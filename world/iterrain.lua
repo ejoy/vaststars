@@ -38,7 +38,7 @@ function iterrain.create()
             "vaststars|terrain",
         },
         data = {
-            name = "shape_terrain_test",
+            name = "shape_terrain",
             reference = true,
             scene = {
                 srt = srt,
@@ -55,8 +55,8 @@ function iterrain.create()
                 },
             },
             materials = {
-                shape = "res/shape_terrain.material",
-                edge = "res/shape_terrain_edge.material",
+                shape = "/pkg/vaststars/res/shape_terrain.material",
+                edge = "/pkg/vaststars/res/shape_terrain_edge.material",
             },
 
             --

@@ -6,5 +6,9 @@ return {
         "ant.general",
         "ant.render",
         "ant.sky",
+        "ant.math",
+        "ant.effekseer",
+        "ant.rmlui",
+        "ant.terrain",
     }
 }
