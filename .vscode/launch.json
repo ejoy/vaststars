@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lua",
+            "request": "launch",
+            "name": "Editor",
+            "preLaunchTask": "Clear terminal",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "outputCapture": [],
+            "luaVersion": "latest",
+            "luaArch": "x86_64",
+            "luaexe": "${workspaceRoot}\\3rd\\ant\\bin\\lua.exe",
+            "program": "${workspaceRoot}\\main.lua",
+            "cwd": "${workspaceRoot}\\3rd\\ant\\",
+        }
+    ]
+}

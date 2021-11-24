@@ -1,0 +1,9 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label" : "Clear terminal",
+        "command": "${command:workbench.action.terminal.clear}",
+      },
+    ]
+  }
