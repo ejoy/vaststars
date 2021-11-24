@@ -64,7 +64,6 @@ system "camera_controller_system"
     .require_interface "ant.objcontroller|iobj_motion"
     .require_interface "ant.camera|icamera"
     .method "init_world"
-    .method "post_init"
     .method "data_changed"
 
 interface "icamera_controller"
