@@ -1,0 +1,306 @@
+<rml>
+    <head>
+        <style>
+            div {
+                font: 120% "宋体";
+            }
+            button {
+                width: 80px;
+                height: 80px;
+                margin: 10px;
+                text-align: center;
+                text-decoration: none;
+                border-radius: 8px;
+                border: 2px rgba(84,130,53,255);
+                opacity: 1;
+                transition: transform 2s elastic-out;
+                background-color: rgba(197,224,180,255);
+                transform: scale(1.0);
+            }
+            button:hover {
+                transform: scale(1.1);
+            }
+            .button-bg {
+                 width:50px;
+                 height:50px;
+                 margin-bottom:5px;
+                 align-self:center;
+                 background-size:cover;
+            }
+            .button-text {
+                background-color: rgba(128,156,126,128);
+                font-size:18px;
+                text-align:center;
+                border-radius: 4px;
+            }
+            .panel {
+                background-color: rgba(120, 120, 120, 255);
+                border: 2px green;
+                border-radius: 5px;
+                width: 98%;
+                height: 100%;
+                flex-direction: column;
+            }
+            .progress-background {
+                width: 20px;
+                height: 100px;
+                background-color: rgba(255,255,255,255);
+            }
+            .progress-fill {
+                width: 20px;
+                height: 100px;
+                background-color: rgba(112,48,160,255);
+            }
+            .item-container {
+                border: 1px rgba(180, 180, 180, 255);
+                flex-direction: row;
+                justify-content: flex-start;
+                width: 100%;
+            }
+            .item-display {
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items:center;
+                font-size:25px;
+            }
+            .item-bg {
+                width:50px;
+                height:50px;
+                background-size:cover;
+            }
+            .item-progress {
+                margin-left: 100px;
+                width:50px;
+                height:50px;
+                background-size:cover;
+            }
+            .property-display {
+                flex-direction: row;
+                align-items:center;
+            }
+            .property-bg {
+                width:30px;
+                height:30px;
+                background-size:cover;
+            }
+            .property-text {
+                margin-left: 10px;
+                font-size:20px;
+            }
+            .row {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items:center;
+            }
+            .column {
+                flex-direction: column;
+                align-items:center;
+            }
+        </style>
+        <script type="text/x-lua" >
+            local start = window.createModel "start" {
+                show_work = false,
+                --workName = {"加工", "化工", "电力", "物流", "计算机", "自定义"}
+
+                work_id = 1,
+                road_list = {{id=1}}
+            }
+            function start.clickWork(self, workid)
+                if not workid then
+                    start.show_work = not start.show_work
+                    start.work_id = 1
+                else
+                    start.work_id = workid
+                end
+                console.log("workid", workid)
+            end
+            function start.clickVehicle(self, carid)
+ 
+            end
+            function start.addRoad()
+                local rl = start.road_list
+                rl[#rl + 1] = {id=#rl + 1}
+                console.log("addRoad", #rl)
+            end
+            window.addEventListener('message', function(event)
+                event.source.postMessage(event.data)
+            end)
+            window.addEventListener('mousemove', function(event)
+                if event.button then
+                    console.log("darg", event.x, event.y)
+                end
+            end)
+        </script>
+    </head>
+    <body>
+        <div class="row" style="justify-content: space-evenly; height: 100%;" data-model="start">
+            <div class="panel">
+                <div class="row" style="align-items: center; justify-content: flex-start;">
+                    <button style='background-color: rgba(255, 255, 255, 0); border: 0px; background-image:"common/return.png"; width:60px; height:60px; background-size:cover;'/>
+                    <div>组装机</div>
+                </div>
+                <div class="row" style="justify-content: flex-start; height: 600px;">
+                    <div class="column" style="justify-content: flex-start; align-items: flex-start; width:50%; height: 100%; border: 2px rgba(100, 100, 100, 255);">
+                        <div styly="height:200px;">
+                            <div class="row" style="justify-content: flex-start; font-size: 20px;">
+                                <div>角色背包</div>
+                                <div style="margin-left: 150px;">MAX(999)</div>
+                            </div>
+                            <div class="progress-background" style="position:absolute; z-index: 1; top: 30px; left:10px; width: 300px; height: 30px;"/>
+                            <div class="progress-fill" style="background-color: rgba(0, 176, 240, 255); position:absolute; z-index: 2; top: 30px; left:10px; width: 150px; height: 30px;"/>
+                            <div style="z-index: 3; margin-left:25%; font-size: 25px; color: black;">800</div>
+                        </div>
+                        <div class="item-container">
+                            <div class="item-display">
+                                <div class="item-bg" style='background-image:"science/hand.png";'/>
+                                <div>100</div>
+                            </div>
+                            <div class="item-progress" style='background-image:"science/hand1.png";'/>
+                        </div>
+                        <div class="item-container">
+                            <div class="item-display">
+                                <div class="item-bg" style='background-image:"science/hand.png";'/>
+                                <div>100</div>
+                            </div>
+                            <div class="item-progress" style='background-image:"science/hand1.png";'/>
+                        </div>
+                        <div class="item-container">
+                            <div class="item-display">
+                                <div class="item-bg" style='background-image:"science/hand.png";'/>
+                                <div>100</div>
+                            </div>
+                            <div class="item-progress" style='background-image:"science/hand1.png";'/>
+                        </div>
+                        <div class="item-container">
+                            <div class="item-display">
+                                <div class="item-bg" style='background-image:"science/hand.png";'/>
+                                <div>100</div>
+                            </div>
+                            <div class="item-progress" style='background-image:"science/hand1.png";'/>
+                        </div>
+                    </div>
+                    <div class="column" style="justify-content: space-between; width:50%; height: 100%;">
+                        <div style='border: 2px rgba(100, 100, 100, 255); width: 100%; height: 30%; flex-direction: row; justify-content: flex-start; align-items:center;'>
+                            <div class="column" style="justify-content: flex-start; align-items:center;">
+                                <div style="color: green; font-size:20px;">输出正常</div>
+                                <div style='background-image: "assemble/engine.png"; width:80px; height:80px; background-size:cover;'/>
+                            </div>
+                            <div class="column" style="justify-content: flex-start; align-self: flex-start;margin-left: 30px; margin-top: 20px;">
+                                <div style="font-size: 20px;">供电</div>
+                                <div class="progress-background" style="position:absolute; z-index: 1; top: 30px;left:10px; font-size: 20px;"/>
+                                <div class="progress-fill" style="background-color: rgba(0, 176, 240, 255); position:absolute; z-index: 2; top: 30px;left:10px; height: 50px;"/>
+                                <div style="text-align:center; position:absolute; z-index: 3; font-size: 30px; top: 50px; color: black;">18%</div>
+                            </div>
+                            <div class="column" style="align-items:flex-start; justify-content: space-between; margin-left: 30px;">
+                                <div class="property-display">
+                                    <div class="property-bg" style='background-image:"character/timer.png";'/>
+                                    <div class="property-text" style="color: rgba(0,176,240,255);">制造速度</div>
+                                    <div class="property-text">2.0s(-1.75s)</div>
+                                </div>
+                                <div class="property-display">
+                                    <div class="property-bg" style='background-image:"character/buffer.png";'/>
+                                    <div class="property-text" style="color: rgba(0,176,240,255);">产能加成</div>
+                                    <div class="property-text">40%</div>
+                                </div>
+                                <div class="property-display">
+                                    <div class="property-bg" style='background-image:"character/health.png";'/>
+                                    <div class="property-text" style="color: rgba(0,176,240,255);">建筑生命</div>
+                                    <div class="property-text">200/990</div>
+                                </div>
+                                <div class="property-display">
+                                    <div class="property-bg" style='background-image:"character/flash.png";'/>
+                                    <div class="property-text" style="color: rgba(0,176,240,255);">建筑能耗</div>
+                                    <div class="property-text">500kw(-250kw)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="border: 2px rgba(100, 100, 100, 255); width: 100%; height: 50%;">
+                            <div class="row" style="justify-content: center;">
+                                <div class="column" style="justify-content: space-between; width: 35%;">
+                                    <div class="row">
+                                        <button style='background-color: white; border: 2px rgba(84,130,53,255);'>
+                                            <div class="button-bg" style='background-image:"science/hand.png";'></div>
+                                            <div class="button-text">机器抓</div>
+                                        </button>
+                                        <button>
+                                            <div class="button-bg" style='background-image:"construct/hand.png";'></div>
+                                            <div class="button-text">机器抓</div>
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        <button>
+                                            <div class="button-bg" style='background-image:"construct/hand.png";'></div>
+                                            <div class="button-text">机器抓</div>
+                                        </button>
+                                        <button>
+                                            <div class="button-bg" style='background-image:"construct/hand.png";'></div>
+                                            <div class="button-text">机器抓</div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="column" style="justify-content: center; width: 30%;">
+                                    <div style="width: 100%; height: 20px;">
+                                        <div class="progress-background" style="position:absolute; z-index: 1; top: 10px; left:10px; font-size: 20px; width:180px; height:20px;"/>
+                                        <div class="progress-fill" style="background-color: rgba(0, 176, 240, 255); position:absolute; z-index: 2; top: 10px; left:10px; width: 100px; height:20px;"/>
+                                        <div style="text-align:center; position:absolute; z-index: 3; font-size: 30px; top: 10px; color: black;">18%</div>
+                                    </div>
+                                    <div style="width: 100%; height: 20px;">
+                                        <div class="progress-background" style="position:absolute; z-index: 1; top: 10px; left:10px; font-size: 20px; width:180px; height:10px;"/>
+                                        <div class="progress-fill" style="background-color: rgba(255, 176, 240, 255); position:absolute; z-index: 2; top: 10px; left:10px; width: 80px; height:10px;"/>
+                                        <div style="text-align:center; position:absolute; z-index: 3; font-size: 30px; top: 10px; color: black;">15%</div>
+                                    </div>
+                                </div>
+                                <div class="column" style="justify-content: space-between; width: 35%;">
+                                    <div class="row">
+                                        <button style='background-color: white; border: 2px rgba(84,130,53,255);'>
+                                            <div class="button-bg" style='background-image:"science/hand.png";'></div>
+                                            <div class="button-text">机器抓</div>
+                                        </button>
+                                        <button>
+                                            <div class="button-bg" style='background-image:"construct/hand.png";'></div>
+                                            <div class="button-text">机器抓</div>
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        <button>
+                                            <div class="button-bg" style='background-image:"construct/hand.png";'></div>
+                                            <div class="button-text">机器抓</div>
+                                        </button>
+                                        <button>
+                                            <div class="button-bg" style='background-image:"construct/hand.png";'></div>
+                                            <div class="button-text">机器抓</div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="border: 2px rgba(100, 100, 100, 255); width:100%; height: 20%;">
+                            <button>
+                                <div class="button-bg" style='background-image:"construct/hand.png";'></div>
+                                <div class="button-text">机器抓</div>
+                            </button>
+                            <button>
+                                <div class="button-bg" style='background-image:"construct/hand.png";'></div>
+                                <div class="button-text">机器抓</div>
+                            </button>
+                            <button>
+                                <div class="button-bg" style='background-image:"construct/hand.png";'></div>
+                                <div class="button-text">机器抓</div>
+                            </button>
+                            <button>
+                                <div class="button-bg" style='background-image:"construct/hand.png";'></div>
+                                <div class="button-text">机器抓</div>
+                            </button>
+                            <button>
+                                <div class="button-bg" style='background-image:"construct/hand.png";'></div>
+                                <div class="button-text">机器抓</div>
+                            </button>
+                            <button style='background-image:"science/add.png"; background-size:cover; border: 2px rgba(84,130,53,255); background-color: rgba(255,255,255,255);'>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>

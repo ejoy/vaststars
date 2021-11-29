@@ -1,0 +1,231 @@
+<rml>
+    <head>
+        <style>
+            div {
+                font: 120% "宋体";
+            }
+            button {
+                width: 120px;
+                height: 60px;
+                margin: 10px;
+                text-align: center;
+                text-decoration: none;
+                border-radius: 8px;
+                border: 2px white;
+                
+                transition: transform 2s elastic-out;
+                color: #ffffff;
+                background-color: rgba(197,90,17,255);
+                transform: scale(1.0);
+            }
+            button:hover {
+                transform: scale(1.2);
+            }
+            .panel {
+                background-color: rgba(255, 255, 255, 100);
+                border: 2px green;
+                border-radius: 5px;
+                width: 96%;
+                height: 96%;
+                margin: 2%;
+            }
+            .header {
+                height: 60px;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .progress-background {
+                width: 350px;
+                height: 40px;
+                background-color: rgba(255,255,255,255);
+            }
+            .progress-fill {
+                width: 350px;
+                height: 40px;
+                background-color: rgba(112,48,160,255);
+            }
+            .small-box {
+                width:30px;
+                height:30px;
+                background-size:cover;
+            }
+            .box {
+                width: 40px;
+                height: 40px;
+                background-size: cover;
+            }
+            .row {
+                flex-direction: row;
+            }
+            .column {
+                flex-direction: column;
+            }
+            .right-button-display {
+                flex-direction: row;
+                align-items:center;
+                justify-content: flex-end;
+                height:60;
+                width:100px;
+            }
+        </style>
+        <script type="text/x-lua" >
+            local start = window.createModel "start" {
+                show_work = false,
+                work_id = 1,
+                road_list = {{id=1}}
+            }
+            function start.clickWork(self, workid)
+                if not workid then
+                    start.show_work = not start.show_work
+                    start.work_id = 1
+                else
+                    start.work_id = workid
+                end
+                console.log("workid", workid)
+            end
+            function start.clickVehicle(self, carid)
+ 
+            end
+            function start.addRoad()
+                local rl = start.road_list
+                rl[#rl + 1] = {id=#rl + 1}
+                console.log("addRoad", #rl)
+            end
+            window.addEventListener('message', function(event)
+                event.source.postMessage(event.data)
+            end)
+            window.addEventListener('mousemove', function(event)
+                if event.button then
+                    console.log("darg", event.x, event.y)
+                end
+            end)
+        </script>
+    </head>
+    <body>
+        <div class="panel" class="column" style="justify-content: space-between;" data-model="start">
+            <div class="header" style="align-items: center; ">
+                <div class="row" style="justify-content: flex-start; align-items: center;">
+                    <button style='background-color: rgba(255, 255, 255, 0); border: 0px; background-image:"common/return.png"; width:60px; height:60px; background-size:cover;'/>
+                    <div>物品交换</div>
+                </div>
+                <div>
+                    <div style='background-image:"common/sort.png"; width:60px; height:60px; background-size:cover;'></div>
+                    <div style="font-size:80%; text-align: center;">排序</div>
+                </div>
+            </div>
+            <div class="row" style="background-color: rgba(255, 255, 255, 120); margin: 10px; height: 520px;">
+                <div class="column" style="justify-content: flex-start; width: 50%; height: 100%;">
+                    <div style="color: rgba(0,0,150,255); font-size: 60%; height: 100px;">
+                        <div class="row" style="justify-content: flex-start;">
+                            <div class="row" style="align-items: flex-start;">
+                                <div class="box" style='background-image:"exchange/blue_character.png";'></div>
+                                <div>角色背包</div>
+                            </div>
+                            <div style="margin-left: 100px;">MAX(999)</div>
+                        </div>
+                        <div class="progress-background" style="position:absolute; z-index: 1; top: 50px;left:10px; font-size: 150%;"><p style="text-align:center;">9000</p></div>
+                        <div class="progress-fill" style="background-color: rgba(0, 176, 240, 255); position:absolute; z-index: 2; top: 50px;left:10px; width: 150px;"/>
+                    </div>
+                    <div>
+                        <div class="row" style="align-items: center; justify-content: space-between;">
+                            <div class="row" style="align-items: flex-start;">
+                                <div class="box" style='background-image:"construct/hand.png";'></div>
+                                <div style="font-size: 80%;">1000</div>
+                            </div>
+                            <div style='background-image:"icon.png"; width:40px; height:40px;'></div>
+                            <div style="align-items:flex-end;">
+                                <button class="row" style="align-items: center; justify-content: flex-end; width:120px; background-color: rgba(0, 176, 240, 255);">
+                                    <div style='opacity: 1.0; background-image:"exchange/left_arrow.png"; width:60px; height:40px; background-size:cover;'/>
+                                    <div class="box" style='background-image:"exchange/yellow_box.png";'/>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" style="justify-content: space-between;">
+                            <div class="row" style="align-items: flex-start;">
+                                <div class="box" style='background-image:"construct/hand.png";'></div>
+                                <div style="font-size: 80%;">900</div>
+                            </div>
+                            <div style='background-image:"icon.png"; width:40px; height:40px;'></div>
+                            <div style='width:40px; height:40px;'/>
+                        </div>
+                    </div>
+                </div>
+                <div class="column" style="width: 50%; height: 100%;">
+                    <div style="color: rgba(100,0,255,255);font-size: 60%; height: 100px;">
+                        <div class="row" style="justify-content: flex-end;">
+                            <div>MAX(999)</div>
+                            <div class="row" style="align-items: flex-start;">
+                                <div style="margin-left:100px;">箱子容量</div>
+                                <div class="box" style='background-image:"exchange/purple_bag.png";'></div>
+                            </div>
+                        </div>
+                        <div class="progress-background" style="align-self: flex-end; position:absolute; z-index: 1; top: 50px; font-size: 150%;"><p style="text-align:center;">9000</p></div>
+                        <div class="progress-fill" style="align-self: flex-end; position:absolute; z-index: 2; top: 50px; width: 150px;"/>
+                    </div>
+                    <div>
+                        <div class="row" style="align-items: center; justify-content: space-between;">
+                            <div style="align-items:flex-end;">
+                                <button class="row" style="align-items: center; justify-content: flex-start; width:120px; background-color: rgba(112, 48, 160, 255);">
+                                    <div class="box" style='background-image:"exchange/yellow_box.png";'/>
+                                    <div style='opacity: 1.0; background-image:"exchange/right_arrow.png"; width:60px; height:40px; background-size:cover;'/>
+                                </button>
+                            </div>
+                            <div class="box" style='background-image:"construct/hand.png";'/>
+                            <div style="font-size: 80%;">900</div>
+                        </div>
+                        <div class="row" style="justify-content: space-between;">
+                            <div style='width:40px; height:40px;'/>
+                            <div class="box" style='background-image:"construct/hand.png";'/>
+                            <div style="font-size: 80%;">403</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="justify-content: space-between;">
+                <div style="align-items: flex-start;">
+                    <div class="row" style="align-items:flex-start;'>
+                        <button class="row" style="width:160px; align-items:center; background-color: rgba(0, 176, 240, 255);">
+                            <div style="font-size:80%; text-align:center;">重置选择</div>
+                        </button>
+                        <button class="row" style="align-items:center; justify-content: flex-end; width:160px;">
+                            <div class="column" style="justify-content: center;">
+                                <div style="font-size:50%; text-align:left;">全部迁入</div>
+                                <div style="font-size:50%; text-align:center;">箱子</div>
+                            </div>
+                            <div class="column" style="justify-content: center;">
+                                <div class="small-box" style='background-image:"exchange/in.png";'/>
+                                <div class="small-box" style='background-image:"exchange/purple_bag.png";'/>
+                            </div>
+                        </button>
+                        <button class="row" style="align-items:center; justify-content: flex-end; width:160px;">
+                            <div class="column" style="justify-content: center;">
+                                <div style="font-size:50%; text-align:left;">全部迁入</div>
+                                <div style="font-size:50%; text-align:center;">角色</div>
+                            </div>
+                            <div class="column" style="justify-content: center;">
+                                <div class="small-box" style='background-image:"exchange/in.png";'/>
+                                <div class="small-box" style='background-image:"exchange/blue_character.png";'/>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <div style="align-items: flex-end;">
+                    <div class="row" style="align-items:center;'>
+                        <button class="right-button-display">
+                            <div style="font-size:80%; text-align:left;">1个</div>
+                            <div class="box" style='background-image:"exchange/yellow_box.png";'/>
+                        </button>
+                        <button class="right-button-display" style="background-color: rgba(0, 176, 80, 255);">
+                            <div style="font-size:80%; text-align:left;">1组</div>
+                            <div class="box" style='background-image:"exchange/yellow_box.png";'/>
+                        </button>
+                        <button class="right-button-display">
+                            <div style="font-size:80%; text-align:left;">ALL</div>
+                            <div class="box" style='background-image:"exchange/yellow_box.png";'/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>

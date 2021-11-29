@@ -1,0 +1,428 @@
+<rml>
+    <head>
+        <style>
+            div {
+                font: 120% "宋体";
+            }
+            button {
+                width: 80px;
+                height: 80px;
+                margin: 10px;
+                text-align: center;
+                text-decoration: none;
+                border-radius: 8px;
+                border: 2px rgba(84,130,53,255);
+                opacity: 1;
+                transition: transform 2s elastic-out;
+                background-color: rgba(197,224,180,255);
+                transform: scale(1.0);
+            }
+            button:hover {
+                transform: scale(1.1);
+            }
+            .small_button {
+                margin: 0px;
+                opacity: 1;
+                background-color: white; 
+                background-size: cover;
+                border: 2px rgba(84,130,53,255);
+                border-radius: 8px;
+                width: 60px;
+                height: 60px;
+            }
+            .button-bg {
+                 width:50px;
+                 height:50px;
+                 margin-bottom:5px;
+                 align-self:center;
+                 background-size:cover;
+            }
+            .button-text {
+                background-color: rgba(128,156,126,128);
+                font-size:18px;
+                border-radius: 4px;
+            }
+            .panel {
+                background-color: rgba(120, 120, 120, 255);
+                border: 2px green;
+                border-radius: 5px;
+                width: 48%;
+                height: 100%;
+            }
+            .header {
+                height: 60px;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .row {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items:center;
+            }
+            .column {
+                flex-direction: column;
+            }
+            .property-icon {
+                width: 40px;
+                height: 40px;
+                background-size: cover;
+            }
+            .property-text {
+                margin-left: 10px;
+                font-size: 20px;
+            }
+            .item {
+                flex-direction: column;
+                align-items:flex-start;
+                justify-content:space-between;
+                background-color: rgba(197,224,180,255);
+                background-image: "construct/hand.png";
+                background-size:cover;
+                width:90px;
+                height:90px;
+                margin:10px;
+                font-size: 20px;
+                border: 2px rgba(84,130,53,255);
+            }
+            .item-title {
+                background-color: rgba(138,156,126,255);
+                border-radius: 5px;
+                width: 80px;
+                margin:0px;
+            }
+            .item-desc {
+                text-align:left;
+                margin:0px;
+                left:10px
+            }
+            workbutton {
+                font-size: 24px;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                border-radius: 15px;
+                border: 2px white;
+                background-color: rgba(237,125,49,255);
+                height: 90px;
+                width: 90px;
+                transform: scale(1.0);
+                transition: color background-color transform 2s elastic-out;
+            }
+            workbutton:active {
+                transform: scale(1.0);
+            }
+            workbutton:hover {
+                transform: scale(1.1);
+                background-color: rgba(0,176,80,255);
+            }
+            .workbutton-bg {
+                margin: auto auto;
+                width:60px;
+                height: 60px; 
+            }
+            .progress-background {
+                width: 50px;
+                height: 300px;
+                background-color: rgba(255,255,255,255);
+            }
+            .progress-fill {
+                width: 50px;
+                height: 300px;
+                background-color: rgba(112,48,160,255);
+            }
+        </style>
+        <script type="text/x-lua" >
+            local start = window.createModel "start" {
+                show_work = false,
+                --workName = {"加工", "化工", "电力", "物流", "计算机", "自定义"}
+
+                work_id = 1,
+                road_list = {{id=1}}
+            }
+            function start.clickWork(self, workid)
+                if not workid then
+                    start.show_work = not start.show_work
+                    start.work_id = 1
+                else
+                    start.work_id = workid
+                end
+                console.log("workid", workid)
+            end
+            function start.clickVehicle(self, carid)
+ 
+            end
+            function start.addRoad()
+                local rl = start.road_list
+                rl[#rl + 1] = {id=#rl + 1}
+                console.log("addRoad", #rl)
+            end
+            window.addEventListener('message', function(event)
+                event.source.postMessage(event.data)
+            end)
+            window.addEventListener('mousemove', function(event)
+                if event.button then
+                    console.log("darg", event.x, event.y)
+                end
+            end)
+        </script>
+    </head>
+    <body>
+        <div style="height: 100%; flex-direction: row; justify-content: space-evenly;" data-model="start">
+            <div class="panel" style="flex-direction: column;">
+                <div class="header" style="width: 100%; align-items: center; justify-content: space-between;">
+                    <button style='background-color: rgba(255, 255, 255, 0); border: 0px; background-image:"common/return.png"; width:70px; height:70px; background-size:cover;'/>
+                    <div style="left: -200px;">制造舱</div>
+                    <button style='background-color: rgba(255, 255, 255, 0); border: 0px; background-image:"factory/seacher.png"; width:70px; height:70px; background-size:cover;'/>
+                </div>
+                <div class="column" style="width: 100%; justify-content:flex-start;">
+                    <div class="row" style="width: 100%;">
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                    </div>
+                    <div class="row">
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                    </div>
+                    <div class="row">
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器抓</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                    </div>
+                    <div class="row">
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                    </div>
+                    <div class="row">
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            <div class="item-desc">9</div>
+                            <div class="item-title">机器爪</div>
+                        </button>
+                    </div>
+                </div>
+                <div class="row" style="justify-content:space-evenly;">
+                    <workbutton>
+                        <div class="workbutton-bg" style='background-image:"construct/process.png";'/>
+                        <div>加工</div>
+                    </workbutton>
+                    <workbutton>
+                        <div class="workbutton-bg" style='background-image:"construct/chemical.png";'/>
+                        <div>化工</div>
+                    </workbutton>
+                    <workbutton>
+                        <div class="workbutton-bg" style='background-image:"construct/power.png";'/>
+                        <div>电力</div>
+                    </workbutton>
+                    <workbutton>
+                        <div class="workbutton-bg" style='background-image:"construct/express.png";'/>
+                        <div>物流</div>
+                    </workbutton>
+                    <workbutton>
+                        <div class="workbutton-bg" style='background-image:"construct/computer.png";'/>
+                        <div>效能</div>
+                    </workbutton>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="column" style="justify-content: space-between; align-items:center; height: 100%; width: 100%;">
+                    <div class="header" style="width: 100%; height: 15%; align-items: center; justify-content: space-between;">
+                        <div style='align-self:flex_start; background-image:"science/hand.png"; width:80px; height:80px; background-size:cover;'/>
+                        <div style="align-self:center;font-size: 30px;">流水线上快速抓取的机械臂</div>
+                        <div style='align-self:flex_end; background-image:"science/book.png"; width:80px; height:80px; background-size:cover;'/>
+                    </div>
+                    <div class="row" style="width: 100%; height: 70%;">
+                        <div class="column" style="border: 2px rgba(255,255,255,255); width: 50%; height: 100%; align-items:center; justify-content: flex-start;">
+                            <div style="font-size: 30px;">所需材料</div>
+                            <div class="row">
+                                <div class="button-bg" style='background-image:"science/hand.png";'/>
+                                <div class="button-text">机器爪</div>
+                                <div style="font-size: 25px;">X3 (19)</div>
+                            </div>
+                            <div class="row">
+                                <div class="button-bg" style='background-image:"science/hand.png";'/>
+                                <div class="button-text">机器爪</div>
+                                <div style="font-size: 25px;">X3 (19)</div>
+                            </div>
+                            <div class="row">
+                                <div class="button-bg" style='background-image:"science/hand.png";'/>
+                                <div class="button-text">机器爪</div>
+                                <div style="font-size: 25px;">X3 (19)</div>
+                            </div>
+                            <div class="row">
+                                <div class="button-bg" style='background-image:"science/hand.png";'/>
+                                <div class="button-text">机器爪</div>
+                                <div style="font-size: 25px;">X3 (19)</div>
+                            </div>
+                        </div>
+                        <div class="column" style="border: 2px rgba(255,255,255,255); width: 50%; height: 100%; align-items:flex-start; justify-content: space-between;">
+                            <div style="height: 20%; align-self: center;font-size: 30px;">制造数量</div>
+                            <div class="row" style="height: 60%;">
+                                <div style="width:40%; font-size: 20px;">
+                                    <div style="text-align:right; top: -120px; color: yellow;">MAX999</div>
+                                    <div style="text-align:right; top: 30px; color: green;">生产100个</div>
+                                </div>
+                                <div style="width:20%;">
+                                    <div class="progress-background" style="position:absolute; z-index: 1; top: -150px; left:10px; font-size: 20px;"/>
+                                    <div class="progress-fill" style="background-color: yellow; position:absolute; z-index: 2; top: -150px; left:10px; height: 180px;"/>
+                                    <div class="progress-fill" style="background-color: green; position:absolute; z-index: 3; top: -150px; left:10px; height: 100px;"/>
+                                </div>
+                                <div class="row" style="width:40%; border-radius: 10px; background-color: rgba(114,106,104,255);">
+                                    <div class="property-icon" style='background-image:"science/timer.png";'/>
+                                    <div class="property-text">1m36s</div>
+                                </div>
+                            </div>
+                            <div class="row" style="height: 20%;">
+                                <button style='background-image:"factory/return.png";background-size:cover;'/>
+                                <button style='background-image:"road/add.png";background-size:cover;'/>
+                                <button style='background-image:"road/add.png";background-size:cover;'/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="width:100%; height: 15%; ">
+                        <div class="row" style="justify-content: space-evenly; background-color: rgba(148,133,125,255); border-radius: 10px; width:75%;">
+                            <div class="column" style="justify-content:center;">
+                                <div style="font-size:25px;">制造</div>
+                                <div style="font-size:25px;">队列</div>
+                            </div>
+                            <div class="column" style="justify-content:center;">
+                                <button class="small_button" style='background-image:"science/hand.png";'/>
+                                <div style="font-size:18px;">21m23s</div>
+                            </div>
+                            <div class="column" style="justify-content:center;">
+                                <button class="small_button" style='background-image:"character/add.png";'/>
+                                <div style="font-size:18px;">21m23s</div>
+                            </div>
+                            <div class="column" style="justify-content:center;">
+                                <button class="small_button" style='background-image:"character/add.png";'/>
+                                <div style="font-size:18px;">21m23s</div>
+                            </div>
+                            <div class="column" style="justify-content:center;">
+                                <button class="small_button" style='background-image:"character/add.png";'/>
+                                <div style="font-size:18px;">21m23s</div>
+                            </div>
+                            <div class="column" style="justify-content:center;">
+                                <button class="small_button" style='background-image:"character/add.png";'/>
+                                <div style="font-size:18px;">21m23s</div>
+                            </div>
+                        </div>
+                        <button class="column" style="background-color: rgba(0,176,240,255); width: 20%; height: 60px;">
+                            <div style="margin: 0px; font-size:24px; text-align: center;">制造</div>
+                            <div style="margin: 0px; font-size:18px; text-align: center;">(21m23s)</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>

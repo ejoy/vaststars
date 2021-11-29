@@ -1,0 +1,261 @@
+<rml>
+    <head>
+        <style>
+            div {
+                font: 100% "宋体";
+            }
+            button {
+                width: 210px;
+                height: 210px;
+                text-align: center;
+                border-radius: 15px;
+                border: 2px white;
+
+                transition: transform 2s elastic-out;
+                transform: scale(1.0);
+            }
+            button:hover {
+                transform: scale(1.1);
+            }
+            button:active {
+                transform: scale(1.0);
+            }
+            button#work {
+                position: absolute;
+                top: 610px;
+                left:1158px;
+                width: 120px;
+                height: 120px;
+                margin: 0px;
+                font-size: 150%;
+            }
+            #work-buttons-container {
+                left: 1220px;
+                width: 120px;
+                height: 600px;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            workbutton {
+                font-size: 24px;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                border-radius: 15px;
+                border: 2px white;
+                background-color: rgba(237,125,49,255);
+                height: 90px;
+                width: 90px;
+                transform: scale(1.0);
+                transition: color background-color transform 2s elastic-out;
+            }
+            workbutton:active {
+                transform: scale(1.0);
+            }
+            workbutton:hover {
+                transform: scale(1.1);
+                background-color: rgba(0,176,80,255);
+            }
+            .workbutton-bg {
+                margin: auto auto;
+                width:60px;
+                height: 60px; 
+            }
+            #work-detail {
+                position: absolute;
+                top: 10px;
+                left: 850px;
+                width: 300px;
+                height: 580px;
+                background-color: rgba(206,206,206,255);
+                border: 2px green;
+                border-radius: 5px;
+            }
+            .tools-container {
+                flex-direction: column;
+                align-items: center;
+                font-size: 50%;
+            }
+            .tools-button {
+                flex-direction: column;
+                align-items:flex-start;
+                justify-content:space-between;
+                background-color: rgba(197,224,180,255);
+                background-image: "construct/hand.png";
+                background-size:cover;
+                width:90px;
+                height:90px;
+                margin:10px;
+                font-size: 20px;
+                border: 2px rgba(84,130,53,255);
+            }
+            .tools-button-title {
+                background-color: rgba(138,156,126,255);
+                border-radius: 5px;
+                width: 80px;
+                margin:0px;
+            }
+            .tools-button-desc {
+                text-align:left;
+                margin:0px;
+                left:10px
+            }
+            .row {
+                flex-direction: row;
+            }
+            .column {
+                flex-direction: column;
+            }
+        </style>
+        <script type="text/x-lua" >
+            local start = window.createModel "start" {
+                show_work = false,
+                --workName = {"加工", "化工", "电力", "物流", "计算机", "自定义"}
+                work_id = 1,
+            }
+            function start.clickWork(self, workid)
+                if not workid then
+                    start.show_work = not start.show_work
+                    start.work_id = 1
+                else
+                    start.work_id = workid
+                end
+                console.log("workid", workid)
+            end
+            function start.clickTool(self, worid, toolid)
+ 
+            end
+            window.addEventListener('message', function(event)
+                event.source.postMessage(event.data)
+            end)
+            window.addEventListener('mousemove', function(event)
+                if event.button then
+                    console.log("darg", event.x, event.y)
+                end
+            end)
+        </script>
+    </head>
+    <body>
+        <div id="test" data-model="start">
+            <button id="work" data-event-click="clickWork()" style='background-color: rgba(0,176,240,255); flex-direction: column; justify-content: flex-start; align-item: center;'>
+                <div style='margin: 0 auto; background-image:"construct/work.png"; width:80px; height: 80px; background-size:cover;'/>
+                <div>施工</div>
+            </button>
+            <div id="work-buttons-container" data-if="show_work">
+                <workbutton data-event-click="clickWork(1)">
+                    <div class="workbutton-bg" style='background-image:"construct/process.png";'/>
+                    <div>加工</div>
+                </workbutton>
+                <workbutton data-event-click="clickWork(2)">
+                    <div class="workbutton-bg" style='background-image:"construct/chemical.png";'/>
+                    <div>化工</div>
+                </workbutton>
+                <workbutton data-event-click="clickWork(3)">
+                    <div class="workbutton-bg" style='background-image:"construct/power.png";'/>
+                    <div>电力</div>
+                </workbutton>
+                <workbutton data-event-click="clickWork(4)">
+                    <div class="workbutton-bg" style='background-image:"construct/express.png";'/>
+                    <div>物流</div>
+                </workbutton>
+                <workbutton data-event-click="clickWork(5)">
+                    <div class="workbutton-bg" style='background-image:"construct/computer.png";'/>
+                    <div>计算机</div>
+                </workbutton>
+                <workbutton data-event-click="clickWork(6)">
+                    <div class="workbutton-bg" style='background-image:"construct/custom.png";'/>
+                    <div>自定义</div>
+                </workbutton>
+            </div>
+            <div id="work-detail" data-if="show_work">
+                <div data-if="work_id==1">
+                    <div class="tools-container">
+                        <div class="row">
+                            <button class="tools-button" data-event-click="clickTool(1,1)">
+                                <div class="tools-button-desc">99</div>
+                                <div class="tools-button-desc">9</div>
+                                <div class="tools-button-title">[1]工具1</div>
+                            </button>
+                            <button class="tools-button" data-event-click="clickTool(1,2)">
+                                <div class="tools-button-desc">99</div>
+                                <div class="tools-button-desc">9</div>
+                                <div class="tools-button-title">[1]工具2</div>
+                            </button>
+                        </div>
+                        <div class="row">  
+                            <button class="tools-button" data-event-click="clickTool(1,3)">
+                                <div class="tools-button-desc">99</div>
+                                <div class="tools-button-desc">9</div>
+                                <div class="tools-button-title">[1]工具3</div>
+                            </button>
+                            <button class="tools-button" data-event-click="clickTool(1,4)">
+                                <div class="tools-button-desc">99</div>
+                                <div class="tools-button-desc">9</div>
+                                <div class="tools-button-title">[1]工具4</div>
+                            </button>
+                        </div>
+                        <div class="row">
+                            <button class="tools-button" data-event-click="clickTool(1,5)">
+                                <div class="tools-button-desc">99</div>
+                                <div class="tools-button-desc">9</div>
+                                <div class="tools-button-title">[1]工具5</div>
+                            </button>
+                            <button class="tools-button" data-event-click="clickTool(1,6)">
+                                <div class="tools-button-desc">99</div>
+                                <div class="tools-button-desc">9</div>
+                                <div class="tools-button-title">[1]工具6</div>
+                            </button>
+                        </div>
+                        <div class="row">
+                            <button class="tools-button" data-event-click="clickTool(1,7)">
+                                <div class="tools-button-desc">99</div>
+                                <div class="tools-button-desc">9</div>
+                                <div class="tools-button-title">[1]工具7</div>
+                            </button>
+                            <button class="tools-button" data-event-click="clickTool(1,8)">
+                                <div class="tools-button-desc">99</div>
+                                <div class="tools-button-desc">9</div>
+                                <div class="tools-button-title">[1]工具8</div>
+                            </button>
+                        </div>
+                        <div class="row">
+                            <button class="tools-button" data-event-click="clickTool(1,9)">
+                                <div class="tools-button-desc">99</div>
+                                <div class="tools-button-desc">9</div>
+                                <div class="tools-button-title">[1]工具9</div>
+                            </button>
+                            <button data-event-click="clickTool(1,10)" style="width:90px; height:90px; margin:10px;">
+                                <div style="width: 80px; margin:0px; font-size:50px; font-weight:900;">+</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div data-if="work_id==2">
+                    <div class="tools-container">
+
+                    </div>
+                </div>
+                <div data-if="work_id==3">
+                    <div class="tools-container">
+
+                    </div>
+                </div>
+                <div data-if="work_id==4">
+                    <div class="tools-container">
+
+                    </div>
+                </div>
+                <div data-if="work_id==5">
+                    <div class="tools-container">
+
+                    </div>
+                </div>
+                <div data-if="work_id==6">
+                    <div class="tools-container">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>
