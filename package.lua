@@ -10,5 +10,6 @@ return {
         "ant.effekseer",
         "ant.rmlui",
         "ant.terrain",
+        "ant.json",
     }
 }

@@ -7,6 +7,7 @@ local irq = ecs.import.interface "ant.render|irenderqueue"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local iterrain = ecs.import.interface "vaststars|iterrain"
 local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
+local iui = ecs.import.interface "vaststars|iui"
 local FRAMES_PER_SECOND <const> = ecs.require("lualib.define").FRAMES_PER_SECOND
 local math3d = require "math3d"
 local mc = mathpkg.constant
@@ -16,12 +17,9 @@ local m = ecs.system 'init_system'
 
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
-    -- iRmlUi.preload_dir "/pkg/vaststars/res/ui"
-    -- local window = iRmlUi.open "construct.rml"
-    -- window.postMessage("hello")
-    -- window.addEventListener("message", function(event)
-    --     print(event.data)
-    -- end)
+    iRmlUi.preload_dir "/pkg/vaststars/res/ui"
+
+    iui.open "construct.rml"
 
     local mq = w:singleton("main_queue", "camera_ref:in")
     local eyepos = math3d.vector(0, 8, -8)

@@ -3,6 +3,7 @@ local world = ecs.world
 local w     = world.w
 
 local iterrain = ecs.interface "iterrain"
+local iroad = ecs.import.interface "vaststars|iroad"
 
 local function generate_terrain_fields(w, h)
     local fields = {}
@@ -107,11 +108,16 @@ function iterrain.get_position_by_coord(tile_coord)
     return {((tile_coord[1] - 1) * unit + unit / 2) + srt.t[1], 0, ((tile_coord[2] - 1) * unit + unit / 2) + srt.t[3]}
 end
 
+function iterrain.get_tile_centre_position(position)
+    local tile_coord = iterrain.get_coord_by_position(position)
+    return iterrain.get_position_by_coord(tile_coord)
+end
+
 function iterrain.get_tile_building_type(tile_coord)
     local x = tile_coord[1]
     local y = tile_coord[2]
 
-    local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
+    local e = w:singleton("terrain", "terrain:in shape_terrain:in")
     if not e.terrain.tile_building_types[x] then
         return
     end
@@ -123,12 +129,17 @@ function iterrain.set_tile_building_type(tile_coord, building_type)
     local x = tile_coord[1]
     local y = tile_coord[2]
 
-    local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
+    local e = w:singleton("terrain", "terrain:in shape_terrain:in")
     e.terrain.tile_building_types[x] = e.terrain.tile_building_types[x] or {}
     e.terrain.tile_building_types[x][y] = building_type
+
+    if building_type == "road" then
+        iroad.construct(nil, tile_coord, "O0")
+    end
 end
 
 function iterrain.can_construct(posision)
+    -- todo
     local tile_coord = iterrain.get_coord_by_position(posision)
     return (iterrain.get_tile_building_type(tile_coord) == nil)
 end

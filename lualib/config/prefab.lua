@@ -3,5 +3,6 @@ local entity = {
     ["res/station.prefab"] = { scale = 0.10, direction = {0, 0, -1}, position = nil, },
     ["res/arrow.prefab"] = { scale = 0.125, direction = nil, position = nil, },
     ["res/water.prefab"] = { scale = nil, direction = nil, position = nil, },
+    ["res/road/O_road.prefab"] = { scale = 0.10, direction = nil, position = nil, },
 }
 return entity

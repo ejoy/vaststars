@@ -108,10 +108,12 @@
             }
         </style>
         <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
             local start = window.createModel "start" {
                 show_work = false,
                 --workName = {"加工", "化工", "电力", "物流", "计算机", "自定义"}
                 work_id = 1,
+                is_show_construct_confirm = false,
             }
             function start.clickWork(self, workid)
                 if not workid then
@@ -120,24 +122,39 @@
                 else
                     start.work_id = workid
                 end
-                console.log("workid", workid)
+                -- console.log("workid", workid)
+                if workid == 6 then
+                    ui_sys.post("construct", "building", "road")
+                    start.show_work = false
+                end
             end
-            function start.clickTool(self, worid, toolid)
+            function start.clickTool(self)
  
             end
-            window.addEventListener('message', function(event)
-                event.source.postMessage(event.data)
-            end)
-            window.addEventListener('mousemove', function(event)
-                if event.button then
-                    console.log("darg", event.x, event.y)
-                end
-            end)
+            function start.clickContructConfirm()
+                ui_sys.post("construct", "confirm")
+            end
+            ui_sys.add_event_listener("construct", {
+                ["show_construct_confirm"] = function(show, position)
+                    start.is_show_construct_confirm = show
+
+                    if show then
+                        local element = document:getElementById("id-button-construct-confirm")
+                        element.style.left = ("%dpx"):format(math.floor(position[1]))
+                        element.style.top = ("%dpx"):format(math.floor(position[2]))
+                    end
+                end,
+            })
         </script>
     </head>
     <body>
         <div id="test" data-model="start">
-            <button id="work" data-event-click="clickWork()" style='background-color: rgba(0,176,240,255); flex-direction: column; justify-content: flex-start; align-item: center;'>
+            <!-- 建造确认按钮 -->
+            <input id = "id-button-construct-confirm" type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/button-construct-confirm.png";' data-event-click = "clickContructConfirm()" data-if = "is_show_construct_confirm">
+                <span style = "font-size: 100%; -webkit-text-stroke: 2px #cd7c3d;">Confirm</span>
+            </input>
+
+            <button id="work" data-event-click="clickWork()" style='background-color: rgba(0,176,240,255); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width:80px; height: 80px; background-size:cover;'/>
                 <div>施工</div>
             </button>
@@ -225,7 +242,7 @@
                                 <div class="tools-button-title">[1]工具9</div>
                             </button>
                             <button data-event-click="clickTool(1,10)" style="width:90px; height:90px; margin:10px;">
-                                <div style="width: 80px; margin:0px; font-size:50px; font-weight:900;">+</div>
+                                <div style="width: 80px; margin:0px; font-size:50px;">+</div>
                             </button>
                         </div>
                     </div>

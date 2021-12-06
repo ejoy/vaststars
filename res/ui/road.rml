@@ -108,7 +108,6 @@
             end)
             window.addEventListener('mousemove', function(event)
                 if event.button then
-                    console.log("darg", event.x, event.y)
                 end
             end)
         </script>

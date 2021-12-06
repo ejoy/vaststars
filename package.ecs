@@ -25,6 +25,11 @@ system "init_system"
     .require_policy "ant.render|render_queue"
     .require_policy "ant.terrain|shape_terrain"
 
+    .require_system "vaststars|input_system"
+    .require_system "vaststars|construct_system"
+    .require_system "vaststars|pickup_mapping_system"
+    .require_system "vaststars|drapdrop_system"
+
     .require_interface "ant.collision|icollider"
     .require_interface "ant.animation|ianimation"
     .require_interface "vaststars|icamera_controller"
@@ -72,7 +77,29 @@ interface "icamera_controller"
     .method "camera"
 
 ---
-component "terrain".type "lua"
+system "input_system"
+    .implement "world/input_system.lua"
+    .method "data_changed"
+    .method "init_world"
+
+interface "iinput"
+    .implement "world/input_system.lua"
+    .method "screen_to_world"
+    .method "get_mouse_world_position"
+
+component "drapdrop"
+    .type "lua"
+
+policy "drapdrop"
+    .component "drapdrop"
+
+system "drapdrop_system"
+    .implement "world/drapdrop_system.lua"
+    .method "data_changed"
+
+component "terrain"
+    .type "lua"
+
 policy "terrain"
     .component "terrain"
 
@@ -81,6 +108,51 @@ interface "iterrain"
     .method "create"
     .method "get_coord_by_position"
     .method "get_position_by_coord"
+    .method "get_tile_centre_position"
     .method "get_tile_building_type"
     .method "set_tile_building_type"
     .method "can_construct"
+
+system "ui_system"
+    .implement "world/ui_system.lua"
+    .method "data_changed"
+
+interface "iui"
+    .implement "world/ui_system.lua"
+    .method "open"
+    .method "post"
+
+component "construct_entity"
+    .type "lua"
+
+policy "construct_entity"
+    .component "construct_entity"
+
+system "construct_system"
+    .implement "world/construct_system.lua"
+    .method "data_changed"
+
+system "pickup_mapping_system"
+    .implement "world/pickup_mapping_system.lua"
+    .method "after_pickup"
+
+interface "ipickup_mapping"
+    .implement "world/pickup_mapping_system.lua"
+    .method "mapping"
+    .method "unmapping"
+    .method "get_entity"
+
+component "prefab_binding_on_ready"
+    .type "lua"
+component "prefab_binding_on_message"
+    .type "lua"
+
+policy "prefab_binding"
+    .component "prefab_binding_on_ready"
+    .component "prefab_binding_on_message"
+
+interface "iroad"
+    .implement "world/iroad.lua"
+    .method "reset"
+    .method "construct"
+    .method "get_road_type"
