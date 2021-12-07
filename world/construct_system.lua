@@ -27,11 +27,17 @@ local shape_terrain_mb = world:sub {"shape_terrain", "on_ready"}
 local terrain_road_mb = world:sub {"terrain_road", "on_ready"}
 local construct_sys = ecs.system "construct_system"
 local construct_prefab -- assuming there is only one "construct entity" in the same time
-local road_entity
+local road_binding_entity
 
 local function __get_binding_entity(prefab)
     local s = #prefab.tag["*"]
     return prefab.tag["*"][s]
+end
+
+local function __get_building_type(prefab)
+    local binding_entity = __get_binding_entity(prefab)
+    w:sync("construct_entity:in", binding_entity)
+    return binding_entity.construct_entity.building_type
 end
 
 local function __replace_material(template)
@@ -46,12 +52,39 @@ local function __replace_material(template)
     return template
 end
 
-local function __update_basecolor_by_pos(prefab, position)
+local __can_construct_station ; do
+    local tile_coord_offset = {{0, -1}, {-1, 0}, {1, 0}, {0, 1}}
+    function __can_construct_station(tile_coord)
+        local coord
+        for _, coord_offset in ipairs(tile_coord_offset) do
+            coord = {
+                tile_coord[1] + coord_offset[1],
+                tile_coord[2] + coord_offset[2],
+            }
+
+            if iterrain.get_tile_building_type(coord) == "road" then
+                return true
+            end
+        end
+
+        return false
+    end
+end
+
+local function __update_basecolor_by_pos(prefab, building_type, position)
     local basecolor_factor
-    if not iterrain.can_construct(position) then
-        basecolor_factor = {100.0, 0.0, 0.0, 0.8}
+    if building_type == "station" then
+        if not __can_construct_station(iterrain.get_coord_by_position(position)) then
+            basecolor_factor = {100.0, 0.0, 0.0, 0.8}
+        else
+            basecolor_factor = {0.0, 100.0, 0.0, 0.8}
+        end
     else
-        basecolor_factor = {0.0, 100.0, 0.0, 0.8}
+        if not iterrain.can_construct(position) then
+            basecolor_factor = {100.0, 0.0, 0.0, 0.8}
+        else
+            basecolor_factor = {0.0, 100.0, 0.0, 0.8}
+        end
     end
 
     for _, e in ipairs(prefab.tag["*"]) do
@@ -64,7 +97,7 @@ end
 
 local function on_prefab_ready(prefab)
     local position = math3d.tovalue(iom.get_position(prefab.root))
-    __update_basecolor_by_pos(prefab, position)
+    __update_basecolor_by_pos(prefab, __get_building_type(prefab), position)
 
     iui.post("construct", "show_construct_confirm", true, math3d.tovalue(icamera.world_to_screen(position)) )
 end
@@ -72,7 +105,7 @@ end
 local on_prefab_message ; do
     local funcs = {}
     funcs["basecolor"] = function(prefab, position)
-        __update_basecolor_by_pos(prefab, position)
+        __update_basecolor_by_pos(prefab, __get_building_type(prefab), position)
     end
 
     funcs["confirm_construct"] = function(prefab)
@@ -85,24 +118,31 @@ local on_prefab_message ; do
             local position = math3d.tovalue(iom.get_position(binding_entity))
             local building_type = binding_entity.construct_entity.building_type
             local tile_coord = iterrain.get_coord_by_position(position)
-            iterrain.set_tile_building_type(tile_coord, building_type)
+
             if building_type == "road" then -- todo bad taste
                 iroad.construct(nil, tile_coord, "O0")
+                iterrain.set_tile_building_type(tile_coord, building_type)
             elseif building_type == "station" then
-                local prefab_file_name = "res/station.prefab"
-                local srt = get_prefab_cfg_srt(prefab_file_name)
-                srt.t = position
-                create_prefab_binding("/pkg/vaststars/" .. prefab_file_name, {
-                    policy = {
-                        "ant.scene|scene_object",
-                        "vaststars|prefab_binding",
-                    },
-                    data = {
-                        scene = {
-                            srt = srt,
+                if __can_construct_station(iterrain.get_coord_by_position(position)) then
+                    local prefab_file_name = "res/station.prefab"
+                    local srt = get_prefab_cfg_srt(prefab_file_name)
+                    srt.t = position
+                    create_prefab_binding("/pkg/vaststars/" .. prefab_file_name, {
+                        policy = {
+                            "ant.scene|scene_object",
+                            "vaststars|prefab_binding",
                         },
-                    },
-                })
+                        data = {
+                            scene = {
+                                srt = srt,
+                            },
+                        },
+                    })
+                    iterrain.set_tile_building_type(tile_coord, building_type)
+                else
+                    print("Can not construct station")
+                    return
+                end
             end
 
             iui.post("construct", "show_construct_confirm", false)
@@ -189,6 +229,11 @@ local show_road_arrow, hide_road_arrow ; do
                 goto continue
             end
 
+            if not iterrain.can_construct(tile_position) then
+                hide_road_arrow(idx)
+                goto continue
+            end
+
             tile_position[2] = ROAD_YAXIS_DEFAULT
             local prefab = road_arrow_prefabs[idx]
             if not prefab then
@@ -256,7 +301,7 @@ function construct_sys:data_changed()
     for _, _, prefab in terrain_road_mb:unpack() do
         for _, e in ipairs(prefab.tag["*"]) do
             w:sync("scene:in", e)
-            ipickup_mapping.mapping(e.scene.id, road_entity)
+            ipickup_mapping.mapping(e.scene.id, road_binding_entity)
         end
     end
 end
@@ -293,7 +338,7 @@ end
 
 local iconstruct = ecs.interface "iconstruct"
 function iconstruct.init()
-    road_entity = ecs.create_entity {
+    road_binding_entity = ecs.create_entity {
         policy = {
             "ant.scene|scene_object",
             "vaststars|building",
