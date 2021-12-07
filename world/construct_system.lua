@@ -77,7 +77,11 @@ local function __update_basecolor_by_pos(prefab, building_type, position)
         if not __can_construct_station(iterrain.get_coord_by_position(position)) then
             basecolor_factor = {100.0, 0.0, 0.0, 0.8}
         else
-            basecolor_factor = {0.0, 100.0, 0.0, 0.8}
+            if not iterrain.can_construct(position) then
+                basecolor_factor = {100.0, 0.0, 0.0, 0.8}
+            else
+                basecolor_factor = {0.0, 100.0, 0.0, 0.8}
+            end
         end
     else
         if not iterrain.can_construct(position) then
@@ -229,7 +233,8 @@ local show_road_arrow, hide_road_arrow ; do
                 goto continue
             end
 
-            if not iterrain.can_construct(tile_position) then
+            local building_type = iterrain.get_tile_building_type(arrow_tile_coord)
+            if building_type and building_type ~= "road" then
                 hide_road_arrow(idx)
                 goto continue
             end
