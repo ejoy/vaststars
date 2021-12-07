@@ -21,12 +21,11 @@ function drapdrop_system.data_changed()
         end
     end
 
-    for _, what, mouse_x, mouse_y in mouse_drag_mb:unpack() do
-        if what ~= "LEFT" or not entity then
-            goto continue
+    if entity then
+        for _, what, mouse_x, mouse_y in mouse_drag_mb:unpack() do
+            if what == "LEFT" then
+                world:pub {"drapdrop_entity", entity.scene.id, mouse_x, mouse_y}
+            end
         end
-
-        world:pub {"drapdrop_entity", entity.scene.id, mouse_x, mouse_y}
-       ::continue::
     end
 end

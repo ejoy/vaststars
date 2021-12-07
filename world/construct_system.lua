@@ -11,16 +11,23 @@ local icamera = ecs.import.interface "ant.camera|icamera"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
 local iui = ecs.import.interface "vaststars|iui"
 local iterrain = ecs.import.interface "vaststars|iterrain"
+local iroad_arrow = ecs.import.interface "vaststars|iroad_arrow"
+local iroad = ecs.import.interface "vaststars|iroad"
 local math3d = require "math3d"
 local get_prefab_cfg_srt = ecs.require "world.prefab_cfg_srt"
 local create_prefab_binding = ecs.require "world.prefab_binding"
+local ROAD_YAXIS_DEFAULT <const> = ecs.require("lualib.define").ROAD_YAXIS_DEFAULT
 
 local ui_mb = world:sub {"ui", "construct", "building"}
 local ui_confirm_mb = world:sub {"ui", "construct", "confirm"}
-
+local pickup_mapping_mb = world:sub {"pickup_mapping"}
+local pickup_mb = world:sub {"pickup"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
-local construct_sys = ecs.system 'construct_system'
+local shape_terrain_mb = world:sub {"shape_terrain", "on_ready"}
+local terrain_road_mb = world:sub {"terrain_road", "on_ready"}
+local construct_sys = ecs.system "construct_system"
 local construct_prefab -- assuming there is only one "construct entity" in the same time
+local road_entity
 
 local function __get_binding_entity(prefab)
     local s = #prefab.tag["*"]
@@ -39,7 +46,7 @@ local function __replace_material(template)
     return template
 end
 
-local function __set_basecolor_by_pos(prefab, position)
+local function __update_basecolor_by_pos(prefab, position)
     local basecolor_factor
     if not iterrain.can_construct(position) then
         basecolor_factor = {100.0, 0.0, 0.0, 0.8}
@@ -57,14 +64,15 @@ end
 
 local function on_prefab_ready(prefab)
     local position = math3d.tovalue(iom.get_position(prefab.root))
-    __set_basecolor_by_pos(prefab, position)
-    iui.post("construct", "show_construct_confirm", true, icamera.world_to_screen(position))
+    __update_basecolor_by_pos(prefab, position)
+
+    iui.post("construct", "show_construct_confirm", true, math3d.tovalue(icamera.world_to_screen(position)) )
 end
 
 local on_prefab_message ; do
     local funcs = {}
     funcs["basecolor"] = function(prefab, position)
-        __set_basecolor_by_pos(prefab, position)
+        __update_basecolor_by_pos(prefab, position)
     end
 
     funcs["confirm_construct"] = function(prefab)
@@ -78,6 +86,9 @@ local on_prefab_message ; do
             local building_type = binding_entity.construct_entity.building_type
             local tile_coord = iterrain.get_coord_by_position(position)
             iterrain.set_tile_building_type(tile_coord, building_type)
+            if building_type == "road" then -- todo bad taste
+                iroad.construct(nil, tile_coord, "O0")
+            end
 
             iui.post("construct", "show_construct_confirm", false)
 
@@ -100,7 +111,7 @@ local on_prefab_message ; do
     end
 end
 
-local function create_construct_entity(building_type, prefab_file_name)
+local function __create_construct_entity(building_type, prefab_file_name)
     local p = "/pkg/vaststars/" .. prefab_file_name
     local template = __replace_material(serialize.parse(p, cr.read_file(p)))
 
@@ -126,9 +137,59 @@ local function create_construct_entity(building_type, prefab_file_name)
 end
 
 ----------------------------------
+local show_road_arrow, hide_road_arrow ; do
+    local road_arrow_prefabs = {}
+    local arrow_tile_coord_offset = {{0, -1}, {-1, 0}, {1, 0}, {0, 1}}
+    local arrow_yaxis_rotation = {math.rad(180.0), math.rad(-90.0), math.rad(90.0), math.rad(0.0)}
+    local arrow_direction = {"top", "left", "right", "bottom"}
+
+    function hide_road_arrow(idx)
+        if not idx then
+            for idx, prefab in pairs(road_arrow_prefabs) do
+                prefab:send("remove")
+                road_arrow_prefabs[idx] = nil
+            end
+        else
+            local prefab = road_arrow_prefabs[idx]
+            if prefab then
+                prefab:send("remove")
+                road_arrow_prefabs[idx] = nil
+            end
+        end
+    end
+
+    function show_road_arrow(position)
+        local tile_coord = iterrain.get_coord_by_position(position)
+        local arrow_tile_coord
+
+        for idx, coord_offset in ipairs(arrow_tile_coord_offset) do
+            arrow_tile_coord = {
+                tile_coord[1] + coord_offset[1],
+                tile_coord[2] + coord_offset[2],
+            }
+
+            local tile_position = iterrain.get_position_by_coord(arrow_tile_coord)
+            if not tile_position then
+                hide_road_arrow(idx)
+                goto continue
+            end
+
+            tile_position[2] = ROAD_YAXIS_DEFAULT
+            local prefab = road_arrow_prefabs[idx]
+            if not prefab then
+                road_arrow_prefabs[idx] = iroad_arrow.create(tile_position, arrow_yaxis_rotation[idx], arrow_direction[idx], tile_coord, arrow_tile_coord)
+            else
+                prefab:send("arrow_tile_coord", arrow_tile_coord, tile_coord)
+                prefab:send("position", tile_position)
+            end
+            ::continue::
+        end
+    end
+end
+
 local funcs = {}
 funcs["road"] = function()
-    construct_prefab = create_construct_entity("road", "res/road/O_road.prefab")
+    construct_prefab = __create_construct_entity("road", "res/road/O_road.prefab")
 end
 
 function construct_sys:data_changed()
@@ -160,10 +221,79 @@ function construct_sys:data_changed()
                 position = iinput.screen_to_world {mouse_x, mouse_y}
                 position = iterrain.get_tile_centre_position(math3d.tovalue(position))
                 iom.set_position(entity, position)
-                iui.post("construct", "show_construct_confirm", true, icamera.world_to_screen(position))
+                iui.post("construct", "show_construct_confirm", true, math3d.tovalue(icamera.world_to_screen(position)))
 
                 construct_prefab:send("basecolor", position)
             end
         end
     end
+
+    --
+    for _, _, e, parent in shape_terrain_mb:unpack() do
+        w:sync("scene:in", e)
+        ipickup_mapping.mapping(e.scene.id, parent)
+    end
+
+    for _, _, prefab in terrain_road_mb:unpack() do
+        for _, e in ipairs(prefab.tag["*"]) do
+            w:sync("scene:in", e)
+            ipickup_mapping.mapping(e.scene.id, road_entity)
+        end
+    end
+end
+
+function construct_sys:after_pickup_mapping()
+    local mapping_entity, is_show_road_arrow
+    for _, _, meid in pickup_mapping_mb:unpack() do
+        mapping_entity = ipickup_mapping.get_entity(meid)
+        if mapping_entity then
+            w:sync("building?in", mapping_entity)
+            if mapping_entity.building then
+                if mapping_entity.building.building_type == "road" then
+                    show_road_arrow( iterrain.get_tile_centre_position(iinput.get_mouse_world_position()) )
+                    is_show_road_arrow = true
+                end
+            end
+
+            w:sync("road_arrow?in", mapping_entity)
+            if mapping_entity.road_arrow then
+                local arrow_tile_coord = mapping_entity.road_arrow.arrow_tile_coord
+                iterrain.set_tile_building_type(arrow_tile_coord, "road")
+                iroad.construct(mapping_entity.road_arrow.tile_coord, arrow_tile_coord)
+            end
+        end
+    end
+
+    for _, entity in pickup_mb:unpack() do
+        if not is_show_road_arrow then
+            hide_road_arrow()
+            break
+        end
+    end
+end
+
+local iconstruct = ecs.interface "iconstruct"
+function iconstruct.init()
+    road_entity = ecs.create_entity {
+        policy = {
+            "ant.scene|scene_object",
+            "vaststars|building",
+        },
+        data = {
+            scene = {
+                srt = {}
+            },
+            building = {
+                building_type = "road",
+            },
+            reference = true,
+        },
+    }
+
+    iterrain.create({
+        on_ready = function(entity)
+            w:sync("scene:in", entity)
+            ipickup_mapping.mapping(entity.scene.id, entity)
+        end,
+    })
 end

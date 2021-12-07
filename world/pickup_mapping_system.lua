@@ -24,6 +24,9 @@ function pickup_mapping_sys.after_pickup()
 end
 
 function ipickup_mapping.mapping(sid, entity)
+    if not entity.scene then
+        w:sync("scene:in", entity)
+    end
     local msid = entity.scene.id
     id_mapping[sid] = msid
     entity_mapping[msid] = entity

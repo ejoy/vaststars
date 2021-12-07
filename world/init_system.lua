@@ -3,11 +3,10 @@ local world = ecs.world
 local w = world.w
 
 local mathpkg = import_package "ant.math"
-local irq = ecs.import.interface "ant.render|irenderqueue"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-local iterrain = ecs.import.interface "vaststars|iterrain"
 local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars|iui"
+local iconstruct = ecs.import.interface "vaststars|iconstruct"
 local FRAMES_PER_SECOND <const> = ecs.require("lualib.define").FRAMES_PER_SECOND
 local math3d = require "math3d"
 local mc = mathpkg.constant
@@ -30,5 +29,5 @@ function m:init_world()
 
     ecs.create_instance "/res/light_directional.prefab"
     ecs.create_instance "/res/skybox.prefab"
-    iterrain.create()
+    iconstruct.init()
 end

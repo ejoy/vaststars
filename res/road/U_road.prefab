@@ -1,0 +1,152 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  name: DIAOTOU
+  scene:
+    srt:
+      r: {0, 0.7071068286895752, 0, -0.7071068286895752}
+mount: 1
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/U_road.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars/res/glb/road/U_road.glb|meshes/平面.014_P1.meshbin"
+  name: "平面.004"
+  scene:
+    srt:
+      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+      t: {0, 2.2019999027252197, 0}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/U_road.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars/res/glb/road/U_road.glb|meshes/平面.020_P1.meshbin"
+  name: "平面.010"
+  scene:
+    srt:
+      r: {0, 0.856329619884491, 0, -0.516429603099823}
+      t: {-2.0020742416381836, 2.2019999027252197, -0.9889083504676819}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/U_road.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars/res/glb/road/U_road.glb|meshes/平面.021_P1.meshbin"
+  name: "平面.012"
+  scene:
+    srt:
+      r: {0, 0.8637510538101196, 0, 0.5039187669754028}
+      t: {2.31121826171875, 2.2019999027252197, -0.8711392879486084}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/U_road.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars/res/glb/road/U_road.glb|meshes/柱体.006_P1.meshbin"
+  name: "柱体.001"
+  scene:
+    srt:
+      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+      t: {0, 4.078086853027344, 0}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/U_road.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars/res/glb/road/U_road.glb|meshes/平面.013_P1.meshbin"
+  name: "平面.003"
+  scene:
+    srt:
+      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+      t: {0, 2.2019999027252197, 0}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/U_road.glb|materials/Road.bian.material
+  mesh: "/pkg/vaststars/res/glb/road/U_road.glb|meshes/立方体.029_P1.meshbin"
+  name: "立方体.008"
+  scene:
+    srt:
+      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+      t: {0, 2.0999999046325684, 0}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/U_road.glb|materials/road.jia.material
+  mesh: "/pkg/vaststars/res/glb/road/U_road.glb|meshes/立方体.030_P1.meshbin"
+  name: "立方体.009"
+  scene:
+    srt:
+      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/U_road.glb|materials/road.shiti.material
+  mesh: "/pkg/vaststars/res/glb/road/U_road.glb|meshes/立方体.006_P1.meshbin"
+  name: "立方体.010"
+  scene:
+    srt:
+      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+      t: {0, 2, 0}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/U_road.glb|materials/Road.material
+  mesh: "/pkg/vaststars/res/glb/road/U_road.glb|meshes/立方体.027_P1.meshbin"
+  name: DIAOTOU
+  scene:
+    srt:
+      r: {0, 0.7071068286895752, 0, -0.7071068286895752}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object

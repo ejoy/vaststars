@@ -1,0 +1,86 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  name: SHIZI
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/平面.001_P1.meshbin"
+  name: "平面.001"
+  scene:
+    srt:
+      t: {0, 2.2019999027252197, 0}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/road.shiti.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/立方体.004_P1.meshbin"
+  name: "立方体.003"
+  scene:
+    srt:
+      t: {0, 2, 0}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road.bian.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/立方体.005_P1.meshbin"
+  name: "立方体.004"
+  scene:
+    srt:
+      t: {0, 2.0999999046325684, 0}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/road.jia.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/立方体.001_P1.meshbin"
+  name: "立方体.005"
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/立方体.003_P1.meshbin"
+  name: SHIZI
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object

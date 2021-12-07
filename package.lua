@@ -11,5 +11,8 @@ return {
         "ant.rmlui",
         "ant.terrain",
         "ant.json",
+        "ant.serialize",
+        "ant.hwi",
+        "ant.compile_resource",
     }
 }

@@ -1,0 +1,139 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  name: zhuanwan
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+mount: 1
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/C_road.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars/res/glb/road/C_road.glb|meshes/平面.012_P1.meshbin"
+  name: "平面.008"
+  scene:
+    srt:
+      r: {0, 0.3826834559440613, 0, -0.9238795042037964}
+      t: {0.5, 2.0999999046325684, -0.5}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/C_road.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars/res/glb/road/C_road.glb|meshes/平面.034_P1.meshbin"
+  name: "平面.014"
+  scene:
+    srt:
+      r: {0, 0.3826834559440613, 0, -0.9238795042037964}
+      t: {1.4578540325164795, 2.2019999027252197, -1.3006486892700195}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/C_road.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars/res/glb/road/C_road.glb|meshes/柱体.005_P1.meshbin"
+  name: "柱体.003"
+  scene:
+    srt:
+      r: {0, 0.3826834559440613, 0, -0.9238795042037964}
+      t: {0, 4.078086853027344, 0}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/C_road.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars/res/glb/road/C_road.glb|meshes/平面.011_P1.meshbin"
+  name: "平面.007"
+  scene:
+    srt:
+      r: {0, 0.3826834559440613, 0, -0.9238795042037964}
+      t: {0.5, 2.0999999046325684, -0.5}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/C_road.glb|materials/Road.bian.material
+  mesh: "/pkg/vaststars/res/glb/road/C_road.glb|meshes/立方体.025_P1.meshbin"
+  name: "立方体.002"
+  scene:
+    srt:
+      r: {0, 0.3826834559440613, 0, -0.9238795042037964}
+      t: {0.5, 2.0999999046325684, -0.5}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/C_road.glb|materials/road.jia.material
+  mesh: "/pkg/vaststars/res/glb/road/C_road.glb|meshes/立方体.026_P1.meshbin"
+  name: "立方体.006"
+  scene:
+    srt:
+      r: {0, 0.3826834559440613, 0, -0.9238795042037964}
+      s: {1, 1, 1.009615421295166}
+      t: {1.5407506227493286, 0, -1.5264842510223389}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/C_road.glb|materials/road.shiti.material
+  mesh: "/pkg/vaststars/res/glb/road/C_road.glb|meshes/立方体.024_P1.meshbin"
+  name: "立方体.001"
+  scene:
+    srt:
+      r: {0, 0.3826834559440613, 0, -0.9238795042037964}
+      t: {0.5, 2, -0.5}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/C_road.glb|materials/Road.material
+  mesh: "/pkg/vaststars/res/glb/road/C_road.glb|meshes/立方体.023_P1.meshbin"
+  name: zhuanwan
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object

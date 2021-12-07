@@ -13,7 +13,9 @@ local TOP <const> = 3
 local BOTTOM <const> = 1
 local NEIGHBORS_END <const> = 4
 
-iterrain_road.set_road_resource("O", "/pkg/vaststars/res/road/O_road.prefab")
+for _, v in ipairs({'C', 'I', 'O', 'T', 'U', 'X'}) do
+    iterrain_road.set_road_resource(v, ("/pkg/vaststars/res/road/%s_road.prefab"):format(v))
+end
 
 local get_direction ; do
     local accel = {
@@ -52,14 +54,14 @@ local translate_road_type ; do
     end
     init(accel, 1)
 
-    accel[0][0][0][1] = "O0"
-    accel[0][0][1][0] = "O1"
+    accel[0][0][0][1] = "U0"
+    accel[0][0][1][0] = "U1"
     accel[0][0][1][1] = "C2"
-    accel[0][1][0][0] = "O2"
+    accel[0][1][0][0] = "U2"
     accel[0][1][0][1] = "I0"
     accel[0][1][1][0] = "C3"
     accel[0][1][1][1] = "T2"
-    accel[1][0][0][0] = "O3"
+    accel[1][0][0][0] = "U3"
     accel[1][0][0][1] = "C1"
     accel[1][0][1][0] = "I1"
     accel[1][0][1][1] = "T1"

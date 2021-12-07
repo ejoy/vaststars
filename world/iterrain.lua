@@ -3,7 +3,6 @@ local world = ecs.world
 local w     = world.w
 
 local iterrain = ecs.interface "iterrain"
-local iroad = ecs.import.interface "vaststars|iroad"
 
 local function generate_terrain_fields(w, h)
     local fields = {}
@@ -19,7 +18,8 @@ local function generate_terrain_fields(w, h)
     return fields
 end
 
-function iterrain.create()
+function iterrain.create(data)
+    data = data or {}
     --
     local width, height = 256, 256
     local unit = 1
@@ -69,9 +69,12 @@ function iterrain.create()
                 },
                 tile_terrain_types = {},  -- = {[x][y] = terrain_type, ...}
                 tile_building_types = {}, -- = {[x][y] = building_type, ...} 
-            }
+            },
+            on_ready = data.on_ready,
         }
     }
+
+    return entity
 end
 
 function iterrain.get_coord_by_position(position)
@@ -132,10 +135,6 @@ function iterrain.set_tile_building_type(tile_coord, building_type)
     local e = w:singleton("terrain", "terrain:in shape_terrain:in")
     e.terrain.tile_building_types[x] = e.terrain.tile_building_types[x] or {}
     e.terrain.tile_building_types[x][y] = building_type
-
-    if building_type == "road" then
-        iroad.construct(nil, tile_coord, "O0")
-    end
 end
 
 function iterrain.can_construct(posision)
