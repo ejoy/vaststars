@@ -8,6 +8,203 @@ policy:
   ant.scene|scene_object
 ---
 data:
+  name: zhizouzhong
+  scene:
+    srt:
+      t: {0, 2.2019999027252197, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/平面.028_P1.meshbin"
+  name: "平面.027"
+  scene:
+    srt:
+      r: {0, 0.70710688829422, 0, -0.7071066498756409}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/平面.029_P1.meshbin"
+  name: "平面.028"
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/平面.030_P1.meshbin"
+  name: "平面.029"
+  scene:
+    srt:
+      r: {0, -1, 0, -7.549790126404332e-08}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/平面.019_P1.meshbin"
+  name: "平面.014"
+  scene:
+    srt:
+      r: {0, -0.7071065902709961, 0, -0.7071069478988647}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  name: zhongzhuan
+  scene:
+    srt:
+      t: {0, 2.2019999027252197, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/平面.024_P1.meshbin"
+  name: "平面.023"
+  scene:
+    srt:
+      r: {0, -0.38268330693244934, 0, -0.9238796234130859}
+      t: {-1.117048978805542, 0, -1.0225636959075928}
+mount: 7
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/平面.036_P1.meshbin"
+  name: "平面.024"
+  scene:
+    srt:
+      r: {0, 0.3826836943626404, 0, -0.9238794445991516}
+      t: {1.0166875123977661, 0, -1.1167432069778442}
+mount: 7
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/平面.037_P1.meshbin"
+  name: "平面.025"
+  scene:
+    srt:
+      r: {0, 0.3826836943626404, 0, -0.9238794445991516}
+      t: {1.0166875123977661, 0, -1.1167432069778442}
+mount: 7
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/平面.038_P1.meshbin"
+  name: "平面.026"
+  scene:
+    srt:
+      r: {0, 0.9238796830177307, 0, -0.3826830983161926}
+      t: {1.1086947917938232, 0, 1.0280457735061646}
+mount: 7
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/平面.035_P1.meshbin"
+  name: "平面.032"
+  scene:
+    srt:
+      r: {0, -0.38268330693244934, 0, -0.9238796234130859}
+      t: {-1.117048978805542, 0, -1.0225636959075928}
+mount: 7
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/平面.039_P1.meshbin"
+  name: "平面.033"
+  scene:
+    srt:
+      r: {0, 0.9238796830177307, 0, -0.3826830983161926}
+      t: {1.1086947917938232, 0, 1.0280457735061646}
+mount: 7
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/平面.040_P1.meshbin"
+  name: "平面.034"
+  scene:
+    srt:
+      r: {0, -0.9238795042037964, 0, -0.3826836049556732}
+      t: {-1.025041937828064, 0, 1.1120020151138306}
+mount: 7
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/X_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/X_road.glb|meshes/平面.041_P1.meshbin"
+  name: "平面.035"
+  scene:
+    srt:
+      r: {0, -0.9238795042037964, 0, -0.3826836049556732}
+      t: {-1.025041937828064, 0, 1.1120020151138306}
+mount: 7
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
   name: SHIZI
   scene:
     srt: {}
@@ -25,7 +222,7 @@ data:
   scene:
     srt:
       t: {0, 2.2019999027252197, 0}
-mount: 2
+mount: 16
 policy:
   ant.general|name
   ant.render|render
@@ -39,7 +236,7 @@ data:
   scene:
     srt:
       t: {0, 2, 0}
-mount: 2
+mount: 16
 policy:
   ant.general|name
   ant.render|render
@@ -53,7 +250,7 @@ data:
   scene:
     srt:
       t: {0, 2.0999999046325684, 0}
-mount: 2
+mount: 16
 policy:
   ant.general|name
   ant.render|render
@@ -66,7 +263,7 @@ data:
   name: "立方体.005"
   scene:
     srt: {}
-mount: 2
+mount: 16
 policy:
   ant.general|name
   ant.render|render

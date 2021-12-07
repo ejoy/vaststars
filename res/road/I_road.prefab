@@ -35,12 +35,27 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars/res/glb/road/I_road.glb|materials/Road.line.material
-  mesh: "/pkg/vaststars/res/glb/road/I_road.glb|meshes/平面.033_P1.meshbin"
-  name: "平面.013"
+  material: /pkg/vaststars/res/glb/road/I_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/I_road.glb|meshes/平面.005_P1.meshbin"
+  name: "平面.017"
   scene:
     srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+      r: {0, 0.7071065902709961, 0, 0.7071069478988647}
+      t: {0, 2.2019999027252197, 0}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/I_road.glb|materials/Road_line.material
+  mesh: "/pkg/vaststars/res/glb/road/I_road.glb|meshes/平面.025_P1.meshbin"
+  name: "平面.043"
+  scene:
+    srt:
+      r: {0, 0.7071069478988647, 0, -0.7071066498756409}
       t: {0, 2.2019999027252197, 0}
 mount: 2
 policy:
