@@ -15,15 +15,19 @@ local function on_prefab_ready(prefab)
     local e
     for i = 1, s - 1 do
         e = prefab.tag["*"][i]
+        if not e.scene then
+            w:sync("scene:in", e)
+        end
 
         --
-        world:call(e, "set_parent", binding_entity)
+        if e.scene.parent == prefab.root.scene.id then
+            world:call(e, "set_parent", binding_entity)
+        end
 
         --
-        w:sync("scene:in", e)
         ipickup_mapping.mapping(e.scene.id, binding_entity)
     end
-    world:call(binding_entity, "set_parent", nil)
+    world:call(binding_entity, "set_parent", nil) -- todo bad teste
 
     w:sync("prefab_binding_on_ready?in", binding_entity)
     if binding_entity.prefab_binding_on_ready then
@@ -75,7 +79,7 @@ local function create(filename, data)
     instance.on_ready = on_prefab_ready
     instance.on_message = on_prefab_message
 
-    if data.data.scene and data.data.scene.srt then
+    if data.data.scene and data.data.scene.srt then -- todo bad teste
         local srt = data.data.scene.srt
         iom.set_srt(instance.root, srt.s, srt.r, srt.t)
     end

@@ -88,6 +88,21 @@ local on_prefab_message ; do
             iterrain.set_tile_building_type(tile_coord, building_type)
             if building_type == "road" then -- todo bad taste
                 iroad.construct(nil, tile_coord, "O0")
+            elseif building_type == "station" then
+                local prefab_file_name = "res/station.prefab"
+                local srt = get_prefab_cfg_srt(prefab_file_name)
+                srt.t = position
+                create_prefab_binding("/pkg/vaststars/" .. prefab_file_name, {
+                    policy = {
+                        "ant.scene|scene_object",
+                        "vaststars|prefab_binding",
+                    },
+                    data = {
+                        scene = {
+                            srt = srt,
+                        },
+                    },
+                })
             end
 
             iui.post("construct", "show_construct_confirm", false)
@@ -192,6 +207,10 @@ funcs["road"] = function()
     construct_prefab = __create_construct_entity("road", "res/road/O_road.prefab")
 end
 
+funcs["station"] = function()
+    construct_prefab = __create_construct_entity("station", "res/station.prefab")
+end
+
 function construct_sys:data_changed()
     local func
     for _, _, _, building_type in ui_mb:unpack() do
@@ -264,7 +283,7 @@ function construct_sys:after_pickup_mapping()
         end
     end
 
-    for _, entity in pickup_mb:unpack() do
+    for _ in pickup_mb:unpack() do
         if not is_show_road_arrow then
             hide_road_arrow()
             break

@@ -123,6 +123,10 @@
                     start.work_id = workid
                 end
                 -- console.log("workid", workid)
+                if workid == 5 then
+                    ui_sys.post("construct", "building", "station")
+                    start.show_work = false
+                end
                 if workid == 6 then
                     ui_sys.post("construct", "building", "road")
                     start.show_work = false
