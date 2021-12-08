@@ -115,24 +115,13 @@
                 work_id = 1,
                 is_show_construct_confirm = false,
             }
-            function start.clickWork(self, workid)
-                if not workid then
+            function start.clickWork(self, construct_id)
+                if not construct_id then
                     start.show_work = not start.show_work
                     start.work_id = 1
                 else
-                    start.work_id = workid
-                end
-                -- console.log("workid", workid)
-                if workid == 4 then
-                    ui_sys.post("construct", "building", "logistics_center")
-                    start.show_work = false
-                end
-                if workid == 5 then
-                    ui_sys.post("construct", "building", "goods_station")
-                    start.show_work = false
-                end
-                if workid == 6 then
-                    ui_sys.post("construct", "building", "road")
+                    start.work_id = construct_id
+                    ui_sys.post("construct", "building", construct_id)
                     start.show_work = false
                 end
             end
@@ -167,28 +156,28 @@
                 <div>施工</div>
             </button>
             <div id="work-buttons-container" data-if="show_work">
-                <workbutton data-event-click="clickWork(1)">
-                    <div class="workbutton-bg" style='background-image:"construct/process.png";'/>
+                <workbutton data-event-click="clickWork(6)">
+                    <div class="workbutton-bg" style='background-image:"construct/6.png";'/>
                     <div>加工</div>
                 </workbutton>
-                <workbutton data-event-click="clickWork(2)">
-                    <div class="workbutton-bg" style='background-image:"construct/chemical.png";'/>
+                <workbutton data-event-click="clickWork(5)">
+                    <div class="workbutton-bg" style='background-image:"construct/5.png";'/>
                     <div>化工</div>
                 </workbutton>
-                <workbutton data-event-click="clickWork(3)">
-                    <div class="workbutton-bg" style='background-image:"construct/power.png";'/>
+                <workbutton data-event-click="clickWork(4)">
+                    <div class="workbutton-bg" style='background-image:"construct/4.png";'/>
                     <div>电力</div>
                 </workbutton>
-                <workbutton data-event-click="clickWork(4)">
-                    <div class="workbutton-bg" style='background-image:"construct/express.png";'/>
+                <workbutton data-event-click="clickWork(3)">
+                    <div class="workbutton-bg" style='background-image:"construct/3.png";'/>
                     <div>物流</div>
                 </workbutton>
-                <workbutton data-event-click="clickWork(5)">
-                    <div class="workbutton-bg" style='background-image:"construct/computer.png";'/>
+                <workbutton data-event-click="clickWork(2)">
+                    <div class="workbutton-bg" style='background-image:"construct/2.png";'/>
                     <div>计算机</div>
                 </workbutton>
-                <workbutton data-event-click="clickWork(6)">
-                    <div class="workbutton-bg" style='background-image:"construct/custom.png";'/>
+                <workbutton data-event-click="clickWork(1)">
+                    <div class="workbutton-bg" style='background-image:"construct/1.png";'/>
                     <div>自定义</div>
                 </workbutton>
             </div>

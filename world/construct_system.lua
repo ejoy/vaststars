@@ -17,6 +17,7 @@ local math3d = require "math3d"
 local get_prefab_cfg_srt = ecs.require "world.prefab_cfg_srt"
 local create_prefab_binding = ecs.require "world.prefab_binding"
 local ROAD_YAXIS_DEFAULT <const> = ecs.require("lualib.define").ROAD_YAXIS_DEFAULT
+local construct_cfg = ecs.require "lualib.config.construct"
 
 local ui_building_mb = world:sub {"ui", "construct", "building"}
 local ui_confirm_mb = world:sub {"ui", "construct", "confirm"}
@@ -262,20 +263,19 @@ funcs["goods_station"] = function()
 end
 
 funcs["logistics_center"] = function()
-    construct_prefab = __create_construct_entity("logistics_center", "res/logistics_center.prefab")
+    
 end
 
 function construct_sys:data_changed()
-    local func
-    for _, _, _, building_type in ui_building_mb:unpack() do
-        func = funcs[building_type]
-        if func then
+    local cfg
+    for _, _, _, construct_cfg_id in ui_building_mb:unpack() do
+        cfg = construct_cfg[construct_cfg_id]
+        if cfg then
             if construct_prefab then
                 construct_prefab:send("remove")
                 construct_prefab = nil
             end
-
-            func()
+            construct_prefab = __create_construct_entity(cfg.building_type, cfg.prefab_file_name)
         end
     end
 
