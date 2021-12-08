@@ -118,11 +118,12 @@ local on_prefab_message ; do
         local position = math3d.tovalue(iom.get_position(binding_entity))
         if iterrain.can_construct(position) then
             --
-            w:sync("construct_entity:in", binding_entity)
-
             local position = math3d.tovalue(iom.get_position(binding_entity))
-            local building_type = binding_entity.construct_entity.building_type
-            local prefab_file_name = binding_entity.construct_entity.prefab_file_name
+
+            w:sync("construct_entity:in", binding_entity)
+            local construct_entity = binding_entity.construct_entity
+            local building_type = construct_entity.building_type
+            local prefab_file_name = construct_entity.prefab_file_name
             local tile_coord = iterrain.get_coord_by_position(position)
 
             if building_type == "road" then -- todo bad taste
