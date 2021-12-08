@@ -253,19 +253,6 @@ local show_road_arrow, hide_road_arrow ; do
     end
 end
 
-local funcs = {}
-funcs["road"] = function()
-    construct_prefab = __create_construct_entity("road", "res/road/O_road.prefab")
-end
-
-funcs["goods_station"] = function()
-    construct_prefab = __create_construct_entity("goods_station", "res/goods_station.prefab")
-end
-
-funcs["logistics_center"] = function()
-    
-end
-
 function construct_sys:data_changed()
     local cfg
     for _, _, _, construct_cfg_id in ui_building_mb:unpack() do
