@@ -151,6 +151,7 @@ function iterrain.set_tile_building_type(tile_coord, building_type)
     local e = w:singleton("terrain", "terrain:in shape_terrain:in")
     local terrain = e.terrain
 
+    -- todo store building_id instead of building_type?
     for x = tile_coord[1] - (width // 2), tile_coord[1] + (width // 2) do
         for y = tile_coord[2] - (height // 2), tile_coord[2] + (height // 2) do
             terrain.tile_building_types[x] = terrain.tile_building_types[x] or {}
