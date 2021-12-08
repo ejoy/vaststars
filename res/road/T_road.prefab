@@ -11,7 +11,7 @@ data:
   name: TZI
   scene:
     srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+      r: {0, -0.7071067690849304, 0, -0.7071068286895752}
 mount: 1
 policy:
   ant.general|name
@@ -26,96 +26,6 @@ data:
   scene:
     srt:
       r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2.2019999027252197, 0}
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
-  ant.scene|scene_object
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars/res/glb/road/T_road.glb|materials/Road_line.material
-  mesh: "/pkg/vaststars/res/glb/road/T_road.glb|meshes/平面.026_P1.meshbin"
-  name: "平面.044"
-  scene:
-    srt:
-      r: {0, 0.3826836943626404, 0, -0.9238794445991516}
-      t: {1.0280455350875854, 2.2019999027252197, -1.1369458436965942}
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
-  ant.scene|scene_object
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars/res/glb/road/T_road.glb|materials/Road_line.material
-  mesh: "/pkg/vaststars/res/glb/road/T_road.glb|meshes/平面.027_P1.meshbin"
-  name: "平面.045"
-  scene:
-    srt:
-      r: {0, 0.3826836943626404, 0, -0.9238794445991516}
-      t: {1.0280455350875854, 2.2019999027252197, -1.1369458436965942}
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
-  ant.scene|scene_object
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars/res/glb/road/T_road.glb|materials/Road_line.material
-  mesh: "/pkg/vaststars/res/glb/road/T_road.glb|meshes/平面.033_P1.meshbin"
-  name: "平面.046"
-  scene:
-    srt:
-      r: {0, 0.9238795638084412, 0, -0.3826833665370941}
-      t: {1.1120021343231201, 2.2019999027252197, 0.9967907071113586}
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
-  ant.scene|scene_object
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars/res/glb/road/T_road.glb|materials/Road_line.material
-  mesh: "/pkg/vaststars/res/glb/road/T_road.glb|meshes/平面.034_P1.meshbin"
-  name: "平面.047"
-  scene:
-    srt:
-      r: {0, 0.9238795638084412, 0, -0.3826833665370941}
-      t: {1.1120021343231201, 2.2019999027252197, 0.9967907071113586}
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
-  ant.scene|scene_object
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars/res/glb/road/T_road.glb|materials/Road_line.material
-  mesh: "/pkg/vaststars/res/glb/road/T_road.glb|meshes/平面.048_P1.meshbin"
-  name: "平面.048"
-  scene:
-    srt:
-      r: {0, 0.70710688829422, 0, -0.7071066498756409}
-      t: {0, 2.2019999027252197, 0}
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
-  ant.scene|scene_object
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars/res/glb/road/T_road.glb|materials/Road_line.material
-  mesh: "/pkg/vaststars/res/glb/road/T_road.glb|meshes/平面.049_P1.meshbin"
-  name: "平面.049"
-  scene:
-    srt:
-      r: {0, -0.7071066498756409, 0, -0.70710688829422}
       t: {0, 2.2019999027252197, 0}
 mount: 2
 policy:
@@ -140,13 +50,13 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars/res/glb/road/T_road.glb|materials/Road.bian.material
-  mesh: "/pkg/vaststars/res/glb/road/T_road.glb|meshes/立方体.033_P1.meshbin"
-  name: "立方体.014"
+  material: /pkg/vaststars/res/glb/road/T_road.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars/res/glb/road/T_road.glb|meshes/平面.015_P1.meshbin"
+  name: "平面.009"
   scene:
     srt:
       r: {0, -0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2.0999999046325684, 0}
+      t: {0, 2.2019999027252197, 0}
 mount: 2
 policy:
   ant.general|name
@@ -184,21 +94,6 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars/res/glb/road/T_road.glb|materials/Road.line.material
-  mesh: "/pkg/vaststars/res/glb/road/T_road.glb|meshes/平面.015_P1.meshbin"
-  name: "平面.009"
-  scene:
-    srt:
-      r: {0, -0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2.2019999027252197, 0}
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
-  ant.scene|scene_object
----
-data:
-  filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars/res/glb/road/T_road.glb|materials/Road.bian.material
   mesh: "/pkg/vaststars/res/glb/road/T_road.glb|meshes/立方体.037_P1.meshbin"
   name: "立方体.017"
@@ -214,12 +109,27 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars/res/glb/road/T_road.glb|materials/Road.bian.material
+  mesh: "/pkg/vaststars/res/glb/road/T_road.glb|meshes/立方体.033_P1.meshbin"
+  name: "立方体.014"
+  scene:
+    srt:
+      r: {0, -0.7071068286895752, 0, -0.7071067094802856}
+      t: {0, 2.0999999046325684, 0}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars/res/glb/road/T_road.glb|materials/Road.material
   mesh: "/pkg/vaststars/res/glb/road/T_road.glb|meshes/立方体.035_P1.meshbin"
   name: TZI
   scene:
     srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+      r: {0, -0.7071067690849304, 0, -0.7071068286895752}
 mount: 1
 policy:
   ant.general|name
