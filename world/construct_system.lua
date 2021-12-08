@@ -100,18 +100,18 @@ local on_prefab_message ; do
             else
                 local prefab_file_name = construct_entity.prefab_file_name
                 local srt = get_prefab_cfg_srt(prefab_file_name)
-                    srt.t = position
-                    create_prefab_binding("/pkg/vaststars/" .. prefab_file_name, {
-                        policy = {
-                            "ant.scene|scene_object",
-                            "vaststars|prefab_binding",
+                srt.t = position
+                create_prefab_binding("/pkg/vaststars/" .. prefab_file_name, {
+                    policy = {
+                        "ant.scene|scene_object",
+                        "vaststars|prefab_binding",
+                    },
+                    data = {
+                        scene = {
+                            srt = srt,
                         },
-                        data = {
-                            scene = {
-                                srt = srt,
-                            },
-                        },
-                    })
+                    },
+                })
 
                 -- todo bad taste
                 local cfg = construct_cfg[building_type]
