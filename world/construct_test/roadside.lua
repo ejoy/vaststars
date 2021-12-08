@@ -27,10 +27,10 @@ local __check_neighbors_road ; do
             }
 
             if coord_offset[1] ~= 0 then
-                coord[1] = coord[1] + (coord_offset[1] * (width - 1))
+                coord[1] = coord[1] + (coord_offset[1] * (width // 2))
             end
             if coord_offset[2] ~= 0 then
-                coord[2] = coord[2] + (coord_offset[2] * (height - 1))
+                coord[2] = coord[2] + (coord_offset[2] * (height // 2))
             end
 
             if iterrain.get_tile_building_type(coord) == "road" then
@@ -44,15 +44,9 @@ end
 
 local __check_building_coord ; do
     function __check_building_coord(tile_coord, width, height)
-        local coord
-        for i = 0, width do
-            for j = 0, height do
-                coord = {
-                    tile_coord[1] + i,
-                    tile_coord[2] + j,
-                }
-
-                if iterrain.get_tile_building_type(coord) ~= nil  then
+        for x = tile_coord[1] - (width // 2), tile_coord[1] + (width // 2) do
+            for y = tile_coord[2] - (height // 2), tile_coord[2] + (height // 2) do
+                if iterrain.get_tile_building_type({x, y}) ~= nil  then
                     return false
                 end
             end
@@ -62,7 +56,6 @@ local __check_building_coord ; do
     end
 end
 
--- tile_coord : topleft
 local function __can_construct(tile_coord, width, height)
     if not __check_neighbors_road(tile_coord, width, height) then
         return false
@@ -82,8 +75,5 @@ return function(building_type, position)
     local height = size[2]
 
     local coord = iterrain.get_coord_by_position(position)
-    coord[1] = coord[1] - (width // 2)
-    coord[2] = coord[2] - (height // 2)
-
     return __can_construct(coord, width, height)
 end
