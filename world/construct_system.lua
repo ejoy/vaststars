@@ -16,8 +16,10 @@ local iroad = ecs.import.interface "vaststars|iroad"
 local math3d = require "math3d"
 local get_prefab_cfg_srt = ecs.require "world.prefab_cfg_srt"
 local create_prefab_binding = ecs.require "world.prefab_binding"
-local ROAD_YAXIS_DEFAULT <const> = ecs.require("lualib.define").ROAD_YAXIS_DEFAULT
 local construct_cfg = ecs.require "lualib.config.construct"
+local ROAD_YAXIS_DEFAULT <const> = ecs.require("lualib.define").ROAD_YAXIS_DEFAULT
+local CONSTRUCT_RED_BASIC_COLOR <const> = {100.0, 0.0, 0.0, 0.8}
+local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 100.0, 0.0, 0.8}
 
 local ui_building_mb = world:sub {"ui", "construct", "building"}
 local ui_confirm_mb = world:sub {"ui", "construct", "confirm"}
@@ -35,10 +37,10 @@ local function __get_binding_entity(prefab)
     return prefab.tag["*"][s]
 end
 
-local function __get_building_type(prefab)
+local function __get_construct_entity(prefab)
     local binding_entity = __get_binding_entity(prefab)
     w:sync("construct_entity:in", binding_entity)
-    return binding_entity.construct_entity.building_type
+    return binding_entity.construct_entity
 end
 
 local function __replace_material(template)
@@ -53,43 +55,13 @@ local function __replace_material(template)
     return template
 end
 
-local __can_construct_station ; do
-    local tile_coord_offset = {{0, -1}, {-1, 0}, {1, 0}, {0, 1}}
-    function __can_construct_station(tile_coord)
-        local coord
-        for _, coord_offset in ipairs(tile_coord_offset) do
-            coord = {
-                tile_coord[1] + coord_offset[1],
-                tile_coord[2] + coord_offset[2],
-            }
-
-            if iterrain.get_tile_building_type(coord) == "road" then
-                return true
-            end
-        end
-
-        return false
-    end
-end
-
-local function __update_basecolor_by_pos(prefab, building_type, position)
+local function __update_basecolor_by_pos(prefab, position) 
     local basecolor_factor
-    if building_type == "goods_station" or building_type == "logistics_center" then
-        if not __can_construct_station(iterrain.get_coord_by_position(position)) then
-            basecolor_factor = {100.0, 0.0, 0.0, 0.8}
-        else
-            if not iterrain.can_construct(position) then
-                basecolor_factor = {100.0, 0.0, 0.0, 0.8}
-            else
-                basecolor_factor = {0.0, 100.0, 0.0, 0.8}
-            end
-        end
+    local construct_entity = __get_construct_entity(prefab)
+    if not construct_entity.test_func(construct_entity.building_type, position) then
+        basecolor_factor = CONSTRUCT_RED_BASIC_COLOR
     else
-        if not iterrain.can_construct(position) then
-            basecolor_factor = {100.0, 0.0, 0.0, 0.8}
-        else
-            basecolor_factor = {0.0, 100.0, 0.0, 0.8}
-        end
+        basecolor_factor = CONSTRUCT_GREEN_BASIC_COLOR
     end
 
     for _, e in ipairs(prefab.tag["*"]) do
@@ -102,7 +74,7 @@ end
 
 local function on_prefab_ready(prefab)
     local position = math3d.tovalue(iom.get_position(prefab.root))
-    __update_basecolor_by_pos(prefab, __get_building_type(prefab), position)
+    __update_basecolor_by_pos(prefab, position)
 
     iui.post("construct", "show_construct_confirm", true, math3d.tovalue(icamera.world_to_screen(position)) )
 end
@@ -110,28 +82,25 @@ end
 local on_prefab_message ; do
     local funcs = {}
     funcs["basecolor"] = function(prefab, position)
-        __update_basecolor_by_pos(prefab, __get_building_type(prefab), position)
+        __update_basecolor_by_pos(prefab, position)
     end
 
     funcs["confirm_construct"] = function(prefab)
         local binding_entity = __get_binding_entity(prefab)
+        w:sync("construct_entity:in", binding_entity)
+        local construct_entity = binding_entity.construct_entity
         local position = math3d.tovalue(iom.get_position(binding_entity))
-        if iterrain.can_construct(position) then
-            --
-            local position = math3d.tovalue(iom.get_position(binding_entity))
+        local building_type = construct_entity.building_type
 
-            w:sync("construct_entity:in", binding_entity)
-            local construct_entity = binding_entity.construct_entity
-            local building_type = construct_entity.building_type
-            local prefab_file_name = construct_entity.prefab_file_name
+        if construct_entity.test_func(building_type, position) then         
             local tile_coord = iterrain.get_coord_by_position(position)
 
             if building_type == "road" then -- todo bad taste
                 iroad.construct(nil, tile_coord, "O0")
                 iterrain.set_tile_building_type(tile_coord, building_type)
-            elseif building_type == "goods_station" or building_type == "logistics_center" then
-                if __can_construct_station(iterrain.get_coord_by_position(position)) then
-                    local srt = get_prefab_cfg_srt(prefab_file_name)
+            else
+                local prefab_file_name = construct_entity.prefab_file_name
+                local srt = get_prefab_cfg_srt(prefab_file_name)
                     srt.t = position
                     create_prefab_binding("/pkg/vaststars/" .. prefab_file_name, {
                         policy = {
@@ -145,19 +114,11 @@ local on_prefab_message ; do
                         },
                     })
                     iterrain.set_tile_building_type(tile_coord, building_type)
-                else
-                    print("Can not construct station")
-                    return
-                end
             end
 
             iui.post("construct", "show_construct_confirm", false)
-
-            --
             prefab:send("remove")
-
-            --
-            construct_prefab = nil -- todo bad taste
+            construct_prefab = nil
         else
             -- todo error tips
             print("can not construct")
@@ -172,7 +133,7 @@ local on_prefab_message ; do
     end
 end
 
-local function __create_construct_entity(building_type, prefab_file_name)
+local function __create_construct_entity(building_type, prefab_file_name, test_func)
     local p = "/pkg/vaststars/" .. prefab_file_name
     local template = __replace_material(serialize.parse(p, cr.read_file(p)))
 
@@ -187,6 +148,7 @@ local function __create_construct_entity(building_type, prefab_file_name)
             construct_entity = {
                 building_type = building_type,
                 prefab_file_name = prefab_file_name,
+                test_func = test_func,
             },
             scene = {
                 srt = get_prefab_cfg_srt(prefab_file_name),
@@ -257,14 +219,13 @@ end
 
 function construct_sys:data_changed()
     local cfg
-    for _, _, _, construct_cfg_id in ui_building_mb:unpack() do
-        cfg = construct_cfg[construct_cfg_id]
+    for _, _, _, building_type in ui_building_mb:unpack() do
+        cfg = construct_cfg[building_type]
         if cfg then
             if construct_prefab then
                 construct_prefab:send("remove")
-                construct_prefab = nil
             end
-            construct_prefab = __create_construct_entity(cfg.building_type, cfg.prefab_file_name)
+            construct_prefab = __create_construct_entity(cfg.building_type, cfg.prefab_file_name, ecs.require(cfg.test_func))
         end
     end
 

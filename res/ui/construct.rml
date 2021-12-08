@@ -115,13 +115,13 @@
                 work_id = 1,
                 is_show_construct_confirm = false,
             }
-            function start.clickWork(self, construct_id)
-                if not construct_id then
+            function start.clickWork(self, building_type)
+                if not building_type then
                     start.show_work = not start.show_work
                     start.work_id = 1
                 else
-                    start.work_id = construct_id
-                    ui_sys.post("construct", "building", construct_id)
+                    start.work_id = building_type
+                    ui_sys.post("construct", "building", building_type)
                     start.show_work = false
                 end
             end
@@ -156,29 +156,29 @@
                 <div>施工</div>
             </button>
             <div id="work-buttons-container" data-if="show_work">
-                <workbutton data-event-click="clickWork(6)">
-                    <div class="workbutton-bg" style='background-image:"construct/6.png";'/>
+                <workbutton data-event-click="clickWork(1)">
+                    <div class="workbutton-bg" style='background-image:"construct/process.png";'/>
                     <div>加工</div>
                 </workbutton>
-                <workbutton data-event-click="clickWork(5)">
-                    <div class="workbutton-bg" style='background-image:"construct/5.png";'/>
+                <workbutton data-event-click="clickWork(2)">
+                    <div class="workbutton-bg" style='background-image:"construct/chemical.png";'/>
                     <div>化工</div>
                 </workbutton>
-                <workbutton data-event-click="clickWork(4)">
-                    <div class="workbutton-bg" style='background-image:"construct/4.png";'/>
+                <workbutton data-event-click="clickWork(3)">
+                    <div class="workbutton-bg" style='background-image:"construct/power.png";'/>
                     <div>电力</div>
                 </workbutton>
-                <workbutton data-event-click="clickWork(3)">
-                    <div class="workbutton-bg" style='background-image:"construct/3.png";'/>
-                    <div>物流</div>
+                <workbutton data-event-click="clickWork('logistics_center')">
+                    <div class="workbutton-bg" style='background-image:"construct/logistics_center.png";'/>
+                    <div>物流中心</div>
                 </workbutton>
-                <workbutton data-event-click="clickWork(2)">
-                    <div class="workbutton-bg" style='background-image:"construct/2.png";'/>
-                    <div>计算机</div>
+                <workbutton data-event-click="clickWork('goods_station')">
+                    <div class="workbutton-bg" style='background-image:"construct/goods_station.png";'/>
+                    <div>车站</div>
                 </workbutton>
-                <workbutton data-event-click="clickWork(1)">
-                    <div class="workbutton-bg" style='background-image:"construct/1.png";'/>
-                    <div>自定义</div>
+                <workbutton data-event-click="clickWork('road')">
+                    <div class="workbutton-bg" style='background-image:"construct/road.png";'/>
+                    <div>道路</div>
                 </workbutton>
             </div>
             <div id="work-detail" data-if="show_work">
