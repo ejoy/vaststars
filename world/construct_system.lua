@@ -122,6 +122,7 @@ local on_prefab_message ; do
 
             local position = math3d.tovalue(iom.get_position(binding_entity))
             local building_type = binding_entity.construct_entity.building_type
+            local prefab_file_name = binding_entity.construct_entity.prefab_file_name
             local tile_coord = iterrain.get_coord_by_position(position)
 
             if building_type == "road" then -- todo bad taste
@@ -129,7 +130,6 @@ local on_prefab_message ; do
                 iterrain.set_tile_building_type(tile_coord, building_type)
             elseif building_type == "goods_station" or building_type == "logistics_center" then
                 if __can_construct_station(iterrain.get_coord_by_position(position)) then
-                    local prefab_file_name = "res/goods_station.prefab"
                     local srt = get_prefab_cfg_srt(prefab_file_name)
                     srt.t = position
                     create_prefab_binding("/pkg/vaststars/" .. prefab_file_name, {
@@ -185,6 +185,7 @@ local function __create_construct_entity(building_type, prefab_file_name)
         data = {
             construct_entity = {
                 building_type = building_type,
+                prefab_file_name = prefab_file_name,
             },
             scene = {
                 srt = get_prefab_cfg_srt(prefab_file_name),
