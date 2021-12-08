@@ -18,7 +18,7 @@ local get_prefab_cfg_srt = ecs.require "world.prefab_cfg_srt"
 local create_prefab_binding = ecs.require "world.prefab_binding"
 local ROAD_YAXIS_DEFAULT <const> = ecs.require("lualib.define").ROAD_YAXIS_DEFAULT
 
-local ui_mb = world:sub {"ui", "construct", "building"}
+local ui_building_mb = world:sub {"ui", "construct", "building"}
 local ui_confirm_mb = world:sub {"ui", "construct", "confirm"}
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local pickup_mb = world:sub {"pickup"}
@@ -73,7 +73,7 @@ end
 
 local function __update_basecolor_by_pos(prefab, building_type, position)
     local basecolor_factor
-    if building_type == "station" then
+    if building_type == "goods_station" or building_type == "logistics_center" then
         if not __can_construct_station(iterrain.get_coord_by_position(position)) then
             basecolor_factor = {100.0, 0.0, 0.0, 0.8}
         else
@@ -126,9 +126,9 @@ local on_prefab_message ; do
             if building_type == "road" then -- todo bad taste
                 iroad.construct(nil, tile_coord, "O0")
                 iterrain.set_tile_building_type(tile_coord, building_type)
-            elseif building_type == "station" then
+            elseif building_type == "goods_station" or building_type == "logistics_center" then
                 if __can_construct_station(iterrain.get_coord_by_position(position)) then
-                    local prefab_file_name = "res/station.prefab"
+                    local prefab_file_name = "res/goods_station.prefab"
                     local srt = get_prefab_cfg_srt(prefab_file_name)
                     srt.t = position
                     create_prefab_binding("/pkg/vaststars/" .. prefab_file_name, {
@@ -257,13 +257,17 @@ funcs["road"] = function()
     construct_prefab = __create_construct_entity("road", "res/road/O_road.prefab")
 end
 
-funcs["station"] = function()
-    construct_prefab = __create_construct_entity("station", "res/station.prefab")
+funcs["goods_station"] = function()
+    construct_prefab = __create_construct_entity("goods_station", "res/goods_station.prefab")
+end
+
+funcs["logistics_center"] = function()
+    construct_prefab = __create_construct_entity("logistics_center", "res/logistics_center.prefab")
 end
 
 function construct_sys:data_changed()
     local func
-    for _, _, _, building_type in ui_mb:unpack() do
+    for _, _, _, building_type in ui_building_mb:unpack() do
         func = funcs[building_type]
         if func then
             if construct_prefab then

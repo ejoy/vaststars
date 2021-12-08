@@ -79,6 +79,7 @@
             }
         </style>
         <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
             local start = window.createModel "start" {
                 show_work = false,
                 --workName = {"加工", "化工", "电力", "物流", "计算机", "自定义"}
@@ -94,6 +95,7 @@
                     start.work_id = workid
                 end
                 console.log("workid", workid)
+                ui_sys.post("road")
             end
             function start.clickTool(self, worid, toolid)
  
