@@ -106,9 +106,6 @@ local function set_road(shape_terrain_entity, x, y, ...)
         return
     end
 
-    if not shape_terrain_entity.scene then
-        w:sync("scene:in", shape_terrain_entity)
-    end
     iterrain_road.set_road(shape_terrain_entity, road_type, x, y)
 
     road_types[x] = road_types[x] or {}
@@ -151,9 +148,10 @@ function iroad.construct(tile_coord_s, tile_coord_d, road_type)
         return
     end
 
-    local shape_terrain_entity
-    for e in w:select("shape_terrain:in") do
-        shape_terrain_entity = e
+    local shape_terrain_entity = w:singleton("shape_terrain", "shape_terrain:in")
+    if not shape_terrain_entity then
+        print("Can not found shape_terrain_entity")
+        return
     end
 
     -- 第一次创建路块
@@ -195,4 +193,14 @@ function iroad.get_road_type(tile_coord)
     end
 
     return road_types[tile_coord[1]][tile_coord[2]]
+end
+
+function iroad.set_building_entry(tile_coord)
+    local shape_terrain_entity = w:singleton("shape_terrain", "shape_terrain:in")
+    if not shape_terrain_entity then
+        print("Can not found shape_terrain_entity")
+        return
+    end
+
+    set_road(shape_terrain_entity, tile_coord[1], tile_coord[2] - 1, TOP)
 end

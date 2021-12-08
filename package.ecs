@@ -171,6 +171,7 @@ interface "iroad"
     .method "reset"
     .method "construct"
     .method "get_road_type"
+    .method "set_building_entry"
 
 component "road_arrow"
     .type "lua"

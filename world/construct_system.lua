@@ -112,6 +112,16 @@ local on_prefab_message ; do
                             },
                         },
                     })
+
+                -- todo bad taste
+                local cfg = construct_cfg[building_type]
+                if cfg then
+                    local coord = {
+                        tile_coord[1],
+                        (tile_coord[2] - cfg.size[2] // 2),
+                    }
+                    iroad.set_building_entry(coord)
+                end
             end
 
             iterrain.set_tile_building_type(tile_coord, building_type)
