@@ -21,8 +21,8 @@ local ROAD_YAXIS_DEFAULT <const> = ecs.require("lualib.define").ROAD_YAXIS_DEFAU
 local CONSTRUCT_RED_BASIC_COLOR <const> = {100.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 100.0, 0.0, 0.8}
 
-local ui_building_mb = world:sub {"ui", "construct", "building"}
-local ui_confirm_mb = world:sub {"ui", "construct", "confirm"}
+local ui_construct_building_mb = world:sub {"ui", "construct", "building"}
+local ui_construct_confirm_mb = world:sub {"ui", "construct", "confirm"}
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local pickup_mb = world:sub {"pickup"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
@@ -97,7 +97,6 @@ local on_prefab_message ; do
 
             if building_type == "road" then -- todo bad taste
                 iroad.construct(nil, tile_coord, "O0")
-                iterrain.set_tile_building_type(tile_coord, building_type)
             else
                 local prefab_file_name = construct_entity.prefab_file_name
                 local srt = get_prefab_cfg_srt(prefab_file_name)
@@ -113,9 +112,9 @@ local on_prefab_message ; do
                             },
                         },
                     })
-                    iterrain.set_tile_building_type(tile_coord, building_type)
             end
 
+            iterrain.set_tile_building_type(tile_coord, building_type)
             iui.post("construct", "show_construct_confirm", false)
             prefab:send("remove")
             construct_prefab = nil
@@ -192,6 +191,7 @@ local show_road_arrow, hide_road_arrow ; do
                 tile_coord[2] + coord_offset[2],
             }
 
+            -- todo bad taste
             local tile_position = iterrain.get_position_by_coord(arrow_tile_coord)
             if not tile_position then
                 hide_road_arrow(idx)
@@ -219,7 +219,7 @@ end
 
 function construct_sys:data_changed()
     local cfg
-    for _, _, _, building_type in ui_building_mb:unpack() do
+    for _, _, _, building_type in ui_construct_building_mb:unpack() do
         cfg = construct_cfg[building_type]
         if cfg then
             if construct_prefab then
@@ -229,7 +229,7 @@ function construct_sys:data_changed()
         end
     end
 
-    for _, _, _ in ui_confirm_mb:unpack() do
+    for _, _, _ in ui_construct_confirm_mb:unpack() do
         if construct_prefab then
             construct_prefab:send("confirm_construct")
         end

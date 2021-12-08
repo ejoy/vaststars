@@ -136,9 +136,3 @@ function iterrain.set_tile_building_type(tile_coord, building_type)
     e.terrain.tile_building_types[x] = e.terrain.tile_building_types[x] or {}
     e.terrain.tile_building_types[x][y] = building_type
 end
-
-function iterrain.can_construct(posision)
-    -- todo
-    local tile_coord = iterrain.get_coord_by_position(posision)
-    return (iterrain.get_tile_building_type(tile_coord) == nil)
-end
