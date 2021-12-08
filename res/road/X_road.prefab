@@ -2,7 +2,10 @@
 data:
   name: Scene
   scene:
-    srt: {}
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0, 0}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -83,4 +86,244 @@ mount: 1
 policy:
   ant.general|name
   ant.render|render
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: "左到右"
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0.009999999776482582, 0}
+  slot: true
+  tag:
+    empty9
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: empty10
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0.009999999776482582, 0}
+  slot: true
+  tag:
+    empty10
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: empty11
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {0, 0, 0}
+  slot: true
+  tag:
+    empty11
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: empty12
+  reference: true
+  scene:
+    srt:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {0, 0, 0}
+  slot: true
+  tag:
+    empty12
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: empty13
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0, 0}
+  slot: true
+  tag:
+    empty13
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: empty14
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0, 0}
+  slot: true
+  tag:
+    empty14
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: empty15
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0, 0}
+  slot: true
+  tag:
+    empty15
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: empty16
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0, 0}
+  slot: true
+  tag:
+    empty16
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: empty17
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0, 0}
+  slot: true
+  tag:
+    empty17
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: empty18
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0, 0}
+  slot: true
+  tag:
+    empty18
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: empty19
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0, 0}
+  slot: true
+  tag:
+    empty19
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: empty20
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0, 0}
+  slot: true
+  tag:
+    empty20
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
   ant.scene|scene_object

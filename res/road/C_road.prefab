@@ -122,3 +122,43 @@ policy:
   ant.general|name
   ant.render|render
   ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: "拐弯箭头1"
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0.009999999776482582, 0}
+  slot: true
+  tag:
+    empty3
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: "拐弯箭头2"
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0.009999999776482582, 0}
+  slot: true
+  tag:
+    empty4
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object

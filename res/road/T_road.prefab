@@ -135,3 +135,123 @@ policy:
   ant.general|name
   ant.render|render
   ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: "T路直走1"
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0.009999999776482582, 0}
+  slot: true
+  tag:
+    empty5
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: "T路直走2"
+  reference: true
+  scene:
+    srt:
+      r: {-4.371138828673793e-08, 1, -1.910685465164705e-15, -4.371138828673793e-08}
+      s: {1, 1, 1}
+      t: {0, 0.009999999776482582, 0}
+  slot: true
+  tag:
+    empty6
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: "下转右"
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0, 0}
+  slot: true
+  tag:
+    empty5
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: "右转下"
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0.009999999776482582, 0}
+  slot: true
+  tag:
+    empty6
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: "下转左"
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {0, 0.009999999776482582, 0}
+  slot: true
+  tag:
+    empty7
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  name: "左转下"
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {0, 0.009999999776482582, 0}
+  slot: true
+  tag:
+    empty8
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
