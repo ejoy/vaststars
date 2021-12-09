@@ -111,11 +111,11 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: empty10
+  name: "右到左"
   reference: true
   scene:
     srt:
-      r: {0, 0, 0, 1}
+      r: {-4.371138828673793e-08, 1, -4.371138828673793e-08, 1.910685465164705e-15}
       s: {1, 1, 1}
       t: {0, 0.009999999776482582, 0}
   slot: true
@@ -131,13 +131,13 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: empty11
+  name: "下到上"
   reference: true
   scene:
     srt:
-      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
-      t: {0, 0, 0}
+      t: {0, 0.009999999776482582, 0}
   slot: true
   tag:
     empty11
@@ -151,11 +151,11 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: empty12
+  name: "上到下"
   reference: true
   scene:
     srt:
-      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {0, 0, 0}
   slot: true
@@ -171,11 +171,11 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: empty13
+  name: "下转左"
   reference: true
   scene:
     srt:
-      r: {0, 0, 0, 1}
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {0, 0, 0}
   slot: true
@@ -191,13 +191,13 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: empty14
+  name: "左转下"
   reference: true
   scene:
     srt:
-      r: {0, 0, 0, 1}
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
-      t: {0, 0, 0}
+      t: {0, 0.009999999776482582, 0}
   slot: true
   tag:
     empty14
@@ -211,13 +211,13 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: empty15
+  name: "下转右"
   reference: true
   scene:
     srt:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
-      t: {0, 0, 0}
+      t: {0, 0.009999999776482582, 0}
   slot: true
   tag:
     empty15
@@ -231,13 +231,13 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: empty16
+  name: "右转下"
   reference: true
   scene:
     srt:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
-      t: {0, 0, 0}
+      t: {0, 0.009999999776482582, 0}
   slot: true
   tag:
     empty16
@@ -251,13 +251,13 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: empty17
+  name: "上转左"
   reference: true
   scene:
     srt:
-      r: {0, 0, 0, 1}
+      r: {-0, 1, -0, -4.371138828673793e-08}
       s: {1, 1, 1}
-      t: {0, 0, 0}
+      t: {0, 0.009999999776482582, 0}
   slot: true
   tag:
     empty17
@@ -271,11 +271,11 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: empty18
+  name: "左转下"
   reference: true
   scene:
     srt:
-      r: {0, 0, 0, 1}
+      r: {-0, 1, -0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {0, 0, 0}
   slot: true
@@ -291,11 +291,11 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: empty19
+  name: "上转右"
   reference: true
   scene:
     srt:
-      r: {0, 0, 0, 1}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {0, 0, 0}
   slot: true
@@ -311,11 +311,11 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: empty20
+  name: "右转下"
   reference: true
   scene:
     srt:
-      r: {0, 0, 0, 1}
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {0, 0, 0}
   slot: true
