@@ -26,9 +26,10 @@ system "init_system"
     .require_policy "ant.terrain|shape_terrain"
 
     .require_system "vaststars|input_system"
-    .require_system "vaststars|construct_system"
     .require_system "vaststars|pickup_mapping_system"
     .require_system "vaststars|drapdrop_system"
+    .require_system "vaststars|construct_system"
+    .require_system "vaststars|route_system"
 
     .require_interface "ant.collision|icollider"
     .require_interface "ant.animation|ianimation"
@@ -146,6 +147,10 @@ system "construct_system"
 interface "iconstruct"
     .implement "world/construct_system.lua"
     .method "init"
+
+system "route_system"
+    .implement "world/route_system.lua"
+    .method "data_changed"
 
 system "pickup_mapping_system"
     .implement "world/pickup_mapping_system.lua"

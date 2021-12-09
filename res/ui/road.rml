@@ -37,14 +37,12 @@
                 text-align: center;
                 width: 150px;
                 height: 40px;
-                /*margin: 10px;*/
                 font-size: 120%;
             }
             .road-panel {
                 background-color: rgba(189,215,238,128);
                 border: 2px green;
                 border-radius: 5px;
-                left: 70%;
                 width: 30%;
                 height: 100%;
                 flex-direction: column;
@@ -83,7 +81,8 @@
             local start = window.createModel "start" {
                 show_work = false,
                 work_id = 1,
-                road_list = {{id=1}}
+                road_list = {{id=1}},
+                flag = false, -- todo bad taste
             }
             function start.clickWork(self, workid)
                 if not workid then
@@ -93,112 +92,113 @@
                     start.work_id = workid
                 end
                 console.log("workid", workid)
-                ui_sys.post("road")
             end
-            function start.clickTool(self, worid, toolid)
- 
+            function start.close(self)
+                if not start.flag then
+                    return
+                end
+
+                ui_sys.post("route", "close")
             end
             function start.addRoad()
                 local rl = start.road_list
                 rl[#rl + 1] = {id=#rl + 1}
                 console.log("addRoad", #rl)
             end
-            window.addEventListener('message', function(event)
-                event.source.postMessage(event.data)
-            end)
-            window.addEventListener('mousemove', function(event)
-                if event.button then
-                end
-            end)
+            
+            window.setTimeout(function() start.flag = true end, 50)
         </script>
     </head>
     <body>
-        <div class="road-panel" data-model="start">
-            <div class="header" style="align-items: center; width:100%;">
-                <div style="align-items: flex-start;">
-                    <div class="row">
-                        <div class="big-bg" style='background-image:"road/header.png";'></div>
-                        <div>123456</div>
-                    </div>
-                </div>
-                <div style="align-items: flex-end;">
-                    <div class="row">
-                        <div>1/10</div>
-                        <div class="middle-bg" style='background-image:"road/car.png";'></div>
-                    </div>
-                </div>
-            </div>
-            <div class="road-list" style="align-items: stretch; width:100%;" data-for="road : road_list">
-                <!--
-                <div class="row" style="justify-content: space-between; background-color: rgba(255,242,204,150); margin:5px; font-size: 120%;">
+        <div data-model="start" style = "flex-direction: row; height: 100%;">
+            <div style = "background-color:rgba(0,0,0,0); width: 70%; height: 100%;" data-event-click="close()" />
+            <div class="road-panel" style = "flex-direction: column;">
+                <div class="header" style="align-items: center; width: 100%;">
                     <div style="align-items: flex-start;">
                         <div class="row">
-                            <div class="middle-bg" style='background-image:"road/lighter.png";'></div>
-                            <div>{{work_id}}</div>
+                            <div class="big-bg" style='background-image:"road/header.png";'></div>
+                            <div>123456</div>
                         </div>
                     </div>
                     <div style="align-items: flex-end;">
-                        <div class="column" style="font-size: 60%;">
-                            <div class="row">
-                                <div>{{work_id}}</div>
-                                <div class="small-bg" style='background-image:"road/car.png";'></div>
-                            </div>
-                            <div class="row">
-                                <div>{{work_id}}</div>
-                                <div class="small-bg" style='background-image:"road/car2.png";'></div>
-                            </div>
+                        <div class="row">
+                            <div>1/10</div>
+                            <div class="middle-bg" style='background-image:"road/car.png";'></div>
                         </div>
                     </div>
                 </div>
-
-                <div class="column" style="background-color: rgba(0, 0, 255, 128); margin:5px;">
-                    <div class="row" style="justify-content: space-between; background-color: rgba(0,176,240,128);">
+                <div class="road-list" style="align-items: stretch; width:100%;" data-for="road : road_list">
+                    <!--
+                    <div class="row" style="justify-content: space-between; background-color: rgba(255,242,204,150); margin:5px; font-size: 120%;">
                         <div style="align-items: flex-start;">
                             <div class="row">
                                 <div class="middle-bg" style='background-image:"road/lighter.png";'></div>
-                                <div style="font-size: 100%;">{{work_id}}</div>
+                                <div>{{work_id}}</div>
                             </div>
                         </div>
                         <div style="align-items: flex-end;">
-                            <div class="row">
-                                <div style="font-size: 100%;">{{work_id}}</div>
-                                <div class="middle-bg" style='background-image:"road/car.png";'></div>
+                            <div class="column" style="font-size: 60%;">
+                                <div class="row">
+                                    <div>{{work_id}}</div>
+                                    <div class="small-bg" style='background-image:"road/car.png";'></div>
+                                </div>
+                                <div class="row">
+                                    <div>{{work_id}}</div>
+                                    <div class="small-bg" style='background-image:"road/car2.png";'></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="justify-content: space-between; background-color: rgba(100, 200, 128, 128);">
-                        <button style="width: 50px; height:50px; margin:0px">-1</button>
-                        <div style='background-image:"road/car.png";'></div>
-                        <button style="width: 50px; height:50px; margin:0px">+1</button>
-                    </div>
-                </div>
-                <div class="row" style="justify-content: space-between; background-color: rgba(255,242,204,150); margin:5px; font-size: 120%;">
-                    <div style="align-items: flex-start;">
-                        <div class="row">
-                            <div class="middle-bg" style='background-image:"road/lighter.png";'></div>
-                            <div>{{work_id}}</div>
+
+                    <div class="column" style="background-color: rgba(0, 0, 255, 128); margin:5px;">
+                        <div class="row" style="justify-content: space-between; background-color: rgba(0,176,240,128);">
+                            <div style="align-items: flex-start;">
+                                <div class="row">
+                                    <div class="middle-bg" style='background-image:"road/lighter.png";'></div>
+                                    <div style="font-size: 100%;">{{work_id}}</div>
+                                </div>
+                            </div>
+                            <div style="align-items: flex-end;">
+                                <div class="row">
+                                    <div style="font-size: 100%;">{{work_id}}</div>
+                                    <div class="middle-bg" style='background-image:"road/car.png";'></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="justify-content: space-between; background-color: rgba(100, 200, 128, 128);">
+                            <button style="width: 50px; height:50px; margin:0px">-1</button>
+                            <div style='background-image:"road/car.png";'></div>
+                            <button style="width: 50px; height:50px; margin:0px">+1</button>
                         </div>
                     </div>
-                    <div style="align-items: flex-end;">
-                        <div class="column" style="font-size: 60%;">
-                            
+                    <div class="row" style="justify-content: space-between; background-color: rgba(255,242,204,150); margin:5px; font-size: 120%;">
+                        <div style="align-items: flex-start;">
                             <div class="row">
+                                <div class="middle-bg" style='background-image:"road/lighter.png";'></div>
                                 <div>{{work_id}}</div>
-                                <div class="small-bg" style='background-image:"road/car.png";'></div>
                             </div>
-                            <div class="row">
-                                <div>{{work_id}}</div>
-                                <div class="small-bg" style='background-image:"road/car2.png";'></div>
+                        </div>
+                        <div style="align-items: flex-end;">
+                            <div class="column" style="font-size: 60%;">
+                                
+                                <div class="row">
+                                    <div>{{work_id}}</div>
+                                    <div class="small-bg" style='background-image:"road/car.png";'></div>
+                                </div>
+                                <div class="row">
+                                    <div>{{work_id}}</div>
+                                    <div class="small-bg" style='background-image:"road/car2.png";'></div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    -->
                 </div>
-                -->
+                <button style="width:320px; height:60px; font-size: 100%; background-color: rgb(237,125,49);" data-event-click="addRoad()">
+                    <div style='align-self: center; background-image:"road/add.png"; width:30px; height:30px; background-size:cover;'/>
+                    <div>增加路线</div>
+                </button>
             </div>
-            <button style="width:320px; height:60px; font-size: 100%; background-color: rgb(237,125,49);" data-event-click="addRoad()">
-                <div style='align-self: center; background-image:"road/add.png"; width:30px; height:30px; background-size:cover;'/>
-                <div>增加路线</div>
-            </button>
         </div>
     </body>
 </rml>

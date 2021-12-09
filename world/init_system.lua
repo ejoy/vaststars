@@ -19,7 +19,6 @@ function m:init_world()
     iRmlUi.preload_dir "/pkg/vaststars/res/ui"
 
     iui.open("construct", "construct.rml")
-    iui.open("road", "road.rml")
 
     local mq = w:singleton("main_queue", "camera_ref:in")
     local eyepos = math3d.vector(0, 8, -8)

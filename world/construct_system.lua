@@ -99,16 +99,18 @@ local on_prefab_message ; do
                 iroad.construct(nil, tile_coord, "O0")
             else
                 local prefab_file_name = construct_entity.prefab_file_name
-                local srt = get_prefab_cfg_srt(prefab_file_name)
-                srt.t = position
                 create_prefab_binding("/pkg/vaststars/" .. prefab_file_name, {
                     policy = {
                         "ant.scene|scene_object",
                         "vaststars|prefab_binding",
+                        "vaststars|building",
                     },
                     data = {
                         scene = {
-                            srt = srt,
+                            srt = binding_entity.scene.srt,
+                        },
+                        building = {
+                            building_type = building_type,
                         },
                     },
                 })
@@ -282,9 +284,12 @@ function construct_sys:after_pickup_mapping()
         if mapping_entity then
             w:sync("building?in", mapping_entity)
             if mapping_entity.building then
+                -- todo bad taste
                 if mapping_entity.building.building_type == "road" then
                     show_road_arrow( iterrain.get_tile_centre_position(iinput.get_mouse_world_position()) )
                     is_show_road_arrow = true
+                elseif mapping_entity.building.building_type == "logistics_center" then
+                    iui.open("route", "road.rml")
                 end
             end
 
