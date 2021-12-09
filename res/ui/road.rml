@@ -82,8 +82,6 @@
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
                 show_work = false,
-                --workName = {"加工", "化工", "电力", "物流", "计算机", "自定义"}
-
                 work_id = 1,
                 road_list = {{id=1}}
             }
@@ -131,6 +129,7 @@
                 </div>
             </div>
             <div class="road-list" style="align-items: stretch; width:100%;" data-for="road : road_list">
+                <!--
                 <div class="row" style="justify-content: space-between; background-color: rgba(255,242,204,150); margin:5px; font-size: 120%;">
                     <div style="align-items: flex-start;">
                         <div class="row">
@@ -151,6 +150,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="column" style="background-color: rgba(0, 0, 255, 128); margin:5px;">
                     <div class="row" style="justify-content: space-between; background-color: rgba(0,176,240,128);">
                         <div style="align-items: flex-start;">
@@ -181,6 +181,7 @@
                     </div>
                     <div style="align-items: flex-end;">
                         <div class="column" style="font-size: 60%;">
+                            
                             <div class="row">
                                 <div>{{work_id}}</div>
                                 <div class="small-bg" style='background-image:"road/car.png";'></div>
@@ -192,15 +193,12 @@
                         </div>
                     </div>
                 </div>
+                -->
             </div>
             <button style="width:320px; height:60px; font-size: 100%; background-color: rgb(237,125,49);" data-event-click="addRoad()">
                 <div style='align-self: center; background-image:"road/add.png"; width:30px; height:30px; background-size:cover;'/>
                 <div>增加路线</div>
             </button>
-            <div class="footer" style="align-items: flex-end;">
-                <button data-event-click="clickWork()" class="row" style="justify-content: flex-start; width: 170px;"><div class="small-bg" style='background-image:"road/car.png";'/><p style="margin-left:-20px;">管理车辆</p></button>
-                <button data-event-click="clickWork()" class="row" style="justify-content: flex-start; width: 170px;"><div class="small-bg" style='background-image:"construct/work.png";'/><p style="margin-left:-20px;">修改路线</p></button>
-            </div>
         </div>
     </body>
 </rml>
