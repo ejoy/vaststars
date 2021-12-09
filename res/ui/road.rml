@@ -100,10 +100,8 @@
 
                 ui_sys.post("route", "close")
             end
-            function start.addRoad()
-                local rl = start.road_list
-                rl[#rl + 1] = {id=#rl + 1}
-                console.log("addRoad", #rl)
+            function start.addRoute()
+                ui_sys.post("route", "add_route")
             end
             
             window.setTimeout(function() start.flag = true end, 50)
@@ -194,7 +192,7 @@
                     </div>
                     -->
                 </div>
-                <button style="width:320px; height:60px; font-size: 100%; background-color: rgb(237,125,49);" data-event-click="addRoad()">
+                <button style="width:320px; height:60px; font-size: 100%; background-color: rgb(237,125,49);" data-event-click="addRoute()">
                     <div style='align-self: center; background-image:"road/add.png"; width:30px; height:30px; background-size:cover;'/>
                     <div>增加路线</div>
                 </button>

@@ -32,6 +32,14 @@ local construct_sys = ecs.system "construct_system"
 local construct_prefab -- assuming there is only one "construct entity" in the same time
 local road_binding_entity
 
+local __gen_building_id ; do
+    local id = 0
+    function __gen_building_id()
+        id = id + 1
+        return id
+    end
+end
+
 local function __get_binding_entity(prefab)
     local s = #prefab.tag["*"]
     return prefab.tag["*"][s]
@@ -110,6 +118,7 @@ local on_prefab_message ; do
                             srt = binding_entity.scene.srt,
                         },
                         building = {
+                            id = __gen_building_id(),
                             building_type = building_type,
                         },
                     },

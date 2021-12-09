@@ -1,0 +1,129 @@
+<rml>
+    <head>
+        <style>
+            div {
+                font: 120% "宋体";
+            }
+            button {
+                width: 80px;
+                height: 80px;
+                margin: 10px;
+                text-align: center;
+                text-decoration: none;
+                border-radius: 8px;
+                border: 2px white;
+                opacity: 0.5;
+                
+                transition: color background-color transform 2s elastic-out;
+                background-color: #f22222;
+                color: #ffffff;
+                transform: scale(1.0);
+            }
+            button:hover {
+                transform: scale(1.1);
+                background-color: #222222;
+                color: #f5d057;
+            }
+            .header {
+                height: 60px;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .panel {
+                background-color: rgba(189,215,238,255);
+                border: 2px green;
+                border-radius: 5px;
+                width: 30%;
+                height: 100%;
+            }
+            .road-item {
+                background-color: rgba(255, 242, 204, 255);
+                border: 2px white;
+                border-radius: 5px;
+            }
+            .row {
+                flex-direction: row;
+            }
+            .column {
+                flex-direction: column;
+            }
+            .big-bg {
+                width: 60px;
+                height: 60px;
+                background-size: cover;
+            }
+            .middle-bg {
+                width: 50px;
+                height: 50px;
+                background-size: cover;
+            }
+        </style>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = window.createModel "start" {
+                show_work = false,
+                work_id = 1,
+                road_list = {{id=1}},
+                flag = false, -- todo bad taste
+                name1 = " ",
+                name2 = " ",
+            }
+            function start.addRoad(self)
+                console.log("workid", workid)
+            end
+            function start.close(self)
+                if not start.flag then
+                    return
+                end
+
+                ui_sys.post("route_new", "close")
+            end
+            window.setTimeout(function() start.flag = true end, 50)
+
+            ui_sys.add_event_listener("route_new", {
+                ["init"] = function(station_list)
+                    for i = 1, math.min(2, #station_list) do
+                        start["name" .. i] = station_list[i].name
+                    end
+                end,
+            })
+        </script>
+    </head>
+    <body>
+        <div data-model="start" style = "flex-direction: row; height: 100%;">
+            <!-- 空白区域 -->
+            <div style = "background-color:rgba(0,0,0,0); width: 40%; height: 100%;" data-event-click="close()" />
+            <!-- 选择站点 -->
+            <div class="panel" style = "flex-direction: column; background-color: rgba(248, 203, 173, 255); border: 2px rgba(197, 90, 17, 255);">
+                <div style = "align-items:center; justify-content:center;" data-event-click="confirm()">
+                    <span style = "font-size: 120%; -webkit-text-stroke: 2px #cd7c3d;">选择站点</span>
+                </div>
+                <div style = "font-size: 100%; -webkit-text-stroke: 2px #cd7c3d;">{{name1}}</div>
+                <div style = "font-size: 100%; -webkit-text-stroke: 2px #cd7c3d;">{{name2}}</div>
+            </div>
+            <div class="panel" style = "flex-direction: column;">
+                <div class="header" style="align-items: center; width: 100%;">
+                    <div style="align-items: flex-start;">
+                        <div class="row">
+                            <div class="big-bg" style='background-image:"road/header.png";'></div>
+                            <div>XX工厂</div>
+                        </div>
+                    </div>
+                    <div style="align-items: flex-end;">
+                        <div class="row">
+                            <div>1/10</div>
+                            <div class="middle-bg" style='background-image:"road/car.png";'></div>
+                        </div>
+                    </div>
+                </div>
+                <div style = "background-color: rgba(0, 255, 0, 100); width: 100%;">加工路线</div>
+                <div style = "width: 100%">
+                    <button style="width:320px; height:60px; font-size: 100%; background-color: rgb(237,125,49);" data-event-click="addRoad()">
+                        <div style='align-self: center; background-image:"road/add.png"; width:30px; height:30px; background-size:cover;'/>
+                        <div>增加</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>

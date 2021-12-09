@@ -19,7 +19,8 @@ function ui_system.data_changed()
         window.postMessage(json_encode(ud))
     end
 
-    for _, _, id, url in ui_system_open_mb:unpack() do
+    for msg in ui_system_open_mb:each() do
+        local id, url = msg[3], msg[4]
         local w = irmlui.open(url)
         w.addEventListener("message", function(event)
             if not event.data then
@@ -32,11 +33,20 @@ function ui_system.data_changed()
                 error(("%s"):format(err))
                 return
             end
-    
+            
+            -- rmlui -> world
             world:pub {"ui", res.id, res.event, table.unpack(res.ud)}
         end)
     
         windows[id] = w
+
+        if msg[5] then
+            local ud = {}
+            ud.id = id
+            ud.event = "init"
+            ud.ud = {table.unpack(msg, 5, #msg)}
+            world:pub {"ui_receiver", w, ud} -- world -> rmlui
+        end
     end
 
     for _, _, id in ui_system_close_mb:unpack() do
@@ -50,8 +60,8 @@ function ui_system.data_changed()
 end
 
 local iui = ecs.interface "iui"
-function iui.open(id, url)
-    world:pub {"ui_system", "open", id, url}
+function iui.open(id, url, ...)
+    world:pub {"ui_system", "open", id, url, ...}
 end
 
 function iui.close(id)
@@ -68,5 +78,5 @@ function iui.post(id, event, ...)
     ud.id = id
     ud.event = event
     ud.ud = {...}
-    world:pub {"ui_receiver", window, ud}
+    world:pub {"ui_receiver", window, ud} -- world -> rmlui
 end
