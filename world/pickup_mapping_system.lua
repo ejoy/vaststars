@@ -34,7 +34,7 @@ end
 
 function ipickup_mapping.unmapping(sid)
     local msid = id_mapping[sid]
-    entity_mapping[msid] = nil
+    -- entity_mapping[msid] = nil -- todo the mapping entity may be the same one, so can not set nil here
 end
 
 function ipickup_mapping.get_entity(sid)
