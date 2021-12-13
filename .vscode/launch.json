@@ -11,7 +11,7 @@
             "outputCapture": [],
             "luaVersion": "latest",
             "luaArch": "x86_64",
-            "luaexe": "${workspaceRoot}\\3rd\\ant\\bin\\lua.exe",
+            "luaexe": "${workspaceRoot}\\3rd\\ant\\bin\\msvc\\release\\lua.exe",
             "program": "${workspaceRoot}\\main.lua",
             "cwd": "${workspaceRoot}\\3rd\\ant\\",
         }
