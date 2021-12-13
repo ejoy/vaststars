@@ -4,14 +4,35 @@ local json_decode = json.decode
 
 local m = {}
 function m.post(id, event, ...)
+    local internal
+    if id:sub(1, 1) == "@" then
+        internal = true
+        id = id:sub(2)
+    else
+        internal = false
+    end
+
     local t = {}
     t.id = id
     t.event = event
     t.ud = {...}
-    window.extern.postMessage(json_encode(t))
+
+    if internal then
+        window.postMessage(json_encode(t))
+    else
+        window.extern.postMessage(json_encode(t))
+    end
 end
 
-function m.add_event_listener(id, funcs)
+do
+    local event_funcs = {} -- = {[event][id] = func, ...}
+    function m.add_event_listener(id, funcs)
+        for event, func in pairs(funcs) do
+            event_funcs[event] = event_funcs[event] or {}
+            event_funcs[event][id] = func
+        end
+    end
+
     window.addEventListener("message", function(event)
         if not event.data then
             console.log("event data is null")
@@ -19,13 +40,13 @@ function m.add_event_listener(id, funcs)
         end
         local res, err = json_decode(event.data)
         if res then
-            if res.id ~= id then
+            if not event_funcs[res.event] then
                 return
             end
 
-            local func = funcs[res.event]
+            local func = event_funcs[res.event][res.id]
             if not func then
-                console.log(string.format("can not found ui event(%s)", res.event))
+                console.log(("can not found func | event(%s) id(%s)"):format(res.event, res.id))
                 return
             end
             func(table.unpack(res.ud))

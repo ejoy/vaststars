@@ -1,0 +1,17 @@
+@keyframes error-tip-keyframes {
+    0% {
+        opacity: 1;
+        display: flex;
+        transform: translateY(2.5vmin);
+    }
+    50% {
+        opacity: 1;
+        display: flex;
+        transform: translateY(0vmin);
+    }
+    100% {
+        opacity: 0;
+        display: none;
+        transform: translateY(-2.5vmin);
+    }
+}

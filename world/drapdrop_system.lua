@@ -6,7 +6,7 @@ local ipickup_mapping = ecs.import.interface "vaststars|ipickup_mapping"
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local mouse_mb = world:sub {"mouse"}
 
-local drapdrop_system = ecs.system 'drapdrop_system'
+local drapdrop_system = ecs.system "drapdrop_system"
 
 function drapdrop_system:data_changed()
     for _, _, state, vx, vy in mouse_mb:unpack() do
@@ -34,7 +34,7 @@ function drapdrop_system.after_pickup_mapping()
     for _, _, msid in pickup_mapping_mb:unpack() do
         mapping_entity = ipickup_mapping.get_entity(msid)
         if mapping_entity then
-            w:sync("drapdrop?in scene:in", mapping_entity)
+            w:sync("drapdrop?in", mapping_entity)
             if mapping_entity.drapdrop ~= nil then
                 mapping_entity.drapdrop = true
                 w:sync("drapdrop:out", mapping_entity)

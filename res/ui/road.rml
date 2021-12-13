@@ -81,8 +81,8 @@
             local start = window.createModel "start" {
                 show_work = false,
                 work_id = 1,
-                road_list = {{id=1}},
-                flag = false, -- todo bad taste
+                flag = false, -- todo
+                route_item_text = " ",
             }
             function start.clickWork(self, workid)
                 if not workid then
@@ -100,11 +100,17 @@
 
                 ui_sys.post("route", "close")
             end
-            function start.addRoute()
-                ui_sys.post("route", "add_route")
+            function start.showNewRoute()
+                ui_sys.post("route", "show_route_new")
             end
             
-            window.setTimeout(function() start.flag = true end, 50)
+            window.setTimeout(function() start.flag = true end, 50) -- todo
+
+            ui_sys.add_event_listener("road", {
+                ["new_route"] = function(idxs)
+                    console.log("new_route " .. table.concat(idxs, ", "))
+                end
+            })
         </script>
     </head>
     <body>
@@ -125,74 +131,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="road-list" style="align-items: stretch; width:100%;" data-for="road : road_list">
-                    <!--
-                    <div class="row" style="justify-content: space-between; background-color: rgba(255,242,204,150); margin:5px; font-size: 120%;">
-                        <div style="align-items: flex-start;">
-                            <div class="row">
-                                <div class="middle-bg" style='background-image:"road/lighter.png";'></div>
-                                <div>{{work_id}}</div>
-                            </div>
-                        </div>
-                        <div style="align-items: flex-end;">
-                            <div class="column" style="font-size: 60%;">
-                                <div class="row">
-                                    <div>{{work_id}}</div>
-                                    <div class="small-bg" style='background-image:"road/car.png";'></div>
-                                </div>
-                                <div class="row">
-                                    <div>{{work_id}}</div>
-                                    <div class="small-bg" style='background-image:"road/car2.png";'></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- route list -->
+                <table class="normal-table" style="align-items: stretch; width:100%;">
+                    <tr><th style = "text-align:center;">{{route_item_text}}</th></tr>
+                </table>
 
-                    <div class="column" style="background-color: rgba(0, 0, 255, 128); margin:5px;">
-                        <div class="row" style="justify-content: space-between; background-color: rgba(0,176,240,128);">
-                            <div style="align-items: flex-start;">
-                                <div class="row">
-                                    <div class="middle-bg" style='background-image:"road/lighter.png";'></div>
-                                    <div style="font-size: 100%;">{{work_id}}</div>
-                                </div>
-                            </div>
-                            <div style="align-items: flex-end;">
-                                <div class="row">
-                                    <div style="font-size: 100%;">{{work_id}}</div>
-                                    <div class="middle-bg" style='background-image:"road/car.png";'></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" style="justify-content: space-between; background-color: rgba(100, 200, 128, 128);">
-                            <button style="width: 50px; height:50px; margin:0px">-1</button>
-                            <div style='background-image:"road/car.png";'></div>
-                            <button style="width: 50px; height:50px; margin:0px">+1</button>
-                        </div>
-                    </div>
-                    <div class="row" style="justify-content: space-between; background-color: rgba(255,242,204,150); margin:5px; font-size: 120%;">
-                        <div style="align-items: flex-start;">
-                            <div class="row">
-                                <div class="middle-bg" style='background-image:"road/lighter.png";'></div>
-                                <div>{{work_id}}</div>
-                            </div>
-                        </div>
-                        <div style="align-items: flex-end;">
-                            <div class="column" style="font-size: 60%;">
-                                
-                                <div class="row">
-                                    <div>{{work_id}}</div>
-                                    <div class="small-bg" style='background-image:"road/car.png";'></div>
-                                </div>
-                                <div class="row">
-                                    <div>{{work_id}}</div>
-                                    <div class="small-bg" style='background-image:"road/car2.png";'></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    -->
-                </div>
-                <button style="width:320px; height:60px; font-size: 100%; background-color: rgb(237,125,49);" data-event-click="addRoute()">
+                <button style="width:320px; height:60px; font-size: 100%; background-color: rgb(237,125,49);" data-event-click="showNewRoute()">
                     <div style='align-self: center; background-image:"road/add.png"; width:30px; height:30px; background-size:cover;'/>
                     <div>增加路线</div>
                 </button>

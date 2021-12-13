@@ -232,6 +232,23 @@ local show_road_arrow, hide_road_arrow ; do
     end
 end
 
+function construct_sys:camera_usage()
+    local entity, position
+    for _, eid, mouse_x, mouse_y in drapdrop_entity_mb:unpack() do
+        entity = ipickup_mapping.get_entity(eid)
+        if entity then
+            w:sync("construct_entity?in", entity)
+            if entity.construct_entity then
+                position = iinput.screen_to_world {mouse_x, mouse_y}
+                position = iterrain.get_tile_centre_position(math3d.tovalue(position))
+                iom.set_position(iprefab_proxy.get_root(entity), position)
+                iui.post("construct", "show_construct_confirm", true, math3d.tovalue(icamera.world_to_screen(position)))
+                iprefab_proxy.message(construct_prefab, "basecolor", position)
+            end
+        end
+    end
+end
+
 function construct_sys:data_changed()
     local cfg
     for _, _, _, building_type in ui_construct_building_mb:unpack() do
@@ -250,21 +267,6 @@ function construct_sys:data_changed()
         end
     end
 
-    local entity, position
-    for _, eid, mouse_x, mouse_y in drapdrop_entity_mb:unpack() do
-        entity = ipickup_mapping.get_entity(eid)
-        if entity then
-            w:sync("construct_entity?in", entity)
-            if entity.construct_entity then
-                position = iinput.screen_to_world {mouse_x, mouse_y}
-                position = iterrain.get_tile_centre_position(math3d.tovalue(position))
-                iom.set_position(iprefab_proxy.get_root(entity), position)
-                iui.post("construct", "show_construct_confirm", true, math3d.tovalue(icamera.world_to_screen(position)))
-                iprefab_proxy.message(construct_prefab, "basecolor", position)
-            end
-        end
-    end
-
     --
     for _, _, e, parent in shape_terrain_mb:unpack() do
         w:sync("scene:in", e)
@@ -277,7 +279,7 @@ end
 function construct_sys:after_pickup_mapping()
     local mapping_entity, is_show_road_arrow, building
     for _, _, meid in pickup_mapping_mb:unpack() do
-        mapping_entity = ipickup_mapping.get_entity(meid)
+    mapping_entity = ipickup_mapping.get_entity(meid)
         if mapping_entity then
             w:sync("building?in", mapping_entity)
             building = mapping_entity.building

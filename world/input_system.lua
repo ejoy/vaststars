@@ -7,19 +7,14 @@ local math3d = require "math3d"
 local mathutils = ecs.require "lualib.mathutils"
 local mc = import_package "ant.math".constant
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local irq		= ecs.import.interface "ant.render|irenderqueue"
+local icamera   = ecs.import.interface "ant.camera|icamera"
 
 local mouse_mb = world:sub {"mouse"}
 local last_mouse
 local last_vx, last_vy
 
 local input_sys = ecs.system 'input_system'
-local camera_ref
-
-function input_sys:init_world()
-	for e in w:select "main_queue camera_ref:in" do
-        camera_ref = e.camera_ref
-    end
-end
 
 function input_sys:data_changed()
     for _, what, state, x, y in mouse_mb:unpack() do
@@ -47,8 +42,10 @@ end
 
 local iinput = ecs.interface "iinput"
 
+-- call in 'camera_usage' stage
 function iinput.screen_to_world(screen_pos)
-    return mathutils.ray_hit_plane(iom.ray(camera_ref, screen_pos), {dir = mc.YAXIS, pos = mc.ZERO_PT})
+    local c = icamera.find_camera(irq.main_camera())
+    return mathutils.ray_hit_plane(iom.ray(c.viewprojmat, screen_pos), {dir = mc.YAXIS, pos = mc.ZERO_PT})
 end
 
 function iinput.get_mouse_world_position()

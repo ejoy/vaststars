@@ -1,0 +1,16 @@
+table.normal-table {
+    color:#333333;
+}
+table.normal-table tr {
+    border-width: 1px;
+    border-color: #cc3300;
+}
+table.normal-table th {
+    background-color:#ff6600;
+}
+table.normal-table th:hover {
+    background-color:#ffcc33;
+}
+table.normal-table th:active {
+    background-color:#ccff66;
+}

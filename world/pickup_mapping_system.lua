@@ -38,5 +38,15 @@ function ipickup_mapping.unmapping(sid)
 end
 
 function ipickup_mapping.get_entity(sid)
-    return entity_mapping[sid]
+    local e = entity_mapping[sid]
+    if not e then
+        return
+    end
+
+    if not e[1] then -- todo bad taste
+        entity_mapping[sid] = nil
+        return
+    end
+
+    return e
 end
