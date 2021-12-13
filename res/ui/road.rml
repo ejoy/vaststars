@@ -76,13 +76,14 @@
                 background-size: cover;
             }
         </style>
+        <style path = "common/normal-table.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
                 show_work = false,
                 work_id = 1,
                 flag = false, -- todo
-                route_item_text = " ",
+                route_text_1 = " ",
             }
             function start.clickWork(self, workid)
                 if not workid then
@@ -103,14 +104,16 @@
             function start.showNewRoute()
                 ui_sys.post("route", "show_route_new")
             end
-            
             window.setTimeout(function() start.flag = true end, 50) -- todo
 
+            function start.clickShowRoute(event, route_idx)
+                ui_sys.post("route", "show_route", route_idx)
+            end
+
             ui_sys.add_event_listener("road", {
-                ["new_route"] = function(idxs)
-                    console.log("new_route -------")
-                    for k, v in pairs(idxs) do
-                        console.log(k, v)
+                ["init"] = function(building_infos, route_infos)
+                    for _, v in pairs(route_infos) do
+                        start.route_text_1 = v.text
                     end
                 end
             })
@@ -136,7 +139,7 @@
                 </div>
                 <!-- route list -->
                 <table class="normal-table" style="align-items: stretch; width:100%;">
-                    <tr><th style = "text-align:center;">{{route_item_text}}</th></tr>
+                    <tr><th style = "text-align:center;" data-if = "route_text_1 != ' '" data-event-click="clickShowRoute(1)">{{route_text_1}}</th></tr>
                 </table>
 
                 <button style="width:320px; height:60px; font-size: 100%; background-color: rgb(237,125,49);" data-event-click="showNewRoute()">

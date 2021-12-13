@@ -38,7 +38,7 @@ local function __update_stations(stations)
 end
 
 function start.addRoute(event)
-    ui_sys.post("#road", "new_route", start.choice_field_idxs)
+    ui_sys.post("route", "new_route", start.choice_field_idxs)
 end
 
 function start.close(event)
@@ -71,6 +71,7 @@ ui_sys.add_event_listener("route_new", {
         start.stations = stations
         __update_stations(stations) -- todo
     end,
+
     ["select_station"] = function(idx)
         if start.selected_item_idxs[idx] then
             __show_error_tip(("already choice (%s)"):format(start.stations[idx].name))

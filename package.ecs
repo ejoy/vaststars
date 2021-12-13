@@ -166,6 +166,10 @@ interface "iconstruct"
     .implement "world/construct_system.lua"
     .method "init"
 
+interface "iroute"
+    .implement "world/route_system.lua"
+    .method "show"
+
 system "route_system"
     .implement "world/route_system.lua"
     .method "data_changed"

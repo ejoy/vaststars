@@ -14,6 +14,7 @@ local iterrain = ecs.import.interface "vaststars|iterrain"
 local iroad_arrow = ecs.import.interface "vaststars|iroad_arrow"
 local iroad = ecs.import.interface "vaststars|iroad"
 local iprefab_proxy = ecs.import.interface "vaststars|iprefab_proxy"
+local iroute = ecs.import.interface "vaststars|iroute"
 
 local math3d = require "math3d"
 local get_prefab_cfg_srt = ecs.require "world.prefab_cfg_srt"
@@ -291,7 +292,7 @@ function construct_sys:after_pickup_mapping()
                     iroad.show_arrow(tile_coord)
 
                 elseif building.building_type == "logistics_center" then
-                    iui.open("road", "road.rml")
+                    iroute.show()
                 end
             end
 

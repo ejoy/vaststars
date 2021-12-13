@@ -8,8 +8,31 @@ local ui_route_mb = world:sub {"ui", "route"}
 local ui_route_new_close_mb = world:sub {"ui", "route_new", "close"}
 
 local route_sys = ecs.system "route_system"
-
+local iroute = ecs.interface "iroute"
 local routes = {}
+
+local function __get_all_building_infos()
+    local building_infos = {}
+    for e in w:select "building:in" do
+        if e.building.building_type == "logistics_center" then -- todo ?
+            building_infos[e.building.id] = {
+                name = "物流中心_" .. e.building.id, -- todo
+            }
+        end
+    end
+    return building_infos
+end
+
+local function __get_all_route_infos()
+    local building_infos = __get_all_building_infos()
+
+    local route_infos = {}
+    for _, route in pairs(routes) do
+        route_infos[#route_infos + 1] = {text = building_infos[route["begin"]].name .. " -> " .. building_infos[route["end"]].name}
+    end
+    return route_infos
+end
+
 local route_ui_cmds = {}
 route_ui_cmds["close"] = function ()
     iui.close("road")
@@ -17,29 +40,18 @@ route_ui_cmds["close"] = function ()
 end
 
 route_ui_cmds["show_route_new"] = function()
-    local station_list = {}
-
-    for e in w:select "building:in" do
-        if e.building.building_type == "logistics_center" then -- todo ?
-            station_list[#station_list + 1] = {
-                id = e.building.id,
-                name = "物流中心_" .. e.building.id, -- todo
-            }
-        end
-    end
-
-    iui.open("route_new", "route_new.rml", station_list)
+    iui.open("route_new", "route_new.rml", __get_all_building_infos(), __get_all_route_infos())
 end
 
-route_ui_cmds["add_route"] = function(building_ids)
+route_ui_cmds["show_route"] = function(route_id)
+    local route = routes[route_id]
+    print(route_id)
+end
+
+route_ui_cmds["new_route"] = function(building_ids)
     local route_id = #routes+1
     routes[route_id] = building_ids
-
-    iui.post("route", route_id)
-end
-
-route_ui_cmds["show_route"] = function(building_ids)
-    routes[#routes+1] = building_ids
+    iroute.show()
 end
 
 function route_sys:data_changed()
@@ -56,4 +68,8 @@ function route_sys:data_changed()
         iui.close("route_new")
         iui.open("construct", "construct.rml")
     end
+end
+
+function iroute.show()
+    iui.open("road", "road.rml", __get_all_building_infos(), __get_all_route_infos())
 end
