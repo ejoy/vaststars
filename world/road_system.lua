@@ -3,7 +3,19 @@ local world = ecs.world
 local w = world.w
 
 local iterrain_road = ecs.import.interface "ant.terrain|iterrain_road"
+local iprefab_proxy = ecs.import.interface "vaststars|iprefab_proxy"
+local ipickup_mapping = ecs.import.interface "vaststars|ipickup_mapping"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+
+local terrain_road_create_mb = world:sub {"terrain_road", "road", "create"}
+local terrain_road_remove_mb = world:sub {"terrain_road", "road", "remove"}
+
+local road_sys = ecs.system "road_system"
 local iroad = ecs.interface "iroad"
+
+local road_binding_entity
+local terrain_roads_instance_id = {} -- lazy deletion
+local terrain_roads_prefab_proxy = {}
 
 local road_tiles = {} -- = {[x] = {[y] = {info}, ...}, ...} -- info 为序列, 分别表示此'路块'在四个方向的'闭'/'开'状态
 local road_types = {} -- = {[x] = {[y] = road_type, ...}, ...} -- 缓存每个路块的类型 O,C.. + 数字表示
@@ -15,6 +27,52 @@ local NEIGHBORS_END <const> = 4
 
 for _, v in ipairs({'C', 'I', 'O', 'T', 'U', 'X'}) do
     iterrain_road.set_road_resource(v, ("/pkg/vaststars/res/road/%s_road.prefab"):format(v))
+end
+
+function road_sys:init()
+    road_binding_entity = ecs.create_entity {
+        policy = {
+            "ant.scene|scene_object",
+            "vaststars|building",
+        },
+        data = {
+            scene = {
+                srt = {}
+            },
+            building = {
+                building_type = "road",
+            },
+            reference = true,
+        },
+    }
+end
+
+function road_sys:data_changed()
+    for _, _, _, instance_id, x, y, prefab_file_name, srt, parant_entity in terrain_road_create_mb:unpack() do
+        local prefab_proxy = iprefab_proxy.create(ecs.create_instance(prefab_file_name), {},
+        {
+            on_ready = function(_, prefab)
+                local e = prefab.root
+                iom.set_srt(e, srt.s, srt.r, srt.t)
+                ecs.method.set_parent(e, parant_entity)
+            end,
+            on_pickup_mapping = function(eid)
+                ipickup_mapping.mapping(eid, road_binding_entity)
+            end
+        })
+
+        terrain_roads_prefab_proxy[instance_id] = prefab_proxy
+
+        terrain_roads_instance_id[x] = terrain_roads_instance_id[x] or {}
+        terrain_roads_instance_id[x][y] = instance_id
+    end
+
+    for _, _, _, instance_id in terrain_road_remove_mb:unpack() do
+        if terrain_roads_prefab_proxy[instance_id] then
+            iprefab_proxy.remove(terrain_roads_prefab_proxy[instance_id])
+            terrain_roads_prefab_proxy[instance_id] = nil
+        end
+    end
 end
 
 local get_direction ; do
@@ -92,7 +150,12 @@ function iroad.reset()
     road_tiles = {}
 end
 
-local function set_road(shape_terrain_entity, x, y, ...)
+local function __flush_road(shape_terrain_entity, x, y)
+    local road_type = road_types[x][y]
+    iterrain_road.set_road(shape_terrain_entity, road_type, x, y)
+end
+
+local function __set_road(shape_terrain_entity, x, y, ...)
     road_tiles[x] = road_tiles[x] or {}
     road_tiles[x][y] = road_tiles[x][y] or {0, 0, 0, 0}
 
@@ -106,31 +169,29 @@ local function set_road(shape_terrain_entity, x, y, ...)
         return
     end
 
-    iterrain_road.set_road(shape_terrain_entity, road_type, x, y)
-
     road_types[x] = road_types[x] or {}
     road_types[x][y] = road_type
 end
 
 local funcs = {}
 funcs[LEFT] = function(shape_terrain_entity, sx, sy, dx, dy)
-    set_road(shape_terrain_entity, sx, sy, LEFT)
-    set_road(shape_terrain_entity, dx, dy, RIGHT)
+    __set_road(shape_terrain_entity, sx, sy, LEFT)
+    __set_road(shape_terrain_entity, dx, dy, RIGHT)
 end
 
 funcs[RIGHT] = function(shape_terrain_entity, sx, sy, dx, dy)
-    set_road(shape_terrain_entity, sx, sy, RIGHT)
-    set_road(shape_terrain_entity, dx, dy, LEFT)
+    __set_road(shape_terrain_entity, sx, sy, RIGHT)
+    __set_road(shape_terrain_entity, dx, dy, LEFT)
 end
 
 funcs[TOP] = function(shape_terrain_entity, sx, sy, dx, dy)
-    set_road(shape_terrain_entity, sx, sy, BOTTOM)
-    set_road(shape_terrain_entity, dx, dy, TOP)
+    __set_road(shape_terrain_entity, sx, sy, BOTTOM)
+    __set_road(shape_terrain_entity, dx, dy, TOP)
 end
 
 funcs[BOTTOM] = function(shape_terrain_entity, sx, sy, dx, dy)
-    set_road(shape_terrain_entity, sx, sy, TOP)
-    set_road(shape_terrain_entity, dx, dy, BOTTOM)
+    __set_road(shape_terrain_entity, sx, sy, TOP)
+    __set_road(shape_terrain_entity, dx, dy, BOTTOM)
 end
 
 function iroad.construct(tile_coord_s, tile_coord_d, road_type)
@@ -185,6 +246,8 @@ function iroad.construct(tile_coord_s, tile_coord_d, road_type)
         return
     end
     func(shape_terrain_entity, sx, sy, dx, dy)
+    __flush_road(shape_terrain_entity, sx, sy)
+    __flush_road(shape_terrain_entity, dx, dy)
 end
 
 function iroad.get_road_type(tile_coord)
@@ -202,5 +265,30 @@ function iroad.set_building_entry(tile_coord)
         return
     end
 
-    set_road(shape_terrain_entity, tile_coord[1], tile_coord[2] - 1, TOP)
+    -- todo hard coded -- TOP
+    __set_road(shape_terrain_entity, tile_coord[1], tile_coord[2] - 1, TOP)
+    __flush_road(shape_terrain_entity, tile_coord[1], tile_coord[2] - 1)
+end
+
+function iroad.show_arrow(tile_coord)
+    local x = tile_coord[1]
+    local y = tile_coord[2]
+
+    if not terrain_roads_instance_id[x] then
+        return
+    end
+    local instance_id = terrain_roads_instance_id[x][y]
+
+    if not instance_id then
+        return
+    end
+
+    local proxy = terrain_roads_prefab_proxy[instance_id]
+    if not proxy then
+        return
+    end
+
+    -- todo
+    -- local prefab = ecs.create_instance("/pkg/vaststars/res/road/arrow_straight.prefab")
+    -- iprefab_proxy.message(proxy, "slot_attach", "直路箭头1", prefab.root)
 end

@@ -13,9 +13,10 @@ local iui = ecs.import.interface "vaststars|iui"
 local iterrain = ecs.import.interface "vaststars|iterrain"
 local iroad_arrow = ecs.import.interface "vaststars|iroad_arrow"
 local iroad = ecs.import.interface "vaststars|iroad"
+local iprefab_proxy = ecs.import.interface "vaststars|iprefab_proxy"
+
 local math3d = require "math3d"
 local get_prefab_cfg_srt = ecs.require "world.prefab_cfg_srt"
-local create_prefab_binding = ecs.require "world.prefab_binding"
 local construct_cfg = ecs.require "lualib.config.construct"
 local ROAD_YAXIS_DEFAULT <const> = ecs.require("lualib.define").ROAD_YAXIS_DEFAULT
 local CONSTRUCT_RED_BASIC_COLOR <const> = {100.0, 0.0, 0.0, 0.8}
@@ -27,10 +28,10 @@ local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local pickup_mb = world:sub {"pickup"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local shape_terrain_mb = world:sub {"shape_terrain", "on_ready"}
-local terrain_road_mb = world:sub {"terrain_road", "on_ready"}
+
 local construct_sys = ecs.system "construct_system"
+
 local construct_prefab -- assuming there is only one "construct entity" in the same time
-local road_binding_entity
 
 local __gen_building_id ; do
     local id = 0
@@ -40,15 +41,9 @@ local __gen_building_id ; do
     end
 end
 
-local function __get_binding_entity(prefab)
-    local s = #prefab.tag["*"]
-    return prefab.tag["*"][s]
-end
-
-local function __get_construct_entity(prefab)
-    local binding_entity = __get_binding_entity(prefab)
-    w:sync("construct_entity:in", binding_entity)
-    return binding_entity.construct_entity
+local function __get_construct_entity(entity)
+    w:sync("construct_entity:in", entity)
+    return entity.construct_entity
 end
 
 local function __replace_material(template)
@@ -63,9 +58,9 @@ local function __replace_material(template)
     return template
 end
 
-local function __update_basecolor_by_pos(prefab, position) 
+local function __update_basecolor_by_pos(entity, prefab, position) 
     local basecolor_factor
-    local construct_entity = __get_construct_entity(prefab)
+    local construct_entity = __get_construct_entity(entity)
     if not construct_entity.test_func(construct_entity.building_type, position) then
         basecolor_factor = CONSTRUCT_RED_BASIC_COLOR
     else
@@ -80,25 +75,23 @@ local function __update_basecolor_by_pos(prefab, position)
     end
 end
 
-local function on_prefab_ready(prefab)
+local function on_prefab_ready(entity, prefab)
     local position = math3d.tovalue(iom.get_position(prefab.root))
-    __update_basecolor_by_pos(prefab, position)
-
+    __update_basecolor_by_pos(entity, prefab, position)
     iui.post("construct", "show_construct_confirm", true, math3d.tovalue(icamera.world_to_screen(position)) )
 end
 
 local on_prefab_message ; do
     local funcs = {}
-    funcs["basecolor"] = function(prefab, position)
-        __update_basecolor_by_pos(prefab, position)
+    funcs["basecolor"] = function(entity, prefab, position)
+        __update_basecolor_by_pos(entity, prefab, position)
     end
 
-    funcs["confirm_construct"] = function(prefab)
-        local binding_entity = __get_binding_entity(prefab)
-        w:sync("construct_entity:in", binding_entity)
-        local construct_entity = binding_entity.construct_entity
-        local position = math3d.tovalue(iom.get_position(binding_entity))
+    funcs["confirm_construct"] = function(entity, prefab)
+        local construct_entity = __get_construct_entity(entity)
+        local position = math3d.tovalue(iom.get_position(prefab.root))
         local building_type = construct_entity.building_type
+        local srt = prefab.root.scene.srt
 
         if construct_entity.test_func(building_type, position) then         
             local tile_coord = iterrain.get_coord_by_position(position)
@@ -107,24 +100,24 @@ local on_prefab_message ; do
                 iroad.construct(nil, tile_coord, "O0")
             else
                 local prefab_file_name = construct_entity.prefab_file_name
-                create_prefab_binding("/pkg/vaststars/" .. prefab_file_name, {
+                iprefab_proxy.create(ecs.create_instance("/pkg/vaststars/" .. prefab_file_name), {
                     policy = {
-                        "ant.scene|scene_object",
-                        "vaststars|prefab_binding",
                         "vaststars|building",
                     },
                     data = {
-                        scene = {
-                            srt = binding_entity.scene.srt,
-                        },
                         building = {
                             id = __gen_building_id(),
                             building_type = building_type,
                         },
                     },
+                },
+                {
+                    on_ready = function(_, prefab)
+                        iom.set_srt(prefab.root, srt.s, srt.r, srt.t)
+                    end
                 })
 
-                -- todo bad taste
+                -- todo hard coded
                 local cfg = construct_cfg[building_type]
                 if cfg then
                     local coord = {
@@ -145,10 +138,10 @@ local on_prefab_message ; do
         end
     end
 
-    function on_prefab_message(prefab, cmd, ...)
+    function on_prefab_message(entity, prefab, cmd, ...)
         local func = funcs[cmd]
         if func then
-            func(prefab, ...)
+            func(entity, prefab, ...)
         end
     end
 end
@@ -157,12 +150,11 @@ local function __create_construct_entity(building_type, prefab_file_name, test_f
     local p = "/pkg/vaststars/" .. prefab_file_name
     local template = __replace_material(serialize.parse(p, cr.read_file(p)))
 
-    return create_prefab_binding(template, {
+    return iprefab_proxy.create(ecs.create_instance(template), {
         policy = {
             "ant.scene|scene_object",
             "vaststars|construct_entity",
             "vaststars|drapdrop",
-            "vaststars|prefab_binding",
         },
         data = {
             construct_entity = {
@@ -173,31 +165,33 @@ local function __create_construct_entity(building_type, prefab_file_name, test_f
             scene = {
                 srt = get_prefab_cfg_srt(prefab_file_name),
             },
-            drapdrop = true,
-            prefab_binding_on_ready = on_prefab_ready,
-            prefab_binding_on_message = on_prefab_message,
+            drapdrop = false,
         },
+    },
+    {
+        on_ready = on_prefab_ready,
+        on_message = on_prefab_message,
     })
 end
 
 ----------------------------------
 local show_road_arrow, hide_road_arrow ; do
-    local road_arrow_prefabs = {}
+    local road_arrow_prefab_proxys = {}
     local arrow_tile_coord_offset = {{0, -1}, {-1, 0}, {1, 0}, {0, 1}}
     local arrow_yaxis_rotation = {math.rad(180.0), math.rad(-90.0), math.rad(90.0), math.rad(0.0)}
     local arrow_direction = {"top", "left", "right", "bottom"}
 
     function hide_road_arrow(idx)
         if not idx then
-            for idx, prefab in pairs(road_arrow_prefabs) do
-                prefab:send("remove")
-                road_arrow_prefabs[idx] = nil
+            for idx, prefab_proxy in pairs(road_arrow_prefab_proxys) do
+                iprefab_proxy.remove(prefab_proxy)
+                road_arrow_prefab_proxys[idx] = nil
             end
         else
-            local prefab = road_arrow_prefabs[idx]
-            if prefab then
-                prefab:send("remove")
-                road_arrow_prefabs[idx] = nil
+            local prefab_proxy = road_arrow_prefab_proxys[idx]
+            if prefab_proxy then
+                iprefab_proxy.remove(prefab_proxy)
+                road_arrow_prefab_proxys[idx] = nil
             end
         end
     end
@@ -226,12 +220,12 @@ local show_road_arrow, hide_road_arrow ; do
             end
 
             tile_position[2] = ROAD_YAXIS_DEFAULT
-            local prefab = road_arrow_prefabs[idx]
-            if not prefab then
-                road_arrow_prefabs[idx] = iroad_arrow.create(tile_position, arrow_yaxis_rotation[idx], arrow_direction[idx], tile_coord, arrow_tile_coord)
+            local prefab_proxy = road_arrow_prefab_proxys[idx]
+            if not prefab_proxy then
+                road_arrow_prefab_proxys[idx] = iroad_arrow.create(tile_position, arrow_yaxis_rotation[idx], arrow_direction[idx], tile_coord, arrow_tile_coord)
             else
-                prefab:send("arrow_tile_coord", arrow_tile_coord, tile_coord)
-                prefab:send("position", tile_position)
+                iprefab_proxy.message(prefab_proxy, "arrow_tile_coord", arrow_tile_coord, tile_coord)
+                iprefab_proxy.message(prefab_proxy, "position", tile_position)
             end
             ::continue::
         end
@@ -244,7 +238,7 @@ function construct_sys:data_changed()
         cfg = construct_cfg[building_type]
         if cfg then
             if construct_prefab then
-                construct_prefab:send("remove")
+                iprefab_proxy.message(construct_prefab, "remove")
             end
             construct_prefab = __create_construct_entity(cfg.building_type, cfg.prefab_file_name, ecs.require(cfg.test_func))
         end
@@ -252,7 +246,7 @@ function construct_sys:data_changed()
 
     for _, _, _ in ui_construct_confirm_mb:unpack() do
         if construct_prefab then
-            construct_prefab:send("confirm_construct")
+            iprefab_proxy.message(construct_prefab, "confirm_construct")
         end
     end
 
@@ -264,10 +258,9 @@ function construct_sys:data_changed()
             if entity.construct_entity then
                 position = iinput.screen_to_world {mouse_x, mouse_y}
                 position = iterrain.get_tile_centre_position(math3d.tovalue(position))
-                iom.set_position(entity, position)
+                iom.set_position(iprefab_proxy.get_root(entity), position)
                 iui.post("construct", "show_construct_confirm", true, math3d.tovalue(icamera.world_to_screen(position)))
-
-                construct_prefab:send("basecolor", position)
+                iprefab_proxy.message(construct_prefab, "basecolor", position)
             end
         end
     end
@@ -278,26 +271,26 @@ function construct_sys:data_changed()
         ipickup_mapping.mapping(e.scene.id, parent)
     end
 
-    for _, _, prefab in terrain_road_mb:unpack() do
-        for _, e in ipairs(prefab.tag["*"]) do
-            w:sync("scene:in", e)
-            ipickup_mapping.mapping(e.scene.id, road_binding_entity)
-        end
-    end
+
 end
 
 function construct_sys:after_pickup_mapping()
-    local mapping_entity, is_show_road_arrow
+    local mapping_entity, is_show_road_arrow, building
     for _, _, meid in pickup_mapping_mb:unpack() do
         mapping_entity = ipickup_mapping.get_entity(meid)
         if mapping_entity then
             w:sync("building?in", mapping_entity)
-            if mapping_entity.building then
+            building = mapping_entity.building
+            if building then
                 -- todo bad taste
-                if mapping_entity.building.building_type == "road" then
+                if building.building_type == "road" then
                     show_road_arrow( iterrain.get_tile_centre_position(iinput.get_mouse_world_position()) )
                     is_show_road_arrow = true
-                elseif mapping_entity.building.building_type == "logistics_center" then
+
+                    local tile_coord = iterrain.get_coord_by_position(iinput.get_mouse_world_position())
+                    iroad.show_arrow(tile_coord)
+
+                elseif building.building_type == "logistics_center" then
                     iui.open("route", "road.rml")
                 end
             end
@@ -321,22 +314,6 @@ end
 
 local iconstruct = ecs.interface "iconstruct"
 function iconstruct.init()
-    road_binding_entity = ecs.create_entity {
-        policy = {
-            "ant.scene|scene_object",
-            "vaststars|building",
-        },
-        data = {
-            scene = {
-                srt = {}
-            },
-            building = {
-                building_type = "road",
-            },
-            reference = true,
-        },
-    }
-
     iterrain.create({
         on_ready = function(entity)
             w:sync("scene:in", entity)
