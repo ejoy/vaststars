@@ -1,0 +1,3 @@
+[submodule "3rd/ant"]
+	path = 3rd/ant
+	url = https://github.com/ejoy/ant
