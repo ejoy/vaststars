@@ -38,7 +38,7 @@ local function __update_stations(stations)
 end
 
 function start.addRoute(event)
-    ui_sys.post("@road", "new_route", start.choice_field_idxs)
+    ui_sys.post("#road", "new_route", start.choice_field_idxs)
 end
 
 function start.close(event)

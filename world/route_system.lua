@@ -12,7 +12,7 @@ local route_sys = ecs.system "route_system"
 local routes = {}
 local route_ui_cmds = {}
 route_ui_cmds["close"] = function ()
-    iui.close("route")
+    iui.close("road")
     iui.open("construct", "construct.rml")
 end
 

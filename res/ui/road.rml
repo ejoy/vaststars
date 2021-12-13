@@ -108,7 +108,10 @@
 
             ui_sys.add_event_listener("road", {
                 ["new_route"] = function(idxs)
-                    console.log("new_route " .. table.concat(idxs, ", "))
+                    console.log("new_route -------")
+                    for k, v in pairs(idxs) do
+                        console.log(k, v)
+                    end
                 end
             })
         </script>

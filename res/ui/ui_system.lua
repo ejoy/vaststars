@@ -8,6 +8,8 @@ function m.post(id, event, ...)
     if id:sub(1, 1) == "@" then
         internal = true
         id = id:sub(2)
+    elseif id:sub(1, 1) == "#" then
+        internal = false
     else
         internal = false
     end

@@ -272,8 +272,6 @@ function construct_sys:data_changed()
         w:sync("scene:in", e)
         ipickup_mapping.mapping(e.scene.id, parent)
     end
-
-
 end
 
 function construct_sys:after_pickup_mapping()
@@ -293,7 +291,7 @@ function construct_sys:after_pickup_mapping()
                     iroad.show_arrow(tile_coord)
 
                 elseif building.building_type == "logistics_center" then
-                    iui.open("route", "road.rml")
+                    iui.open("road", "road.rml")
                 end
             end
 

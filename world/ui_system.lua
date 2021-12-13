@@ -22,22 +22,33 @@ function ui_system.data_changed()
     for msg in ui_system_open_mb:each() do
         local id, url = msg[3], msg[4]
         local w = irmlui.open(url)
+
         w.addEventListener("message", function(event)
             if not event.data then
                 console.log("event data is null")
                 return
             end
-    
+
             local res, err = json_decode(event.data)
             if not res then
                 error(("%s"):format(err))
                 return
             end
-            
-            -- rmlui -> world
-            world:pub {"ui", res.id, res.event, table.unpack(res.ud)}
+
+            if res.id:sub(1, 1) == "#" then
+                res.id = res.id:sub(2)
+                local w = windows[res.id]
+                if not w then
+                    error(("can nof found id(%s)"):format(res.id))
+                end
+
+                w.postMessage(json_encode(res))
+            else
+                -- rmlui -> world
+                world:pub {"ui", res.id, res.event, table.unpack(res.ud)}
+            end
         end)
-    
+
         windows[id] = w
 
         if msg[5] then
@@ -54,7 +65,7 @@ function ui_system.data_changed()
         if not window then
             error("Can not found window")
         end
-    
+
         window:close()
     end
 end
