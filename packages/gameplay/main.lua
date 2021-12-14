@@ -1,4 +1,12 @@
 package.path = "packages/gameplay/?.lua;packages/gameplay/?/init.lua"
+local vfs = require "vfs"
+function vfs.realpath(path)
+    local f <close> = io.open(path)
+    if f == nil then
+        return
+    end
+    return path
+end
 
 local game = require "base.game"
 require "type"
