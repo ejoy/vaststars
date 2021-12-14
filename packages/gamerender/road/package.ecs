@@ -1,0 +1,39 @@
+import "@ant.terrain"
+import "@vaststars.utility"
+
+system "road_system"
+    .implement "road/road_system.lua"
+    .method "init"
+    .method "data_changed"
+
+interface "iroad"
+    .implement "road/road_system.lua"
+    .method "reset"
+    .method "construct"
+    .method "get_road_type"
+    .method "set_building_entry"
+    .method "show_arrow"
+
+component "road_arrow"
+    .type "lua"
+
+policy "road_arrow"
+    .component "road_arrow"
+
+interface "iroad_arrow"
+    .implement "road/iroad_arrow.lua"
+    .method "create"
+
+system "route_system"
+    .implement "road/route_system.lua"
+    .method "data_changed"
+
+interface "iroute"
+    .implement "road/route_system.lua"
+    .method "show"
+
+component "building"
+    .type "lua"
+
+policy "building"
+    .component "building"

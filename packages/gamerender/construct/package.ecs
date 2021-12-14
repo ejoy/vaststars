@@ -1,0 +1,26 @@
+import "@vaststars.input"
+import "@ant.animation"
+
+component "construct_entity"
+    .type "lua"
+
+policy "construct_entity"
+    .component "construct_entity"
+
+system "construct_system"
+    .implement "construct/construct_system.lua"
+    .require_system "ant.animation|animation_system"
+    .require_system "ant.animation|animation_birth"
+    .require_system "ant.animation|skinning_system"
+    .require_system "ant.animation|mesh_skinning"
+    .require_system "ant.asset|meshskin_system"
+    .method "data_changed"
+    .method "camera_usage"
+    .method "after_pickup_mapping"
+
+interface "iconstruct"
+    .implement "construct/construct_system.lua"
+    .method "init"
+
+pipeline "pickup_mapping"
+    .stage "after_pickup_mapping"

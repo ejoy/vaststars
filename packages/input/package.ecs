@@ -1,0 +1,29 @@
+component "drapdrop"
+    .type "lua"
+
+policy "drapdrop"
+    .component "drapdrop"
+
+system "drapdrop_system"
+    .implement "drapdrop_system.lua"
+    .method "data_changed"
+    .method "after_pickup_mapping"
+
+system "input_system"
+    .implement "input_system.lua"
+    .method "data_changed"
+
+interface "iinput"
+    .implement "input_system.lua"
+    .method "screen_to_world"
+    .method "get_mouse_world_position"
+
+system "pickup_mapping_system"
+    .implement "pickup_mapping_system.lua"
+    .method "after_pickup"
+
+interface "ipickup_mapping"
+    .implement "pickup_mapping_system.lua"
+    .method "mapping"
+    .method "unmapping"
+    .method "get_entity"

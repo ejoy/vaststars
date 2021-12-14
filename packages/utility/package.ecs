@@ -1,0 +1,17 @@
+component "prefab_proxy"
+    .type "lua"
+
+policy "prefab_proxy"
+    .component "prefab_proxy"
+
+system "prefab_proxy_system"
+    .implement "prefab_proxy_system.lua"
+    .method "component_init"
+
+interface "iprefab_proxy"
+    .implement "prefab_proxy_system.lua"
+    .method "create"
+    .method "remove"
+    .method "message"
+    .method "get_root"
+    .method "get_config_srt"

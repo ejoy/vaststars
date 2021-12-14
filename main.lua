@@ -2,7 +2,7 @@ package.path = "engine/?.lua"
 require "bootstrap"
 import_package "ant.window".start {
     import = {
-        "@vaststars",
+        "@vaststars.gamerender"
     },
     pipeline = {
         "init",
@@ -10,12 +10,10 @@ import_package "ant.window".start {
         "exit",
     },
     system = {
-        "vaststars|init_system",
+        "vaststars.gamerender|init_system",
     },
     interface = {
         "ant.objcontroller|iobj_motion",
-        "ant.animation|ianimation",
-        "ant.effekseer|effekseer_playback",
     },
     policy = {
         "ant.general|name",

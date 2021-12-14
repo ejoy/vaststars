@@ -1,6 +1,7 @@
 {
     "Lua.diagnostics.globals": [
         "window",
-        "console"
+        "console",
+        "import_package"
     ]
 }

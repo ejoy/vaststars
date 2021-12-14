@@ -1,0 +1,307 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  name: jixiebi
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.001.material
+  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/plane_P1.meshbin
+  name: 0.001
+  scene:
+    srt:
+      t: {0.06279541552066803, 2, -0.004578660242259502}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    boneAction: /pkg/vaststars.resources/glb/goods_station.glb|animations/boneAction.ozz
+  animation_birth: boneAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.002.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.001_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/bone.skinbin
+  name: lifangti.002
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    boneAction: /pkg/vaststars.resources/glb/goods_station.glb|animations/boneAction.ozz
+  animation_birth: boneAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/mate.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.003_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/bone.skinbin
+  name: lifangti.003
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    boneAction: /pkg/vaststars.resources/glb/goods_station.glb|animations/boneAction.ozz
+  animation_birth: boneAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/mate.001.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.003_P2.meshbin
+  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/bone.skinbin
+  name: lifangti.003
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    boneAction: /pkg/vaststars.resources/glb/goods_station.glb|animations/boneAction.ozz
+  animation_birth: boneAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/mate.002.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.003_P3.meshbin
+  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/bone.skinbin
+  name: lifangti.003
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    boneAction: /pkg/vaststars.resources/glb/goods_station.glb|animations/boneAction.ozz
+  animation_birth: boneAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.002.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.004_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/bone.skinbin
+  name: lifangti.004
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    boneAction: /pkg/vaststars.resources/glb/goods_station.glb|animations/boneAction.ozz
+  animation_birth: boneAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/road.jia.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/plane.001_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/bone.skinbin
+  name: plane.002
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Road.material
+  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/Scene.004_P1.meshbin
+  name: SM_Env_Sidewalk_Straight_01_SF__79_.001
+  scene:
+    srt:
+      r: {0, -1, 0, -1.9470718370939721e-07}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    boneAction: /pkg/vaststars.resources/glb/goods_station.glb|animations/boneAction.ozz
+  animation_birth: boneAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/road.jia.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuiti_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/bone.skinbin
+  name: zhuiti
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    boneAction: /pkg/vaststars.resources/glb/goods_station.glb|animations/boneAction.ozz
+  animation_birth: boneAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/mate.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuti_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/bone.skinbin
+  name: zhuti
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    boneAction: /pkg/vaststars.resources/glb/goods_station.glb|animations/boneAction.ozz
+  animation_birth: boneAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.002.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuti.009_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/bone.skinbin
+  name: zhuti.002
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object

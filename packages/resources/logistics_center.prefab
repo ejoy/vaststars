@@ -1,0 +1,837 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  name: yunshuzhongxin
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.004.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube_P1.meshbin
+  name: Cube
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.001_P1.meshbin
+  name: Cube.001
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.003_P1.meshbin
+  name: Cube.003
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    bone.001Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.001Action.ozz
+    bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002Action.ozz
+    bone.003Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.003Action.ozz
+    bone.004Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.004Action.ozz
+    boneAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/boneAction.ozz
+  animation_birth: bone.001Action
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Exoplanet-Rover.001.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.012_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/bone.skinbin
+  name: Exoplanet-Rover_Exoplanet-Rover_0
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    bone.001Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.001Action.ozz
+    bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002Action.ozz
+    bone.003Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.003Action.ozz
+    bone.004Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.004Action.ozz
+    boneAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/boneAction.ozz
+  animation_birth: bone.001Action
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Exoplanet-Rover.001.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.001_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/bone.003.skinbin
+  name: Exoplanet-Rover_Exoplanet-Rover_0.001
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Exoplanet-Rover.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.004_P1.meshbin
+  name: Exoplanet-Rover_Exoplanet-Rover_0.002
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Exoplanet-Rover.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.009_P1.meshbin
+  name: Exoplanet-Rover_Exoplanet-Rover_0.003
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    bone.001Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.001Action.ozz
+    bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002Action.ozz
+    bone.003Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.003Action.ozz
+    bone.004Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.004Action.ozz
+    boneAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/boneAction.ozz
+  animation_birth: bone.001Action
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Exoplanet-Rover.001.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.013_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/bone.004.skinbin
+  name: Exoplanet-Rover_Exoplanet-Rover_0.004
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Exoplanet-Rover.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.016_P1.meshbin
+  name: Exoplanet-Rover_Exoplanet-Rover_0.005
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/ExoRov_Wheels.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.007_P1.meshbin
+  name: ExoRov_FrontArm_R_ExoRov_Wheels_0
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/ExoRov_Wheels.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.002_P1.meshbin
+  name: ExoRov_FrontArm_R_ExoRov_Wheels_0.001
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/ExoRov_Wheels.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.005_P1.meshbin
+  name: ExoRov_FrontArm_R_ExoRov_Wheels_0.002
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/ExoRov_Wheels.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.010_P1.meshbin
+  name: ExoRov_FrontArm_R_ExoRov_Wheels_0.003
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/ExoRov_Wheels.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.014_P1.meshbin
+  name: ExoRov_FrontArm_R_ExoRov_Wheels_0.004
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/ExoRov_Wheels.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.017_P1.meshbin
+  name: ExoRov_FrontArm_R_ExoRov_Wheels_0.005
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/ExoRov_Wheels.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.006_P1.meshbin
+  name: ExoRov_FrontWheel_R_ExoRov_Wheels_0
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/ExoRov_Wheels.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.003_P1.meshbin
+  name: ExoRov_FrontWheel_R_ExoRov_Wheels_0.001
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/ExoRov_Wheels.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.008_P1.meshbin
+  name: ExoRov_FrontWheel_R_ExoRov_Wheels_0.002
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/ExoRov_Wheels.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.011_P1.meshbin
+  name: ExoRov_FrontWheel_R_ExoRov_Wheels_0.003
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/ExoRov_Wheels.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.015_P1.meshbin
+  name: ExoRov_FrontWheel_R_ExoRov_Wheels_0.004
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/ExoRov_Wheels.001.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Mesh.018_P1.meshbin
+  name: ExoRov_FrontWheel_R_ExoRov_Wheels_0.005
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    bone.001Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.001Action.ozz
+    bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002Action.ozz
+    bone.003Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.003Action.ozz
+    bone.004Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.004Action.ozz
+    boneAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/boneAction.ozz
+  animation_birth: bone.001Action
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/bone.002.skinbin
+  name: lifangti
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    bone.001Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.001Action.ozz
+    bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002Action.ozz
+    bone.003Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.003Action.ozz
+    bone.004Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.004Action.ozz
+    boneAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/boneAction.ozz
+  animation_birth: bone.001Action
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.004.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.028_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/bone.001.skinbin
+  name: lifangti.001
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    bone.001Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.001Action.ozz
+    bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002Action.ozz
+    bone.003Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.003Action.ozz
+    bone.004Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.004Action.ozz
+    boneAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/boneAction.ozz
+  animation_birth: bone.001Action
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.034_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/bone.002.skinbin
+  name: lifangti.002
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    bone.001Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.001Action.ozz
+    bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002Action.ozz
+    bone.003Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.003Action.ozz
+    bone.004Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.004Action.ozz
+    boneAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/boneAction.ozz
+  animation_birth: bone.001Action
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.035_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/bone.002.skinbin
+  name: lifangti.003
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    bone.001Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.001Action.ozz
+    bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002Action.ozz
+    bone.003Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.003Action.ozz
+    bone.004Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.004Action.ozz
+    boneAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/boneAction.ozz
+  animation_birth: bone.001Action
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.037_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/bone.002.skinbin
+  name: lifangti.004
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.003.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.001_P1.meshbin
+  name: lifangti.005
+  scene:
+    srt: {}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.006_P1.meshbin
+  name: lifangti.006
+  scene:
+    srt:
+      r: {-1, 0, 0, -1.9470718370939721e-07}
+      s: {1.4396729469299316, 0.5758692026138306, 2.3034768104553223}
+      t: {0, 21.402563095092773, -9.893950462341309}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.003_P1.meshbin
+  name: lifangti.007
+  scene:
+    srt:
+      t: {0, 11.597249031066895, 0}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.006.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.002_P1.meshbin
+  name: lifangti.008
+  scene:
+    srt:
+      s: {0.21271997690200806, 0.21271997690200806, 0.21271997690200806}
+      t: {6.14010763168335, 19.970691680908203, -4.535443305969238}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.007.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.004_P1.meshbin
+  name: lifangti.009
+  scene:
+    srt:
+      s: {0.21271997690200806, 0.21271997690200806, 0.21271997690200806}
+      t: {6.14010763168335, 19.970691680908203, -4.535443305969238}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.007.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.005_P1.meshbin
+  name: lifangti.010
+  scene:
+    srt:
+      s: {0.21271997690200806, 0.21271997690200806, 0.21271997690200806}
+      t: {6.14010763168335, 19.970691680908203, -4.535443305969238}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.006.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.007_P1.meshbin
+  name: lifangti.011
+  scene:
+    srt:
+      s: {0.21271997690200806, 0.21271997690200806, 0.21271997690200806}
+      t: {6.14010763168335, 19.970691680908203, -4.535443305969238}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.006.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.008_P1.meshbin
+  name: lifangti.012
+  scene:
+    srt:
+      s: {0.21271997690200806, 0.21271997690200806, 0.21271997690200806}
+      t: {6.14010763168335, 19.970691680908203, -4.535443305969238}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.006.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.009_P1.meshbin
+  name: lifangti.013
+  scene:
+    srt:
+      s: {0.21271997690200806, 0.21271997690200806, 0.21271997690200806}
+      t: {6.14010763168335, 19.970691680908203, -4.535443305969238}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/pingmian_P1.meshbin
+  name: pingmian
+  scene:
+    srt:
+      t: {-9.80612850189209, 20.32884979248047, -4.426846504211426}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.006.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/pingmian.001_P1.meshbin
+  name: pingmian.001
+  scene:
+    srt:
+      t: {-9.80612850189209, 20.32884979248047, -4.426846504211426}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.003.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/zhuti_P1.meshbin
+  name: zhuti
+  scene:
+    srt:
+      r: {0.08372934907674789, 0, 0, -0.996488630771637}
+      s: {0.8726375699043274, 0.8726375102996826, 0.8726375102996826}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    bone.001Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.001Action.ozz
+    bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002Action.ozz
+    bone.003Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.003Action.ozz
+    bone.004Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.004Action.ozz
+    boneAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/boneAction.ozz
+  animation_birth: bone.001Action
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/zhuti.004_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/bone.002.skinbin
+  name: zhuti.001
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.003.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/zhuti.006_P1.meshbin
+  name: zhuti.002
+  scene:
+    srt:
+      s: {0.8732045888900757, 0.8732045888900757, 0.8732045888900757}
+      t: {10.049322128295898, 15.519233703613281, 6.1480631828308105}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    bone.001Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.001Action.ozz
+    bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002Action.ozz
+    bone.003Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.003Action.ozz
+    bone.004Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.004Action.ozz
+    boneAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/boneAction.ozz
+  animation_birth: bone.001Action
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/zhuti.007_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/bone.002.skinbin
+  name: zhuti.003
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    bone.001Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.001Action.ozz
+    bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002Action.ozz
+    bone.003Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.003Action.ozz
+    bone.004Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.004Action.ozz
+    boneAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/boneAction.ozz
+  animation_birth: bone.001Action
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/zhuti.008_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/bone.002.skinbin
+  name: zhuti.005
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 2
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.002.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/zhuti.001_P1.meshbin
+  name: zhuti.006
+  scene:
+    srt:
+      s: {1.1676726341247559, 1.1676726341247559, 1.1676726341247559}
+      t: {11.24179458618164, 15.165066719055176, -3.3881795406341553}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.004.material
+  mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/zhuti.002_P1.meshbin
+  name: zhuti.007
+  scene:
+    srt:
+      r: {0.7071068286895752, 0, 0, -0.7071067094802856}
+      s: {1.8072118759155273, 1.8072118759155273, 1.8072118759155273}
+      t: {-9.991876602172852, 12.990860939025879, -3.6029601097106934}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
