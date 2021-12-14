@@ -1,7 +1,7 @@
 local lm = require "luamake"
 
 lm.mode = "debug"
-lm.bindir = "bin/"..lm.mode
+lm.bindir = "bin/msvc/"..lm.mode
 
 lm:import "3rd/ant/make.lua"
 lm:import "clibs/make.lua"

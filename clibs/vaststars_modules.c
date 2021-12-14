@@ -19,7 +19,6 @@ static void loadmodules(lua_State* L) {
     CORE(world)
 }
 
-
 void ant_openlibs(lua_State* L) {
     ant_loadmodules(L);
     luaL_getsubtable(L, LUA_REGISTRYINDEX, LUA_PRELOAD_TABLE);
