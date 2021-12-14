@@ -49,8 +49,8 @@ lcreate_world(lua_State* L) {
 	return 1;
 }
 
-extern "C" __declspec(dllexport) int
-luaopen_vaststars_core(lua_State *L) {
+extern "C" int
+luaopen_vaststars_world_core(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
 		{ "create_world", lcreate_world },

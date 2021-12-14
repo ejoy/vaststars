@@ -324,7 +324,7 @@ lat(lua_State* L) {
     return 2;
 }
 
-extern "C" __declspec(dllexport) int
+extern "C" int
 luaopen_vaststars_container_core(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {

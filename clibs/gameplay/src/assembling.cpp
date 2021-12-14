@@ -65,7 +65,7 @@ lupdate(lua_State *L) {
     return 0;
 }
 
-extern "C" __declspec(dllexport) int
+extern "C" int
 luaopen_vaststars_assembling_system(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
