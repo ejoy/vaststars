@@ -10,10 +10,8 @@
             "console": "integratedTerminal",
             "outputCapture": [],
             "luaVersion": "5.4",
-            "luaArch": "x86_64",
             "luaexe": "${workspaceRoot}/bin/msvc/debug/vaststars.exe",
-            "program": "main.lua",
-            "cwd": "${workspaceRoot}",
+            "program": "",
         }
     ]
 }
