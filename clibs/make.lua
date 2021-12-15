@@ -4,8 +4,8 @@ lm:import "gameplay/make.lua"
 
 Ant = "../3rd/ant/"
 
-lm:copy "mainlua" {
-    input = Ant .. "runtime/common/main.lua",
+lm:copy "bootstrap_lua" {
+    input = "bootstrap.lua",
     output = "../"..lm.bindir,
 }
 
@@ -19,7 +19,7 @@ lm:exe "vaststars" {
         "ant_editor",
         --"ant_runtime",
         "ant_links",
-        "mainlua",
+        "bootstrap_lua",
         modules
     },
     includes = {
