@@ -1,5 +1,5 @@
-local component = require "base.register.component"
-local type = require "base.register.type"
+local component = require "register.component"
+local type = require "register.type"
 
 -- store energy
 component "capacitance" {

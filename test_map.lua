@@ -1,5 +1,4 @@
-local gameplay = import_package "vaststars.gameplay"
-local game = gameplay.game
+local game = ...
 
 --[[
   o  o  o

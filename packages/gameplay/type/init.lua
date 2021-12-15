@@ -4,7 +4,7 @@ require "type.inserter"
 require "type.assembling"
 require "type.powergrid"
 
-local type = require "base.register.type"
+local type = require "register.type"
 type "item"
     .stack "number"
 

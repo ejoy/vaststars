@@ -1,34 +1,26 @@
 package.path = "engine/?.lua"
 require "bootstrap"
 
-local gameplay = import_package "vaststars.gameplay"
-local game = gameplay.game
-local system = gameplay.system
-local csystem = gameplay.csystem
-
 import_package "vaststars.prototype"
 
-csystem "vaststars.powergrid.system"
-csystem "vaststars.burner.system"
-csystem "vaststars.assembling.system"
-csystem "vaststars.inserter.system"
-
+local gameplay = import_package "vaststars.gameplay"
+local system = gameplay.system
 local test = system "test"
-function test:update(world)
+function test.update(world)
     for v in world:select "generator capacitance:update entity:in" do
         v.capacitance = 0
     end
 end
 
-game.init()
-dofile "test_map.lua"
+local game = gameplay.createWorld()
+assert(loadfile "test_map.lua")(game)
 game.rebuild()
 
 local function dump()
-    local w = game.w
+    local world = game.world
     local container = require "vaststars.container.core"
-    for v in w:select "chest:in debug:in" do
-        local c, n = container.at(game.world, v.chest, 1)
+    for v in world:select "chest:in debug:in" do
+        local c, n = container.at(game.cworld, v.chest, 1)
         print(v.debug.description, n)
     end
     print "===================="

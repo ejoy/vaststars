@@ -1,7 +1,7 @@
-local prototype = require "base.prototype"
-local type = require "base.register.type"
-local component = require "base.register.component"
-local game = require "base.game"
+local prototype = require "prototype"
+local type = require "register.type"
+local component = require "register.component"
+local system = require "register.system"
 
 component "inserter" {
     "input_container:word",
@@ -26,7 +26,8 @@ function c:ctor(_, pt)
     }
 end
 
-game.on("rebuild", function (world)
+local s = system "inserter"
+function s.init(world)
     local ChestMap = {}
     local function packCoord(x, y)
         return x | (y<<8)
@@ -78,4 +79,4 @@ game.on("rebuild", function (world)
             v.inserter.output_container = 0xFFFF
         end
     end
-end)
+end

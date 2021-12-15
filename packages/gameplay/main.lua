@@ -1,10 +1,11 @@
-local game = require "base.game"
+local createWorld = require "world"
 
-require "type.init"
+require "init"
 
 return {
-    game = game,
-    system = require "base.register.system",
-    csystem = require "base.register.csystem",
-    prototype = require "base.register.prototype",
+    createWorld = createWorld,
+    system = require "register.system",
+    csystem = require "register.csystem",
+    prototype = require "register.prototype",
+    pipeline = require "register.pipeline",
 }

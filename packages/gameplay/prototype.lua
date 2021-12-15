@@ -1,4 +1,4 @@
-local status = require "base.status"
+local status = require "status"
 
 local m = {}
 

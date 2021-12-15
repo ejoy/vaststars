@@ -1,5 +1,5 @@
-local type = require "base.register.type"
-local component = require "base.register.component"
+local type = require "register.type"
+local component = require "register.component"
 
 local DIRECTION <const> = {
     N = 0, North = 0,
