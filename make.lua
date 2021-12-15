@@ -19,7 +19,13 @@ if lm.os == "windows" then
     }
 end
 
+lm:copy "copy_luaecs" {
+    input = "3rd/ant/3rd/luaecs/ecs.lua",
+    output = "packages/ecs/ecs.lua",
+}
+
 lm:default {
     lm.os == "windows" and "fmod_dll",
+    "copy_luaecs",
     "vaststars"
 }
