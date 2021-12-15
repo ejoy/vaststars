@@ -3,7 +3,7 @@ require "base.register.types"
 local status = require "base.status"
 local prototype = require "base.prototype"
 local timer = require "base.timer"
-local ecs = require "ecs"
+local ecs = import_package "vaststars.ecs"
 local vaststars = require "vaststars.world.core"
 local w = ecs.world()
 local m = {}
