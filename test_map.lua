@@ -1,4 +1,5 @@
-local game = require "base.game"
+local gameplay = import_package "vaststars.gameplay"
+local game = gameplay.game
 
 --[[
   o  o  o

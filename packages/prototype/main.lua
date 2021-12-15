@@ -1,4 +1,5 @@
-local prototype = require "base.register.prototype"
+local gameplay = import_package "vaststars.gameplay"
+local prototype = gameplay.prototype
 
 prototype "chest" {
     type = {"entity", "chest"},
