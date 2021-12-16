@@ -139,7 +139,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: "T路直走1"
+  name: "左至右"
   reference: true
   scene:
     srt:
@@ -159,7 +159,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: "T路直走2"
+  name: "右至左"
   reference: true
   scene:
     srt:
@@ -199,11 +199,11 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: "右转下"
+  name: "左转下"
   reference: true
   scene:
     srt:
-      r: {0, 0, 0, 1}
+      r: {0, 0.7071067690849304, -0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {0, 0.009999999776482582, 0}
   slot: true
@@ -239,11 +239,11 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: "左转下"
+  name: "右转下"
   reference: true
   scene:
     srt:
-      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      r: {0, -8.742277657347586e-08, 0, -1}
       s: {1, 1, 1}
       t: {0, 0.009999999776482582, 0}
   slot: true

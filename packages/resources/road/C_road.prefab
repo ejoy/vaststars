@@ -126,7 +126,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: "拐弯箭头1"
+  name: "下转右"
   reference: true
   scene:
     srt:
@@ -146,7 +146,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
-  name: "拐弯箭头2"
+  name: "右转下"
   reference: true
   scene:
     srt:
