@@ -19,7 +19,14 @@ for j = #arg - i + 1, #arg do
 end
 
 local fs = require "bee.filesystem"
-fs.current_path(fs.path "3rd/ant")
+fs.current_path(fs.exe_path()
+    :parent_path()
+    :parent_path()
+    :parent_path()
+    :parent_path()
+    / "3rd"
+    / "ant"
+)
 
 if arg[0] == nil then
     arg[0] = "main.lua"

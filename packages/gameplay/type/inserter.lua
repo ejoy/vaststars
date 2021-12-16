@@ -44,7 +44,6 @@ function s.init(world)
                 ChestMap[packCoord(x+i, y+j)] = id
             end
         end
-        
     end
     for v in world:select "chest:in entity:in" do
         setContainer(v.entity, v.chest)

@@ -14,7 +14,6 @@ extern "C" {
 static void
 assembling_update(world& w, assembling& a, entity& e, capacitance& c) {
     prototype_context p = w.prototype(e.prototype);
-    prototype_context recipe = w.prototype(a.recipe);
 
     // step.1
     float power = pt_power(&p);
@@ -27,6 +26,7 @@ assembling_update(world& w, assembling& a, entity& e, capacitance& c) {
 
     // step.2
     if (a.process == STATUS_DONE || a.process == STATUS_IDLE) {
+        prototype_context recipe = w.prototype(a.recipe);
         assembling_container& container = w.query_container<assembling_container>(a.container);
         if (a.process == STATUS_DONE) {
             container::item* items = (container::item*)pt_results(&recipe);

@@ -8,7 +8,7 @@ local system = gameplay.system
 local test = system "test"
 function test.update(world)
     for v in world:select "generator capacitance:update entity:in" do
-        v.capacitance = 0
+        --v.capacitance = 0
     end
 end
 

@@ -163,7 +163,9 @@ game.create_entity "assembling" {
     recipe = "electronic circuit"
 }
 
-game.create_entity "test generator" {
+game.create_entity "nuclear reactor" {
     x = 10,
     y = 10,
+    recipe = "uranium combustion",
+    items = {{"uranium fuel cell", 1}}
 }

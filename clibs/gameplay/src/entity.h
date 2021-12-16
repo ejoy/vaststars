@@ -10,7 +10,7 @@ enum COMPONENT {
 	TAG_ACCUMULATOR,
 	TAG_ROAD,
 	COMPONENT_ENTITY,
-	COMPONENT_BUNKER,
+	COMPONENT_BURNER,
 	COMPONENT_ASSEMBLING,
 	COMPONENT_INSERTER,
 	COMPONENT_STATION,
@@ -26,9 +26,10 @@ struct capacitance {
 	float shortage;
 };
 
-struct bunker {
-	int type;
-	float number;
+struct burner {
+	uint16_t recipe;
+	uint16_t container;
+	uint16_t process;
 };
 
 struct assembling {

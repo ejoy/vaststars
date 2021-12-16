@@ -56,7 +56,7 @@ return function ()
         "generator",
         "accumulator",
         "entity",
-        "bunker",
+        "burner",
         "assembling",
         "inserter",
     }
@@ -75,6 +75,9 @@ return function ()
                 local ctor = status.ctor[types[i]]
                 if ctor then
                     for k, v in pairs(ctor(game, init, typeobject)) do
+                        if obj[k] ~= nil and obj[k] ~= v then
+                            error("Duplicate component:" .. k)
+                        end
                         obj[k] = v
                     end
                 end

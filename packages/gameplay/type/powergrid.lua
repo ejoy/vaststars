@@ -1,5 +1,7 @@
 local component = require "register.component"
 local type = require "register.type"
+local container = require "vaststars.container.core"
+local prototype = require "prototype"
 
 -- store energy
 component "capacitance" {
@@ -7,10 +9,10 @@ component "capacitance" {
 	type = "float",
 }
 
--- Anything with a bunker is a burner
-component "bunker" {
-	"type:int",
-	"number:float",
+component "burner" {
+	"recipe:word",
+	"container:word",
+	"process:word",
 }
 
 -- tags
@@ -23,73 +25,68 @@ component "generator" {
 component "accumulator" {
 }
 
--- convert fuel/heat to charge capacitance
 local burner = type "burner"
-	.burner_type "burner_type"
-
--- store solid fuel
-type "bunker"
-	.capacity "count"
-	.fuel_filter "filter"
+	.power "power"
+	.capacitance "energy"
+	--.fuel_filter "filter"
 
 -- output inner capacitance to powergrid
 local generator = type "generator"
 	.power "power"
-	.efficiency "percentage"
 	.priority "priority"
+	.capacitance "energy"
 
 -- consume inner capacitance
 local consumer = type "consumer"
 	.power "power"
 	.drain "drain_power"
 	.priority "priority"
+	.capacitance "energy"
 
 local accumulator = type "accumulator"
 	.power "power"
 	.charge_power "power"
-	.battery "energy"
+	.capacitance "energy"
 
-function generator:ctor(init, prototype)
+function generator:ctor(init, pt)
 	return {
-		capacitance = prototype.power / prototype.efficiency,
+		capacitance = pt.capacitance,
 		generator = true,
 	}
 end
 
--- consumer has 2x capacitance
-function consumer:ctor(init, prototype)
+function consumer:ctor(init, pt)
 	return {
-		capacitance = prototype.power * 2,
+		capacitance = pt.capacitance,
 		consumer = true,
 	}
 end
 
-function burner:ctor(init)
-	if init.fuel then
-		local f, n = init.fuel:match "^([%w_]+)%*(%d+)$"
-		local fobj = query(f)
-		if fobj == nil then
-			error ("No fuel : " .. init.fuel)
-		end
-		return {
-			bunker = {
-				type = fobj.id,
-				number = n + 0,
-			}
-		}
-	else
-		return {
-			bunker = {
-				type = 0,
-				number = 0,
-			}
-		}
-	end
+function accumulator:ctor(init, pt)
+	return {
+		capacitance = pt.capacitance,
+		accumulator = true,
+	}
 end
 
-function accumulator:ctor(init, prototype)
+local STATUS_IDLE <const> = 0
+local STATUS_DONE <const> = 1
+
+function burner:ctor(init, pt)
+    local recipe = assert(prototype.query("recipe", init.recipe))
+	local id = container.create(self.cworld, "assembling", recipe.ingredients, recipe.results)
+	if init.items then
+        for i, item in pairs(init.items) do
+            local what = prototype.query("item", item[1])
+            container.place(self.cworld, id, what.id, item[2])
+        end
+    end
 	return {
-		capacitance = prototype.battery,
-		accumulator = true,
+		capacitance = pt.power * 2,
+		burner = {
+            recipe = recipe.id,
+            container = id,
+            process = STATUS_IDLE,
+		}
 	}
 end

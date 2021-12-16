@@ -9,7 +9,7 @@ PROTOTYPE(drain, float)
 PROTOTYPE(priority, int)	// power priority
 PROTOTYPE(efficiency, float)	// power convert efficiency
 PROTOTYPE(charge_power, float)	// battrty charge power
-PROTOTYPE(battery, float)	// battery capacity
+PROTOTYPE(capacitance, float)
 PROTOTYPE(fuel_energy, float)
 PROTOTYPE(stack, int)
 PROTOTYPE(time, int)

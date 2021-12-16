@@ -40,13 +40,6 @@ prototype "electronic circuit" {
     stack = 100,
 }
 
-prototype "coal" {
-	type = { "item", "fuel" },
-	stack = 50,
-	fuel_energy = "4MJ",
-	fuel_category = "chemical",
-}
-
 prototype "copper cable" {
     type = { "recipe" },
     ingredients = {
@@ -70,10 +63,30 @@ prototype "electronic circuit" {
     time = "0.5s"
 }
 
-prototype "test generator" {
-    type = {"entity", "generator"},
+prototype "uranium fuel cell" {
+	type = { "item" },
+	stack = 50,
+}
+
+prototype "used up uranium fuel cell" {
+	type = { "item" },
+	stack = 50,
+}
+
+prototype "uranium combustion" {
+    type = { "recipe" },
+    ingredients = {
+        {"uranium fuel cell", 1},
+    },
+    results = {
+        {"used up uranium fuel cell", 1}
+    },
+    time = "200s"
+}
+
+prototype "nuclear reactor" {
+    type = {"entity", "generator", "burner"},
     area = "3x3",
-    power = "100MW",
-    efficiency = "100%",
+    power = "40MW",
     priority = "primary",
 }

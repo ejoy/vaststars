@@ -43,7 +43,10 @@ register_unit("drain_power", "float", function(s, object)
 	return number_conversion(n,u) / UPS
 end)
 
-register_unit("energy", "float", function(s)
+register_unit("energy", "float", function(s, object)
+	if s == nil then
+		return object.power * 2
+	end
 	local n, u = s:match "^(%d+%.?%d*)([kMG]?)J$"
 	assert(n, "Need energy : nJ")
 	return number_conversion(n,u)
