@@ -21,6 +21,7 @@ system "construct_system"
 interface "iconstruct"
     .implement "construct/construct_system.lua"
     .method "init"
+    .method "show_route"
 
 pipeline "pickup_mapping"
     .stage "after_pickup_mapping"

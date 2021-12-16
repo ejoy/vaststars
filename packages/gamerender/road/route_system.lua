@@ -3,6 +3,8 @@ local world = ecs.world
 local w = world.w
 
 local iui = ecs.import.interface "vaststars.ui|iui"
+local iconstruct = ecs.import.interface "vaststars.gamerender|iconstruct"
+local gameplay = import_package "vaststars.gameplay"
 
 local ui_route_mb = world:sub {"ui", "route"}
 local ui_route_new_close_mb = world:sub {"ui", "route_new", "close"}
@@ -45,7 +47,8 @@ end
 
 route_ui_cmds["show_route"] = function(route_id)
     local route = routes[route_id]
-    print(route_id)
+    local path = gameplay.path(route["begin"], route["end"])
+    iconstruct.show_route(route["begin"], path)
 end
 
 route_ui_cmds["new_route"] = function(building_ids)

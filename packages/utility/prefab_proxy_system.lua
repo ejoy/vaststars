@@ -14,13 +14,13 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 
 local ud_refs = {}
 
-local function __remove_proxy(ud)
+local function destroy_proxy(ud)
     local proxy = ud.proxy
     if not proxy.prefab then
         w:sync("prefab_proxy:in", proxy)
     end
 
-    proxy.prefab_proxy.prefab:send("__remove")
+    proxy.prefab_proxy.prefab:send("destroy")
 end
 
 function prefab_proxy_sys:component_init()
@@ -28,7 +28,7 @@ function prefab_proxy_sys:component_init()
         for slot_name, e in pairs(ud.slot_attachs) do
             world:call(e, "set_parent", nil)
         end
-        __remove_proxy(ud)
+        destroy_proxy(ud)
     end
 end
 
@@ -75,10 +75,10 @@ local __on_prefab_message ; do
             return
         end
 
-        __remove_proxy(ud)
+        destroy_proxy(ud)
     end
 
-    funcs["__remove"] = function(ud, prefab)
+    funcs["destroy"] = function(ud, prefab)
         for _, e in ipairs(prefab.tag["*"]) do
             w:sync("scene:in", e)
             ipickup_mapping.unmapping(e.scene.id)
@@ -89,16 +89,17 @@ local __on_prefab_message ; do
         w:remove(ud.proxy)
     end
 
-    funcs["slot_attach"] = function(ud, prefab, slot_name, entity)
+    funcs["slot_attach"] = function(ud, prefab, slot_name, prefab_file_name)
         local slot = ud.slots[slot_name]
         if not slot then
             -- todo
+            error(("can not found slot name (%s)"):format(slot_name))
             return
-            -- error(("can not found slot name (%s)"):format(slot_name))
         end
 
-        world:call(entity, "set_parent", slot)
-        ud.slot_attachs[slot_name] = entity
+        local prefab = ecs.create_instance(prefab_file_name)
+        world:call(prefab.root, "set_parent", slot)
+        ud.slot_attachs[slot_name] = prefab.root
     end
 
     funcs["slot_detach"] = function(ud, _, slot_name)
@@ -140,7 +141,7 @@ function iprefab_proxy.create(prefab, v, events)
     v.data = v.data or {}
 
     v.policy[#v.policy+1] = "vaststars.utility|prefab_proxy"
-    v.data.prefab_proxy = {prefab = obj, root = prefab.root}
+    v.data.prefab_proxy = {prefab = obj, root = prefab.root, ud_ref_id = id}
     v.policy[#v.policy+1] = "ant.scene|scene_object"
     v.data.scene = v.data.scene or {}
     v.data.reference = true
@@ -190,4 +191,22 @@ function iprefab_proxy.get_config_srt(prefab_file_name)
     end
 
     return srt
+end
+
+function iprefab_proxy.set_slot(proxy, slot_name, entity)
+    w:sync("prefab_proxy:in", proxy)
+    local ud = ud_refs[proxy.prefab_proxy.ud_ref_id]
+    if not ud then
+        error(("can not found proxy id (%d)"):format(proxy.prefab_proxy.ud_ref_id))
+    end
+
+    local slot = ud.slots[slot_name]
+    if not slot then
+        -- todo
+        error(("can not found slot name (%s)"):format(slot_name))
+        return
+    end
+
+    world:call(entity, "set_parent", slot)
+    ud.slot_attachs[slot_name] = entity
 end

@@ -8,10 +8,12 @@ enum COMPONENT {
 	TAG_CONSUMER,
 	TAG_GENERATOR,
 	TAG_ACCUMULATOR,
+	TAG_ROAD,
 	COMPONENT_ENTITY,
 	COMPONENT_BUNKER,
 	COMPONENT_ASSEMBLING,
 	COMPONENT_INSERTER,
+	COMPONENT_STATION,
 };
 
 struct entity {
@@ -42,6 +44,11 @@ struct inserter {
 	uint16_t hold_amount;
 	uint16_t process : 15;
 	uint16_t status  : 1;
+};
+
+struct station {
+	uint16_t id;
+	uint16_t coord;
 };
 
 #endif

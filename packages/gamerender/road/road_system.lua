@@ -155,7 +155,7 @@ local function __flush_road(shape_terrain_entity, x, y)
     iterrain_road.set_road(shape_terrain_entity, road_type, x, y)
 end
 
-local function __set_road(shape_terrain_entity, x, y, ...)
+local function __set_road(x, y, ...)
     road_tiles[x] = road_tiles[x] or {}
     road_tiles[x][y] = road_tiles[x][y] or {0, 0, 0, 0}
 
@@ -174,24 +174,24 @@ local function __set_road(shape_terrain_entity, x, y, ...)
 end
 
 local funcs = {}
-funcs[LEFT] = function(shape_terrain_entity, sx, sy, dx, dy)
-    __set_road(shape_terrain_entity, sx, sy, LEFT)
-    __set_road(shape_terrain_entity, dx, dy, RIGHT)
+funcs[LEFT] = function(sx, sy, dx, dy)
+    __set_road(sx, sy, LEFT)
+    __set_road(dx, dy, RIGHT)
 end
 
-funcs[RIGHT] = function(shape_terrain_entity, sx, sy, dx, dy)
-    __set_road(shape_terrain_entity, sx, sy, RIGHT)
-    __set_road(shape_terrain_entity, dx, dy, LEFT)
+funcs[RIGHT] = function(sx, sy, dx, dy)
+    __set_road(sx, sy, RIGHT)
+    __set_road(dx, dy, LEFT)
 end
 
-funcs[TOP] = function(shape_terrain_entity, sx, sy, dx, dy)
-    __set_road(shape_terrain_entity, sx, sy, BOTTOM)
-    __set_road(shape_terrain_entity, dx, dy, TOP)
+funcs[TOP] = function(sx, sy, dx, dy)
+    __set_road(sx, sy, BOTTOM)
+    __set_road(dx, dy, TOP)
 end
 
-funcs[BOTTOM] = function(shape_terrain_entity, sx, sy, dx, dy)
-    __set_road(shape_terrain_entity, sx, sy, TOP)
-    __set_road(shape_terrain_entity, dx, dy, BOTTOM)
+funcs[BOTTOM] = function(sx, sy, dx, dy)
+    __set_road(sx, sy, TOP)
+    __set_road(dx, dy, BOTTOM)
 end
 
 function iroad.construct(tile_coord_s, tile_coord_d, road_type)
@@ -245,7 +245,7 @@ function iroad.construct(tile_coord_s, tile_coord_d, road_type)
         assert(shape_terrain_entity)
         return
     end
-    func(shape_terrain_entity, sx, sy, dx, dy)
+    func(sx, sy, dx, dy)
     __flush_road(shape_terrain_entity, sx, sy)
     __flush_road(shape_terrain_entity, dx, dy)
 end
@@ -266,11 +266,38 @@ function iroad.set_building_entry(tile_coord)
     end
 
     -- todo hard coded -- TOP
-    __set_road(shape_terrain_entity, tile_coord[1], tile_coord[2] - 1, TOP)
+    __set_road(tile_coord[1], tile_coord[2] - 1, TOP)
     __flush_road(shape_terrain_entity, tile_coord[1], tile_coord[2] - 1)
 end
 
-function iroad.show_arrow(tile_coord)
+local accel_dir = {
+    ['C0'] = {
+        [0] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_right.prefab", slot = "拐弯箭头1"},
+        [3] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_left.prefab",  slot = "拐弯箭头1"},
+    },
+    ['C1'] = {
+        [1] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_left.prefab",  slot = "拐弯箭头1"},
+        [3] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_right.prefab", slot = "拐弯箭头1"},
+    },
+    ['C2'] = {
+        [1] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_right.prefab", slot = "拐弯箭头1"},
+        [2] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_left.prefab",  slot = "拐弯箭头1"},
+    },
+    ['C3'] = {
+        [0] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_left.prefab", slot = "拐弯箭头1"},
+        [2] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_right.prefab",  slot = "拐弯箭头1"},
+    },
+    ['I0'] = {
+        [0] = {prefab = "/pkg/vaststars.resources/road/arrow_straight.prefab", slot = "直路箭头1"},
+        [1] = {prefab = "/pkg/vaststars.resources/road/arrow_straight.prefab", slot = "直路箭头2"},
+    },
+    ['I1'] = {
+        [2] = {prefab = "/pkg/vaststars.resources/road/arrow_straight.prefab", slot = "拐弯箭头2"},
+        [3] = {prefab = "/pkg/vaststars.resources/road/arrow_straight.prefab", slot = "拐弯箭头1"},
+    },
+}
+
+local function __show_dir_arrow(tile_coord, dir)
     local x = tile_coord[1]
     local y = tile_coord[2]
 
@@ -288,7 +315,48 @@ function iroad.show_arrow(tile_coord)
         return
     end
 
-    -- todo
-    -- local prefab = ecs.create_instance("/pkg/vaststars.resources/road/arrow_straight.prefab")
-    -- iprefab_proxy.message(proxy, "slot_attach", "直路箭头1", prefab.root)
+    local road_type = iroad.get_road_type(tile_coord)
+    assert(road_type)
+
+    local c = accel_dir[road_type][dir]
+
+    local prefab = ecs.create_instance(c.prefab) -- 此处需要缓存 prefab 后续删除
+    iprefab_proxy.set_slot(proxy, c.slot, prefab.root)
+end
+
+-- todo
+-- dir : 0: x + 1; 1: x - 1; 2: y + 1; 3: y -1;
+local __trans_coord ; do
+    local t  = {}
+    t[0] = function(coord)
+        coord[1] = coord[1] + 1
+        return coord
+    end
+    t[1] = function(coord)
+        coord[1] = coord[1] - 1
+        return coord
+    end
+    t[2] = function(coord)
+        coord[2] = coord[2] + 1
+        return coord
+    end
+    t[3] = function(coord)
+        coord[2] = coord[2] - 1
+        return coord
+    end
+    function __trans_coord(coord, dir)
+        local f = assert(t[dir])
+        return f(coord)
+    end
+end
+
+-- starting & ending : coord
+-- path : sequence
+function iroad.show_route(starting, path)
+    local coord = {starting[1], starting[2]}
+    for _, dir in ipairs(path) do
+        __show_dir_arrow(coord, dir)
+        coord = __trans_coord(coord, dir)
+    end
+    __show_dir_arrow(coord, 2) -- todo 需要根据建筑物的出口方向来设置参数
 end

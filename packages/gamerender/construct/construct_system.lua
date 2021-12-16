@@ -15,6 +15,8 @@ local iroad_arrow = ecs.import.interface "vaststars.gamerender|iroad_arrow"
 local iroad = ecs.import.interface "vaststars.gamerender|iroad"
 local iprefab_proxy = ecs.import.interface "vaststars.utility|iprefab_proxy"
 local iroute = ecs.import.interface "vaststars.gamerender|iroute"
+local get_add_gameplay_entity_func = ecs.require "construct.gameplay_entity.get_func"
+local gameplay = import_package "vaststars.gameplay"
 
 local math3d = require "math3d"
 local construct_cfg = import_package "vaststars.config".construct
@@ -32,6 +34,7 @@ local shape_terrain_mb = world:sub {"shape_terrain", "on_ready"}
 local construct_sys = ecs.system "construct_system"
 
 local construct_prefab -- assuming there is only one "construct entity" in the same time
+local all_building = {} -- todo 移至 entity? = {[building_id] = tile_coord, ...} -- on the road
 
 local __gen_building_id ; do
     local id = 0
@@ -95,10 +98,15 @@ local on_prefab_message ; do
 
         if construct_entity.test_func(building_type, position) then         
             local tile_coord = iterrain.get_coord_by_position(position)
+            local add_gameplay_entity = get_add_gameplay_entity_func(building_type)
+            local building_id = 0
 
             if building_type == "road" then -- todo bad taste
                 iroad.construct(nil, tile_coord, "O0")
+                gameplay.new(add_gameplay_entity(building_id, tile_coord))
             else
+                building_id = __gen_building_id()
+
                 local prefab_file_name = construct_entity.prefab_file_name
                 iprefab_proxy.create(ecs.create_instance("/pkg/vaststars.resources/" .. prefab_file_name), {
                     policy = {
@@ -106,7 +114,7 @@ local on_prefab_message ; do
                     },
                     data = {
                         building = {
-                            id = __gen_building_id(),
+                            id = building_id,
                             building_type = building_type,
                         },
                     },
@@ -117,7 +125,7 @@ local on_prefab_message ; do
                     end
                 })
 
-                -- todo hard coded
+                -- todo hard coded 此处需要根据建筑物的转向计算坐标
                 local cfg = construct_cfg[building_type]
                 if cfg then
                     local coord = {
@@ -125,8 +133,17 @@ local on_prefab_message ; do
                         (tile_coord[2] - cfg.size[2] // 2),
                     }
                     iroad.set_building_entry(coord)
+
+                    if add_gameplay_entity then
+                        local gpcoord = {
+                            tile_coord[1],
+                            (tile_coord[2] - cfg.size[2] // 2 - 1),
+                        }
+                        gameplay.new(add_gameplay_entity(building_id, gpcoord))
+                        all_building[building_id] = gpcoord
+                    end
                 end
-            end
+            end         
 
             iterrain.set_tile_building_type(tile_coord, building_type)
             iui.post("construct", "show_construct_confirm", false)
@@ -243,7 +260,7 @@ function construct_sys:camera_usage()
                 position = iterrain.get_tile_centre_position(math3d.tovalue(position))
                 iom.set_position(iprefab_proxy.get_root(entity), position)
                 iui.post("construct", "show_construct_confirm", true, math3d.tovalue(icamera.world_to_screen(position)))
-                iprefab_proxy.message(construct_prefab, "basecolor", position)
+                iprefab_proxy.message(entity, "basecolor", position)
             end
         end
     end
@@ -277,7 +294,7 @@ end
 function construct_sys:after_pickup_mapping()
     local mapping_entity, is_show_road_arrow, building
     for _, _, meid in pickup_mapping_mb:unpack() do
-    mapping_entity = ipickup_mapping.get_entity(meid)
+        mapping_entity = ipickup_mapping.get_entity(meid)
         if mapping_entity then
             w:sync("building?in", mapping_entity)
             building = mapping_entity.building
@@ -286,10 +303,6 @@ function construct_sys:after_pickup_mapping()
                 if building.building_type == "road" then
                     show_road_arrow( iterrain.get_tile_centre_position(iinput.get_mouse_world_position()) )
                     is_show_road_arrow = true
-
-                    local tile_coord = iterrain.get_coord_by_position(iinput.get_mouse_world_position())
-                    iroad.show_arrow(tile_coord)
-
                 elseif building.building_type == "logistics_center" then
                     iroute.show()
                 end
@@ -300,6 +313,9 @@ function construct_sys:after_pickup_mapping()
                 local arrow_tile_coord = mapping_entity.road_arrow.arrow_tile_coord
                 iterrain.set_tile_building_type(arrow_tile_coord, "road")
                 iroad.construct(mapping_entity.road_arrow.tile_coord, arrow_tile_coord)
+
+                local add_gameplay_entity = get_add_gameplay_entity_func("road")
+                gameplay.new(add_gameplay_entity(0, arrow_tile_coord))
             end
         end
     end
@@ -320,4 +336,10 @@ function iconstruct.init()
             ipickup_mapping.mapping(entity.scene.id, entity)
         end,
     })
+end
+
+-- todo 删除此接口
+function iconstruct.show_route(building_id, path)
+    local coord = assert(all_building[building_id])
+    iroad.show_route(coord, path)
 end

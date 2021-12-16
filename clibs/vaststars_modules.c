@@ -17,6 +17,7 @@ static void loadmodules(lua_State* L) {
     CORE(prototype)
     CORE(container)
     CORE(world)
+	CORE(road)
 }
 
 void ant_openlibs(lua_State* L) {

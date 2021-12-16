@@ -1,6 +1,6 @@
 return {
 	name = "vaststars.config",
-    entry = "main",
-    dependencies = {
+	entry = "main",
+	dependencies = {
     }
 }

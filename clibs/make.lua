@@ -6,7 +6,7 @@ Ant = "../3rd/ant/"
 
 lm:copy "bootstrap_lua" {
     input = "bootstrap.lua",
-    output = "../"..lm.bindir,
+    output = "../"..lm.bindir.."/main.lua",
 }
 
 local modules = {

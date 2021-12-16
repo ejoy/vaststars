@@ -12,7 +12,7 @@ interface "iroad"
     .method "construct"
     .method "get_road_type"
     .method "set_building_entry"
-    .method "show_arrow"
+    .method "show_route"
 
 component "road_arrow"
     .type "lua"
