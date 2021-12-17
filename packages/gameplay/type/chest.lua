@@ -1,11 +1,6 @@
 local prototype = require "prototype"
 local container = require "vaststars.container.core"
-local component = require "register.component"
 local type = require "register.type"
-
-component "chest" {
-    type = "word",
-}
 
 local c = type "chest"
     .slots "number"
@@ -19,6 +14,8 @@ function c:ctor(init, pt)
         end
     end
     return {
-        chest = id
+        chest = {
+            container = id
+        }
     }
 end

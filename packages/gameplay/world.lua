@@ -3,8 +3,10 @@ require "register.types"
 local status = require "status"
 local prototype = require "prototype"
 local timer = require "timer"
-local ecs = import_package "vaststars.ecs"
 local vaststars = require "vaststars.world.core"
+local ecs = import_package "vaststars.ecs"
+local serialize = import_package "ant.serialize"
+local datalist = require "datalist"
 
 local function pipelineFunc(g, name)
     local p = status.pipelines[name]
@@ -40,11 +42,23 @@ local function pipelineFunc(g, name)
     end
 end
 
+local function deepcopy(t)
+    local r = {}
+    for k, v in pairs(t) do
+        if type(v) == "table" then
+            r[k] = deepcopy(v)
+        else
+            r[k] = v
+        end
+    end
+    return r
+end
+
 return function ()
     local game = {}
     local world = ecs.world()
     world:register {
-        name = "debug",
+        name = "description",
         type = "lua"
     }
     for _, c in pairs(status.components) do
@@ -75,14 +89,13 @@ return function ()
                 local ctor = status.ctor[types[i]]
                 if ctor then
                     for k, v in pairs(ctor(game, init, typeobject)) do
-                        if obj[k] ~= nil and obj[k] ~= v then
-                            error("Duplicate component:" .. k)
+                        if obj[k] == nil then
+                            obj[k] = v
                         end
-                        obj[k] = v
                     end
                 end
             end
-            obj.debug = init
+            obj.description = init.description
             return world:new(obj)
         end
     end
@@ -97,6 +110,26 @@ return function ()
     local rebuildFunc = pipelineFunc(game, "rebuild")
     function game.rebuild()
         rebuildFunc()
+        world:update()
+    end
+
+    function game.backup()
+        local sav = {}
+        for v in world:select "entity" do
+            local e = deepcopy(world:readall(v))
+            e[1] = nil
+            e[2] = nil
+            sav[#sav+1] = e
+        end
+        return serialize.stringify(sav)
+    end
+
+    function game.restore(sav)
+        sav = datalist.parse(sav)
+        world:clearall()
+        for _, e in ipairs(sav) do
+            world:new(e)
+        end
         world:update()
     end
 

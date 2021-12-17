@@ -1,13 +1,6 @@
 local type = require "register.type"
 local container = require "vaststars.container.core"
 local prototype = require "prototype"
-local component = require "register.component"
-
-component "assembling" {
-    "recipe:word",
-    "container:word",
-    "process:word",
-}
 
 local c = type "assembling"
     .speed "percentage"

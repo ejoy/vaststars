@@ -4,24 +4,22 @@ require "bootstrap"
 import_package "vaststars.prototype"
 
 local gameplay = import_package "vaststars.gameplay"
-local system = gameplay.system
-local test = system "test"
-function test.update(world)
-    for v in world:select "generator capacitance:update entity:in" do
-        --v.capacitance = 0
-    end
-end
 
 local game = gameplay.createWorld()
 assert(loadfile "test_map.lua")(game)
+--local sav = game.backup()
+--local f = io.open("../../test.map", "w")
+--f:write(sav)
+--f:close()
+--game.restore(sav)
 game.rebuild()
 
 local function dump()
     local world = game.world
     local container = require "vaststars.container.core"
-    for v in world:select "chest:in debug:in" do
-        local c, n = container.at(game.cworld, v.chest, 1)
-        print(v.debug.description, n)
+    for v in world:select "chest:in description:in" do
+        local c, n = container.at(game.cworld, v.chest.container, 1)
+        print(v.description, n)
     end
     print "===================="
 end

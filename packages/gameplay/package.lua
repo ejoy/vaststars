@@ -2,6 +2,7 @@ return {
     name = "vaststars.gameplay",
     entry = "main",
     dependencies = {
-        "vaststars.ecs"
+        "vaststars.ecs",
+        "ant.serialize"
     }
 }

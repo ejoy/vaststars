@@ -1,15 +1,6 @@
 local prototype = require "prototype"
 local type = require "register.type"
-local component = require "register.component"
 local system = require "register.system"
-
-component "inserter" {
-    "input_container:word",
-    "output_container:word",
-    "hold_item:word",
-    "hold_amount:word",
-    "process:word",
-}
 
 local c = type "inserter"
     .speed "time"
@@ -37,7 +28,7 @@ function s.init(world)
     end
     local function setContainer(entity, id)
         local pt = prototype.queryById(entity.prototype)
-        local x, y = unpackCoord(entity.position)
+        local x, y = entity.x, entity.y
         local w, h = unpackCoord(pt.area)
         for i = 0, w-1 do
             for j = 0, h-1 do
@@ -46,13 +37,13 @@ function s.init(world)
         end
     end
     for v in world:select "chest:in entity:in" do
-        setContainer(v.entity, v.chest)
+        setContainer(v.entity, v.chest.container)
     end
     for v in world:select "assembling:in entity:in" do
         setContainer(v.entity, v.assembling.container)
     end
     for v in world:select "inserter:update entity:in" do
-        local x, y = unpackCoord(v.entity.position)
+        local x, y = v.entity.x, v.entity.y
         local sx, sy, ex, ey
         if v.entity.direction == 0 then --N
             sx, sy = 0, 1

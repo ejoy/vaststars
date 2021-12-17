@@ -1,29 +1,6 @@
-local component = require "register.component"
 local type = require "register.type"
 local container = require "vaststars.container.core"
 local prototype = require "prototype"
-
--- store energy
-component "capacitance" {
-	name = "capacitance",
-	type = "float",
-}
-
-component "burner" {
-	"recipe:word",
-	"container:word",
-	"process:word",
-}
-
--- tags
-component "consumer" {
-}
-
-component "generator" {
-}
-
-component "accumulator" {
-}
 
 local burner = type "burner"
 	.power "power"
@@ -50,21 +27,27 @@ local accumulator = type "accumulator"
 
 function generator:ctor(init, pt)
 	return {
-		capacitance = pt.capacitance,
+		capacitance = {
+			shortage = pt.capacitance
+		},
 		generator = true,
 	}
 end
 
 function consumer:ctor(init, pt)
 	return {
-		capacitance = pt.capacitance,
+		capacitance = {
+			shortage = pt.capacitance
+		},
 		consumer = true,
 	}
 end
 
 function accumulator:ctor(init, pt)
 	return {
-		capacitance = pt.capacitance,
+		capacitance = {
+			shortage = pt.capacitance
+		},
 		accumulator = true,
 	}
 end
@@ -82,7 +65,9 @@ function burner:ctor(init, pt)
         end
     end
 	return {
-		capacitance = pt.power * 2,
+		capacitance = {
+			shortage = pt.capacitance
+		},
 		burner = {
             recipe = recipe.id,
             container = id,

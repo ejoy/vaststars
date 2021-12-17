@@ -1,4 +1,5 @@
-require "type.init"
+require "init.type"
+require "init.component"
 
 local csystem = require "register.csystem"
 
