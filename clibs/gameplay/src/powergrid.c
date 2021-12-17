@@ -217,7 +217,7 @@ powergrid_run(struct powergrid *pg) {
 			// It's a generator, and must be not a consumer
 			float eff = pg->generator_efficiency[pt_priority(&p)];
 			if (eff > 0) {
-				float consume_energy = pt_power(&p) * eff;
+				float consume_energy = (pt_capacitance(&p) - c->shortage) * eff;
 				c->shortage += consume_energy;
 			}
 		} else if (pg->accumulator_efficiency != 0 &&
