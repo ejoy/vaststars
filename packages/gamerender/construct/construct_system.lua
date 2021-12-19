@@ -102,8 +102,7 @@ local on_prefab_message ; do
             local building_id = 0
 
             if building_type == "road" then -- todo bad taste
-                iroad.construct(nil, tile_coord, "O0")
-                gameplay.new(add_gameplay_entity(building_id, tile_coord))
+                iroad.construct(nil, tile_coord, "O0") -- add gameplay entity in road_system
             else
                 building_id = __gen_building_id()
 
@@ -312,10 +311,7 @@ function construct_sys:after_pickup_mapping()
             if mapping_entity.road_arrow then
                 local arrow_tile_coord = mapping_entity.road_arrow.arrow_tile_coord
                 iterrain.set_tile_building_type(arrow_tile_coord, "road")
-                iroad.construct(mapping_entity.road_arrow.tile_coord, arrow_tile_coord)
-
-                local add_gameplay_entity = get_add_gameplay_entity_func("road")
-                gameplay.new(add_gameplay_entity(0, arrow_tile_coord))
+                iroad.construct(mapping_entity.road_arrow.tile_coord, arrow_tile_coord) -- add gameplay entity in road_system
             end
         end
     end

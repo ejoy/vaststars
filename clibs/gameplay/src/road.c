@@ -31,6 +31,7 @@ union coord {
 struct node {
 	union coord c;
 	unsigned short distance;
+	unsigned short rode_type;
 };
 
 struct road_map {
@@ -68,11 +69,12 @@ sort_conflict(struct road_map *map) {
 }
 
 static void
-map_add(struct road_map *map, union coord c) {
+map_add(struct road_map *map, union coord c, unsigned short rode_type) {
 	int h = inthash(c.id);
 	if (map->hash[h].distance == INVALID_DISTANCE) {
 		map->hash[h].distance = 0;
 		map->hash[h].c = c;
+		map->hash[h].rode_type = rode_type;
 	} else if (map->hash[h].c.id == c.id) {
 		// already added
 		return;
@@ -86,6 +88,7 @@ map_add(struct road_map *map, union coord c) {
 	}
 	map->conflict[n].c = c;
 	map->conflict[n].distance = 0;
+	map->conflict[n].rode_type = 0;
 }
 
 static struct node *
@@ -130,6 +133,42 @@ static const int neighbor[4][2] = {
 	{ 0, -1 },
 };
 
+// C:0; I:1; U:2; T:3; X:4; O:5;
+//        y+1(2)
+// x-1(1)   c    x-1(0)
+//        y-1(3)
+static const int rode_type_t_in_dir[6][4] = {
+	{1, 0, 0, 1}, // C
+	{1, 1, 0, 0}, // I
+	{0, 1, 0, 0}, // O
+	{1, 1, 0, 1}, // T
+	{1, 1, 1, 1}, // X
+	{0, 0, 0, 0}, // O
+};
+
+static const int dir_90_deg_cntclkws[4] = {
+	2, // 0 -> 2
+	3, // 1 -> 3
+	1, // 2 -> 1
+	0, // 3 -> 0
+};
+
+static const int in_2_out[4] = {
+	1, // 0 -> 1
+	0, // 1 -> 0
+	3, // 2 -> 3
+	2, // 3 -> 2
+};
+
+static unsigned short
+rotate_dir(unsigned short out_dir, unsigned short times) {
+	unsigned short r = out_dir;
+	for(int i=0;i<times;i++) {
+		r = dir_90_deg_cntclkws[r];
+	}
+	return r;
+}
+
 static void
 path_flow(struct road_map *map, union coord starting) {
 	int top;
@@ -151,8 +190,15 @@ path_flow(struct road_map *map, union coord starting) {
 				struct node * next = map_lookup(map, c);
 				if (next && (next->distance == 0 || next->distance > distance)) {
 					assert(top < MAXNODE);
-					next->distance = distance;
-					stack[top++] = next;
+
+					unsigned short road_type_t = (next->rode_type >> 8) & 0xFF;
+					unsigned short rotation_times = next->rode_type & 0xFF;
+					assert((road_type_t >= 0 && road_type_t <= 5) && (rotation_times >= 0 && rotation_times <= 3));
+					unsigned short out_dir = rotate_dir(in_2_out[i], rotation_times);
+					if(rode_type_t_in_dir[road_type_t][out_dir] == 1) {
+						next->distance = distance;
+						stack[top++] = next;
+					}
 				}
 			}
 		}
@@ -236,17 +282,14 @@ lpath(lua_State *L) {
 	if (starting == ending)
 		return luaL_error(L, "Starting station should be different to ending station");
 	int i;
-	struct entity *e;
 	struct station *station;
+	struct road *road;
 	struct road_map map;
 	map_init(&map);
-	for (i=0;entity_iter(ctx, TAG_ROAD, i);i++) {
-		e = entity_sibling(ctx, TAG_ROAD, i, COMPONENT_ENTITY);
-		if (e == NULL)
-			luaL_error(L, "No entity");
+	for (i=0;(road = entity_iter(ctx, COMPONENT_ROAD, i));i++) {
 		union coord c;
-		c.id = e->coord;
-		map_add(&map, c);
+		c.id = road->coord;
+		map_add(&map, c, road->road_type);
 	}
 	qsort(map.conflict, map.conflict_n, sizeof(struct node), compar);
 	union coord starting_point;
@@ -269,10 +312,10 @@ lpath(lua_State *L) {
 		return luaL_error(L, "Can't find station %d %d", starting, ending);
 	}
 	if (map_lookup(&map, starting_point) == NULL) {
-		return luaL_error(L, "Station %d (%d %d) is not on road", starting, starting_point.c.x, starting_point.c.y);
+		return luaL_error(L, "starting Station (%d %d) is not on road", starting_point.c.x, starting_point.c.y);
 	}
 	if (map_lookup(&map, ending_point) == NULL) {
-		return luaL_error(L, "Station %d (%d %d) is not on road", ending, ending_point.c.x, ending_point.c.y);
+		return luaL_error(L, "ending Station (%d %d) is not on road", ending_point.c.x, ending_point.c.y);
 	}
 	path_flow(&map, ending_point);
 //	print_map(&map);

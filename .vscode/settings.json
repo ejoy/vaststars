@@ -2,6 +2,13 @@
     "Lua.diagnostics.globals": [
         "window",
         "console",
-        "import_package"
-    ]
+        "import_package",
+        "pipeline",
+        "system"
+    ],
+    "files.associations": {
+        "*.ecs": "lua",
+        "queue": "c",
+        "stack": "c"
+    },
 }

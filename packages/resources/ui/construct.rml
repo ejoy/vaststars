@@ -131,6 +131,9 @@
             function start.clickContructConfirm()
                 ui_sys.post("construct", "confirm")
             end
+            function start.clickDebug()
+                ui_sys.post("debug", "debug")
+            end
             ui_sys.add_event_listener("construct", {
                 ["show_construct_confirm"] = function(show, position)
                     start.is_show_construct_confirm = show
@@ -146,6 +149,11 @@
     </head>
     <body>
         <div id="test" data-model="start">
+            <!-- debug 按钮 -->
+            <div style = "position: absolute; left: 0vmin; top: 0vmin; z-index: 999;">
+                <button class = "test-button" data-event-click="clickDebug()" style = "position: absolute; left: 0vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></button>
+            </div>
+
             <!-- 建造确认按钮 -->
             <input id = "id-button-construct-confirm" type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/button-construct-confirm.png";' data-event-click = "clickContructConfirm()" data-if = "is_show_construct_confirm">
                 <span style = "font-size: 100%; -webkit-text-stroke: 2px #cd7c3d;">Confirm</span>

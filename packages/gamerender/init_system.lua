@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local mathpkg = import_package "ant.math"
+local gameplay_update = import_package "vaststars.gameplay".update
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.ui|iui"
@@ -30,4 +31,8 @@ function m:init_world()
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
     iconstruct.init()
+end
+
+function m:data_changed()
+    gameplay_update()
 end

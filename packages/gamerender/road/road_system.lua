@@ -6,6 +6,47 @@ local iterrain_road = ecs.import.interface "ant.terrain|iterrain_road"
 local iprefab_proxy = ecs.import.interface "vaststars.utility|iprefab_proxy"
 local ipickup_mapping = ecs.import.interface "vaststars.input|ipickup_mapping"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local road_path_cfg = import_package "vaststars.config".road_path
+local packCoord = require "construct.gameplay_entity.packcoord"
+local gameplay = import_package "vaststars.gameplay"
+
+-- 0:> 1:< 2:v 3: ^
+local translate_dir ; do
+    local counterclockwise = {[2] = 1, [1] = 3, [3] = 0, [0] = 2}
+
+    -- times 表示按顺时针旋转的次数
+    local function f(dir, times)
+        for i = 1, times do
+            dir = counterclockwise[dir]
+        end
+        return dir
+    end
+
+    function translate_dir(in_dir, out_dir, times)
+        return f(in_dir, times), f(out_dir, times)
+    end
+end
+
+local function get_cfg(rode_type, in_dir, out_dir)
+    local rt = rode_type:sub(1, 1)
+    local times = tonumber(rode_type:sub(2, 2))
+
+    local new_in_dir, new_out_dir = translate_dir(in_dir, out_dir, times)
+    if not road_path_cfg[rt] then
+        return
+    end
+    if not road_path_cfg[rt][new_in_dir] then
+        return
+    end
+    return road_path_cfg[rt][new_in_dir][new_out_dir]
+end
+
+local function set_gameplay_road(x, y, road_type)
+    print("set_gameplay_road", x, y, "rode_type", road_type) -- todo
+
+    local position = packCoord(x, y)
+    gameplay.set_road_type(position, road_type)
+end
 
 local terrain_road_create_mb = world:sub {"terrain_road", "road", "create"}
 local terrain_road_remove_mb = world:sub {"terrain_road", "road", "remove"}
@@ -153,6 +194,7 @@ end
 local function __flush_road(shape_terrain_entity, x, y)
     local road_type = road_types[x][y]
     iterrain_road.set_road(shape_terrain_entity, road_type, x, y)
+    set_gameplay_road(x, y, road_type)
 end
 
 local function __set_road(x, y, ...)
@@ -217,7 +259,10 @@ function iroad.construct(tile_coord_s, tile_coord_d, road_type)
 
     -- 第一次创建路块
     if not sx and not sy then
+        road_types[dx] = road_types[dx] or {}
+        road_types[dx][dy] = road_type
         iterrain_road.set_road(shape_terrain_entity, road_type, dx, dy)
+        set_gameplay_road(dx, dy, road_type)
         return
     end
 
@@ -248,6 +293,8 @@ function iroad.construct(tile_coord_s, tile_coord_d, road_type)
     func(sx, sy, dx, dy)
     __flush_road(shape_terrain_entity, sx, sy)
     __flush_road(shape_terrain_entity, dx, dy)
+
+
 end
 
 function iroad.get_road_type(tile_coord)
@@ -270,34 +317,33 @@ function iroad.set_building_entry(tile_coord)
     __flush_road(shape_terrain_entity, tile_coord[1], tile_coord[2] - 1)
 end
 
-local accel_dir = {
-    ['C0'] = {
-        [0] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_right.prefab", slot = "拐弯箭头1"},
-        [3] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_left.prefab",  slot = "拐弯箭头1"},
-    },
-    ['C1'] = {
-        [1] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_left.prefab",  slot = "拐弯箭头1"},
-        [3] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_right.prefab", slot = "拐弯箭头1"},
-    },
-    ['C2'] = {
-        [1] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_right.prefab", slot = "拐弯箭头1"},
-        [2] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_left.prefab",  slot = "拐弯箭头1"},
-    },
-    ['C3'] = {
-        [0] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_left.prefab", slot = "拐弯箭头1"},
-        [2] = {prefab = "/pkg/vaststars.resources/road/arrow_turn_right.prefab",  slot = "拐弯箭头1"},
-    },
-    ['I0'] = {
-        [0] = {prefab = "/pkg/vaststars.resources/road/arrow_straight.prefab", slot = "直路箭头1"},
-        [1] = {prefab = "/pkg/vaststars.resources/road/arrow_straight.prefab", slot = "直路箭头2"},
-    },
-    ['I1'] = {
-        [2] = {prefab = "/pkg/vaststars.resources/road/arrow_straight.prefab", slot = "拐弯箭头2"},
-        [3] = {prefab = "/pkg/vaststars.resources/road/arrow_straight.prefab", slot = "拐弯箭头1"},
-    },
-}
+local ltask = require "ltask"
+local route_prefabs = {}
+local route_idx
+local last_route_update = 0
 
-local function __show_dir_arrow(tile_coord, dir)
+function road_sys:ui_update()
+    if not route_idx then
+        return
+    end
+    local _, now = ltask.now()
+    if now - last_route_update > 30 then
+        last_route_update = now
+
+        if route_idx > 0 then
+            local prefab = route_prefabs[route_idx]
+            prefab:send("hide")
+        end
+        route_idx = route_idx + 1
+        if route_idx > #route_prefabs then
+            route_idx = 1
+        end
+        local prefab = route_prefabs[route_idx]
+        prefab:send("show")
+    end
+end
+
+local function __show_dir_arrow(tile_coord, in_dir, out_dir)
     local x = tile_coord[1]
     local y = tile_coord[2]
 
@@ -318,9 +364,35 @@ local function __show_dir_arrow(tile_coord, dir)
     local road_type = iroad.get_road_type(tile_coord)
     assert(road_type)
 
-    local c = accel_dir[road_type][dir]
+    local c = get_cfg(road_type, in_dir, out_dir)
+    if not c then
+        return
+    end
 
-    local prefab = ecs.create_instance(c.prefab) -- 此处需要缓存 prefab 后续删除
+    local prefab = ecs.create_instance("/pkg/vaststars.resources/" .. c.prefab) -- todo 此处需要缓存 prefab 后续删除
+    prefab.on_ready = function(prefab)
+        local ifs 		= ecs.import.interface "ant.scene|ifilter_state"
+        for _, e in ipairs(prefab.tag['*']) do
+            ifs.set_state(e, "main_view", false)
+        end
+    end
+    prefab.on_message = function(prefab, cmd)
+        if cmd == "hide" then
+            local ifs 		= ecs.import.interface "ant.scene|ifilter_state"
+            for _, e in ipairs(prefab.tag['*']) do
+                ifs.set_state(e, "main_view", false)
+            end
+        elseif cmd == "show" then
+            local ifs 		= ecs.import.interface "ant.scene|ifilter_state"
+            for _, e in ipairs(prefab.tag['*']) do
+                ifs.set_state(e, "main_view", true)
+            end
+        elseif cmd == "remove" then
+            prefab:remove()
+        end
+    end
+    route_prefabs[#route_prefabs + 1] = world:create_object(prefab)
+
     iprefab_proxy.set_slot(proxy, c.slot, prefab.root)
 end
 
@@ -353,10 +425,24 @@ end
 -- starting & ending : coord
 -- path : sequence
 function iroad.show_route(starting, path)
+    local in_2_out = {[1] = 0, [0] = 1, [2] = 3, [3] = 2} -- todo
     local coord = {starting[1], starting[2]}
+    local in_dir, out_dir
+
+    route_prefabs = {}
+    route_idx = 0
     for _, dir in ipairs(path) do
-        __show_dir_arrow(coord, dir)
+        if not in_dir then
+            in_dir = 2
+            out_dir = in_2_out[dir]
+        else
+            in_dir = in_2_out[in_dir]
+            out_dir = in_2_out[dir]
+        end
+        print(in_dir, out_dir)
+        __show_dir_arrow(coord, in_dir, out_dir)
         coord = __trans_coord(coord, dir)
+        in_dir = dir
     end
-    __show_dir_arrow(coord, 2) -- todo 需要根据建筑物的出口方向来设置参数
+    __show_dir_arrow(coord, in_2_out[in_dir], in_2_out[2]) -- todo 需要根据建筑物的出口方向来设置参数
 end

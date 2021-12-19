@@ -13,7 +13,7 @@ enum COMPONENT {
 	COMPONENT_ASSEMBLING,
 	COMPONENT_INSERTER,
 
-	TAG_ROAD,
+	COMPONENT_ROAD,
 	COMPONENT_STATION,
 };
 
@@ -46,6 +46,11 @@ struct inserter {
 	uint16_t hold_amount;
 	uint16_t process : 15;
 	uint16_t status  : 1;
+};
+
+struct road {
+	uint16_t road_type;
+	uint16_t coord;
 };
 
 struct station {

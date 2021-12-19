@@ -5,6 +5,7 @@ system "road_system"
     .implement "road/road_system.lua"
     .method "init"
     .method "data_changed"
+    .method "ui_update"
 
 interface "iroad"
     .implement "road/road_system.lua"
