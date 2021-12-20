@@ -23,18 +23,30 @@ game.create_entity "inserter" {
     y = 1,
     dir = "W"
 }
-game.create_entity "assembling" {
+game.create_entity "chest" {
     x = 7,
+    y = 1,
+    items = {
+    },
+    description = "碎石",
+}
+game.create_entity "inserter" {
+    x = 8,
+    y = 1,
+    dir = "W"
+}
+game.create_entity "assembling" {
+    x = 9,
     y = 1,
     recipe = "iron plate"
 }
 game.create_entity "inserter" {
-    x = 10,
+    x = 12,
     y = 1,
     dir = "W"
 }
 game.create_entity "chest" {
-    x = 11,
+    x = 13,
     y = 1,
     items = {
     },

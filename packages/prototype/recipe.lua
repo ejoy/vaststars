@@ -8,7 +8,7 @@ prototype "iron ignot" {
     },
     results = {
         {"iron ignot", 2},
-        --{"gravel", 1}
+        {"gravel", 1}
     },
     time = "8s"
 }
