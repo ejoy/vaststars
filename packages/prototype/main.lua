@@ -71,7 +71,7 @@ prototype "iron ignot" {
         {"iron ore", 5},
     },
     results = {
-        {"iron ignot", 2}
+        {"iron ignot", 2},
         {"gravel", 1}
     },
     time = "8s"
@@ -132,7 +132,7 @@ prototype "nuclear reactor" {
 ---指挥中心的类型---
 prototype "headquater" {
     type ={"entity", "generator"},
-    area = "256x256",
+    area = "5x5",
     power = "1MW",
     priority = "primary",
 }
