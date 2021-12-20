@@ -16,6 +16,5 @@ lm:lib "gameplay" {
     sources = {
         "src/*.c",
         "src/*.cpp",
-        "!src/road.c",
     }
 }

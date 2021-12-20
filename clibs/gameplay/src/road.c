@@ -288,8 +288,8 @@ lpath(lua_State *L) {
 	map_init(&map);
 	for (i=0;(road = entity_iter(ctx, COMPONENT_ROAD, i));i++) {
 		union coord c;
-		c.id = road->coord;
-		map_add(&map, c, road->road_type);
+		c.id = (e->y << 8) | e->x;
+		map_add(&map, c);
 	}
 	qsort(map.conflict, map.conflict_n, sizeof(struct node), compar);
 	union coord starting_point;

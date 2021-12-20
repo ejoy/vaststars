@@ -44,3 +44,12 @@ component "generator" {
 
 component "accumulator" {
 }
+
+
+component "road" {
+}
+
+component "station" {
+	"id:word",
+	"coord:word",
+}
