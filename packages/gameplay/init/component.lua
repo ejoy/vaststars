@@ -47,6 +47,8 @@ component "accumulator" {
 
 
 component "road" {
+    "road_type:word",
+    "coord:word",
 }
 
 component "station" {
