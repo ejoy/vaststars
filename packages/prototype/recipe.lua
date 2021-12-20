@@ -37,16 +37,6 @@ prototype "electronic circuit" {
     time = "0.5s"
 }
 
-prototype "uranium fuel cell" {
-	type = { "item" },
-	stack = 50,
-}
-
-prototype "used up uranium fuel cell" {
-	type = { "item" },
-	stack = 50,
-}
-
 prototype "uranium combustion" {
     type = { "recipe" },
     ingredients = {
@@ -56,4 +46,15 @@ prototype "uranium combustion" {
         {"used up uranium fuel cell", 1}
     },
     time = "200s"
+}
+
+prototype "copper cable" {
+    type = { "recipe" },
+    ingredients = {
+        {"copper plate", 1}
+    },
+    results = {
+        {"copper cable", 2}
+    },
+    time = "0.5s"
 }
