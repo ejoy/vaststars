@@ -10,10 +10,11 @@ prototype "iron ignot" {
         {"iron ignot", 2},
         {"gravel", 1}
     },
-    time = "8s"
+    time = "8s",
+    description = "铁矿石通过金属冶炼获得铁锭"
 }
 
-prototype "iron plate" {
+prototype "iron plate 1" {
     type = { "recipe" },
     ingredients = {
         {"iron ignot", 4},
@@ -21,5 +22,19 @@ prototype "iron plate" {
     results = {
         {"iron plate", 3}
     },
-    time = "3s"
+    time = "3s",
+    description = "使用铁锭锻造铁板"
+}
+
+prototype "iron plate 2" {
+    type = { "recipe" },
+    ingredients = {
+        {"iron ignot", 4},
+        {"gravel", 2}
+    },
+    results = {
+        {"iron plate", 5}
+    },
+    time = "5s",
+    description = "使用铁锭和碎石锻造铁板"
 }
