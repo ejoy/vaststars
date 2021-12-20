@@ -366,6 +366,7 @@ local function __show_dir_arrow(tile_coord, in_dir, out_dir)
 
     local c = get_cfg(road_type, in_dir, out_dir)
     if not c then
+        print("__show_dir_arrow", road_type, in_dir, out_dir)
         return
     end
 
@@ -439,7 +440,6 @@ function iroad.show_route(starting, path)
             in_dir = in_2_out[in_dir]
             out_dir = in_2_out[dir]
         end
-        print(in_dir, out_dir)
         __show_dir_arrow(coord, in_dir, out_dir)
         coord = __trans_coord(coord, dir)
         in_dir = dir

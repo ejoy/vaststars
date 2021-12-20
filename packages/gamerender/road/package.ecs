@@ -2,6 +2,7 @@ import "@ant.terrain"
 import "@vaststars.utility"
 
 system "road_system"
+    .require_system "route_system"
     .implement "road/road_system.lua"
     .method "init"
     .method "data_changed"
@@ -28,10 +29,6 @@ interface "iroad_arrow"
 system "route_system"
     .implement "road/route_system.lua"
     .method "data_changed"
-
-interface "iroute"
-    .implement "road/route_system.lua"
-    .method "show"
 
 component "building"
     .type "lua"

@@ -121,7 +121,7 @@
                     start.work_id = 1
                 else
                     start.work_id = building_type
-                    ui_sys.post("construct", "building", building_type)
+                    ui_sys.postMessage("construct.rml", "building", building_type)
                     start.show_work = false
                 end
             end
@@ -129,12 +129,12 @@
  
             end
             function start.clickContructConfirm()
-                ui_sys.post("construct", "confirm")
+                ui_sys.postMessage("construct.rml", "confirm")
             end
             function start.clickDebug()
-                ui_sys.post("debug", "debug")
+                ui_sys.postMessage("debug", "debug")
             end
-            ui_sys.add_event_listener("construct", {
+            ui_sys.addEventListener("construct.rml", {
                 ["show_construct_confirm"] = function(show, position)
                     start.is_show_construct_confirm = show
 
@@ -172,9 +172,9 @@
                     <div class="workbutton-bg" style='background-image:"construct/chemical.png";'/>
                     <div>化工</div>
                 </workbutton>
-                <workbutton data-event-click="clickWork(3)">
+                <workbutton data-event-click="clickWork('container')">
                     <div class="workbutton-bg" style='background-image:"construct/power.png";'/>
-                    <div>电力</div>
+                    <div>仓库</div>
                 </workbutton>
                 <workbutton data-event-click="clickWork('logistics_center')">
                     <div class="workbutton-bg" style='background-image:"construct/logistics_center.png";'/>

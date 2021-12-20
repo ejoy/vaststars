@@ -84,7 +84,6 @@ local __on_prefab_message ; do
             ipickup_mapping.unmapping(e.scene.id)
         end
         prefab:remove()
-
         ud_refs[ud.ud_ref_id] = nil
         w:remove(ud.proxy)
     end

@@ -14,7 +14,6 @@ local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 local iroad_arrow = ecs.import.interface "vaststars.gamerender|iroad_arrow"
 local iroad = ecs.import.interface "vaststars.gamerender|iroad"
 local iprefab_proxy = ecs.import.interface "vaststars.utility|iprefab_proxy"
-local iroute = ecs.import.interface "vaststars.gamerender|iroute"
 local get_add_gameplay_entity_func = ecs.require "construct.gameplay_entity.get_func"
 local gameplay = import_package "vaststars.gameplay"
 
@@ -24,8 +23,8 @@ local ROAD_YAXIS_DEFAULT <const> = import_package "vaststars.constant".ROAD_YAXI
 local CONSTRUCT_RED_BASIC_COLOR <const> = {100.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 100.0, 0.0, 0.8}
 
-local ui_construct_building_mb = world:sub {"ui", "construct", "building"}
-local ui_construct_confirm_mb = world:sub {"ui", "construct", "confirm"}
+local ui_construct_building_mb = world:sub {"ui", "construct.rml", "building"}
+local ui_construct_confirm_mb = world:sub {"ui", "construct.rml", "confirm"}
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local pickup_mb = world:sub {"pickup"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
@@ -64,7 +63,7 @@ end
 local function __update_basecolor_by_pos(entity, prefab, position) 
     local basecolor_factor
     local construct_entity = __get_construct_entity(entity)
-    if not construct_entity.test_func(construct_entity.building_type, position) then
+    if construct_entity.test_func and not construct_entity.test_func(construct_entity.building_type, position) then
         basecolor_factor = CONSTRUCT_RED_BASIC_COLOR
     else
         basecolor_factor = CONSTRUCT_GREEN_BASIC_COLOR
@@ -81,7 +80,7 @@ end
 local function on_prefab_ready(entity, prefab)
     local position = math3d.tovalue(iom.get_position(prefab.root))
     __update_basecolor_by_pos(entity, prefab, position)
-    iui.post("construct", "show_construct_confirm", true, math3d.tovalue(icamera.world_to_screen(position)) )
+    iui.post("construct.rml", "show_construct_confirm", true, math3d.tovalue(icamera.world_to_screen(position)) )
 end
 
 local on_prefab_message ; do
@@ -96,7 +95,7 @@ local on_prefab_message ; do
         local building_type = construct_entity.building_type
         local srt = prefab.root.scene.srt
 
-        if construct_entity.test_func(building_type, position) then         
+        if not construct_entity.test_func or construct_entity.test_func(building_type, position) then    
             local tile_coord = iterrain.get_coord_by_position(position)
             local add_gameplay_entity = get_add_gameplay_entity_func(building_type)
             local building_id = 0
@@ -145,7 +144,7 @@ local on_prefab_message ; do
             end         
 
             iterrain.set_tile_building_type(tile_coord, building_type)
-            iui.post("construct", "show_construct_confirm", false)
+            iui.post("construct.rml", "show_construct_confirm", false)
             prefab:send("remove")
             construct_prefab = nil
         else
@@ -254,12 +253,12 @@ function construct_sys:camera_usage()
         entity = ipickup_mapping.get_entity(eid)
         if entity then
             w:sync("construct_entity?in", entity)
-            if entity.construct_entity then
+            if entity.construct_entity and construct_prefab then
                 position = iinput.screen_to_world {mouse_x, mouse_y}
                 position = iterrain.get_tile_centre_position(math3d.tovalue(position))
                 iom.set_position(iprefab_proxy.get_root(entity), position)
-                iui.post("construct", "show_construct_confirm", true, math3d.tovalue(icamera.world_to_screen(position)))
-                iprefab_proxy.message(entity, "basecolor", position)
+                iui.post("construct.rml", "show_construct_confirm", true, math3d.tovalue(icamera.world_to_screen(position)))
+                iprefab_proxy.message(entity, "basecolor", position) -- todo 此处可能会发送很多 basecolor 消息
             end
         end
     end
@@ -273,7 +272,12 @@ function construct_sys:data_changed()
             if construct_prefab then
                 iprefab_proxy.message(construct_prefab, "remove")
             end
-            construct_prefab = __create_construct_entity(cfg.building_type, cfg.prefab_file_name, ecs.require(("construct.construct_test.%s"):format(cfg.test_func)))
+
+            local test_func
+            if cfg.test_func then
+                test_func = ecs.require(("construct.construct_test.%s"):format(cfg.test_func))
+            end
+            construct_prefab = __create_construct_entity(cfg.building_type, cfg.prefab_file_name, test_func)
         end
     end
 
@@ -303,7 +307,7 @@ function construct_sys:after_pickup_mapping()
                     show_road_arrow( iterrain.get_tile_centre_position(iinput.get_mouse_world_position()) )
                     is_show_road_arrow = true
                 elseif building.building_type == "logistics_center" then
-                    iroute.show()
+                    iui.open("road.rml")
                 end
             end
 

@@ -6,55 +6,22 @@ local iui = ecs.import.interface "vaststars.ui|iui"
 local iconstruct = ecs.import.interface "vaststars.gamerender|iconstruct"
 local gameplay = import_package "vaststars.gameplay"
 
-local ui_route_mb = world:sub {"ui", "route"}
-local ui_route_new_close_mb = world:sub {"ui", "route_new", "close"}
+local ui_route_mb = world:sub {"ui", "route.rml"}
+local ui_route_new_data_mb = world:sub {"ui", "route_new.rml", "__get_data"}
+local ui_road_new_data_mb = world:sub {"ui", "road.rml", "__get_data"}
 
 local route_sys = ecs.system "route_system"
-local iroute = ecs.interface "iroute"
 local routes = {}
 
-local function __get_all_building_infos()
-    local building_infos = {}
-    for e in w:select "building:in" do
-        if e.building.building_type == "logistics_center" then -- todo ?
-            building_infos[e.building.id] = {
-                name = "物流中心_" .. e.building.id, -- todo
-            }
-        end
-    end
-    return building_infos
-end
-
-local function __get_all_route_infos()
-    local building_infos = __get_all_building_infos()
-
-    local route_infos = {}
-    for _, route in pairs(routes) do
-        route_infos[#route_infos + 1] = {text = building_infos[route["begin"]].name .. " -> " .. building_infos[route["end"]].name}
-    end
-    return route_infos
-end
-
 local route_ui_cmds = {}
-route_ui_cmds["close"] = function ()
-    iui.close("road")
-    iui.open("construct", "construct.rml")
-end
-
-route_ui_cmds["show_route_new"] = function()
-    iui.open("route_new", "route_new.rml", __get_all_building_infos(), __get_all_route_infos())
-end
-
 route_ui_cmds["show_route"] = function(route_id)
     local route = routes[route_id]
-    local path = gameplay.path(route["begin"], route["end"])
-    iconstruct.show_route(route["begin"], path)
+    local path = gameplay.path(route[1], route[2])
+    iconstruct.show_route(route[1], path)
 end
 
 route_ui_cmds["new_route"] = function(building_ids)
-    local route_id = #routes+1
-    routes[route_id] = building_ids
-    iroute.show()
+    routes[#routes+1] = building_ids
 end
 
 function route_sys:data_changed()
@@ -66,13 +33,29 @@ function route_sys:data_changed()
         end
     end
 
-    for _ in ui_route_new_close_mb:unpack() do
-        -- todo bad taste
-        iui.close("route_new")
-        iui.open("construct", "construct.rml")
+    for _ in ui_route_new_data_mb:unpack() do
+        local logistics_centers = {}
+        for e in w:select "building:in" do
+            if e.building.building_type == "logistics_center" then -- todo ?
+                logistics_centers[e.building.id] = {
+                    id = e.building.id,
+                    name = "物流中心_" .. e.building.id,
+                }
+            end
+        end
+        iui.post("route_new.rml", "__set_data", logistics_centers)
     end
-end
 
-function iroute.show()
-    iui.open("road", "road.rml", __get_all_building_infos(), __get_all_route_infos())
+    for _ in ui_road_new_data_mb:unpack() do
+        local logistics_centers = {}
+        for e in w:select "building:in" do
+            if e.building.building_type == "logistics_center" then -- todo ?
+                logistics_centers[e.building.id] = {
+                    id = e.building.id,
+                    name = "物流中心_" .. e.building.id,
+                }
+            end
+        end
+        iui.post("road.rml", "__set_data", logistics_centers, routes)
+    end
 end

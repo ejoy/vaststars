@@ -77,10 +77,9 @@
                 <!-- header -->
                 <div style = "text-align:center; -webkit-text-stroke: 2px #cd7c3d;">选择站点</div>
 
-                <!-- list --><!-- todo data-for? -->
-                <table class="normal-table">
-                    <tr data-event-click="selectStation(1)"><th style = "text-align:center;">{{station_name_1}}</th></tr>
-                    <tr data-event-click="selectStation(2)"><th style = "text-align:center;">{{station_name_2}}</th></tr>
+                <!-- station list -->
+                <table class="normal-table" data-for="stations">
+                    <tr data-event-click="selectStation(it.id)"><th style = "text-align:center;">{{it.name}}</th></tr>
                 </table>
             </div>
 
@@ -103,12 +102,12 @@
                 <div style = "background-color: rgba(0, 255, 0, 100); width: 100%;">加工路线</div>
                 <div style = "width: 100%">
                     <div style = "-webkit-text-stroke: 2px #cd7c3d;">起点:</div>
-                    <div style = "align-items:center; justify-content:center; background-color: rgb(237,125,49);" data-event-click="clickSelectRoute('begin')">
-                        <span style = "-webkit-text-stroke: 2px #cd7c3d;">{{selected_station_name_1}}</span>
+                    <div style = "align-items:center; justify-content:center; background-color: rgb(237,125,49);" data-event-click="clickSelectStation('begin')">
+                        <span style = "-webkit-text-stroke: 2px #cd7c3d;">{{starting_station_name}}</span>
                     </div>
                     <div style = "-webkit-text-stroke: 2px #cd7c3d;">终点:</div>
-                    <div style = "align-items:center; justify-content:center; background-color: rgb(237,125,49);" data-event-click="clickSelectRoute('end')">
-                        <span style = "-webkit-text-stroke: 2px #cd7c3d;">{{selected_station_name_2}}</span>
+                    <div style = "align-items:center; justify-content:center; background-color: rgb(237,125,49);" data-event-click="clickSelectStation('end')">
+                        <span style = "-webkit-text-stroke: 2px #cd7c3d;">{{ending_station_name}}</span>
                     </div>
 
                     <button style="width:320px; height:60px; background-color: rgb(237,125,49);" data-event-click="addRoute()">
