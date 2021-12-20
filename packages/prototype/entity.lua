@@ -20,6 +20,14 @@ prototype "chest" {
     slots = 20,
     stack = 10,
 }
+
+prototype "goods station" {
+    type = {"entity", "chest"},
+    area = "1x1",
+    slots = 30,
+    stack = 20,
+}
+
 prototype "inserter" {
     type = {"entity", "inserter", "consumer"},
     area = "1x1",
