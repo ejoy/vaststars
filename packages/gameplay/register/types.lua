@@ -128,6 +128,7 @@ register_unit("items", "string", function(s)
 	local r = {}
 	for _, t in ipairs(s) do
 		local what = prototype.query("item", t[1])
+		assert(what, "unknown item: ".. t[1])
 		r[#r+1] = string.pack("<I2I2", what.id, t[2])
 	end
 	return table.concat(r)
