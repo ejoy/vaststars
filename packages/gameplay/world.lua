@@ -61,19 +61,13 @@ return function ()
         name = "description",
         type = "lua"
     }
-    for _, c in pairs(status.components) do
+    local components = {}
+    for _, c in ipairs(status.components) do
+        assert(c.type == nil)
         world:register(c)
+        components[#components+1] = c.name
     end
-    local context = world:context {
-        "capacitance",
-        "consumer",
-        "generator",
-        "accumulator",
-        "entity",
-        "burner",
-        "assembling",
-        "inserter",
-    }
+    local context = world:context(components)
     local ptable = require "vaststars.prototype.core"
     local cworld = vaststars.create_world(context, ptable)
     game.world = world
