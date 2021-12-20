@@ -18,15 +18,29 @@ prototype "inserter" {
 prototype "assembling" {
     type = {"entity", "assembling", "consumer"},
     area = "3x3",
-    speed = "100%",
-    power = "75kW",
-    priority = "primary",
+    speed = "50%",
+    power = "150kW",
+    priority = "secondary",
 }
-
+---测试物品---
+prototype "iron ignot" {
+    type = {"item"},
+    stack = 100,
+}
+prototype "iron ore" {
+    type = {"item"},
+    stack = 100,
+}
 prototype "iron plate" {
     type = {"item"},
     stack = 100,
 }
+prototype "gravel"{
+    type = {"item"},
+    stack = 100,
+}
+--------------
+
 prototype "copper plate" {
     type = {"item"},
     stack = 100,
@@ -39,7 +53,6 @@ prototype "electronic circuit" {
     type = {"item"},
     stack = 100,
 }
-
 prototype "copper cable" {
     type = { "recipe" },
     ingredients = {
@@ -50,6 +63,31 @@ prototype "copper cable" {
     },
     time = "0.5s"
 }
+
+---测试配方---
+prototype "iron ignot" {
+    type = { "recipe" },
+    ingredients = {
+        {"iron ore", 5},
+    },
+    results = {
+        {"iron ignot", 2}
+        {"gravel", 1}
+    },
+    time = "8s"
+}
+
+prototype "iron plate" {
+    type = { "recipe" },
+    ingredients = {
+        {"iron ignot", 4},
+    },
+    results = {
+        {"iron plate", 3}
+    },
+    time = "3s"
+}
+-------------
 
 prototype "electronic circuit" {
     type = { "recipe" },
@@ -90,3 +128,12 @@ prototype "nuclear reactor" {
     power = "40MW",
     priority = "primary",
 }
+
+---指挥中心的类型---
+prototype "headquater" {
+    type ={"entity", "generator"},
+    area = "256x256",
+    power = "1MW",
+    priority = "primary",
+}
+--------------------
