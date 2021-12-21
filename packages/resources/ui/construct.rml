@@ -168,9 +168,9 @@
                     <div class="workbutton-bg" style='background-image:"construct/process.png";'/>
                     <div>加工</div>
                 </workbutton>
-                <workbutton data-event-click="clickWork(2)">
+                <workbutton data-event-click="clickWork('rock')">
                     <div class="workbutton-bg" style='background-image:"construct/chemical.png";'/>
-                    <div>化工</div>
+                    <div>矿石</div>
                 </workbutton>
                 <workbutton data-event-click="clickWork('container')">
                     <div class="workbutton-bg" style='background-image:"construct/power.png";'/>

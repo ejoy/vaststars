@@ -35,22 +35,25 @@ function iroad_arrow.create(position, yaxis_rotation, direction, tile_coord, arr
     srt.t = position
     srt.r = math3d.ref(math3d.quaternion{axis = mc.YAXIS, r = yaxis_rotation})
 
-    return iprefab_proxy.create(ecs.create_instance("/pkg/vaststars.resources/" .. prefab_file_name), {
-        policy = {
-            "vaststars.gamerender|road_arrow",
-        },
-        data = {
-            road_arrow = {
-                direction = direction,
-                tile_coord = tile_coord,
-                arrow_tile_coord = arrow_tile_coord,
+    return iprefab_proxy.create(ecs.create_instance("/pkg/vaststars.resources/" .. prefab_file_name),
+        {},
+        {
+            policy = {
+                "vaststars.gamerender|road_arrow",
+            },
+            data = {
+                road_arrow = {
+                    direction = direction,
+                    tile_coord = tile_coord,
+                    arrow_tile_coord = arrow_tile_coord,
+                },
             },
         },
-    },
-    {
-        on_ready = function(_, prefab)
-            iom.set_srt(prefab.root, srt.s, srt.r, srt.t)
-        end,
-        on_message = on_prefab_message,
-    })
+        {
+            on_ready = function(_, prefab)
+                iom.set_srt(prefab.root, srt.s, srt.r, srt.t)
+            end,
+            on_message = on_prefab_message,
+        }
+    )
 end

@@ -10,7 +10,7 @@ local prefab_proxy_remove_mb = world:sub {"prefab_proxy", "remove"}
 local iprefab_proxy = ecs.interface "iprefab_proxy"
 local prefab_proxy_sys = ecs.system "prefab_proxy_system"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-
+local iani = ecs.import.interface "ant.animation|ianimation"
 
 local ud_refs = {}
 
@@ -48,12 +48,16 @@ local function __on_prefab_ready(ud_ref_id, prefab)
 
     local on_pickup_mapping = ud.events.on_pickup_mapping
     for _, e in ipairs(prefab.tag["*"]) do
-        w:sync("scene:in slot?in name:in", e)
+        w:sync("scene:in slot?in name:in _animation?in", e)
 
         if not on_pickup_mapping then
             ipickup_mapping.mapping(e.scene.id, ud.proxy)
         else
             on_pickup_mapping(e.scene.id)
+        end
+
+        if e._animation then
+            iani.pause(e, true)
         end
 
         if e.slot then
@@ -124,7 +128,7 @@ local __on_prefab_message ; do
 end
 
 -- 'prefab' must be the value returned by calling the function ecs.create_instance()
-function iprefab_proxy.create(prefab, v, events)
+function iprefab_proxy.create(prefab, srt, v, events)
     local id = gen_ud_ref_id()
     prefab.on_ready = function(prefab)
         __on_prefab_ready(id, prefab)
@@ -132,6 +136,7 @@ function iprefab_proxy.create(prefab, v, events)
     prefab.on_message = function(prefab, ...)
         __on_prefab_message(id, prefab, ...)
     end
+    iom.set_srt(prefab.root, srt.s, srt.r, srt.t)
     local obj = world:create_object(prefab)
 
     --
@@ -142,13 +147,8 @@ function iprefab_proxy.create(prefab, v, events)
     v.policy[#v.policy+1] = "vaststars.utility|prefab_proxy"
     v.data.prefab_proxy = {prefab = obj, root = prefab.root, ud_ref_id = id}
     v.policy[#v.policy+1] = "ant.scene|scene_object"
-    v.data.scene = v.data.scene or {}
+    v.data.scene = {}
     v.data.reference = true
-
-    local srt = v.data.scene.srt
-    if srt then
-        iom.set_srt(prefab.root, srt.s, srt.r, srt.t)
-    end
 
     local proxy = ecs.create_entity(v)
     ud_refs[id] = {ud_ref_id = id, proxy = proxy, slots = {}, slot_attachs = {}, events = events or {}}

@@ -90,17 +90,20 @@ end
 
 function road_sys:data_changed()
     for _, _, _, instance_id, x, y, prefab_file_name, srt, parant_entity in terrain_road_create_mb:unpack() do
-        local prefab_proxy = iprefab_proxy.create(ecs.create_instance(prefab_file_name), {},
-        {
-            on_ready = function(_, prefab)
-                local e = prefab.root
-                iom.set_srt(e, srt.s, srt.r, srt.t)
-                ecs.method.set_parent(e, parant_entity)
-            end,
-            on_pickup_mapping = function(eid)
-                ipickup_mapping.mapping(eid, road_binding_entity)
-            end
-        })
+        local prefab_proxy = iprefab_proxy.create(ecs.create_instance(prefab_file_name),
+            srt,
+            {},
+            {
+                on_ready = function(_, prefab)
+                    local e = prefab.root
+                    iom.set_srt(e, srt.s, srt.r, srt.t)
+                    ecs.method.set_parent(e, parant_entity)
+                end,
+                on_pickup_mapping = function(eid)
+                    ipickup_mapping.mapping(eid, road_binding_entity)
+                end
+            }
+        )
 
         terrain_roads_prefab_proxy[instance_id] = prefab_proxy
 

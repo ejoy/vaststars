@@ -4,5 +4,6 @@ local entity = {
     ["goods_station.prefab"] = { scale = 0.10, direction = nil, position = nil, },
     ["logistics_center.prefab"] = { scale = 0.10, direction = nil, position = nil, },
     ["container.prefab"] = { scale = 0.10, direction = nil, position = nil, },
+    ["rock.prefab"] = { scale = 0.10, direction = nil, position = nil, },
 }
 return entity

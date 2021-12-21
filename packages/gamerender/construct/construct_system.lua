@@ -63,7 +63,7 @@ end
 local function __update_basecolor_by_pos(entity, prefab, position) 
     local basecolor_factor
     local construct_entity = __get_construct_entity(entity)
-    if construct_entity.test_func and not construct_entity.test_func(construct_entity.building_type, position) then
+    if construct_entity.detect and not construct_entity.detect(construct_entity.building_type, position) then
         basecolor_factor = CONSTRUCT_RED_BASIC_COLOR
     else
         basecolor_factor = CONSTRUCT_GREEN_BASIC_COLOR
@@ -95,18 +95,27 @@ local on_prefab_message ; do
         local building_type = construct_entity.building_type
         local srt = prefab.root.scene.srt
 
-        if not construct_entity.test_func or construct_entity.test_func(building_type, position) then    
-            local tile_coord = iterrain.get_coord_by_position(position)
-            local add_gameplay_entity = get_add_gameplay_entity_func(building_type)
-            local building_id = 0
+        if construct_entity.detect then
+            if not construct_entity.detect(building_type, position) then
+                -- todo error tips
+                print("can not construct")
+                return
+            end
+        end
 
-            if building_type == "road" then -- todo bad taste
-                iroad.construct(nil, tile_coord, "O0") -- add gameplay entity in road_system
-            else
-                building_id = __gen_building_id()
+        local tile_coord = iterrain.get_coord_by_position(position)
+        local add_gameplay_entity = get_add_gameplay_entity_func(building_type)
+        local building_id = 0
 
-                local prefab_file_name = construct_entity.prefab_file_name
-                iprefab_proxy.create(ecs.create_instance("/pkg/vaststars.resources/" .. prefab_file_name), {
+        if building_type == "road" then -- todo bad taste
+            iroad.construct(nil, tile_coord, "O0") -- add gameplay entity in road_system
+        else
+            building_id = __gen_building_id()
+
+            local prefab_file_name = construct_entity.prefab_file_name
+            iprefab_proxy.create(ecs.create_instance("/pkg/vaststars.resources/" .. prefab_file_name),
+                {},
+                {
                     policy = {
                         "vaststars.gamerender|building",
                     },
@@ -121,36 +130,36 @@ local on_prefab_message ; do
                     on_ready = function(_, prefab)
                         iom.set_srt(prefab.root, srt.s, srt.r, srt.t)
                     end
-                })
+                }
+            )
 
-                -- todo hard coded 此处需要根据建筑物的转向计算坐标
-                local cfg = construct_cfg[building_type]
-                if cfg then
-                    local coord = {
-                        tile_coord[1],
-                        (tile_coord[2] - cfg.size[2] // 2),
-                    }
-                    iroad.set_building_entry(coord)
+            -- todo hard coded 此处需要根据建筑物的转向计算坐标
+            local cfg = construct_cfg[building_type]
+            if cfg then
+                local coord = {
+                    tile_coord[1],
+                    (tile_coord[2] - cfg.size[2] // 2),
+                }
 
-                    if add_gameplay_entity then
-                        local gpcoord = {
-                            tile_coord[1],
-                            (tile_coord[2] - cfg.size[2] // 2 - 1),
-                        }
-                        gameplay.new(add_gameplay_entity(building_id, gpcoord))
-                        all_building[building_id] = gpcoord
-                    end
+                if building_type ~= "container" and building_type ~= "rock" then
+                    iroad.set_building_entry(coord) -- todo 并非所有建筑都需要 set_building_entry
                 end
-            end         
 
-            iterrain.set_tile_building_type(tile_coord, building_type)
-            iui.post("construct.rml", "show_construct_confirm", false)
-            prefab:send("remove")
-            construct_prefab = nil
-        else
-            -- todo error tips
-            print("can not construct")
+                if add_gameplay_entity then
+                    local gpcoord = {
+                        tile_coord[1],
+                        (tile_coord[2] - cfg.size[2] // 2 - 1),
+                    }
+                    gameplay.new(add_gameplay_entity(building_id, gpcoord))
+                    all_building[building_id] = gpcoord
+                end
+            end
         end
+
+        iterrain.set_tile_building_type(tile_coord, building_type)
+        iui.post("construct.rml", "show_construct_confirm", false)
+        prefab:send("remove")
+        construct_prefab = nil
     end
 
     function on_prefab_message(entity, prefab, cmd, ...)
@@ -161,32 +170,32 @@ local on_prefab_message ; do
     end
 end
 
-local function __create_construct_entity(building_type, prefab_file_name, test_func)
-    local p = "/pkg/vaststars.resources/" .. prefab_file_name
-    local template = __replace_material(serialize.parse(p, cr.read_file(p)))
+local function __create_construct_entity(building_type, prefab_file_name, detect)
+    local f = "/pkg/vaststars.resources/" .. prefab_file_name
+    local template = __replace_material(serialize.parse(f, cr.read_file(f)))
 
-    return iprefab_proxy.create(ecs.create_instance(template), {
-        policy = {
-            "ant.scene|scene_object",
-            "vaststars.gamerender|construct_entity",
-            "vaststars.input|drapdrop",
-        },
-        data = {
-            construct_entity = {
-                building_type = building_type,
-                prefab_file_name = prefab_file_name,
-                test_func = test_func,
+    return iprefab_proxy.create(ecs.create_instance(template),
+        iprefab_proxy.get_config_srt(prefab_file_name),
+            {
+                policy = {
+                    "ant.scene|scene_object",
+                    "vaststars.gamerender|construct_entity",
+                    "vaststars.input|drapdrop",
+                },
+                data = {
+                    construct_entity = {
+                        building_type = building_type,
+                        prefab_file_name = prefab_file_name,
+                        detect = detect,
+                    },
+                    drapdrop = false,
+                },
             },
-            scene = {
-                srt = iprefab_proxy.get_config_srt(prefab_file_name),
-            },
-            drapdrop = false,
-        },
-    },
-    {
-        on_ready = on_prefab_ready,
-        on_message = on_prefab_message,
-    })
+            {
+                on_ready = on_prefab_ready,
+                on_message = on_prefab_message,
+            }
+        )
 end
 
 ----------------------------------
@@ -273,11 +282,11 @@ function construct_sys:data_changed()
                 iprefab_proxy.message(construct_prefab, "remove")
             end
 
-            local test_func
-            if cfg.test_func then
-                test_func = ecs.require(("construct.construct_test.%s"):format(cfg.test_func))
+            local detect
+            if cfg.detect then
+                detect = ecs.require(("construct.detect.%s"):format(cfg.detect))
             end
-            construct_prefab = __create_construct_entity(cfg.building_type, cfg.prefab_file_name, test_func)
+            construct_prefab = __create_construct_entity(cfg.building_type, cfg.prefab_file_name, detect)
         end
     end
 
