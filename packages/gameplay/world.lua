@@ -76,7 +76,7 @@ return function ()
 
     function game.create_entity(type)
         return function (init)
-            local typeobject = assert(prototype.query("entity", type))
+            local typeobject = assert(prototype.query("entity", type), "unknown entity: " .. type)
             local types = typeobject.type
             local obj = {}
             for i = 1, #types do

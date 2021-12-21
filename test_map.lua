@@ -1,6 +1,6 @@
 local game = ...
 
-game.create_entity "chest" {
+game.create_entity "small chest" {
     x = 1,
     y = 1,
     items = {
@@ -13,7 +13,7 @@ game.create_entity "inserter" {
     y = 1,
     dir = "W"
 }
-game.create_entity "assembling" {
+game.create_entity "chemical plant 1" {
     x = 3,
     y = 1,
     recipe = "iron ignot"
@@ -23,7 +23,7 @@ game.create_entity "inserter" {
     y = 1,
     dir = "W"
 }
-game.create_entity "chest" {
+game.create_entity "small chest" {
     x = 7,
     y = 1,
     items = {
@@ -35,17 +35,17 @@ game.create_entity "inserter" {
     y = 1,
     dir = "W"
 }
-game.create_entity "assembling" {
+game.create_entity "chemical plant 1" {
     x = 9,
     y = 1,
-    recipe = "iron plate"
+    recipe = "iron plate 2"
 }
 game.create_entity "inserter" {
     x = 12,
     y = 1,
     dir = "W"
 }
-game.create_entity "chest" {
+game.create_entity "small chest" {
     x = 13,
     y = 1,
     items = {

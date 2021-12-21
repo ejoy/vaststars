@@ -9,7 +9,7 @@ local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
 
 function c:ctor(init, pt)
-    local recipe = assert(prototype.query("recipe", init.recipe))
+    local recipe = assert(prototype.query("recipe", init.recipe), "unknown recipe: "..init.recipe)
     return {
         assembling = {
             recipe = recipe.id,

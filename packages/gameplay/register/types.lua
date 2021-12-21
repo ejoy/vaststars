@@ -69,13 +69,15 @@ register_unit("count", "int", function(s)
 end)
 
 register_unit("percentage", "float", function(s)
+	if s == nil then
+		return 0
+	end
 	if type(s) == "number" then
 		return s
-	else
-		local p = s:match "^(%-?%d+%.?%d*)%%$"
-		assert(p, "Need percentage : n%")
-		return p / 100
 	end
+	local p = s:match "^(%-?%d+%.?%d*)%%$"
+	assert(p, "Need percentage : n%")
+	return p / 100
 end)
 
 register_unit("time", "word", function(s)

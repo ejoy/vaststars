@@ -82,11 +82,11 @@ return function (name)
 		assert(id_lookup[id] == nil)
 		for _, key in ipairs(combine_keys) do
 			local v = object[key.key]
-			v = unit[key.unit].converter(v, object)
-			if v == nil then
-				error (string.format("Missing .%s", key.key))
+			local ok, r = pcall(unit[key.unit].converter, v, object)
+			if not ok or r == nil then
+				error(string.format("Missing .%s", key.key))
 			end
-			object[key.key] = v
+			object[key.key] = r
 		end
 		name_lookup[namekey] = object
 		id_lookup[id] = object
