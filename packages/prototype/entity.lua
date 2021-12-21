@@ -1,13 +1,13 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
-prototype "headquater" {
+prototype "指挥中心" {
     type ={"entity", "generator"},
     area = "5x5",
     power = "1MW",
     priority = "primary",
 }
-prototype "assembling 1" {
+prototype "组装机1" {
     type = {"entity", "assembling", "consumer"},
     area = "3x3",
     speed = "100%",
@@ -15,7 +15,7 @@ prototype "assembling 1" {
     priority = "secondary",
 }
 
-prototype "furnace 1" {
+prototype "熔炼炉1" {
     type = {"entity", "assembling", "consumer"},
     area = "3x3",
     speed = "50%",
@@ -23,44 +23,41 @@ prototype "furnace 1" {
     priority = "secondary",
 }
 
-prototype "small chest" {
+prototype "小型铁制箱子" {
     type = {"entity", "chest"},
     area = "1x1",
     slots = 10,
-    stack = 50,
 }
 
-prototype "miner" {
+prototype "采矿机1" {
     type ={"entity", "consumer"},
     area = "3x3",
     power = "150kW",
     priority = "secondary",
 }
 
-prototype "goods station 1" {
+prototype "车站1" {
     type = {"entity", "chest"},
     area = "1x1",
     slots = 30,
-    stack = 20,
 }
 
-prototype "inserter" {
+prototype "机器爪1" {
     type = {"entity", "inserter", "consumer"},
     area = "1x1",
     speed = "1s",
-    stack = 50,
     power = "12kW",
     priority = "secondary",
 }
 
-prototype "steam generator 1" {
+prototype "蒸汽发电机1" {
     type ={"entity", "generator"},
     area = "2x3",
     power = "1MW",
     priority = "secondary",
 }
 
-prototype "chemical plant 1" {
+prototype "化工厂1" {
     type ={"entity", "assembling", "consumer"},
     area = "3x3",
     power = "200kW",
@@ -68,14 +65,14 @@ prototype "chemical plant 1" {
     priority = "secondary",
 }
 
-prototype "distillery 1" {
+prototype "蒸馏厂1" {
     type ={"entity", "assembling", "consumer"},
     area = "5x5",
     power = "240kW",
     priority = "secondary",
 }
 
-prototype "crusher 1" {
+prototype "粉碎机1" {
     type ={"entity", "assembling", "consumer"},
     area = "3x3",
     power = "100kW",
@@ -83,26 +80,26 @@ prototype "crusher 1" {
     priority = "secondary",
 }
 
-prototype "logistics center" {
+prototype "物流中心" {
     type ={"entity", "consumer"},
     area = "3x3",
     power = "600kW",
     priority = "secondary",
 }
 
-prototype "storage tank 1" {
+prototype "液罐1" {
     type ={"entity"},
     area = "3x3",
 }
 
-prototype "offshore pump" {
+prototype "抽水泵" {
     type ={"entity", "consumer"},
     area = "1x2",
     power = "6kW",
     priority = "secondary",
 }
 
-prototype "pump 1" {
+prototype "压力泵1" {
     type ={"entity", "consumer"},
     area = "1x2",
     power = "10kW",
@@ -110,36 +107,36 @@ prototype "pump 1" {
     priority = "secondary",
 }
 
-prototype "chimney 1" {
+prototype "烟囱1" {
     type ={"entity"},
     area = "2x2",
 }
 
-prototype "outfall 1" {
+prototype "排水口1" {
     type ={"entity"},
     area = "2x2",
 }
 
-prototype "wind turbine 1" {
+prototype "风力发电机1" {
     type ={"entity", "generator"},
     area = "3x3",
     power = "1.2MW",
     priority = "primary",
 }
 
-prototype "iron electric pole" {
+prototype "铁制电线杆" {
     type ={"entity"},
     area = "1x1",
 }
 
-prototype "lab 1" {
+prototype "科技中心1" {
     type ={"entity", "consumer"},
     area = "3x3",
     power = "150kW",
     priority = "secondary",
 }
 
-prototype "electrolyzer 1" {
+prototype "电解厂1" {
     type ={"entity", "assembling", "consumer"},
     area = "5x5",
     power = "1MW",
@@ -147,7 +144,7 @@ prototype "electrolyzer 1" {
     priority = "secondary",
 }
 
-prototype "air filter" {
+prototype "空气过滤器1" {
     type ={"entity", "consumer"},
     area = "2x2",
     power = "50kW",
@@ -155,37 +152,37 @@ prototype "air filter" {
     priority = "secondary",
 }
 
-prototype "pipe 1" {
+prototype "管道1" {
     type ={"entity"},
     area = "1x1",
 }
 
-prototype "underground pipe 1" {
+prototype "地下管1" {
     type ={"entity"},
     area = "1x1",
 }
 
-prototype "solar panel" {
+prototype "太阳能板1" {
     type ={"entity","generator"},
     area = "3x3",
     power = "100kW",
     priority = "primary",
 }
 
-prototype "accumulator" {
+prototype "蓄电池1" {
     type ={"entity"},
     area = "2x2",
     priority = "secondary",
 }
 
-prototype "hydro plant" {
+prototype "水电站1" {
     type ={"entity", "assembling", "consumer"},
     area = "5x5",
     power = "150kW",
     priority = "secondary",
 }
 
-prototype "nuclear reactor" {
+prototype "核反应堆" {
     type = {"entity", "generator", "burner"},
     area = "3x3",
     power = "40MW",

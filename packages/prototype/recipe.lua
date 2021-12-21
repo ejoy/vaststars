@@ -1,7 +1,7 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
-prototype "iron ignot" {
+prototype "铁锭" {
     type = { "recipe" },
     category = "smelting",
     ingredients = {
@@ -15,7 +15,7 @@ prototype "iron ignot" {
     description = "铁矿石通过金属冶炼获得铁锭",
 }
 
-prototype "iron plate 1" {
+prototype "铁板1" {
     type = { "recipe" },
     category = "machine-casting",
     ingredients = {
@@ -29,7 +29,7 @@ prototype "iron plate 1" {
 
 }
 
-prototype "iron plate 2" {
+prototype "铁板2" {
     type = { "recipe" },
     category = "machine-casting",
     ingredients = {
