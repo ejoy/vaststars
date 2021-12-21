@@ -3,6 +3,7 @@ local prototype = gameplay.prototype
 
 prototype "iron ignot" {
     type = { "recipe" },
+    category = "smelting",
     ingredients = {
         {"iron ore", 5},
     },
@@ -11,11 +12,12 @@ prototype "iron ignot" {
         {"gravel", 1}
     },
     time = "8s",
-    description = "铁矿石通过金属冶炼获得铁锭"
+    description = "铁矿石通过金属冶炼获得铁锭",
 }
 
 prototype "iron plate 1" {
     type = { "recipe" },
+    category = "machine-casting",
     ingredients = {
         {"iron ignot", 4},
     },
@@ -23,11 +25,13 @@ prototype "iron plate 1" {
         {"iron plate", 3}
     },
     time = "3s",
-    description = "使用铁锭锻造铁板"
+    description = "使用铁锭锻造铁板",
+
 }
 
 prototype "iron plate 2" {
     type = { "recipe" },
+    category = "machine-casting",
     ingredients = {
         {"iron ignot", 4},
         {"gravel", 2}
@@ -36,5 +40,6 @@ prototype "iron plate 2" {
         {"iron plate", 5}
     },
     time = "5s",
-    description = "使用铁锭和碎石锻造铁板"
+    description = "使用铁锭和碎石锻造铁板",
+
 }
