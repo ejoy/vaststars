@@ -13,11 +13,11 @@ struct container {
     using item_array = std::vector<item>;
 
     virtual item     at(uint16_t index) = 0;
-    virtual uint32_t need() = 0;
-    virtual item     pickup_any(world& w, uint16_t max) = 0;
-    virtual uint16_t pickup(world& w, uint16_t item, uint16_t max) = 0;
-    virtual bool     place(world& w, uint16_t item, uint16_t amount) = 0;
-    item             pickup(world& w, container& need, uint16_t max);
+    virtual uint32_t inserter_need() = 0;
+    virtual item     inserter_pickup_any(world& w, uint16_t max) = 0;
+    virtual uint16_t inserter_pickup(world& w, uint16_t item, uint16_t max) = 0;
+    virtual bool     inserter_place(world& w, uint16_t item, uint16_t amount) = 0;
+    item             inserter_pickup(world& w, container& need, uint16_t max);
 };
 
 struct chest_container: public container {
@@ -31,10 +31,10 @@ struct chest_container: public container {
     void     sort(size_t index, uint16_t newvalue);
     bool     resize(world& w, uint16_t item, uint16_t value, uint16_t newvalue);
     item     at(uint16_t index) override;
-    uint32_t need() override;
-    item     pickup_any(world& w, uint16_t max) override;
-    uint16_t pickup(world& w, uint16_t item, uint16_t max) override;
-    bool     place(world& w, uint16_t item, uint16_t amount) override;
+    uint32_t inserter_need() override;
+    item     inserter_pickup_any(world& w, uint16_t max) override;
+    uint16_t inserter_pickup(world& w, uint16_t item, uint16_t max) override;
+    bool     inserter_place(world& w, uint16_t item, uint16_t amount) override;
 };
 
 struct recipe_container: public container {
@@ -48,13 +48,13 @@ struct recipe_container: public container {
     bool     pickup_batch(world& w, item const* items);
     bool     place_batch(world& w, item const* items);
     item     at(uint16_t index) override;
-    uint32_t need() override;
-    item     pickup_any(world& w, uint16_t max) override;
-    uint16_t pickup(world& w, uint16_t item, uint16_t max) override;
-    bool     place(world& w, uint16_t item, uint16_t amount) override;
+    uint32_t inserter_need() override;
+    item     inserter_pickup_any(world& w, uint16_t max) override;
+    uint16_t inserter_pickup(world& w, uint16_t item, uint16_t max) override;
+    bool     inserter_place(world& w, uint16_t item, uint16_t amount) override;
 };
 
 struct container_mgr {
-    std::vector<chest_container> chest;
+    std::vector<chest_container>  chest;
     std::vector<recipe_container> recipe;
 };

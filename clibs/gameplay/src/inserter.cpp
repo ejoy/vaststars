@@ -36,7 +36,7 @@ tryActive(world& w, inserter& i, entity& e, capacitance& c) {
         if (i.hold_amount == 0) {
             container& input = w.query_container<container>(i.input_container);
             container& output = w.query_container<container>(i.output_container);
-            auto r = input.pickup(w, output, 1);
+            auto r = input.inserter_pickup(w, output, 1);
             if (r.amount == 0) {
                 return false;
             }
@@ -48,7 +48,7 @@ tryActive(world& w, inserter& i, entity& e, capacitance& c) {
     else {
         if (i.hold_amount != 0) {
             container& output = w.query_container<container>(i.output_container);
-            if (!output.place(w, i.hold_item, i.hold_amount)) {
+            if (!output.inserter_place(w, i.hold_item, i.hold_amount)) {
                 return false;
             }
             i.hold_item = 0;
