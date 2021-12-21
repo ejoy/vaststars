@@ -53,14 +53,14 @@ end
 
 print "copy data to vaststars-release/* ..."
 
-copy_directory(BIN, output / "bin", function (path)
+copy_directory(BIN, output / "bin/msvc/release", function (path)
    return path:equal_extension '.dll' or path:equal_extension'.exe' or path:equal_extension'.lua'
 end)
 copy_directory(input / "packages", output / "packages", function (path)
     return path:filename():string() ~= ".gitignore"
 end)
 
-local files = {"run.bat", "settings", ".mount", "main.lua"}
+local files = {"run.bat", "run_editor.bat", "settings", ".mount", "main.lua"}
 for _, file in ipairs(files) do
 	fs.copy_file(input / file, output / file, fs.copy_options.overwrite_existing)
 end
@@ -68,7 +68,7 @@ end
 if PLAT == "msvc" then
     print "copy msvc depend dll"
     local msvc = dofile "tools/install/msvc_helper.lua"
-    msvc.copy_vcrt("x64", output / "bin")
+    msvc.copy_vcrt("x64", output / "bin/msvc/release")
 end
 
 local function check_need_submit(...)
