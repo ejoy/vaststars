@@ -16,7 +16,7 @@ static void
 checkFinish(world& w, burner& b) {
 	if (b.process == STATUS_DONE) {
 		prototype_context recipe = w.prototype(b.recipe);
-		assembling_container& container = w.query_container<assembling_container>(b.container);
+		recipe_container& container = w.query_container<recipe_container>(b.container);
 		container::item* items = (container::item*)pt_results(&recipe);
 		if (container.place_batch(w, items)) {
 			b.process = STATUS_IDLE;
@@ -43,7 +43,7 @@ lupdate(lua_State *L) {
 		burner& b = v.get<burner>();
 		if (b.process == STATUS_DONE || b.process == STATUS_IDLE) {
 			prototype_context recipe = w.prototype(b.recipe);
-			assembling_container& container = w.query_container<assembling_container>(b.container);
+			recipe_container& container = w.query_container<recipe_container>(b.container);
 			if (b.process == STATUS_DONE) {
 				container::item* items = (container::item*)pt_results(&recipe);
 				if (container.place_batch(w, items)) {

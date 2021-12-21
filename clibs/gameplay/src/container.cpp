@@ -133,7 +133,7 @@ bool chest_container::place(world& w, uint16_t item, uint16_t amount) {
     return true;
 }
 
-assembling_container::assembling_container(item_array in, item_array out)
+recipe_container::recipe_container(item_array in, item_array out)
     : inslots(in.size())
     , outslots(out.size())
 {
@@ -149,7 +149,7 @@ assembling_container::assembling_container(item_array in, item_array out)
     }
 }
 
-container::item assembling_container::at(uint16_t index) {
+container::item recipe_container::at(uint16_t index) {
     if (index < inslots.size()) {
         return inslots[index];
     }
@@ -159,7 +159,7 @@ container::item assembling_container::at(uint16_t index) {
     return {0,0};
 }
 
-uint32_t assembling_container::need() {
+uint32_t recipe_container::need() {
     for (auto& s : outslots) {
         if (s.amount >= s.limit) {
             return NO_ITEM;
@@ -173,7 +173,7 @@ uint32_t assembling_container::need() {
     return NO_ITEM;
 }
 
-container::item assembling_container::pickup_any(world& w, uint16_t max) {
+container::item recipe_container::pickup_any(world& w, uint16_t max) {
     for (auto& s : outslots) {
         if (s.amount != 0) {
             uint16_t r = std::min(s.amount, max);
@@ -184,7 +184,7 @@ container::item assembling_container::pickup_any(world& w, uint16_t max) {
     return {0,0};
 }
 
-uint16_t assembling_container::pickup(world& w, uint16_t item, uint16_t max) {
+uint16_t recipe_container::pickup(world& w, uint16_t item, uint16_t max) {
     for (auto& s : outslots) {
         if (s.item == item) {
             uint16_t r = std::min(s.amount, max);
@@ -195,7 +195,7 @@ uint16_t assembling_container::pickup(world& w, uint16_t item, uint16_t max) {
     return 0;
 }
 
-bool assembling_container::place(world& w, uint16_t item, uint16_t amount) {
+bool recipe_container::place(world& w, uint16_t item, uint16_t amount) {
     for (auto& s : inslots) {
         if (s.item == item) {
             if (amount + s.amount > s.limit) {
@@ -208,7 +208,7 @@ bool assembling_container::place(world& w, uint16_t item, uint16_t amount) {
     return false;
 }
 
-bool assembling_container::pickup_batch(world& w, item const* items) {
+bool recipe_container::pickup_batch(world& w, item const* items) {
     for (size_t i = 0; i < inslots.size(); ++i) {
         auto& s = inslots[i];
         auto& t = items[i];
@@ -225,7 +225,7 @@ bool assembling_container::pickup_batch(world& w, item const* items) {
     return true;
 }
 
-bool assembling_container::place_batch(world& w, item const* items) {
+bool recipe_container::place_batch(world& w, item const* items) {
     for (size_t i = 0; i < outslots.size(); ++i) {
         auto& s = outslots[i];
         auto& t = items[i];
@@ -274,8 +274,8 @@ lcreate(lua_State* L) {
         return 1;
     }
     else {
-        w.containers.assembling.emplace_back(read_table(L, 3), read_table(L, 4));
-        lua_pushinteger(L, w.container_id<assembling_container>());
+        w.containers.recipe.emplace_back(read_table(L, 3), read_table(L, 4));
+        lua_pushinteger(L, w.container_id<recipe_container>());
         return 1;
     }
 }

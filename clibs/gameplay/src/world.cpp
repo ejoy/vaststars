@@ -7,8 +7,8 @@
 
 #define CONTAINER_TYPE(id)  ((id) & 0x8000)
 #define CONTAINER_INDEX(id) ((id) & 0x3FFF)
-#define CONTAINER_TYPE_CHEST      0x0000
-#define CONTAINER_TYPE_ASSEMBLING 0x8000
+#define CONTAINER_TYPE_CHEST  0x0000
+#define CONTAINER_TYPE_RECIPE 0x8000
 
 template <>
 container& world::query_container<container>(uint16_t id) {
@@ -17,16 +17,16 @@ container& world::query_container<container>(uint16_t id) {
         assert(containers.chest.size() > idx);
         return containers.chest[idx];
     }
-    assert(containers.assembling.size() > idx);
-    return containers.assembling[idx];
+    assert(containers.recipe.size() > idx);
+    return containers.recipe[idx];
 }
 
 template <>
-assembling_container& world::query_container<assembling_container>(uint16_t id) {
+recipe_container& world::query_container<recipe_container>(uint16_t id) {
     uint16_t idx = CONTAINER_INDEX(id);
     assert(CONTAINER_TYPE(id) != CONTAINER_TYPE_CHEST);
-    assert(containers.assembling.size() > idx);
-    return containers.assembling[idx];
+    assert(containers.recipe.size() > idx);
+    return containers.recipe[idx];
 }
 
 template <>
@@ -35,8 +35,8 @@ uint16_t world::container_id<chest_container>() {
 }
 
 template <>
-uint16_t world::container_id<assembling_container>() {
-    return CONTAINER_TYPE_ASSEMBLING | (uint16_t)(containers.assembling.size()-1);
+uint16_t world::container_id<recipe_container>() {
+    return CONTAINER_TYPE_RECIPE | (uint16_t)(containers.recipe.size()-1);
 }
 
 static int

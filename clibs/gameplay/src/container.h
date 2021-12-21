@@ -37,14 +37,14 @@ struct chest_container: public container {
     bool     place(world& w, uint16_t item, uint16_t amount) override;
 };
 
-struct assembling_container: public container {
+struct recipe_container: public container {
     struct slot: public item {
         uint16_t limit;
     };
     std::vector<slot> inslots;
     std::vector<slot> outslots;
 
-    assembling_container(item_array in, item_array out);
+    recipe_container(item_array in, item_array out);
     bool     pickup_batch(world& w, item const* items);
     bool     place_batch(world& w, item const* items);
     item     at(uint16_t index) override;
@@ -56,5 +56,5 @@ struct assembling_container: public container {
 
 struct container_mgr {
     std::vector<chest_container> chest;
-    std::vector<assembling_container> assembling;
+    std::vector<recipe_container> recipe;
 };
