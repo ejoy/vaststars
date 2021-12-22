@@ -63,6 +63,54 @@ prototype "化工厂1" {
     power = "200kW",
     drain = "6kW",
     priority = "secondary",
+    fluidbox = {
+        {
+            type = "input",
+            fluid_area = 10,
+            fluid_height = 1,
+            fluid_level = -1,
+            pipe = {
+                {type="input", position={0,4}},
+            }
+        },
+        {
+            type = "input",
+            fluid_area = 10,
+            fluid_height = 1,
+            fluid_level = -1,
+            pipe = {
+                {type="input", position={3,4}},
+            }
+        },
+        {
+            type = "input",
+            fluid_area = 10,
+            fluid_height = 1,
+            fluid_level = -1,
+            pipe = {
+                {type="input-output", position={-1,2}},
+                {type="input-output", position={4,2}},
+            }
+        },
+        {
+            type = "output",
+            fluid_area = 10,
+            fluid_height = 1,
+            fluid_level = -1,
+            pipe = {
+                {type="output", position={0,-1}},
+            }
+        },
+        {
+            type = "output",
+            fluid_area = 10,
+            fluid_height = 1,
+            fluid_level = -1,
+            pipe = {
+                {type="output", position={3,-1}},
+            }
+        },
+    }
 }
 
 prototype "蒸馏厂1" {
@@ -88,8 +136,11 @@ prototype "物流中心" {
 }
 
 prototype "液罐1" {
-    type ={"entity"},
+    type ={"entity", "storage-tank"},
     area = "3x3",
+    fluid_area = 10,
+    fluid_height = 2,
+    fluid_level = 0,
 }
 
 prototype "抽水泵" {
@@ -153,13 +204,14 @@ prototype "空气过滤器1" {
 }
 
 prototype "管道1" {
-    type ={"entity"},
+    type ={"entity","pipe"},
     area = "1x1",
 }
 
 prototype "地下管1" {
-    type ={"entity"},
+    type ={"entity","pipe-to-ground"},
     area = "1x1",
+    max_distance = 10,
 }
 
 prototype "太阳能板1" {
