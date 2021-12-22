@@ -19,7 +19,7 @@ prototype "铁丝" {
     description = "伴生在矿物里的碎石",
 }
 
-prototype "铁棍" {
+prototype "铁棒" {
     type = {"item"},
     stack = 100,
     description = "伴生在矿物里的碎石",
@@ -222,7 +222,7 @@ prototype "铁制电线杆" {
     description = "用于传输电力的铁制电杆",
 }
 
-prototype "科技中心1" {
+prototype "科研中心1" {
     type = {"item"},
     stack = 25,
     description = "研究科技技术的中心",
@@ -300,7 +300,7 @@ prototype "破损组装机" {
     description = "处理海水的工厂",
 }
 
-prototype "破损电线杆" {
+prototype "破损铁制电线杆" {
     type = {"item"},
     stack = 50,
     description = "处理海水的工厂",
