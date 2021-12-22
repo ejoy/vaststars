@@ -73,7 +73,10 @@ return function (name)
 		object.name = name
 		object.id = id
 		assert(id > 0)
-		assert(name_lookup[namekey] == nil)
+		if name_lookup[namekey] ~= nil then
+			local o = name_lookup[namekey]
+			error(("Duplicate %s: %s"):format(o.type[1], o.name))
+		end
 		if id_lookup[id] ~= nil then
 			local o = id_lookup[id]
 			error(("Duplicate id: %s %s"):format(namekey, o.type[1] .. "::" .. o.name))
