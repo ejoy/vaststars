@@ -19,9 +19,7 @@ local function generate_terrain_fields(w, h)
     return fields
 end
 
-function iterrain.create(data)
-    data = data or {}
-    --
+function iterrain.create()
     local width, height = 256, 256
     local unit = 1
     local srt = {
@@ -71,7 +69,6 @@ function iterrain.create(data)
                 tile_terrain_types = {},  -- = {[x][y] = terrain_type, ...}
                 tile_building_types = {}, -- = {[x][y] = building_type, ...} 
             },
-            on_ready = data.on_ready,
         }
     }
 

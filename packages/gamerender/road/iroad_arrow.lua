@@ -10,14 +10,14 @@ local iroad_arrow = ecs.interface "iroad_arrow"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 
 local on_prefab_message ; do
-    local funcs = {}
-    funcs["arrow_tile_coord"] = function(entity, prefab, arrow_tile_coord, tile_coord)
-        w:sync("road_arrow:in", entity)
-        entity.road_arrow.arrow_tile_coord = arrow_tile_coord
-        entity.road_arrow.tile_coord = tile_coord
+    local funcs = {} -- todo 此处通过 iprefab_proxy 接口设置?
+    funcs["set_arrow_tile_coord"] = function(entity, prefab, arrow_tile_coord, tile_coord)
+        w:sync("pickup_set_road:in", entity)
+        entity.pickup_set_road.arrow_tile_coord = arrow_tile_coord
+        entity.pickup_set_road.tile_coord = tile_coord
     end
 
-    funcs["position"] = function (entity, prefab, position)
+    funcs["set_position"] = function (entity, prefab, position)
         iom.set_position(prefab.root, position)
     end
 
@@ -29,7 +29,7 @@ local on_prefab_message ; do
     end
 end
 
-function iroad_arrow.create(position, yaxis_rotation, direction, tile_coord, arrow_tile_coord)
+function iroad_arrow.create(position, yaxis_rotation, tile_coord, arrow_tile_coord)
     local prefab_file_name = "road/arrow.prefab"
     local srt = iprefab_proxy.get_config_srt(prefab_file_name)
     srt.t = position
@@ -39,14 +39,14 @@ function iroad_arrow.create(position, yaxis_rotation, direction, tile_coord, arr
         {},
         {
             policy = {
-                "vaststars.gamerender|road_arrow",
+                "vaststars.gamerender|pickup_set_road"
             },
             data = {
-                road_arrow = {
-                    direction = direction,
+                pickup_set_road = {
                     tile_coord = tile_coord,
                     arrow_tile_coord = arrow_tile_coord,
                 },
+                pickup_mapping_tag = "pickup_set_road",
             },
         },
         {

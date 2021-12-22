@@ -22,8 +22,10 @@ system "pickup_mapping_system"
     .implement "pickup_mapping_system.lua"
     .method "after_pickup"
 
+component "pickup_mapping_tag"
+    .type "lua"
+
 interface "ipickup_mapping"
     .implement "pickup_mapping_system.lua"
     .method "mapping"
     .method "unmapping"
-    .method "get_entity"

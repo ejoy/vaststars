@@ -14,7 +14,7 @@ function drapdrop_system:data_changed()
             if state == "MOVE" then
                 for e in w:select "drapdrop:in scene:in" do
                     if e.drapdrop == true then
-                        world:pub {"drapdrop_entity", e.scene.id, vx, vy}
+                        world:pub {"drapdrop_entity", e, vx, vy}
                     end
                 end
             elseif state == "UP" then
@@ -30,15 +30,11 @@ function drapdrop_system:data_changed()
 end
 
 function drapdrop_system.after_pickup_mapping()
-    local mapping_entity
-    for _, _, msid in pickup_mapping_mb:unpack() do
-        mapping_entity = ipickup_mapping.get_entity(msid)
-        if mapping_entity then
-            w:sync("drapdrop?in", mapping_entity)
-            if mapping_entity.drapdrop ~= nil then
-                mapping_entity.drapdrop = true
-                w:sync("drapdrop:out", mapping_entity)
-            end
+    for _, _, mapping_entity in pickup_mapping_mb:unpack() do
+        w:sync("drapdrop?in", mapping_entity)
+        if mapping_entity.drapdrop ~= nil then
+            mapping_entity.drapdrop = true
+            w:sync("drapdrop:out", mapping_entity)
         end
     end
 end

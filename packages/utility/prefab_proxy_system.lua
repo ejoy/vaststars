@@ -14,21 +14,23 @@ local iani = ecs.import.interface "ant.animation|ianimation"
 
 local ud_refs = {}
 
-local function destroy_proxy(ud)
-    local proxy = ud.proxy
-    if not proxy.prefab then
-        w:sync("prefab_proxy:in", proxy)
+local function destroy_proxy(ud, prefab)
+    for _, e in ipairs(prefab.tag["*"]) do
+        w:sync("scene:in", e)
+        ipickup_mapping.unmapping(e.scene.id)
     end
-
-    proxy.prefab_proxy.prefab:send("destroy")
+    prefab:remove()
+    ud_refs[ud.ud_ref_id] = nil
+    w:remove(ud.proxy)
 end
 
 function prefab_proxy_sys:component_init()
-    for _, _, ud in prefab_proxy_remove_mb:unpack() do
-        for slot_name, e in pairs(ud.slot_attachs) do
-            world:call(e, "set_parent", nil)
+    for _, _, ud, prefab in prefab_proxy_remove_mb:unpack() do
+        for _, prefab in pairs(ud.slot_attachs) do
+            world:call(prefab.root, "set_parent", nil)
+            prefab:send("remove")
         end
-        destroy_proxy(ud)
+        destroy_proxy(ud, prefab)
     end
 end
 
@@ -73,40 +75,31 @@ end
 
 local __on_prefab_message ; do
     local funcs = {}
-    funcs["remove"] = function(ud)
+    funcs["remove"] = function(ud, prefab)
         if next(ud.slot_attachs) then
-            world:pub {"prefab_proxy", "remove", ud}
+            world:pub {"prefab_proxy", "remove", ud, prefab}
             return
         end
 
-        destroy_proxy(ud)
+        destroy_proxy(ud, prefab)
     end
 
-    funcs["destroy"] = function(ud, prefab)
-        for _, e in ipairs(prefab.tag["*"]) do
-            w:sync("scene:in", e)
-            ipickup_mapping.unmapping(e.scene.id)
-        end
-        prefab:remove()
-        ud_refs[ud.ud_ref_id] = nil
-        w:remove(ud.proxy)
-    end
+    do
+        local function entity_play(e, state)
+            w:sync("animation?in", e)
+            if not e.animation then
+                return
+            end
 
-    funcs["slot_attach"] = function(ud, prefab, slot_name, prefab_file_name)
-        local slot = ud.slots[slot_name]
-        if not slot then
-            -- todo
-            error(("can not found slot name (%s)"):format(slot_name))
-            return
+            iani.play(e, state)
         end
 
-        local prefab = ecs.create_instance(prefab_file_name)
-        world:call(prefab.root, "set_parent", slot)
-        ud.slot_attachs[slot_name] = prefab.root
-    end
-
-    funcs["slot_detach"] = function(ud, _, slot_name)
-        ud.slot_attachs[slot_name] = nil
+        funcs["play_animation_once"] = function(_, prefab, animation_name)
+            local state = {name = animation_name, loop = false, manual = false}
+            for _, e in ipairs(prefab.tag["*"]) do
+                entity_play(e, state)
+            end
+        end
     end
 
     function __on_prefab_message(ud_ref_id, prefab, cmd, ...)
@@ -192,7 +185,7 @@ function iprefab_proxy.get_config_srt(prefab_file_name)
     return srt
 end
 
-function iprefab_proxy.set_slot(proxy, slot_name, entity)
+function iprefab_proxy.slot_attach(proxy, slot_name, prefab)
     w:sync("prefab_proxy:in", proxy)
     local ud = ud_refs[proxy.prefab_proxy.ud_ref_id]
     if not ud then
@@ -206,6 +199,25 @@ function iprefab_proxy.set_slot(proxy, slot_name, entity)
         return
     end
 
-    world:call(entity, "set_parent", slot)
-    ud.slot_attachs[slot_name] = entity
+    world:call(prefab.root, "set_parent", slot)
+    ud.slot_attachs[slot_name] = prefab
+end
+
+function iprefab_proxy.slot_detach(proxy, slot_name)
+    w:sync("prefab_proxy:in", proxy)
+    local ud = ud_refs[proxy.prefab_proxy.ud_ref_id]
+    if not ud then
+        error(("can not found proxy id (%d)"):format(proxy.prefab_proxy.ud_ref_id))
+    end
+
+    local slot = ud.slots[slot_name]
+    local prefab = ud.slot_attachs[slot_name]
+    if not slot or not prefab then
+        error(("can not found slot name (%s)"):format(slot_name))
+        return
+    end
+
+    world:call(prefab.root, "set_parent", slot)
+    prefab:send("remove")
+    ud.slot_attachs[slot_name] = nil
 end

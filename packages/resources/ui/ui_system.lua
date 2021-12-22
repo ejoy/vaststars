@@ -17,12 +17,19 @@ function m.postMessage(url, event, ...)
     end
 end
 
+function m.pub(...)
+    local ud = {}
+    ud.url = ""
+    ud.event = "__pub"
+    ud.ud = {...}
+    window.extern.postMessage(json_encode(ud))
+end
+
 function m.open(url)
     local ud = {}
     ud.url = url
     ud.event = "__open"
     ud.ud = {}
-
     window.extern.postMessage(json_encode(ud))
     m.postMessage(url, "__get_data")
 end

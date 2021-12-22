@@ -75,6 +75,7 @@ function road_sys:init()
         policy = {
             "ant.scene|scene_object",
             "vaststars.gamerender|building",
+            "vaststars.gamerender|pickup_show_set_road_arrow"
         },
         data = {
             scene = {
@@ -84,6 +85,8 @@ function road_sys:init()
                 building_type = "road",
             },
             reference = true,
+            pickup_show_set_road_arrow = true,
+            pickup_mapping_tag = "pickup_show_set_road_arrow",
         },
     }
 end
@@ -373,6 +376,7 @@ local function __show_dir_arrow(tile_coord, in_dir, out_dir)
         return
     end
 
+    local idx = #route_prefabs + 1
     local prefab = ecs.create_instance("/pkg/vaststars.resources/" .. c.prefab) -- todo 此处需要缓存 prefab 后续删除
     prefab.on_ready = function(prefab)
         local ifs 		= ecs.import.interface "ant.scene|ifilter_state"
@@ -393,11 +397,11 @@ local function __show_dir_arrow(tile_coord, in_dir, out_dir)
             end
         elseif cmd == "remove" then
             prefab:remove()
+            table.remove(route_prefabs, idx) -- todo idx 可能非法
         end
     end
-    route_prefabs[#route_prefabs + 1] = world:create_object(prefab)
-
-    iprefab_proxy.set_slot(proxy, c.slot, prefab.root)
+    route_prefabs[idx] = world:create_object(prefab)
+    iprefab_proxy.slot_attach(proxy, c.slot, route_prefabs[idx])
 end
 
 -- todo

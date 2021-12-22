@@ -49,6 +49,8 @@ local function open(url)
                 world:pub {"ui_receiver_close", res.url, "__close", table.unpack(res.ud)}
             elseif res.event == "__set_data" then
                 world:pub {"ui_receiver_datasource", res.url, "__set_data", table.unpack(res.ud)}
+            elseif res.event == "__pub" then
+                world:pub {table.unpack(res.ud)}
             else
                 world:pub {"ui_receiver", res.url, res.event, table.unpack(res.ud)}
             end

@@ -16,12 +16,6 @@ interface "iroad"
     .method "set_building_entry"
     .method "show_route"
 
-component "road_arrow"
-    .type "lua"
-
-policy "road_arrow"
-    .component "road_arrow"
-
 interface "iroad_arrow"
     .implement "road/iroad_arrow.lua"
     .method "create"

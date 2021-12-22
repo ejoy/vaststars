@@ -107,6 +107,7 @@
                 flex-direction: column;
             }
         </style>
+        <style path = "common/test-button.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
@@ -131,8 +132,8 @@
             function start.clickContructConfirm()
                 ui_sys.postMessage("construct.rml", "confirm")
             end
-            function start.clickDebug()
-                ui_sys.postMessage("debug", "debug")
+            function start.clickDebug(event, i)
+                ui_sys.pub("debug", i)
             end
             ui_sys.addEventListener("construct.rml", {
                 ["show_construct_confirm"] = function(show, position)
@@ -151,7 +152,8 @@
         <div id="test" data-model="start">
             <!-- debug 按钮 -->
             <div style = "position: absolute; left: 0vmin; top: 0vmin; z-index: 999;">
-                <button class = "test-button" data-event-click="clickDebug()" style = "position: absolute; left: 0vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></button>
+                <div class = "test-button" data-event-click="clickDebug(1)" style = "position: absolute; left: 0vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
+                <div class = "test-button" data-event-click="clickDebug(2)" style = "position: absolute; left: 5vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
             </div>
 
             <!-- 建造确认按钮 -->
