@@ -633,3 +633,31 @@ prototype "机械科技包" {
     time = "15s",
     description = "使用铁锭和碎石锻造铁板",
 }
+
+prototype "机械科技包" {
+    type = { "recipe" },
+    category = "中型制造",
+    ingredients = {
+        {"电动机1", 1},
+        {"铁齿轮", 3},
+    },
+    results = {
+        {"机械科技包", 1},
+    },
+    time = "15s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "空气分离1" {
+    type = { "recipe" },
+    category = "过滤",
+    ingredients = {
+        {"空气", 150},
+    },
+    results = {
+        {"氮气", 90},
+        {"二氧化碳", 40},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
