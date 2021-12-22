@@ -13,6 +13,18 @@ prototype "铁板" {
     description = "锻造加工成的铁板",
 }
 
+prototype "铁丝" {
+    type = {"item"},
+    stack = 100,
+    description = "伴生在矿物里的碎石",
+}
+
+prototype "铁棍" {
+    type = {"item"},
+    stack = 100,
+    description = "伴生在矿物里的碎石",
+}
+
 prototype "铁矿石" {
     type = {"item"},
     stack = 100,
@@ -20,6 +32,72 @@ prototype "铁矿石" {
 }
 
 prototype "碎石" {
+    type = {"item"},
+    stack = 100,
+    description = "伴生在矿物里的碎石",
+}
+
+prototype "石砖" {
+    type = {"item"},
+    stack = 200,
+    description = "伴生在矿物里的碎石",
+}
+
+prototype "碳" {
+    type = {"item"},
+    stack = 100,
+    description = "伴生在矿物里的碎石",
+}
+
+prototype "硅" {
+    type = {"item"},
+    stack = 100,
+    description = "伴生在矿物里的碎石",
+}
+
+prototype "沙石矿" {
+    type = {"item"},
+    stack = 100,
+    description = "伴生在矿物里的碎石",
+}
+
+prototype "氢氧化钠" {
+    type = {"item"},
+    stack = 100,
+    description = "伴生在矿物里的碎石",
+}
+
+prototype "石头" {
+    type = {"item"},
+    stack = 100,
+    description = "伴生在矿物里的碎石",
+}
+
+prototype "沙子" {
+    type = {"item"},
+    stack = 100,
+    description = "伴生在矿物里的碎石",
+}
+
+prototype "塑料" {
+    type = {"item"},
+    stack = 100,
+    description = "伴生在矿物里的碎石",
+}
+
+prototype "电动机1" {
+    type = {"item"},
+    stack = 50,
+    description = "伴生在矿物里的碎石",
+}
+
+prototype "铁齿轮" {
+    type = {"item"},
+    stack = 50,
+    description = "伴生在矿物里的碎石",
+}
+
+prototype "玻璃" {
     type = {"item"},
     stack = 100,
     description = "伴生在矿物里的碎石",
@@ -90,9 +168,15 @@ prototype "粉碎机1" {
     description = "用于粉碎物体的装置",
 }
 
-prototype "物流中心" {
+prototype "物流中心1" {
     type = {"item"},
     stack = 25,
+    description = "派遣和停靠运输车辆的物流车站",
+}
+
+prototype "运输车辆1" {
+    type = {"item"},
+    stack = 50,
     description = "派遣和停靠运输车辆的物流车站",
 }
 
@@ -186,10 +270,78 @@ prototype "水电站1" {
     description = "处理海水的工厂",
 }
 
+prototype "破损空气过滤器" {
+    type = {"item"},
+    stack = 10,
+    description = "处理海水的工厂",
+}
+
+prototype "破损水电站" {
+    type = {"item"},
+    stack = 10,
+    description = "处理海水的工厂",
+}
+
+prototype "破损电解厂" {
+    type = {"item"},
+    stack = 10,
+    description = "处理海水的工厂",
+}
+
+prototype "破损化工厂" {
+    type = {"item"},
+    stack = 10,
+    description = "处理海水的工厂",
+}
+
+prototype "破损组装机" {
+    type = {"item"},
+    stack = 10,
+    description = "处理海水的工厂",
+}
+
+prototype "破损电线杆" {
+    type = {"item"},
+    stack = 50,
+    description = "处理海水的工厂",
+}
+
+prototype "破损太阳能板" {
+    type = {"item"},
+    stack = 50,
+    description = "处理海水的工厂",
+}
+
+prototype "破损蓄电池" {
+    type = {"item"},
+    stack = 50,
+    description = "处理海水的工厂",
+}
 
 
+prototype "地质科技包" {
+    type = {"item"},
+    stack = 100,
+    description = "处理海水的工厂",
+}
 
+prototype "环境科技包" {
+    type = {"item"},
+    stack = 100,
+    description = "处理海水的工厂",
+}
 
+prototype "机械科技包" {
+    type = {"item"},
+    stack = 100,
+    description = "处理海水的工厂",
+}
+
+prototype "砖石公路" {
+    type = {"item"},
+    stack = 100,
+    description = "处理海水的工厂",
+}
 
 
 prototype "铜片" {
