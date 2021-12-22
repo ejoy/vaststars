@@ -69,22 +69,20 @@ return function (name)
 		local cache_key = table.concat(typelist, ":")
 		local combine_keys = ckeys[cache_key](typelist)
 		local namekey = object.type[1] .. "::" .. name
+		local id = hashstring(namekey) & 0xffff
 		object.name = name
-		local id = object.id
-		if not id then
-			id = (hashstring(namekey) & 0x3fff) | 0x4000
-			object.id = id
-		else
-			object.id = id | 0
-			assert(id > 0 and id <= 0x3fff)
-		end
+		object.id = id
+		assert(id > 0)
 		assert(name_lookup[namekey] == nil)
-		assert(id_lookup[id] == nil)
+		if id_lookup[id] ~= nil then
+			local o = id_lookup[id]
+			error(("Duplicate id: %s %s"):format(namekey, o.type[1] .. "::" .. o.name))
+		end
 		for _, key in ipairs(combine_keys) do
 			local v = object[key.key]
 			local ok, r = pcall(unit[key.unit].converter, v, object)
 			if not ok or r == nil then
-				error(string.format("Missing .%s", key.key))
+				error(string.format("Missing .%s in %s", key.key, namekey))
 			end
 			object[key.key] = r
 		end
