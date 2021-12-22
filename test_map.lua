@@ -8,7 +8,7 @@ game.create_entity "小型铁制箱子" {
     },
     description = "铁矿石",
 }
-game.create_entity "inserter" {
+game.create_entity "机器爪1" {
     x = 2,
     y = 1,
     dir = "W"
@@ -18,7 +18,7 @@ game.create_entity "组装机1" {
     y = 1,
     recipe = "铁锭"
 }
-game.create_entity "inserter" {
+game.create_entity "机器爪1" {
     x = 6,
     y = 1,
     dir = "W"
