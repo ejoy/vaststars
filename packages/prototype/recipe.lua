@@ -145,7 +145,7 @@ prototype "机器爪1" {
     category = "小型制造",
     ingredients = {
         {"铁棍", 3},
-        {"齿轮", 2},
+        {"铁齿轮", 2},
         {"电动机1", 1},
     },
     results = {
@@ -201,7 +201,7 @@ prototype "采矿机1" {
     category = "中型制造",
     ingredients = {
         {"铁板", 4},
-        {"齿轮", 3},
+        {"铁齿轮", 3},
         {"电动机1", 2},
     },
     results = {
