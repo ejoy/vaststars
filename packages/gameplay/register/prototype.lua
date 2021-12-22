@@ -80,9 +80,12 @@ return function (name)
 		end
 		for _, key in ipairs(combine_keys) do
 			local v = object[key.key]
-			local ok, r = pcall(unit[key.unit].converter, v, object)
-			if not ok or r == nil then
-				error(string.format("Missing .%s in %s", key.key, namekey))
+			local ok, r, errmsg = pcall(unit[key.unit].converter, v, object)
+			if not ok then
+				error(string.format("Error format .%s in %s", key.key, namekey))
+			end
+			if r == nil then
+				error(string.format(".%s in %s: %s", key.key, namekey, errmsg))
 			end
 			object[key.key] = r
 		end
