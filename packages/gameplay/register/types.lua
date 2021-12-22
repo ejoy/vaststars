@@ -23,14 +23,16 @@ local function number_conversion(n, u)
 	elseif u == 'G' then
 		n = n * 1000000000
 	elseif u ~= '' then
-		error ("Invalid postfix " .. u)
+		return nil, ("Invalid postfix " .. u)
 	end
 	return n
 end
 
 register_unit("power", "float", function(s)
 	local n, u = s:match "^(%d+%.?%d*)([kMG]?)W$"
-	assert(n, "Need power : nW")
+	if not n then
+		return nil, "Need power : nW"
+	end
 	return number_conversion(n,u) / UPS
 end)
 
@@ -39,7 +41,9 @@ register_unit("drain_power", "float", function(s, object)
 		return object.power / 30
 	end
 	local n, u = s:match "^(%d+%.?%d*)([kMG]?)W$"
-	assert(n, "Need power : nW")
+	if not n then
+		return nil, "Need power : nW"
+	end
 	return number_conversion(n,u) / UPS
 end)
 
@@ -48,18 +52,21 @@ register_unit("energy", "float", function(s, object)
 		return object.power * 2
 	end
 	local n, u = s:match "^(%d+%.?%d*)([kMG]?)J$"
-	assert(n, "Need energy : nJ")
+	if not n then
+		return nil, "Need energy : nJ"
+	end
 	return number_conversion(n,u)
 end)
 
 local function check_number(s)
 	if type(s) == "number" then
 		return s
-	else
-		local n, u = s:match "^(%d+%.?%d*)([kMG]?)$"
-		assert(n, "Need a number")
-		return number_conversion(n,u)
 	end
+	local n, u = s:match "^(%d+%.?%d*)([kMG]?)$"
+	if not n then
+		return nil, "Need a number"
+	end
+	return number_conversion(n,u)
 end
 
 register_unit("number", "float", check_number)
@@ -76,7 +83,9 @@ register_unit("percentage", "float", function(s)
 		return s
 	end
 	local p = s:match "^(%-?%d+%.?%d*)%%$"
-	assert(p, "Need percentage : n%")
+	if not p then
+		return nil, "Need percentage : n%"
+	end
 	return p / 100
 end)
 
@@ -94,25 +103,23 @@ register_unit("time", "word", function(s)
 		local tick = assert(tonumber(s))
 		return tick
 	end
-	error("Invalid time")
+	return nil, "Invalid time"
 end)
 
-local size_cache = setmetatable( {}, { __index = function(c, key)
-	assert(type(key) == "string", "Need size *x*")
-	local w, h = key:match "(%d)x(%d)"
-	assert(w, "Need size *x*")
+register_unit("size", "word", function(s)
+	if type(s) ~= "string" then
+		return nil, "Need size *x*"
+	end
+	local w, h = s:match "(%d)x(%d)"
+	if not w then
+		return nil, "Need size *x*"
+	end
 	w = w + 0
 	h = h + 0
 	assert(w > 0 and w < 256)
 	assert(h > 0 and h < 256)
 	local v = w << 8 | h
-	c[key] = v
 	return v
-end })
-
-
-register_unit("size", "word", function(s)
-	return size_cache[s]
 end)
 
 register_unit("text", "string", function(s)
@@ -130,6 +137,9 @@ register_unit("items", "string", function(s)
 	local r = {}
 	for _, t in ipairs(s) do
 		local what = prototype.query("item", t[1])
+		if not what then
+			return nil, "Unkonwn item: " .. t[1]
+		end
 		r[#r+1] = string.pack("<I2I2", what.id, t[2])
 	end
 	return table.concat(r)
