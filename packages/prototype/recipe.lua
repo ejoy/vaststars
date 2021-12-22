@@ -44,14 +44,14 @@ prototype "铁板2" {
 
 }
 
-prototype "铁棍1" {
+prototype "铁棒1" {
     type = { "recipe" },
     category = "金属锻造",
     ingredients = {
         {"铁锭", 4},
     },
     results = {
-        {"铁棍", 5}
+        {"铁棒", 5}
     },
     time = "4s",
     description = "使用铁锭和碎石锻造铁板",
@@ -61,7 +61,7 @@ prototype "铁丝1" {
     type = { "recipe" },
     category = "金属锻造",
     ingredients = {
-        {"铁棍", 3},
+        {"铁棒", 3},
     },
     results = {
         {"铁丝", 4}
@@ -114,7 +114,7 @@ prototype "电动机1" {
     type = { "recipe" },
     category = "中型组装",
     ingredients = {
-        {"铁棍", 1},
+        {"铁棒", 1},
         {"铁丝", 2},
         {"铁板", 2},
         {"塑料", 1},
@@ -130,7 +130,7 @@ prototype "铁齿轮" {
     type = { "recipe" },
     category = "小型制造",
     ingredients = {
-        {"铁棍", 1},
+        {"铁棒", 1},
         {"铁板", 2},
     },
     results = {
@@ -144,7 +144,7 @@ prototype "机器爪1" {
     type = { "recipe" },
     category = "小型制造",
     ingredients = {
-        {"铁棍", 3},
+        {"铁棒", 3},
         {"铁齿轮", 2},
         {"电动机1", 1},
     },
@@ -186,7 +186,7 @@ prototype "小型铁制箱子" {
     type = { "recipe" },
     category = "中型组装",
     ingredients = {
-        {"铁棍", 1},
+        {"铁棒", 1},
         {"铁板", 8},
     },
     results = {
@@ -276,7 +276,7 @@ prototype "铁制电线杆" {
     category = "中型制造",
     ingredients = {
         {"塑料", 1},
-        {"铁棍", 1},
+        {"铁棒", 1},
         {"铁丝", 2},
     },
     results = {
@@ -291,7 +291,7 @@ prototype "液罐1" {
     category = "大型制造",
     ingredients = {
         {"管道1", 4},
-        {"铁棍", 1},
+        {"铁棒", 1},
         {"铁板", 6},
     },
     results = {
@@ -335,7 +335,7 @@ prototype "烟囱1" {
     type = { "recipe" },
     category = "大型制造",
     ingredients = {
-        {"铁棍", 2},
+        {"铁棒", 2},
         {"管道1", 3},
         {"石砖", 3},
     },
@@ -467,7 +467,7 @@ prototype "电解厂1" {
     type = { "recipe" },
     category = "大型制造",
     ingredients = {
-        {"水罐1", 4},
+        {"液罐1", 4},
         {"铁制电线杆", 8},
     },
     results = {
