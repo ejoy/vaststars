@@ -249,6 +249,26 @@ policy:
   ant.scene|scene_object
 ---
 data:
+  follow_flag: 1
+  follow_joint: None
+  name: "货物挂点"
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 2.200000047683716, 0.6000000238418579}
+  slot: true
+  tag:
+    empty1
+mount: 11
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
   _animation:
     anim_clips: {}
     joint_list: {}
