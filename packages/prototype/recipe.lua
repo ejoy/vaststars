@@ -432,7 +432,7 @@ prototype "粉碎机1" {
     description = "使用铁锭和碎石锻造铁板",
 }
 
-prototype "车辆厂1" {
+prototype "物流中心1" {
     type = { "recipe" },
     category = "大型制造",
     ingredients = {
@@ -441,7 +441,7 @@ prototype "车辆厂1" {
         {"砖石公路", 10},
     },
     results = {
-        {"车辆厂1", 1},
+        {"物流中心1", 1},
     },
     time = "10s",
     description = "使用铁锭和碎石锻造铁板",
