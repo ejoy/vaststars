@@ -12,15 +12,12 @@ local prefab_proxy_sys = ecs.system "prefab_proxy_system"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local iani = ecs.import.interface "ant.animation|ianimation"
 
-local ud_refs = {}
-
 local function destroy_proxy(ud, prefab)
     for _, e in ipairs(prefab.tag["*"]) do
         w:sync("scene:in", e)
         ipickup_mapping.unmapping(e.scene.id)
     end
     prefab:remove()
-    ud_refs[ud.ud_ref_id] = nil
     w:remove(ud.proxy)
 end
 
@@ -34,20 +31,7 @@ function prefab_proxy_sys:component_init()
     end
 end
 
-local gen_ud_ref_id ; do
-    local id = 0
-    function gen_ud_ref_id()
-        id = id + 1
-        return id
-    end
-end
-
-local function __on_prefab_ready(ud_ref_id, prefab)
-    local ud = ud_refs[ud_ref_id]
-    if not ud then
-        error(("can not found proxy id (%d)"):format(ud_ref_id))
-    end
-
+local function __on_prefab_ready(ud, prefab)
     local on_pickup_mapping = ud.events.on_pickup_mapping
     for _, e in ipairs(prefab.tag["*"]) do
         w:sync("scene:in slot?in name:in _animation?in", e)
@@ -94,20 +78,15 @@ local __on_prefab_message ; do
             iani.play(e, state)
         end
 
-        funcs["play_animation_once"] = function(_, prefab, animation_name)
-            local state = {name = animation_name, loop = false, manual = false}
+        funcs["play_animation_once"] = function(ud, prefab, animation_name)
+            local state = {name = animation_name, loop = false, manual = false, owner = ud.proxy}
             for _, e in ipairs(prefab.tag["*"]) do
                 entity_play(e, state)
             end
         end
     end
 
-    function __on_prefab_message(ud_ref_id, prefab, cmd, ...)
-        local ud = ud_refs[ud_ref_id]
-        if not ud then
-            error(("can not found proxy id (%d)"):format(ud_ref_id))
-        end
-
+    function __on_prefab_message(ud, prefab, cmd, ...)
         local func = funcs[cmd]
         if func then
             func(ud, prefab, ...)
@@ -122,12 +101,12 @@ end
 
 -- 'prefab' must be the value returned by calling the function ecs.create_instance()
 function iprefab_proxy.create(prefab, srt, v, events)
-    local id = gen_ud_ref_id()
+    local ud = {slots = {}, slot_attachs = {}, events = events or {}}
     prefab.on_ready = function(prefab)
-        __on_prefab_ready(id, prefab)
+        __on_prefab_ready(ud, prefab)
     end
     prefab.on_message = function(prefab, ...)
-        __on_prefab_message(id, prefab, ...)
+        __on_prefab_message(ud, prefab, ...)
     end
     iom.set_srt(prefab.root, srt.s, srt.r, srt.t)
     local obj = world:create_object(prefab)
@@ -138,13 +117,13 @@ function iprefab_proxy.create(prefab, srt, v, events)
     v.data = v.data or {}
 
     v.policy[#v.policy+1] = "vaststars.utility|prefab_proxy"
-    v.data.prefab_proxy = {prefab = obj, root = prefab.root, ud_ref_id = id}
+    v.data.prefab_proxy = {prefab = obj, root = prefab.root, ud = ud}
     v.policy[#v.policy+1] = "ant.scene|scene_object"
     v.data.scene = {}
     v.data.reference = true
 
     local proxy = ecs.create_entity(v)
-    ud_refs[id] = {ud_ref_id = id, proxy = proxy, slots = {}, slot_attachs = {}, events = events or {}}
+    ud.proxy = proxy
     return proxy
 end
 
@@ -187,14 +166,9 @@ end
 
 function iprefab_proxy.slot_attach(proxy, slot_name, prefab)
     w:sync("prefab_proxy:in", proxy)
-    local ud = ud_refs[proxy.prefab_proxy.ud_ref_id]
-    if not ud then
-        error(("can not found proxy id (%d)"):format(proxy.prefab_proxy.ud_ref_id))
-    end
-
+    local ud = proxy.prefab_proxy.ud
     local slot = ud.slots[slot_name]
     if not slot then
-        -- todo
         error(("can not found slot name (%s)"):format(slot_name))
         return
     end
@@ -205,11 +179,7 @@ end
 
 function iprefab_proxy.slot_detach(proxy, slot_name)
     w:sync("prefab_proxy:in", proxy)
-    local ud = ud_refs[proxy.prefab_proxy.ud_ref_id]
-    if not ud then
-        error(("can not found proxy id (%d)"):format(proxy.prefab_proxy.ud_ref_id))
-    end
-
+    local ud = proxy.prefab_proxy.ud
     local slot = ud.slots[slot_name]
     local prefab = ud.slot_attachs[slot_name]
     if not slot or not prefab then
@@ -224,11 +194,7 @@ end
 
 function iprefab_proxy.has_slot_attach(proxy, slot_name)
     w:sync("prefab_proxy:in", proxy)
-    local ud = ud_refs[proxy.prefab_proxy.ud_ref_id]
-    if not ud then
-        error(("can not found proxy id (%d)"):format(proxy.prefab_proxy.ud_ref_id))
-    end
-
+    local ud = proxy.prefab_proxy.ud
     local slot = ud.slots[slot_name]
     if not slot then
         error(("can not found slot name (%s)"):format(slot_name))
