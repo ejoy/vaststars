@@ -43,7 +43,7 @@ prototype "石砖" {
     description = "伴生在矿物里的碎石",
 }
 
-prototype "碳" {
+prototype "石墨" {
     type = {"item"},
     stack = 100,
     description = "伴生在矿物里的碎石",

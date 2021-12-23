@@ -596,13 +596,55 @@ prototype "破损蓄电池" {
     type = { "recipe" },
     category = "手工制造",
     ingredients = {
-        {"碳", 1},
+        {"石墨", 1},
         {"破损蓄电池", 1},
     },
     results = {
         {"蓄电池1", 1},
     },
     time = "6s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "破损物流中心" {
+    type = { "recipe" },
+    category = "手工制造",
+    ingredients = {
+        {"铁板", 5},
+        {"破损物流中心", 1},
+    },
+    results = {
+        {"物流中心1", 1},
+    },
+    time = "6s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "破损运输汽车" {
+    type = { "recipe" },
+    category = "手工制造",
+    ingredients = {
+        {"铁丝", 10},
+        {"破损运输车辆", 1},
+    },
+    results = {
+        {"运输车辆1", 1},
+    },
+    time = "4s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "破损车站" {
+    type = { "recipe" },
+    category = "手工制造",
+    ingredients = {
+        {"铁棒", 6},
+        {"破损车站", 1},
+    },
+    results = {
+        {"车站1", 1},
+    },
+    time = "5s",
     description = "使用铁锭和碎石锻造铁板",
 }
 
@@ -643,6 +685,168 @@ prototype "空气分离1" {
     results = {
         {"氮气", 90},
         {"二氧化碳", 40},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "海水电解" {
+    type = { "recipe" },
+    category = "电解",
+    ingredients = {
+        {"海水", 40},
+    },
+    results = {
+        {"氢气", 110},
+        {"氯气", 15},
+        {"氢氧化钠", 1},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "二氧化碳转一氧化碳" {
+    type = { "recipe" },
+    category = "基础化工",
+    ingredients = {
+        {"二氧化碳", 40},
+        {"氢气", 40},
+    },
+    results = {
+        {"纯水", 8},
+        {"一氧化碳", 25},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "二氧化碳转甲烷" {
+    type = { "recipe" },
+    category = "基础化工",
+    ingredients = {
+        {"二氧化碳", 32},
+        {"氢气", 110},
+    },
+    results = {
+        {"纯水", 10},
+        {"甲烷", 24},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "一氧化碳转石墨" {
+    type = { "recipe" },
+    category = "基础化工",
+    ingredients = {
+        {"一氧化碳", 28},
+        {"氢气", 36},
+    },
+    results = {
+        {"纯水", 5},
+        {"石墨", 1},
+    },
+    time = "2s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "氯化氢" {
+    type = { "recipe" },
+    category = "基础化工",
+    ingredients = {
+        {"氯气", 30},
+        {"氢气", 30},
+    },
+    results = {
+        {"盐酸", 60},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "纯水电解" {
+    type = { "recipe" },
+    category = "电解",
+    ingredients = {
+        {"纯水", 45},
+    },
+    results = {
+        {"氧气", 70},
+        {"氢气", 140},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "甲烷转乙烯" {
+    type = { "recipe" },
+    category = "基础化工",
+    ingredients = {
+        {"甲烷", 40},
+        {"氧气", 40},
+    },
+    results = {
+        {"乙烯", 16},
+        {"纯水", 8},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "塑料1" {
+    type = { "recipe" },
+    category = "基础化工",
+    ingredients = {
+        {"乙烯", 30},
+        {"氯气", 30},
+    },
+    results = {
+        {"盐酸", 20},
+        {"塑料", 1},
+    },
+    time = "3s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "塑料2" {
+    type = { "recipe" },
+    category = "基础化工",
+    ingredients = {
+        {"甲烷", 20},
+        {"氧气", 20},
+        {"氯气", 20},
+    },
+    results = {
+        {"盐酸", 25},
+        {"塑料", 1},
+    },
+    time = "4s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "酸碱中和" {
+    type = { "recipe" },
+    category = "液体处理",
+    ingredients = {
+        {"碱性溶液", 80},
+        {"盐酸", 80},
+    },
+    results = {
+        {"废水", 100},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "碱性溶液" {
+    type = { "recipe" },
+    category = "液体处理",
+    ingredients = {
+        {"纯水", 80},
+        {"氢氧化钠", 3},
+    },
+    results = {
+        {"碱性溶液", 100},
     },
     time = "1s",
     description = "使用铁锭和碎石锻造铁板",
