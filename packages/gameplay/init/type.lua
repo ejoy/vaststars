@@ -9,9 +9,7 @@ local type = require "register.type"
 type "item"
     .stack "number"
 
-type "fuel"
-    .fuel_energy "energy"
-    .fuel_category "filter"
+type "fluid"
 
 type "recipe"
     .ingredients "items"

@@ -137,10 +137,13 @@ register_unit("items", "string", function(s)
 	local r = {}
 	for _, t in ipairs(s) do
 		local what = prototype.query("item", t[1])
-		if not what then
-			return nil, "Unkonwn item: " .. t[1]
+		if what then
+			r[#r+1] = string.pack("<I2I2", what.id, t[2])
+		else
+			if not prototype.query("fluid", t[1]) then
+				return nil, "Unkonwn item/fluid: " .. t[1]
+			end
 		end
-		r[#r+1] = string.pack("<I2I2", what.id, t[2])
 	end
 	return table.concat(r)
 end)
