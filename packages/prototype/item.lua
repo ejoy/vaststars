@@ -361,6 +361,17 @@ prototype "砖石公路" {
     description = "处理海水的工厂",
 }
 
+prototype "气体排泄" {
+    type = {"item"},
+    stack = 100,
+    description = "处理海水的工厂",
+}
+
+prototype "液体排泄" {
+    type = {"item"},
+    stack = 100,
+    description = "处理海水的工厂",
+}
 
 prototype "铜片" {
     type = {"item"},

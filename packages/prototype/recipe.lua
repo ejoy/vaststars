@@ -865,3 +865,108 @@ prototype "碱性溶液" {
     time = "1s",
     description = "使用铁锭和碎石锻造铁板",
 }
+
+prototype "废水排泄" {
+    type = { "recipe" },
+    category = "液体排泄",
+    ingredients = {
+        {"废水", 100},
+    },
+    results = {
+        {"液体排泄", 1},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "海水排泄" {
+    type = { "recipe" },
+    category = "液体排泄",
+    ingredients = {
+        {"海水", 100},
+    },
+    results = {
+        {"液体排泄", 1},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "纯水排泄" {
+    type = { "recipe" },
+    category = "液体排泄",
+    ingredients = {
+        {"纯水", 100},
+    },
+    results = {
+        {"液体排泄", 1},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+
+prototype "氮气排泄" {
+    type = { "recipe" },
+    category = "气体排泄",
+    ingredients = {
+        {"氮气", 100},
+    },
+    results = {
+        {"气体排泄", 1},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "氧气排泄" {
+    type = { "recipe" },
+    category = "气体排泄",
+    ingredients = {
+        {"氧气", 100},
+    },
+    results = {
+        {"气体排泄", 1},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "二氧化碳排泄" {
+    type = { "recipe" },
+    category = "气体排泄",
+    ingredients = {
+        {"二氧化碳", 100},
+    },
+    results = {
+        {"气体排泄", 1},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "氢气排泄" {
+    type = { "recipe" },
+    category = "气体排泄",
+    ingredients = {
+        {"氢气", 100},
+    },
+    results = {
+        {"气体排泄", 1},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "蒸汽排泄" {
+    type = { "recipe" },
+    category = "气体排泄",
+    ingredients = {
+        {"蒸汽", 100},
+    },
+    results = {
+        {"气体排泄", 1},
+    },
+    time = "1s",
+    description = "使用铁锭和碎石锻造铁板",
+}

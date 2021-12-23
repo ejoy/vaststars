@@ -76,7 +76,7 @@ prototype "氯气" {
 prototype "海水" {
     type = {"fluid"},
     heat_capacity = "0.08kJ",
-    default_temperature = 25,
+    default_temperature = 15,
     max_temperature = 100,
     des = "大气层中的基本气体",
 }
@@ -84,7 +84,7 @@ prototype "海水" {
 prototype "纯水" {
     type = {"fluid"},
     heat_capacity = "0.08kJ",
-    default_temperature = 25,
+    default_temperature = 15,
     max_temperature = 100,
     des = "大气层中的基本气体",
 }
@@ -92,7 +92,7 @@ prototype "纯水" {
 prototype "废水" {
     type = {"fluid"},
     heat_capacity = "0.08kJ",
-    default_temperature = 25,
+    default_temperature = 20,
     max_temperature = 100,
     des = "大气层中的基本气体",
 }
@@ -110,5 +110,13 @@ prototype "碱性溶液" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
+    des = "大气层中的基本气体",
+}
+
+prototype "蒸汽" {
+    type = {"fluid"},
+    heat_capacity = "0.05KJ",
+    default_temperature = 165,
+    max_temperature = 200,
     des = "大气层中的基本气体",
 }
