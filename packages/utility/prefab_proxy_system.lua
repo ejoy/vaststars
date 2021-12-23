@@ -221,3 +221,19 @@ function iprefab_proxy.slot_detach(proxy, slot_name)
     prefab:send("remove")
     ud.slot_attachs[slot_name] = nil
 end
+
+function iprefab_proxy.has_slot_attach(proxy, slot_name)
+    w:sync("prefab_proxy:in", proxy)
+    local ud = ud_refs[proxy.prefab_proxy.ud_ref_id]
+    if not ud then
+        error(("can not found proxy id (%d)"):format(proxy.prefab_proxy.ud_ref_id))
+    end
+
+    local slot = ud.slots[slot_name]
+    if not slot then
+        error(("can not found slot name (%s)"):format(slot_name))
+        return
+    end
+
+    return (ud.slot_attachs[slot_name] ~= nil)
+end

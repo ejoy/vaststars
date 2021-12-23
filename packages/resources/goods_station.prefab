@@ -182,6 +182,30 @@ policy:
   ant.scene|scene_object
 ---
 data:
+  follow_flag: 2
+  follow_joint: Bone.002
+  follow_offset:
+    r: {-1.1641534958251043e-10, 0, -0, 1}
+    s: {1, 1, 1}
+    t: {0, 4, 0}
+  name: "货物挂点"
+  reference: true
+  scene:
+    srt:
+      r: {-1.1641534958251043e-10, 0, -0, 1}
+      s: {1, 1, 1}
+      t: {0, 4, 0}
+  slot: true
+  tag:
+    empty1
+mount: 8
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
   _animation:
     anim_clips: {}
     joint_list: {}
