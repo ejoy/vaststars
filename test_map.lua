@@ -30,6 +30,33 @@ game.create_entity "小型铁制箱子" {
     },
     description = "碎石",
 }
+
+game.create_entity "机器爪1" {
+    x = 7,
+    y = 2,
+    dir = "S"
+}
+
+game.create_entity "组装机1" {
+    x = 7,
+    y = 3,
+    recipe = "铁棒1"
+}
+
+game.create_entity "机器爪1" {
+    x = 7,
+    y = 6,
+    dir = "S"
+}
+
+game.create_entity "小型铁制箱子" {
+    x = 7,
+    y = 7,
+    items = {
+    },
+    description = "铁棒",
+}
+
 game.create_entity "机器爪1" {
     x = 8,
     y = 1,
