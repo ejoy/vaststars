@@ -148,6 +148,10 @@ register_unit("items", "string", function(s)
 	return table.concat(r)
 end)
 
+register_unit("fluidbox", "string", function(s)
+	return ""
+end)
+
 local enum = {
 	priority = {
 		primary = 0,

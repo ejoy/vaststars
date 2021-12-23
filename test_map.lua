@@ -84,3 +84,63 @@ game.create_entity "指挥中心" {
     x = 1,
     y = 10
 }
+
+local pipeType = {}
+([[
+═║
+╔╦╗
+╠╬╣
+╚╩╝
+]]):gsub("[^\n\r]", function (s)
+    pipeType[s] = true
+end)
+
+local function create_pipe(x, y, graph)
+    local j = 1
+    for line in graph:gmatch "[^\n\r]*" do
+        for i = 1, #line do
+            local c = line:sub(i,i)
+            if pipeType[c] then
+                game.create_entity "管道1" {
+                    x = x + i - 1,
+                    y = y + j - 1,
+                    pipetype = c
+                }
+            end
+        end
+        j = j + 1
+    end
+end
+
+create_pipe(1, 14, [[
+xxx
+xxx════╗
+xxx    ║
+       xxx
+       xxx
+       xxx
+xxx  ╔═╝ ║    xxx
+xxx══╝   ╚════xxx
+xxx           xxx
+]])
+
+game.create_entity "液罐1" {
+    x = 1,
+    y = 20,
+    fluid = {"空气",20000}
+}
+game.create_entity "液罐1" {
+    x = 1,
+    y = 14,
+    fluid = {}
+}
+game.create_entity "液罐1" {
+    x = 15,
+    y = 14,
+    fluid = {}
+}
+game.create_entity "化工厂1" {
+    x = 8,
+    y = 17,
+    recipe = "空气分离1"
+}

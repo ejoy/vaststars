@@ -26,8 +26,14 @@ local function dump()
     local world = game.world
     local container = require "vaststars.container.core"
     for v in world:select "chest:in description:in" do
-        local c, n = container.at(game.cworld, v.chest.container, 1)
-        print(v.description, n)
+        for i = 1, 10 do
+            local c, n = container.at(game.cworld, v.chest.container, i)
+            if c then
+                print(gameplay.query(c).name, n)
+            else
+                break
+            end
+        end
     end
     print "===================="
 end

@@ -63,51 +63,51 @@ prototype "化工厂1" {
     power = "200kW",
     drain = "6kW",
     priority = "secondary",
-    fluidbox = {
+    fluidboxes = {
         {
             type = "input",
-            fluid_area = 10,
-            fluid_height = 1,
-            fluid_level = -1,
+            area = 10,
+            height = 1,
+            base_level = -1,
             pipe = {
-                {type="input", position={0,4}},
+                {type="input", position={0,3}},
             }
         },
         {
             type = "input",
-            fluid_area = 10,
-            fluid_height = 1,
-            fluid_level = -1,
+            area = 10,
+            height = 1,
+            base_level = -1,
             pipe = {
-                {type="input", position={3,4}},
+                {type="input", position={2,3}},
             }
         },
         {
             type = "input",
-            fluid_area = 10,
-            fluid_height = 1,
-            fluid_level = -1,
+            area = 10,
+            height = 1,
+            base_level = -1,
             pipe = {
-                {type="input-output", position={-1,2}},
-                {type="input-output", position={4,2}},
+                {type="input-output", position={-1,1}},
+                {type="input-output", position={3,1}},
             }
         },
         {
             type = "output",
-            fluid_area = 10,
-            fluid_height = 1,
-            fluid_level = -1,
+            area = 10,
+            height = 1,
+            base_level = -1,
             pipe = {
                 {type="output", position={0,-1}},
             }
         },
         {
             type = "output",
-            fluid_area = 10,
-            fluid_height = 1,
-            fluid_level = -1,
+            area = 10,
+            height = 1,
+            base_level = -1,
             pipe = {
-                {type="output", position={3,-1}},
+                {type="output", position={2,-1}},
             }
         },
     }
@@ -138,9 +138,15 @@ prototype "物流中心" {
 prototype "液罐1" {
     type ={"entity", "storage-tank"},
     area = "3x3",
-    fluid_area = 10,
-    fluid_height = 2,
-    fluid_level = 0,
+    fluidbox = {
+        area = 10,
+        height = 2,
+        base_level = 0,
+        pipe = {
+            {type="input-output", position={-1,1}},
+            {type="input-output", position={3,1}},
+        }
+    }
 }
 
 prototype "抽水泵" {

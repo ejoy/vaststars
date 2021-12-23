@@ -16,9 +16,7 @@ function pg:ctor(init, pt)
 end
 
 local st = type "storage-tank"
-    .fluid_area   "number"
-    .fluid_height "number"
-    .fluid_level  "number"
+    .fluidbox "fluidbox"
 
 function st:ctor(init, pt)
     return {}
