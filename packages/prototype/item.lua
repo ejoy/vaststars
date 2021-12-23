@@ -318,6 +318,24 @@ prototype "破损蓄电池" {
     description = "处理海水的工厂",
 }
 
+prototype "破损物流中心" {
+    type = {"item"},
+    stack = 50,
+    description = "处理海水的工厂",
+}
+
+prototype "破损运输汽车" {
+    type = {"item"},
+    stack = 50,
+    description = "处理海水的工厂",
+}
+
+prototype "破损车站" {
+    type = {"item"},
+    stack = 50,
+    description = "处理海水的工厂",
+}
+
 
 prototype "地质科技包" {
     type = {"item"},
