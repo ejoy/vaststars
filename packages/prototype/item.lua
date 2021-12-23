@@ -324,7 +324,7 @@ prototype "破损物流中心" {
     description = "处理海水的工厂",
 }
 
-prototype "破损运输汽车" {
+prototype "破损运输车辆" {
     type = {"item"},
     stack = 50,
     description = "处理海水的工厂",
