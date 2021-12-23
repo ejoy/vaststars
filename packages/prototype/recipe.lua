@@ -360,6 +360,20 @@ prototype "压力泵1" {
     description = "使用铁锭和碎石锻造铁板",
 }
 
+prototype "抽水泵" {
+    type = { "recipe" },
+    category = "中型制造",
+    ingredients = {
+        {"排水口1", 1},
+        {"压力泵1", 1},
+    },
+    results = {
+        {"抽水泵", 1},
+    },
+    time = "4s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
 prototype "空气过滤器1" {
     type = { "recipe" },
     category = "大型制造",
