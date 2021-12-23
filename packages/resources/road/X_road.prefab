@@ -91,6 +91,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
+  follow_offset: {}
   name: "左至右"
   reference: true
   scene:
@@ -111,6 +112,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
+  follow_offset: {}
   name: "右至左"
   reference: true
   scene:
@@ -131,6 +133,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
+  follow_offset: {}
   name: "下至上"
   reference: true
   scene:
@@ -151,6 +154,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
+  follow_offset: {}
   name: "上至下"
   reference: true
   scene:
@@ -171,6 +175,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
+  follow_offset: {}
   name: "下转左"
   reference: true
   scene:
@@ -191,6 +196,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
+  follow_offset: {}
   name: "左转下"
   reference: true
   scene:
@@ -211,6 +217,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
+  follow_offset: {}
   name: "下转右"
   reference: true
   scene:
@@ -231,6 +238,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
+  follow_offset: {}
   name: "右转下"
   reference: true
   scene:
@@ -251,6 +259,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
+  follow_offset: {}
   name: "上转左"
   reference: true
   scene:
@@ -271,6 +280,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
+  follow_offset: {}
   name: "左转上"
   reference: true
   scene:
@@ -291,6 +301,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
+  follow_offset: {}
   name: "上转右"
   reference: true
   scene:
@@ -311,6 +322,7 @@ policy:
 data:
   follow_flag: 1
   follow_joint: None
+  follow_offset: {}
   name: "右转上"
   reference: true
   scene:
