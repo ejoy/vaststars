@@ -17,6 +17,11 @@ component "assembling" {
     "process:word",
 }
 
+component "fluidbox" {
+    "in:dword[4]",
+    "out:dword[4]",
+}
+
 component "inserter" {
     "input_container:word",
     "output_container:word",
@@ -44,7 +49,6 @@ component "generator" {
 
 component "accumulator" {
 }
-
 
 component "road" {
     "road_type:word",

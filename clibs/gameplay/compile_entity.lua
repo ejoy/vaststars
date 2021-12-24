@@ -18,6 +18,7 @@ local function loadComponents(filename)
 end
 
 local TYPENAMES <const> = {
+    dword = "uint32_t",
     word = "uint16_t",
     byte = "uint8_t",
     float = "float",
@@ -43,8 +44,15 @@ local function writeEntityH(components)
         if not isTag(c) then
             write("struct "..c.name.." {")
             for _, field in ipairs(c) do
-                local name, typename = field:match "^([%w_]+):(%w+)$"
-                write(("\t%s %s;"):format(assert(TYPENAMES[typename]), name))
+                local name, typename, n = field:match "^([%w_]+):(%w+)%[(%d+)%]$"
+                if name == nil then
+                    name, typename = field:match "^([%w_]+):(%w+)$"
+                end
+                if n then
+                    write(("\t%s %s[%s];"):format(assert(TYPENAMES[typename]), name, n))
+                else
+                    write(("\t%s %s;"):format(assert(TYPENAMES[typename]), name))
+                end
             end
             write "};"
             write ""
