@@ -86,7 +86,7 @@ prototype "沙石粉碎" {
 
 prototype "石砖" {
     type = { "recipe" },
-    category = "中型组装",
+    category = "中型制造",
     ingredients = {
         {"碎石", 4},
     },
@@ -112,7 +112,7 @@ prototype "玻璃" {
 
 prototype "电动机1" {
     type = { "recipe" },
-    category = "中型组装",
+    category = "中型制造",
     ingredients = {
         {"铁棒", 1},
         {"铁丝", 2},
@@ -157,7 +157,7 @@ prototype "机器爪1" {
 
 prototype "砖石公路" {
     type = { "recipe" },
-    category = "中型组装",
+    category = "中型制造",
     ingredients = {
         {"石砖", 8},
     },
@@ -170,7 +170,7 @@ prototype "砖石公路" {
 
 prototype "车站1" {
     type = { "recipe" },
-    category = "中型组装",
+    category = "中型制造",
     ingredients = {
         {"机器爪1", 1},
         {"小型铁制箱子", 1},
@@ -184,7 +184,7 @@ prototype "车站1" {
 
 prototype "小型铁制箱子" {
     type = { "recipe" },
-    category = "中型组装",
+    category = "中型制造",
     ingredients = {
         {"铁棒", 1},
         {"铁板", 8},
