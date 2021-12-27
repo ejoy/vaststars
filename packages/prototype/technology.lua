@@ -94,6 +94,18 @@ prototype "空气分离" {
   time = 3
 }
 
+prototype "铁加工2" {
+  effects = {
+    {"unlock-recipe","铁丝1"},
+    {"unlock-recipe","铁齿轮"},
+  },
+  prerequisites = {"铁加工1"},
+  ingredients = {
+      {"地质科技包", 5},
+  },
+  time = 4
+}
+
 prototype "石头处理1" {
   effects = {
     {"unlock-recipe","破损太阳能板"},
@@ -105,18 +117,6 @@ prototype "石头处理1" {
       {"地质科技包", 8},
   },
   time = 2
-}
-
-prototype "铁加工2" {
-  effects = {
-    {"unlock-recipe","铁丝1"},
-    {"unlock-recipe","铁齿轮"},
-  },
-  prerequisites = {""},
-  ingredients = {
-      {"地质科技包", 5},
-  },
-  time = 4
 }
 
 prototype "基地生产1" {
