@@ -338,7 +338,9 @@ function road_sys:ui_update()
 
         if route_idx > 0 then
             local prefab = route_prefabs[route_idx]
-            prefab:send("hide")
+            if prefab then
+                prefab:send("hide")
+            end
         end
         route_idx = route_idx + 1
         if route_idx > #route_prefabs then
