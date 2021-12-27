@@ -156,6 +156,12 @@ prototype "化工厂1" {
     description = "加工化工原料的工厂",
 }
 
+prototype "铸造厂1" {
+    type = {"item"},
+    stack = 25,
+    description = "加工化工原料的工厂",
+}
+
 prototype "蒸馏厂1" {
     type = {"item"},
     stack = 10,
@@ -343,7 +349,7 @@ prototype "地质科技包" {
     description = "处理海水的工厂",
 }
 
-prototype "环境科技包" {
+prototype "气候科技包" {
     type = {"item"},
     stack = 100,
     description = "处理海水的工厂",

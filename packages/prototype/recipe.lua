@@ -317,6 +317,21 @@ prototype "化工厂1" {
     description = "使用铁锭和碎石锻造铁板",
 }
 
+prototype "铸造厂1" {
+    type = { "recipe" },
+    category = "大型制造",
+    ingredients = {
+        {"铁板", 3},
+        {"机器爪1", 2},
+        {"熔炼炉1", 1},
+    },
+    results = {
+        {"铸造厂1", 1},
+    },
+    time = "15s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
 prototype "水电站1" {
     type = { "recipe" },
     category = "大型制造",
@@ -662,7 +677,7 @@ prototype "破损车站" {
     description = "使用铁锭和碎石锻造铁板",
 }
 
-prototype "地质科技包" {
+prototype "地质科技包1" {
     type = { "recipe" },
     category = "小型制造",
     ingredients = {
@@ -676,7 +691,21 @@ prototype "地质科技包" {
     description = "使用铁锭和碎石锻造铁板",
 }
 
-prototype "机械科技包" {
+prototype "气候科技包1" {
+    type = { "recipe" },
+    category = "液体处理",
+    ingredients = {
+        {"海水", 2000},
+        {"空气", 3000},
+    },
+    results = {
+        {"气候科技包", 1},
+    },
+    time = "25s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "机械科技包1" {
     type = { "recipe" },
     category = "中型制造",
     ingredients = {
