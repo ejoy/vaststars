@@ -18,9 +18,7 @@ animation:
 graphic:
   curve_world:
     flat_distance:  0
-    base_distance:  30
-    exp: 3.5
-    amplification: 1.0
+    curve_rate: 0.1
     dirVS: {0.0, 0.0, 1.0, 0.0}
   lighting:
     cluster_shading: 1
