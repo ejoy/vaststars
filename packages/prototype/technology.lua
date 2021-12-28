@@ -75,6 +75,7 @@ prototype "管道系统1" {
 prototype "电解" {
   effects = {
     {"unlock-recipe","海水电解"},
+    {"unlock-recipe","破损电解厂"},
   },
   prerequisites = {"水过滤系统"},
   ingredients = {
@@ -86,6 +87,7 @@ prototype "电解" {
 prototype "空气分离" {
   effects = {
     {"unlock-recipe","空气分离1"},
+    {"unlock-recipe","破损空气过滤器"},
   },
   prerequisites = {"水过滤系统","管道系统1"},
   ingredients = {
@@ -98,6 +100,7 @@ prototype "铁加工2" {
   effects = {
     {"unlock-recipe","铁丝1"},
     {"unlock-recipe","铁齿轮"},
+    {"unlock-recipe","破损组装机"},
   },
   prerequisites = {"铁加工1"},
   ingredients = {
@@ -303,6 +306,18 @@ prototype "物流1" {
   time = 8
 }
 
+prototype "泵系统1" {
+  effects = {
+    {"unlock-recipe","压力泵1"},
+  },
+  prerequisites = {"机械研究"},
+  ingredients = {
+    {"气候科技包", 4},
+    {"机械科技包", 4},
+  },
+  time = 6
+}
+
 prototype "金属加工1" {
   effects = {
     {"unlock-recipe","铸造厂1"},
@@ -314,6 +329,8 @@ prototype "金属加工1" {
   },
   time = 8
 }
+
+
 
 prototype "自动化1" {
   effects = {
