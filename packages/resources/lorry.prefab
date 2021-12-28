@@ -8,28 +8,28 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  name: blend_root
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/lorry.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/lorry.glb|meshes/Cylinder_P1.meshbin
+  name: Cylinder
   scene:
     srt:
-      r: {0, -0.7071068286895752, 0.7071067094802856, 1.1520230458472724e-07}
-      s: {0.005139347165822983, 0.005139347165822983, 0.005139347165822983}
+      t: {0, 0.26264306902885437, 1.4524952173233032}
 mount: 1
 policy:
   ant.general|name
-  ant.scene|scene_object
+  ant.render|render
   ant.scene|scene_object
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/lorry.glb|materials/ExoRov_Wheels.material
-  mesh: /pkg/vaststars.resources/glb/lorry.glb|meshes/Mesh.007_P1.meshbin
-  name: ExoRov_FrontArm_R_ExoRov_Wheels_0
+  material: /pkg/vaststars.resources/glb/lorry.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/lorry.glb|meshes/Cube.002_P1.meshbin
+  name: Cube.002
   scene:
     srt:
-      r: {0.7071068286895752, 0, 0, -0.7071067094802856}
-      s: {0.5276044607162476, 0.5276044607162476, 0.5276044607162476}
-      t: {-7.62939453125e-06, 0, 0}
-mount: 2
+      t: {0, 0.16866442561149597, 0}
+mount: 1
 policy:
   ant.general|name
   ant.render|render
@@ -37,15 +37,13 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/lorry.glb|materials/ExoRov_Wheels.material
-  mesh: /pkg/vaststars.resources/glb/lorry.glb|meshes/Mesh.006_P1.meshbin
-  name: ExoRov_FrontWheel_R_ExoRov_Wheels_0
+  material: /pkg/vaststars.resources/glb/lorry.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/lorry.glb|meshes/Cylinder.002_P1.meshbin
+  name: Cylinder.001
   scene:
     srt:
-      r: {0.7071068286895752, 0, 0, -0.7071067094802856}
-      s: {0.4198356866836548, 0.4198356866836548, 0.4198356866836548}
-      t: {3.0517578125e-05, 6.103515625e-05, -1.52587890625e-05}
-mount: 2
+      t: {0, 0.26264306902885437, -1.5699877738952637}
+mount: 1
 policy:
   ant.general|name
   ant.render|render
@@ -53,14 +51,13 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/lorry.glb|materials/Exoplanet-Rover.material
-  mesh: /pkg/vaststars.resources/glb/lorry.glb|meshes/Mesh.012_P1.meshbin
-  name: Exoplanet-Rover_Exoplanet-Rover_0
+  material: /pkg/vaststars.resources/glb/lorry.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/lorry.glb|meshes/Cube.001_P1.meshbin
+  name: Cube.001
   scene:
     srt:
-      r: {0.7071068286895752, 0, 0, -0.7071067094802856}
-      t: {-7.121820817701519e-05, -3.5609100450528786e-05, 217.40614318847656}
-mount: 2
+      t: {0, 0.16866442561149597, 0}
+mount: 1
 policy:
   ant.general|name
   ant.render|render
