@@ -346,6 +346,22 @@ prototype "水电站1" {
     description = "使用铁锭和碎石锻造铁板",
 }
 
+prototype "蒸馏厂1" {
+    type = { "recipe" },
+    category = "大型制造",
+    ingredients = {
+        {"烟囱1", 1},
+        {"液罐1", 2},
+        {"熔炼炉1", 1}, 
+    },
+    results = {
+        {"蒸馏厂1", 1},
+    },
+    time = "4s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+
 prototype "烟囱1" {
     type = { "recipe" },
     category = "大型制造",

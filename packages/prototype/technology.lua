@@ -148,7 +148,7 @@ prototype "储存1" {
   time = 3
 }
 
-prototype "碳处理" {
+prototype "碳处理1" {
   effects = {
     {"unlock-recipe","破损蓄电池"},
     {"unlock-recipe","二氧化碳转甲烷"},
@@ -156,6 +156,18 @@ prototype "碳处理" {
   prerequisites = {"电解","空气分离"},
   ingredients = {
       {"气候科技包", 4},
+  },
+  time = 4
+}
+
+prototype "碳处理2" {
+  effects = {
+    {"unlock-recipe","二氧化碳转一氧化碳"},
+    {"unlock-recipe","一氧化碳转石墨"},
+  },
+  prerequisites = {"碳处理1"},
+  ingredients = {
+      {"气候科技包", 8},
   },
   time = 4
 }
@@ -202,7 +214,7 @@ prototype "有机化学" {
     {"unlock-recipe","甲烷转乙烯"},
     {"unlock-recipe","塑料1"},
   },
-  prerequisites = {"碳处理"},
+  prerequisites = {"碳处理1"},
   ingredients = {
     {"地质科技包", 4},
     {"气候科技包", 4},
@@ -255,6 +267,18 @@ prototype "机械研究" {
     {"气候科技包", 5},
   },
   time = 6
+}
+
+prototype "蒸馏厂1" {
+  effects = {
+    {"unlock-recipe","蒸馏厂1"},
+  },
+  prerequisites = {"机械研究"},
+  ingredients = {
+    {"机械科技包", 4},
+    {"气候科技包", 4},
+  },
+  time = 7
 }
 
 prototype "挖掘1" {
