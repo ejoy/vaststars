@@ -1,5 +1,4 @@
 local type = require "register.type"
-local container = require "vaststars.container.core"
 local prototype = require "prototype"
 
 local c = type "assembling"
@@ -13,7 +12,7 @@ function c:ctor(init, pt)
     return {
         assembling = {
             recipe = recipe.id,
-            container = container.create(self.cworld, "assembling", recipe.ingredients, recipe.results),
+            container = self:container_create("assembling", recipe.ingredients, recipe.results),
             process = STATUS_IDLE,
         }
     }

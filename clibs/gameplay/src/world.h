@@ -17,6 +17,8 @@ struct world {
 
 #include "container.h"
 #include "select.h"
+#include "fluid.h"
+#include <map>
 extern "C" {
 #include "prototype.h"
 }
@@ -24,6 +26,7 @@ extern "C" {
 struct world {
     struct cworld c;
     struct container_mgr containers;
+    std::map<uint16_t, fluidflow> fluidflows;
 
     template <typename C>
     C& query_container(uint16_t id);

@@ -11,7 +11,7 @@ function m.queryById(name)
 end
 
 function m.query(maintype, name)
-	return name_lookup[maintype.."::"..name]
+	return name_lookup["("..maintype..")"..name]
 end
 
 function m.value(unitname, v)

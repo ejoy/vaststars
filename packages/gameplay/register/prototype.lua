@@ -5,7 +5,6 @@ local types = status.types
 local id_lookup = status.prototype_id
 local name_lookup = status.prototype_name
 
-local maxid = 0
 local function hashstring(s)
 	local h = #s
 	local b = { string.byte(s, 1, h) }
@@ -15,13 +14,32 @@ local function hashstring(s)
 	return h
 end
 
-local function getid(s)
-	local hash = hashstring(s) & 0xf000
-	maxid = maxid + 1
-	if maxid > 0xfff then
+local maintype = {
+	entity = {
+		maxid = 0,
+		magic = 0x0000,
+	},
+	recipe = {
+		maxid = 0,
+		magic = 0x0400,
+	},
+	item = {
+		maxid = 0,
+		magic = 0x8000,
+	},
+	fluid = {
+		maxid = 0,
+		magic = 0x0C00,
+	},
+}
+local function getid(mainkey, name)
+	local m = assert(maintype[mainkey])
+	local hash = hashstring(name) & 0xF000
+	m.maxid = m.maxid + 1
+	if m.maxid > 0x3FF then
 		error "Too many prototype"
 	end
-	return maxid | hash
+	return m.maxid | m.magic | hash
 end
 
 local function gen_union(list)
@@ -77,15 +95,16 @@ return function (name)
 		local typelist = assert(object.type)
 		local cache_key = table.concat(typelist, ":")
 		local combine_keys = ckeys[cache_key](typelist)
-		local namekey = object.type[1] .. "::" .. name
+		local mainkey = object.type[1]
+		local namekey = "("..mainkey..")"..name
 		if name_lookup[namekey] ~= nil then
 			local o = name_lookup[namekey]
 			error(("Duplicate %s: %s"):format(o.type[1], o.name))
 		end
-		local id = getid(namekey)
+		local id = getid(mainkey, name)
 		if id_lookup[id] ~= nil then
 			local o = id_lookup[id]
-			error(("Duplicate id: %s %s"):format(namekey, o.type[1] .. "::" .. o.name))
+			error(("Duplicate id: %s %s"):format(namekey, "("..o.type[1]..")"..o.name))
 		end
 		object.name = name
 		object.id = id

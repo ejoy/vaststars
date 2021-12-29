@@ -74,7 +74,7 @@ updateWaiting(world& w) {
 }
 
 static int
-lrebuild(lua_State *L) {
+lbuild(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     waiting.clear();
 
@@ -119,7 +119,7 @@ extern "C" int
 luaopen_vaststars_inserter_system(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
-		{ "rebuild", lrebuild },
+		{ "build", lbuild },
 		{ "update", lupdate },
 		{ NULL, NULL },
 	};

@@ -58,57 +58,56 @@ prototype "蒸汽发电机1" {
 }
 
 prototype "化工厂1" {
-    type ={"entity", "assembling", "consumer"},
+    type ={"entity", "assembling", "consumer","fluidboxes"},
     area = "3x3",
     power = "200kW",
     drain = "6kW",
     priority = "secondary",
     fluidboxes = {
-        {
-            type = "input",
-            area = 10,
-            height = 1,
-            base_level = -1,
-            pipe = {
-                {type="input", position={0,3}},
-            }
+        input = {
+            {
+                area = 10,
+                height = 100,
+                base_level = -100,
+                pipe = {
+                    {type="input", position={0,0,"N"}},
+                }
+            },
+            {
+                area = 10,
+                height = 100,
+                base_level = -100,
+                pipe = {
+                    {type="input", position={2,0,"N"}},
+                }
+            },
+            {
+                area = 10,
+                height = 100,
+                base_level = -100,
+                pipe = {
+                    {type="input-output", position={0,1,"W"}},
+                    {type="input-output", position={2,1,"E"}},
+                }
+            },
         },
-        {
-            type = "input",
-            area = 10,
-            height = 1,
-            base_level = -1,
-            pipe = {
-                {type="input", position={2,3}},
-            }
-        },
-        {
-            type = "input",
-            area = 10,
-            height = 1,
-            base_level = -1,
-            pipe = {
-                {type="input-output", position={-1,1}},
-                {type="input-output", position={3,1}},
-            }
-        },
-        {
-            type = "output",
-            area = 10,
-            height = 1,
-            base_level = -1,
-            pipe = {
-                {type="output", position={0,-1}},
-            }
-        },
-        {
-            type = "output",
-            area = 10,
-            height = 1,
-            base_level = -1,
-            pipe = {
-                {type="output", position={2,-1}},
-            }
+        output = {
+            {
+                area = 10,
+                height = 100,
+                base_level = -100,
+                pipe = {
+                    {type="output", position={0,2,"S"}},
+                }
+            },
+            {
+                area = 10,
+                height = 100,
+                base_level = -100,
+                pipe = {
+                    {type="output", position={2,2,"S"}},
+                }
+            },
         },
     }
 }
@@ -210,8 +209,13 @@ prototype "空气过滤器1" {
 }
 
 prototype "管道1" {
-    type ={"entity","pipe"},
+    type = {"entity","pipe"},
     area = "1x1",
+    fluidbox = {
+        area = 2,
+        height = 100,
+        base_level = 0,
+    }
 }
 
 prototype "地下管1" {

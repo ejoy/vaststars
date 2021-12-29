@@ -1,6 +1,7 @@
 #pragma once
 
 #include "entity.h"
+#include "luaecs.h"
 
 namespace ecs::select {
     template <typename T> struct component {};
@@ -17,6 +18,8 @@ namespace ecs::select {
     COMPONENT_ID(burner, COMPONENT_BURNER)
     COMPONENT_ID(assembling, COMPONENT_ASSEMBLING)
     COMPONENT_ID(inserter, COMPONENT_INSERTER)
+    COMPONENT_ID(fluidboxes, COMPONENT_FLUIDBOXES)
+    COMPONENT_ID(pipe, COMPONENT_PIPE)
 
     #undef COMPONENT_ID
 

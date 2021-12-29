@@ -721,7 +721,7 @@ fluidflow_update(struct fluidflow_network *net) {
 	reservation_fluid(net);
 //	print_reservation(net);
 	topology_sort(net);
-	print_order(net);
+//	print_order(net);
 	
 	int i;
 	for (i=0;i<net->n;i++) {

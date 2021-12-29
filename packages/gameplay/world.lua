@@ -2,19 +2,18 @@ require "register.types"
 
 local status = require "status"
 local prototype = require "prototype"
-local timer = require "timer"
 local vaststars = require "vaststars.world.core"
-local ecs = import_package "vaststars.ecs"
+local container = require "vaststars.container.core"
+local fluidflow = require "vaststars.fluidflow.core"
+local luaecs = import_package "vaststars.ecs"
 local serialize = import_package "ant.serialize"
 local datalist = require "datalist"
 
-local function pipelineFunc(g, name)
+local function pipelineFunc(world, cworld, name)
     local p = status.pipelines[name]
     if not p then
         return
     end
-    local world = g.world
-    local cworld = g.cworld
     local systems = status.systems
     local csystems = status.csystems
     local funcs = {}
@@ -54,27 +53,45 @@ local function deepcopy(t)
     return r
 end
 
+local function extendArray(c)
+    local r = {}
+    for _, field in ipairs(c) do
+        local name, typename, n = field:match "^([%w_]+):(%w+)%[(%d+)%]$"
+        print(field, name, typename, n)
+        if name then
+            for i = 1, tonumber(n) do
+                r[#r+1] = ("%s%d:%s"):format(name, i, typename)
+            end
+        else
+            r[#r+1] = field
+        end
+    end
+    r.name = c.name
+    return r
+end
+
 return function ()
-    local game = {}
-    local world = ecs.world()
-    world:register {
+    local world = {}
+    local ecs = luaecs.world()
+    local timer = dofile(package.searchpath("timer", package.path))
+    ecs:register {
         name = "description",
         type = "lua"
     }
     local components = {}
     for _, c in ipairs(status.components) do
         assert(c.type == nil)
-        world:register(c)
+        ecs:register(extendArray(c))
         components[#components+1] = c.name
     end
-    local context = world:context(components)
+    local context = ecs:context(components)
     local ptable = require "vaststars.prototype.core"
     local cworld = vaststars.create_world(context, ptable)
-    game.world = world
-    game.cworld = cworld
-    game.ecs_context = context
+    world.ecs = ecs
+    world._cworld = cworld
+    world._context = context
 
-    function game.create_entity(type)
+    function world:create_entity(type)
         return function (init)
             local typeobject = assert(prototype.query("entity", type), "unknown entity: " .. type)
             local types = typeobject.type
@@ -82,7 +99,7 @@ return function ()
             for i = 1, #types do
                 local ctor = status.ctor[types[i]]
                 if ctor then
-                    for k, v in pairs(ctor(game, init, typeobject)) do
+                    for k, v in pairs(ctor(world, init, typeobject)) do
                         if obj[k] == nil then
                             obj[k] = v
                         end
@@ -90,27 +107,27 @@ return function ()
                 end
             end
             obj.description = init.description
-            return world:new(obj)
+            return ecs:new(obj)
         end
     end
 
-    local updateFunc = pipelineFunc(game, "update")
-    function game.update()
+    local updateFunc = pipelineFunc(world, cworld, "update")
+    function world:update()
         updateFunc()
         timer.update(1)
-        world:update()
+        ecs:update()
     end
 
-    local rebuildFunc = pipelineFunc(game, "rebuild")
-    function game.rebuild()
-        rebuildFunc()
-        world:update()
+    local buildFunc = pipelineFunc(world, cworld, "build")
+    function world:build()
+        buildFunc()
+        ecs:update()
     end
 
-    function game.backup()
+    function world:backup()
         local sav = {}
-        for v in world:select "entity" do
-            local e = deepcopy(world:readall(v))
+        for v in ecs:select "entity" do
+            local e = deepcopy(ecs:readall(v))
             e[1] = nil
             e[2] = nil
             sav[#sav+1] = e
@@ -118,16 +135,41 @@ return function ()
         return serialize.stringify(sav)
     end
 
-    function game.restore(sav)
+    function world:restore(sav)
         sav = datalist.parse(sav)
-        world:clearall()
+        ecs:clearall()
         for _, e in ipairs(sav) do
-            world:new(e)
+            ecs:new(e)
         end
-        world:update()
+        ecs:update()
     end
 
-    game.wait = timer.wait
-    game.loop = timer.loop
-    return game
+    function world:container_create(...)
+        return container.create(cworld, ...)
+    end
+    function world:container_place(...)
+        return container.place(cworld, ...)
+    end
+    function world:container_at(...)
+        return container.at(cworld, ...)
+    end
+    function world:fluidflow_reset(...)
+        return fluidflow.reset(cworld, ...)
+    end
+    function world:fluidflow_build(...)
+        return fluidflow.build(cworld, ...)
+    end
+    function world:fluidflow_connect(...)
+        return fluidflow.connect(cworld, ...)
+    end
+
+
+    function world:wait(...)
+        return timer.wait(...)
+    end
+    function world:loop(...)
+        return timer.loop(...)
+    end
+
+    return world
 end

@@ -20,6 +20,7 @@ end
 
 local s = system "inserter"
 function s.init(world)
+    local ecs = world.ecs
     local ChestMap = {}
     local function packCoord(x, y)
         return x | (y<<8)
@@ -37,24 +38,24 @@ function s.init(world)
             end
         end
     end
-    for v in world:select "chest:in entity:in" do
+    for v in ecs:select "chest:in entity:in" do
         setContainer(v.entity, v.chest.container)
     end
-    for v in world:select "assembling:in entity:in" do
+    for v in ecs:select "assembling:in entity:in" do
         setContainer(v.entity, v.assembling.container)
     end
-    for v in world:select "inserter:update entity:in" do
+    for v in ecs:select "inserter:update entity:in" do
         local x, y = v.entity.x, v.entity.y
         local sx, sy, ex, ey
         if v.entity.direction == 0 then --N
-            sx, sy = 0, 1
-            ex, ey = 0, -1
+            sx, sy = 0, -1
+            ex, ey = 0, 1
         elseif v.entity.direction == 1 then --E
             sx, sy = 1, 0
             ex, ey = -1, 0
         elseif v.entity.direction == 2 then --S
-            sx, sy = 0, -1
-            ex, ey = 0, 1
+            sx, sy = 0, 1
+            ex, ey = 0, -1
         elseif v.entity.direction == 3 then --W
             sx, sy = -1, 0
             ex, ey = 1, 0

@@ -7,27 +7,134 @@ local gameplay = import_package "vaststars.gameplay"
 
 local test = gameplay.system "test"
 
+function test.init(world)
+    local ecs = world.ecs
+    local Map = {}
+    local direction <const> = {
+        {0,-1}, --N
+        {1,0}, --E
+        {0,1}, --S
+        {-1,0}, --W
+        N = {0,-1},
+        E = {1,0},
+        S = {0,1},
+        W = {-1,0},
+    }
+
+    local function fluid_list(s)
+        local r = {}
+        for i = 1, #s, 4 do
+            local id = string.unpack("<I2I2", s, i)
+            if id & 0x0C00 == 0x0C00 then
+                r[#r+1] = id
+            end
+        end
+        return r
+    end
+    local function init_fluidbox(fluidboxes, classify, s)
+        local lst = fluid_list(s)
+        assert(fluidboxes[classify.."_count"] >= #lst)
+        for i = 1, #lst do
+            fluidboxes[classify..i] = lst[i] << 16
+        end
+        for i = #lst + 1, fluidboxes[classify.."_count"] do
+            fluidboxes[classify..i] = 0
+        end
+    end
+
+    local function walk_pipe(fluid, start_x, start_y)
+        local task = {}
+        local function push(x, y)
+            task[#task+1] = { x, y }
+        end
+        local function pop()
+            local n = #task
+            local t = task[n]
+            task[n] = nil
+            return t[1], t[2]
+        end
+        push(start_x, start_y)
+        while #task > 0 do
+            local x, y = pop()
+            local p = Map[(x << 8)|y]
+            if p ~= nil then
+                if p.fluid == nil then
+                    p.fluid = fluid
+                    for i = 1, 4 do
+                        if p.type & (1 << (i-1)) ~= 0 then
+                            push(x + direction[i][1], y + direction[i][2])
+                        end
+                    end
+                else
+                    assert(p.fluid == fluid)
+                end
+            end
+        end
+    end
+    local function walk_fluidbox(fluidboxes, classify, e)
+        local pt = gameplay.query(e.prototype).fluidboxes[classify.."put"]
+        for i = 1, #pt do
+            local fluid = fluidboxes[classify..i] >> 16
+            for _, pipe in ipairs(pt[i].pipe) do
+                local dir = pipe.position[3]
+                local x = e.x + pipe.position[1] + direction[dir][1]
+                local y = e.y + pipe.position[2] + direction[dir][2]
+                walk_pipe(fluid, x, y)
+            end
+        end
+    end
+
+    local function init()
+        for v in ecs:select "assembling:in fluidboxes:update" do
+            local recipe = gameplay.query(v.assembling.recipe)
+            init_fluidbox(v.fluidboxes, "in", recipe.ingredients)
+            init_fluidbox(v.fluidboxes, "out", recipe.results)
+        end
+        for v in ecs:select "pipe:in entity:in" do
+            Map[(v.entity.x << 8)|v.entity.y] = {
+                type = v.pipe.type
+            }
+        end
+    end
+    local function walk()
+        for v in ecs:select "fluidboxes:in entity:in" do
+            walk_fluidbox(v.fluidboxes, "in", v.entity)
+            walk_fluidbox(v.fluidboxes, "out", v.entity)
+        end
+    end
+    local function sync()
+        for v in ecs:select "pipe:update entity:in" do
+            local p = Map[(v.entity.x << 8)|v.entity.y]
+            assert(p.fluid ~= 0)
+            v.pipe.fluid = p.fluid
+        end
+    end
+
+    init()
+    walk()
+    sync()
+end
+
 function test.update(world)
-    for v in world:select "generator capacitance:out" do
+    for v in world.ecs:select "generator capacitance:out" do
         v.capacitance.shortage = 0
     end
 end
 
-local game = gameplay.createWorld()
-assert(loadfile "test_map.lua")(game)
+local world = gameplay.createWorld()
+assert(loadfile "test_map.lua")(world)
 --local sav = game.backup()
 --local f = io.open("../../test.map", "w")
 --f:write(sav)
 --f:close()
 --game.restore(sav)
-game.rebuild()
+world:build()
 
 local function dump()
-    local world = game.world
-    local container = require "vaststars.container.core"
-    for v in world:select "chest:in description:in" do
+    local ecs = world.ecs
+    for v in ecs:select "chest:in description:in" do
         for i = 1, 10 do
-            local c, n = container.at(game.cworld, v.chest.container, i)
+            local c, n = world:container_at(v.chest.container, i)
             if c then
                 print(gameplay.query(c).name, n)
             else
@@ -38,18 +145,16 @@ local function dump()
     print "===================="
 end
 
-game.wait(2*50, dump)
-game.wait(4*50, dump)
-game.wait(6*50, dump)
-game.wait(300*50, dump)
-game.wait(30*60*50, dump)
+world:wait(1*60*50, dump)
+world:wait(3*60*50, dump)
+world:wait(5*60*50, dump)
 
-game.wait(600*50, function ()
-    game.quit = true
+world:wait(10*60*50, function ()
+    world.quit = true
 end)
 
-while not game.quit do
-    game.update()
+while not world.quit do
+    world:update()
 end
 
 print "ok"

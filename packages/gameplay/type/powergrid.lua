@@ -1,5 +1,4 @@
 local type = require "register.type"
-local container = require "vaststars.container.core"
 local prototype = require "prototype"
 
 local burner = type "burner"
@@ -57,11 +56,11 @@ local STATUS_DONE <const> = 1
 
 function burner:ctor(init, pt)
     local recipe = assert(prototype.query("recipe", init.recipe))
-	local id = container.create(self.cworld, "assembling", recipe.ingredients, recipe.results)
+	local id = self:container_create("assembling", recipe.ingredients, recipe.results)
 	if init.items then
         for i, item in pairs(init.items) do
             local what = prototype.query("item", item[1])
-            container.place(self.cworld, id, what.id, item[2])
+            self:container_place(id, what.id, item[2])
         end
     end
 	return {
