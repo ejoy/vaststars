@@ -7,6 +7,7 @@ local function loadComponents(filename)
     local function component(name)
         return function (object)
             object.name = name
+            components[name] = object
             components[#components+1] = object
         end
     end
@@ -23,6 +24,13 @@ local TYPENAMES <const> = {
     byte = "uint8_t",
     float = "float",
 }
+
+local function TypeName(components, typename)
+    if components[typename] then
+        return "struct "..typename
+    end
+    return assert(TYPENAMES[typename])
+end
 
 local function writeEntityH(components)
     local out = {}
@@ -49,9 +57,9 @@ local function writeEntityH(components)
                     name, typename = field:match "^([%w_]+):(%w+)$"
                 end
                 if n then
-                    write(("\t%s %s[%s];"):format(assert(TYPENAMES[typename]), name, n))
+                    write(("\t%s %s[%s];"):format(TypeName(components, typename), name, n))
                 else
-                    write(("\t%s %s;"):format(assert(TYPENAMES[typename]), name))
+                    write(("\t%s %s;"):format(TypeName(components, typename), name))
                 end
             end
             write "};"

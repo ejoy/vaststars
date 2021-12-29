@@ -149,9 +149,11 @@ local function create_pipe(t)
                     y = y,
                     pipe = {
                         type = convertPipeType[c],
+                    },
+                    fluidbox = {
                         fluid = 0,
                         id = 0,
-                    },
+                    }
                 }
             end
             i = i + 1

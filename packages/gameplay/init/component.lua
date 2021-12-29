@@ -45,17 +45,18 @@ component "generator" {
 component "accumulator" {
 }
 
-component "fluidboxes" {
-    "in:dword[4]",
-    "out:dword[3]",
-    "in_count:byte",
-    "out_count:byte",
-}
-
 component "pipe" {
     "type:byte",
+}
+
+component "fluidbox" {
     "fluid:word",
     "id:word",
+}
+
+component "fluidboxes" {
+    "in:fluidbox[4]",
+    "out:fluidbox[3]",
 }
 
 component "road" {

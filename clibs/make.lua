@@ -15,9 +15,9 @@ local modules = {
 
 lm:exe "vaststars" {
     deps = {
-        "bgfx-lib",
         "ant_editor",
         --"ant_runtime",
+        "bgfx-lib",
         "ant_links",
         "bootstrap_lua",
         modules

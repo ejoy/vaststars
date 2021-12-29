@@ -86,30 +86,35 @@ function m.build(world)
     local ecs = world.ecs
     world:fluidflow_reset()
     builder_init()
-    for v in ecs:select "pipe:update entity:in" do
+    for v in ecs:select "pipe:in fluidbox:update entity:in" do
         local pt = query(v.entity.prototype)
-        local id = builder_build(world, v.pipe.fluid, pt.fluidbox)
-        v.pipe.id = id
+        local id = builder_build(world, v.fluidbox.fluid, pt.fluidbox)
+        v.fluidbox.id = id
         for i = 0, 3 do
             if v.pipe.type & (1 << i) ~= 0 then
-                builder_connect(v.pipe.fluid, v.entity.x, v.entity.y, i, id, INOUT)
+                builder_connect(v.fluidbox.fluid, v.entity.x, v.entity.y, i, id, INOUT)
             end
         end
     end
+    ecs:clear "pipe"
     for v in ecs:select "fluidboxes:update entity:in" do
         local pt = query(v.entity.prototype)
-        for i, fluidbox in ipairs(pt.fluidboxes.input) do
-            local fluid = v.fluidboxes["in"..i] >> 16
-            if fluid ~= 0 then
-                local id = builder_build(world, fluid, fluidbox)
-                v.fluidboxes["in"..i] = (fluid << 16) | id
-                for _, pipe in ipairs(fluidbox.pipe) do
-                    local x = v.entity.x + pipe.position[1]
-                    local y = v.entity.y + pipe.position[2]
-                    builder_connect(fluid, x, y, PipeDirection[pipe.position[3]], id, PipeEdgeType[pipe.type])
+        local function init_fluidflow(classify)
+            for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
+                local fluid = v.fluidboxes[classify..i.."_fluid"]
+                if fluid ~= 0 then
+                    local id = builder_build(world, fluid, fluidbox)
+                    v.fluidboxes[classify..i.."_id"] = id
+                    for _, pipe in ipairs(fluidbox.pipe) do
+                        local x = v.entity.x + pipe.position[1]
+                        local y = v.entity.y + pipe.position[2]
+                        builder_connect(fluid, x, y, PipeDirection[pipe.position[3]], id, PipeEdgeType[pipe.type])
+                    end
                 end
             end
         end
+        init_fluidflow "in"
+        init_fluidflow "out"
     end
     builder_finish(world)
 end

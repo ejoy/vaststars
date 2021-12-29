@@ -7,15 +7,20 @@ function c:ctor(init, pt)
     assert(#pt.fluidboxes.output <= 3)
     return {
         fluidboxes = {
-            in_count = #pt.fluidboxes.input,
-            out_count = #pt.fluidboxes.output,
-            in1 = 0,
-            in2 = 0,
-            in3 = 0,
-            in4 = 0,
-            out1 = 0,
-            out2 = 0,
-            out3 = 0,
+            in1_fluid = 0,
+            in1_id = 0,
+            in2_fluid = 0,
+            in2_id = 0,
+            in3_fluid = 0,
+            in3_id = 0,
+            in4_fluid = 0,
+            in4_id = 0,
+            out1_fluid = 0,
+            out1_id = 0,
+            out2_fluid = 0,
+            out2_id = 0,
+            out3_fluid = 0,
+            out3_id = 0,
         }
     }
 end

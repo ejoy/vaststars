@@ -53,23 +53,6 @@ local function deepcopy(t)
     return r
 end
 
-local function extendArray(c)
-    local r = {}
-    for _, field in ipairs(c) do
-        local name, typename, n = field:match "^([%w_]+):(%w+)%[(%d+)%]$"
-        print(field, name, typename, n)
-        if name then
-            for i = 1, tonumber(n) do
-                r[#r+1] = ("%s%d:%s"):format(name, i, typename)
-            end
-        else
-            r[#r+1] = field
-        end
-    end
-    r.name = c.name
-    return r
-end
-
 return function ()
     local world = {}
     local ecs = luaecs.world()
@@ -81,7 +64,7 @@ return function ()
     local components = {}
     for _, c in ipairs(status.components) do
         assert(c.type == nil)
-        ecs:register(extendArray(c))
+        ecs:register(c)
         components[#components+1] = c.name
     end
     local context = ecs:context(components)
@@ -162,7 +145,6 @@ return function ()
     function world:fluidflow_connect(...)
         return fluidflow.connect(cworld, ...)
     end
-
 
     function world:wait(...)
         return timer.wait(...)

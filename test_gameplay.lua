@@ -31,14 +31,14 @@ function test.init(world)
         end
         return r
     end
-    local function init_fluidbox(fluidboxes, classify, s)
+    local function init_fluidbox(fluidboxes, classify, max, s)
         local lst = fluid_list(s)
-        assert(fluidboxes[classify.."_count"] >= #lst)
+        assert(max >= #lst)
         for i = 1, #lst do
-            fluidboxes[classify..i] = lst[i] << 16
+            fluidboxes[classify..i.."_fluid"] = lst[i]
         end
-        for i = #lst + 1, fluidboxes[classify.."_count"] do
-            fluidboxes[classify..i] = 0
+        for i = #lst + 1, max do
+            fluidboxes[classify..i.."_fluid"] = 0
         end
     end
 
@@ -74,7 +74,7 @@ function test.init(world)
     local function walk_fluidbox(fluidboxes, classify, e)
         local pt = gameplay.query(e.prototype).fluidboxes[classify.."put"]
         for i = 1, #pt do
-            local fluid = fluidboxes[classify..i] >> 16
+            local fluid = fluidboxes[classify..i.."_fluid"]
             for _, pipe in ipairs(pt[i].pipe) do
                 local dir = pipe.position[3]
                 local x = e.x + pipe.position[1] + direction[dir][1]
@@ -87,8 +87,8 @@ function test.init(world)
     local function init()
         for v in ecs:select "assembling:in fluidboxes:update" do
             local recipe = gameplay.query(v.assembling.recipe)
-            init_fluidbox(v.fluidboxes, "in", recipe.ingredients)
-            init_fluidbox(v.fluidboxes, "out", recipe.results)
+            init_fluidbox(v.fluidboxes, "in",  4, recipe.ingredients)
+            init_fluidbox(v.fluidboxes, "out", 4, recipe.results)
         end
         for v in ecs:select "pipe:in entity:in" do
             Map[(v.entity.x << 8)|v.entity.y] = {
@@ -103,10 +103,11 @@ function test.init(world)
         end
     end
     local function sync()
-        for v in ecs:select "pipe:update entity:in" do
+        for v in ecs:select "pipe fluidbox:out entity:in" do
             local p = Map[(v.entity.x << 8)|v.entity.y]
             assert(p.fluid ~= 0)
-            v.pipe.fluid = p.fluid
+            v.fluidbox.fluid = p.fluid
+            v.fluidbox.id = 0
         end
     end
 

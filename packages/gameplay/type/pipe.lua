@@ -4,6 +4,7 @@ local pi = type "pipe"
 
 function pi:ctor(init, pt)
     return {
+        fluidbox = init.fluidbox,
         pipe = init.pipe,
     }
 end
