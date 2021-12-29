@@ -234,7 +234,7 @@ prototype "排放" {
   time = 2
 }
 
-prototype "金属冶炼" {
+prototype "冶金学" {
   effects = {
     {"unlock-recipe","熔炼炉1"},
   },

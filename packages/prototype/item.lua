@@ -159,7 +159,7 @@ prototype "化工厂1" {
 prototype "铸造厂1" {
     type = {"item"},
     stack = 25,
-    description = "加工化工原料的工厂",
+    description = "铸造金属的工厂",
 }
 
 prototype "蒸馏厂1" {
@@ -183,7 +183,7 @@ prototype "物流中心1" {
 prototype "运输车辆1" {
     type = {"item"},
     stack = 50,
-    description = "派遣和停靠运输车辆的物流车站",
+    description = "运输货物的交通工具",
 }
 
 prototype "液罐1" {
