@@ -18,19 +18,21 @@ for j = #arg - i + 1, #arg do
     arg[j] = nil
 end
 
+local antdir = os.getenv "antdir"
 local fs = require "bee.filesystem"
-fs.current_path(fs.exe_path()
+antdir = antdir and fs.path(antdir) or (fs.exe_path()
+    :parent_path()
     :parent_path()
     :parent_path()
     :parent_path()
     :parent_path()
     / "3rd"
-    / "ant"
-)
+    / "ant")
 
+fs.current_path(antdir)
 if arg[0] == nil then
-    arg[0] = "main.lua"
+    arg[0] = "../../main.lua"
 end
-arg[0] = "../../"..arg[0]
 
+print("arg[0]", arg[0])
 assert(loadfile(arg[0]))(table.unpack(arg))
