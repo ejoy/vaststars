@@ -2,8 +2,6 @@ local lm = require "luamake"
 
 lm:import "gameplay/make.lua"
 
-Ant = "../3rd/ant/"
-
 lm:copy "bootstrap_lua" {
     input = "bootstrap.lua",
     output = "../"..lm.bindir.."/main.lua",
@@ -12,6 +10,8 @@ lm:copy "bootstrap_lua" {
 local modules = {
     "gameplay"
 }
+
+local Antdir = "../" .. lm.antdir
 
 lm:exe "vaststars" {
     deps = {
@@ -23,8 +23,8 @@ lm:exe "vaststars" {
         modules
     },
     includes = {
-        Ant .. "clibs/lua",
-        Ant .. "runtime/common",
+        Antdir .. "clibs/lua",
+        Antdir .. "runtime/common",
     },
     sources = "vaststars_modules.c"
 }

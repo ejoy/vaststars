@@ -1,16 +1,20 @@
 local lm = require "luamake"
 
+local fs = require "bee.filesystem"
+
 lm.mode = "debug"
 lm.bindir = "bin/msvc/"..lm.mode
 
-lm:import "3rd/ant/make.lua"
+lm.antdir = lm.antdir or "3rd/ant/"
+
+lm:import(lm.antdir .. "make.lua")
 lm:import "clibs/make.lua"
 
 if lm.os == "windows" then
     lm:copy "fmod_dll" {
         input = {
-            "3rd/ant/3rd/fmod/windows/core/lib/x64/fmodL.dll",
-            "3rd/ant/3rd/fmod/windows/studio/lib/x64/fmodstudioL.dll",
+            lm.antdir .. "3rd/fmod/windows/core/lib/x64/fmodL.dll",
+            lm.antdir .. "3rd/fmod/windows/studio/lib/x64/fmodstudioL.dll",
         },
         output = {
             lm.bindir .. "/fmodL.dll",
@@ -20,7 +24,7 @@ if lm.os == "windows" then
 end
 
 lm:copy "copy_luaecs" {
-    input = "3rd/ant/3rd/luaecs/ecs.lua",
+    input = lm.antdir .. "3rd/luaecs/ecs.lua",
     output = "packages/ecs/ecs.lua",
 }
 
