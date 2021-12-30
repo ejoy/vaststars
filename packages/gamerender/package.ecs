@@ -25,7 +25,7 @@ interface "igame_object"
     .method "get_prefab"
     .method "get_prefab_object"
 
-component "debug_component"
+component "debug_component" .type "lua"
 -----------------
 -- tag
 component "inserter" -- 机器爪

@@ -37,7 +37,7 @@ local function zoom_camera(camera, delta)
 		end
 
 		local y = math3d.index(p, 2)
-		if y > 1 and y < 10 then
+		if y > 1 and y < 100 then
 			iom.set_position(camera, p)
 		end
 	end

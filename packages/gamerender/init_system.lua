@@ -22,7 +22,7 @@ function m:init_world()
     iui.open("construct.rml")
 
     local mq = w:singleton("main_queue", "camera_ref:in")
-    local eyepos = math3d.vector(0, 8, -8)
+    local eyepos = math3d.vector(0, 20, -20)
     local camera_ref = mq.camera_ref
     iom.set_position(camera_ref, eyepos)
     local dir = math3d.normalize(math3d.sub(mc.ZERO_PT, eyepos))
