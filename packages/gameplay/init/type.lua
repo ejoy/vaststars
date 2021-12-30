@@ -3,7 +3,6 @@ require "type.chest"
 require "type.inserter"
 require "type.assembling"
 require "type.powergrid"
-require "type.pipe"
 require "type.fluidbox"
 
 local type = require "register.type"

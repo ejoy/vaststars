@@ -152,8 +152,8 @@ register_unit("items", "string", function(s)
 	return table.concat(r)
 end)
 
-register_unit("fluidbox", "string", function(s)
-	return ""
+register_unit("fluidbox", "table", function(s)
+	return s
 end)
 
 local enum = {

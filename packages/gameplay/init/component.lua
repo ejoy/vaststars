@@ -45,13 +45,13 @@ component "generator" {
 component "accumulator" {
 }
 
-component "pipe" {
-    "type:byte",
-}
-
 component "fluidbox" {
     "fluid:word",
     "id:word",
+}
+
+component "fluidbox_build" {
+    "volume:float",
 }
 
 component "fluidboxes" {

@@ -69,7 +69,7 @@ prototype "化工厂1" {
                 area = 10,
                 height = 100,
                 base_level = -100,
-                pipe = {
+                connections = {
                     {type="input", position={0,0,"N"}},
                 }
             },
@@ -77,7 +77,7 @@ prototype "化工厂1" {
                 area = 10,
                 height = 100,
                 base_level = -100,
-                pipe = {
+                connections = {
                     {type="input", position={2,0,"N"}},
                 }
             },
@@ -85,7 +85,7 @@ prototype "化工厂1" {
                 area = 10,
                 height = 100,
                 base_level = -100,
-                pipe = {
+                connections = {
                     {type="input-output", position={0,1,"W"}},
                     {type="input-output", position={2,1,"E"}},
                 }
@@ -96,7 +96,7 @@ prototype "化工厂1" {
                 area = 10,
                 height = 100,
                 base_level = -100,
-                pipe = {
+                connections = {
                     {type="output", position={0,2,"S"}},
                 }
             },
@@ -104,7 +104,7 @@ prototype "化工厂1" {
                 area = 10,
                 height = 100,
                 base_level = -100,
-                pipe = {
+                connections = {
                     {type="output", position={2,2,"S"}},
                 }
             },
@@ -135,15 +135,17 @@ prototype "物流中心" {
 }
 
 prototype "液罐1" {
-    type ={"entity", "storage-tank"},
+    type ={"entity", "fluidbox"},
     area = "3x3",
     fluidbox = {
-        area = 10,
-        height = 2,
+        area = 100,
+        height = 200,
         base_level = 0,
-        pipe = {
-            {type="input-output", position={-1,1}},
-            {type="input-output", position={3,1}},
+        connections = {
+            {type="input-output", position={0,0,"N"}},
+            {type="input-output", position={2,2,"E"}},
+            {type="input-output", position={2,2,"S"}},
+            {type="input-output", position={0,0,"W"}},
         }
     }
 }
@@ -208,13 +210,62 @@ prototype "空气过滤器1" {
     priority = "secondary",
 }
 
-prototype "管道1" {
-    type = {"entity","pipe"},
+prototype "管道1-I型" {
+    type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
         area = 2,
         height = 100,
         base_level = 0,
+        connections = {
+            {type="input-output", position={0,0,"N"}},
+            {type="input-output", position={0,0,"S"}},
+        }
+    }
+}
+
+prototype "管道1-L型" {
+    type = {"entity","fluidbox"},
+    area = "1x1",
+    fluidbox = {
+        area = 2,
+        height = 100,
+        base_level = 0,
+        connections = {
+            {type="input-output", position={0,0,"N"}},
+            {type="input-output", position={0,0,"E"}},
+        }
+    }
+}
+
+prototype "管道1-T型" {
+    type = {"entity","fluidbox"},
+    area = "1x1",
+    fluidbox = {
+        area = 2,
+        height = 100,
+        base_level = 0,
+        connections = {
+            {type="input-output", position={0,0,"E"}},
+            {type="input-output", position={0,0,"S"}},
+            {type="input-output", position={0,0,"W"}},
+        }
+    }
+}
+
+prototype "管道1-X型" {
+    type = {"entity","fluidbox"},
+    area = "1x1",
+    fluidbox = {
+        area = 2,
+        height = 100,
+        base_level = 0,
+        connections = {
+            {type="input-output", position={0,0,"N"}},
+            {type="input-output", position={0,0,"E"}},
+            {type="input-output", position={0,0,"S"}},
+            {type="input-output", position={0,0,"W"}},
+        }
     }
 }
 

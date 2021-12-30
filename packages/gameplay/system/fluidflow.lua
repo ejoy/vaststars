@@ -42,6 +42,21 @@ local function uniquekey(x, y, d)
     return ("%d,%d,%s"):format(x, y, d)
 end
 
+local function rotate(position, d)
+    local x = position[1]
+    local y = position[2]
+    local dir = (PipeDirection[position[3]] + d) % 4
+    if d == N then
+        return x, y, dir
+    elseif d == E then
+        return y, -x, dir
+    elseif d == S then
+        return -x, -y, dir
+    elseif d == W then
+        return -y, x, dir
+    end
+end
+
 local function builder_init()
     builder = {}
 end
@@ -86,17 +101,16 @@ function m.build(world)
     local ecs = world.ecs
     world:fluidflow_reset()
     builder_init()
-    for v in ecs:select "pipe:in fluidbox:update entity:in" do
+    for v in ecs:select "fluidbox:update entity:in" do
         local pt = query(v.entity.prototype)
         local id = builder_build(world, v.fluidbox.fluid, pt.fluidbox)
+        local fluid = v.fluidbox.fluid
         v.fluidbox.id = id
-        for i = 0, 3 do
-            if v.pipe.type & (1 << i) ~= 0 then
-                builder_connect(v.fluidbox.fluid, v.entity.x, v.entity.y, i, id, INOUT)
-            end
+        for _, conn in ipairs(pt.fluidbox.connections) do
+            local x, y, dir = rotate(conn.position, v.entity.direction)
+            builder_connect(fluid, v.entity.x + x, v.entity.y + y, dir, id, PipeEdgeType[conn.type])
         end
     end
-    ecs:clear "pipe"
     for v in ecs:select "fluidboxes:update entity:in" do
         local pt = query(v.entity.prototype)
         local function init_fluidflow(classify)
@@ -105,10 +119,9 @@ function m.build(world)
                 if fluid ~= 0 then
                     local id = builder_build(world, fluid, fluidbox)
                     v.fluidboxes[classify..i.."_id"] = id
-                    for _, pipe in ipairs(fluidbox.pipe) do
-                        local x = v.entity.x + pipe.position[1]
-                        local y = v.entity.y + pipe.position[2]
-                        builder_connect(fluid, x, y, PipeDirection[pipe.position[3]], id, PipeEdgeType[pipe.type])
+                    for _, conn in ipairs(fluidbox.connections) do
+                        local x, y, dir = rotate(conn.position, v.entity.direction)
+                        builder_connect(fluid, v.entity.x + x, v.entity.y + y, dir, id, PipeEdgeType[conn.type])
                     end
                 end
             end
@@ -117,4 +130,9 @@ function m.build(world)
         init_fluidflow "out"
     end
     builder_finish(world)
+
+    for v in ecs:select "fluidbox:in fluidbox_build:in" do
+        world:fluidflow_change(v.fluidbox.fluid, v.fluidbox.id, "import", v.fluidbox_build.volume)
+    end
+    ecs:clear "fluidbox_build"
 end

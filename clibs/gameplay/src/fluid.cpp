@@ -58,7 +58,7 @@ void fluidflow::change(int id, change_type type, float fluid) {
 		r = fluidflow_export(network, id, fluid);
 		break;
 	}
-	assert(r == 0.f);
+	assert(r != -1.f);
 }
 
 static int
@@ -114,9 +114,37 @@ lfluidflow_connect(lua_State *L) {
 	}
 	bool ok =  w.fluidflows[fluid].connect(connects.data(), connects.size());
 	if (!ok) {
-		luaL_error(L, "fluidflow connect failed.");
-		return 0;
+		return luaL_error(L, "fluidflow connect failed.");
 	}
+	return 0;
+}
+
+static int
+lfluidflow_query(lua_State *L) {
+	world& w = *(world*)lua_touserdata(L, 1);
+	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
+	uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
+	fluid_state state;
+	if (!w.fluidflows[fluid].query(id, &state)) {
+		return luaL_error(L, "fluidflow query failed.");
+	}
+	lua_createtable(L, 0, 2);
+	lua_pushnumber(L, state.volume);
+	lua_setfield(L, -2, "volume");
+	lua_pushnumber(L, state.space);
+	lua_setfield(L, -2, "space");
+	return 1;
+}
+
+static int
+lfluidflow_change(lua_State *L) {
+	world& w = *(world*)lua_touserdata(L, 1);
+	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
+	uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
+	static const char *const CHANGETYPE[] = {"import", "export", NULL};
+	fluidflow::change_type type = (fluidflow::change_type)luaL_checkoption(L, 4, "import", CHANGETYPE);
+	float value = (float)luaL_checknumber(L, 5);
+	w.fluidflows[fluid].change(id, type, value);
 	return 0;
 }
 
@@ -127,6 +155,8 @@ luaopen_vaststars_fluidflow_core(lua_State *L) {
 		{ "reset", lfluidflow_reset },
 		{ "build", lfluidflow_build },
 		{ "connect", lfluidflow_connect },
+		{ "query", lfluidflow_query },
+		{ "change", lfluidflow_change },
 		{ NULL, NULL },
 	};
 	luaL_newlib(L, l);

@@ -11,7 +11,7 @@ function test.init(world)
     local ecs = world.ecs
     local Map = {}
     local direction <const> = {
-        {0,-1}, --N
+        [0] = {0,-1}, --N
         {1,0}, --E
         {0,1}, --S
         {-1,0}, --W
@@ -20,6 +20,36 @@ function test.init(world)
         S = {0,1},
         W = {-1,0},
     }
+
+    local function rotate(position, d)
+        local N <const> = 0
+        local E <const> = 1
+        local S <const> = 2
+        local W <const> = 3
+        local PipeDirection <const> = {
+            ["N"] = 0,
+            ["E"] = 1,
+            ["S"] = 2,
+            ["W"] = 3,
+        }
+        local x = position[1]
+        local y = position[2]
+        local dir = (PipeDirection[position[3]] + d) % 4
+        if d == N then
+            return x, y, dir
+        elseif d == E then
+            return y, -x, dir
+        elseif d == S then
+            return -x, -y, dir
+        elseif d == W then
+            return -y, x, dir
+        end
+    end
+
+    local function pipePostion(e, position)
+        local x, y, dir = rotate(position, e.direction)
+        return e.x + x + direction[dir][1], e.y + y + direction[dir][2]
+    end
 
     local function fluid_list(s)
         local r = {}
@@ -60,10 +90,8 @@ function test.init(world)
             if p ~= nil then
                 if p.fluid == nil then
                     p.fluid = fluid
-                    for i = 1, 4 do
-                        if p.type & (1 << (i-1)) ~= 0 then
-                            push(x + direction[i][1], y + direction[i][2])
-                        end
+                    for _, conn in ipairs(p.connections) do
+                        push(conn[1], conn[2])
                     end
                 else
                     assert(p.fluid == fluid)
@@ -71,14 +99,13 @@ function test.init(world)
             end
         end
     end
+
     local function walk_fluidbox(fluidboxes, classify, e)
         local pt = gameplay.query(e.prototype).fluidboxes[classify.."put"]
         for i = 1, #pt do
             local fluid = fluidboxes[classify..i.."_fluid"]
-            for _, pipe in ipairs(pt[i].pipe) do
-                local dir = pipe.position[3]
-                local x = e.x + pipe.position[1] + direction[dir][1]
-                local y = e.y + pipe.position[2] + direction[dir][2]
+            for _, pipe in ipairs(pt[i].connections) do
+                local x, y = pipePostion(e, pipe.position)
                 walk_pipe(fluid, x, y)
             end
         end
@@ -90,10 +117,25 @@ function test.init(world)
             init_fluidbox(v.fluidboxes, "in",  4, recipe.ingredients)
             init_fluidbox(v.fluidboxes, "out", 4, recipe.results)
         end
-        for v in ecs:select "pipe:in entity:in" do
-            Map[(v.entity.x << 8)|v.entity.y] = {
-                type = v.pipe.type
+        for v in ecs:select "fluidbox:in entity:in" do
+            local e = v.entity
+            local pt = gameplay.query(e.prototype)
+            local fluidbox = pt.fluidbox
+            local connections = {}
+            for _, conn in ipairs(fluidbox.connections) do
+                connections[#connections+1] = {pipePostion(e, conn.position)}
+            end
+            local w, h = pt.area & 0xFF, pt.area >> 8
+            local entity = {
+                connections = connections
             }
+            for i = 0, w-1 do
+                for j = 0, h-1 do
+                    local x = e.x + i
+                    local y = e.y + j
+                    Map[(x << 8)|y] = entity
+                end
+            end
         end
     end
     local function walk()
@@ -103,7 +145,7 @@ function test.init(world)
         end
     end
     local function sync()
-        for v in ecs:select "pipe fluidbox:out entity:in" do
+        for v in ecs:select "fluidbox:out entity:in" do
             local p = Map[(v.entity.x << 8)|v.entity.y]
             assert(p.fluid ~= 0)
             v.fluidbox.fluid = p.fluid
@@ -133,14 +175,32 @@ world:build()
 
 local function dump()
     local ecs = world.ecs
-    for v in ecs:select "chest:in description:in" do
-        for i = 1, 10 do
-            local c, n = world:container_at(v.chest.container, i)
-            if c then
-                print(gameplay.query(c).name, n)
-            else
-                break
+    --for v in ecs:select "chest:in" do
+    --    for i = 1, 10 do
+    --        local c, n = world:container_at(v.chest.container, i)
+    --        if c then
+    --            print(gameplay.query(c).name, n)
+    --        else
+    --            break
+    --        end
+    --    end
+    --end
+    local function display(fluid, id)
+        if fluid ~= 0 then
+            local r = world:fluidflow_query(fluid, id)
+            if r then
+                print(gameplay.query(fluid).name, ("%f/%f"):format(r.volume, r.volume + r.space))
             end
+        end
+    end
+    for v in ecs:select "fluidbox:in" do
+        display(v.fluidbox.fluid, v.fluidbox.id)
+    end
+    for v in ecs:select "fluidboxes:in" do
+        for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
+            local fluid = v.fluidboxes[classify.."_fluid"]
+            local id = v.fluidboxes[classify.."_id"]
+            display(fluid, id)
         end
     end
     print "===================="

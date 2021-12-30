@@ -57,10 +57,6 @@ return function ()
     local world = {}
     local ecs = luaecs.world()
     local timer = dofile(package.searchpath("timer", package.path))
-    ecs:register {
-        name = "description",
-        type = "lua"
-    }
     local components = {}
     for _, c in ipairs(status.components) do
         assert(c.type == nil)
@@ -144,6 +140,12 @@ return function ()
     end
     function world:fluidflow_connect(...)
         return fluidflow.connect(cworld, ...)
+    end
+    function world:fluidflow_query(...)
+        return fluidflow.query(cworld, ...)
+    end
+    function world:fluidflow_change(...)
+        return fluidflow.change(cworld, ...)
     end
 
     function world:wait(...)

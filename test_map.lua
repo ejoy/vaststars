@@ -6,7 +6,6 @@ world:create_entity "小型铁制箱子" {
     items = {
         {"铁矿石", 100},
     },
-    description = "铁矿石",
 }
 world:create_entity "机器爪1" {
     x = 2,
@@ -28,7 +27,6 @@ world:create_entity "小型铁制箱子" {
     y = 1,
     items = {
     },
-    description = "碎石",
 }
 
 world:create_entity "机器爪1" {
@@ -54,7 +52,6 @@ world:create_entity "小型铁制箱子" {
     y = 7,
     items = {
     },
-    description = "铁棒",
 }
 
 world:create_entity "机器爪1" {
@@ -77,7 +74,6 @@ world:create_entity "小型铁制箱子" {
     y = 1,
     items = {
     },
-    description = "铁板",
 }
 
 world:create_entity "指挥中心" {
@@ -87,47 +83,40 @@ world:create_entity "指挥中心" {
 
 world:create_entity "液罐1" {
     x = 1,
-    y = 20,
+    y = 14,
+    dir = "N",
     fluid = {"空气",20000}
 }
 world:create_entity "液罐1" {
     x = 1,
-    y = 14,
+    y = 22,
+    dir = "E",
     fluid = {"氮气",0}
 }
 world:create_entity "液罐1" {
     x = 15,
-    y = 14,
+    y = 22,
+    dir = "N",
     fluid = {"氧气",0}
 }
 world:create_entity "化工厂1" {
     x = 8,
-    y = 17,
+    y = 18,
     recipe = "空气分离1"
 }
 
-local function PipeType(s)
-    local m = 0
-    for i = 1, 4 do
-        if s:sub(i,i) ~= "_" then
-            m = m | (1 << (i-1))
-        end
-    end
-    return m
-end
-
 local convertPipeType = {
-    ["║"] = PipeType "N_S_",
-    ["═"] = PipeType "_E_W",
-    ["╔"] = PipeType "_ES_",
-    ["╠"] = PipeType "NES_",
-    ["╚"] = PipeType "NE__",
-    ["╦"] = PipeType "_ESW",
-    ["╬"] = PipeType "NESW",
-    ["╩"] = PipeType "NE_W",
-    ["╗"] = PipeType "__SW",
-    ["╣"] = PipeType "N_SW",
-    ["╝"] = PipeType "N__W",
+    ["║"] = {"管道1-I型", "N"},
+    ["═"] = {"管道1-I型", "E"},
+    ["╔"] = {"管道1-L型", "E"},
+    ["╠"] = {"管道1-T型", "W"},
+    ["╚"] = {"管道1-L型", "N"},
+    ["╦"] = {"管道1-T型", "N"},
+    ["╬"] = {"管道1-X型", "N"},
+    ["╩"] = {"管道1-T型", "S"},
+    ["╗"] = {"管道1-L型", "S"},
+    ["╣"] = {"管道1-T型", "E"},
+    ["╝"] = {"管道1-L型", "W"},
 }
 
 local function create_pipe(t)
@@ -140,20 +129,16 @@ local function create_pipe(t)
     for line in t.graph:gmatch "[^\n\r]*" do
         local i = 1
         for _, c in utf8.codes(line) do
-            c = utf8.char(c)
-            if convertPipeType[c] then
+            local pipetype = convertPipeType[utf8.char(c)]
+            if pipetype then
+                local entity, dir = pipetype[1], pipetype[2]
                 local x = ox + i - 1
                 local y = oy + j - 1
-                world:create_entity "管道1" {
+                world:create_entity (entity) {
                     x = x,
                     y = y,
-                    pipe = {
-                        type = convertPipeType[c],
-                    },
-                    fluidbox = {
-                        fluid = 0,
-                        id = 0,
-                    }
+                    dir = dir,
+                    fluid = {}
                 }
             end
             i = i + 1
@@ -166,13 +151,15 @@ create_pipe {
     offset = {x=1, y=14},
     graph = [[
 xxx
+xxx
 xxx════╗
-xxx    ║
+       ║
        xxx
        xxx
        xxx
-xxx  ╔═╝ ║    xxx
+     ╔═╝ ║    
 xxx══╝   ╚════xxx
+xxx           xxx
 xxx           xxx
 ]]
 }
