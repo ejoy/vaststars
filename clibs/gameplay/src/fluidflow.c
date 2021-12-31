@@ -1,5 +1,5 @@
 #include "fluidflow.h"
- 
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -489,6 +489,11 @@ reservation(struct fluidflow_network *net, int from, int to, int r) {
 	}
 }
  
+static inline int
+fluid_level(struct pipe *p) {
+	return (uint64_t)p->fluid * p->height / p->capacity;
+}
+ 
 static void
 attempt_flow(struct fluidflow_network *net, int idx) {
 	struct pipe *p = &net->p[idx];
@@ -502,7 +507,7 @@ attempt_flow(struct fluidflow_network *net, int idx) {
 	int fluid = p->fluid;
 	if (fluid == 0)
 		return;
-	int level = (uint64_t)fluid * p->height / p->capacity;
+	int level = fluid_level(p);
 	for (i=0;i<PIPE_CONNECTION;i++) {
 		if (p->downlink[i] == PIPE_INVALID_CONNECTION)
 			break;
@@ -512,7 +517,7 @@ attempt_flow(struct fluidflow_network *net, int idx) {
 			// It's pump
 			f[i] = (pumping_speed > fluid) ? fluid : pumping_speed;
 		} else {
-			int to_level = (uint64_t)to->fluid * to->height / to->capacity;
+			int to_level = fluid_level(to);
 			if (level + p->base_level > to_level + to->base_level) {
 				f[i] = (level + p->base_level - to_level - to->base_level) / FIXSHIFT / 2 ;
 			} else {

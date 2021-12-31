@@ -105,7 +105,8 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "*.rh": "cpp",
-        "*.idl": "cpp"
+        "*.idl": "cpp",
+        "stdlib.h": "c"
     },
     "Lua.diagnostics.disable": [
         "empty-block",
