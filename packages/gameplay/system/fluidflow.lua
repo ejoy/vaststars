@@ -29,13 +29,13 @@ local PipeDirection <const> = {
 
 local function uniquekey(x, y, d)
     if d == N then
-        y = y + 1
-        d = "S"
+        d = "N"
     elseif d == E then
         x = x + 1
         d = "W"
     elseif d == S then
-        d = "S"
+        y = y + 1
+        d = "N"
     elseif d == W then
         d = "W"
     end

@@ -189,7 +189,7 @@ local function dump()
         if fluid ~= 0 then
             local r = world:fluidflow_query(fluid, id)
             if r then
-                print(gameplay.query(fluid).name, ("%f/%f"):format(r.volume, r.volume + r.space))
+                print(gameplay.query(fluid).name, ("%d/%d"):format(r.volume, r.volume + r.space))
             end
         end
     end
@@ -209,6 +209,10 @@ end
 world:wait(1*60*50, dump)
 world:wait(3*60*50, dump)
 world:wait(5*60*50, dump)
+
+--world:loop(1, function ()
+--    world:fluidflow_dump(0x3c01)
+--end)
 
 world:wait(10*60*50, function ()
     world.quit = true

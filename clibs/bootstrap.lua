@@ -18,15 +18,15 @@ for j = #arg - i + 1, #arg do
     arg[j] = nil
 end
 
-local antdir = os.getenv "antdir"
 local fs = require "bee.filesystem"
-antdir = antdir and fs.path(antdir) or (fs.exe_path()
+local ProjectDir = fs.exe_path()
     :parent_path()
     :parent_path()
     :parent_path()
     :parent_path()
-    / "3rd"
-    / "ant")
+
+local antdir = os.getenv "antdir"
+antdir = antdir and fs.path(antdir) or (ProjectDir / "3rd" / "ant")
 
 fs.current_path(antdir)
 if arg[0] == nil then
@@ -34,5 +34,7 @@ if arg[0] == nil then
 end
 arg[0] = "../../"..arg[0]
 
-print("arg[0]", arg[0])
+local MainPath = fs.relative(ProjectDir / arg[0], antdir)
+arg[0] = MainPath:string()
+
 assert(loadfile(arg[0]))(table.unpack(arg))

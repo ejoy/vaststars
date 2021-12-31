@@ -22,7 +22,7 @@ struct fluidflow {
     bool connect(int* IDs, size_t n);
     void dump();
     fluid_state* query(int id, fluid_state* output);
-    void change(int id, change_type type, float fluid);
+    void change(int id, change_type type, int fluid);
     void block(int id);
     void update();
 

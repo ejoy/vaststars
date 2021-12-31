@@ -147,6 +147,9 @@ return function ()
     function world:fluidflow_change(...)
         return fluidflow.change(cworld, ...)
     end
+    function world:fluidflow_dump(...)
+        return fluidflow.dump(cworld, ...)
+    end
 
     function world:wait(...)
         return timer.wait(...)

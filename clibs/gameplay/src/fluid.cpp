@@ -48,8 +48,8 @@ void fluidflow::update() {
 	fluidflow_update(network);
 }
 
-void fluidflow::change(int id, change_type type, float fluid) {
-	float r;
+void fluidflow::change(int id, change_type type, int fluid) {
+	int r;
 	switch (type) {
 	case change_type::Import:
 		r = fluidflow_import(network, id, fluid);
@@ -58,7 +58,7 @@ void fluidflow::change(int id, change_type type, float fluid) {
 		r = fluidflow_export(network, id, fluid);
 		break;
 	}
-	assert(r != -1.f);
+	assert(r != -1);
 }
 
 static int
@@ -81,10 +81,10 @@ static int
 lfluidflow_build(lua_State *L) {
 	world& w = *(world*)lua_touserdata(L, 1);
 	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-	float area = (float)luaL_checknumber(L, 3);
-	float height = (float)luaL_checknumber(L, 4);
-	float base_level = (float)luaL_checknumber(L, 5);
-	float pumping_speed = (float)luaL_optnumber(L, 6, 0.0);
+	int area = (int)luaL_checkinteger(L, 3);
+	int height = (int)luaL_checkinteger(L, 4);
+	int base_level = (int)luaL_checkinteger(L, 5);
+	int pumping_speed = (int)luaL_optinteger(L, 6, 0);
 	fluid_box box {
 		.area = area,
 		.height = height,
@@ -129,9 +129,9 @@ lfluidflow_query(lua_State *L) {
 		return luaL_error(L, "fluidflow query failed.");
 	}
 	lua_createtable(L, 0, 2);
-	lua_pushnumber(L, state.volume);
+	lua_pushinteger(L, state.volume);
 	lua_setfield(L, -2, "volume");
-	lua_pushnumber(L, state.space);
+	lua_pushinteger(L, state.space);
 	lua_setfield(L, -2, "space");
 	return 1;
 }
@@ -143,8 +143,16 @@ lfluidflow_change(lua_State *L) {
 	uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
 	static const char *const CHANGETYPE[] = {"import", "export", NULL};
 	fluidflow::change_type type = (fluidflow::change_type)luaL_checkoption(L, 4, "import", CHANGETYPE);
-	float value = (float)luaL_checknumber(L, 5);
+	int value = (int)luaL_checkinteger(L, 5);
 	w.fluidflows[fluid].change(id, type, value);
+	return 0;
+}
+
+static int
+lfluidflow_dump(lua_State *L) {
+	world& w = *(world*)lua_touserdata(L, 1);
+	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
+	w.fluidflows[fluid].dump();
 	return 0;
 }
 
@@ -157,6 +165,7 @@ luaopen_vaststars_fluidflow_core(lua_State *L) {
 		{ "connect", lfluidflow_connect },
 		{ "query", lfluidflow_query },
 		{ "change", lfluidflow_change },
+		{ "dump", lfluidflow_dump },
 		{ NULL, NULL },
 	};
 	luaL_newlib(L, l);
