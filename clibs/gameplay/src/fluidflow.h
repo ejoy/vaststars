@@ -3,8 +3,8 @@
 struct fluidflow_network;
  
 struct fluid_box {
-	int area;
-	int height;	// capacity = area * height
+	int capacity;
+	int height;
 	int base_level;
 	int pumping_speed;	// 0 : pipe , >0 pump
 };

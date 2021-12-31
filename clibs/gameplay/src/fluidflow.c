@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdint.h>
  
 #define PIPE_DEFAULT 8
 #define PIPE_MAX 0xffff
@@ -13,7 +14,7 @@
 struct pipe {
 	int id;
 	int fluid;
-	int area;
+	int height;
 	int capacity;
 	int base_level;
 	int pumping_speed;	// 0 : pipe , >0 pump
@@ -104,8 +105,8 @@ fluidflow_build(struct fluidflow_network *net, int id, struct fluid_box *box) {
 	struct pipe *p = &net->p[net->n++];
 	p->id = id;
 	p->fluid = 0;
-	p->area = box->area;
-	p->capacity = box->area * box->height;
+	p->capacity = box->capacity;
+	p->height = box->height * FIXSHIFT;
 	p->base_level = box->base_level * FIXSHIFT;
 	p->pumping_speed = box->pumping_speed;
 	int i;
@@ -499,7 +500,9 @@ attempt_flow(struct fluidflow_network *net, int idx) {
 	int i;
 	int f[PIPE_CONNECTION];
 	int fluid = p->fluid;
-	int level = fluid * FIXSHIFT / p->area;
+	if (fluid == 0)
+		return;
+	int level = (uint64_t)fluid * p->height / p->capacity;
 	for (i=0;i<PIPE_CONNECTION;i++) {
 		if (p->downlink[i] == PIPE_INVALID_CONNECTION)
 			break;
@@ -509,7 +512,7 @@ attempt_flow(struct fluidflow_network *net, int idx) {
 			// It's pump
 			f[i] = (pumping_speed > fluid) ? fluid : pumping_speed;
 		} else {
-			int to_level = to->fluid * FIXSHIFT / to->area;
+			int to_level = (uint64_t)to->fluid * to->height / to->capacity;
 			if (level + p->base_level > to_level + to->base_level) {
 				f[i] = (level + p->base_level - to_level - to->base_level) / FIXSHIFT / 2 ;
 			} else {
@@ -770,19 +773,19 @@ int
 main() {
 	struct fluidflow_network *net = fluidflow_new();
 	struct fluid_box bump = {
-		1, // area
+		200 * 100, // cap
 		200 * 100,	// height
 		0,	// base_level
 		200 * 100,	// pumping_speed
 	};
 	struct fluid_box pipe = {
-		2,	// area
+		2 * 100 * 100,	// cap
 		100 * 100,	// height
 		0,
 		0,
 	};
 	struct fluid_box tank = {
-		50,	// area
+		50 * 100 * 100,	// cap
 		100 * 100,	// height
 		0,
 		0,

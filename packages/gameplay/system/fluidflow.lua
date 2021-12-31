@@ -62,7 +62,7 @@ local function builder_init()
 end
 
 local function builder_build(world, fluid, fluidbox)
-    return world:fluidflow_build(fluid, fluidbox.area, fluidbox.height, fluidbox.base_level, fluidbox.pumping_speed)
+    return world:fluidflow_build(fluid, fluidbox.capacity, fluidbox.height, fluidbox.base_level, fluidbox.pumping_speed)
 end
 
 local function builder_connect(fluid, x, y, dir, id, type)

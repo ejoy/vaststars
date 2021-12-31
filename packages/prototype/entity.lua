@@ -66,7 +66,7 @@ prototype "化工厂1" {
     fluidboxes = {
         input = {
             {
-                area = 10,
+                capacity = 1000,
                 height = 100,
                 base_level = -100,
                 connections = {
@@ -74,7 +74,7 @@ prototype "化工厂1" {
                 }
             },
             {
-                area = 10,
+                capacity = 1000,
                 height = 100,
                 base_level = -100,
                 connections = {
@@ -82,7 +82,7 @@ prototype "化工厂1" {
                 }
             },
             {
-                area = 10,
+                capacity = 1000,
                 height = 100,
                 base_level = -100,
                 connections = {
@@ -93,7 +93,7 @@ prototype "化工厂1" {
         },
         output = {
             {
-                area = 10,
+                capacity = 1000,
                 height = 100,
                 base_level = -100,
                 connections = {
@@ -101,7 +101,7 @@ prototype "化工厂1" {
                 }
             },
             {
-                area = 10,
+                capacity = 1000,
                 height = 100,
                 base_level = -100,
                 connections = {
@@ -138,7 +138,7 @@ prototype "液罐1" {
     type ={"entity", "fluidbox"},
     area = "3x3",
     fluidbox = {
-        area = 100,
+        capacity = 20000,
         height = 200,
         base_level = 0,
         connections = {
@@ -214,7 +214,7 @@ prototype "管道1-I型" {
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
-        area = 2,
+        capacity = 200,
         height = 100,
         base_level = 0,
         connections = {
@@ -228,7 +228,7 @@ prototype "管道1-L型" {
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
-        area = 2,
+        capacity = 200,
         height = 100,
         base_level = 0,
         connections = {
@@ -242,7 +242,7 @@ prototype "管道1-T型" {
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
-        area = 2,
+        capacity = 200,
         height = 100,
         base_level = 0,
         connections = {
@@ -257,7 +257,7 @@ prototype "管道1-X型" {
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
-        area = 2,
+        capacity = 200,
         height = 100,
         base_level = 0,
         connections = {

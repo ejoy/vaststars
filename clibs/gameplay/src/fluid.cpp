@@ -81,12 +81,12 @@ static int
 lfluidflow_build(lua_State *L) {
 	world& w = *(world*)lua_touserdata(L, 1);
 	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-	int area = (int)luaL_checkinteger(L, 3);
+	int capacity = (int)luaL_checkinteger(L, 3);
 	int height = (int)luaL_checkinteger(L, 4);
 	int base_level = (int)luaL_checkinteger(L, 5);
 	int pumping_speed = (int)luaL_optinteger(L, 6, 0);
 	fluid_box box {
-		.area = area,
+		.capacity = capacity,
 		.height = height,
 		.base_level = base_level,
 		.pumping_speed = pumping_speed,
