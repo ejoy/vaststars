@@ -95,7 +95,7 @@ prototype "化工厂1" {
             {
                 capacity = 1000,
                 height = 100,
-                base_level = -100,
+                base_level = 100,
                 connections = {
                     {type="output", position={0,2,"S"}},
                 }
@@ -103,7 +103,7 @@ prototype "化工厂1" {
             {
                 capacity = 1000,
                 height = 100,
-                base_level = -100,
+                base_level = 100,
                 connections = {
                     {type="output", position={2,2,"S"}},
                 }
@@ -139,7 +139,7 @@ prototype "液罐1" {
     area = "3x3",
     fluidbox = {
         capacity = 20000,
-        height = 200,
+        height = 100,
         base_level = 0,
         connections = {
             {type="input-output", position={0,0,"N"}},

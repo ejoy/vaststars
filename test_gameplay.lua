@@ -185,22 +185,25 @@ local function dump()
     --        end
     --    end
     --end
-    local function display(fluid, id)
+    local function display(fluid, id, fluidbox)
         if fluid ~= 0 then
             local r = world:fluidflow_query(fluid, id)
             if r then
-                print(gameplay.query(fluid).name, ("%d/%d"):format(r.volume, r.volume + r.space))
+                print(gameplay.query(fluid).name, ("%0.2f/%d"):format(r.volume / r.ratio, fluidbox.capacity))
             end
         end
     end
-    for v in ecs:select "fluidbox:in" do
-        display(v.fluidbox.fluid, v.fluidbox.id)
+    for v in ecs:select "fluidbox:in entity:in" do
+        local pt = gameplay.query(v.entity.prototype)
+        display(v.fluidbox.fluid, v.fluidbox.id, pt.fluidbox)
     end
-    for v in ecs:select "fluidboxes:in" do
+    for v in ecs:select "fluidboxes:in entity:in" do
+        local pt = gameplay.query(v.entity.prototype)
         for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
             local fluid = v.fluidboxes[classify.."_fluid"]
             local id = v.fluidboxes[classify.."_id"]
-            display(fluid, id)
+            local what, i = classify:match "(%a*)(%d)"
+            display(fluid, id, pt.fluidboxes[what.."put"][tonumber(i)])
         end
     end
     print "===================="

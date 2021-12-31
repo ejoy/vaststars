@@ -18,6 +18,10 @@ uint16_t fluidflow::build(struct fluid_box *box) {
 	if (maxid >= 0xFFFF) {
 		return 0;
 	}
+	box->capacity *= ratio;
+	box->height *= ratio;
+	box->base_level *= ratio;
+	box->pumping_speed *= ratio;
 	if (fluidflow_build(network, ++maxid, box)) {
 		return 0;
 	}
@@ -36,8 +40,14 @@ void fluidflow::dump() {
 	fluidflow_dump(network);
 }
 
-fluid_state* fluidflow::query(int id, fluid_state* output) {
-	return fluidflow_query(network, id, output);
+bool fluidflow::query(int id, state& state) {
+	fluid_state output;
+	if (!fluidflow_query(network, id, &output)) {
+		return false;
+	}
+	state.volume = output.volume;
+	state.ratio = ratio;
+	return true;
 }
 
 void fluidflow::block(int id) {
@@ -52,10 +62,10 @@ void fluidflow::change(int id, change_type type, int fluid) {
 	int r;
 	switch (type) {
 	case change_type::Import:
-		r = fluidflow_import(network, id, fluid);
+		r = fluidflow_import(network, id, fluid * ratio);
 		break;
 	case change_type::Export:
-		r = fluidflow_export(network, id, fluid);
+		r = fluidflow_export(network, id, fluid * ratio);
 		break;
 	}
 	assert(r != -1);
@@ -124,15 +134,15 @@ lfluidflow_query(lua_State *L) {
 	world& w = *(world*)lua_touserdata(L, 1);
 	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
 	uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
-	fluid_state state;
-	if (!w.fluidflows[fluid].query(id, &state)) {
+	fluidflow::state state;
+	if (!w.fluidflows[fluid].query(id, state)) {
 		return luaL_error(L, "fluidflow query failed.");
 	}
 	lua_createtable(L, 0, 2);
 	lua_pushinteger(L, state.volume);
 	lua_setfield(L, -2, "volume");
-	lua_pushinteger(L, state.space);
-	lua_setfield(L, -2, "space");
+	lua_pushinteger(L, state.ratio);
+	lua_setfield(L, -2, "ratio");
 	return 1;
 }
 

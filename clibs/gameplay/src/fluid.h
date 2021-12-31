@@ -10,9 +10,9 @@ struct fluidflow {
         Export,
     };
 
-    struct connectinfo {
-        int from;
-        int to;
+    struct state {
+        int volume;
+        int ratio;
     };
 
     fluidflow();
@@ -21,11 +21,12 @@ struct fluidflow {
     int teardown(int id);
     bool connect(int* IDs, size_t n);
     void dump();
-    fluid_state* query(int id, fluid_state* output);
+    bool query(int id, state& state);
     void change(int id, change_type type, int fluid);
     void block(int id);
     void update();
 
     fluidflow_network* network;
     uint16_t maxid = 0;
+    static const int ratio = 100;
 };
