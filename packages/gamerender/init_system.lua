@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local mathpkg = import_package "ant.math"
-local gameplay_update = import_package "vaststars.gameplay".update
+local game = import_package "vaststars.gameplay".createWorld()
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.ui|iui"
@@ -34,5 +34,5 @@ function m:init_world()
 end
 
 function m:data_changed()
-    gameplay_update()
+    game.update()
 end

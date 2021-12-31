@@ -25,7 +25,6 @@ antdir = antdir and fs.path(antdir) or (fs.exe_path()
     :parent_path()
     :parent_path()
     :parent_path()
-    :parent_path()
     / "3rd"
     / "ant")
 
