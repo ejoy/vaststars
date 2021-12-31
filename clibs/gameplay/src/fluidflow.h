@@ -11,7 +11,6 @@ struct fluid_box {
  
 struct fluid_state {
 	int volume;
-	int space;
 };
  
 struct fluidflow_network * fluidflow_new();

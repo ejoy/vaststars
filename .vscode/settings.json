@@ -106,7 +106,8 @@
         "xtree": "cpp",
         "*.rh": "cpp",
         "*.idl": "cpp",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "string.h": "c"
     },
     "Lua.diagnostics.disable": [
         "empty-block",

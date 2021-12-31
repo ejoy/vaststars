@@ -1,5 +1,5 @@
 #include "fluidflow.h"
-
+ 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -338,7 +338,6 @@ fluidflow_dump(struct fluidflow_network *net) {
 static struct fluid_state *
 get_state(struct pipe *p, struct fluid_state *output) {
 	output->volume = p->fluid;
-	output->space = p->capacity - p->fluid;
 	return output;
 }
  
@@ -679,6 +678,29 @@ get_reservation(struct pipe *p, int from_idx) {
 }
  
 static void
+divide_fluid(int n, int f[PIPE_CONNECTION], int total, int space) {
+	int radio = space * FIXSHIFT / total;
+	int i;
+	int o[PIPE_CONNECTION];
+	int sum = 0;
+	for (i=0;i<n;i++) {
+		o[i] = f[i];
+		f[i] = f[i] * radio / FIXSHIFT;
+		sum += f[i];
+	}
+	int index = 0;
+	while (sum < space) {
+		if (o[index] > f[index]) {
+			++f[index];
+			++sum;
+		}
+		++index;
+		if (index >= n)
+			index = 0;
+	}
+}
+ 
+static void
 flow(struct fluidflow_network *net, int idx) {
 	struct pipe *p = &net->p[idx];
 	int f[PIPE_CONNECTION];
@@ -697,14 +719,8 @@ flow(struct fluidflow_network *net, int idx) {
 		// flow
 		if (total > fluid) {
 			// reservation space is bigger than fluid
-			int radio = fluid * FIXSHIFT / total;
+			divide_fluid(n, f, total, fluid);
 			p->fluid = 0;
-			int total = fluid;
-			for (i=0;i<n-1;i++) {
-				f[i] = f[i] * radio / FIXSHIFT;
-				total -= f[i];
-			}
-			f[i] = total;
 		} else {
 			p->fluid -= total;
 		}
@@ -732,11 +748,8 @@ flow(struct fluidflow_network *net, int idx) {
 	if (total > space) {
 		// space is smaller than fluid
 		n = i;
-		int radio = space * FIXSHIFT / total;
 //		printf("Realoc %d radio = %g total = %d space = %d\n", p->id, (float) radio / FIXSHIFT, total, space );
-		for (i=0;i<n;i++) {
-			p->reservation[i] = p->reservation[i] * radio / FIXSHIFT;
-		}
+		divide_fluid(n, p->reservation, total, space);
 	}
 }
  
