@@ -18,7 +18,7 @@ checkFinish(world& w, burner& b) {
 		prototype_context recipe = w.prototype(b.recipe);
 		recipe_container& container = w.query_container<recipe_container>(b.container);
 		container::item* items = (container::item*)pt_results(&recipe);
-		if (container.place_batch(w, items)) {
+		if (container.recipe_place(w, items)) {
 			b.process = STATUS_IDLE;
 		}
 	}
@@ -46,13 +46,13 @@ lupdate(lua_State *L) {
 			recipe_container& container = w.query_container<recipe_container>(b.container);
 			if (b.process == STATUS_DONE) {
 				container::item* items = (container::item*)pt_results(&recipe);
-				if (container.place_batch(w, items)) {
+				if (container.recipe_place(w, items)) {
 					b.process = STATUS_IDLE;
 				}
 			}
 			if (b.process == STATUS_IDLE) {
 				container::item* items = (container::item*)pt_ingredients(&recipe);
-				if (container.pickup_batch(w, items)) {
+				if (container.recipe_pickup(w, items)) {
 					int time = pt_time(&recipe);
 					b.process = time + STATUS_DONE;
 				}

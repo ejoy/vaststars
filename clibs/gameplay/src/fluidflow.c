@@ -18,6 +18,7 @@ struct pipe {
 	int capacity;
 	int base_level;
 	int pumping_speed;	// 0 : pipe , >0 pump
+	int flow;
 	unsigned short uplink[PIPE_CONNECTION];	// index
 	unsigned short downlink[PIPE_CONNECTION];
 	int reservation[PIPE_CONNECTION];
@@ -109,6 +110,7 @@ fluidflow_build(struct fluidflow_network *net, int id, struct fluid_box *box) {
 	p->height = box->height * FIXSHIFT;
 	p->base_level = box->base_level * FIXSHIFT;
 	p->pumping_speed = box->pumping_speed;
+	p->flow = 0;
 	int i;
 	for (i=0;i<PIPE_CONNECTION;i++) {
 		p->uplink[i] = PIPE_INVALID_CONNECTION;
@@ -338,6 +340,7 @@ fluidflow_dump(struct fluidflow_network *net) {
 static struct fluid_state *
 get_state(struct pipe *p, struct fluid_state *output) {
 	output->volume = p->fluid;
+	output->flow = p->flow;
 	return output;
 }
  
@@ -388,30 +391,33 @@ find_export(struct fluidflow_network *net, int id) {
 }
  
 static int
-set_fluid(struct fluidflow_network *net, int idx, int fluid) {
+set_fluid(struct fluidflow_network *net, int idx, int fluid, int multiple) {
 	if (idx == PIPE_INVALID_CONNECTION)
 		return -1;
 	struct pipe *p = &net->p[idx];
-	p->fluid = fluid;
-	if (p->fluid <= 0) {
-		p->fluid = 0;
+	if (fluid <= 0) {
+		p->fluid %= multiple;
 		return 0;
-	} else if (p->fluid > p->capacity) {
+	}
+	fluid *= multiple;
+	if (fluid >= p->capacity) {
 		p->fluid = p->capacity;
+	} else {
+		p->fluid = fluid + p->fluid % multiple;
 	}
 	return p->fluid;
 }
  
 int
-fluidflow_import(struct fluidflow_network *net, int id, int fluid) {
+fluidflow_import(struct fluidflow_network *net, int id, int fluid, int multiple) {
 	int idx = find_import(net, id);
-	return set_fluid(net, idx, fluid);
+	return set_fluid(net, idx, fluid, multiple);
 }
  
 int
-fluidflow_export(struct fluidflow_network *net, int id, int fluid) {
+fluidflow_export(struct fluidflow_network *net, int id, int fluid, int multiple) {
 	int idx = find_export(net, id);
-	return set_fluid(net, idx, fluid);
+	return set_fluid(net, idx, fluid, multiple);
 }
  
 void
@@ -496,16 +502,15 @@ fluid_level(struct pipe *p) {
 static void
 attempt_flow(struct fluidflow_network *net, int idx) {
 	struct pipe *p = &net->p[idx];
-	if (is_blocking(net, p->id)) {
+	int fluid = p->fluid;
+	if (fluid == 0 || is_blocking(net, p->id)) {
+		p->flow = 0;
 		return;
 	}
  
 	int total = 0;
 	int i;
 	int f[PIPE_CONNECTION];
-	int fluid = p->fluid;
-	if (fluid == 0)
-		return;
 	int level = fluid_level(p);
 	for (i=0;i<PIPE_CONNECTION;i++) {
 		if (p->downlink[i] == PIPE_INVALID_CONNECTION)
@@ -721,8 +726,10 @@ flow(struct fluidflow_network *net, int idx) {
 			// reservation space is bigger than fluid
 			divide_fluid(n, f, total, fluid);
 			p->fluid = 0;
+			p->flow = fluid;
 		} else {
 			p->fluid -= total;
+			p->flow = total;
 		}
 		for (i=0;i<n;i++) {
 			if (f[i] > 0) {
@@ -732,6 +739,8 @@ flow(struct fluidflow_network *net, int idx) {
 				to->fluid += f[i];
 			}
 		}
+	} else {
+		p->flow = 0;
 	}
  
 	int space = p->capacity - p->fluid;
@@ -775,14 +784,14 @@ fluidflow_update(struct fluidflow_network *net) {
  
 static void
 update(struct fluidflow_network *net, int fluid[]) {
-	fluidflow_import(net, 1, fluid[0] + 20000);
-	fluidflow_import(net, 1, fluid[11] + 20000);
+	fluidflow_import(net, 1, fluid[0] + 20000, 1);
+	fluidflow_import(net, 1, fluid[11] + 20000, 1);
 	fluidflow_update(net);
 	int i;
 	for (i=1;i<=12;i++) {
 		struct fluid_state s;
 		fluid[i-1] = fluidflow_query(net, i, &s)->volume;
-		printf("[%d]:%d ", i, fluid[i-1]);
+		printf("[%d]:%d/%d ", i, fluid[i-1], s.flow);
 	}
 	printf("\n");
 }

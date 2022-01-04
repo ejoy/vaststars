@@ -42,19 +42,26 @@ local function uniquekey(x, y, d)
     return ("%d,%d,%s"):format(x, y, d)
 end
 
-local function rotate(position, d)
-    local x = position[1]
-    local y = position[2]
-    local dir = (PipeDirection[position[3]] + d) % 4
-    if d == N then
-        return x, y, dir
-    elseif d == E then
-        return y, -x, dir
-    elseif d == S then
-        return -x, -y, dir
-    elseif d == W then
-        return -y, x, dir
+local function rotate(position, direction, area)
+    local function rotate_(x, y, d)
+        if d == N then
+            return x, y
+        elseif d == E then
+            return -y, x
+        elseif d == S then
+            return -x, -y
+        elseif d == W then
+            return y, -x
+        end
     end
+    local w, h = area & 0xFF, area >> 8
+    local dw, dh = w//2, h//2
+    local x, y = position[1], position[2]
+    x, y = x - dw, y - dh
+    x, y = rotate_(x, y, direction)
+    x, y = x + dw, y + dh
+    local dir = (PipeDirection[position[3]] + direction) % 4
+    return x, y, dir
 end
 
 local function builder_init()
@@ -107,7 +114,7 @@ function m.build(world)
         local fluid = v.fluidbox.fluid
         v.fluidbox.id = id
         for _, conn in ipairs(pt.fluidbox.connections) do
-            local x, y, dir = rotate(conn.position, v.entity.direction)
+            local x, y, dir = rotate(conn.position, v.entity.direction, pt.area)
             builder_connect(fluid, v.entity.x + x, v.entity.y + y, dir, id, PipeEdgeType[conn.type])
         end
     end
@@ -120,7 +127,7 @@ function m.build(world)
                     local id = builder_build(world, fluid, fluidbox)
                     v.fluidboxes[classify..i.."_id"] = id
                     for _, conn in ipairs(fluidbox.connections) do
-                        local x, y, dir = rotate(conn.position, v.entity.direction)
+                        local x, y, dir = rotate(conn.position, v.entity.direction, pt.area)
                         builder_connect(fluid, v.entity.x + x, v.entity.y + y, dir, id, PipeEdgeType[conn.type])
                     end
                 end

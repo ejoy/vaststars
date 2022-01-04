@@ -18,10 +18,10 @@ uint16_t fluidflow::build(struct fluid_box *box) {
 	if (maxid >= 0xFFFF) {
 		return 0;
 	}
-	box->capacity *= ratio;
-	box->height *= ratio;
-	box->base_level *= ratio;
-	box->pumping_speed *= ratio;
+	box->capacity *= multiple;
+	box->height *= multiple;
+	box->base_level *= multiple;
+	box->pumping_speed *= multiple;
 	if (fluidflow_build(network, ++maxid, box)) {
 		return 0;
 	}
@@ -46,7 +46,8 @@ bool fluidflow::query(int id, state& state) {
 		return false;
 	}
 	state.volume = output.volume;
-	state.ratio = ratio;
+	state.flow = output.flow;
+	state.multiple = multiple;
 	return true;
 }
 
@@ -62,10 +63,10 @@ void fluidflow::change(int id, change_type type, int fluid) {
 	int r;
 	switch (type) {
 	case change_type::Import:
-		r = fluidflow_import(network, id, fluid * ratio);
+		r = fluidflow_import(network, id, fluid, multiple);
 		break;
 	case change_type::Export:
-		r = fluidflow_export(network, id, fluid * ratio);
+		r = fluidflow_export(network, id, fluid, multiple);
 		break;
 	}
 	assert(r != -1);
@@ -74,8 +75,58 @@ void fluidflow::change(int id, change_type type, int fluid) {
 static int
 lupdate(lua_State *L) {
 	world& w = *(world*)lua_touserdata(L, 1);
+	for (auto& e : w.select<fluidboxes, assembling>()) {
+		fluidboxes& fb = e.get<fluidboxes>();
+		assembling& a = e.get<assembling>();
+		recipe_container& container = w.query_container<recipe_container>(a.container);
+		for (size_t i = 0; i < 4; ++i) {
+			uint16_t fluid = fb.in[i].fluid;
+			if (fluid != 0) {
+				uint8_t index = ((a.fluidbox >> (i*4)) & 0xF) - 1;
+				uint16_t value = 0;
+				if (container.recipe_get(recipe_container::slot_type::in, index, value)) {
+					w.fluidflows[fluid].change(fb.in[i].id, fluidflow::change_type::Import, value);
+				}
+			}
+		}
+		for (size_t i = 0; i < 3; ++i) {
+			uint16_t fluid = fb.out[i].fluid;
+			if (fluid != 0) {
+				uint8_t index = ((a.fluidbox >> ((i+4)*4)) & 0xF) - 1;
+				uint16_t value = 0;
+				if (container.recipe_get(recipe_container::slot_type::out, index, value)) {
+					w.fluidflows[fluid].change(fb.out[i].id, fluidflow::change_type::Export, value);
+				}
+			}
+		}
+	}
 	for (auto& [_,f] : w.fluidflows) {
 		f.update();
+	}
+	for (auto& e : w.select<fluidboxes, assembling>()) {
+		fluidboxes& fb = e.get<fluidboxes>();
+		assembling& a = e.get<assembling>();
+		recipe_container& container = w.query_container<recipe_container>(a.container);
+		for (size_t i = 0; i < 4; ++i) {
+			uint16_t fluid = fb.in[i].fluid;
+			if (fluid != 0) {
+				uint8_t index = ((a.fluidbox >> (i*4)) & 0xF) - 1;
+				fluidflow::state state;
+				if (w.fluidflows[fluid].query(fb.in[i].id, state)) {
+					container.recipe_set(recipe_container::slot_type::in, index, state.volume / state.multiple);
+				}
+			}
+		}
+		for (size_t i = 0; i < 3; ++i) {
+			uint16_t fluid = fb.out[i].fluid;
+			if (fluid != 0) {
+				uint8_t index = ((a.fluidbox >> ((i+4)*4)) & 0xF) - 1;
+				fluidflow::state state;
+				if (w.fluidflows[fluid].query(fb.out[i].id, state)) {
+					container.recipe_set(recipe_container::slot_type::out, index, state.volume / state.multiple);
+				}
+			}
+		}
 	}
 	return 0;
 }
@@ -141,8 +192,10 @@ lfluidflow_query(lua_State *L) {
 	lua_createtable(L, 0, 2);
 	lua_pushinteger(L, state.volume);
 	lua_setfield(L, -2, "volume");
-	lua_pushinteger(L, state.ratio);
-	lua_setfield(L, -2, "ratio");
+	lua_pushinteger(L, state.flow);
+	lua_setfield(L, -2, "flow");
+	lua_pushinteger(L, state.multiple);
+	lua_setfield(L, -2, "multiple");
 	return 1;
 }
 

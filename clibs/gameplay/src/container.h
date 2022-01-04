@@ -41,12 +41,17 @@ struct recipe_container: public container {
     struct slot: public item {
         uint16_t limit;
     };
+    enum class slot_type {
+        in,
+        out
+    };
     std::vector<slot> inslots;
     std::vector<slot> outslots;
-
     recipe_container(item_array in, item_array out);
-    bool     pickup_batch(world& w, item const* items);
-    bool     place_batch(world& w, item const* items);
+    bool     recipe_pickup(world& w, item const* items);
+    bool     recipe_place(world& w, item const* items);
+    bool     recipe_get(slot_type type, uint16_t index, uint16_t& value);
+    bool     recipe_set(slot_type type, uint16_t index, uint16_t value);
     item     at(uint16_t index) override;
     uint32_t inserter_need() override;
     item     inserter_pickup_any(world& w, uint16_t max) override;

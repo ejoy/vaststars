@@ -208,7 +208,7 @@ bool recipe_container::inserter_place(world& w, uint16_t item, uint16_t amount) 
     return false;
 }
 
-bool recipe_container::pickup_batch(world& w, item const* items) {
+bool recipe_container::recipe_pickup(world& w, item const* items) {
     for (size_t i = 0; i < inslots.size(); ++i) {
         auto& s = inslots[i];
         auto& t = items[i];
@@ -225,13 +225,45 @@ bool recipe_container::pickup_batch(world& w, item const* items) {
     return true;
 }
 
-bool recipe_container::place_batch(world& w, item const* items) {
+bool recipe_container::recipe_place(world& w, item const* items) {
     for (size_t i = 0; i < outslots.size(); ++i) {
         auto& s = outslots[i];
         auto& t = items[i];
         s.amount += t.amount;
     }
     return true;
+}
+
+bool recipe_container::recipe_get(slot_type type, uint16_t index, uint16_t& value) {
+    if (type == slot_type::in) {
+        if (index < inslots.size()) {
+            value = inslots[index].amount;
+            return true;
+        }
+    }
+    else {
+        if (index < outslots.size()) {
+            value = outslots[index].amount;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool recipe_container::recipe_set(slot_type type, uint16_t index, uint16_t value) {
+    if (type == slot_type::in) {
+        if (index < inslots.size()) {
+            inslots[index].amount = value;
+            return true;
+        }
+    }
+    else {
+        if (index < outslots.size()) {
+            outslots[index].amount = value;
+            return true;
+        }
+    }
+    return false;
 }
 
 container::item container::inserter_pickup(world& w, container& need, uint16_t max) {

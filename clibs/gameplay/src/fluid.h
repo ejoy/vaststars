@@ -12,7 +12,8 @@ struct fluidflow {
 
     struct state {
         int volume;
-        int ratio;
+        int flow;
+        int multiple;
     };
 
     fluidflow();
@@ -28,5 +29,5 @@ struct fluidflow {
 
     fluidflow_network* network;
     uint16_t maxid = 0;
-    static const int ratio = 100;
+    static const int multiple = 100;
 };

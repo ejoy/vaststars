@@ -11,6 +11,7 @@ struct fluid_box {
  
 struct fluid_state {
 	int volume;
+	int flow;
 };
  
 struct fluidflow_network * fluidflow_new();
@@ -21,7 +22,7 @@ int fluidflow_connect(struct fluidflow_network *net, int n, int *id);
 void fluidflow_dump(struct fluidflow_network *net);
  
 struct fluid_state * fluidflow_query(struct fluidflow_network *net, int id, struct fluid_state *output);
-int fluidflow_import(struct fluidflow_network *net, int id, int fluid);
-int fluidflow_export(struct fluidflow_network *net, int id, int fluid);
+int fluidflow_import(struct fluidflow_network *net, int id, int fluid, int multiple);
+int fluidflow_export(struct fluidflow_network *net, int id, int fluid, int multiple);
 void fluidflow_block(struct fluidflow_network *net, int id);
 void fluidflow_update(struct fluidflow_network *net);

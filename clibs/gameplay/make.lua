@@ -1,8 +1,11 @@
 local lm = require "luamake"
 
 lm:build "compile_entity" {
-    "$luamake", "lua", "$in",
-    input = "../../clibs/gameplay/compile_entity.lua",
+    "$luamake", "lua", "clibs/gameplay/compile_entity.lua",
+    input = {
+        "../../clibs/gameplay/compile_entity.lua",
+        "../../packages/gameplay/init/component.lua",
+    },
     output = "../../clibs/gameplay/src/entity.h",
 }
 

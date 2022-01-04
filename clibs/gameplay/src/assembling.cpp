@@ -30,13 +30,13 @@ assembling_update(world& w, assembling& a, entity& e, capacitance& c) {
         recipe_container& container = w.query_container<recipe_container>(a.container);
         if (a.process == STATUS_DONE) {
             container::item* items = (container::item*)pt_results(&recipe);
-            if (container.place_batch(w, items)) {
+            if (container.recipe_place(w, items)) {
                 a.process = STATUS_IDLE;
             }
         }
         if (a.process == STATUS_IDLE) {
             container::item* items = (container::item*)pt_ingredients(&recipe);
-            if (container.pickup_batch(w, items)) {
+            if (container.recipe_pickup(w, items)) {
                 int time = pt_time(&recipe);
                 a.process = time + STATUS_DONE;
             }

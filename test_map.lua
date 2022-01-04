@@ -1,5 +1,6 @@
 local world = ...
 
+--[[
 world:create_entity "小型铁制箱子" {
     x = 1,
     y = 1,
@@ -75,6 +76,7 @@ world:create_entity "小型铁制箱子" {
     items = {
     },
 }
+]]
 
 world:create_entity "指挥中心" {
     x = 1,
