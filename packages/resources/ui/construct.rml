@@ -112,7 +112,6 @@
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
                 show_work = false,
-                --workName = {"加工", "化工", "电力", "物流", "计算机", "自定义"}
                 work_id = 1,
                 is_show_construct_confirm = false,
             }
@@ -122,7 +121,7 @@
                     start.work_id = 1
                 else
                     start.work_id = building_type
-                    ui_sys.postMessage("construct.rml", "building", building_type)
+                    ui_sys.pub("ui", "construct", "click_construct", building_type)
                     start.show_work = false
                 end
             end
@@ -130,13 +129,13 @@
  
             end
             function start.clickContructConfirm()
-                ui_sys.postMessage("construct.rml", "confirm")
+                ui_sys.pub("ui", "construct", "click_construct_confirm")
             end
             function start.clickDebug(event, i)
                 ui_sys.pub("debug", i)
             end
-            ui_sys.addEventListener("construct.rml", {
-                ["show_construct_confirm"] = function(show, position)
+            ui_sys.addEventListener({
+                ["construct_show_confirm"] = function(show, position)
                     start.is_show_construct_confirm = show
 
                     if show then

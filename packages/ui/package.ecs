@@ -1,9 +1,8 @@
 system "ui_system"
     .implement "ui_system.lua"
-    .method "data_changed"
+    .method "ui_update"
 
 interface "iui"
     .implement "ui_system.lua"
     .method "open"
     .method "close"
-    .method "post"

@@ -8,22 +8,25 @@ import "construct/package.ecs"
 import "road/package.ecs"
 import "terrain/package.ecs"
 
-component "prefab_raw" .type "lua"
-component "prefab_object" .type "lua"
+component "game_object"
 
 policy "game_object"
-    .component "prefab_raw"
-    .component "prefab_object"
+    .component "game_object"
 
 system "game_object_system"
     .implement "game_object_system.lua"
     .method "entity_remove"
+    .method "entity_ready"
 
 interface "igame_object"
     .implement "game_object_system.lua"
     .method "new"
-    .method "get_prefab"
     .method "get_prefab_object"
+    .method "get_game_object"
+
+interface "iprefab_object"
+    .implement "iprefab_object.lua"
+    .method "create"
 
 component "debug_component" .type "lua"
 -----------------

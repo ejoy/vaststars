@@ -32,7 +32,7 @@ fs.current_path(antdir)
 if arg[0] == nil then
     arg[0] = "main.lua"
 end
-arg[0] = "../../"..arg[0]
+-- arg[0] = "../../"..arg[0]
 
 local MainPath = fs.relative(ProjectDir / arg[0], antdir)
 arg[0] = MainPath:string()

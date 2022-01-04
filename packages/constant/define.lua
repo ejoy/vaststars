@@ -1,6 +1,6 @@
 local DEFINE = {
     FRAMES_PER_SECOND = 60,
-    ROAD_YAXIS_DEFAULT = 0.22, -- 路面高度 -- todo 建议移至编辑器配置
+    ROAD_YAXIS_DEFAULT = 2.2, -- 路面高度 -- todo 建议移至编辑器配置
     ROAD_WIDTH = 0.6, -- 路面宽度
 }
 

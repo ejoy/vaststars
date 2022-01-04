@@ -2,62 +2,31 @@ local ecs = ...
 local world = ecs.world
 
 local irmlui = ecs.import.interface "ant.rmlui|irmlui"
-
 local json = import_package "ant.json"
 local json_encode = json.encode
 local json_decode = json.decode
 
-local ui_receiver_mb = world:sub {"ui_receiver"}
-local ui_receiver_open_mb = world:sub {"ui_receiver_open"}
-local ui_receiver_close_mb = world:sub {"ui_receiver_close"}
-
+local rmlui_message_mb = world:sub {"rmlui_message"}
+local ui_message_mb = world:sub {"ui_message"}
 local windows = {}
 
-local function post_message(url, event, ...)
-    local w = windows[url]
-    if not w then
-        error(("Can not found window (%s)"):format(url))
-        return
-    end
-
-    local ud = {}
-    ud.url = url
-    ud.event = event
-    ud.ud = {...}
-    w.postMessage(json_encode(ud))
-end
-
 local function open(url)
-    if not windows[url] then
-        local w = irmlui.open(url)
-        w.addEventListener("message", function(event)
-            if not event.data then
-                console.log("event data is null")
-                return
-            end
+    local w = irmlui.open(url)
+    w.addEventListener("message", function(event)
+        if not event.data then
+            console.log("event data is null")
+            return
+        end
 
-            local res, err = json_decode(event.data)
-            if not res then
-                error(("%s"):format(err))
-                return
-            end
+        local res, err = json_decode(event.data)
+        if not res then
+            error(("%s"):format(err))
+            return
+        end
 
-            -- rmlui to world
-            if res.event == "__open"then
-                world:pub {"ui_receiver_open", res.url, "__open", table.unpack(res.ud)}
-            elseif res.event == "__close" then
-                world:pub {"ui_receiver_close", res.url, "__close", table.unpack(res.ud)}
-            elseif res.event == "__set_data" then
-                world:pub {"ui_receiver_datasource", res.url, "__set_data", table.unpack(res.ud)}
-            elseif res.event == "__pub" then
-                world:pub {table.unpack(res.ud)}
-            else
-                world:pub {"ui_receiver", res.url, res.event, table.unpack(res.ud)}
-            end
-        end)
-        windows[url] = w
-    end
-    post_message(url, "__get_data")
+        world:pub {"rmlui_message", res.event, table.unpack(res.ud)}
+    end)
+    windows[url] = w
 end
 
 local function close(url)
@@ -70,20 +39,38 @@ local function close(url)
     windows[url] = nil
 end
 
+local function pub(...)
+    world:pub {...}
+end
+
+local ui_events = {
+    __OPEN = open,
+    __CLOSE = close,
+    __PUB = pub,
+}
+
 local ui_system = ecs.system 'ui_system'
-function ui_system.data_changed()
-    -- recv rmlui message
-    for msg in ui_receiver_mb:each() do
-        local url, event = msg[2], msg[3]
-        world:pub {"ui", url, event, table.unpack(msg, 4, #msg)}
+function ui_system.ui_update()
+    local event, func
+    -- rmlui to world
+    for msg in rmlui_message_mb:each() do
+        event = msg[2]
+        func = ui_events[event]
+        if func then
+            func(table.unpack(msg, 3, #msg))
+        else
+            error(("Can not found event `%s`"):format(event))
+        end
     end
 
-    for _, url in ui_receiver_open_mb:unpack() do
-        open(url)
-    end
-
-    for _, url in ui_receiver_close_mb:unpack() do
-        close(url)
+    -- world to rmlui
+    for msg in ui_message_mb:each() do
+        for _, w in pairs(windows) do
+            local ud = {}
+            ud.event = msg[2]
+            ud.ud = {table.unpack(msg, 3, #msg)}
+            w.postMessage(json_encode(ud))
+        end
     end
 end
 
@@ -94,8 +81,4 @@ end
 
 function iui.close(url)
     close(url)
-end
-
-function iui.post(url, event, ...)
-    post_message(url, event, ...)
 end

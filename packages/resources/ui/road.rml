@@ -93,7 +93,7 @@
                 ui_sys.postMessage("route.rml", "show_route", route_id)
             end
 
-            ui_sys.addEventListener("road.rml", {
+            ui_sys.addEventListener({
                 ["__set_data"] = function(stations, routes)
                     start.routes = {}
                     for id, v in ipairs(routes) do

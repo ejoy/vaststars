@@ -23,7 +23,7 @@ function iterrain.create()
     local width, height = 256, 256
     local unit = 10
     local srt = {
-        t = {-width//2 + unit/2, 0.0, -height//2 + unit/2}, -- 地形偏移
+        t = {-(width * unit)//2 + unit//2, 0.0, -(height * unit)//2 + unit//2}, -- 地形偏移
     }
     local shape = {}
     shape[1] = srt.t

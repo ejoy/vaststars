@@ -8,6 +8,24 @@ local pickup_mapping_sys = ecs.system "pickup_mapping_system"
 local ipickup_mapping = ecs.interface "ipickup_mapping"
 
 local id_mapping = {}
+local id_entity = {}
+
+function pickup_mapping_sys:entity_remove()
+	for e in w:select "REMOVED render_object:in scene:in" do
+        local sid = e.scene.id
+        -- print(("ipickup_mapping.clear %s"):format(sid))
+
+        id_mapping[sid] = nil
+
+        local t = id_entity[sid]
+        if t then
+            for _, v in ipairs(t) do
+                id_mapping[v] = nil
+            end
+        end
+        id_entity[sid] = nil
+	end
+end
 
 function pickup_mapping_sys.after_pickup()
     local mapping_entity
@@ -27,8 +45,13 @@ end
 
 function ipickup_mapping.mapping(sid, entity)
     id_mapping[sid] = entity
-end
 
-function ipickup_mapping.unmapping(sid)
-    id_mapping[sid] = nil
+    if not entity.scene then
+        w:sync("scene:in", entity)
+    end
+
+    -- print(("ipickup_mapping.mapping %s -> %s"):format(sid, entity.scene.id))
+    id_entity[entity.scene.id] = id_entity[entity.scene.id] or {}
+    local t = id_entity[entity.scene.id]
+    t[#t+1] = sid
 end

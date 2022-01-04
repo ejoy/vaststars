@@ -3,9 +3,10 @@ local world = ecs.world
 local w = world.w
 
 local iterrain_road = ecs.import.interface "ant.terrain|iterrain_road"
-local iprefab_proxy = ecs.import.interface "vaststars.utility|iprefab_proxy"
 local ipickup_mapping = ecs.import.interface "vaststars.input|ipickup_mapping"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
+local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
 local road_path_cfg = import_package "vaststars.config".road_path
 local packCoord = require "construct.gameplay_entity.packcoord"
 local gameplay = import_package "vaststars.gameplay"
@@ -45,7 +46,7 @@ local function set_gameplay_road(x, y, road_type)
     print("set_gameplay_road", x, y, "rode_type", road_type) -- todo
 
     local position = packCoord(x, y)
-    gameplay.set_road_type(position, road_type)
+    -- gameplay.set_road_type(position, road_type)
 end
 
 local terrain_road_create_mb = world:sub {"terrain_road", "road", "create"}
@@ -54,9 +55,8 @@ local terrain_road_remove_mb = world:sub {"terrain_road", "road", "remove"}
 local road_sys = ecs.system "road_system"
 local iroad = ecs.interface "iroad"
 
-local road_binding_entity
 local terrain_roads_instance_id = {} -- lazy deletion
-local terrain_roads_prefab_proxy = {}
+local terrain_roads_game_object = {}
 
 local road_tiles = {} -- = {[x] = {[y] = {info}, ...}, ...} -- info 为序列, 分别表示此'路块'在四个方向的'闭'/'开'状态
 local road_types = {} -- = {[x] = {[y] = road_type, ...}, ...} -- 缓存每个路块的类型 O,C.. + 数字表示
@@ -71,53 +71,48 @@ for _, v in ipairs({'C', 'I', 'O', 'T', 'U', 'X'}) do
 end
 
 function road_sys:init()
-    road_binding_entity = ecs.create_entity {
-        policy = {
-            "ant.scene|scene_object",
-            "vaststars.gamerender|building",
-            "vaststars.gamerender|pickup_show_set_road_arrow"
-        },
-        data = {
-            scene = {
-                srt = {}
-            },
-            building = {
-                building_type = "road",
-            },
-            reference = true,
-            pickup_show_set_road_arrow = true,
-            pickup_mapping_tag = "pickup_show_set_road_arrow",
-        },
-    }
 end
 
 function road_sys:data_changed()
+    local prefab
     for _, _, _, instance_id, x, y, prefab_file_name, srt, parant_entity in terrain_road_create_mb:unpack() do
-        local prefab_proxy = iprefab_proxy.create(ecs.create_instance(prefab_file_name),
-            srt,
-            {},
-            {
-                on_ready = function(_, prefab)
-                    local e = prefab.root
-                    iom.set_srt(e, srt.s, srt.r, srt.t)
-                    ecs.method.set_parent(e, parant_entity)
-                end,
-                on_pickup_mapping = function(eid)
-                    ipickup_mapping.mapping(eid, road_binding_entity)
-                end
-            }
-        )
-
-        terrain_roads_prefab_proxy[instance_id] = prefab_proxy
+        prefab = ecs.create_instance(prefab_file_name)
+        iom.set_srt(prefab.root, srt.s, srt.r, srt.t)
+        prefab.on_ready = function(game_object, prefab)
+            ecs.method.set_parent(prefab.root, parant_entity)
+        end
+        prefab.on_message = function(game_object, prefab)
+        end
+        terrain_roads_game_object[instance_id] = iprefab_object.create(prefab, {
+            policy = {
+                "ant.scene|scene_object",
+                "vaststars.gamerender|building",
+                "vaststars.gamerender|pickup_show_set_road_arrow"
+            },
+            data = {
+                scene = {
+                    srt = {}
+                },
+                building = {
+                    building_type = "road",
+                },
+                reference = true,
+                pickup_show_set_road_arrow = true,
+                pickup_mapping_tag = "pickup_show_set_road_arrow",
+            },
+        })
 
         terrain_roads_instance_id[x] = terrain_roads_instance_id[x] or {}
         terrain_roads_instance_id[x][y] = instance_id
     end
 
+    local game_object
     for _, _, _, instance_id in terrain_road_remove_mb:unpack() do
-        if terrain_roads_prefab_proxy[instance_id] then
-            iprefab_proxy.remove(terrain_roads_prefab_proxy[instance_id])
-            terrain_roads_prefab_proxy[instance_id] = nil
+        game_object = terrain_roads_game_object[instance_id]
+        if game_object then
+            prefab = igame_object.get_prefab_object(game_object)
+            prefab:remove()
+            terrain_roads_game_object[instance_id] = nil
         end
     end
 end
@@ -364,8 +359,8 @@ local function __show_dir_arrow(tile_coord, in_dir, out_dir)
         return
     end
 
-    local proxy = terrain_roads_prefab_proxy[instance_id]
-    if not proxy then
+    local game_object = terrain_roads_game_object[instance_id]
+    if not game_object then
         return
     end
 
@@ -380,30 +375,14 @@ local function __show_dir_arrow(tile_coord, in_dir, out_dir)
 
     local idx = #route_prefabs + 1
     local prefab = ecs.create_instance("/pkg/vaststars.resources/" .. c.prefab) -- todo 此处需要缓存 prefab 后续删除
-    prefab.on_ready = function(prefab)
-        local ifs 		= ecs.import.interface "ant.scene|ifilter_state"
-        for _, e in ipairs(prefab.tag['*']) do
-            ifs.set_state(e, "main_view", false)
-        end
-    end
     prefab.on_message = function(prefab, cmd)
-        if cmd == "hide" then
-            local ifs 		= ecs.import.interface "ant.scene|ifilter_state"
-            for _, e in ipairs(prefab.tag['*']) do
-                ifs.set_state(e, "main_view", false)
-            end
-        elseif cmd == "show" then
-            local ifs 		= ecs.import.interface "ant.scene|ifilter_state"
-            for _, e in ipairs(prefab.tag['*']) do
-                ifs.set_state(e, "main_view", true)
-            end
-        elseif cmd == "remove" then
+        if cmd == "remove" then
             prefab:remove()
             table.remove(route_prefabs, idx) -- todo idx 可能非法
         end
     end
-    route_prefabs[idx] = world:create_object(prefab)
-    iprefab_proxy.slot_attach(proxy, c.slot, route_prefabs[idx])
+    route_prefabs[idx] = iprefab_object.create(prefab)
+    route_prefabs[idx]:send("slot_attach", c.slot, route_prefabs[idx])
 end
 
 -- todo

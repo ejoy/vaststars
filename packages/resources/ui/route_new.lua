@@ -63,7 +63,7 @@ function start.selectStation(event, building_id)
     start.choice_field = ""
 end
 
-ui_sys.addEventListener("route_new.rml", {
+ui_sys.addEventListener({
     ["__set_data"] = function(stations) -- todo
         start.stations = stations
     end,
