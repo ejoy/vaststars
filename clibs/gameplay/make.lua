@@ -1,7 +1,9 @@
 local lm = require "luamake"
 
 lm:build "compile_entity" {
-    "$luamake", "lua", "clibs/gameplay/compile_entity.lua"
+    "$luamake", "lua", "$in",
+    input = "../../clibs/gameplay/compile_entity.lua",
+    output = "../../clibs/gameplay/src/entity.h",
 }
 
 local rootdir = "../../"
