@@ -203,7 +203,7 @@ prototype "液罐1" {
     fluidbox = {
         capacity = 5000,
         height = 100,
-        base_level = 100,
+        base_level = 0,
         connections = {
             {type="input-output", position={0,0,"N"}},
             {type="input-output", position={2,2,"E"}},
