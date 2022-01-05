@@ -48,6 +48,11 @@ namespace ecs::select {
         int index;
     };
 
+    template <typename Component, typename MainKey>
+    Component* sibling(ecs_context* ctx, int i) {
+        return (Component*)entity_sibling(ctx, component<MainKey>::id, i, component<Component>::id);
+    }
+
     template <typename ...Components>
     struct visit_entity_sibling;
 

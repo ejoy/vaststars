@@ -38,6 +38,11 @@ struct world {
         return ecs::select::visit_entity(c.L, c.ecs, i, e);
     }
 
+    template <typename Component, typename MainKey, typename ...SubKey>
+    Component* sibling(ecs::select::entity<MainKey, SubKey...>& e) {
+        return ecs::select::sibling<Component, MainKey>(c.ecs, e.index);
+    }
+
     template <typename ...Args>
     ecs::select::each_range<Args...> select() {
         return ecs::select::each<Args...>(c.L, c.ecs);

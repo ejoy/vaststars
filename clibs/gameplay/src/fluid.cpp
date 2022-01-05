@@ -75,31 +75,6 @@ void fluidflow::change(int id, change_type type, int fluid) {
 static int
 lupdate(lua_State *L) {
 	world& w = *(world*)lua_touserdata(L, 1);
-	for (auto& e : w.select<fluidboxes, assembling>()) {
-		fluidboxes& fb = e.get<fluidboxes>();
-		assembling& a = e.get<assembling>();
-		recipe_container& container = w.query_container<recipe_container>(a.container);
-		for (size_t i = 0; i < 4; ++i) {
-			uint16_t fluid = fb.in[i].fluid;
-			if (fluid != 0) {
-				uint8_t index = ((a.fluidbox_in >> (i*4)) & 0xF) - 1;
-				uint16_t value = 0;
-				if (container.recipe_get(recipe_container::slot_type::in, index, value)) {
-					w.fluidflows[fluid].change(fb.in[i].id, fluidflow::change_type::Import, value);
-				}
-			}
-		}
-		for (size_t i = 0; i < 3; ++i) {
-			uint16_t fluid = fb.out[i].fluid;
-			if (fluid != 0) {
-				uint8_t index = ((a.fluidbox_out >> (i*4)) & 0xF) - 1;
-				uint16_t value = 0;
-				if (container.recipe_get(recipe_container::slot_type::out, index, value)) {
-					w.fluidflows[fluid].change(fb.out[i].id, fluidflow::change_type::Export, value);
-				}
-			}
-		}
-	}
 	for (auto& [_,f] : w.fluidflows) {
 		f.update();
 	}
