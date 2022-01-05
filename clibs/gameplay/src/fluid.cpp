@@ -82,7 +82,7 @@ lupdate(lua_State *L) {
 		for (size_t i = 0; i < 4; ++i) {
 			uint16_t fluid = fb.in[i].fluid;
 			if (fluid != 0) {
-				uint8_t index = ((a.fluidbox >> (i*4)) & 0xF) - 1;
+				uint8_t index = ((a.fluidbox_in >> (i*4)) & 0xF) - 1;
 				uint16_t value = 0;
 				if (container.recipe_get(recipe_container::slot_type::in, index, value)) {
 					w.fluidflows[fluid].change(fb.in[i].id, fluidflow::change_type::Import, value);
@@ -92,7 +92,7 @@ lupdate(lua_State *L) {
 		for (size_t i = 0; i < 3; ++i) {
 			uint16_t fluid = fb.out[i].fluid;
 			if (fluid != 0) {
-				uint8_t index = ((a.fluidbox >> ((i+4)*4)) & 0xF) - 1;
+				uint8_t index = ((a.fluidbox_out >> (i*4)) & 0xF) - 1;
 				uint16_t value = 0;
 				if (container.recipe_get(recipe_container::slot_type::out, index, value)) {
 					w.fluidflows[fluid].change(fb.out[i].id, fluidflow::change_type::Export, value);
@@ -110,7 +110,7 @@ lupdate(lua_State *L) {
 		for (size_t i = 0; i < 4; ++i) {
 			uint16_t fluid = fb.in[i].fluid;
 			if (fluid != 0) {
-				uint8_t index = ((a.fluidbox >> (i*4)) & 0xF) - 1;
+				uint8_t index = ((a.fluidbox_in >> (i*4)) & 0xF) - 1;
 				fluidflow::state state;
 				if (w.fluidflows[fluid].query(fb.in[i].id, state)) {
 					container.recipe_set(recipe_container::slot_type::in, index, state.volume / state.multiple);
@@ -120,7 +120,7 @@ lupdate(lua_State *L) {
 		for (size_t i = 0; i < 3; ++i) {
 			uint16_t fluid = fb.out[i].fluid;
 			if (fluid != 0) {
-				uint8_t index = ((a.fluidbox >> ((i+4)*4)) & 0xF) - 1;
+				uint8_t index = ((a.fluidbox_out >> (i*4)) & 0xF) - 1;
 				fluidflow::state state;
 				if (w.fluidflows[fluid].query(fb.out[i].id, state)) {
 					container.recipe_set(recipe_container::slot_type::out, index, state.volume / state.multiple);

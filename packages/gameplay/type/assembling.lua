@@ -14,7 +14,7 @@ end
 local function getFluidList(s, max)
     local r = {}
     for i = 1, #s, 4 do
-        local id = string.unpack("<I2I2", s, i)
+        local id = string.unpack("<I2", s, i)
         if isFluidId(id) then
             r[#r+1] = (i-1)//4+1
         end
@@ -28,29 +28,24 @@ local function getFluidList(s, max)
     return r
 end
 
-local function getFluidBox(recipe)
-    assert(#recipe.ingredients <= 15)
-    assert(#recipe.results <= 15)
-    local inFluid = getFluidList(recipe.ingredients, 4)
-    local outFluid = getFluidList(recipe.results, 3)
+local function getFluidBox(s, max)
+    assert(#s <= 15)
+    local fluids = getFluidList(s, max)
     local fb = 0
-    for i = 3, 1, -1 do
-        fb = (fb << 4) | outFluid[i]
-    end
-    for i = 4, 1, -1 do
-        fb = (fb << 4) | inFluid[i]
+    for i = max, 1, -1 do
+        fb = (fb << 4) | fluids[i]
     end
     return fb
 end
 
 function c:ctor(init, pt)
     local recipe = assert(prototype.query("recipe", init.recipe), "unknown recipe: "..init.recipe)
-    getFluidBox(recipe)
     return {
         assembling = {
             recipe = recipe.id,
             container = self:container_create("assembling", recipe.ingredients, recipe.results),
-            fluidbox = getFluidBox(recipe),
+            fluidbox_in = getFluidBox(recipe.ingredients, 4),
+            fluidbox_out = getFluidBox(recipe.results, 3),
             process = STATUS_IDLE,
         }
     }

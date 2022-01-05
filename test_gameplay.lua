@@ -51,24 +51,16 @@ function test.init(world)
         return e.x + x + direction[dir][1], e.y + y + direction[dir][2]
     end
 
-    local function fluid_list(s)
-        local r = {}
-        for i = 1, #s, 4 do
-            local id = string.unpack("<I2I2", s, i)
-            if id & 0x0C00 == 0x0C00 then
-                r[#r+1] = id
+    local function init_fluidbox(assembling, fluidboxes, classify, max, s)
+        local lst = assembling["fluidbox_"..classify]
+        for i = 1, max do
+            local index = (lst >> ((i-1)*4)) & 0x0F
+            if index ~= 0 then
+                local id = string.unpack("<I2", s, 4*(index-1)+1)
+                fluidboxes[classify..i.."_fluid"] = id
+            else
+                fluidboxes[classify..i.."_fluid"] = 0
             end
-        end
-        return r
-    end
-    local function init_fluidbox(fluidboxes, classify, max, s)
-        local lst = fluid_list(s)
-        assert(max >= #lst)
-        for i = 1, #lst do
-            fluidboxes[classify..i.."_fluid"] = lst[i]
-        end
-        for i = #lst + 1, max do
-            fluidboxes[classify..i.."_fluid"] = 0
         end
     end
 
@@ -114,8 +106,8 @@ function test.init(world)
     local function init()
         for v in ecs:select "assembling:in fluidboxes:update" do
             local recipe = gameplay.query(v.assembling.recipe)
-            init_fluidbox(v.fluidboxes, "in",  4, recipe.ingredients)
-            init_fluidbox(v.fluidboxes, "out", 4, recipe.results)
+            init_fluidbox(v.assembling, v.fluidboxes, "in",  4, recipe.ingredients)
+            init_fluidbox(v.assembling, v.fluidboxes, "out", 4, recipe.results)
         end
         for v in ecs:select "fluidbox:in entity:in" do
             local e = v.entity

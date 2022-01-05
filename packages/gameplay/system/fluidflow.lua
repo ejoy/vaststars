@@ -68,8 +68,8 @@ local function builder_init()
     builder = {}
 end
 
-local function builder_build(world, fluid, fluidbox)
-    return world:fluidflow_build(fluid, fluidbox.capacity, fluidbox.height, fluidbox.base_level, fluidbox.pumping_speed)
+local function builder_build(world, fluid, fluidbox, capacity)
+    return world:fluidflow_build(fluid, capacity, fluidbox.height, fluidbox.base_level, fluidbox.pumping_speed)
 end
 
 local function builder_connect(fluid, x, y, dir, id, type)
@@ -110,7 +110,7 @@ function m.build(world)
     builder_init()
     for v in ecs:select "fluidbox:update entity:in" do
         local pt = query(v.entity.prototype)
-        local id = builder_build(world, v.fluidbox.fluid, pt.fluidbox)
+        local id = builder_build(world, v.fluidbox.fluid, pt.fluidbox, pt.fluidbox.capacity)
         local fluid = v.fluidbox.fluid
         v.fluidbox.id = id
         for _, conn in ipairs(pt.fluidbox.connections) do
@@ -118,13 +118,37 @@ function m.build(world)
             builder_connect(fluid, v.entity.x + x, v.entity.y + y, dir, id, PipeEdgeType[conn.type])
         end
     end
-    for v in ecs:select "fluidboxes:update entity:in" do
+    for v in ecs:select "fluidboxes:update entity:in assembling:in" do
         local pt = query(v.entity.prototype)
+        local recipe = query(v.assembling.recipe)
+        local k <const> = {
+            ["in"] = "ingredients",
+            ["out"] = "results",
+        }
+        local function recipe_limit(classify, i)
+            local lst = v.assembling["fluidbox_"..classify]
+            local index = (lst >> (4*(i-1))) & 0xF
+            local _, amount = string.unpack("<I2I2", recipe[k[classify]], 4*(index-1)+1)
+            return amount * 2
+        end
+        local function need_recipe_limit(fluidbox)
+            for _, conn in ipairs(fluidbox.connections) do
+                local type = PipeEdgeType[conn.type]
+                if type == INOUT or type == OUT then
+                    return false
+                end
+            end
+            return true
+        end
         local function init_fluidflow(classify)
             for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
                 local fluid = v.fluidboxes[classify..i.."_fluid"]
                 if fluid ~= 0 then
-                    local id = builder_build(world, fluid, fluidbox)
+                    local capacity = fluidbox.capacity
+                    if need_recipe_limit(fluidbox) then
+                        capacity = recipe_limit(classify, i)
+                    end
+                    local id = builder_build(world, fluid, fluidbox, capacity)
                     v.fluidboxes[classify..i.."_id"] = id
                     for _, conn in ipairs(fluidbox.connections) do
                         local x, y, dir = rotate(conn.position, v.entity.direction, pt.area)

@@ -12,7 +12,8 @@ component "chest" {
 }
 
 component "assembling" {
-    "fluidbox:dword",
+    "fluidbox_in:word",
+    "fluidbox_out:word",
     "recipe:word",
     "container:word",
     "process:word",
