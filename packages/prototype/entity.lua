@@ -16,7 +16,7 @@ prototype "组装机1" {
     fluidbox = {
         capacity = 500,
         height = 100,
-        base_level = -2,
+        base_level = -200,
         connections = {
             {type="input", position={1,0,"N"}},
         }
@@ -66,7 +66,7 @@ prototype "蒸汽发电机1" {
     fluidbox = {
         capacity = 100,
         height = 100,
-        base_level = 1,
+        base_level = 100,
         connections = {
             {type="input-output", position={0,1,"W"}},
             {type="input-output", position={2,1,"E"}},
@@ -85,7 +85,7 @@ prototype "化工厂1" {
             {
                 capacity = 500,
                 height = 100,
-                base_level = -1,
+                base_level = -100,
                 connections = {
                     {type="input", position={0,0,"N"}},
                 }
@@ -93,7 +93,7 @@ prototype "化工厂1" {
             {
                 capacity = 500,
                 height = 100,
-                base_level = -1,
+                base_level = -100,
                 connections = {
                     {type="input", position={2,0,"N"}},
                 }
@@ -101,7 +101,7 @@ prototype "化工厂1" {
             {
                 capacity = 500,
                 height = 100,
-                base_level = -1,
+                base_level = -100,
                 connections = {
                     {type="input-output", position={0,1,"W"}},
                     {type="input-output", position={2,1,"E"}},
@@ -112,7 +112,7 @@ prototype "化工厂1" {
             {
                 capacity = 500,
                 height = 100,
-                base_level = 1,
+                base_level = 100,
                 connections = {
                     {type="output", position={0,2,"S"}},
                 }
@@ -120,7 +120,7 @@ prototype "化工厂1" {
             {
                 capacity = 500,
                 height = 100,
-                base_level = 1,
+                base_level = 100,
                 connections = {
                     {type="output", position={2,2,"S"}},
                 }
@@ -139,7 +139,7 @@ prototype "蒸馏厂1" {
             {
                 capacity = 500,
                 height = 200,
-                base_level = -2,
+                base_level = -200,
                 connections = {
                     {type="input", position={1,0,"N"}},
                 }
@@ -147,7 +147,7 @@ prototype "蒸馏厂1" {
             {
                 capacity = 500,
                 height = 200,
-                base_level = -2,
+                base_level = -200,
                 connections = {
                     {type="input", position={3,0,"N"}},
                 }
@@ -157,7 +157,7 @@ prototype "蒸馏厂1" {
             {
                 capacity = 500,
                 height = 200,
-                base_level = 1,
+                base_level = 100,
                 connections = {
                     {type="output", position={0,4,"S"}},
                 }
@@ -165,7 +165,7 @@ prototype "蒸馏厂1" {
             {
                 capacity = 500,
                 height = 200,
-                base_level = 1,
+                base_level = 100,
                 connections = {
                     {type="output", position={2,4,"S"}},
                 }
@@ -173,7 +173,7 @@ prototype "蒸馏厂1" {
             {
                 capacity = 5000,
                 height = 200,
-                base_level = 1,
+                base_level = 100,
                 connections = {
                     {type="output", position={4,4,"S"}},
                 }
@@ -203,7 +203,7 @@ prototype "液罐1" {
     fluidbox = {
         capacity = 5000,
         height = 100,
-        base_level = 1,
+        base_level = 100,
         connections = {
             {type="input-output", position={0,0,"N"}},
             {type="input-output", position={2,2,"E"}},
@@ -221,7 +221,7 @@ prototype "抽水泵" {
     fluidbox = {
         capacity = 800,
         height = 200,
-        base_level = 4,
+        base_level = 400,
         connections = {
             {type="output", position={0,0,"N"}},
         }
@@ -239,7 +239,7 @@ prototype "压力泵1" {
             {
                 capacity = 1200,
                 height = 300,
-                base_level = -3,
+                base_level = -300,
                 connections = {
                     {type="input", position={0,1,"S"}},
                 }
@@ -249,7 +249,7 @@ prototype "压力泵1" {
             {
                 capacity = 1200,
                 height = 300,
-                base_level = 3,
+                base_level = 300,
                 connections = {
                     {type="output", position={0,0,"N"}},
                 }
@@ -264,7 +264,7 @@ prototype "烟囱1" {
     fluidbox = {
         capacity = 1000,
         height = 100,
-        base_level = -2,
+        base_level = -200,
         connections = {
             {type="input", position={0,0,"N"}},
         }
@@ -277,7 +277,7 @@ prototype "排水口1" {
     fluidbox = {
         capacity = 1000,
         height = 100,
-        base_level = -2,
+        base_level = -200,
         connections = {
             {type="input", position={1,0,"N"}},
         }
@@ -314,7 +314,7 @@ prototype "电解厂1" {
             {
                 capacity = 500,
                 height = 100,
-                base_level = -2,
+                base_level = -200,
                 connections = {
                     {type="input", position={2,0,"N"}},
                 }
@@ -324,7 +324,7 @@ prototype "电解厂1" {
             {
                 capacity = 500,
                 height = 100,
-                base_level = 1,
+                base_level = 100,
                 connections = {
                     {type="output", position={0,4,"S"}},
                 }
@@ -332,7 +332,7 @@ prototype "电解厂1" {
             {
                 capacity = 500,
                 height = 100,
-                base_level = 1,
+                base_level = 100,
                 connections = {
                     {type="output", position={2,4,"S"}},
                 }
@@ -340,7 +340,7 @@ prototype "电解厂1" {
             {
                 capacity = 500,
                 height = 100,
-                base_level = 1,
+                base_level = 100,
                 connections = {
                     {type="output", position={4,4,"S"}},
                 }
@@ -360,7 +360,7 @@ prototype "空气过滤器1" {
     fluidbox = {
         capacity = 1000,
         height = 100,
-        base_level = 2,
+        base_level = 200,
         connections = {
             {type="output", position={1,2,"S"}},
         }
@@ -464,7 +464,7 @@ prototype "水电站1" {
             {
                 capacity = 500,
                 height = 100,
-                base_level = -1,
+                base_level = -100,
                 connections = {
                     {type="input", position={1,0,"N"}},
                 }
@@ -472,7 +472,7 @@ prototype "水电站1" {
             {
                 capacity = 500,
                 height = 100,
-                base_level = -1,
+                base_level = -100,
                 connections = {
                     {type="input", position={3,0,"N"}},
                 }
@@ -482,7 +482,7 @@ prototype "水电站1" {
             {
                 capacity = 500,
                 height = 100,
-                base_level = 1,
+                base_level = 100,
                 connections = {
                     {type="output", position={1,4,"S"}},
                 }
@@ -490,7 +490,7 @@ prototype "水电站1" {
             {
                 capacity = 500,
                 height = 100,
-                base_level = 1,
+                base_level = 100,
                 connections = {
                     {type="output", position={3,4,"S"}},
                 }
