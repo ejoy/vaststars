@@ -66,7 +66,7 @@ prototype "蒸汽发电机1" {
     fluidbox = {
         capacity = 100,
         height = 100,
-        base_level = 100,
+        base_level = 0,
         connections = {
             {type="input-output", position={0,1,"W"}},
             {type="input-output", position={2,1,"E"}},
