@@ -251,7 +251,7 @@ prototype "压力泵1" {
     fluidbox = {
         capacity = 500,
         height = 300,
-        base_level = 300,
+        base_level = 0,
         pumping_speed = 1200,
         connections = {
             {type="output", position={0,0,"N"}},
