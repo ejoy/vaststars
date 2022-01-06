@@ -175,6 +175,7 @@ lfluidflow_set(lua_State *L) {
 	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
 	uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
 	int value = (int)luaL_checkinteger(L, 4);
+	assert(value >= 0);
 	w.fluidflows[fluid].set(id, value);
 	return 0;
 }

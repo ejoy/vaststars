@@ -66,7 +66,11 @@ local function builder_init()
 end
 
 local function builder_build(world, fluid, fluidbox, capacity)
-    return world:fluidflow_build(fluid, capacity, fluidbox.height, fluidbox.base_level, fluidbox.pumping_speed // UPS)
+    local pumping_speed = fluidbox.pumping_speed
+    if pumping_speed then
+        pumping_speed = pumping_speed // UPS
+    end
+    return world:fluidflow_build(fluid, capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
 end
 
 local function builder_connect(c, key, id, type)

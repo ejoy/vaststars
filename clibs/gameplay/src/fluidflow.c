@@ -1,5 +1,4 @@
 #include "fluidflow.h"
-
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -419,7 +418,7 @@ reservation(struct fluidflow_network *net, int from, int to, int r) {
 	int i;
 	for (i=0;i<PIPE_CONNECTION;i++) {
 		if (p->uplink[i] == from) {
-//			printf("Reservation %d -> %d : %d\n", from, to , r);
+//			printf("Reservation %d -> %d : %d+%d/%d\n", net->p[from].id, p->id , r, p->fluid, p->capacity);
 			p->reservation[i] = r;
 			return;
 		}
@@ -466,9 +465,9 @@ attempt_flow(struct fluidflow_network *net, int idx) {
 		int radio = FIXSHIFT * fluid / total;
 		for (i=0;i<n-1;i++) {
 			f[i] = f[i] * radio / FIXSHIFT;
-			total -= f[i];
+			fluid -= f[i];
 		}
-		f[i] = total;
+		f[i] = fluid;
 	}
 	for (i=0;i<n;i++) {
 		if (f[i] > 0) {
@@ -633,7 +632,7 @@ topology_sort(struct fluidflow_network *net) {
 	struct bitset set;
 	bitset_init(&set, n);
 	unsigned short *order = prev_order(net);
-	int idx = net->pump_n;
+	int idx = 0;
 	while (idx < n) {
 		int current = order[idx];
 		int downstream = check_order(net, current, &set);
@@ -733,7 +732,7 @@ adjust_reservation(struct fluidflow_network *net, int idx) {
 	struct pipe *p = &net->p[idx];
 	int space = p->capacity - p->fluid;
 	int i;
-//	printf("Space %d %d :", p->id, space);
+//	printf("Space %d %d :\n", p->id, space);
 	if (space == 0) {
 		for (i=0;i<PIPE_CONNECTION;i++) {
 			if (p->uplink[i] == PIPE_INVALID_CONNECTION) {
@@ -748,14 +747,14 @@ adjust_reservation(struct fluidflow_network *net, int idx) {
 		if (p->uplink[i] == PIPE_INVALID_CONNECTION) {
 			break;
 		}
-//		printf("(%d:%g)", net->p[p->uplink[i]].id,  p->reservation[i]);
+//		printf("(%d:%d)", net->p[p->uplink[i]].id,  p->reservation[i]);
 		total += p->reservation[i];
 	}
 //	printf("\n");
 	if (total > space) {
 		// space is smaller than fluid
 		int n = i;
-//		printf("Realoc %d radio = %g total = %d space = %d\n", p->id, (float) radio / FIXSHIFT, total, space );
+//		printf("Realoc %d radio = %g total = %d space = %d\n", p->id, (float) space / total, total, space );
 		divide_fluid(n, p->reservation, total, space);
 	}
 }
@@ -799,8 +798,8 @@ draw_fluid(struct fluidflow_network *net, struct pipe *p) {
 			net->p[source_idx].fluid = 0;
 		}
 	} else {
-		p->flow = space;
-		divide_fluid(n, f, total, space);
+		p->flow = speed;
+		divide_fluid(n, f, total, speed);
 		for (i=0;i<n;i++) {
 			int source_idx = p->uplink[i];
 			net->p[source_idx].fluid -= f[i];
