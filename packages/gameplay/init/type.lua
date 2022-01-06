@@ -4,6 +4,7 @@ require "type.inserter"
 require "type.assembling"
 require "type.powergrid"
 require "type.fluidbox"
+require "type.pump"
 
 local type = require "register.type"
 type "item"

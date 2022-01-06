@@ -17,7 +17,7 @@ struct world {
 
 #include "container.h"
 #include "select.h"
-#include "fluid.h"
+#include "system/fluid.h"
 #include <map>
 extern "C" {
 #include "prototype.h"

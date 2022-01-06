@@ -15,6 +15,8 @@ local IN <const> = 0
 local OUT <const> = 1
 local INOUT <const> = 2
 
+local UPS <const> = 50
+
 local PipeEdgeType <const> = {
     ["input"] = IN,
     ["output"] = OUT,
@@ -43,25 +45,20 @@ local function uniquekey(x, y, d)
 end
 
 local function rotate(position, direction, area)
-    local function rotate_(x, y, d)
-        if d == N then
-            return x, y
-        elseif d == E then
-            return -y, x
-        elseif d == S then
-            return -x, -y
-        elseif d == W then
-            return y, -x
-        end
-    end
-    local w, h = area & 0xFF, area >> 8
-    local dw, dh = w//2, h//2
+    local w, h = area >> 8, area & 0xFF
     local x, y = position[1], position[2]
-    x, y = x - dw, y - dh
-    x, y = rotate_(x, y, direction)
-    x, y = x + dw, y + dh
     local dir = (PipeDirection[position[3]] + direction) % 4
-    return x, y, dir
+    w = w - 1
+    h = h - 1
+    if direction == N then
+        return x, y, dir
+    elseif direction == E then
+        return h - y, x, dir
+    elseif direction == S then
+        return w - x, h - y, dir
+    elseif direction == W then
+        return y, w - x, dir
+    end
 end
 
 local function builder_init()
@@ -69,19 +66,10 @@ local function builder_init()
 end
 
 local function builder_build(world, fluid, fluidbox, capacity)
-    return world:fluidflow_build(fluid, capacity, fluidbox.height, fluidbox.base_level, fluidbox.pumping_speed)
+    return world:fluidflow_build(fluid, capacity, fluidbox.height, fluidbox.base_level, fluidbox.pumping_speed // UPS)
 end
 
-local function builder_connect(fluid, x, y, dir, id, type)
-    local c = builder[fluid]
-    if not c then
-        c = {
-            map = {},
-            connects = {},
-        }
-        builder[fluid] = c
-    end
-    local key = uniquekey(x, y, dir)
+local function builder_connect(c, key, id, type)
     local neighbor = c.map[key]
     if not neighbor then
         c.map[key] = { id = id, type = type }
@@ -109,6 +97,22 @@ local function builder_connect(fluid, x, y, dir, id, type)
     c.map[key] = nil
 end
 
+local function builder_connect_fluidbox(fluid, id, fluidbox, entity, area)
+    local c = builder[fluid]
+    if not c then
+        c = {
+            map = {},
+            connects = {},
+        }
+        builder[fluid] = c
+    end
+    for _, conn in ipairs(fluidbox.connections) do
+        local x, y, dir = rotate(conn.position, entity.direction, area)
+        local key = uniquekey(entity.x + x, entity.y + y, dir)
+        builder_connect(c, key, id, PipeEdgeType[conn.type])
+    end
+end
+
 local function builder_finish(world)
     for fluid, c in pairs(builder) do
         world:fluidflow_connect(fluid, c.connects)
@@ -124,10 +128,7 @@ function m.build(world)
         local id = builder_build(world, v.fluidbox.fluid, pt.fluidbox, pt.fluidbox.capacity)
         local fluid = v.fluidbox.fluid
         v.fluidbox.id = id
-        for _, conn in ipairs(pt.fluidbox.connections) do
-            local x, y, dir = rotate(conn.position, v.entity.direction, pt.area)
-            builder_connect(fluid, v.entity.x + x, v.entity.y + y, dir, id, PipeEdgeType[conn.type])
-        end
+        builder_connect_fluidbox(fluid, id, pt.fluidbox, v.entity, pt.area)
     end
     for v in ecs:select "fluidboxes:update entity:in assembling:in" do
         local pt = query(v.entity.prototype)
@@ -161,10 +162,7 @@ function m.build(world)
                     end
                     local id = builder_build(world, fluid, fluidbox, capacity)
                     v.fluidboxes[classify..i.."_id"] = id
-                    for _, conn in ipairs(fluidbox.connections) do
-                        local x, y, dir = rotate(conn.position, v.entity.direction, pt.area)
-                        builder_connect(fluid, v.entity.x + x, v.entity.y + y, dir, id, PipeEdgeType[conn.type])
-                    end
+                    builder_connect_fluidbox(fluid, id, fluidbox, v.entity, pt.area)
                 end
             end
         end

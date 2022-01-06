@@ -243,32 +243,20 @@ prototype "抽水泵" {
 }
 
 prototype "压力泵1" {
-    type ={"entity", "consumer", "fluidboxes"},
+    type ={"entity", "consumer", "fluidbox", "pump"},
     area = "1x2",
     power = "10kW",
     drain = "300W",
     priority = "secondary",
-    fluidboxes = {
-        input = {
-            {
-                capacity = 500,
-                height = 300,
-                base_level = 0,
-                connections = {
-                    {type="input", position={0,1,"S"}},
-                }
-            },
-        },
-        output = {
-            {
-                capacity = 500,
-                height = 300,
-                base_level = 0,
-                connections = {
-                    {type="output", position={0,0,"N"}},
-                }
-            },
-        },
+    fluidbox = {
+        capacity = 500,
+        height = 300,
+        base_level = 300,
+        pumping_speed = 1200,
+        connections = {
+            {type="output", position={0,0,"N"}},
+            {type="input", position={0,1,"S"}},
+        }
     }
 }
 

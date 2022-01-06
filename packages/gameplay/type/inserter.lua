@@ -26,7 +26,7 @@ function s.init(world)
         return x | (y<<8)
     end
     local function unpackCoord(v)
-        return v & 0xFF, v >> 8
+        return v >> 8, v & 0xFF
     end
     local function setContainer(entity, id)
         local pt = prototype.queryById(entity.prototype)

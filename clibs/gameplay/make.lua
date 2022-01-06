@@ -19,9 +19,10 @@ lm:lib "gameplay" {
     includes = {
         ant3rd .. "luaecs",
         lua_include,
+        "src/"
     },
     sources = {
-        "src/*.c",
-        "src/*.cpp",
+        "src/**.c",
+        "src/**.cpp",
     }
 }

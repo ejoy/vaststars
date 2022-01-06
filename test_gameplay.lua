@@ -20,34 +20,36 @@ function test.init(world)
         S = {0,1},
         W = {-1,0},
     }
+    local N <const> = 0
+    local E <const> = 1
+    local S <const> = 2
+    local W <const> = 3
+    local PipeDirection <const> = {
+        ["N"] = 0,
+        ["E"] = 1,
+        ["S"] = 2,
+        ["W"] = 3,
+    }
 
-    local function rotate(position, d)
-        local N <const> = 0
-        local E <const> = 1
-        local S <const> = 2
-        local W <const> = 3
-        local PipeDirection <const> = {
-            ["N"] = 0,
-            ["E"] = 1,
-            ["S"] = 2,
-            ["W"] = 3,
-        }
-        local x = position[1]
-        local y = position[2]
-        local dir = (PipeDirection[position[3]] + d) % 4
-        if d == N then
+    local function rotate(position, direction, area)
+        local w, h = area >> 8, area & 0xFF
+        local x, y = position[1], position[2]
+        local dir = (PipeDirection[position[3]] + direction) % 4
+        w = w - 1
+        h = h - 1
+        if direction == N then
             return x, y, dir
-        elseif d == E then
-            return y, -x, dir
-        elseif d == S then
-            return -x, -y, dir
-        elseif d == W then
-            return -y, x, dir
+        elseif direction == E then
+            return h - y, x, dir
+        elseif direction == S then
+            return w - x, h - y, dir
+        elseif direction == W then
+            return y, w - x, dir
         end
     end
 
-    local function pipePostion(e, position)
-        local x, y, dir = rotate(position, e.direction)
+    local function pipePostion(e, position, area)
+        local x, y, dir = rotate(position, e.direction, area)
         return e.x + x + direction[dir][1], e.y + y + direction[dir][2]
     end
 
@@ -93,11 +95,11 @@ function test.init(world)
     end
 
     local function walk_fluidbox(fluidboxes, classify, e)
-        local pt = gameplay.query(e.prototype).fluidboxes[classify.."put"]
-        for i = 1, #pt do
+        local pt = gameplay.query(e.prototype)
+        for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
             local fluid = fluidboxes[classify..i.."_fluid"]
-            for _, pipe in ipairs(pt[i].connections) do
-                local x, y = pipePostion(e, pipe.position)
+            for _, pipe in ipairs(fluidbox.connections) do
+                local x, y = pipePostion(e, pipe.position, pt.area)
                 walk_pipe(fluid, x, y)
             end
         end
@@ -115,9 +117,12 @@ function test.init(world)
             local fluidbox = pt.fluidbox
             local connections = {}
             for _, conn in ipairs(fluidbox.connections) do
-                connections[#connections+1] = {pipePostion(e, conn.position)}
+                connections[#connections+1] = {pipePostion(e, conn.position, pt.area)}
             end
-            local w, h = pt.area & 0xFF, pt.area >> 8
+            local w, h = pt.area >> 8, pt.area & 0xFF
+            if e.direction == E or e.direction == W then
+                w, h = h, w
+            end
             local entity = {
                 connections = connections
             }

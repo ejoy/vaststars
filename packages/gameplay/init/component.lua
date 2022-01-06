@@ -52,13 +52,16 @@ component "fluidbox" {
     "id:word",
 }
 
-component "fluidbox_build" {
-    "volume:float",
-}
-
 component "fluidboxes" {
     "in:fluidbox[4]",
     "out:fluidbox[3]",
+}
+
+component "pump" {
+}
+
+component "fluidbox_build" {
+    "volume:float",
 }
 
 component "road" {

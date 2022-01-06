@@ -101,6 +101,12 @@ world:create_entity "液罐1" {
     dir = "N",
     fluid = {"氧气",0}
 }
+world:create_entity "压力泵1" {
+    x = 5,
+    y = 16,
+    dir = "E",
+    fluid = {}
+}
 world:create_entity "化工厂1" {
     x = 8,
     y = 18,
@@ -154,12 +160,12 @@ create_pipe {
     graph = [[
 xxx
 xxx
-xxx════╗
+xxx═>>═╗
        ║
        xxx
        xxx
        xxx
-     ╔═╝ ║    
+     ╔═╝ ║
 xxx══╝   ╚════xxx
 xxx           xxx
 xxx           xxx

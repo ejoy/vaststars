@@ -3,9 +3,12 @@
 #include "entity.h"
 #include "luaecs.h"
 
+namespace ecs::tag {
+    struct pump {};
+}
+
 namespace ecs::select {
     template <typename T> struct component {};
-
     #define COMPONENT_ID(TYPE, ID) \
         template <> \
         struct component<TYPE> { \
@@ -19,6 +22,9 @@ namespace ecs::select {
     COMPONENT_ID(assembling, COMPONENT_ASSEMBLING)
     COMPONENT_ID(inserter, COMPONENT_INSERTER)
     COMPONENT_ID(fluidboxes, COMPONENT_FLUIDBOXES)
+    COMPONENT_ID(fluidbox, COMPONENT_FLUIDBOX)
+    COMPONENT_ID(tag::pump, TAG_PUMP)
+
 
     #undef COMPONENT_ID
 
