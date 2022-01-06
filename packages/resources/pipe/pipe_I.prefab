@@ -48,3 +48,48 @@ policy:
   ant.general|name
   ant.render|render
   ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: "满"
+  reference: true
+  scene:
+    srt: {}
+  slot: true
+  tag:
+    empty1
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: "缺"
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 0.019999999552965164, 1}
+      t: {0, 2.299999952316284, 0}
+  slot: true
+  tag:
+    empty2
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
