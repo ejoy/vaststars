@@ -191,11 +191,6 @@ policy:
   ant.scene|slot
   ant.scene|scene_object
 ---
-editor: false
-mount: 12
-name: prefab2
-prefab: /pkg/vaststars.resources/lorry.prefab
----
 data:
   follow_flag: 1
   follow_joint: None
@@ -219,11 +214,6 @@ policy:
   ant.general|tag
   ant.scene|slot
   ant.scene|scene_object
----
-editor: false
-mount: 14
-name: prefab3
-prefab: /pkg/vaststars.resources/lorry.prefab
 ---
 data:
   follow_flag: 1
@@ -249,11 +239,6 @@ policy:
   ant.scene|slot
   ant.scene|scene_object
 ---
-editor: false
-mount: 16
-name: prefab4
-prefab: /pkg/vaststars.resources/lorry.prefab
----
 data:
   follow_flag: 1
   follow_joint: None
@@ -277,11 +262,6 @@ policy:
   ant.general|tag
   ant.scene|slot
   ant.scene|scene_object
----
-editor: false
-mount: 18
-name: prefab5
-prefab: /pkg/vaststars.resources/lorry.prefab
 ---
 data:
   follow_flag: 1
@@ -307,11 +287,6 @@ policy:
   ant.scene|slot
   ant.scene|scene_object
 ---
-editor: false
-mount: 20
-name: prefab6
-prefab: /pkg/vaststars.resources/lorry.prefab
----
 data:
   follow_flag: 1
   follow_joint: None
@@ -335,8 +310,3 @@ policy:
   ant.general|tag
   ant.scene|slot
   ant.scene|scene_object
----
-editor: false
-mount: 22
-name: prefab7
-prefab: /pkg/vaststars.resources/lorry.prefab
