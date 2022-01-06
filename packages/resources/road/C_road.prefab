@@ -166,3 +166,177 @@ policy:
   ant.general|tag
   ant.scene|slot
   ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: path_l_3
+  reference: true
+  scene:
+    srt:
+      r: {-0, 1, -0, -4.371138828673793e-08}
+      s: {1, 1, 1}
+      t: {-1.5, 2.200000047683716, -5}
+  slot: true
+  tag:
+    empty1
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+editor: false
+mount: 12
+name: prefab2
+prefab: /pkg/vaststars.resources/lorry.prefab
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: path_l_2
+  reference: true
+  scene:
+    srt:
+      r: {0, -0.9238795042037964, 0, 0.3826834261417389}
+      s: {1, 1, 1}
+      t: {0.5, 2.200000047683716, -0.5}
+  slot: true
+  tag:
+    empty2
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+editor: false
+mount: 14
+name: prefab3
+prefab: /pkg/vaststars.resources/lorry.prefab
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: path_l_1
+  reference: true
+  scene:
+    srt:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {5, 2.200000047683716, 1.5}
+  slot: true
+  tag:
+    empty3
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+editor: false
+mount: 16
+name: prefab4
+prefab: /pkg/vaststars.resources/lorry.prefab
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: path_r_1
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {1.5, 2.2000010013580322, -5}
+  slot: true
+  tag:
+    empty4
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+editor: false
+mount: 18
+name: prefab5
+prefab: /pkg/vaststars.resources/lorry.prefab
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: path_r_2
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.3826834559440613, 0, 0.9238795042037964}
+      s: {1, 1, 1}
+      t: {2.5, 2.2000010013580322, -2.5}
+  slot: true
+  tag:
+    empty5
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+editor: false
+mount: 20
+name: prefab6
+prefab: /pkg/vaststars.resources/lorry.prefab
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: path_r_3
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {5, 2.1999990940093994, -1.5}
+  slot: true
+  tag:
+    empty6
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+editor: false
+mount: 22
+name: prefab7
+prefab: /pkg/vaststars.resources/lorry.prefab
