@@ -126,31 +126,17 @@ function iterrain.get_tile_building_type(tile_coord)
     return e.terrain.tile_building_types[x][y]
 end
 
-local function __get_building_size(building_type)
-    local cfg = construct_cfg[building_type]
-    if not cfg then
-        return
-    end
-
-    return cfg.size
-end
-
-function iterrain.set_tile_building_type(tile_coord, building_type)
-    local cfg = __get_building_size(building_type)
-    if not cfg then
-        print(("Cannot found building_type(%s)"):format(building_type))
-        return
-    end
-
-    local width = cfg[1]
-    local height = cfg[2]
+function iterrain.set_tile_building_type(tile_coord, building_type, size)
+    -- print("set_tile_building_type coord: ", tile_coord[1], tile_coord[2], "building_type: ", building_type, "size: ", size[1], size[2])
+    local width = size[1]
+    local height = size[2]
 
     local e = w:singleton("terrain", "terrain:in shape_terrain:in")
     local terrain = e.terrain
 
-    -- todo store building_id instead of building_type?
     for x = tile_coord[1] - (width // 2), tile_coord[1] + (width // 2) do
         for y = tile_coord[2] - (height // 2), tile_coord[2] + (height // 2) do
+            -- print("set_tile_building_type: ", x, y, building_type)
             terrain.tile_building_types[x] = terrain.tile_building_types[x] or {}
             terrain.tile_building_types[x][y] = building_type
         end

@@ -11,7 +11,12 @@ local ui_message_mb = world:sub {"ui_message"}
 local windows = {}
 
 local function open(url)
-    local w = irmlui.open(url)
+    local w = windows[url]
+    if w then
+        return
+    end
+
+    w = irmlui.open(url)
     w.addEventListener("message", function(event)
         if not event.data then
             console.log("event data is null")

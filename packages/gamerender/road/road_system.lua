@@ -3,13 +3,11 @@ local world = ecs.world
 local w = world.w
 
 local iterrain_road = ecs.import.interface "ant.terrain|iterrain_road"
-local ipickup_mapping = ecs.import.interface "vaststars.input|ipickup_mapping"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
 local road_path_cfg = import_package "vaststars.config".road_path
 local packCoord = require "construct.gameplay_entity.packcoord"
-local gameplay = import_package "vaststars.gameplay"
 
 -- 0:> 1:< 2:v 3: ^
 local translate_dir ; do
@@ -76,7 +74,7 @@ end
 function road_sys:data_changed()
     local prefab
     for _, _, _, instance_id, x, y, prefab_file_name, srt, parant_entity in terrain_road_create_mb:unpack() do
-        prefab = ecs.create_instance(prefab_file_name)
+        prefab = ecs.create_instance(prefab_file_name) -- todo config?
         iom.set_srt(prefab.root, srt.s, srt.r, srt.t)
         prefab.on_ready = function(game_object, prefab)
             ecs.method.set_parent(prefab.root, parant_entity)
@@ -87,7 +85,6 @@ function road_sys:data_changed()
             policy = {
                 "ant.scene|scene_object",
                 "vaststars.gamerender|building",
-                "vaststars.gamerender|pickup_show_set_road_arrow"
             },
             data = {
                 scene = {
@@ -95,10 +92,11 @@ function road_sys:data_changed()
                 },
                 building = {
                     building_type = "road",
+                    tile_coord = {x, y},
+                    size = {1, 1},
                 },
                 reference = true,
                 pickup_show_set_road_arrow = true,
-                pickup_mapping_tag = "pickup_show_set_road_arrow",
             },
         })
 
@@ -110,8 +108,7 @@ function road_sys:data_changed()
     for _, _, _, instance_id in terrain_road_remove_mb:unpack() do
         game_object = terrain_roads_game_object[instance_id]
         if game_object then
-            prefab = igame_object.get_prefab_object(game_object)
-            prefab:remove()
+            igame_object.get_prefab_object(game_object):remove()
             terrain_roads_game_object[instance_id] = nil
         end
     end
@@ -188,10 +185,6 @@ local function can_construct(x, y, road_type)
     return true
 end
 
-function iroad.reset()
-    road_tiles = {}
-end
-
 local function __flush_road(shape_terrain_entity, x, y)
     local road_type = road_types[x][y]
     iterrain_road.set_road(shape_terrain_entity, road_type, x, y)
@@ -237,6 +230,7 @@ funcs[BOTTOM] = function(sx, sy, dx, dy)
     __set_road(dx, dy, BOTTOM)
 end
 
+-- road_type nil
 function iroad.construct(tile_coord_s, tile_coord_d, road_type)
     local sx, sy
     if tile_coord_s then
@@ -294,8 +288,6 @@ function iroad.construct(tile_coord_s, tile_coord_d, road_type)
     func(sx, sy, dx, dy)
     __flush_road(shape_terrain_entity, sx, sy)
     __flush_road(shape_terrain_entity, dx, dy)
-
-
 end
 
 function iroad.get_road_type(tile_coord)

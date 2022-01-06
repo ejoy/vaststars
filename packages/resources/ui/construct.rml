@@ -167,9 +167,9 @@
                 <div>施工</div>
             </button>
             <div id="work-buttons-container" data-if="show_work">
-                <workbutton data-event-click="clickWork(1)">
+                <workbutton data-event-click="clickWork('pipe')">
                     <div class="workbutton-bg" style='background-image:"construct/process.png";'/>
-                    <div>加工</div>
+                    <div>水管</div>
                 </workbutton>
                 <workbutton data-event-click="clickWork('rock')">
                     <div class="workbutton-bg" style='background-image:"construct/chemical.png";'/>

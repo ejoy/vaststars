@@ -27,14 +27,9 @@ function game_object_sys:entity_remove()
     end
 end
 
-function game_object_sys:entity_ready()
-end
-
-function igame_object.new(prefab, template)
+function igame_object.create(prefab, template)
     template = template or {}
     template.policy = template.policy or {}
-    template.policy[#template.policy+1] = "vaststars.gamerender|game_object"
-
     template.data = template.data or {}
     template.data.scene = {}
     template.data.reference = true

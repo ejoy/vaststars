@@ -5,7 +5,6 @@ local w     = world.w
 local math3d = require "math3d"
 local mc = import_package "ant.math".constant
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
-local ipickup_mapping = ecs.import.interface "vaststars.input|ipickup_mapping"
 local iroad_arrow = ecs.interface "iroad_arrow"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 
@@ -36,15 +35,11 @@ function iroad_arrow.create(position, yaxis_rotation, tile_coord, arrow_tile_coo
 
     prefab.on_message = on_prefab_message
     local game_object = iprefab_object.create(prefab, {
-        policy = {
-            "vaststars.gamerender|pickup_set_road"
-        },
         data = {
             pickup_set_road = {
                 tile_coord = tile_coord,
                 arrow_tile_coord = arrow_tile_coord,
             },
-            pickup_mapping_tag = "pickup_set_road",
         },
     })
 

@@ -8,19 +8,22 @@ import "construct/package.ecs"
 import "road/package.ecs"
 import "terrain/package.ecs"
 
+--
+component "pipe_types" .type "lua" -- = {[x][y] = pipe_type, ...}
+component "pipe_entities" .type "lua" -- = {[x][y] = pipe_entity, ...}
+policy "pipe_data"
+    .component "pipe_types"
+    .component "pipe_entities"
+
+--
 component "game_object"
-
-policy "game_object"
-    .component "game_object"
-
 system "game_object_system"
     .implement "game_object_system.lua"
     .method "entity_remove"
-    .method "entity_ready"
 
 interface "igame_object"
     .implement "game_object_system.lua"
-    .method "new"
+    .method "create"
     .method "get_prefab_object"
     .method "get_game_object"
 
@@ -28,25 +31,35 @@ interface "iprefab_object"
     .implement "iprefab_object.lua"
     .method "create"
 
+interface "iconstruct_arrow"
+    .implement "iconstruct_arrow.lua"
+    .method "show"
+    .method "hide"
+
+system "pipe_system"
+    .implement "pipe_system.lua"
+    .method "init_world"
+    .method "after_pickup_mapping"
+
 component "debug_component" .type "lua"
------------------
--- tag
 component "inserter" -- 机器爪
-
-component "pickup_show_set_road_arrow" -- 点击显示建路箭头
-policy "pickup_show_set_road_arrow"
-    .component "pickup_mapping_tag"
-    .component "pickup_show_set_road_arrow"
-
+component "stop_ani_during_init" -- 开始时暂停动画显示
+component "set_road_entry_during_init" -- 开始时设置入口
+component "pickup_show_set_road_arrow" .type "lua" -- 点击显示建路箭头 {tile_coord, arrow_tile_coord}
 component "pickup_set_road" .type "lua" -- 点击建路 {tile_coord, arrow_tile_coord}
-policy "pickup_set_road"
-    .component "pickup_mapping_tag"
-    .component "pickup_set_road"
-
 component "pickup_show_ui" .type "lua" -- 点击显示 ui {url}
-policy "pickup_show_ui"
-    .component "pickup_mapping_tag"
-    .component "pickup_show_ui"
+component "pickup_show_set_pipe_arrow" .type "lua" -- 点击显示建水管箭头
+component "pickup_set_pipe" .type "lua" -- 点击建水管 {tile_coord, arrow_tile_coord}
+
+component "construct_arrows" .type "lua" -- 缓存箭头,
+component "construct_arrows_building_type" .type "lua" -- 点击箭头时的建筑类型
+policy "construct_arrows"
+    .component "construct_arrows"
+    .component "construct_arrows_building_type"
+
+interface "ipipe"
+    .implement "pipe_system.lua"
+    .method "construct"
 
 pipeline "init"
     .stage "init"
@@ -86,6 +99,7 @@ system "init_system"
     .require_system "vaststars.gamerender|camera_controller_system"
     .require_system "vaststars.gamerender|debug_system"
     .require_system "vaststars.gamerender|game_object_system"
+    .require_system "vaststars.gamerender|pipe_system"
     .implement "init_system.lua"
     .method "init_world"
     .method "data_changed"

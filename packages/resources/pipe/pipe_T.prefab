@@ -1,0 +1,36 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pipe/pipe_T.glb|materials/材质.004.material"
+  mesh: /pkg/vaststars.resources/glb/pipe/pipe_T.glb|meshes/zhuti.008_P1.meshbin
+  name: zhuti.T
+  scene:
+    srt:
+      r: {0, -0.70710688829422, 0, 0.7071066498756409}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pipe/pipe_T.glb|materials/材质.005.material"
+  mesh: /pkg/vaststars.resources/glb/pipe/pipe_T.glb|meshes/zhuti.008_P2.meshbin
+  name: zhuti.T
+  scene:
+    srt:
+      r: {0, -0.70710688829422, 0, 0.7071066498756409}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object

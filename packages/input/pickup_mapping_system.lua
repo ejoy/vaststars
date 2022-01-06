@@ -11,9 +11,9 @@ local id_mapping = {}
 local id_entity = {}
 
 function pickup_mapping_sys:entity_remove()
-	for e in w:select "REMOVED render_object:in scene:in" do
+	for e in w:select "REMOVED scene:in" do
         local sid = e.scene.id
-        -- print(("ipickup_mapping.clear %s"):format(sid))
+        -- print(("ipickup_mapping.entity_remove %s"):format(sid))
 
         id_mapping[sid] = nil
 
@@ -29,22 +29,26 @@ end
 
 function pickup_mapping_sys.after_pickup()
     local mapping_entity
+    local params
     for _, entity in pickup_mb:unpack() do
         if entity then
-            mapping_entity = id_mapping[entity.scene.id]
-            if mapping_entity then
-                if not mapping_entity.pickup_mapping_tag then
-                    w:sync("pickup_mapping_tag?in", mapping_entity)
+            if id_mapping[entity.scene.id] then
+                mapping_entity = id_mapping[entity.scene.id].entity
+                params = id_mapping[entity.scene.id].params
+                if #params == 0 then
+                    world:pub {"pickup_mapping", mapping_entity}
+                else
+                    for _, v in ipairs(params) do
+                        world:pub {"pickup_mapping", v, mapping_entity}
+                    end
                 end
-
-                world:pub {"pickup_mapping", mapping_entity.pickup_mapping_tag, mapping_entity}
             end
         end
     end
 end
 
-function ipickup_mapping.mapping(sid, entity)
-    id_mapping[sid] = entity
+function ipickup_mapping.mapping(sid, entity, params)
+    id_mapping[sid] = {entity = entity, params = params or {}}
 
     if not entity.scene then
         w:sync("scene:in", entity)

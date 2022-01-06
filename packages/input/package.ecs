@@ -1,9 +1,6 @@
 component "drapdrop"
     .type "lua"
 
-policy "drapdrop"
-    .component "drapdrop"
-
 system "drapdrop_system"
     .implement "drapdrop_system.lua"
     .method "data_changed"
@@ -22,9 +19,6 @@ system "pickup_mapping_system"
     .implement "pickup_mapping_system.lua"
     .method "after_pickup"
     .method "entity_remove"
-
-component "pickup_mapping_tag"
-    .type "lua"
 
 interface "ipickup_mapping"
     .implement "pickup_mapping_system.lua"

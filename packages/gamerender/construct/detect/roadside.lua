@@ -3,16 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
-local construct_cfg = import_package "vaststars.config".construct
-
-local function __get_building_size(building_type)
-    local cfg = construct_cfg[building_type]
-    if not cfg then
-        return
-    end
-
-    return cfg.size
-end
 
 local __check_neighbors_road ; do
     local tile_coord_offset = {{0, -1}, {-1, 0}, {1, 0}, {0, 1}} -- top, left, right, bottom
@@ -64,13 +54,7 @@ local function __can_construct(tile_coord, width, height)
     return __check_building_coord(tile_coord, width, height)
 end
 
-return function(building_type, position)
-    local size = __get_building_size(building_type)
-    if not size then
-        print(("Cannot found building_type(%s)"):format(building_type))
-        return false
-    end
-
+return function(building_type, position, size)
     local width = size[1]
     local height = size[2]
 

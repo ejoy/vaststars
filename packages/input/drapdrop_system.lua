@@ -2,8 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local ipickup_mapping = ecs.import.interface "vaststars.input|ipickup_mapping"
-local pickup_mapping_mb = world:sub {"pickup_mapping"}
+local pickup_mapping_mb = world:sub {"pickup_mapping", "drapdrop"}
 local mouse_mb = world:sub {"mouse"}
 
 local drapdrop_system = ecs.system "drapdrop_system"
