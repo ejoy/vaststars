@@ -144,8 +144,8 @@ return function ()
     function world:fluidflow_query(...)
         return fluidflow.query(cworld, ...)
     end
-    function world:fluidflow_change(...)
-        return fluidflow.change(cworld, ...)
+    function world:fluidflow_set(...)
+        return fluidflow.set(cworld, ...)
     end
     function world:fluidflow_dump(...)
         return fluidflow.dump(cworld, ...)

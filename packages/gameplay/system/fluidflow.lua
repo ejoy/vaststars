@@ -87,13 +87,24 @@ local function builder_connect(fluid, x, y, dir, id, type)
         c.map[key] = { id = id, type = type }
         return
     end
-    if type ~= OUT and neighbor.type ~= IN then
-        c.connects[#c.connects+1] = id
-        c.connects[#c.connects+1] = neighbor.id
+    local from, to
+    local oneway = true
+    if type ~= IN and neighbor.type ~= OUT then
+        from = id
+        to = neighbor.id
     end
-    if neighbor.type ~= OUT and type ~= IN then
-        c.connects[#c.connects+1] = neighbor.id
-        c.connects[#c.connects+1] = id
+    if neighbor.type ~= IN and type ~= OUT then
+        if from then
+            oneway = false
+        else
+            from = neighbor.id
+            to = id
+        end
+    end
+    if from then
+        c.connects[#c.connects+1] = from
+        c.connects[#c.connects+1] = to
+        c.connects[#c.connects+1] = oneway
     end
     c.map[key] = nil
 end
@@ -163,7 +174,7 @@ function m.build(world)
     builder_finish(world)
 
     for v in ecs:select "fluidbox:in fluidbox_build:in" do
-        world:fluidflow_change(v.fluidbox.fluid, v.fluidbox.id, "import", v.fluidbox_build.volume)
+        world:fluidflow_set(v.fluidbox.fluid, v.fluidbox.id, v.fluidbox_build.volume)
     end
     ecs:clear "fluidbox_build"
 end

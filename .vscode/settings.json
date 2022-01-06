@@ -107,7 +107,9 @@
         "*.rh": "cpp",
         "*.idl": "cpp",
         "stdlib.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "sort_r.h": "c",
+        "stdio.h": "c"
     },
     "Lua.diagnostics.disable": [
         "empty-block",

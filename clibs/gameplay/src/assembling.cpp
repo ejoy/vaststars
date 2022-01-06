@@ -19,7 +19,7 @@ sync_input_fluidbox(world& w, assembling& a, fluidboxes& fb, recipe_container& c
 			uint8_t index = ((a.fluidbox_in >> (i*4)) & 0xF) - 1;
 			uint16_t value = 0;
 			if (container.recipe_get(recipe_container::slot_type::in, index, value)) {
-				w.fluidflows[fluid].change(fb.in[i].id, fluidflow::change_type::Import, value);
+				w.fluidflows[fluid].set(fb.in[i].id, value);
 			}
 		}
 	}
@@ -33,7 +33,7 @@ sync_output_fluidbox(world& w, assembling& a, fluidboxes& fb, recipe_container& 
 			uint8_t index = ((a.fluidbox_out >> (i*4)) & 0xF) - 1;
 			uint16_t value = 0;
 			if (container.recipe_get(recipe_container::slot_type::out, index, value)) {
-				w.fluidflows[fluid].change(fb.out[i].id, fluidflow::change_type::Export, value);
+				w.fluidflows[fluid].set(fb.out[i].id, value);
 			}
 		}
 	}
