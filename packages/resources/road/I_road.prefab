@@ -200,30 +200,6 @@ data:
     srt:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
-      t: {0, 2.200000047683716, -1.2999999523162842}
-  slot: true
-  tag:
-    empty2
-mount: 1
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.scene|slot
-  ant.scene|scene_object
----
-data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
-  name: path_l_3
-  reference: true
-  scene:
-    srt:
-      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
-      s: {1, 1, 1}
       t: {3, 2.200000047683716, -1.2999999523162842}
   slot: true
   tag:
@@ -267,30 +243,6 @@ data:
     s: {1, 1, 1}
     t: {0, 0, 0}
   name: path_r_2
-  reference: true
-  scene:
-    srt:
-      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
-      s: {1, 1, 1}
-      t: {0, 2.200000047683716, 1.2999999523162842}
-  slot: true
-  tag:
-    empty5
-mount: 1
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.scene|slot
-  ant.scene|scene_object
----
-data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
-  name: path_r_3
   reference: true
   scene:
     srt:
