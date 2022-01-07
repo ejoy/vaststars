@@ -9,9 +9,9 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/pipe/pipe_I.glb|materials/road.jia.material
-  mesh: /pkg/vaststars.resources/glb/pipe/pipe_I.glb|meshes/zhuti.027_P1.meshbin
-  name: zhuti.I
+  material: "/pkg/vaststars.resources/glb/pipe/pipe_I.glb|materials/材质.004.material"
+  mesh: /pkg/vaststars.resources/glb/pipe/pipe_I.glb|meshes/zhuti.002_P1.meshbin
+  name: zhuti.II
   scene:
     srt:
       r: {0, 0.7071068286895752, 0, -0.7071068286895752}
@@ -24,8 +24,8 @@ policy:
 data:
   filter_state: main_view|selectable|cast_shadow
   material: "/pkg/vaststars.resources/glb/pipe/pipe_I.glb|materials/材质.005.material"
-  mesh: /pkg/vaststars.resources/glb/pipe/pipe_I.glb|meshes/zhuti.027_P2.meshbin
-  name: zhuti.I
+  mesh: /pkg/vaststars.resources/glb/pipe/pipe_I.glb|meshes/zhuti.002_P2.meshbin
+  name: zhuti.II
   scene:
     srt:
       r: {0, 0.7071068286895752, 0, -0.7071068286895752}
@@ -37,9 +37,9 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: "/pkg/vaststars.resources/glb/pipe/pipe_I.glb|materials/材质.004.material"
-  mesh: /pkg/vaststars.resources/glb/pipe/pipe_I.glb|meshes/zhuti.027_P3.meshbin
-  name: zhuti.I
+  material: /pkg/vaststars.resources/glb/pipe/pipe_I.glb|materials/road.jia.material
+  mesh: /pkg/vaststars.resources/glb/pipe/pipe_I.glb|meshes/zhuti.002_P3.meshbin
+  name: zhuti.II
   scene:
     srt:
       r: {0, 0.7071068286895752, 0, -0.7071068286895752}
@@ -47,49 +47,4 @@ mount: 1
 policy:
   ant.general|name
   ant.render|render
-  ant.scene|scene_object
----
-data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
-  name: "满"
-  reference: true
-  scene:
-    srt: {}
-  slot: true
-  tag:
-    empty1
-mount: 1
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.scene|slot
-  ant.scene|scene_object
----
-data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
-  name: "缺"
-  reference: true
-  scene:
-    srt:
-      r: {0, 0, 0, 1}
-      s: {1, 0.019999999552965164, 1}
-      t: {0, 2.299999952316284, 0}
-  slot: true
-  tag:
-    empty2
-mount: 1
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.scene|slot
   ant.scene|scene_object
