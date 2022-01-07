@@ -59,7 +59,7 @@ function iprefab_object.create(prefab, template)
     end
 
     local components = {}
-    for k, v in pairs(template.data or {}) do
+    for k in pairs(template.data or {}) do
         components[#components+1] = k
     end
 

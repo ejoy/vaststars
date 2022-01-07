@@ -243,6 +243,95 @@ funcs[5] = function()
     end
 end
 
+funcs[6] = function()
+    local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
+    local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+    local animation = require "hierarchy".animation
+    local new_vector_float3 = animation.new_vector_float3
+    local new_vector_quaternion = animation.new_vector_quaternion
+    local math3d = require "math3d"
+
+    test_rodio = test_rodio + 0.05
+    if test_rodio > 0.5 then
+        test_rodio = 0
+    end
+    for _, e in pairs(pipe_fluild_cache) do
+        w:remove(e)
+    end
+    pipe_fluild_cache = {}
+
+    for game_object in w:select "pickup_show_set_pipe_arrow:in" do
+        local prefab_object = igame_object.get_prefab_object(game_object)
+        w:sync("scene:in", prefab_object.root)
+
+        w:sync("prefab_slot_cache:in", game_object)
+        local slot_cache = game_object.prefab_slot_cache
+        if not slot_cache then
+            goto continue
+        end
+
+        local translations = new_vector_float3()
+        local rotations = new_vector_quaternion()
+        for _, slot_name in ipairs({"empty", "full"}) do
+            local e = slot_cache[slot_name]
+            translations:insert(iom.get_position(e)) -- add translation key
+            rotations:insert(iom.get_rotation(e))    -- add rotation key
+        end
+
+        local mat = build_track(translations, rotations, 10.0, test_rodio)
+        local srt = math3d.mul(iom.worldmat(prefab_object.root), mat)
+        -- iom.set_srt(e, math3d.srt(srt))
+        local s, r, t = math3d.srt(srt)
+
+        ----------------------------------------------------------------------------------------------------------
+        local e = ecs.create_entity {
+            policy = {
+                "ant.render|render",
+                "ant.general|name",
+            },
+            data = {
+                name = "fluild_uv_motion",
+                scene = { srt = { s = s, r = r, t = t} },
+                filter_state = "main_view|selectable|cast_shadow",
+                mesh = "/pkg/vaststars.resources/glb/pipe/pipe_fluid.glb|meshes/Plane_P1.meshbin",
+                material = "/pkg/vaststars.resources/pipe/fluild.material",
+                reference = true,
+
+                on_ready = function(e)
+                    local imaterial = ecs.import.interface "ant.asset|imaterial"
+                    imaterial.set_property(e, "u_uvmotion", {0, 0.1, 1.0, 1.0})
+                end,
+            }
+        }
+        pipe_fluild_cache[#pipe_fluild_cache+1] = e
+        ::continue::
+    end
+end
+
+--[[
+funcs[7] = function()
+    local e = ecs.create_entity {
+        policy = {
+            "ant.render|render",
+			"ant.general|name",
+        },
+        data = {
+            name = "fluild_uv_motion",
+            scene = { srt = {} },
+            filter_state = "main_view|selectable|cast_shadow",
+            mesh = "/pkg/vaststars.resources/glb/pipe/pipe_fluid.glb|meshes/Plane_P1.meshbin",
+            material = "/pkg/vaststars.resources/pipe/fluild.material",
+            reference = true,
+
+            on_ready = function(e)
+                local imaterial = ecs.import.interface "ant.asset|imaterial"
+                imaterial.set_property(e, "u_uvmotion", {0, 0.1, 1.0, 1.0})
+            end,
+        }
+    }
+end
+--]]
+
 --------------
 function m:ui_update()
     for _, i in debug_mb:unpack() do 
