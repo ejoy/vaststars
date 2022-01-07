@@ -11,6 +11,10 @@ extern "C" {
 #define NO_ITEM   0x00000
 #define ANY_ITEM  0x10001
 
+static bool isFluidId(uint16_t id) {
+    return (id & 0x0C00) == 0x0C00;
+}
+
 chest_container::chest_container(uint16_t size)
     : slots()
     , used(0)
@@ -229,6 +233,9 @@ bool recipe_container::recipe_place(world& w, item const* items) {
     for (size_t i = 0; i < outslots.size(); ++i) {
         auto& s = outslots[i];
         auto& t = items[i];
+        if (isFluidId(s.item) && (s.amount + t.amount) > s.limit) {
+            return false;
+        }
         s.amount += t.amount;
     }
     return true;

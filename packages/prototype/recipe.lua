@@ -735,6 +735,16 @@ prototype "机械科技包1" {
     description = "使用铁锭和碎石锻造铁板",
 }
 
+prototype "空气过滤" {
+    type = { "recipe" },
+    ingredients = {
+    },
+    results = {
+        {"空气", 50},
+    },
+    time = "1s",
+}
+
 prototype "空气分离1" {
     type = { "recipe" },
     category = "过滤",

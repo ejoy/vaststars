@@ -349,23 +349,27 @@ prototype "电解厂1" {
             },
         },
     }
-
-
 }
 
 prototype "空气过滤器1" {
-    type ={"entity", "consumer","fluidbox"},
+    type ={"entity", "consumer","assembling","fluidboxes"},
     area = "3x3",
     power = "50kW",
     drain = "1.5kW",
     priority = "secondary",
-    fluidbox = {
-        capacity = 1000,
-        height = 200,
-        base_level = 150,
-        connections = {
-            {type="output", position={1,2,"S"}},
-        }
+    recipe = "空气过滤",
+    fluidboxes = {
+        input = {},
+        output = {
+            {
+                capacity = 1000,
+                height = 200,
+                base_level = 150,
+                connections = {
+                    {type="output", position={1,2,"S"}},
+                }
+            }
+        },
     }
 }
 

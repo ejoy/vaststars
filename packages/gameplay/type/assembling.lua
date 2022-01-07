@@ -39,7 +39,9 @@ local function getFluidBox(s, max)
 end
 
 function c:ctor(init, pt)
-    local recipe = assert(prototype.query("recipe", init.recipe), "unknown recipe: "..init.recipe)
+    --TODO fluid limit
+    local recipe_name = pt.recipe and pt.recipe or init.recipe
+    local recipe = assert(prototype.query("recipe", recipe_name), "unknown recipe: "..recipe_name)
     return {
         assembling = {
             recipe = recipe.id,
