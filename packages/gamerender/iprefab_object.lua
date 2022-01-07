@@ -28,9 +28,11 @@ events.on_ready = function(game_object, prefab, components)
         w:sync("scene:in", e)
         ipickup_mapping.mapping(e.scene.id, game_object, components)
 
-        w:sync("_animation?in", e)
-        if stop_animation and e._animation then
-            iani.pause(e, true)
+        if stop_animation then
+            w:sync("_animation?in", e)
+            if e._animation then
+                iani.pause(e, true)
+            end
         end
 
         w:sync("slot?in name:in", e)
