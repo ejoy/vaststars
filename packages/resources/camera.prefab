@@ -1,20 +1,21 @@
 ---
-action:
-    bind_camera: main_queue
 data:
   camera:
-    eyepos: {-1, 1, 2, 1}
-    viewdir: {4, -2, -9, 0}
-    updir: {0, 1, 0, 0}
     frustum:
-      aspect: 1.3333333333333333
-      f: 100
+      aspect: 1.7699999809265137
+      f: 300
       fov: 60
       n: 1
-      type: mat
-  name: DEFAULT_CAMERA
-tag:
-  camera
+  name: camera1
+  reference: true
+  scene:
+    srt:
+      r: {0.3826834559440613, 0, 0, 0.9238795042037964}
+      t: {0, 60, 60}
+    updir: {0, 1, 0, 0}
+  tag:
+    camera
 policy:
   ant.general|name
+  ant.general|tag
   ant.camera|camera

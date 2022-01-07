@@ -30,7 +30,11 @@ local function print_camera_info(e, dir)
     end
 
     print("camera scale", table.concat(math3d.tovalue(srt.s), ","))
-    print("camera rotation", table.concat(math3d.tovalue(srt.r), ","))
+    local t = math3d.tovalue(math3d.quat2euler(srt.r))
+    for k, v in pairs(t) do
+        t[k] = math.deg(v)
+    end
+    print("camera rotation", table.concat(t, ","))
     print("camera translation", table.concat(math3d.tovalue(srt.t), ","))
 
     local frustum = icamera.get_frustum(e)
