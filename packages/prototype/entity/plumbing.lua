@@ -18,16 +18,22 @@ prototype "液罐1" {
 }
 
 prototype "抽水泵" {
-    type ={"entity", "consumer", "fluidbox"},
+    type ={"entity", "consumer", "assembling", "fluidboxes"},
     area = "1x2",
     power = "6kW",
     priority = "secondary",
-    fluidbox = {
-        capacity = 300,
-        height = 100,
-        base_level = 150,
-        connections = {
-            {type="output", position={0,0,"N"}},
+    recipe = "离岸抽水",
+    fluidboxes = {
+        input = {},
+        output = {
+            {
+                capacity = 300,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={0,0,"N"}},
+                }
+            }
         }
     }
 }

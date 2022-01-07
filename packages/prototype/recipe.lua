@@ -745,6 +745,17 @@ prototype "空气过滤" {
     time = "1s",
 }
 
+prototype "离岸抽水" {
+    type = { "recipe" },
+    ingredients = {
+    },
+    results = {
+        {"海水", 1200},
+    },
+    time = "1s",
+}
+
+
 prototype "空气分离1" {
     type = { "recipe" },
     category = "过滤",
