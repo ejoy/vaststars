@@ -413,13 +413,13 @@ reset_blocking(struct fluidflow_network *net) {
 }
  
 static void
-reservation(struct fluidflow_network *net, int from, int to, int r) {
+set_reservation(struct fluidflow_network *net, int from, int to, int r) {
 	struct pipe *p = &net->p[to];
 	int i;
 	for (i=0;i<PIPE_CONNECTION;i++) {
 		if (p->uplink[i] == from) {
-//			printf("Reservation %d -> %d : %d+%d/%d\n", net->p[from].id, p->id , r, p->fluid, p->capacity);
 			p->reservation[i] = r;
+//			printf("Reservation %d + %d -> %d : %d/%d\n", net->p[from].id, p->id , p->fluid , r , p->capacity);
 			return;
 		}
 	}
@@ -444,17 +444,19 @@ attempt_flow(struct fluidflow_network *net, int idx) {
 	int f[PIPE_CONNECTION];
 	int level = fluid_level(p);
 	for (i=0;i<PIPE_CONNECTION;i++) {
-		if (p->downlink[i] == PIPE_INVALID_CONNECTION)
+		int to_idx = p->downlink[i];
+		if (to_idx == PIPE_INVALID_CONNECTION)
 			break;
-		if (p->downlink[i] >= net->pump_n) {
-			struct pipe *to = &net->p[p->downlink[i]];
+		if (to_idx >= net->pump_n) {
+			struct pipe *to = &net->p[to_idx];
 			int to_level = fluid_level(to);
-			if (level + p->base_level > to_level + to->base_level) {
-				f[i] = (level + p->base_level - to_level - to->base_level) / FIXSHIFT / 2 ;
+			int pressure = ((level + p->base_level) - (to_level + to->base_level)) / FIXSHIFT;
+			if (pressure > 0) {
+				f[i] = pressure / 2;
+				total += f[i];
 			} else {
 				f[i] = 0;
 			}
-			total += f[i];
 		} else {
 			// ignore flow to pump
 			f[i] = 0;
@@ -470,9 +472,8 @@ attempt_flow(struct fluidflow_network *net, int idx) {
 		f[i] = fluid;
 	}
 	for (i=0;i<n;i++) {
-		if (f[i] > 0) {
-			reservation(net, idx, p->downlink[i], f[i]);
-		}
+//		printf("Attempt flow %d -> %d : %d\n", p->id, net->p[p->downlink[i]].id, f[i]);
+		set_reservation(net, idx, p->downlink[i], f[i]);
 	}
 }
  
@@ -884,7 +885,7 @@ fluidflow_dump(struct fluidflow_network *net) {
 static void
 update(struct fluidflow_network *net, int fluid[]) {
 	fluidflow_set(net, 1, fluid[0] + 20000, 1);
-	fluidflow_set(net, 12, fluid[11] + 20000, 1);
+	fluidflow_set(net, 12, fluid[11] + 10000, 1);
 	fluidflow_update(net);
 	int i;
 	for (i=1;i<=12;i++) {
@@ -917,9 +918,9 @@ main() {
 		0,
 	};
 	fluidflow_build(net, 12, &pipe);
-	fluidflow_build(net, 11, &tank);
+	fluidflow_build(net, 11, &bump);
 	fluidflow_build(net, 10, &tank);
-	fluidflow_build(net, 9, &tank);
+	fluidflow_build(net, 9, &pipe);
 	fluidflow_build(net, 8, &pipe);
 	fluidflow_build(net, 7, &pipe);
 	fluidflow_build(net, 6, &pipe);
@@ -937,9 +938,9 @@ main() {
 		6, 7,
 		7, 8,
 		8, 9,
-		4, 10,
-		4, 11,
-		12, 10,
+		9, 10,
+		11, 10,
+		12, 11,
 	};
 	int i;
 	for (i=0;i<sizeof(c)/sizeof(c[0]);i+=2) {
@@ -948,7 +949,7 @@ main() {
 	fluidflow_dump(net);
  
 	int fluid[12] = {0};
-	for (i=0;i<10;i++) {
+	for (i=0;i<20;i++) {
 		if (i % 2 == 1)
 			fluidflow_block(net, 2);
 		update(net, fluid);
