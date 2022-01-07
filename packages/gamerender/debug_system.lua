@@ -2,6 +2,40 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+---
+local print_srt; do
+    local math3d = require "math3d"
+    local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+
+    function print_srt(e)
+        print("print_str", tostring(e))
+        print("position", table.concat(math3d.tovalue(iom.get_position(e)), ","))
+        print("rotation", table.concat(math3d.tovalue(iom.get_rotation(e)), ","))
+    end
+end
+
+--
+local build_track; do
+    local animation = require "hierarchy".animation
+    local skeleton = require "hierarchy".skeleton
+
+    function build_track(translations, rotations, duration, ratio)
+        local raw_animation = animation.new_raw_animation()
+        raw_animation:push_key(translations, rotations, duration)
+
+        local skl = skeleton.build({{name = "root", s = {1.0, 1.0, 1.0}, r = {0.0, 0.0, 0.0, 1.0}, t = {0.0, 0.0, 0.0}}})
+        local poseresult = animation.new_pose_result(1)
+        poseresult:setup(skl)
+        poseresult:do_sample(animation.new_sampling_context(), raw_animation:build(), ratio)
+        poseresult:fetch_result()
+        if poseresult:count() < 1 then
+            return
+        end
+
+        return poseresult:joint(1)
+    end
+end
+
 local m = ecs.system 'debug_system'
 local debug_mb = world:sub {"debug"}
 local funcs = {}
@@ -83,49 +117,25 @@ end
 
 ------
 funcs[3] = function ()
-    local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-    local math3d = require "math3d"
+    local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
     local prefab_file_name = "/pkg/vaststars.resources/road/C_road.prefab"
     local prefab = ecs.create_instance(prefab_file_name)
     prefab.on_message = function()
     end
-    igame_object.new(prefab, {
+    iprefab_object.create(prefab, {
         data = {debug_component = 1},
     })
 end
 
 -- test track
 do
-    local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
     local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-    local mathadapter = import_package "ant.math.adapter"
 
     local math3d        = require "math3d"
-    local math3d_adapter= require "math3d.adapter"
     local animation = require "hierarchy".animation
-    local skeleton = require "hierarchy".skeleton
-
     local new_vector_float3 = animation.new_vector_float3
     local new_vector_quaternion = animation.new_vector_quaternion
 
-    local function build_track(translations, rotations, duration, ratio)
-        local raw_animation = animation.new_raw_animation()
-        raw_animation:push_key(translations, rotations, duration)
-        local ani = raw_animation:build()
-
-        local skl = skeleton.build({{name = "root", s = {1.0, 1.0, 1.0}, r = {0.0, 0.0, 0.0, 1.0}, t = {0.0, 0.0, 0.0}}})
-        local poseresult = animation.new_pose_result(1)
-        poseresult:setup(skl)
-        poseresult:do_sample(animation.new_sampling_context(1), ani, ratio, 0)
-        poseresult:fetch_result()
-
-        local t = {}
-        local len = poseresult:count()
-        for i = 1, len do
-            t[#t+1] = poseresult:joint(i)
-        end
-        return t
-    end
     local translations
     local rotations
     local ratio = 1.1
@@ -150,8 +160,6 @@ do
         remove_debug_prefab(2)
         -- add lorry
         local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
-        local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-        local math3d = require "math3d"
         local prefab_file_name = "/pkg/vaststars.resources/lorry.prefab"
         local prefab = ecs.create_instance(prefab_file_name)
         prefab.on_message = function()
@@ -183,6 +191,55 @@ do
 
             -- print(times)
         end
+    end
+end
+
+local test_rodio = 0
+local pipe_fluild_cache = {}
+funcs[5] = function()
+    local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
+    local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
+    local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+    local animation = require "hierarchy".animation
+    local new_vector_float3 = animation.new_vector_float3
+    local new_vector_quaternion = animation.new_vector_quaternion
+    local math3d = require "math3d"
+
+    test_rodio = test_rodio + 0.05
+    if test_rodio > 0.5 then
+        test_rodio = 0
+    end
+    for _, prefab in pairs(pipe_fluild_cache) do
+        prefab:remove()
+    end
+    pipe_fluild_cache = {}
+
+    for game_object in w:select "pickup_show_set_pipe_arrow:in" do
+        local prefab_object = igame_object.get_prefab_object(game_object)
+        w:sync("scene:in", prefab_object.root)
+
+        w:sync("prefab_slot_cache:in", game_object)
+        local slot_cache = game_object.prefab_slot_cache
+        if not slot_cache then
+            goto continue
+        end
+
+        local translations = new_vector_float3()
+        local rotations = new_vector_quaternion()
+        for _, slot_name in ipairs({"empty", "full"}) do
+            local e = slot_cache[slot_name]
+            translations:insert(iom.get_position(e)) -- add translation key
+            rotations:insert(iom.get_rotation(e))    -- add rotation key
+        end
+
+        local prefab = ecs.create_instance("/pkg/vaststars.resources/pipe/pipe_fluild.prefab") -- todo
+        prefab.on_message = function() end
+        pipe_fluild_cache[#pipe_fluild_cache+1] = world:create_object(prefab)
+
+        local mat = build_track(translations, rotations, 10.0, test_rodio)
+        local srt = math3d.mul(iom.worldmat(prefab_object.root), mat)
+        iom.set_srt(prefab.root, math3d.srt(srt))
+        ::continue::
     end
 end
 

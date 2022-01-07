@@ -7,7 +7,6 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
 local road_path_cfg = import_package "vaststars.config".road_path
-local packCoord = require "construct.gameplay_entity.packcoord"
 
 -- 0:> 1:< 2:v 3: ^
 local translate_dir ; do
@@ -42,9 +41,6 @@ end
 
 local function set_gameplay_road(x, y, road_type)
     print("set_gameplay_road", x, y, "rode_type", road_type) -- todo
-
-    local position = packCoord(x, y)
-    -- gameplay.set_road_type(position, road_type)
 end
 
 local terrain_road_create_mb = world:sub {"terrain_road", "road", "create"}

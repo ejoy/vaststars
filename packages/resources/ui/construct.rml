@@ -155,7 +155,8 @@
                 <div class = "test-button" data-event-click="clickDebug(2)" style = "position: absolute; left: 5vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
                 <div class = "test-button" data-event-click="clickDebug(3)" style = "position: absolute; left: 10vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
                 <div class = "test-button" data-event-click="clickDebug(4)" style = "position: absolute; left: 15vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
-            </div>
+                <div class = "test-button" data-event-click="clickDebug(5)" style = "position: absolute; left: 20vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
+            </div>            
 
             <!-- 建造确认按钮 -->
             <input id = "id-button-construct-confirm" type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/button-construct-confirm.png";' data-event-click = "clickContructConfirm()" data-if = "is_show_construct_confirm">

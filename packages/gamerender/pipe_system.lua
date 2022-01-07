@@ -29,7 +29,7 @@ local LEFT   <const> = 1 -- x - 1  < -- East
 local TOP    <const> = 2 -- y + 1  v -- South
 local BOTTOM <const> = 3 -- y - 1  ^ -- West
 
-local rotators<const> = {
+local rotators <const> = {
     math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
     math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
     math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
@@ -50,6 +50,9 @@ local type_to_passable_state, passable_state_to_type, set_passable_state ; do
 
     passable["I0"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = false, [BOTTOM] = false}
     passable["I1"] = {[RIGHT] = false, [LEFT] = false, [TOP] = true,  [BOTTOM] = true}
+
+    passable["E0"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = false, [BOTTOM] = false}
+    passable["E1"] = {[RIGHT] = false, [LEFT] = false, [TOP] = true,  [BOTTOM] = true}
 
     passable["T0"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = false, [BOTTOM] = true}
     passable["T1"] = {[RIGHT] = false, [LEFT] = true,  [TOP] = true,  [BOTTOM] = true}
@@ -78,8 +81,9 @@ local type_to_passable_state, passable_state_to_type, set_passable_state ; do
 
     local accel_reversed = {}
     for k, v in pairs(accel) do
-        assert(accel_reversed[v] == nil)
-        accel_reversed[v] = k
+        if not accel_reversed[v] then
+            accel_reversed[v] = k
+        end
     end
 
     function type_to_passable_state(t)
@@ -102,16 +106,16 @@ local prefab_names = {
     ['T'] = "/pkg/vaststars.resources/pipe/pipe_T.prefab",
     ['X'] = "/pkg/vaststars.resources/pipe/pipe_X.prefab",
     ['O'] = "/pkg/vaststars.resources/pipe/pipe_O.prefab",
+    ['E'] = "/pkg/vaststars.resources/pipe/pipe_E.prefab",
 }
 
 local function create_entity(pipe_type, x, y)
     local tt = pipe_type:sub(1, 1)
     local rr = pipe_type:sub(2, 2)
-    local r = rotators[rr:byte() - ('0'):byte()]
 
     local prefab = ecs.create_instance(prefab_names[tt])
     iom.set_position(prefab.root, iterrain.get_position_by_coord({x, y}))
-    iom.set_rotation(prefab.root, r)
+    iom.set_rotation(prefab.root, rotators[rr:byte() - ('0'):byte()])
     return iprefab_object.create(prefab, {
         policy = {
             "ant.scene|scene_object",
@@ -208,6 +212,22 @@ local get_dir ; do
     end
 end
 
+local check_neighbors ; do
+    local accel = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+    function check_neighbors(pipe_types, sx, sy)
+        local dx, dy
+        for _, v in ipairs(accel) do
+            dx, dy = sx + v[1], sy + v[2]
+            if pipe_types[dx] and pipe_types[dx][dy] then
+                if pipe_types[dx][dy]:sub(1, 1) == 'E' then
+                    return false
+                end
+            end
+        end
+        return true
+    end
+end
+
 function ipipe.construct(coord_s, coord_d)
     local e = w:singleton("pipe_types", "pipe_types:in pipe_entities:in")
     local pipe_entities = e.pipe_entities
@@ -245,6 +265,13 @@ function ipipe.construct(coord_s, coord_d)
     end
 
     func(pipe_types, sx, sy, dx, dy)
+
+    --
+    local pt1 = pipe_types[sx][sy]
+    if pt1:sub(1, 1) == 'I' and check_neighbors(pipe_types, sx, sy) then
+        pipe_types[sx][sy] = ('E%s'):format(pt1:sub(2, 2))
+    end
+
     flush(pipe_types, pipe_entities, sx, sy)
     flush(pipe_types, pipe_entities, dx, dy)
     w:sync("pipe_types:out pipe_entities:out", e)

@@ -9,20 +9,26 @@ local igame_object = ecs.interface "igame_object"
 local prefab_game_object = {}
 local game_object_prefab = {}
 
+local function is_valid_reference(reference)
+    return reference[1] ~= nil
+end
+
 function game_object_sys:entity_remove()
     local root, game_object
     for _, prefab in object_remove_mb:unpack() do
-        w:sync("prefab:in", prefab)
-        root = prefab.prefab.root
+        if is_valid_reference(prefab) then
+            w:sync("prefab:in", prefab)
+            root = prefab.prefab.root
 
-        w:sync("scene:in", root)
-        game_object = prefab_game_object[root.scene.id]
-        if game_object then
-            w:sync("scene:in", game_object)
-            -- print(("remove game_object `%s`"):format(game_object.scene.id))
-            game_object_prefab[game_object.scene.id] = nil
-            w:remove(game_object)
-            prefab_game_object[root.scene.id] = nil
+            w:sync("scene:in", root)
+            game_object = prefab_game_object[root.scene.id]
+            if game_object then
+                w:sync("scene:in", game_object)
+                -- print(("remove game_object `%s`"):format(game_object.scene.id))
+                game_object_prefab[game_object.scene.id] = nil
+                w:remove(game_object)
+                prefab_game_object[root.scene.id] = nil
+            end
         end
     end
 end
@@ -30,6 +36,7 @@ end
 function igame_object.create(prefab, template)
     template = template or {}
     template.policy = template.policy or {}
+    template.policy[#template.policy+1] = "vaststars.gamerender|game_object"
     template.data = template.data or {}
     template.data.scene = {}
     template.data.reference = true
