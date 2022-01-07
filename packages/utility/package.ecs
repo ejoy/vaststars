@@ -1,1 +1,3 @@
-
+interface "icamera_info"
+    .implement "icamera_info.lua"
+    .method "info"
