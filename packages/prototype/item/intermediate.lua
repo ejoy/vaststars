@@ -103,13 +103,6 @@ prototype "玻璃" {
     description = "伴生在矿物里的碎石",
 }
 
-
-prototype "运输车辆1" {
-    type = {"item"},
-    stack = 50,
-    description = "运输货物的交通工具",
-}
-
 prototype "地质科技包" {
     type = {"item"},
     stack = 100,

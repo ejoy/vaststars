@@ -125,3 +125,9 @@ prototype "砖石公路" {
     stack = 100,
     description = "处理海水的工厂",
 }
+
+prototype "运输车辆1" {
+    type = {"item"},
+    stack = 50,
+    description = "运输货物的交通工具",
+}
