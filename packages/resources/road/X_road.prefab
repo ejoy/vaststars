@@ -98,7 +98,7 @@ data:
     srt:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
-      t: {0, 0.009999999776482582, 0}
+      t: {0, 2.200000047683716, 0}
   slot: true
   tag:
     empty9
@@ -333,6 +333,774 @@ data:
   slot: true
   tag:
     empty20
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_l2r_1
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {1.5, 2.200000047683716, -4}
+  slot: true
+  tag:
+    empty7
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_l2r_2
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {1.5, 2.200000047683716, 4}
+  slot: true
+  tag:
+    empty8
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_r2l_1
+  reference: true
+  scene:
+    srt:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      s: {1, 1, 1}
+      t: {-1.5, 2.200000047683716, 4}
+  slot: true
+  tag:
+    empty9
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_r2l_2
+  reference: true
+  scene:
+    srt:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      s: {1, 1, 1}
+      t: {-1.5, 2.200000047683716, -4}
+  slot: true
+  tag:
+    empty10
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_b2t_1
+  reference: true
+  scene:
+    srt:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {4, 2.200000047683716, 1.5}
+  slot: true
+  tag:
+    empty11
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_b2t_2
+  reference: true
+  scene:
+    srt:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {-4, 2.200000047683716, 1.5}
+  slot: true
+  tag:
+    empty12
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_t2b_1
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {-4, 2.200000047683716, -1.5}
+  slot: true
+  tag:
+    empty13
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_t2b_2
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {4, 2.200000047683716, -1.5}
+  slot: true
+  tag:
+    empty14
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_l2b_1
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {1.5, 2.200000047683716, -4}
+  slot: true
+  tag:
+    empty15
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_l2b_2
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.3826834559440613, 0, 0.9238795042037964}
+      s: {1, 1, 1}
+      t: {2, 2.200000047683716, -3}
+  slot: true
+  tag:
+    empty16
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_l2b_3
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {4, 2.200000047683716, -1.5}
+  slot: true
+  tag:
+    empty17
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_l2t_1
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {1.5, 2.200000047683716, -4}
+  slot: true
+  tag:
+    empty18
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_l2t_2
+  reference: true
+  scene:
+    srt:
+      r: {0, -0.3826834559440613, 0, 0.9238795042037964}
+      s: {1, 1, 1}
+      t: {0, 2.200000047683716, -1}
+  slot: true
+  tag:
+    empty19
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_l2t_3
+  reference: true
+  scene:
+    srt:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {-4, 2.200000047683716, 1.5}
+  slot: true
+  tag:
+    empty20
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_r2b_1
+  reference: true
+  scene:
+    srt:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      s: {1, 1, 1}
+      t: {-1.5, 2.200000047683716, 4}
+  slot: true
+  tag:
+    empty21
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_r2b_2
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.9537169337272644, 0, 0.30070582032203674}
+      s: {1, 1, 1}
+      t: {0, 2.200000047683716, 1}
+  slot: true
+  tag:
+    empty22
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_r2b_3
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {4, 2.200000047683716, -1.5}
+  slot: true
+  tag:
+    empty23
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_r2t_1
+  reference: true
+  scene:
+    srt:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      s: {1, 1, 1}
+      t: {-1.5, 2.200000047683716, 4}
+  slot: true
+  tag:
+    empty24
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_r2t_2
+  reference: true
+  scene:
+    srt:
+      r: {0, -0.9537169337272644, 0, 0.30070582032203674}
+      s: {1, 1, 1}
+      t: {-1.899999976158142, 2.200000047683716, 2.799999952316284}
+  slot: true
+  tag:
+    empty25
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_r2t_3
+  reference: true
+  scene:
+    srt:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {-4, 2.200000047683716, 1.5}
+  slot: true
+  tag:
+    empty26
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_b2l_1
+  reference: true
+  scene:
+    srt:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {4, 2.200000047683716, 1.5}
+  slot: true
+  tag:
+    empty27
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_b2l_2
+  reference: true
+  scene:
+    srt:
+      r: {0, -0.9537169337272644, 0, 0.30070582032203674}
+      s: {1, 1, 1}
+      t: {0, 2.200000047683716, 0}
+  slot: true
+  tag:
+    empty28
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_b2l_3
+  reference: true
+  scene:
+    srt:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      s: {1, 1, 1}
+      t: {-1.5, 2.200000047683716, -4}
+  slot: true
+  tag:
+    empty29
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_b2r_1
+  reference: true
+  scene:
+    srt:
+      r: {0, -0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {4, 2.200000047683716, 1.5}
+  slot: true
+  tag:
+    empty30
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_b2r_2
+  reference: true
+  scene:
+    srt:
+      r: {0, -0.3826834559440613, 0, 0.9238795042037964}
+      s: {1, 1, 1}
+      t: {3, 2.200000047683716, 2}
+  slot: true
+  tag:
+    empty31
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_b2r_3
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {1.5, 2.200000047683716, 4}
+  slot: true
+  tag:
+    empty32
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_t2l_1
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {-4, 2.200000047683716, -1.5}
+  slot: true
+  tag:
+    empty33
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_t2l_2
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.9238795042037964, 0, 0.3826834261417389}
+      s: {1, 1, 1}
+      t: {-3, 2.200000047683716, -2}
+  slot: true
+  tag:
+    empty34
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_t2l_3
+  reference: true
+  scene:
+    srt:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      s: {1, 1, 1}
+      t: {-1.5, 2.200000047683716, -4}
+  slot: true
+  tag:
+    empty35
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_t2r_1
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+      s: {1, 1, 1}
+      t: {-4, 2.200000047683716, -1.5}
+  slot: true
+  tag:
+    empty36
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_t2r_2
+  reference: true
+  scene:
+    srt:
+      r: {0, 0.3826834559440613, 0, 0.9238795042037964}
+      s: {1, 1, 1}
+      t: {0, 2.200000047683716, 0}
+  slot: true
+  tag:
+    empty37
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.scene|slot
+  ant.scene|scene_object
+---
+data:
+  follow_flag: 1
+  follow_joint: None
+  follow_offset:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
+  name: road_t2r_3
+  reference: true
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {1.5, 2.200000047683716, 4}
+  slot: true
+  tag:
+    empty38
 mount: 1
 policy:
   ant.general|name
