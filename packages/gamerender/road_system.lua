@@ -11,10 +11,10 @@ local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 
-local pipe_sys = ecs.system "pipe_system"
-local ipipe = ecs.interface "ipipe"
-local pickup_show_set_pipe_arrow_mb = world:sub {"pickup_mapping", "pickup_show_set_pipe_arrow"}
-local pickup_set_pipe_mb = world:sub {"pickup_mapping", "pickup_set_pipe"}
+local road_sys = ecs.system "road_system"
+local iroad = ecs.interface "iroad"
+local pickup_show_set_road_arrow_mb = world:sub {"pickup_mapping", "pickup_show_set_road_arrow"}
+local pickup_set_road_mb = world:sub {"pickup_mapping", "pickup_set_road"}
 local pickup_mb = world:sub {"pickup"}
 local construct_arrows_entity
 
@@ -49,9 +49,6 @@ local type_to_passable_state, passable_state_to_type, set_passable_state ; do
 
     passable["I0"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = false, [BOTTOM] = false}
     passable["I1"] = {[RIGHT] = false, [LEFT] = false, [TOP] = true,  [BOTTOM] = true}
-
-    passable["E0"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = false, [BOTTOM] = false}
-    passable["E1"] = {[RIGHT] = false, [LEFT] = false, [TOP] = true,  [BOTTOM] = true}
 
     passable["T0"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = false, [BOTTOM] = true}
     passable["T1"] = {[RIGHT] = false, [LEFT] = true,  [TOP] = true,  [BOTTOM] = true}
@@ -99,13 +96,12 @@ local type_to_passable_state, passable_state_to_type, set_passable_state ; do
 end
 
 local prefab_names = {
-    ['U'] = "/pkg/vaststars.resources/pipe/pipe_U.prefab",
-    ['C'] = "/pkg/vaststars.resources/pipe/pipe_C.prefab",
-    ['I'] = "/pkg/vaststars.resources/pipe/pipe_I.prefab",
-    ['T'] = "/pkg/vaststars.resources/pipe/pipe_T.prefab",
-    ['X'] = "/pkg/vaststars.resources/pipe/pipe_X.prefab",
-    ['O'] = "/pkg/vaststars.resources/pipe/pipe_O.prefab",
-    ['E'] = "/pkg/vaststars.resources/pipe/pipe_E.prefab",
+    ['U'] = "/pkg/vaststars.resources/road/road_U.prefab",
+    ['C'] = "/pkg/vaststars.resources/road/road_C.prefab",
+    ['I'] = "/pkg/vaststars.resources/road/road_I.prefab",
+    ['T'] = "/pkg/vaststars.resources/road/road_T.prefab",
+    ['X'] = "/pkg/vaststars.resources/road/road_X.prefab",
+    ['O'] = "/pkg/vaststars.resources/road/road_O.prefab",
 }
 
 local function create_entity(type_t, x, y)
@@ -125,12 +121,12 @@ local function create_entity(type_t, x, y)
                 srt = {}
             },
             building = {
-                building_type = "pipe",
+                building_type = "road",
                 tile_coord = {x, y},
                 area = {1, 1},
             },
             reference = true,
-            pickup_show_set_pipe_arrow = true,
+            pickup_show_set_road_arrow = true,
         },
     })
 end
@@ -208,50 +204,34 @@ local get_dir ; do
     end
 end
 
-local check_neighbors ; do
-    local accel = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
-    function check_neighbors(pipe_types, sx, sy)
-        local dx, dy
-        for _, v in ipairs(accel) do
-            dx, dy = sx + v[1], sy + v[2]
-            if pipe_types[dx] and pipe_types[dx][dy] then
-                if pipe_types[dx][dy]:sub(1, 1) == 'E' then
-                    return false
-                end
-            end
-        end
-        return true
-    end
-end
-
-function pipe_sys:init_world()
+function road_sys:init_world()
     construct_arrows_entity = ecs.create_entity({
         policy = {
             "vaststars.gamerender|construct_arrows",
         },
         data = {
             construct_arrows = {},
-            construct_arrows_building_type = "pipe",
+            construct_arrows_building_type = "road",
             reference = true,
         }
     })
 
     ecs.create_entity({
         policy = {
-            "vaststars.gamerender|pipe_data",
+            "vaststars.gamerender|road_data",
         },
         data = {
-            pipe_types = {},
-            pipe_entities = {},
+            road_types = {},
+            road_entities = {},
         }
     })
 end
 
-function pipe_sys:after_pickup_mapping()
+function road_sys:after_pickup_mapping()
     local is_show_arrow
-    for _, _, game_object in pickup_show_set_pipe_arrow_mb:unpack() do
+    for _, _, game_object in pickup_show_set_road_arrow_mb:unpack() do
         local prefab = igame_object.get_prefab_object(game_object)
-        iconstruct_arrow.show(construct_arrows_entity, "pickup_set_pipe", math3d.tovalue(iom.get_position(prefab.root)))
+        iconstruct_arrow.show(construct_arrows_entity, "pickup_set_road", math3d.tovalue(iom.get_position(prefab.root)))
         is_show_arrow = true
     end
 
@@ -262,33 +242,34 @@ function pipe_sys:after_pickup_mapping()
         end
     end
 
-    for _, _, game_object in pickup_set_pipe_mb:unpack() do
-        w:sync("pickup_set_pipe:in", game_object)
-        ipipe.construct(game_object.pickup_set_pipe.tile_coord, game_object.pickup_set_pipe.arrow_tile_coord)
+    for _, _, game_object in pickup_set_road_mb:unpack() do
+        w:sync("pickup_set_road:in", game_object)
+        iroad.construct(game_object.pickup_set_road.tile_coord, game_object.pickup_set_road.arrow_tile_coord)
     end
 end
 
-function ipipe.construct(coord_s, coord_d)
-    local e = w:singleton("pipe_types", "pipe_types:in pipe_entities:in")
-    local pipe_entities = e.pipe_entities
-    local pipe_types = e.pipe_types
+-- road_type nil
+function iroad.construct(tile_coord_s, tile_coord_d)
+    local e = w:singleton("road_types", "road_types:in road_entities:in")
+    local road_types = e.road_types
+    local road_entities = e.road_entities
 
     local sx, sy
-    if coord_s then
-        sx = coord_s[1]
-        sy = coord_s[2]
+    if tile_coord_s then
+        sx = tile_coord_s[1]
+        sy = tile_coord_s[2]
     end
 
     local dx, dy
-    dx = coord_d[1]
-    dy = coord_d[2]
+    dx = tile_coord_d[1]
+    dy = tile_coord_d[2]
 
     -- construct for the first time
     if not sx and not sy then
-        pipe_types[dx] = pipe_types[dx] or {}
-        pipe_types[dx][dy] = "O0"
-        flush(pipe_types, pipe_entities, dx, dy)
-        w:sync("pipe_types:out pipe_entities:out", e)
+        road_types[dx] = road_types[dx] or {}
+        road_types[dx][dy] = "O0"
+        flush(road_types, road_entities, dx, dy)
+        w:sync("road_types:out road_entities:out", e)
         return
     end
 
@@ -304,15 +285,30 @@ function ipipe.construct(coord_s, coord_d)
         return
     end
 
-    func(pipe_types, sx, sy, dx, dy)
+    func(road_types, sx, sy, dx, dy)
+    flush(road_types, road_entities, sx, sy)
+    flush(road_types, road_entities, dx, dy)
+    w:sync("road_types:out road_entities:out", e)
+end
 
-    --
-    local pt1 = pipe_types[sx][sy]
-    if pt1:sub(1, 1) == 'I' and check_neighbors(pipe_types, sx, sy) then
-        pipe_types[sx][sy] = ('E%s'):format(pt1:sub(2, 2))
+function iroad.get_road_type(tile_coord)
+    local e = w:singleton("road_types", "road_types:in")
+    local road_types = e.road_types
+
+    if not road_types[tile_coord[1]] then
+        return
     end
 
-    flush(pipe_types, pipe_entities, sx, sy)
-    flush(pipe_types, pipe_entities, dx, dy)
-    w:sync("pipe_types:out pipe_entities:out", e)
+    return road_types[tile_coord[1]][tile_coord[2]]
+end
+
+function iroad.set_building_entry(tile_coord)
+    local e = w:singleton("road_types", "road_types:in road_entities:in")
+    local road_types = e.road_types
+    local road_entities = e.road_entities
+
+    -- todo hard coded -- TOP
+    set(road_types, tile_coord[1], tile_coord[2] - 1, TOP)
+    flush(road_types, road_entities, tile_coord[1], tile_coord[2] - 1)
+    w:sync("road_types:out road_entities:out", e)
 end
