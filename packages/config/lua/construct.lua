@@ -1,6 +1,6 @@
 local construct = {
     ["road"] = {
-        construct_prefab = "road/O_road.prefab",
+        construct_prefab = "road/road_O.prefab",
         construct_entity = {
             policy = {
                 "ant.general|name",
@@ -11,7 +11,7 @@ local construct = {
                 construct_entity = {
                     building_type = "road",
                     detect = "exclusive",
-                    prefab = "road/O_road.prefab",
+                    prefab = "road/road_O.prefab",
                     entity = {
                         policy = {
                             "ant.general|name",
@@ -21,7 +21,7 @@ local construct = {
                             name = "vaststars.road",
                             building = {
                                 building_type = "road",
-                                size = {1, 1},
+                                area = {1, 1},
                             },
                             pickup_show_set_road_arrow = true,
                         },
@@ -54,7 +54,7 @@ local construct = {
                             name = "vaststars.goods_station",
                             building = {
                                 building_type = "goods_station",
-                                size = {1, 1},
+                                area = {1, 1},
                             },
                             stop_ani_during_init = true,
                             set_road_entry_during_init = true,
@@ -89,7 +89,7 @@ local construct = {
                             name = "vaststars.logistics_center",
                             building = {
                                 building_type = "logistics_center",
-                                size = {3, 3},
+                                area = {3, 3},
                             },
                             stop_ani_during_init = true,
                             set_road_entry_during_init = true,
@@ -122,7 +122,7 @@ local construct = {
                             name = "vaststars.container",
                             building = {
                                 building_type = "container",
-                                size = {1, 1},
+                                area = {1, 1},
                             },
                             stop_ani_during_init = true,
                         },
@@ -155,7 +155,7 @@ local construct = {
                             name = "vaststars.rock",
                             building = {
                                 building_type = "rock",
-                                size = {1, 1},
+                                area = {1, 1},
                             },
                             stop_ani_during_init = true,
                         },
@@ -189,7 +189,7 @@ local construct = {
                             name = "vaststars.pipe",
                             building = {
                                 building_type = "pipe",
-                                size = {1, 1},
+                                area = {1, 1},
                             },
                             pickup_show_set_pipe_arrow = true,
                         },

@@ -1,12 +1,11 @@
 import "@ant.objcontroller"
 import "@ant.rmlui"
 import "@ant.sky"
-import "@vaststars.ui"
-import "@vaststars.utility"
 import "@ant.animation"
+import "@ant.terrain"
+import "@vaststars.utility"
 import "@vaststars.input"
-import "road/package.ecs"
-import "terrain/package.ecs"
+import "@vaststars.ui"
 
 pipeline "init"
     .stage "init"
@@ -46,6 +45,18 @@ component "pipe_entities" .type "lua" -- = {[x][y] = pipe_entity, ...}
 policy "pipe_data"
     .component "pipe_types"
     .component "pipe_entities"
+
+component "road_types" .type "lua" -- = {[x][y] = road_type, ...}
+component "road_entities" .type "lua" -- = {[x][y] = road_entity, ...}
+policy "road_data"
+    .component "road_types"
+    .component "road_entities"
+
+component "terrain"
+    .type "lua"
+
+policy "terrain"
+    .component "terrain"
 
 ------------------------
 system "init_system"
@@ -147,7 +158,7 @@ system "construct_system"
     .require_system "ant.animation|skinning_system"
     .require_system "ant.animation|mesh_skinning"
     .require_system "ant.asset|meshskin_system"
-    .method "init_world"
+    .require_system "ant.terrain|shape_terrain_system"
     .method "entity_init"
     .method "data_changed"
     .method "camera_usage"
@@ -156,3 +167,35 @@ system "construct_system"
 interface "iconstruct"
     .implement "construct_system.lua"
     .method "init"
+
+    system "road_system"
+    .require_system "route_system"
+    .implement "road_system.lua"
+    .method "init_world"
+    .method "after_pickup_mapping"
+
+interface "iroad"
+    .implement "road_system.lua"
+    .method "construct"
+    .method "get_road_type"
+    .method "set_building_entry"
+
+system "route_system"
+    .implement "route_system.lua"
+    .method "data_changed"
+
+component "building"
+    .type "lua"
+
+policy "building"
+    .component "building"
+
+interface "iterrain"
+    .implement "iterrain.lua"
+    .require_system "ant.terrain|terrain_road_system"
+    .method "create"
+    .method "get_coord_by_position"
+    .method "get_position_by_coord"
+    .method "get_tile_centre_position"
+    .method "get_tile_building_type"
+    .method "set_tile_building_type"

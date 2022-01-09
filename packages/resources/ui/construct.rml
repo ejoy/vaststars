@@ -157,6 +157,7 @@
                 <div class = "test-button" data-event-click="clickDebug(4)" style = "position: absolute; left: 15vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
                 <div class = "test-button" data-event-click="clickDebug(5)" style = "position: absolute; left: 20vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
                 <div class = "test-button" data-event-click="clickDebug(6)" style = "position: absolute; left: 25vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
+                <div class = "test-button" data-event-click="clickDebug(7)" style = "position: absolute; left: 30vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
             </div>            
 
             <!-- 建造确认按钮 -->
