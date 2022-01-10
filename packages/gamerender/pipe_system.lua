@@ -11,6 +11,7 @@ local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 
+local PIPE_ARROW_YAXIS_DEFAULT <const> = import_package "vaststars.constant".PIPE_ARROW_YAXIS_DEFAULT
 local pipe_sys = ecs.system "pipe_system"
 local ipipe = ecs.interface "ipipe"
 local pickup_show_set_pipe_arrow_mb = world:sub {"pickup_mapping", "pickup_show_set_pipe_arrow"}
@@ -251,7 +252,7 @@ function pipe_sys:after_pickup_mapping()
     local is_show_arrow
     for _, _, game_object in pickup_show_set_pipe_arrow_mb:unpack() do
         local prefab = igame_object.get_prefab_object(game_object)
-        iconstruct_arrow.show(construct_arrows_entity, "pickup_set_pipe", math3d.tovalue(iom.get_position(prefab.root)))
+        iconstruct_arrow.show(construct_arrows_entity, PIPE_ARROW_YAXIS_DEFAULT, "pickup_set_pipe", math3d.tovalue(iom.get_position(prefab.root)))
         is_show_arrow = true
     end
 

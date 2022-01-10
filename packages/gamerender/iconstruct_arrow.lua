@@ -4,13 +4,13 @@ local w = world.w
 
 local arrow_tile_coord_offset = {{0, -1}, {-1, 0}, {1, 0}, {0, 1}}
 local arrow_yaxis_rotation = {math.rad(180.0), math.rad(-90.0), math.rad(90.0), math.rad(0.0)}
-local ROAD_YAXIS_DEFAULT <const> = import_package "vaststars.constant".ROAD_YAXIS_DEFAULT
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 local math3d = require "math3d"
 local mc = import_package "ant.math".constant
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local ifs = ecs.import.interface "ant.scene|ifilter_state"
 
 local iconstruct_arrow = ecs.interface "iconstruct_arrow"
 
@@ -21,6 +21,18 @@ funcs["set_arrow_tile_coord"] = function(game_object, prefab, component_name, ar
     game_object[component_name].tile_coord = tile_coord
     w:sync(("%s:out"):format(component_name), game_object)
     iom.set_position(prefab.root, tile_position)
+end
+
+funcs["show"] = function(game_object, prefab)
+    for _, e in ipairs(prefab.tag['*']) do
+        ifs.set_state(e, "main_view", true)
+    end
+end
+
+funcs["hide"] = function(game_object, prefab)
+    for _, e in ipairs(prefab.tag['*']) do
+        ifs.set_state(e, "main_view", false)
+    end
 end
 
 local function on_prefab_message(game_object, prefab, cmd, ...)
@@ -47,7 +59,7 @@ function iconstruct_arrow.hide(e, idx)
     w:sync("construct_arrows:out", e)
 end
 
-function iconstruct_arrow.show(e, component_name, position)
+function iconstruct_arrow.show(e, yaxis, component_name, position)
     w:sync("construct_arrows:in construct_arrows_building_type:in", e)
     local tile_coord = iterrain.get_coord_by_position(position)
     local arrow_tile_coord
@@ -72,10 +84,10 @@ function iconstruct_arrow.show(e, component_name, position)
             goto continue
         end
 
-        tile_position[2] = ROAD_YAXIS_DEFAULT
+        tile_position[2] = yaxis
         local game_object = e.construct_arrows[idx]
         if not game_object then
-            local prefab = ecs.create_instance("/pkg/vaststars.resources/road/arrow.prefab")
+            local prefab = ecs.create_instance("/pkg/vaststars.resources/construct_arrow.prefab")
             iom.set_position(prefab.root, tile_position)
             iom.set_rotation(prefab.root, math3d.ref(math3d.quaternion{axis = mc.YAXIS, r = arrow_yaxis_rotation[idx]}))
 
