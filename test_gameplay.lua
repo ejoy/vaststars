@@ -98,9 +98,11 @@ function test.init(world)
         local pt = gameplay.query(e.prototype)
         for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
             local fluid = fluidboxes[classify..i.."_fluid"]
-            for _, pipe in ipairs(fluidbox.connections) do
-                local x, y = pipePostion(e, pipe.position, pt.area)
-                walk_pipe(fluid, x, y)
+            if fluid ~= 0 then
+                for _, pipe in ipairs(fluidbox.connections) do
+                    local x, y = pipePostion(e, pipe.position, pt.area)
+                    walk_pipe(fluid, x, y)
+                end
             end
         end
     end
