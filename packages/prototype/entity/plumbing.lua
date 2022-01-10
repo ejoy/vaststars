@@ -5,7 +5,7 @@ prototype "液罐1" {
     type ={"entity", "fluidbox"},
     area = "3x3",
     fluidbox = {
-        capacity = 20000,
+        capacity = 15000,
         height = 200,
         base_level = 0,
         connections = {

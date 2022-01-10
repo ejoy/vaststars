@@ -2,6 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local fs = require "filesystem"
 local serialize = import_package "ant.serialize"
 local cr = import_package "ant.compile_resource"
 local iinput = ecs.import.interface "vaststars.input|iinput"
@@ -14,7 +15,6 @@ local iroad = ecs.import.interface "vaststars.gamerender|iroad"
 local ipipe = ecs.import.interface "vaststars.gamerender|ipipe"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
-local iconstruct_arrow = ecs.import.interface "vaststars.gamerender|iconstruct_arrow"
 
 local math3d = require "math3d"
 local construct_cfg = import_package "vaststars.config".construct
@@ -26,6 +26,13 @@ local ui_construct_confirm_mb = world:sub {"ui", "construct", "click_construct_c
 local pickup_show_ui_mb = world:sub {"pickup_mapping", "pickup_show_ui"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_sys = ecs.system "construct_system"
+
+local base_path = fs.path('/pkg/vaststars.gamerender/construct_detect/')
+local construct_detectors = {}
+for f in fs.pairs(base_path) do
+    local detector = fs.relative(f, base_path):stem():string()
+    construct_detectors[detector] = ecs.require(('construct_detect.%s'):format(detector))
+end
 
 local function get_construct_entity(entity)
     w:sync("construct_entity:in", entity)
@@ -49,7 +56,7 @@ local function __update_basecolor_by_pos(game_object, prefab, position)
     local construct_entity = get_construct_entity(game_object)
 
     if construct_entity.detect then
-        local func = ecs.require(("construct_detect.%s"):format(construct_entity.detect)) -- todo cache
+        local func = construct_detectors[construct_entity.detect]
         if not func(construct_entity.building_type, position, construct_entity.entity.data.building.area) then
             basecolor_factor = CONSTRUCT_RED_BASIC_COLOR
         else
@@ -100,7 +107,7 @@ local on_prefab_message ; do
         local srt = prefab.root.scene.srt
 
         if construct_entity.detect then
-            local func = ecs.require(("construct_detect.%s"):format(construct_entity.detect)) -- todo cache
+            local func = construct_detectors[construct_entity.detect]
             if not func(construct_entity.building_type, position, construct_entity.entity.data.building.area) then
                 print("can not construct") -- todo error tips
                 return
