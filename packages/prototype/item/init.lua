@@ -1,0 +1,5 @@
+require "item.broken"
+require "item.buildings"
+require "item.fluid"
+require "item.intermediate"
+require "item.plumbing"
