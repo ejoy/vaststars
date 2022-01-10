@@ -25,7 +25,7 @@ local maintype = {
 	},
 	item = {
 		maxid = 0,
-		magic = 0x8000,
+		magic = 0x0800,
 	},
 	fluid = {
 		maxid = 0,
