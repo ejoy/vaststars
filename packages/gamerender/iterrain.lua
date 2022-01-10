@@ -2,7 +2,6 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local construct_cfg = import_package "vaststars.config".construct
 local iterrain = ecs.interface "iterrain"
 
 local function generate_terrain_fields(w, h)
@@ -23,14 +22,13 @@ function iterrain.create()
     local width, height = 256, 256
     local unit = 10
     local srt = {
-        t = {-(width * unit)//2 + unit//2, 0.0, -(height * unit)//2 + unit//2}, -- 地形偏移
+        t = {-(width * unit)//2 + unit//2, 0.0, -(height * unit)//2 + unit//2}, -- offset
     }
     local shape = {}
     shape[1] = srt.t
     shape[2] = {shape[1][1] + width * unit, shape[1][2], shape[1][3] + height * unit}
 
-    local terrain_fields = generate_terrain_fields(width, height)
-    local entity = ecs.create_entity{
+    ecs.create_entity {
         policy = {
             "ant.scene|scene_object",
             "ant.terrain|shape_terrain",
@@ -44,7 +42,7 @@ function iterrain.create()
                 srt = srt,
             },
             shape_terrain = {
-                terrain_fields = terrain_fields, -- tile 类型
+                terrain_fields = generate_terrain_fields(width, height), -- tile 类型
                 width = width, -- width 与 height 的 tile 个数
                 height = height,
                 section_size = math.max(1, width > 4 and width//4 or width//2),
@@ -67,12 +65,10 @@ function iterrain.create()
                     {1, shape[2][3] - shape[1][3]},
                 },
                 tile_terrain_types = {},  -- = {[x][y] = terrain_type, ...}
-                tile_building_types = {}, -- = {[x][y] = building_type, ...} 
+                tile_building_types = {}, -- = {[x][y] = building_type, ...}
             },
         }
     }
-
-    return entity
 end
 
 function iterrain.get_coord_by_position(position)
@@ -104,7 +100,7 @@ function iterrain.get_position_by_coord(tile_coord)
     for i = 1, #tile_bounds do
         if tile_coord[i] < tile_bounds[i][1] or tile_coord[i] > tile_bounds[i][2] then
             return
-        end 
+        end
     end
     return {((tile_coord[1] - 1) * unit + unit / 2) + srt.t[1], 0, ((tile_coord[2] - 1) * unit + unit / 2) + srt.t[3]}
 end
@@ -126,17 +122,15 @@ function iterrain.get_tile_building_type(tile_coord)
     return e.terrain.tile_building_types[x][y]
 end
 
-function iterrain.set_tile_building_type(tile_coord, building_type, size)
-    -- print("set_tile_building_type coord: ", tile_coord[1], tile_coord[2], "building_type: ", building_type, "size: ", size[1], size[2])
-    local width = size[1]
-    local height = size[2]
+function iterrain.set_tile_building_type(tile_coord, building_type, area)
+    local width = area[1]
+    local height = area[2]
 
     local e = w:singleton("terrain", "terrain:in shape_terrain:in")
     local terrain = e.terrain
 
     for x = tile_coord[1] - (width // 2), tile_coord[1] + (width // 2) do
         for y = tile_coord[2] - (height // 2), tile_coord[2] + (height // 2) do
-            -- print("set_tile_building_type: ", x, y, building_type)
             terrain.tile_building_types[x] = terrain.tile_building_types[x] or {}
             terrain.tile_building_types[x][y] = building_type
         end

@@ -52,6 +52,12 @@ policy "road_data"
     .component "road_types"
     .component "road_entities"
 
+component "terrain"
+    .type "lua"
+
+policy "terrain"
+    .component "terrain"
+
 ------------------------
 system "init_system"
     .require_interface "ant.objcontroller|iobj_motion"
@@ -153,7 +159,6 @@ system "construct_system"
     .require_system "ant.animation|mesh_skinning"
     .require_system "ant.asset|meshskin_system"
     .require_system "ant.terrain|shape_terrain_system"
-    .method "init_world"
     .method "entity_init"
     .method "data_changed"
     .method "camera_usage"
@@ -185,14 +190,9 @@ component "building"
 policy "building"
     .component "building"
 
-component "terrain"
-    .type "lua"
-
-policy "terrain"
-    .component "terrain"
-
 interface "iterrain"
     .implement "iterrain.lua"
+    .require_system "ant.terrain|terrain_road_system"
     .method "create"
     .method "get_coord_by_position"
     .method "get_position_by_coord"

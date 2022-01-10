@@ -124,7 +124,6 @@ local on_prefab_message ; do
             world:pub {"ui_message", "construct_show_confirm", false}
             prefab:remove()
         end
-        iterrain.set_tile_building_type(tile_coord, "road", {1, 1})
 
         --
         world:pub {"ui_message", "construct_show_confirm", false}
@@ -137,9 +136,6 @@ local on_prefab_message ; do
             func(game_object, prefab, ...)
         end
     end
-end
-
-function construct_sys:init_world()
 end
 
 function construct_sys:entity_init()
