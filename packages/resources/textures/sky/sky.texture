@@ -1,7 +1,7 @@
 colorspace: Linear
 format: RGBA16F
 normalmap: false
-path: /pkg/ant.resources.binary/textures/cubemap/sky.dds
+path: /pkg/vaststars.resources/textures/cubemap/sky.dds
 sampler:
   MAG: LINEAR
   MIN: LINEAR

@@ -9,15 +9,18 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: "/pkg/vaststars.resources/glb/pipe/pipe_fluid.glb|materials/材质.003.material"
+  material: /pkg/vaststars.resources/pipe/fluid.material
   mesh: /pkg/vaststars.resources/glb/pipe/pipe_fluid.glb|meshes/Plane_P1.meshbin
   name: Plane
   scene:
     srt:
       r: {0, 0.7071068286895752, 0, -0.7071068286895752}
       s: {10.67638111114502, 10.67638111114502, 10.67638111114502}
+  tag:
+    uvmotion_pipe_fluid
 mount: 1
 policy:
   ant.general|name
   ant.render|render
   ant.scene|scene_object
+  ant.general|tag

@@ -1,22 +1,18 @@
 ---
-data:
-  light:
-    color: {1, 1, 1, 1}
-    inner_radian: 0.7853981633974483
-    intensity: 120000
-    intensity_unit: lux
-    motion_type: dynamic
-    outter_radian: 0.7853981633974483
-    range: 1
-    type: directional
-  make_shadow: false
-  name: directional1
-  reference: true
-  scene:
-    srt:
-      r: {2.2689280275926285, 0, 0}
-      t: {0, 3, 0}
-  visible: true
 policy:
   ant.render|light
   ant.general|name
+data:
+  reference: true
+  scene:
+    srt:
+      r: {0.78, 0, 0}
+      t: {0, 10, 0, 1}
+  name: directional_light
+  visible: true
+  light:
+    color: {1, 1, 1, 1}
+    intensity: 120000
+    intensity_unit: lux
+    type: directional
+  make_shadow: true
