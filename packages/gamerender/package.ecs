@@ -52,6 +52,14 @@ policy "road_data"
     .component "road_types"
     .component "road_entities"
 
+component "route_max_id" .type "lua"
+component "route_endpoints" .type "lua" -- {[scene_id] = e, ...}
+component "routes" .type "lua" -- {[id] = {scene_id, scene_id}, ...}
+policy "route_data"
+    .component "route_max_id"
+    .component "route_endpoints"
+    .component "routes"
+
 component "terrain"
     .type "lua"
 
@@ -116,6 +124,7 @@ interface "iprefab_object"
     .method "create"
     .method "slot_attach"
     .method "slot_detach"
+    .method "has_tag"
 
 interface "iconstruct_arrow"
     .implement "iconstruct_arrow.lua"
@@ -127,6 +136,7 @@ system "pipe_system"
     .method "init_world"
     .method "after_pickup_mapping"
 
+--
 component "debug_component" .type "lua"
 component "inserter" -- 机器爪
 component "stop_ani_during_init" -- 开始时暂停动画显示
@@ -184,6 +194,9 @@ interface "iroad"
 
 system "route_system"
     .implement "route_system.lua"
+    .method "init_world"
+    .method "entity_init"
+    .method "entity_remove"
     .method "data_changed"
 
 component "building"

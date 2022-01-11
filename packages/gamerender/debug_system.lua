@@ -230,37 +230,9 @@ local test_ratio = 0
 local pipe_fluid_cache = {}
 funcs[5] = function()
     local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
+    local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
     local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-    local math3d = require "math3d"
-
-    test_ratio = test_ratio + 0.05
-    if test_ratio > 0.5 then
-        test_ratio = 0
-    end
-    for _, prefab in pairs(pipe_fluid_cache) do
-        prefab:remove()
-    end
-    pipe_fluid_cache = {}
-
-    for game_object in w:select "pickup_show_set_pipe_arrow:in" do
-        local prefab_object = igame_object.get_prefab_object(game_object)
-        w:sync("scene:in", prefab_object.root)
-
-        local mat = get_fluid_material_mat(game_object, test_ratio)
-        if mat then
-            local prefab = ecs.create_instance("/pkg/vaststars.resources/pipe/pipe_fluid.prefab") -- todo
-            prefab.on_message = function() end
-            pipe_fluid_cache[#pipe_fluid_cache+1] = world:create_object(prefab)
-
-            local srt = math3d.mul(iom.worldmat(prefab_object.root), mat)
-            iom.set_srt(prefab.root, math3d.srt(srt))
-        end
-    end
-end
-
-funcs[6] = function()
-    local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
-    local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+    local imaterial = ecs.import.interface "ant.asset|imaterial"
     local math3d = require "math3d"
 
     test_ratio = test_ratio + 0.05
@@ -268,7 +240,11 @@ funcs[6] = function()
         test_ratio = 0
     end
     for _, e in pairs(pipe_fluid_cache) do
-        w:remove(e)
+        if e.remove then
+            e:remove()
+        else
+            w:remove(e)
+        end
     end
     pipe_fluid_cache = {}
 
@@ -278,53 +254,21 @@ funcs[6] = function()
 
         local mat = get_fluid_material_mat(game_object, test_ratio)
         if mat then
-            local srt = math3d.mul(iom.worldmat(prefab_object.root), mat)
-            local s, r, t = math3d.srt(srt)
-
-            local e = ecs.create_entity {
-                policy = {
-                    "ant.render|render",
-                    "ant.general|name",
-                },
-                data = {
-                    name = "fluid_uv_motion",
-                    scene = { srt = { s = s, r = r, t = t} },
-                    filter_state = "main_view|selectable|cast_shadow",
-                    mesh = "/pkg/vaststars.resources/glb/pipe/pipe_fluid.glb|meshes/Plane_P1.meshbin",
-                    material = "/pkg/vaststars.resources/pipe/fluid.material",
-                    reference = true,
-    
-                    on_ready = function(e)
-                        local imaterial = ecs.import.interface "ant.asset|imaterial"
+            local prefab = ecs.create_instance("/pkg/vaststars.resources/pipe/pipe_fluid.prefab")
+            prefab.on_message = function() end
+            prefab.on_ready = function(prefab)
+                for _, e in ipairs(prefab.tag["*"]) do
+                    if iprefab_object.has_tag(e, "uvmotion_pipe_fluid") then
                         imaterial.set_property(e, "u_uvmotion", {0, 0.1, 1.0, 1.0})
-                    end,
-                }
-            }
-            pipe_fluid_cache[#pipe_fluid_cache+1] = e
+                    end
+                end
+            end
+            pipe_fluid_cache[#pipe_fluid_cache+1] = world:create_object(prefab)
+
+            local srt = math3d.mul(iom.worldmat(prefab_object.root), mat)
+            iom.set_srt(prefab.root, math3d.srt(srt))
         end
     end
-end
-
-funcs[7] = function()
-    local e = ecs.create_entity {
-        policy = {
-            "ant.render|render",
-			"ant.general|name",
-        },
-        data = {
-            name = "fluid_uv_motion",
-            scene = { srt = {} },
-            filter_state = "main_view|selectable|cast_shadow",
-            mesh = "/pkg/vaststars.resources/glb/pipe/pipe_fluid.glb|meshes/Plane_P1.meshbin",
-            material = "/pkg/vaststars.resources/pipe/fluid.material",
-            reference = true,
-
-            on_ready = function(e)
-                local imaterial = ecs.import.interface "ant.asset|imaterial"
-                imaterial.set_property(e, "u_uvmotion", {0, 0.1, 1.0, 1.0})
-            end,
-        }
-    }
 end
 
 --------------

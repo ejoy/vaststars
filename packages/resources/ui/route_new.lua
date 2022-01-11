@@ -1,17 +1,18 @@
 local ui_sys = require "ui_system"
 local start = window.createModel "start" {
     show_select_route = false,
-    stations = {},
-    choice_field = "", -- begin or end
-    route_building_ids = {},
-    selected_building_ids = {},
     error_tip = " ",
+    endpoint_names = {
+        [1] = "点击选择站点",
+        [2] = "点击选择站点",
+    },
+    route_endpoints = {},
 
-    starting_station_name = "点击选择站点",
-    ending_station_name = "点击选择站点",
+    select_index = "", -- begin or end
+    select_endpoint_ids = {},
 }
 
-local function __show_error_tip(err)
+local function show_error_tip(err)
     local error_tip_element_id = "id-div-error-tip"
     start.error_tip = err
     local element = document:getElementById(error_tip_element_id)
@@ -24,11 +25,11 @@ local function __show_error_tip(err)
 end
 
 function start.addRoute(event)
-    if #start.route_building_ids ~= 2 then
-        __show_error_tip(("还未选择车站"))
+    if #start.select_endpoint_ids ~= 2 then
+        show_error_tip(("还未选择车站"))
         return
     end
-    ui_sys.pub("ui", "route_new", "new_route", start.route_building_ids)
+    ui_sys.pub("ui", "route_new", "add_route", start.select_endpoint_ids)
     ui_sys.close("route_new.rml")
 end
 
@@ -36,50 +37,36 @@ function start.close(event)
     ui_sys.close("route_new.rml")
 end
 
-function start.clickSelectStation(event, choice_field)
+function start.clickselectEndpoint(event, select_index)
     start.show_select_route = true
-    start.choice_field = choice_field
+    start.select_index = select_index
 end
 
-function start.selectStation(event, building_id)
-    if not start.stations[building_id] then
-        __show_error_tip(("Can not found building_id(%s)"):format(building_id))
+function start.selectEndpoint(event, index)
+    index = index + 1
+    local endpoint = start.route_endpoints[index]
+    if not endpoint then
+        show_error_tip(("Can not found index(%s)"):format(index))
         return
     end
 
-    if start.selected_building_ids[building_id] then
-        __show_error_tip(("already choice (%s)"):format(start.stations[building_id].name))
-        return
+    for _, id in pairs(start.select_endpoint_ids) do
+        if id == endpoint.id then
+            show_error_tip(("already select id(%s)"):format(endpoint.id))
+            return
+        end
     end
 
-    if start.choice_field == "begin" then
-        start.starting_station_name = start.stations[building_id].name
-        start.selected_building_ids[building_id] = true
-        start.route_building_ids[1] = building_id
-    elseif start.choice_field == "end" then
-        start.ending_station_name = start.stations[building_id].name
-        start.selected_building_ids[building_id] = true
-        start.route_building_ids[2] = building_id
-    end
+    assert(start.select_index == 1 or start.select_index == 2)
+    start.endpoint_names[start.select_index] = endpoint.name
+    start("endpoint_names")
 
+    start.select_endpoint_ids[start.select_index] = endpoint.id
     start.show_select_route = false
-    start.choice_field = ""
+    start.select_index = 0
 end
 
 window.onload = function()
-    ui_sys.pub("ui", "GET_DATA", "stations")
+    ui_sys.pub("ui", "GET_DATA", "route_endpoints")
 end
-
-ui_sys.addEventListener({
-    ["SET_DATA"] = function(data)
-        for k, v in pairs(data) do
-            if k == "stations" then
-                local t = {}
-                for k1, v1 in pairs(v) do
-                    t[#t+1] = v1
-                end
-                start.stations = t
-            end
-        end
-    end,
-})
+ui_sys.addEventListener(start, {"route_endpoints"}, {})

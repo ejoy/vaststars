@@ -116,3 +116,17 @@ function iprefab_object.slot_detach(game_object, slot_name)
     game_object.prefab_slot_attach[slot_name] = nil
     w:sync("prefab_slot_attach:out", game_object)
 end
+
+function iprefab_object.has_tag(e, tag)
+    w:sync("tag?in", e)
+    if not e.tag then
+        return false
+    end
+
+    for _, t in ipairs(e.tag) do
+        if t == tag then
+            return true
+        end
+    end
+    return false
+end

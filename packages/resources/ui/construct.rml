@@ -134,7 +134,7 @@
             function start.clickDebug(event, i)
                 ui_sys.pub("debug", i)
             end
-            ui_sys.addEventListener({
+            ui_sys.addEventListener(start, {}, {
                 ["construct_show_confirm"] = function(show, position)
                     start.is_show_construct_confirm = show
 
@@ -156,8 +156,6 @@
                 <div class = "test-button" data-event-click="clickDebug(3)" style = "position: absolute; left: 10vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
                 <div class = "test-button" data-event-click="clickDebug(4)" style = "position: absolute; left: 15vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
                 <div class = "test-button" data-event-click="clickDebug(5)" style = "position: absolute; left: 20vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
-                <div class = "test-button" data-event-click="clickDebug(6)" style = "position: absolute; left: 25vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
-                <div class = "test-button" data-event-click="clickDebug(7)" style = "position: absolute; left: 30vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
             </div>            
 
             <!-- 建造确认按钮 -->

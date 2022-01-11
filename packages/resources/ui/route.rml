@@ -92,20 +92,10 @@
             function start.clickShowRoute(event, route_id)
             end
 
-            ui_sys.addEventListener({
-                -- todo
-                ["__set_data"] = function(stations, routes)
-                    start.routes = {}
-                    for id, v in ipairs(routes) do
-                        local r = {}
-                        r.id = id
-                        r.name_1 = stations[v[1]].name
-                        r.name_2 = stations[v[2]].name
-                        start.routes[#start.routes + 1] = r
-                        start("routes")
-                    end
-                end,
-            })
+            window.onload = function()
+                ui_sys.pub("ui", "GET_DATA", "routes")
+            end
+            ui_sys.addEventListener(start, {"routes"}, {})
         </script>
     </head>
     <body>

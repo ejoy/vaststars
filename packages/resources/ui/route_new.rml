@@ -78,8 +78,8 @@
                 <div style = "text-align:center; -webkit-text-stroke: 2px #cd7c3d;">选择站点</div>
 
                 <!-- station list -->
-                <table class="normal-table" data-for="stations">
-                    <tr data-event-click="selectStation(it.id)"><th style = "text-align:center;">{{it.name}}</th></tr>
+                <table class="normal-table" data-for="route_endpoints">
+                    <tr data-event-click="selectEndpoint(it_index)"><th style = "text-align:center;">{{it.name}}</th></tr>
                 </table>
             </div>
 
@@ -102,12 +102,12 @@
                 <div style = "background-color: rgba(0, 255, 0, 100); width: 100%;">加工路线</div>
                 <div style = "width: 100%">
                     <div style = "-webkit-text-stroke: 2px #cd7c3d;">起点:</div>
-                    <div style = "align-items:center; justify-content:center; background-color: rgb(237,125,49);" data-event-click="clickSelectStation('begin')">
-                        <span style = "-webkit-text-stroke: 2px #cd7c3d;">{{starting_station_name}}</span>
+                    <div style = "align-items:center; justify-content:center; background-color: rgb(237,125,49);" data-event-click="clickselectEndpoint(1)">
+                        <span style = "-webkit-text-stroke: 2px #cd7c3d;">{{endpoint_names[0]}}</span>
                     </div>
                     <div style = "-webkit-text-stroke: 2px #cd7c3d;">终点:</div>
-                    <div style = "align-items:center; justify-content:center; background-color: rgb(237,125,49);" data-event-click="clickSelectStation('end')">
-                        <span style = "-webkit-text-stroke: 2px #cd7c3d;">{{ending_station_name}}</span>
+                    <div style = "align-items:center; justify-content:center; background-color: rgb(237,125,49);" data-event-click="clickselectEndpoint(2)">
+                        <span style = "-webkit-text-stroke: 2px #cd7c3d;">{{endpoint_names[1]}}</span>
                     </div>
 
                     <button style="width:320px; height:60px; background-color: rgb(237,125,49);" data-event-click="addRoute()">
