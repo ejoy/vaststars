@@ -26,12 +26,14 @@ end
 funcs["show"] = function(game_object, prefab)
     for _, e in ipairs(prefab.tag['*']) do
         ifs.set_state(e, "main_view", true)
+        ifs.set_state(e, "selectable", true)
     end
 end
 
 funcs["hide"] = function(game_object, prefab)
     for _, e in ipairs(prefab.tag['*']) do
         ifs.set_state(e, "main_view", false)
+        ifs.set_state(e, "selectable", false)
     end
 end
 
@@ -46,14 +48,12 @@ function iconstruct_arrow.hide(e, idx)
     w:sync("construct_arrows:in", e)
     if not idx then
         for idx, game_object in pairs(e.construct_arrows) do
-            igame_object.get_prefab_object(game_object):remove()
-            e.construct_arrows[idx] = nil
+            igame_object.get_prefab_object(game_object):send("hide")
         end
     else
         local game_object = e.construct_arrows[idx]
         if game_object then
-            igame_object.get_prefab_object(game_object):remove()
-            e.construct_arrows[idx] = nil
+            igame_object.get_prefab_object(game_object):send("hide")
         end
     end
     w:sync("construct_arrows:out", e)
@@ -103,7 +103,9 @@ function iconstruct_arrow.show(e, yaxis, component_name, position)
 
             e.construct_arrows[idx] = game_object
         else
-            igame_object.get_prefab_object(game_object):send("set_arrow_tile_coord", component_name, arrow_tile_coord, tile_coord, tile_position)
+            local prefab_object = igame_object.get_prefab_object(game_object)
+            prefab_object:send("set_arrow_tile_coord", component_name, arrow_tile_coord, tile_coord, tile_position)
+            prefab_object:send("show")
         end
         ::continue::
     end
