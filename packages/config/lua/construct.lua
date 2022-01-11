@@ -10,7 +10,7 @@ local construct = {
                 name = "vaststars.road",
                 construct_entity = {
                     building_type = "road",
-                    detect = "exclusive",
+                    detector = "exclusive",
                     prefab = "road/road_O.prefab",
                     entity = {
                         policy = {
@@ -43,7 +43,7 @@ local construct = {
                 name = "vaststars.goods_station",
                 construct_entity = {
                     building_type = "road",
-                    detect = "roadside",
+                    detector = "roadside",
                     prefab = "goods_station.prefab",
                     entity = {
                         policy = {
@@ -75,10 +75,10 @@ local construct = {
                 "vaststars.gamerender|construct_entity",
             },
             data = {
-                name = "vaststars.logistics_center",
+                name = "",
                 construct_entity = {
                     building_type = "road",
-                    detect = "roadside",
+                    detector = "roadside",
                     prefab = "logistics_center.prefab",
                     entity = {
                         policy = {
@@ -86,13 +86,16 @@ local construct = {
                             "vaststars.gamerender|building",
                         },
                         data = {
-                            name = "vaststars.logistics_center",
+                            name = "",
                             building = {
                                 building_type = "logistics_center",
                                 area = {3, 3},
                             },
                             stop_ani_during_init = true,
                             set_road_entry_during_init = true,
+                            pickup_show_ui = {url = "route.rml"},
+                            route_endpoint = true,
+                            named = true,
                         },
                     },
                 },
@@ -178,7 +181,7 @@ local construct = {
                 name = "vaststars.pipe",
                 construct_entity = {
                     building_type = "pipe",
-                    detect = "exclusive",
+                    detector = "exclusive",
                     prefab = "pipe/pipe_O.prefab",
                     entity = {
                         policy = {

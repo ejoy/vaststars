@@ -24,8 +24,11 @@ local function __show_error_tip(err)
 end
 
 function start.addRoute(event)
-    ui_sys.postMessage("route.rml", "new_route", start.route_building_ids)
-    ui_sys.postMessage("road.rml", "__get_data")
+    if #start.route_building_ids ~= 2 then
+        __show_error_tip(("还未选择车站"))
+        return
+    end
+    ui_sys.pub("ui", "route_new", "new_route", start.route_building_ids)
     ui_sys.close("route_new.rml")
 end
 
@@ -63,8 +66,20 @@ function start.selectStation(event, building_id)
     start.choice_field = ""
 end
 
+window.onload = function()
+    ui_sys.pub("ui", "GET_DATA", "stations")
+end
+
 ui_sys.addEventListener({
-    ["__set_data"] = function(stations) -- todo
-        start.stations = stations
+    ["SET_DATA"] = function(data)
+        for k, v in pairs(data) do
+            if k == "stations" then
+                local t = {}
+                for k1, v1 in pairs(v) do
+                    t[#t+1] = v1
+                end
+                start.stations = t
+            end
+        end
     end,
 })

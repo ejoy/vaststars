@@ -29,12 +29,6 @@ local LEFT   <const> = 1 -- x - 1  < -- East
 local TOP    <const> = 2 -- y + 1  v -- South
 local BOTTOM <const> = 3 -- y - 1  ^ -- West
 
-local rotators <const> = {
-    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
-    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
-    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
-}
-
 local type_to_passable_state, passable_state_to_type, set_passable_state ; do
     -- 'true' means that the direction is passable
     local passable = {}
@@ -105,6 +99,12 @@ local prefab_names = {
     ['O'] = "/pkg/vaststars.resources/road/road_O.prefab",
 }
 
+local rotators <const> = {
+    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
+    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
+    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
+}
+
 local function create_entity(type_t, x, y)
     local tt = type_t:sub(1, 1)
     local rr = type_t:sub(2, 2)
@@ -118,28 +118,14 @@ local function create_entity(type_t, x, y)
             "vaststars.gamerender|building",
         },
         data = {
-            scene = {
-                srt = {}
-            },
             building = {
                 building_type = "road",
                 tile_coord = {x, y},
                 area = {1, 1},
             },
-            reference = true,
             pickup_show_set_road_arrow = true,
         },
     })
-end
-
-local function flush(types, entities, x, y)
-    entities[x] = entities[x] or {}
-
-    local game_object = entities[x][y]
-    if game_object then
-        igame_object.get_prefab_object(game_object):remove()
-    end
-    entities[x][y] = create_entity(types[x][y], x, y)
 end
 
 local function set(types, x, y, dir)
@@ -159,6 +145,16 @@ local function set(types, x, y, dir)
     end
 
     types[x][y] = type_t
+end
+
+local function flush(types, entities, x, y)
+    entities[x] = entities[x] or {}
+
+    local game_object = entities[x][y]
+    if game_object then
+        igame_object.get_prefab_object(game_object):remove()
+    end
+    entities[x][y] = create_entity(types[x][y], x, y)
 end
 
 local funcs = {}

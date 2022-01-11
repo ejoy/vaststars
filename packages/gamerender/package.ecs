@@ -136,6 +136,8 @@ component "pickup_set_road" .type "lua" -- 点击建路 {tile_coord, arrow_tile_
 component "pickup_show_ui" .type "lua" -- 点击显示 ui {url}
 component "pickup_show_set_pipe_arrow" .type "lua" -- 点击显示建水管箭头
 component "pickup_set_pipe" .type "lua" -- 点击建水管 {tile_coord, arrow_tile_coord}
+component "route_endpoint" -- 路线终端(用于路线的起点或终点)
+component "named" -- 需要命名
 
 component "construct_arrows" .type "lua" -- 缓存箭头,
 component "construct_arrows_building_type" .type "lua" -- 点击箭头时的建筑类型

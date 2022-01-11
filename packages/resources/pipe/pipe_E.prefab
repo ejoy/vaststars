@@ -9,36 +9,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/pipe/pipe_E.glb|materials/road.jia.material
-  mesh: /pkg/vaststars.resources/glb/pipe/pipe_E.glb|meshes/zhuti.027_P1.meshbin
-  name: zhuti.I
-  scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071068286895752}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
-  ant.scene|scene_object
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: "/pkg/vaststars.resources/glb/pipe/pipe_E.glb|materials/材质.005.material"
-  mesh: /pkg/vaststars.resources/glb/pipe/pipe_E.glb|meshes/zhuti.027_P2.meshbin
-  name: zhuti.I
-  scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071068286895752}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
-  ant.scene|scene_object
----
-data:
-  filter_state: main_view|selectable|cast_shadow
   material: "/pkg/vaststars.resources/glb/pipe/pipe_E.glb|materials/材质.004.material"
-  mesh: /pkg/vaststars.resources/glb/pipe/pipe_E.glb|meshes/zhuti.027_P3.meshbin
+  mesh: /pkg/vaststars.resources/glb/pipe/pipe_E.glb|meshes/zhuti.027_P1.meshbin
   name: zhuti.I
   scene:
     srt:

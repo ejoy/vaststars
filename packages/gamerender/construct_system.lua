@@ -18,6 +18,7 @@ local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object
 
 local math3d = require "math3d"
 local construct_cfg = import_package "vaststars.config".construct
+local backers_cfg = import_package "vaststars.config".backers
 local CONSTRUCT_RED_BASIC_COLOR <const> = {100.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 100.0, 0.0, 0.8}
 
@@ -27,11 +28,11 @@ local pickup_show_ui_mb = world:sub {"pickup_mapping", "pickup_show_ui"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_sys = ecs.system "construct_system"
 
-local base_path = fs.path('/pkg/vaststars.gamerender/construct_detect/')
+local base_path = fs.path('/pkg/vaststars.gamerender/construct_detector/')
 local construct_detectors = {}
 for f in fs.pairs(base_path) do
     local detector = fs.relative(f, base_path):stem():string()
-    construct_detectors[detector] = ecs.require(('construct_detect.%s'):format(detector))
+    construct_detectors[detector] = ecs.require(('construct_detector.%s'):format(detector))
 end
 
 local function get_construct_entity(entity)
@@ -55,8 +56,8 @@ local function __update_basecolor_by_pos(game_object, prefab, position)
     local basecolor_factor
     local construct_entity = get_construct_entity(game_object)
 
-    if construct_entity.detect then
-        local func = construct_detectors[construct_entity.detect]
+    if construct_entity.detector then
+        local func = construct_detectors[construct_entity.detector]
         if not func(construct_entity.building_type, position, construct_entity.entity.data.building.area) then
             basecolor_factor = CONSTRUCT_RED_BASIC_COLOR
         else
@@ -106,8 +107,8 @@ local on_prefab_message ; do
         local position = math3d.tovalue(iom.get_position(prefab.root))
         local srt = prefab.root.scene.srt
 
-        if construct_entity.detect then
-            local func = construct_detectors[construct_entity.detect]
+        if construct_entity.detector then
+            local func = construct_detectors[construct_entity.detector]
             if not func(construct_entity.building_type, position, construct_entity.entity.data.building.area) then
                 print("can not construct") -- todo error tips
                 return
@@ -121,18 +122,14 @@ local on_prefab_message ; do
         elseif construct_entity.entity.data.building.building_type == "pipe" then
             ipipe.construct(nil, tile_coord)
         else
-            local new_prefab = ecs.create_instance("/pkg/vaststars.resources/" .. construct_entity.prefab)
+            local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(construct_entity.prefab))
             iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
             local template = deep_copy(construct_entity.entity) -- todo deep copy?
             template.data.building.tile_coord = iterrain.get_coord_by_position(position)
             iprefab_object.create(new_prefab, template)
-
-            -- remove construct entity
-            world:pub {"ui_message", "construct_show_confirm", false}
-            prefab:remove()
         end
 
-        --
+        -- remove construct entity
         world:pub {"ui_message", "construct_show_confirm", false}
         prefab:remove()
     end
@@ -146,10 +143,12 @@ local on_prefab_message ; do
 end
 
 function construct_sys:entity_init()
+    --
 	for e in w:select "INIT building:in" do
         iterrain.set_tile_building_type(e.building.tile_coord, e.building.building_type, e.building.area)
     end
 
+    --
     for e in w:select "INIT set_road_entry_during_init:in building:in" do
         local tile_coord = e.building.tile_coord
         local coord = {
@@ -159,6 +158,11 @@ function construct_sys:entity_init()
         iroad.set_building_entry(coord)
     end
     w:clear "set_road_entry_during_init"
+
+    --
+    for e in w:select "INIT named:in name:out" do
+        e.name = backers_cfg[math.random(1, #backers_cfg)]
+    end
 end
 
 function construct_sys:camera_usage()
@@ -212,9 +216,7 @@ function construct_sys:after_pickup_mapping()
     for _, _, entity in pickup_show_ui_mb:unpack() do
         w:sync("pickup_show_ui:in", entity)
         url = entity.pickup_show_ui.url
-        if url and url ~= "" then
-            iui.open(url)
-        end
+        iui.open(url)
     end
 end
 

@@ -29,13 +29,7 @@ local LEFT   <const> = 1 -- x - 1  < -- East
 local TOP    <const> = 2 -- y + 1  v -- South
 local BOTTOM <const> = 3 -- y - 1  ^ -- West
 
-local rotators <const> = {
-    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
-    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
-    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
-}
-
-local type_to_passable_state, passable_state_to_type, set_passable_state ; do
+local type_to_passable_state, passable_state_to_type, set_passable_state, get_passable_state ; do
     -- 'true' means that the direction is passable
     local passable = {}
     passable["U0"] = {[RIGHT] = false, [LEFT] = true,  [TOP] = false, [BOTTOM] = false}
@@ -81,7 +75,8 @@ local type_to_passable_state, passable_state_to_type, set_passable_state ; do
 
     local accel_reversed = {}
     for k, v in pairs(accel) do
-        if not accel_reversed[v] then
+        if k:sub(1, 1) ~= 'E' then
+            assert(accel_reversed[v] == nil)
             accel_reversed[v] = k
         end
     end
@@ -97,6 +92,10 @@ local type_to_passable_state, passable_state_to_type, set_passable_state ; do
     function set_passable_state(passable_state, dir)
         return (passable_state | (1 << dir))
     end
+
+    function get_passable_state(passable_state, dir)
+        return (passable_state >> dir) & 1
+    end
 end
 
 local prefab_names = {
@@ -107,6 +106,12 @@ local prefab_names = {
     ['X'] = "/pkg/vaststars.resources/pipe/pipe_X.prefab",
     ['O'] = "/pkg/vaststars.resources/pipe/pipe_O.prefab",
     ['E'] = "/pkg/vaststars.resources/pipe/pipe_E.prefab",
+}
+
+local rotators <const> = {
+    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
+    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
+    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
 }
 
 local function create_entity(type_t, x, y)
@@ -122,28 +127,14 @@ local function create_entity(type_t, x, y)
             "vaststars.gamerender|building",
         },
         data = {
-            scene = {
-                srt = {}
-            },
             building = {
                 building_type = "pipe",
                 tile_coord = {x, y},
                 area = {1, 1},
             },
-            reference = true,
             pickup_show_set_pipe_arrow = true,
         },
     })
-end
-
-local function flush(types, entities, x, y)
-    entities[x] = entities[x] or {}
-
-    local game_object = entities[x][y]
-    if game_object then
-        igame_object.get_prefab_object(game_object):remove()
-    end
-    entities[x][y] = create_entity(types[x][y], x, y)
 end
 
 local function set(types, x, y, dir)
@@ -163,6 +154,16 @@ local function set(types, x, y, dir)
     end
 
     types[x][y] = type_t
+end
+
+local function flush(types, entities, x, y)
+    entities[x] = entities[x] or {}
+
+    local game_object = entities[x][y]
+    if game_object then
+        igame_object.get_prefab_object(game_object):remove()
+    end
+    entities[x][y] = create_entity(types[x][y], x, y)
 end
 
 local funcs = {}
@@ -216,7 +217,9 @@ local check_neighbors ; do
         for _, v in ipairs(accel) do
             dx, dy = sx + v[1], sy + v[2]
             if pipe_types[dx] and pipe_types[dx][dy] then
-                if pipe_types[dx][dy]:sub(1, 1) == 'E' then
+                local passable_state = type_to_passable_state(pipe_types[dx][dy])
+                local dir = get_dir(sx, sy, dx, dy)
+                if get_passable_state(passable_state, dir) == 1 and pipe_types[dx][dy]:sub(1, 1) == 'E' then
                     return false
                 end
             end
@@ -308,9 +311,9 @@ function ipipe.construct(coord_s, coord_d)
     func(pipe_types, sx, sy, dx, dy)
 
     --
-    local pt1 = pipe_types[sx][sy]
-    if pt1:sub(1, 1) == 'I' and check_neighbors(pipe_types, sx, sy) then
-        pipe_types[sx][sy] = ('E%s'):format(pt1:sub(2, 2))
+    local pt = pipe_types[sx][sy]
+    if pt:sub(1, 1) == 'I' and check_neighbors(pipe_types, sx, sy) then
+        pipe_types[sx][sy] = ('E%s'):format(pt:sub(2, 2))
     end
 
     flush(pipe_types, pipe_entities, sx, sy)
