@@ -16,5 +16,5 @@ properties:
     texture: /pkg/vaststars.resources/shape_normal.texture
   u_pbr_factor:       {0, 0.7, 0, 0}  #metallic, roughness, alpha_cutoff, occlusion strength
   u_emissive_factor:  {0, 0, 0, 0}
-  u_basecolor_factor: {1, 1, 1, 1}
+  u_basecolor_factor: {0.5, 0.5, 0.5, 1}
 state: /pkg/ant.resources/materials/states/default.state
