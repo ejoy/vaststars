@@ -4,8 +4,17 @@ return {
         "ant.objcontroller",
         "ant.rmlui",
         "ant.sky",
-        "vaststars.ui",
         "ant.math",
+        "ant.terrain",
+        "ant.animation",
+        "ant.serialize",
+        "ant.compile_resource",
+        "ant.asset",
+        "vaststars.ui",
         "vaststars.utility",
+        "vaststars.input",
+        "vaststars.constant",
+        "vaststars.gameplay",
+        "vaststars.config",
     }
 }

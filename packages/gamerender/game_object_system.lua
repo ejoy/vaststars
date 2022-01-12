@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local object_remove_mb  = world:sub {"object_remove"}
+local game_object_remove_mb = world:sub {"game_object_system", "remove"}
 local game_object_sys = ecs.system "game_object_system"
 local igame_object = ecs.interface "igame_object"
 
@@ -11,6 +12,12 @@ local game_object_prefab = {}
 
 local function is_valid_reference(reference)
     return reference[1] ~= nil
+end
+
+function game_object_sys:entity_ready()
+    for _, _, game_object in game_object_remove_mb:unpack() do
+        igame_object.get_prefab_object(game_object):remove()
+    end
 end
 
 function game_object_sys:entity_remove()
@@ -61,4 +68,8 @@ end
 function igame_object.get_game_object(prefab)
     w:sync("scene:in", prefab.root)
     return prefab_game_object[prefab.root.scene.id]
+end
+
+function igame_object.remove_prefab(game_object)
+    world:pub{"game_object_system", "remove", game_object}
 end

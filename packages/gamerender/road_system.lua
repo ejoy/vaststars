@@ -152,7 +152,7 @@ local function flush(types, entities, x, y)
 
     local game_object = entities[x][y]
     if game_object then
-        igame_object.get_prefab_object(game_object):remove()
+        igame_object.remove_prefab(game_object)
     end
     entities[x][y] = create_entity(types[x][y], x, y)
 end
@@ -245,8 +245,13 @@ function road_sys:after_pickup_mapping()
     end
 end
 
--- road_type nil
 function iroad.construct(tile_coord_s, tile_coord_d)
+    -- if tile_coord_s then
+    --     print(("{%s}"):format(table.concat(tile_coord_s, ",")), ("{%s}"):format(table.concat(tile_coord_d, ",")))
+    -- else
+    --     print(("{}"), ("{%s}"):format(table.concat(tile_coord_d, ",")))
+    -- end
+
     local e = w:singleton("road_types", "road_types:in road_entities:in")
     local road_types = e.road_types
     local road_entities = e.road_entities

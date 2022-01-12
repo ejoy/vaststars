@@ -149,14 +149,98 @@ end
 
 ------
 funcs[3] = function ()
+    local iroad = ecs.import.interface "vaststars.gamerender|iroad"
+    local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
     local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
-    local prefab_file_name = "/pkg/vaststars.resources/road/C_road.prefab"
-    local prefab = ecs.create_instance(prefab_file_name)
-    prefab.on_message = function()
+
+    local t = {
+        {{}       , {123,129}},
+        {{123,129}, {123,128}},
+        {{123,128}, {124,128}},
+        {{124,128}, {125,128}},
+        {{125,128}, {125,129}},
+        {{125,128}, {125,127}},
+        {{125,128}, {126,128}},
+        {{126,128}, {127,128}},
+        {{127,128}, {128,128}},
+        {{128,128}, {129,128}},
+        {{129,128}, {130,128}},
+        {{130,128}, {131,128}},
+        {{131,128}, {132,128}},
+        {{132,128}, {132,129}},
+        {{132,128}, {133,128}},
+        {{132,128}, {132,127}},
+        {{132,129}, {132,130}},
+        {{132,130}, {131,130}},
+    }
+
+    for _, v in ipairs(t) do
+        if #v[1] > 0 then
+            iroad.construct(v[1], v[2])
+        else
+            iroad.construct(nil,  v[2])
+        end
     end
-    iprefab_object.create(prefab, {
-        data = {debug_component = 1},
-    })
+
+    -- add logistics_center
+    local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format("logistics_center.prefab"))
+    local srt = {
+        s = {1.0,1.0,1.0,0.0},
+        r = {0.0,0.0,0.0,1.0},
+        t = {-50.0,0.0,30.0,1.0},
+    }
+    iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
+    local template = {
+        policy = {
+            "ant.general|name",
+            "vaststars.gamerender|building",
+        },
+        data = {
+            name = "",
+            building = {
+                building_type = "logistics_center",
+                area = {3, 3},
+            },
+            stop_ani_during_init = true,
+            set_road_entry_during_init = true,
+            pickup_show_ui = {url = "route.rml"},
+            route_endpoint = true,
+            named = true,
+        },
+    }
+    template.data.building.tile_coord = {0x7b,0x83}
+    iprefab_object.create(new_prefab, template)
+
+    -- add logistics_center
+    local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format("logistics_center.prefab"))
+    local srt = {
+        s = {1.0,1.0,1.0,0.0},
+        r = {0.0,0.0,0.0,1.0},
+        t = {30.0,0.0,40.0,1.0},
+    }
+    iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
+    local template = {
+        policy = {
+            "ant.general|name",
+            "vaststars.gamerender|building",
+        },
+        data = {
+            name = "",
+            building = {
+                building_type = "logistics_center",
+                area = {3, 3},
+            },
+            stop_ani_during_init = true,
+            set_road_entry_during_init = true,
+            pickup_show_ui = {url = "route.rml"},
+            route_endpoint = true,
+            named = true,
+        },
+    }
+    template.data.building.tile_coord = {0x83,0x84}
+    iprefab_object.create(new_prefab, template)
+
+    --
 end
 
 -- test track
@@ -212,10 +296,8 @@ do
         local _, now = ltask.now()
         if ratio <= 1 and now - last_time > 1 then
             local duration = 10.0
-            local result = get_track_joint(translations, rotations, duration, ratio) -- build track
-            for k, v in ipairs(result) do
-                iom.set_srt(prefab.root, math3d.srt(v))
-            end
+            local mat = get_track_joint(translations, rotations, duration, ratio)
+            iom.set_srt(prefab.root, math3d.srt(mat))
 
             times = times + 1
             ratio = ratio + 0.01

@@ -19,8 +19,8 @@ local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object
 local math3d = require "math3d"
 local construct_cfg = import_package "vaststars.config".construct
 local backers_cfg = import_package "vaststars.config".backers
-local CONSTRUCT_RED_BASIC_COLOR <const> = {100.0, 0.0, 0.0, 0.8}
-local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 100.0, 0.0, 0.8}
+local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
+local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
 
 local ui_construct_building_mb = world:sub {"ui", "construct", "click_construct"}
 local ui_construct_confirm_mb = world:sub {"ui", "construct", "click_construct_confirm"}
@@ -125,7 +125,7 @@ local on_prefab_message ; do
             local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(construct_entity.prefab))
             iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
             local template = deep_copy(construct_entity.entity) -- todo deep copy?
-            template.data.building.tile_coord = iterrain.get_coord_by_position(position)
+            template.data.building.tile_coord = tile_coord
             iprefab_object.create(new_prefab, template)
         end
 
