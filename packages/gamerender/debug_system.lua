@@ -41,12 +41,13 @@ local get_fluid_material_mat; do
     local animation = require "hierarchy".animation
     local new_vector_float3 = animation.new_vector_float3
     local new_vector_quaternion = animation.new_vector_quaternion
+    local math3d = require "math3d"
 
     local cache = {}
     function get_fluid_material_mat(game_object, ratio)
-        -- if cache[ratio] then
-        --     return cache[ratio]
-        -- end
+        if cache[ratio] then
+            return cache[ratio]
+        end
 
         w:sync("prefab_slot_cache:in", game_object)
         local slot_cache = game_object.prefab_slot_cache
@@ -63,8 +64,8 @@ local get_fluid_material_mat; do
         end
 
         local mat = get_track_joint(translations, rotations, 10.0, ratio)
-        cache[ratio] = mat
-        return mat
+        cache[ratio] = math3d.tovalue(mat)
+        return cache[ratio]
     end
 end
 
@@ -309,30 +310,6 @@ do
 end
 
 funcs[5] = function()
-    local road_pipe_type_convert = {
-        ['U0'] = {"U型", "E"},
-        ['U1'] = {"U型", "S"},
-        ['U2'] = {"U型", "W"},
-        ['U3'] = {"U型", "N"},
-
-        ['C0'] = {"L型", "E"},
-        ['C1'] = {"L型", "S"},
-        ['C2'] = {"L型", "W"},
-        ['C3'] = {"L型", "N"},
-
-        ['I0'] = {"I型", "E"},
-        ['I1'] = {"I型", "N"},
-
-        ['T0'] = {"T型", "N"},
-        ['T1'] = {"T型", "E"},
-        ['T2'] = {"T型", "S"},
-        ['T3'] = {"T型", "W"},
-
-        ['X0'] = {"X型", "E"},
-
-        ['O0'] = {"O型", "E"},
-    }
-
     local convert = {
         ["road"] = function(game_object)
             local e = w:singleton("road_types", "road_types:in")
@@ -340,12 +317,11 @@ funcs[5] = function()
             local x = game_object.building.tile_coord[1]
             local y = game_object.building.tile_coord[2]
             local rt = road_types[x][y]
-            local entity, dir = table.unpack(road_pipe_type_convert[rt])
             return {
-                entity = "路1-" .. entity,
+                entity = "路1-" .. rt:sub(1,1) .. "型",
                 x = x,
                 y = y,
-                dir = dir,
+                dir = game_object.dir,
             }
         end,
         ["goods_station"] = function(game_object)
@@ -386,18 +362,17 @@ funcs[5] = function()
             local x = game_object.building.tile_coord[1]
             local y = game_object.building.tile_coord[2]
             local pt = pipe_types[x][y]
-            local entity, dir = table.unpack(road_pipe_type_convert[pt])
             return {
-                entity = "管道1-" .. entity,
+                entity = "管道1-" .. pt:sub(1,1) .. "型",
                 x = x,
                 y = y,
-                dir = dir,
+                dir = game_object.dir,
             }
         end,
     }
 
     local t = {}
-    for game_object in w:select "building:in " do
+    for game_object in w:select "building:in dir:in" do
         t[#t+1] = convert[game_object.building.building_type](game_object)
     end
 

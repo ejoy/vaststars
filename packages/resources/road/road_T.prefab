@@ -20,8 +20,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/T_road.glb|materials/Road.line.material
-  mesh: "/pkg/vaststars.resources/glb/road/T_road.glb|meshes/平面.017_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_T.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_T.glb|meshes/平面.017_P1.meshbin"
   name: "平面.011"
   scene:
     srt:
@@ -35,8 +35,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/T_road.glb|materials/Road.line.material
-  mesh: "/pkg/vaststars.resources/glb/road/T_road.glb|meshes/柱体.007_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_T.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_T.glb|meshes/柱体.007_P1.meshbin"
   name: "柱体.004"
   scene:
     srt:
@@ -50,8 +50,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/T_road.glb|materials/Road.line.material
-  mesh: "/pkg/vaststars.resources/glb/road/T_road.glb|meshes/平面.015_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_T.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_T.glb|meshes/平面.015_P1.meshbin"
   name: "平面.009"
   scene:
     srt:
@@ -65,8 +65,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/T_road.glb|materials/road.jia.material
-  mesh: "/pkg/vaststars.resources/glb/road/T_road.glb|meshes/立方体.034_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_T.glb|materials/road.jia.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_T.glb|meshes/立方体.034_P1.meshbin"
   name: "立方体.015"
   scene:
     srt:
@@ -79,8 +79,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/T_road.glb|materials/road.shiti.material
-  mesh: "/pkg/vaststars.resources/glb/road/T_road.glb|meshes/立方体.036_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_T.glb|materials/road.shiti.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_T.glb|meshes/立方体.036_P1.meshbin"
   name: "立方体.016"
   scene:
     srt:
@@ -94,8 +94,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/T_road.glb|materials/Road.bian.material
-  mesh: "/pkg/vaststars.resources/glb/road/T_road.glb|meshes/立方体.037_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_T.glb|materials/Road.bian.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_T.glb|meshes/立方体.037_P1.meshbin"
   name: "立方体.017"
   scene:
     srt:
@@ -109,8 +109,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/T_road.glb|materials/Road.bian.material
-  mesh: "/pkg/vaststars.resources/glb/road/T_road.glb|meshes/立方体.033_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_T.glb|materials/Road.bian.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_T.glb|meshes/立方体.033_P1.meshbin"
   name: "立方体.014"
   scene:
     srt:
@@ -124,8 +124,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/T_road.glb|materials/Road.material
-  mesh: "/pkg/vaststars.resources/glb/road/T_road.glb|meshes/立方体.035_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_T.glb|materials/Road.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_T.glb|meshes/立方体.035_P1.meshbin"
   name: TZI
   scene:
     srt:

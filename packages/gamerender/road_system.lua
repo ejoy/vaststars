@@ -20,98 +20,92 @@ local pickup_mb = world:sub {"pickup"}
 local construct_arrows_entity
 
 --[[
-           2:(y + 1)
-1:(x - 1)             0:(x + 1)
-           3:(y - 1)
+                        North:(y + 1):(0, 1)
+West:(x - 1):(-1, 0)                             East:(x + 1):(1, 0)
+                        South:(y - 1):(0, -1)
 --]]
-local RIGHT  <const> = 0 -- x + 1  > -- North
-local LEFT   <const> = 1 -- x - 1  < -- East
-local TOP    <const> = 2 -- y + 1  v -- South
-local BOTTOM <const> = 3 -- y - 1  ^ -- West
+local North <const> = 0
+local East  <const> = 1
+local South <const> = 2
+local West  <const> = 3
 
-local type_to_passable_state, passable_state_to_type, set_passable_state ; do
+local DIRECTION <const> = {
+    N = 0,
+    E = 1,
+    S = 2,
+    W = 3,
+}
+
+local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ; do
     -- 'true' means that the direction is passable
-    local passable = {}
-    passable["U0"] = {[RIGHT] = false, [LEFT] = true,  [TOP] = false, [BOTTOM] = false}
-    passable["U1"] = {[RIGHT] = false, [LEFT] = false, [TOP] = true,  [BOTTOM] = false}
-    passable["U2"] = {[RIGHT] = true,  [LEFT] = false, [TOP] = false, [BOTTOM] = false}
-    passable["U3"] = {[RIGHT] = false, [LEFT] = false, [TOP] = false, [BOTTOM] = true}
+    local passable = {
+        ['U'] = {[North] = true,  [East] = false, [South] = false, [West] = false, },
+        ['L'] = {[North] = true,  [East] = true,  [South] = false, [West] = false, },
+        ['I'] = {[North] = true,  [East] = false, [South] = true , [West] = false, },
+        ['T'] = {[North] = false, [East] = true,  [South] = true , [West] = true,  },
+        ['X'] = {[North] = true,  [East] = true,  [South] = true , [West] = true,  },
+        ['O'] = {[North] = false, [East] = false, [South] = false, [West] = false, },
+    }
 
-    passable["C0"] = {[RIGHT] = true,  [LEFT] = false, [TOP] = false, [BOTTOM] = true}
-    passable["C1"] = {[RIGHT] = false, [LEFT] = true,  [TOP] = false, [BOTTOM] = true}
-    passable["C2"] = {[RIGHT] = false, [LEFT] = true,  [TOP] = true,  [BOTTOM] = false}
-    passable["C3"] = {[RIGHT] = true,  [LEFT] = false, [TOP] = true,  [BOTTOM] = false}
-
-    passable["I0"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = false, [BOTTOM] = false}
-    passable["I1"] = {[RIGHT] = false, [LEFT] = false, [TOP] = true,  [BOTTOM] = true}
-
-    passable["T0"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = false, [BOTTOM] = true}
-    passable["T1"] = {[RIGHT] = false, [LEFT] = true,  [TOP] = true,  [BOTTOM] = true}
-    passable["T2"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = true,  [BOTTOM] = false}
-    passable["T3"] = {[RIGHT] = true,  [LEFT] = false, [TOP] = true,  [BOTTOM] = true}
-
-    passable["X0"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = true,  [BOTTOM] = true}
-
-    passable["O0"] = {[RIGHT] = false, [LEFT] = false, [TOP] = false, [BOTTOM] = false}
+    local directions = {
+        ['U'] = {'N', 'E', 'S', 'W'},
+        ['L'] = {'N', 'E', 'S', 'W'},
+        ['I'] = {'N', 'E'},
+        ['T'] = {'N', 'E', 'S', 'W'},
+        ['X'] = {'N'},
+        ['O'] = {'N'},
+    }
 
     --
     local accel = {}
-    for t, v in pairs(passable) do
-        local r = 0
-        for i = BOTTOM, RIGHT, -1 do
-            r = r << 1
-            if v[i] then
-                r = r | 1
-            else
-                r = r | 0
+    for type_t, v in pairs(passable) do
+        for _, dir in ipairs(directions[type_t]) do
+            local state = 0
+            for b = West, North, -1 do
+                state = state << 1
+                if v[(b - DIRECTION[dir]) % 4] then
+                    state = state | 1
+                else
+                    state = state | 0
+                end
             end
+            accel[type_t .. dir] = state
         end
-        assert(accel[t] == nil)
-        accel[t] = r
     end
 
     local accel_reversed = {}
-    for k, v in pairs(accel) do
-        if not accel_reversed[v] then
-            accel_reversed[v] = k
-        end
+    for typedir, passable_state in pairs(accel) do
+        assert(accel_reversed[passable_state] == nil)
+        accel_reversed[passable_state] = typedir
     end
 
-    function type_to_passable_state(t)
-        return accel[t]
+    function typedir_to_passable_state(typedir)
+        return accel[typedir]
     end
 
-    function passable_state_to_type(passable_state)
+    function passable_state_to_typedir(passable_state)
         return accel_reversed[passable_state]
     end
 
-    function set_passable_state(passable_state, dir)
-        return (passable_state | (1 << dir))
+    function set_passable_state(passable_state, passable_dir)
+        return (passable_state | (1 << passable_dir))
     end
 end
 
-local prefab_names = {
-    ['U'] = "/pkg/vaststars.resources/road/road_U.prefab",
-    ['C'] = "/pkg/vaststars.resources/road/road_C.prefab",
-    ['I'] = "/pkg/vaststars.resources/road/road_I.prefab",
-    ['T'] = "/pkg/vaststars.resources/road/road_T.prefab",
-    ['X'] = "/pkg/vaststars.resources/road/road_X.prefab",
-    ['O'] = "/pkg/vaststars.resources/road/road_O.prefab",
-}
-
+local prefab_file_path <const> = "/pkg/vaststars.resources/road/road_%s.prefab"
 local rotators <const> = {
-    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
-    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
-    math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
+    [North] = nil,
+    [East]  = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
+    [South] = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
+    [West]  = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
 }
 
-local function create_entity(type_t, x, y)
-    local tt = type_t:sub(1, 1)
-    local rr = type_t:sub(2, 2)
-
-    local prefab = ecs.create_instance(prefab_names[tt])
+local function create_entity(typedir, x, y)
+    local t = typedir:sub(1, 1)
+    local dir = typedir:sub(2, 2)
+    local prefab = ecs.create_instance(prefab_file_path:format(t))
     iom.set_position(prefab.root, iterrain.get_position_by_coord({x, y}))
-    iom.set_rotation(prefab.root, rotators[rr:byte() - ('0'):byte()])
+    iom.set_rotation(prefab.root, rotators[DIRECTION[dir]])
     return iprefab_object.create(prefab, {
         policy = {
             "ant.scene|scene_object",
@@ -124,27 +118,28 @@ local function create_entity(type_t, x, y)
                 area = {1, 1},
             },
             pickup_show_set_road_arrow = true,
+            dir = dir,
         },
     })
 end
 
-local function set(types, x, y, dir)
+local function set(types, x, y, passable_dir)
     types[x] = types[x] or {}
     local passable_state = 0
     if not types[x][y] then
         passable_state = 0
     else
-        passable_state = type_to_passable_state(types[x][y])
+        passable_state = typedir_to_passable_state(types[x][y])
     end
-    passable_state = set_passable_state(passable_state, dir)
+    passable_state = set_passable_state(passable_state, passable_dir)
 
-    local type_t = passable_state_to_type(passable_state)
-    if not type_t then
-        assert(type_t)
+    local typedir = passable_state_to_typedir(passable_state)
+    if not typedir then
+        assert(false)
         return
     end
 
-    types[x][y] = type_t
+    types[x][y] = typedir
 end
 
 local function flush(types, entities, x, y)
@@ -158,37 +153,37 @@ local function flush(types, entities, x, y)
 end
 
 local funcs = {}
-funcs[LEFT] = function(types, sx, sy, dx, dy)
-    set(types, sx, sy, LEFT)
-    set(types, dx, dy, RIGHT)
+funcs[West] = function(types, sx, sy, dx, dy)
+    set(types, sx, sy, West)
+    set(types, dx, dy, East)
 end
 
-funcs[RIGHT] = function(types, sx, sy, dx, dy)
-    set(types, sx, sy, RIGHT)
-    set(types, dx, dy, LEFT)
+funcs[East] = function(types, sx, sy, dx, dy)
+    set(types, sx, sy, East)
+    set(types, dx, dy, West)
 end
 
-funcs[TOP] = function(types, sx, sy, dx, dy)
-    set(types, sx, sy, BOTTOM)
-    set(types, dx, dy, TOP)
+funcs[North] = function(types, sx, sy, dx, dy)
+    set(types, sx, sy, South)
+    set(types, dx, dy, North)
 end
 
-funcs[BOTTOM] = function(types, sx, sy, dx, dy)
-    set(types, sx, sy, TOP)
-    set(types, dx, dy, BOTTOM)
+funcs[South] = function(types, sx, sy, dx, dy)
+    set(types, sx, sy, North)
+    set(types, dx, dy, South)
 end
 
 local get_dir ; do
     local accel = {
         [-1] = {
-            [0] = LEFT,
+            [0] = West,
         },
         [0] = {
-            [-1] = TOP,
-            [1] = BOTTOM,
+            [-1] = North,
+            [1] = South,
         },
         [1] = {
-            [0] = RIGHT,
+            [0] = East,
         },
     }
 
@@ -246,12 +241,6 @@ function road_sys:after_pickup_mapping()
 end
 
 function iroad.construct(tile_coord_s, tile_coord_d)
-    -- if tile_coord_s then
-    --     print(("{%s}"):format(table.concat(tile_coord_s, ",")), ("{%s}"):format(table.concat(tile_coord_d, ",")))
-    -- else
-    --     print(("{}"), ("{%s}"):format(table.concat(tile_coord_d, ",")))
-    -- end
-
     local e = w:singleton("road_types", "road_types:in road_entities:in")
     local road_types = e.road_types
     local road_entities = e.road_entities
@@ -269,7 +258,7 @@ function iroad.construct(tile_coord_s, tile_coord_d)
     -- construct for the first time
     if not sx and not sy then
         road_types[dx] = road_types[dx] or {}
-        road_types[dx][dy] = "O0"
+        road_types[dx][dy] = 'ON'
         flush(road_types, road_entities, dx, dy)
         w:sync("road_types:out road_entities:out", e)
         return
@@ -309,8 +298,8 @@ function iroad.set_building_entry(tile_coord)
     local road_types = e.road_types
     local road_entities = e.road_entities
 
-    -- todo hard coded -- TOP
-    set(road_types, tile_coord[1], tile_coord[2] - 1, TOP)
+    -- todo hard coded -- North
+    set(road_types, tile_coord[1], tile_coord[2] - 1, North)
     flush(road_types, road_entities, tile_coord[1], tile_coord[2] - 1)
     w:sync("road_types:out road_entities:out", e)
 end

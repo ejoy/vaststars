@@ -40,6 +40,9 @@ pipeline "pickup_mapping"
     .stage "after_pickup_mapping"
 
 ------------------------
+component "dir" .type "lua"
+
+------------------------
 component "gameplay_world" .type "lua"
 component "gameplay_road_entitys" .type "lua"
 policy "gameplay_adapter"
@@ -52,7 +55,7 @@ policy "pipe_data"
     .component "pipe_types"
     .component "pipe_entities"
 
-component "road_types" .type "lua" -- = {[x][y] = road_type, ...}
+component "road_types" .type "lua" -- = {[x][y] = {type = xx, dir = xx}, ...}
 component "road_entities" .type "lua" -- = {[x][y] = road_entity, ...}
 policy "road_data"
     .component "road_types"

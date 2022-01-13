@@ -10,8 +10,7 @@ policy:
 data:
   name: DIAOTOU
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071068286895752}
+    srt: {}
 mount: 1
 policy:
   ant.general|name
@@ -20,8 +19,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/U_road.glb|materials/Road.line.material
-  mesh: "/pkg/vaststars.resources/glb/road/U_road.glb|meshes/平面.014_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/平面.014_P1.meshbin"
   name: "平面.004"
   scene:
     srt:
@@ -35,8 +34,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/U_road.glb|materials/Road.line.material
-  mesh: "/pkg/vaststars.resources/glb/road/U_road.glb|meshes/柱体.006_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/柱体.006_P1.meshbin"
   name: "柱体.001"
   scene:
     srt:
@@ -50,23 +49,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/U_road.glb|materials/Road.line.material
-  mesh: "/pkg/vaststars.resources/glb/road/U_road.glb|meshes/平面.013_P1.meshbin"
-  name: "平面.003"
-  scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2.2019999027252197, 0}
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
-  ant.scene|scene_object
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/U_road.glb|materials/Road.bian.material
-  mesh: "/pkg/vaststars.resources/glb/road/U_road.glb|meshes/立方体.029_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/Road.bian.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/立方体.029_P1.meshbin"
   name: "立方体.008"
   scene:
     srt:
@@ -80,8 +64,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/U_road.glb|materials/road.jia.material
-  mesh: "/pkg/vaststars.resources/glb/road/U_road.glb|meshes/立方体.030_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/road.jia.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/立方体.030_P1.meshbin"
   name: "立方体.009"
   scene:
     srt:
@@ -94,8 +78,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/U_road.glb|materials/road.shiti.material
-  mesh: "/pkg/vaststars.resources/glb/road/U_road.glb|meshes/立方体.006_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/road.shiti.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/立方体.006_P1.meshbin"
   name: "立方体.010"
   scene:
     srt:
@@ -109,12 +93,26 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/U_road.glb|materials/Road.material
-  mesh: "/pkg/vaststars.resources/glb/road/U_road.glb|meshes/立方体.027_P1.meshbin"
-  name: DIAOTOU
+  material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/平面.013_P1.meshbin"
+  name: "平面.003"
   scene:
     srt:
-      r: {0, 0.7071068286895752, 0, -0.7071068286895752}
+      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+      t: {0, 2.2019999027252197, 0}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/Road.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/立方体.027_P1.meshbin"
+  name: DIAOTOU
+  scene:
+    srt: {}
 mount: 1
 policy:
   ant.general|name

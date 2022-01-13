@@ -2,10 +2,7 @@
 data:
   name: Scene
   scene:
-    srt:
-      r: {0, 0, 0, 1}
-      s: {1, 1, 1}
-      t: {0, 0, 0}
+    srt: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -22,8 +19,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/X_road.glb|materials/Road.bian.material
-  mesh: "/pkg/vaststars.resources/glb/road/X_road.glb|meshes/立方体.005_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_X.glb|materials/Road.bian.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_X.glb|meshes/立方体.005_P1.meshbin"
   name: "立方体.004"
   scene:
     srt:
@@ -36,8 +33,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/X_road.glb|materials/road.jia.material
-  mesh: "/pkg/vaststars.resources/glb/road/X_road.glb|meshes/立方体.001_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_X.glb|materials/road.jia.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_X.glb|meshes/立方体.001_P1.meshbin"
   name: "立方体.005"
   scene:
     srt: {}
@@ -49,8 +46,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/X_road.glb|materials/Road.line.material
-  mesh: "/pkg/vaststars.resources/glb/road/X_road.glb|meshes/平面.001_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_X.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_X.glb|meshes/平面.001_P1.meshbin"
   name: "平面.001"
   scene:
     srt:
@@ -63,8 +60,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/X_road.glb|materials/road.shiti.material
-  mesh: "/pkg/vaststars.resources/glb/road/X_road.glb|meshes/立方体.004_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_X.glb|materials/road.shiti.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_X.glb|meshes/立方体.004_P1.meshbin"
   name: "立方体.003"
   scene:
     srt:
@@ -77,8 +74,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/X_road.glb|materials/Road.material
-  mesh: "/pkg/vaststars.resources/glb/road/X_road.glb|meshes/立方体.003_P1.meshbin"
+  material: /pkg/vaststars.resources/glb/road/road_X.glb|materials/Road.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_X.glb|meshes/立方体.003_P1.meshbin"
   name: SHIZI
   scene:
     srt: {}
