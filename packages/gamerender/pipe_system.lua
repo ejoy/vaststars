@@ -45,9 +45,6 @@ local type_to_passable_state, passable_state_to_type, set_passable_state, get_pa
     passable["I0"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = false, [BOTTOM] = false}
     passable["I1"] = {[RIGHT] = false, [LEFT] = false, [TOP] = true,  [BOTTOM] = true}
 
-    passable["E0"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = false, [BOTTOM] = false}
-    passable["E1"] = {[RIGHT] = false, [LEFT] = false, [TOP] = true,  [BOTTOM] = true}
-
     passable["T0"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = false, [BOTTOM] = true}
     passable["T1"] = {[RIGHT] = false, [LEFT] = true,  [TOP] = true,  [BOTTOM] = true}
     passable["T2"] = {[RIGHT] = true,  [LEFT] = true,  [TOP] = true,  [BOTTOM] = false}
@@ -105,7 +102,6 @@ local prefab_names = {
     ['T'] = "/pkg/vaststars.resources/pipe/pipe_T.prefab",
     ['X'] = "/pkg/vaststars.resources/pipe/pipe_X.prefab",
     ['O'] = "/pkg/vaststars.resources/pipe/pipe_O.prefab",
-    ['E'] = "/pkg/vaststars.resources/pipe/pipe_E.prefab",
 }
 
 local rotators <const> = {
@@ -210,24 +206,6 @@ local get_dir ; do
     end
 end
 
-local check_neighbors ; do
-    local accel = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
-    function check_neighbors(pipe_types, sx, sy)
-        local dx, dy
-        for _, v in ipairs(accel) do
-            dx, dy = sx + v[1], sy + v[2]
-            if pipe_types[dx] and pipe_types[dx][dy] then
-                local passable_state = type_to_passable_state(pipe_types[dx][dy])
-                local dir = get_dir(sx, sy, dx, dy)
-                if get_passable_state(passable_state, dir) == 1 and pipe_types[dx][dy]:sub(1, 1) == 'E' then
-                    return false
-                end
-            end
-        end
-        return true
-    end
-end
-
 function pipe_sys:init_world()
     construct_arrows_entity = ecs.create_entity({
         policy = {
@@ -309,13 +287,6 @@ function ipipe.construct(coord_s, coord_d)
     end
 
     func(pipe_types, sx, sy, dx, dy)
-
-    --
-    local pt = pipe_types[sx][sy]
-    if pt:sub(1, 1) == 'I' and check_neighbors(pipe_types, sx, sy) then
-        pipe_types[sx][sy] = ('E%s'):format(pt:sub(2, 2))
-    end
-
     flush(pipe_types, pipe_entities, sx, sy)
     flush(pipe_types, pipe_entities, dx, dy)
     w:sync("pipe_types:out pipe_entities:out", e)

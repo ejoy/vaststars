@@ -308,49 +308,116 @@ do
     end
 end
 
-local test_ratio = 0
-local pipe_fluid_cache = {}
 funcs[5] = function()
-    local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
-    local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
-    local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-    local imaterial = ecs.import.interface "ant.asset|imaterial"
-    local math3d = require "math3d"
+    local road_pipe_type_convert = {
+        ['U0'] = {"U型", "E"},
+        ['U1'] = {"U型", "S"},
+        ['U2'] = {"U型", "W"},
+        ['U3'] = {"U型", "N"},
 
-    test_ratio = test_ratio + 0.05
-    if test_ratio > 0.5 then
-        test_ratio = 0
+        ['C0'] = {"L型", "E"},
+        ['C1'] = {"L型", "S"},
+        ['C2'] = {"L型", "W"},
+        ['C3'] = {"L型", "N"},
+
+        ['I0'] = {"I型", "E"},
+        ['I1'] = {"I型", "N"},
+
+        ['T0'] = {"T型", "N"},
+        ['T1'] = {"T型", "E"},
+        ['T2'] = {"T型", "S"},
+        ['T3'] = {"T型", "W"},
+
+        ['X0'] = {"X型", "E"},
+
+        ['O0'] = {"O型", "E"},
+    }
+
+    local convert = {
+        ["road"] = function(game_object)
+            local e = w:singleton("road_types", "road_types:in")
+            local road_types = e.road_types
+            local x = game_object.building.tile_coord[1]
+            local y = game_object.building.tile_coord[2]
+            local rt = road_types[x][y]
+            local entity, dir = table.unpack(road_pipe_type_convert[rt])
+            return {
+                entity = "路1-" .. entity,
+                x = x,
+                y = y,
+                dir = dir,
+            }
+        end,
+        ["goods_station"] = function(game_object)
+            return {
+                entity = "车站",
+                x = game_object.building.tile_coord[1],
+                y = game_object.building.tile_coord[2],
+                dir = "N",
+            }
+        end,
+        ["logistics_center"] = function(game_object)
+            return {
+                entity = "物流中心",
+                x = game_object.building.tile_coord[1],
+                y = game_object.building.tile_coord[2],
+                dir = "N",
+            }
+        end,
+        ["container"] = function(game_object)
+            return {
+                entity = "箱子",
+                x = game_object.building.tile_coord[1],
+                y = game_object.building.tile_coord[2],
+                dir = "N",
+            }
+        end,
+        ["rock"] = function(game_object)
+            return {
+                entity = "货物",
+                x = game_object.building.tile_coord[1],
+                y = game_object.building.tile_coord[2],
+                dir = "N",
+            }
+        end,
+        ["pipe"] = function(game_object)
+            local e = w:singleton("pipe_types", "pipe_types:in")
+            local pipe_types = e.pipe_types
+            local x = game_object.building.tile_coord[1]
+            local y = game_object.building.tile_coord[2]
+            local pt = pipe_types[x][y]
+            local entity, dir = table.unpack(road_pipe_type_convert[pt])
+            return {
+                entity = "管道1-" .. entity,
+                x = x,
+                y = y,
+                dir = dir,
+            }
+        end,
+    }
+
+    local t = {}
+    for game_object in w:select "building:in " do
+        t[#t+1] = convert[game_object.building.building_type](game_object)
     end
-    for _, e in pairs(pipe_fluid_cache) do
-        if e.remove then
-            e:remove()
-        else
-            w:remove(e)
-        end
+
+    local fs        = require "filesystem"
+    local lfs       = require "filesystem.local"
+    local serialize = import_package "ant.serialize"
+
+    local dumppath <const> = fs.path "/pkg/vaststars.gamerender/dump.lua"
+    local lpath
+    if not fs.exists(dumppath) then
+        local p = dumppath:parent_path()
+        lpath = p:localpath() / dumppath:filename():string()
+    else
+        lpath = dumppath:localpath()
     end
-    pipe_fluid_cache = {}
+    local f <close> = lfs.open(lpath, "w")
+    local c = serialize.stringify(t)
+    f:write(c)
 
-    for game_object in w:select "pickup_show_set_pipe_arrow:in" do
-        local prefab_object = igame_object.get_prefab_object(game_object)
-        w:sync("scene:in", prefab_object.root)
-
-        local mat = get_fluid_material_mat(game_object, test_ratio)
-        if mat then
-            local prefab = ecs.create_instance("/pkg/vaststars.resources/pipe/pipe_fluid.prefab")
-            prefab.on_message = function() end
-            prefab.on_ready = function(prefab)
-                for _, e in ipairs(prefab.tag["*"]) do
-                    if iprefab_object.has_tag(e, "uvmotion_pipe_fluid") then
-                        imaterial.set_property(e, "u_uvmotion", {0, 0.1, 1.0, 1.0})
-                    end
-                end
-            end
-            pipe_fluid_cache[#pipe_fluid_cache+1] = world:create_object(prefab)
-
-            local srt = math3d.mul(iom.worldmat(prefab_object.root), mat)
-            iom.set_srt(prefab.root, math3d.srt(srt))
-        end
-    end
+    print(c)
 end
 
 --------------
