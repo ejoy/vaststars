@@ -112,13 +112,15 @@ local function create_entity(typedir, x, y)
             "vaststars.gamerender|building",
         },
         data = {
+            x = x,
+            y = y,
+            dir = dir,
             building = {
                 building_type = "road",
                 tile_coord = {x, y},
                 area = {1, 1},
             },
             pickup_show_set_road_arrow = true,
-            dir = dir,
         },
     })
 end

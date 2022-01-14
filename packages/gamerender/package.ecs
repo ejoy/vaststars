@@ -40,6 +40,8 @@ pipeline "pickup_mapping"
     .stage "after_pickup_mapping"
 
 ------------------------
+component "x" .type "lua"
+component "y" .type "lua"
 component "dir" .type "lua"
 
 ------------------------

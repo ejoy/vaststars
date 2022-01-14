@@ -113,12 +113,14 @@ local function create_entity(typedir, x, y)
         },
         data = {
             building = {
+                x = x,
+                y = y,
+                dir = dir,
                 building_type = "pipe",
                 tile_coord = {x, y},
                 area = {1, 1},
             },
             pickup_show_set_pipe_arrow = true,
-            dir = dir,
         },
     })
 end

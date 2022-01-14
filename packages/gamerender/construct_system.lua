@@ -124,8 +124,11 @@ local on_prefab_message ; do
         else
             local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(construct_entity.prefab))
             iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
-            local template = deep_copy(construct_entity.entity) -- todo deep copy?
+            local template = deep_copy(construct_entity.entity)
             template.data.building.tile_coord = tile_coord
+            template.data.x = tile_coord[1]
+            template.data.y = tile_coord[2]
+            template.data.dir = 'N' -- todo
             iprefab_object.create(new_prefab, template)
         end
 
