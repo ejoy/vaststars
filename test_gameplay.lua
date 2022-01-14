@@ -172,18 +172,21 @@ assert(loadfile "test_map.lua")(world)
 --game.restore(sav)
 world:build()
 
-local function dump()
+local function dump_item()
     local ecs = world.ecs
-    --for v in ecs:select "chest:in" do
-    --    for i = 1, 10 do
-    --        local c, n = world:container_at(v.chest.container, i)
-    --        if c then
-    --            print(gameplay.query(c).name, n)
-    --        else
-    --            break
-    --        end
-    --    end
-    --end
+    for v in ecs:select "chest:in" do
+        for i = 1, 10 do
+            local c, n = world:container_at(v.chest.container, i)
+            if c then
+                print(gameplay.query(c).name, n)
+            else
+                break
+            end
+        end
+    end
+end
+
+local function dump_fluid()
     local function display(fluid, id, fluidbox)
         if fluid ~= 0 then
             local r = world:fluidflow_query(fluid, id)
@@ -206,6 +209,11 @@ local function dump()
         end
     end
     print "===================="
+end
+
+local function dump()
+    dump_item()
+    --dump_fluid()
 end
 
 world:wait(2*50, dump)
