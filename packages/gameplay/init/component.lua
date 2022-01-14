@@ -16,7 +16,9 @@ component "assembling" {
     "fluidbox_out:word",
     "recipe:word",
     "container:word",
-    "process:word",
+    "process:int",
+    "status:word",
+    "speed:word"
 }
 
 component "inserter" {

@@ -19,6 +19,7 @@ local function loadComponents(filename)
 end
 
 local TYPENAMES <const> = {
+    int = "int32_t",
     dword = "uint32_t",
     word = "uint16_t",
     byte = "uint8_t",

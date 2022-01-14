@@ -75,7 +75,9 @@ function c:ctor(init, pt)
             container = self:container_create("assembling", container_in, container_out),
             fluidbox_in = fluidbox_in,
             fluidbox_out = fluidbox_out,
-            process = STATUS_IDLE,
+            process = 0,
+            status = STATUS_IDLE,
+            speed = math.floor(pt.speed * 100),
         }
     }
 end

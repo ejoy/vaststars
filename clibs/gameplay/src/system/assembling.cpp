@@ -10,6 +10,7 @@ extern "C" {
 
 #define STATUS_IDLE 0
 #define STATUS_DONE 1
+#define STATUS_WORKING 2
 
 static void
 sync_input_fluidbox(world& w, assembling& a, fluidboxes& fb, recipe_container& container) {
@@ -56,37 +57,37 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
     c.shortage += drain;
 
     // step.2
-    if (a.process == STATUS_DONE || a.process == STATUS_IDLE) {
+    while (a.process <= 0) {
         prototype_context recipe = w.prototype(a.recipe);
         recipe_container& container = w.query_container<recipe_container>(a.container);
-        if (a.process == STATUS_DONE) {
+        if (a.status == STATUS_DONE) {
             container::item* items = (container::item*)pt_results(&recipe);
-            if (container.recipe_place(w, items)) {
-                a.process = STATUS_IDLE;
-                if (a.fluidbox_out != 0) {
-                    fluidboxes* fb = w.sibling<fluidboxes>(v);
-                    if (fb) {
-                        sync_output_fluidbox(w, a, *fb, container);
-                    }
+            if (!container.recipe_place(w, items)) {
+                return;
+            }
+            a.status = STATUS_IDLE;
+            if (a.fluidbox_out != 0) {
+                fluidboxes* fb = w.sibling<fluidboxes>(v);
+                if (fb) {
+                    sync_output_fluidbox(w, a, *fb, container);
                 }
             }
         }
-        if (a.process == STATUS_IDLE) {
+        if (a.status == STATUS_IDLE) {
             container::item* items = (container::item*)pt_ingredients(&recipe);
-            if (container.recipe_pickup(w, items)) {
-                int time = pt_time(&recipe);
-                a.process = time + STATUS_DONE;
-                if (a.fluidbox_in != 0) {
-                    fluidboxes* fb = w.sibling<fluidboxes>(v);
-                    if (fb) {
-                        sync_input_fluidbox(w, a, *fb, container);
-                    }
+            if (!container.recipe_pickup(w, items)) {
+                return;
+            }
+            int time = pt_time(&recipe);
+            a.process += time * 100;
+            a.status = STATUS_DONE;
+            if (a.fluidbox_in != 0) {
+                fluidboxes* fb = w.sibling<fluidboxes>(v);
+                if (fb) {
+                    sync_input_fluidbox(w, a, *fb, container);
                 }
             }
         }
-    }
-    if (a.process == STATUS_DONE || a.process == STATUS_IDLE) {
-        return;
     }
 
     // step.3
@@ -96,7 +97,7 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
     c.shortage += power;
 
     // step.4
-    a.process--;
+    a.process -= a.speed;
 }
 
 static int
