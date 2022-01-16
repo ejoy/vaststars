@@ -131,17 +131,31 @@
             function start.clickContructConfirm()
                 ui_sys.pub("ui", "construct", "click_construct_confirm")
             end
+            function start.clickContructCancel()
+                ui_sys.pub("ui", "construct", "click_construct_cancel")
+            end
+            function start.clickContructRotate()
+                ui_sys.pub("ui", "construct", "click_construct_rotate")
+            end
             function start.clickDebug(event, i)
                 ui_sys.pub("debug", i)
             end
             ui_sys.addEventListener(start, {}, {
-                ["construct_show_confirm"] = function(show, position)
+                ["construct_show_confirm"] = function(show, coord1, coord2, coord3)
                     start.is_show_construct_confirm = show
 
                     if show then
                         local element = document:getElementById("id-button-construct-confirm")
-                        element.style.left = ("%dpx"):format(math.floor(position[1]))
-                        element.style.top = ("%dpx"):format(math.floor(position[2]))
+                        element.style.left = ("%dpx"):format(math.floor(coord1[1]))
+                        element.style.top = ("%dpx"):format(math.floor(coord1[2]))
+
+                        local element = document:getElementById("id-button-construct-cancel")
+                        element.style.left = ("%dpx"):format(math.floor(coord2[1]))
+                        element.style.top = ("%dpx"):format(math.floor(coord2[2]))
+
+                        local element = document:getElementById("id-button-construct-rotate")
+                        element.style.left = ("%dpx"):format(math.floor(coord3[1]))
+                        element.style.top = ("%dpx"):format(math.floor(coord3[2]))
                     end
                 end,
             })
@@ -159,10 +173,10 @@
             </div>            
 
             <!-- 建造确认按钮 -->
-            <input id = "id-button-construct-confirm" type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/button-construct-confirm.png";' data-event-click = "clickContructConfirm()" data-if = "is_show_construct_confirm">
-                <span style = "font-size: 100%; -webkit-text-stroke: 2px #cd7c3d;">Confirm</span>
-            </input>
-
+            <input id = "id-button-construct-confirm" type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/confirm.png";' data-event-click = "clickContructConfirm()" data-if = "is_show_construct_confirm" />
+            <input id = "id-button-construct-cancel"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/cancel.png";'  data-event-click = "clickContructCancel()" data-if = "is_show_construct_confirm" />
+            <input id = "id-button-construct-rotate"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/rotate.png";'  data-event-click = "clickContructRotate()" data-if = "is_show_construct_confirm" />
+            
             <button id="work" data-event-click="clickWork()" style='background-color: rgba(0,176,240,255); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width:80px; height: 80px; background-size:cover;'/>
                 <div>施工</div>

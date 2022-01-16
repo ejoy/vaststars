@@ -17,6 +17,8 @@ local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
 
 local math3d = require "math3d"
+local mathpkg = import_package "ant.math"
+local mc = mathpkg.constant
 local construct_cfg = import_package "vaststars.config".construct
 local backers_cfg = import_package "vaststars.config".backers
 local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
@@ -24,6 +26,9 @@ local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
 
 local ui_construct_building_mb = world:sub {"ui", "construct", "click_construct"}
 local ui_construct_confirm_mb = world:sub {"ui", "construct", "click_construct_confirm"}
+local ui_construct_cancel_mb = world:sub {"ui", "construct", "click_construct_cancel"}
+local ui_construct_rotate_mb = world:sub {"ui", "construct", "click_construct_rotate"}
+
 local pickup_show_ui_mb = world:sub {"pickup_mapping", "pickup_show_ui"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_sys = ecs.system "construct_system"
@@ -78,7 +83,8 @@ end
 local function on_prefab_ready(game_object, prefab)
     local position = math3d.tovalue(iom.get_position(prefab.root))
     __update_basecolor_by_pos(game_object, prefab, position)
-    world:pub {"ui_message", "construct_show_confirm", true, math3d.tovalue(icamera.world_to_screen(position)) }
+    local coord1, coord2, coord3 = iterrain.get_confirm_ui_position(position)
+    world:pub {"ui_message", "construct_show_confirm", true, math3d.tovalue(icamera.world_to_screen(coord1)), math3d.tovalue(icamera.world_to_screen(coord2)), math3d.tovalue(icamera.world_to_screen(coord3)) }
 end
 
 local function deep_copy(src, dst)
@@ -177,7 +183,8 @@ function construct_sys:camera_usage()
             position = iinput.screen_to_world {mouse_x, mouse_y}
             position = iterrain.get_tile_centre_position(math3d.tovalue(position))
             iom.set_position(prefab_object.root, position)
-            world:pub {"ui_message", "construct_show_confirm", true, math3d.tovalue(icamera.world_to_screen(position)) }
+            local coord1, coord2, coord3 = iterrain.get_confirm_ui_position(position)
+            world:pub {"ui_message", "construct_show_confirm", true, math3d.tovalue(icamera.world_to_screen(coord1)), math3d.tovalue(icamera.world_to_screen(coord2)), math3d.tovalue(icamera.world_to_screen(coord3)) }
             prefab_object:send("basecolor", position)
         end
     end
@@ -210,6 +217,23 @@ function construct_sys:data_changed()
         for game_object in w:select "construct_entity:in" do
             prefab_object = igame_object.get_prefab_object(game_object)
             prefab_object:send("confirm_construct")
+        end
+    end
+
+    for _, _, _ in ui_construct_cancel_mb:unpack() do
+        for game_object in w:select "construct_entity:in" do
+            prefab_object = igame_object.get_prefab_object(game_object)
+            world:pub {"ui_message", "construct_show_confirm", false}
+            prefab_object:remove()
+        end
+    end
+
+    for _, _, _ in ui_construct_rotate_mb:unpack() do
+        for game_object in w:select "construct_entity:in" do
+            prefab_object = igame_object.get_prefab_object(game_object)
+            local rotation = iom.get_rotation(prefab_object.root)
+            local deg = math.deg(math3d.tovalue(math3d.quat2euler(rotation))[2])
+            iom.set_rotation(prefab_object.root, math3d.quaternion{axis=mc.YAXIS, r=math.rad(deg + 90)})
         end
     end
 end
