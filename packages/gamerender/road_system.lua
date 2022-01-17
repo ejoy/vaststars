@@ -10,6 +10,7 @@ local iconstruct_arrow = ecs.import.interface "vaststars.gamerender|iconstruct_a
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
+local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
 
 local ROAD_ARROW_YAXIS_DEFAULT <const> = import_package "vaststars.constant".ROAD_ARROW_YAXIS_DEFAULT
 local road_sys = ecs.system "road_system"
@@ -152,6 +153,9 @@ local function flush(types, entities, x, y)
         igame_object.remove_prefab(game_object)
     end
     entities[x][y] = create_entity(types[x][y], x, y)
+
+    --
+    igameplay_adapter.set_road(x, y, types[x][y])
 end
 
 local funcs = {}

@@ -135,6 +135,24 @@ local on_prefab_message ; do
             template.data.x = tile_coord[1]
             template.data.y = tile_coord[2]
             template.data.dir = 'N' -- todo
+            template.data.on_ready = function(game_object, prefab)
+                if construct_entity.entity.data.building.building_type == "logistics_center" then
+                    local function packCoord(x, y)
+                        return x | (y<<8)
+                    end
+    
+                    local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
+                    if gameplay_adapter then
+                        w:sync("scene:in", prefab.root)
+                        gameplay_adapter.gameplay_world:create_entity {
+                            station = {
+                                id = prefab.root.scene.id,
+                                position = packCoord(tile_coord[1], tile_coord[2]),
+                            }
+                        }
+                    end
+                end
+            end
             iprefab_object.create(new_prefab, template)
         end
 

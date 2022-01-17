@@ -137,7 +137,7 @@ function iterrain.set_tile_building_type(tile_coord, building_type, area)
     local width = area[1]
     local height = area[2]
 
-    local e = w:singleton("terrain", "terrain:in shape_terrain:in")
+    local e = w:singleton("shape_terrain", "terrain:in shape_terrain:in")
     local terrain = e.terrain
 
     for x = tile_coord[1] - (width // 2), tile_coord[1] + (width // 2) do

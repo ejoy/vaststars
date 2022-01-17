@@ -34,18 +34,34 @@ end
 
 function igameplay_adapter.set_road(x, y, road_type)
     local position = packCoord(x, y)
+    local t = {
+        ['N'] = 0,
+        ['E'] = 1,
+        ['S'] = 2,
+        ['W'] = 3,
+    }
+
+    local tr = {
+        ['L'] = 0,
+        ['I'] = 1,
+        ['U'] = 2,
+        ['T'] = 3,
+        ['X'] = 4,
+        ['O'] = 5,
+    }
 
     local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in gameplay_road_entitys:in")
+    local gameplay_world = gameplay_adapter.gameplay_world
     local e = gameplay_adapter.gameplay_road_entitys[position]
     if e then
-        w:remove(e)
+        gameplay_world:remove(e)
     end
 
     local ref = {}
-    w:new {
+    gameplay_world:create_entity {
         road = {
             position = position,
-            road_type = packCoord(road_type:sub(1, 1), tonumber(road_type:sub(2, 2))),
+            road_type = packCoord(tr[road_type:sub(1, 1)], t[road_type:sub(2, 2)]),
         },
         reference = ref,
     }
