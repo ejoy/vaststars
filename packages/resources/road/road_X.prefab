@@ -344,7 +344,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_b2t_1
+  name: path_b2t_1
   reference: true
   scene:
     srt:
@@ -368,7 +368,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_b2t_2
+  name: path_b2t_2
   reference: true
   scene:
     srt:
@@ -392,7 +392,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_t2b_1
+  name: path_t2b_1
   reference: true
   scene:
     srt:
@@ -416,7 +416,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_t2b_2
+  name: path_t2b_2
   reference: true
   scene:
     srt:
@@ -440,7 +440,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_r2l_1
+  name: path_r2l_1
   reference: true
   scene:
     srt:
@@ -464,7 +464,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_r2l_2
+  name: path_r2l_2
   reference: true
   scene:
     srt:
@@ -488,7 +488,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_l2r_1
+  name: path_l2r_1
   reference: true
   scene:
     srt:
@@ -512,7 +512,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_l2r_2
+  name: path_l2r_2
   reference: true
   scene:
     srt:
@@ -536,7 +536,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_b2r_1
+  name: path_b2r_1
   reference: true
   scene:
     srt:
@@ -560,7 +560,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_b2r_2
+  name: path_b2r_2
   reference: true
   scene:
     srt:
@@ -584,7 +584,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_b2r_3
+  name: path_b2r_3
   reference: true
   scene:
     srt:
@@ -608,7 +608,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_b2l_1
+  name: path_b2l_1
   reference: true
   scene:
     srt:
@@ -632,7 +632,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_b2l_2
+  name: path_b2l_2
   reference: true
   scene:
     srt:
@@ -656,7 +656,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_b21_3
+  name: path_b21_3
   reference: true
   scene:
     srt:
@@ -680,7 +680,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_t2r_1
+  name: path_t2r_1
   reference: true
   scene:
     srt:
@@ -704,7 +704,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_t2r_2
+  name: path_t2r_2
   reference: true
   scene:
     srt:
@@ -728,7 +728,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_t2r_3
+  name: path_t2r_3
   reference: true
   scene:
     srt:
@@ -752,7 +752,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_t2l_1
+  name: path_t2l_1
   reference: true
   scene:
     srt:
@@ -776,7 +776,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_t2l_2
+  name: path_t2l_2
   reference: true
   scene:
     srt:
@@ -800,7 +800,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_t2l_3
+  name: path_t2l_3
   reference: true
   scene:
     srt:
@@ -824,7 +824,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_r2b_1
+  name: path_r2b_1
   reference: true
   scene:
     srt:
@@ -848,7 +848,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_r2b_2
+  name: path_r2b_2
   reference: true
   scene:
     srt:
@@ -872,7 +872,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_r2b_3
+  name: path_r2b_3
   reference: true
   scene:
     srt:
@@ -896,7 +896,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_r2t_1
+  name: path_r2t_1
   reference: true
   scene:
     srt:
@@ -920,7 +920,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_r2t_2
+  name: path_r2t_2
   reference: true
   scene:
     srt:
@@ -944,7 +944,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_r2t_3
+  name: path_r2t_3
   reference: true
   scene:
     srt:
@@ -968,7 +968,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_l2b_1
+  name: path_l2b_1
   reference: true
   scene:
     srt:
@@ -992,7 +992,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_l2b_2
+  name: path_l2b_2
   reference: true
   scene:
     srt:
@@ -1016,7 +1016,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_l2b_3
+  name: path_l2b_3
   reference: true
   scene:
     srt:
@@ -1040,7 +1040,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_l2t_1
+  name: path_l2t_1
   reference: true
   scene:
     srt:
@@ -1064,7 +1064,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_l2t_2
+  name: path_l2t_2
   reference: true
   scene:
     srt:
@@ -1088,7 +1088,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_l2t_3
+  name: path_l2t_3
   reference: true
   scene:
     srt:
@@ -1112,7 +1112,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_b2r_4
+  name: path_b2r_4
   reference: true
   scene:
     srt:
@@ -1136,7 +1136,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_t2l_4
+  name: path_t2l_4
   reference: true
   scene:
     srt:
@@ -1160,7 +1160,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_r2t_4
+  name: path_r2t_4
   reference: true
   scene:
     srt:
@@ -1184,7 +1184,7 @@ data:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
     t: {0, 0, 0}
-  name: road_l2b_4
+  name: path_l2b_4
   reference: true
   scene:
     srt:
