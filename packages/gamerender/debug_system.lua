@@ -22,9 +22,10 @@ local get_track_joint; do
 
     function get_track_joint(translations, rotations, duration, ratio)
         local raw_animation = animation.new_raw_animation()
-        raw_animation:push_key(translations, rotations, duration)
         local skl = skeleton.build({{name = "root", s = {1.0, 1.0, 1.0}, r = {0.0, 0.0, 0.0, 1.0}, t = {0.0, 0.0, 0.0}}})
-        local poseresult = animation.new_pose_result(1)
+
+        raw_animation:push_key(skl, {translations}, {rotations}, duration)
+        local poseresult = animation.new_pose_result(#skl)
         poseresult:setup(skl)
         poseresult:do_sample(animation.new_sampling_context(), raw_animation:build(), ratio)
         poseresult:fetch_result()
@@ -36,38 +37,7 @@ local get_track_joint; do
     end
 end
 
-local get_fluid_material_mat; do
-    local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-    local animation = require "hierarchy".animation
-    local new_vector_float3 = animation.new_vector_float3
-    local new_vector_quaternion = animation.new_vector_quaternion
-    local math3d = require "math3d"
 
-    local cache = {}
-    function get_fluid_material_mat(game_object, ratio)
-        if cache[ratio] then
-            return cache[ratio]
-        end
-
-        w:sync("prefab_slot_cache:in", game_object)
-        local slot_cache = game_object.prefab_slot_cache
-        if not slot_cache then
-            return
-        end
-
-        local translations = new_vector_float3()
-        local rotations = new_vector_quaternion()
-        for _, slot_name in ipairs({"empty", "full"}) do
-            local e = slot_cache[slot_name]
-            translations:insert(iom.get_position(e))
-            rotations:insert(iom.get_rotation(e))
-        end
-
-        local mat = get_track_joint(translations, rotations, 10.0, ratio)
-        cache[ratio] = math3d.tovalue(mat)
-        return cache[ratio]
-    end
-end
 
 local m = ecs.system 'debug_system'
 local debug_mb = world:sub {"debug"}
@@ -207,8 +177,28 @@ funcs[3] = function ()
             pickup_show_ui = {url = "route.rml"},
             route_endpoint = true,
             named = true,
+            x = 0x7b,
+            y = 0x83,
         },
     }
+    new_prefab.on_ready = function(game_object, prefab)
+        w:sync("building:in x:in y:in", game_object)
+        local function packCoord(x, y)
+            print(x, y)
+            return x | (y<<8)
+        end
+
+        local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
+        if gameplay_adapter then
+            w:sync("scene:in", prefab.root)
+            gameplay_adapter.gameplay_world:create_entity {
+                station = {
+                    id = prefab.root.scene.id,
+                    position = packCoord(game_object.x, game_object.y + (-1 * (game_object.building.area[2] // 2)) - 1),
+                }
+            }
+        end
+    end
     template.data.building.tile_coord = {0x7b,0x83}
     iprefab_object.create(new_prefab, template)
 
@@ -236,8 +226,29 @@ funcs[3] = function ()
             pickup_show_ui = {url = "route.rml"},
             route_endpoint = true,
             named = true,
+            x = 0x83,
+            y = 0x84,
         },
     }
+
+    new_prefab.on_ready = function(game_object, prefab)
+        w:sync("building:in x:in y:in", game_object)
+        local function packCoord(x, y)
+            print(x, y)
+            return x | (y<<8)
+        end
+
+        local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
+        if gameplay_adapter then
+            w:sync("scene:in", prefab.root)
+            gameplay_adapter.gameplay_world:create_entity {
+                station = {
+                    id = prefab.root.scene.id,
+                    position = packCoord(game_object.x, game_object.y + (-1 * (game_object.building.area[2] // 2)) - 1),
+                }
+            }
+        end
+    end
     template.data.building.tile_coord = {0x83,0x84}
     iprefab_object.create(new_prefab, template)
 
@@ -246,65 +257,203 @@ end
 
 -- test track
 do
-    local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+    local function get_endpoint_coord(id)
+        for game_object in w:select "route_endpoint:in x:in y:in" do
+            local prefab_object = igame_object.get_prefab_object(game_object)
+            w:sync("scene:in ", prefab_object.root)
+            w:sync("building:in", game_object)
+            if prefab_object.root.scene.id == id then
+                return {game_object.x, game_object.y + (-1 * (game_object.building.area[2] // 2)) - 1}
+            end
+        end
+    end
 
+    local function get_road_game_object(coord)
+        local x = coord[1]
+        local y = coord[2]
+
+        local e = w:singleton("road_entities", "road_entities:in")
+        local road_entities = e.road_entities
+
+        assert(road_entities[x])
+        assert(road_entities[x][y])
+        return road_entities[x][y]
+    end
+
+    local config = import_package "vaststars.config"
+    local DIRECTION <const> = {
+        N = 0,
+        E = 1,
+        S = 2,
+        W = 3,
+    }
+
+    local DIRECTION_REV = {}
+    for dir, v in pairs(DIRECTION) do
+        DIRECTION_REV[v] = dir
+    end
+
+    local function get_road_path(road_game_object, indir, outdir)
+        local e = w:singleton("road_types", "road_types:in")
+        w:sync("x:in y:in", road_game_object)
+        local road_type_dir = (e.road_types[road_game_object.x][road_game_object.y])
+        local rt = road_type_dir:sub(1, 1)
+        local dir = road_type_dir:sub(2, 2)
+
+        indir = (DIRECTION[indir] - DIRECTION[dir]) % 4
+        outdir = (DIRECTION[outdir] - DIRECTION[dir]) % 4
+        local t = config.road_track[rt][DIRECTION_REV[indir]][DIRECTION_REV[outdir]]
+
+        local r = {}
+        for _, v in ipairs(t) do
+            r[#r+1] = road_game_object.prefab_slot_cache[v]
+        end
+        return r, rt
+    end
+
+    local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+    local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
     local math3d        = require "math3d"
     local animation = require "hierarchy".animation
     local new_vector_float3 = animation.new_vector_float3
     local new_vector_quaternion = animation.new_vector_quaternion
 
-    local translations
-    local rotations
-    local ratio = 1.1
-    local times = 0
+    local srts = {}
+    local idx = 1
+    local run = true
+    local last_update_time
+    local delta_time
 
     funcs[4] = function ()
-        translations = new_vector_float3()
-        rotations = new_vector_quaternion()
+        if next(srts) then
+            idx = 1
+            last_update_time = nil
+            return
+        end
 
-        local prefab = get_debug_prefab(1)
-        for _, e in ipairs(prefab.tag["*"]) do
-            w:sync("slot?in name:in", e)
-            if e.slot and e.name:match("^path.*$") then
-                translations:insert(iom.get_position(e)) -- add translation key
-                rotations:insert(iom.get_rotation(e))    -- add rotation key
+        local endpoint_ids = {}
+        for game_object in w:select "route_endpoint:in" do
+            local prefab_object = igame_object.get_prefab_object(game_object)
+            w:sync("scene:in", prefab_object.root)
+            endpoint_ids[#endpoint_ids + 1] = prefab_object.root.scene.id
+
+            if #endpoint_ids >= 2 then
+                break
             end
         end
 
-        ratio = 0
-        times = 0
+        assert(#endpoint_ids == 2)
+        local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
 
+        local road_path
+        if run then
+            road_path = gameplay_adapter.gameplay_world:road_path(endpoint_ids[1], endpoint_ids[2])
+        else
+            road_path = gameplay_adapter.gameplay_world:road_path(endpoint_ids[2], endpoint_ids[1])
+        end
+
+        local result = {{coord = get_endpoint_coord(endpoint_ids[1]), indir = 'N'}}
+        for _, dir in ipairs(road_path) do
+            local x = result[#result].coord[1]
+            local y = result[#result].coord[2]
+            local indir
+            if dir == 0 then
+                x = x + 1
+                indir = 'W'
+            elseif dir == 1 then
+                x = x - 1
+                indir = 'E'
+            elseif dir == 2 then
+                y = y + 1
+                indir = 'S'
+            else
+                assert(dir == 3)
+                y = y - 1
+                indir = 'N'
+            end
+            result[#result].outdir = DIRECTION_REV[(DIRECTION[indir] + 2) % 4] -- 取下个路块 '入口' 的相反方向
+            result[#result+1] = {coord = {x, y}, indir = indir}
+        end
+        result[#result].outdir = 'N'
+
+        --
+        local translations = new_vector_float3()
+        local rotations = new_vector_quaternion()
+        for i1, v in ipairs(result) do
+            local game_object = get_road_game_object(v.coord)
+            local rpath, rt = get_road_path(game_object, v.indir, v.outdir)
+            for i2, e in ipairs(rpath) do
+                if i1 ~= #result and i2 == #rpath then
+                    break
+                end
+
+                local wm = iom.worldmat(e)
+		        local s, r, t = math3d.srt(wm)
+                translations:insert(t) -- add translation key
+                rotations:insert(r)    -- add rotation key
+
+                print("key frame: ", rt, ",", table.concat(math3d.tovalue(t), ", "))
+            end
+        end
+
+        srts = {}
+        idx = 1
+        last_update_time = nil
+
+        local base = 100
+        local duration = (translations:size() - 1) * base * 20
+        local ratio = 0
+        local step = 1/((translations:size() - 1) * base)
+
+        while ratio <= 1 do
+            local mat = get_track_joint(translations, rotations, duration, ratio)
+            srts[#srts+1] = math3d.ref(mat)
+            ratio = ratio + step
+        end
+
+        print("srts", #srts)
         remove_debug_prefab(2)
         -- add lorry
-        local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
         local prefab_file_name = "/pkg/vaststars.resources/lorry.prefab"
         local prefab = ecs.create_instance(prefab_file_name)
         prefab.on_message = function()
         end
-        igame_object.new(prefab, {
+        iprefab_object.create(prefab, {
             data = {debug_component = 2},
         })
     end
 
     local ltask = require "ltask"
-    local last_time = 0
+    local ltask_now = ltask.now
+    local function get_current()
+        local _, now = ltask_now()
+        return now * 10
+    end
+
+    --------------------------------------------------------
+
+    local span <const> = 8
+    local iom_set_srt = iom.set_srt
+    local math3d_srt = math3d.srt
     test_funcs[2] = function ()
         local prefab = get_debug_prefab(2)
         if not prefab then
             return
         end
 
-        local _, now = ltask.now()
-        if ratio <= 1 and now - last_time > 1 then
-            local duration = 10.0
-            local mat = get_track_joint(translations, rotations, duration, ratio)
-            iom.set_srt(prefab.root, math3d.srt(mat))
+        local current = get_current()
+        last_update_time = last_update_time or current       
+        delta_time = (current - (last_update_time or current)) + (delta_time or 0)
+        last_update_time = current
 
-            times = times + 1
-            ratio = ratio + 0.01
-            last_time = now
-
-            -- print(times)
+        while delta_time >= span do
+            delta_time = delta_time - span
+            idx = idx + 1
+            if idx > #srts then
+                return
+            end
+            iom_set_srt(prefab.root, math3d_srt(srts[idx]))
+            -- print("run", get_current())
         end
     end
 end
@@ -395,6 +544,18 @@ funcs[5] = function()
     print(c)
 end
 
+funcs[6] = function()
+    world:print_cpu_stat()
+    for k, v in pairs(world:memory()) do
+        print(k, v)
+    end
+
+    for game_object in w:select "game_object:in" do
+        local prefab_object = igame_object.get_prefab_object(game_object)
+        prefab_object:remove()
+    end
+end
+
 --------------
 function m:ui_update()
     for _, i in debug_mb:unpack() do 
@@ -404,6 +565,10 @@ function m:ui_update()
         end
     end
 
+
+end
+
+function m:start_frame()
     for _, func in ipairs(test_funcs) do
         func()
     end

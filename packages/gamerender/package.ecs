@@ -46,10 +46,10 @@ component "dir" .type "lua"
 
 ------------------------
 component "gameplay_world" .type "lua"
-component "gameplay_road_entitys" .type "lua"
+component "gameplay_road_entities" .type "lua"
 policy "gameplay_adapter"
     .component "gameplay_world"
-    .component "gameplay_road_entitys"
+    .component "gameplay_road_entities"
 
 component "pipe_types" .type "lua" -- = {[x][y] = pipe_type, ...}
 component "pipe_entities" .type "lua" -- = {[x][y] = pipe_entity, ...}
@@ -111,6 +111,7 @@ system "camera_controller_system"
 system "debug_system"
     .implement "debug_system.lua"
     .method "ui_update"
+    .method "start_frame"
 
 interface "icamera_controller"
     .implement "camera.lua"

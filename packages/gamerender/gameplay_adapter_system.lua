@@ -20,7 +20,7 @@ function gameplay_adapter_system:init_world()
         },
         data = {
             gameplay_world = create_gameplay_world(),
-            gameplay_road_entitys = {},
+            gameplay_road_entities = {},
         }
     })
 end
@@ -50,9 +50,9 @@ function igameplay_adapter.set_road(x, y, road_type)
         ['O'] = 5,
     }
 
-    local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in gameplay_road_entitys:in")
+    local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in gameplay_road_entities:in")
     local gameplay_world = gameplay_adapter.gameplay_world
-    local e = gameplay_adapter.gameplay_road_entitys[position]
+    local e = gameplay_adapter.gameplay_road_entities[position]
     if e then
         gameplay_world:remove(e)
     end
@@ -61,9 +61,9 @@ function igameplay_adapter.set_road(x, y, road_type)
     gameplay_world:create_entity {
         road = {
             position = position,
-            road_type = packCoord(tr[road_type:sub(1, 1)], t[road_type:sub(2, 2)]),
+            road_type = tr[road_type:sub(1, 1)] << 8 | t[road_type:sub(2, 2)],
         },
         reference = ref,
     }
-    gameplay_adapter.gameplay_road_entitys[position] = ref
+    gameplay_adapter.gameplay_road_entities[position] = ref
 end
