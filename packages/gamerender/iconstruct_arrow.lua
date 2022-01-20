@@ -48,12 +48,16 @@ function iconstruct_arrow.hide(e, idx)
     w:sync("construct_arrows:in", e)
     if not idx then
         for idx, game_object in pairs(e.construct_arrows) do
-            igame_object.get_prefab_object(game_object):send("hide")
+            igame_object.get_prefab_object(game_object):remove()
+            e.construct_arrows[idx] = nil
+            -- igame_object.get_prefab_object(game_object):send("hide")
         end
     else
         local game_object = e.construct_arrows[idx]
         if game_object then
-            igame_object.get_prefab_object(game_object):send("hide")
+            igame_object.get_prefab_object(game_object):remove()
+            e.construct_arrows[idx] = nil
+            -- igame_object.get_prefab_object(game_object):send("hide")
         end
     end
     w:sync("construct_arrows:out", e)

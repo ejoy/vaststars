@@ -28,6 +28,7 @@ local ui_construct_building_mb = world:sub {"ui", "construct", "click_construct"
 local ui_construct_confirm_mb = world:sub {"ui", "construct", "click_construct_confirm"}
 local ui_construct_cancel_mb = world:sub {"ui", "construct", "click_construct_cancel"}
 local ui_construct_rotate_mb = world:sub {"ui", "construct", "click_construct_rotate"}
+local ui_remove_message_mb = world:sub {"ui", "construct", "click_construct_remove"}
 
 local pickup_show_remove_mb = world:sub {"pickup_mapping", "pickup_show_remove"}
 local pickup_show_ui_mb = world:sub {"pickup_mapping", "pickup_show_ui"}
@@ -259,6 +260,15 @@ function construct_sys:data_changed()
             local rotation = iom.get_rotation(prefab_object.root)
             local deg = math.deg(math3d.tovalue(math3d.quat2euler(rotation))[2])
             iom.set_rotation(prefab_object.root, math3d.quaternion{axis=mc.YAXIS, r=math.rad(deg + 90)})
+        end
+    end
+
+    for _ in ui_remove_message_mb:unpack() do
+        for game_object in w:select("pickup_show_remove:in building:in pickup_show_set_road_arrow?in pickup_show_set_pipe_arrow?in x:in y:in") do
+            if game_object and game_object.pickup_show_remove and not game_object.pickup_show_set_road_arrow and not game_object.pickup_show_set_pipe_arrow then
+                igame_object.get_prefab_object(game_object):remove()
+                iterrain.set_tile_building_type(game_object.building.tile_coord, nil, game_object.building.area)
+            end
         end
     end
 end

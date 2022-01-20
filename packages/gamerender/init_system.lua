@@ -33,5 +33,7 @@ function m:init_world()
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
     iconstruct.init()
+
+    world:pub{"camera_controller", "stop", false}
 end
 
