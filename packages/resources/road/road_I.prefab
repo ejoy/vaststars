@@ -124,9 +124,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "左至右"
   reference: true
   scene:
@@ -145,9 +144,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "右至左"
   reference: true
   scene:
@@ -166,12 +164,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_r_1
   reference: true
   scene:
@@ -190,12 +184,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_r_2
   reference: true
   scene:
@@ -214,12 +204,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_l_1
   reference: true
   scene:
@@ -238,12 +224,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_l_2
   reference: true
   scene:

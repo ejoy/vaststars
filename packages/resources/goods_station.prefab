@@ -182,20 +182,16 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 2
-  follow_joint: Bone.002
-  follow_offset:
-    r: {-1.1641534958251043e-10, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 5.699999809265137, 0}
+  slot:
+    follow_flag: 2
+    joint_name: Bone.002
+#   offset_srt:
+#     t: {0, 5.699999809265137, 0}
   name: "货物挂点"
   reference: true
   scene:
     srt:
-      r: {-1.1641534958251043e-10, 0, 0, 1}
-      s: {1, 1, 1}
       t: {0, 5.699999809265137, 0}
-  slot: true
   tag:
     empty1
 mount: 8

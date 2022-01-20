@@ -86,9 +86,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "左至右"
   reference: true
   scene:
@@ -96,7 +95,7 @@ data:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {0, 2.200000047683716, 0}
-  slot: true
+  
   tag:
     empty9
 mount: 1
@@ -107,9 +106,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "右至左"
   reference: true
   scene:
@@ -117,7 +115,7 @@ data:
       r: {-4.371138828673793e-08, 1, -4.371138828673793e-08, 1.910685465164705e-15}
       s: {1, 1, 1}
       t: {0, 0.009999999776482582, 0}
-  slot: true
+  
   tag:
     empty10
 mount: 1
@@ -128,9 +126,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "下至上"
   reference: true
   scene:
@@ -138,7 +135,7 @@ data:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {0, 0.009999999776482582, 0}
-  slot: true
+  
   tag:
     empty11
 mount: 1
@@ -149,9 +146,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "上至下"
   reference: true
   scene:
@@ -159,7 +155,7 @@ data:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {0, 0, 0}
-  slot: true
+  
   tag:
     empty12
 mount: 1
@@ -170,9 +166,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "下转左"
   reference: true
   scene:
@@ -180,7 +175,7 @@ data:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {0, 0, 0}
-  slot: true
+  
   tag:
     empty13
 mount: 1
@@ -191,9 +186,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "左转下"
   reference: true
   scene:
@@ -201,7 +195,7 @@ data:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {0, 0.009999999776482582, 0}
-  slot: true
+  
   tag:
     empty14
 mount: 1
@@ -212,9 +206,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "下转右"
   reference: true
   scene:
@@ -222,7 +215,7 @@ data:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {0, 0.009999999776482582, 0}
-  slot: true
+  
   tag:
     empty15
 mount: 1
@@ -233,9 +226,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "右转下"
   reference: true
   scene:
@@ -243,7 +235,7 @@ data:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {0, 0.009999999776482582, 0}
-  slot: true
+  
   tag:
     empty16
 mount: 1
@@ -254,9 +246,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "上转左"
   reference: true
   scene:
@@ -264,7 +255,7 @@ data:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {0, 0.009999999776482582, 0}
-  slot: true
+  
   tag:
     empty17
 mount: 1
@@ -275,9 +266,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "左转上"
   reference: true
   scene:
@@ -285,7 +275,7 @@ data:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {0, 0, 0}
-  slot: true
+  
   tag:
     empty18
 mount: 1
@@ -296,9 +286,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "上转右"
   reference: true
   scene:
@@ -306,7 +295,7 @@ data:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {0, 0, 0}
-  slot: true
+  
   tag:
     empty19
 mount: 1
@@ -317,9 +306,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset: {}
+  slot:
+    follow_flag: 1
   name: "右转上"
   reference: true
   scene:
@@ -327,7 +315,7 @@ data:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {0, 0, 0}
-  slot: true
+  
   tag:
     empty20
 mount: 1
@@ -338,12 +326,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_b2t_1
   reference: true
   scene:
@@ -351,7 +335,7 @@ data:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {1.5, 2.200000047683716, -5}
-  slot: true
+  
   tag:
     empty7
 mount: 1
@@ -362,12 +346,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_b2t_2
   reference: true
   scene:
@@ -375,7 +355,7 @@ data:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {1.5, 2.200000047683716, 5}
-  slot: true
+  
   tag:
     empty8
 mount: 1
@@ -386,12 +366,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_t2b_1
   reference: true
   scene:
@@ -399,7 +375,7 @@ data:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-1.5, 2.200000047683716, 5}
-  slot: true
+  
   tag:
     empty9
 mount: 1
@@ -410,12 +386,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_t2b_2
   reference: true
   scene:
@@ -423,7 +395,7 @@ data:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-1.5, 2.200000047683716, -5}
-  slot: true
+  
   tag:
     empty10
 mount: 1
@@ -434,12 +406,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_r2l_1
   reference: true
   scene:
@@ -447,7 +415,7 @@ data:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {5, 2.200000047683716, 1.5}
-  slot: true
+  
   tag:
     empty11
 mount: 1
@@ -458,12 +426,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_r2l_2
   reference: true
   scene:
@@ -471,7 +435,7 @@ data:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {-5, 2.200000047683716, 1.5}
-  slot: true
+  
   tag:
     empty12
 mount: 1
@@ -482,12 +446,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_l2r_1
   reference: true
   scene:
@@ -495,7 +455,7 @@ data:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {-5, 2.200000047683716, -1.5}
-  slot: true
+  
   tag:
     empty13
 mount: 1
@@ -506,12 +466,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_l2r_2
   reference: true
   scene:
@@ -519,7 +475,7 @@ data:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {5, 2.200000047683716, -1.5}
-  slot: true
+  
   tag:
     empty14
 mount: 1
@@ -530,12 +486,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_b2r_1
   reference: true
   scene:
@@ -543,7 +495,7 @@ data:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {1.5, 2.200000047683716, -5}
-  slot: true
+  
   tag:
     empty15
 mount: 1
@@ -554,12 +506,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_b2r_2
   reference: true
   scene:
@@ -567,7 +515,7 @@ data:
       r: {0, 0.3826834559440613, 0, 0.9238795042037964}
       s: {1, 1, 1}
       t: {2, 2.200000047683716, -3}
-  slot: true
+  
   tag:
     empty16
 mount: 1
@@ -578,12 +526,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_b2r_3
   reference: true
   scene:
@@ -591,7 +535,7 @@ data:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {4, 2.200000047683716, -1.5}
-  slot: true
+  
   tag:
     empty17
 mount: 1
@@ -602,12 +546,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_b2l_1
   reference: true
   scene:
@@ -615,7 +555,7 @@ data:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {1.5, 2.200000047683716, -5}
-  slot: true
+  
   tag:
     empty18
 mount: 1
@@ -626,12 +566,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_b2l_2
   reference: true
   scene:
@@ -639,7 +575,7 @@ data:
       r: {0, -0.3826834559440613, 0, 0.9238795042037964}
       s: {1, 1, 1}
       t: {0, 2.200000047683716, -1}
-  slot: true
+  
   tag:
     empty19
 mount: 1
@@ -650,12 +586,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_b21_3
   reference: true
   scene:
@@ -663,7 +595,7 @@ data:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {-5, 2.200000047683716, 1.5}
-  slot: true
+  
   tag:
     empty20
 mount: 1
@@ -674,12 +606,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_t2r_1
   reference: true
   scene:
@@ -687,7 +615,7 @@ data:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-1.5, 2.200000047683716, 5}
-  slot: true
+  
   tag:
     empty21
 mount: 1
@@ -698,12 +626,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_t2r_2
   reference: true
   scene:
@@ -711,7 +635,7 @@ data:
       r: {0, 0.9537169337272644, 0, 0.30070582032203674}
       s: {1, 1, 1}
       t: {0, 2.200000047683716, 1}
-  slot: true
+  
   tag:
     empty22
 mount: 1
@@ -722,12 +646,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_t2r_3
   reference: true
   scene:
@@ -735,7 +655,7 @@ data:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {5, 2.200000047683716, -1.5}
-  slot: true
+  
   tag:
     empty23
 mount: 1
@@ -746,12 +666,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_t2l_1
   reference: true
   scene:
@@ -759,7 +675,7 @@ data:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-1.5, 2.200000047683716, 5}
-  slot: true
+  
   tag:
     empty24
 mount: 1
@@ -770,12 +686,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_t2l_2
   reference: true
   scene:
@@ -783,7 +695,7 @@ data:
       r: {0, -0.9537169337272644, 0, 0.30070582032203674}
       s: {1, 1, 1}
       t: {-1.899999976158142, 2.200000047683716, 2.799999952316284}
-  slot: true
+  
   tag:
     empty25
 mount: 1
@@ -794,12 +706,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_t2l_3
   reference: true
   scene:
@@ -807,7 +715,7 @@ data:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {-4, 2.200000047683716, 1.5}
-  slot: true
+  
   tag:
     empty26
 mount: 1
@@ -818,12 +726,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_r2b_1
   reference: true
   scene:
@@ -831,7 +735,7 @@ data:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {5, 2.200000047683716, 1.5}
-  slot: true
+  
   tag:
     empty27
 mount: 1
@@ -842,12 +746,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_r2b_2
   reference: true
   scene:
@@ -855,7 +755,7 @@ data:
       r: {0, -0.9537169337272644, 0, 0.30070582032203674}
       s: {1, 1, 1}
       t: {0, 2.200000047683716, 0}
-  slot: true
+  
   tag:
     empty28
 mount: 1
@@ -866,12 +766,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_r2b_3
   reference: true
   scene:
@@ -879,7 +775,7 @@ data:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-1.5, 2.200000047683716, -5}
-  slot: true
+  
   tag:
     empty29
 mount: 1
@@ -890,12 +786,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_r2t_1
   reference: true
   scene:
@@ -903,7 +795,7 @@ data:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {5, 2.200000047683716, 1.5}
-  slot: true
+  
   tag:
     empty30
 mount: 1
@@ -914,12 +806,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_r2t_2
   reference: true
   scene:
@@ -927,7 +815,7 @@ data:
       r: {0, -0.3826834559440613, 0, 0.9238795042037964}
       s: {1, 1, 1}
       t: {3, 2.200000047683716, 2}
-  slot: true
+  
   tag:
     empty31
 mount: 1
@@ -938,12 +826,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_r2t_3
   reference: true
   scene:
@@ -951,7 +835,7 @@ data:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {1.5, 2.200000047683716, 4}
-  slot: true
+  
   tag:
     empty32
 mount: 1
@@ -962,12 +846,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_l2b_1
   reference: true
   scene:
@@ -975,7 +855,7 @@ data:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {-5, 2.200000047683716, -1.5}
-  slot: true
+  
   tag:
     empty33
 mount: 1
@@ -986,12 +866,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_l2b_2
   reference: true
   scene:
@@ -999,7 +875,7 @@ data:
       r: {0, 0.9238795042037964, 0, 0.3826834261417389}
       s: {1, 1, 1}
       t: {-3, 2.200000047683716, -2}
-  slot: true
+  
   tag:
     empty34
 mount: 1
@@ -1010,12 +886,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_l2b_3
   reference: true
   scene:
@@ -1023,7 +895,7 @@ data:
       r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-1.5, 2.200000047683716, -4}
-  slot: true
+  
   tag:
     empty35
 mount: 1
@@ -1034,12 +906,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_l2t_1
   reference: true
   scene:
@@ -1047,7 +915,7 @@ data:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {-5, 2.200000047683716, -1.5}
-  slot: true
+  
   tag:
     empty36
 mount: 1
@@ -1058,12 +926,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_l2t_2
   reference: true
   scene:
@@ -1071,7 +935,7 @@ data:
       r: {0, 0.3826834559440613, 0, 0.9238795042037964}
       s: {1, 1, 1}
       t: {0, 2.200000047683716, 0}
-  slot: true
+  
   tag:
     empty37
 mount: 1
@@ -1082,12 +946,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_l2t_3
   reference: true
   scene:
@@ -1095,7 +955,7 @@ data:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {1.5, 2.200000047683716, 5}
-  slot: true
+  
   tag:
     empty38
 mount: 1
@@ -1106,12 +966,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_b2r_4
   reference: true
   scene:
@@ -1119,7 +975,7 @@ data:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {5, 2.200000047683716, -1.5}
-  slot: true
+  
   tag:
     empty1
 mount: 1
@@ -1130,12 +986,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_t2l_4
   reference: true
   scene:
@@ -1143,7 +995,7 @@ data:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {-5, 2.200000047683716, 1.5}
-  slot: true
+  
   tag:
     empty4
 mount: 1
@@ -1154,12 +1006,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_r2t_4
   reference: true
   scene:
@@ -1167,7 +1015,7 @@ data:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {1.5, 2.200000047683716, 5}
-  slot: true
+  
   tag:
     empty6
 mount: 1
@@ -1178,12 +1026,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  follow_flag: 1
-  follow_joint: None
-  follow_offset:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
   name: path_l2b_4
   reference: true
   scene:
@@ -1191,7 +1035,7 @@ data:
       r: {0, -1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-1.5, 2.200000047683716, -5}
-  slot: true
+  
   tag:
     empty7
 mount: 1
