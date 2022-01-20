@@ -158,6 +158,7 @@ system "pipe_system"
     .implement "pipe_system.lua"
     .method "init_world"
     .method "after_pickup_mapping"
+    .method "ui_update"
 
 --
 component "debug_component" .type "lua"
@@ -171,6 +172,7 @@ component "pickup_show_set_pipe_arrow" .type "lua" -- 点击显示建水管箭�
 component "pickup_set_pipe" .type "lua" -- 点击建水管 {tile_coord, arrow_tile_coord}
 component "route_endpoint" -- 路线终端(用于路线的起点或终点)
 component "named" -- 需要命名
+component "pickup_show_remove" .type "lua" -- 删除建筑
 
 component "construct_arrows" .type "lua" -- 缓存箭头,
 component "construct_arrows_building_type" .type "lua" -- 点击箭头时的建筑类型
@@ -181,6 +183,7 @@ policy "construct_arrows"
 interface "ipipe"
     .implement "pipe_system.lua"
     .method "construct"
+    .method "destruct"
 
 component "construct_entity" .type "lua"
 policy "construct_entity"
@@ -208,10 +211,12 @@ interface "iconstruct"
     .implement "road_system.lua"
     .method "init_world"
     .method "after_pickup_mapping"
+    .method "ui_update"
 
 interface "iroad"
     .implement "road_system.lua"
     .method "construct"
+    .method "destruct"
     .method "get_road_type"
     .method "set_building_entry"
 
@@ -234,6 +239,7 @@ interface "iterrain"
     .method "create"
     .method "get_coord_by_position"
     .method "get_position_by_coord"
+    .method "get_begin_position_by_coord"
     .method "get_tile_centre_position"
     .method "get_tile_building_type"
     .method "set_tile_building_type"

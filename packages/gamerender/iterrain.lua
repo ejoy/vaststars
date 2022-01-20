@@ -105,6 +105,21 @@ function iterrain.get_position_by_coord(tile_coord)
     return {((tile_coord[1] - 1) * unit + unit / 2) + srt.t[1], 0, ((tile_coord[2] - 1) * unit + unit / 2) + srt.t[3]}
 end
 
+function iterrain.get_begin_position_by_coord(...)
+    local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
+    local tile_bounds = e.terrain.tile_bounds
+    local srt = e.scene.srt
+    local unit = e.shape_terrain.unit
+
+    local tile_coord = {...}
+    for i = 1, #tile_bounds do
+        if tile_coord[i] < tile_bounds[i][1] or tile_coord[i] > tile_bounds[i][2] then
+            return
+        end
+    end
+    return {((tile_coord[1] - 1) * unit) + srt.t[1], 0, ((tile_coord[2] - 1) * unit + unit) + srt.t[3]}
+end
+
 function iterrain.get_confirm_ui_position(position)
     local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
     local srt = e.scene.srt

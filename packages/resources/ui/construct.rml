@@ -114,6 +114,7 @@
                 show_work = false,
                 work_id = 1,
                 is_show_construct_confirm = false,
+                is_show_construct_remove = false,
             }
             function start.clickWork(self, building_type)
                 if not building_type then
@@ -137,6 +138,9 @@
             function start.clickContructRotate()
                 ui_sys.pub("ui", "construct", "click_construct_rotate")
             end
+            function start.clickContructRemove()
+                ui_sys.pub("ui", "construct", "click_construct_remove")
+            end            
             function start.clickDebug(event, i)
                 ui_sys.pub("debug", i)
             end
@@ -158,6 +162,17 @@
                         element.style.top = ("%dpx"):format(math.floor(coord3[2]))
                     end
                 end,
+                ["construct_show_remove"] = function(coord)
+                    if not coord then
+                        start.is_show_construct_remove = false
+                        return
+                    end
+
+                    start.is_show_construct_remove = true
+                    local element = document:getElementById("id-button-construct-remove")
+                    element.style.left = ("%dpx"):format(math.floor(coord[1]))
+                    element.style.top = ("%dpx"):format(math.floor(coord[2]))
+                end
             })
         </script>
     </head>
@@ -177,6 +192,7 @@
             <input id = "id-button-construct-confirm" type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/confirm.png";' data-event-click = "clickContructConfirm()" data-if = "is_show_construct_confirm" />
             <input id = "id-button-construct-cancel"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/cancel.png";'  data-event-click = "clickContructCancel()" data-if = "is_show_construct_confirm" />
             <input id = "id-button-construct-rotate"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/rotate.png";'  data-event-click = "clickContructRotate()" data-if = "is_show_construct_confirm" />
+            <input id = "id-button-construct-remove"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/cancel.png";'  data-event-click = "clickContructRemove()" data-if = "is_show_construct_remove" />
             
             <button id="work" data-event-click="clickWork()" style='background-color: rgba(0,176,240,255); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width:80px; height: 80px; background-size:cover;'/>

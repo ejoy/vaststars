@@ -430,12 +430,42 @@ do
         return now * 10
     end
 
+    local create_queue = import_package("vaststars.utility").queue
     --------------------------------------------------------
+    local update_fps, get_fps do
+        local max_cache_milsec <const> = 10000
+        local max_cache_sec <const> = max_cache_milsec / 1000
+        local frames = create_queue()
+
+        function update_fps()
+            local current = get_current()
+            frames:push(current)
+
+            local h = frames:gethead()
+            while h and current - h > max_cache_milsec do
+                frames:pop()
+                h = frames:gethead()
+            end
+        end
+
+        function get_fps()
+            return (frames:size() / max_cache_sec)
+        end
+    end
 
     local span <const> = 8
     local iom_set_srt = iom.set_srt
     local math3d_srt = math3d.srt
+    local bgfx = require "bgfx"
+
     test_funcs[2] = function ()
+        update_fps()
+        bgfx.dbg_text_print(8, 1, 0x03, ("DEBUGFPS: %.03f"):format(get_fps()))
+        local bgfxstat = bgfx.get_stats("sdcpnmtv")
+        bgfx.dbg_text_print(8, 2, 0x03, ("DrawCall: %-10d Triangle: %-10d Texture: %-10d cpu(ms): %04.4f gpu(ms): %04.4f fps: %d"):format(
+            bgfxstat.numDraw, bgfxstat.numTriList, bgfxstat.numTextures, bgfxstat.cpu, bgfxstat.gpu, bgfxstat.fps
+        ))
+
         local prefab = get_debug_prefab(2)
         if not prefab then
             return

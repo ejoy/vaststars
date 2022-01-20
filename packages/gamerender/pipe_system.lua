@@ -16,6 +16,7 @@ local pipe_sys = ecs.system "pipe_system"
 local ipipe = ecs.interface "ipipe"
 local pickup_show_set_pipe_arrow_mb = world:sub {"pickup_mapping", "pickup_show_set_pipe_arrow"}
 local pickup_set_pipe_mb = world:sub {"pickup_mapping", "pickup_set_pipe"}
+local ui_remove_message_mb = world:sub {"ui", "construct", "click_construct_remove"}
 local pickup_mb = world:sub {"pickup"}
 local construct_arrows_entity
 
@@ -87,8 +88,16 @@ local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ;
         return accel_reversed[passable_state]
     end
 
-    function set_passable_state(passable_state, passable_dir)
-        return (passable_state | (1 << passable_dir))
+    function set_passable_state(passable_state, passable_dir, state)
+        if state == 0 then
+            if (passable_state & (1 << passable_dir)) == (1 << passable_dir) then
+                return passable_state - (1 << passable_dir)
+            else
+                return passable_state
+            end
+        else
+            return (passable_state | (1 << passable_dir))
+        end
     end
 end
 
@@ -112,15 +121,16 @@ local function create_entity(typedir, x, y)
             "vaststars.gamerender|building",
         },
         data = {
+            x = x,
+            y = y,
+            dir = dir,
             building = {
-                x = x,
-                y = y,
-                dir = dir,
                 building_type = "pipe",
                 tile_coord = {x, y},
                 area = {1, 1},
             },
             pickup_show_set_pipe_arrow = true,
+            pickup_show_remove = false,
         },
     })
 end
@@ -133,7 +143,26 @@ local function set(types, x, y, passable_dir)
     else
         passable_state = typedir_to_passable_state(types[x][y])
     end
-    passable_state = set_passable_state(passable_state, passable_dir)
+    passable_state = set_passable_state(passable_state, passable_dir, 1)
+
+    local typedir = passable_state_to_typedir(passable_state)
+    if not typedir then
+        assert(false)
+        return
+    end
+
+    types[x][y] = typedir
+end
+
+local function unset(types, x, y, passable_dir)
+    types[x] = types[x] or {}
+    local passable_state = 0
+    if not types[x][y] then
+        passable_state = 0
+    else
+        passable_state = typedir_to_passable_state(types[x][y])
+    end
+    passable_state = set_passable_state(passable_state, passable_dir, 0)
 
     local typedir = passable_state_to_typedir(passable_state)
     if not typedir then
@@ -175,7 +204,7 @@ funcs[South] = function(types, sx, sy, dx, dy)
     set(types, dx, dy, South)
 end
 
-local get_dir ; do
+local get_dir, dir_to_coord ; do
     local accel = {
         [-1] = {
             [0] = West,
@@ -189,12 +218,24 @@ local get_dir ; do
         },
     }
 
+    local dir_accel = {
+        [North] = {0, 1},
+        [East] = {1, 0},
+        [South] = {0, -1},
+        [West] = {-1, 0},
+    }
+
     function get_dir(sx, sy, dx, dy)
         if not accel[dx - sx] then
             return
         end
 
         return accel[dx - sx][dy - sy]
+    end
+
+    function dir_to_coord(x, y, dir)
+        local t = dir_accel[dir]
+        return x + t[1], y + t[2]
     end
 end
 
@@ -240,6 +281,51 @@ function pipe_sys:after_pickup_mapping()
         w:sync("pickup_set_pipe:in", game_object)
         ipipe.construct(game_object.pickup_set_pipe.tile_coord, game_object.pickup_set_pipe.arrow_tile_coord)
     end
+end
+
+function pipe_sys:ui_update()
+    for _ in ui_remove_message_mb:unpack() do
+        for game_object in w:select("pickup_show_remove:in pickup_show_set_pipe_arrow:in x:in y:in") do
+            if game_object and game_object.pickup_show_remove then
+                ipipe.destruct(game_object.x, game_object.y)
+            end
+        end
+    end
+end
+
+function ipipe.destruct(x, y)
+    local e = w:singleton("pipe_types", "pipe_types:in pipe_entities:in")
+    local pipe_entities = e.pipe_entities
+    local pipe_types = e.pipe_types
+
+    assert(pipe_types[x])
+    assert(pipe_types[x][y])
+
+    local t = {}
+    for _, dir in pairs(DIRECTION) do
+        local dx, dy = dir_to_coord(x, y, dir)
+        if pipe_types[dx] and pipe_types[dx][dy] then
+            t[#t+1] = {dx, dy}
+            unset(pipe_types, dx, dy, (dir + 2) % 4 )
+        end
+    end
+
+    for _, v in ipairs(t) do
+        flush(pipe_types, pipe_entities, v[1], v[2])
+    end
+
+    local game_object = pipe_entities[x][y]
+    w:sync("building:in", game_object)
+    iterrain.set_tile_building_type(game_object.building.tile_coord, nil, game_object.building.area)
+    igame_object.remove_prefab(game_object)
+
+    pipe_entities[x][y] = nil
+    pipe_types[x][y] = nil
+
+    w:sync("pipe_types:out pipe_entities:out", e)
+
+    iconstruct_arrow.hide(construct_arrows_entity)
+    world:pub {"ui_message", "construct_show_remove", nil}
 end
 
 function ipipe.construct(coord_s, coord_d)

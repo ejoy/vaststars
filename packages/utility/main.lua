@@ -18,4 +18,5 @@ function m.ray_hit_plane(ray, plane_info)
 	return nil
 end
 
+m.queue = require "queue"
 return m

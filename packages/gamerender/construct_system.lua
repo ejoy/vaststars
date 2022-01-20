@@ -29,7 +29,9 @@ local ui_construct_confirm_mb = world:sub {"ui", "construct", "click_construct_c
 local ui_construct_cancel_mb = world:sub {"ui", "construct", "click_construct_cancel"}
 local ui_construct_rotate_mb = world:sub {"ui", "construct", "click_construct_rotate"}
 
+local pickup_show_remove_mb = world:sub {"pickup_mapping", "pickup_show_remove"}
 local pickup_show_ui_mb = world:sub {"pickup_mapping", "pickup_show_ui"}
+local pickup_mb = world:sub {"pickup"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_sys = ecs.system "construct_system"
 
@@ -267,6 +269,27 @@ function construct_sys:after_pickup_mapping()
         w:sync("pickup_show_ui:in", entity)
         url = entity.pickup_show_ui.url
         iui.open(url)
+    end
+
+    local show_pickup_show_remove
+    for _, _, game_object in pickup_show_remove_mb:unpack() do
+        w:sync("x:in y:in pickup_show_remove:in ", game_object)
+        local pos = iterrain.get_begin_position_by_coord(game_object.x, game_object.y)
+        world:pub {"ui_message", "construct_show_remove", math3d.tovalue(icamera.world_to_screen(pos))}
+        game_object.pickup_show_remove = true
+        w:sync("pickup_show_remove:out", game_object)
+        show_pickup_show_remove = true
+    end
+
+    for _ in pickup_mb:unpack() do
+        if not show_pickup_show_remove then
+            for e in w:select("pickup_show_remove:update") do
+                e.pickup_show_remove = false
+            end
+
+            world:pub {"ui_message", "construct_show_remove", nil}
+            break
+        end
     end
 end
 
