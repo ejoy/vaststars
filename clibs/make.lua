@@ -15,8 +15,7 @@ local Antdir = "../" .. lm.antdir
 
 lm:exe "vaststars" {
     deps = {
-        "ant_editor",
-        --"ant_runtime",
+        lm.os == "ios" and "ant_runtime" or "ant_editor",
         "bgfx-lib",
         "ant_links",
         "bootstrap_lua",

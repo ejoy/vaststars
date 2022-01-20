@@ -1,9 +1,35 @@
 local lm = require "luamake"
 
-local fs = require "bee.filesystem"
+
+local plat = (function ()
+    if lm.os == "windows" then
+        if lm.compiler == "gcc" then
+            return "mingw"
+        end
+        return "msvc"
+    end
+    return lm.os
+end)()
 
 lm.mode = "debug"
-lm.bindir = "bin/msvc/"..lm.mode
+lm.builddir = ("build/%s/%s"):format(plat, lm.mode)
+lm.bindir = ("bin/%s/%s"):format(plat, lm.mode)
+
+if lm.os == "ios" then
+    lm.arch = "arm64"
+    if lm.mode == "release" then
+        lm.sys = "ios13.0"
+    else
+        lm.sys = "ios14.1"
+    end
+end
+
+lm.ios = {
+    flags = {
+        "-fembed-bitcode",
+        "-fobjc-arc"
+    }
+}
 
 lm.antdir = lm.antdir or "3rd/ant/"
 
