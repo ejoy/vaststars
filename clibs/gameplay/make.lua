@@ -24,5 +24,6 @@ lm:lib "gameplay" {
     sources = {
         "src/**.c",
         "src/**.cpp",
+        "!src/mining.cpp"
     }
 }

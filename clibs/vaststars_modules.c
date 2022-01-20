@@ -2,7 +2,7 @@
 #include <lauxlib.h>
 
 #define MODULE(CATALOG, NAME) \
-    int luaopen_vaststars_##NAME##_##CATALOG##(lua_State* L); \
+    int luaopen_vaststars_##NAME##_##CATALOG(lua_State* L); \
     lua_pushcfunction(L, luaopen_vaststars_##NAME##_##CATALOG); \
     lua_setfield(L, -2, "vaststars."#NAME"."#CATALOG);
 
