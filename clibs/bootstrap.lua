@@ -29,7 +29,7 @@ local antdir = os.getenv "antdir"
 antdir = antdir and fs.path(antdir) or (ProjectDir / "3rd" / "ant")
 
 fs.current_path(antdir)
-if arg[0] == nil then
+if arg[0] == nil or arg[0] == "" then
     arg[0] = "main.lua"
 end
 -- arg[0] = "../../"..arg[0]

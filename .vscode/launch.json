@@ -10,7 +10,12 @@
             "console": "integratedTerminal",
             "outputCapture": [],
             "luaVersion": "5.4",
-            "luaexe": "${workspaceRoot}/bin/msvc/debug/vaststars.exe",
+            "windows": {
+                "luaexe": "${workspaceRoot}/bin/msvc/debug/vaststars",
+            },
+            "osx": {
+                "luaexe": "${workspaceRoot}/bin/macos/debug/vaststars",
+            },
             "program": "",
         }
     ]
