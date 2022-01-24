@@ -64,11 +64,10 @@ local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ;
         for _, dir in ipairs(directions[type_t]) do
             local state = 0
             for b = West, North, -1 do
-                state = state << 1
                 if v[(b - DIRECTION[dir]) % 4] then
-                    state = state | 1
+                    state = state << 1 | 1
                 else
-                    state = state | 0
+                    state = state << 1 | 0
                 end
             end
             accel[type_t .. dir] = state
@@ -91,13 +90,9 @@ local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ;
 
     function set_passable_state(passable_state, passable_dir, state)
         if state == 0 then
-            if (passable_state & (1 << passable_dir)) == (1 << passable_dir) then
-                return passable_state - (1 << passable_dir)
-            else
-                return passable_state
-            end
+            return passable_state & ~(1 << passable_dir)
         else
-            return (passable_state | (1 << passable_dir))
+            return passable_state |  (1 << passable_dir)
         end
     end
 end
@@ -110,7 +105,7 @@ local rotators <const> = {
     [West]  = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
 }
 
-local function create_entity(typedir, x, y)
+local function create_game_object(typedir, x, y)
     local t = typedir:sub(1, 1)
     local dir = typedir:sub(2, 2)
     local prefab = ecs.create_instance(prefab_file_path:format(t))
@@ -181,7 +176,7 @@ local function flush(types, entities, x, y)
     if game_object then
         igame_object.remove_prefab(game_object)
     end
-    entities[x][y] = create_entity(types[x][y], x, y)
+    entities[x][y] = create_game_object(types[x][y], x, y)
     --
     igameplay_adapter.set_road(x, y, types[x][y])
 end
@@ -290,13 +285,13 @@ function road_sys:ui_update()
     for _ in ui_remove_message_mb:unpack() do
         for game_object in w:select("pickup_show_remove:in pickup_show_set_road_arrow:in x:in y:in") do
             if game_object and game_object.pickup_show_remove then
-                iroad.destruct(game_object.x, game_object.y)
+                iroad.dismantle(game_object.x, game_object.y)
             end
         end
     end
 end
 
-function iroad.destruct(x, y)
+function iroad.dismantle(x, y)
     local e = w:singleton("road_types", "road_types:in road_entities:in")
     local road_types = e.road_types
     local road_entities = e.road_entities

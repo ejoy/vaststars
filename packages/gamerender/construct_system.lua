@@ -152,7 +152,7 @@ local on_prefab_message ; do
                     local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
                     if gameplay_adapter then
                         w:sync("scene:in", prefab.root)
-                        gameplay_adapter.gameplay_world:create_entity {
+                        gameplay_adapter.gameplay_world.ecs:new {
                             station = {
                                 id = prefab.root.scene.id,
                                 position = packCoord(tile_coord[1], tile_coord[2] + (-1 * (game_object.building.area[2] // 2)) - 1),

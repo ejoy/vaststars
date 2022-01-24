@@ -37,9 +37,55 @@ local get_track_joint; do
     end
 end
 
+local ltask = require "ltask"
+local ltask_now = ltask.now
+local function get_current()
+    local _, now = ltask_now()
+    return now * 10
+end
 
+local create_queue = import_package("vaststars.utility").queue
+--------------------------------------------------------
+local update_fps, get_fps do
+    local max_cache_milsec <const> = 10000
+    local max_cache_sec <const> = max_cache_milsec / 1000
+    local frames = create_queue()
 
-local m = ecs.system 'debug_system'
+    function update_fps()
+        local current = get_current()
+        frames:push(current)
+
+        local h = frames:gethead()
+        while h and current - h > max_cache_milsec do
+            frames:pop()
+            h = frames:gethead()
+        end
+    end
+
+    function get_fps()
+        return (frames:size() / max_cache_sec)
+    end
+end
+
+local add_entity_count, dec_entity_count, get_entity_count; do
+    local c = 0
+    function get_entity_count()
+        return c
+    end
+
+    function add_entity_count()
+        c = c + 1
+    end
+
+    function dec_entity_count()
+        c = c - 1
+    end
+end
+
+--------------------------------------------------------
+--------------------------------------------------------
+
+local debug_sys = ecs.system 'debug_system'
 local debug_mb = world:sub {"debug"}
 local funcs = {}
 local test_funcs = {}
@@ -192,10 +238,10 @@ funcs[3] = function ()
         local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
         if gameplay_adapter then
             w:sync("scene:in", prefab.root)
-            gameplay_adapter.gameplay_world:create_entity {
+            gameplay_adapter.gameplay_world.ecs:new {
                 station = {
                     id = prefab.root.scene.id,
-                    position = packCoord(game_object.x, game_object.y + (-1 * (game_object.building.area[2] // 2)) - 1),
+                    coord = packCoord(game_object.x, game_object.y + (-1 * (game_object.building.area[2] // 2)) - 1),
                 }
             }
         end
@@ -243,10 +289,10 @@ funcs[3] = function ()
         local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
         if gameplay_adapter then
             w:sync("scene:in", prefab.root)
-            gameplay_adapter.gameplay_world:create_entity {
+            gameplay_adapter.gameplay_world.ecs:new {
                 station = {
                     id = prefab.root.scene.id,
-                    position = packCoord(game_object.x, game_object.y + (-1 * (game_object.building.area[2] // 2)) - 1),
+                    coord = packCoord(game_object.x, game_object.y + (-1 * (game_object.building.area[2] // 2)) - 1),
                 }
             }
         end
@@ -295,7 +341,7 @@ do
         DIRECTION_REV[v] = dir
     end
 
-    local function get_road_path(road_game_object, indir, outdir)
+    local function get_road_track_slots(road_game_object, indir, outdir)
         local e = w:singleton("road_types", "road_types:in")
         w:sync("x:in y:in", road_game_object)
         local road_type_dir = (e.road_types[road_game_object.x][road_game_object.y])
@@ -304,21 +350,21 @@ do
 
         indir = (DIRECTION[indir] - DIRECTION[dir]) % 4
         outdir = (DIRECTION[outdir] - DIRECTION[dir]) % 4
-        local t = config.road_track[rt][DIRECTION_REV[indir]][DIRECTION_REV[outdir]]
+        local slot_names = config.road_track[rt][DIRECTION_REV[indir]][DIRECTION_REV[outdir]]
 
-        local r = {}
-        for _, v in ipairs(t) do
-            r[#r+1] = road_game_object.prefab_slot_cache[v]
+        local t = {}
+        for _, v in ipairs(slot_names) do
+            t[#t+1] = road_game_object.prefab_slot_cache[v]
         end
-        return r, rt
+        return t
     end
 
     local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
     local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
     local math3d        = require "math3d"
-    local animation = require "hierarchy".animation
-    local new_vector_float3 = animation.new_vector_float3
-    local new_vector_quaternion = animation.new_vector_quaternion
+    local hierarchy = require "hierarchy"
+    local animation = hierarchy.animation
+    local skeleton = hierarchy.skeleton
 
     local srts = {}
     local idx = 1
@@ -344,7 +390,11 @@ do
             end
         end
 
-        assert(#endpoint_ids == 2)
+        if #endpoint_ids ~= 2 then
+            print(#endpoint_ids, "can not found endpoints")
+            return
+        end
+
         local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
 
         local road_path
@@ -353,6 +403,7 @@ do
         else
             road_path = gameplay_adapter.gameplay_world:road_path(endpoint_ids[2], endpoint_ids[1])
         end
+        assert(road_path)
 
         local result = {{coord = get_endpoint_coord(endpoint_ids[1]), indir = 'N'}}
         for _, dir in ipairs(road_path) do
@@ -378,37 +429,71 @@ do
         end
         result[#result].outdir = 'N'
 
-        --
-        local translations = new_vector_float3()
-        local rotations = new_vector_quaternion()
-        for i1, v in ipairs(result) do
+        local road_track_slot_entities = {}
+        for _, v in ipairs(result) do
             local game_object = get_road_game_object(v.coord)
-            local rpath, rt = get_road_path(game_object, v.indir, v.outdir)
-            for i2, e in ipairs(rpath) do
-                if i1 ~= #result and i2 == #rpath then
-                    break
-                end
-
-                local wm = iom.worldmat(e)
-		        local s, r, t = math3d.srt(wm)
-                translations:insert(t) -- add translation key
-                rotations:insert(r)    -- add rotation key
-
-                print("key frame: ", rt, ",", table.concat(math3d.tovalue(t), ", "))
+            local slot_entities = get_road_track_slots(game_object, v.indir, v.outdir)
+            for _, e in ipairs(slot_entities) do
+                road_track_slot_entities[#road_track_slot_entities+1] = e
             end
         end
 
-        srts = {}
-        idx = 1
-        last_update_time = nil
+        --
+        local raw_animation = animation.new_raw_animation()
+        local skl = skeleton.build({{name = "root", s = {1.0, 1.0, 1.0}, r = {0.0, 0.0, 0.0, 1.0}, t = {0.0, 0.0, 0.0}}})
 
-        local base = 100
-        local duration = (translations:size() - 1) * base * 20
+        local function calc_dist(p1, p2)
+            local d = 0.0
+            for i = 1, 3 do
+                d = d + (p1[i] - p2[i]) ^ 2
+            end
+            return math.sqrt(d)
+        end
+
+        local it = {}
+        local lt
+        local total = 0.0
+        local EPSILON <const> = 2 ^ -14
+        for idx, e in ipairs(road_track_slot_entities) do
+            local wm = iom.worldmat(e)
+            local s, r, t = math3d.srt(wm)
+
+            local dist = 0.0
+            if lt then
+                dist = calc_dist(math3d.tovalue(lt), math3d.tovalue(t))
+
+                -- 排除重复点
+                if dist > EPSILON then
+                    total = total + dist
+                    it[#it+1] = {d = total, s = s, r = r, t = t}
+                    lt = t
+                end
+            else
+                it[#it+1] = {d = 0, s = s, r = r, t = t}
+                lt = t
+            end 
+        end
+
+        raw_animation:setup(skl, total)
+        for _, v in ipairs(it) do
+            raw_animation:push_prekey(
+                "root",
+                v.d,
+                v.s, v.r, v.t
+            )
+        end
+
+        local ani = raw_animation:build()
+        local poseresult = animation.new_pose_result(#skl)
+        poseresult:setup(skl)
+
         local ratio = 0
-        local step = 1/((translations:size() - 1) * base)
+        local step = 1 / (#result - 1) / 30
 
-        while ratio <= 1 do
-            local mat = get_track_joint(translations, rotations, duration, ratio)
+        while ratio <= 1.0 do
+            poseresult:do_sample(animation.new_sampling_context(1), ani, ratio, 0)
+            poseresult:fetch_result()
+            local mat = poseresult:joint(1)
             srts[#srts+1] = math3d.ref(mat)
             ratio = ratio + step
         end
@@ -425,48 +510,19 @@ do
         })
     end
 
-    local ltask = require "ltask"
-    local ltask_now = ltask.now
-    local function get_current()
-        local _, now = ltask_now()
-        return now * 10
-    end
-
-    local create_queue = import_package("vaststars.utility").queue
-    --------------------------------------------------------
-    local update_fps, get_fps do
-        local max_cache_milsec <const> = 10000
-        local max_cache_sec <const> = max_cache_milsec / 1000
-        local frames = create_queue()
-
-        function update_fps()
-            local current = get_current()
-            frames:push(current)
-
-            local h = frames:gethead()
-            while h and current - h > max_cache_milsec do
-                frames:pop()
-                h = frames:gethead()
-            end
-        end
-
-        function get_fps()
-            return (frames:size() / max_cache_sec)
-        end
-    end
-
-    local span <const> = 8
+    local span <const> = 1
     local iom_set_srt = iom.set_srt
     local math3d_srt = math3d.srt
     local bgfx = require "bgfx"
 
     test_funcs[2] = function ()
-        update_fps()
-        bgfx.dbg_text_print(8, 1, 0x03, ("DEBUGFPS: %.03f"):format(get_fps()))
-        local bgfxstat = bgfx.get_stats("sdcpnmtv")
-        bgfx.dbg_text_print(8, 2, 0x03, ("DrawCall: %-10d Triangle: %-10d Texture: %-10d cpu(ms): %04.4f gpu(ms): %04.4f fps: %d"):format(
-            bgfxstat.numDraw, bgfxstat.numTriList, bgfxstat.numTextures, bgfxstat.cpu, bgfxstat.gpu, bgfxstat.fps
-        ))
+        -- update_fps()
+        -- bgfx.dbg_text_print(8, 1, 0x03, ("DebugFPS: %.03f"):format(get_fps()))
+        -- local bgfxstat = bgfx.get_stats("sdcpnmtv")
+        -- bgfx.dbg_text_print(8, 2, 0x03, ("DrawCall: %-10d Triangle: %-10d Texture: %-10d cpu(ms): %04.4f gpu(ms): %04.4f fps: %d"):format(
+        --     bgfxstat.numDraw, bgfxstat.numTriList, bgfxstat.numTextures, bgfxstat.cpu, bgfxstat.gpu, bgfxstat.fps
+        -- ))
+        -- bgfx.dbg_text_print(8, 3, 0x04, ("entities: %-10d"):format(get_entity_count()))
 
         local prefab = get_debug_prefab(2)
         if not prefab then
@@ -478,15 +534,14 @@ do
         delta_time = (current - (last_update_time or current)) + (delta_time or 0)
         last_update_time = current
 
-        while delta_time >= span do
-            delta_time = delta_time - span
+        -- while delta_time >= span do
+        --     delta_time = delta_time - span
             idx = idx + 1
             if idx > #srts then
                 return
             end
             iom_set_srt(prefab.root, math3d_srt(srts[idx]))
-            -- print("run", get_current())
-        end
+        -- end
     end
 end
 
@@ -577,19 +632,43 @@ funcs[5] = function()
 end
 
 funcs[6] = function()
+    print("world._frame", world._frame)
     world:print_cpu_stat()
-    for k, v in pairs(world:memory()) do
-        print(k, v)
-    end
+    -- for k, v in pairs(world:memory()) do
+    --     print(k, v)
+    -- end
 
-    for game_object in w:select "game_object:in" do
-        local prefab_object = igame_object.get_prefab_object(game_object)
-        prefab_object:remove()
+    -- for e in w:select "debug_component:in" do
+    --     w:remove(e)
+    -- end
+end
+
+funcs[7] = function()
+    for i = 1, 100 do
+        ecs.create_entity({
+            policy = {
+                "ant.general|name",
+                "ant.scene|scene_object",
+            },
+            data = {
+                name = "test",
+                debug_component = i,
+                scene = {srt = {}},
+            }
+        })
     end
+    print("done")
+end
+
+funcs[8] = function()
+    for e in w:select "shape_terrain:in" do
+        w:remove(e)
+    end
+    print("done")
 end
 
 --------------
-function m:ui_update()
+function debug_sys:ui_update()
     for _, i in debug_mb:unpack() do 
         local func = funcs[i]
         if func then
@@ -600,8 +679,20 @@ function m:ui_update()
 
 end
 
-function m:start_frame()
+function debug_sys:start_frame()
     for _, func in ipairs(test_funcs) do
         func()
+    end
+end
+
+function debug_sys:entity_init()
+	for e in w:select "INIT" do
+        add_entity_count()
+    end
+end
+
+function debug_sys:entity_remove()
+    for e in w:select "REMOVED" do
+        dec_entity_count()
     end
 end

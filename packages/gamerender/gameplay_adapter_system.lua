@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local create_gameplay_world = import_package "vaststars.gameplay".createWorld
+local set_road_mb = world:sub {"gameplay_adapter_system", "set_road"}
 local gameplay_adapter_system = ecs.system "gameplay_adapter_system"
 local igameplay_adapter = ecs.interface "igameplay_adapter"
 
@@ -32,15 +33,40 @@ function gameplay_adapter_system:data_changed()
     end
 end
 
+function gameplay_adapter_system:entity_ready()
+    local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in gameplay_road_entities:in")
+    if not gameplay_adapter then
+        return
+    end
+
+    local gameplay_ecs = gameplay_adapter.gameplay_world.ecs
+
+    for _, _, coord, road_type in set_road_mb:unpack() do
+        local e = gameplay_adapter.gameplay_road_entities[coord]
+        if e then
+            gameplay_ecs:remove(e)
+        end
+
+        local ref = {}
+        gameplay_ecs:new {
+            road = {
+                coord = coord,
+                road_type = road_type,
+            },
+            reference = ref,
+        }
+        gameplay_adapter.gameplay_road_entities[coord] = ref
+    end
+end
+
 function igameplay_adapter.set_road(x, y, road_type)
-    local position = packCoord(x, y)
     local t = {
         ['N'] = 0,
         ['E'] = 1,
         ['S'] = 2,
         ['W'] = 3,
     }
-
+    
     local tr = {
         ['L'] = 0,
         ['I'] = 1,
@@ -50,20 +76,6 @@ function igameplay_adapter.set_road(x, y, road_type)
         ['O'] = 5,
     }
 
-    local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in gameplay_road_entities:in")
-    local gameplay_world = gameplay_adapter.gameplay_world
-    local e = gameplay_adapter.gameplay_road_entities[position]
-    if e then
-        gameplay_world:remove(e)
-    end
-
-    local ref = {}
-    gameplay_world:create_entity {
-        road = {
-            position = position,
-            road_type = tr[road_type:sub(1, 1)] << 8 | t[road_type:sub(2, 2)],
-        },
-        reference = ref,
-    }
-    gameplay_adapter.gameplay_road_entities[position] = ref
+    local coord = packCoord(x, y)
+    world:pub {"gameplay_adapter_system", "set_road", coord, tr[road_type:sub(1, 1)] << 8 | t[road_type:sub(2, 2)]}
 end

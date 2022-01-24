@@ -119,7 +119,7 @@ map_lookup(struct road_map *map, union coord c) {
 
 static int
 checkstation(lua_State *L, int index) {
-	int id = luaL_checkinteger(L, index);
+	int id = (int)luaL_checkinteger(L, index);
 	if (id < 0) {
 		return luaL_error(L, "Invalid station id %d", id);
 	}
