@@ -1,0 +1,391 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		11FAA86A279E7C2500D847F3 /* vaststars_modules.c in Sources */ = {isa = PBXBuildFile; fileRef = 11FAA869279E7C2500D847F3 /* vaststars_modules.c */; };
+		11FAA86D279E7CFB00D847F3 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FAA86C279E7CFB00D847F3 /* Metal.framework */; };
+		11FAA86F279E7D1200D847F3 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FAA86E279E7D1200D847F3 /* CoreText.framework */; };
+		11FAA871279E7D1C00D847F3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FAA870279E7D1C00D847F3 /* CoreTelephony.framework */; };
+		11FAA873279E7D3500D847F3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FAA872279E7D3500D847F3 /* Foundation.framework */; };
+		11FAA875279E7D4500D847F3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FAA874279E7D4500D847F3 /* QuartzCore.framework */; };
+		11FAA877279E7D5400D847F3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FAA876279E7D5400D847F3 /* UIKit.framework */; };
+		11FAA879279E7D5F00D847F3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FAA878279E7D5F00D847F3 /* SystemConfiguration.framework */; };
+		11FAA87D279E808A00D847F3 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 11FAA87C279E808A00D847F3 /* Settings.bundle */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		11FAA849279AA48600D847F3 /* vaststars.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vaststars.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		11FAA869279E7C2500D847F3 /* vaststars_modules.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vaststars_modules.c; path = ../../../../clibs/vaststars_modules.c; sourceTree = "<group>"; };
+		11FAA86C279E7CFB00D847F3 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		11FAA86E279E7D1200D847F3 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		11FAA870279E7D1C00D847F3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		11FAA872279E7D3500D847F3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		11FAA874279E7D4500D847F3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		11FAA876279E7D5400D847F3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		11FAA878279E7D5F00D847F3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		11FAA87C279E808A00D847F3 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		11FAA880279E8EF700D847F3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		11FAA846279AA48600D847F3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11FAA879279E7D5F00D847F3 /* SystemConfiguration.framework in Frameworks */,
+				11FAA877279E7D5400D847F3 /* UIKit.framework in Frameworks */,
+				11FAA875279E7D4500D847F3 /* QuartzCore.framework in Frameworks */,
+				11FAA873279E7D3500D847F3 /* Foundation.framework in Frameworks */,
+				11FAA871279E7D1C00D847F3 /* CoreTelephony.framework in Frameworks */,
+				11FAA86F279E7D1200D847F3 /* CoreText.framework in Frameworks */,
+				11FAA86D279E7CFB00D847F3 /* Metal.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		11FAA840279AA48600D847F3 = {
+			isa = PBXGroup;
+			children = (
+				11FAA84B279AA48600D847F3 /* vaststars */,
+				11FAA84A279AA48600D847F3 /* Products */,
+				11FAA86B279E7CFB00D847F3 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		11FAA84A279AA48600D847F3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				11FAA849279AA48600D847F3 /* vaststars.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		11FAA84B279AA48600D847F3 /* vaststars */ = {
+			isa = PBXGroup;
+			children = (
+				11FAA880279E8EF700D847F3 /* Info.plist */,
+				11FAA869279E7C2500D847F3 /* vaststars_modules.c */,
+				11FAA87C279E808A00D847F3 /* Settings.bundle */,
+			);
+			path = vaststars;
+			sourceTree = "<group>";
+		};
+		11FAA86B279E7CFB00D847F3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				11FAA878279E7D5F00D847F3 /* SystemConfiguration.framework */,
+				11FAA876279E7D5400D847F3 /* UIKit.framework */,
+				11FAA874279E7D4500D847F3 /* QuartzCore.framework */,
+				11FAA872279E7D3500D847F3 /* Foundation.framework */,
+				11FAA870279E7D1C00D847F3 /* CoreTelephony.framework */,
+				11FAA86E279E7D1200D847F3 /* CoreText.framework */,
+				11FAA86C279E7CFB00D847F3 /* Metal.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		11FAA848279AA48600D847F3 /* vaststars */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 11FAA864279AA48700D847F3 /* Build configuration list for PBXNativeTarget "vaststars" */;
+			buildPhases = (
+				11FAA845279AA48600D847F3 /* Sources */,
+				11FAA846279AA48600D847F3 /* Frameworks */,
+				11FAA847279AA48600D847F3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = vaststars;
+			productName = vaststars;
+			productReference = 11FAA849279AA48600D847F3 /* vaststars.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		11FAA841279AA48600D847F3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1320;
+				TargetAttributes = {
+					11FAA848279AA48600D847F3 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+				};
+			};
+			buildConfigurationList = 11FAA844279AA48600D847F3 /* Build configuration list for PBXProject "vaststars" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 11FAA840279AA48600D847F3;
+			productRefGroup = 11FAA84A279AA48600D847F3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				11FAA848279AA48600D847F3 /* vaststars */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		11FAA847279AA48600D847F3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11FAA87D279E808A00D847F3 /* Settings.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		11FAA845279AA48600D847F3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11FAA86A279E7C2500D847F3 /* vaststars_modules.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		11FAA862279AA48700D847F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../3rd/ant/runtime/common,
+					../../../3rd/ant/clibs/lua,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				"LIBRARY_SEARCH_PATHS[arch=*]" = ../../../bin/ios/debug;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lvaststars",
+					"-lstdc++",
+				);
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		11FAA863279AA48700D847F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../3rd/ant/runtime/common,
+					../../../3rd/ant/clibs/lua,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				"LIBRARY_SEARCH_PATHS[arch=*]" = ../../../bin/ios/release;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"-lvaststars",
+					"-lstdc++",
+				);
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		11FAA865279AA48700D847F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GP6WLPM75Q;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = vaststars/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = metal;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-lvaststars",
+					"-lbgfx-lib",
+					"-lgameplay",
+					"-lstdc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ejoy.vaststars;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		11FAA866279AA48700D847F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GP6WLPM75Q;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = vaststars/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = metal;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-lvaststars",
+					"-lbgfx-lib",
+					"-lgameplay",
+					"-lstdc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ejoy.vaststars;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		11FAA844279AA48600D847F3 /* Build configuration list for PBXProject "vaststars" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11FAA862279AA48700D847F3 /* Debug */,
+				11FAA863279AA48700D847F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		11FAA864279AA48700D847F3 /* Build configuration list for PBXNativeTarget "vaststars" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11FAA865279AA48700D847F3 /* Debug */,
+				11FAA866279AA48700D847F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 11FAA841279AA48600D847F3 /* Project object */;
+}

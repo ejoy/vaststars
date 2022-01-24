@@ -2,6 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+print "init_world"
 local mathpkg = import_package "ant.math"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"

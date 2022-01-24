@@ -13,6 +13,23 @@ local modules = {
 
 local Antdir = "../" .. lm.antdir
 
+if lm.os == "ios" then
+    lm:lib "vaststars" {
+        deps = {
+            "ant_runtime",
+            "bgfx-lib",
+            "ant_links",
+            modules
+        },
+        includes = {
+            Antdir .. "clibs/lua",
+            Antdir .. "runtime/common",
+        },
+        sources = "vaststars_modules.c"
+    }
+    return
+end
+
 lm:exe "vaststars" {
     deps = {
         lm.os == "ios" and "ant_runtime" or "ant_editor",
