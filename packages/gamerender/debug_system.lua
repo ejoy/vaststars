@@ -14,29 +14,6 @@ local print_srt; do
     end
 end
 
---
-local get_track_joint; do
-    local hierarchy = require "hierarchy"
-    local animation = hierarchy.animation
-    local skeleton = hierarchy.skeleton
-
-    function get_track_joint(translations, rotations, duration, ratio)
-        local raw_animation = animation.new_raw_animation()
-        local skl = skeleton.build({{name = "root", s = {1.0, 1.0, 1.0}, r = {0.0, 0.0, 0.0, 1.0}, t = {0.0, 0.0, 0.0}}})
-
-        raw_animation:push_key(skl, {translations}, {rotations}, duration)
-        local poseresult = animation.new_pose_result(#skl)
-        poseresult:setup(skl)
-        poseresult:do_sample(animation.new_sampling_context(), raw_animation:build(), ratio)
-        poseresult:fetch_result()
-        if poseresult:count() < 1 then
-            return
-        end
-
-        return poseresult:joint(1)
-    end
-end
-
 local ltask = require "ltask"
 local ltask_now = ltask.now
 local function get_current()
@@ -146,7 +123,7 @@ end
 
 test_funcs[1] = function ()
     local animation_mb = world:sub {"animation"}
-    for _, name, action, game_object in animation_mb:unpack() do
+    for _, _, action, game_object in animation_mb:unpack() do
         local slot_name <const> = "货物挂点"
         local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
         local prefab = igame_object.get_prefab_object(game_object)
@@ -169,6 +146,7 @@ funcs[3] = function ()
     local iroad = ecs.import.interface "vaststars.gamerender|iroad"
     local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
     local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
+    local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
 
     local t = {
         {{}       , {123,129}},
@@ -214,9 +192,9 @@ funcs[3] = function ()
         },
         data = {
             name = "",
+            area = {3, 3},
             building = {
                 building_type = "logistics_center",
-                area = {3, 3},
             },
             stop_ani_during_init = true,
             set_road_entry_during_init = true,
@@ -229,22 +207,14 @@ funcs[3] = function ()
         },
     }
     new_prefab.on_ready = function(game_object, prefab)
-        w:sync("building:in x:in y:in", game_object)
-        local function packCoord(x, y)
-            print(x, y)
-            return x | (y<<8)
-        end
-
-        local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
-        if gameplay_adapter then
-            w:sync("scene:in", prefab.root)
-            gameplay_adapter.gameplay_world.ecs:new {
-                station = {
-                    id = prefab.root.scene.id,
-                    coord = packCoord(game_object.x, game_object.y + (-1 * (game_object.building.area[2] // 2)) - 1),
-                }
+        w:sync("area:in x:in y:in", game_object)
+        w:sync("scene:in", prefab.root)
+        igameplay_adapter.create_entity {
+            station = {
+                id = prefab.root.scene.id,
+                coord = igameplay_adapter.pack_coord(game_object.x, game_object.y + (-1 * (game_object.area[2] // 2)) - 1),
             }
-        end
+        }
     end
     template.data.building.tile_coord = {0x7b,0x83}
     iprefab_object.create(new_prefab, template)
@@ -264,9 +234,9 @@ funcs[3] = function ()
         },
         data = {
             name = "",
+            area = {3, 3},
             building = {
                 building_type = "logistics_center",
-                area = {3, 3},
             },
             stop_ani_during_init = true,
             set_road_entry_during_init = true,
@@ -280,27 +250,17 @@ funcs[3] = function ()
     }
 
     new_prefab.on_ready = function(game_object, prefab)
-        w:sync("building:in x:in y:in", game_object)
-        local function packCoord(x, y)
-            print(x, y)
-            return x | (y<<8)
-        end
-
-        local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
-        if gameplay_adapter then
-            w:sync("scene:in", prefab.root)
-            gameplay_adapter.gameplay_world.ecs:new {
-                station = {
-                    id = prefab.root.scene.id,
-                    coord = packCoord(game_object.x, game_object.y + (-1 * (game_object.building.area[2] // 2)) - 1),
-                }
+        w:sync("area:in x:in y:in", game_object)
+        w:sync("scene:in", prefab.root)
+        igameplay_adapter.create_entity {
+            station = {
+                id = prefab.root.scene.id,
+                coord = igameplay_adapter.pack_coord(game_object.x, game_object.y + (-1 * (game_object.area[2] // 2)) - 1),
             }
-        end
+        }
     end
     template.data.building.tile_coord = {0x83,0x84}
     iprefab_object.create(new_prefab, template)
-
-    --
 end
 
 -- test track
@@ -309,9 +269,9 @@ do
         for game_object in w:select "route_endpoint:in x:in y:in" do
             local prefab_object = igame_object.get_prefab_object(game_object)
             w:sync("scene:in ", prefab_object.root)
-            w:sync("building:in", game_object)
+            w:sync("area:in", game_object)
             if prefab_object.root.scene.id == id then
-                return {game_object.x, game_object.y + (-1 * (game_object.building.area[2] // 2)) - 1}
+                return {game_object.x, game_object.y + (-1 * (game_object.area[2] // 2)) - 1}
             end
         end
     end
@@ -361,6 +321,7 @@ do
 
     local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
     local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
+    local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
     local math3d        = require "math3d"
     local hierarchy = require "hierarchy"
     local animation = hierarchy.animation
@@ -376,6 +337,8 @@ do
         if next(srts) then
             idx = 1
             last_update_time = nil
+            -- srts = {}
+            -- run = false
             return
         end
 
@@ -395,13 +358,11 @@ do
             return
         end
 
-        local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
-
         local road_path
         if run then
-            road_path = gameplay_adapter.gameplay_world:road_path(endpoint_ids[1], endpoint_ids[2])
+            road_path = igameplay_adapter.world_caller("road_path", endpoint_ids[1], endpoint_ids[2])
         else
-            road_path = gameplay_adapter.gameplay_world:road_path(endpoint_ids[2], endpoint_ids[1])
+            road_path = igameplay_adapter.world_caller("road_path", endpoint_ids[2], endpoint_ids[1])
         end
         assert(road_path)
 
@@ -454,7 +415,7 @@ do
         local lt
         local total = 0.0
         local EPSILON <const> = 2 ^ -14
-        for idx, e in ipairs(road_track_slot_entities) do
+        for _, e in ipairs(road_track_slot_entities) do
             local wm = iom.worldmat(e)
             local s, r, t = math3d.srt(wm)
 
@@ -634,37 +595,12 @@ end
 funcs[6] = function()
     print("world._frame", world._frame)
     world:print_cpu_stat()
-    -- for k, v in pairs(world:memory()) do
-    --     print(k, v)
-    -- end
-
-    -- for e in w:select "debug_component:in" do
-    --     w:remove(e)
-    -- end
 end
 
 funcs[7] = function()
-    for i = 1, 100 do
-        ecs.create_entity({
-            policy = {
-                "ant.general|name",
-                "ant.scene|scene_object",
-            },
-            data = {
-                name = "test",
-                debug_component = i,
-                scene = {srt = {}},
-            }
-        })
-    end
-    print("done")
-end
-
-funcs[8] = function()
     for e in w:select "shape_terrain:in" do
         w:remove(e)
     end
-    print("done")
 end
 
 --------------
@@ -675,8 +611,6 @@ function debug_sys:ui_update()
             func()
         end
     end
-
-
 end
 
 function debug_sys:start_frame()

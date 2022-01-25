@@ -9,6 +9,7 @@ local construct = {
             data = {
                 name = "vaststars.road",
                 construct_entity = {
+                    dir = 'N',
                     building_type = "road",
                     detector = "exclusive",
                     prefab = "road/road_O.prefab",
@@ -19,9 +20,9 @@ local construct = {
                         },
                         data = {
                             name = "vaststars.road",
+                            area = {1, 1},
                             building = {
                                 building_type = "road",
-                                area = {1, 1},
                             },
                             pickup_show_set_road_arrow = true,
                             pickup_show_remove = false,
@@ -43,6 +44,7 @@ local construct = {
             data = {
                 name = "vaststars.goods_station",
                 construct_entity = {
+                    dir = 'N',
                     building_type = "goods_station",
                     detector = "roadside",
                     prefab = "goods_station.prefab",
@@ -53,9 +55,9 @@ local construct = {
                         },
                         data = {
                             name = "vaststars.goods_station",
+                            area = {1, 1},
                             building = {
                                 building_type = "goods_station",
-                                area = {1, 1},
                             },
                             stop_ani_during_init = true,
                             set_road_entry_during_init = true,
@@ -79,6 +81,7 @@ local construct = {
             data = {
                 name = "",
                 construct_entity = {
+                    dir = 'N',
                     building_type = "logistics_center",
                     detector = "roadside",
                     prefab = "logistics_center.prefab",
@@ -89,9 +92,9 @@ local construct = {
                         },
                         data = {
                             name = "",
+                            area = {3, 3},
                             building = {
                                 building_type = "logistics_center",
-                                area = {3, 3},
                             },
                             stop_ani_during_init = true,
                             set_road_entry_during_init = true,
@@ -118,6 +121,7 @@ local construct = {
             data = {
                 name = "vaststars.container",
                 construct_entity = {
+                    dir = 'N',
                     building_type = "container",
                     prefab = "container.prefab",
                     entity = {
@@ -126,9 +130,9 @@ local construct = {
                         },
                         data = {
                             name = "vaststars.container",
+                            area = {1, 1},
                             building = {
                                 building_type = "container",
-                                area = {1, 1},
                             },
                             stop_ani_during_init = true,
                             pickup_show_remove = false,
@@ -151,6 +155,7 @@ local construct = {
             data = {
                 name = "vaststars.rock",
                 construct_entity = {
+                    dir = 'N',
                     building_type = "rock",
                     prefab = "rock.prefab",
                     entity = {
@@ -160,9 +165,9 @@ local construct = {
                         },
                         data = {
                             name = "vaststars.rock",
+                            area = {1, 1},
                             building = {
                                 building_type = "rock",
-                                area = {1, 1},
                             },
                             stop_ani_during_init = true,
                             pickup_show_remove = false,
@@ -185,6 +190,7 @@ local construct = {
             data = {
                 name = "vaststars.pipe",
                 construct_entity = {
+                    dir = 'N',
                     building_type = "pipe",
                     detector = "exclusive",
                     prefab = "pipe/pipe_O.prefab",
@@ -195,9 +201,9 @@ local construct = {
                         },
                         data = {
                             name = "vaststars.pipe",
+                            area = {1, 1},
                             building = {
                                 building_type = "pipe",
-                                area = {1, 1},
                             },
                             pickup_show_set_pipe_arrow = true,
                             pickup_show_remove = false,

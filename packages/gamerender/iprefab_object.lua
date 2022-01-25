@@ -74,7 +74,7 @@ function iprefab_object.create(prefab, template)
         end
     end
 
-    return igame_object.create(world:create_object(prefab), template)
+    return igame_object.create(prefab, world:create_object(prefab), template)
 end
 
 function iprefab_object.slot_attach(game_object, slot_name, prefab)

@@ -119,10 +119,10 @@ local function create_game_object(typedir, x, y)
             x = x,
             y = y,
             dir = dir,
+            area = {1, 1},
             building = {
                 building_type = "pipe",
                 tile_coord = {x, y},
-                area = {1, 1},
             },
             pickup_show_set_pipe_arrow = true,
             pickup_show_remove = false,
@@ -310,8 +310,8 @@ function ipipe.dismantle(x, y)
     end
 
     local game_object = pipe_entities[x][y]
-    w:sync("building:in", game_object)
-    iterrain.set_tile_building_type(game_object.building.tile_coord, nil, game_object.building.area)
+    w:sync("building:in area:in", game_object)
+    iterrain.set_tile_building_type(game_object.building.tile_coord, nil, game_object.area)
     igame_object.remove_prefab(game_object)
 
     pipe_entities[x][y] = nil

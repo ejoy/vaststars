@@ -10,6 +10,7 @@ return {
         "ant.serialize",
         "ant.compile_resource",
         "ant.asset",
+        "ant.camera",
         "vaststars.ui",
         "vaststars.utility",
         "vaststars.input",

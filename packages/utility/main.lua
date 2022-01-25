@@ -19,4 +19,5 @@ function m.ray_hit_plane(ray, plane_info)
 end
 
 m.queue = require "queue"
+m.dir = require "dir"
 return m

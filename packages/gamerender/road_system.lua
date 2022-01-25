@@ -120,10 +120,10 @@ local function create_game_object(typedir, x, y)
             x = x,
             y = y,
             dir = dir,
+            area = {1, 1},
             building = {
                 building_type = "road",
                 tile_coord = {x, y},
-                area = {1, 1},
             },
             pickup_show_set_road_arrow = true,
             pickup_show_remove = false,
@@ -313,8 +313,8 @@ function iroad.dismantle(x, y)
     end
 
     local game_object = road_entities[x][y]
-    w:sync("building:in", game_object)
-    iterrain.set_tile_building_type(game_object.building.tile_coord, nil, game_object.building.area)
+    w:sync("building:in area:in", game_object)
+    iterrain.set_tile_building_type(game_object.building.tile_coord, nil, game_object.area)
     igame_object.remove_prefab(game_object)
 
     road_entities[x][y] = nil
@@ -379,13 +379,12 @@ function iroad.get_road_type(tile_coord)
     return road_types[tile_coord[1]][tile_coord[2]]
 end
 
-function iroad.set_building_entry(tile_coord)
+function iroad.set_building_entry(coord, dir)
     local e = w:singleton("road_types", "road_types:in road_entities:in")
     local road_types = e.road_types
     local road_entities = e.road_entities
 
-    -- todo hard coded -- North
-    set(road_types, tile_coord[1], tile_coord[2] - 1, North)
-    flush(road_types, road_entities, tile_coord[1], tile_coord[2] - 1)
+    set(road_types, coord[1], coord[2], DIRECTION[dir])
+    flush(road_types, road_entities, coord[1], coord[2])
     w:sync("road_types:out road_entities:out", e)
 end

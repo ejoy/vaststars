@@ -5,6 +5,7 @@ local prototype = require "prototype"
 local vaststars = require "vaststars.world.core"
 local container = require "vaststars.container.core"
 local fluidflow = require "vaststars.fluidflow.core"
+local road = require "vaststars.road.core"
 local luaecs = import_package "vaststars.ecs"
 local serialize = import_package "ant.serialize"
 local datalist = require "datalist"
@@ -149,6 +150,9 @@ return function ()
     end
     function world:fluidflow_dump(...)
         return fluidflow.dump(cworld, ...)
+    end
+    function world:road_path(begining, ending)
+        return road.path(context, begining, ending)
     end
 
     function world:wait(...)
