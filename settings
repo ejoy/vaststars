@@ -9,42 +9,43 @@ _windows:
     api: d3d11
 animation:
   skinning:
-    type: CPU
     CPU:
       enable: true
       max_indices: 5
     GPU:
       enable: true
+    type: CPU
 graphic:
   curve_world:
-    type: "cylinder"
-    flat_distance:  0
-    curve_rate: 0.1
-    distance: 10
+    curve_rate: 0.11999999731779099
+    dirVS: {0, 0, 1, 0}
+    distance: 100
+    enable: true
+    flat_distance: 50
     max_range: 20
-    dirVS: {0.0, 0.0, 1.0, 0.0}
-  lighting:
-    cluster_shading: 1
-  render:
-    clear_color: 0x000000ff
-    clear_depth: 1
-    clear_stencil: 0
-    clear: CDS
+    type: cylinder
   hdr:
     enable: true
     format: RGBA16F
+  lighting:
+    cluster_shading: 1
   postprocess:
     bloom:
       enable: false
-      inv_highlight: 0.000001
+      inv_highlight: 1e-06
       threshold: 120000
+  render:
+    clear: CDS
+    clear_color: 255
+    clear_depth: 1
+    clear_stencil: 0
   shadow:
-    enable: true
-    size: 1024
-    type: inv_z
     bias: 0.003
+    color: {0, 0, 0, 1}
+    enable: true
     normal_offset: 0
-    color: {0.0, 0.0, 0.0, 1}
-    stabilize: true
+    size: 1024
     split_lamada: 1
     split_num: 4
+    stabilize: true
+    type: inv_z
