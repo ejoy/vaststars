@@ -6,7 +6,7 @@ local mathpkg = import_package "ant.math"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.ui|iui"
-local iconstruct = ecs.import.interface "vaststars.gamerender|iconstruct"
+local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 
 local FRAMES_PER_SECOND <const> = import_package "vaststars.constant".FRAMES_PER_SECOND
 local math3d = require "math3d"
@@ -39,7 +39,6 @@ function m:init_world()
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
 
     iui.open("construct.rml")
-    local s, r, t = get_camera_srt()
 
     local mq = w:singleton("main_queue", "camera_ref:in")
     local camera_ref = mq.camera_ref
@@ -47,7 +46,7 @@ function m:init_world()
 
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
-    iconstruct.init()
+    iterrain.create()
 
     world:pub{"camera_controller", "stop", false}
 end

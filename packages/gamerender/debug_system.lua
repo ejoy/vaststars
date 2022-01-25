@@ -193,6 +193,7 @@ funcs[3] = function ()
         data = {
             name = "",
             area = {3, 3},
+            dir = 'N',
             building = {
                 building_type = "logistics_center",
             },
@@ -235,6 +236,7 @@ funcs[3] = function ()
         data = {
             name = "",
             area = {3, 3},
+            dir = 'N',
             building = {
                 building_type = "logistics_center",
             },

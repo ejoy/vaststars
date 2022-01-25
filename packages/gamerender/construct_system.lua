@@ -149,10 +149,8 @@ local on_prefab_message ; do
 
             new_prefab.on_ready = function(game_object, prefab)
                 w:sync("area:in", game_object)
-                print("area", tile_coord[1], tile_coord[2] + (-1 * (game_object.area[2] // 2)) - 1)
 
                 if construct_entity.entity.data.building.building_type == "logistics_center" then
-                    w:sync("building:in", game_object)
                     w:sync("scene:in", prefab.root)
                     igameplay_adapter.create_entity {
                         station = {
@@ -307,9 +305,4 @@ function construct_sys:after_pickup_mapping()
             break
         end
     end
-end
-
-local iconstruct = ecs.interface "iconstruct"
-function iconstruct.init()
-    iterrain.create()
 end
