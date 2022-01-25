@@ -140,9 +140,12 @@
             end
             function start.clickContructRemove()
                 ui_sys.pub("ui", "construct", "click_construct_remove")
-            end            
+            end
             function start.clickDebug(event, i)
                 ui_sys.pub("debug", i)
+            end
+            function start.CameraOpt(event, opt)
+                ui_sys.pub('camera', opt)
             end
             ui_sys.addEventListener(start, {}, {
                 ["construct_show_confirm"] = function(show, coord1, coord2, coord3)
@@ -189,6 +192,9 @@
                 <div class = "test-button" data-event-click="clickDebug(7)" style = "position: absolute; left: 30vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
                 <div class = "test-button" data-event-click="clickDebug(8)" style = "position: absolute; left: 35vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
             </div>            
+
+            <div style = 'position: absolute; left: 0vmin; top: 12vmin; background-image:"construct/camera_reset.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;' data-event-click = "CameraOpt('reset')" />
+            <div style = 'position: absolute; left: 0vmin; top: 17vmin; background-image:"construct/camera_reset.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;' data-event-click = "CameraOpt('lookdown')" />
 
             <!-- 建造确认按钮 -->
             <input id = "id-button-construct-confirm" type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/confirm.png";' data-event-click = "clickContructConfirm()" data-if = "is_show_construct_confirm" />

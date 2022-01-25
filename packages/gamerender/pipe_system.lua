@@ -113,17 +113,13 @@ local function create_game_object(typedir, x, y)
     return iprefab_object.create(prefab, {
         policy = {
             "ant.scene|scene_object",
-            "vaststars.gamerender|building",
         },
         data = {
             x = x,
             y = y,
             dir = dir,
             area = {1, 1},
-            building = {
-                building_type = "pipe",
-                tile_coord = {x, y},
-            },
+            building_type = "pipe",
             pickup_show_set_pipe_arrow = true,
             pickup_show_remove = false,
         },
@@ -274,7 +270,7 @@ function pipe_sys:after_pickup_mapping()
 
     for _, _, game_object in pickup_set_pipe_mb:unpack() do
         w:sync("pickup_set_pipe:in", game_object)
-        ipipe.construct(game_object.pickup_set_pipe.tile_coord, game_object.pickup_set_pipe.arrow_tile_coord)
+        ipipe.construct(game_object.pickup_set_pipe.tile_coord, game_object.pickup_set_pipe.arrow_coord)
     end
 end
 
@@ -310,8 +306,8 @@ function ipipe.dismantle(x, y)
     end
 
     local game_object = pipe_entities[x][y]
-    w:sync("building:in area:in", game_object)
-    iterrain.set_tile_building_type(game_object.building.tile_coord, nil, game_object.area)
+    w:sync("area:in", game_object)
+    iterrain.set_tile_building_type({x, y}, nil, game_object.area)
     igame_object.remove_prefab(game_object)
 
     pipe_entities[x][y] = nil

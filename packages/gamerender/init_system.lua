@@ -17,6 +17,8 @@ local bgfx = require 'bgfx'
 
 local m = ecs.system 'init_system'
 local default_camera_path <const> = fs.path "/pkg/vaststars.resources/camera_default.prefab"
+local camera_reset_mb = world:sub {"camera", "reset"}
+local camera_lookdown_mb = world:sub {"camera", "lookdown"}
 
 local function to_quat(t)
     for k, v in ipairs(t) do
@@ -51,3 +53,15 @@ function m:init_world()
     world:pub{"camera_controller", "stop", false}
 end
 
+function m:data_changed()
+    local mq = w:singleton("main_queue", "camera_ref:in")
+    local camera_ref = mq.camera_ref
+
+    for _ in camera_reset_mb:unpack() do
+        iom.set_srt(camera_ref, get_camera_srt())
+    end
+
+    for _ in camera_lookdown_mb:unpack() do
+        iom.set_srt(camera_ref, mc.ONE, to_quat({90.0, 0, 0}), {0, 60, 0})
+    end
+end

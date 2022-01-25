@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local arrow_tile_coord_offset = {{0, -1}, {-1, 0}, {1, 0}, {0, 1}}
+local arrow_coord_offset = {{0, -1}, {-1, 0}, {1, 0}, {0, 1}}
 local arrow_yaxis_rotation = {math.rad(180.0), math.rad(-90.0), math.rad(90.0), math.rad(0.0)}
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
@@ -15,9 +15,9 @@ local ifs = ecs.import.interface "ant.scene|ifilter_state"
 local iconstruct_arrow = ecs.interface "iconstruct_arrow"
 
 local funcs = {}
-funcs["set_arrow_tile_coord"] = function(game_object, prefab, component_name, arrow_tile_coord, tile_coord, tile_position)
+funcs["set_arrow_coord"] = function(game_object, prefab, component_name, arrow_coord, tile_coord, tile_position)
     w:sync(("%s:in"):format(component_name), game_object)
-    game_object[component_name].arrow_tile_coord = arrow_tile_coord
+    game_object[component_name].arrow_coord = arrow_coord
     game_object[component_name].tile_coord = tile_coord
     w:sync(("%s:out"):format(component_name), game_object)
     iom.set_position(prefab.root, tile_position)
@@ -66,23 +66,23 @@ end
 function iconstruct_arrow.show(e, yaxis, component_name, position)
     w:sync("construct_arrows:in construct_arrows_building_type:in", e)
     local tile_coord = iterrain.get_coord_by_position(position)
-    local arrow_tile_coord
+    local arrow_coord
 
-    for idx, coord_offset in ipairs(arrow_tile_coord_offset) do
-        arrow_tile_coord = {
+    for idx, coord_offset in ipairs(arrow_coord_offset) do
+        arrow_coord = {
             tile_coord[1] + coord_offset[1],
             tile_coord[2] + coord_offset[2],
         }
 
         -- bounds checking
-        local tile_position = iterrain.get_position_by_coord(arrow_tile_coord)
+        local tile_position = iterrain.get_position_by_coord(arrow_coord)
         if not tile_position then
             iconstruct_arrow.hide(e, idx)
             goto continue
         end
 
         -- only tiles that don't have a building or the same type of building can be set
-        local building_type = iterrain.get_tile_building_type(arrow_tile_coord)
+        local building_type = iterrain.get_tile_building_type(arrow_coord)
         if building_type and building_type ~= e.construct_arrows_building_type then
             iconstruct_arrow.hide(e, idx)
             goto continue
@@ -100,7 +100,7 @@ function iconstruct_arrow.show(e, yaxis, component_name, position)
                 data = {
                     [component_name] = {
                         tile_coord = tile_coord,
-                        arrow_tile_coord = arrow_tile_coord,
+                        arrow_coord = arrow_coord,
                     },
                 },
             })
@@ -108,7 +108,7 @@ function iconstruct_arrow.show(e, yaxis, component_name, position)
             e.construct_arrows[idx] = game_object
         else
             local prefab_object = igame_object.get_prefab_object(game_object)
-            prefab_object:send("set_arrow_tile_coord", component_name, arrow_tile_coord, tile_coord, tile_position)
+            prefab_object:send("set_arrow_coord", component_name, arrow_coord, tile_coord, tile_position)
             prefab_object:send("show")
         end
         ::continue::

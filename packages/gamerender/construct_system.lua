@@ -133,29 +133,28 @@ local on_prefab_message ; do
         end
 
         -- create entity
-        local tile_coord = iterrain.get_coord_by_position(position)
-        if construct_entity.entity.data.building.building_type == "road" then -- todo road
-            iroad.construct(nil, tile_coord)
-        elseif construct_entity.entity.data.building.building_type == "pipe" then
-            ipipe.construct(nil, tile_coord)
+        local coord = iterrain.get_coord_by_position(position)
+        if construct_entity.entity.data.building_type == "road" then -- todo road
+            iroad.construct(nil, coord)
+        elseif construct_entity.entity.data.building_type == "pipe" then
+            ipipe.construct(nil, coord)
         else
             local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(construct_entity.prefab))
             iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
             local template = deep_copy(construct_entity.entity)
-            template.data.building.tile_coord = tile_coord
-            template.data.x = tile_coord[1]
-            template.data.y = tile_coord[2]
+            template.data.x = coord[1]
+            template.data.y = coord[2]
             template.data.dir = construct_entity.dir
 
             new_prefab.on_ready = function(game_object, prefab)
                 w:sync("area:in", game_object)
 
-                if construct_entity.entity.data.building.building_type == "logistics_center" then
+                if construct_entity.entity.data.building_type == "logistics_center" then
                     w:sync("scene:in", prefab.root)
                     igameplay_adapter.create_entity {
                         station = {
                             id = prefab.root.scene.id,
-                            coord = igameplay_adapter.pack_coord(tile_coord[1], tile_coord[2] + (-1 * (game_object.area[2] // 2)) - 1),
+                            coord = igameplay_adapter.pack_coord(coord[1], coord[2] + (-1 * (game_object.area[2] // 2)) - 1),
                         }
                     }
                 end
@@ -178,8 +177,8 @@ end
 
 function construct_sys:entity_init()
     --
-	for e in w:select "INIT building:in area:in" do
-        iterrain.set_tile_building_type(e.building.tile_coord, e.building.building_type, e.area)
+	for e in w:select "INIT x:in y:in area:in building_type:in" do
+        iterrain.set_tile_building_type({e.x, e.y}, e.building_type, e.area)
     end
 
     --
@@ -266,10 +265,10 @@ function construct_sys:data_changed()
     end
 
     for _ in ui_remove_message_mb:unpack() do
-        for game_object in w:select("pickup_show_remove:in building:in pickup_show_set_road_arrow?in pickup_show_set_pipe_arrow?in x:in y:in area:in") do
+        for game_object in w:select("pickup_show_remove:in pickup_show_set_road_arrow?in pickup_show_set_pipe_arrow?in x:in y:in area:in") do
             if game_object and game_object.pickup_show_remove and not game_object.pickup_show_set_road_arrow and not game_object.pickup_show_set_pipe_arrow then
                 igame_object.get_prefab_object(game_object):remove()
-                iterrain.set_tile_building_type(game_object.building.tile_coord, nil, game_object.area)
+                iterrain.set_tile_building_type({game_object.x, game_object.y}, nil, game_object.area)
 
                 world:pub {"ui_message", "construct_show_remove", nil}
             end

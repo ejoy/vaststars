@@ -16,14 +16,11 @@ local construct = {
                     entity = {
                         policy = {
                             "ant.general|name",
-                            "vaststars.gamerender|building",
                         },
                         data = {
                             name = "vaststars.road",
                             area = {1, 1},
-                            building = {
-                                building_type = "road",
-                            },
+                            building_type = "road",
                             pickup_show_set_road_arrow = true,
                             pickup_show_remove = false,
                         },
@@ -51,14 +48,11 @@ local construct = {
                     entity = {
                         policy = {
                             "ant.general|name",
-                            "vaststars.gamerender|building",
                         },
                         data = {
                             name = "vaststars.goods_station",
                             area = {1, 1},
-                            building = {
-                                building_type = "goods_station",
-                            },
+                            building_type = "goods_station",
                             stop_ani_during_init = true,
                             set_road_entry_during_init = true,
                             pickup_show_remove = false,
@@ -88,14 +82,11 @@ local construct = {
                     entity = {
                         policy = {
                             "ant.general|name",
-                            "vaststars.gamerender|building",
                         },
                         data = {
                             name = "",
                             area = {3, 3},
-                            building = {
-                                building_type = "logistics_center",
-                            },
+                            building_type = "logistics_center",
                             stop_ani_during_init = true,
                             set_road_entry_during_init = true,
                             pickup_show_ui = {url = "route.rml"},
@@ -126,14 +117,11 @@ local construct = {
                     prefab = "container.prefab",
                     entity = {
                         policy = {
-                            "vaststars.gamerender|building",
                         },
                         data = {
                             name = "vaststars.container",
                             area = {1, 1},
-                            building = {
-                                building_type = "container",
-                            },
+                            building_type = "container",
                             stop_ani_during_init = true,
                             pickup_show_remove = false,
                         },
@@ -161,14 +149,11 @@ local construct = {
                     entity = {
                         policy = {
                             "ant.general|name",
-                            "vaststars.gamerender|building",
                         },
                         data = {
                             name = "vaststars.rock",
                             area = {1, 1},
-                            building = {
-                                building_type = "rock",
-                            },
+                            building_type = "rock",
                             stop_ani_during_init = true,
                             pickup_show_remove = false,
                         },
@@ -197,14 +182,11 @@ local construct = {
                     entity = {
                         policy = {
                             "ant.general|name",
-                            "vaststars.gamerender|building",
                         },
                         data = {
                             name = "vaststars.pipe",
                             area = {1, 1},
-                            building = {
-                                building_type = "pipe",
-                            },
+                            building_type = "pipe",
                             pickup_show_set_pipe_arrow = true,
                             pickup_show_remove = false,
                         },

@@ -114,17 +114,13 @@ local function create_game_object(typedir, x, y)
     return iprefab_object.create(prefab, {
         policy = {
             "ant.scene|scene_object",
-            "vaststars.gamerender|building",
         },
         data = {
             x = x,
             y = y,
             dir = dir,
             area = {1, 1},
-            building = {
-                building_type = "road",
-                tile_coord = {x, y},
-            },
+            building_type = "road",
             pickup_show_set_road_arrow = true,
             pickup_show_remove = false,
         },
@@ -277,7 +273,7 @@ function road_sys:after_pickup_mapping()
 
     for _, _, game_object in pickup_set_road_mb:unpack() do
         w:sync("pickup_set_road:in", game_object)
-        iroad.construct(game_object.pickup_set_road.tile_coord, game_object.pickup_set_road.arrow_tile_coord)
+        iroad.construct(game_object.pickup_set_road.tile_coord, game_object.pickup_set_road.arrow_coord)
     end
 end
 
@@ -313,8 +309,8 @@ function iroad.dismantle(x, y)
     end
 
     local game_object = road_entities[x][y]
-    w:sync("building:in area:in", game_object)
-    iterrain.set_tile_building_type(game_object.building.tile_coord, nil, game_object.area)
+    w:sync("area:in", game_object)
+    iterrain.set_tile_building_type({x, y}, nil, game_object.area)
     igame_object.remove_prefab(game_object)
 
     road_entities[x][y] = nil
@@ -326,20 +322,20 @@ function iroad.dismantle(x, y)
     world:pub {"ui_message", "construct_show_remove", nil}
 end
 
-function iroad.construct(tile_coord_s, tile_coord_d)
+function iroad.construct(coord_s, coord_d)
     local e = w:singleton("road_types", "road_types:in road_entities:in")
     local road_types = e.road_types
     local road_entities = e.road_entities
 
     local sx, sy
-    if tile_coord_s then
-        sx = tile_coord_s[1]
-        sy = tile_coord_s[2]
+    if coord_s then
+        sx = coord_s[1]
+        sy = coord_s[2]
     end
 
     local dx, dy
-    dx = tile_coord_d[1]
-    dy = tile_coord_d[2]
+    dx = coord_d[1]
+    dy = coord_d[2]
 
     -- construct for the first time
     if not sx and not sy then
@@ -368,15 +364,15 @@ function iroad.construct(tile_coord_s, tile_coord_d)
     w:sync("road_types:out road_entities:out", e)
 end
 
-function iroad.get_road_type(tile_coord)
+function iroad.get_road_type(coord)
     local e = w:singleton("road_types", "road_types:in")
     local road_types = e.road_types
 
-    if not road_types[tile_coord[1]] then
+    if not road_types[coord[1]] then
         return
     end
 
-    return road_types[tile_coord[1]][tile_coord[2]]
+    return road_types[coord[1]][coord[2]]
 end
 
 function iroad.set_building_entry(coord, dir)

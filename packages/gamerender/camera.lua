@@ -51,18 +51,18 @@ end
 
 do
 	local funcs = {}
-	funcs['A'] = function(camera)
-		iom.move_delta(camera, {-camera_move_speed, 0, 0})
-	end
-	funcs['D'] = function(camera)
-		iom.move_delta(camera, {camera_move_speed, 0, 0})
-	end
-	funcs['S'] = function(camera)
-		iom.move_delta(camera, {0, 0, -camera_move_speed})
-	end
-	funcs['W'] = function(camera)
-		iom.move_delta(camera, {0, 0, camera_move_speed})
-	end
+	-- funcs['A'] = function(camera)
+	-- 	iom.move_delta(camera, {-camera_move_speed, 0, 0})
+	-- end
+	-- funcs['D'] = function(camera)
+	-- 	iom.move_delta(camera, {camera_move_speed, 0, 0})
+	-- end
+	-- funcs['S'] = function(camera)
+	-- 	iom.move_delta(camera, {0, 0, -camera_move_speed})
+	-- end
+	-- funcs['W'] = function(camera)
+	-- 	iom.move_delta(camera, {0, 0, camera_move_speed})
+	-- end
 
 	local func
 	function cc_sys:data_changed()

@@ -91,18 +91,18 @@ function iterrain.get_coord_by_position(position)
 end
 
 -- return the center of the tile
-function iterrain.get_position_by_coord(tile_coord)
+function iterrain.get_position_by_coord(coord)
     local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
     local tile_bounds = e.terrain.tile_bounds
     local srt = e.scene.srt
     local unit = e.shape_terrain.unit
 
     for i = 1, #tile_bounds do
-        if tile_coord[i] < tile_bounds[i][1] or tile_coord[i] > tile_bounds[i][2] then
+        if coord[i] < tile_bounds[i][1] or coord[i] > tile_bounds[i][2] then
             return
         end
     end
-    return {((tile_coord[1] - 1) * unit + unit / 2) + srt.t[1], 0, ((tile_coord[2] - 1) * unit + unit / 2) + srt.t[3]}
+    return {((coord[1] - 1) * unit + unit / 2) + srt.t[1], 0, ((coord[2] - 1) * unit + unit / 2) + srt.t[3]}
 end
 
 function iterrain.get_begin_position_by_coord(...)
@@ -111,13 +111,13 @@ function iterrain.get_begin_position_by_coord(...)
     local srt = e.scene.srt
     local unit = e.shape_terrain.unit
 
-    local tile_coord = {...}
+    local coord = {...}
     for i = 1, #tile_bounds do
-        if tile_coord[i] < tile_bounds[i][1] or tile_coord[i] > tile_bounds[i][2] then
+        if coord[i] < tile_bounds[i][1] or coord[i] > tile_bounds[i][2] then
             return
         end
     end
-    return {((tile_coord[1] - 1) * unit) + srt.t[1], 0, ((tile_coord[2] - 1) * unit + unit) + srt.t[3]}
+    return {((coord[1] - 1) * unit) + srt.t[1], 0, ((coord[2] - 1) * unit + unit) + srt.t[3]}
 end
 
 function iterrain.get_confirm_ui_position(position)
@@ -132,13 +132,12 @@ function iterrain.get_confirm_ui_position(position)
 end
 
 function iterrain.get_tile_centre_position(position)
-    local tile_coord = iterrain.get_coord_by_position(position)
-    return iterrain.get_position_by_coord(tile_coord)
+    return iterrain.get_position_by_coord( iterrain.get_coord_by_position(position) )
 end
 
-function iterrain.get_tile_building_type(tile_coord)
-    local x = tile_coord[1]
-    local y = tile_coord[2]
+function iterrain.get_tile_building_type(coord)
+    local x = coord[1]
+    local y = coord[2]
 
     local e = w:singleton("terrain", "terrain:in shape_terrain:in")
     if not e.terrain.tile_building_types[x] then
@@ -148,15 +147,15 @@ function iterrain.get_tile_building_type(tile_coord)
     return e.terrain.tile_building_types[x][y]
 end
 
-function iterrain.set_tile_building_type(tile_coord, building_type, area)
+function iterrain.set_tile_building_type(coord, building_type, area)
     local width = area[1]
     local height = area[2]
 
     local e = w:singleton("shape_terrain", "terrain:in shape_terrain:in")
     local terrain = e.terrain
 
-    for x = tile_coord[1] - (width // 2), tile_coord[1] + (width // 2) do
-        for y = tile_coord[2] - (height // 2), tile_coord[2] + (height // 2) do
+    for x = coord[1] - (width // 2), coord[1] + (width // 2) do
+        for y = coord[2] - (height // 2), coord[2] + (height // 2) do
             terrain.tile_building_types[x] = terrain.tile_building_types[x] or {}
             terrain.tile_building_types[x][y] = building_type
         end

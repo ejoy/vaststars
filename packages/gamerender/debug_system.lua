@@ -188,15 +188,12 @@ funcs[3] = function ()
     local template = {
         policy = {
             "ant.general|name",
-            "vaststars.gamerender|building",
         },
         data = {
             name = "",
             area = {3, 3},
             dir = 'N',
-            building = {
-                building_type = "logistics_center",
-            },
+            building_type = "logistics_center",
             stop_ani_during_init = true,
             set_road_entry_during_init = true,
             pickup_show_remove = false,
@@ -217,7 +214,6 @@ funcs[3] = function ()
             }
         }
     end
-    template.data.building.tile_coord = {0x7b,0x83}
     iprefab_object.create(new_prefab, template)
 
     -- add logistics_center
@@ -231,15 +227,12 @@ funcs[3] = function ()
     local template = {
         policy = {
             "ant.general|name",
-            "vaststars.gamerender|building",
         },
         data = {
             name = "",
             area = {3, 3},
             dir = 'N',
-            building = {
-                building_type = "logistics_center",
-            },
+            building_type = "logistics_center",
             stop_ani_during_init = true,
             set_road_entry_during_init = true,
             pickup_show_remove = false,
@@ -261,7 +254,6 @@ funcs[3] = function ()
             }
         }
     end
-    template.data.building.tile_coord = {0x83,0x84}
     iprefab_object.create(new_prefab, template)
 end
 
@@ -513,8 +505,8 @@ funcs[5] = function()
         ["road"] = function(game_object)
             local e = w:singleton("road_types", "road_types:in")
             local road_types = e.road_types
-            local x = game_object.building.tile_coord[1]
-            local y = game_object.building.tile_coord[2]
+            local x = game_object.x
+            local y = game_object.y
             local rt = road_types[x][y]
             return {
                 entity = "路1-" .. rt:sub(1,1) .. "型",
@@ -526,40 +518,40 @@ funcs[5] = function()
         ["goods_station"] = function(game_object)
             return {
                 entity = "车站",
-                x = game_object.building.tile_coord[1],
-                y = game_object.building.tile_coord[2],
+                x = game_object.x,
+                y = game_object.y,
                 dir = "N",
             }
         end,
         ["logistics_center"] = function(game_object)
             return {
                 entity = "物流中心",
-                x = game_object.building.tile_coord[1],
-                y = game_object.building.tile_coord[2],
+                x = game_object.x,
+                y = game_object.y,
                 dir = "N",
             }
         end,
         ["container"] = function(game_object)
             return {
                 entity = "箱子",
-                x = game_object.building.tile_coord[1],
-                y = game_object.building.tile_coord[2],
+                x = game_object.x,
+                y = game_object.y,
                 dir = "N",
             }
         end,
         ["rock"] = function(game_object)
             return {
                 entity = "货物",
-                x = game_object.building.tile_coord[1],
-                y = game_object.building.tile_coord[2],
+                x = game_object.x,
+                y = game_object.y,
                 dir = "N",
             }
         end,
         ["pipe"] = function(game_object)
             local e = w:singleton("pipe_types", "pipe_types:in")
             local pipe_types = e.pipe_types
-            local x = game_object.building.tile_coord[1]
-            local y = game_object.building.tile_coord[2]
+            local x = game_object.x
+            local y = game_object.y
             local pt = pipe_types[x][y]
             return {
                 entity = "管道1-" .. pt:sub(1,1) .. "型",
@@ -571,8 +563,8 @@ funcs[5] = function()
     }
 
     local t = {}
-    for game_object in w:select "building:in dir:in" do
-        t[#t+1] = convert[game_object.building.building_type](game_object)
+    for game_object in w:select "building_type:in dir:in" do
+        t[#t+1] = convert[game_object.building_type](game_object)
     end
 
     local fs        = require "filesystem"

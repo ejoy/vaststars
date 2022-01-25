@@ -20,7 +20,7 @@ graphic:
     curve_rate: 0.11999999731779099
     dirVS: {0, 0, 1, 0}
     distance: 100
-    enable: true
+    enable: false
     flat_distance: 50
     max_range: 20
     type: cylinder
