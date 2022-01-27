@@ -206,30 +206,10 @@
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width:80px; height: 80px; background-size:cover;'/>
                 <div>施工</div>
             </button>
-            <div id="work-buttons-container" data-if="show_work">
-                <workbutton data-event-click="clickWork('pipe')">
-                    <div class="workbutton-bg" style='background-image:"construct/process.png";'/>
-                    <div>水管</div>
-                </workbutton>
-                <workbutton data-event-click="clickWork('rock')">
-                    <div class="workbutton-bg" style='background-image:"construct/chemical.png";'/>
-                    <div>矿石</div>
-                </workbutton>
-                <workbutton data-event-click="clickWork('container')">
-                    <div class="workbutton-bg" style='background-image:"construct/power.png";'/>
-                    <div>仓库</div>
-                </workbutton>
-                <workbutton data-event-click="clickWork('logistics_center')">
-                    <div class="workbutton-bg" style='background-image:"construct/logistics_center.png";'/>
-                    <div>物流中心</div>
-                </workbutton>
-                <workbutton data-event-click="clickWork('goods_station')">
-                    <div class="workbutton-bg" style='background-image:"construct/goods_station.png";'/>
-                    <div>车站</div>
-                </workbutton>
-                <workbutton data-event-click="clickWork('road')">
-                    <div class="workbutton-bg" style='background-image:"construct/road.png";'/>
-                    <div>道路</div>
+            <div id="work-buttons-container" data-if="show_work" >
+                <workbutton data-event-click="clickWork(it.name)" data-for = "construct_menu">
+                    <div class="workbutton-bg" data-style-background-image = "it.image" />
+                    <div>{{it.name}}</div>
                 </workbutton>
             </div>
             <div id="work-detail" data-if="show_work">
