@@ -4,12 +4,24 @@ local menu = {
         image = "construct/power.png",
         detail = {
             {
-                prototype = "组装机1",
-                image = "construct/process.png",
+                prototype = "铁制电线杆",
+                image = "construct/road.png",
             },
             {
-                prototype = "组装机1",
-                image = "construct/process.png",
+                prototype = "蒸汽发电机1",
+                image = "construct/road.png",
+            },
+            {
+                prototype = "风力发电机1",
+                image = "construct/road.png",
+            },
+            {
+                prototype = "太阳能板1",
+                image = "construct/road.png",
+            },
+            {
+                prototype = "蓄电池1",
+                image = "construct/road.png",
             },
         }
     },
@@ -121,26 +133,6 @@ local menu = {
             },
             {
                 prototype = "科技中心1",
-                image = "construct/road.png",
-            },
-            {
-                prototype = "铁制电线杆",
-                image = "construct/road.png",
-            },
-            {
-                prototype = "蒸汽发电机1",
-                image = "construct/road.png",
-            },
-            {
-                prototype = "风力发电机1",
-                image = "construct/road.png",
-            },
-            {
-                prototype = "太阳能板1",
-                image = "construct/road.png",
-            },
-            {
-                prototype = "蓄电池1",
                 image = "construct/road.png",
             },
         },
