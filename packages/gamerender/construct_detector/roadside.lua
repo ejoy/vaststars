@@ -2,20 +2,15 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local utility = import_package "vaststars.utility"
+local dir_offset_of_entry = utility.dir.offset_of_entry
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 
-local __check_neighbors_road ; do
-    local coord_offset = {
-        N = {0, -1},
-        E = {-1, 0},
-        S = {0, 1},
-        W = {1, 0},
-    }
-
-    function __check_neighbors_road(coord, dir, width, height)
-        local offset = coord_offset[dir]
+local check_entry_road ; do
+    function check_entry_road(coord, dir, width, height)
+        local offset = dir_offset_of_entry(dir)
         local i = {
-            coord[1] + offset[1] + (offset[1] * (width  // 2)),
+            coord[1] + offset[1] + (offset[1] * (width // 2)),
             coord[2] + offset[2] + (offset[2] * (height // 2)),
         }
 
@@ -38,7 +33,7 @@ local __check_building_coord ; do
 end
 
 local function __can_construct(coord, dir, width, height)
-    if not __check_neighbors_road(coord, dir, width, height) then
+    if not check_entry_road(coord, dir, width, height) then
         return false
     end
 

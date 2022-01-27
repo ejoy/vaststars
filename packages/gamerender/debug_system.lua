@@ -194,12 +194,12 @@ funcs[3] = function ()
             area = {3, 3},
             dir = 'N',
             building_type = "logistics_center",
-            stop_ani_during_init = true,
-            set_road_entry_during_init = true,
+            pause_animation = true,
+            set_road_entry = true,
             pickup_show_remove = false,
             pickup_show_ui = {url = "route.rml"},
             route_endpoint = true,
-            named = true,
+            random_name = true,
             x = 0x7b,
             y = 0x83,
         },
@@ -233,12 +233,12 @@ funcs[3] = function ()
             area = {3, 3},
             dir = 'N',
             building_type = "logistics_center",
-            stop_ani_during_init = true,
-            set_road_entry_during_init = true,
+            pause_animation = true,
+            set_road_entry = true,
             pickup_show_remove = false,
             pickup_show_ui = {url = "route.rml"},
             route_endpoint = true,
-            named = true,
+            random_name = true,
             x = 0x83,
             y = 0x84,
         },
@@ -296,9 +296,9 @@ do
     end
 
     local function get_road_track_slots(road_game_object, indir, outdir)
-        local e = w:singleton("road_types", "road_types:in")
+        local e = w:singleton("road_typedirs", "road_typedirs:in")
         w:sync("x:in y:in", road_game_object)
-        local road_type_dir = (e.road_types[road_game_object.x][road_game_object.y])
+        local road_type_dir = (e.road_typedirs[road_game_object.x][road_game_object.y])
         local rt = road_type_dir:sub(1, 1)
         local dir = road_type_dir:sub(2, 2)
 
@@ -503,11 +503,11 @@ end
 funcs[5] = function()
     local convert = {
         ["road"] = function(game_object)
-            local e = w:singleton("road_types", "road_types:in")
-            local road_types = e.road_types
+            local e = w:singleton("road_typedirs", "road_typedirs:in")
+            local road_typedirs = e.road_typedirs
             local x = game_object.x
             local y = game_object.y
-            local rt = road_types[x][y]
+            local rt = road_typedirs[x][y]
             return {
                 entity = "路1-" .. rt:sub(1,1) .. "型",
                 x = x,
@@ -548,11 +548,11 @@ funcs[5] = function()
             }
         end,
         ["pipe"] = function(game_object)
-            local e = w:singleton("pipe_types", "pipe_types:in")
-            local pipe_types = e.pipe_types
+            local e = w:singleton("pipe_typedirs", "pipe_typedirs:in")
+            local pipe_typedirs = e.pipe_typedirs
             local x = game_object.x
             local y = game_object.y
-            local pt = pipe_types[x][y]
+            local pt = pipe_typedirs[x][y]
             return {
                 entity = "管道1-" .. pt:sub(1,1) .. "型",
                 x = x,
@@ -595,6 +595,9 @@ funcs[7] = function()
     for e in w:select "shape_terrain:in" do
         w:remove(e)
     end
+end
+
+funcs[8] = function()
 end
 
 --------------

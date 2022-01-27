@@ -8,6 +8,79 @@ import "@vaststars.utility"
 import "@vaststars.input"
 import "@vaststars.ui"
 
+------------------------
+-- property
+component "x" .type "lua"
+component "y" .type "lua"
+component "dir" .type "lua"
+component "area" .type "lua"
+component "building_type" .type "lua"
+
+------------------------
+-- function
+component "pause_animation" -- 建造 entity 时不显示动画
+component "set_road_entry" -- 建造 entity 时需要设置建筑物的路口
+component "route_endpoint" -- 路线的起点或终点(用于计算路线)
+component "pickup_show_set_road_arrow" .type "lua" -- 点击显示建路箭头 {tile_coord, arrow_coord}
+component "pickup_set_road" .type "lua" -- 点击建路 {tile_coord, arrow_coord}
+component "pickup_show_ui" .type "lua" -- 点击显示 ui {url}
+component "pickup_show_set_pipe_arrow" .type "lua" -- 点击显示建水管箭头
+component "pickup_set_pipe" .type "lua" -- 点击建水管 {tile_coord, arrow_coord}
+component "pickup_show_remove" .type "lua" -- 点击显示删除建筑按钮
+component "random_name" -- 随机名称(用于车站命名)
+
+------------------------
+component "debug_component" .type "lua"
+component "inserter" -- 机器爪
+
+component "construct_entity" .type "lua"
+policy "construct_entity"
+    .component "construct_entity"
+component "prefab_slot_cache" .type "lua"
+component "prefab_slot_attach" .type "lua"
+component "game_object_id" .type "lua"
+policy "game_object"
+    .component "game_object_id"
+    .component_opt "prefab_slot_cache"
+    .component_opt "prefab_slot_attach"
+
+------------------------
+-- cache
+component "gameplay_world" .type "lua"
+component "gameplay_road_entities" .type "lua"
+policy "gameplay_adapter"
+    .component "gameplay_world"
+    .component "gameplay_road_entities"
+
+component "construct_arrows" .type "lua" -- 缓存箭头
+
+component "pipe_typedirs" .type "lua" -- = {[x][y] = pipe_type, ...}
+component "pipe_entities" .type "lua" -- = {[x][y] = pipe_entity, ...}
+policy "pipe_data"
+    .component "pipe_typedirs"
+    .component "pipe_entities"
+
+component "road_typedirs" .type "lua" -- = {[x][y] = {type = xx, dir = xx}, ...}
+component "road_entities" .type "lua" -- = {[x][y] = road_entity, ...}
+policy "road_data"
+    .component "road_typedirs"
+    .component "road_entities"
+
+component "route_max_id" .type "lua"
+component "route_endpoints" .type "lua" -- {[scene_id] = e, ...}
+component "routes" .type "lua" -- {[id] = {scene_id, scene_id}, ...}
+policy "route_data"
+    .component "route_max_id"
+    .component "route_endpoints"
+    .component "routes"
+
+component "terrain"
+    .type "lua"
+
+policy "terrain"
+    .component "terrain"
+
+------------------------
 pipeline "init"
     .stage "init"
     .stage "post_init"
@@ -39,46 +112,6 @@ pipeline "ui"
 
 pipeline "pickup_mapping"
     .stage "after_pickup_mapping"
-
-------------------------
-component "x" .type "lua"
-component "y" .type "lua"
-component "dir" .type "lua"
-component "area" .type "lua"
-component "building_type" .type "lua"
-
-------------------------
-component "gameplay_world" .type "lua"
-component "gameplay_road_entities" .type "lua"
-policy "gameplay_adapter"
-    .component "gameplay_world"
-    .component "gameplay_road_entities"
-
-component "pipe_types" .type "lua" -- = {[x][y] = pipe_type, ...}
-component "pipe_entities" .type "lua" -- = {[x][y] = pipe_entity, ...}
-policy "pipe_data"
-    .component "pipe_types"
-    .component "pipe_entities"
-
-component "road_types" .type "lua" -- = {[x][y] = {type = xx, dir = xx}, ...}
-component "road_entities" .type "lua" -- = {[x][y] = road_entity, ...}
-policy "road_data"
-    .component "road_types"
-    .component "road_entities"
-
-component "route_max_id" .type "lua"
-component "route_endpoints" .type "lua" -- {[scene_id] = e, ...}
-component "routes" .type "lua" -- {[id] = {scene_id, scene_id}, ...}
-policy "route_data"
-    .component "route_max_id"
-    .component "route_endpoints"
-    .component "routes"
-
-component "terrain"
-    .type "lua"
-
-policy "terrain"
-    .component "terrain"
 
 ------------------------
 system "init_system"
@@ -128,14 +161,6 @@ interface "icamera_controller"
     .implement "camera.lua"
     .method "attach"
     .method "camera"
---
-component "prefab_slot_cache" .type "lua"
-component "prefab_slot_attach" .type "lua"
-component "game_object_id" .type "lua"
-policy "game_object"
-    .component "game_object_id"
-    .component_opt "prefab_slot_cache"
-    .component_opt "prefab_slot_attach"
 
 system "game_object_system"
     .implement "game_object_system.lua"
@@ -172,35 +197,10 @@ system "pipe_system"
     .method "after_pickup_mapping"
     .method "ui_update"
 
---
-component "debug_component" .type "lua"
-component "inserter" -- 机器爪
-component "stop_ani_during_init" -- 开始时暂停动画显示
-component "set_road_entry_during_init" -- 开始时设置入口
-component "pickup_show_set_road_arrow" .type "lua" -- 点击显示建路箭头 {tile_coord, arrow_coord}
-component "pickup_set_road" .type "lua" -- 点击建路 {tile_coord, arrow_coord}
-component "pickup_show_ui" .type "lua" -- 点击显示 ui {url}
-component "pickup_show_set_pipe_arrow" .type "lua" -- 点击显示建水管箭头
-component "pickup_set_pipe" .type "lua" -- 点击建水管 {tile_coord, arrow_coord}
-component "route_endpoint" -- 路线终端(用于路线的起点或终点)
-component "named" -- 需要命名
-component "pickup_show_remove" .type "lua" -- 删除建筑
-
-
-component "construct_arrows" .type "lua" -- 缓存箭头,
-component "construct_arrows_building_type" .type "lua" -- 点击箭头时的建筑类型
-policy "construct_arrows"
-    .component "construct_arrows"
-    .component "construct_arrows_building_type"
-
 interface "ipipe"
     .implement "pipe_system.lua"
     .method "construct"
     .method "dismantle"
-
-component "construct_entity" .type "lua"
-policy "construct_entity"
-    .component "construct_entity"
 
 system "construct_system"
     .implement "construct_system.lua"

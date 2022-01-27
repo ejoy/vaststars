@@ -19,7 +19,7 @@ local pickup_show_set_road_arrow_mb = world:sub {"pickup_mapping", "pickup_show_
 local pickup_set_road_mb = world:sub {"pickup_mapping", "pickup_set_road"}
 local ui_remove_message_mb = world:sub {"ui", "construct", "click_construct_remove"}
 local pickup_mb = world:sub {"pickup"}
-local construct_arrows_entity
+local construct_arrows
 
 --[[
                         North:(y + 1):(0, 1)
@@ -99,18 +99,18 @@ end
 
 local prefab_file_path <const> = "/pkg/vaststars.resources/road/road_%s.prefab"
 local rotators <const> = {
-    [North] = nil,
-    [East]  = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
-    [South] = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
-    [West]  = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
+    N = nil,
+    E = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
+    S = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
+    W = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
 }
 
 local function create_game_object(typedir, x, y)
     local t = typedir:sub(1, 1)
     local dir = typedir:sub(2, 2)
     local prefab = ecs.create_instance(prefab_file_path:format(t))
-    iom.set_position(prefab.root, iterrain.get_position_by_coord({x, y}))
-    iom.set_rotation(prefab.root, rotators[DIRECTION[dir]])
+    iom.set_position(prefab.root, iterrain.get_position_by_coord(x, y))
+    iom.set_rotation(prefab.root, rotators[dir])
     return iprefab_object.create(prefab, {
         policy = {
             "ant.scene|scene_object",
@@ -127,13 +127,13 @@ local function create_game_object(typedir, x, y)
     })
 end
 
-local function set(types, x, y, passable_dir)
-    types[x] = types[x] or {}
+local function set(typedirs, x, y, passable_dir)
+    typedirs[x] = typedirs[x] or {}
     local passable_state = 0
-    if not types[x][y] then
+    if not typedirs[x][y] then
         passable_state = 0
     else
-        passable_state = typedir_to_passable_state(types[x][y])
+        passable_state = typedir_to_passable_state(typedirs[x][y])
     end
     passable_state = set_passable_state(passable_state, passable_dir, 1)
 
@@ -143,16 +143,16 @@ local function set(types, x, y, passable_dir)
         return
     end
 
-    types[x][y] = typedir
+    typedirs[x][y] = typedir
 end
 
-local function unset(types, x, y, passable_dir)
-    types[x] = types[x] or {}
+local function unset(typedirs, x, y, passable_dir)
+    typedirs[x] = typedirs[x] or {}
     local passable_state = 0
-    if not types[x][y] then
+    if not typedirs[x][y] then
         passable_state = 0
     else
-        passable_state = typedir_to_passable_state(types[x][y])
+        passable_state = typedir_to_passable_state(typedirs[x][y])
     end
     passable_state = set_passable_state(passable_state, passable_dir, 0)
 
@@ -162,40 +162,40 @@ local function unset(types, x, y, passable_dir)
         return
     end
 
-    types[x][y] = typedir
+    typedirs[x][y] = typedir
 end
 
-local function flush(types, entities, x, y)
+local function flush(typedirs, entities, x, y)
     entities[x] = entities[x] or {}
 
     local game_object = entities[x][y]
     if game_object then
         igame_object.remove_prefab(game_object)
     end
-    entities[x][y] = create_game_object(types[x][y], x, y)
+    entities[x][y] = create_game_object(typedirs[x][y], x, y)
     --
-    igameplay_adapter.set_road(x, y, types[x][y])
+    igameplay_adapter.set_road(x, y, typedirs[x][y])
 end
 
 local funcs = {}
-funcs[West] = function(types, sx, sy, dx, dy)
-    set(types, sx, sy, West)
-    set(types, dx, dy, East)
+funcs[West] = function(typedirs, sx, sy, dx, dy)
+    set(typedirs, sx, sy, West)
+    set(typedirs, dx, dy, East)
 end
 
-funcs[East] = function(types, sx, sy, dx, dy)
-    set(types, sx, sy, East)
-    set(types, dx, dy, West)
+funcs[East] = function(typedirs, sx, sy, dx, dy)
+    set(typedirs, sx, sy, East)
+    set(typedirs, dx, dy, West)
 end
 
-funcs[North] = function(types, sx, sy, dx, dy)
-    set(types, sx, sy, South)
-    set(types, dx, dy, North)
+funcs[North] = function(typedirs, sx, sy, dx, dy)
+    set(typedirs, sx, sy, South)
+    set(typedirs, dx, dy, North)
 end
 
-funcs[South] = function(types, sx, sy, dx, dy)
-    set(types, sx, sy, North)
-    set(types, dx, dy, South)
+funcs[South] = function(typedirs, sx, sy, dx, dy)
+    set(typedirs, sx, sy, North)
+    set(typedirs, dx, dy, South)
 end
 
 local get_dir, dir_to_coord ; do
@@ -234,13 +234,10 @@ local get_dir, dir_to_coord ; do
 end
 
 function road_sys:init_world()
-    construct_arrows_entity = ecs.create_entity({
-        policy = {
-            "vaststars.gamerender|construct_arrows",
-        },
+    construct_arrows = ecs.create_entity({
+        policy = {},
         data = {
             construct_arrows = {},
-            construct_arrows_building_type = "road",
             reference = true,
         }
     })
@@ -250,7 +247,7 @@ function road_sys:init_world()
             "vaststars.gamerender|road_data",
         },
         data = {
-            road_types = {},
+            road_typedirs = {},
             road_entities = {},
         }
     })
@@ -260,13 +257,13 @@ function road_sys:after_pickup_mapping()
     local is_show_arrow
     for _, _, game_object in pickup_show_set_road_arrow_mb:unpack() do
         local prefab = igame_object.get_prefab_object(game_object)
-        iconstruct_arrow.show(construct_arrows_entity, ROAD_ARROW_YAXIS_DEFAULT, "pickup_set_road", math3d.tovalue(iom.get_position(prefab.root)))
+        iconstruct_arrow.show(construct_arrows, ROAD_ARROW_YAXIS_DEFAULT, "pickup_set_road", math3d.tovalue(iom.get_position(prefab.root)))
         is_show_arrow = true
     end
 
     for _ in pickup_mb:unpack() do
         if not is_show_arrow then
-            iconstruct_arrow.hide(construct_arrows_entity)
+            iconstruct_arrow.hide(construct_arrows)
             break
         end
     end
@@ -288,24 +285,24 @@ function road_sys:ui_update()
 end
 
 function iroad.dismantle(x, y)
-    local e = w:singleton("road_types", "road_types:in road_entities:in")
-    local road_types = e.road_types
+    local e = w:singleton("road_typedirs", "road_typedirs:in road_entities:in")
+    local road_typedirs = e.road_typedirs
     local road_entities = e.road_entities
 
-    assert(road_types[x])
-    assert(road_types[x][y])
+    assert(road_typedirs[x])
+    assert(road_typedirs[x][y])
 
     local t = {}
     for _, dir in pairs(DIRECTION) do
         local dx, dy = dir_to_coord(x, y, dir)
-        if road_types[dx] and road_types[dx][dy] then
+        if road_typedirs[dx] and road_typedirs[dx][dy] then
             t[#t+1] = {dx, dy}
-            unset(road_types, dx, dy, (dir + 2) % 4 )
+            unset(road_typedirs, dx, dy, (dir + 2) % 4 )
         end
     end
 
     for _, v in ipairs(t) do
-        flush(road_types, road_entities, v[1], v[2])
+        flush(road_typedirs, road_entities, v[1], v[2])
     end
 
     local game_object = road_entities[x][y]
@@ -314,17 +311,17 @@ function iroad.dismantle(x, y)
     igame_object.remove_prefab(game_object)
 
     road_entities[x][y] = nil
-    road_types[x][y] = nil
+    road_typedirs[x][y] = nil
 
-    w:sync("road_types:out road_entities:out", e)
+    w:sync("road_typedirs:out road_entities:out", e)
 
-    iconstruct_arrow.hide(construct_arrows_entity)
+    iconstruct_arrow.hide(construct_arrows)
     world:pub {"ui_message", "construct_show_remove", nil}
 end
 
 function iroad.construct(coord_s, coord_d)
-    local e = w:singleton("road_types", "road_types:in road_entities:in")
-    local road_types = e.road_types
+    local e = w:singleton("road_typedirs", "road_typedirs:in road_entities:in")
+    local road_typedirs = e.road_typedirs
     local road_entities = e.road_entities
 
     local sx, sy
@@ -339,10 +336,10 @@ function iroad.construct(coord_s, coord_d)
 
     -- construct for the first time
     if not sx and not sy then
-        road_types[dx] = road_types[dx] or {}
-        road_types[dx][dy] = 'ON'
-        flush(road_types, road_entities, dx, dy)
-        w:sync("road_types:out road_entities:out", e)
+        road_typedirs[dx] = road_typedirs[dx] or {}
+        road_typedirs[dx][dy] = 'ON'
+        flush(road_typedirs, road_entities, dx, dy)
+        w:sync("road_typedirs:out road_entities:out", e)
         return
     end
 
@@ -358,29 +355,29 @@ function iroad.construct(coord_s, coord_d)
         return
     end
 
-    func(road_types, sx, sy, dx, dy)
-    flush(road_types, road_entities, sx, sy)
-    flush(road_types, road_entities, dx, dy)
-    w:sync("road_types:out road_entities:out", e)
+    func(road_typedirs, sx, sy, dx, dy)
+    flush(road_typedirs, road_entities, sx, sy)
+    flush(road_typedirs, road_entities, dx, dy)
+    w:sync("road_typedirs:out road_entities:out", e)
 end
 
 function iroad.get_road_type(coord)
-    local e = w:singleton("road_types", "road_types:in")
-    local road_types = e.road_types
+    local e = w:singleton("road_typedirs", "road_typedirs:in")
+    local road_typedirs = e.road_typedirs
 
-    if not road_types[coord[1]] then
+    if not road_typedirs[coord[1]] then
         return
     end
 
-    return road_types[coord[1]][coord[2]]
+    return road_typedirs[coord[1]][coord[2]]
 end
 
 function iroad.set_building_entry(coord, dir)
-    local e = w:singleton("road_types", "road_types:in road_entities:in")
-    local road_types = e.road_types
+    local e = w:singleton("road_typedirs", "road_typedirs:in road_entities:in")
+    local road_typedirs = e.road_typedirs
     local road_entities = e.road_entities
 
-    set(road_types, coord[1], coord[2], DIRECTION[dir])
-    flush(road_types, road_entities, coord[1], coord[2])
-    w:sync("road_types:out road_entities:out", e)
+    set(road_typedirs, coord[1], coord[2], DIRECTION[dir])
+    flush(road_typedirs, road_entities, coord[1], coord[2])
+    w:sync("road_typedirs:out road_entities:out", e)
 end

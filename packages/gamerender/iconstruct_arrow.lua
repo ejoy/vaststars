@@ -64,7 +64,7 @@ function iconstruct_arrow.hide(e, idx)
 end
 
 function iconstruct_arrow.show(e, yaxis, component_name, position)
-    w:sync("construct_arrows:in construct_arrows_building_type:in", e)
+    w:sync("construct_arrows:in", e)
     local tile_coord = iterrain.get_coord_by_position(position)
     local arrow_coord
 
@@ -75,15 +75,8 @@ function iconstruct_arrow.show(e, yaxis, component_name, position)
         }
 
         -- bounds checking
-        local tile_position = iterrain.get_position_by_coord(arrow_coord)
+        local tile_position = iterrain.get_position_by_coord(arrow_coord[1], arrow_coord[2])
         if not tile_position then
-            iconstruct_arrow.hide(e, idx)
-            goto continue
-        end
-
-        -- only tiles that don't have a building or the same type of building can be set
-        local building_type = iterrain.get_tile_building_type(arrow_coord)
-        if building_type and building_type ~= e.construct_arrows_building_type then
             iconstruct_arrow.hide(e, idx)
             goto continue
         end

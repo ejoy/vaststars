@@ -17,18 +17,14 @@ events.on_init = function(game_object, prefab, components)
 end
 
 events.on_ready = function(game_object, prefab, components)
-    local stop_animation = false
-    w:sync("stop_ani_during_init?in", game_object)
-    if game_object.stop_ani_during_init then
-        stop_animation = true
-    end
+    w:sync("pause_animation?in", game_object)
 
     local prefab_slot_cache = {}
     for _, e in ipairs(prefab.tag["*"]) do
         w:sync("scene:in", e)
         ipickup_mapping.mapping(e.scene.id, game_object, components)
 
-        if stop_animation then
+        if game_object.pause_animation then
             w:sync("_animation?in", e)
             if e._animation then
                 iani.pause(e, true)

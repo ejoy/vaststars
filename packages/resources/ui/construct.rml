@@ -115,6 +115,9 @@
                 work_id = 1,
                 is_show_construct_confirm = false,
                 is_show_construct_remove = false,
+
+                debug_button = {},
+                construct_menu = require "config.construct",
             }
             function start.clickWork(self, building_type)
                 if not building_type then
@@ -177,21 +180,18 @@
                     element.style.top = ("%dpx"):format(math.floor(coord[2]))
                 end
             })
+
+            for i = 1, 8 do
+                start.debug_button[i] = {id = i, left = ("%dvmin"):format(i * 5)}
+            end
         </script>
     </head>
     <body>
         <div id="test" data-model="start">
             <!-- debug 按钮 -->
-            <div style = "position: absolute; left: 0vmin; top: 0vmin; z-index: 999;">
-                <div class = "test-button" data-event-click="clickDebug(1)" style = "position: absolute; left: 0vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
-                <div class = "test-button" data-event-click="clickDebug(2)" style = "position: absolute; left: 5vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
-                <div class = "test-button" data-event-click="clickDebug(3)" style = "position: absolute; left: 10vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
-                <div class = "test-button" data-event-click="clickDebug(4)" style = "position: absolute; left: 15vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
-                <div class = "test-button" data-event-click="clickDebug(5)" style = "position: absolute; left: 20vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
-                <div class = "test-button" data-event-click="clickDebug(6)" style = "position: absolute; left: 25vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
-                <div class = "test-button" data-event-click="clickDebug(7)" style = "position: absolute; left: 30vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
-                <div class = "test-button" data-event-click="clickDebug(8)" style = "position: absolute; left: 35vmin; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
-            </div>            
+            <div style = "position: absolute; left: 0vmin; top: 0vmin; z-index: 999;" data-for="debug_button">
+                <div class = "test-button" data-event-click="clickDebug(it.id)" data-style-left="it.left" style = "position: absolute; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"><span></span></div>
+            </div>
 
             <div style = 'position: absolute; left: 0vmin; top: 12vmin; background-image:"construct/camera_reset.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;' data-event-click = "CameraOpt('reset')" />
             <div style = 'position: absolute; left: 0vmin; top: 17vmin; background-image:"construct/camera_reset.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;' data-event-click = "CameraOpt('lookdown')" />

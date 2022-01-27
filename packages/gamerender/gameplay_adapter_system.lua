@@ -8,7 +8,9 @@ local gameplay_adapter_system = ecs.system "gameplay_adapter_system"
 local igameplay_adapter = ecs.interface "igameplay_adapter"
 
 local function packCoord(x, y)
-    return x | (y<<8)
+    assert(x & 0xFF == x)
+    assert(y & 0xFF == y)
+    return x | (y << 8)
 end
 
 function gameplay_adapter_system:init_world()
@@ -39,7 +41,6 @@ function gameplay_adapter_system:entity_ready()
     end
 
     local gameplay_ecs = gameplay_adapter.gameplay_world.ecs
-
     for _, _, coord, road_type in set_road_mb:unpack() do
         local e = gameplay_adapter.gameplay_road_entities[coord]
         if e then
@@ -100,7 +101,5 @@ function igameplay_adapter.world_caller(funcname, ...)
 end
 
 function igameplay_adapter.pack_coord(x, y)
-    assert(x & 0xFF == x)
-    assert(y & 0xFF == y)
-    return x | (y << 8)
+    return packCoord(x, y)
 end

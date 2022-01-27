@@ -23,8 +23,9 @@ local mc = mathpkg.constant
 local construct_cfg = import_package "vaststars.config".construct
 local backers_cfg = import_package "vaststars.config".backers
 local utility = import_package "vaststars.utility"
-local dir_rotate_cntclkws = utility.dir.rotate_cntclkws
+local dir_rotate = utility.dir.rotate
 local dir_offset_of_entry = utility.dir.offset_of_entry
+local deepcopy = utility.deepcopy
 
 local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
@@ -98,21 +99,6 @@ local function on_prefab_ready(game_object, prefab)
     world:pub {"ui_message", "construct_show_confirm", true, math3d.tovalue(icamera.world_to_screen(coord1)), math3d.tovalue(icamera.world_to_screen(coord2)), math3d.tovalue(icamera.world_to_screen(coord3)) }
 end
 
-local function deep_copy(src, dst)
-    dst = dst or {}
-    for k, v in pairs(src) do
-        local t = type(v)
-        if t == "table" then
-            dst[k] = {}
-            deep_copy(v, dst[k])
-        else
-            assert(t ~= "function")
-            dst[k] = v
-        end
-    end
-    return dst
-end
-
 local on_prefab_message ; do
     local funcs = {}
     funcs["basecolor"] = function(game_object)
@@ -141,7 +127,7 @@ local on_prefab_message ; do
         else
             local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(construct_entity.prefab))
             iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
-            local template = deep_copy(construct_entity.entity)
+            local template = deepcopy(construct_entity.entity)
             template.data.x = coord[1]
             template.data.y = coord[2]
             template.data.dir = construct_entity.dir
@@ -182,19 +168,19 @@ function construct_sys:entity_init()
     end
 
     --
-    for e in w:select "INIT set_road_entry_during_init:in x:in y:in dir:in area:in" do
+    for e in w:select "INIT set_road_entry:in x:in y:in dir:in area:in" do
         local offset = dir_offset_of_entry(e.dir)
         local coord = {
             e.x + offset[1] + (offset[1] * (e.area[1] // 2)),
             e.y + offset[2] + (offset[2] * (e.area[2] // 2)),
         }
 
-        iroad.set_building_entry(coord, e.dir)
+        iroad.set_building_entry(coord, (e.dir))
     end
-    w:clear "set_road_entry_during_init"
+    w:clear "set_road_entry"
 
     --
-    for e in w:select "INIT named:in name:out" do
+    for e in w:select "INIT random_name:in name:out" do
         e.name = backers_cfg[math.random(1, #backers_cfg)]
     end
 end
@@ -231,7 +217,7 @@ function construct_sys:data_changed()
 
             prefab.on_message = on_prefab_message
             prefab.on_ready = on_prefab_ready
-            iprefab_object.create(prefab, deep_copy(cfg.construct_entity))
+            iprefab_object.create(prefab, deepcopy(cfg.construct_entity))
         else
             print(("Can not found building_type `%s`"):format(building_type))
         end
@@ -254,12 +240,12 @@ function construct_sys:data_changed()
     end
 
     for _, _, _ in ui_construct_rotate_mb:unpack() do
-        for game_object in w:select "construct_entity:in" do
-            game_object.construct_entity.dir = dir_rotate_cntclkws(game_object.construct_entity.dir, -1)
+        for game_object in w:select "construct_entity:update" do
+            game_object.construct_entity.dir = dir_rotate(game_object.construct_entity.dir, -1)
             prefab_object = igame_object.get_prefab_object(game_object)
             local rotation = iom.get_rotation(prefab_object.root)
             local deg = math.deg(math3d.tovalue(math3d.quat2euler(rotation))[2])
-            iom.set_rotation(prefab_object.root, math3d.quaternion{axis=mc.YAXIS, r=math.rad(deg + 90)})
+            iom.set_rotation(prefab_object.root, math3d.quaternion{axis=mc.YAXIS, r=math.rad(deg - 90)})
             __update_basecolor_by_pos(game_object)
         end
     end

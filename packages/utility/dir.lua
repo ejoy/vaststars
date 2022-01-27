@@ -21,7 +21,7 @@ for dir, v in pairs(DIRECTION) do
 end
 
 local m = {}
-function m.rotate_cntclkws(dir, t)
+function m.rotate(dir, t)
     return DIRECTION_REV[(DIRECTION[dir] + t) % 4]
 end
 
