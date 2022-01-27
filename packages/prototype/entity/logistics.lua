@@ -35,3 +35,8 @@ prototype "科技中心1" {
     power = "150kW",
     priority = "secondary",
 }
+
+prototype "砖石公路" {
+    type ={"entity"},
+    area = "1x1",
+}
