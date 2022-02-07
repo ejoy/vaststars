@@ -35,9 +35,9 @@ local function copy_directory(from, to, filter)
     end
 end
 
-local input = fs.path "../../"
-local output = fs.path "../../../vaststars-release"
 local BIN = fs.exe_path():parent_path()
+local input = BIN / "../../../"
+local output = BIN / "../../../../vaststars-release"
 local PLAT = BIN:parent_path():filename():string()
 
 local dirs = {"bin", "packages"}
