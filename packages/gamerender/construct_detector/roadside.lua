@@ -5,6 +5,7 @@ local w = world.w
 local utility = import_package "vaststars.utility"
 local dir_offset_of_entry = utility.dir.offset_of_entry
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
+local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
 
 local check_entry_road ; do
     function check_entry_road(coord, dir, width, height)
@@ -41,9 +42,7 @@ local function __can_construct(coord, dir, width, height)
 end
 
 return function(position, dir, area)
-    local width = area[1]
-    local height = area[2]
-
+    local width, height = igameplay_adapter.unpack_coord(area)
     local coord = iterrain.get_coord_by_position(position)
     return __can_construct(coord, dir, width, height)
 end

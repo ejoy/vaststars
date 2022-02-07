@@ -20,7 +20,7 @@ local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_a
 local math3d = require "math3d"
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
-local entities_cfg = import_package "vaststars.config".construct
+local entities_cfg = import_package "vaststars.config".entity
 local backers_cfg = import_package "vaststars.config".backers
 local utility = import_package "vaststars.utility"
 local dir_rotate = utility.dir.rotate
@@ -49,11 +49,6 @@ for f in fs.pairs(base_path) do
     construct_detectors[detector] = ecs.require(('construct_detector.%s'):format(detector))
 end
 
-local function get_construct_entity(entity)
-    w:sync("construct_entity:in", entity)
-    return entity.construct_entity
-end
-
 local function __replace_material(template)
     for _, v in ipairs(template) do
         for _, policy in ipairs(v.policy) do
@@ -67,15 +62,16 @@ local function __replace_material(template)
 end
 
 local function __update_basecolor_by_pos(game_object)
-    local basecolor_factor
-    local construct_entity = get_construct_entity(game_object)
+    w:sync("construct_detector:in dir:in prototype:in", game_object)
 
+    local basecolor_factor
     local prefab = igame_object.get_prefab(game_object)
     local position = math3d.tovalue(iom.get_position(prefab.root))
 
-    if construct_entity.detector then
-        local func = construct_detectors[construct_entity.detector]
-        if not func(position, construct_entity.dir, construct_entity.entity.data.area) then
+    if game_object.construct_detector then
+        local entity = igameplay_adapter.query("entity", game_object.prototype)
+        local func = construct_detectors[game_object.construct_detector]
+        if not func(position, game_object.dir, entity.area) then
             basecolor_factor = CONSTRUCT_RED_BASIC_COLOR
         else
             basecolor_factor = CONSTRUCT_GREEN_BASIC_COLOR
@@ -106,13 +102,14 @@ local on_prefab_message ; do
     end
 
     funcs["confirm_construct"] = function(game_object, prefab)
-        local construct_entity = get_construct_entity(game_object)
         local position = math3d.tovalue(iom.get_position(prefab.root))
         local srt = prefab.root.scene.srt
 
-        if construct_entity.detector then
-            local func = construct_detectors[construct_entity.detector]
-            if not func(position, construct_entity.dir, construct_entity.entity.data.area) then
+        w:sync("construct_detector?in dir:in", game_object)
+        if game_object.construct_detector then
+            local func = construct_detectors[game_object.construct_detector]
+            local entity = igameplay_adapter.query("entity", game_object.prototype)
+            if not func(position, game_object.dir, entity.area) then
                 print("can not construct") -- todo error tips
                 return
             end
@@ -120,27 +117,44 @@ local on_prefab_message ; do
 
         -- create entity
         local coord = iterrain.get_coord_by_position(position)
-        if construct_entity.entity.data.building_type == "road" then -- todo road
+        w:sync("construct_road?in construct_pipe?in dir:in construct_prefab:in construct_entity:in", game_object)
+
+        if game_object.construct_road then
             iroad.construct(nil, coord)
-        elseif construct_entity.entity.data.building_type == "pipe" then
+        elseif game_object.construct_pipe then
             ipipe.construct(nil, coord)
         else
-            local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(construct_entity.prefab))
+            local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(game_object.construct_prefab))
             iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
-            local template = deepcopy(construct_entity.entity)
-            template.data.x = coord[1]
-            template.data.y = coord[2]
-            template.data.dir = construct_entity.dir
+            local template = {
+                policy = {},
+                data = {
+                    prototype = game_object.prototype,
+                    pause_animation = true,
+                    x = coord[1],
+                    y = coord[2],
+                    dir = game_object.dir,
+                    area = igameplay_adapter.query("entity", game_object.prototype).area,
+                }
+            }
+
+            for k, v in pairs(game_object.construct_entity) do
+                template.data[k] = v
+            end
 
             new_prefab.on_ready = function(game_object, prefab)
-                w:sync("area:in", game_object)
+                w:sync("prototype:in", game_object)
+                local entity = igameplay_adapter.query("entity", game_object.prototype)
+                local area = {}
+                area[1], area[2] = igameplay_adapter.unpack_coord(entity.area)
 
-                if construct_entity.entity.data.building_type == "logistics_center" then
+                w:sync("station?in", game_object)
+                if game_object.station then
                     w:sync("scene:in", prefab.root)
                     igameplay_adapter.create_entity {
                         station = {
                             id = prefab.root.scene.id,
-                            coord = igameplay_adapter.pack_coord(coord[1], coord[2] + (-1 * (game_object.area[2] // 2)) - 1),
+                            coord = igameplay_adapter.pack_coord(coord[1], coord[2] + (-1 * (area[2] // 2)) - 1),
                         }
                     }
                 end
@@ -170,12 +184,13 @@ function construct_sys:entity_init()
     --
     for e in w:select "INIT set_road_entry:in x:in y:in dir:in area:in" do
         local offset = dir_offset_of_entry(e.dir)
+        local width, heigh = igameplay_adapter.unpack_coord(e.area)
         local coord = {
-            e.x + offset[1] + (offset[1] * (e.area[1] // 2)),
-            e.y + offset[2] + (offset[2] * (e.area[2] // 2)),
+            e.x + offset[1] + (offset[1] * (width // 2)),
+            e.y + offset[2] + (offset[2] * (heigh // 2)),
         }
 
-        iroad.set_building_entry(coord, (e.dir))
+        iroad.set_building_entry(coord, e.dir)
     end
     w:clear "set_road_entry"
 
@@ -188,16 +203,13 @@ end
 function construct_sys:camera_usage()
     local position
     for _, game_object, mouse_x, mouse_y in drapdrop_entity_mb:unpack() do
-        w:sync("construct_entity?in", game_object)
-        if game_object.construct_entity then
-            local prefab_object = igame_object.get_prefab_object(game_object)
-            position = iinput.screen_to_world {mouse_x, mouse_y}
-            position = iterrain.get_tile_centre_position(math3d.tovalue(position))
-            iom.set_position(prefab_object.root, position)
-            local coord1, coord2, coord3 = iterrain.get_confirm_ui_position(position)
-            world:pub {"ui_message", "construct_show_confirm", true, math3d.tovalue(icamera.world_to_screen(coord1)), math3d.tovalue(icamera.world_to_screen(coord2)), math3d.tovalue(icamera.world_to_screen(coord3)) }
-            prefab_object:send("basecolor")
-        end
+        local prefab_object = igame_object.get_prefab_object(game_object)
+        position = iinput.screen_to_world {mouse_x, mouse_y}
+        position = iterrain.get_tile_centre_position(math3d.tovalue(position))
+        iom.set_position(prefab_object.root, position)
+        local coord1, coord2, coord3 = iterrain.get_confirm_ui_position(position)
+        world:pub {"ui_message", "construct_show_confirm", true, math3d.tovalue(icamera.world_to_screen(coord1)), math3d.tovalue(icamera.world_to_screen(coord2)), math3d.tovalue(icamera.world_to_screen(coord3)) }
+        prefab_object:send("basecolor")
     end
 end
 
@@ -210,24 +222,32 @@ function construct_sys:data_changed()
                 igame_object.get_prefab_object(game_object):remove()
             end
 
-            local f = ("/pkg/vaststars.resources/%s"):format(cfg.construct_prefab)
+            local f = ("/pkg/vaststars.resources/%s"):format(cfg.prefab)
             local template = __replace_material(serialize.parse(f, cr.read_file(f)))
             local prefab = ecs.create_instance(template)
             iom.set_position(prefab.root, iterrain.get_tile_centre_position({0, 0, 0})) -- todo 可能需要根据屏幕中间位置来设置?
 
+            local t = {
+                policy = {},
+                data = {
+                    prototype = prototype,
+                    drapdrop = false,
+                    construct_entity = cfg.component,
+                    pause_animation = true,
+                    dir = 'N',
+                    x = 0,
+                    y = 0,
+                    construct_prefab = cfg.prefab,
+                },
+            }
+
+            for k, v in pairs(cfg.construct_component) do
+                t.data[k] = v
+            end
+
             prefab.on_message = on_prefab_message
             prefab.on_ready = on_prefab_ready
-            iprefab_object.create(prefab, {
-                policy = {
-                    "ant.general|name",
-                    "vaststars.gamerender|construct_entity",
-                },
-                data = {
-                    construct_entity = cfg,
-                    drapdrop = false,
-                    pause_animation = true,
-                },
-            })
+            iprefab_object.create(prefab, t)
         else
             print(("Can not found prototype `%s`"):format(prototype))
         end
@@ -250,8 +270,8 @@ function construct_sys:data_changed()
     end
 
     for _, _, _ in ui_construct_rotate_mb:unpack() do
-        for game_object in w:select "construct_entity:update" do
-            game_object.construct_entity.dir = dir_rotate(game_object.construct_entity.dir, -1)
+        for game_object in w:select "construct_entity:in dir:update" do
+            game_object.dir = dir_rotate(game_object.dir, -1)
             prefab_object = igame_object.get_prefab_object(game_object)
             local rotation = iom.get_rotation(prefab_object.root)
             local deg = math.deg(math3d.tovalue(math3d.quat2euler(rotation))[2])

@@ -3,6 +3,7 @@ local world = ecs.world
 local w     = world.w
 
 local iterrain = ecs.interface "iterrain"
+local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
 
 local function generate_terrain_fields(w, h)
     local fields = {}
@@ -148,8 +149,7 @@ function iterrain.get_tile_building_type(coord)
 end
 
 function iterrain.set_tile_building_type(coord, building_type, area)
-    local width = area[1]
-    local height = area[2]
+    local width, height = igameplay_adapter.unpack_coord(area)
 
     local e = w:singleton("shape_terrain", "terrain:in shape_terrain:in")
     local terrain = e.terrain

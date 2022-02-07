@@ -2,7 +2,9 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local create_gameplay_world = import_package "vaststars.gameplay".createWorld
+import_package "vaststars.prototype"
+local gameplay = import_package "vaststars.gameplay"
+local create_gameplay_world = gameplay.createWorld
 local set_road_mb = world:sub {"gameplay_adapter_system", "set_road"}
 local gameplay_adapter_system = ecs.system "gameplay_adapter_system"
 local igameplay_adapter = ecs.interface "igameplay_adapter"
@@ -11,6 +13,10 @@ local function packCoord(x, y)
     assert(x & 0xFF == x)
     assert(y & 0xFF == y)
     return x | (y << 8)
+end
+
+local function unpackCoord(v)
+    return v >> 8, v & 0xFF
 end
 
 function gameplay_adapter_system:init_world()
@@ -102,4 +108,12 @@ end
 
 function igameplay_adapter.pack_coord(x, y)
     return packCoord(x, y)
+end
+
+function igameplay_adapter.unpack_coord(v)
+    return unpackCoord(v)
+end
+
+function igameplay_adapter.query(maintype, prototype)
+    return gameplay.queryByName(maintype, prototype)
 end

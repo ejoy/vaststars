@@ -71,7 +71,7 @@ local menu = {
     },
     {
         name = "管道",
-        image = "construct/goods_station.png",
+        image = "construct/pipe.png",
         detail = {
             {
                 prototype = "管道1-I型",
@@ -109,7 +109,7 @@ local menu = {
     },
     {
         name = "物流",
-        image = "construct/logistics_center.png",
+        image = "construct/logisitic1.png",
         detail = {
             {
                 prototype = "砖石公路",

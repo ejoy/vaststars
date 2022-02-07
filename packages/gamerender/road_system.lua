@@ -119,7 +119,7 @@ local function create_game_object(typedir, x, y)
             x = x,
             y = y,
             dir = dir,
-            area = {1, 1},
+            area = igameplay_adapter.pack_coord(1, 1),
             building_type = "road",
             pickup_show_set_road_arrow = true,
             pickup_show_remove = false,

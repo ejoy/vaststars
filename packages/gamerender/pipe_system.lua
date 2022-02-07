@@ -10,6 +10,7 @@ local iconstruct_arrow = ecs.import.interface "vaststars.gamerender|iconstruct_a
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
+local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
 
 local PIPE_ARROW_YAXIS_DEFAULT <const> = import_package "vaststars.constant".PIPE_ARROW_YAXIS_DEFAULT
 local pipe_sys = ecs.system "pipe_system"
@@ -118,7 +119,7 @@ local function create_game_object(typedir, x, y)
             x = x,
             y = y,
             dir = dir,
-            area = {1, 1},
+            area = igameplay_adapter.pack_coord(1, 1),
             building_type = "pipe",
             pickup_show_set_pipe_arrow = true,
             pickup_show_remove = false,

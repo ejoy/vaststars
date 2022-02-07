@@ -17,5 +17,6 @@ return {
         "vaststars.constant",
         "vaststars.gameplay",
         "vaststars.config",
+        "vaststars.prototype",
     }
 }
