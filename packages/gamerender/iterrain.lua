@@ -64,7 +64,6 @@ function iterrain.create()
                     {1, shape[2][1] - shape[1][1]},
                     {1, shape[2][3] - shape[1][3]},
                 },
-                tile_terrain_types = {},  -- = {[x][y] = terrain_type, ...}
                 tile_building_types = {}, -- = {[x][y] = building_type, ...}
             },
         }

@@ -20,7 +20,7 @@ local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_a
 local math3d = require "math3d"
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
-local construct_cfg = import_package "vaststars.config".construct
+local entities_cfg = import_package "vaststars.config".construct
 local backers_cfg = import_package "vaststars.config".backers
 local utility = import_package "vaststars.utility"
 local dir_rotate = utility.dir.rotate
@@ -203,8 +203,8 @@ end
 
 function construct_sys:data_changed()
     local cfg
-    for _, _, _, building_type in ui_construct_building_mb:unpack() do
-        cfg = construct_cfg[building_type]
+    for _, _, _, prototype in ui_construct_building_mb:unpack() do
+        cfg = entities_cfg[prototype]
         if cfg then
             for game_object in w:select "construct_entity:in" do
                 igame_object.get_prefab_object(game_object):remove()
@@ -217,9 +217,19 @@ function construct_sys:data_changed()
 
             prefab.on_message = on_prefab_message
             prefab.on_ready = on_prefab_ready
-            iprefab_object.create(prefab, deepcopy(cfg.construct_entity))
+            iprefab_object.create(prefab, {
+                policy = {
+                    "ant.general|name",
+                    "vaststars.gamerender|construct_entity",
+                },
+                data = {
+                    construct_entity = cfg,
+                    drapdrop = false,
+                    pause_animation = true,
+                },
+            })
         else
-            print(("Can not found building_type `%s`"):format(building_type))
+            print(("Can not found prototype `%s`"):format(prototype))
         end
     end
 
