@@ -9,7 +9,7 @@ import "@vaststars.input"
 import "@vaststars.ui"
 
 ------------------------
--- property
+-- build-in property
 component "prototype" .type "lua"
 component "construct_entity" .type "lua" -- table, component
 component "construct_detector" .type "lua" -- string
@@ -19,17 +19,17 @@ component "y" .type "lua"
 component "dir" .type "lua"
 component "area" .type "lua"
 component "building_type" .type "lua"
+component "pickup_show_set_pipe_arrow" .type "lua" -- 点击显示建水管箭头
+component "pickup_set_pipe" .type "lua" -- 点击建水管 {tile_coord, arrow_coord}
+component "pickup_show_set_road_arrow" .type "lua" -- 点击显示建路箭头 {tile_coord, arrow_coord}
+component "pickup_set_road" .type "lua" -- 点击建路 {tile_coord, arrow_coord}
 
 ------------------------
 -- tag
 component "pause_animation" -- 建造 entity 时不显示动画
 component "set_road_entry" -- 建造 entity 时需要设置建筑物的路口
 component "route_endpoint" -- 路线的起点或终点(用于计算路线)
-component "pickup_show_set_road_arrow" .type "lua" -- 点击显示建路箭头 {tile_coord, arrow_coord}
-component "pickup_set_road" .type "lua" -- 点击建路 {tile_coord, arrow_coord}
 component "pickup_show_ui" .type "lua" -- 点击显示 ui {url}
-component "pickup_show_set_pipe_arrow" .type "lua" -- 点击显示建水管箭头
-component "pickup_set_pipe" .type "lua" -- 点击建水管 {tile_coord, arrow_coord}
 component "pickup_show_remove" .type "lua" -- 点击显示删除建筑按钮
 component "random_name" -- 随机名称(用于车站命名)
 component "construct_road" -- 创建路块

@@ -233,7 +233,6 @@ prototype ("砖石公路", {
         construct_detector = "exclusive",
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -300,7 +299,6 @@ prototype ("管道1-I型", {
         construct_detector = "exclusive",
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 

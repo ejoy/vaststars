@@ -116,10 +116,12 @@ local function create_game_object(typedir, x, y)
             "ant.scene|scene_object",
         },
         data = {
+            prototype = ("路1-%s型"):format(t),
             x = x,
             y = y,
             dir = dir,
             area = igameplay_adapter.pack_coord(1, 1),
+
             building_type = "road",
             pickup_show_set_road_arrow = true,
             pickup_show_remove = false,

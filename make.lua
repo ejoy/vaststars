@@ -54,8 +54,14 @@ lm:copy "copy_luaecs" {
     output = "packages/ecs/ecs.lua",
 }
 
+lm:copy "copy_json" {
+    input = lm.antdir .. "packages/json/json.lua",
+    output = "packages/resources/ui/json.lua",
+}
+
 lm:default {
     lm.os == "windows" and "fmod_dll",
     "copy_luaecs",
+    "copy_json",
     "vaststars"
 }
