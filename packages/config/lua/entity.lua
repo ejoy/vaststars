@@ -9,6 +9,7 @@ end
 prototype ("铁制电线杆", {
     prefab = "prefabs/assembling-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -18,6 +19,7 @@ prototype ("铁制电线杆", {
 prototype ("蒸汽发电机1", {
     prefab = "prefabs/assembling-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -27,6 +29,7 @@ prototype ("蒸汽发电机1", {
 prototype ("风力发电机1", {
     prefab = "prefabs/wind-turbine-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -36,6 +39,7 @@ prototype ("风力发电机1", {
 prototype ("太阳能板1", {
     prefab = "prefabs/assembling-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -45,6 +49,7 @@ prototype ("太阳能板1", {
 prototype ("蓄电池1", {
     prefab = "prefabs/small-chest.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -54,6 +59,7 @@ prototype ("蓄电池1", {
 prototype ("电解厂1", {
     prefab = "prefabs/assembling-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -63,6 +69,7 @@ prototype ("电解厂1", {
 prototype ("水电站1", {
     prefab = "prefabs/assembling-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -72,6 +79,7 @@ prototype ("水电站1", {
 prototype ("蒸馏厂1", {
     prefab = "prefabs/distillery-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -81,6 +89,7 @@ prototype ("蒸馏厂1", {
 prototype ("化工厂1", {
     prefab = "prefabs/distillery-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -90,6 +99,7 @@ prototype ("化工厂1", {
 prototype ("采矿机1", {
     prefab = "prefabs/assembling-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -99,6 +109,7 @@ prototype ("采矿机1", {
 prototype ("组装机1", {
     prefab = "prefabs/assembling-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -108,6 +119,7 @@ prototype ("组装机1", {
 prototype ("熔炼炉1", {
     prefab = "prefabs/furnace-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -117,6 +129,7 @@ prototype ("熔炼炉1", {
 prototype ("粉碎机1", {
     prefab = "prefabs/assembling-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -126,6 +139,7 @@ prototype ("粉碎机1", {
 prototype ("地下管1", {
     prefab = "prefabs/assembling-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
     },
@@ -134,6 +148,7 @@ prototype ("地下管1", {
 prototype ("液罐1", {
     prefab = "prefabs/storage-tank-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -143,6 +158,7 @@ prototype ("液罐1", {
 prototype ("抽水泵", {
     prefab = "prefabs/offshore-pump-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -152,6 +168,7 @@ prototype ("抽水泵", {
 prototype ("压力泵1", {
     prefab = "prefabs/pump-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -161,6 +178,7 @@ prototype ("压力泵1", {
 prototype ("烟囱1", {
     prefab = "prefabs/chimney-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -170,6 +188,7 @@ prototype ("烟囱1", {
 prototype ("排水口1", {
     prefab = "prefabs/outfall-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -179,6 +198,7 @@ prototype ("排水口1", {
 prototype ("空气过滤器1", {
     prefab = "prefabs/chimney-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -198,6 +218,7 @@ prototype ("砖石公路", {
 prototype ("小型铁制箱子", {
     prefab = "prefabs/small-chest.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -207,6 +228,7 @@ prototype ("小型铁制箱子", {
 prototype ("机器爪1", {
     prefab = "prefabs/goods-station-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
@@ -228,6 +250,7 @@ prototype ("物流中心", {
 prototype ("科技中心1", {
     prefab = "prefabs/lab-1.prefab",
     construct_component = {
+        construct_detector = "exclusive",
     },
     component = {
         pickup_show_remove = true,
