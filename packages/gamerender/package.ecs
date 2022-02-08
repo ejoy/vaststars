@@ -9,7 +9,7 @@ import "@vaststars.input"
 import "@vaststars.ui"
 
 ------------------------
--- build-in property
+-- build-in component
 component "prototype" .type "lua"
 component "construct_entity" .type "lua" -- table, component
 component "construct_detector" .type "lua" -- string
@@ -23,10 +23,10 @@ component "pickup_show_set_pipe_arrow" .type "lua" -- 点击显示建水管箭�
 component "pickup_set_pipe" .type "lua" -- 点击建水管 {tile_coord, arrow_coord}
 component "pickup_show_set_road_arrow" .type "lua" -- 点击显示建路箭头 {tile_coord, arrow_coord}
 component "pickup_set_road" .type "lua" -- 点击建路 {tile_coord, arrow_coord}
+component "pause_animation" -- 建造 entity 时不显示动画
 
 ------------------------
--- tag
-component "pause_animation" -- 建造 entity 时不显示动画
+-- component
 component "set_road_entry" -- 建造 entity 时需要设置建筑物的路口
 component "route_endpoint" -- 路线的起点或终点(用于计算路线)
 component "pickup_show_ui" .type "lua" -- 点击显示 ui {url}

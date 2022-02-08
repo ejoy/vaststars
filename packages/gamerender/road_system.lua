@@ -97,7 +97,7 @@ local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ;
     end
 end
 
-local prefab_file_path <const> = "/pkg/vaststars.resources/road/road_%s.prefab"
+local prefab_file_path <const> = "/pkg/vaststars.resources/prefabs/road/road_%s.prefab"
 local rotators <const> = {
     N = nil,
     E = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
