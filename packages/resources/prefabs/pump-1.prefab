@@ -1,0 +1,547 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/Road.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti_P1.meshbin
+  name: zhuti
+  scene:
+    srt:
+      r: {0.020374150946736336, -0.020222507417201996, -0.6946262717247009, -0.7187979221343994}
+      s: {3.0835602283477783, 3.490516185760498, 3.083559989929199}
+      t: {0.5509079694747925, 7.462963104248047, 0.03796824440360069}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.003.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti_P2.meshbin
+  name: zhuti
+  scene:
+    srt:
+      r: {0.020374150946736336, -0.020222507417201996, -0.6946262717247009, -0.7187979221343994}
+      s: {3.0835602283477783, 3.490516185760498, 3.083559989929199}
+      t: {0.5509079694747925, 7.462963104248047, 0.03796824440360069}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.006_P1.meshbin
+  name: zhuti.003
+  scene:
+    srt:
+      r: {0.02160162851214409, -0.018184710294008255, -0.6909294724464417, -0.7223705053329468}
+      s: {1.1870863437652588, 1.187086582183838, 1.1870863437652588}
+      t: {-4.254988670349121, 7.826947212219238, 0.04301071912050247}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.006_P1.meshbin
+  name: zhuti.004
+  scene:
+    srt:
+      r: {-0.3267571032047272, 0.34543707966804504, -0.6091634035110474, -0.63468337059021}
+      s: {1.1870863437652588, 1.1870863437652588, 1.1870863437652588}
+      t: {-4.254988670349121, 7.826947212219238, 0.04301071912050247}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.006_P1.meshbin
+  name: zhuti.007
+  scene:
+    srt:
+      r: {-0.5875615477561951, 0.6164990067481995, -0.36417242884635925, -0.3769334852695465}
+      s: {1.1870863437652588, 1.187086582183838, 1.1870863437652588}
+      t: {-4.254988670349121, 7.826947212219238, 0.04301071912050247}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.006_P1.meshbin
+  name: zhuti.009
+  scene:
+    srt:
+      r: {-0.6909295320510864, 0.722370445728302, -0.021601498126983643, -0.01818460039794445}
+      s: {1.1870863437652588, 1.1870862245559692, 1.1870863437652588}
+      t: {-4.254988670349121, 7.826947212219238, 0.04301071912050247}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.006_P1.meshbin
+  name: zhuti.010
+  scene:
+    srt:
+      r: {-0.6091635227203369, 0.6346829533576965, 0.32675671577453613, 0.34543800354003906}
+      s: {1.1870864629745483, 1.1870863437652588, 1.1870863437652588}
+      t: {-4.254988670349121, 7.826947212219238, 0.04301071912050247}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.006_P1.meshbin
+  name: zhuti.011
+  scene:
+    srt:
+      r: {-0.3641726076602936, 0.3769325613975525, 0.5875614881515503, 0.616499662399292}
+      s: {1.1870863437652588, 1.1870863437652588, 1.1870863437652588}
+      t: {-4.254988670349121, 7.826947212219238, 0.04301071912050247}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.012_P1.meshbin
+  name: zhuti.012
+  scene:
+    srt:
+      r: {0.02160162851214409, -0.018184710294008255, -0.6909294724464417, -0.7223705053329468}
+      s: {3.660452365875244, 4.143544673919678, 3.660452127456665}
+      t: {-2.1853487491607666, 7.735170364379883, 0.05560808256268501}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.016_P1.meshbin
+  name: zhuti.015
+  scene:
+    srt:
+      r: {0.02160162851214409, -0.018184710294008255, -0.6909294724464417, -0.7223705053329468}
+      s: {3.660452365875244, 4.143544673919678, 3.660452127456665}
+      t: {-5.600864410400391, 7.886628150939941, 0.03481896221637726}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.004.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.018_P1.meshbin
+  name: zhuti.018
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/pingmian.001_P1.meshbin
+  name: pingmian
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.003.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.004_P1.meshbin
+  name: zhuti.022
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/Road.bian.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.001_P1.meshbin
+  name: zhuti.017
+  scene:
+    srt:
+      r: {-0.7359949350357056, -0.012616273947060108, 0.013721142895519733, -0.6767303943634033}
+      s: {0.8965001702308655, 2.200514078140259, 0.8965001702308655}
+      t: {1.55538010597229, 7.607666492462158, 6.674007415771484}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.006.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.001_P2.meshbin
+  name: zhuti.017
+  scene:
+    srt:
+      r: {-0.7359949350357056, -0.012616273947060108, 0.013721142895519733, -0.6767303943634033}
+      s: {0.8965001702308655, 2.200514078140259, 0.8965001702308655}
+      t: {1.55538010597229, 7.607666492462158, 6.674007415771484}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.003.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.001_P3.meshbin
+  name: zhuti.017
+  scene:
+    srt:
+      r: {-0.7359949350357056, -0.012616273947060108, 0.013721142895519733, -0.6767303943634033}
+      s: {0.8965001702308655, 2.200514078140259, 0.8965001702308655}
+      t: {1.55538010597229, 7.607666492462158, 6.674007415771484}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.003.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.007_P1.meshbin
+  name: zhuti.024
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/Road.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.008_P1.meshbin
+  name: zhuti.025
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.006.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.013_P1.meshbin
+  name: zhuti.027
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.007.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.013_P2.meshbin
+  name: zhuti.027
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/Road.bian.001.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.020_P1.meshbin
+  name: zhuti.023
+  scene:
+    srt:
+      r: {-0.5014306902885437, -0.04466407373547554, 0.025931578129529953, -0.8636549711227417}
+      s: {1, 2.4545602798461914, 1}
+      t: {1.8428981304168701, 12.902871131896973, 2.1381123065948486}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.010.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.020_P2.meshbin
+  name: zhuti.023
+  scene:
+    srt:
+      r: {-0.5014306902885437, -0.04466407373547554, 0.025931578129529953, -0.8636549711227417}
+      s: {1, 2.4545602798461914, 1}
+      t: {1.8428981304168701, 12.902871131896973, 2.1381123065948486}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.009.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.020_P3.meshbin
+  name: zhuti.023
+  scene:
+    srt:
+      r: {-0.5014306902885437, -0.04466407373547554, 0.025931578129529953, -0.8636549711227417}
+      s: {1, 2.4545602798461914, 1}
+      t: {1.8428981304168701, 12.902871131896973, 2.1381123065948486}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/Road.bian.001.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.019_P1.meshbin
+  name: zhuti.016
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.009.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.019_P2.meshbin
+  name: zhuti.016
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/Road.001.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.015_P1.meshbin
+  name: zhuti.005
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.010.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.014_P1.meshbin
+  name: zhuti.002
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.008.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.014_P2.meshbin
+  name: zhuti.002
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/Road.bian.002.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.024_P1.meshbin
+  name: zhuti.029
+  scene:
+    srt:
+      r: {-0.5611613392829895, -0.03657516837120056, 0.024832364171743393, -0.8265250325202942}
+      s: {1, 2.4545602798461914, 1}
+      t: {1.8110883235931396, 11.163708686828613, 5.5824875831604}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.013.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.024_P2.meshbin
+  name: zhuti.029
+  scene:
+    srt:
+      r: {-0.5611613392829895, -0.03657516837120056, 0.024832364171743393, -0.8265250325202942}
+      s: {1, 2.4545602798461914, 1}
+      t: {1.8110883235931396, 11.163708686828613, 5.5824875831604}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.012.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.024_P3.meshbin
+  name: zhuti.029
+  scene:
+    srt:
+      r: {-0.5611613392829895, -0.03657516837120056, 0.024832364171743393, -0.8265250325202942}
+      s: {1, 2.4545602798461914, 1}
+      t: {1.8110883235931396, 11.163708686828613, 5.5824875831604}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/Road.bian.002.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.023_P1.meshbin
+  name: zhuti.028
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.012.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.023_P2.meshbin
+  name: zhuti.028
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/Road.002.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.022_P1.meshbin
+  name: zhuti.026
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.013.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.021_P1.meshbin
+  name: zhuti.019
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.011.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.021_P2.meshbin
+  name: zhuti.019
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.004.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.025_P1.meshbin
+  name: zhuti.001
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/road.jia.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.025_P2.meshbin
+  name: zhuti.001
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/pump.glb|materials/材质.003.material"
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.025_P3.meshbin
+  name: zhuti.001
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/pump.glb|materials/road.jia.material
+  mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/ZHUITI.001_P1.meshbin
+  name: ZHUITI.001
+  scene:
+    srt:
+      s: {0.6178131699562073, 0.6178131699562073, 0.6178131699562073}
+      t: {0, 1.5, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render

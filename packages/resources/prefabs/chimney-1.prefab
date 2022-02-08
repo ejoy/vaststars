@@ -1,0 +1,133 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/chimney.glb|materials/材质.material"
+  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.008_P1.meshbin
+  name: Cylinder.008
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/chimney.glb|materials/材质.009.material"
+  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.009_P1.meshbin
+  name: Cylinder.009
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.002.material
+  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.010_P1.meshbin
+  name: Cylinder.010
+  scene:
+    srt:
+      t: {0, 0.9483034610748291, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.002.material
+  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Plane_P1.meshbin
+  name: Plane
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/chimney.glb|materials/road.jia.material
+  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.012_P1.meshbin
+  name: Cylinder.011
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/chimney.glb|materials/road.jia.material
+  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.013_P1.meshbin
+  name: Cylinder.012
+  scene:
+    srt:
+      s: {1.0656399726867676, 1.0656399726867676, 1.0656399726867676}
+      t: {0, 12.743448257446289, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/chimney.glb|materials/road.jia.material
+  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.015_P1.meshbin
+  name: Cylinder.013
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/chimney.glb|materials/road.jia.material
+  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.015_P1.meshbin
+  name: Cylinder.014
+  scene:
+    srt:
+      r: {0, 0.866025447845459, 0, -0.4999999701976776}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/chimney.glb|materials/road.jia.material
+  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.015_P1.meshbin
+  name: Cylinder.015
+  scene:
+    srt:
+      r: {0, -0.866025447845459, 0, -0.4999999701976776}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/chimney.glb|materials/road.jia.001.material
+  mesh: "/pkg/vaststars.resources/glb/chimney.glb|meshes/柱体.001_P1.meshbin"
+  name: zhuti.001
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render

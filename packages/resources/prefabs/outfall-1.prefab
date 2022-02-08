@@ -1,0 +1,181 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/outfall.glb|materials/road.jia.material
+  mesh: /pkg/vaststars.resources/glb/outfall.glb|meshes/Cylinder_P1.meshbin
+  name: Cylinder
+  scene:
+    srt:
+      t: {0, 0, 3.4706645011901855}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/outfall.glb|materials/材质.material"
+  mesh: /pkg/vaststars.resources/glb/outfall.glb|meshes/Plane.002_P1.meshbin
+  name: Plane.003
+  scene:
+    srt:
+      s: {0.6000000238418579, 1, 0.6000000238418579}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/outfall.glb|materials/材质.004.material"
+  mesh: /pkg/vaststars.resources/glb/outfall.glb|meshes/Cylinder.001_P1.meshbin
+  name: Cylinder.001
+  scene:
+    srt:
+      r: {0.7071068286895752, 0, 0, -0.7071068286895752}
+      s: {1.1572171449661255, 1.1572171449661255, 1.1572171449661255}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/outfall.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/outfall.glb|meshes/Cylinder.002_P1.meshbin
+  name: Cylinder.002
+  scene:
+    srt:
+      r: {0.7071068286895752, 0, 0, -0.7071068286895752}
+      s: {1.1572171449661255, 1.1572171449661255, 1.1572171449661255}
+      t: {0, 19.712594985961914, -10.64351749420166}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/outfall.glb|materials/pbr_default_cw.material
+  mesh: /pkg/vaststars.resources/glb/outfall.glb|meshes/Cylinder.005_P1.meshbin
+  name: Cylinder.004
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/outfall.glb|materials/材质.005.material"
+  mesh: /pkg/vaststars.resources/glb/outfall.glb|meshes/Cylinder.006_P1.meshbin
+  name: Cylinder.003
+  scene:
+    srt:
+      r: {0.7071068286895752, 0, 0, -0.7071068286895752}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/outfall.glb|materials/材质.005.material"
+  mesh: /pkg/vaststars.resources/glb/outfall.glb|meshes/Cylinder.011_P1.meshbin
+  name: Cylinder.005
+  scene:
+    srt:
+      r: {0, 0, 0.7071067690849304, -0.7071068286895752}
+      s: {0.8688240051269531, 1.6721552610397339, 0.8688240051269531}
+      t: {5.980677127838135, 17.63758087158203, -7.842861175537109}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/outfall.glb|materials/材质.004.material"
+  mesh: /pkg/vaststars.resources/glb/outfall.glb|meshes/Plane.003_P1.meshbin
+  name: Plane.004
+  scene:
+    srt:
+      s: {0.6000000238418579, 1, 0.6000000238418579}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/outfall.glb|materials/材质.004.material"
+  mesh: /pkg/vaststars.resources/glb/outfall.glb|meshes/Plane.004_P1.meshbin
+  name: Plane.005
+  scene:
+    srt:
+      s: {0.6000000238418579, 1, 0.6000000238418579}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/outfall.glb|materials/road.jia.material
+  mesh: /pkg/vaststars.resources/glb/outfall.glb|meshes/Cylinder.004_P1.meshbin
+  name: Cylinder.007
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/outfall.glb|materials/材质.005.material"
+  mesh: /pkg/vaststars.resources/glb/outfall.glb|meshes/Plane.005_P1.meshbin
+  name: Plane.006
+  scene:
+    srt:
+      s: {0.6000000238418579, 1, 0.6000000238418579}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/outfall.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/outfall.glb|meshes/Plane.010_P1.meshbin
+  name: Plane.008
+  scene:
+    srt:
+      s: {0.6000000238418579, 1, 0.6000000238418579}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/outfall.glb|materials/road.jia.material
+  mesh: /pkg/vaststars.resources/glb/outfall.glb|meshes/Cube_P1.meshbin
+  name: Cube
+  scene:
+    srt:
+      s: {0.09098464250564575, 0.09098464250564575, 1}
+      t: {-0.8759632110595703, 7.810257911682129, 8.744105339050293}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render

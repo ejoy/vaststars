@@ -1,0 +1,117 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/storage_tank.glb|materials/材质.002.material"
+  mesh: /pkg/vaststars.resources/glb/storage_tank.glb|meshes/lifangti.002_P1.meshbin
+  name: lifangti.004
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/storage_tank.glb|materials/材质.003.material"
+  mesh: "/pkg/vaststars.resources/glb/storage_tank.glb|meshes/立方体.003_P1.meshbin"
+  name: lifangti.005
+  scene:
+    srt:
+      r: {0, 0.016509542241692543, 0, -0.9998638033866882}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/storage_tank.glb|materials/材质.003.material"
+  mesh: "/pkg/vaststars.resources/glb/storage_tank.glb|meshes/立方体.004_P1.meshbin"
+  name: lifangti.006
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/storage_tank.glb|materials/材质.003.material"
+  mesh: "/pkg/vaststars.resources/glb/storage_tank.glb|meshes/立方体.007_P1.meshbin"
+  name: lifangti.008
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/storage_tank.glb|materials/材质.003.material"
+  mesh: "/pkg/vaststars.resources/glb/storage_tank.glb|meshes/平面.003_P1.meshbin"
+  name: piongmian.002
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/storage_tank.glb|materials/材质.007.material"
+  mesh: "/pkg/vaststars.resources/glb/storage_tank.glb|meshes/柱体.001_P1.meshbin"
+  name: zhuti.001
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/storage_tank.glb|materials/材质.007.material"
+  mesh: "/pkg/vaststars.resources/glb/storage_tank.glb|meshes/柱体.003_P1.meshbin"
+  name: zhuti.002
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/storage_tank.glb|materials/材质.007.material"
+  mesh: "/pkg/vaststars.resources/glb/storage_tank.glb|meshes/柱体.004_P1.meshbin"
+  name: zhuti.003
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/storage_tank.glb|materials/材质.007.material"
+  mesh: "/pkg/vaststars.resources/glb/storage_tank.glb|meshes/柱体.005_P1.meshbin"
+  name: zhuti.004
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render

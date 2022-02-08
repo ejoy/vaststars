@@ -1,0 +1,69 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/lab.glb|materials/材质.010.material"
+  mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Icosphere_P1.meshbin
+  name: Icosphere
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/lab.glb|materials/Road.material
+  mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Cylinder_P1.meshbin
+  name: Cylinder
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/lab.glb|materials/材质.material"
+  mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Plane.002_P1.meshbin
+  name: Plane.002
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/lab.glb|materials/材质.010.material"
+  mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Icosphere.001_P1.meshbin
+  name: Icosphere.001
+  scene:
+    srt:
+      s: {8.361084938049316, 8.361084938049316, 8.361084938049316}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/lab.glb|materials/road.jia.001.material
+  mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Plane.001_P1.meshbin
+  name: Plane.001
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render

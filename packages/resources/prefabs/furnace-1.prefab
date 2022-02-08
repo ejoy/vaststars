@@ -1,0 +1,1344 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/default.003.material
+  mesh: "/pkg/vaststars.resources/glb/furnace.glb|meshes/圆环_P1.meshbin"
+  name: "圆环"
+  scene:
+    srt:
+      s: {4.090798377990723, 4.090798377990723, 4.090798377990723}
+      t: {0, 10.951189041137695, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/default.001.material
+  mesh: "/pkg/vaststars.resources/glb/furnace.glb|meshes/网格.067_P1.meshbin"
+  name: Detail_Original_02_02
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, -0.7071067094802856}
+      s: {0.06286980211734772, 0.06286980211734772, 0.06286980211734772}
+      t: {8.680366516113281, 8.964056968688965, 8.683303833007813}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/default.001.material
+  mesh: "/pkg/vaststars.resources/glb/furnace.glb|meshes/网格.066_P1.meshbin"
+  name: Detail_Original_02_01
+  scene:
+    srt:
+      t: {0.000244140625, 0.0018310546875, 66.53697204589844}
+mount: 3
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/default.001.material
+  mesh: "/pkg/vaststars.resources/glb/furnace.glb|meshes/网格.065_P1.meshbin"
+  name: Detail_Original_02_04
+  scene:
+    srt:
+      t: {0.003173828125, -0.005706787109375, -70.67229461669922}
+mount: 3
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/default.001.material
+  mesh: "/pkg/vaststars.resources/glb/furnace.glb|meshes/网格.067_P1.meshbin"
+  name: Detail_Original_02_02
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, -0.7071067094802856}
+      s: {0.06286980211734772, 0.06286980211734772, 0.06286980211734772}
+      t: {8.680366516113281, 8.964056968688965, 8.683303833007813}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/default.001.material
+  mesh: "/pkg/vaststars.resources/glb/furnace.glb|meshes/网格.103_P1.meshbin"
+  name: Detail_Symmetry_18_01
+  scene:
+    srt:
+      r: {0, -0.7071068286895752, 0, -0.7071068286895752}
+      s: {0.13353930413722992, 0.13353930413722992, 0.13353930413722992}
+      t: {0, 7.788129806518555, -11.873856544494629}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/default.004.material
+  mesh: "/pkg/vaststars.resources/glb/furnace.glb|meshes/网格.115_P1.meshbin"
+  name: Detail_Original_06_01.001
+  scene:
+    srt:
+      s: {0.18615606427192688, 0.08578957617282867, 0.18615606427192688}
+      t: {0, 7.344612121582031, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/default.001.material
+  mesh: "/pkg/vaststars.resources/glb/furnace.glb|meshes/网格.171_P1.meshbin"
+  name: Detail_Original_07_01.001
+  scene:
+    srt:
+      s: {0.1875533163547516, 0.1875533163547516, 0.1875533163547516}
+      t: {0, 10.361431121826172, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-14.569933891296387, -0.10070258378982544, -0.07195806503295898}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-14.569933891296387, -0.10070258378982544, -0.07195806503295898}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.002_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Bottom_01_1
+  scene:
+    srt:
+      t: {5.240436553955078, 222.4910888671875, -133.84127807617188}
+mount: 11
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.005_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Top_01_1
+  scene:
+    srt:
+      t: {5.240119457244873, 222.5361328125, 340.197998046875}
+mount: 11
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-14.569933891296387, -0.10070258378982544, -0.07195806503295898}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-14.569933891296387, -0.10070258378982544, -0.07195806503295898}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/123.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.009_P1.meshbin
+  name: SM_Env_Greeble_Cube_02__32_
+  scene:
+    srt:
+      r: {0, 0.7071067094802856, 0.7071068286895752, -5.338507236274381e-08}
+      s: {0.023705581203103065, 0.027110988274216652, 0.02050241455435753}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/123.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.010_P1.meshbin
+  name: SM_Bld_Power_03__2_
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.006664808373898268, 0.00666480278596282, 0.00666480278596282}
+      t: {-8.493222236633301, 6.1890411376953125, 8.684927940368652}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/123.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.010_P1.meshbin
+  name: SM_Bld_Power_03
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.006664808373898268, 0.00666480278596282, 0.00666480278596282}
+      t: {-4.52916145324707, 6.042821884155273, 10.547679901123047}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/123.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.012_P1.meshbin
+  name: SM_Bld_Large_02__4_
+  scene:
+    srt:
+      r: {0.49999991059303284, -0.5000000596046448, -0.5000001788139343, -0.49999988079071045}
+      s: {0.005181771703064442, 0.005181771703064442, 0.005181771703064442}
+      t: {-11.964579582214355, 6.04568338394165, 11.86181926727295}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/123.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.013_P1.meshbin
+  name: SM_Bld_Large_Part_07__6_
+  scene:
+    srt:
+      r: {-0.49999988079071045, 0.5000001788139343, 0.5000002980232239, 0.4999998211860657}
+      s: {0.008637650869786739, 0.008637650869786739, 0.008637651801109314}
+      t: {-10.24309253692627, 6.036189079284668, -3.7088165283203125}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/123.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.019_P1.meshbin
+  name: SM_Bld_Section_Corner_03__7_
+  scene:
+    srt:
+      r: {0, 1, 0, 1.6292068494294654e-07}
+      s: {0.7196598052978516, 0.7196598052978516, 0.7196598052978516}
+      t: {-13.55800724029541, 6.907110691070557, 13.489901542663574}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/123.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.020_P1.meshbin
+  name: SM_Bld_Large_Part_08__10_
+  scene:
+    srt:
+      r: {0, 0.37769126892089844, 0, -0.9259315729141235}
+      s: {1.1723730564117432, 1.1723730564117432, 1.1723730564117432}
+      t: {-8.835536956787109, 11.029243469238281, -9.388294219970703}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.001
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-14.569933891296387, -0.10070258378982544, 9.992101669311523}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.001
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-14.569933891296387, -0.10070258378982544, 9.992101669311523}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.002_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Bottom_01_1.001
+  scene:
+    srt:
+      t: {5.240478515625, 222.4910888671875, -133.84129333496094}
+mount: 24
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.005_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Top_01_1.001
+  scene:
+    srt:
+      t: {5.24029541015625, 222.5361328125, 340.197998046875}
+mount: 24
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.001
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-14.569933891296387, -0.10070258378982544, 9.992101669311523}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.001
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-14.569933891296387, -0.10070258378982544, 9.992101669311523}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.002
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-14.569933891296387, -0.10070258378982544, -9.953863143920898}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.002
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-14.569933891296387, -0.10070258378982544, -9.953863143920898}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.002_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Bottom_01_1.002
+  scene:
+    srt:
+      t: {5.24041748046875, 222.490966796875, -133.84127807617188}
+mount: 30
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.005_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Top_01_1.002
+  scene:
+    srt:
+      t: {5.240234375, 222.5360107421875, 340.197998046875}
+mount: 30
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.002
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-14.569933891296387, -0.10070258378982544, -9.953863143920898}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.002
+  scene:
+    srt:
+      r: {0.5000007748603821, -0.4999992549419403, -0.4999993145465851, -0.5000006556510925}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-14.569933891296387, -0.10070258378982544, -9.953863143920898}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.003
+  scene:
+    srt:
+      r: {0, -0.7071067094802856, -0.7071068286895752, -9.595422625352512e-07}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-0.058258771896362305, -0.10070258378982544, 14.515616416931152}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.003
+  scene:
+    srt:
+      r: {0, -0.7071067094802856, -0.7071068286895752, -9.595422625352512e-07}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-0.058258771896362305, -0.10070258378982544, 14.515616416931152}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.002_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Bottom_01_1.003
+  scene:
+    srt:
+      t: {5.240437030792236, 222.4910888671875, -133.84127807617188}
+mount: 36
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.005_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Top_01_1.003
+  scene:
+    srt:
+      t: {5.240118026733398, 222.5361328125, 340.197998046875}
+mount: 36
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.003
+  scene:
+    srt:
+      r: {0, -0.7071067094802856, -0.7071068286895752, -9.595422625352512e-07}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-0.058258771896362305, -0.10070258378982544, 14.515616416931152}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.003
+  scene:
+    srt:
+      r: {0, -0.7071067094802856, -0.7071068286895752, -9.595422625352512e-07}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-0.058258771896362305, -0.10070258378982544, 14.515616416931152}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.004
+  scene:
+    srt:
+      r: {0, -0.7071067094802856, -0.7071068286895752, -9.595422625352512e-07}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {10.0058012008667, -0.10070258378982544, 14.515616416931152}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.004
+  scene:
+    srt:
+      r: {0, -0.7071067094802856, -0.7071068286895752, -9.595422625352512e-07}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {10.0058012008667, -0.10070258378982544, 14.515616416931152}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.002_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Bottom_01_1.004
+  scene:
+    srt:
+      t: {5.240478515625, 222.490966796875, -133.84127807617188}
+mount: 42
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.005_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Top_01_1.004
+  scene:
+    srt:
+      t: {5.24017333984375, 222.5360107421875, 340.197998046875}
+mount: 42
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.004
+  scene:
+    srt:
+      r: {0, -0.7071067094802856, -0.7071068286895752, -9.595422625352512e-07}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {10.0058012008667, -0.10070258378982544, 14.515616416931152}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.004
+  scene:
+    srt:
+      r: {0, -0.7071067094802856, -0.7071068286895752, -9.595422625352512e-07}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {10.0058012008667, -0.10070258378982544, 14.515616416931152}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.005
+  scene:
+    srt:
+      r: {0, -0.7071067094802856, -0.7071068286895752, -9.595422625352512e-07}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-9.940163612365723, -0.10070258378982544, 14.515616416931152}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.005
+  scene:
+    srt:
+      r: {0, -0.7071067094802856, -0.7071068286895752, -9.595422625352512e-07}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-9.940163612365723, -0.10070258378982544, 14.515616416931152}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.002_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Bottom_01_1.005
+  scene:
+    srt:
+      t: {5.240478515625, 222.4910888671875, -133.84127807617188}
+mount: 48
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.005_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Top_01_1.005
+  scene:
+    srt:
+      t: {5.24017333984375, 222.5361328125, 340.197998046875}
+mount: 48
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.005
+  scene:
+    srt:
+      r: {0, -0.7071067094802856, -0.7071068286895752, -9.595422625352512e-07}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-9.940163612365723, -0.10070258378982544, 14.515616416931152}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.005
+  scene:
+    srt:
+      r: {0, -0.7071067094802856, -0.7071068286895752, -9.595422625352512e-07}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-9.940163612365723, -0.10070258378982544, 14.515616416931152}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.006
+  scene:
+    srt:
+      r: {-0.4999993145465851, -0.5000006556510925, -0.5000007748603821, 0.4999992549419403}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {14.529316902160645, -0.10070258378982544, 0.04947853088378906}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.006
+  scene:
+    srt:
+      r: {-0.4999993145465851, -0.5000006556510925, -0.5000007748603821, 0.4999992549419403}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {14.529316902160645, -0.10070258378982544, 0.04947853088378906}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.002_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Bottom_01_1.006
+  scene:
+    srt:
+      t: {5.240444660186768, 222.4910888671875, -269.6528625488281}
+mount: 54
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.005_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Top_01_1.006
+  scene:
+    srt:
+      t: {5.240112781524658, 222.5360107421875, 416.2581787109375}
+mount: 54
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.006
+  scene:
+    srt:
+      r: {-0.4999993145465851, -0.5000006556510925, -0.5000007748603821, 0.4999992549419403}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {14.529316902160645, -0.10070258378982544, 0.04947853088378906}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.006
+  scene:
+    srt:
+      r: {-0.4999993145465851, -0.5000006556510925, -0.5000007748603821, 0.4999992549419403}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {14.529316902160645, -0.10070258378982544, 0.04947853088378906}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.007
+  scene:
+    srt:
+      r: {-0.4999993145465851, -0.5000006556510925, -0.5000007748603821, 0.4999992549419403}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {14.529314994812012, -0.10070258378982544, -10.014580726623535}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.007
+  scene:
+    srt:
+      r: {-0.4999993145465851, -0.5000006556510925, -0.5000007748603821, 0.4999992549419403}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {14.529314994812012, -0.10070258378982544, -10.014580726623535}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.002_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Bottom_01_1.007
+  scene:
+    srt:
+      t: {5.240478515625, 222.4910888671875, -133.84127807617188}
+mount: 60
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.005_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Top_01_1.007
+  scene:
+    srt:
+      t: {5.24017333984375, 222.5362548828125, 340.197998046875}
+mount: 60
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.007
+  scene:
+    srt:
+      r: {-0.4999993145465851, -0.5000006556510925, -0.5000007748603821, 0.4999992549419403}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {14.529314994812012, -0.10070258378982544, -10.014580726623535}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.007
+  scene:
+    srt:
+      r: {-0.4999993145465851, -0.5000006556510925, -0.5000007748603821, 0.4999992549419403}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {14.529314994812012, -0.10070258378982544, -10.014580726623535}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.008
+  scene:
+    srt:
+      r: {-0.4999993145465851, -0.5000006556510925, -0.5000007748603821, 0.4999992549419403}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {14.529316902160645, -0.10070258378982544, 9.93138313293457}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.008
+  scene:
+    srt:
+      r: {-0.4999993145465851, -0.5000006556510925, -0.5000007748603821, 0.4999992549419403}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {14.529316902160645, -0.10070258378982544, 9.93138313293457}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.002_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Bottom_01_1.008
+  scene:
+    srt:
+      t: {5.24041748046875, 222.4910888671875, -133.84127807617188}
+mount: 66
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.005_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Top_01_1.008
+  scene:
+    srt:
+      t: {5.24017333984375, 222.5361328125, 340.197998046875}
+mount: 66
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.008
+  scene:
+    srt:
+      r: {-0.4999993145465851, -0.5000006556510925, -0.5000007748603821, 0.4999992549419403}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {14.529316902160645, -0.10070258378982544, 9.93138313293457}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.008
+  scene:
+    srt:
+      r: {-0.4999993145465851, -0.5000006556510925, -0.5000007748603821, 0.4999992549419403}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {14.529316902160645, -0.10070258378982544, 9.93138313293457}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.009
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, 0.7071067094802856}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {0.017640113830566406, -0.10070258378982544, -14.538094520568848}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.009
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, 0.7071067094802856}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {0.017640113830566406, -0.10070258378982544, -14.538094520568848}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.002_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Bottom_01_1.009
+  scene:
+    srt:
+      t: {5.240443229675293, 222.4910888671875, -261.2226257324219}
+mount: 72
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.005_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Top_01_1.009
+  scene:
+    srt:
+      t: {5.240114688873291, 222.5361328125, 408.89501953125}
+mount: 72
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.009
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, 0.7071067094802856}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {0.017640113830566406, -0.10070258378982544, -14.538094520568848}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.009
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, 0.7071067094802856}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {0.017640113830566406, -0.10070258378982544, -14.538094520568848}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.010
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, 0.7071067094802856}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-10.046417236328125, -0.10070258378982544, -14.538092613220215}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.010
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, 0.7071067094802856}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-10.046417236328125, -0.10070258378982544, -14.538092613220215}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.002_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Bottom_01_1.010
+  scene:
+    srt:
+      t: {5.24053955078125, 222.4910888671875, -133.84127807617188}
+mount: 78
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.005_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Top_01_1.010
+  scene:
+    srt:
+      t: {5.240234375, 222.5362548828125, 340.197998046875}
+mount: 78
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.010
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, 0.7071067094802856}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-10.046417236328125, -0.10070258378982544, -14.538092613220215}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.010
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, 0.7071067094802856}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {-10.046417236328125, -0.10070258378982544, -14.538092613220215}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.011
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, 0.7071067094802856}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {9.899544715881348, -0.10070258378982544, -14.538094520568848}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.011
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, 0.7071067094802856}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {9.899544715881348, -0.10070258378982544, -14.538094520568848}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.002_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Bottom_01_1.011
+  scene:
+    srt:
+      t: {5.240478515625, 222.4910888671875, -311.69354248046875}
+mount: 84
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.005_P1.meshbin
+  name: SM_Bld_Warehouse_Door_Top_01_1.011
+  scene:
+    srt:
+      t: {5.24017333984375, 222.5361328125, 418.1118469238281}
+mount: 84
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/PolygonScifi_01_A.002.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P1.meshbin
+  name: SM_Bld_Warehouse_01__1_.011
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, 0.7071067094802856}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {9.899544715881348, -0.10070258378982544, -14.538094520568848}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/Glass_01_A.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene_P2.meshbin
+  name: SM_Bld_Warehouse_01__1_.011
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0, 0, 0.7071067094802856}
+      s: {0.009890379384160042, 0.009890379384160042, 0.009890379384160042}
+      t: {9.899544715881348, -0.10070258378982544, -14.538094520568848}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/default.001.material
+  mesh: "/pkg/vaststars.resources/glb/furnace.glb|meshes/网格.856_P1.meshbin"
+  name: Detail_Original_06_01.002
+  scene:
+    srt:
+      s: {0.09615848213434219, 0.04431440308690071, 0.09615848213434219}
+      t: {8.621164321899414, 6.797807693481445, -8.68577766418457}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/123.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.024_P1.meshbin
+  name: SM_Bld_Large_Part_07__6_.001
+  scene:
+    srt:
+      r: {-0.49999988079071045, 0.5000001788139343, 0.5000002980232239, 0.4999998211860657}
+      s: {0.008637650869786739, 0.008637650869786739, 0.008637651801109314}
+      t: {-10.24309253692627, 6.036189079284668, -5.867364406585693}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/123.material
+  mesh: /pkg/vaststars.resources/glb/furnace.glb|meshes/Scene.025_P1.meshbin
+  name: SM_Bld_Large_Part_07__6_.002
+  scene:
+    srt:
+      r: {-0.49999988079071045, 0.5000001788139343, 0.5000002980232239, 0.4999998211860657}
+      s: {0.008637650869786739, 0.008637650869786739, 0.008637651801109314}
+      t: {-10.24309253692627, 6.036189079284668, -7.923027038574219}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/default.001.material
+  mesh: "/pkg/vaststars.resources/glb/furnace.glb|meshes/网格.602_P1.meshbin"
+  name: Detail_369
+  scene:
+    srt:
+      s: {1.882872462272644, 0.9990423917770386, 1.882872462272644}
+      t: {0.024272680282592773, 7.960321426391602, 0.025687873363494873}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: "/pkg/vaststars.resources/glb/furnace.glb|materials/01 - Default.001.material"
+  mesh: "/pkg/vaststars.resources/glb/furnace.glb|meshes/网格.722_P1.meshbin"
+  name: Detail_370
+  scene:
+    srt:
+      r: {0, 0.3826834559440613, 0, -0.9238795042037964}
+      s: {0.47186529636383057, 0.47186529636383057, 0.47186529636383057}
+      t: {0, 9.917521476745605, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/furnace.glb|materials/default.005.material
+  mesh: "/pkg/vaststars.resources/glb/furnace.glb|meshes/网格.823_P1.meshbin"
+  name: Detail_288
+  scene:
+    srt:
+      s: {0.5049760937690735, 0.5049760937690735, 0.5049760937690735}
+      t: {8.583284378051758, 9.576913833618164, -9.206489562988281}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
