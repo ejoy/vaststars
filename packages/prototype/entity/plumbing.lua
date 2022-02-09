@@ -31,7 +31,7 @@ prototype "抽水泵" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={0,0,"N"}},
+                    {type="output", position={0,0,"S"}},
                 }
             }
         }
