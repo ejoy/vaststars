@@ -27,7 +27,7 @@ local menu = {
     },
     {
         name = "化工",
-        image = "construct/chemical.png",
+        image = "construct/chemistry2.png",
         detail = {
             {
                 prototype = "电解厂1",
@@ -49,7 +49,7 @@ local menu = {
     },
     {
         name = "加工",
-        image = "construct/process.png",
+        image = "construct/assembler.png",
         detail = {
             {
                 prototype = "采矿机1",
@@ -61,7 +61,7 @@ local menu = {
             },
             {
                 prototype = "熔炼炉1",
-                image = "construct/furnace1.png",
+                image = "construct/furnace2.png",
             },
             {
                 prototype = "粉碎机1",
@@ -95,7 +95,7 @@ local menu = {
             },
             {
                 prototype = "烟囱1",
-                image = "construct/chimney.png",
+                image = "construct/chimney2.png",
             },
             {
                 prototype = "排水口1",
@@ -139,7 +139,7 @@ local menu = {
     },
     {
         name = "自定义",
-        image = "construct/road.png",
+        image = "construct/modify.png",
         detail = {
             {
                 prototype = "砖石公路",
