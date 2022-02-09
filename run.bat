@@ -1,12 +1,24 @@
 @echo off
-@set current_dir=%~dp0
+chcp 65001
+set current_dir=%~dp0
+set exe=bin\msvc\debug\vaststars.exe
+set titlemsg=debug
+set cachedir=.build
+set param=
 
 pushd %current_dir%
-if exist ".build" (
-	rd /s /q .build
+
+if exist "%cachedir%" (
+	rd /s /q %cachedir%
 )
 
-%current_dir%bin\msvc\release\vaststars.exe
-popd
+if not exist "%exe%" (
+	set exe=bin\msvc\release\vaststars.exe
+	set titlemsg=release
+)
 
+title %titlemsg% - %current_dir%%exe%
+%current_dir%%exe% %param%
+
+popd
 pause

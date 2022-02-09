@@ -1,9 +1,10 @@
 @echo off
 set current_dir=%~dp0
 
+title build debug - %current_dir%
 pushd %CURRENT_DIR%
-%CURRENT_DIR%\..\luamake\luamake.exe -mode debug
-%CURRENT_DIR%\..\luamake\luamake.exe tools -mode debug
+luamake.exe -mode debug
+luamake.exe tools -mode debug
 popd
 
 pause
