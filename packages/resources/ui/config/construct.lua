@@ -9,7 +9,7 @@ local menu = {
             },
             {
                 prototype = "蒸汽发电机1",
-                image = "construct/power-plant1.png",
+                image = "construct/turbine1.png",
             },
             {
                 prototype = "风力发电机1",
@@ -31,7 +31,7 @@ local menu = {
         detail = {
             {
                 prototype = "电解厂1",
-                image = "construct/electric-pole2.png",
+                image = "construct/electrolysis1.png",
             },
             {
                 prototype = "水电站1",
@@ -39,7 +39,7 @@ local menu = {
             },
             {
                 prototype = "蒸馏厂1",
-                image = "construct/assembler.png",
+                image = "construct/distillery.png",
             },
             {
                 prototype = "化工厂1",
@@ -65,7 +65,7 @@ local menu = {
             },
             {
                 prototype = "粉碎机1",
-                image = "construct/assembler.png",
+                image = "construct/crusher1.png",
             },
         },
     },
@@ -103,7 +103,7 @@ local menu = {
             },
             {
                 prototype = "空气过滤器1",
-                image = "construct/chemistry1.png",
+                image = "construct/air-filter1.png",
             },
         },
     },
