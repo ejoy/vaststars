@@ -9,7 +9,7 @@
                 height: 210px;
                 text-align: center;
                 border-radius: 15px;
-                border: 2px white;
+                border: 4px white;
 
                 transition: transform 2s elastic-out;
                 transform: scale(1.0);
@@ -22,8 +22,8 @@
             }
             button#work {
                 position: absolute;
-                top: 610px;
-                left:1158px;
+                top: 620px;
+                left:1190px;
                 width: 120px;
                 height: 120px;
                 margin: 0px;
@@ -31,18 +31,19 @@
             }
             #work-buttons-container {
                 left: 1220px;
+                top: 10px;
                 width: 120px;
                 height: 600px;
                 flex-direction: column;
                 justify-content: space-between;
             }
             workbutton {
-                font-size: 24px;
+                font-size: 22px;
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
                 border-radius: 15px;
-                border: 2px white;
+                border: 4px white;
                 background-color: rgb(209, 154, 27);;
                 height: 90px;
                 width: 90px;
@@ -54,7 +55,7 @@
             }
             workbutton:hover {
                 transform: scale(1.1);
-                background-color: rgba(0,176,80,255);
+                background-color: rgb(0,176,80);
             }
             .workbutton-bg {
                 margin: auto auto;
@@ -64,11 +65,11 @@
             #work-detail {
                 position: absolute;
                 top: 10px;
-                left: 900px;
+                left: 910px;
                 width: 300px;
-                height: 580px;
-                background-color: rgba(206,206,206,255);
-                border: 2px green;
+                height: 600px;
+                background-color: rgb(206,206,206);
+                border: 2.5px rgb(0, 0, 0);
                 border-radius: 5px;
             }
             .tools-container {
@@ -80,16 +81,17 @@
                 flex-direction: column;
                 align-items:flex-start;
                 justify-content:space-between;
-                background-color: rgba(197,224,180,255);
+                background-color: rgb(197,224,180);
                 background-size:cover;
                 width:90px;
                 height:90px;
                 margin:10px;
                 font-size: 16px;
-                border: 2px rgba(84,130,53,255);
+                border: 2px rgb(84,130,53);
+                align-items: center;
             }
             .tools-button-title {
-                background-color: rgba(138,156,126,255);
+                background-color: rgb(138,156,126);
                 border-radius: 5px;
                 -webkit-text-stroke: 1.5px black;
                 width: 80px;
