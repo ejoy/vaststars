@@ -68,8 +68,8 @@
                 left: 910px;
                 width: 300px;
                 height: 600px;
-                background-color: rgb(206,206,206);
-                border: 2.5px rgb(0, 0, 0);
+                background-color: rgb(96, 146, 92);
+                border: 2.5px rgb(255, 255, 255);
                 border-radius: 5px;
             }
             .tools-container {
@@ -81,17 +81,17 @@
                 flex-direction: column;
                 align-items:flex-start;
                 justify-content:space-between;
-                background-color: rgb(197,224,180);
+                background-color: rgb(255, 255, 255);
                 background-size:cover;
                 width:90px;
                 height:90px;
                 margin:10px;
                 font-size: 16px;
-                border: 2px rgb(84,130,53);
+                border: 2px rgb(0, 0, 0);
                 align-items: center;
             }
             .tools-button-title {
-                background-color: rgb(138,156,126);
+                background-color: rgb(190, 190, 190);
                 border-radius: 5px;
                 -webkit-text-stroke: 1.5px black;
                 width: 80px;
