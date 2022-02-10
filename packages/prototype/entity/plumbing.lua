@@ -19,7 +19,7 @@ prototype "液罐1" {
 
 prototype "抽水泵" {
     type ={"entity", "consumer", "assembling", "fluidboxes"},
-    area = "1x2",
+    area = "1x1",
     power = "6kW",
     priority = "secondary",
     recipe = "离岸抽水",
