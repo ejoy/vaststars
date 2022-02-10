@@ -8,7 +8,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  filter_state: main_view|selectable
   material: /pkg/vaststars.resources/glb/construct_arrow.glb|materials/Material.material
   mesh: "/pkg/vaststars.resources/glb/construct_arrow.glb|meshes/平面_P1.meshbin"
   name: "平面"

@@ -25,7 +25,6 @@ local backers_cfg = import_package "vaststars.config".backers
 local utility = import_package "vaststars.utility"
 local dir_rotate = utility.dir.rotate
 local dir_offset_of_entry = utility.dir.offset_of_entry
-local deepcopy = utility.deepcopy
 
 local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
@@ -49,6 +48,17 @@ for f in fs.pairs(base_path) do
     construct_detectors[detector] = ecs.require(('construct_detector.%s'):format(detector))
 end
 
+local function check_construct_detector(detectors, position, dir, area)
+    local func
+    for _, v in ipairs(detectors) do
+        func = construct_detectors[v]
+        if not func(position, dir, area) then
+            return false
+        end
+    end
+    return true
+end
+
 local function __replace_material(template)
     for _, v in ipairs(template) do
         for _, policy in ipairs(v.policy) do
@@ -70,8 +80,7 @@ local function __update_basecolor_by_pos(game_object)
 
     if game_object.construct_detector then
         local entity = igameplay_adapter.query("entity", game_object.prototype)
-        local func = construct_detectors[game_object.construct_detector]
-        if not func(position, game_object.dir, entity.area) then
+        if not check_construct_detector(game_object.construct_detector, position, game_object.dir, entity.area) then
             basecolor_factor = CONSTRUCT_RED_BASIC_COLOR
         else
             basecolor_factor = CONSTRUCT_GREEN_BASIC_COLOR
@@ -107,9 +116,8 @@ local on_prefab_message ; do
 
         w:sync("construct_detector?in dir:in", game_object)
         if game_object.construct_detector then
-            local func = construct_detectors[game_object.construct_detector]
             local entity = igameplay_adapter.query("entity", game_object.prototype)
-            if not func(position, game_object.dir, entity.area) then
+            if not check_construct_detector(game_object.construct_detector, position, game_object.dir, entity.area) then
                 print("can not construct") -- todo error tips
                 return
             end
@@ -122,7 +130,7 @@ local on_prefab_message ; do
         if game_object.construct_road then
             iroad.construct(nil, coord)
         elseif game_object.construct_pipe then
-            ipipe.construct(nil, coord)
+            ipipe.construct(nil, coord, game_object.dir)
         else
             local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(game_object.construct_prefab))
             iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
@@ -177,8 +185,8 @@ end
 
 function construct_sys:entity_init()
     --
-	for e in w:select "INIT x:in y:in area:in building_type:in" do
-        iterrain.set_tile_building_type({e.x, e.y}, e.building_type, e.area)
+	for e in w:select "INIT x:in y:in area:in prototype:in" do
+        iterrain.set_tile_building_type({e.x, e.y}, e.prototype, e.area)
     end
 
     --
@@ -270,8 +278,9 @@ function construct_sys:data_changed()
     end
 
     for _, _, _ in ui_construct_rotate_mb:unpack() do
-        for game_object in w:select "construct_entity:in dir:update" do
+        for game_object in w:select "construct_entity:in dir:in" do
             game_object.dir = dir_rotate(game_object.dir, -1)
+            w:sync("dir:out", game_object)
             prefab_object = igame_object.get_prefab_object(game_object)
             local rotation = iom.get_rotation(prefab_object.root)
             local deg = math.deg(math3d.tovalue(math3d.quat2euler(rotation))[2])

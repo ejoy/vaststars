@@ -55,7 +55,7 @@ local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ;
         ['I'] = {'N', 'E'},
         ['T'] = {'N', 'E', 'S', 'W'},
         ['X'] = {'N'},
-        ['O'] = {'N'},
+        ['O'] = {'N', 'E', 'S', 'W'},
     }
 
     --
@@ -76,8 +76,9 @@ local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ;
 
     local accel_reversed = {}
     for typedir, passable_state in pairs(accel) do
-        assert(accel_reversed[passable_state] == nil)
-        accel_reversed[passable_state] = typedir
+        -- assert(accel_reversed[passable_state] == nil)
+        accel_reversed[passable_state] = accel_reversed[passable_state] or {}
+        table.insert(accel_reversed[passable_state], typedir)
     end
 
     function typedir_to_passable_state(typedir)
@@ -85,7 +86,7 @@ local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ;
     end
 
     function passable_state_to_typedir(passable_state)
-        return accel_reversed[passable_state]
+        return accel_reversed[passable_state][1]
     end
 
     function set_passable_state(passable_state, passable_dir, state)
@@ -319,7 +320,7 @@ function ipipe.dismantle(x, y)
     world:pub {"ui_message", "construct_show_remove", nil}
 end
 
-function ipipe.construct(coord_s, coord_d)
+function ipipe.construct(coord_s, coord_d, dir)
     local e = w:singleton("pipe_typedirs", "pipe_typedirs:in pipe_entities:in")
     local pipe_entities = e.pipe_entities
     local pipe_typedirs = e.pipe_typedirs
@@ -337,7 +338,7 @@ function ipipe.construct(coord_s, coord_d)
     -- construct for the first time
     if not sx and not sy then
         pipe_typedirs[dx] = pipe_typedirs[dx] or {}
-        pipe_typedirs[dx][dy] = "ON"
+        pipe_typedirs[dx][dy] = "O" .. dir
         flush(pipe_typedirs, pipe_entities, dx, dy)
         w:sync("pipe_typedirs:out pipe_entities:out", e)
         return
