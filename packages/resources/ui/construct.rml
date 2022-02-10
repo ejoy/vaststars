@@ -43,7 +43,7 @@
                 justify-content: flex-start;
                 align-items: center;
                 border-radius: 15px;
-                border: 4px white;
+                border: 3px white;
                 background-color: rgb(209, 154, 27);;
                 height: 90px;
                 width: 90px;
