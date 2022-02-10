@@ -43,7 +43,7 @@
                 align-items: center;
                 border-radius: 15px;
                 border: 2px white;
-                background-color: rgba(237,125,49,255);
+                background-color: rgb(209, 154, 27);;
                 height: 90px;
                 width: 90px;
                 transform: scale(1.0);
@@ -64,7 +64,7 @@
             #work-detail {
                 position: absolute;
                 top: 10px;
-                left: 850px;
+                left: 900px;
                 width: 300px;
                 height: 580px;
                 background-color: rgba(206,206,206,255);
@@ -85,12 +85,13 @@
                 width:90px;
                 height:90px;
                 margin:10px;
-                font-size: 20px;
+                font-size: 16px;
                 border: 2px rgba(84,130,53,255);
             }
             .tools-button-title {
                 background-color: rgba(138,156,126,255);
                 border-radius: 5px;
+                -webkit-text-stroke: 1.5px black;
                 width: 80px;
                 margin:0px;
             }
