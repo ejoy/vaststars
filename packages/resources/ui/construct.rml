@@ -43,8 +43,8 @@
                 justify-content: flex-start;
                 align-items: center;
                 border-radius: 15px;
-                border: 3px white;
-                background-color: rgb(209, 154, 27);
+                border: 1.5px rgb(218, 138, 77);
+                background-color: rgb(173, 96, 37);
                 height: 90px;
                 width: 90px;
                 transform: scale(1.0);
@@ -64,7 +64,7 @@
                 background-size: cover;
             }
             .workbutton-text {
-                color: rgb(255, 0, 255);
+                color: rgb(194,207,23)
             }
             #work-detail {
                 position: absolute;
@@ -72,8 +72,8 @@
                 left: 910px;
                 width: 300px;
                 height: 600px;
-                background-color: rgb(96, 146, 92);
-                border: 2.5px rgb(255, 255, 255);
+                background-color: rgb(56, 55, 47);
+                border: 2.5px rgb(218, 138, 77);
                 border-radius: 5px;
             }
             .tools-container {
@@ -284,7 +284,7 @@
             <input id = "id-button-construct-rotate"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/rotate.png";'  data-event-click = "clickContructRotate()" data-if = "is_show_construct_confirm" />
             <input id = "id-button-construct-remove"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/cancel.png";'  data-event-click = "clickContructRemove()" data-if = "is_show_construct_remove" />
 
-            <button id="work" data-event-click="clickWork()" style='background-color: rgba(0,176,240,255); flex-direction: column; justify-content: flex-start;'>
+            <button id="work" data-event-click="clickWork()" style='background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width:80px; height: 80px; background-size:cover;'/>
                 <div>施工</div>
             </button>
