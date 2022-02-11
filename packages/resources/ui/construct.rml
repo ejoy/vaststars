@@ -63,6 +63,9 @@
                 height: 50px; 
                 background-size: cover;
             }
+            .workbutton-text {
+                color: rgb(255, 0, 255);
+            }
             #work-detail {
                 position: absolute;
                 top: 10px;
@@ -288,7 +291,7 @@
             <div id="work-buttons-container" data-if="show_work" >
                 <workbutton data-event-click="clickWork(it.name)" data-for = "config_construct">
                     <div class="workbutton-bg" data-style-background-image = "it.image" />
-                    <div>{{it.name}}</div>
+                    <div class="workbutton-text" >{{it.name}}</div>
                 </workbutton>
             </div>
             <div id="work-detail" data-if="show_work" >
