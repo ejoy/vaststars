@@ -151,21 +151,27 @@ local on_prefab_message ; do
             end
 
             new_prefab.on_ready = function(game_object, prefab)
-                w:sync("prototype:in", game_object)
+                w:sync("prototype:in x:in y:in dir:in", game_object)
                 local entity = igameplay_adapter.query("entity", game_object.prototype)
                 local area = {}
                 area[1], area[2] = igameplay_adapter.unpack_coord(entity.area)
 
+                local gameplay_entity = {
+                    x = game_object.x,
+                    y = game_object.y,
+                    dir = game_object.dir,
+                }
+
                 w:sync("station?in", game_object)
                 if game_object.station then
                     w:sync("scene:in", prefab.root)
-                    igameplay_adapter.create_entity {
-                        station = {
-                            id = prefab.root.scene.id,
-                            coord = igameplay_adapter.pack_coord(coord[1], coord[2] + (-1 * (area[2] // 2)) - 1),
-                        }
+                    gameplay_entity.station = {
+                        id = prefab.root.scene.id,
+                        coord = igameplay_adapter.pack_coord(coord[1], coord[2] + (-1 * (area[2] // 2)) - 1),
                     }
                 end
+
+                igameplay_adapter.create_entity(game_object.prototype, gameplay_entity)
             end
             iprefab_object.create(new_prefab, template)
         end

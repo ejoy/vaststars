@@ -86,13 +86,14 @@ function igameplay_adapter.set_road(x, y, road_type)
     world:pub {"gameplay_adapter_system", "set_road", coord, tr[road_type:sub(1, 1)] << 8 | t[road_type:sub(2, 2)]}
 end
 
-function igameplay_adapter.create_entity(entity)
+function igameplay_adapter.create_entity(prototype, entity)
     local e = w:singleton("gameplay_world", "gameplay_world:in")
     if not e then
         log.error("failed to create entity")
         return
     end
-    e.gameplay_world.ecs:new(entity)
+    e.gameplay_world:create_entity(prototype)(entity)
+    e.gameplay_world:build()
 end
 
 function igameplay_adapter.world_caller(funcname, ...)
@@ -104,6 +105,16 @@ function igameplay_adapter.world_caller(funcname, ...)
 
     local world = e.gameplay_world
     return world[funcname](world, ...)
+end
+
+function igameplay_adapter.world()
+    local e = w:singleton("gameplay_world", "gameplay_world:in")
+    if not e then
+        log.error("failed to create entity")
+        return
+    end
+
+    return e.gameplay_world
 end
 
 function igameplay_adapter.pack_coord(x, y)

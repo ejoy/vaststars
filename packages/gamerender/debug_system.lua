@@ -1,6 +1,7 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
+local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
 
 ---
 local print_srt; do
@@ -598,6 +599,31 @@ funcs[7] = function()
 end
 
 funcs[8] = function()
+    local gameplay = import_package "vaststars.gameplay"
+
+    local function display(msg, fluid, id, fluidbox)
+        if fluid ~= 0 then
+            local r = world:fluidflow_query(fluid, id)
+            if r then
+                print(msg, gameplay.query(fluid).name, ("%0.2f/%d\t%0.2f"):format(r.volume / r.multiple, fluidbox.capacity, r.flow / r.multiple))
+            end
+        end
+    end
+
+    for v in igameplay_adapter.world().ecs:select "fluidbox:in entity:in" do
+        local pt = gameplay.query(v.entity.prototype)
+        display("fluidbox", v.fluidbox.fluid, v.fluidbox.id, pt.fluidbox)
+    end
+
+    for v in igameplay_adapter.world().ecs:select "fluidboxes:in entity:in" do
+        local pt = gameplay.query(v.entity.prototype)
+        for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
+            local fluid = v.fluidboxes[classify.."_fluid"]
+            local id = v.fluidboxes[classify.."_id"]
+            local what, i = classify:match "(%a*)(%d)"
+            display("fluidboxes", fluid, id, pt.fluidboxes[what.."put"][tonumber(i)])
+        end
+    end
 end
 
 --------------

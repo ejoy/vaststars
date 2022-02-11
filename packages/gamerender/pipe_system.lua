@@ -38,7 +38,7 @@ local DIRECTION <const> = {
     W = 3,
 }
 
-local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ; do
+local typedir_to_passable_state, passable_state_to_typedir, set_passable_state, type_to_prototype ; do
     -- 'true' means that the direction is passable
     local passable = {
         ['U'] = {[North] = true,  [East] = false, [South] = false, [West] = false, },
@@ -56,6 +56,15 @@ local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ;
         ['T'] = {'N', 'E', 'S', 'W'},
         ['X'] = {'N'},
         ['O'] = {'N', 'E', 'S', 'W'},
+    }
+
+    type_to_prototype = {
+        ['U'] = 'I',
+        ['L'] = 'L',
+        ['I'] = 'I',
+        ['T'] = 'T',
+        ['X'] = 'X',
+        ['O'] = 'I',
     }
 
     --
@@ -112,12 +121,24 @@ local function create_game_object(typedir, x, y)
     local prefab = ecs.create_instance(prefab_file_path:format(t))
     iom.set_position(prefab.root, iterrain.get_position_by_coord(x, y))
     iom.set_rotation(prefab.root, rotators[dir])
+
+    prefab.on_ready = function(game_object, prefab)
+        w:sync("prototype:in x:in y:in dir:in", game_object)
+        local gameplay_entity = {
+            x = game_object.x,
+            y = game_object.y,
+            dir = game_object.dir,
+        }
+
+        igameplay_adapter.create_entity(game_object.prototype, gameplay_entity)
+    end
+
     return iprefab_object.create(prefab, {
         policy = {
             "ant.scene|scene_object",
         },
         data = {
-            prototype = ("管道1-%s型"):format(t),
+            prototype = ("管道1-%s型"):format(type_to_prototype[t]),
             x = x,
             y = y,
             dir = dir,

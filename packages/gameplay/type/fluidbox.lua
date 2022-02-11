@@ -31,7 +31,7 @@ local fb = type "fluidbox"
     .fluidbox "fluidbox"
 
 function fb:ctor(init, pt)
-    if not init.fluid[1] then
+    if not init.fluid or not init.fluid[1] then
         return {
             fluidbox = { fluid = 0, id = 0 }
         }
