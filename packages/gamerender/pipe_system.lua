@@ -134,22 +134,23 @@ local function create_game_object(typedir, x, y)
         igameplay_adapter.create_entity(game_object.prototype, gameplay_entity)
     end
 
-    return iprefab_object.create(prefab, {
-        policy = {
-            "ant.scene|scene_object",
-        },
+    local template = {
+        policy = {},
         data = {
             prototype = ("管道1-%s型"):format(type_to_prototype[t]),
             x = x,
             y = y,
             dir = dir,
             area = igameplay_adapter.pack_coord(1, 1),
+            pickup_show_ui = {url = "detail_panel.rml"},
 
             building_type = "pipe",
             pickup_show_set_pipe_arrow = true,
             pickup_show_remove = false,
         },
-    })
+    }
+
+    return iprefab_object.create(prefab, template)
 end
 
 local function set(typedirs, x, y, passable_dir)

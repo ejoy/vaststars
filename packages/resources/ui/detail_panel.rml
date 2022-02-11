@@ -1,0 +1,102 @@
+<rml>
+    <head>
+        <script type="text/x-lua" >
+            local function format_vars(fmt, vars)
+                return string.gsub(fmt, "%$([%w_]+)%$", vars)
+            end
+
+            local ui_sys = require "ui_system"
+            local start = window.createModel "start" {
+                detail_panel_icon = "construct/solar-panel.png",
+                detail_panel_prototype = "物流中心",
+                detail_panel_status_icon = "work_status_icon/normal.png",
+                detail_panel_status_desc = "正常工作",
+
+                config_construct = require "config.construct",
+                config_property_list = require "config.property_list",
+
+                detail_panel_property_list = {},
+                entity_properties = {},
+            }
+
+            start.close = function(event)
+                ui_sys.close("detail_panel.rml")
+            end
+
+            start.entity_properties = {
+                health = 100,
+                total_health = 100,
+                fluid_name = "水",
+                fluid_volume = 100,
+            }
+
+            start.detail_panel_property_list = {}
+            for property_name, property_value in pairs(start.entity_properties) do
+                local cfg = start.config_property_list[property_name]
+                if not cfg then
+                    goto continue
+                end
+
+                local t = {}
+                t.icon = cfg.icon
+                t.desc = cfg.desc
+                t.value = format_vars(cfg.value, start.entity_properties)
+                t.pos = cfg.pos
+
+                start.detail_panel_property_list[#start.detail_panel_property_list + 1] = t
+                ::continue::
+            end
+            table.sort(start.detail_panel_property_list, function(a, b) return a.pos < b.pos end)
+
+            ui_sys.addEventListener(start, {}, {
+                
+            })
+
+        </script>
+    </head>
+    <body>
+        <div data-model="start">
+            <div style = "width: 100%; height: 100%;" data-event-click="close()" />
+
+            <!-- detail panel begin -->
+            <div style = "position: absolute; left: 0vmin; top: 85px; width: 300px; height: 580px; background-color: rgba(206,206,206,255); flex-direction: column; justify-content: flex-start;">
+                <!-- title -->
+                <div style = "width: 100%; height: 100px; flex-direction: row; justify-content: flex-start;">
+                    <!-- icon -->
+                    <div style = "justify-content: center; align-items: center; width: 106px;">
+                        <div data-style-background-image="detail_panel_icon" style = "width: 60px; height: 60px; background-size: contain; background-repeat: no-repeat;" />
+                    </div>
+                    <!-- prototype & status -->
+                    <div style = "justify-content: center;">
+                        <div style = "flex-direction: column; justify-content: flex-start;">
+                            <div style = "width: 60px; height: 50px; font-size: 36px; -webkit-text-stroke: 1px black;">{{detail_panel_prototype}}</div>
+                            <div style = "flex-direction: row; justify-content: flex-start;">
+                                <div style = 'width: 30px; height: 30px;' data-style-background-image = "detail_panel_status_icon" />
+                                <div style = "left: 10px; font-size: 24px; color: black;">{{detail_panel_status_desc}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- separator -->
+                <div style = "height: 28px;" />
+
+                <!-- property list -->
+                <div data-for = "property : detail_panel_property_list">
+                    <div style = "width: 100%; height: 80px; flex-direction: row; align-items: flex-start;">
+                        <!-- icon -->
+                        <div style = "width: 30px; height: 30px;" data-style-background-image="property.icon" />
+
+                        <!-- proprety & value -->
+                        <div style = "flex-direction: column; justify-content: flex-start;">
+                            <div style = "width: 60px; height: 40px; font-size: 36px; -webkit-text-stroke: 1px black;">{{property.desc}}</div>
+                            <div style = "width: 60px; height: 40px; font-size: 36px; -webkit-text-stroke: 1px black;">{{property.value}}</div>
+                        </div>
+                    </div>
+                    <div style = "height: 20px;" />
+                </div>
+            </div>
+            <!-- detail panel end -->
+        </div>
+    </body>
+</rml>

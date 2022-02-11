@@ -116,77 +116,30 @@
         </style>
         <style path = "common/test-button.rcss"/>
         <script type="text/x-lua" >
-            local function format_vars(fmt, vars)
-                return string.gsub(fmt, "%$([%w_]+)%$", vars)
-            end
-
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
-                show_detail_panel = true,
                 show_work = false,
                 show_construct_menu = "",
                 is_show_construct_confirm = false,
                 is_show_construct_remove = false,
-                detail_panel_icon = "construct/solar-panel.png",
-                detail_panel_prototype = "物流中心",
-                detail_panel_status_icon = "work_status_icon/normal.png",
-                detail_panel_status_desc = "正常工作",
 
                 debug_button = {},
                 config_construct = require "config.construct",
-                config_property_list = require "config.property_list",
-
-                detail_panel_property_list = {},
-                entity_properties = {},
             }
 
-            start.entity_properties = {
-                health = 100,
-                total_health = 100,
-                fluid_name = "水",
-                fluid_volume = 100,
-            }
-
-            start.detail_panel_property_list = {}
-            for property_name, property_value in pairs(start.entity_properties) do
-                local cfg = start.config_property_list[property_name]
-                if not cfg then
-                    goto continue
-                end
-
-                local t = {}
-                t.icon = cfg.icon
-                t.desc = cfg.desc
-                t.value = format_vars(cfg.value, start.entity_properties)
-                t.pos = cfg.pos
-
-                start.detail_panel_property_list[#start.detail_panel_property_list + 1] = t
-                ::continue::
-            end
-            table.sort(start.detail_panel_property_list, function(a, b) return a.pos < b.pos end)
-
-            function start.clickWork(self, show_construct_menu)
+            function start.clickWork(event, show_construct_menu)
                 if not show_construct_menu then
                     start.show_work = not start.show_work
                 else
                     start.show_construct_menu = show_construct_menu
                 end
             end
-            function start.clickConstruct(self, prototype)
+            function start.clickConstruct(event, prototype)
                 start.show_work = not start.show_work
                 ui_sys.pub("ui", "construct", "click_construct", prototype)
             end
-            function start.clickContructConfirm()
-                ui_sys.pub("ui", "construct", "click_construct_confirm")
-            end
-            function start.clickContructCancel()
-                ui_sys.pub("ui", "construct", "click_construct_cancel")
-            end
-            function start.clickContructRotate()
-                ui_sys.pub("ui", "construct", "click_construct_rotate")
-            end
-            function start.clickContructRemove()
-                ui_sys.pub("ui", "construct", "click_construct_remove")
+            function start.clickContructButton(event, msg)
+                ui_sys.pub("ui", "construct", msg)
             end
             function start.clickDebug(event, i)
                 ui_sys.pub("debug", i)
@@ -231,59 +184,20 @@
         </script>
     </head>
     <body>
-        <div id="test" data-model="start">
+        <div data-model="start">
             <!-- debug 按钮 -->
             <div style = "position: absolute; left: 0vmin; top: 0vmin; z-index: 999;" data-for="debug_button" >
                 <div class = "test-button" data-event-click="clickDebug(it.id)" data-style-left="it.left" style = "position: absolute; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"></div>
-            </div>
-
-            <!-- detail panel -->
-            <div data-if="show_detail_panel" style = "position: absolute; left: 0vmin; top: 85px; width: 300px; height: 580px; background-color: rgba(206,206,206,255); flex-direction: column; justify-content: flex-start;">
-                <!-- title -->
-                <div style = "width: 100%; height: 100px; flex-direction: row; justify-content: flex-start;">
-                    <!-- icon -->
-                    <div style = "justify-content: center; align-items: center; width: 106px;">
-                        <div data-style-background-image="detail_panel_icon" style = "width: 60px; height: 60px; background-size: contain; background-repeat: no-repeat;" />
-                    </div>
-                    <!-- prototype & status -->
-                    <div style = "justify-content: center;">
-                        <div style = "flex-direction: column; justify-content: flex-start;">
-                            <div style = "width: 60px; height: 50px; font-size: 36px; -webkit-text-stroke: 1px black;">{{detail_panel_prototype}}</div>
-                            <div style = "flex-direction: row; justify-content: flex-start;">
-                                <div style = 'width: 30px; height: 30px; background-image:"property/health.png";' />
-                                <div style = "left: 10px; font-size: 24px; color: black;">{{detail_panel_status_desc}}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- separator -->
-                <div style = "height: 28px;" />
-
-                <!-- property list -->
-                <div data-for = "property : detail_panel_property_list">
-                    <div style = "width: 100%; height: 80px; flex-direction: row; align-items: flex-start;">
-                        <!-- icon -->
-                        <div style = "width: 30px; height: 30px;" data-style-background-image="property.icon" />
-
-                        <!-- proprety & value -->
-                        <div style = "flex-direction: column; justify-content: flex-start;">
-                            <div style = "width: 60px; height: 40px; font-size: 36px; -webkit-text-stroke: 1px black;">{{property.desc}}</div>
-                            <div style = "width: 60px; height: 40px; font-size: 36px; -webkit-text-stroke: 1px black;">{{property.value}}</div>
-                        </div>
-                    </div>
-                    <div style = "height: 20px;" />
-                </div>
             </div>
 
             <div style = 'position: absolute; left: 0vmin; top: 0vmin; background-image:"construct/camera_reset.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;' data-event-click = "CameraOpt('reset')" />
             <div style = 'position: absolute; left: 0vmin; top: 5vmin; background-image:"construct/camera_reset.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;' data-event-click = "CameraOpt('lookdown')" />
 
             <!-- 建造确认按钮 -->
-            <input id = "id-button-construct-confirm" type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/confirm.png";' data-event-click = "clickContructConfirm()" data-if = "is_show_construct_confirm" />
-            <input id = "id-button-construct-cancel"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/cancel.png";'  data-event-click = "clickContructCancel()" data-if = "is_show_construct_confirm" />
-            <input id = "id-button-construct-rotate"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/rotate.png";'  data-event-click = "clickContructRotate()" data-if = "is_show_construct_confirm" />
-            <input id = "id-button-construct-remove"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/cancel.png";'  data-event-click = "clickContructRemove()" data-if = "is_show_construct_remove" />
+            <input id = "id-button-construct-confirm" type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/confirm.png";' data-event-click = "clickContructButton('click_construct_confirm')" data-if = "is_show_construct_confirm" />
+            <input id = "id-button-construct-cancel"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/cancel.png";'  data-event-click = "clickContructButton('click_construct_cancel')" data-if = "is_show_construct_confirm" />
+            <input id = "id-button-construct-rotate"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/rotate.png";'  data-event-click = "clickContructButton('click_construct_rotate')" data-if = "is_show_construct_confirm" />
+            <input id = "id-button-construct-remove"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/cancel.png";'  data-event-click = "clickContructButton('click_construct_remove')" data-if = "is_show_construct_remove" />
 
             <button id="work" data-event-click="clickWork()" style='background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width:80px; height: 80px; background-size:cover;'/>

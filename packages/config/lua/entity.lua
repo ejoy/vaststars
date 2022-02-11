@@ -274,8 +274,7 @@ prototype ("管道1-I型", {
         construct_pipe = true,
         construct_detector = {"exclusive"},
     },
-    component = {
-    },
+    component = {},
 })
 
 return t
