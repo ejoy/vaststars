@@ -106,6 +106,22 @@ function igameplay_adapter.create_entity(prototype, entity)
     gameplay_world:build()
 end
 
+function igameplay_adapter.remove_entity(x, y)
+    local e = w:singleton("gameplay_world", "gameplay_world:in")
+    if not e then
+        log.error("failed to create entity")
+        return
+    end
+
+    local gameplay_ecs = e.gameplay_world.ecs
+
+    for e in gameplay_ecs:select "entity:in" do
+        if x == e.entity.x and e.entity.y == y then
+            gameplay_ecs:remove(e)
+        end
+    end
+end
+
 function igameplay_adapter.world()
     local e = w:singleton("gameplay_world", "gameplay_world:in")
     if not e then

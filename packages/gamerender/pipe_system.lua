@@ -332,6 +332,7 @@ function ipipe.dismantle(x, y)
     w:sync("area:in", game_object)
     iterrain.set_tile_building_type({x, y}, nil, game_object.area)
     igame_object.remove_prefab(game_object)
+    igameplay_adapter.remove_entity(game_object.x, game_object.y)
 
     pipe_entities[x][y] = nil
     pipe_typedirs[x][y] = nil

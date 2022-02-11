@@ -300,7 +300,7 @@ function construct_sys:data_changed()
             if game_object and game_object.pickup_show_remove and not game_object.pickup_show_set_road_arrow and not game_object.pickup_show_set_pipe_arrow then
                 igame_object.get_prefab_object(game_object):remove()
                 iterrain.set_tile_building_type({game_object.x, game_object.y}, nil, game_object.area)
-
+                igameplay_adapter.remove_entity(game_object.x, game_object.y)
                 world:pub {"ui_message", "construct_show_remove", nil}
             end
         end
