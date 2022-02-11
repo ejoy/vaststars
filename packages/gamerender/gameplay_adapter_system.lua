@@ -8,6 +8,7 @@ local create_gameplay_world = gameplay.createWorld
 local set_road_mb = world:sub {"gameplay_adapter_system", "set_road"}
 local gameplay_adapter_system = ecs.system "gameplay_adapter_system"
 local igameplay_adapter = ecs.interface "igameplay_adapter"
+local create_entity_funcs = {}
 
 local function packCoord(x, y)
     assert(x & 0xFF == x)
@@ -92,19 +93,17 @@ function igameplay_adapter.create_entity(prototype, entity)
         log.error("failed to create entity")
         return
     end
-    e.gameplay_world:create_entity(prototype)(entity)
-    e.gameplay_world:build()
-end
 
-function igameplay_adapter.world_caller(funcname, ...)
-    local e = w:singleton("gameplay_world", "gameplay_world:in")
-    if not e then
-        log.error("failed to create entity")
-        return
+    local gameplay_world = e.gameplay_world
+    if not create_entity_funcs[prototype] then
+        create_entity_funcs[prototype] = gameplay_world:create_entity(prototype)
+        if not create_entity_funcs[prototype] then
+            log.error(("failed to create entity `%s`"):format(prototype))
+            return
+        end
     end
-
-    local world = e.gameplay_world
-    return world[funcname](world, ...)
+    create_entity_funcs[prototype](entity)
+    gameplay_world:build()
 end
 
 function igameplay_adapter.world()

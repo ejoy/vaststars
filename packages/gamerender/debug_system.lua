@@ -355,9 +355,9 @@ do
 
         local road_path
         if run then
-            road_path = igameplay_adapter.world_caller("road_path", endpoint_ids[1], endpoint_ids[2])
+            road_path = igameplay_adapter.world().road_path(endpoint_ids[1], endpoint_ids[2])
         else
-            road_path = igameplay_adapter.world_caller("road_path", endpoint_ids[2], endpoint_ids[1])
+            road_path = igameplay_adapter.world().road_path(endpoint_ids[2], endpoint_ids[1])
         end
         assert(road_path)
 
@@ -502,70 +502,14 @@ do
 end
 
 funcs[5] = function()
-    local convert = {
-        ["road"] = function(game_object)
-            local e = w:singleton("road_typedirs", "road_typedirs:in")
-            local road_typedirs = e.road_typedirs
-            local x = game_object.x
-            local y = game_object.y
-            local rt = road_typedirs[x][y]
-            return {
-                entity = "路1-" .. rt:sub(1,1) .. "型",
-                x = x,
-                y = y,
-                dir = game_object.dir,
-            }
-        end,
-        ["goods_station"] = function(game_object)
-            return {
-                entity = "车站",
-                x = game_object.x,
-                y = game_object.y,
-                dir = "N",
-            }
-        end,
-        ["logistics_center"] = function(game_object)
-            return {
-                entity = "物流中心",
-                x = game_object.x,
-                y = game_object.y,
-                dir = "N",
-            }
-        end,
-        ["container"] = function(game_object)
-            return {
-                entity = "箱子",
-                x = game_object.x,
-                y = game_object.y,
-                dir = "N",
-            }
-        end,
-        ["rock"] = function(game_object)
-            return {
-                entity = "货物",
-                x = game_object.x,
-                y = game_object.y,
-                dir = "N",
-            }
-        end,
-        ["pipe"] = function(game_object)
-            local e = w:singleton("pipe_typedirs", "pipe_typedirs:in")
-            local pipe_typedirs = e.pipe_typedirs
-            local x = game_object.x
-            local y = game_object.y
-            local pt = pipe_typedirs[x][y]
-            return {
-                entity = "管道1-" .. pt:sub(1,1) .. "型",
-                x = x,
-                y = y,
-                dir = game_object.dir,
-            }
-        end,
-    }
-
     local t = {}
-    for game_object in w:select "building_type:in dir:in" do
-        t[#t+1] = convert[game_object.building_type](game_object)
+    for game_object in w:select "prototype:in dir:in x:in y:in" do
+        t[#t+1] = {
+            entity = game_object.prototype,
+            x = game_object.x,
+            y = game_object.y,
+            dir = game_object.dir,
+        }
     end
 
     local fs        = require "filesystem"
@@ -593,15 +537,16 @@ funcs[6] = function()
 end
 
 funcs[7] = function()
-    for e in w:select "shape_terrain:in" do
-        w:remove(e)
-    end
+    -- for e in w:select "shape_terrain:in" do
+    --     w:remove(e)
+    -- end
 end
 
 funcs[8] = function()
     local gameplay = import_package "vaststars.gameplay"
 
     local function display(msg, fluid, id, fluidbox)
+        local world = igameplay_adapter.world()
         if fluid ~= 0 then
             local r = world:fluidflow_query(fluid, id)
             if r then

@@ -128,6 +128,7 @@ local function create_game_object(typedir, x, y)
             x = game_object.x,
             y = game_object.y,
             dir = game_object.dir,
+            fluid = {"海水", 2000},
         }
 
         igameplay_adapter.create_entity(game_object.prototype, gameplay_entity)
