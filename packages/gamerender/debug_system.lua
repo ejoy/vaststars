@@ -179,7 +179,7 @@ funcs[3] = function ()
     end
 
     -- add logistics_center
-    local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format("logistics_center.prefab"))
+    local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/prefabs/%s"):format("logistics-center-1.prefab"))
     local srt = {
         s = {1.0,1.0,1.0,0.0},
         r = {0.0,0.0,0.0,1.0},
@@ -218,7 +218,7 @@ funcs[3] = function ()
     iprefab_object.create(new_prefab, template)
 
     -- add logistics_center
-    local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format("logistics_center.prefab"))
+    local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/prefabs/%s"):format("logistics-center-1.prefab"))
     local srt = {
         s = {1.0,1.0,1.0,0.0},
         r = {0.0,0.0,0.0,1.0},
