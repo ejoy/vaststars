@@ -43,8 +43,8 @@
                 justify-content: flex-start;
                 align-items: center;
                 border-radius: 15px;
-                border: 1.5px rgb(218, 138, 77);
-                background-color: rgb(173, 96, 37);
+                border: 1.5px rgb(89, 73, 39);
+                background-color: rgb(246, 142, 14);
                 height: 90px;
                 width: 90px;
                 transform: scale(1.0);
@@ -72,8 +72,8 @@
                 left: 910px;
                 width: 300px;
                 height: 600px;
-                background-color: rgb(56, 55, 47);
-                border: 2.5px rgb(218, 138, 77);
+                background-color: rgb(44, 32, 18);
+                border: 3px rgb(89, 73, 39);
                 border-radius: 5px;
             }
             .tools-container {
@@ -85,17 +85,17 @@
                 flex-direction: column;
                 align-items:flex-start;
                 justify-content:space-between;
-                background-color: rgb(255, 255, 255);
+                background-color: rgb(250, 205, 9);
                 background-size:cover;
                 width:90px;
                 height:90px;
                 margin:10px;
                 font-size: 16px;
-                border: 2px rgb(0, 0, 0);
+                border: 2px rgb(89, 73, 39);
                 align-items: center;
             }
             .tools-button-title {
-                background-color: rgb(190, 190, 190);
+                background-color: rgb(246, 237, 189);
                 border-radius: 5px;
                 -webkit-text-stroke: 1.5px black;
                 width: 80px;
