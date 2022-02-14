@@ -64,7 +64,7 @@
                 background-size: cover;
             }
             .workbutton-text {
-                color: rgb(194,207,23)
+                color: rgb(221, 235, 26)
             }
             #work-detail {
                 position: absolute;
