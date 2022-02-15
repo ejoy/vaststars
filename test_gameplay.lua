@@ -187,6 +187,7 @@ local function dump_item()
 end
 
 local function dump_fluid()
+    local ecs = world.ecs
     local function display(fluid, id, fluidbox)
         if fluid ~= 0 then
             local r = world:fluidflow_query(fluid, id)
@@ -212,8 +213,8 @@ local function dump_fluid()
 end
 
 local function dump()
-    dump_item()
-    --dump_fluid()
+    --dump_item()
+    dump_fluid()
 end
 
 world:wait(2*50, dump)

@@ -77,7 +77,7 @@ end)
 
 register_unit("percentage", "float", function(s)
 	if s == nil then
-		return 0
+		return 1
 	end
 	if type(s) == "number" then
 		return s

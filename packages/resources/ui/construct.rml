@@ -2,7 +2,7 @@
     <head>
         <style>
             div {
-                font: 100% "宋体";
+                font: 100% "微软雅黑";
             }
             button {
                 width: 210px;
@@ -38,7 +38,7 @@
                 justify-content: space-between;
             }
             workbutton {
-                font-size: 22px;
+                font-size: 24px;
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
@@ -64,7 +64,7 @@
                 background-size: cover;
             }
             .workbutton-text {
-                color: rgb(194,207,23)
+                color: rgb(221, 235, 26)
             }
             #work-detail {
                 position: absolute;
@@ -90,7 +90,7 @@
                 width:90px;
                 height:90px;
                 margin:10px;
-                font-size: 16px;
+                font-size: 18px;
                 border: 2px rgb(89, 73, 39);
                 align-items: center;
             }

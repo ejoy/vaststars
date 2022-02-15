@@ -59,7 +59,7 @@
             <div style = "width: 100%; height: 100%;" data-event-click="close()" />
 
             <!-- detail panel begin -->
-            <div style = "position: absolute; left: 0vmin; top: 85px; width: 300px; height: 580px; background-color: rgba(206,206,206,255); flex-direction: column; justify-content: flex-start;">
+            <div style = "position: absolute; left: 0vmin; top: 85px; width: 300px; height: 580px; background-color: rgb(250, 205, 9); flex-direction: column; justify-content: flex-start;">
                 <!-- title -->
                 <div style = "width: 100%; height: 100px; flex-direction: row; justify-content: flex-start;">
                     <!-- icon -->
@@ -69,10 +69,10 @@
                     <!-- prototype & status -->
                     <div style = "justify-content: center;">
                         <div style = "flex-direction: column; justify-content: flex-start;">
-                            <div style = "width: 60px; height: 50px; font-size: 36px; -webkit-text-stroke: 1px black;">{{detail_panel_prototype}}</div>
+                            <div style = "width: 60px; height: 50px; font: 微软雅黑; font-size: 36px; -webkit-text-stroke: 1px black;">{{detail_panel_prototype}}</div>
                             <div style = "flex-direction: row; justify-content: flex-start;">
-                                <div style = 'width: 30px; height: 30px;' data-style-background-image = "detail_panel_status_icon" />
-                                <div style = "left: 10px; font-size: 24px; color: black;">{{detail_panel_status_desc}}</div>
+                                <div style = 'width: 32px; height: 32px;' data-style-background-image = "detail_panel_status_icon" />
+                                <div style = "left: 10px; font: 微软雅黑; font-size: 24px; color: black;">{{detail_panel_status_desc}}</div>
                             </div>
                         </div>
                     </div>
@@ -85,12 +85,12 @@
                 <div data-for = "property : detail_panel_property_list">
                     <div style = "width: 100%; height: 80px; flex-direction: row; align-items: flex-start;">
                         <!-- icon -->
-                        <div style = "width: 30px; height: 30px;" data-style-background-image="property.icon" />
+                        <div style = "width: 50px; height: 50px; background-size:cover;" data-style-background-image="property.icon" />
 
                         <!-- proprety & value -->
                         <div style = "flex-direction: column; justify-content: flex-start;">
-                            <div style = "width: 60px; height: 40px; font-size: 36px; -webkit-text-stroke: 1px black;">{{property.desc}}</div>
-                            <div style = "width: 60px; height: 40px; font-size: 36px; -webkit-text-stroke: 1px black;">{{property.value}}</div>
+                            <div style = "width: 60px; height: 40px; font: 微软雅黑; font-size: 36px; -webkit-text-stroke: 1px black;">{{property.desc}}</div>
+                            <div style = "width: 60px; height: 40px; font: 微软雅黑; font-size: 36px; -webkit-text-stroke: 1px black;">{{property.value}}</div>
                         </div>
                     </div>
                     <div style = "height: 20px;" />
