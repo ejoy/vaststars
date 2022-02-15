@@ -85,7 +85,6 @@ world:create_entity "空气过滤器1" {
     x = 1,
     y = 15,
     dir = "W",
-    fluid = {"空气",15000}
 }
 world:create_entity "液罐1" {
     x = 1,
