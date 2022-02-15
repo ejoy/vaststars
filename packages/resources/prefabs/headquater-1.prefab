@@ -105,7 +105,7 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/headquater.glb|materials/pbr_default_cw.material
+  material: /pkg/ant.resources/materials/pbr_default.material
   mesh: /pkg/vaststars.resources/glb/headquater.glb|meshes/Cube.005_P1.meshbin
   name: Cube.005
   scene:
@@ -117,7 +117,7 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/headquater.glb|materials/pbr_default_cw.material
+  material: /pkg/ant.resources/materials/pbr_default.material
   mesh: /pkg/vaststars.resources/glb/headquater.glb|meshes/Cylinder.026_P1.meshbin
   name: Cylinder.027
   scene:
@@ -153,7 +153,7 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/headquater.glb|materials/pbr_default_cw.material
+  material: /pkg/ant.resources/materials/pbr_default.material
   mesh: /pkg/vaststars.resources/glb/headquater.glb|meshes/Cube.001_P1.meshbin
   name: Cube.007
   scene:
@@ -167,7 +167,7 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/headquater.glb|materials/pbr_default_cw.material
+  material: /pkg/ant.resources/materials/pbr_default.material
   mesh: /pkg/vaststars.resources/glb/headquater.glb|meshes/Cube.006_P1.meshbin
   name: Cube.003
   scene:
@@ -179,7 +179,7 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/headquater.glb|materials/pbr_default_cw.material
+  material: /pkg/ant.resources/materials/pbr_default.material
   mesh: /pkg/vaststars.resources/glb/headquater.glb|meshes/Cube.008_P1.meshbin
   name: Cube.008
   scene:
@@ -191,7 +191,7 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/headquater.glb|materials/pbr_default_cw.material
+  material: /pkg/ant.resources/materials/pbr_default.material
   mesh: /pkg/vaststars.resources/glb/headquater.glb|meshes/Plane_P1.meshbin
   name: Plane.001
   scene:
@@ -205,7 +205,7 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/headquater.glb|materials/pbr_default_cw.material
+  material: /pkg/ant.resources/materials/pbr_default.material
   mesh: /pkg/vaststars.resources/glb/headquater.glb|meshes/Plane_P1.meshbin
   name: Plane.002
   scene:
@@ -219,7 +219,7 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/headquater.glb|materials/pbr_default_cw.material
+  material: /pkg/ant.resources/materials/pbr_default.material
   mesh: /pkg/vaststars.resources/glb/headquater.glb|meshes/Cube.001_P1.meshbin
   name: Cube.007
   scene:
