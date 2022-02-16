@@ -118,8 +118,9 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
+                edit_mode = '',
                 show_work = false,
-                show_construct_menu = "",
+                show_construct_menu = '',
                 is_show_construct_confirm = false,
                 is_show_construct_remove = false,
 
@@ -127,13 +128,15 @@
                 config_construct = require "config.construct",
             }
 
-            function start.clickWork(event, show_construct_menu)
-                if not show_construct_menu then
-                    start.show_work = not start.show_work
-                else
-                    start.show_construct_menu = show_construct_menu
-                end
+            function start.clickMainButton(event, construct_menu)
+                start.edit_mode = ''
+                start.show_construct_menu = ''
             end
+
+            function start.clickButton(event, construct_menu)
+                start.show_construct_menu = construct_menu
+            end
+
             function start.clickConstruct(event, prototype)
                 start.show_work = not start.show_work
                 ui_sys.pub("ui", "construct", "click_construct", prototype)
@@ -186,12 +189,13 @@
     <body>
         <div data-model="start">
             <!-- debug 按钮 -->
-            <div style = "position: absolute; left: 0vmin; top: 0vmin; z-index: 999;" data-for="debug_button" >
+            <div data-if = "false" style = "position: absolute; left: 0vmin; top: 0vmin; z-index: 999;" data-for="debug_button" >
                 <div class = "test-button" data-event-click="clickDebug(it.id)" data-style-left="it.left" style = "position: absolute; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"></div>
             </div>
 
-            <div style = 'position: absolute; left: 0vmin; top: 0vmin; background-image:"construct/camera_reset.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;' data-event-click = "CameraOpt('reset')" />
-            <div style = 'position: absolute; left: 0vmin; top: 5vmin; background-image:"construct/camera_reset.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;' data-event-click = "CameraOpt('lookdown')" />
+            <!-- 摄像机控制按钮 debug -->
+            <div data-if = "false" style = 'position: absolute; left: 0vmin; top: 0vmin; background-image:"construct/camera_reset.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;' data-event-click = "CameraOpt('reset')" />
+            <div data-if = "false" style = 'position: absolute; left: 0vmin; top: 5vmin; background-image:"construct/camera_reset.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;' data-event-click = "CameraOpt('lookdown')" />
 
             <!-- 建造确认按钮 -->
             <input id = "id-button-construct-confirm" type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/confirm.png";' data-event-click = "clickContructButton('click_construct_confirm')" data-if = "is_show_construct_confirm" />
@@ -199,18 +203,41 @@
             <input id = "id-button-construct-rotate"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/rotate.png";'  data-event-click = "clickContructButton('click_construct_rotate')" data-if = "is_show_construct_confirm" />
             <input id = "id-button-construct-remove"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/cancel.png";'  data-event-click = "clickContructButton('click_construct_remove')" data-if = "is_show_construct_remove" />
 
-            <button id="work" data-event-click="clickWork()" style='background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
+            <!-- 施工返回按钮 -->
+            <div data-if = "edit_mode != ''" data-event-click="edit_mode = ''" style='position: absolute; left: 0vmin; top: 0vmin; background-image:"construct/return.png"; width:50px; height: 50px; background-size:cover;' />
+
+            <!-- 施工 -->
+            <button data-if = "edit_mode == ''" data-event-click="edit_mode = 'construct'" style='position: absolute; left: 1190px; top: 620px; width: 120px; height: 120px; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width:80px; height: 80px; background-size:cover;'/>
                 <div>施工</div>
             </button>
-            <div id="work-buttons-container" data-if="show_work" >
-                <workbutton data-event-click="clickWork(it.name)" data-for = "config_construct">
+
+            <!-- 开始施工 -->
+            <button data-if = "edit_mode != ''" data-event-click="clickMainButton()" style='position: absolute; left: 1190px; top: 620px; width: 120px; height: 120px; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
+                <div style='margin: 0 auto; background-image:"construct/work.png"; width:80px; height: 80px; background-size:cover;'/>
+                <div>开始施工</div>
+            </button>
+            
+            <!-- 拆除模式 -->
+            <div data-if = "edit_mode != ''" data-event-click="edit_mode = 'dismantle'" data-style-border = "edit_mode == 'dismantle' ? '4px yellow' : '2px black'" style='position: absolute; left: 20px; top: 620px; width: 120px; height: 120px; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 15px; text-align: center; font: 100% "微软雅黑";'>
+                <div style='margin: 0 auto; background-image:"construct/work.png"; width:80px; height: 80px; background-size:cover;'/>
+                <div>拆除模式</div>
+            </div>
+
+            <!-- 建造模式 -->
+            <div data-if = "edit_mode != ''" data-event-click="edit_mode = 'construct'" data-style-border = "edit_mode == 'construct' ? '4px yellow' : '2px black'" style='position: absolute; left: 160px; top: 620px; width: 120px; height: 120px; background-color: rgb(59, 137, 211); flex-direction: column; justify-content: flex-start;  border-radius: 15px; text-align: center; font: 100% "微软雅黑";'>
+                <div style='margin: 0 auto; background-image:"construct/work.png"; width:80px; height: 80px; background-size:cover;'/>
+                <div>建造模式</div>
+            </div>
+
+            <div id="work-buttons-container" data-if="edit_mode != ''" >
+                <workbutton data-event-click="clickButton(it.name)" data-for = "config_construct">
                     <div class="workbutton-bg" data-style-background-image = "it.image" />
                     <div class="workbutton-text" >{{it.name}}</div>
                 </workbutton>
             </div>
-            <div id="work-detail" data-if="show_work" >
-             <div data-if="show_construct_menu == '电力'">
+            <div id="work-detail" data-if="edit_mode != '' && show_construct_menu != ''" >
+            <div data-if="show_construct_menu == '电力'">
                  <div class="tools-container">
                      <div class="row">
                          <button class="tools-button" data-event-click="clickConstruct('铁制电线杆')">
