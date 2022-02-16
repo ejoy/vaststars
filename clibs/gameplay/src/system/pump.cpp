@@ -47,9 +47,9 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
     prototype_context p = w.prototype(e.prototype);
 
     // step.1
-    float power = pt_power(&p);
-    float drain = pt_drain(&p);
-    float capacitance = power * 2;
+    unsigned int power = pt_power(&p);
+    unsigned int drain = pt_drain(&p);
+    unsigned int capacitance = power * 2;
     if (c.shortage + drain > capacitance) {
         return;
     }
@@ -112,9 +112,9 @@ lupdate(lua_State *L) {
         capacitance& c = v.get<capacitance>();
         prototype_context p = w.prototype(e.prototype);
 
-        float power = pt_power(&p);
-        float drain = pt_drain(&p);
-        float capacitance = power * 2;
+        unsigned int power = pt_power(&p);
+        unsigned int drain = pt_drain(&p);
+        unsigned int capacitance = power * 2;
         if (c.shortage + drain > capacitance) {
             block(w, v.get<fluidbox>());
             continue;

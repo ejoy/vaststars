@@ -3,14 +3,12 @@
 
 #include "prototype_imp.h"
 
-// powergrid
-PROTOTYPE(power, float)
-PROTOTYPE(drain, float)
-PROTOTYPE(priority, int)	// power priority
-PROTOTYPE(efficiency, float)	// power convert efficiency
-PROTOTYPE(charge_power, float)	// battrty charge power
-PROTOTYPE(capacitance, float)
-PROTOTYPE(fuel_energy, float)
+PROTOTYPE(priority, int)
+PROTOTYPE(power, uint)
+PROTOTYPE(drain, uint)
+PROTOTYPE(charge_power, uint)
+PROTOTYPE(capacitance, uint)
+
 PROTOTYPE(stack, int)
 PROTOTYPE(time, int)
 PROTOTYPE(ingredients, string)

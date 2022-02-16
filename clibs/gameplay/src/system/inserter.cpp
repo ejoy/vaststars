@@ -24,9 +24,9 @@ static bool
 tryActive(world& w, inserter& i, entity& e, capacitance& c) {
     prototype_context p = w.prototype(e.prototype);
 
-    float power = pt_power(&p);
-    float drain = pt_drain(&p);
-    float capacitance = power * 2;
+    unsigned int power = pt_power(&p);
+    unsigned int drain = pt_drain(&p);
+    unsigned int capacitance = power * 2;
     if (c.shortage + drain > capacitance) {
         return false;
     }
@@ -101,8 +101,8 @@ lupdate(lua_State *L) {
             capacitance& c = e.get<capacitance>();
             prototype_context p = w.prototype(e.get<entity>().prototype);
             
-            float power = pt_power(&p);
-            float capacitance = power * 2;
+            unsigned int power = pt_power(&p);
+            unsigned int capacitance = power * 2;
             if (c.shortage + power <= capacitance) {
                 c.shortage += power;
                 i.process--;
