@@ -7,6 +7,7 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.ui|iui"
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
+local icanvas = ecs.import.interface "vaststars.gamerender|icanvas"
 
 local FRAMES_PER_SECOND <const> = import_package "vaststars.constant".FRAMES_PER_SECOND
 local math3d = require "math3d"
@@ -49,6 +50,7 @@ function m:init_world()
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
     iterrain.create()
+    icanvas.create()
 
     world:pub{"camera_controller", "stop", false}
 end
