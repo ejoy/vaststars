@@ -68,10 +68,10 @@
             }
             #work-detail {
                 position: absolute;
-                top: 10px;
-                left: 910px;
-                width: 300px;
-                height: 600px;
+                top: 20px;
+                left: 1010px;
+                width: 200px;
+                height: 580px;
                 background-color: rgb(44, 32, 18);
                 border: 3px rgb(89, 73, 39);
                 border-radius: 5px;
