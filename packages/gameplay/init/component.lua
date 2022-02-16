@@ -17,7 +17,8 @@ component "assembling" {
     "recipe:word",
     "container:word",
     "process:int",
-    "status:word",
+    "low_power:byte",
+    "status:byte",
     "speed:word"
 }
 

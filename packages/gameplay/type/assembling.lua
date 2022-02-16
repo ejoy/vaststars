@@ -51,6 +51,28 @@ local function createContainer(s)
     return table.concat(container)
 end
 
+local function what_status(e)
+    --TODO
+    --  no_power
+    --  disabled
+    --  no_minable_resources
+    local a = e.assembling
+    if a.recipe == 0 then
+        return "idle"
+    end
+    if a.process <= 0 then
+        if a.status == STATUS_IDLE then
+            return "insufficient_input"
+        elseif a.status == STATUS_DONE then
+            return "full_output"
+        end
+    end
+    if a.low_power ~= 0 then
+        return "low_power"
+    end
+    return "working"
+end
+
 function c:ctor(init, pt)
     local recipe_name = pt.recipe and pt.recipe or init.recipe
     local recipe = assert(prototype.query("recipe", recipe_name), "unknown recipe: "..recipe_name)
@@ -76,6 +98,7 @@ function c:ctor(init, pt)
             fluidbox_in = fluidbox_in,
             fluidbox_out = fluidbox_out,
             process = 0,
+            low_power = 0,
             status = STATUS_IDLE,
             speed = math.floor(pt.speed * 100),
         }

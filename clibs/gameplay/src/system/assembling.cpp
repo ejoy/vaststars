@@ -56,8 +56,13 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
     }
     c.shortage += drain;
 
+    if (a.recipe == 0) {
+        return;
+    }
+
     // step.2
     while (a.process <= 0) {
+        a.low_power = 0;
         prototype_context recipe = w.prototype(a.recipe);
         recipe_container& container = w.query_container<recipe_container>(a.container);
         if (a.status == STATUS_DONE) {
@@ -92,12 +97,14 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
 
     // step.3
     if (c.shortage + power > capacitance) {
+        a.low_power = 50;
         return;
     }
     c.shortage += power;
 
     // step.4
     a.process -= a.speed;
+    if (a.low_power > 0) a.low_power--;
 }
 
 static int
