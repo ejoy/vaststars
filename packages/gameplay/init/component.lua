@@ -50,6 +50,9 @@ component "generator" {
 component "accumulator" {
 }
 
+component "pole" {
+}
+
 component "fluidbox" {
     "fluid:word",
     "id:word",

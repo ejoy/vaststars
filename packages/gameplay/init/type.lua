@@ -6,6 +6,7 @@ require "type.powergrid"
 require "type.fluidbox"
 require "type.pump"
 require "type.mining"
+require "type.pole"
 
 local type = require "register.type"
 type "item"

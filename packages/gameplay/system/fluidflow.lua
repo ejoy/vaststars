@@ -1,4 +1,3 @@
-
 local system = require "register.system"
 local query = require "prototype".queryById
 
