@@ -44,8 +44,8 @@ stat_consumer(struct powergrid *pg) {
 		if (c == NULL)
 			luaL_error(L, "No capacitance");
 
-		float power = pt_power(&p);
-		float charge = c->shortage < power ? c->shortage : power;
+		unsigned int power = pt_power(&p);
+		unsigned int charge = c->shortage < power ? c->shortage : power;
 		int priority = pt_priority(&p);
 		pg->consumer_power[priority] += charge;
 //		printf("Charge priority %d %f\n", priority, charge);
@@ -66,7 +66,7 @@ stat_generator(struct powergrid *pg) {
 		struct capacitance *c = entity_sibling(ctx, TAG_GENERATOR, i, COMPONENT_CAPACITANCE);
 		if (c == NULL)
 			luaL_error(L, "No capacitance");
-		float capacitance = pt_capacitance(&p);
+		uint64_t capacitance = pt_capacitance(&p);
 		int priority = pt_priority(&p);
 		pg->generator_power[priority] += capacitance - c->shortage;
 	}
@@ -86,14 +86,14 @@ stat_accumulator(struct powergrid *pg) {
 		struct capacitance *c = entity_sibling(ctx, TAG_ACCUMULATOR, i, COMPONENT_CAPACITANCE);
 		if (c == NULL)
 			luaL_error(L, "No capacitance");
-		float power = pt_power(&p);
+		unsigned int power = pt_power(&p);
 		if (c->shortage == 0) {
 			// battery is full
 			pg->accumulator_output += power;
 		} else {
-			float charge_power = pt_charge_power(&p);
+			unsigned int charge_power = pt_charge_power(&p);
 			pg->accumulator_input += (c->shortage <= charge_power) ? c->shortage : charge_power;
-			float capacitance_remain = pt_capacitance(&p) - c->shortage;
+			unsigned int capacitance_remain = pt_capacitance(&p) - c->shortage;
 			pg->accumulator_output += (capacitance_remain <= power) ? capacitance_remain : power;
 		}
 	}
@@ -201,15 +201,15 @@ powergrid_run(struct powergrid *pg) {
 				float eff = pg->consumer_efficiency[pt_priority(&p)];
 				if (eff > 0) {
 					// charge
-					float power = pt_power(&p);
+					unsigned int power = pt_power(&p);
 					if (c->shortage <= power) {
 						if (eff >= 1.0f) {
 							c->shortage = 0;	// full charge
 						} else {
-							c->shortage *= (1 - eff);
+							c->shortage -= (uint32_t)(c->shortage * eff);
 						}
 					} else {
-						c->shortage -= power * eff;
+						c->shortage -= (uint32_t)(power * eff);
 					}
 				}
 			}
@@ -217,7 +217,7 @@ powergrid_run(struct powergrid *pg) {
 			// It's a generator, and must be not a consumer
 			float eff = pg->generator_efficiency[pt_priority(&p)];
 			if (eff > 0) {
-				float consume_energy = (pt_capacitance(&p) - c->shortage) * eff;
+				uint32_t consume_energy = (uint32_t)((pt_capacitance(&p) - c->shortage) * eff);
 				c->shortage += consume_energy;
 			}
 		} else if (pg->accumulator_efficiency != 0 &&
@@ -225,9 +225,9 @@ powergrid_run(struct powergrid *pg) {
 			float eff = pg->accumulator_efficiency;
 			if (eff > 0) {
 				// discharge
-				float capacitance = pt_capacitance(&p); 
-				float remain = capacitance - c->shortage;
-				float power = pt_power(&p) * eff;
+				unsigned int capacitance = pt_capacitance(&p); 
+				unsigned int remain = capacitance - c->shortage;
+				uint32_t power = (uint32_t)(pt_power(&p) * eff);
 				if (remain >= power) {
 					c->shortage += power;
 				} else {
@@ -236,7 +236,7 @@ powergrid_run(struct powergrid *pg) {
 			} else {
 				// charge
 				eff = -eff;
-				float charge_power = pt_charge_power(&p) * eff;
+				uint32_t charge_power = (uint32_t)(pt_charge_power(&p) * eff);
 				if (charge_power >= c->shortage) {
 					c->shortage = 0;
 				} else {

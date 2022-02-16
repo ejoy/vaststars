@@ -25,29 +25,29 @@ local function number_conversion(n, u)
 	elseif u ~= '' then
 		return nil, ("Invalid postfix " .. u)
 	end
-	return n
+	return math.floor(n)
 end
 
-register_unit("power", "float", function(s)
+register_unit("power", "dword", function(s)
 	local n, u = s:match "^(%d+%.?%d*)([kMG]?)W$"
 	if not n then
 		return nil, "Need power : nW"
 	end
-	return number_conversion(n,u) / UPS
+	return number_conversion(n,u) // UPS
 end)
 
-register_unit("drain_power", "float", function(s, object)
+register_unit("drain_power", "dword", function(s, object)
 	if s == nil then
-		return object.power / 30
+		return object.power // 30
 	end
 	local n, u = s:match "^(%d+%.?%d*)([kMG]?)W$"
 	if not n then
 		return nil, "Need power : nW"
 	end
-	return number_conversion(n,u) / UPS
+	return number_conversion(n,u) // UPS
 end)
 
-register_unit("energy", "float", function(s, object)
+register_unit("energy", "dword", function(s, object)
 	if s == nil then
 		return object.power * 2
 	end

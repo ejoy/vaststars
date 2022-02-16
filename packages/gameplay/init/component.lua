@@ -32,7 +32,7 @@ component "inserter" {
 }
 
 component "capacitance" {
-	"shortage:float"
+	"shortage:dword"
 }
 
 component "burner" {

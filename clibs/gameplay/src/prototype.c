@@ -1,12 +1,12 @@
 #define LUA_LIB
-
+ 
 #include <lua.h>
 #include <lauxlib.h>
 #include <string.h>
-
+ 
 #define PROTOTYPE_IMPLEMENTATION
 #include "prototype.h"
-
+ 
 static void
 fetch_value(lua_State *L, struct prototype_cache *c, int id, const char *name, int type) {
 	if (id == 0)
@@ -26,37 +26,37 @@ fetch_value(lua_State *L, struct prototype_cache *c, int id, const char *name, i
 		luaL_error(L, "Invalid type .%s for %d", name, id);
 	}
 }
-
-static float
+ 
+static lua_Number
 read_float_lua(lua_State *L, struct prototype_cache *c, int id, const char *name) {
 	fetch_value(L, c, id, name, LUA_TNUMBER);
-	return (float)lua_tonumber(c->L, 3);
+	return lua_tonumber(c->L, 3);
 }
-
-static int
+ 
+static lua_Integer
 read_int_lua(lua_State *L, struct prototype_cache *c, int id, const char *name) {
 	fetch_value(L, c, id, name, LUA_TNUMBER);
 	if (!lua_isinteger(c->L, 3)) {
 		luaL_error(L, ".%s is not an integer", name);
 	}
-	return (int)lua_tointeger(c->L, 3);
+	return lua_tointeger(c->L, 3);
 }
-
+ 
 static int
 read_bool_lua(lua_State *L, struct prototype_cache *c, int id, const char *name) {
 	fetch_value(L, c, id, name, LUA_TBOOLEAN);
 	return lua_toboolean(c->L, 3);
 }
-
+ 
 static const char *
 read_string_lua(lua_State *L, struct prototype_cache *c, int id, const char *name) {
 	fetch_value(L, c, id, name, LUA_TSTRING);
 	return lua_tostring(c->L, 3);
 }
-
+ 
 static int
 insert_type(lua_State *L) {
-	int id = (int)luaL_checkinteger(L, 2);
+	int id = luaL_checkinteger(L, 2);
 	if (id == 0) {
 		return luaL_error(L, "Invalid id 0");
 	}
@@ -73,17 +73,17 @@ insert_type(lua_State *L) {
 	lua_seti(cL, 1, id);
 	return 0;
 }
-
+ 
 static int
 get_type(lua_State *L) {
-	int id = (int)luaL_checkinteger(L, 2);
+	int id = luaL_checkinteger(L, 2);
 	lua_getiuservalue(L, 1, 1);
 	lua_State *cL = lua_tothread(L, -1);
 	lua_geti(cL, 1, id);
 	lua_xmove(cL, L, 1);
 	return 1;
 }
-
+ 
 static void
 prototype_meta(lua_State *L) {
 	luaL_Reg l[] = {
@@ -93,7 +93,7 @@ prototype_meta(lua_State *L) {
 	};
 	luaL_newlib(L, l);
 }
-
+ 
 LUAMOD_API int
 luaopen_vaststars_prototype_core(lua_State *L) {
 	luaL_checkversion(L);
@@ -106,9 +106,9 @@ luaopen_vaststars_prototype_core(lua_State *L) {
 	lua_setmetatable(L, -2);
 	return 1;
 }
-
+ 
 #ifdef TEST_PROTOTYPE
-
+ 
 static int
 lpower(lua_State *L) {
 	luaL_checktype(L, 1, LUA_TUSERDATA);
@@ -118,7 +118,7 @@ lpower(lua_State *L) {
 	lua_pushnumber(L, power);
 	return 1;
 }
-
+ 
 static int
 lcount(lua_State *L) {
 	luaL_checktype(L, 1, LUA_TUSERDATA);
@@ -128,7 +128,7 @@ lcount(lua_State *L) {
 	lua_pushinteger(L, count);
 	return 1;
 }
-
+ 
 static int
 lenable(lua_State *L) {
 	luaL_checktype(L, 1, LUA_TUSERDATA);
@@ -138,7 +138,7 @@ lenable(lua_State *L) {
 	lua_pushboolean(L, enable);
 	return 1;
 }
-
+ 
 static int
 lname(lua_State *L) {
 	luaL_checktype(L, 1, LUA_TUSERDATA);
@@ -148,7 +148,7 @@ lname(lua_State *L) {
 	lua_pushstring(L, name);
 	return 1;
 }
-
+ 
 LUAMOD_API int
 luaopen_vaststars_prototype_test(lua_State *L) {
 	luaL_checkversion(L);
@@ -162,5 +162,5 @@ luaopen_vaststars_prototype_test(lua_State *L) {
 	luaL_newlib(L, l);
 	return 1;
 }
-
+ 
 #endif
