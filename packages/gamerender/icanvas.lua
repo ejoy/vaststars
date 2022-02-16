@@ -4,7 +4,7 @@ local w     = world.w
 
 local icas   = ecs.import.interface "ant.terrain|icanvas"
 local icanvas = ecs.interface "icanvas"
-local canvas = {}
+local canvas_items = {}
 
 function icanvas.create()
     local unit = 1
@@ -18,7 +18,7 @@ function icanvas.create()
             name = "canvas",
             scene = {
                 srt = {
-                    t={0.0, 5.0, 0.0}
+                    t={0.0, 1.0, 0.0}
                 }
             },
             reference = true,
@@ -27,35 +27,18 @@ function icanvas.create()
                 texts = {},
             },
             on_ready = function (e)
-                canvas.added_items =
+                canvas_items.added_items =
                     icas.add_items(e,
                         {
                             texture = {
-                                path = "/pkg/ant.resources/textures/white.texture",
-                                size = {
-                                    w = 1, h = 1,
-                                },
+                                path = "/pkg/vaststars.resources/textures/canvas.texture",
                                 rect = {
                                     x = 0, y = 0,
-                                    w = 1, h = 1,
+                                    w = 271, h = 203,
                                 },
                             },
                             x = 0 * unit, y = 0 * unit,
-                            w = 2 * unit, h = 2 * unit,
-                        },
-                        {
-                            texture = {
-                                path = "/pkg/ant.resources/textures/white.texture",
-                                size = {
-                                    w = 1, h = 1,
-                                },
-                                rect = {
-                                    x = 0, y = 0,
-                                    w = 1, h = 1,
-                                },
-                            },
-                            x = 0 * unit, y = 0 * unit,
-                            w = 2 * unit, h = 2 * unit,
+                            w = 271 * unit, h = 203 * unit,
                         }
                     )
             end
