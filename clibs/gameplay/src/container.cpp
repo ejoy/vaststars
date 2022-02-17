@@ -296,7 +296,7 @@ static container::item_array read_table(lua_State* L, int idx) {
     for (size_t i = 0; i < n; ++i) {
         r[i] = p[i];
     }
-    return std::move(r);
+    return r;
 }
 
 static int
