@@ -32,7 +32,7 @@ function m.build(world)
             end
         end
     end
-    for e in ecs:select "capacitance entity:in power:new" do
+    for e in ecs:select "capacitance entity:in power?out" do
         e.power = hasPower(Map, e)
     end
 end
