@@ -12,7 +12,6 @@ local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
 
-local ROAD_ARROW_YAXIS_DEFAULT <const> = import_package "vaststars.constant".ROAD_ARROW_YAXIS_DEFAULT
 local road_sys = ecs.system "road_system"
 local iroad = ecs.interface "iroad"
 local pickup_show_set_road_arrow_mb = world:sub {"pickup_mapping", "pickup_show_set_road_arrow"}
@@ -259,7 +258,7 @@ function road_sys:after_pickup_mapping()
     local is_show_arrow
     for _, _, game_object in pickup_show_set_road_arrow_mb:unpack() do
         local prefab = igame_object.get_prefab_object(game_object)
-        iconstruct_arrow.show(construct_arrows, ROAD_ARROW_YAXIS_DEFAULT, "pickup_set_road", math3d.tovalue(iom.get_position(prefab.root)))
+        iconstruct_arrow.show(construct_arrows, "pickup_set_road", math3d.tovalue(iom.get_position(prefab.root)))
         is_show_arrow = true
     end
 
@@ -270,9 +269,9 @@ function road_sys:after_pickup_mapping()
         end
     end
 
-    for _, _, game_object in pickup_set_road_mb:unpack() do
-        w:sync("pickup_set_road:in", game_object)
-        iroad.construct(game_object.pickup_set_road.tile_coord, game_object.pickup_set_road.arrow_coord)
+    for _, _, e in pickup_set_road_mb:unpack() do
+        w:sync("pickup_set_road:in", e)
+        iroad.construct(e.pickup_set_road.tile_coord, e.pickup_set_road.arrow_coord)
     end
 end
 

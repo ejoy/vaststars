@@ -117,7 +117,7 @@ function iterrain.get_begin_position_by_coord(...)
             return
         end
     end
-    return {((coord[1] - 1) * unit) + srt.t[1], 0, ((coord[2] - 1) * unit + unit) + srt.t[3]}
+    return {((coord[1] - 1) * unit) + srt.t[1], 0, ((coord[2] - 1) * unit) + srt.t[3]}
 end
 
 function iterrain.get_confirm_ui_position(position)

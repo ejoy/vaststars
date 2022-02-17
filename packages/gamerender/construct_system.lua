@@ -315,24 +315,24 @@ function construct_sys:after_pickup_mapping()
         iui.open(url)
     end
 
-    local show_pickup_show_remove
-    for _, _, game_object in pickup_show_remove_mb:unpack() do
-        w:sync("x:in y:in pickup_show_remove:in ", game_object)
-        local pos = iterrain.get_begin_position_by_coord(game_object.x, game_object.y)
-        world:pub {"ui_message", "construct_show_remove", math3d.tovalue(icamera.world_to_screen(pos))}
-        game_object.pickup_show_remove = true
-        w:sync("pickup_show_remove:out", game_object)
-        show_pickup_show_remove = true
-    end
+    -- local show_pickup_show_remove
+    -- for _, _, game_object in pickup_show_remove_mb:unpack() do
+    --     w:sync("x:in y:in pickup_show_remove:in ", game_object)
+    --     local pos = iterrain.get_begin_position_by_coord(game_object.x, game_object.y)
+    --     world:pub {"ui_message", "construct_show_remove", math3d.tovalue(icamera.world_to_screen(pos))}
+    --     game_object.pickup_show_remove = true
+    --     w:sync("pickup_show_remove:out", game_object)
+    --     show_pickup_show_remove = true
+    -- end
 
-    for _ in pickup_mb:unpack() do
-        if not show_pickup_show_remove then
-            for e in w:select("pickup_show_remove:update") do
-                e.pickup_show_remove = false
-            end
+    -- for _ in pickup_mb:unpack() do
+    --     if not show_pickup_show_remove then
+    --         for e in w:select("pickup_show_remove:update") do
+    --             e.pickup_show_remove = false
+    --         end
 
-            world:pub {"ui_message", "construct_show_remove", nil}
-            break
-        end
-    end
+    --         world:pub {"ui_message", "construct_show_remove", nil}
+    --         break
+    --     end
+    -- end
 end

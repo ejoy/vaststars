@@ -4,10 +4,8 @@ local w     = world.w
 
 local icas   = ecs.import.interface "ant.terrain|icanvas"
 local icanvas = ecs.interface "icanvas"
-local canvas_items = {}
 
 function icanvas.create()
-    local unit = 1
     return ecs.create_entity {
         policy = {
             "ant.scene|scene_object",
@@ -26,22 +24,24 @@ function icanvas.create()
                 textures = {},
                 texts = {},
             },
-            on_ready = function (e)
-                canvas_items.added_items =
-                    icas.add_items(e,
-                        {
-                            texture = {
-                                path = "/pkg/vaststars.resources/textures/canvas.texture",
-                                rect = {
-                                    x = 0, y = 0,
-                                    w = 271, h = 203,
-                                },
-                            },
-                            x = 0 * unit, y = 0 * unit,
-                            w = 271 * unit, h = 203 * unit,
-                        }
-                    )
-            end
         }
     }
+end
+
+function icanvas.add_items(items)
+    local e = w:singleton("canvas", "canvas:in")
+    if not e then
+        return
+    end
+
+    return icas.add_items(e, items)
+end
+
+function icanvas.remove_item(itemid)
+    local e = w:singleton("canvas", "canvas:in")
+    if not e then
+        return
+    end
+
+    return icas.remove_item(e, itemid)
 end

@@ -120,7 +120,6 @@
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
                 edit_mode = '',
-                show_work = false,
                 show_construct_menu = '',
                 is_show_construct_confirm = false,
                 is_show_construct_remove = false,
@@ -139,7 +138,8 @@
             end
 
             function start.clickConstruct(event, prototype)
-                start.show_work = not start.show_work
+                start.edit_mode = ''
+                start.show_construct_menu = ''
                 ui_sys.pub("ui", "construct", "click_construct", prototype)
             end
             function start.clickContructButton(event, msg)
@@ -238,7 +238,7 @@
                 </workbutton>
             </div>
             <div id="work-detail" data-if="edit_mode != '' && show_construct_menu != ''" >
-            <div data-if="show_construct_menu == '电力'">
+             <div data-if="show_construct_menu == '电力'">
                  <div class="tools-container">
                      <div class="row">
                          <button class="tools-button" data-event-click="clickConstruct('铁制电线杆')">
