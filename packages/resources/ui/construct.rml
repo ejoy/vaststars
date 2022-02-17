@@ -10,6 +10,7 @@
                 text-align: center;
                 border-radius: 15px;
                 border: 4px white;
+                font-size: 30px;
 
                 transition: transform 2s elastic-out;
                 transform: scale(1.0);
@@ -43,7 +44,7 @@
                 justify-content: flex-start;
                 align-items: center;
                 border-radius: 15px;
-                border: 1.5px rgb(89, 73, 39);
+                border: 2px rgb(89, 73, 39);
                 background-color: rgb(246, 142, 14);
                 height: 90px;
                 width: 90px;
@@ -68,23 +69,23 @@
             }
             #work-detail {
                 position: absolute;
-                top: 20px;
-                left: 1010px;
-                width: 200px;
-                height: 580px;
+                top: 10px;
+                left: 984px;
+                width: 226px;
+                height: 600px;
                 background-color: rgb(44, 32, 18);
                 border: 3px rgb(89, 73, 39);
                 border-radius: 5px;
             }
             .tools-container {
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
                 font-size: 50%;
             }
             .tools-button {
                 flex-direction: column;
                 align-items:flex-start;
-                justify-content:space-between;
+                justify-content:space-evenly;
                 background-color: rgb(250, 205, 9);
                 background-size:cover;
                 width:90px;
