@@ -3,6 +3,8 @@ local world = ecs.world
 local w = world.w
 
 local arrow_coord_offset = {{0, -1}, {-1, 0}, {1, 0}, {0, 1}}
+local arrow_rotation = {math.rad(90.0), math.rad(180.0), math.rad(-90.0), math.rad(0.0)}
+
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 local icanvas = ecs.import.interface "vaststars.gamerender|icanvas"
 
@@ -42,24 +44,24 @@ end
 
 local textures = {
     [1] = {
-        path = "/pkg/vaststars.resources/textures/arrow_1.png",
-        w = 203,
-        h = 271,
+        path = "/pkg/vaststars.resources/textures/canvas.texture",
+        w = 271,
+        h = 203,
     },
     [2] = {
-        path = "/pkg/vaststars.resources/textures/arrow_2.png",
+        path = "/pkg/vaststars.resources/textures/canvas.texture",
         w = 271,
         h = 203,
     },
     [3] = {
-        path = "/pkg/vaststars.resources/textures/arrow_3.png",
+        path = "/pkg/vaststars.resources/textures/canvas.texture",
         w = 271,
         h = 203,
     },
     [4] = {
-        path = "/pkg/vaststars.resources/textures/arrow_4.png",
-        w = 203,
-        h = 271,
+        path = "/pkg/vaststars.resources/textures/canvas.texture",
+        w = 271,
+        h = 203,
     },
 }
 
@@ -111,6 +113,9 @@ function iconstruct_arrow.show(e, component_name, position)
                     x = 0, y = 0,
                     w = texture.w, h = texture.h,
                 },
+                srt = {
+                    r = arrow_rotation[idx],
+                }
             },
             x = pos[1], y = pos[3],
             w = 10, h = 10,
