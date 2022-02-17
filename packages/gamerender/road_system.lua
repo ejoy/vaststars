@@ -11,11 +11,12 @@ local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
+local iinput = ecs.import.interface "vaststars.input|iinput"
+local pickup_mapping_canvas_mb = world:sub {"pickup_mapping", "canvas"}
 
 local road_sys = ecs.system "road_system"
 local iroad = ecs.interface "iroad"
 local pickup_show_set_road_arrow_mb = world:sub {"pickup_mapping", "pickup_show_set_road_arrow"}
-local pickup_set_road_mb = world:sub {"pickup_mapping", "pickup_set_road"}
 local ui_remove_message_mb = world:sub {"ui", "construct", "click_construct_remove"}
 local pickup_mb = world:sub {"pickup"}
 local construct_arrows
@@ -255,23 +256,33 @@ function road_sys:init_world()
 end
 
 function road_sys:after_pickup_mapping()
+    if not construct_arrows then
+        return
+    end
+    w:sync("construct_arrows:in", construct_arrows)
+
     local is_show_arrow
     for _, _, game_object in pickup_show_set_road_arrow_mb:unpack() do
         local prefab = igame_object.get_prefab_object(game_object)
-        iconstruct_arrow.show(construct_arrows, "pickup_set_road", math3d.tovalue(iom.get_position(prefab.root)))
+        iconstruct_arrow.show(construct_arrows, math3d.tovalue(iom.get_position(prefab.root)))
         is_show_arrow = true
+    end
+
+    for _ in pickup_mapping_canvas_mb:unpack() do
+        local pos = iinput.get_mouse_world_position()
+        local coord = iterrain.get_coord_by_position(pos)
+        local k = igameplay_adapter.pack_coord(coord[1], coord[2])
+        local v = construct_arrows.construct_arrows[k]
+        if v then
+            iroad.construct(v.tile_coord, v.arrow_coord)
+        end
     end
 
     for _ in pickup_mb:unpack() do
         if not is_show_arrow then
             iconstruct_arrow.hide(construct_arrows)
-            break
         end
-    end
-
-    for _, _, e in pickup_set_road_mb:unpack() do
-        w:sync("pickup_set_road:in", e)
-        iroad.construct(e.pickup_set_road.tile_coord, e.pickup_set_road.arrow_coord)
+        break
     end
 end
 

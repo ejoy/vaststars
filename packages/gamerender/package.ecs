@@ -20,9 +20,7 @@ component "dir" .type "lua"
 component "area" .type "lua"
 component "building_type" .type "lua"
 component "pickup_show_set_pipe_arrow" .type "lua" -- 点击显示建水管箭头
-component "pickup_set_pipe" .type "lua" -- 点击建水管 {tile_coord, arrow_coord}
 component "pickup_show_set_road_arrow" .type "lua" -- 点击显示建路箭头 {tile_coord, arrow_coord}
-component "pickup_set_road" .type "lua" -- 点击建路 {tile_coord, arrow_coord}
 component "pause_animation" -- 建造 entity 时不显示动画
 
 ------------------------
@@ -264,6 +262,6 @@ interface "icanvas"
     .method "add_items"
     .method "remove_item"
 
-system "construct_arrow_system"
+system "canvas_system"
     .implement "icanvas.lua"
     .method "data_changed"
