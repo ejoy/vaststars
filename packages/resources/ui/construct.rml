@@ -205,7 +205,7 @@
             <input id = "id-button-construct-remove"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/cancel.png";'  data-event-click = "clickContructButton('click_construct_remove')" data-if = "is_show_construct_remove" />
 
             <!-- 施工返回按钮 -->
-            <div data-if = "edit_mode != ''" data-event-click="edit_mode = ''" style='position: absolute; left: 0vmin; top: 0vmin; background-image:"construct/return.png"; width:50px; height: 50px; background-size:cover;' />
+            <div data-if = "edit_mode != ''" data-event-click="edit_mode = ''" style='position: absolute; left: 5px; top: 5px; background-image:"construct/return.png"; width:80px; height: 80px; background-size:cover;' />
 
             <!-- 施工 -->
             <button data-if = "edit_mode == ''" data-event-click="edit_mode = 'construct'" style='position: absolute; left: 1190px; top: 620px; width: 120px; height: 120px; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
