@@ -2,7 +2,7 @@
     <head>
         <style>
             div {
-                font: 120% "宋体";
+                font: 120% "微软雅黑";
             }
             button {
                 width: 80px;
@@ -11,10 +11,10 @@
                 text-align: center;
                 text-decoration: none;
                 border-radius: 8px;
-                border: 2px rgba(84,130,53,255);
+                border: 2px rgb(84,130,53);
                 opacity: 1;
                 transition: transform 2s elastic-out;
-                background-color: rgba(197,224,180,255);
+                background-color: rgb(197,224,180);
                 transform: scale(1.0);
             }
             button:hover {
@@ -25,7 +25,7 @@
                 opacity: 1;
                 background-color: white; 
                 background-size: cover;
-                border: 2px rgba(84,130,53,255);
+                border: 2px rgb(84,130,53);
                 border-radius: 8px;
                 width: 60px;
                 height: 60px;
@@ -38,13 +38,13 @@
                  background-size:cover;
             }
             .button-text {
-                background-color: rgba(128,156,126,128);
+                background-color: rgb(128,156,126);
                 font-size:18px;
                 border-radius: 4px;
             }
             .panel {
-                background-color: rgba(120, 120, 120, 255);
-                border: 2px green;
+                background-color: rgb(44, 32, 18);
+                border: 3px rgb(89, 73, 39);
                 border-radius: 5px;
                 width: 48%;
                 height: 100%;
@@ -71,40 +71,52 @@
                 margin-left: 10px;
                 font-size: 20px;
             }
+            .item-container {
+                flex-direction: column;
+                align-items: flex-start;
+                font-size: 50%;
+            }
             .item {
                 flex-direction: column;
                 align-items:flex-start;
-                justify-content:space-between;
-                background-color: rgba(197,224,180,255);
-                background-image: "construct/hand.png";
+                justify-content:space-evenly;
+                background-color: rgb(250, 205, 9);
                 background-size:cover;
                 width:90px;
                 height:90px;
                 margin:10px;
-                font-size: 20px;
-                border: 2px rgba(84,130,53,255);
+                font-size: 18px;
+                border: 2px rgb(89, 73, 39);
+                background-image: "construct/insert1.png";
             }
             .item-title {
-                background-color: rgba(138,156,126,255);
+                align-items:center;
+                top:12px;
+                background-color: rgb(246, 237, 189);
                 border-radius: 5px;
-                width: 80px;
+                color:rgb(73, 60, 32);
+                -webkit-text-stroke: 1px rgb(39, 32, 17);
+                width: 85px;
                 margin:0px;
             }
             .item-desc {
                 text-align:left;
                 margin:0px;
-                left:10px
+                top:-18px;
+                left:5px;
+                -webkit-text-stroke: 0.5px rgb(39, 32, 17);
             }
             workbutton {
-                font-size: 24px;
+                font-size: 20px;
+                color: rgb(221, 235, 26);
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
-                border-radius: 15px;
-                border: 2px white;
-                background-color: rgba(237,125,49,255);
-                height: 90px;
-                width: 90px;
+                border-radius: 10px;
+                border: 2px rgb(89, 73, 39);
+                background-color: rgb(246, 142, 14);
+                height: 65px;
+                width: 130px;
                 transform: scale(1.0);
                 transition: color background-color transform 2s elastic-out;
             }
@@ -113,22 +125,24 @@
             }
             workbutton:hover {
                 transform: scale(1.1);
-                background-color: rgba(0,176,80,255);
+                background-color: rgb(0,176,80);
             }
             .workbutton-bg {
                 margin: auto auto;
-                width:60px;
-                height: 60px; 
+                top:12px;
+                width:50px;
+                height: 50px; 
+                background-size: cover;
             }
             .progress-background {
                 width: 50px;
                 height: 300px;
-                background-color: rgba(255,255,255,255);
+                background-color: rgb(255,255,255);
             }
             .progress-fill {
                 width: 50px;
                 height: 300px;
-                background-color: rgba(112,48,160,255);
+                background-color: rgb(112,48,160);
             }
         </style>
         <script type="text/x-lua" >
@@ -170,166 +184,175 @@
             <div class="panel" style="flex-direction: column;">
                 <div class="header" style="width: 100%; align-items: center; justify-content: space-between;">
                     <button style='background-color: rgba(255, 255, 255, 0); border: 0px; background-image:"common/return.png"; width:70px; height:70px; background-size:cover;'/>
-                    <div style="left: -200px;">制造舱</div>
-                    <button style='background-color: rgba(255, 255, 255, 0); border: 0px; background-image:"factory/seacher.png"; width:70px; height:70px; background-size:cover;'/>
+                    <div style="left: -170px; -webkit-text-stroke: 1.5px rgb(0, 112, 192); font-size:200%;">制造舱</div>
+                    <button style='top:2px; background-color: rgba(255, 255, 255, 0); border: 0px; background-image:"factory/seacher.png"; width:68px; height:68px; background-size:cover;'/>
                 </div>
-                <div class="column" style="width: 100%; justify-content:flex-start;">
+                <div class="item-container">
                     <div class="row" style="width: 100%;">
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            <div class="item-desc">99</div>                
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            <div class="item-desc">99</div>                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            <div class="item-desc">99</div>                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            <div class="item-desc">99</div>                            
                             <div class="item-title">机器爪</div>
                         </button>
                     </div>
-                    <div class="row">
+                    <div class="row" style="width: 100%;">
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
-                            <div class="item-title">机器爪</div>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button class="item">
-                            <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
-                            <div class="item-title">机器抓</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                     </div>
-                    <div class="row">
+                    <div class="row" style="width: 100%;">
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                     </div>
-                    <div class="row">
+                    <div class="row" style="width: 100%;">
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
                             <div class="item-desc">99</div>
-                            <div class="item-desc">9</div>
+                            
+                            <div class="item-title">机器爪</div>
+                        </button>
+                    </div>
+                    <div class="row" style="width: 100%;">
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-desc">99</div>
+                            
                             <div class="item-title">机器爪</div>
                         </button>
                     </div>
                 </div>
                 <div class="row" style="justify-content:space-evenly;">
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/process.png";'/>
-                        <div>加工</div>
+                        <div class="workbutton-bg" style='background-image:"construct/logisitic1.png";'/>
+                        <div style="-webkit-text-stroke: 1.5px rgb(39, 32, 17); position:relative;top:-38px; left:-42px;">物流</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/chemical.png";'/>
-                        <div>化工</div>
+                        <div class="workbutton-bg" style='background-image:"construct/assembler.png";'/>
+                        <div style="-webkit-text-stroke: 1.5px rgb(39, 32, 17); position:relative;top:-38px; left:-42px;">生产</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/power.png";'/>
-                        <div>电力</div>
+                        <div class="workbutton-bg" style='background-image:"construct/chemistry2.png";'/>
+                        <div style="-webkit-text-stroke: 1.5px rgb(39, 32, 17); position:relative;top:-38px; left:-42px;">化工</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/express.png";'/>
-                        <div>物流</div>
+                        <div class="workbutton-bg" style='background-image:"construct/steel-beam.png";'/>
+                        <div style="-webkit-text-stroke: 1.5px rgb(39, 32, 17); position:relative;top:-38px; left:-42px;">金属</div>
+                    </workbutton>
+                </div>
+                <div class="row" style="justify-content:space-evenly;">
+                    <workbutton>
+                        <div class="workbutton-bg" style='background-image:"construct/processor.png";'/>
+                        <div style="-webkit-text-stroke: 1.5px rgb(39, 32, 17); position:relative;top:-38px; left:-42px;">器件</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/computer.png";'/>
-                        <div>效能</div>
+                        <div class="workbutton-bg" style='background-image:"construct/tank3.png";'/>
+                        <div style="-webkit-text-stroke: 1.5px rgb(39, 32, 17); position:relative;top:-38px; left:-42px;">流体</div>
+                    </workbutton>
+                    <workbutton>
+                        <div class="workbutton-bg" style='background-image:"construct/pack.png";'/>
+                        <div style="-webkit-text-stroke: 1.5px rgb(39, 32, 17); position:relative;top:-38px; left:-42px;">打包</div>
+                    </workbutton>
+                    <workbutton>
+                        <div class="workbutton-bg" style='background-image:"construct/unpack.png";'/>
+                        <div style="-webkit-text-stroke: 1.5px rgb(39, 32, 17); position:relative;top:-38px; left:-42px;">解包</div>
                     </workbutton>
                 </div>
             </div>
