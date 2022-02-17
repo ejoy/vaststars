@@ -8,8 +8,6 @@ path: /pkg/vaststars.resources/textures/canvas.png
 sampler:
   MAG: LINEAR
   MIN: LINEAR
-  MIP: LINEAR
-  U: CLAMP
-  V: CLAMP
-  W: CLAMP
+  U: WRAP
+  V: WRAP
 type: texture
