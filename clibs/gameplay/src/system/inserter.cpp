@@ -107,8 +107,15 @@ lupdate(lua_State *L) {
                 c.shortage += power;
                 i.process--;
                 if (i.process == STATUS_DONE) {
+                    i.low_power = 0;
                     wait(e.index);
                 }
+                else {
+                    if (i.low_power > 0) i.low_power--;
+                }
+            }
+            else {
+                i.low_power = 50;
             }
         }
     }

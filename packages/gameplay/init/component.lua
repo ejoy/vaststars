@@ -28,7 +28,8 @@ component "inserter" {
     "hold_item:word",
     "hold_amount:word",
     "process:word",
-    "status:byte"
+    "low_power:byte",
+    "status:byte",
 }
 
 component "capacitance" {
