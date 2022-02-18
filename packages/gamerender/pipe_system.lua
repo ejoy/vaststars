@@ -142,7 +142,7 @@ local function create_game_object(typedir, x, y)
             y = y,
             dir = dir,
             area = igameplay_adapter.pack_coord(1, 1),
-            -- pickup_show_ui = {url = "detail_panel.rml"}, -- todo
+            pickup_show_ui = {url = "detail_panel.rml"},
 
             building_type = "pipe",
             pickup_show_set_pipe_arrow = true,

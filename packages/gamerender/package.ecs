@@ -132,6 +132,7 @@ system "init_system"
     .implement "init_system.lua"
     .method "init_world"
     .method "data_changed"
+    .method "after_pickup"
 
 system "gameplay_adapter_system"
     .implement "gameplay_adapter_system.lua"

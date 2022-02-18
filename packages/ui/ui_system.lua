@@ -8,6 +8,7 @@ local json_decode = json.decode
 
 local rmlui_message_mb = world:sub {"rmlui_message"}
 local ui_message_mb = world:sub {"ui_message"}
+local ui_message_leave_mb = world:sub {"ui_message", "leave"}
 local windows = {}
 
 local function open(url)
@@ -57,6 +58,15 @@ local ui_events = {
 local ui_system = ecs.system 'ui_system'
 function ui_system.ui_update()
     local event, func
+    for msg in ui_message_leave_mb:each() do
+        for _, w in pairs(windows) do
+            local ud = {}
+            ud.event = msg[2]
+            ud.ud = {table.unpack(msg, 3, #msg)}
+            w.postMessage(json_encode(ud))
+        end
+    end
+
     -- rmlui to world
     for msg in rmlui_message_mb:each() do
         event = msg[2]
@@ -70,20 +80,22 @@ function ui_system.ui_update()
 
     -- world to rmlui
     for msg in ui_message_mb:each() do
-        for _, w in pairs(windows) do
-            local ud = {}
-            ud.event = msg[2]
-            ud.ud = {table.unpack(msg, 3, #msg)}
-            w.postMessage(json_encode(ud))
+        if msg[2] ~= "leave" then
+            for _, w in pairs(windows) do
+                local ud = {}
+                ud.event = msg[2]
+                ud.ud = {table.unpack(msg, 3, #msg)}
+                w.postMessage(json_encode(ud))
+            end
         end
     end
 end
 
 local iui = ecs.interface "iui"
 function iui.open(url, ...)
-    open(url)
+    world:pub {"rmlui_message", "__OPEN", url}
 end
 
 function iui.close(url)
-    close(url)
+    world:pub {"rmlui_message", "__CLOSE", url}
 end

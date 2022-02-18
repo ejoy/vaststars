@@ -19,10 +19,6 @@
                 entity_properties = {},
             }
 
-            start.close = function(event)
-                ui_sys.close("detail_panel.rml")
-            end
-
             start.entity_properties = {
                 health = 100,
                 total_health = 100,
@@ -49,15 +45,15 @@
             table.sort(start.detail_panel_property_list, function(a, b) return a.pos < b.pos end)
 
             ui_sys.addEventListener(start, {}, {
-                
+                ["leave"] = function()
+                    ui_sys.close("detail_panel.rml")
+                end,
             })
 
         </script>
     </head>
     <body>
         <div data-model="start">
-            <div style = "width: 100%; height: 100%;" data-event-click="close()" />
-
             <!-- detail panel begin -->
             <div style = "font: 微软雅黑; position: absolute; left: 1px; top: 85px; width: 300px; height: 580px; background-color: rgb(250, 205, 9); border: 2px rgb(89, 73, 39);flex-direction: column; justify-content: flex-start;">
                 <!-- title -->

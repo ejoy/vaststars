@@ -8,6 +8,7 @@ local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.ui|iui"
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 local icanvas = ecs.import.interface "vaststars.gamerender|icanvas"
+local pickup_mb = world:sub {"pickup"}
 
 local FRAMES_PER_SECOND <const> = import_package "vaststars.constant".FRAMES_PER_SECOND
 local math3d = require "math3d"
@@ -65,5 +66,12 @@ function m:data_changed()
 
     for _ in camera_lookdown_mb:unpack() do
         iom.set_srt(camera_ref, mc.ONE, to_quat({90.0, 0, 0}), {0, 60, 0})
+    end
+end
+
+function m:after_pickup()
+    for _ in pickup_mb:unpack() do
+        world:pub {"ui_message", "leave"}
+        break
     end
 end

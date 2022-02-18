@@ -231,6 +231,11 @@
                 <div style ="font-size: 28px; top : 20px;">建造模式</div>
             </div>
 
+            <!-- 水管指定液体界面 -->
+            <div style = 'position: absolute; left: 300px; top: 620px; width: 700px; height: 120px; background-color: rgb(208, 206, 206);'>
+
+            </div>
+
             <div id="work-buttons-container" data-if="edit_mode != ''" >
                 <workbutton data-event-click="clickButton(it.name)" data-for = "config_construct">
                     <div class="workbutton-bg" data-style-background-image = "it.image" />

@@ -82,9 +82,6 @@
             local start = window.createModel "start" {
                 routes = {},
             }
-            function start.close(event)
-                ui_sys.close("route.rml")
-            end
             function start.showNewRoute(event)
                 ui_sys.open("route_new.rml")
             end
@@ -95,12 +92,15 @@
             window.onload = function()
                 ui_sys.pub("ui", "GET_DATA", "routes")
             end
-            ui_sys.addEventListener(start, {"routes"}, {})
+            ui_sys.addEventListener(start, {"routes"}, {
+                ["leave"] = function()
+                    ui_sys.close("route.rml")
+                end,
+            })
         </script>
     </head>
     <body>
         <div data-model="start" style = "flex-direction: row; height: 100%;">
-            <div style = "background-color:rgba(0,0,0,0); width: 70%; height: 100%;" data-event-click="close()" />
             <div class="road-panel" style = "flex-direction: column;">
                 <!-- header -->
                 <div class="header" style="align-items: center; width: 100%;">

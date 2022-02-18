@@ -69,9 +69,6 @@
                 <span style = "font-size: 2.5vmin; -webkit-text-stroke: 1px #ff0000;">{{error_tip}}</span>
             </div>
 
-            <!-- 空白区域 -->
-            <div style = "background-color:rgba(0,0,0,0); width: 70%; height: 100%;" data-event-click="close()" />
-
             <!-- select station -->
             <div class="panel" style = "position: absolute; left: 40%; width: 30%; flex-direction: column; background-color: rgba(248, 203, 173, 255); border: 2px rgba(197, 90, 17, 255);" data-if = "show_select_route">
                 <!-- header -->
