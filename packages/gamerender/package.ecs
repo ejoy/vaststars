@@ -149,6 +149,7 @@ interface "igameplay_adapter"
     .method "unpack_coord"
     .method "query"
     .method "world"
+    .method "prototype_name"
 
 system "camera_controller_system"
     .implement "camera.lua"

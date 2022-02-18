@@ -119,6 +119,8 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
+                fluid_catagory = {},
+                cur_fluid_catagory = "", -- 当前选中的流体分类
                 edit_mode = '',
                 show_construct_menu = '',
                 is_show_construct_confirm = false,
@@ -151,7 +153,11 @@
             function start.CameraOpt(event, opt)
                 ui_sys.pub('camera', opt)
             end
-            ui_sys.addEventListener(start, {}, {
+
+            window.onload = function()
+                ui_sys.pub("ui", "GET_DATA", "fluid_catagory")
+            end
+            ui_sys.addEventListener(start, {"fluid_catagory"}, {
                 ["construct_show_confirm"] = function(show, coord1, coord2, coord3)
                     start.is_show_construct_confirm = show
 
@@ -220,20 +226,48 @@
             </button>
             
             <!-- 拆除模式 -->
-            <div data-if = "edit_mode != ''" data-event-click="edit_mode = 'dismantle'" data-style-border = "edit_mode == 'dismantle' ? '4px yellow' : '2px black'" style='position: absolute; left: 20px; top: 620px; width: 120px; height: 120px; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 15px; text-align: center; font: 100% "微软雅黑";'>
+            <div data-if = "edit_mode != ''" data-event-click="edit_mode = 'dismantle'" data-style-border = "edit_mode == 'dismantle' ? '4px yellow' : '2px black'" style='position: absolute; left: 20px; top: 620px; width: 120px; height: 120px; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 15px; text-align: center; font-size: 100%;'>
                 <div style='margin: 0 auto; top : 20px; background-image:"construct/demolish.png"; width:50px; height: 50px; background-size:cover;'/>
                 <div style ="font-size: 28px; top : 20px;">拆除模式</div>
             </div>
 
             <!-- 建造模式 -->
-            <div data-if = "edit_mode != ''" data-event-click="edit_mode = 'construct'" data-style-border = "edit_mode == 'construct' ? '4px yellow' : '2px black'" style='position: absolute; left: 160px; top: 620px; width: 120px; height: 120px; background-color: rgb(59, 137, 211); flex-direction: column; justify-content: flex-start;  border-radius: 15px; text-align: center; font: 100% "微软雅黑";'>
+            <div data-if = "edit_mode != ''" data-event-click="edit_mode = 'construct'" data-style-border = "edit_mode == 'construct' ? '4px yellow' : '2px black'" style='position: absolute; left: 160px; top: 620px; width: 120px; height: 120px; background-color: rgb(59, 137, 211); flex-direction: column; justify-content: flex-start;  border-radius: 15px; text-align: center; font-size: 100%;'>
                 <div style='margin: 0 auto; top : 20px; background-image:"construct/construct.png"; width:50px; height: 50px; background-size:cover;'/>
                 <div style ="font-size: 28px; top : 20px;">建造模式</div>
             </div>
 
-            <!-- 水管指定液体界面 -->
-            <div style = 'position: absolute; left: 300px; top: 620px; width: 700px; height: 120px; background-color: rgb(208, 206, 206);'>
-
+            <!-- 水管指定液体界面 一级菜单 -->
+            <div style = 'position: absolute; left: 300px; top: 620px; width: 800px; height: 120px; justify-content: center; align-items: center;'>
+                <div style = 'width: auto; height: 120px; background-color: rgb(208, 206, 206); flex-direction: row; align-items: center;'>
+                    <div data-for = "fluid_catagory" style = "flex-direction: row;">
+                        <!-- separator -->
+                        <div style = "width: 20px;" data-if="it_index == 0" />
+                        <div style='width: 100px; height: 100px; background-color: rgb(59, 137, 211); border: 2px white; flex-direction: column; justify-content: flex-start;  border-radius: 15px; text-align: center; font-size: 100%;' data-event-click = "cur_fluid_catagory = it.catagory">
+                            <div style='margin: 0 auto; top : 10px; width:50px; height: 50px; background-size:cover;' data-style-background-image = "it.icon" />
+                            <div style ="font-size: 25px; top : 10px;">{{it.catagory}}</div>
+                        </div>
+                        <!-- separator -->
+                        <div style = "width: 20px;" />
+                    </div>
+                </div>
+            </div>
+            <!-- 水管指定液体界面 二级菜单 -->
+            <div style = 'position: absolute; left: 300px; top: 500px; width: 800px; height: 120px; justify-content: center; align-items: center;'>
+                <div style = 'width: auto; height: 120px; background-color: rgb(208, 206, 206); flex-direction: row; align-items: center;' data-if = "cur_fluid_catagory != ''">
+                    <div data-for = "catagory : fluid_catagory" style = "flex-direction: row;">
+                        <div data-for = "catagory.fluid" style = "flex-direction: row;" data-if = "cur_fluid_catagory == catagory.catagory">
+                            <!-- separator -->
+                            <div style = "width: 20px;" data-if="it_index == 0" />
+                            <div style='width: 100px; height: 100px; background-color: rgb(59, 137, 211); border: 2px white; flex-direction: column; justify-content: flex-start;  border-radius: 15px; text-align: center; font-size: 100%;'>
+                                <div style='margin: 0 auto; top : 10px; width:50px; height: 50px; background-size:cover;' data-style-background-image = "it.icon" />
+                                <div style ="font-size: 25px; top : 10px;">{{it.name}}</div>
+                            </div>
+                            <!-- separator -->
+                            <div style = "width: 20px;" />
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="work-buttons-container" data-if="edit_mode != ''" >

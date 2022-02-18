@@ -22,6 +22,7 @@ local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
 local entities_cfg = import_package "vaststars.config".entity
 local backers_cfg = import_package "vaststars.config".backers
+local fluid_list_cfg = import_package "vaststars.config".fluid_list
 local utility = import_package "vaststars.utility"
 local dir_rotate = utility.dir.rotate
 local dir_offset_of_entry = utility.dir.offset_of_entry
@@ -34,32 +35,67 @@ local ui_construct_confirm_mb = world:sub {"ui", "construct", "click_construct_c
 local ui_construct_cancel_mb = world:sub {"ui", "construct", "click_construct_cancel"}
 local ui_construct_rotate_mb = world:sub {"ui", "construct", "click_construct_rotate"}
 local ui_remove_message_mb = world:sub {"ui", "construct", "click_construct_remove"}
+local ui_get_fluid_catagory = world:sub {"ui", "GET_DATA", "fluid_catagory"}
 
 local pickup_show_remove_mb = world:sub {"pickup_mapping", "pickup_show_remove"}
 local pickup_show_ui_mb = world:sub {"pickup_mapping", "pickup_show_ui"}
-local pickup_mb = world:sub {"pickup"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_sys = ecs.system "construct_system"
 
-local base_path = fs.path('/pkg/vaststars.gamerender/construct_detector/')
-local construct_detectors = {}
-for f in fs.pairs(base_path) do
-    local detector = fs.relative(f, base_path):stem():string()
-    construct_detectors[detector] = ecs.require(('construct_detector.%s'):format(detector))
-end
+local get_fluid_catagory; do
+    local function is_type(prototype, t)
+        for _, v in ipairs(prototype.type) do
+            if v == t then
+                return true
+            end
+        end
+        return false
+    end
 
-local function check_construct_detector(detectors, position, dir, area)
-    local func
-    for _, v in ipairs(detectors) do
-        func = construct_detectors[v]
-        if not func(position, dir, area) then
-            return false
+    local t = {}
+    for _, v in pairs(igameplay_adapter.prototype_name()) do
+        if is_type(v, 'fluid') then
+            for _, c in ipairs(v.catagory) do
+                t[c] = t[c] or {}
+                t[c][#t[c]+1] = {id = v.id, name = v.name, icon = v.icon}
+            end
         end
     end
-    return true
+
+    local r = {}
+    for catagory, v in pairs(t) do
+        r[#r+1] = {catagory = catagory, icon = fluid_list_cfg[catagory].icon, pos = fluid_list_cfg[catagory].pos, fluid = v}
+        table.sort(v, function(a, b) return a.id < b.id end)
+    end
+    table.sort(r, function(a, b) return a.pos < b.pos end)
+
+    -- = {{catagory = xxx, icon = xxx, fluid = {{id = xxx, name = xxx, icon = xxx}, ...} }, ...}
+    function get_fluid_catagory()
+        return r
+    end
 end
 
-local function __replace_material(template)
+local check_construct_detector; do
+    local base_path = fs.path('/pkg/vaststars.gamerender/construct_detector/')
+    local construct_detectors = {}
+    for f in fs.pairs(base_path) do
+        local detector = fs.relative(f, base_path):stem():string()
+        construct_detectors[detector] = ecs.require(('construct_detector.%s'):format(detector))
+    end
+
+    function check_construct_detector(detectors, position, dir, area)
+        local func
+        for _, v in ipairs(detectors) do
+            func = construct_detectors[v]
+            if not func(position, dir, area) then
+                return false
+            end
+        end
+        return true
+    end
+end
+
+local function replace_material(template)
     for _, v in ipairs(template) do
         for _, policy in ipairs(v.policy) do
             if policy == "ant.render|render" or policy == "ant.render|simplerender" then
@@ -237,7 +273,7 @@ function construct_sys:data_changed()
             end
 
             local f = ("/pkg/vaststars.resources/%s"):format(cfg.prefab)
-            local template = __replace_material(serialize.parse(f, cr.read_file(f)))
+            local template = replace_material(serialize.parse(f, cr.read_file(f)))
             local prefab = ecs.create_instance(template)
             iom.set_position(prefab.root, iterrain.get_tile_centre_position({0, 0, 0})) -- todo 可能需要根据屏幕中间位置来设置?
 
@@ -304,6 +340,10 @@ function construct_sys:data_changed()
                 world:pub {"ui_message", "construct_show_remove", nil}
             end
         end
+    end
+
+    for _ in ui_get_fluid_catagory:unpack() do
+        world:pub {"ui_message", "SET_DATA", {["fluid_catagory"] = get_fluid_catagory()}}
     end
 end
 

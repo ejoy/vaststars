@@ -143,3 +143,7 @@ end
 function igameplay_adapter.query(maintype, prototype)
     return gameplay.queryByName(maintype, prototype)
 end
+
+function igameplay_adapter.prototype_name()
+    return gameplay.prototype_name
+end

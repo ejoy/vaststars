@@ -1,4 +1,4 @@
-local liquid_list = {
+local fluid_list = {
 	["普通液体"] = {
 		icon = "fluid/liquid.png",
 		pos = 1,
@@ -17,4 +17,4 @@ local liquid_list = {
 	},
 }
 
-return liquid_list
+return fluid_list
