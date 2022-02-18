@@ -120,6 +120,17 @@ function iterrain.get_begin_position_by_coord(...)
     return {((coord[1] - 1) * unit) + srt.t[1], 0, ((coord[2] - 1) * unit) + srt.t[3]}
 end
 
+function iterrain.adjust_building_position(pos, area)
+    local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
+    local unit = e.shape_terrain.unit
+
+    local c = iterrain.get_coord_by_position(pos)
+    local begining = iterrain.get_begin_position_by_coord(c[1], c[2])
+    local width, height = igameplay_adapter.unpack_coord(area)
+
+    return {begining[1] + (width * unit / 2), pos[2], begining[3] + (height * unit / 2)}
+end
+
 function iterrain.get_confirm_ui_position(position)
     local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
     local srt = e.scene.srt
@@ -154,10 +165,12 @@ function iterrain.set_tile_building_type(coord, building_type, area)
     local e = w:singleton("shape_terrain", "terrain:in shape_terrain:in")
     local terrain = e.terrain
 
-    for x = coord[1] - (width // 2), coord[1] + (width // 2) do
-        for y = coord[2] - (height // 2), coord[2] + (height // 2) do
-            terrain.tile_building_types[x] = terrain.tile_building_types[x] or {}
-            terrain.tile_building_types[x][y] = building_type
+    for x = 0, width - 1 do
+        for y = 0, height - 1 do
+            local px = coord[1] + x
+            local py = coord[2] + y
+            terrain.tile_building_types[px] = terrain.tile_building_types[px] or {}
+            terrain.tile_building_types[px][py] = building_type
         end
     end
 end

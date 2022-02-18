@@ -37,7 +37,6 @@ local ui_remove_message_mb = world:sub {"ui", "construct", "click_construct_remo
 
 local pickup_show_remove_mb = world:sub {"pickup_mapping", "pickup_show_remove"}
 local pickup_show_ui_mb = world:sub {"pickup_mapping", "pickup_show_ui"}
-local pickup_mb = world:sub {"pickup"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_sys = ecs.system "construct_system"
 
@@ -191,8 +190,10 @@ end
 
 function construct_sys:entity_init()
     --
-	for e in w:select "INIT x:in y:in area:in prototype:in" do
-        iterrain.set_tile_building_type({e.x, e.y}, e.prototype, e.area)
+	for e in w:select "INIT x:in y:in area:in prototype:in construct_entity?in" do
+        if not e.construct_entity then
+            iterrain.set_tile_building_type({e.x, e.y}, e.prototype, e.area)
+        end
     end
 
     --
@@ -217,9 +218,11 @@ end
 function construct_sys:camera_usage()
     local position
     for _, game_object, mouse_x, mouse_y in drapdrop_entity_mb:unpack() do
+        w:sync("area:in", game_object)
+
         local prefab_object = igame_object.get_prefab_object(game_object)
         position = iinput.screen_to_world {mouse_x, mouse_y}
-        position = iterrain.get_tile_centre_position(math3d.tovalue(position))
+        position = iterrain.adjust_building_position(math3d.tovalue(position), game_object.area)
         iom.set_position(prefab_object.root, position)
         local coord1, coord2, coord3 = iterrain.get_confirm_ui_position(position)
         world:pub {"ui_message", "construct_show_confirm", true, math3d.tovalue(icamera.world_to_screen(coord1)), math3d.tovalue(icamera.world_to_screen(coord2)), math3d.tovalue(icamera.world_to_screen(coord3)) }
@@ -240,6 +243,7 @@ function construct_sys:data_changed()
             local template = __replace_material(serialize.parse(f, cr.read_file(f)))
             local prefab = ecs.create_instance(template)
             iom.set_position(prefab.root, iterrain.get_tile_centre_position({0, 0, 0})) -- todo 可能需要根据屏幕中间位置来设置?
+            local gpentity = igameplay_adapter.query("entity", prototype)
 
             local t = {
                 policy = {},
@@ -252,6 +256,7 @@ function construct_sys:data_changed()
                     x = 0,
                     y = 0,
                     construct_prefab = cfg.prefab,
+                    area = gpentity.area,
                 },
             }
 
@@ -315,6 +320,7 @@ function construct_sys:after_pickup_mapping()
         iui.open(url)
     end
 
+    -- todo
     -- local show_pickup_show_remove
     -- for _, _, game_object in pickup_show_remove_mb:unpack() do
     --     w:sync("x:in y:in pickup_show_remove:in ", game_object)

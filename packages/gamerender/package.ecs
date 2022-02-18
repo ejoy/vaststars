@@ -254,6 +254,7 @@ interface "iterrain"
     .method "get_tile_building_type"
     .method "set_tile_building_type"
     .method "get_confirm_ui_position"
+    .method "adjust_building_position"
 
 interface "icanvas"
     .implement "icanvas.lua"

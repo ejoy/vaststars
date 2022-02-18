@@ -52,17 +52,13 @@ function iconstruct_arrow.show(e, position)
 
         local itemids = icanvas.add_items({
             texture = {
-                path = "/pkg/vaststars.resources/textures/canvas.texture",
-                rect = {
-                    x = 0, y = 0,
-                    w = 271, h = 203,
-                },
-                srt = {
-                    r = arrow_rotation[idx],
-                }
+                name = "arrow.png",
             },
             x = pos[1], y = pos[3],
             w = 10, h = 10,
+            srt = {
+                r = arrow_rotation[idx],
+            }
         })
 
         e.construct_arrows[igameplay_adapter.pack_coord(arrow_coord[1], arrow_coord[2])] = {id = itemids[1], tile_coord = tile_coord, arrow_coord = arrow_coord,}

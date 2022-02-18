@@ -2,11 +2,14 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
+local fs = require "filesystem"
 local icas   = ecs.import.interface "ant.terrain|icanvas"
 local icanvas = ecs.interface "icanvas"
 local canvas_sys = ecs.system "canvas_system"
 local canvas_new_entity_mb = world:sub {"canvas_update", "new_entity"}
 local ipickup_mapping = ecs.import.interface "vaststars.input|ipickup_mapping"
+local datalist = require "datalist"
+local canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/canvas.cfg")):read "a")
 
 function canvas_sys.data_changed()
     local canvas_entity = w:singleton("canvas", "canvas:in")
@@ -43,13 +46,28 @@ function icanvas.create()
     }
 end
 
-function icanvas.add_items(items)
+function icanvas.add_items(...)
     local e = w:singleton("canvas", "canvas:in")
     if not e then
         return
     end
 
-    return icas.add_items(e, items)
+    for _, item in ipairs({...}) do
+        local cfg = canvas_cfg[item.texture.name]
+        if not cfg then
+            error(("can not found `%s`"):format(item.texture.name))
+        end
+
+        item.texture.path = "/pkg/vaststars.resources/textures/canvas.texture"
+        item.texture.rect = {
+            x = cfg.x,
+            y = cfg.y,
+            w = cfg.width,
+            h = cfg.heigh,
+        }
+    end
+
+    return icas.add_items(e, ...)
 end
 
 function icanvas.remove_item(itemid)
