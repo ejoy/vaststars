@@ -52,11 +52,7 @@ function iconstruct_arrow.show(e, position)
 
         local itemids = icanvas.add_items({
             texture = {
-                path = "/pkg/vaststars.resources/textures/canvas.texture",
-                rect = {
-                    x = 0, y = 0,
-                    w = 271, h = 203,
-                },
+                name = "arrow.png",
                 srt = {
                     r = arrow_rotation[idx],
                 }
