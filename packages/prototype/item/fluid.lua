@@ -3,7 +3,7 @@ local prototype = gameplay.prototype
 
 prototype "空气" {
     type = {"fluid"},
-    catagory = {"ordinary gas"},
+    catagory = {"普通气体"},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
@@ -12,7 +12,7 @@ prototype "空气" {
 
 prototype "氮气" {
     type = {"fluid"},
-    catagory = {"ordinary gas"},
+    catagory = {"普通气体"},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
@@ -21,7 +21,7 @@ prototype "氮气" {
 
 prototype "氧气" {
     type = {"fluid"},
-    catagory = {"ordinary gas"},
+    catagory = {"普通气体"},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
@@ -30,7 +30,7 @@ prototype "氧气" {
 
 prototype "氢气" {
     type = {"fluid"},
-    catagory = {"ordinary gas"},
+    catagory = {"普通气体"},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
@@ -39,7 +39,7 @@ prototype "氢气" {
 
 prototype "乙烯" {
     type = {"fluid"},
-    catagory = {"chemical gas"},
+    catagory = {"化学气体"},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
@@ -48,7 +48,7 @@ prototype "乙烯" {
 
 prototype "甲烷" {
     type = {"fluid"},
-    catagory = {"chemical gas"},
+    catagory = {"化学气体"},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
@@ -57,7 +57,7 @@ prototype "甲烷" {
 
 prototype "二氧化碳" {
     type = {"fluid"},
-    catagory = {"ordinary gas"},
+    catagory = {"普通气体"},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
@@ -66,7 +66,7 @@ prototype "二氧化碳" {
 
 prototype "一氧化碳" {
     type = {"fluid"},
-    catagory = {"chemical gas"},
+    catagory = {"化学气体"},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
@@ -75,7 +75,7 @@ prototype "一氧化碳" {
 
 prototype "氯气" {
     type = {"fluid"},
-    catagory = {"chemical gas"},
+    catagory = {"化学气体"},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
@@ -84,7 +84,7 @@ prototype "氯气" {
 
 prototype "海水" {
     type = {"fluid"},
-    catagory = {"ordinary fluid"},
+    catagory = {"普通液体"},
     heat_capacity = "0.08kJ",
     default_temperature = 15,
     max_temperature = 100,
@@ -93,8 +93,7 @@ prototype "海水" {
 
 prototype "纯水" {
     type = {"fluid"},
-    catagory = {"ordinary fluid"},
-    catagoy = "gas",
+    catagory = {"普通液体"},
     heat_capacity = "0.08kJ",
     default_temperature = 15,
     max_temperature = 100,
@@ -103,7 +102,7 @@ prototype "纯水" {
 
 prototype "废水" {
     type = {"fluid"},
-    catagory = {"ordinary fluid"},
+    catagory = {"普通液体"},
     heat_capacity = "0.08kJ",
     default_temperature = 20,
     max_temperature = 100,
@@ -112,7 +111,7 @@ prototype "废水" {
 
 prototype "盐酸" {
     type = {"fluid"},
-    catagory = {"chemical fluid"},
+    catagory = {"化学液体"},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
@@ -121,7 +120,7 @@ prototype "盐酸" {
 
 prototype "碱性溶液" {
     type = {"fluid"},
-    catagory = {"chemical fluid"},
+    catagory = {"化学液体"},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
@@ -130,7 +129,7 @@ prototype "碱性溶液" {
 
 prototype "蒸汽" {
     type = {"fluid"},
-    catagory = {"ordinary gas"},
+    catagory = {"普通气体"},
     heat_capacity = "0.05KJ",
     default_temperature = 165,
     max_temperature = 200,
