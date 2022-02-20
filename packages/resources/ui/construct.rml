@@ -5,12 +5,12 @@
                 font: 100% "微软雅黑";
             }
             button {
-                width: 210px;
-                height: 210px;
+                width: 28.00vmin;
+                height: 28.00vmin;
                 text-align: center;
-                border-radius: 15px;
-                border: 4px white;
-                font-size: 30px;
+                border-radius: 2.00vmin;
+                border: 0.53vmin white;
+                font-size: 4.00vmin;
 
                 transition: transform 2s elastic-out;
                 transform: scale(1.0);
@@ -23,31 +23,31 @@
             }
             button#work {
                 position: absolute;
-                top: 620px;
-                left:1190px;
-                width: 120px;
-                height: 120px;
-                margin: 0px;
+                top: 82.67vmin;
+                left: 158.67vmin;
+                width: 16.00vmin;
+                height: 16.00vmin;
+                margin: 0.00vmin;
                 font-size: 150%;
             }
             #work-buttons-container {
-                left: 1220px;
-                top: 10px;
-                width: 120px;
-                height: 600px;
+                left: 162.67vmin;
+                top: 1.33vmin;
+                width: 16.00vmin;
+                height: 80.00vmin;
                 flex-direction: column;
                 justify-content: space-between;
             }
             workbutton {
-                font-size: 24px;
+                font-size: 3.20vmin;
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
-                border-radius: 15px;
-                border: 2px rgb(89, 73, 39);
+                border-radius: 2.00vmin;
+                border: 0.27vmin rgb(89, 73, 39);
                 background-color: rgb(246, 142, 14);
-                height: 90px;
-                width: 90px;
+                height: 12.00vmin;
+                width: 12.00vmin;
                 transform: scale(1.0);
                 transition: color background-color transform 2s elastic-out;
             }
@@ -60,8 +60,8 @@
             }
             .workbutton-bg {
                 margin: auto auto;
-                width:50px;
-                height: 50px; 
+                width: 6.67vmin;
+                height: 6.67vmin; 
                 background-size: cover;
             }
             .workbutton-text {
@@ -69,13 +69,13 @@
             }
             #work-detail {
                 position: absolute;
-                top: 10px;
-                left: 984px;
-                width: 226px;
-                height: 600px;
+                top: 1.33vmin;
+                left: 131.20vmin;
+                width: 30.13vmin;
+                height: 80.00vmin;
                 background-color: rgb(44, 32, 18);
-                border: 3px rgb(89, 73, 39);
-                border-radius: 5px;
+                border: 0.40vmin rgb(89, 73, 39);
+                border-radius: 0.67vmin;
             }
             .tools-container {
                 flex-direction: column;
@@ -88,25 +88,25 @@
                 justify-content:space-evenly;
                 background-color: rgb(250, 205, 9);
                 background-size:cover;
-                width:90px;
-                height:90px;
-                margin:10px;
-                font-size: 18px;
-                border: 2px rgb(89, 73, 39);
+                width: 12.00vmin;
+                height: 12.00vmin;
+                margin: 1.33vmin;
+                font-size: 2.40vmin;
+                border: 0.27vmin rgb(89, 73, 39);
                 align-items: center;
             }
             .tools-button-title {
                 background-color: rgb(246, 237, 189);
-                border-radius: 5px;
+                border-radius: 0.67vmin;
                 color:rgb(73, 60, 32);
-                -webkit-text-stroke: 0.5px rgb(39, 32, 17);
-                width: 80px;
-                margin:0px;
+                -webkit-text-stroke: 0.07vmin rgb(39, 32, 17);
+                width: 10.67vmin;
+                margin: 0.00vmin;
             }
             .tools-button-desc {
                 text-align:left;
-                margin:0px;
-                left:10px
+                margin: 0.00vmin;
+                left: 1.33vmin
             }
             .row {
                 flex-direction: row;
@@ -119,6 +119,8 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
+                fluid_catagory = {},
+                cur_fluid_catagory = "", -- 当前选中的流体分类
                 edit_mode = '',
                 show_construct_menu = '',
                 is_show_construct_confirm = false,
@@ -151,7 +153,11 @@
             function start.CameraOpt(event, opt)
                 ui_sys.pub('camera', opt)
             end
-            ui_sys.addEventListener(start, {}, {
+
+            window.onload = function()
+                ui_sys.pub("ui", "GET_DATA", "fluid_catagory")
+            end
+            ui_sys.addEventListener(start, {"fluid_catagory"}, {
                 ["construct_show_confirm"] = function(show, coord1, coord2, coord3)
                     start.is_show_construct_confirm = show
 
@@ -205,30 +211,63 @@
             <input id = "id-button-construct-remove"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/cancel.png";'  data-event-click = "clickContructButton('click_construct_remove')" data-if = "is_show_construct_remove" />
 
             <!-- 施工返回按钮 -->
-            <div data-if = "edit_mode != ''" data-event-click="edit_mode = ''" style='position: absolute; left: 5px; top: 5px; background-image:"construct/return.png"; width:80px; height: 80px; background-size:cover;' />
+            <div data-if = "edit_mode != ''" data-event-click="edit_mode = ''" style='position: absolute; left: 0.67vmin; top: 0.67vmin; background-image:"construct/return.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;' />
 
             <!-- 施工 -->
-            <button data-if = "edit_mode == ''" data-event-click="edit_mode = 'construct'" style='position: absolute; left: 1190px; top: 620px; width: 120px; height: 120px; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
-                <div style='margin: 0 auto; background-image:"construct/work.png"; width:80px; height: 80px; background-size:cover;'/>
+            <button data-if = "edit_mode == ''" data-event-click="edit_mode = 'construct'" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
+                <div style='margin: 0 auto; background-image:"construct/work.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>施工</div>
             </button>
 
             <!-- 开始施工 -->
-            <button data-if = "edit_mode != ''" data-event-click="clickMainButton()" style='position: absolute; left: 1190px; top: 620px; width: 120px; height: 120px; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
-                <div style='margin: 0 auto; background-image:"construct/work.png"; width:80px; height: 80px; background-size:cover;'/>
+            <button data-if = "edit_mode != ''" data-event-click="clickMainButton()" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
+                <div style='margin: 0 auto; background-image:"construct/work.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始施工</div>
             </button>
             
             <!-- 拆除模式 -->
-            <div data-if = "edit_mode != ''" data-event-click="edit_mode = 'dismantle'" data-style-border = "edit_mode == 'dismantle' ? '4px yellow' : '2px black'" style='position: absolute; left: 20px; top: 620px; width: 120px; height: 120px; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 15px; text-align: center; font: 100% "微软雅黑";'>
-                <div style='margin: 0 auto; top : 20px; background-image:"construct/demolish.png"; width:50px; height: 50px; background-size:cover;'/>
-                <div style ="font-size: 28px; top : 20px;">拆除模式</div>
+            <div data-if = "edit_mode != ''" data-event-click="edit_mode = 'dismantle'" data-style-border = "edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 100%;'>
+                <div style='margin: 0 auto; top: 2.67vmin; background-image:"construct/demolish.png"; width: 6.67vmin; height: 6.67vmin; background-size:cover;'/>
+                <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除模式</div>
             </div>
 
             <!-- 建造模式 -->
-            <div data-if = "edit_mode != ''" data-event-click="edit_mode = 'construct'" data-style-border = "edit_mode == 'construct' ? '4px yellow' : '2px black'" style='position: absolute; left: 160px; top: 620px; width: 120px; height: 120px; background-color: rgb(59, 137, 211); flex-direction: column; justify-content: flex-start;  border-radius: 15px; text-align: center; font: 100% "微软雅黑";'>
-                <div style='margin: 0 auto; top : 20px; background-image:"construct/construct.png"; width:50px; height: 50px; background-size:cover;'/>
-                <div style ="font-size: 28px; top : 20px;">建造模式</div>
+            <div data-if = "edit_mode != ''" data-event-click="edit_mode = 'construct'" data-style-border = "edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 21.33vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(59, 137, 211); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;'>
+                <div style='margin: 0 auto; top: 2.67vmin; background-image:"construct/construct.png"; width: 6.67vmin; height: 6.67vmin; background-size:cover;'/>
+                <div style ="font-size: 3.73vmin; top: 2.67vmin;">建造模式</div>
+            </div>
+
+            <!-- 水管指定液体界面 一级菜单 -->
+            <div style = 'position: absolute; left: 40.00vmin; top: 82.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
+                <div style = 'width: auto; height: 16.00vmin; background-color: rgb(208, 206, 206); flex-direction: row; align-items: center;'>
+                    <div data-for = "fluid_catagory" style = "flex-direction: row;">
+                        <!-- separator -->
+                        <div style = "width: 2.67vmin;" data-if="it_index == 0" />
+                        <div style='width: 13.33vmin; height: 13.33vmin; background-color: rgb(59, 137, 211); border: 0.27vmin white; flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;' data-event-click = "cur_fluid_catagory = it.catagory">
+                            <div style='margin: 0 auto; top: 1.33vmin; width: 6.67vmin; height: 6.67vmin; background-size:cover;' data-style-background-image = "it.icon" />
+                            <div style ="font-size: 3.33vmin; top: 1.33vmin;">{{it.catagory}}</div>
+                        </div>
+                        <!-- separator -->
+                        <div style = "width: 2.67vmin;" />
+                    </div>
+                </div>
+            </div>
+            <!-- 水管指定液体界面 二级菜单 -->
+            <div style = 'position: absolute; left: 40.00vmin; top: 66.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
+                <div style = 'width: auto; height: 16.00vmin; background-color: rgb(208, 206, 206); flex-direction: row; align-items: center;' data-if = "cur_fluid_catagory != ''">
+                    <div data-for = "catagory : fluid_catagory" style = "flex-direction: row;">
+                        <div data-for = "catagory.fluid" style = "flex-direction: row;" data-if = "cur_fluid_catagory == catagory.catagory">
+                            <!-- separator -->
+                            <div style = "width: 2.67vmin;" data-if="it_index == 0" />
+                            <div style='width: 13.33vmin; height: 13.33vmin; background-color: rgb(59, 137, 211); border: 0.27vmin white; flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;'>
+                                <div style='margin: 0 auto; top: 1.33vmin; width: 6.67vmin; height: 6.67vmin; background-size:cover;' data-style-background-image = "it.icon" />
+                                <div style ="font-size: 3.33vmin; top: 1.33vmin;">{{it.name}}</div>
+                            </div>
+                            <!-- separator -->
+                            <div style = "width: 2.67vmin;" />
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="work-buttons-container" data-if="edit_mode != ''" >
