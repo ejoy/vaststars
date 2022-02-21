@@ -32,13 +32,8 @@ local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
 
 local ui_construct_building_mb = world:sub {"ui", "construct", "click_construct"}
-local ui_construct_confirm_mb = world:sub {"ui", "construct", "click_construct_confirm"}
-local ui_construct_cancel_mb = world:sub {"ui", "construct", "click_construct_cancel"}
-local ui_construct_rotate_mb = world:sub {"ui", "construct", "click_construct_rotate"}
 local ui_remove_message_mb = world:sub {"ui", "construct", "click_construct_remove"}
 local ui_get_fluid_catagory = world:sub {"ui", "GET_DATA", "fluid_catagory"}
-
-local pickup_show_remove_mb = world:sub {"pickup_mapping", "pickup_show_remove"}
 local pickup_show_ui_mb = world:sub {"pickup_mapping", "pickup_show_ui"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_sys = ecs.system "construct_system"
