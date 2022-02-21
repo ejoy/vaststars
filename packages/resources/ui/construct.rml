@@ -119,11 +119,10 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
-                fluid_catagory = {},
-                cur_fluid_catagory = "", -- 当前选中的流体分类
-                cur_edit_mode = '',
-                show_construct_menu = '',
-                is_show_construct_confirm = false,
+                fluid_catagory = {},      -- 流体分类信息, 从 world 获取
+                cur_fluid_catagory = "",  -- 当前选中的流体分类
+                cur_construct_menu = '',  -- 当前选中的二级建造菜单名
+                cur_edit_mode = '',           -- 当前的编辑模式, construct or dismantle
                 is_show_construct_remove = false,
 
                 debug_button = {},
@@ -132,16 +131,16 @@
 
             function start.clickMainButton(event, construct_menu)
                 start.cur_edit_mode = ''
-                start.show_construct_menu = ''
+                start.cur_construct_menu = ''
             end
 
             function start.clickButton(event, construct_menu)
-                start.show_construct_menu = construct_menu
+                start.cur_construct_menu = construct_menu
             end
 
             function start.clickConstruct(event, prototype)
                 start.cur_edit_mode = ''
-                start.show_construct_menu = ''
+                start.cur_construct_menu = ''
                 ui_sys.pub("ui", "construct", "click_construct", prototype)
             end
             function start.clickContructButton(event, msg)
@@ -171,7 +170,7 @@
                 end,
                 ["leave"] = function()
                     start.cur_edit_mode = ''
-                    start.show_construct_menu = ''
+                    start.cur_construct_menu = ''
                     start.cur_fluid_catagory = ''
                 end,
             })
@@ -261,8 +260,8 @@
                     <div class="workbutton-text" >{{it.name}}</div>
                 </workbutton>
             </div>
-            <div id="work-detail" data-if="cur_edit_mode != '' && show_construct_menu != ''" >
-             <div data-if="show_construct_menu == '电力'">
+            <div id="work-detail" data-if="cur_edit_mode != '' && cur_construct_menu != ''" >
+             <div data-if="cur_construct_menu == '电力'">
                  <div class="tools-container">
                      <div class="row">
                          <button class="tools-button" data-event-click="clickConstruct('铁制电线杆')">
@@ -292,7 +291,7 @@
                      </div>
                  </div>
              </div>
-             <div data-if="show_construct_menu == '化工'">
+             <div data-if="cur_construct_menu == '化工'">
                  <div class="tools-container">
                      <div class="row">
                          <button class="tools-button" data-event-click="clickConstruct('电解厂1')">
@@ -316,7 +315,7 @@
                      </div>
                  </div>
              </div>
-             <div data-if="show_construct_menu == '加工'">
+             <div data-if="cur_construct_menu == '加工'">
                  <div class="tools-container">
                      <div class="row">
                          <button class="tools-button" data-event-click="clickConstruct('采矿机1')">
@@ -340,7 +339,7 @@
                      </div>
                  </div>
              </div>
-             <div data-if="show_construct_menu == '管道'">
+             <div data-if="cur_construct_menu == '管道'">
                  <div class="tools-container">
                      <div class="row">
                          <button class="tools-button" data-event-click="clickConstruct('管道1-I型')">
@@ -384,7 +383,7 @@
                      </div>
                  </div>
              </div>
-             <div data-if="show_construct_menu == '物流'">
+             <div data-if="cur_construct_menu == '物流'">
                  <div class="tools-container">
                      <div class="row">
                          <button class="tools-button" data-event-click="clickConstruct('砖石公路')">
@@ -418,7 +417,7 @@
                      </div>
                  </div>
              </div>
-             <div data-if="show_construct_menu == '自定义'">
+             <div data-if="cur_construct_menu == '自定义'">
                  <div class="tools-container">
                      <div class="row">
                          <button class="tools-button" data-event-click="clickConstruct('砖石公路')">
