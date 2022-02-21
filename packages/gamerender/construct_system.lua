@@ -165,6 +165,20 @@ local show_construct_button, hide_construct_button; do
         {
             name = "rotate.png",
             coord_func = function(x, y, area)
+                local dx, dy
+                local width = igameplay_adapter.unpack_coord(area)
+                -- 针对建筑宽度大于 1 的特殊处理
+                if width > 1 then
+                    if width % 1 == 0 then
+                        dx = x + (width // 2)
+                        dy = y - 1
+                        return dx, dy
+                    else
+                        dx = x - (width // 2) + 2
+                        dy = y - 1
+                        return dx, dy
+                    end
+                end
                 return x, y - 1
             end,
             event = function()
@@ -193,10 +207,20 @@ local show_construct_button, hide_construct_button; do
         hide_construct_button()
 
         for _, v in ipairs(coord_offset) do
-            local cx, cy = v.coord_func(x, y, area)
+            local cx, cy, dx, dy = v.coord_func(x, y, area)
             local pcoord = igameplay_adapter.pack_coord(cx, cy)
-            local id = icanvas.add_items(v.name, cx, cy)
+            local id
+            if dx and dy then
+                id = icanvas.add_items(v.name, cx, cy, {t = {5, 0}})
+            else
+                id = icanvas.add_items(v.name, cx, cy)
+            end
             construct_button_canvas_items[pcoord] = {id = id, event = v.event}
+
+            if dx and dy then
+                local pcoord = igameplay_adapter.pack_coord(dx, dy)
+                construct_button_canvas_items[pcoord] = {id = id, event = v.event}
+            end
         end
     end
 end
