@@ -158,23 +158,6 @@
                 ui_sys.pub("ui", "GET_DATA", "fluid_catagory")
             end
             ui_sys.addEventListener(start, {"fluid_catagory"}, {
-                ["construct_show_confirm"] = function(show, coord1, coord2, coord3)
-                    start.is_show_construct_confirm = show
-
-                    if show then
-                        local element = document:getElementById("id-button-construct-confirm")
-                        element.style.left = ("%dpx"):format(math.floor(coord1[1]))
-                        element.style.top = ("%dpx"):format(math.floor(coord1[2]))
-
-                        local element = document:getElementById("id-button-construct-cancel")
-                        element.style.left = ("%dpx"):format(math.floor(coord2[1]))
-                        element.style.top = ("%dpx"):format(math.floor(coord2[2]))
-
-                        local element = document:getElementById("id-button-construct-rotate")
-                        element.style.left = ("%dpx"):format(math.floor(coord3[1]))
-                        element.style.top = ("%dpx"):format(math.floor(coord3[2]))
-                    end
-                end,
                 ["construct_show_remove"] = function(coord)
                     if not coord then
                         start.is_show_construct_remove = false
@@ -205,9 +188,6 @@
             <div data-if = "false" style = 'position: absolute; left: 0vmin; top: 5vmin; background-image:"construct/camera_reset.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;' data-event-click = "CameraOpt('lookdown')" />
 
             <!-- 建造确认按钮 -->
-            <input id = "id-button-construct-confirm" type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/confirm.png";' data-event-click = "clickContructButton('click_construct_confirm')" data-if = "is_show_construct_confirm" />
-            <input id = "id-button-construct-cancel"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/cancel.png";'  data-event-click = "clickContructButton('click_construct_cancel')" data-if = "is_show_construct_confirm" />
-            <input id = "id-button-construct-rotate"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/rotate.png";'  data-event-click = "clickContructButton('click_construct_rotate')" data-if = "is_show_construct_confirm" />
             <input id = "id-button-construct-remove"  type = "button" style = 'align-items:center; justify-content:center; position: absolute; left: 0vmin; top: 0vmin; width: 12vmin; height: 5vmin; background-size: 100% 100%; background-image: "construct/cancel.png";'  data-event-click = "clickContructButton('click_construct_remove')" data-if = "is_show_construct_remove" />
 
             <!-- 施工返回按钮 -->

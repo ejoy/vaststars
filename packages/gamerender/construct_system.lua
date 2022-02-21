@@ -16,6 +16,7 @@ local ipipe = ecs.import.interface "vaststars.gamerender|ipipe"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
 local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
+local icanvas = ecs.import.interface "vaststars.gamerender|icanvas"
 
 local math3d = require "math3d"
 local mathpkg = import_package "ant.math"
@@ -133,11 +134,32 @@ local function __update_basecolor_by_pos(game_object)
     end
 end
 
-local function on_prefab_ready(game_object, prefab)
-    local position = math3d.tovalue(iom.get_position(prefab.root))
-    __update_basecolor_by_pos(game_object)
-    local coord1, coord2, coord3 = iterrain.get_confirm_ui_position(position)
-    world:pub {"ui_message", "construct_show_confirm", true, math3d.tovalue(icamera.world_to_screen(coord1)), math3d.tovalue(icamera.world_to_screen(coord2)), math3d.tovalue(icamera.world_to_screen(coord3)) }
+local on_prefab_ready; do
+    local canvas_itemids = {}
+    function on_prefab_ready(game_object, prefab)
+        icanvas.remove_item(table.unpack(canvas_itemids))
+
+        local position = math3d.tovalue(iom.get_position(prefab.root))
+        __update_basecolor_by_pos(game_object)
+        local coord = iterrain.get_coord_by_position(position)
+        local coord_offset = {
+            {name = "confirm.png", coord = {-1, 1}},
+            {name = "cancel.png",  coord = {1,  1}},
+            {name = "rotate.png",  coord = {0,  -1}},
+        }
+
+        local items = {}
+        for _, v in ipairs(coord_offset) do
+            local item = {
+                name = v.name,
+                x = coord[1] + v.coord[1],
+                y = coord[2] + v.coord[2],
+            }
+
+            items[#items+1] = item
+        end
+        canvas_itemids = icanvas.add_items(table.unpack(items))
+    end
 end
 
 local on_prefab_message ; do

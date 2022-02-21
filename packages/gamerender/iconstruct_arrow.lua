@@ -44,23 +44,7 @@ function iconstruct_arrow.show(e, position)
             icanvas.remove_item(canvas.id)
         end
 
-        -- bounds checking
-        local pos = iterrain.get_begin_position_by_coord(arrow_coord[1], arrow_coord[2])
-        if not pos then
-            goto continue
-        end
-
-        local itemids = icanvas.add_items({
-            texture = {
-                name = "arrow.png",
-                srt = {
-                    r = arrow_rotation[idx],
-                }
-            },
-            x = pos[1], y = pos[3],
-            w = 10, h = 10,
-        })
-
+        local itemids = icanvas.add_items({name = "arrow.png", x = arrow_coord[1], y = arrow_coord[2], srt = {r = arrow_rotation[idx]}})
         e.construct_arrows[igameplay_adapter.pack_coord(arrow_coord[1], arrow_coord[2])] = {id = itemids[1], tile_coord = tile_coord, arrow_coord = arrow_coord,}
         ::continue::
     end

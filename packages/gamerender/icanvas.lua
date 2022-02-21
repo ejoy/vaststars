@@ -8,6 +8,7 @@ local icanvas = ecs.interface "icanvas"
 local canvas_sys = ecs.system "canvas_system"
 local canvas_new_entity_mb = world:sub {"canvas_update", "new_entity"}
 local ipickup_mapping = ecs.import.interface "vaststars.input|ipickup_mapping"
+local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 local datalist = require "datalist"
 local canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/canvas.cfg")):read "a")
 
@@ -46,35 +47,55 @@ function icanvas.create()
     }
 end
 
+-- item = {name = xx, x = xx, y = xx, srt = {s = xx, r = xx, t = xx}}
 function icanvas.add_items(...)
     local e = w:singleton("canvas", "canvas:in")
     if not e then
         return
     end
 
-    for _, item in ipairs({...}) do
-        local cfg = canvas_cfg[item.texture.name]
+    local items = {}
+    for _, i in ipairs({...}) do
+        local cfg = canvas_cfg[i.name]
         if not cfg then
-            error(("can not found `%s`"):format(item.texture.name))
+            error(("can not found `%s`"):format(i.name))
         end
 
-        item.texture.path = "/pkg/vaststars.resources/textures/canvas.texture"
-        item.texture.rect = {
-            x = cfg.x,
-            y = cfg.y,
-            w = cfg.width,
-            h = cfg.height,
+        -- bounds checking
+        local p = iterrain.get_begin_position_by_coord(i.x, i.y)
+        if not p then
+            goto continue
+        end
+
+        local item = {
+            texture = {
+                path = "/pkg/vaststars.resources/textures/canvas.texture",
+                rect = {
+                    x = cfg.x,
+                    y = cfg.y,
+                    w = cfg.width,
+                    h = cfg.height,
+                },
+                -- srt = {},
+            },
+            x = p[1], y = p[2], w = 10, h = 10,
+            srt = i.srt,
         }
+        items[#items+1] = item
+
+        ::continue::
     end
 
-    return icas.add_items(e, ...)
+    return icas.add_items(e, table.unpack(items))
 end
 
-function icanvas.remove_item(itemid)
+function icanvas.remove_item(...)
     local e = w:singleton("canvas", "canvas:in")
     if not e then
         return
     end
 
-    return icas.remove_item(e, itemid)
+    for _, id in ipairs({...}) do
+        return icas.remove_item(e, id)
+    end
 end
