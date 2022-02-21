@@ -239,7 +239,7 @@
             .draw-line {
                 margin-bottom:0.1em;
                 width: 100%;
-                border-bottom: 1.5px rgb(126, 125, 125);
+                border-bottom: 1.5px rgb(89, 73, 39);
             }
             .recipe-title {
                 margin:0 0 0.1em 0;
@@ -282,7 +282,7 @@
                 width:50%;
                 margin:0.05em 0 0 0.1em;
                 font-size:24px;
-                color:white;
+                color:rgb(243,244,221);
                 -webkit-text-stroke: 0.5px rgb(89, 73, 39);    
                 align-self: flex-start;
             }
@@ -300,11 +300,11 @@
             } 
             .production-num {
                 width:60%;
-                color:rgb(255, 255, 255);
+                color:rgb(243,244,221);
                 margin:0.5em 0 0 0.1em;
             }         
             .production-current-num {
-                color:white;
+                color:rgb(243,244,221);
                 -webkit-text-storke: 0.5px rgb(89, 73, 39);
                 align-self: flex-start;
                 text-align: center;
@@ -313,7 +313,7 @@
             .production-queue {
                 flex-direction: row;
                 justify-content: space-evenly;
-                background-color: rgba(148,133,125,255); 
+                background-color: rgb(59,50,13); 
                 border-radius: 2px; 
                 width:75%;
                 height: 100%;
@@ -321,7 +321,7 @@
             }
             .button-start-production {
                 flex-direction: column;
-                background-color: rgb(19,175,240);
+                background-color: rgb(92,184,92);
                 width: 20%; 
                 height: 80px;
                 justify-content: center;
@@ -330,7 +330,13 @@
                 margin: 0px; 
                 font-size:28px; 
                 text-align: center;
-                -webkit-text-stroke: 0.5px rgb(89, 73, 39);
+                color:rgb(243,244,221);
+            }
+            .button-start-time-style {
+                margin: 0px; 
+                font-size:18px; 
+                text-align: center;
+                color:rgb(255,255,255);
             }
             .button-increase-item {
                 background-color: rgb(19,175,240);
@@ -632,7 +638,7 @@
                         </div>
                         <button class="button-start-production">
                             <div class ="button-start-style">开始制造</div>
-                            <div style="margin: 0px; font-size:18px; text-align: center;">(21m23s)</div>
+                            <div class ="button-start-time-style">(21m23s)</div>
                         </button>
                     </div>
                 </div>
