@@ -76,9 +76,8 @@ function icanvas.add_items(...)
                     w = cfg.width,
                     h = cfg.height,
                 },
-                -- srt = {},
             },
-            x = p[1], y = p[2], w = 10, h = 10,
+            x = p[1], y = p[3], w = 10, h = 10,
             srt = i.srt,
         }
         items[#items+1] = item

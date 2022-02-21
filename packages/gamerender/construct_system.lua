@@ -42,6 +42,8 @@ local pickup_show_remove_mb = world:sub {"pickup_mapping", "pickup_show_remove"}
 local pickup_show_ui_mb = world:sub {"pickup_mapping", "pickup_show_ui"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_sys = ecs.system "construct_system"
+local pickup_mapping_canvas_mb = world:sub {"pickup_mapping", "canvas"}
+local pickup_mb = world:sub {"pickup"}
 
 local get_fluid_catagory; do
     local function is_type(prototype, t)
@@ -134,31 +136,42 @@ local function __update_basecolor_by_pos(game_object)
     end
 end
 
-local on_prefab_ready; do
-    local canvas_itemids = {}
-    function on_prefab_ready(game_object, prefab)
-        icanvas.remove_item(table.unpack(canvas_itemids))
+local canvas_itemids = {}
+local show_construct_button, hide_construct_button; do
+    function hide_construct_button()
+        for _, item in pairs(canvas_itemids) do
+            icanvas.remove_item(item.id)
+        end
+        canvas_itemids = {}
+    end
 
-        local position = math3d.tovalue(iom.get_position(prefab.root))
-        __update_basecolor_by_pos(game_object)
-        local coord = iterrain.get_coord_by_position(position)
+    function show_construct_button(x, y)
+        hide_construct_button()
+
         local coord_offset = {
             {name = "confirm.png", coord = {-1, 1}},
             {name = "cancel.png",  coord = {1,  1}},
             {name = "rotate.png",  coord = {0,  -1}},
         }
 
-        local items = {}
         for _, v in ipairs(coord_offset) do
             local item = {
                 name = v.name,
-                x = coord[1] + v.coord[1],
-                y = coord[2] + v.coord[2],
+                x = x + v.coord[1],
+                y = y + v.coord[2],
             }
-
-            items[#items+1] = item
+            item.id = icanvas.add_items(item)[1]
+            canvas_itemids[igameplay_adapter.pack_coord(item.x, item.y)] = item
         end
-        canvas_itemids = icanvas.add_items(table.unpack(items))
+    end
+end
+
+local on_prefab_ready; do
+    function on_prefab_ready(game_object, prefab)
+        local position = math3d.tovalue(iom.get_position(prefab.root))
+        __update_basecolor_by_pos(game_object)
+        local coord = iterrain.get_coord_by_position(position)
+        show_construct_button(coord[1], coord[2])
     end
 end
 
@@ -235,7 +248,7 @@ local on_prefab_message ; do
         end
 
         -- remove construct entity
-        world:pub {"ui_message", "construct_show_confirm", false}
+        hide_construct_button()
         prefab:remove()
     end
 
@@ -279,8 +292,8 @@ function construct_sys:camera_usage()
         position = iinput.screen_to_world {mouse_x, mouse_y}
         position = iterrain.get_tile_centre_position(math3d.tovalue(position))
         iom.set_position(prefab_object.root, position)
-        local coord1, coord2, coord3 = iterrain.get_confirm_ui_position(position)
-        world:pub {"ui_message", "construct_show_confirm", true, math3d.tovalue(icamera.world_to_screen(coord1)), math3d.tovalue(icamera.world_to_screen(coord2)), math3d.tovalue(icamera.world_to_screen(coord3)) }
+        local coord = iterrain.get_coord_by_position(position)
+        show_construct_button(coord[1], coord[2])
         prefab_object:send("basecolor")
     end
 end
@@ -325,34 +338,6 @@ function construct_sys:data_changed()
         end
     end
 
-    local prefab_object
-    for _, _, _ in ui_construct_confirm_mb:unpack() do
-        for game_object in w:select "construct_entity:in" do
-            prefab_object = igame_object.get_prefab_object(game_object)
-            prefab_object:send("confirm_construct")
-        end
-    end
-
-    for _, _, _ in ui_construct_cancel_mb:unpack() do
-        for game_object in w:select "construct_entity:in" do
-            prefab_object = igame_object.get_prefab_object(game_object)
-            world:pub {"ui_message", "construct_show_confirm", false}
-            prefab_object:remove()
-        end
-    end
-
-    for _, _, _ in ui_construct_rotate_mb:unpack() do
-        for game_object in w:select "construct_entity:in dir:in" do
-            game_object.dir = dir_rotate(game_object.dir, -1)
-            w:sync("dir:out", game_object)
-            prefab_object = igame_object.get_prefab_object(game_object)
-            local rotation = iom.get_rotation(prefab_object.root)
-            local deg = math.deg(math3d.tovalue(math3d.quat2euler(rotation))[2])
-            iom.set_rotation(prefab_object.root, math3d.quaternion{axis=mc.YAXIS, r=math.rad(deg - 90)})
-            __update_basecolor_by_pos(game_object)
-        end
-    end
-
     for _ in ui_remove_message_mb:unpack() do
         for game_object in w:select("pickup_show_remove:in pickup_show_set_road_arrow?in pickup_show_set_pipe_arrow?in x:in y:in area:in") do
             if game_object and game_object.pickup_show_remove and not game_object.pickup_show_set_road_arrow and not game_object.pickup_show_set_pipe_arrow then
@@ -377,24 +362,45 @@ function construct_sys:after_pickup_mapping()
         iui.open(url)
     end
 
-    -- local show_pickup_show_remove
-    -- for _, _, game_object in pickup_show_remove_mb:unpack() do
-    --     w:sync("x:in y:in pickup_show_remove:in ", game_object)
-    --     local pos = iterrain.get_begin_position_by_coord(game_object.x, game_object.y)
-    --     world:pub {"ui_message", "construct_show_remove", math3d.tovalue(icamera.world_to_screen(pos))}
-    --     game_object.pickup_show_remove = true
-    --     w:sync("pickup_show_remove:out", game_object)
-    --     show_pickup_show_remove = true
-    -- end
+    local prefab_object
+    local show = true
+    for _ in pickup_mapping_canvas_mb:unpack() do
+        local pos = iinput.get_mouse_world_position()
+        local coord = iterrain.get_coord_by_position(pos)
+        local k = igameplay_adapter.pack_coord(coord[1], coord[2])
+        local v = canvas_itemids[k]
+        if v then
+            if v.name == "confirm.png" then
+                for game_object in w:select "construct_entity:in" do
+                    prefab_object = igame_object.get_prefab_object(game_object)
+                    prefab_object:send("confirm_construct")
+                end
+                show = false
+            elseif v.name == "cancel.png" then
+                for game_object in w:select "construct_entity:in" do
+                    hide_construct_button()
+                    prefab_object = igame_object.get_prefab_object(game_object)
+                    prefab_object:remove()
+                end
+                show = false
+            elseif v.name == "rotate.png" then
+                for game_object in w:select "construct_entity:in dir:in" do
+                    game_object.dir = dir_rotate(game_object.dir, -1)
+                    w:sync("dir:out", game_object)
+                    prefab_object = igame_object.get_prefab_object(game_object)
+                    local rotation = iom.get_rotation(prefab_object.root)
+                    local deg = math.deg(math3d.tovalue(math3d.quat2euler(rotation))[2])
+                    iom.set_rotation(prefab_object.root, math3d.quaternion{axis=mc.YAXIS, r=math.rad(deg - 90)})
+                    __update_basecolor_by_pos(game_object)
+                end
+            end
+        end
+    end
 
-    -- for _ in pickup_mb:unpack() do
-    --     if not show_pickup_show_remove then
-    --         for e in w:select("pickup_show_remove:update") do
-    --             e.pickup_show_remove = false
-    --         end
-
-    --         world:pub {"ui_message", "construct_show_remove", nil}
-    --         break
-    --     end
-    -- end
+    for _ in pickup_mb:unpack() do
+        if not show then
+            hide_construct_button()
+        end
+        break
+    end
 end

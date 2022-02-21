@@ -44,6 +44,7 @@ function iconstruct_arrow.show(e, position)
             icanvas.remove_item(canvas.id)
         end
 
+        -- print(arrow_coord[1], arrow_coord[2])
         local itemids = icanvas.add_items({name = "arrow.png", x = arrow_coord[1], y = arrow_coord[2], srt = {r = arrow_rotation[idx]}})
         e.construct_arrows[igameplay_adapter.pack_coord(arrow_coord[1], arrow_coord[2])] = {id = itemids[1], tile_coord = tile_coord, arrow_coord = arrow_coord,}
         ::continue::
