@@ -75,6 +75,20 @@ end
 
 function c:ctor(init, pt)
     local recipe_name = pt.recipe and pt.recipe or init.recipe
+    if recipe_name == nil then
+        return {
+            assembling = {
+                recipe = 0,
+                container = 0,
+                fluidbox_in = 0,
+                fluidbox_out = 0,
+                process = 0,
+                low_power = 0,
+                status = STATUS_IDLE,
+                speed = math.floor(pt.speed * 100),
+            }
+        }
+    end
     local recipe = assert(prototype.query("recipe", recipe_name), "unknown recipe: "..recipe_name)
     if not pt.fluidboxes then
         local container_in = createContainer(recipe.ingredients)
