@@ -11,7 +11,7 @@
                 text-align: center;
                 text-decoration: none;
                 border-radius: 8px;
-                border: 2px rgb(84,130,53);
+                border: 2px rgb(89, 73, 39);
                 opacity: 1;
                 transition: transform 2s elastic-out;
                 background-color: rgb(197,224,180);
@@ -317,11 +317,11 @@
                 border-radius: 2px; 
                 width:75%;
                 height: 100%;
-                border:1px #fff;
+                border:0.5px rgb(89, 73, 39);
             }
             .button-start-production {
                 flex-direction: column;
-                background-color: rgb(0,176,240);
+                background-color: rgb(19,175,240);
                 width: 20%; 
                 height: 80px;
                 justify-content: center;
@@ -330,7 +330,11 @@
                 margin: 0px; 
                 font-size:28px; 
                 text-align: center;
-                -webkit-text-stroke: 1px rgb(89, 73, 39);
+                -webkit-text-stroke: 0.5px rgb(89, 73, 39);
+            }
+            .button-increase-item {
+                background-color: rgb(19,175,240);
+                background-size:cover;
             }
 
         </style>
@@ -593,9 +597,9 @@
                                 </div>
                             </div>
                             <div class="row" style="height: 20%;">
-                                <button style='background-color: rgb(0,176,240); background-image:"factory/return.png";background-size:cover;'/>
-                                <button style='background-color: rgb(0,176,240); background-image:"factory/plus-five.png";background-size:cover;'/>
-                                <button style='background-color: rgb(0,176,240); background-image:"factory/plus-one.png";background-size:cover;'/>
+                                <button class = "button-increase-item" style='background-image:"factory/return.png";'/>
+                                <button class = "button-increase-item" style='background-image:"factory/plus-five.png";'/>
+                                <button class = "button-increase-item" style='background-image:"factory/plus-one.png";'/>
                             </div>
                         </div>
                     </div>
