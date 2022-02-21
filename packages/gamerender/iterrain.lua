@@ -120,17 +120,6 @@ function iterrain.get_begin_position_by_coord(...)
     return {((coord[1] - 1) * unit) + srt.t[1], 0, ((coord[2] - 1) * unit) + srt.t[3]}
 end
 
-function iterrain.get_confirm_ui_position(position)
-    local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
-    local srt = e.scene.srt
-    local unit = e.shape_terrain.unit
-
-    local coord = iterrain.get_coord_by_position(position)
-    return {((coord[1] - 1) * unit - unit) + srt.t[1], 0, ((coord[2] - 1) * unit + 2 * unit) + srt.t[3]},
-           {((coord[1] - 1) * unit + unit) + srt.t[1], 0, ((coord[2] - 1) * unit + 2 * unit) + srt.t[3]},
-           {((coord[1] - 1) * unit ) + srt.t[1], 0, ((coord[2] - 1) * unit) + srt.t[3]}
-end
-
 function iterrain.get_tile_centre_position(position)
     local coord = iterrain.get_coord_by_position(position)
     return iterrain.get_position_by_coord(coord[1], coord[2])

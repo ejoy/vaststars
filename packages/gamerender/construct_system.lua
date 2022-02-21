@@ -138,6 +138,12 @@ end
 
 local canvas_itemids = {}
 local show_construct_button, hide_construct_button; do
+    local coord_offset = {
+        {name = "confirm.png", coord = {-1, 1}},
+        {name = "cancel.png",  coord = {1,  1}},
+        {name = "rotate.png",  coord = {0,  -1}},
+    }
+
     function hide_construct_button()
         for _, item in pairs(canvas_itemids) do
             icanvas.remove_item(item.id)
@@ -148,19 +154,13 @@ local show_construct_button, hide_construct_button; do
     function show_construct_button(x, y)
         hide_construct_button()
 
-        local coord_offset = {
-            {name = "confirm.png", coord = {-1, 1}},
-            {name = "cancel.png",  coord = {1,  1}},
-            {name = "rotate.png",  coord = {0,  -1}},
-        }
-
         for _, v in ipairs(coord_offset) do
             local item = {
                 name = v.name,
                 x = x + v.coord[1],
                 y = y + v.coord[2],
             }
-            item.id = icanvas.add_items(item)[1]
+            item.id = icanvas.add_items(v.name, x + v.coord[1], y + v.coord[2])
             canvas_itemids[igameplay_adapter.pack_coord(item.x, item.y)] = item
         end
     end

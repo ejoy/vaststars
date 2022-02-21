@@ -12,6 +12,12 @@ local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 local datalist = require "datalist"
 local canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/canvas.cfg")):read "a")
 
+local function packCoord(x, y)
+    assert(x & 0xFF == x)
+    assert(y & 0xFF == y)
+    return x | (y << 8)
+end
+
 function canvas_sys.data_changed()
     local canvas_entity = w:singleton("canvas", "canvas:in")
     if not canvas_entity then
@@ -47,54 +53,73 @@ function icanvas.create()
     }
 end
 
--- item = {name = xx, x = xx, y = xx, srt = {s = xx, r = xx, t = xx}}
-function icanvas.add_items(...)
+local cache_id = {}
+local cache_event = {}
+
+function icanvas.add_items(name, x, y, srt, event)
+    local pcoord = packCoord(x, y)
+    if cache_id[pcoord] then
+        log.warn(("coord(%s, %s) already has item"):format(x, y))
+    end
+
     local e = w:singleton("canvas", "canvas:in")
     if not e then
+        log.error("can not found canvas entity")
         return
     end
 
-    local items = {}
-    for _, i in ipairs({...}) do
-        local cfg = canvas_cfg[i.name]
-        if not cfg then
-            error(("can not found `%s`"):format(i.name))
-        end
-
-        -- bounds checking
-        local p = iterrain.get_begin_position_by_coord(i.x, i.y)
-        if not p then
-            goto continue
-        end
-
-        local item = {
-            texture = {
-                path = "/pkg/vaststars.resources/textures/canvas.texture",
-                rect = {
-                    x = cfg.x,
-                    y = cfg.y,
-                    w = cfg.width,
-                    h = cfg.height,
-                },
-            },
-            x = p[1], y = p[3], w = 10, h = 10,
-            srt = i.srt,
-        }
-        items[#items+1] = item
-
-        ::continue::
+    local cfg = canvas_cfg[name]
+    if not cfg then
+        log.error(("can not found `%s`"):format(name))
+        return
     end
 
-    return icas.add_items(e, table.unpack(items))
+    -- bounds checking
+    local p = iterrain.get_begin_position_by_coord(x, y)
+    if not p then
+        return
+    end
+
+    local item = {
+        texture = {
+            path = "/pkg/vaststars.resources/textures/canvas.texture",
+            rect = {
+                x = cfg.x,
+                y = cfg.y,
+                w = cfg.width,
+                h = cfg.height,
+            },
+        },
+        x = p[1], y = p[3], w = 10, h = 10,
+        srt = srt,
+    }
+
+    local item_id = icas.add_items(e, item)[1]
+    if not item_id then
+        log.error(("item_id is null (%s, %s)"):format(x, y))
+        return
+    end
+
+    cache_id[pcoord] = {id = item_id, event = event}
+    cache_event[item_id] = pcoord
+    return item_id
 end
 
-function icanvas.remove_item(...)
+function icanvas.remove_item(id)
     local e = w:singleton("canvas", "canvas:in")
     if not e then
+        log.error("can not found canvas entity")
         return
     end
 
-    for _, id in ipairs({...}) do
-        return icas.remove_item(e, id)
+    local pcoord = cache_event[id]
+    if not pcoord then
+        log.error(("can not found item `%s`"):format(id))
+        return
     end
+
+    cache_event[id] = nil
+    cache_id[pcoord] = nil
+
+    return icas.remove_item(e, id)
 end

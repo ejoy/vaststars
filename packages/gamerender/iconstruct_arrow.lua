@@ -2,8 +2,13 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+--[[
+            (0, 1):-90
+(-1, 0):180             (1, 0):0
+            (0, -1):90
+--]]
 local arrow_coord_offset = {{0, -1}, {-1, 0}, {1, 0}, {0, 1}}
-local arrow_rotation = {math.rad(-90.0), math.rad(180.0), math.rad(0), math.rad(90.0)}
+local arrow_rotation = {math.rad(90.0), math.rad(180.0), math.rad(0), math.rad(-90.0)}
 
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 local icanvas = ecs.import.interface "vaststars.gamerender|icanvas"
@@ -44,10 +49,8 @@ function iconstruct_arrow.show(e, position)
             icanvas.remove_item(canvas.id)
         end
 
-        -- print(arrow_coord[1], arrow_coord[2])
-        local itemids = icanvas.add_items({name = "arrow.png", x = arrow_coord[1], y = arrow_coord[2], srt = {r = arrow_rotation[idx]}})
-        e.construct_arrows[igameplay_adapter.pack_coord(arrow_coord[1], arrow_coord[2])] = {id = itemids[1], tile_coord = tile_coord, arrow_coord = arrow_coord,}
-        ::continue::
+        local item_id = icanvas.add_items("arrow.png", arrow_coord[1], arrow_coord[2], {r = arrow_rotation[idx]})
+        e.construct_arrows[igameplay_adapter.pack_coord(arrow_coord[1], arrow_coord[2])] = {id = item_id, tile_coord = tile_coord, arrow_coord = arrow_coord,}
     end
     w:sync("construct_arrows:out", e)
 end
