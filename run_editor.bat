@@ -9,7 +9,7 @@ set param=.\3rd\ant\tools\prefab_editor\main.lua
 pushd %current_dir%
 
 if exist "%cachedir%" (
-	rd /s /q %cachedir%
+	rem rd /s /q %cachedir%
 )
 
 if not exist "%exe%" (
