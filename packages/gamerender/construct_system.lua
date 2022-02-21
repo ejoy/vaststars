@@ -214,7 +214,7 @@ local on_prefab_message ; do
         local position = math3d.tovalue(iom.get_position(prefab.root))
         local srt = prefab.root.scene.srt
 
-        w:sync("construct_detector?in dir:in", game_object)
+        w:sync("construct_detector?in dir:in x:in y:in area:in", game_object)
         if game_object.construct_detector then
             local entity = igameplay_adapter.query("entity", game_object.prototype)
             if not check_construct_detector(game_object.construct_detector, position, game_object.dir, entity.area) then
@@ -224,13 +224,12 @@ local on_prefab_message ; do
         end
 
         -- create entity
-        local coord = iterrain.get_coord_by_position(position)
         w:sync("construct_road?in construct_pipe?in dir:in construct_prefab:in construct_entity:in", game_object)
 
         if game_object.construct_road then
-            iroad.construct(nil, coord)
+            iroad.construct(nil, {game_object.x, game_object.y})
         elseif game_object.construct_pipe then
-            ipipe.construct(nil, coord, game_object.dir)
+            ipipe.construct(nil, {game_object.x, game_object.y}, game_object.dir)
         else
             local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(game_object.construct_prefab))
             iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
@@ -239,8 +238,8 @@ local on_prefab_message ; do
                 data = {
                     prototype = game_object.prototype,
                     pause_animation = true,
-                    x = coord[1],
-                    y = coord[2],
+                    x = game_object.x,
+                    y = game_object.y,
                     dir = game_object.dir,
                     area = igameplay_adapter.query("entity", game_object.prototype).area,
                 }
@@ -252,10 +251,6 @@ local on_prefab_message ; do
 
             new_prefab.on_ready = function(game_object, prefab)
                 w:sync("prototype:in x:in y:in dir:in", game_object)
-                local entity = igameplay_adapter.query("entity", game_object.prototype)
-                local area = {}
-                area[1], area[2] = igameplay_adapter.unpack_coord(entity.area)
-
                 local gameplay_entity = {
                     x = game_object.x,
                     y = game_object.y,
@@ -267,7 +262,7 @@ local on_prefab_message ; do
                     w:sync("scene:in", prefab.root)
                     gameplay_entity.station = {
                         id = prefab.root.scene.id,
-                        coord = igameplay_adapter.pack_coord(coord[1], coord[2] + (-1 * (area[2] // 2)) - 1),
+                        coord = igameplay_adapter.pack_coord(game_object.x, game_object.y), -- todo
                     }
                 end
 
@@ -291,8 +286,10 @@ end
 
 function construct_sys:entity_init()
     --
-	for e in w:select "INIT x:in y:in area:in prototype:in" do
-        iterrain.set_tile_building_type({e.x, e.y}, e.prototype, e.area)
+	for e in w:select "INIT x:in y:in area:in prototype:in construct_entity?in" do
+        if not e.construct_entity then
+            iterrain.set_tile_building_type({e.x, e.y}, e.prototype, e.area)
+        end
     end
 
     --
@@ -315,13 +312,19 @@ function construct_sys:entity_init()
 end
 
 function construct_sys:camera_usage()
-    local position
+    local coord, position
     for _, game_object, mouse_x, mouse_y in drapdrop_entity_mb:unpack() do
+        w:sync("area:in x:in y:in", game_object)
+
         local prefab_object = igame_object.get_prefab_object(game_object)
         position = iinput.screen_to_world {mouse_x, mouse_y}
-        position = iterrain.get_tile_centre_position(math3d.tovalue(position))
+        coord, position = iterrain.adjust_building_position(math3d.tovalue(position), game_object.area)
+
+        game_object.x = coord[1]
+        game_object.y = coord[2]
+        w:sync("x:out y:out", game_object)
+
         iom.set_position(prefab_object.root, position)
-        local coord = iterrain.get_coord_by_position(position)
         show_construct_button(coord[1], coord[2])
         prefab_object:send("basecolor")
     end
@@ -339,7 +342,10 @@ function construct_sys:data_changed()
             local f = ("/pkg/vaststars.resources/%s"):format(cfg.prefab)
             local template = replace_material(serialize.parse(f, cr.read_file(f)))
             local prefab = ecs.create_instance(template)
-            iom.set_position(prefab.root, iterrain.get_tile_centre_position({0, 0, 0})) -- todo 可能需要根据屏幕中间位置来设置?
+
+            local gpentity = igameplay_adapter.query("entity", prototype)
+            local coord, position = iterrain.adjust_building_position({0, 0, 0}, gpentity.area) -- todo 可能需要根据屏幕中间位置来设置?
+            iom.set_position(prefab.root, position)
 
             local t = {
                 policy = {},
@@ -349,9 +355,10 @@ function construct_sys:data_changed()
                     construct_entity = cfg.component,
                     pause_animation = true,
                     dir = 'N',
-                    x = 0,
-                    y = 0,
+                    x = coord[1],
+                    y = coord[2],
                     construct_prefab = cfg.prefab,
+                    area = gpentity.area,
                 },
             }
 
