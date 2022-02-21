@@ -136,32 +136,66 @@ local function __update_basecolor_by_pos(game_object)
     end
 end
 
-local canvas_itemids = {}
+local construct_button_canvas_items = {}
 local show_construct_button, hide_construct_button; do
     local coord_offset = {
-        {name = "confirm.png", coord = {-1, 1}},
-        {name = "cancel.png",  coord = {1,  1}},
-        {name = "rotate.png",  coord = {0,  -1}},
+        {
+            name = "confirm.png",
+            coord = {-1, 1},
+            event = function()
+                local prefab_object
+                for game_object in w:select "construct_entity:in" do
+                    prefab_object = igame_object.get_prefab_object(game_object)
+                    prefab_object:send("confirm_construct")
+                end
+            end
+        },
+        {
+            name = "cancel.png",
+            coord = {1,  1},
+            event = function()
+                local prefab_object
+                for game_object in w:select "construct_entity:in" do
+                    hide_construct_button()
+                    prefab_object = igame_object.get_prefab_object(game_object)
+                    prefab_object:remove()
+                end
+            end,
+        },
+        {
+            name = "rotate.png",
+            coord = {0,  -1},
+            event = function()
+                local prefab_object
+                for game_object in w:select "construct_entity:in dir:in" do
+                    game_object.dir = dir_rotate(game_object.dir, -1)
+                    w:sync("dir:out", game_object)
+                    prefab_object = igame_object.get_prefab_object(game_object)
+                    local rotation = iom.get_rotation(prefab_object.root)
+                    local deg = math.deg(math3d.tovalue(math3d.quat2euler(rotation))[2])
+                    iom.set_rotation(prefab_object.root, math3d.quaternion{axis=mc.YAXIS, r=math.rad(deg - 90)})
+                    __update_basecolor_by_pos(game_object)
+                end
+            end,
+        },
     }
 
     function hide_construct_button()
-        for _, item in pairs(canvas_itemids) do
-            icanvas.remove_item(item.id)
+        for _, v in pairs(construct_button_canvas_items) do
+            icanvas.remove_item(v.id)
         end
-        canvas_itemids = {}
+        construct_button_canvas_items = {}
     end
 
     function show_construct_button(x, y)
         hide_construct_button()
 
         for _, v in ipairs(coord_offset) do
-            local item = {
-                name = v.name,
-                x = x + v.coord[1],
-                y = y + v.coord[2],
-            }
-            item.id = icanvas.add_items(v.name, x + v.coord[1], y + v.coord[2])
-            canvas_itemids[igameplay_adapter.pack_coord(item.x, item.y)] = item
+            local cx = x + v.coord[1]
+            local cy = y + v.coord[2]
+            local pcoord = igameplay_adapter.pack_coord(cx, cy)
+            local id = icanvas.add_items(v.name, cx, cy)
+            construct_button_canvas_items[pcoord] = {id = id, event = v.event}
         end
     end
 end
@@ -362,38 +396,15 @@ function construct_sys:after_pickup_mapping()
         iui.open(url)
     end
 
-    local prefab_object
     local show = true
     for _ in pickup_mapping_canvas_mb:unpack() do
         local pos = iinput.get_mouse_world_position()
         local coord = iterrain.get_coord_by_position(pos)
         local k = igameplay_adapter.pack_coord(coord[1], coord[2])
-        local v = canvas_itemids[k]
+        local v = construct_button_canvas_items[k]
         if v then
-            if v.name == "confirm.png" then
-                for game_object in w:select "construct_entity:in" do
-                    prefab_object = igame_object.get_prefab_object(game_object)
-                    prefab_object:send("confirm_construct")
-                end
-                show = false
-            elseif v.name == "cancel.png" then
-                for game_object in w:select "construct_entity:in" do
-                    hide_construct_button()
-                    prefab_object = igame_object.get_prefab_object(game_object)
-                    prefab_object:remove()
-                end
-                show = false
-            elseif v.name == "rotate.png" then
-                for game_object in w:select "construct_entity:in dir:in" do
-                    game_object.dir = dir_rotate(game_object.dir, -1)
-                    w:sync("dir:out", game_object)
-                    prefab_object = igame_object.get_prefab_object(game_object)
-                    local rotation = iom.get_rotation(prefab_object.root)
-                    local deg = math.deg(math3d.tovalue(math3d.quat2euler(rotation))[2])
-                    iom.set_rotation(prefab_object.root, math3d.quaternion{axis=mc.YAXIS, r=math.rad(deg - 90)})
-                    __update_basecolor_by_pos(game_object)
-                end
-            end
+            v.event()
+            show = true
         end
     end
 

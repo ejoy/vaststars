@@ -54,11 +54,11 @@ function icanvas.create()
 end
 
 local cache_id = {}
-local cache_event = {}
+local cache_coord = {}
 
-function icanvas.add_items(name, x, y, srt, event)
+function icanvas.add_items(name, x, y, srt)
     local pcoord = packCoord(x, y)
-    if cache_id[pcoord] then
+    if cache_coord[pcoord] then
         log.warn(("coord(%s, %s) already has item"):format(x, y))
     end
 
@@ -100,8 +100,8 @@ function icanvas.add_items(name, x, y, srt, event)
         return
     end
 
-    cache_id[pcoord] = {id = item_id, event = event}
-    cache_event[item_id] = pcoord
+    cache_id[item_id] = pcoord
+    cache_coord[pcoord] = item_id
     return item_id
 end
 
@@ -112,14 +112,14 @@ function icanvas.remove_item(id)
         return
     end
 
-    local pcoord = cache_event[id]
+    local pcoord = cache_id[id]
     if not pcoord then
         log.error(("can not found item `%s`"):format(id))
         return
     end
 
-    cache_event[id] = nil
-    cache_id[pcoord] = nil
+    cache_id[id] = nil
+    cache_coord[pcoord] = nil
 
     return icas.remove_item(e, id)
 end
