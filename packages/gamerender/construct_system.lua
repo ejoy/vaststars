@@ -136,7 +136,9 @@ local show_construct_button, hide_construct_button; do
     local coord_offset = {
         {
             name = "confirm.png",
-            coord = {-1, 1},
+            coord_func = function(x, y, area)
+                return x - 1, y + 1
+            end,
             event = function()
                 local prefab_object
                 for game_object in w:select "construct_entity:in" do
@@ -147,7 +149,10 @@ local show_construct_button, hide_construct_button; do
         },
         {
             name = "cancel.png",
-            coord = {1,  1},
+            coord_func = function(x, y, area)
+                local width = igameplay_adapter.unpack_coord(area)
+                return x + width, y + 1
+            end,
             event = function()
                 local prefab_object
                 for game_object in w:select "construct_entity:in" do
@@ -159,7 +164,9 @@ local show_construct_button, hide_construct_button; do
         },
         {
             name = "rotate.png",
-            coord = {0,  -1},
+            coord_func = function(x, y, area)
+                return x, y - 1
+            end,
             event = function()
                 local prefab_object
                 for game_object in w:select "construct_entity:in dir:in" do
@@ -182,12 +189,11 @@ local show_construct_button, hide_construct_button; do
         construct_button_canvas_items = {}
     end
 
-    function show_construct_button(x, y)
+    function show_construct_button(x, y, area)
         hide_construct_button()
 
         for _, v in ipairs(coord_offset) do
-            local cx = x + v.coord[1]
-            local cy = y + v.coord[2]
+            local cx, cy = v.coord_func(x, y, area)
             local pcoord = igameplay_adapter.pack_coord(cx, cy)
             local id = icanvas.add_items(v.name, cx, cy)
             construct_button_canvas_items[pcoord] = {id = id, event = v.event}
@@ -197,10 +203,9 @@ end
 
 local on_prefab_ready; do
     function on_prefab_ready(game_object, prefab)
-        local position = math3d.tovalue(iom.get_position(prefab.root))
+        w:sync("x:in y:in area:in", game_object)
         __update_basecolor_by_pos(game_object)
-        local coord = iterrain.get_coord_by_position(position)
-        show_construct_button(coord[1], coord[2])
+        show_construct_button(game_object.x, game_object.y, game_object.area)
     end
 end
 
@@ -325,7 +330,7 @@ function construct_sys:camera_usage()
         w:sync("x:out y:out", game_object)
 
         iom.set_position(prefab_object.root, position)
-        show_construct_button(coord[1], coord[2])
+        show_construct_button(coord[1], coord[2], game_object.area)
         prefab_object:send("basecolor")
     end
 end
