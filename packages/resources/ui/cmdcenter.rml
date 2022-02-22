@@ -15,6 +15,7 @@
                 opacity: 1;
                 transition: transform 2s elastic-out;
                 background-color: rgb(197,224,180);
+                transform: scale(1.0);
             }
             button:hover {
                 transform: scale(1.1);
@@ -357,10 +358,8 @@
                     {id=116, icon0="correct.png", icon1="correct.png"},
                 },
             }
-            local listclass = require "list"
             local pageclass = require "page"
             -- window size : 1336 750
-            local list_proxy = listclass.create(1, {667, 750}, #start.item_list, {750, 50})
             local page_proxy = pageclass.create({667, 720}, start)
             function start.pagemousedown(event)
                 console.log("pagemousedown")
@@ -381,18 +380,6 @@
             function start.page_item_click(event, id)
                 console.log("page_item_click", id)
                 start.selected_id = id
-            end
-
-            function start.listmousedown(event)
-                list_proxy:on_mousedown(event)
-            end
-
-            function start.listdrag(event)
-                list_proxy:on_drag(event)
-            end
-
-            function start.listmouseup(event)
-                list_proxy:on_mouseup(event)
             end
 
             window.addEventListener('message', function(event)
