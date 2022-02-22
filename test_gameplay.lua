@@ -108,11 +108,11 @@ function test.init(world)
     end
 
     local function init()
-        for v in ecs:select "assembling:in fluidboxes:update" do
-            local recipe = gameplay.query(v.assembling.recipe)
-            init_fluidbox(v.assembling, v.fluidboxes, "in",  4, recipe.ingredients)
-            init_fluidbox(v.assembling, v.fluidboxes, "out", 4, recipe.results)
-        end
+        --for v in ecs:select "assembling:in fluidboxes:update" do
+        --    local recipe = gameplay.query(v.assembling.recipe)
+        --    init_fluidbox(v.assembling, v.fluidboxes, "in",  4, recipe.ingredients)
+        --    init_fluidbox(v.assembling, v.fluidboxes, "out", 4, recipe.results)
+        --end
         for v in ecs:select "fluidbox:in entity:in" do
             local e = v.entity
             local pt = gameplay.query(e.prototype)

@@ -1,5 +1,6 @@
 local type = require "register.type"
 local prototype = require "prototype"
+local query = require "prototype".queryById
 
 local c = type "assembling"
     .speed "percentage"
@@ -11,7 +12,17 @@ local function isFluidId(id)
     return id & 0x0C00 == 0x0C00
 end
 
-local function createContainerAndFluidBox(fluidboxes, s, max)
+local function findFluidbox(init, id)
+    local name = query(id).name
+    for i, v in ipairs(init) do
+        if name == v[1] then
+            return i
+        end
+    end
+    return 0
+end
+
+local function createContainerAndFluidBox(init, fluidboxes, s, max)
     assert(#s <= 4 * 15)
     local container = {}
     local fluids = {}
@@ -19,7 +30,7 @@ local function createContainerAndFluidBox(fluidboxes, s, max)
         local id, n = string.unpack("<I2I2", s, 4*idx-3)
         local limit = 0
         if isFluidId(id) then
-            fluids[#fluids+1] = idx
+            fluids[#fluids+1] = findFluidbox(init, id)
             limit = fluidboxes[#fluids].capacity
         else
             limit = n * 2
@@ -90,7 +101,7 @@ function c:ctor(init, pt)
         }
     end
     local recipe = assert(prototype.query("recipe", recipe_name), "unknown recipe: "..recipe_name)
-    if not pt.fluidboxes then
+    if not init.fluids or not pt.fluidboxes then
         local container_in = createContainer(recipe.ingredients)
         local container_out = createContainer(recipe.results)
         return {
@@ -99,12 +110,15 @@ function c:ctor(init, pt)
                 container = self:container_create("assembling", container_in, container_out),
                 fluidbox_in = 0,
                 fluidbox_out = 0,
-                process = STATUS_IDLE,
+                process = 0,
+                low_power = 0,
+                status = STATUS_IDLE,
+                speed = math.floor(pt.speed * 100),
             }
         }
     end
-    local container_in, fluidbox_in = createContainerAndFluidBox(pt.fluidboxes.input, recipe.ingredients, 4)
-    local container_out, fluidbox_out = createContainerAndFluidBox(pt.fluidboxes.output, recipe.results, 3)
+    local container_in, fluidbox_in = createContainerAndFluidBox(init.fluids.input, pt.fluidboxes.input, recipe.ingredients, 4)
+    local container_out, fluidbox_out = createContainerAndFluidBox(init.fluids.output, pt.fluidboxes.output, recipe.results, 3)
     return {
         assembling = {
             recipe = recipe.id,

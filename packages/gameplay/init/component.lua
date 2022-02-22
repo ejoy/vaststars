@@ -70,10 +70,6 @@ component "fluidboxes" {
 component "pump" {
 }
 
-component "fluidbox_build" {
-    "volume:float",
-}
-
 component "road" {
     "road_type:word",
     "coord:word",

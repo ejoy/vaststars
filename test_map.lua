@@ -85,6 +85,11 @@ world:create_entity "空气过滤器1" {
     x = 1,
     y = 15,
     dir = "W",
+    fluids = {
+        output = {
+            {"空气",0}
+        }
+    }
 }
 world:create_entity "液罐1" {
     x = 1,
@@ -107,7 +112,16 @@ world:create_entity "压力泵1" {
 world:create_entity "化工厂1" {
     x = 8,
     y = 18,
-    recipe = "空气分离1"
+    recipe = "空气分离1",
+    fluids = {
+        input = {
+            {"空气",0}
+        },
+        output = {
+            {"氮气", 0},
+            {"二氧化碳", 0}
+        }
+    }
 }
 
 local convertPipeType = {

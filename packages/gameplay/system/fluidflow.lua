@@ -174,8 +174,24 @@ function m.build(world)
     end
     builder_finish(world)
 
-    for v in ecs:select "fluidbox:in fluidbox_build:in" do
-        world:fluidflow_set(v.fluidbox.fluid, v.fluidbox.id, v.fluidbox_build.volume)
+    local function init_fluidbox(fluid, id, volume)
+        if fluid ~= 0 and volume and volume > 0 then
+            world:fluidflow_set(fluid, id, volume)
+        end
     end
-    ecs:clear "fluidbox_build"
+    for v in ecs:select "fluidbox:in init_fluidbox:in" do
+        init_fluidbox(v.fluidbox.fluid, v.fluidbox.id, v.init_fluidbox)
+    end
+    for v in ecs:select "fluidboxes:in init_fluidbox:in" do
+        local fb = v.fluidboxes
+        local init = v.init_fluidbox
+        init_fluidbox(fb.in1_fluid,  fb.in1_id,  init.in1)
+        init_fluidbox(fb.in2_fluid,  fb.in2_id,  init.in2)
+        init_fluidbox(fb.in3_fluid,  fb.in3_id,  init.in3)
+        init_fluidbox(fb.in4_fluid,  fb.in4_id,  init.in4)
+        init_fluidbox(fb.out1_fluid, fb.out1_id, init.out1)
+        init_fluidbox(fb.out2_fluid, fb.out2_id, init.out2)
+        init_fluidbox(fb.out3_fluid, fb.out3_id, init.out3)
+    end
+    ecs:clear "init_fluidbox"
 end
