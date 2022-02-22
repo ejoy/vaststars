@@ -25,7 +25,7 @@ function gameplay_adapter_system:init_world()
             "vaststars.gamerender|gameplay_adapter",
         },
         data = {
-            gameplay_world = create_gameplay_world(),
+            gameplay_world = create_gameplay_world(), -- todo
             gameplay_road_entities = {},
         }
     })
@@ -99,6 +99,22 @@ do
         return create_entity_cache[prototype](entity)
     end
 
+    local function has_entity(x, y)
+        local e = w:singleton("gameplay_world", "gameplay_world:in")
+        if not e then
+            log.error("failed to get gameplay_world")
+            return false
+        end
+
+        local gameplay_ecs = e.gameplay_world.ecs
+        for e in gameplay_ecs:select "entity:in" do
+            if x == e.entity.x and e.entity.y == y then
+                return true
+            end
+        end
+        return false
+    end
+
     -- local init_func = {}
     -- init_func["fluidboxes"] = function(prototype_info, entity)
     --     if not prototype_info.recipe then
@@ -127,13 +143,19 @@ do
     -- end
 
     function igameplay_adapter.create_entity(game_object)
+        w:sync("prototype:in x:in y:in dir:in fluid?in", game_object)
+
+        if has_entity(game_object.x, game_object.y) then
+            log.error(("already create entity(%s, %s)"):format(game_object.x, game_object.y))
+            return
+        end
+
         local e = w:singleton("gameplay_world", "gameplay_world:in")
         if not e then
             log.error("failed to create entity")
             return
         end
 
-        w:sync("prototype:in x:in y:in dir:in fluid?in", game_object)
         local prototype = game_object.prototype
         local gpworld = e.gameplay_world
         local gpentitiy = {
@@ -143,7 +165,6 @@ do
             fluid = game_object.fluid,
         }
 
-        -- gpentitiy = init(prototype, gpentitiy)
         create(gpworld, prototype, gpentitiy)
         gpworld:build()
     end

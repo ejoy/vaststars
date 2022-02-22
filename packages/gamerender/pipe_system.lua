@@ -115,7 +115,7 @@ local rotators <const> = {
     W = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
 }
 
-local function create_game_object(typedir, x, y, fluid)
+local function create_game_object(typedir, x, y, fluid, create_gameplay_entity)
     local t = typedir:sub(1, 1)
     local dir = typedir:sub(2, 2)
     local prefab = ecs.create_instance(prefab_file_path:format(t))
@@ -123,19 +123,21 @@ local function create_game_object(typedir, x, y, fluid)
     iom.set_rotation(prefab.root, rotators[dir])
 
     prefab.on_ready = function(game_object, prefab)
-        igameplay_adapter.create_entity(game_object)
+        if create_gameplay_entity then
+            igameplay_adapter.create_entity(game_object)
+        end
     end
 
     local template = {
         policy = {},
         data = {
-            prototype = ("管道1-%s型"):format(type_to_prototype[t]),
+            prototype = ("管道1-%s型"):format(type_to_prototype[t]), -- todo
             fluid = fluid,
             x = x,
             y = y,
             dir = dir,
             area = igameplay_adapter.pack_coord(1, 1),
-            pickup_show_ui = {url = "detail_panel.rml"},
+            pickup_show_ui = {"detail_panel.rml", x, y},
 
             building_type = "pipe",
             pickup_show_set_pipe_arrow = true,
@@ -187,11 +189,13 @@ end
 local function flush(typedirs, entities, x, y, fluid)
     entities[x] = entities[x] or {}
 
+    local create_gameplay_entity = true
     local game_object = entities[x][y]
     if game_object then
+        create_gameplay_entity = false
         igame_object.remove_prefab(game_object)
     end
-    entities[x][y] = create_game_object(typedirs[x][y], x, y, fluid)
+    entities[x][y] = create_game_object(typedirs[x][y], x, y, fluid, create_gameplay_entity)
 end
 
 local funcs = {}
@@ -282,7 +286,7 @@ do
         if not pipe_entities[coord[1]] or not pipe_entities[coord[1]][coord[2]] then
             return
         end
-        
+
         return pipe_entities[coord[1]][coord[2]]
     end
 

@@ -11,7 +11,7 @@ local ui_message_mb = world:sub {"ui_message"}
 local ui_message_leave_mb = world:sub {"ui_message", "leave"}
 local windows = {}
 
-local function open(url)
+local function open(url, ...)
     local w = windows[url]
     if w then
         return
@@ -93,7 +93,7 @@ end
 
 local iui = ecs.interface "iui"
 function iui.open(url, ...)
-    world:pub {"rmlui_message", "__OPEN", url}
+    world:pub {"rmlui_message", "__OPEN", url, ...}
 end
 
 function iui.close(url)

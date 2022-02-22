@@ -425,8 +425,8 @@ function construct_sys:after_pickup_mapping()
     local url
     for _, _, entity in pickup_show_ui_mb:unpack() do
         w:sync("pickup_show_ui:in", entity)
-        url = entity.pickup_show_ui.url
-        iui.open(url)
+        url = entity.pickup_show_ui[1]
+        iui.open(url, table.unpack(entity.pickup_show_ui, 2))
     end
 
     local show = true
