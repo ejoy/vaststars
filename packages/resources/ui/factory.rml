@@ -101,7 +101,7 @@
                 background-image: "construct/insert1.png";
             }
             .item-title {
-                align-items:center;
+                text-align: center;
                 top:14%;
                 background-color: rgb(246, 237, 189);
                 border-radius: 5px;
@@ -110,7 +110,7 @@
                 width: 85px;
                 margin:0px;
             }
-            .item-desc {
+            .item-count {
                 text-align:left;
                 margin:0px;
                 top:-18px;
@@ -389,111 +389,111 @@
                 <div class="item-container">
                     <div class="row" style="width: 100%;">
                         <button class="item">
-                            <div class="item-desc">99</div>
+                            <div class="item-count">99</div>
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>                
+                            <div class="item-count">99</div>                
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>                            
+                            <div class="item-count">99</div>                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>                            
+                            <div class="item-count">99</div>                            
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>                            
-                            <div class="item-title">机器爪</div>
-                        </button>
-                    </div>
-                    <div class="row" style="width: 100%;">
-                        <button class="item">
-                            <div class="item-desc">99</div>                        
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-desc">99</div>                        
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-desc">99</div>                        
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-desc">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-desc">99</div>                          
+                            <div class="item-count">99</div>                            
                             <div class="item-title">机器爪</div>
                         </button>
                     </div>
                     <div class="row" style="width: 100%;">
                         <button class="item">
-                            <div class="item-desc">99</div>                         
+                            <div class="item-count">99</div>                        
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>                          
+                            <div class="item-count">99</div>                        
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>                          
+                            <div class="item-count">99</div>                        
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>                           
+                            <div class="item-count">99</div>                          
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                    </div>
-                    <div class="row" style="width: 100%;">
-                        <button class="item">
-                            <div class="item-desc">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-desc">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-desc">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-desc">99</div>                           
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-desc">99</div>                         
+                            <div class="item-count">99</div>                          
                             <div class="item-title">机器爪</div>
                         </button>
                     </div>
                     <div class="row" style="width: 100%;">
                         <button class="item">
-                            <div class="item-desc">99</div>                         
+                            <div class="item-count">99</div>                         
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>                         
+                            <div class="item-count">99</div>                          
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>                        
+                            <div class="item-count">99</div>                          
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>                          
+                            <div class="item-count">99</div>                           
                             <div class="item-title">机器爪</div>
                         </button>
                         <button class="item">
-                            <div class="item-desc">99</div>                    
+                            <div class="item-count">99</div>                          
+                            <div class="item-title">机器爪</div>
+                        </button>
+                    </div>
+                    <div class="row" style="width: 100%;">
+                        <button class="item">
+                            <div class="item-count">99</div>                          
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-count">99</div>                          
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-count">99</div>                          
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-count">99</div>                           
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-count">99</div>                         
+                            <div class="item-title">机器爪</div>
+                        </button>
+                    </div>
+                    <div class="row" style="width: 100%;">
+                        <button class="item">
+                            <div class="item-count">99</div>                         
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-count">99</div>                         
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-count">99</div>                        
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-count">99</div>                          
+                            <div class="item-title">机器爪</div>
+                        </button>
+                        <button class="item">
+                            <div class="item-count">99</div>                    
                             <div class="item-title">机器爪</div>
                         </button>
                     </div>
