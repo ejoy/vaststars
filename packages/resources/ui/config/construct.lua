@@ -169,6 +169,10 @@ local menu = {
                 prototype = "铁制电线杆",
                 image = "construct/electric-pole1.png",
             },
+            {
+                prototype = "指挥中心",
+                image = "construct/headquater.png",
+            },
         },
     },
 }

@@ -62,28 +62,6 @@ local function createContainer(s)
     return table.concat(container)
 end
 
-local function what_status(e)
-    --TODO
-    --  no_power
-    --  disabled
-    --  no_minable_resources
-    local a = e.assembling
-    if a.recipe == 0 then
-        return "idle"
-    end
-    if a.process <= 0 then
-        if a.status == STATUS_IDLE then
-            return "insufficient_input"
-        elseif a.status == STATUS_DONE then
-            return "full_output"
-        end
-    end
-    if a.low_power ~= 0 then
-        return "low_power"
-    end
-    return "working"
-end
-
 function c:ctor(init, pt)
     local recipe_name = pt.recipe and pt.recipe or init.recipe
     if recipe_name == nil then
@@ -131,4 +109,26 @@ function c:ctor(init, pt)
             speed = math.floor(pt.speed * 100),
         }
     }
+end
+
+local function what_status(e)
+    --TODO
+    --  no_power
+    --  disabled
+    --  no_minable_resources
+    local a = e.assembling
+    if a.recipe == 0 then
+        return "idle"
+    end
+    if a.process <= 0 then
+        if a.status == STATUS_IDLE then
+            return "insufficient_input"
+        elseif a.status == STATUS_DONE then
+            return "full_output"
+        end
+    end
+    if a.low_power ~= 0 then
+        return "low_power"
+    end
+    return "working"
 end

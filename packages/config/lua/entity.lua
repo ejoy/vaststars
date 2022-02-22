@@ -6,6 +6,16 @@ local prototype = function(pt, i)
     t[pt] = i
 end
 
+prototype ("指挥中心", {
+    prefab = "prefabs/headquater-1.prefab.prefab",
+    construct_component = {
+        construct_detector = {"exclusive"},
+    },
+    component = {
+        pickup_show_remove = false,
+    },
+})
+
 prototype ("铁制电线杆", {
     prefab = "prefabs/assembling-1.prefab",
     construct_component = {
