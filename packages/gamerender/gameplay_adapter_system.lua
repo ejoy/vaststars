@@ -8,7 +8,6 @@ local create_gameplay_world = gameplay.createWorld
 local set_road_mb = world:sub {"gameplay_adapter_system", "set_road"}
 local gameplay_adapter_system = ecs.system "gameplay_adapter_system"
 local igameplay_adapter = ecs.interface "igameplay_adapter"
-local create_entity_funcs = {}
 
 local function packCoord(x, y)
     assert(x & 0xFF == x)
@@ -87,23 +86,67 @@ function igameplay_adapter.set_road(x, y, road_type)
     world:pub {"gameplay_adapter_system", "set_road", coord, tr[road_type:sub(1, 1)] << 8 | t[road_type:sub(2, 2)]}
 end
 
-function igameplay_adapter.create_entity(prototype, entity)
-    local e = w:singleton("gameplay_world", "gameplay_world:in")
-    if not e then
-        log.error("failed to create entity")
-        return
+do
+    local create_entity_cache = {}
+    local function create(world, prototype, entity)
+        if not create_entity_cache[prototype] then
+            create_entity_cache[prototype] = world:create_entity(prototype)
+            if not create_entity_cache[prototype] then
+                log.error(("failed to create entity `%s`"):format(prototype))
+                return
+            end
+        end
+        return create_entity_cache[prototype](entity)
     end
 
-    local gameplay_world = e.gameplay_world
-    if not create_entity_funcs[prototype] then
-        create_entity_funcs[prototype] = gameplay_world:create_entity(prototype)
-        if not create_entity_funcs[prototype] then
-            log.error(("failed to create entity `%s`"):format(prototype))
+    -- local init_func = {}
+    -- init_func["fluidboxes"] = function(prototype_info, entity)
+    --     if not prototype_info.recipe then
+    --         log.error(("can not found recipe `%s`"):format(prototype_info.name))
+    --         return entity
+    --     end
+    --     local r = igameplay_adapter.query("recipe", prototype_info.recipe)
+    --     return entity
+    -- end
+    -- init_func["fluidbox"] = function(prototype_info, entity)
+    --     local r = igameplay_adapter.query("recipe", prototype_info.recipe)
+    --     return entity
+    -- end
+
+    -- local function init(prototype, entity)
+    --     local pi = igameplay_adapter.query("entity", prototype)
+    --     local func
+
+    --     for _, entity_type in ipairs(pi.type) do
+    --         func = init_func[entity_type]
+    --         if func then
+    --             entity = func(pi, entity)
+    --         end
+    --     end
+    --     return entity
+    -- end
+
+    function igameplay_adapter.create_entity(game_object)
+        local e = w:singleton("gameplay_world", "gameplay_world:in")
+        if not e then
+            log.error("failed to create entity")
             return
         end
+
+        w:sync("prototype:in x:in y:in dir:in fluid?in", game_object)
+        local prototype = game_object.prototype
+        local gpworld = e.gameplay_world
+        local gpentitiy = {
+            x = game_object.x,
+            y = game_object.y,
+            dir = game_object.dir,
+            fluid = game_object.fluid,
+        }
+
+        -- gpentitiy = init(prototype, gpentitiy)
+        create(gpworld, prototype, gpentitiy)
+        gpworld:build()
     end
-    create_entity_funcs[prototype](entity)
-    gameplay_world:build()
 end
 
 function igameplay_adapter.remove_entity(x, y)

@@ -16,20 +16,12 @@ local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_a
 
 local iconstruct_arrow = ecs.interface "iconstruct_arrow"
 
-function iconstruct_arrow.hide(e, idx)
+function iconstruct_arrow.hide(e)
     w:sync("construct_arrows:in", e)
-    if not idx then
-        for idx, canvas in pairs(e.construct_arrows) do
-            icanvas.remove_item(canvas.id)
-            e.construct_arrows[idx] = nil
-        end
-    else
-        local canvas = e.construct_arrows[idx]
-        if canvas then
-            icanvas.remove_item(canvas.id)
-            e.construct_arrows[idx] = nil
-        end
+    for _, canvas in pairs(e.construct_arrows) do
+        icanvas.remove_item(canvas.id)
     end
+    e.construct_arrows = {}
     w:sync("construct_arrows:out", e)
 end
 
@@ -38,16 +30,14 @@ function iconstruct_arrow.show(e, position)
     local tile_coord = iterrain.get_coord_by_position(position)
     local arrow_coord
 
+    -- remove all items at first
+    iconstruct_arrow.hide(e)
+
     for idx, coord_offset in ipairs(arrow_coord_offset) do
         arrow_coord = {
             tile_coord[1] + coord_offset[1],
             tile_coord[2] + coord_offset[2],
         }
-
-        local canvas = e.construct_arrows[idx]
-        if canvas then
-            icanvas.remove_item(canvas.id)
-        end
 
         local item_id = icanvas.add_items("arrow.png", arrow_coord[1], arrow_coord[2], {r = arrow_rotation[idx]})
         e.construct_arrows[igameplay_adapter.pack_coord(arrow_coord[1], arrow_coord[2])] = {id = item_id, tile_coord = tile_coord, arrow_coord = arrow_coord,}

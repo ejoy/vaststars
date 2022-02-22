@@ -31,8 +31,8 @@ local dir_offset_of_entry = utility.dir.offset_of_entry
 local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
 
-local ui_construct_building_mb = world:sub {"ui", "construct", "click_construct"}
-local ui_remove_message_mb = world:sub {"ui", "construct", "click_construct_remove"}
+local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
+local ui_construct_fluidbox_mb = world:sub {"ui", "construct", "construct_fluidbox"}
 local ui_get_fluid_catagory = world:sub {"ui", "GET_DATA", "fluid_catagory"}
 local pickup_show_ui_mb = world:sub {"pickup_mapping", "pickup_show_ui"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
@@ -133,6 +133,15 @@ end
 
 local construct_button_canvas_items = {}
 local show_construct_button, hide_construct_button; do
+    local function is_fluidbox(type)
+        for _, t in ipairs(type) do
+            if t == "fluidbox" then
+                return true
+            end
+        end
+        return false
+    end
+
     local coord_offset = {
         {
             name = "confirm.png",
@@ -141,9 +150,13 @@ local show_construct_button, hide_construct_button; do
             end,
             event = function()
                 local prefab_object
-                for game_object in w:select "construct_entity:in" do
-                    prefab_object = igame_object.get_prefab_object(game_object)
-                    prefab_object:send("confirm_construct")
+                for game_object in w:select "construct_entity:in type:in" do
+                    if is_fluidbox(game_object.type) then
+                        world:pub {"ui_message", "set_edit_mode", "construct_fluidbox"}
+                    else
+                        prefab_object = igame_object.get_prefab_object(game_object)
+                        prefab_object:send("confirm_construct")
+                    end
                 end
             end
         },
@@ -270,7 +283,7 @@ local on_prefab_message ; do
                     x = game_object.x,
                     y = game_object.y,
                     dir = game_object.dir,
-                    area = igameplay_adapter.query("entity", game_object.prototype).area,
+                    area = game_object.area,
                 }
             }
 
@@ -279,23 +292,7 @@ local on_prefab_message ; do
             end
 
             new_prefab.on_ready = function(game_object, prefab)
-                w:sync("prototype:in x:in y:in dir:in", game_object)
-                local gameplay_entity = {
-                    x = game_object.x,
-                    y = game_object.y,
-                    dir = game_object.dir,
-                }
-
-                w:sync("station?in", game_object)
-                if game_object.station then
-                    w:sync("scene:in", prefab.root)
-                    gameplay_entity.station = {
-                        id = prefab.root.scene.id,
-                        coord = igameplay_adapter.pack_coord(game_object.x, game_object.y), -- todo
-                    }
-                end
-
-                igameplay_adapter.create_entity(game_object.prototype, gameplay_entity)
+                igameplay_adapter.create_entity(game_object)
             end
             iprefab_object.create(new_prefab, template)
         end
@@ -361,7 +358,7 @@ end
 
 function construct_sys:data_changed()
     local cfg
-    for _, _, _, prototype in ui_construct_building_mb:unpack() do
+    for _, _, _, prototype in ui_construct_entity_mb:unpack() do
         cfg = entities_cfg[prototype]
         if cfg then
             for game_object in w:select "construct_entity:in" do
@@ -372,14 +369,19 @@ function construct_sys:data_changed()
             local template = replace_material(serialize.parse(f, cr.read_file(f)))
             local prefab = ecs.create_instance(template)
 
-            local gpentity = igameplay_adapter.query("entity", prototype)
-            local coord, position = iterrain.adjust_building_position({0, 0, 0}, gpentity.area) -- todo 可能需要根据屏幕中间位置来设置?
+            local pt = igameplay_adapter.query("entity", prototype)
+            if not pt then
+                log.error(("can not found prototype `%s`"):format(prototype))
+                return
+            end
+            local coord, position = iterrain.adjust_building_position({0, 0, 0}, pt.area) -- todo 可能需要根据屏幕中间位置来设置?
             iom.set_position(prefab.root, position)
 
             local t = {
                 policy = {},
                 data = {
                     prototype = prototype,
+                    type = pt.type,
                     drapdrop = false,
                     construct_entity = cfg.component,
                     pause_animation = true,
@@ -387,7 +389,7 @@ function construct_sys:data_changed()
                     x = coord[1],
                     y = coord[2],
                     construct_prefab = cfg.prefab,
-                    area = gpentity.area,
+                    area = pt.area,
                 },
             }
 
@@ -399,18 +401,17 @@ function construct_sys:data_changed()
             prefab.on_ready = on_prefab_ready
             iprefab_object.create(prefab, t)
         else
-            print(("Can not found prototype `%s`"):format(prototype))
+            log.error(("Can not found prototype `%s`"):format(prototype))
         end
     end
 
-    for _ in ui_remove_message_mb:unpack() do
-        for game_object in w:select("pickup_show_remove:in pickup_show_set_road_arrow?in pickup_show_set_pipe_arrow?in x:in y:in area:in") do
-            if game_object and game_object.pickup_show_remove and not game_object.pickup_show_set_road_arrow and not game_object.pickup_show_set_pipe_arrow then
-                igame_object.get_prefab_object(game_object):remove()
-                iterrain.set_tile_building_type({game_object.x, game_object.y}, nil, game_object.area)
-                igameplay_adapter.remove_entity(game_object.x, game_object.y)
-                world:pub {"ui_message", "construct_show_remove", nil}
-            end
+    for _, _, _, fluidname in ui_construct_fluidbox_mb:unpack() do
+        local prefab_object
+        for game_object in w:select "construct_entity:in type:in fluid:new" do
+            game_object.fluid = {fluidname} -- 指定 fluidbox 的流体类型
+            prefab_object = igame_object.get_prefab_object(game_object)
+            prefab_object:send("confirm_construct")
+            world:pub {"ui_message", "set_edit_mode", ""} -- 去除流体盒建造模式
         end
     end
 

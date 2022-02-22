@@ -11,6 +11,8 @@ import "@vaststars.ui"
 ------------------------
 -- build-in component
 component "prototype" .type "lua"
+component "type" .type "lua"
+component "fluid" .type "lua" -- 用于指定 gameplay entity 的流体类型
 component "construct_entity" .type "lua" -- table, component
 component "construct_detector" .type "lua" -- string
 component "construct_prefab" .type "lua" -- string

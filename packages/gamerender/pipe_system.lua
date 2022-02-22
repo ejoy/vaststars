@@ -123,15 +123,7 @@ local function create_game_object(typedir, x, y)
     iom.set_rotation(prefab.root, rotators[dir])
 
     prefab.on_ready = function(game_object, prefab)
-        w:sync("prototype:in x:in y:in dir:in", game_object)
-        local gameplay_entity = {
-            x = game_object.x,
-            y = game_object.y,
-            dir = game_object.dir,
-            fluid = {"海水", 0},
-        }
-
-        igameplay_adapter.create_entity(game_object.prototype, gameplay_entity)
+        igameplay_adapter.create_entity(game_object)
     end
 
     local template = {
@@ -351,7 +343,6 @@ function ipipe.dismantle(x, y)
     w:sync("pipe_typedirs:out pipe_entities:out", e)
 
     iconstruct_arrow.hide(construct_arrows)
-    world:pub {"ui_message", "construct_show_remove", nil}
 end
 
 function ipipe.construct(coord_s, coord_d, dir)

@@ -329,7 +329,6 @@ function iroad.dismantle(x, y)
     w:sync("road_typedirs:out road_entities:out", e)
 
     iconstruct_arrow.hide(construct_arrows)
-    world:pub {"ui_message", "construct_show_remove", nil}
 end
 
 function iroad.construct(coord_s, coord_d)
