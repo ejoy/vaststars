@@ -47,8 +47,6 @@ function s.build(world)
         local inChest = ChestMap[packCoord(x + sx, y + sy)]
         local outChest = ChestMap[packCoord(x + ex, y + ey)]
         if inChest and outChest then
-            v.inserter.process = 0
-            v.inserter.status = 0
             v.inserter.input_container = inChest
             v.inserter.output_container = outChest
         else
