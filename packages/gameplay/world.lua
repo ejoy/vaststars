@@ -56,6 +56,7 @@ end
 
 return function ()
     local world = {}
+    local queue = {}
     local ecs = luaecs.world()
     local timer = dofile(package.searchpath("timer", package.path))
     local components = {}
@@ -91,7 +92,9 @@ return function ()
                 end
             end
             obj.description = init.description
-            return ecs:new(obj)
+            queue[#queue+1] = function ()
+                ecs:new(obj)
+            end
         end
     end
 
@@ -104,6 +107,11 @@ return function ()
 
     local buildFunc = pipelineFunc(world, cworld, "build")
     function world:build()
+        local q = queue
+        queue = {}
+        for _, f in ipairs(q) do
+            f()
+        end
         buildFunc()
         ecs:update()
     end
