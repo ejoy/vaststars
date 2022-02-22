@@ -6,6 +6,8 @@ import_package "vaststars.prototype"
 local gameplay = import_package "vaststars.gameplay"
 local create_gameplay_world = gameplay.createWorld
 local set_road_mb = world:sub {"gameplay_adapter_system", "set_road"}
+local ui_get_entity_properties = world:sub {"ui", "GET_DATA", "entity_properties"}
+
 local gameplay_adapter_system = ecs.system "gameplay_adapter_system"
 local igameplay_adapter = ecs.interface "igameplay_adapter"
 
@@ -31,13 +33,65 @@ function gameplay_adapter_system:init_world()
     })
 end
 
-function gameplay_adapter_system:data_changed()
-    local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
-    if not gameplay_adapter then
-        return
+do
+    local function deepcopy(t)
+        local r = {}
+        for k, v in pairs(t) do
+            if type(v) == "table" then
+                r[k] = deepcopy(v)
+            else
+                r[k] = v
+            end
+        end
+        return r
     end
 
-    gameplay_adapter.gameplay_world:update()
+    local function get_entity(x, y)
+        local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in gameplay_road_entities:in")
+        if not gameplay_adapter then
+            return
+        end
+
+        local gameplay_ecs = gameplay_adapter.gameplay_world.ecs
+        for v in gameplay_ecs:select "entity:in" do
+            if v.entity.x == x and v.entity.y == y then
+                local e = deepcopy(gameplay_ecs:readall(v))
+                e[1] = nil
+                e[2] = nil
+                return e
+            end
+        end
+    end
+
+    function gameplay_adapter_system:data_changed()
+        local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
+        if not gameplay_adapter then
+            return
+        end
+
+        local gameplay_world = gameplay_adapter.gameplay_world
+        gameplay_world:update()
+
+        for _, _, _, x, y in ui_get_entity_properties:unpack() do
+            local e = get_entity(x, y)
+            if e then
+                local pt = gameplay.query(e.entity.prototype)
+
+                local t = {}
+                t.name = pt.name
+                if e.fluidbox and e.fluidbox.fluid ~= 0 then
+                    local pt = gameplay.query(e.fluidbox.fluid)
+                    t.fluid_name = pt.name
+
+                    local r = gameplay_world:fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
+                    if r then
+                        t.fluid_volume = r.volume / r.multiple
+                    end
+                end
+                world:pub {"ui_message", "entity_properties", t}
+            end
+        end
+    end
 end
 
 function gameplay_adapter_system:entity_ready()

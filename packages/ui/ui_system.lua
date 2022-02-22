@@ -32,6 +32,14 @@ local function open(url, ...)
 
         world:pub {"rmlui_message", res.event, table.unpack(res.ud)}
     end)
+
+    local init = {...}
+    if #init > 0 then
+        local ud = {}
+        ud.event = "INIT"
+        ud.ud = init
+        w.postMessage(json_encode(ud))
+    end
     windows[url] = w
 end
 
