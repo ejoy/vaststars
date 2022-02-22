@@ -56,7 +56,7 @@ end
 
 return function ()
     local world = {}
-    local queue = {}
+    local needBuild = false
     local ecs = luaecs.world()
     local timer = dofile(package.searchpath("timer", package.path))
     local components = {}
@@ -92,26 +92,27 @@ return function ()
                 end
             end
             obj.description = init.description
-            queue[#queue+1] = function ()
-                ecs:new(obj)
-            end
+            ecs:new(obj)
+            needBuild = true
         end
     end
 
+    function world:remove_entity(v)
+        ecs:remove(v)
+        needBuild = true
+    end
+
     local updateFunc = pipelineFunc(world, cworld, "update")
+    local buildFunc = pipelineFunc(world, cworld, "build")
     function world:update()
+        assert(not needBuild)
         updateFunc()
         timer.update(1)
         ecs:update()
     end
-
-    local buildFunc = pipelineFunc(world, cworld, "build")
     function world:build()
-        local q = queue
-        queue = {}
-        for _, f in ipairs(q) do
-            f()
-        end
+        needBuild = false
+        ecs:update()
         buildFunc()
         ecs:update()
     end
