@@ -7,7 +7,7 @@ local prototype = function(pt, i)
 end
 
 prototype ("指挥中心", {
-    prefab = "prefabs/headquater-1.prefab.prefab",
+    prefab = "prefabs/headquater-1.prefab",
     construct_component = {
         construct_detector = {"exclusive"},
     },

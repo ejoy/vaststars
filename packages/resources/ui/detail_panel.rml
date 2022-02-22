@@ -21,10 +21,9 @@
                 config_property_list = require "config.property_list",
 
                 detail_panel_property_list = {},
-                entity_properties = {},
             }
 
-            ui_sys.addEventListener(start, {"entity_properties"}, {
+            ui_sys.addEventListener(start, {}, {
                 ["leave"] = function()
                     ui_sys.close("detail_panel.rml")
                 end,

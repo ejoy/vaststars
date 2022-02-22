@@ -444,6 +444,10 @@
                              <div class="workbutton-bg" style='background-image:"construct/electric-pole1.png";'/>
                              <div class="tools-button-title">铁制电线杆</div>
                          </button>
+                         <button class="tools-button" data-event-click="clickConstructEntity('指挥中心')">
+                             <div class="workbutton-bg" style='background-image:"construct/headquater.png";'/>
+                             <div class="tools-button-title">指挥中心</div>
+                         </button>
                      </div>
                  </div>
              </div>

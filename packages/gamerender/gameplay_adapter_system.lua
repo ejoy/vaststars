@@ -169,32 +169,55 @@ do
         return false
     end
 
-    -- local init_func = {}
-    -- init_func["fluidboxes"] = function(prototype_info, entity)
-    --     if not prototype_info.recipe then
-    --         log.error(("can not found recipe `%s`"):format(prototype_info.name))
-    --         return entity
-    --     end
-    --     local r = igameplay_adapter.query("recipe", prototype_info.recipe)
-    --     return entity
-    -- end
-    -- init_func["fluidbox"] = function(prototype_info, entity)
-    --     local r = igameplay_adapter.query("recipe", prototype_info.recipe)
-    --     return entity
-    -- end
+    local function isFluidId(id)
+        return id & 0x0C00 == 0x0C00
+    end
 
-    -- local function init(prototype, entity)
-    --     local pi = igameplay_adapter.query("entity", prototype)
-    --     local func
+    local function get_fluid_list(fluidboxes, classify, s)
+        local lst = fluidboxes[classify]
+        assert(lst)
 
-    --     for _, entity_type in ipairs(pi.type) do
-    --         func = init_func[entity_type]
-    --         if func then
-    --             entity = func(pi, entity)
-    --         end
-    --     end
-    --     return entity
-    -- end
+        local r = {}
+        for idx = 1, #s//4 do
+            local id = string.unpack("<I2I2", s, 4*idx-3)
+            if isFluidId(id) then
+                local pt = gameplay.query(id)
+                r[#r + 1] = {pt.name, 0}
+            end
+        end
+        return r
+    end
+
+    local init_func = {}
+    init_func["assembling"] = function(pt, entity)
+        if not pt.recipe then
+            log.error(("can not found recipe `%s`"):format(pt.name))
+            return entity
+        end
+        local r = igameplay_adapter.query("recipe", pt.recipe)
+
+        local output = get_fluid_list(pt.fluidboxes, "output", r.results)
+        if #output > 0 then
+            entity.fluids = {
+                output = output
+            }
+        end
+
+        return entity
+    end
+
+    local function init(prototype, entity)
+        local pt = igameplay_adapter.query("entity", prototype)
+        local func
+
+        for _, entity_type in ipairs(pt.type) do
+            func = init_func[entity_type]
+            if func then
+                entity = func(pt, entity)
+            end
+        end
+        return entity
+    end
 
     function igameplay_adapter.create_entity(game_object)
         w:sync("prototype:in x:in y:in dir:in fluid?in", game_object)
@@ -219,6 +242,7 @@ do
             fluid = game_object.fluid,
         }
 
+        gpentitiy = init(game_object.prototype, gpentitiy)
         create(gpworld, prototype, gpentitiy)
         gpworld:build()
     end
