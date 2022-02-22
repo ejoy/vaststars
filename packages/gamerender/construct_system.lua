@@ -256,7 +256,7 @@ local on_prefab_message ; do
         local position = math3d.tovalue(iom.get_position(prefab.root))
         local srt = prefab.root.scene.srt
 
-        w:sync("construct_detector?in dir:in x:in y:in area:in", game_object)
+        w:sync("construct_detector?in dir:in x:in y:in area:in fluid?in", game_object)
         if game_object.construct_detector then
             local entity = igameplay_adapter.query("entity", game_object.prototype)
             if not check_construct_detector(game_object.construct_detector, position, game_object.dir, entity.area) then
@@ -271,7 +271,7 @@ local on_prefab_message ; do
         if game_object.construct_road then
             iroad.construct(nil, {game_object.x, game_object.y})
         elseif game_object.construct_pipe then
-            ipipe.construct(nil, {game_object.x, game_object.y}, game_object.dir)
+            ipipe.construct(nil, {game_object.x, game_object.y}, game_object.dir, game_object.fluid)
         else
             local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(game_object.construct_prefab))
             iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
@@ -284,6 +284,7 @@ local on_prefab_message ; do
                     y = game_object.y,
                     dir = game_object.dir,
                     area = game_object.area,
+                    fluid = game_object.fluid,
                 }
             }
 
@@ -407,8 +408,8 @@ function construct_sys:data_changed()
 
     for _, _, _, fluidname in ui_construct_fluidbox_mb:unpack() do
         local prefab_object
-        for game_object in w:select "construct_entity:in type:in fluid:new" do
-            game_object.fluid = {fluidname} -- 指定 fluidbox 的流体类型
+        for game_object in w:select "construct_entity:in type:in fluid?new" do
+            game_object.fluid = {fluidname, 0} -- 指定 fluidbox 的流体类型
             prefab_object = igame_object.get_prefab_object(game_object)
             prefab_object:send("confirm_construct")
             world:pub {"ui_message", "set_edit_mode", ""} -- 去除流体盒建造模式

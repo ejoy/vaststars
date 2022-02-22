@@ -115,7 +115,7 @@ local rotators <const> = {
     W = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
 }
 
-local function create_game_object(typedir, x, y)
+local function create_game_object(typedir, x, y, fluid)
     local t = typedir:sub(1, 1)
     local dir = typedir:sub(2, 2)
     local prefab = ecs.create_instance(prefab_file_path:format(t))
@@ -130,6 +130,7 @@ local function create_game_object(typedir, x, y)
         policy = {},
         data = {
             prototype = ("管道1-%s型"):format(type_to_prototype[t]),
+            fluid = fluid,
             x = x,
             y = y,
             dir = dir,
@@ -183,14 +184,14 @@ local function unset(typedirs, x, y, passable_dir)
     typedirs[x][y] = typedir
 end
 
-local function flush(typedirs, entities, x, y)
+local function flush(typedirs, entities, x, y, fluid)
     entities[x] = entities[x] or {}
 
     local game_object = entities[x][y]
     if game_object then
         igame_object.remove_prefab(game_object)
     end
-    entities[x][y] = create_game_object(typedirs[x][y], x, y)
+    entities[x][y] = create_game_object(typedirs[x][y], x, y, fluid)
 end
 
 local funcs = {}
@@ -269,34 +270,58 @@ function pipe_sys:init_world()
     })
 end
 
-function pipe_sys:after_pickup_mapping()
-    if not construct_arrows then
-        return
-    end
-    w:sync("construct_arrows:in", construct_arrows)
-
-    local is_show_arrow
-    for _, _, game_object in pickup_show_set_pipe_arrow_mb:unpack() do
-        local prefab = igame_object.get_prefab_object(game_object)
-        iconstruct_arrow.show(construct_arrows, math3d.tovalue(iom.get_position(prefab.root)))
-        is_show_arrow = true
-    end
-
-    for _ in pickup_mapping_canvas_mb:unpack() do
-        local pos = iinput.get_mouse_world_position()
-        local coord = iterrain.get_coord_by_position(pos)
-        local k = igameplay_adapter.pack_coord(coord[1], coord[2])
-        local v = construct_arrows.construct_arrows[k]
-        if v then
-            ipipe.construct(v.tile_coord, v.arrow_coord)
+do
+    local function get_game_object(coord)
+        local e = w:singleton("pipe_typedirs", "pipe_typedirs:in pipe_entities:in")
+        if not e then
+            log.error("can not found pipe_entities")
+            return
         end
+        local pipe_entities = e.pipe_entities
+
+        if not pipe_entities[coord[1]] or not pipe_entities[coord[1]][coord[2]] then
+            return
+        end
+        
+        return pipe_entities[coord[1]][coord[2]]
     end
 
-    for _ in pickup_mb:unpack() do
-        if not is_show_arrow then
-            iconstruct_arrow.hide(construct_arrows)
+    function pipe_sys:after_pickup_mapping()
+        if not construct_arrows then
+            return
         end
-        break
+        w:sync("construct_arrows:in", construct_arrows)
+
+        local is_show_arrow
+        for _, _, game_object in pickup_show_set_pipe_arrow_mb:unpack() do
+            local prefab = igame_object.get_prefab_object(game_object)
+            iconstruct_arrow.show(construct_arrows, math3d.tovalue(iom.get_position(prefab.root)))
+            is_show_arrow = true
+        end
+
+        for _ in pickup_mapping_canvas_mb:unpack() do
+            local pos = iinput.get_mouse_world_position()
+            local coord = iterrain.get_coord_by_position(pos)
+            local k = igameplay_adapter.pack_coord(coord[1], coord[2])
+            local v = construct_arrows.construct_arrows[k]
+            if v then
+                local game_object = get_game_object(v.tile_coord)
+                if not game_object then
+                    log.error(("can not found entity (%s, %s)"):format(v.tile_coord[1], v.tile_coord[2]))
+                    return
+                end
+
+                w:sync("fluid:in", game_object)
+                ipipe.construct(v.tile_coord, v.arrow_coord, nil, game_object.fluid)
+            end
+        end
+
+        for _ in pickup_mb:unpack() do
+            if not is_show_arrow then
+                iconstruct_arrow.hide(construct_arrows)
+            end
+            break
+        end
     end
 end
 
@@ -345,7 +370,7 @@ function ipipe.dismantle(x, y)
     iconstruct_arrow.hide(construct_arrows)
 end
 
-function ipipe.construct(coord_s, coord_d, dir)
+function ipipe.construct(coord_s, coord_d, dir, fluid)
     local e = w:singleton("pipe_typedirs", "pipe_typedirs:in pipe_entities:in")
     local pipe_entities = e.pipe_entities
     local pipe_typedirs = e.pipe_typedirs
@@ -364,7 +389,7 @@ function ipipe.construct(coord_s, coord_d, dir)
     if not sx and not sy then
         pipe_typedirs[dx] = pipe_typedirs[dx] or {}
         pipe_typedirs[dx][dy] = "O" .. dir
-        flush(pipe_typedirs, pipe_entities, dx, dy)
+        flush(pipe_typedirs, pipe_entities, dx, dy, fluid)
         w:sync("pipe_typedirs:out pipe_entities:out", e)
         return
     end
@@ -382,7 +407,7 @@ function ipipe.construct(coord_s, coord_d, dir)
     end
 
     func(pipe_typedirs, sx, sy, dx, dy)
-    flush(pipe_typedirs, pipe_entities, sx, sy)
-    flush(pipe_typedirs, pipe_entities, dx, dy)
+    flush(pipe_typedirs, pipe_entities, sx, sy, fluid)
+    flush(pipe_typedirs, pipe_entities, dx, dy, fluid)
     w:sync("pipe_typedirs:out pipe_entities:out", e)
 end
