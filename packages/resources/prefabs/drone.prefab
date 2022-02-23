@@ -1,0 +1,74 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Cube.006_P1.meshbin
+  name: Cube.003
+  scene:
+    srt:
+      s: {1.3879286050796509, 0.3469821512699127, 1.3879286050796509}
+      t: {0, 2.025148630142212, 0.07886886596679688}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Plane_P1.meshbin
+  name: Plane.001
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Cube.001_P1.meshbin
+  name: Cube.007
+  scene:
+    srt:
+      s: {1.2804089784622192, 0.3201022446155548, 1.2804089784622192}
+      t: {0, 2.3709356784820557, 0.07886886596679688}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Cube.008_P1.meshbin
+  name: Cube.008
+  scene:
+    srt:
+      s: {2, 0.5, 2}
+      t: {0, 2.3709356784820557, 0.07886886596679688}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Plane.001_P1.meshbin
+  name: Plane.002
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
