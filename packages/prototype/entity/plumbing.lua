@@ -84,7 +84,7 @@ prototype "排水口1" {
 
 prototype "空气过滤器1" {
     type ={"entity", "consumer","assembling","fluidboxes"},
-    area = "3x3",
+    area = "2x2",
     power = "50kW",
     drain = "1.5kW",
     priority = "secondary",
