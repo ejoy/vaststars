@@ -27,7 +27,7 @@ prototype "抽水泵" {
         input = {},
         output = {
             {
-                capacity = 300,
+                capacity = 1200,
                 height = 100,
                 base_level = 150,
                 connections = {
