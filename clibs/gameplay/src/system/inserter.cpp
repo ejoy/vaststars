@@ -182,10 +182,6 @@ tryActive(world& w, inserter& i, entity& e, capacitance& c) {
     }
     c.shortage += drain;
 
-    if (i.input_container == 0xFFFF || i.output_container == 0xFFFF) {
-        return;
-    }
-
     if (i.status == STATUS_IN) {
         if (i.hold_amount == 0) {
             container& input = w.query_container<container>(i.input_container);

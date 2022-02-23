@@ -71,26 +71,28 @@ lupdate(lua_State *L) {
 		f.update();
 	}
 	for (auto& e : w.select<fluidboxes, assembling>()) {
-		fluidboxes& fb = e.get<fluidboxes>();
 		assembling& a = e.get<assembling>();
-		recipe_container& container = w.query_container<recipe_container>(a.container);
-		for (size_t i = 0; i < 4; ++i) {
-			uint16_t fluid = fb.in[i].fluid;
-			if (fluid != 0) {
-				uint8_t index = ((a.fluidbox_in >> (i*4)) & 0xF) - 1;
-				fluidflow::state state;
-				if (w.fluidflows[fluid].query(fb.in[i].id, state)) {
-					container.recipe_set(recipe_container::slot_type::in, index, state.volume / state.multiple);
+		if (a.recipe != 0) {
+			fluidboxes& fb = e.get<fluidboxes>();
+			recipe_container& container = w.query_container<recipe_container>(a.container);
+			for (size_t i = 0; i < 4; ++i) {
+				uint16_t fluid = fb.in[i].fluid;
+				if (fluid != 0) {
+					uint8_t index = ((a.fluidbox_in >> (i*4)) & 0xF) - 1;
+					fluidflow::state state;
+					if (w.fluidflows[fluid].query(fb.in[i].id, state)) {
+						container.recipe_set(recipe_container::slot_type::in, index, state.volume / state.multiple);
+					}
 				}
 			}
-		}
-		for (size_t i = 0; i < 3; ++i) {
-			uint16_t fluid = fb.out[i].fluid;
-			if (fluid != 0) {
-				uint8_t index = ((a.fluidbox_out >> (i*4)) & 0xF) - 1;
-				fluidflow::state state;
-				if (w.fluidflows[fluid].query(fb.out[i].id, state)) {
-					container.recipe_set(recipe_container::slot_type::out, index, state.volume / state.multiple);
+			for (size_t i = 0; i < 3; ++i) {
+				uint16_t fluid = fb.out[i].fluid;
+				if (fluid != 0) {
+					uint8_t index = ((a.fluidbox_out >> (i*4)) & 0xF) - 1;
+					fluidflow::state state;
+					if (w.fluidflows[fluid].query(fb.out[i].id, state)) {
+						container.recipe_set(recipe_container::slot_type::out, index, state.volume / state.multiple);
+					}
 				}
 			}
 		}
