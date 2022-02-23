@@ -70,6 +70,9 @@ component "fluidboxes" {
 component "pump" {
 }
 
+component "mining" {
+}
+
 component "road" {
     "road_type:word",
     "coord:word",
