@@ -176,7 +176,7 @@ local function dump_item()
     local ecs = world.ecs
     for v in ecs:select "chest:in" do
         for i = 1, 10 do
-            local c, n = world:container_at(v.chest.container, i)
+            local c, n = world:container_get(v.chest.container, i)
             if c then
                 print(gameplay.query(c).name, n)
             else

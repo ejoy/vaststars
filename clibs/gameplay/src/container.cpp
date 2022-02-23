@@ -8,9 +8,6 @@ extern "C" {
 #include "prototype.h"
 }
 
-#define NO_ITEM   0x00000
-#define ANY_ITEM  0x10001
-
 static bool isFluidId(uint16_t id) {
     return (id & 0x0C00) == 0x0C00;
 }
@@ -21,20 +18,21 @@ chest_container::chest_container(uint16_t size)
     , size(size)
 {}
 
-container::item chest_container::at(uint16_t index) {
+container::item chest_container::get(uint16_t index) {
     if (index >= slots.size()) {
         return {0,0};
     }
     return slots[index];
 }
 
-uint32_t chest_container::inserter_need() {
-    if (used >= size) {
-        return NO_ITEM;
+bool chest_container::set(uint16_t index, item item) {
+    if (index >= slots.size()) {
+        return false;
     }
-    return ANY_ITEM;
+    slots[index] = item;
+    return true;
 }
-
+ 
 void chest_container::sort(size_t index, uint16_t newvalue) {
     uint16_t value = slots[index].amount;
     if (newvalue == 0) {
@@ -91,52 +89,6 @@ size_t chest_container::find(uint16_t item) {
     return -1;
 }
 
-container::item chest_container::inserter_pickup_any(world& w, uint16_t max) {
-    if (slots.size() == 0) {
-        return {0,0};
-    }
-    auto& s = slots[0];
-    uint16_t r = std::min(s.amount, max);
-    uint16_t newvalue = s.amount - r;
-    resize(w, s.item, s.amount, newvalue);
-    sort(0, newvalue);
-    return {s.item, r};
-}
-
-uint16_t chest_container::inserter_pickup(world& w, uint16_t item, uint16_t max) {
-    size_t pos = find(item);
-    if (pos == (size_t)-1) {
-        return 0;
-    }
-    auto& s = slots[pos];
-    uint16_t r = std::min(s.amount, max);
-    uint16_t newvalue = s.amount - r;
-    resize(w, s.item, s.amount, newvalue);
-    sort(pos, newvalue);
-    return r;
-}
-
-bool chest_container::inserter_place(world& w, uint16_t item, uint16_t amount) {
-    size_t pos = find(item);
-    if (pos == (size_t)-1) {
-        if (used >= size) {
-            return false;
-        }
-        if (!resize(w, item, 0, amount)) {
-            return false;
-        }
-        slots.push_back(slot {item, 0});
-        sort(slots.size()-1, amount);
-        return true;
-    }
-    uint16_t newvalue = slots[pos].amount + amount;
-    if (!resize(w, slots[pos].item, slots[pos].amount, newvalue)) {
-        return false;
-    }
-    sort(pos, newvalue);
-    return true;
-}
-
 recipe_container::recipe_container(item_array in, item_array out)
     : inslots(in.size())
     , outslots(out.size())
@@ -153,7 +105,7 @@ recipe_container::recipe_container(item_array in, item_array out)
     }
 }
 
-container::item recipe_container::at(uint16_t index) {
+container::item recipe_container::get(uint16_t index) {
     if (index < inslots.size()) {
         return inslots[index];
     }
@@ -163,51 +115,22 @@ container::item recipe_container::at(uint16_t index) {
     return {0,0};
 }
 
-uint32_t recipe_container::inserter_need() {
-    for (auto& s : outslots) {
-        if (s.amount >= s.limit) {
-            return NO_ITEM;
+bool recipe_container::set(uint16_t index, item item) {
+    if (index < inslots.size()) {
+        auto& v = inslots[index];
+        if (v.item != item.item) {
+            return false;
         }
+        v.amount = item.amount;
+        return true;
     }
-    for (auto& s : inslots) {
-        if (s.amount < s.limit) {
-            return s.item;
+    if (index < inslots.size() + outslots.size()) {
+        auto& v = outslots[index-inslots.size()];
+        if (v.item != item.item) {
+            return false;
         }
-    }
-    return NO_ITEM;
-}
-
-container::item recipe_container::inserter_pickup_any(world& w, uint16_t max) {
-    for (auto& s : outslots) {
-        if (s.amount != 0) {
-            uint16_t r = std::min(s.amount, max);
-            s.amount -= r;
-            return {s.item, r};
-        }
-    }
-    return {0,0};
-}
-
-uint16_t recipe_container::inserter_pickup(world& w, uint16_t item, uint16_t max) {
-    for (auto& s : outslots) {
-        if (s.item == item) {
-            uint16_t r = std::min(s.amount, max);
-            s.amount -= r;
-            return r;
-        }
-    }
-    return 0;
-}
-
-bool recipe_container::inserter_place(world& w, uint16_t item, uint16_t amount) {
-    for (auto& s : inslots) {
-        if (s.item == item) {
-            if (amount + s.amount > s.limit) {
-                return false;
-            }
-            s.amount += amount;
-            return true;
-        }
+        v.amount = item.amount;
+        return true;
     }
     return false;
 }
@@ -273,21 +196,6 @@ bool recipe_container::recipe_set(slot_type type, uint16_t index, uint16_t value
     return false;
 }
 
-container::item container::inserter_pickup(world& w, container& need, uint16_t max) {
-    uint32_t item = need.inserter_need();
-    if (item == NO_ITEM) {
-        return {0, 0};
-    }
-    if (item == ANY_ITEM) {
-        return inserter_pickup_any(w, max);
-    }
-    uint16_t amount = inserter_pickup(w, (uint16_t)item, max);
-    if (amount == 0) {
-        return {0, 0};
-    }
-    return {(uint16_t)item, amount};
-}
-
 static container::item_array read_table(lua_State* L, int idx) {
     size_t sz = 0;
     container::item* p = (container::item*)luaL_checklstring(L, idx, &sz);
@@ -320,47 +228,31 @@ lcreate(lua_State* L) {
 }
 
 static int
-lpickup(lua_State* L) {
-    world& w = *(world *)lua_touserdata(L, 1);
-    uint16_t id = (uint16_t)luaL_checkinteger(L, 2);
-    uint16_t need = (uint16_t)luaL_checkinteger(L, 3);
-    uint16_t max = (uint16_t)luaL_checkinteger(L, 4);
-    container& c = w.query_container<container>(id);
-    container& n = w.query_container<container>(need);
-    auto r = c.inserter_pickup(w, n, max);
-    if (r.amount == 0) {
-        return 0;
-    }
-    lua_pushinteger(L, r.item);
-    lua_pushinteger(L, r.amount);
-    return 2;
-}
-
-static int
-lplace(lua_State* L) {
-    world& w = *(world *)lua_touserdata(L, 1);
-    uint16_t id = (uint16_t)luaL_checkinteger(L, 2);
-    uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
-    uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);
-    container& c = w.query_container<container>(id);
-    bool ok = c.inserter_place(w, item, amount);
-    lua_pushboolean(L, ok);
-    return 1;
-}
-
-static int
-lat(lua_State* L) {
+lget(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
     uint16_t id = (uint16_t)luaL_checkinteger(L, 2);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 3);
     container& c = w.query_container<container>(id);
-    auto r = c.at(index-1);
+    auto r = c.get(index-1);
     if (r.amount == 0) {
         return 0;
     }
     lua_pushinteger(L, r.item);
     lua_pushinteger(L, r.amount);
     return 2;
+}
+
+static int
+lset(lua_State* L) {
+    world& w = *(world *)lua_touserdata(L, 1);
+    uint16_t id = (uint16_t)luaL_checkinteger(L, 2);
+    uint16_t index = (uint16_t)luaL_checkinteger(L, 3);
+    uint16_t item = (uint16_t)luaL_checkinteger(L, 4);
+    uint16_t amount = (uint16_t)luaL_checkinteger(L, 5);
+    container& c = w.query_container<container>(id);
+    auto ok = c.set(index-1, {item, amount});
+    lua_pushboolean(L, ok);
+    return 1;
 }
 
 extern "C" int
@@ -368,9 +260,8 @@ luaopen_vaststars_container_core(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
 		{ "create", lcreate },
-		{ "pickup", lpickup },
-		{ "place", lplace },
-		{ "at", lat },
+		{ "get", lget },
+		{ "set", lset },
 		{ NULL, NULL },
 	};
 	luaL_newlib(L, l);

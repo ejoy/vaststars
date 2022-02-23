@@ -13,11 +13,161 @@ extern "C" {
 
 #define STATUS_DONE 0
 
+#define NO_ITEM   0x00000
+#define ANY_ITEM  0x10001
+#define CONTAINER_TYPE_CHEST  0
+#define CONTAINER_TYPE_RECIPE 1
+
 std::list<int> waiting;
+
+static container::item
+pickup(world& w, chest_container& input, uint16_t max) {
+    if (input.slots.size() == 0) {
+        return {0,0};
+    }
+    auto& s = input.slots[0];
+    uint16_t r = std::min(s.amount, max);
+    uint16_t newvalue = s.amount - r;
+    input.resize(w, s.item, s.amount, newvalue);
+    input.sort(0, newvalue);
+    return {s.item, r};
+}
+
+static container::item
+pickup(world& w, recipe_container& input, uint16_t max) {
+    for (auto& s : input.outslots) {
+        if (s.amount != 0) {
+            uint16_t r = std::min(s.amount, max);
+            s.amount -= r;
+            return {s.item, r};
+        }
+    }
+    return {0,0};
+}
+
+static container::item
+pickup(world& w, container& input, uint16_t max) {
+    if (input.type() == CONTAINER_TYPE_CHEST) {
+        return pickup(w, (chest_container&)input, max);
+    }
+    return pickup(w, (recipe_container&)input, max);
+}
+
+static container::item
+pickup(world& w, container& input, chest_container& output, uint16_t max) {
+    if (output.used >= output.size) {
+        return {0, 0};
+    }
+    return pickup(w, input, max);
+}
+
+static uint16_t
+pickup(world& w, chest_container& input, uint16_t item, uint16_t max) {
+    size_t pos = input.find(item);
+    if (pos == (size_t)-1) {
+        return 0;
+    }
+    auto& s = input.slots[pos];
+    uint16_t r = std::min(s.amount, max);
+    uint16_t newvalue = s.amount - r;
+    input.resize(w, s.item, s.amount, newvalue);
+    input.sort(pos, newvalue);
+    return r;
+}
+
+static uint16_t
+pickup(world& w, recipe_container& input, uint16_t item, uint16_t max) {
+    for (auto& s : input.outslots) {
+        if (s.item == item) {
+            uint16_t r = std::min(s.amount, max);
+            s.amount -= r;
+            return r;
+        }
+    }
+    return 0;
+}
+
+static uint16_t
+pickup(world& w, container& input, uint16_t item, uint16_t max) {
+    if (input.type() == CONTAINER_TYPE_CHEST) {
+        return pickup(w, (chest_container&)input, item, max);
+    }
+    return pickup(w, (recipe_container&)input, item, max);
+}
+
+static container::item
+pickup(world& w, container& input, recipe_container& output, uint16_t max) {
+    for (auto& s : output.outslots) {
+        if (s.amount >= s.limit) {
+            return {0, 0};
+        }
+    }
+    for (auto& s : output.inslots) {
+        if (s.amount < s.limit) {
+            uint16_t amount = pickup(w, input, s.item, max);
+            if (amount != 0) {
+                return {s.item, amount};
+            }
+        }
+    }
+    return {0, 0};
+}
+
+static container::item
+pickup(world& w, container& input, container& output, uint16_t max) {
+    if (output.type() == CONTAINER_TYPE_CHEST) {
+        return pickup(w, input, (chest_container&)output, max);
+    }
+    return pickup(w, input, (recipe_container&)output, max);
+}
 
 static void
 wait(int index) {
     waiting.push_back(index);
+}
+
+static bool
+place(world& w, chest_container& output, uint16_t item, uint16_t amount) {
+    size_t pos = output.find(item);
+    if (pos == (size_t)-1) {
+        if (output.used >= output.size) {
+            return false;
+        }
+        if (!output.resize(w, item, 0, amount)) {
+            return false;
+        }
+        output.slots.push_back(chest_container::slot {item, 0});
+        output.sort(output.slots.size()-1, amount);
+        return true;
+    }
+    uint16_t newvalue = output.slots[pos].amount + amount;
+    if (!output.resize(w, output.slots[pos].item, output.slots[pos].amount, newvalue)) {
+        return false;
+    }
+    output.sort(pos, newvalue);
+    return true;
+}
+
+static bool
+place(world& w, recipe_container& output, uint16_t item, uint16_t amount) {
+    for (auto& s : output.inslots) {
+        if (s.item == item) {
+            if (amount + s.amount > s.limit) {
+                return false;
+            }
+            s.amount += amount;
+            return true;
+        }
+    }
+    return false;
+}
+
+static bool
+place(world& w, container& output, uint16_t item, uint16_t amount) {
+    if (output.type() == CONTAINER_TYPE_CHEST) {
+        return place(w, (chest_container&)output, item, amount);
+    }
+    return place(w, (recipe_container&)output, item, amount);
 }
 
 static bool
@@ -32,11 +182,15 @@ tryActive(world& w, inserter& i, entity& e, capacitance& c) {
     }
     c.shortage += drain;
 
+    if (i.input_container == 0xFFFF || i.output_container == 0xFFFF) {
+        return;
+    }
+
     if (i.status == STATUS_IN) {
         if (i.hold_amount == 0) {
             container& input = w.query_container<container>(i.input_container);
             container& output = w.query_container<container>(i.output_container);
-            auto r = input.inserter_pickup(w, output, 1);
+            auto r = pickup(w, input, output, 1);
             if (r.amount == 0) {
                 return false;
             }
@@ -48,7 +202,7 @@ tryActive(world& w, inserter& i, entity& e, capacitance& c) {
     else {
         if (i.hold_amount != 0) {
             container& output = w.query_container<container>(i.output_container);
-            if (!output.inserter_place(w, i.hold_item, i.hold_amount)) {
+            if (!place(w, output, i.hold_item, i.hold_amount)) {
                 return false;
             }
             i.hold_item = 0;
