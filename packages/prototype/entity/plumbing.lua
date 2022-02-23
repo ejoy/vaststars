@@ -97,7 +97,7 @@ prototype "空气过滤器1" {
                 height = 200,
                 base_level = 150,
                 connections = {
-                    {type="output", position={1,2,"S"}},
+                    {type="output", position={0,1,"S"}},
                 }
             }
         },
