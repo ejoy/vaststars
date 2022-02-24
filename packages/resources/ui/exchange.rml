@@ -423,8 +423,7 @@
                 </div>
             </div>
             <div class="panel">
-                <div class="header">
-                </div>
+                <div class="header"/>
                 <div class="item-container">
                     <div class="row" style="width: 100%;">
                         <button class="item">
