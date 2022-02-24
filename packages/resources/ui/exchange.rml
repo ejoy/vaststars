@@ -267,8 +267,13 @@
                     {id=122, icon0="correct.png", icon1="correct.png"},
                     {id=123, icon0="correct.png", icon1="correct.png"},
                     {id=124, icon0="correct.png", icon1="correct.png"},
+                    {id=125, icon0="correct.png", icon1="correct.png"},
+                    {id=126, icon0="correct.png", icon1="correct.png"},
+                    {id=127, icon0="correct.png", icon1="correct.png"},
+                    {id=128, icon0="correct.png", icon1="correct.png"},
+                    {id=129, icon0="correct.png", icon1="correct.png"},
                 },
-                item_size = 120,
+                item_size = 90,
                 view_items = {},
                 virtual_pages = {},
                 current_page = 0,
@@ -295,7 +300,7 @@
             }
             local pageclass = require "page"
             -- window size : 1336 750
-            local page_proxy = pageclass.create({510, 360}, start)
+            local page_proxy = pageclass.create({540, 490}, start)
             function start.pagemousedown(event)
                 console.log("pagemousedown")
                 page_proxy:on_mousedown(event)
@@ -345,7 +350,7 @@
                                     <div class="item-count">99</div>                          
                                     <div class="item-title">机器爪</div>
                                 </button>
-                                <div>{{it.data.id}}</div>
+                                <!--<div>{{it.data.id}}</div>-->
                             </div>
                         </div>
                     </div>

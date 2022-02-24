@@ -304,35 +304,21 @@
                     {id=122, icon0="correct.png", icon1="correct.png"},
                     {id=123, icon0="correct.png", icon1="correct.png"},
                     {id=124, icon0="correct.png", icon1="correct.png"},
+                    {id=125, icon0="correct.png", icon1="correct.png"},
+                    {id=126, icon0="correct.png", icon1="correct.png"},
+                    {id=127, icon0="correct.png", icon1="correct.png"},
+                    {id=128, icon0="correct.png", icon1="correct.png"},
+                    {id=129, icon0="correct.png", icon1="correct.png"},
                 },
-                item_size = 120,
+                item_size = 90,
                 view_items = {},
                 virtual_pages = {},
                 current_page = 0,
                 selected_id = 100,
-                item_list = {
-                    {id=100, icon0="correct.png", icon1="correct.png"},
-                    {id=101, icon0="correct.png", icon1="correct.png"},
-                    {id=102, icon0="correct.png", icon1="correct.png"},
-                    {id=103, icon0="correct.png", icon1="correct.png"},
-                    {id=104, icon0="correct.png", icon1="correct.png"},
-                    {id=105, icon0="correct.png", icon1="correct.png"},
-                    {id=106, icon0="correct.png", icon1="correct.png"},
-                    {id=107, icon0="correct.png", icon1="correct.png"},
-                    {id=108, icon0="correct.png", icon1="correct.png"},
-                    {id=109, icon0="correct.png", icon1="correct.png"},
-                    {id=110, icon0="correct.png", icon1="correct.png"},
-                    {id=111, icon0="correct.png", icon1="correct.png"},
-                    {id=112, icon0="correct.png", icon1="correct.png"},
-                    {id=113, icon0="correct.png", icon1="correct.png"},
-                    {id=114, icon0="correct.png", icon1="correct.png"},
-                    {id=115, icon0="correct.png", icon1="correct.png"},
-                    {id=116, icon0="correct.png", icon1="correct.png"},
-                },
             }
             local pageclass = require "page"
             -- window size : 1336 750
-            local page_proxy = pageclass.create({510, 360}, start)
+            local page_proxy = pageclass.create({540, 490}, start)
             function start.pagemousedown(event)
                 console.log("pagemousedown")
                 page_proxy:on_mousedown(event)
@@ -382,7 +368,7 @@
                                     <div class="item-count">99</div>                          
                                     <div class="item-title">机器爪</div>
                                 </button>
-                                <div>{{it.data.id}}</div>
+                                <!--<div>{{it.data.id}}</div>-->
                             </div>
                         </div>
                     </div>
