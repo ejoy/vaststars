@@ -1,13 +1,9 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
+local vector2 = require "vector2"
 
---[[
-            (0, -1):270
-(-1, 0):180             (1, 0):0
-            (0, 1):90
---]]
-local arrow_coord_offset = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}}
+local arrow_coord_offset = {vector2.RIGHT, vector2.DOWN, vector2.LEFT, vector2.UP}
 local arrow_rotation = {math.rad(0), math.rad(90.0), math.rad(180.0), math.rad(270.0)}
 
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"

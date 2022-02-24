@@ -1,8 +1,5 @@
---[[
-                        North:(y - 1):(0, -1)
-West:(x - 1):(-1, 0)                             East:(x + 1):(1, 0)
-                        South:(y + 1):(0, 1)
---]]
+local vector2 = require "vector2"
+
 local North <const> = 0
 local East  <const> = 1
 local South <const> = 2
@@ -27,10 +24,10 @@ end
 
 do
     local offset <const> = {
-        N = {0, -1},
-        S = {0,  1},
-        W = {-1, 0},
-        E = {1,  0},
+        N = vector2.UP,
+        S = vector2.DOWN,
+        W = vector2.RIGHT,
+        E = vector2.LEFT,
     }
 
     function m.offset_of_entry(dir)

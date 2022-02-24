@@ -2,8 +2,8 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local utility = import_package "vaststars.utility"
-local dir_offset_of_entry = utility.dir.offset_of_entry
+local dir = require "dir"
+local dir_offset_of_entry = dir.offset_of_entry
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
 

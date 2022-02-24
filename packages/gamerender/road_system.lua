@@ -12,25 +12,20 @@ local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
 local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
 local iinput = ecs.import.interface "vaststars.input|iinput"
-local pickup_mapping_canvas_mb = world:sub {"pickup_mapping", "canvas"}
+local vector2 = require "vector2"
 
 local road_sys = ecs.system "road_system"
 local iroad = ecs.interface "iroad"
 local pickup_show_set_road_arrow_mb = world:sub {"pickup_mapping", "pickup_show_set_road_arrow"}
 local ui_remove_message_mb = world:sub {"ui", "construct", "click_construct_remove"}
 local pickup_mb = world:sub {"pickup"}
+local pickup_mapping_canvas_mb = world:sub {"pickup_mapping", "canvas"}
 local construct_arrows
 
---[[
-                        North:(y - 1):(0, -1)
-West:(x - 1):(-1, 0)                             East:(x + 1):(1, 0)
-                        South:(y + 1):(0, 1)
---]]
 local North <const> = 0
 local East  <const> = 1
 local South <const> = 2
 local West  <const> = 3
-
 local DIRECTION <const> = {
     N = 0,
     E = 1,
@@ -201,25 +196,18 @@ funcs[South] = function(typedirs, sx, sy, dx, dy)
 end
 
 local get_dir, dir_to_coord ; do
-    local accel = {
-        [-1] = {
-            [0] = West,
-        },
-        [0] = {
-            [-1] = North,
-            [1] = South,
-        },
-        [1] = {
-            [0] = East,
-        },
+    local dir_accel = {
+        [North] = vector2.UP,
+        [East] = vector2.RIGHT,
+        [South] = vector2.DOWN,
+        [West] = vector2.LEFT,
     }
 
-    local dir_accel = {
-        [North] = {0, -1},
-        [East] = {1, 0},
-        [South] = {0, 1},
-        [West] = {-1, 0},
-    }
+    local accel = {}
+    for dir, v in pairs(dir_accel) do
+        accel[v[1]] = accel[v[1]] or {}
+        accel[v[1]][v[2]] = dir
+    end
 
     function get_dir(sx, sy, dx, dy)
         if not accel[dx - sx] then

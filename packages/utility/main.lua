@@ -19,6 +19,5 @@ function m.ray_hit_plane(ray, plane_info)
 end
 
 m.queue = require "queue"
-m.dir = require "dir"
 m.deepcopy = require "deepcopy"
 return m

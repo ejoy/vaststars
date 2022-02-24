@@ -25,9 +25,9 @@ local mc = mathpkg.constant
 local entities_cfg = import_package "vaststars.config".entity
 local backers_cfg = import_package "vaststars.config".backers
 local fluid_list_cfg = import_package "vaststars.config".fluid_list
-local utility = import_package "vaststars.utility"
-local dir_rotate = utility.dir.rotate
-local dir_offset_of_entry = utility.dir.offset_of_entry
+local dir = require "dir"
+local dir_rotate = dir.rotate
+local dir_offset_of_entry = dir.offset_of_entry
 
 local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
