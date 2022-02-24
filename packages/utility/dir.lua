@@ -1,7 +1,7 @@
 --[[
-                        North:(y + 1):(0, 1)
+                        North:(y - 1):(0, -1)
 West:(x - 1):(-1, 0)                             East:(x + 1):(1, 0)
-                        South:(y - 1):(0, -1)
+                        South:(y + 1):(0, 1)
 --]]
 local North <const> = 0
 local East  <const> = 1
@@ -29,8 +29,8 @@ do
     local offset <const> = {
         N = {0, -1},
         S = {0,  1},
-        W = {1, 0},
-        E = {-1,  0},
+        W = {-1, 0},
+        E = {1,  0},
     }
 
     function m.offset_of_entry(dir)

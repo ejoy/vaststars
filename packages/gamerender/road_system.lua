@@ -22,9 +22,9 @@ local pickup_mb = world:sub {"pickup"}
 local construct_arrows
 
 --[[
-                        North:(y + 1):(0, 1)
+                        North:(y - 1):(0, -1)
 West:(x - 1):(-1, 0)                             East:(x + 1):(1, 0)
-                        South:(y - 1):(0, -1)
+                        South:(y + 1):(0, 1)
 --]]
 local North <const> = 0
 local East  <const> = 1
@@ -191,13 +191,13 @@ funcs[East] = function(typedirs, sx, sy, dx, dy)
 end
 
 funcs[North] = function(typedirs, sx, sy, dx, dy)
-    set(typedirs, sx, sy, South)
-    set(typedirs, dx, dy, North)
+    set(typedirs, sx, sy, North)
+    set(typedirs, dx, dy, South)
 end
 
 funcs[South] = function(typedirs, sx, sy, dx, dy)
-    set(typedirs, sx, sy, North)
-    set(typedirs, dx, dy, South)
+    set(typedirs, sx, sy, South)
+    set(typedirs, dx, dy, North)
 end
 
 local get_dir, dir_to_coord ; do
@@ -215,9 +215,9 @@ local get_dir, dir_to_coord ; do
     }
 
     local dir_accel = {
-        [North] = {0, 1},
+        [North] = {0, -1},
         [East] = {1, 0},
-        [South] = {0, -1},
+        [South] = {0, 1},
         [West] = {-1, 0},
     }
 

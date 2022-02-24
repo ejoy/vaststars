@@ -39,6 +39,7 @@ local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_sys = ecs.system "construct_system"
 local pickup_mapping_canvas_mb = world:sub {"pickup_mapping", "canvas"}
 local pickup_mb = world:sub {"pickup"}
+local vector2 = require "vector2"
 
 local get_fluid_catagory; do
     local function is_type(prototype, t)
@@ -142,11 +143,16 @@ local show_construct_button, hide_construct_button; do
         return false
     end
 
+    local UP_LEFT <const> = vector2.UP_LEFT
+    local UP_RIGHT <const> = vector2.UP_RIGHT
+    local DOWN <const> = vector2.DOWN
+    local RIGHT <const> = vector2.RIGHT
+
     local coord_offset = {
         {
             name = "confirm.png",
             coord_func = function(x, y, area)
-                return x - 1, y + 1
+                return x + UP_LEFT[1], y + UP_LEFT[2]
             end,
             event = function()
                 local prefab_object
@@ -164,7 +170,7 @@ local show_construct_button, hide_construct_button; do
             name = "cancel.png",
             coord_func = function(x, y, area)
                 local width = igameplay_adapter.unpack_coord(area)
-                return x + width, y + 1
+                return x + UP_RIGHT[1] * width, y + UP_RIGHT[2]
             end,
             event = function()
                 local prefab_object
@@ -179,20 +185,23 @@ local show_construct_button, hide_construct_button; do
             name = "rotate.png",
             coord_func = function(x, y, area)
                 local dx, dy
-                local width = igameplay_adapter.unpack_coord(area)
+                local width, height = igameplay_adapter.unpack_coord(area)
                 -- 针对建筑宽度大于 1 的特殊处理
                 if width > 1 then
                     if width % 1 == 0 then
-                        dx = x + (width // 2)
-                        dy = y - 1
-                        return dx, dy
+                        x = x + RIGHT[1] * ((width - 1) // 2)
+                        y = y + DOWN[2]
+                        dx = x + RIGHT[1]
+                        dy = y + RIGHT[2]
+                        return x, y, dx, dy
                     else
-                        dx = x - (width // 2) + 2
-                        dy = y - 1
+                        dx = x + RIGHT[1] * (width // 2)
+                        dy = y + DOWN[2]
                         return dx, dy
                     end
+                else
+                    return x + DOWN[1], y + DOWN[2]
                 end
-                return x, y - 1
             end,
             event = function()
                 local prefab_object

@@ -70,7 +70,14 @@ do
         end
 
         local gameplay_world = gameplay_adapter.gameplay_world
+        local gameplay_ecs = gameplay_adapter.gameplay_world.ecs
+
         gameplay_world:update()
+
+        -- 科技中心发电
+        for v in gameplay_ecs:select "generator capacitance:out" do
+            v.capacitance.shortage = 0
+        end
 
         for _, _, _, x, y in ui_get_entity_properties:unpack() do
             local e = get_entity(x, y)
@@ -153,22 +160,6 @@ do
         return create_entity_cache[prototype](entity)
     end
 
-    local function has_entity(x, y)
-        local e = w:singleton("gameplay_world", "gameplay_world:in")
-        if not e then
-            log.error("failed to get gameplay_world")
-            return false
-        end
-
-        local gameplay_ecs = e.gameplay_world.ecs
-        for e in gameplay_ecs:select "entity:in" do
-            if x == e.entity.x and e.entity.y == y then
-                return true
-            end
-        end
-        return false
-    end
-
     local function isFluidId(id)
         return id & 0x0C00 == 0x0C00
     end
@@ -222,11 +213,6 @@ do
     function igameplay_adapter.create_entity(game_object)
         w:sync("prototype:in x:in y:in dir:in fluid?in", game_object)
 
-        if has_entity(game_object.x, game_object.y) then
-            log.error(("already create entity(%s, %s)"):format(game_object.x, game_object.y))
-            return
-        end
-
         local e = w:singleton("gameplay_world", "gameplay_world:in")
         if not e then
             log.error("failed to create entity")
@@ -242,7 +228,7 @@ do
             fluid = game_object.fluid,
         }
 
-        gpentitiy = init(game_object.prototype, gpentitiy)
+        gpentitiy = init(prototype, gpentitiy)
         create(gpworld, prototype, gpentitiy)
         gpworld:build()
     end

@@ -13,10 +13,8 @@ data:
   mesh: /pkg/vaststars.resources/glb/pipe/pipe_O.glb|meshes/zhuti.006_P1.meshbin
   name: zhuti.O
   scene:
-    srt:
-      r: {0, -0.7071068286895752, 0, -0.7071068286895752}
+    srt: {}
 mount: 1
 policy:
   ant.general|name
   ant.render|render
-  ant.scene|scene_object

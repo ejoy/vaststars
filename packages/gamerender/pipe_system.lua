@@ -22,9 +22,9 @@ local pickup_mb = world:sub {"pickup"}
 local construct_arrows
 
 --[[
-                        North:(y + 1):(0, 1)
+                        North:(y - 1):(0, -1)
 West:(x - 1):(-1, 0)                             East:(x + 1):(1, 0)
-                        South:(y - 1):(0, -1)
+                        South:(y + 1):(0, 1)
 --]]
 local North <const> = 0
 local East  <const> = 1
@@ -115,7 +115,7 @@ local rotators <const> = {
     W = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
 }
 
-local function create_game_object(typedir, x, y, fluid, create_gameplay_entity)
+local function create_game_object(typedir, x, y, fluid)
     local t = typedir:sub(1, 1)
     local dir = typedir:sub(2, 2)
     local prefab = ecs.create_instance(prefab_file_path:format(t))
@@ -123,9 +123,7 @@ local function create_game_object(typedir, x, y, fluid, create_gameplay_entity)
     iom.set_rotation(prefab.root, rotators[dir])
 
     prefab.on_ready = function(game_object, prefab)
-        if create_gameplay_entity then
-            igameplay_adapter.create_entity(game_object)
-        end
+        igameplay_adapter.create_entity(game_object)
     end
 
     local template = {
@@ -189,13 +187,13 @@ end
 local function flush(typedirs, entities, x, y, fluid)
     entities[x] = entities[x] or {}
 
-    local create_gameplay_entity = true
     local game_object = entities[x][y]
     if game_object then
-        create_gameplay_entity = false
         igame_object.remove_prefab(game_object)
+        w:sync("x:in y:in", game_object)
+        igameplay_adapter.remove_entity(game_object.x, game_object.y)
     end
-    entities[x][y] = create_game_object(typedirs[x][y], x, y, fluid, create_gameplay_entity)
+    entities[x][y] = create_game_object(typedirs[x][y], x, y, fluid)
 end
 
 local funcs = {}
@@ -210,13 +208,13 @@ funcs[East] = function(typedirs, sx, sy, dx, dy)
 end
 
 funcs[North] = function(typedirs, sx, sy, dx, dy)
-    set(typedirs, sx, sy, South)
-    set(typedirs, dx, dy, North)
+    set(typedirs, sx, sy, North)
+    set(typedirs, dx, dy, South)
 end
 
 funcs[South] = function(typedirs, sx, sy, dx, dy)
-    set(typedirs, sx, sy, North)
-    set(typedirs, dx, dy, South)
+    set(typedirs, sx, sy, South)
+    set(typedirs, dx, dy, North)
 end
 
 local get_dir, dir_to_coord ; do
@@ -234,9 +232,9 @@ local get_dir, dir_to_coord ; do
     }
 
     local dir_accel = {
-        [North] = {0, 1},
+        [North] = {0, -1},
         [East] = {1, 0},
-        [South] = {0, -1},
+        [South] = {0, 1},
         [West] = {-1, 0},
     }
 
