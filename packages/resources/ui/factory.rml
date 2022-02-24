@@ -344,37 +344,90 @@
             }
 
         </style>
-        <script type="text/x-lua" >s
+        <script type="text/x-lua" >
+            console.log("before createModel")
             local start = window.createModel "start" {
-                show_work = false
-                --workName = {"加工", "化工", "电力", "物流", "计算机", "自定义"}
-
-                work_id = 1,
-                road_list = {{id=1}}
+                items = {
+                    {id=100, icon0="correct.png", icon1="correct.png"},
+                    {id=101, icon0="correct.png", icon1="correct.png"},
+                    {id=102, icon0="correct.png", icon1="correct.png"},
+                    {id=103, icon0="correct.png", icon1="correct.png"},
+                    {id=104, icon0="correct.png", icon1="correct.png"},
+                    {id=105, icon0="correct.png", icon1="correct.png"},
+                    {id=106, icon0="correct.png", icon1="correct.png"},
+                    {id=107, icon0="correct.png", icon1="correct.png"},
+                    {id=108, icon0="correct.png", icon1="correct.png"},
+                    {id=109, icon0="correct.png", icon1="correct.png"},
+                    {id=110, icon0="correct.png", icon1="correct.png"},
+                    {id=111, icon0="correct.png", icon1="correct.png"},
+                    {id=112, icon0="correct.png", icon1="correct.png"},
+                    {id=113, icon0="correct.png", icon1="correct.png"},
+                    {id=114, icon0="correct.png", icon1="correct.png"},
+                    {id=115, icon0="correct.png", icon1="correct.png"},
+                    {id=116, icon0="correct.png", icon1="correct.png"},
+                    {id=117, icon0="correct.png", icon1="correct.png"},
+                    {id=118, icon0="correct.png", icon1="correct.png"},
+                    {id=119, icon0="correct.png", icon1="correct.png"},
+                    {id=120, icon0="correct.png", icon1="correct.png"},
+                    {id=121, icon0="correct.png", icon1="correct.png"},
+                    {id=122, icon0="correct.png", icon1="correct.png"},
+                    {id=123, icon0="correct.png", icon1="correct.png"},
+                    {id=124, icon0="correct.png", icon1="correct.png"},
+                },
+                item_size = 120,
+                view_items = {},
+                virtual_pages = {},
+                current_page = 0,
+                selected_id = 100,
+                item_list = {
+                    {id=100, icon0="correct.png", icon1="correct.png"},
+                    {id=101, icon0="correct.png", icon1="correct.png"},
+                    {id=102, icon0="correct.png", icon1="correct.png"},
+                    {id=103, icon0="correct.png", icon1="correct.png"},
+                    {id=104, icon0="correct.png", icon1="correct.png"},
+                    {id=105, icon0="correct.png", icon1="correct.png"},
+                    {id=106, icon0="correct.png", icon1="correct.png"},
+                    {id=107, icon0="correct.png", icon1="correct.png"},
+                    {id=108, icon0="correct.png", icon1="correct.png"},
+                    {id=109, icon0="correct.png", icon1="correct.png"},
+                    {id=110, icon0="correct.png", icon1="correct.png"},
+                    {id=111, icon0="correct.png", icon1="correct.png"},
+                    {id=112, icon0="correct.png", icon1="correct.png"},
+                    {id=113, icon0="correct.png", icon1="correct.png"},
+                    {id=114, icon0="correct.png", icon1="correct.png"},
+                    {id=115, icon0="correct.png", icon1="correct.png"},
+                    {id=116, icon0="correct.png", icon1="correct.png"},
+                },
             }
-            function start.clickWork(self, workid)
-                if not workid then
-                    start.show_work = not start.show_work
-                    start.work_id = 1
-                else
-                    start.work_id = workid
-                end
-                console.log("workid", workid)
+            local pageclass = require "page"
+            -- window size : 1336 750
+            local page_proxy = pageclass.create({510, 360}, start)
+            function start.pagemousedown(event)
+                console.log("pagemousedown")
+                page_proxy:on_mousedown(event)
             end
-            function start.clickVehicle(self, carid)
- 
+            
+            function start.pagedrag(event)
+                --console.log("pagedrag")
+                page_proxy:on_drag(event)
             end
-            function start.addRoad()
-                local rl = start.road_list
-                rl[#rl + 1] = {id=#rl + 1}
-                console.log("addRoad", #rl)
+
+            function start.pagemouseup(event)
+                console.log("pagemouseup")
+                page_proxy:on_mouseup(event)
+                start.current_page = page_proxy:get_current_page() - 1
             end
+
+            function start.page_item_click(event, id)
+                console.log("page_item_click", id)
+                start.selected_id = id
+            end
+
             window.addEventListener('message', function(event)
+                console.log("event.source.postMessage")
                 event.source.postMessage(event.data)
             end)
             window.addEventListener('mousemove', function(event)
-                if event.button then
-                end
             end)
         </script>
     </head>
@@ -387,116 +440,27 @@
                     <button class = "find-button"/>
                 </div>
                 <div class="item-container">
-                    <div class="row" style="width: 100%;">
-                        <button class="item">
-                            <div class="item-count">99</div>
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                            
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                            
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                            
-                            <div class="item-title">机器爪</div>
-                        </button>
+                    <div style="width:100%; height:95%;">
+                        <div class = "item-page-block" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
+                            <div class ="row">
+                                <div style="width:95%; height:100%;" data-for="virtual_pages">
+                                    <div data-style-left="(it_index + 1) * 100 + '%'"/>
+                                </div>
+                            </div>
+                            <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_click(it.data.id)" data-style-width="90+'px'" data-style-height="90+'px'" data-style-left="it.left" data-style-top="it.top" data-for="view_items">
+                                <button class="item">
+                                    <div class="item-count">99</div>                          
+                                    <div class="item-title">机器爪</div>
+                                </button>
+                                <div>{{it.data.id}}</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row" style="width: 100%;">
-                        <button class="item">
-                            <div class="item-count">99</div>                        
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                        
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                        
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                    </div>
-                    <div class="row" style="width: 100%;">
-                        <button class="item">
-                            <div class="item-count">99</div>                         
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                           
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                    </div>
-                    <div class="row" style="width: 100%;">
-                        <button class="item">
-                            <div class="item-count">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                           
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                         
-                            <div class="item-title">机器爪</div>
-                        </button>
-                    </div>
-                    <div class="row" style="width: 100%;">
-                        <button class="item">
-                            <div class="item-count">99</div>                         
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                         
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                        
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                          
-                            <div class="item-title">机器爪</div>
-                        </button>
-                        <button class="item">
-                            <div class="item-count">99</div>                    
-                            <div class="item-title">机器爪</div>
-                        </button>
-                    </div>
+                    <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
+                        <div data-for="virtual_pages">
+                            <div style="width:20px; height:20px; background-size:cover;" data-style-background-image="it_index == current_page ? 'common/page1.png' : 'common/page0.png'"/>
+                        </div>
+                    </div>         
                 </div>
                 <div class = "draw-line"/>
                 <div class = "tab-container">
