@@ -90,7 +90,7 @@ function icanvas.add_items(name, x, y, srt)
                 h = cfg.height,
             },
         },
-        x = p[1], y = p[3], w = 10, h = 10,
+        x = p[1], y = p[3] - 10, w = 10, h = 10,
         srt = srt,
     }
 

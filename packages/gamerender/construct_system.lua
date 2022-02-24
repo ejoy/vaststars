@@ -17,6 +17,7 @@ local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
 local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
 local icanvas = ecs.import.interface "vaststars.gamerender|icanvas"
+local hwi  = import_package "ant.hwi"
 
 local math3d = require "math3d"
 local mathpkg = import_package "ant.math"
@@ -188,15 +189,15 @@ local show_construct_button, hide_construct_button; do
                 local width, height = igameplay_adapter.unpack_coord(area)
                 -- 针对建筑宽度大于 1 的特殊处理
                 if width > 1 then
-                    if width % 1 == 0 then
+                    if width % 2 == 0 then
                         x = x + RIGHT[1] * ((width - 1) // 2)
-                        y = y + DOWN[2]
+                        y = y + DOWN[2] * height
                         dx = x + RIGHT[1]
-                        dy = y + RIGHT[2]
+                        dy = y + DOWN[2] * height
                         return x, y, dx, dy
                     else
                         dx = x + RIGHT[1] * (width // 2)
-                        dy = y + DOWN[2]
+                        dy = y + DOWN[2] * height
                         return dx, dy
                     end
                 else
@@ -364,9 +365,7 @@ function construct_sys:camera_usage()
         show_construct_button(coord[1], coord[2], game_object.area)
         prefab_object:send("basecolor")
     end
-end
 
-function construct_sys:data_changed()
     local cfg
     for _, _, _, prototype in ui_construct_entity_mb:unpack() do
         cfg = entities_cfg[prototype]
@@ -384,7 +383,9 @@ function construct_sys:data_changed()
                 log.error(("can not found prototype `%s`"):format(prototype))
                 return
             end
-            local coord, position = iterrain.adjust_building_position({0, 0, 0}, pt.area) -- todo 可能需要根据屏幕中间位置来设置?
+
+            local screen_x, screen_y = hwi.screen_size()
+            local coord, position = iterrain.adjust_building_position(math3d.tovalue(iinput.screen_to_world({screen_x / 2, screen_y / 2})), pt.area)
             iom.set_position(prefab.root, position)
 
             local t = {
@@ -414,7 +415,9 @@ function construct_sys:data_changed()
             log.error(("Can not found prototype `%s`"):format(prototype))
         end
     end
+end
 
+function construct_sys:data_changed()
     for _, _, _, fluidname in ui_construct_fluidbox_mb:unpack() do
         local prefab_object
         for game_object in w:select "construct_entity:in type:in fluid?new" do

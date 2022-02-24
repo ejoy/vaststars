@@ -4,6 +4,7 @@ local w     = world.w
 
 local iterrain = ecs.interface "iterrain"
 local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_adapter"
+local UP = require "vector2".UP
 
 local function generate_terrain_fields(w, h)
     local fields = {}
@@ -43,11 +44,11 @@ function iterrain.create()
                 srt = srt,
             },
             shape_terrain = {
-                terrain_fields = generate_terrain_fields(width, height), -- tile 类型
-                width = width, -- width 与 height 的 tile 个数
+                terrain_fields = generate_terrain_fields(width, height),
+                width = width,
                 height = height,
                 section_size = math.max(1, width > 4 and width//4 or width//2),
-                unit = unit,  --- 所有数据的比例
+                unit = unit,
                 edge = {
                     color = 0xffe5e5e5,
                     thickness = 0.08,
@@ -62,95 +63,78 @@ function iterrain.create()
             terrain = {
                 shape = shape,
                 tile_bounds = {
-                    {1, shape[2][1] - shape[1][1]},
-                    {1, shape[2][3] - shape[1][3]},
+                    {0, 0},
+                    {(shape[2][1] - shape[1][1]) // unit - 1, (shape[2][3] - shape[1][3]) // unit - 1},
                 },
                 tile_building_types = {}, -- = {[x][y] = building_type, ...}
+                origin = {shape[1][1], shape[2][3]},
             },
         }
     }
 end
 
-local function convert(shape_terrain, x, y)
-    local height = shape_terrain.height
-    return x, height - y
-end
-
 function iterrain.get_coord_by_position(position)
     local e = w:singleton("terrain", "terrain:in shape_terrain:in")
     local shape = e.terrain.shape
+    local origin = e.terrain.origin
     local shape_terrain = e.shape_terrain
     local unit = shape_terrain.unit
 
     if position[1] < shape[1][1] or position[1] > shape[2][1] then
+        log.error(("out of bounds (%s) : (%s) - (%s)"):format(table.concat(position, ","), table.concat(shape[1], ","), table.concat(shape[2], ",")))
         return
     end
 
     if position[3] < shape[1][3] or position[3] > shape[2][3] then
+        log.error(("out of bounds (%s) : (%s) - (%s)"):format(table.concat(position, ","), table.concat(shape[1], ","), table.concat(shape[2], ",")))
         return
     end
 
-    local x = math.ceil((position[1] - shape[1][1]) / unit)
-    local y = math.ceil((position[3] - shape[1][3]) / unit)
-    return {convert(shape_terrain, x, y)}
+    return {math.ceil((position[1] - origin[1]) / unit) - 1, math.ceil((origin[2] - position[3]) / unit) - 1}
 end
 
--- return the center of the tile
-function iterrain.get_position_by_coord(x, y)
+function iterrain.get_begin_position_by_coord(x, y)
     local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
     local tile_bounds = e.terrain.tile_bounds
-    local srt = e.scene.srt
     local shape_terrain = e.shape_terrain
     local unit = shape_terrain.unit
-    x, y = convert(shape_terrain, x, y)
+    local origin = e.terrain.origin
 
-    for i = 1, #tile_bounds do
-        if x < tile_bounds[i][1] or y > tile_bounds[i][2] then
-            return
-        end
+    if x < tile_bounds[1][1] or x > tile_bounds[2][1] then
+        log.error(("out of bounds (%s,%s) : (%s) - (%s)"):format(x, y, table.concat(tile_bounds[1], ","), table.concat(tile_bounds[2], ",")))
+        return
     end
-    return {((x - 1) * unit + unit / 2) + srt.t[1], 0, ((y - 1) * unit + unit / 2) + srt.t[3]}
-end
 
-function iterrain.get_begin_position_by_coord(...)
-    local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
-    local tile_bounds = e.terrain.tile_bounds
-    local srt = e.scene.srt
-    local shape_terrain = e.shape_terrain
-    local unit = shape_terrain.unit
-
-    local coord = {...}
-    coord[1], coord[2] = convert(shape_terrain, coord[1], coord[2])
-    for i = 1, #tile_bounds do
-        if coord[i] < tile_bounds[i][1] or coord[i] > tile_bounds[i][2] then
-            return
-        end
+    if y < tile_bounds[1][2] and y > tile_bounds[2][2] then
+        log.error(("out of bounds (%s,%s) : (%s) - (%s)"):format(x, y, table.concat(tile_bounds[1], ","), table.concat(tile_bounds[2], ",")))
+        return
     end
-    return {((coord[1] - 1) * unit) + srt.t[1], 0, ((coord[2] - 1) * unit) + srt.t[3]}
+    return {origin[1] + (x * unit), 0, origin[2] - (y * unit)}
 end
 
 -- pos : the centre of entity
 function iterrain.adjust_building_position(pos, area)
     local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
     local unit = e.shape_terrain.unit
-
-    local coord = iterrain.get_coord_by_position(pos)
-    local begining = iterrain.get_begin_position_by_coord(coord[1], coord[2])
     local width, height = igameplay_adapter.unpack_coord(area)
 
-    return coord, {begining[1] + (width * unit / 2), pos[2], begining[3] + (height * unit / 2)}
+    local coord = iterrain.get_coord_by_position(pos)
+    coord[2] = coord[2] + UP[2] * (height - 1)
+    local begining = iterrain.get_begin_position_by_coord(coord[1], coord[2])
+    return coord, {begining[1] + (width * unit // 2), pos[2], begining[3] - (height * unit // 2)}
 end
 
-function iterrain.get_tile_centre_position(position)
-    local coord = iterrain.get_coord_by_position(position)
-    return iterrain.get_position_by_coord(coord[1], coord[2])
+-- return the center of the tile
+function iterrain.get_position_by_coord(x, y)
+    local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
+    local unit = e.shape_terrain.unit
+    local position = iterrain.get_begin_position_by_coord(x, y)
+    return {position[1] + unit // 2, position[2], position[3] - unit // 2}
 end
 
 function iterrain.get_tile_building_type(coord)
+    local x, y = coord[1], coord[2]
     local e = w:singleton("terrain", "terrain:in shape_terrain:in")
-    local shape_terrain = e.shape_terrain
-    local x, y = convert(shape_terrain, coord[1], coord[2])
-
     if not e.terrain.tile_building_types[x] then
         return
     end
@@ -160,9 +144,7 @@ end
 
 function iterrain.set_tile_building_type(coord, building_type, area)
     local e = w:singleton("shape_terrain", "terrain:in shape_terrain:in")
-    local shape_terrain = e.shape_terrain
     local terrain = e.terrain
-    coord[1], coord[2] = convert(shape_terrain, coord[1], coord[2])
     local width, height = igameplay_adapter.unpack_coord(area)
 
     for x = 0, width - 1 do

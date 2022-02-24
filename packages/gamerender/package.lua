@@ -11,6 +11,7 @@ return {
         "ant.compile_resource",
         "ant.asset",
         "ant.camera",
+        "ant.hwi",
         "vaststars.ui",
         "vaststars.utility",
         "vaststars.input",
