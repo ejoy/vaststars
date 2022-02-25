@@ -117,9 +117,13 @@ local function create_game_object(typedir, x, y)
             dir = dir,
             area = igameplay_adapter.pack_coord(1, 1),
 
+            road = true,
             building_type = "road",
             pickup_show_set_road_arrow = true,
             pickup_show_remove = false,
+            disassemble = true,
+            disassemble_selected = false,
+            construct_prefab = prefab_file_path:format(t),
         },
     })
 end
@@ -250,19 +254,24 @@ function road_sys:after_pickup_mapping()
     w:sync("construct_arrows:in", construct_arrows)
 
     local is_show_arrow
+    local e = w:singleton("cur_edit_mode", "cur_edit_mode:in")
     for _, _, game_object in pickup_show_set_road_arrow_mb:unpack() do
-        local prefab = igame_object.get_prefab_object(game_object)
-        iconstruct_arrow.show(construct_arrows, math3d.tovalue(iom.get_position(prefab.root)))
-        is_show_arrow = true
+        if e and e.cur_edit_mode ~= "dismantle" then
+            local prefab = igame_object.get_prefab_object(game_object)
+            iconstruct_arrow.show(construct_arrows, math3d.tovalue(iom.get_position(prefab.root)))
+            is_show_arrow = true
+        end
     end
 
     for _ in pickup_mapping_canvas_mb:unpack() do
-        local pos = iinput.get_mouse_world_position()
-        local coord = iterrain.get_coord_by_position(pos)
-        local k = igameplay_adapter.pack_coord(coord[1], coord[2])
-        local v = construct_arrows.construct_arrows[k]
-        if v then
-            iroad.construct(v.tile_coord, v.arrow_coord)
+        if e and e.cur_edit_mode ~= "dismantle" then
+            local pos = iinput.get_mouse_world_position()
+            local coord = iterrain.get_coord_by_position(pos)
+            local k = igameplay_adapter.pack_coord(coord[1], coord[2])
+            local v = construct_arrows.construct_arrows[k]
+            if v then
+                iroad.construct(v.tile_coord, v.arrow_coord)
+            end
         end
     end
 
@@ -282,6 +291,13 @@ function road_sys:ui_update()
             end
         end
     end
+end
+
+function iroad.update_game_object(x, y, game_object)
+    local e = w:singleton("pipe_typedirs", "pipe_typedirs:in pipe_entities:in")
+    local entities = e.pipe_entities
+
+    entities[x][y] = game_object
 end
 
 function iroad.dismantle(x, y)
@@ -306,7 +322,7 @@ function iroad.dismantle(x, y)
     end
 
     local game_object = road_entities[x][y]
-    w:sync("area:in", game_object)
+    w:sync("area:in x:in y:in", game_object)
     iterrain.set_tile_building_type({x, y}, nil, game_object.area)
     igame_object.remove_prefab(game_object)
     igameplay_adapter.remove_entity(game_object.x, game_object.y)

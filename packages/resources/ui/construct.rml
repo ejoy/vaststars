@@ -122,27 +122,42 @@
                 fluid_catagory = {},      -- 流体分类信息, 从 world 获取
                 cur_fluid_catagory = "",  -- 当前选中的流体分类
                 cur_construct_menu = '',  -- 当前选中的二级建造菜单名
-                cur_edit_mode = '',           -- 当前的编辑模式, construct or dismantle
-                is_show_construct_remove = false,
+                cur_edit_mode = '',       -- 当前的编辑模式, construct/dismantle/construct_fluidbox
+                show_construct_menu = true,
 
                 debug_button = {},
                 config_construct = require "config.construct",
             }
 
-            function start.clickMainButton(event, construct_menu)
-                start.cur_edit_mode = ''
-                start.cur_construct_menu = ''
+            function start.clickShowConstructMenu(event)
+                start.show_construct_menu = not start.show_construct_menu
             end
-            function start.clickButton(event, construct_menu)
+            function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
             end
-            function start.clickConstructEntity(event, prototype)
+            function start.clickConstructMenuItem(event, prototype)
                 start.cur_edit_mode = ''
                 start.cur_construct_menu = ''
+                ui_sys.pub("ui", "construct", "cur_edit_mode", start.cur_edit_mode)
                 ui_sys.pub("ui", "construct", "construct_entity", prototype)
             end
-            function start.clickContructButton(event, msg)
-                ui_sys.pub("ui", "construct", msg)
+            function start.clickDismantle(event)
+                start.cur_edit_mode = ''
+                ui_sys.pub("ui", "construct", "cur_edit_mode", start.cur_edit_mode)
+                ui_sys.pub("ui", "construct", "dismantle")
+            end
+            function start.clickConstructMode(event)
+                start.cur_edit_mode = 'construct'
+                start.show_construct_menu = true
+                ui_sys.pub("ui", "construct", "cur_edit_mode", start.cur_edit_mode)
+            end
+            function start.clickDismantleMode(event)
+                start.cur_edit_mode = 'dismantle'
+                ui_sys.pub("ui", "construct", "cur_edit_mode", start.cur_edit_mode)
+            end
+            function start.clickReturn(event)
+                start.cur_edit_mode = ''
+                ui_sys.pub("ui", "construct", "cur_edit_mode", start.cur_edit_mode)
             end
             function start.clickConstructFluidBox(event, FluidName)
                 ui_sys.pub("ui", "construct", "construct_fluidbox", FluidName)
@@ -159,7 +174,10 @@
             end
             ui_sys.addEventListener(start, {"fluid_catagory"}, {
                 ["leave"] = function()
-                    start.cur_edit_mode = ''
+                    -- start.cur_edit_mode = ''
+                    -- ui_sys.pub("ui", "construct", "cur_edit_mode", start.cur_edit_mode)
+
+                    start.show_construct_menu = false
                     start.cur_construct_menu = ''
                     start.cur_fluid_catagory = ''
                 end,
@@ -185,28 +203,34 @@
             <div data-if = "false" style = 'position: absolute; left: 0vmin; top: 5vmin; background-image:"construct/camera_reset.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;' data-event-click = "CameraOpt('lookdown')" />
 
             <!-- 施工返回按钮 -->
-            <div data-if = "cur_edit_mode != '' && cur_edit_mode != 'construct_fluidbox'" data-event-click="cur_edit_mode = ''" style='position: absolute; left: 0.67vmin; top: 0.67vmin; background-image:"construct/return.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;' />
+            <div data-if = "cur_edit_mode != ''" data-event-click="clickReturn()" style='position: absolute; left: 0.67vmin; top: 0.67vmin; background-image:"construct/return.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;' />
 
             <!-- 施工 -->
-            <button data-if = "cur_edit_mode == ''" data-event-click="cur_edit_mode = 'construct'" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
+            <button data-if = "cur_edit_mode == ''" data-event-click="clickConstructMode()" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>施工</div>
             </button>
 
             <!-- 开始施工 -->
-            <button data-if = "cur_edit_mode != '' && cur_edit_mode != 'construct_fluidbox'" data-event-click="clickMainButton()" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
+            <button data-if = "cur_edit_mode == 'construct'" data-event-click="clickShowConstructMenu()" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始施工</div>
             </button>
+
+            <!-- 开始拆除 -->
+            <button data-if = "cur_edit_mode == 'dismantle'" data-event-click="clickDismantle()" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: flex-start;'>
+                <div style='margin: 0 auto; background-image:"construct/work.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
+                <div>开始拆除</div>
+            </button>
             
             <!-- 拆除模式 -->
-            <div data-if = "cur_edit_mode != '' && cur_edit_mode != 'construct_fluidbox'" data-event-click="cur_edit_mode = 'dismantle'" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 100%;'>
+            <div data-if = "cur_edit_mode != ''" data-event-click="clickDismantleMode()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 100%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"construct/demolish.png"; width: 6.67vmin; height: 6.67vmin; background-size:cover;'/>
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除模式</div>
             </div>
 
             <!-- 建造模式 -->
-            <div data-if = "cur_edit_mode != '' && cur_edit_mode != 'construct_fluidbox'" data-event-click="cur_edit_mode = 'construct'" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 21.33vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(59, 137, 211); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;'>
+            <div data-if = "cur_edit_mode != ''" data-event-click="clickConstructMode()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 21.33vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(59, 137, 211); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"construct/construct.png"; width: 6.67vmin; height: 6.67vmin; background-size:cover;'/>
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">建造模式</div>
             </div>
@@ -244,37 +268,37 @@
                 </div>
             </div>
 
-            <div id="work-buttons-container" data-if="cur_edit_mode != '' && cur_edit_mode != 'construct_fluidbox'" >
-                <workbutton data-event-click="clickButton(it.name)" data-for = "config_construct">
+            <div id="work-buttons-container" data-if="cur_edit_mode == 'construct' && show_construct_menu" >
+                <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "config_construct">
                     <div class="workbutton-bg" data-style-background-image = "it.image" />
                     <div class="workbutton-text" >{{it.name}}</div>
                 </workbutton>
             </div>
-            <div id="work-detail" data-if="cur_edit_mode != '' && cur_construct_menu != ''" >
+            <div id="work-detail" data-if="cur_edit_mode == 'construct' && cur_construct_menu != ''" >
              <div data-if="cur_construct_menu == '电力'">
                  <div class="tools-container">
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('铁制电线杆')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('铁制电线杆')">
                              <div class="workbutton-bg" style='background-image:"construct/electric-pole1.png";'/>
                              <div class="tools-button-title">铁制电线杆</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('蒸汽发电机1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('蒸汽发电机1')">
                              <div class="workbutton-bg" style='background-image:"construct/turbine1.png";'/>
                              <div class="tools-button-title">蒸汽发电机1</div>
                          </button>
                      </div>
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('风力发电机1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('风力发电机1')">
                              <div class="workbutton-bg" style='background-image:"construct/wind-turbine.png";'/>
                              <div class="tools-button-title">风力发电机1</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('太阳能板1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('太阳能板1')">
                              <div class="workbutton-bg" style='background-image:"construct/solar-panel.png";'/>
                              <div class="tools-button-title">太阳能板1</div>
                          </button>
                      </div>
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('蓄电池1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('蓄电池1')">
                              <div class="workbutton-bg" style='background-image:"construct/grid-battery.png";'/>
                              <div class="tools-button-title">蓄电池1</div>
                          </button>
@@ -284,21 +308,21 @@
              <div data-if="cur_construct_menu == '化工'">
                  <div class="tools-container">
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('电解厂1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('电解厂1')">
                              <div class="workbutton-bg" style='background-image:"construct/electrolysis1.png";'/>
                              <div class="tools-button-title">电解厂1</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('水电站1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('水电站1')">
                              <div class="workbutton-bg" style='background-image:"construct/hydroplant.png";'/>
                              <div class="tools-button-title">水电站1</div>
                          </button>
                      </div>
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('蒸馏厂1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('蒸馏厂1')">
                              <div class="workbutton-bg" style='background-image:"construct/distillery.png";'/>
                              <div class="tools-button-title">蒸馏厂1</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('化工厂1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('化工厂1')">
                              <div class="workbutton-bg" style='background-image:"construct/chemistry1.png";'/>
                              <div class="tools-button-title">化工厂1</div>
                          </button>
@@ -308,21 +332,21 @@
              <div data-if="cur_construct_menu == '加工'">
                  <div class="tools-container">
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('采矿机1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('采矿机1')">
                              <div class="workbutton-bg" style='background-image:"construct/miner1.png";'/>
                              <div class="tools-button-title">采矿机1</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('组装机1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('组装机1')">
                              <div class="workbutton-bg" style='background-image:"construct/assembler.png";'/>
                              <div class="tools-button-title">组装机1</div>
                          </button>
                      </div>
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('熔炼炉1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('熔炼炉1')">
                              <div class="workbutton-bg" style='background-image:"construct/furnace2.png";'/>
                              <div class="tools-button-title">熔炼炉1</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('粉碎机1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('粉碎机1')">
                              <div class="workbutton-bg" style='background-image:"construct/crusher1.png";'/>
                              <div class="tools-button-title">粉碎机1</div>
                          </button>
@@ -332,41 +356,41 @@
              <div data-if="cur_construct_menu == '管道'">
                  <div class="tools-container">
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('管道1-I型')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('管道1-I型')">
                              <div class="workbutton-bg" style='background-image:"construct/pipe.png";'/>
                              <div class="tools-button-title">管道1-I型</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('地下管1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('地下管1')">
                              <div class="workbutton-bg" style='background-image:"construct/pipe.png";'/>
                              <div class="tools-button-title">地下管1</div>
                          </button>
                      </div>
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('液罐1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('液罐1')">
                              <div class="workbutton-bg" style='background-image:"construct/tank1.png";'/>
                              <div class="tools-button-title">液罐1</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('抽水泵')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('抽水泵')">
                              <div class="workbutton-bg" style='background-image:"construct/offshore-pump.png";'/>
                              <div class="tools-button-title">抽水泵</div>
                          </button>
                      </div>
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('压力泵1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('压力泵1')">
                              <div class="workbutton-bg" style='background-image:"construct/pump1.png";'/>
                              <div class="tools-button-title">压力泵1</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('烟囱1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('烟囱1')">
                              <div class="workbutton-bg" style='background-image:"construct/chimney2.png";'/>
                              <div class="tools-button-title">烟囱1</div>
                          </button>
                      </div>
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('排水口1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('排水口1')">
                              <div class="workbutton-bg" style='background-image:"construct/outfall.png";'/>
                              <div class="tools-button-title">排水口1</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('空气过滤器1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('空气过滤器1')">
                              <div class="workbutton-bg" style='background-image:"construct/air-filter1.png";'/>
                              <div class="tools-button-title">空气过滤器1</div>
                          </button>
@@ -376,31 +400,31 @@
              <div data-if="cur_construct_menu == '物流'">
                  <div class="tools-container">
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('砖石公路')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('砖石公路')">
                              <div class="workbutton-bg" style='background-image:"construct/processor.png";'/>
                              <div class="tools-button-title">砖石公路</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('车站1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('车站1')">
                              <div class="workbutton-bg" style='background-image:"construct/logisitic1.png";'/>
                              <div class="tools-button-title">车站1</div>
                          </button>
                      </div>
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('小型铁制箱子')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('小型铁制箱子')">
                              <div class="workbutton-bg" style='background-image:"construct/chest.png";'/>
                              <div class="tools-button-title">小型铁制箱子</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('机器爪1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('机器爪1')">
                              <div class="workbutton-bg" style='background-image:"construct/insert1.png";'/>
                              <div class="tools-button-title">机器爪1</div>
                          </button>
                      </div>
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('物流中心')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('物流中心')">
                              <div class="workbutton-bg" style='background-image:"construct/logisitic2.png";'/>
                              <div class="tools-button-title">物流中心</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('科技中心1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('科技中心1')">
                              <div class="workbutton-bg" style='background-image:"construct/manufacture.png";'/>
                              <div class="tools-button-title">科技中心1</div>
                          </button>
@@ -410,41 +434,41 @@
              <div data-if="cur_construct_menu == '自定义'">
                  <div class="tools-container">
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('砖石公路')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('砖石公路')">
                              <div class="workbutton-bg" style='background-image:"construct/processor.png";'/>
                              <div class="tools-button-title">砖石公路</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('车站1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('车站1')">
                              <div class="workbutton-bg" style='background-image:"construct/logisitic1.png";'/>
                              <div class="tools-button-title">车站1</div>
                          </button>
                      </div>
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('机器爪1')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('机器爪1')">
                              <div class="workbutton-bg" style='background-image:"construct/insert1.png";'/>
                              <div class="tools-button-title">机器爪1</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('小型铁制箱子')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('小型铁制箱子')">
                              <div class="workbutton-bg" style='background-image:"construct/chest.png";'/>
                              <div class="tools-button-title">小型铁制箱子</div>
                          </button>
                      </div>
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('物流中心')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('物流中心')">
                              <div class="workbutton-bg" style='background-image:"construct/logisitic2.png";'/>
                              <div class="tools-button-title">物流中心</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('管道1-I型')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('管道1-I型')">
                              <div class="workbutton-bg" style='background-image:"construct/pipe.png";'/>
                              <div class="tools-button-title">管道1-I型</div>
                          </button>
                      </div>
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructEntity('铁制电线杆')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('铁制电线杆')">
                              <div class="workbutton-bg" style='background-image:"construct/electric-pole1.png";'/>
                              <div class="tools-button-title">铁制电线杆</div>
                          </button>
-                         <button class="tools-button" data-event-click="clickConstructEntity('指挥中心')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('指挥中心')">
                              <div class="workbutton-bg" style='background-image:"construct/headquater.png";'/>
                              <div class="tools-button-title">指挥中心</div>
                          </button>

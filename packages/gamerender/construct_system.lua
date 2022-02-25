@@ -7,7 +7,6 @@ local serialize = import_package "ant.serialize"
 local cr = import_package "ant.compile_resource"
 local iinput = ecs.import.interface "vaststars.input|iinput"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-local icamera = ecs.import.interface "ant.camera|icamera"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
 local iui = ecs.import.interface "vaststars.ui|iui"
 local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
@@ -31,16 +30,34 @@ local dir_offset_of_entry = dir.offset_of_entry
 
 local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
+local DISMANTLE_YELLOW_BASIC_COLOR <const> = {50.0, 50.0, 0.0, 0.8}
 
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
 local ui_construct_fluidbox_mb = world:sub {"ui", "construct", "construct_fluidbox"}
+local ui_construct_cur_edit_mode_mb = world:sub {"ui", "construct", "cur_edit_mode"}
+local ui_construct_dismantle_mb = world:sub {"ui", "construct", "dismantle"}
 local ui_get_fluid_catagory = world:sub {"ui", "GET_DATA", "fluid_catagory"}
 local pickup_show_ui_mb = world:sub {"pickup_mapping", "pickup_show_ui"}
+local pickup_disassemble_mb = world:sub {"pickup_mapping", "disassemble"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_sys = ecs.system "construct_system"
 local pickup_mapping_canvas_mb = world:sub {"pickup_mapping", "canvas"}
 local pickup_mb = world:sub {"pickup"}
 local vector2 = require "vector2"
+
+local function deepcopy(t)
+    local r = {}
+    for k, v in pairs(t) do
+        if k ~= "reference" then
+            if type(v) == "table" then
+                r[k] = deepcopy(v)
+            else
+                r[k] = v
+            end
+        end
+    end
+    return r
+end
 
 local get_fluid_catagory; do
     local function is_type(prototype, t)
@@ -231,6 +248,10 @@ local show_construct_button, hide_construct_button; do
 
         for _, v in ipairs(coord_offset) do
             local cx, cy, dx, dy = v.coord_func(x, y, area)
+            if not iterrain.verify_coord(cx, cy) then
+                goto continue
+            end
+
             local pcoord = igameplay_adapter.pack_coord(cx, cy)
             local id
             if dx and dy then
@@ -244,6 +265,7 @@ local show_construct_button, hide_construct_button; do
                 local pcoord = igameplay_adapter.pack_coord(dx, dy)
                 construct_button_canvas_items[pcoord] = {id = id, event = v.event}
             end
+            ::continue::
         end
     end
 end
@@ -290,11 +312,14 @@ local on_prefab_message ; do
                 data = {
                     prototype = game_object.prototype,
                     pause_animation = true,
+                    disassemble = true,
+                    disassemble_selected = false,
                     x = game_object.x,
                     y = game_object.y,
                     dir = game_object.dir,
                     area = game_object.area,
                     fluid = game_object.fluid,
+                    construct_prefab = ("/pkg/vaststars.resources/%s"):format(game_object.construct_prefab),
                 }
             }
 
@@ -321,15 +346,23 @@ local on_prefab_message ; do
     end
 end
 
+function construct_sys:init_world()
+    ecs.create_entity {
+        policy = {
+        },
+        data = {
+            cur_edit_mode = "",
+        }
+    }
+end
+
 function construct_sys:entity_init()
-    --
 	for e in w:select "INIT x:in y:in area:in prototype:in construct_entity?in" do
         if not e.construct_entity then
             iterrain.set_tile_building_type({e.x, e.y}, e.prototype, e.area)
         end
     end
 
-    --
     for e in w:select "INIT set_road_entry:in x:in y:in dir:in area:in" do
         local offset = dir_offset_of_entry(e.dir)
         local width, heigh = igameplay_adapter.unpack_coord(e.area)
@@ -342,7 +375,6 @@ function construct_sys:entity_init()
     end
     w:clear "set_road_entry"
 
-    --
     for e in w:select "INIT random_name:in name:out" do
         e.name = backers_cfg[math.random(1, #backers_cfg)]
     end
@@ -355,7 +387,10 @@ function construct_sys:camera_usage()
 
         local prefab_object = igame_object.get_prefab_object(game_object)
         position = iinput.screen_to_world {mouse_x, mouse_y}
-        coord, position = iterrain.adjust_building_position(math3d.tovalue(position), game_object.area)
+        coord, position = iterrain.adjust_position(math3d.tovalue(position), game_object.area)
+        if not coord then
+            goto continue
+        end
 
         game_object.x = coord[1]
         game_object.y = coord[2]
@@ -364,6 +399,7 @@ function construct_sys:camera_usage()
         iom.set_position(prefab_object.root, position)
         show_construct_button(coord[1], coord[2], game_object.area)
         prefab_object:send("basecolor")
+        ::continue::
     end
 
     local cfg
@@ -385,7 +421,7 @@ function construct_sys:camera_usage()
             end
 
             local screen_x, screen_y = hwi.screen_size()
-            local coord, position = iterrain.adjust_building_position(math3d.tovalue(iinput.screen_to_world({screen_x / 2, screen_y / 2})), pt.area)
+            local coord, position = iterrain.adjust_position(math3d.tovalue(iinput.screen_to_world({screen_x / 2, screen_y / 2})), pt.area)
             iom.set_position(prefab.root, position)
 
             local t = {
@@ -431,25 +467,102 @@ function construct_sys:data_changed()
     for _ in ui_get_fluid_catagory:unpack() do
         world:pub {"ui_message", "SET_DATA", {["fluid_catagory"] = get_fluid_catagory()}}
     end
+
+    for _ in ui_construct_dismantle_mb:unpack() do
+        for game_object in w:select "disassemble_selected:in pipe?in road?in x:in y:in area:in" do
+            if game_object.pipe then
+                ipipe.dismantle(game_object.x, game_object.y)
+            elseif game_object.road then
+                iroad.dismantle(game_object.x, game_object.y)
+            else
+                iterrain.set_tile_building_type({game_object.x, game_object.y}, nil, game_object.area)
+                igame_object.get_prefab_object(game_object):remove()
+            end
+        end
+    end
 end
 
 function construct_sys:after_pickup_mapping()
-    local url
-    for _, _, entity in pickup_show_ui_mb:unpack() do
-        w:sync("pickup_show_ui:in", entity)
-        url = entity.pickup_show_ui[1]
-        iui.open(url, table.unpack(entity.pickup_show_ui, 2))
+    for _, _, _, edit_mode in ui_construct_cur_edit_mode_mb:unpack() do
+        for e in w:select "cur_edit_mode:in" do
+            e.cur_edit_mode = edit_mode
+            w:sync("cur_edit_mode:out", e)
+        end
     end
 
-    local show = true
+    for _, _, game_object in pickup_disassemble_mb:unpack() do
+        local e = w:singleton("cur_edit_mode", "cur_edit_mode:in")
+        if not e then
+            break
+        end
+        if e.cur_edit_mode ~= "dismantle" then
+            break
+        end
+        w:sync("disassemble_selected?in", game_object)
+        game_object.disassemble_selected = not game_object.disassemble_selected
+        w:sync("disassemble_selected?out", game_object)
+
+        local t = deepcopy(w:readall(game_object))
+        t[1] = nil
+        t[2] = nil
+
+        local prefab = igame_object.get_prefab(game_object)
+        local position = math3d.tovalue(iom.get_position(prefab.root))
+        igame_object.get_prefab_object(game_object):remove()
+
+        local prefab
+        if game_object.disassemble_selected then
+            local template = replace_material(serialize.parse(game_object.construct_prefab, cr.read_file(game_object.construct_prefab)))
+            prefab = ecs.create_instance(template)
+            prefab.on_ready = function (game_object, prefab)
+                iom.set_position(prefab.root, position)
+                local basecolor_factor = DISMANTLE_YELLOW_BASIC_COLOR
+                for _, e in ipairs(prefab.tag["*"]) do
+                    w:sync("material?in", e)
+                    if e.material then
+                        imaterial.set_property(e, "u_basecolor_factor", basecolor_factor)
+                    end
+                end
+            end
+            
+        else
+            prefab = ecs.create_instance(game_object.construct_prefab)
+            prefab.on_ready = function (game_object, prefab)
+                iom.set_position(prefab.root, position)
+            end
+        end
+
+        local game_object = iprefab_object.create(prefab, {policy = {}, data = t})
+        if t.pipe then
+            ipipe.update_game_object(t.x, t.y, game_object)
+        end
+        if t.road then
+            iroad.update_game_object(t.x, t.y, game_object)
+        end
+    end
+
+    local show = false
+    local e = w:singleton("cur_edit_mode", "cur_edit_mode:in")
+
+    local url
+    for _, _, entity in pickup_show_ui_mb:unpack() do
+        if e and e.cur_edit_mode ~= "dismantle" then
+            w:sync("pickup_show_ui:in", entity)
+            url = entity.pickup_show_ui[1]
+            iui.open(url, table.unpack(entity.pickup_show_ui, 2))
+        end
+    end
+
     for _ in pickup_mapping_canvas_mb:unpack() do
-        local pos = iinput.get_mouse_world_position()
-        local coord = iterrain.get_coord_by_position(pos)
-        local k = igameplay_adapter.pack_coord(coord[1], coord[2])
-        local v = construct_button_canvas_items[k]
-        if v then
-            v.event()
-            show = true
+        if e and e.cur_edit_mode ~= "dismantle" then
+            local pos = iinput.get_mouse_world_position()
+            local coord = iterrain.get_coord_by_position(pos)
+            local k = igameplay_adapter.pack_coord(coord[1], coord[2])
+            local v = construct_button_canvas_items[k]
+            if v then
+                v.event()
+                show = true
+            end
         end
     end
 

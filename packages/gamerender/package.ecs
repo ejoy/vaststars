@@ -13,7 +13,7 @@ import "@vaststars.ui"
 component "prototype" .type "lua"
 component "type" .type "lua"
 component "fluid" .type "lua" -- 用于指定 gameplay entity 的流体类型
-component "construct_entity" .type "lua" -- table, component
+component "construct_entity" .type "lua" -- table
 component "construct_detector" .type "lua" -- string
 component "construct_prefab" .type "lua" -- string
 component "x" .type "lua"
@@ -24,9 +24,13 @@ component "building_type" .type "lua"
 component "pickup_show_set_pipe_arrow" .type "lua" -- 点击显示建水管箭头
 component "pickup_show_set_road_arrow" .type "lua" -- 点击显示建路箭头 {tile_coord, arrow_coord}
 component "pause_animation" -- 建造 entity 时不显示动画
-
+component "disassemble_selected"
+component "cur_edit_mode" .type "lua"
+component "road"
+component "pipe"
 ------------------------
 -- component
+component "disassemble"
 component "set_road_entry" -- 建造 entity 时需要设置建筑物的路口
 component "route_endpoint" -- 路线的起点或终点(用于计算路线)
 component "pickup_show_ui" .type "lua" -- 点击显示 ui {url}
@@ -211,6 +215,7 @@ interface "ipipe"
     .implement "pipe_system.lua"
     .method "construct"
     .method "dismantle"
+    .method "update_game_object"
 
 system "construct_system"
     .implement "construct_system.lua"
@@ -221,6 +226,7 @@ system "construct_system"
     .require_system "ant.asset|meshskin_system"
     .require_system "ant.terrain|shape_terrain_system"
     .require_system "ant.camera|default_camera_controller"
+    .method "init_world"
     .method "entity_init"
     .method "data_changed"
     .method "camera_usage"
@@ -239,6 +245,7 @@ interface "iroad"
     .method "dismantle"
     .method "get_road_type"
     .method "set_building_entry"
+    .method "update_game_object"
 
 system "route_system"
     .implement "route_system.lua"
@@ -256,7 +263,8 @@ interface "iterrain"
     .method "get_begin_position_by_coord"
     .method "get_tile_building_type"
     .method "set_tile_building_type"
-    .method "adjust_building_position"
+    .method "adjust_position"
+    .method "verify_coord"
 
 interface "icanvas"
     .implement "icanvas.lua"

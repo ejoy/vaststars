@@ -132,9 +132,13 @@ local function create_game_object(typedir, x, y, fluid)
             area = igameplay_adapter.pack_coord(1, 1),
             pickup_show_ui = {"detail_panel.rml", x, y},
 
+            pipe = true,
             building_type = "pipe",
             pickup_show_set_pipe_arrow = true,
             pickup_show_remove = false,
+            disassemble = true,
+            disassemble_selected = false,
+            construct_prefab = prefab_file_path:format(t),
         },
     }
 
@@ -283,28 +287,33 @@ do
         w:sync("construct_arrows:in", construct_arrows)
 
         local is_show_arrow
-        for _, _, game_object in pickup_show_set_pipe_arrow_mb:unpack() do
-            local prefab = igame_object.get_prefab_object(game_object)
-            iconstruct_arrow.show(construct_arrows, math3d.tovalue(iom.get_position(prefab.root)))
-            is_show_arrow = true
-        end
-
-        for _ in pickup_mapping_canvas_mb:unpack() do
-            local pos = iinput.get_mouse_world_position()
-            local coord = iterrain.get_coord_by_position(pos)
-            local k = igameplay_adapter.pack_coord(coord[1], coord[2])
-            local v = construct_arrows.construct_arrows[k]
-            if v then
-                local game_object = get_game_object(v.tile_coord)
-                if not game_object then
-                    log.error(("can not found entity (%s, %s)"):format(v.tile_coord[1], v.tile_coord[2]))
-                    return
+        local e = w:singleton("cur_edit_mode", "cur_edit_mode:in")
+            for _, _, game_object in pickup_show_set_pipe_arrow_mb:unpack() do
+                if e and e.cur_edit_mode ~= "dismantle" then
+                    local prefab = igame_object.get_prefab_object(game_object)
+                    iconstruct_arrow.show(construct_arrows, math3d.tovalue(iom.get_position(prefab.root)))
+                    is_show_arrow = true
                 end
-
-                w:sync("fluid:in", game_object)
-                ipipe.construct(v.tile_coord, v.arrow_coord, nil, game_object.fluid)
             end
-        end
+
+            for _ in pickup_mapping_canvas_mb:unpack() do
+                if e and e.cur_edit_mode ~= "dismantle" then
+                    local pos = iinput.get_mouse_world_position()
+                    local coord = iterrain.get_coord_by_position(pos)
+                    local k = igameplay_adapter.pack_coord(coord[1], coord[2])
+                    local v = construct_arrows.construct_arrows[k]
+                    if v then
+                        local game_object = get_game_object(v.tile_coord)
+                        if not game_object then
+                            log.error(("can not found entity (%s, %s)"):format(v.tile_coord[1], v.tile_coord[2]))
+                            return
+                        end
+
+                        w:sync("fluid:in", game_object)
+                        ipipe.construct(v.tile_coord, v.arrow_coord, nil, game_object.fluid)
+                    end
+                end
+            end
 
         for _ in pickup_mb:unpack() do
             if not is_show_arrow then
@@ -323,6 +332,13 @@ function pipe_sys:ui_update()
             end
         end
     end
+end
+
+function ipipe.update_game_object(x, y, game_object)
+    local e = w:singleton("pipe_typedirs", "pipe_typedirs:in pipe_entities:in")
+    local entities = e.pipe_entities
+
+    entities[x][y] = game_object
 end
 
 function ipipe.dismantle(x, y)
@@ -347,7 +363,7 @@ function ipipe.dismantle(x, y)
     end
 
     local game_object = pipe_entities[x][y]
-    w:sync("area:in", game_object)
+    w:sync("area:in x:in y:in", game_object)
     iterrain.set_tile_building_type({x, y}, nil, game_object.area)
     igame_object.remove_prefab(game_object)
     igameplay_adapter.remove_entity(game_object.x, game_object.y)

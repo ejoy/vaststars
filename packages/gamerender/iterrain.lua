@@ -66,11 +66,31 @@ function iterrain.create()
                     {0, 0},
                     {(shape[2][1] - shape[1][1]) // unit - 1, (shape[2][3] - shape[1][3]) // unit - 1},
                 },
+                origin = {shape[1][1], shape[2][3]}, -- origin in logical coordinates
                 tile_building_types = {}, -- = {[x][y] = building_type, ...}
-                origin = {shape[1][1], shape[2][3]},
             },
         }
     }
+end
+
+function iterrain.verify_coord(x, y)
+    local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
+    if not e then
+        log.error("can not found terrain")
+        return false
+    end
+
+    local tile_bounds = e.terrain.tile_bounds
+
+    if x < tile_bounds[1][1] or x > tile_bounds[2][1] then
+        return false
+    end
+
+    if y < tile_bounds[1][2] or y > tile_bounds[2][2] then
+        return false
+    end
+
+    return true
 end
 
 function iterrain.get_coord_by_position(position)
@@ -100,28 +120,30 @@ function iterrain.get_begin_position_by_coord(x, y)
     local unit = shape_terrain.unit
     local origin = e.terrain.origin
 
-    if x < tile_bounds[1][1] or x > tile_bounds[2][1] then
-        log.error(("out of bounds (%s,%s) : (%s) - (%s)"):format(x, y, table.concat(tile_bounds[1], ","), table.concat(tile_bounds[2], ",")))
-        return
-    end
-
-    if y < tile_bounds[1][2] and y > tile_bounds[2][2] then
+    if not iterrain.verify_coord(x, y) then
         log.error(("out of bounds (%s,%s) : (%s) - (%s)"):format(x, y, table.concat(tile_bounds[1], ","), table.concat(tile_bounds[2], ",")))
         return
     end
     return {origin[1] + (x * unit), 0, origin[2] - (y * unit)}
 end
 
--- pos : the centre of entity
-function iterrain.adjust_building_position(pos, area)
+function iterrain.adjust_position(position, area)
     local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
     local unit = e.shape_terrain.unit
-    local width, height = igameplay_adapter.unpack_coord(area)
+    local coord = iterrain.get_coord_by_position(position)
+    if not coord then
+        return
+    end
 
-    local coord = iterrain.get_coord_by_position(pos)
+    local width, height = igameplay_adapter.unpack_coord(area)
     coord[2] = coord[2] + UP[2] * (height - 1)
+
     local begining = iterrain.get_begin_position_by_coord(coord[1], coord[2])
-    return coord, {begining[1] + (width * unit // 2), pos[2], begining[3] - (height * unit // 2)}
+    if not begining then
+        return
+    end
+
+    return coord, {begining[1] + (width * unit // 2), position[2], begining[3] - (height * unit // 2)}
 end
 
 -- return the center of the tile
@@ -129,6 +151,9 @@ function iterrain.get_position_by_coord(x, y)
     local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
     local unit = e.shape_terrain.unit
     local position = iterrain.get_begin_position_by_coord(x, y)
+    if not position then
+        return
+    end
     return {position[1] + unit // 2, position[2], position[3] - unit // 2}
 end
 

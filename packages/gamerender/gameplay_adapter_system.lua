@@ -228,6 +228,8 @@ do
             fluid = game_object.fluid,
         }
 
+        print(prototype, gpentitiy.x, gpentitiy.y, gpentitiy.dir, table.concat(gpentitiy.fluid or {}, ","))
+
         gpentitiy = init(prototype, gpentitiy)
         create(gpworld, prototype, gpentitiy)
         gpworld:build()
@@ -245,6 +247,7 @@ function igameplay_adapter.remove_entity(x, y)
 
     for e in gameplay_ecs:select "entity:in" do
         if x == e.entity.x and e.entity.y == y then
+            print("remove", x, y)
             gameplay_ecs:remove(e)
         end
     end
