@@ -52,7 +52,6 @@ function igame_object.create(prefab, prefab_object, template)
     template.policy[#template.policy+1] = "vaststars.gamerender|game_object"
     template.data = template.data or {}
     template.data.scene = {}
-    template.data.reference = true
     template.data.game_object_id = get_id()
     game_object_prefab[template.data.game_object_id] = {prefab = prefab, prefab_object = prefab_object}
 

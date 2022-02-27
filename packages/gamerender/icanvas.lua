@@ -44,7 +44,6 @@ function icanvas.create()
                     t={0.0, 1.0, 0.0}
                 }
             },
-            reference = true,
             canvas = {
                 textures = {},
                 texts = {},

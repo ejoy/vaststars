@@ -45,8 +45,8 @@ function m:init_world()
     iui.open("construct.rml")
 
     local mq = w:singleton("main_queue", "camera_ref:in")
-    local camera_ref = mq.camera_ref
-    iom.set_srt(camera_ref, get_camera_srt())
+    local camera_entity = world:entity(mq.camera_ref)
+    iom.set_srt(camera_entity, get_camera_srt())
 
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
@@ -58,14 +58,14 @@ end
 
 function m:data_changed()
     local mq = w:singleton("main_queue", "camera_ref:in")
-    local camera_ref = mq.camera_ref
+    local camera_entity = world:entity(mq.camera_ref)
 
     for _ in camera_reset_mb:unpack() do
-        iom.set_srt(camera_ref, get_camera_srt())
+        iom.set_srt(camera_entity, get_camera_srt())
     end
 
     for _ in camera_lookdown_mb:unpack() do
-        iom.set_srt(camera_ref, mc.ONE, to_quat({90.0, 0, 0}), {0, 60, 0})
+        iom.set_srt(camera_entity, mc.ONE, to_quat({90.0, 0, 0}), {0, 60, 0})
     end
 end
 

@@ -39,7 +39,6 @@ function iterrain.create()
         },
         data = {
             name = "shape_terrain",
-            reference = true,
             scene = {
                 srt = srt,
             },

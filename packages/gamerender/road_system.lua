@@ -232,7 +232,6 @@ function road_sys:init_world()
         policy = {},
         data = {
             construct_arrows = {},
-            reference = true,
         }
     })
 
