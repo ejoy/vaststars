@@ -28,6 +28,7 @@ component "disassemble_selected"
 component "cur_edit_mode" .type "lua"
 component "road"
 component "pipe"
+component "fluidbox_selected"
 ------------------------
 -- component
 component "disassemble"

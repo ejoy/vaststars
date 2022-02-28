@@ -122,8 +122,9 @@
                 fluid_catagory = {},      -- 流体分类信息, 从 world 获取
                 cur_fluid_catagory = "",  -- 当前选中的流体分类
                 cur_construct_menu = '',  -- 当前选中的二级建造菜单名
-                cur_edit_mode = '',       -- 当前的编辑模式, construct/dismantle/construct_fluidbox
+                cur_edit_mode = '',       -- 当前的编辑模式, construct/dismantle/construct_fluidbox/set_fluidbox
                 show_construct_menu = true,
+                cur_selected_fluid = {},  -- 当前选中的流体盒中的流体
 
                 debug_button = {},
                 config_construct = require "config.construct",
@@ -159,8 +160,16 @@
                 start.cur_edit_mode = ''
                 ui_sys.pub("ui", "construct", "cur_edit_mode", start.cur_edit_mode)
             end
-            function start.clickConstructFluidBox(event, FluidName)
-                ui_sys.pub("ui", "construct", "construct_fluidbox", FluidName)
+            function start.clickSelectFluid(event, FluidName)
+                if start.cur_edit_mode == "construct_fluidbox" then
+                    ui_sys.pub("ui", "construct", "construct_fluidbox", FluidName)
+                elseif start.cur_edit_mode == "set_fluidbox" then
+                    if start.cur_selected_fluid[1] ~= FluidName then
+                        ui_sys.open("pipe_build_pop.rml", start.cur_selected_fluid[1], start.cur_selected_fluid[2], FluidName)
+                    end
+                    start.cur_edit_mode = ''
+                    start.cur_selected_fluid = {}
+                end
             end
             function start.clickDebug(event, i)
                 ui_sys.pub("debug", i)
@@ -174,9 +183,6 @@
             end
             ui_sys.addEventListener(start, {"fluid_catagory"}, {
                 ["leave"] = function()
-                    -- start.cur_edit_mode = ''
-                    -- ui_sys.pub("ui", "construct", "cur_edit_mode", start.cur_edit_mode)
-
                     start.show_construct_menu = false
                     start.cur_construct_menu = ''
                     start.cur_fluid_catagory = ''
@@ -184,17 +190,21 @@
                 ["set_edit_mode"] = function(edit_mode)
                     start.cur_edit_mode = edit_mode
                 end,
+                ["set_fluidbox"] = function(fluid)
+                    start.cur_edit_mode = "set_fluidbox"
+                    start.cur_selected_fluid = fluid
+                end,
             })
 
             for i = 1, 8 do
-                start.debug_button[i] = {id = i, left = ("%dvmin"):format(i * 5)}
+                start.debug_button[i] = {id = i, left = ("%dvmin"):format(i * 5 + 10)}
             end
         </script>
     </head>
     <body>
         <div data-model="start">
             <!-- debug 按钮 -->
-            <div data-if = "false" style = "position: absolute; left: 0vmin; top: 0vmin; z-index: 999;" data-for="debug_button" >
+            <div style = "position: absolute; left: 0vmin; top: 0vmin; z-index: 999;" data-for="debug_button" >
                 <div class = "test-button" data-event-click="clickDebug(it.id)" data-style-left="it.left" style = "position: absolute; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"></div>
             </div>
 
@@ -236,7 +246,7 @@
             </div>
 
             <!-- 水管指定液体界面 一级菜单 -->
-            <div data-if = "cur_edit_mode == 'construct_fluidbox'" style = 'position: absolute; left: 40.00vmin; top: 82.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
+            <div data-if = "cur_edit_mode == 'construct_fluidbox' || cur_edit_mode == 'set_fluidbox'" style = 'position: absolute; left: 40.00vmin; top: 82.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
                 <div style = 'width: auto; height: 16.00vmin; background-color: rgb(208, 206, 206); flex-direction: row; align-items: center;'>
                     <div data-for = "fluid_catagory" style = "flex-direction: row;">
                         <!-- separator -->
@@ -251,13 +261,13 @@
                 </div>
             </div>
             <!-- 水管指定液体界面 二级菜单 -->
-            <div data-if = "cur_edit_mode == 'construct_fluidbox'" style = 'position: absolute; left: 40.00vmin; top: 66.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
+            <div data-if = "cur_edit_mode == 'construct_fluidbox' || cur_edit_mode == 'set_fluidbox'" style = 'position: absolute; left: 40.00vmin; top: 66.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
                 <div style = 'width: auto; height: 16.00vmin; background-color: rgb(208, 206, 206); flex-direction: row; align-items: center;' data-if = "cur_fluid_catagory != ''">
                     <div data-for = "catagory : fluid_catagory" style = "flex-direction: row;">
                         <div data-for = "catagory.fluid" style = "flex-direction: row;" data-if = "cur_fluid_catagory == catagory.catagory">
                             <!-- separator -->
                             <div style = "width: 2.67vmin;" data-if="it_index == 0" />
-                            <div style='width: 13.33vmin; height: 13.33vmin; background-color: rgb(59, 137, 211); border: 0.27vmin white; flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;' data-event-click = "clickConstructFluidBox(it.name)">
+                            <div style='width: 13.33vmin; height: 13.33vmin; background-color: rgb(59, 137, 211); border: 0.27vmin white; flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;' data-event-click = "clickSelectFluid(it.name)">
                                 <div style='margin: 0 auto; top: 1.33vmin; width: 6.67vmin; height: 6.67vmin; background-size:cover;' data-style-background-image = "it.icon" />
                                 <div style ="font-size: 3.33vmin; top: 1.33vmin;">{{it.name}}</div>
                             </div>

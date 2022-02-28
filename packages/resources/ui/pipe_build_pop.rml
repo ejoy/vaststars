@@ -195,10 +195,30 @@
             }
         </style>
         <script type="text/x-lua" >
-            console.log("before createModel")
+            local ui_sys = require "ui_system"
             local start = window.createModel "start" {
-                
+                FluidName = ' ',
+                FluidCount = 0,
+                NewFluidName = ' ',
             }
+
+            function start.clickConfirm(event)
+                ui_sys.pub("ui", "construct", "set_fluidbox", "confirm", start.NewFluidName)
+                ui_sys.close("pipe_build_pop.rml")
+            end
+
+            function start.clickCancel(event)
+                ui_sys.pub("ui", "construct", "set_fluidbox", "cancel")
+                ui_sys.close("pipe_build_pop.rml")
+            end
+
+            ui_sys.addEventListener(start, {}, {
+                ["INIT"] = function(FluidName, FluidCount, NewFluidName)
+                    start.FluidName = FluidName
+                    start.FluidCount = FluidCount
+                    start.NewFluidName = NewFluidName
+                end,
+            })
         </script>
     </head>
     <body>
@@ -207,28 +227,28 @@
                 <div class = "menu-title-block">管道液体变更</div>
                 <div class = "fluid-number-block">
                     <div class = "change-fluid-block">
-                        <div class = "change-fluid-name">液体A</div>
+                        <div class = "change-fluid-name">{{FluidName}}</div>
                         <div class = "change-fluid-icon" style='background-image: "science/greenbox.png";'/>
                     </div>
                     <div class = "change-arrow"/>
                     <div class = "change-fluid-block">
-                        <div class = "change-fluid-name">液体B</div>
+                        <div class = "change-fluid-name">{{NewFluidName}}</div>
                         <div class = "change-fluid-icon" style='background-image: "science/redbox.png";'/>
                     </div>
                 </div>
                 <div class ="change-desc-block">
                     <div>将删除现存</div>
-                    <div>液体A</div>
+                    <div>{{FluidName}}</div>
                     <div class = "change-fluid-icon" style='background-image: "science/greenbox.png";'/>
-                    <div style="color: chartreuse;">XXXXXXX</div>
+                    <div style="color: chartreuse;">{{FluidCount}}</div>
                     <div>单位</div>
                 </div>
                 <div class="column" style="width: 100%; height: 30%;">
-                    <div class="button-change-block">
+                    <div class="button-change-block" data-event-click="clickCancel()">
                         <button class="button-change" style = "background-color: rgb(203, 118, 24);">
                             <div class = "button-change-text">取消变更</div>
                         </button>
-                        <button class="button-change">
+                        <button class="button-change" data-event-click="clickConfirm()">
                             <div class = "button-change-text">确定变更</div>
                         </button>
                     </div>

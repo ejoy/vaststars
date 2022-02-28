@@ -30,15 +30,20 @@ local dir_offset_of_entry = dir.offset_of_entry
 
 local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
+local CONSTRUCT_WHITE_BASIC_COLOR <const> = {50.0, 50.0, 50.0, 0.8}
 local DISMANTLE_YELLOW_BASIC_COLOR <const> = {50.0, 50.0, 0.0, 0.8}
 
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
 local ui_construct_fluidbox_mb = world:sub {"ui", "construct", "construct_fluidbox"}
 local ui_construct_cur_edit_mode_mb = world:sub {"ui", "construct", "cur_edit_mode"}
 local ui_construct_dismantle_mb = world:sub {"ui", "construct", "dismantle"}
+local ui_construct_set_fluidbox_mb = world:sub {"ui", "construct", "set_fluidbox"}
+
 local ui_get_fluid_catagory = world:sub {"ui", "GET_DATA", "fluid_catagory"}
 local pickup_show_ui_mb = world:sub {"pickup_mapping", "pickup_show_ui"}
 local pickup_disassemble_mb = world:sub {"pickup_mapping", "disassemble"}
+local pickup_pipe_mb = world:sub {"pickup_mapping", "pipe"}
+
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_sys = ecs.system "construct_system"
 local pickup_mapping_canvas_mb = world:sub {"pickup_mapping", "canvas"}
@@ -71,7 +76,7 @@ local get_fluid_catagory; do
 
     local t = {}
     for _, v in pairs(igameplay_adapter.prototype_name()) do
-        if is_type(v, 'fluid') then
+        if is_type(v, "fluid") then
             for _, c in ipairs(v.catagory) do
                 t[c] = t[c] or {}
                 t[c][#t[c]+1] = {id = v.id, name = v.name, icon = v.icon}
@@ -453,6 +458,8 @@ function construct_sys:camera_usage()
     end
 end
 
+local gameplay = import_package "vaststars.gameplay"
+
 function construct_sys:data_changed()
     for _, _, _, fluidname in ui_construct_fluidbox_mb:unpack() do
         local prefab_object
@@ -480,6 +487,32 @@ function construct_sys:data_changed()
             end
         end
     end
+
+    for _, _, _, confirm, fluidname in ui_construct_set_fluidbox_mb:unpack() do
+        if confirm == "confirm" then
+            for game_object in w:select "fluidbox_selected fluid:in x:in y:in" do
+                game_object.fluid = {fluidname, 0}
+                w:sync("fluid:out", game_object)
+
+                local pt = gameplay.queryByName("fluid", fluidname)
+                if not pt then
+                    log.error(("can not found fluid(%s)"):format(fluidname))
+                    goto continue
+                end
+
+                for v in igameplay_adapter.world().ecs:select "entity:in fluidbox:out" do
+                    if v.entity.x == game_object.x and v.entity.y == game_object.y then
+                        v.fluidbox.fluid = pt.id
+                        v.fluidbox.id = 0
+                    end
+                end
+            end
+            igameplay_adapter.world():build()
+        end
+        world:pub {"ui_message", "set_edit_mode", ""} -- 去除流体盒建造模式
+
+        ::continue::
+    end
 end
 
 function construct_sys:after_pickup_mapping()
@@ -488,6 +521,28 @@ function construct_sys:after_pickup_mapping()
             e.cur_edit_mode = edit_mode
             w:sync("cur_edit_mode:out", e)
         end
+    end
+
+    for _, _, game_object in pickup_pipe_mb:unpack() do
+        w:sync("fluidbox_selected?in fluid:in x:in y:in", game_object)
+        game_object.fluidbox_selected = true
+        w:sync("fluidbox_selected?out", game_object)
+
+        for e in igameplay_adapter.world().ecs:select "entity:in fluidbox:in" do
+            if e.entity.x == game_object.x and e.entity.y == game_object.y then
+                local pt = gameplay.query(e.fluidbox.fluid)
+                local fluid_volume = 0
+                if e.fluidbox and e.fluidbox.fluid ~= 0 then
+                    local r = igameplay_adapter.world():fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
+                    if r then
+                        fluid_volume = r.volume / r.multiple
+                    end
+                end
+                game_object.fluid = {pt.name, fluid_volume}
+            end
+        end
+
+        world:pub {"ui_message", "set_fluidbox", game_object.fluid}
     end
 
     for _, _, game_object in pickup_disassemble_mb:unpack() do
@@ -524,7 +579,7 @@ function construct_sys:after_pickup_mapping()
                     end
                 end
             end
-            
+
         else
             prefab = ecs.create_instance(game_object.construct_prefab)
             prefab.on_ready = function (game_object, prefab)
