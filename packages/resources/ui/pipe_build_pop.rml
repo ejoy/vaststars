@@ -21,7 +21,7 @@
             .button-bg {
                  width: 6.67vmin;
                  height: 6.67vmin;
-                 margin-bottom:5px;
+                 margin-bottom:0.66vmin;
                  align-self:center;
                  background-size:cover;
             }
