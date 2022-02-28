@@ -122,24 +122,23 @@
                 fluid_catagory = {},      -- 流体分类信息, 从 world 获取
                 cur_fluid_catagory = "",  -- 当前选中的流体分类
                 cur_construct_menu = '',  -- 当前选中的二级建造菜单名
-                cur_edit_mode = '',       -- 当前的编辑模式, construct/dismantle/construct_fluidbox/set_fluidbox
-                show_construct_menu = true,
+                cur_edit_mode = '',       -- 当前的编辑模式, construct/dismantle/
                 cur_selected_fluid = {},  -- 当前选中的流体盒中的流体
+                show_set_fluidbox = false,
 
                 debug_button = {},
                 config_construct = require "config.construct",
             }
 
-            function start.clickShowConstructMenu(event)
-                start.show_construct_menu = not start.show_construct_menu
+            function start.clickStartConstruct(event)
+                ui_sys.pub("ui", "construct", "complete")
+                start.cur_edit_mode = ''
+                ui_sys.pub("ui", "construct", "cur_edit_mode", start.cur_edit_mode)
             end
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
             end
             function start.clickConstructMenuItem(event, prototype)
-                start.cur_edit_mode = ''
-                start.cur_construct_menu = ''
-                ui_sys.pub("ui", "construct", "cur_edit_mode", start.cur_edit_mode)
                 ui_sys.pub("ui", "construct", "construct_entity", prototype)
             end
             function start.clickDismantle(event)
@@ -149,7 +148,6 @@
             end
             function start.clickConstructMode(event)
                 start.cur_edit_mode = 'construct'
-                start.show_construct_menu = true
                 ui_sys.pub("ui", "construct", "cur_edit_mode", start.cur_edit_mode)
             end
             function start.clickDismantleMode(event)
@@ -161,15 +159,15 @@
                 ui_sys.pub("ui", "construct", "cur_edit_mode", start.cur_edit_mode)
             end
             function start.clickSelectFluid(event, FluidName)
-                if start.cur_edit_mode == "construct_fluidbox" then
+                if not start.cur_selected_fluid[1] then
                     ui_sys.pub("ui", "construct", "construct_fluidbox", FluidName)
-                elseif start.cur_edit_mode == "set_fluidbox" then
+                else
                     if start.cur_selected_fluid[1] ~= FluidName then
                         ui_sys.open("pipe_build_pop.rml", start.cur_selected_fluid[1], start.cur_selected_fluid[2], FluidName)
                     end
-                    start.cur_edit_mode = ''
                     start.cur_selected_fluid = {}
                 end
+                start.show_set_fluidbox = false
             end
             function start.clickDebug(event, i)
                 ui_sys.pub("debug", i)
@@ -183,15 +181,18 @@
             end
             ui_sys.addEventListener(start, {"fluid_catagory"}, {
                 ["leave"] = function()
-                    start.show_construct_menu = false
                     start.cur_construct_menu = ''
                     start.cur_fluid_catagory = ''
+                    start.show_set_fluidbox = false
                 end,
                 ["set_edit_mode"] = function(edit_mode)
                     start.cur_edit_mode = edit_mode
                 end,
+                ["show_set_fluidbox"] = function()
+                    start.show_set_fluidbox = true
+                end,
                 ["set_fluidbox"] = function(fluid)
-                    start.cur_edit_mode = "set_fluidbox"
+                    start.show_set_fluidbox = true
                     start.cur_selected_fluid = fluid
                 end,
             })
@@ -222,7 +223,7 @@
             </button>
 
             <!-- 开始施工 -->
-            <button data-if = "cur_edit_mode == 'construct'" data-event-click="clickShowConstructMenu()" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: flex-start;'>
+            <button data-if = "cur_edit_mode == 'construct'" data-event-click="clickStartConstruct()" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始施工</div>
             </button>
@@ -246,7 +247,7 @@
             </div>
 
             <!-- 水管指定液体界面 一级菜单 -->
-            <div data-if = "cur_edit_mode == 'construct_fluidbox' || cur_edit_mode == 'set_fluidbox'" style = 'position: absolute; left: 40.00vmin; top: 82.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
+            <div data-if = "show_set_fluidbox" style = 'position: absolute; left: 40.00vmin; top: 82.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
                 <div style = 'width: auto; height: 16.00vmin; background-color: rgb(208, 206, 206); flex-direction: row; align-items: center;'>
                     <div data-for = "fluid_catagory" style = "flex-direction: row;">
                         <!-- separator -->
@@ -261,7 +262,7 @@
                 </div>
             </div>
             <!-- 水管指定液体界面 二级菜单 -->
-            <div data-if = "cur_edit_mode == 'construct_fluidbox' || cur_edit_mode == 'set_fluidbox'" style = 'position: absolute; left: 40.00vmin; top: 66.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
+            <div data-if = "show_set_fluidbox" style = 'position: absolute; left: 40.00vmin; top: 66.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
                 <div style = 'width: auto; height: 16.00vmin; background-color: rgb(208, 206, 206); flex-direction: row; align-items: center;' data-if = "cur_fluid_catagory != ''">
                     <div data-for = "catagory : fluid_catagory" style = "flex-direction: row;">
                         <div data-for = "catagory.fluid" style = "flex-direction: row;" data-if = "cur_fluid_catagory == catagory.catagory">
@@ -278,7 +279,7 @@
                 </div>
             </div>
 
-            <div id="work-buttons-container" data-if="cur_edit_mode == 'construct' && show_construct_menu" >
+            <div id="work-buttons-container" data-if="cur_edit_mode == 'construct'" >
                 <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "config_construct">
                     <div class="workbutton-bg" data-style-background-image = "it.image" />
                     <div class="workbutton-text" >{{it.name}}</div>

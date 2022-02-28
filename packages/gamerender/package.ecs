@@ -25,7 +25,10 @@ component "pickup_show_set_pipe_arrow" .type "lua" -- 点击显示建水管箭�
 component "pickup_show_set_road_arrow" .type "lua" -- 点击显示建路箭头 {tile_coord, arrow_coord}
 component "pause_animation" -- 建造 entity 时不显示动画
 component "disassemble_selected"
+component "constructing"
+component "construct"
 component "cur_edit_mode" .type "lua"
+component "constructing_entity" .type "lua"
 component "road"
 component "pipe"
 component "fluidbox_selected"
