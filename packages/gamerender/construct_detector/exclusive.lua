@@ -2,11 +2,8 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
-
-return function(position, _, _)
-    local coord = iterrain.get_coord_by_position(position)
-    if iterrain.get_tile_building_type(coord) == nil then
+return function(get_entity_func, x, y, dir, area)
+    if get_entity_func(x, y) == nil then
         return true
     else
         return false

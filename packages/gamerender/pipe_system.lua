@@ -308,7 +308,7 @@ do
                             return
                         end
 
-                        w:sync("fluid:in", game_object)
+                        w:sync("fluid?in", game_object)
                         ipipe.construct(v.tile_coord, v.arrow_coord, nil, game_object.fluid)
                     end
                 end

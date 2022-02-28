@@ -2,7 +2,7 @@
     <head>
         <style>
             div {
-                font: 120% "宋体";
+                font: 120% "微软雅黑";
             }
             button {
                 width: 80px;
@@ -14,7 +14,7 @@
                 border: 2px rgba(84,130,53,255);
                 opacity: 1;
                 transition: transform 2s elastic-out;
-                background-color: rgba(197,224,180,255);
+                background-color: rgb(197,224,180);
                 transform: scale(1.0);
             }
             button:hover {
@@ -38,54 +38,140 @@
                  background-size:cover;
             }
             .button-text {
-                background-color: rgba(128,156,126,128);
+                background-color: rgb(128,156,126);
                 font-size:18px;
                 text-align:center;
                 border-radius: 4px;
             }
             .panel {
-                background-color: rgba(120, 120, 120, 255);
-                border: 2px green;
+                background-color: rgb(44, 32, 18);
+                border: 1px rgb(89, 73, 39);
                 border-radius: 5px;
                 width: 48%;
                 height: 100%;
             }
-            .header {
+             /*标题栏和返回按键  */
+             .header {
                 height: 60px;
                 flex-direction: row;
                 justify-content: space-between;
             }
-            .row {
+            #item-name-block {
+                width: 100%; 
+                align-items: center; 
+                justify-content: flex-start;
+            }
+            .back-button {
+                border: 0px; 
+                background-image:"common/return.png"; 
+                width:70px; 
+                height:70px; 
+                background-size:cover;
+            }
+            .menu-title {
+                -webkit-text-stroke: 1.5px rgb(0, 112, 192); 
+                font-size:200%;
+                justify-content: flex-start;
+                width: 70%;
+            }
+            .item-container {
+                margin:0.2rem 1em;
+                flex-direction: column;
+                align-items: flex-start;
+                font-size: 50%;
+                height: 70%;
+            }
+            .item {
+                flex-direction: column;
+                align-items:flex-start;
+                justify-content:space-evenly;
+                background-color: rgb(250, 205, 9);
+                border: 2px rgb(89, 73, 39);
+                background-size:cover;
+                width:90px;
+                height:90px;
+                margin:2px auto;
+                font-size: 18px;
+                background-image: "construct/insert1.png";
+            }
+            .item-title {
+                text-align: center;
+                top:14%;
+                background-color: rgb(246, 237, 189);
+                border-radius: 5px;
+                color:rgb(73, 60, 32);
+                -webkit-text-stroke: 0.5px rgb(73, 60, 32);
+                width: 85px;
+                margin:0px;
+            }
+            .item-count {
+                text-align:left;
+                margin:0px;
+                top:-18px;
+                left:5px;
+                -webkit-text-stroke: 0.5px rgb(39, 32, 17);
+            }
+
+            .item-add {
+                background-color:rgb(143, 143, 143);
+                border: 2px rgb(89, 73, 39);
+                background-size:cover;
+                width:90px;
+                height:90px;
+                margin:2px auto;
+                background-image: "science/add.png";
+            }
+            /*分割线*/
+            .draw-line {
+                margin-bottom:0.1em;
+                width: 100%;
+                border-bottom: 1.5px rgb(89, 73, 39);
+            }
+            /*tab区域*/
+            .tab-container {
+                margin:0.1rem auto;
                 flex-direction: row;
-                justify-content: space-between;
+                justify-content: space-evenly;
+                align-items:flex-start;
+                width:100%;
+                height: 10%;
+            }
+            .workbutton-bg {
+                margin: auto auto;
+                top:12px;
+                width:50px;
+                height: 50px; 
+                background-size: cover;
+            }
+            .catalog-desc {
+                -webkit-text-stroke: 1.5px rgb(39, 32, 17); 
+                position:relative;
+                top:-38px; 
+                left:-42px;
+                color: rgb(221, 235, 26)
+            }
+            .property-display {
+                flex-direction: row;
                 align-items:center;
             }
-            .column {
-                flex-direction: column;
-            }
             .property-icon {
-                width: 40px;
-                height: 40px;
-                background-size: cover;
+                width:30px;
+                height:30px;
+                background-size:cover;
             }
             .property-text {
                 margin-left: 10px;
-                font-size: 20px;
-            }
-            .item {
-                border: 2px rgba(84,130,53,255);
-                background-color: rgba(146,208,80,255);
-                width: 280px;
-                height: 70px;
-                flex-direction:row;
-                justify-content: flex-start;
-                align-items:center;
                 font-size:20px;
+                color: rgb(0,176,240);
             }
-            .item-bg {
-                width: 50px;
-                height: 50px;
-                background-size: cover;
+            .row {
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .column {
+                flex-direction: column;
+                align-items:center;
             }
         </style>
         <script type="text/x-lua" >
@@ -123,11 +209,11 @@
         </script>
     </head>
     <body>
-        <div style="height: 100%; flex-direction: row; justify-content: space-evenly;" data-model="start">
-            <div class="panel" style="flex-direction: column;">
-                <div class="header" style="align-items: center; justify-content: flex-start;">
-                    <button style='background-color: rgba(255, 255, 255, 0); border: 0px; background-image:"common/return.png"; width:60px; height:60px; background-size:cover;'/>
-                    <div>角色</div>
+        <div class="item-container-region" data-model="start">
+            <div class="panel">
+                <div class="header" id = "item-name-block">
+                    <button class = "back-button"/>
+                    <div class = "menu-title">科研中心</div>
                 </div>
                 <div class="column" style="justify-content:flex-start;">
                     <div class="row">

@@ -1,5 +1,5 @@
-component "drapdrop"
-    .type "lua"
+component "drapdrop" .type "lua"
+component "drapdrop_selected"
 
 system "drapdrop_system"
     .implement "drapdrop_system.lua"
