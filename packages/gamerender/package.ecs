@@ -5,8 +5,11 @@ import "@ant.animation"
 import "@ant.terrain"
 import "@ant.camera"
 
---
+-- cache
 component "terrain" .type "lua"
+
+--
+component "constructing" -- 建造中的 entity
 
 pipeline "init"
     .stage "init"
@@ -54,8 +57,11 @@ system "init_system"
 
 system "game_object_system"
     .implement "game_object_system.lua"
-    .method "entity_remove"
-    .method "entity_ready"
+
+interface "igame_object"
+    .implement "game_object_system.lua"
+    .method "create"
+    .method "remove"
 
 system "ui_system"
     .implement "ui_system.lua"

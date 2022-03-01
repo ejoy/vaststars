@@ -8,9 +8,6 @@ local igame_object = ecs.interface "igame_object"
 local prefab_game_object = {}
 local game_object_prefab = {}
 
-function game_object_sys:entity_remove()
-end
-
 function igame_object.create(prefab, template)
     local obj = world:create_object(prefab)
     local eid = ecs.create_entity(template)
