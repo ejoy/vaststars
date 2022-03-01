@@ -42,11 +42,16 @@ function igame_object.create(prefab, template, pickup_mapping_param)
         local ofunc = prefab[fn]
         prefab[fn] = function(p, ...)
             local eid = prefab_game_object[p.root]
+            if not eid then
+                return
+            end
+
             local game_object = world:entity(eid)
             if not game_object then
                 log.error(("can nof found game_object `%s`"):format(eid))
                 return
             end
+
             func(game_object, p, pickup_mapping_param , ...)
             if ofunc then
                 ofunc(game_object, p, ...)
@@ -70,7 +75,7 @@ function igame_object.remove(eid)
     world:remove_entity(eid)
     local obj = game_object_prefab[eid]
     if obj then
-        obj:remove()
+        -- obj:remove()
         prefab_game_object[obj.root] = nil
     end
     game_object_prefab[eid] = nil
