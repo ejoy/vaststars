@@ -143,7 +143,7 @@
             .button-change-block {
                 flex-direction: row;
                 width: 100%;
-                height:100%;
+                height:30%;
                 align-items: center;
                 justify-content: space-evenly;
             }
@@ -224,34 +224,23 @@
     <body>
         <div class="item-container-region"  data-model="start">
             <div class="panel" style="align-items: center;">
-                <div class = "menu-title-block">管道液体变更</div>
-                <div class = "fluid-number-block">
-                    <div class = "change-fluid-block">
-                        <div class = "change-fluid-name">{{FluidName}}</div>
-                        <div class = "change-fluid-icon" style ='background-image: "science/greenbox.png";'/>
-                    </div>
-                    <div class = "change-arrow"/>
-                    <div class = "change-fluid-block">
-                        <div class = "change-fluid-name">{{NewFluidName}}</div>
-                        <div class = "change-fluid-icon" style='background-image: "science/redbox.png";'/>
-                    </div>
-                </div>
+                <div class = "menu-title-block">发车间隔</div>
                 <div class ="change-desc-block">
-                    <div>将删除现存</div>
-                    <div>{{FluidName}}</div>
-                    <div class = "change-fluid-icon" style='background-image: "science/greenbox.png";'/>
-                    <div style="color: chartreuse;">{{FluidCount}}</div>
-                    <div>单位</div>
+                    <button class="button-change" style = "width: 15.00vmin; height: 7.33vmin; background-color: rgb(112,48,160); border: 0.20vmin rgb(255,249,214);">
+                        <div class = "button-change-text">-1秒</div>
+                    </button>
+                    <div style="font-size: 5.33vmin; margin:auto 0.6em;">60秒</div>
+                    <button class="button-change" style = "width: 15.00vmin; height: 7.33vmin; background-color: rgb(112,48,160); border: 0.20vmin rgb(255,249,214);">
+                        <div class = "button-change-text">+1秒</div>
+                    </button>
                 </div>
-                <div class="column" style="width: 100%; height: 30%;">
-                    <div class="button-change-block" data-event-click="clickCancel()">
-                        <button class="button-change" style = "background-color: rgb(203, 118, 24);">
-                            <div class = "button-change-text">取消变更</div>
-                        </button>
-                        <button class="button-change" data-event-click="clickConfirm()">
-                            <div class = "button-change-text">确定变更</div>
-                        </button>
-                    </div>
+                <div class="button-change-block" data-event-click="clickCancel()">
+                    <button class="button-change" style = "background-color: rgb(203, 118, 24);">
+                        <div class = "button-change-text">取消变更</div>
+                    </button>
+                    <button class="button-change" data-event-click="clickConfirm()">
+                        <div class = "button-change-text">确定变更</div>
+                    </button>
                 </div>
             </div>
         </div>
