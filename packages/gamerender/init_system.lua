@@ -1,0 +1,50 @@
+local ecs = ...
+local world = ecs.world
+local w = world.w
+
+local FRAMES_PER_SECOND <const> = require "define".FRAMES_PER_SECOND
+local bgfx = require 'bgfx'
+local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
+local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local fs = require "filesystem"
+local default_camera_path <const> = fs.path "/pkg/vaststars.resources/camera_default.prefab"
+local datalist  = require "datalist"
+local math3d = require "math3d"
+local mathpkg = import_package "ant.math"
+local mc = mathpkg.constant
+
+local function to_quat(t)
+    for k, v in ipairs(t) do
+        t[k] = math.rad(v)
+    end
+    return math3d.tovalue(math3d.quaternion(t))
+end
+
+local function get_camera_srt()
+    local f<close> = fs.open(default_camera_path)
+    if f then
+        local srt = datalist.parse(f:read "a")[1].data.scene.srt
+        return srt.s or mc.ONE, srt.r, srt.t
+    end
+    return mc.ONE, to_quat({45.0, 0, 0}), {0, 60, -60}
+end
+
+local m = ecs.system 'init_system'
+function m:init_world()
+    bgfx.maxfps(FRAMES_PER_SECOND)
+    iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
+
+    iui.open("construct.rml")
+
+    local mq = w:singleton("main_queue", "camera_ref:in")
+    local camera_ref = mq.camera_ref
+    iom.set_srt(world:entity(camera_ref), get_camera_srt())
+
+    ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
+    ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
+    -- iterrain.create()
+    -- icanvas.create()
+
+    world:pub{"camera_controller", "stop", false}
+end

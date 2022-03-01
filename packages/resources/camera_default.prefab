@@ -7,7 +7,6 @@ data:
       fov: 60
       n: 1
   name: camera1
-  reference: true
   scene:
     srt:
       r: {0.3826834559440613, 0, 0, 0.9238795042037964}

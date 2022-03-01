@@ -140,7 +140,6 @@ data:
   slot:
     follow_flag: 1
   name: "左至右"
-  reference: true
   scene:
     srt:
       r: {0, 0, 0, 1}
@@ -160,7 +159,6 @@ data:
   slot:
     follow_flag: 1
   name: "右至左"
-  reference: true
   scene:
     srt:
       r: {-4.371138828673793e-08, 1, -1.910685465164705e-15, -4.371138828673793e-08}
@@ -180,7 +178,6 @@ data:
   slot:
     follow_flag: 1
   name: "下转右"
-  reference: true
   scene:
     srt:
       r: {0, 0, 0, 1}
@@ -200,7 +197,6 @@ data:
   slot:
     follow_flag: 1
   name: "左转下"
-  reference: true
   scene:
     srt:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
@@ -220,7 +216,6 @@ data:
   slot:
     follow_flag: 1
   name: "下转左"
-  reference: true
   scene:
     srt:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
@@ -240,7 +235,6 @@ data:
   slot:
     follow_flag: 1
   name: "右转下"
-  reference: true
   scene:
     srt:
       r: {0, -8.742277657347586e-08, 0, -1}
@@ -260,7 +254,6 @@ data:
   slot:
     follow_flag: 1
   name: path_l_1
-  reference: true
   scene:
     srt:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
@@ -280,7 +273,6 @@ data:
   slot:
     follow_flag: 1
   name: path_l_2
-  reference: true
   scene:
     srt:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
@@ -300,7 +292,6 @@ data:
   slot:
     follow_flag: 1
   name: path_r_1
-  reference: true
   scene:
     srt:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
@@ -320,7 +311,6 @@ data:
   slot:
     follow_flag: 1
   name: path_r_2
-  reference: true
   scene:
     srt:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
@@ -340,7 +330,6 @@ data:
   slot:
     follow_flag: 1
   name: path_l2b_1
-  reference: true
   scene:
     srt:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
@@ -360,7 +349,6 @@ data:
   slot:
     follow_flag: 1
   name: path_l2b_2
-  reference: true
   scene:
     srt:
       r: {0, 0.9238795042037964, 0, 0.3826834261417389}
@@ -380,7 +368,6 @@ data:
   slot:
     follow_flag: 1
   name: path_l2b_3
-  reference: true
   scene:
     srt:
       r: {0, 1, 0, -4.371138828673793e-08}
@@ -400,7 +387,6 @@ data:
   slot:
     follow_flag: 1
   name: path_b2r_1
-  reference: true
   scene:
     srt:
       r: {0, 0, 0, 1}
@@ -420,7 +406,6 @@ data:
   slot:
     follow_flag: 1
   name: path_b2r_2
-  reference: true
   scene:
     srt:
       r: {0, 0.3826834559440613, 0, 0.9238795042037964}
@@ -440,7 +425,6 @@ data:
   slot:
     follow_flag: 1
   name: path_b2r_3
-  reference: true
   scene:
     srt:
       r: {0, 0.7071067690849304, 0, 0.7071067690849304}
@@ -460,7 +444,6 @@ data:
   slot:
     follow_flag: 1
   name: path_b2l_1
-  reference: true
   scene:
     srt:
       r: {0, 0, 0, 1}
@@ -480,7 +463,6 @@ data:
   slot:
     follow_flag: 1
   name: path_b2l_2
-  reference: true
   scene:
     srt:
       r: {0, -0.3826834559440613, 0, 0.9238795042037964}
@@ -500,7 +482,6 @@ data:
   slot:
     follow_flag: 1
   name: path_b2l_3
-  reference: true
   scene:
     srt:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
@@ -520,7 +501,6 @@ data:
   slot:
     follow_flag: 1
   name: path_b2l_4
-  reference: true
   scene:
     srt:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
@@ -540,7 +520,6 @@ data:
   slot:
     follow_flag: 1
   name: path_r2b_1
-  reference: true
   scene:
     srt:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
@@ -560,7 +539,6 @@ data:
   slot:
     follow_flag: 1
   name: path_r2b_2
-  reference: true
   scene:
     srt:
       r: {0, -0.9238795042037964, 0, 0.3826834261417389}
@@ -580,7 +558,6 @@ data:
   slot:
     follow_flag: 1
   name: path_r2b_3
-  reference: true
   scene:
     srt:
       r: {0, 1, 0, -4.371138828673793e-08}
@@ -600,7 +577,6 @@ data:
   slot:
     follow_flag: 1
   name: path_r2b_4
-  reference: true
   scene:
     srt:
       r: {0, 1, 0, -4.371138828673793e-08}
