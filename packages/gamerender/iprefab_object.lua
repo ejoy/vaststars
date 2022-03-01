@@ -17,6 +17,7 @@ events.on_init = function(game_object, prefab, components)
 end
 
 events.on_ready = function(game_object, prefab, components)
+    local game_object = 
     w:sync("pause_animation?in", game_object)
 
     local prefab_slot_cache = {}

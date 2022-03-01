@@ -56,7 +56,11 @@ function igame_object.create(prefab, prefab_object, template)
     game_object_prefab[template.data.game_object_id] = {prefab = prefab, prefab_object = prefab_object}
 
     local entity = ecs.create_entity(template)
-    prefab_game_object[prefab_object.root.scene.id] = entity
+    local root = world:entity(prefab_object.root)
+    if not root then
+        return
+    end
+    prefab_game_object[root.scene.id] = entity
     return entity
 end
 
@@ -71,8 +75,11 @@ function igame_object.get_prefab_object(game_object)
 end
 
 function igame_object.get_game_object(prefab)
-    w:sync("scene:in", prefab.root)
-    return prefab_game_object[prefab.root.scene.id]
+    local root = world:entity(prefab.root)
+    if not root then
+        return
+    end
+    return prefab_game_object[root.scene.id]
 end
 
 function igame_object.remove_prefab(game_object)

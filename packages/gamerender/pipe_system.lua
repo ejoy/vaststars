@@ -281,7 +281,7 @@ do
         if not construct_arrows then
             return
         end
-        w:sync("construct_arrows:in", construct_arrows)
+        local construct_arrows = world:entity(construct_arrows)
 
         local is_show_arrow
         local e = w:singleton("cur_edit_mode", "cur_edit_mode:in")

@@ -44,7 +44,11 @@ local iinput = ecs.interface "iinput"
 
 -- call in 'camera_usage' stage
 function iinput.screen_to_world(screen_pos)
-    local c = icamera.find_camera(irq.main_camera())
+    local e = world:entity(irq.main_camera())
+    if not e then
+        return
+    end
+    local c = e.camera
     return ray_hit_plane(iom.ray(c.viewprojmat, screen_pos), {dir = mc.YAXIS, pos = mc.ZERO_PT})
 end
 

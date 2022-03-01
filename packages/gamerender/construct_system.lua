@@ -481,7 +481,7 @@ function construct_sys:camera_usage()
 
             local screen_x, screen_y = hwi.screen_size()
             local coord, position = iterrain.adjust_position(math3d.tovalue(iinput.screen_to_world({screen_x / 2, screen_y / 2})), pt.area)
-            iom.set_position(prefab.root, position)
+            iom.set_position(world:entity(prefab.root), position)
 
             local t = {
                 policy = {},
