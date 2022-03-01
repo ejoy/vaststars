@@ -274,6 +274,11 @@
                 background-image:"science/book.png";
                 background-size:cover;
             }
+            .item-page-block {
+                transition: left 0.5s linear-out; 
+                width:100%; 
+                height:100%;
+            }
         </style>
         <script type="text/x-lua" >
             console.log("before createModel")
