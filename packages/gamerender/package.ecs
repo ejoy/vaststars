@@ -12,7 +12,6 @@ import "@vaststars.ui"
 -- build-in component
 component "prototype" .type "lua"
 component "type" .type "lua"
-component "fluid" .type "lua" -- 用于指定 gameplay entity 的流体类型
 component "construct_entity" .type "lua" -- table
 component "construct_detector" .type "lua" -- string
 component "construct_prefab" .type "lua" -- string
@@ -26,6 +25,7 @@ component "pickup_show_set_road_arrow" .type "lua" -- 点击显示建路箭头 {
 component "pause_animation" -- 建造 entity 时不显示动画
 component "disassemble_selected"
 component "constructing"
+component "constructing_fluid" .type "lua" -- 用于指定 gameplay entity 的流体类型
 component "construct"
 component "cur_edit_mode" .type "lua"
 component "constructing_entity" .type "lua"
@@ -38,7 +38,6 @@ component "disassemble"
 component "set_road_entry" -- 建造 entity 时需要设置建筑物的路口
 component "route_endpoint" -- 路线的起点或终点(用于计算路线)
 component "pickup_show_ui" .type "lua" -- 点击显示 ui {url}
-component "pickup_show_remove" .type "lua" -- 点击显示删除建筑按钮
 component "random_name" -- 随机名称(用于车站命名)
 component "construct_road" -- 创建路块
 component "construct_pipe" -- 创建管道
@@ -160,6 +159,7 @@ interface "igameplay_adapter"
     .method "query"
     .method "world"
     .method "prototype_name"
+    .method "get_fluid"
 
 system "camera_controller_system"
     .implement "camera.lua"
@@ -213,7 +213,6 @@ system "pipe_system"
     .implement "pipe_system.lua"
     .method "init_world"
     .method "after_pickup_mapping"
-    .method "ui_update"
 
 interface "ipipe"
     .implement "pipe_system.lua"
@@ -241,7 +240,6 @@ system "road_system"
     .implement "road_system.lua"
     .method "init_world"
     .method "after_pickup_mapping"
-    .method "ui_update"
 
 interface "iroad"
     .implement "road_system.lua"

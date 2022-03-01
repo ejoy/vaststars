@@ -203,12 +203,12 @@
             }
 
             function start.clickConfirm(event)
-                ui_sys.pub("ui", "construct", "set_fluidbox", "confirm", start.NewFluidName)
+                ui_sys.pub("ui", "construct", "fluidbox_update", "confirm", start.NewFluidName)
                 ui_sys.close("pipe_build_pop.rml")
             end
 
             function start.clickCancel(event)
-                ui_sys.pub("ui", "construct", "set_fluidbox", "cancel")
+                ui_sys.pub("ui", "construct", "fluidbox_update", "cancel")
                 ui_sys.close("pipe_build_pop.rml")
             end
 

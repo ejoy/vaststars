@@ -120,7 +120,6 @@ local function create_game_object(typedir, x, y)
             road = true,
             building_type = "road",
             pickup_show_set_road_arrow = true,
-            pickup_show_remove = false,
             disassemble = true,
             disassemble_selected = false,
             construct_prefab = prefab_file_path:format(t),
@@ -280,16 +279,6 @@ function road_sys:after_pickup_mapping()
             iconstruct_arrow.hide(construct_arrows)
         end
         break
-    end
-end
-
-function road_sys:ui_update()
-    for _ in ui_remove_message_mb:unpack() do
-        for game_object in w:select("pickup_show_remove:in pickup_show_set_road_arrow:in x:in y:in") do
-            if game_object and game_object.pickup_show_remove then
-                iroad.dismantle(game_object.x, game_object.y)
-            end
-        end
     end
 end
 
