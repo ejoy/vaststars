@@ -10,10 +10,10 @@ function m.pub(...)
     window.extern.postMessage(json_encode(ud))
 end
 
-function m.open(url)
+function m.open(url, ...)
     local ud = {}
     ud.event = "__OPEN"
-    ud.ud = {url}
+    ud.ud = {url, ...}
     window.extern.postMessage(json_encode(ud))
 end
 

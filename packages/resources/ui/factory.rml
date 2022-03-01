@@ -5,13 +5,13 @@
                 font: 120% "微软雅黑";
             }
             button {
-                width: 80px;
-                height: 80px;
-                margin: 10px;
+                width: 10.67vmin;
+                height: 10.67vmin;
+                margin: 1.33vmin;
                 text-align: center;
                 text-decoration: none;
-                border-radius: 8px;
-                border: 2px rgb(89, 73, 39);
+                border-radius: 1.07vmin;
+                border: 0.27vmin rgb(89, 73, 39);
                 opacity: 1;
                 transition: transform 2s elastic-out;
                 background-color: rgb(197,224,180);
@@ -21,36 +21,36 @@
                 transform: scale(1.1);
             }
             .small_button {
-                margin: 0px;
+                margin: 0.00vmin;
                 opacity: 1;
                 background-color: rgb(250, 205, 9);
-                border: 2px rgb(89, 73, 39);
+                border: 0.27vmin rgb(89, 73, 39);
                 background-size: cover;
-                border-radius: 8px;
-                width: 60px;
-                height: 60px;
+                border-radius: 1.07vmin;
+                width: 8.00vmin;
+                height: 8.00vmin;
             }
             .button-bg {
-                 width:50px;
-                 height:50px;
+                 width: 6.67vmin;
+                 height: 6.67vmin;
                  margin-bottom:5px;
                  align-self:center;
                  background-size:cover;
             }
             .button-text {
                 background-color: rgb(128,156,126);
-                font-size:18px;
-                border-radius: 4px;
+                font-size: 2.40vmin;
+                border-radius: 0.53vmin;
             }
             .panel {
                 background-color: rgb(44, 32, 18);
-                border: 1px rgb(89, 73, 39);
-                border-radius: 5px;
+                border: 0.13vmin rgb(89, 73, 39);
+                border-radius: 0.67vmin;
                 width: 48%;
                 height: 100%;
             }
             .header {
-                height: 60px;
+                height: 8.00vmin;
                 flex-direction: row;
                 justify-content: space-between;
             }
@@ -63,13 +63,13 @@
                 flex-direction: column;
             }
             .property-icon {
-                width: 30px;
-                height: 30px;
+                width: 4.00vmin;
+                height: 4.00vmin;
                 justify-content: flex-end;
                 background-size: cover;
             }
             .property-text {
-                font-size: 20px;
+                font-size: 2.67vmin;
                 text-align: left;
             }
             .item-container {
@@ -92,42 +92,42 @@
                 align-items:flex-start;
                 justify-content:space-evenly;
                 background-color: rgb(250, 205, 9);
-                border: 2px rgb(89, 73, 39);
+                border: 0.27vmin rgb(89, 73, 39);
                 background-size:cover;
-                width:90px;
-                height:90px;
-                margin:2px auto;
-                font-size: 18px;
+                width: 12.00vmin;
+                height: 12.00vmin;
+                margin: 0.27vmin auto;
+                font-size: 2.40vmin;
                 background-image: "construct/insert1.png";
             }
             .item-title {
                 text-align: center;
                 top:14%;
                 background-color: rgb(246, 237, 189);
-                border-radius: 5px;
+                border-radius: 0.67vmin;
                 color:rgb(73, 60, 32);
-                -webkit-text-stroke: 0.5px rgb(73, 60, 32);
-                width: 85px;
-                margin:0px;
+                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
+                width: 11.33vmin;
+                margin: 0.00vmin;
             }
             .item-count {
                 text-align:left;
-                margin:0px;
+                margin: 0.00vmin;
                 top:-18px;
-                left:5px;
-                -webkit-text-stroke: 0.5px rgb(39, 32, 17);
+                left: 0.67vmin;
+                -webkit-text-stroke: 0.07vmin rgb(39, 32, 17);
             }
             workbutton {
-                font-size: 20px;
+                font-size: 2.67vmin;
                 color: rgb(221, 235, 26);
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
-                border-radius: 10px;
-                border: 2px rgb(89, 73, 39);
+                border-radius: 1.33vmin;
+                border: 0.27vmin rgb(89, 73, 39);
                 background-color: rgb(246, 142, 14);
-                height: 65px;
-                width: 130px;
+                height: 8.67vmin;
+                width: 17.33vmin;
                 transform: scale(1.0);
                 transition: color background-color transform 2s elastic-out;
             }
@@ -140,46 +140,46 @@
             }
             .workbutton-bg {
                 margin: auto auto;
-                top:12px;
-                width:50px;
-                height: 50px; 
+                top: 1.60vmin;
+                width: 6.67vmin;
+                height: 6.67vmin; 
                 background-size: cover;
             }
             .progress-background {
-                width: 50px;
-                height: 300px;
+                width: 6.67vmin;
+                height: 40.00vmin;
                 background-color: rgb(255,255,255);
             }
             .progress-fill {
-                width: 50px;
-                height: 300px;
+                width: 6.67vmin;
+                height: 40.00vmin;
                 background-color: rgb(112,48,160);
             }
             .menu-title {
-                -webkit-text-stroke: 1.5px rgb(0, 112, 192); 
+                -webkit-text-stroke: 0.20vmin rgb(0, 112, 192); 
                 font-size:200%;
                 justify-content: flex-start;
                 right:280%;
             }
             .back-button {
                 background-color: rgba(255, 255, 255, 0); 
-                border: 0px; 
+                border: 0.00vmin; 
                 background-image:"common/return.png"; 
-                width:70px; 
-                height:70px; 
+                width: 9.33vmin; 
+                height: 9.33vmin; 
                 background-size:cover;
             }
             .find-button {
                 top:0.8%; 
                 background-color: rgba(255, 255, 255, 0); 
-                border: 0px; 
+                border: 0.00vmin; 
                 background-image:"factory/seacher.png"; 
-                width:68px; 
-                height:68px; 
+                width: 9.07vmin; 
+                height: 9.07vmin; 
                 background-size:cover;
             }
             .catalog-desc {
-                -webkit-text-stroke: 1.5px rgb(39, 32, 17); 
+                -webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
                 position:relative;
                 top:-38px; 
                 left:-42px;
@@ -210,16 +210,16 @@
                 margin: auto;
                 align-self:flex_start; 
                 background-image:"science/hand.png"; 
-                width:80px; 
-                height:80px; 
+                width: 10.67vmin; 
+                height: 10.67vmin; 
                 background-size:cover;
             }
             .item-recipe-info {
                 margin: auto;
                 align-self:flex_end; 
                 background-image:"science/book.png"; 
-                width:80px;  
-                height:80px; 
+                width: 10.67vmin;  
+                height: 10.67vmin; 
                 background-size:cover;
             }
             .item-recipe-desc {
@@ -227,11 +227,11 @@
                 width:70%;
                 height:75%;
                 justify-content: flex-start;
-                font-size: 30px;
+                font-size: 4.00vmin;
                 word-break: break-word;
             }
             #recipe-container {
-                border: 1px rgb(89, 73, 39); 
+                border: 0.13vmin rgb(89, 73, 39); 
                 width: 50%; 
                 height: 100%; 
                 justify-content: flex-start;
@@ -244,10 +244,10 @@
             .recipe-title {
                 margin:0 0 0.1em 0;
                 height: 10%;
-                font-size : 32px;
+                font-size: 4.27vmin;
                 align-self: center;
                 color: rgb(221, 235, 26);
-                -webkit-text-stroke: 0.5px rgb(89, 73, 39);
+                -webkit-text-stroke: 0.07vmin rgb(89, 73, 39);
             }
             .recipe-content {
                 height: 80%;
@@ -263,34 +263,34 @@
             }
             .recipe-item-icon {
                 margin:auto 0.1em 0 1em;
-                width:55px;
-                height:55px;
+                width: 7.33vmin;
+                height: 7.33vmin;
                 background-size: cover;
                 align-self: flex-start;
             }
             .recipe-item-name { 
                 width:50%;
                 margin:0.9em 0 0 0.1em;
-                font-size:20px;
-                -webkit-text-stroke: 0.5px rgb(89, 73, 39);    
+                font-size: 2.67vmin;
+                -webkit-text-stroke: 0.07vmin rgb(89, 73, 39);    
                 align-self: flex-start;
                 background-color: rgb(246, 237, 189);
-                border-radius: 3px;
+                border-radius: 0.40vmin;
                 color:rgb(73, 60, 32);
             }
             .recipe-item-number { 
                 width:50%;
                 margin:0.05em 0 0 0.1em;
-                font-size:24px;
+                font-size: 3.20vmin;
                 color:rgb(243,244,221);
-                -webkit-text-stroke: 0.5px rgb(89, 73, 39);    
+                -webkit-text-stroke: 0.07vmin rgb(89, 73, 39);    
                 align-self: flex-start;
             }
             .procduction-max-num {
                 flex-direction: row;
                 -webkit-text-storke: 0.5px rgb(89, 73, 39);
                 align-self: flex-start;
-                font-size: 20px;
+                font-size: 2.67vmin;
             }
             .production-max {
                 width:40%;
@@ -314,27 +314,27 @@
                 flex-direction: row;
                 justify-content: space-evenly;
                 background-color: rgb(59,50,13); 
-                border-radius: 2px; 
+                border-radius: 0.27vmin; 
                 width:75%;
                 height: 100%;
-                border:0.5px rgb(89, 73, 39);
+                border: 0.07vmin rgb(89, 73, 39);
             }
             .button-start-production {
                 flex-direction: column;
                 background-color: rgb(92,184,92);
                 width: 20%; 
-                height: 80px;
+                height: 10.67vmin;
                 justify-content: center;
             }
             .button-start-style {
-                margin: 0px; 
-                font-size:28px; 
+                margin: 0.00vmin; 
+                font-size: 3.73vmin; 
                 text-align: center;
                 color:rgb(243,244,221);
             }
             .button-start-time-style {
-                margin: 0px; 
-                font-size:18px; 
+                margin: 0.00vmin; 
+                font-size: 2.40vmin; 
                 text-align: center;
                 color:rgb(255,255,255);
             }
@@ -444,7 +444,7 @@
                     </div>
                     <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
                         <div data-for="virtual_pages">
-                            <div style="width:20px; height:20px; background-size:cover;" data-style-background-image="it_index == current_page ? 'common/page1.png' : 'common/page0.png'"/>
+                            <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" data-style-background-image="it_index == current_page ? 'common/page1.png' : 'common/page0.png'"/>
                         </div>
                     </div>         
                 </div>
@@ -535,7 +535,7 @@
                         <div class="column" id = "recipe-container">
                             <div class = "recipe-title">制造数量</div>
                             <div class="row" style="height: 60%;">
-                                <div style="width:40%; font-size: 20px;">
+                                <div style="width:40%; font-size: 2.67vmin;">
                                     <div class = "procduction-max-num">
                                         <div class = "production-max">MAX</div>
                                         <div class = "production-num">999</div>
@@ -543,9 +543,9 @@
                                     <div class = "production-current-num">生产100个</div>
                                 </div>
                                 <div style="width:20%;">
-                                    <div class="progress-background" style="position:absolute; z-index: 1; top: -150px; left:10px; font-size: 20px;"/>
-                                    <div class="progress-fill" style="background-color: yellow; position:absolute; z-index: 2; top: -150px; left:10px; height: 180px;"/>
-                                    <div class="progress-fill" style="background-color: green; position:absolute; z-index: 3; top: -150px; left:10px; height: 100px;"/>
+                                    <div class="progress-background" style="position:absolute; z-index: 1; top: -150px; left: 1.33vmin; font-size: 2.67vmin;"/>
+                                    <div class="progress-fill" style="background-color: yellow; position:absolute; z-index: 2; top: -150px; left: 1.33vmin; height: 24.00vmin;"/>
+                                    <div class="progress-fill" style="background-color: green; position:absolute; z-index: 3; top: -150px; left: 1.33vmin; height: 13.33vmin;"/>
                                 </div>
                                 <div style="flex-direction:row; width:40%;">
                                     <div class="property-icon" style='background-image:"science/timer.png";'/>
@@ -562,28 +562,28 @@
                     <div class="row" style="width:100%; height: 15%; ">
                         <div class="production-queue">
                             <div class="column" style="justify-content:center;">
-                                <div style="font-size:25px;">制造</div>
-                                <div style="font-size:25px;">队列</div>
+                                <div style="font-size: 3.33vmin;">制造</div>
+                                <div style="font-size: 3.33vmin;">队列</div>
                             </div>
                             <div class="column" style="justify-content:center;">
                                 <button class="small_button" style='background-image:"construct/insert1.png";'/>
-                                <div style="font-size:18px;">21m23s</div>
+                                <div style="font-size: 2.40vmin;">21m23s</div>
                             </div>
                             <div class="column" style="justify-content:center;">
                                 <button class="small_button" style='background-image:"character/add.png";'/>
-                                <div style="font-size:18px;">21m23s</div>
+                                <div style="font-size: 2.40vmin;">21m23s</div>
                             </div>
                             <div class="column" style="justify-content:center;">
                                 <button class="small_button" style='background-image:"character/add.png";'/>
-                                <div style="font-size:18px;">21m23s</div>
+                                <div style="font-size: 2.40vmin;">21m23s</div>
                             </div>
                             <div class="column" style="justify-content:center;">
                                 <button class="small_button" style='background-image:"character/add.png";'/>
-                                <div style="font-size:18px;">21m23s</div>
+                                <div style="font-size: 2.40vmin;">21m23s</div>
                             </div>
                             <div class="column" style="justify-content:center;">
                                 <button class="small_button" style='background-image:"character/add.png";'/>
-                                <div style="font-size:18px;">21m23s</div>
+                                <div style="font-size: 2.40vmin;">21m23s</div>
                             </div>
                         </div>
                         <button class="button-start-production">
