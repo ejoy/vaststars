@@ -42,7 +42,7 @@
                 background-color: rgb(44, 32, 18);
                 border: 0.13vmin rgb(89, 73, 39);
                 border-radius: 0.67vmin;
-                width: 48%;
+                width: 40%;
                 height: 40%;
                 justify-content: space-evenly;
             }
@@ -317,7 +317,7 @@
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
-                width: 24.00vmin;
+                width: 20.00vmin;
                 height: 9.33vmin;
                 background-color: rgb(52, 207, 115);
             }
@@ -327,14 +327,14 @@
                 color: rgb(255,249,214);
             }
             .button-exchange-arrow {
-                width: 8.13vmin;
-                height: 6.27vmin;
+                width: 7.31vmin;
+                height: 5.64vmin;
                 background-size: cover;
                 background-image: "exchange/left_arrow.png";
             }
             .button-exchange-box {
-                width: 8.00vmin;
-                height: 8.00vmin;
+                width: 7.00vmin;
+                height: 7.00vmin;
                 background-size: cover;
                 background-image: "exchange/yellow_box.png";
             }
