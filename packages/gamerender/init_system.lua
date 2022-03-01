@@ -13,6 +13,7 @@ local datalist  = require "datalist"
 local math3d = require "math3d"
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
+local terrain = ecs.require "terrain"
 
 local function to_quat(t)
     for k, v in ipairs(t) do
@@ -43,7 +44,7 @@ function m:init_world()
 
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
-    -- iterrain.create()
+    terrain.create()
     -- icanvas.create()
 
     world:pub{"camera_controller", "stop", false}
