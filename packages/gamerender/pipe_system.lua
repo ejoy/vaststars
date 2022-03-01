@@ -17,7 +17,6 @@ local vector2 = require "vector2"
 local pipe_sys = ecs.system "pipe_system"
 local ipipe = ecs.interface "ipipe"
 local pickup_show_set_pipe_arrow_mb = world:sub {"pickup_mapping", "pickup_show_set_pipe_arrow"}
-local ui_remove_message_mb = world:sub {"ui", "construct", "click_construct_remove"}
 local pickup_mapping_canvas_mb = world:sub {"pickup_mapping", "canvas"}
 local pickup_mb = world:sub {"pickup"}
 local construct_arrows
@@ -125,7 +124,6 @@ local function create_game_object(typedir, x, y, fluid)
         policy = {},
         data = {
             prototype = ("管道1-%s型"):format(type_to_prototype[t]), -- todo
-            fluid = fluid,
             x = x,
             y = y,
             dir = dir,
@@ -135,10 +133,10 @@ local function create_game_object(typedir, x, y, fluid)
             pipe = true,
             building_type = "pipe",
             pickup_show_set_pipe_arrow = true,
-            pickup_show_remove = false,
             disassemble = true,
             disassemble_selected = false,
             construct_prefab = prefab_file_path:format(t),
+            constructing_fluid = fluid,
         },
     }
 
@@ -307,9 +305,7 @@ do
                             log.error(("can not found entity (%s, %s)"):format(v.tile_coord[1], v.tile_coord[2]))
                             return
                         end
-
-                        w:sync("fluid?in", game_object)
-                        ipipe.construct(v.tile_coord, v.arrow_coord, nil, game_object.fluid)
+                        ipipe.construct(v.tile_coord, v.arrow_coord, nil, igameplay_adapter.get_fluid(game_object.x, game_object.y))
                     end
                 end
             end
@@ -319,16 +315,6 @@ do
                 iconstruct_arrow.hide(construct_arrows)
             end
             break
-        end
-    end
-end
-
-function pipe_sys:ui_update()
-    for _ in ui_remove_message_mb:unpack() do
-        for game_object in w:select("pickup_show_remove:in pickup_show_set_pipe_arrow:in x:in y:in") do
-            if game_object and game_object.pickup_show_remove then
-                ipipe.dismantle(game_object.x, game_object.y)
-            end
         end
     end
 end

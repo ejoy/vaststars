@@ -211,7 +211,7 @@ do
     end
 
     function igameplay_adapter.create_entity(game_object)
-        w:sync("prototype:in x:in y:in dir:in fluid?in", game_object)
+        w:sync("prototype:in x:in y:in dir:in constructing_fluid:in", game_object)
 
         local e = w:singleton("gameplay_world", "gameplay_world:in")
         if not e then
@@ -225,7 +225,7 @@ do
             x = game_object.x,
             y = game_object.y,
             dir = game_object.dir,
-            fluid = game_object.fluid,
+            fluid = game_object.constructing_fluid,
         }
 
         print(prototype, gpentitiy.x, gpentitiy.y, gpentitiy.dir, table.concat(gpentitiy.fluid or {}, ","))
@@ -277,4 +277,22 @@ end
 
 function igameplay_adapter.prototype_name()
     return gameplay.prototype_name
+end
+
+function igameplay_adapter.get_fluid(x, y)
+    local gameplay_adapter = w:singleton("gameplay_world", "gameplay_world:in")
+    if not gameplay_adapter then
+        return
+    end
+
+    local ecs = gameplay_adapter.gameplay_world.ecs
+
+    local fluid
+    for e in ecs:select "entity:in fluidbox:in" do
+        if e.entity.x == x and e.entity.y == y then
+            local pt = gameplay.query(e.fluidbox.fluid)
+            fluid = {pt.name, 0}
+        end
+    end
+    return fluid
 end

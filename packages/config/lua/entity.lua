@@ -12,7 +12,6 @@ prototype ("指挥中心", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = false,
     },
 })
 
@@ -22,7 +21,6 @@ prototype ("铁制电线杆", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -32,7 +30,6 @@ prototype ("蒸汽发电机1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -42,7 +39,6 @@ prototype ("风力发电机1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -52,7 +48,6 @@ prototype ("太阳能板1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -62,7 +57,6 @@ prototype ("蓄电池1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -72,7 +66,6 @@ prototype ("电解厂1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -82,7 +75,6 @@ prototype ("水电站1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -92,7 +84,6 @@ prototype ("蒸馏厂1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -102,7 +93,6 @@ prototype ("化工厂1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -112,7 +102,6 @@ prototype ("采矿机1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -122,7 +111,6 @@ prototype ("组装机1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -132,7 +120,6 @@ prototype ("熔炼炉1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -142,7 +129,6 @@ prototype ("粉碎机1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -161,7 +147,6 @@ prototype ("液罐1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -171,7 +156,6 @@ prototype ("抽水泵", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -181,7 +165,6 @@ prototype ("压力泵1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -191,7 +174,6 @@ prototype ("烟囱1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -201,7 +183,6 @@ prototype ("排水口1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -211,7 +192,6 @@ prototype ("空气过滤器1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -231,7 +211,6 @@ prototype ("小型铁制箱子", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -241,7 +220,6 @@ prototype ("机器爪1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -252,7 +230,6 @@ prototype ("物流中心", {
     },
     component = {
     	set_road_entry = true,
-        pickup_show_remove = true,
         station = true,
     },
 })
@@ -263,7 +240,6 @@ prototype ("科技中心1", {
         construct_detector = {"exclusive"},
     },
     component = {
-        pickup_show_remove = true,
     },
 })
 
@@ -274,7 +250,6 @@ prototype ("车站1", {
     },
     component = {
     	set_road_entry = true,
-        pickup_show_remove = true,
     },
 })
 
