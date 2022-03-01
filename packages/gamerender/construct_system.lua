@@ -37,8 +37,8 @@ local function construct_entity(prototype_name)
         return
     end
 
-    for game_object in w:select "constructing:in" do
-        igame_object.remove(game_object)
+    for game_object in w:select "id:in constructing:in" do
+        igame_object.remove(game_object.id)
     end
 
     local area = prototype.get_area(prototype_name)
@@ -54,6 +54,22 @@ local function construct_entity(prototype_name)
     local screen_x, screen_y = hwi.screen_size()
     local coord, position = terrain.adjust_position(input.screen_to_world(screen_x / 2, screen_y / 2), area)
     iom.set_position(world:entity(prefab.root), position)
+
+    local t = {
+        policy = {},
+        data = {
+            drapdrop = true,
+            pause_animation = true,
+            constructing = {
+                prefab = cfg.prefab,
+                fluid = {},
+                dir = "N",
+                x = coord[1],
+                y = coord[2],
+            }
+        }
+    }
+    igame_object.create(prefab, t)
 end
 
 function construct_sys:data_changed()
