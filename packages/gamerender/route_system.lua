@@ -24,8 +24,8 @@ end
 function route_sys:entity_init()
     local route_data = w:singleton("route_endpoints", "route_endpoints:in routes:in")
     if route_data then
-        for e in w:select "INIT scene:in route_endpoint:in name:in" do
-            route_data.route_endpoints[e.scene.id] = e.reference
+        for e in w:select "INIT scene:in route_endpoint:in name:in id:in" do
+            route_data.route_endpoints[e.id] = true
         end
         w:sync("route_endpoints:out routes:out", route_data)
     end
@@ -34,8 +34,8 @@ end
 function route_sys:entity_remove()
     local route_data = w:singleton("route_endpoints", "route_endpoints:in routes:in")
     if route_data then
-        for e in w:select "REMOVED scene:in route_endpoint:in" do
-            route_data.route_endpoints[e.scene.id] = nil
+        for e in w:select "REMOVED scene:in route_endpoint:in id:in" do
+            route_data.route_endpoints[e.id] = nil
         end
         w:sync("route_endpoints:out routes:out", route_data)
     end
