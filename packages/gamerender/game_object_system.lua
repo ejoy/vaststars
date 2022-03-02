@@ -34,6 +34,10 @@ prefab_events.on_ready = function(game_object, prefab)
 end
 prefab_events.on_update = function(game_object, prefab, pickup_mapping_param)
 end
+prefab_events.on_message = function(game_object, prefab, pickup_mapping_param)
+end
+prefab_events.on_init = function(game_object, prefab, pickup_mapping_param)
+end
 
 function igame_object.create(prefab, template, pickup_mapping_param)
     for fn, func in pairs(prefab_events) do

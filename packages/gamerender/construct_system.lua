@@ -82,6 +82,7 @@ local function update_basecolor_by_pos(game_object)
     prefab:send("update_basecolor", basecolor_factor)
 end
 
+local confirm_construct
 local construct_button_canvas_items = {}
 local show_construct_button, hide_construct_button; do
     local UP_LEFT <const> = vector2.UP_LEFT
@@ -97,12 +98,12 @@ local show_construct_button, hide_construct_button; do
             end,
             event = function()
                 local prefab_object
-                for game_object in w:select "constructing:in" do
+                for game_object in w:select "constructing:in id:in" do
                     if prototype.is_fluidbox(game_object.constructing.prototype_name) then
                         world:pub {"ui_message", "show_set_fluidbox", true}
                     else
                         prefab_object = igame_object.get_prefab_object(game_object)
-                        -- prefab_object:send("confirm_construct")
+                        confirm_construct(game_object)
                     end
                 end
             end
@@ -191,6 +192,34 @@ local show_construct_button, hide_construct_button; do
             ::continue::
         end
     end
+end
+
+function confirm_construct(game_object)
+    local prefab_object = igame_object.get_prefab_object(game_object.id)
+    if not prefab_object then
+        log.error(("can not found prefab_object `%s`"):format(game_object.id))
+        return
+    end
+
+    local constructing = game_object.constructing
+    if constructing.construct_detector then
+        local position = math3d.tovalue(iom.get_position(world:entity(prefab_object.root)))
+        local coord = terrain.get_coord_by_position(position)
+        local area = prototype.get_area(constructing.prototype_name)
+        if not check_construct_detector(constructing.construct_detector, coord[1], coord[2], constructing.dir, area) then
+            print("can not construct") -- todo error tips
+            return
+        end
+    end
+
+    prefab_object:send("update_basecolor", CONSTRUCT_WHITE_BASIC_COLOR)
+
+    -- w:sync("constructing?in drapdrop?in", game_object)
+    game_object.construct = constructing
+    game_object.constructing = {}
+    game_object.drapdrop = false
+    hide_construct_button()
+    -- set_constructing_entity(game_object.x, game_object.y, game_object.constructing.prototype_name)
 end
 
 --
@@ -326,17 +355,10 @@ function construct_sys:data_changed()
     end
 
     for _, _, _, fluidname in ui_fluidbox_construct_mb:unpack() do
-        local prefab_object
-        for game_object in w:select "constructing:in id:in" do
+        for game_object in w:select "constructing:in id:in construct?new drapdrop:in" do
             game_object.constructing.fluid = {fluidname, 0}
             w:sync("constructing?out", game_object)
-            prefab_object = igame_object.get_prefab_object(game_object.id)
-            if not prefab_object then
-                log.error(("can not found prefab_object `%s`"):format(game_object.id))
-                goto continue
-            end
-            prefab_object:send("confirm_construct")
-            ::continue::
+            confirm_construct(game_object)
         end
     end
 

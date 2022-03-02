@@ -12,12 +12,11 @@ component "prefab_slot_id_cache" .type "lua"
 -- build-in
 component "drapdrop_selected"
 component "pause_animation"
+component "construct" .type "lua"
+component "constructing" .type "lua"
 
 --
 component "drapdrop"
-
---
-component "constructing" .type "lua"
 
 pipeline "init"
     .stage "init"
