@@ -45,7 +45,7 @@ local function get_construct_detector(prototype_name)
         log.error(("can not found prototype_name `%s`"):format(prototype_name))
         return
     end
-    return cfg.construct_component.construct_detector
+    return cfg.construct_detector
 end
 
 local function update_basecolor_by_pos(game_object)
@@ -153,6 +153,10 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
         return
     end
 
+    if not game_object.constructing then
+        return
+    end
+
     local prefab_object = igame_object.get_prefab_object(game_object_eid)
     if not prefab_object then
         log.error(("can not found prefab_object `%s`"):format(game_object_eid))
@@ -173,7 +177,7 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
     game_object.constructing.y = coord[2]
 
     iom.set_position(world:entity(prefab_object.root), position)
-    -- prefab_object:send("basecolor")
+    prefab_object:send("update_basecolor")
 end
 
 function construct_sys:data_changed()
