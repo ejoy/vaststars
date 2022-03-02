@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local FRAMES_PER_SECOND <const> = require "define".FRAMES_PER_SECOND
+local FRAMES_PER_SECOND <const> = 60
 local bgfx = require 'bgfx'
 local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.gamerender|iui"

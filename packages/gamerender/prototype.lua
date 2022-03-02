@@ -8,6 +8,7 @@ local prototype = {}
 function prototype.get_area(prototype_name)
     local pt = gameplay.queryByName("entity", prototype_name)
     if not pt then
+        log.error(("can not found entity `%s`"):format(prototype_name))
         return
     end
     return pt.area

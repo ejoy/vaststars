@@ -112,20 +112,20 @@ function icanvas.add_items(name, x, y, srt)
     return item_id
 end
 
-function icanvas.remove_item(id)
+function icanvas.remove_item(item_id)
     local canvas_entity = get_canvas_entity()
     if not canvas_entity then
         return
     end
 
-    local pcoord = cache_id[id]
+    local pcoord = cache_id[item_id]
     if not pcoord then
-        log.error(("can not found item `%s`"):format(id))
+        log.error(("can not found item `%s`"):format(item_id))
         return
     end
 
-    cache_id[id] = nil
+    cache_id[item_id] = nil
     cache_coord[pcoord] = nil
 
-    return icas.remove_item(canvas_entity, id)
+    return icas.remove_item(canvas_entity, item_id)
 end

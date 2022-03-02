@@ -9,5 +9,10 @@ return {
         "ant.terrain",
         "ant.json",
         "ant.math",
+        "ant.serialize",
+        "ant.compile_resource",
+        "vaststars.gameplay",
+        "vaststars.prototype",
+        "vaststars.config",
     }
 }
