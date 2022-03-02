@@ -7,13 +7,14 @@ import "@ant.camera"
 
 -- cache
 component "terrain" .type "lua"
-component "prefab_slot_id_cache" .type "lua"
+component "prefab_slot_eid_cache" .type "lua"
 
 -- build-in
-component "drapdrop_selected"
 component "pause_animation"
-component "construct" .type "lua"
-component "constructing" .type "lua"
+component "drapdrop_selected"
+component "construct_object"
+component "construct"
+component "construct_selected"
 
 --
 component "drapdrop"

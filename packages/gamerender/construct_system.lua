@@ -59,19 +59,20 @@ local function get_construct_detector(prototype_name)
 end
 
 local function update_basecolor_by_pos(game_object)
+    local construct_object = game_object.construct_object
     local basecolor_factor
     local prefab = igame_object.get_prefab_object(game_object.id)
     local position = math3d.tovalue(iom.get_position(world:entity(prefab.root)))
-    local construct_detector = get_construct_detector(game_object.constructing.prototype_name)
+    local construct_detector = get_construct_detector(construct_object.prototype_name)
 
     if construct_detector then
-        local area = prototype.get_area(game_object.constructing.prototype_name)
+        local area = prototype.get_area(construct_object.prototype_name)
         if not area then
             return
         end
 
         local coord = terrain.get_coord_by_position(position)
-        if not check_construct_detector(construct_detector, coord[1], coord[2], game_object.constructing.dir, area) then
+        if not check_construct_detector(construct_detector, coord[1], coord[2], construct_object.dir, area) then
             basecolor_factor = CONSTRUCT_RED_BASIC_COLOR
         else
             basecolor_factor = CONSTRUCT_GREEN_BASIC_COLOR
@@ -97,12 +98,10 @@ local show_construct_button, hide_construct_button; do
                 return x + UP_LEFT[1], y + UP_LEFT[2]
             end,
             event = function()
-                local prefab_object
-                for game_object in w:select "constructing:in id:in" do
-                    if prototype.is_fluidbox(game_object.constructing.prototype_name) then
+                for game_object in w:select "construct_selected construct_object:in id:in" do
+                    if prototype.is_fluidbox(game_object.construct_object.prototype_name) then
                         world:pub {"ui_message", "show_set_fluidbox", true}
                     else
-                        prefab_object = igame_object.get_prefab_object(game_object)
                         confirm_construct(game_object)
                     end
                 end
@@ -115,7 +114,7 @@ local show_construct_button, hide_construct_button; do
                 return x + UP_RIGHT[1] * width, y + UP_RIGHT[2]
             end,
             event = function()
-                for game_object in w:select "constructing:in id:in" do
+                for game_object in w:select "construct_selected id:in" do
                     hide_construct_button()
                     igame_object.remove(game_object.id)
                 end
@@ -145,8 +144,8 @@ local show_construct_button, hide_construct_button; do
             end,
             event = function()
                 local prefab_object
-                for game_object in w:select "constructing:in" do
-                    game_object.constructing.dir = dir_rotate(game_object.constructing.dir, -1)
+                for game_object in w:select "construct_selected construct_object:in" do
+                    game_object.construct_object.dir = dir_rotate(game_object.construct_object.dir, -1)
                     w:sync("dir:out", game_object)
                     prefab_object = igame_object.get_prefab_object(game_object)
 
@@ -201,12 +200,12 @@ function confirm_construct(game_object)
         return
     end
 
-    local constructing = game_object.constructing
-    if constructing.construct_detector then
+    local construct_object = game_object.construct_object
+    if construct_object.construct_detector then
         local position = math3d.tovalue(iom.get_position(world:entity(prefab_object.root)))
         local coord = terrain.get_coord_by_position(position)
-        local area = prototype.get_area(constructing.prototype_name)
-        if not check_construct_detector(constructing.construct_detector, coord[1], coord[2], constructing.dir, area) then
+        local area = prototype.get_area(construct_object.prototype_name)
+        if not check_construct_detector(construct_object.construct_detector, coord[1], coord[2], construct_object.dir, area) then
             print("can not construct") -- todo error tips
             return
         end
@@ -214,22 +213,20 @@ function confirm_construct(game_object)
 
     prefab_object:send("update_basecolor", CONSTRUCT_WHITE_BASIC_COLOR)
 
-    -- w:sync("constructing?in drapdrop?in", game_object)
-    game_object.construct = constructing
-    game_object.constructing = {}
+    game_object.construct_selected = false
+    game_object.construct = true
     game_object.drapdrop = false
     hide_construct_button()
-    -- set_constructing_entity(game_object.x, game_object.y, game_object.constructing.prototype_name)
 end
 
 --
 local function on_prefab_ready(game_object)
-    local area = prototype.get_area(game_object.constructing.prototype_name)
+    local area = prototype.get_area(game_object.construct_object.prototype_name)
     if not area then
         return
     end
     update_basecolor_by_pos(game_object)
-    show_construct_button(game_object.constructing.x, game_object.constructing.y, area)
+    show_construct_button(game_object.construct_object.x, game_object.construct_object.y, area)
 end
 
 local on_prefab_message ; do
@@ -270,7 +267,7 @@ local function construct_entity(prototype_name)
         return
     end
 
-    for game_object in w:select "id:in constructing:in" do
+    for game_object in w:select "id:in construct_selected:in" do
         igame_object.remove(game_object.id)
     end
 
@@ -295,7 +292,7 @@ local function construct_entity(prototype_name)
         data = {
             drapdrop = true,
             pause_animation = true,
-            constructing = {
+            construct_object = {
                 prototype_name = prototype_name,
                 prefab = cfg.prefab,
                 fluid = {},
@@ -317,7 +314,7 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
         return
     end
 
-    if not game_object.constructing then
+    if not game_object.construct_selected then
         return
     end
 
@@ -327,7 +324,8 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
         return
     end
 
-    local area = prototype.get_area(game_object.constructing.prototype_name)
+    local construct_object = game_object.construct_object
+    local area = prototype.get_area(construct_object.prototype_name)
     if not area then
         return
     end
@@ -337,12 +335,12 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
         return
     end
 
-    game_object.constructing.x = coord[1]
-    game_object.constructing.y = coord[2]
+    construct_object.x = coord[1]
+    construct_object.y = coord[2]
 
     iom.set_position(world:entity(prefab_object.root), position)
     prefab_object:send("update_basecolor_by_pos")
-    show_construct_button(game_object.constructing.x, game_object.constructing.y, area)
+    show_construct_button(construct_object.x, construct_object.y, area)
 end
 
 function construct_sys:data_changed()
@@ -355,9 +353,9 @@ function construct_sys:data_changed()
     end
 
     for _, _, _, fluidname in ui_fluidbox_construct_mb:unpack() do
-        for game_object in w:select "constructing:in id:in construct?new drapdrop:in" do
-            game_object.constructing.fluid = {fluidname, 0}
-            w:sync("constructing?out", game_object)
+        for game_object in w:select "construct_selected:in construct_object:in id:in construct?in drapdrop:in" do
+            game_object.construct_object.fluid = {fluidname, 0}
+            w:sync("construct_object?out", game_object)
             confirm_construct(game_object)
         end
     end

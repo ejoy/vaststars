@@ -11,7 +11,7 @@ local game_object_prefab = {}
 
 local prefab_events = {}
 prefab_events.on_ready = function(game_object, prefab)
-    local prefab_slot_id_cache = {}
+    local prefab_slot_eid_cache = {}
     for _, eid in ipairs(prefab.tag["*"]) do
         local e = world:entity(eid)
         if not e then
@@ -23,13 +23,13 @@ prefab_events.on_ready = function(game_object, prefab)
         end
 
         if e.slot then
-            prefab_slot_id_cache[e.name] = eid
+            prefab_slot_eid_cache[e.name] = eid
         end
         ::continue::
     end
 
-    if next(prefab_slot_id_cache) then
-        game_object.prefab_slot_id_cache = prefab_slot_id_cache
+    if next(prefab_slot_eid_cache) then
+        game_object.prefab_slot_eid_cache = prefab_slot_eid_cache
     end
 end
 prefab_events.on_update = function(game_object, prefab, pickup_mapping_param)
