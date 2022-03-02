@@ -211,20 +211,24 @@ end
 
 local function update_basecolor(game_object, basecolor_factor)
     local prefab = igame_object.get_prefab(game_object)
-    for _, e in ipairs(prefab.tag["*"]) do
-        w:sync("material?in", e)
+    for _, eid in ipairs(prefab.tag["*"]) do
+        local e = world:entity(eid)
+        if not e then
+            log.error(("can not found entity `%s`"):format(eid))
+            goto continue
+        end
+
         if e.material then
             imaterial.set_property(e, "u_basecolor_factor", basecolor_factor)
         end
+        ::continue::
     end
 end
 
 local function update_basecolor_by_pos(game_object)
-    w:sync("construct_detector:in dir:in prototype:in", game_object)
-
     local basecolor_factor
     local prefab = igame_object.get_prefab(game_object)
-    local position = math3d.tovalue(iom.get_position(prefab.root))
+    local position = math3d.tovalue(iom.get_position(world:entity(prefab.root)))
 
     if game_object.construct_detector then
         local entity = igameplay_adapter.query("entity", game_object.prototype)
@@ -362,7 +366,6 @@ end
 
 local on_prefab_ready; do
     function on_prefab_ready(game_object, prefab)
-        w:sync("x:in y:in area:in", game_object)
         update_basecolor_by_pos(game_object)
         show_construct_button(game_object.x, game_object.y, game_object.area)
     end
@@ -466,6 +469,7 @@ function construct_sys:camera_usage()
         cfg = entities_cfg[prototype]
         if cfg then
             for game_object in w:select "constructing:in" do
+                w:sync("game_object_id:in", game_object)
                 igame_object.get_prefab_object(game_object):remove()
             end
 

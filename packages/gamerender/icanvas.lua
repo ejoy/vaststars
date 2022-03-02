@@ -19,14 +19,14 @@ local function packCoord(x, y)
 end
 
 function canvas_sys.data_changed()
-    local canvas_entity = w:singleton("canvas", "canvas:in")
-    if not canvas_entity then
+    local canvas_eid = w:singleton("canvas", "canvas:in")
+    if not canvas_eid then
+        log.error("failed to create canvas")
         return
     end
 
-    for _, _, e in canvas_new_entity_mb:unpack() do
-        w:sync("scene:in", e)
-        ipickup_mapping.mapping(e.scene.id, canvas_entity, {"canvas"})
+    for _, _, eid in canvas_new_entity_mb:unpack() do
+        ipickup_mapping.mapping(eid, canvas_eid, {"canvas"})
     end
 end
 

@@ -13,41 +13,35 @@ function prefab_object_system:component_init()
 end
 
 local events = {}
-events.on_init = function(game_object, prefab, components)
-end
 
 events.on_ready = function(game_object, prefab, components)
-    local game_object = 
-    w:sync("pause_animation?in", game_object)
 
     local prefab_slot_cache = {}
-    for _, e in ipairs(prefab.tag["*"]) do
-        w:sync("scene:in", e)
-        ipickup_mapping.mapping(e.scene.id, game_object, components)
-
-        if game_object.pause_animation then
-            w:sync("_animation?in", e)
-            if e._animation then
-                iani.pause(e, true)
-            end
+    for _, eid in ipairs(prefab.tag["*"]) do
+        local e = world:entity(eid)
+        if not e then
+            log.error(("can not found entity `%s`"):format(eid))
+            goto continue
         end
 
-        w:sync("slot?in name:in", e)
+        ipickup_mapping.mapping(eid, game_object.id, components)
+
+        if game_object.pause_animation and e._animation then
+            iani.pause(e, true)
+        end
+
         if e.slot then
             prefab_slot_cache[e.name] = e
         end
+        ::continue::
     end
 
     if next(prefab_slot_cache) then
         game_object.prefab_slot_cache = prefab_slot_cache
-        w:sync("prefab_slot_cache:out", game_object)
     end
 end
 
 events.on_update = function(game_object, prefab, components)
-end
-
-events.on_message = function(game_object, prefab, components)
 end
 
 function iprefab_object.create(prefab, template)
@@ -63,7 +57,15 @@ function iprefab_object.create(prefab, template)
     for fn, func in pairs(events) do
         local ofunc = prefab[fn]
         prefab[fn] = function(p, ...)
-            local game_object = igame_object.get_game_object(p)
+            local game_object_eid = igame_object.get_game_object(p)
+            local game_object
+            if game_object_eid then
+                game_object = world:entity(game_object_eid)
+            end
+            if not game_object then
+                log.error(("can not found entity `%s`"):format(game_object_eid))
+                return
+            end
             func(game_object, p, components , ...)
             if ofunc then
                 ofunc(game_object, p, ...)
