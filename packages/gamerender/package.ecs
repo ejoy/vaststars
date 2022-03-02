@@ -45,7 +45,7 @@ pipeline "ui"
     .stage "ui_end"
 
 pipeline "pickup_mapping"
-    .stage "after_pickup_mapping"
+    .stage "pickup_mapping"
 
 ------------------------
 system "init_system"
@@ -82,8 +82,20 @@ system "construct_system"
 system "pickup_mapping_system"
     .implement "pickup_mapping_system.lua"
     .method "after_pickup"
-    .method "entity_remove"
 
 interface "ipickup_mapping"
     .implement "pickup_mapping_system.lua"
     .method "mapping"
+
+
+interface "icanvas"
+    .implement "icanvas.lua"
+    .require_system "ant.terrain|canvas_system"
+    .method "create"
+    .method "add_items"
+    .method "remove_item"
+
+system "canvas_system"
+    .implement "icanvas.lua"
+    .method "data_changed"
+

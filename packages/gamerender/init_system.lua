@@ -7,6 +7,7 @@ local bgfx = require 'bgfx'
 local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local icanvas = ecs.import.interface "vaststars.gamerender|icanvas"
 local fs = require "filesystem"
 local default_camera_path <const> = fs.path "/pkg/vaststars.resources/camera_default.prefab"
 local datalist  = require "datalist"
@@ -45,7 +46,7 @@ function m:init_world()
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
     terrain.create()
-    -- icanvas.create()
+    icanvas.create()
 
     world:pub{"camera_controller", "stop", false}
 end

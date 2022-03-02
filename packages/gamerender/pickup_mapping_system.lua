@@ -10,22 +10,6 @@ local ipickup_mapping = ecs.interface "ipickup_mapping"
 local id_mapping = {}
 local id_entity = {}
 
-function pickup_mapping_sys:entity_remove()
-	for eid in w:select "REMOVED scene:in" do
-        print(("ipickup_mapping.entity_remove %s"):format(eid))
-
-        id_mapping[eid] = nil
-
-        local t = id_entity[eid]
-        if t then
-            for _, v in ipairs(t) do
-                id_mapping[v] = nil
-            end
-            id_entity[eid] = nil
-        end
-	end
-end
-
 function pickup_mapping_sys.after_pickup()
     local mapping_eid
     local params

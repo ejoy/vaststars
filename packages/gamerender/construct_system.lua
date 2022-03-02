@@ -4,11 +4,9 @@ local w = world.w
 
 local serialize = import_package "ant.serialize"
 local cr = import_package "ant.compile_resource"
-local hwi  = import_package "ant.hwi"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local construct_sys = ecs.system "construct_system"
 local prototype = ecs.require "prototype"
-local math3d = require "math3d"
 local terrain = ecs.require "terrain"
 local input = ecs.require "input"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
@@ -51,11 +49,12 @@ local function construct_entity(prototype_name)
     local template = replace_material(serialize.parse(f, cr.read_file(f)))
     local prefab = ecs.create_instance(template)
 
-    local screen_x, screen_y = hwi.screen_size()
-    local coord, position = terrain.adjust_position(input.screen_to_world(screen_x / 2, screen_y / 2), area)
+    local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
+    local rect = mq.render_target.view_rect
+    local coord, position = terrain.adjust_position(input.screen_to_world(rect.w // 2, rect.h // 2), area)
     iom.set_position(world:entity(prefab.root), position)
 
-    local t = {
+    igame_object.create(prefab, {
         policy = {},
         data = {
             drapdrop = true,
@@ -68,8 +67,7 @@ local function construct_entity(prototype_name)
                 y = coord[2],
             }
         }
-    }
-    igame_object.create(prefab, t)
+    })
 end
 
 function construct_sys:data_changed()
