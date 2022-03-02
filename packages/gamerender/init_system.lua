@@ -15,6 +15,7 @@ local math3d = require "math3d"
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
 local terrain = ecs.require "terrain"
+local get_fluid_category = ecs.require "get_fluid_category"
 
 local function to_quat(t)
     for k, v in ipairs(t) do
@@ -37,7 +38,7 @@ function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
 
-    iui.open("construct.rml")
+    iui.open("construct.rml", get_fluid_category())
 
     local mq = w:singleton("main_queue", "camera_ref:in")
     local camera_ref = mq.camera_ref

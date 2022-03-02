@@ -33,9 +33,8 @@ function canvas_sys.data_changed()
         return
     end
 
-    for _, _, e in canvas_new_entity_mb:unpack() do
-        w:sync("id:in", e)
-        ipickup_mapping.mapping(e.id, canvas_entity.id, {"canvas"})
+    for _, _, eid in canvas_new_entity_mb:unpack() do
+        ipickup_mapping.mapping(eid, canvas_entity.id, {"canvas"})
     end
 end
 

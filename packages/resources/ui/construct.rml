@@ -175,10 +175,10 @@
                 ui_sys.pub('camera', opt)
             end
 
-            window.onload = function(event)
-                ui_sys.pub("ui", "GET_DATA", "fluid_category")
-            end
             ui_sys.addEventListener(start, {"fluid_category"}, {
+                ["INIT"] = function(fluid_category)
+                    start.fluid_category = fluid_category
+                end,
                 ["leave"] = function()
                     start.cur_construct_menu = ''
                     start.cur_fluid_category = ''
