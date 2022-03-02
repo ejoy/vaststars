@@ -288,6 +288,7 @@ local function construct_entity(prototype_name)
         data = {
             drapdrop = true,
             pause_animation = true,
+            construct_selected = true,
             construct_object = {
                 prototype_name = prototype_name,
                 prefab = cfg.prefab,
