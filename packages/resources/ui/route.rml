@@ -2,27 +2,66 @@
     <head>
         <style>
             div {
-                font: 120% "宋体";
+                font: 120% "微软雅黑";
             }
             button {
-                width: 80px;
-                height: 80px;
-                margin: 10px;
+                width: 10.67vmin;
+                height: 10.67vmin;
+                margin: 1.33vmin;
                 text-align: center;
                 text-decoration: none;
-                border-radius: 8px;
-                border: 2px white;
-                opacity: 0.5;
-                
-                transition: color background-color transform 2s elastic-out;
-                background-color: #f22222;
-                color: #ffffff;
+                border-radius: 1.07vmin;
+                opacity: 1;
+                transition: transform 2s elastic-out;
                 transform: scale(1.0);
             }
             button:hover {
                 transform: scale(1.1);
-                background-color: #222222;
-                color: #f5d057;
+            }
+            .button-bg {
+                 width: 6.67vmin;
+                 height: 6.67vmin;
+                 margin-bottom:0.66vmin;
+                 align-self:center;
+                 background-size:cover;
+            }
+            .button-text {
+                background-color: rgb(128,156,126);
+                font-size: 2.40vmin;
+                text-align:center;
+                border-radius: 0.53vmin;
+            }
+            .station-name-block {
+                background-color: rgb(44, 32, 18);
+                width: 100%;
+                height:10%;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                border: 0.27vmin rgb(89, 73, 39);
+                font-size: 38px;
+            }
+            .station-route-block {
+                width: 100%;
+                height: 80%;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                overflow: hidden;
+            }
+            .station-route-item {
+                flex-direction: column;
+                transition: top 0.5s linear-out; 
+                justify-content: flex-start; 
+                width:100%; 
+                height: 100%;
+            }
+            .station-add-block {
+                width: 100%;
+                height: 10%;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
             }
             .header {
                 height: 60px;
@@ -40,19 +79,54 @@
                 font-size: 120%;
             }
             .road-panel {
-                background-color: rgba(189,215,238,128);
-                border: 2px green;
-                border-radius: 5px;
+                background-color: rgb(44, 32, 18);
+                border: 0.27vmin rgb(89, 73, 39);
+                border-radius: 0.67vmin;
                 width: 30%;
                 height: 100%;
-                flex-direction: column;
-                align-items: center;
-                justify-content: space-between;
+                justify-content: space-evenly;
             }
-            .road-item {
-                background-color: rgba(255, 242, 204, 128);
-                border: 2px white;
+            .road-item-block {
+                flex-direction: column;
+                background-color: rgb(203, 118, 24);
                 border-radius: 5px;
+                align-items:flex-start;
+                justify-content:space-evenly;
+                background-size:cover;
+                width: 40.00vmin;
+                height: 80px;
+                margin: 1.12vmin auto;
+                font-size: 2.40vmin;
+            }
+            .route-name-block {
+                flex-direction: row;
+                border-radius: 4px;
+                background-color: rgb(191,144,0);
+                width: 60%;
+                height:45%;
+                font-size: 24px;
+                text-align: center;
+                align-items: center;
+                justify-content: flex-start;
+            }
+            .route-info-block {
+                flex-direction: row;
+                width: 100%;
+                height:55%;
+                background-size: cover;
+                font-size: 28px;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+            }
+            .route-name-pic {
+                width: 30px;
+                height: 30px;
+                background-size: cover;
+            }
+            .route-name-text {
+                font-size: 28px;
+                text-align: center;
             }
             .row {
                 flex-direction: row;
@@ -75,58 +149,155 @@
                 height: 40px;
                 background-size: cover;
             }
-        </style>
-        <style path = "common/normal-table.rcss"/>
-        <script type="text/x-lua" >
-            local ui_sys = require "ui_system"
-            local start = window.createModel "start" {
-                routes = {},
+            .route-add-button {
+                flex-direction:row; 
+                align-items:center; 
+                justify-content: center;  
+                width:320px;  
+                height:60px; 
+                background-color: rgb(92, 184, 92);
             }
-            function start.showNewRoute(event)
-                ui_sys.open("route_new.rml")
+        </style>
+        <!--style path = "common/normal-table.rcss"/-->
+        <script type="text/x-lua">
+            console.log("before createModel")
+            local start = window.createModel "start" {
+                items = {
+                    {id=100, icon0="correct.png", icon1="correct.png"},
+                    {id=101, icon0="correct.png", icon1="correct.png"},
+                    {id=102, icon0="correct.png", icon1="correct.png"},
+                    {id=103, icon0="correct.png", icon1="correct.png"},
+                    {id=104, icon0="correct.png", icon1="correct.png"},
+                    {id=105, icon0="correct.png", icon1="correct.png"},
+                    {id=106, icon0="correct.png", icon1="correct.png"},
+                    {id=107, icon0="correct.png", icon1="correct.png"},
+                    {id=108, icon0="correct.png", icon1="correct.png"},
+                    {id=109, icon0="correct.png", icon1="correct.png"},
+                    {id=110, icon0="correct.png", icon1="correct.png"},
+                    {id=111, icon0="correct.png", icon1="correct.png"},
+                    {id=112, icon0="correct.png", icon1="correct.png"},
+                    {id=113, icon0="correct.png", icon1="correct.png"},
+                    {id=114, icon0="correct.png", icon1="correct.png"},
+                    {id=115, icon0="correct.png", icon1="correct.png"},
+                    {id=116, icon0="correct.png", icon1="correct.png"},
+                    {id=117, icon0="correct.png", icon1="correct.png"},
+                    {id=118, icon0="correct.png", icon1="correct.png"},
+                    {id=119, icon0="correct.png", icon1="correct.png"},
+                    {id=120, icon0="correct.png", icon1="correct.png"},
+                    {id=121, icon0="correct.png", icon1="correct.png"},
+                    {id=122, icon0="correct.png", icon1="correct.png"},
+                    {id=123, icon0="correct.png", icon1="correct.png"},
+                    {id=124, icon0="correct.png", icon1="correct.png"},
+                },
+                item_size = 120,
+                view_items = {},
+                virtual_pages = {},
+                current_page = 0,
+                selected_id = 100,
+                item_list = {
+                    {id=100, icon0="correct.png", icon1="correct.png"},
+                    {id=101, icon0="correct.png", icon1="correct.png"},
+                    {id=102, icon0="correct.png", icon1="correct.png"},
+                    {id=103, icon0="correct.png", icon1="correct.png"},
+                    {id=104, icon0="correct.png", icon1="correct.png"},
+                    {id=105, icon0="correct.png", icon1="correct.png"},
+                    {id=106, icon0="correct.png", icon1="correct.png"},
+                    {id=107, icon0="correct.png", icon1="correct.png"},
+                    {id=108, icon0="correct.png", icon1="correct.png"},
+                    {id=109, icon0="correct.png", icon1="correct.png"},
+                    {id=110, icon0="correct.png", icon1="correct.png"},
+                    {id=111, icon0="correct.png", icon1="correct.png"},
+                    {id=112, icon0="correct.png", icon1="correct.png"},
+                    {id=113, icon0="correct.png", icon1="correct.png"},
+                    {id=114, icon0="correct.png", icon1="correct.png"},
+                    {id=115, icon0="correct.png", icon1="correct.png"},
+                    {id=116, icon0="correct.png", icon1="correct.png"},
+                },
+                list_item_width = 667,
+                list_item_height = 50,
+                list_container_width = 667,
+                list_container_height = 750,
+            }
+
+            
+
+            local listclass = require "list"
+            -- window size : 1336 750
+            local list_proxy = listclass.create(1, {start.list_container_width, start.list_container_height}, #start.item_list, {start.list_item_width, start.list_item_height})
+            function start.pagemousedown(event)
+                console.log("pagemousedown")
+                page_proxy:on_mousedown(event)
+            end
+            
+            function start.pagedrag(event)
+                --console.log("pagedrag")
+                page_proxy:on_drag(event)
             end
 
-            function start.clickShowRoute(event, route_id)
+            function start.pagemouseup(event)
+                console.log("pagemouseup")
+                page_proxy:on_mouseup(event)
+                start.current_page = page_proxy:get_current_page() - 1
             end
 
-            window.onload = function()
-                ui_sys.pub("ui", "GET_DATA", "routes")
+            function start.page_item_click(event, id)
+                console.log("page_item_click", id)
+                start.selected_id = id
             end
-            ui_sys.addEventListener(start, {"routes"}, {
-                ["leave"] = function()
-                    ui_sys.close("route.rml")
-                end,
-            })
+
+            function start.listmousedown(event)
+                list_proxy:on_mousedown(event)
+            end
+
+            function start.listdrag(event)
+                list_proxy:on_drag(event)
+            end
+
+            function start.listmouseup(event)
+                list_proxy:on_mouseup(event)
+            end
+
+            window.addEventListener('message', function(event)
+                console.log("event.source.postMessage")
+                event.source.postMessage(event.data)
+            end)
+            window.addEventListener('mousemove', function(event)
+            end)
         </script>
     </head>
     <body>
-        <div data-model="start" style = "flex-direction: row; height: 100%;">
+        <div data-model="start" style = "overflow:hide; flex-direction: row; width:100%; height: 100%; justify-content: flex-end;">
             <div class="road-panel" style = "flex-direction: column;">
                 <!-- header -->
-                <div class="header" style="align-items: center; width: 100%;">
-                    <div style="align-items: flex-start;">
-                        <div class="row">
-                            <div class="big-bg" style='background-image:"road/header.png";'></div>
-                            <div>123456</div>
-                        </div>
-                    </div>
-                    <div style="align-items: flex-end;">
-                        <div class="row">
-                            <div>1/10</div>
-                            <div class="middle-bg" style='background-image:"road/car.png";'></div>
-                        </div>
-                    </div>
+                <div class="station-name-block">
+                    <div class="big-bg" style='background-image:"road/header.png";'></div>
+                    <div>12号车辆厂</div>
                 </div>
 
                 <!-- route list -->
-                <table class="normal-table" style = "width: 100%" data-for="routes">
-                    <tr data-event-click="clickShowRoute(it.id)"><th>{{it.name_1}} -> {{it.name_2}}</th></tr>
-                </table>
-
-                <button style="width:320px; height:60px; font-size: 100%; background-color: rgb(237,125,49);" data-event-click="showNewRoute()">
-                    <div style='align-self: center; background-image:"road/add.png"; width:30px; height:30px; background-size:cover;'/>
-                    <div>增加路线</div>
-                </button>
+                <div class="station-route-block">
+                    <div class="station-route-item" data-event-mousedown="listmousedown()" data-event-mouseup="listmouseup()" data-event-mousemove="listdrag()">
+                        <button class="road-item-block" data-for="item_list">
+                            <div class="route-name-block">
+                                <div class = "route-name-pic" style='background-image: "road/lighter.png";'/>
+                                <div class = "route-name-text">铁锭加工路线</div>
+                            </div>
+                            <div class="route-info-block">
+                                <div class = "route-name-pic" style='background-image: "road/header.png";'/>
+                                <div class = "route-name-text">1233</div>
+                                <div class = "route-name-pic" style='margin:0 0.5em;width:30px;height:23px;background-image: "exchange/right_arrow.png";'/>
+                                <div class = "route-name-pic" style='background-image: "road/header.png";'/>
+                                <div class = "route-name-text">1233</div>
+                            </div>
+                        </button>
+                    </div>             
+                </div>
+                <div class = "station-add-block">
+                    <button class="route-add-button" data-event-click="showNewRoute()">
+                        <div style='align-self: center; background-image:"road/add.png"; width:30px; height:30px; background-size:cover;'/>
+                        <div>增加路线</div>
+                    </button>
+                </div>
             </div>
         </div>
     </body>
