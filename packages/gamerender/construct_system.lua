@@ -60,12 +60,10 @@ local vector2 = require "vector2"
 local function deepcopy(t)
     local r = {}
     for k, v in pairs(t) do
-        if k ~= "reference" then
-            if type(v) == "table" then
-                r[k] = deepcopy(v)
-            else
-                r[k] = v
-            end
+        if type(v) == "table" then
+            r[k] = deepcopy(v)
+        else
+            r[k] = v
         end
     end
     return r

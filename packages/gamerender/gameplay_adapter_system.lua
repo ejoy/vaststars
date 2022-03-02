@@ -114,15 +114,12 @@ function gameplay_adapter_system:entity_ready()
             gameplay_ecs:remove(e)
         end
 
-        local ref = {}
-        gameplay_ecs:new {
+        gameplay_adapter.gameplay_road_entities[coord] = gameplay_ecs:new {
             road = {
                 coord = coord,
                 road_type = road_type,
             },
-            reference = ref,
         }
-        gameplay_adapter.gameplay_road_entities[coord] = ref
     end
 end
 
