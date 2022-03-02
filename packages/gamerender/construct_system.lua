@@ -61,8 +61,8 @@ end
 local function update_basecolor_by_pos(game_object)
     local construct_object = game_object.construct_object
     local basecolor_factor
-    local prefab = igame_object.get_prefab_object(game_object.id)
-    local position = math3d.tovalue(iom.get_position(world:entity(prefab.root)))
+    local prefab_object = igame_object.get_prefab_object(game_object.id)
+    local position = math3d.tovalue(iom.get_position(world:entity(prefab_object.root)))
     local construct_detector = get_construct_detector(construct_object.prototype_name)
 
     if construct_detector then
@@ -80,7 +80,7 @@ local function update_basecolor_by_pos(game_object)
     else
         basecolor_factor = CONSTRUCT_GREEN_BASIC_COLOR
     end
-    prefab:send("update_basecolor", basecolor_factor)
+    prefab_object:send("update_basecolor", basecolor_factor)
 end
 
 local confirm_construct
@@ -235,10 +235,6 @@ local on_prefab_message ; do
         update_basecolor(prefab, basecolor_factor)
     end
 
-    funcs["update_basecolor_by_pos"] = function(game_object)
-        update_basecolor_by_pos(game_object)
-    end
-
     function on_prefab_message(game_object, prefab, cmd, ...)
         local func = funcs[cmd]
         if func then
@@ -267,7 +263,7 @@ local function construct_entity(prototype_name)
         return
     end
 
-    for game_object in w:select "id:in construct_selected:in" do
+    for game_object in w:select "id:in construct_selected" do
         igame_object.remove(game_object.id)
     end
 
@@ -339,7 +335,7 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
     construct_object.y = coord[2]
 
     iom.set_position(world:entity(prefab_object.root), position)
-    prefab_object:send("update_basecolor_by_pos")
+    update_basecolor_by_pos(game_object)
     show_construct_button(construct_object.x, construct_object.y, area)
 end
 
@@ -353,7 +349,7 @@ function construct_sys:data_changed()
     end
 
     for _, _, _, fluidname in ui_fluidbox_construct_mb:unpack() do
-        for game_object in w:select "construct_selected:in construct_object:in id:in construct?in drapdrop:in" do
+        for game_object in w:select "construct_selected construct_object:in id:in construct?in drapdrop:in" do
             game_object.construct_object.fluid = {fluidname, 0}
             w:sync("construct_object?out", game_object)
             confirm_construct(game_object)
