@@ -24,7 +24,7 @@ end
 function route_sys:entity_init()
     local route_data = w:singleton("route_endpoints", "route_endpoints:in routes:in")
     if route_data then
-        for e in w:select "INIT scene:in route_endpoint:in name:in reference:in" do
+        for e in w:select "INIT scene:in route_endpoint:in name:in" do
             route_data.route_endpoints[e.scene.id] = e.reference
         end
         w:sync("route_endpoints:out routes:out", route_data)
