@@ -527,7 +527,7 @@ function construct_sys:data_changed()
 
     for _, _, _, fluidname in ui_fluidbox_construct_mb:unpack() do
         local prefab_object
-        for game_object in w:select "constructing constructing_fluid?in" do
+        for game_object in w:select "constructing constructing_fluid?in game_object_id:in" do
             game_object.constructing_fluid = {fluidname, 0} -- 指定 fluidbox 的流体类型
             w:sync("constructing_fluid?out", game_object)
             prefab_object = igame_object.get_prefab_object(game_object)

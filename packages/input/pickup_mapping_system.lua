@@ -17,8 +17,8 @@ function pickup_mapping_sys:entity_remove()
         id_mapping[eid] = nil
         local t = id_entity[eid]
         if t then
-            for _, v in ipairs(t) do
-                id_mapping[v] = nil
+            for eid in pairs(t) do
+                id_mapping[eid] = nil
             end
             id_entity[eid] = nil
         end

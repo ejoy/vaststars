@@ -13,16 +13,13 @@ local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_a
 local iconstruct_arrow = ecs.interface "iconstruct_arrow"
 
 function iconstruct_arrow.hide(e)
-    w:sync("construct_arrows:in", e)
     for _, canvas in pairs(e.construct_arrows) do
         icanvas.remove_item(canvas.id)
     end
     e.construct_arrows = {}
-    w:sync("construct_arrows:out", e)
 end
 
 function iconstruct_arrow.show(e, position)
-    w:sync("construct_arrows:in", e)
     local tile_coord = iterrain.get_coord_by_position(position)
     local arrow_coord
 
@@ -38,5 +35,4 @@ function iconstruct_arrow.show(e, position)
         local item_id = icanvas.add_items("arrow.png", arrow_coord[1], arrow_coord[2], {r = arrow_rotation[idx]})
         e.construct_arrows[igameplay_adapter.pack_coord(arrow_coord[1], arrow_coord[2])] = {id = item_id, tile_coord = tile_coord, arrow_coord = arrow_coord,}
     end
-    w:sync("construct_arrows:out", e)
 end
