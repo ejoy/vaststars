@@ -675,21 +675,18 @@ function construct_sys:after_pickup_mapping()
         world:pub {"ui_message", "show_set_fluidbox", true, fluid}
     end
 
-    for _, _, game_object in pickup_construct_pipe_mb:unpack() do
-        w:sync("fluidbox_selected?in x:in y:in area:in constructing_fluid:in", game_object)
+    for _, _, game_object_eid in pickup_construct_pipe_mb:unpack() do
+        local game_object = world:entity(game_object_eid)
         game_object.fluidbox_selected = true
-        w:sync("fluidbox_selected?out", game_object)
         world:pub {"ui_message", "show_set_fluidbox", true, game_object.constructing_fluid}
     end
 
-    for _, _, game_object in pickup_disassemble_mb:unpack() do
+    for _, _, game_object_eid in pickup_disassemble_mb:unpack() do
         if get_cur_edit_mode() ~= "dismantle" then
             break
         end
-
-        w:sync("disassemble_selected?in", game_object)
+        local game_object = world:entity(game_object_eid)
         game_object.disassemble_selected = not game_object.disassemble_selected
-        w:sync("disassemble_selected?out", game_object)
 
         local t = deepcopy(w:readall(game_object))
         t[1] = nil

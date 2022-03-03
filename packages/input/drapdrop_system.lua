@@ -25,11 +25,10 @@ function drapdrop_system:data_changed()
 end
 
 function drapdrop_system.after_pickup_mapping()
-    for _, _, mapping_entity in pickup_mapping_mb:unpack() do
-        w:sync("drapdrop?in", mapping_entity)
+    for _, _, mapping_entity_eid in pickup_mapping_mb:unpack() do
+        local mapping_entity = world:entity(mapping_entity_eid)
         if mapping_entity.drapdrop then
             mapping_entity.drapdrop_selected = true
-            w:sync("drapdrop_selected?out", mapping_entity)
         end
     end
 end
