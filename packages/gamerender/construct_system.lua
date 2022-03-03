@@ -691,12 +691,17 @@ function construct_sys:after_pickup_mapping()
         local game_object = world:entity(game_object_eid)
         game_object.disassemble_selected = not game_object.disassemble_selected
 
-        local t = deepcopy(w:readall(game_object))
-        t[1] = nil
-        t[2] = nil
+        local t = {
+            constructing_fluid = game_object.constructing_fluid,
+            dir = game_object.dir,
+            pickup_show_ui = game_object.pickup_show_ui,
+            prototype = game_object.prototype,
+            x = game_object.x,
+            y = game_object.y,
+        }
 
         local prefab = igame_object.get_prefab(game_object)
-        local position = math3d.tovalue(iom.get_position(prefab.root))
+        local position = math3d.tovalue(iom.get_position(world:entity(prefab.root)))
         igame_object.get_prefab_object(game_object):remove()
 
         local prefab
@@ -704,14 +709,14 @@ function construct_sys:after_pickup_mapping()
             local template = replace_material(serialize.parse(game_object.construct_prefab, cr.read_file(game_object.construct_prefab)))
             prefab = ecs.create_instance(template)
             prefab.on_ready = function (game_object, prefab)
-                iom.set_position(prefab.root, position)
+                iom.set_position(world:entity(prefab.root), position)
                 update_basecolor(game_object, DISMANTLE_YELLOW_BASIC_COLOR)
             end
 
         else
             prefab = ecs.create_instance(game_object.construct_prefab)
             prefab.on_ready = function (game_object, prefab)
-                iom.set_position(prefab.root, position)
+                iom.set_position(world:entity(prefab.root), position)
             end
         end
 

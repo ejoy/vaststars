@@ -104,8 +104,8 @@ local function create_game_object(typedir, x, y)
     local t = typedir:sub(1, 1)
     local dir = typedir:sub(2, 2)
     local prefab = ecs.create_instance(prefab_file_path:format(t))
-    iom.set_position(prefab.root, iterrain.get_position_by_coord(x, y))
-    iom.set_rotation(prefab.root, rotators[dir])
+    iom.set_position(world:entity(prefab.root), iterrain.get_position_by_coord(x, y))
+    iom.set_rotation(world:entity(prefab.root), rotators[dir])
     return iprefab_object.create(prefab, {
         policy = {
             "ant.scene|scene_object",
@@ -256,7 +256,7 @@ function road_sys:after_pickup_mapping()
     for _, _, game_object in pickup_show_set_road_arrow_mb:unpack() do
         if e and e.cur_edit_mode ~= "dismantle" then
             local prefab = igame_object.get_prefab_object(game_object)
-            iconstruct_arrow.show(construct_arrows, math3d.tovalue(iom.get_position(prefab.root)))
+            iconstruct_arrow.show(construct_arrows, math3d.tovalue(iom.get_position(world:entity(prefab.root))))
             is_show_arrow = true
         end
     end

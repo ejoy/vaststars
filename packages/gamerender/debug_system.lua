@@ -185,7 +185,7 @@ funcs[3] = function ()
         r = {0.0,0.0,0.0,1.0},
         t = {-50.0,0.0,30.0,1.0},
     }
-    iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
+    iom.set_srt(world:entity(new_prefab.root), srt.s, srt.r, srt.t)
     local template = {
         policy = {
             "ant.general|name",
@@ -205,11 +205,9 @@ funcs[3] = function ()
         },
     }
     new_prefab.on_ready = function(game_object, prefab)
-        w:sync("area:in x:in y:in", game_object)
-        w:sync("scene:in", prefab.root)
         igameplay_adapter.create_entity {
             station = {
-                id = prefab.root.scene.id,
+                id = prefab.root,
                 coord = igameplay_adapter.pack_coord(game_object.x, game_object.y + (-1 * (game_object.area[2] // 2)) - 1),
             }
         }
@@ -223,7 +221,7 @@ funcs[3] = function ()
         r = {0.0,0.0,0.0,1.0},
         t = {30.0,0.0,40.0,1.0},
     }
-    iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
+    iom.set_srt(world:entity(new_prefab.root), srt.s, srt.r, srt.t)
     local template = {
         policy = {
             "ant.general|name",
@@ -244,11 +242,9 @@ funcs[3] = function ()
     }
 
     new_prefab.on_ready = function(game_object, prefab)
-        w:sync("area:in x:in y:in", game_object)
-        w:sync("scene:in", prefab.root)
         igameplay_adapter.create_entity {
             station = {
-                id = prefab.root.scene.id,
+                id = prefab.root,
                 coord = igameplay_adapter.pack_coord(game_object.x, game_object.y + (-1 * (game_object.area[2] // 2)) - 1),
             }
         }
@@ -494,7 +490,7 @@ do
             if idx > #srts then
                 return
             end
-            iom_set_srt(prefab.root, math3d_srt(srts[idx]))
+            iom_set_srt(world:entity(prefab.root), math3d_srt(srts[idx]))
         -- end
     end
 end
