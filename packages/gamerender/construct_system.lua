@@ -726,9 +726,9 @@ function construct_sys:after_pickup_mapping()
 
     local show = false
     local url
-    for _, _, entity in pickup_show_ui_mb:unpack() do
+    for _, _, eid in pickup_show_ui_mb:unpack() do
         if get_cur_edit_mode() == "" then
-            w:sync("pickup_show_ui:in", entity)
+            local entity = world:entity(eid)
             url = entity.pickup_show_ui[1]
             iui.open(url, table.unpack(entity.pickup_show_ui, 2))
         end
