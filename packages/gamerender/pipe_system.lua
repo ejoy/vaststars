@@ -301,11 +301,12 @@ do
                     local k = igameplay_adapter.pack_coord(coord[1], coord[2])
                     local v = construct_arrows.construct_arrows[k]
                     if v then
-                        local game_object = get_game_object(v.tile_coord)
-                        if not game_object then
+                        local game_object_eid = get_game_object(v.tile_coord)
+                        if not game_object_eid then
                             log.error(("can not found entity (%s, %s)"):format(v.tile_coord[1], v.tile_coord[2]))
                             return
                         end
+                        local game_object = world:entity(game_object_eid)
                         ipipe.construct(v.tile_coord, v.arrow_coord, nil, igameplay_adapter.get_fluid(game_object.x, game_object.y))
                     end
                 end

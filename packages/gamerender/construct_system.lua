@@ -284,7 +284,7 @@ local show_construct_button, hide_construct_button; do
             end,
             event = function()
                 local prefab_object
-                for game_object in w:select "constructing" do
+                for game_object in w:select "constructing game_object_id:in" do
                     hide_construct_button()
                     prefab_object = igame_object.get_prefab_object(game_object)
                     prefab_object:remove()
@@ -315,7 +315,7 @@ local show_construct_button, hide_construct_button; do
             end,
             event = function()
                 local prefab_object
-                for game_object in w:select "constructing dir:in" do
+                for game_object in w:select "constructing dir:in game_object_id:in" do
                     game_object.dir = dir_rotate(game_object.dir, -1)
                     w:sync("dir:out", game_object)
                     prefab_object = igame_object.get_prefab_object(game_object)
@@ -604,7 +604,7 @@ function construct_sys:data_changed()
             ::continue::
         end
 
-        for game_object in w:select "constructing" do
+        for game_object in w:select "constructing game_object_id:in" do
             local prefab = igame_object.get_prefab(game_object)
             prefab:remove()
         end
