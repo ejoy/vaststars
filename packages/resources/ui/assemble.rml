@@ -87,7 +87,17 @@
             workbutton:active {
                 transform: scale(1.0);
             }
-
+            .workbutton-bg {
+                margin: auto auto;
+                top: 1.60vmin;
+                width: 6.67vmin;
+                height: 6.67vmin; 
+                background-size: cover;
+            }
+            workbutton:hover {
+                transform: scale(1.1);
+                background-color: rgb(0,176,80);
+            }
             .item-container-region {
                 margin: auto;
                 height: 100%; 
