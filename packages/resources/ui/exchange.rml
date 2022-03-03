@@ -87,6 +87,10 @@
             workbutton:active {
                 transform: scale(1.0);
             }
+            workbutton:hover {
+                transform: scale(1.1);
+                background-color: rgb(0,176,80);
+            }
 
             .item-container-region {
                 margin: auto;
@@ -231,6 +235,7 @@
                 font-size: 3.47vmin;
                 text-align: center;
                 align-self: center;
+                -webkit-text-stroke: 0.07vmin rgb(143, 143, 143);
             }
             .item-page-block {
                 transition: left 0.5s linear-out; 
@@ -425,8 +430,8 @@
                     </div>         
                 </div>
                 <div class = "item-container" style="height:20%; margin: 0 0;">
-                    <div class="row" style="width: 100%; justify-content: space-between;">
-                        <button class="button-operate-item">                        
+                    <div class="row" style="width: 100%; justify-content: space-evenly;">
+                        <button class="button-operate-item" style="background-color: rgb(0, 112, 192);">                        
                             <div class="button-operate-text">回撤上一步</div>
                         </button>
                         <button class="button-operate-item">                      
