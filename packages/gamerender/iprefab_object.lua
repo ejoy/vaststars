@@ -44,6 +44,12 @@ end
 events.on_update = function(game_object, prefab, components)
 end
 
+events.on_message = function(game_object, prefab, components)
+end
+
+events.on_init = function(game_object, prefab, components)
+end
+
 function iprefab_object.create(prefab, template)
     if not template then
         return

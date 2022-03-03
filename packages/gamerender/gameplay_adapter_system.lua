@@ -208,8 +208,6 @@ do
     end
 
     function igameplay_adapter.create_entity(game_object)
-        w:sync("prototype:in x:in y:in dir:in constructing_fluid:in", game_object)
-
         local e = w:singleton("gameplay_world", "gameplay_world:in")
         if not e then
             log.error("failed to create entity")

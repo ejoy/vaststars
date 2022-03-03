@@ -266,7 +266,7 @@ local show_construct_button, hide_construct_button; do
             end,
             event = function()
                 local prefab_object
-                for game_object in w:select "constructing type:in" do
+                for game_object in w:select "constructing type:in game_object_id:in" do
                     if is_fluidbox(game_object.type) then
                         world:pub {"ui_message", "show_set_fluidbox", true}
                     else
@@ -376,8 +376,7 @@ local on_prefab_message ; do
     end
 
     funcs["confirm_construct"] = function(game_object, prefab)
-        local position = math3d.tovalue(iom.get_position(prefab.root))
-        w:sync("construct_detector?in dir:in x:in y:in area:in", game_object)
+        local position = math3d.tovalue(iom.get_position(world:entity(prefab.root)))
         if game_object.construct_detector then
             local entity = igameplay_adapter.query("entity", game_object.prototype)
             local coord = iterrain.get_coord_by_position(position)
@@ -388,11 +387,9 @@ local on_prefab_message ; do
         end
 
         update_basecolor(game_object, CONSTRUCT_WHITE_BASIC_COLOR)
-        w:sync("constructing?in construct?in drapdrop?in", game_object)
         game_object.constructing = false
         game_object.construct = true
         game_object.drapdrop = false
-        w:sync("constructing?out construct?out drapdrop?out", game_object)
         hide_construct_button()
         set_constructing_entity(game_object.x, game_object.y, game_object.prototype)
     end
@@ -443,7 +440,7 @@ end
 function construct_sys:camera_usage()
     local coord, position
     for _, game_object, mouse_x, mouse_y in drapdrop_entity_mb:unpack() do
-        w:sync("area:in x:in y:in", game_object)
+        w:sync("area:in x:in y:in game_object_id:in", game_object)
 
         local prefab_object = igame_object.get_prefab_object(game_object)
         position = iinput.screen_to_world {mouse_x, mouse_y}
@@ -456,7 +453,7 @@ function construct_sys:camera_usage()
         game_object.y = coord[2]
         w:sync("x:out y:out", game_object)
 
-        iom.set_position(prefab_object.root, position)
+        iom.set_position(world:entity(prefab_object.root), position)
         show_construct_button(coord[1], coord[2], game_object.area)
         prefab_object:send("basecolor")
         ::continue::
@@ -561,12 +558,12 @@ function construct_sys:data_changed()
     end
 
     for _ in ui_construct_complete_mb:unpack() do
-        for game_object in w:select "construct" do
+        for game_object in w:select "construct game_object_id:in" do
             local prefab = igame_object.get_prefab(game_object)
             if not prefab then
                 goto continue
             end
-            local srt = prefab.root.scene.srt
+            local srt = world:entity(prefab.root).scene.srt
 
             w:sync("construct_road?in construct_pipe?in dir:in construct_prefab:in construct_entity:in x:in y:in prototype:in area:in constructing_fluid?in", game_object)
             if game_object.construct_road then
@@ -575,7 +572,7 @@ function construct_sys:data_changed()
                 ipipe.construct(nil, {game_object.x, game_object.y}, game_object.dir, game_object.constructing_fluid)
             else
                 local new_prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(game_object.construct_prefab))
-                iom.set_srt(new_prefab.root, srt.s, srt.r, srt.t)
+                iom.set_srt(world:entity(new_prefab.root), srt.s, srt.r, srt.t)
                 local template = {
                     policy = {},
                     data = {
@@ -606,6 +603,13 @@ function construct_sys:data_changed()
             prefab:remove()
             ::continue::
         end
+
+        for game_object in w:select "constructing" do
+            local prefab = igame_object.get_prefab(game_object)
+            prefab:remove()
+        end
+
+        hide_construct_button()
 
         clear_constructing_entity()
         set_cur_edit_mode("")
@@ -644,10 +648,9 @@ function construct_sys:data_changed()
 end
 
 function construct_sys:after_pickup_mapping()
-    for _, _, game_object in pickup_pipe_mb:unpack() do
-        w:sync("fluidbox_selected?in x:in y:in", game_object)
+    for _, _, game_object_eid in pickup_pipe_mb:unpack() do
+        local game_object = world:entity(game_object_eid)
         game_object.fluidbox_selected = true
-        w:sync("fluidbox_selected?out", game_object)
 
         local fluid_name, fluid_volume
         for e in igameplay_adapter.world().ecs:select "entity:in fluidbox:in" do
