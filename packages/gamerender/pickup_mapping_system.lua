@@ -50,6 +50,7 @@ function pickup_mapping_sys.after_pickup()
     end
 end
 
+-- 调用此接口时, eid 与 mapping_eid 所对应的 entity 允许未创建好, 但在 after_pickup stage 里, mapping_eid 对应的 entity 必须创建好
 function ipickup_mapping.mapping(eid, mapping_eid)
     id_mapping[eid] = mapping_eid
     id_entity[mapping_eid] = id_entity[mapping_eid] or {}
