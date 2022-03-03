@@ -39,7 +39,7 @@
                 justify-content: center;
                 align-items: center;
                 border: 0.27vmin rgb(89, 73, 39);
-                font-size: 38px;
+                font-size: 5.07vmin;
             }
             .station-route-block {
                 width: 100%;
@@ -61,21 +61,21 @@
                 height: 10%;
                 align-items: center;
                 justify-content: center;
-                font-size: 24px;
+                font-size: 3.20vmin;
             }
             .header {
-                height: 60px;
+                height: 8.00vmin;
                 flex-direction: row;
                 justify-content: space-between;
             }
             .footer {
-                height: 60px;
+                height: 8.00vmin;
                 flex-direction: row;
             }
             .footer > button {
                 text-align: center;
-                width: 150px;
-                height: 40px;
+                width: 20.00vmin;
+                height: 5.33vmin;
                 font-size: 120%;
             }
             .road-panel {
@@ -89,22 +89,22 @@
             .road-item-block {
                 flex-direction: column;
                 background-color: rgb(203, 118, 24);
-                border-radius: 5px;
+                border-radius: 0.67vmin;
                 align-items:flex-start;
                 justify-content:space-evenly;
                 background-size:cover;
                 width: 40.00vmin;
-                height: 80px;
+                height: 10.67vmin;
                 margin: 1.12vmin auto;
                 font-size: 2.40vmin;
             }
             .route-name-block {
                 flex-direction: row;
-                border-radius: 4px;
+                border-radius: 0.53vmin;
                 background-color: rgb(191,144,0);
                 width: 60%;
                 height:45%;
-                font-size: 24px;
+                font-size: 3.20vmin;
                 text-align: center;
                 align-items: center;
                 justify-content: flex-start;
@@ -114,18 +114,18 @@
                 width: 100%;
                 height:55%;
                 background-size: cover;
-                font-size: 28px;
+                font-size: 3.73vmin;
                 text-align: center;
                 align-items: center;
                 justify-content: center;
             }
             .route-name-pic {
-                width: 30px;
-                height: 30px;
+                width: 4.00vmin;
+                height: 4.00vmin;
                 background-size: cover;
             }
             .route-name-text {
-                font-size: 28px;
+                font-size: 3.73vmin;
                 text-align: center;
             }
             .row {
@@ -135,26 +135,26 @@
                 flex-direction: column;
             }
             .big-bg {
-                width: 60px;
-                height: 60px;
+                width: 8.00vmin;
+                height: 8.00vmin;
                 background-size: cover;
             }
             .middle-bg {
-                width: 50px;
-                height: 50px;
+                width: 6.67vmin;
+                height: 6.67vmin;
                 background-size: cover;
             }
             .small-bg {
-                width: 40px;
-                height: 40px;
+                width: 5.33vmin;
+                height: 5.33vmin;
                 background-size: cover;
             }
             .route-add-button {
                 flex-direction:row; 
                 align-items:center; 
                 justify-content: center;  
-                width:320px;  
-                height:60px; 
+                width: 42.67vmin;  
+                height: 8.00vmin; 
                 background-color: rgb(92, 184, 92);
             }
         </style>
@@ -285,7 +285,7 @@
                             <div class="route-info-block">
                                 <div class = "route-name-pic" style='background-image: "road/header.png";'/>
                                 <div class = "route-name-text">1233</div>
-                                <div class = "route-name-pic" style='margin:0 0.5em;width:30px;height:23px;background-image: "exchange/right_arrow.png";'/>
+                                <div class = "route-name-pic" style='margin:0 0.5em;width: 4.00vmin;height: 3.07vmin;background-image: "exchange/right_arrow.png";'/>
                                 <div class = "route-name-pic" style='background-image: "road/header.png";'/>
                                 <div class = "route-name-text">1233</div>
                             </div>
@@ -294,7 +294,7 @@
                 </div>
                 <div class = "station-add-block">
                     <button class="route-add-button" data-event-click="showNewRoute()">
-                        <div style='align-self: center; background-image:"road/add.png"; width:30px; height:30px; background-size:cover;'/>
+                        <div style='align-self: center; background-image:"road/add.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;'/>
                         <div>增加路线</div>
                     </button>
                 </div>

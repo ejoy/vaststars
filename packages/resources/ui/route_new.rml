@@ -19,7 +19,7 @@
                 transform: scale(1.1);
             }
             .header {
-                height: 60px;
+                height: 8.00vmin;
                 flex-direction: row;
                 justify-content: space-between;
             }
@@ -33,15 +33,15 @@
             }
             .panel {
                 background-color: rgb(189,215,238);
-                border: 2px green;
-                border-radius: 5px;
+                border: 0.27vmin green;
+                border-radius: 0.67vmin;
                 width: 100%;
                 height: 100%;
             }
             .road-item {
                 background-color: rgb(255, 242, 204);
-                border: 2px white;
-                border-radius: 5px;
+                border: 0.27vmin white;
+                border-radius: 0.67vmin;
             }
             .row {
                 flex-direction: row;
@@ -50,18 +50,18 @@
                 flex-direction: column;
             }
             .big-bg {
-                width: 60px;
-                height: 60px;
+                width: 8.00vmin;
+                height: 8.00vmin;
                 background-size: cover;
             }
             .middle-bg {
-                width: 50px;
-                height: 50px;
+                width: 6.67vmin;
+                height: 6.67vmin;
                 background-size: cover;
             }
             .small-bg {
-                width: 34px;
-                height:34px;
+                width: 4.53vmin;
+                height: 4.53vmin;
                 background-size: cover;
             }
             .station-name-block {
@@ -71,8 +71,8 @@
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
-                border: 0.75px  rgb(89, 73, 39);
-                font-size: 38px;
+                border: 0.10vmin  rgb(89, 73, 39);
+                font-size: 5.07vmin;
             }
             .route-name-block {
                 background-color: rgb(203, 118, 24);
@@ -81,17 +81,17 @@
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-                border: 0.75px rgb(89, 73, 39);
-                font-size: 26px;
+                border: 0.10vmin rgb(89, 73, 39);
+                font-size: 3.47vmin;
             }
             .route-change-block {
                 width: 100%;
                 height:25%;
                 flex-direction: column;
                 align-items: flex-start;
-                border: 0.75px rgb(89, 73, 39);
+                border: 0.10vmin rgb(89, 73, 39);
                 background-color: rgb(44, 32, 18);
-                font-size: 26px;
+                font-size: 3.47vmin;
             }
             .route-button-block {
                 width: 100%;
@@ -99,26 +99,26 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: space-evenly;
-                border: 0.75px rgb(255, 255, 255);
+                border: 0.10vmin rgb(255, 255, 255);
                 background-color: rgb(44, 32, 18);
-                font-size: 26px;
+                font-size: 3.47vmin;
             }
             .route-name-text {
-                font-size: 28px;
+                font-size: 3.73vmin;
                 text-align: center;
             }
             .button-name-change {
-                width: 30px;
-                height: 30px;
+                width: 4.00vmin;
+                height: 4.00vmin;
             }
             .pic-block {
                 flex-direction: row;
                 justify-content: space-evenly;
                 align-items: center;
                 background-color: rgb(191,144,0);
-                font-size: 28px;
+                font-size: 3.73vmin;
                 background-size: cover;
-                border-radius: 2px;
+                border-radius: 0.27vmin;
                 width: 40%;
                 height:20%
             }
@@ -127,9 +127,9 @@
                 justify-content: space-evenly;
                 align-items: center;
                 background-color: rgb(44, 32, 18);
-                font-size: 28px;
+                font-size: 3.73vmin;
                 background-size: cover;
-                border-radius: 2px;
+                border-radius: 0.27vmin;
                 width: 100%;
                 height:80%;
             }
@@ -138,13 +138,13 @@
                 justify-content: space-evenly;
                 align-items: center;
                 background-size: cover;
-                border-radius: 2px;
+                border-radius: 0.27vmin;
                 width: 100%;
                 height:80%;
             }
             .change-button {
-                width: 80px;
-                height: 80px;
+                width: 10.67vmin;
+                height: 10.67vmin;
                 background-color: rgb(250, 205, 9);
                 border: 0.27vmin rgb(89, 73, 39);
                 background-size: cover;
@@ -153,8 +153,8 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
-                width: 150px;
-                height: 60px;
+                width: 20.00vmin;
+                height: 8.00vmin;
                 background-color: rgb(250, 205, 9);
                 border: 0.27vmin rgb(89, 73, 39);
                 background-size: cover;
@@ -165,14 +165,14 @@
                 right: -45px;
             }
             .button-close {
-                width: 70px;
-                height: 70px;
+                width: 9.33vmin;
+                height: 9.33vmin;
                 background-image: "common/delete.png";
                 background-size: cover;
             }
             .change-arrow-pic {
-                width: 20px;
-                height: 15px;
+                width: 2.67vmin;
+                height: 2.00vmin;
                 transform: rotate(90deg);
                 background-size: cover; 
                 background-image: "exchange/right_arrow.png";
@@ -187,13 +187,13 @@
             <div class="road-panel" style = "flex-direction: column;">
                 <!-- error tips -->
                 <div id = "id-div-error-tip" style = 'position: absolute; opacity: 0; z-index: 999;'>
-                    <span style = "font-size: 2.5vmin; -webkit-text-stroke: 1px #ff0000;">{{error_tip}}</span>
+                    <span style = "font-size: 2.5vmin; -webkit-text-stroke: 0.13vmin #ff0000;">{{error_tip}}</span>
                 </div>
 
                 <!-- select station -->
-                <div class="panel" style = "position: absolute; left: -70%; width: 70%; flex-direction: column; background-color: rgb(128,156,126); border: 2px rgb(87, 238, 0); border-radius: 3px;" data-if = "show_select_route">
+                <div class="panel" style = "position: absolute; left: -70%; width: 70%; flex-direction: column; background-color: rgb(128,156,126); border: 0.27vmin rgb(87, 238, 0); border-radius: 0.40vmin;" data-if = "show_select_route">
                     <!-- header -->
-                    <div style = "text-align:center; -webkit-text-stroke: 2px rgb(89, 73, 39);">选择站点</div>
+                    <div style = "text-align:center; -webkit-text-stroke: 0.27vmin rgb(89, 73, 39);">选择站点</div>
 
                     <!-- station list -->
                     <table class="normal-table" data-for="route_endpoints">
@@ -239,17 +239,17 @@
                         <div class = "route-name-text">路线修改</div>
                     </div> 
                     <div class = "two-route-block">
-                        <button class = "confirm-button" style="width:280px; background-color:rgb(0,176,240);" data-event-click="clickselectEndpoint(1)">
+                        <button class = "confirm-button" style="width: 37.33vmin; background-color:rgb(0,176,240);" data-event-click="clickselectEndpoint(1)">
                             <div class="middle-bg" style='background-image: "road/header.png";'/>
-                            <div class = "route-name-text" style="font-size: 28px;">{{endpoint_names[0]}}</div>
+                            <div class = "route-name-text" style="font-size: 3.73vmin;">{{endpoint_names[0]}}</div>
                             <div class = "button-area">
                                 <button class="button-close"/>
                             </div>
                         </button>
                         <div class="change-arrow-pic"/>
-                        <button class = "confirm-button" style="width:280px; background-color:rgb(0,176,240);" data-event-click="clickselectEndpoint(2)">
+                        <button class = "confirm-button" style="width: 37.33vmin; background-color:rgb(0,176,240);" data-event-click="clickselectEndpoint(2)">
                             <div class="middle-bg" style='background-image: "road/header.png";'/>
-                            <div class = "route-name-text" style="font-size: 28px;">{{endpoint_names[1]}}</div>
+                            <div class = "route-name-text" style="font-size: 3.73vmin;">{{endpoint_names[1]}}</div>
                             <div class = "button-area">
                                 <button class="button-close"/>
                             </div>
@@ -259,11 +259,11 @@
                 <div class = "route-button-block">
                     <button class = "confirm-button" style="background-color:rgb(203, 118, 24);">
                         <div class="middle-bg" style='background-image: "road/forbidden.png";'/>
-                        <div class = "route-name-text" style="font-size: 28px;">暂停路线</div>
+                        <div class = "route-name-text" style="font-size: 3.73vmin;">暂停路线</div>
                     </button>
                     <button class = "confirm-button" style="background-color:rgb(52, 207, 115);">
                         <div class="middle-bg" style='background-image: "construct/work.png";'/>
-                        <div class = "route-name-text" style="font-size: 28px;">确定修改</div>
+                        <div class = "route-name-text" style="font-size: 3.73vmin;">确定修改</div>
                     </button> 
                 </div>
             </div>
