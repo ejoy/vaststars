@@ -159,6 +159,24 @@
                 border: 0.27vmin rgb(89, 73, 39);
                 background-size: cover;
             }
+            .button-area {
+                position: absolute; 
+                top: -25px; 
+                right: -45px;
+            }
+            .button-close {
+                width: 70px;
+                height: 70px;
+                background-image: "common/delete.png";
+                background-size: cover;
+            }
+            .change-arrow-pic {
+                width: 20px;
+                height: 15px;
+                transform: rotate(90deg);
+                background-size: cover; 
+                background-image: "exchange/right_arrow.png";
+            }
         </style>
         <style path = "common/normal-table.rcss"/>
         <style path = "common/error-tip.rcss"/>
@@ -173,7 +191,7 @@
                 </div>
 
                 <!-- select station -->
-                <div class="panel" style = "position: absolute; left: -50%; width: 50%; flex-direction: column; background-color: rgb(128,156,126); border: 2px rgb(87, 238, 0); border-radius: 3px;" data-if = "show_select_route">
+                <div class="panel" style = "position: absolute; left: -70%; width: 70%; flex-direction: column; background-color: rgb(128,156,126); border: 2px rgb(87, 238, 0); border-radius: 3px;" data-if = "show_select_route">
                     <!-- header -->
                     <div style = "text-align:center; -webkit-text-stroke: 2px rgb(89, 73, 39);">选择站点</div>
 
@@ -221,13 +239,20 @@
                         <div class = "route-name-text">路线修改</div>
                     </div> 
                     <div class = "two-route-block">
-                        <button class = "confirm-button" style="width:200px; background-color:rgb(0,176,240);" data-event-click="clickselectEndpoint(1)">
+                        <button class = "confirm-button" style="width:280px; background-color:rgb(0,176,240);" data-event-click="clickselectEndpoint(1)">
                             <div class="middle-bg" style='background-image: "road/header.png";'/>
                             <div class = "route-name-text" style="font-size: 28px;">{{endpoint_names[0]}}</div>
+                            <div class = "button-area">
+                                <button class="button-close"/>
+                            </div>
                         </button>
-                        <button class = "confirm-button" style="width:200px; background-color:rgb(0,176,240);" data-event-click="clickselectEndpoint(2)">
+                        <div class="change-arrow-pic"/>
+                        <button class = "confirm-button" style="width:280px; background-color:rgb(0,176,240);" data-event-click="clickselectEndpoint(2)">
                             <div class="middle-bg" style='background-image: "road/header.png";'/>
                             <div class = "route-name-text" style="font-size: 28px;">{{endpoint_names[1]}}</div>
+                            <div class = "button-area">
+                                <button class="button-close"/>
+                            </div>
                          </button>
                     </div>
                 </div>
