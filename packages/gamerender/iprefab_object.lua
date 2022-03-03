@@ -69,7 +69,7 @@ function iprefab_object.create(prefab, template)
                 game_object = world:entity(game_object_eid)
             end
             if not game_object then
-                log.error(("can not found entity `%s`"):format(game_object_eid))
+                -- log.error(("can not found entity `%s`"):format(game_object_eid)) -- todo
                 return
             end
             func(game_object, p, components , ...)
