@@ -40,14 +40,15 @@ prefab_events.on_ready = function(game_object, prefab)
         game_object.prefab_slot_eid_cache = prefab_slot_eid_cache
     end
 end
-prefab_events.on_update = function(game_object, prefab, pickup_mapping_param)
+prefab_events.on_update = function(game_object, prefab)
 end
-prefab_events.on_message = function(game_object, prefab, pickup_mapping_param)
+prefab_events.on_message = function(game_object, prefab)
 end
-prefab_events.on_init = function(game_object, prefab, pickup_mapping_param)
+prefab_events.on_init = function(game_object, prefab)
 end
 
-function igame_object.create(prefab, template, pickup_mapping_param)
+function igame_object.create(prefab, template)
+    assert(template.data.pickup_mapping)
     local game_object_eid = ecs.create_entity(template)
     for fn, func in pairs(prefab_events) do
         local ofunc = prefab[fn]
@@ -58,7 +59,7 @@ function igame_object.create(prefab, template, pickup_mapping_param)
                 return
             end
 
-            func(game_object, p, pickup_mapping_param, ...)
+            func(game_object, p, ...)
             if ofunc then
                 ofunc(game_object, p, ...)
             end
@@ -67,7 +68,7 @@ function igame_object.create(prefab, template, pickup_mapping_param)
 
     local obj = world:create_object(prefab)
     for _, eid in ipairs(prefab.tag["*"]) do
-        ipickup_mapping.mapping(eid, game_object_eid, pickup_mapping_param)
+        ipickup_mapping.mapping(eid, game_object_eid)
     end
 
     game_object_prefab[game_object_eid] = obj

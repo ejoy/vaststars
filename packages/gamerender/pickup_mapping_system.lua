@@ -27,27 +27,31 @@ function pickup_mapping_sys:entity_remove()
 end
 
 function pickup_mapping_sys.after_pickup()
-    local m
     local mapping_eid
-    local params
     for _, eid in pickup_mb:unpack() do
-        m = id_mapping[eid]
-        if m then
-            mapping_eid = m.eid
-            params = m.params
-            if #params == 0 then
-                world:pub {"pickup_mapping", mapping_eid}
-            else
-                for _, v in ipairs(params) do
-                    world:pub {"pickup_mapping", v, mapping_eid}
-                end
+        mapping_eid = id_mapping[eid]
+        if mapping_eid then
+            local mapping_entity = world:entity(mapping_eid)
+            if not mapping_entity then
+                log.error(("can not found entity `%s`"):format(mapping_eid))
+                goto continue
             end
+
+            if not mapping_entity.pickup_mapping then
+                log.error(("can not found component pickup_mapping `%s`"):format(mapping_eid))
+                goto continue
+            end
+
+            for param in pairs(mapping_entity.pickup_mapping) do
+                world:pub {"pickup_mapping", param, mapping_eid}
+            end
+            ::continue::
         end
     end
 end
 
-function ipickup_mapping.mapping(eid, mapping_eid, params)
-    id_mapping[eid] = {eid = mapping_eid, params = params or {}}
+function ipickup_mapping.mapping(eid, mapping_eid)
+    id_mapping[eid] = mapping_eid
     id_entity[mapping_eid] = id_entity[mapping_eid] or {}
     id_entity[mapping_eid][eid] = true
     -- print(("ipickup_mapping.mapping %s -> %s"):format(eid, mapping_eid))

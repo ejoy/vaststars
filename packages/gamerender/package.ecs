@@ -10,6 +10,7 @@ component "terrain" .type "lua"
 component "prefab_slot_eid_cache" .type "lua"
 
 -- build-in
+component "pickup_mapping" .type "lua"
 component "pause_animation"
 component "drapdrop_selected"
 component "construct_object" .type "lua"

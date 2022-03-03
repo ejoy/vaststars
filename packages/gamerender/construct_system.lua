@@ -297,11 +297,11 @@ local function construct_entity(prototype_name)
                 dir = "N",
                 x = coord[1],
                 y = coord[2],
-            }
+            },
+            pickup_mapping = {
+                ["drapdrop"] = true,
+            },
         }
-    },
-    {
-        "drapdrop",
     })
 end
 

@@ -34,7 +34,7 @@ function canvas_sys.data_changed()
     end
 
     for _, _, eid in canvas_new_entity_mb:unpack() do
-        ipickup_mapping.mapping(eid, canvas_entity.id, {"canvas"})
+        ipickup_mapping.mapping(eid, canvas_entity.id)
     end
 end
 
@@ -55,6 +55,9 @@ function icanvas.create()
             canvas = {
                 textures = {},
                 texts = {},
+            },
+            pickup_mapping = {
+                ["canvas"] = true,
             },
         }
     }
