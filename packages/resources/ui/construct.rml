@@ -4,6 +4,9 @@
             div {
                 font: 100% "微软雅黑";
             }
+            .nopointer {
+                pointer-events: none;
+            }
             button {
                 width: 28.00vmin;
                 height: 28.00vmin;
@@ -195,8 +198,8 @@
             end
         </script>
     </head>
-    <body>
-        <div data-model="start">
+    <body class = "nopointer">
+        <div class = "nopointer" data-model="start">
             <!-- debug 按钮 -->
             <div style = "position: absolute; left: 0vmin; top: 0vmin; z-index: 999;" data-for="debug_button" >
                 <div class = "test-button" data-event-click="clickDebug(it.id)" data-style-left="it.left" style = "position: absolute; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"></div>
