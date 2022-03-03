@@ -243,7 +243,7 @@
             </div>
 
             <!-- 水管指定液体界面 一级菜单 -->
-            <div data-if = "show_set_fluidbox" style = 'position: absolute; left: 40.00vmin; top: 82.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
+            <div data-if = "show_set_fluidbox" style = 'pointer-events: none; position: absolute; left: 40.00vmin; top: 82.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
                 <div style = 'width: auto; height: 16.00vmin; background-color: rgb(208, 206, 206); flex-direction: row; align-items: center;'>
                     <div data-for = "fluid_category" style = "flex-direction: row;">
                         <!-- separator -->
@@ -258,7 +258,7 @@
                 </div>
             </div>
             <!-- 水管指定液体界面 二级菜单 -->
-            <div data-if = "show_set_fluidbox" style = 'position: absolute; left: 40.00vmin; top: 66.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
+            <div data-if = "show_set_fluidbox" style = 'pointer-events: none; position: absolute; left: 40.00vmin; top: 66.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
                 <div style = 'width: auto; height: 16.00vmin; background-color: rgb(208, 206, 206); flex-direction: row; align-items: center;' data-if = "cur_fluid_category != ''">
                     <div data-for = "catagory : fluid_category" style = "flex-direction: row;">
                         <div data-for = "catagory.fluid" style = "flex-direction: row;" data-if = "cur_fluid_category == catagory.catagory">
