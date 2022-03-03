@@ -165,16 +165,16 @@ local function unset(typedirs, x, y, passable_dir)
     typedirs[x][y] = typedir
 end
 
-local function flush(typedirs, entities, x, y)
+local function flush(typedirs, entities, x, y, fluid)
     entities[x] = entities[x] or {}
 
-    local game_object = entities[x][y]
-    if game_object then
-        igame_object.remove_prefab(game_object)
+    local game_object_id = entities[x][y]
+    if game_object_id then
+        local game_object = world:entity(game_object_id)
+        igame_object.remove_prefab(game_object.id)
+        igameplay_adapter.remove_entity(game_object.x, game_object.y)
     end
     entities[x][y] = create_game_object(typedirs[x][y], x, y)
-    --
-    igameplay_adapter.set_road(x, y, typedirs[x][y])
 end
 
 local funcs = {}
@@ -255,7 +255,7 @@ function road_sys:after_pickup_mapping()
     local e = w:singleton("cur_edit_mode", "cur_edit_mode:in")
     for _, _, game_object in pickup_show_set_road_arrow_mb:unpack() do
         if e and e.cur_edit_mode ~= "dismantle" then
-            local prefab = igame_object.get_prefab_object(game_object)
+            local prefab = igame_object.get_prefab_object(game_object.game_object_id)
             iconstruct_arrow.show(construct_arrows, math3d.tovalue(iom.get_position(world:entity(prefab.root))))
             is_show_arrow = true
         end
@@ -309,10 +309,10 @@ function iroad.dismantle(x, y)
         flush(road_typedirs, road_entities, v[1], v[2])
     end
 
-    local game_object = road_entities[x][y]
-    w:sync("area:in x:in y:in", game_object)
+    local game_object_eid = pipe_entities[x][y]
+    local game_object = world:entity(game_object_eid)
     iterrain.set_tile_building_type({x, y}, nil, game_object.area)
-    igame_object.remove_prefab(game_object)
+    igame_object.remove_prefab(game_object.id)
     igameplay_adapter.remove_entity(game_object.x, game_object.y)
 
     road_entities[x][y] = nil

@@ -13,6 +13,7 @@ local igameplay_adapter = ecs.import.interface "vaststars.gamerender|igameplay_a
 local iconstruct_arrow = ecs.interface "iconstruct_arrow"
 
 function iconstruct_arrow.hide(e)
+    
     for _, canvas in pairs(e.construct_arrows) do
         icanvas.remove_item(canvas.id)
     end

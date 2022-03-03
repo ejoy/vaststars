@@ -17,8 +17,8 @@ local function get_id()
 end
 
 function game_object_sys:entity_ready()
-    for _, _, game_object in game_object_remove_mb:unpack() do
-        igame_object.get_prefab_object(game_object):remove()
+    for _, _, game_object_eid in game_object_remove_mb:unpack() do
+        igame_object.get_prefab_object(game_object_id):remove()
     end
 end
 
@@ -58,14 +58,14 @@ function igame_object.get_prefab(game_object)
     return game_object_prefab[game_object.game_object_id].prefab
 end
 
-function igame_object.get_prefab_object(game_object)
-    return game_object_prefab[game_object.game_object_id].prefab_object
+function igame_object.get_prefab_object(game_object_id)
+    return game_object_prefab[game_object_id].prefab_object
 end
 
 function igame_object.get_game_object(prefab)
     return prefab_game_object[prefab.root]
 end
 
-function igame_object.remove_prefab(game_object)
-    world:pub{"game_object_system", "remove", game_object}
+function igame_object.remove_prefab(game_object_eib)
+    world:pub{"game_object_system", "remove", game_object_eib}
 end

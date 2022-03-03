@@ -270,7 +270,7 @@ local show_construct_button, hide_construct_button; do
                     if is_fluidbox(game_object.type) then
                         world:pub {"ui_message", "show_set_fluidbox", true}
                     else
-                        prefab_object = igame_object.get_prefab_object(game_object)
+                        prefab_object = igame_object.get_prefab_object(game_object.game_object_id)
                         prefab_object:send("confirm_construct")
                     end
                 end
@@ -286,7 +286,7 @@ local show_construct_button, hide_construct_button; do
                 local prefab_object
                 for game_object in w:select "constructing game_object_id:in" do
                     hide_construct_button()
-                    prefab_object = igame_object.get_prefab_object(game_object)
+                    prefab_object = igame_object.get_prefab_object(game_object.game_object_id)
                     prefab_object:remove()
                 end
             end,
@@ -318,7 +318,7 @@ local show_construct_button, hide_construct_button; do
                 for game_object in w:select "constructing dir:in game_object_id:in" do
                     game_object.dir = dir_rotate(game_object.dir, -1)
                     w:sync("dir:out", game_object)
-                    prefab_object = igame_object.get_prefab_object(game_object)
+                    prefab_object = igame_object.get_prefab_object(game_object.game_object_id)
                     local rotation = iom.get_rotation(prefab_object.root)
                     local deg = math.deg(math3d.tovalue(math3d.quat2euler(rotation))[2])
                     iom.set_rotation(prefab_object.root, math3d.quaternion{axis=mc.YAXIS, r=math.rad(deg - 90)})
@@ -439,10 +439,13 @@ end
 
 function construct_sys:camera_usage()
     local coord, position
-    for _, game_object, mouse_x, mouse_y in drapdrop_entity_mb:unpack() do
-        w:sync("area:in x:in y:in game_object_id:in", game_object)
+    for _, game_object_eid, mouse_x, mouse_y in drapdrop_entity_mb:unpack() do
+        local game_object = world:entity(game_object_eid)
+        if not game_object then
+            goto continue
+        end
 
-        local prefab_object = igame_object.get_prefab_object(game_object)
+        local prefab_object = igame_object.get_prefab_object(game_object.game_object_id)
         position = iinput.screen_to_world {mouse_x, mouse_y}
         coord, position = iterrain.adjust_position(math3d.tovalue(position), game_object.area)
         if not coord then
@@ -451,7 +454,6 @@ function construct_sys:camera_usage()
 
         game_object.x = coord[1]
         game_object.y = coord[2]
-        w:sync("x:out y:out", game_object)
 
         iom.set_position(world:entity(prefab_object.root), position)
         show_construct_button(coord[1], coord[2], game_object.area)
@@ -465,7 +467,7 @@ function construct_sys:camera_usage()
         if cfg then
             for game_object in w:select "constructing:in" do
                 w:sync("game_object_id:in", game_object)
-                igame_object.get_prefab_object(game_object):remove()
+                igame_object.get_prefab_object(game_object.game_object_id):remove()
             end
 
             local f = ("/pkg/vaststars.resources/%s"):format(cfg.prefab)
@@ -525,7 +527,7 @@ function construct_sys:data_changed()
         for game_object in w:select "constructing constructing_fluid?in game_object_id:in" do
             game_object.constructing_fluid = {fluidname, 0} -- 指定 fluidbox 的流体类型
             w:sync("constructing_fluid?out", game_object)
-            prefab_object = igame_object.get_prefab_object(game_object)
+            prefab_object = igame_object.get_prefab_object(game_object.game_object_id)
             prefab_object:send("confirm_construct")
         end
     end
@@ -621,14 +623,14 @@ function construct_sys:data_changed()
     end
 
     for _ in ui_dismantle_complete_mb:unpack() do
-        for game_object in w:select "disassemble_selected:in pipe?in road?in x:in y:in area:in" do
+        for game_object in w:select "disassemble_selected:in pipe?in road?in x:in y:in area:in game_object_id:in" do
             if game_object.pipe then
                 ipipe.dismantle(game_object.x, game_object.y)
             elseif game_object.road then
                 iroad.dismantle(game_object.x, game_object.y)
             else
                 iterrain.set_tile_building_type({game_object.x, game_object.y}, nil, game_object.area)
-                igame_object.get_prefab_object(game_object):remove()
+                igame_object.get_prefab_object(game_object.game_object_id):remove()
                 igameplay_adapter.remove_entity(game_object.x, game_object.y)
             end
         end
@@ -636,11 +638,11 @@ function construct_sys:data_changed()
     end
 
     for _ in ui_cancel:unpack() do
-        for game_object in w:select "construct" do
-            igame_object.get_prefab_object(game_object):remove()
+        for game_object in w:select "construct game_object_id:in" do
+            igame_object.get_prefab_object(game_object.game_object_id):remove()
         end
-        for game_object in w:select "disassemble_selected:in" do
-            igame_object.get_prefab_object(game_object):remove()
+        for game_object in w:select "disassemble_selected:in game_object_id:in" do
+            igame_object.get_prefab_object(game_object.game_object_id):remove()
         end
         clear_constructing_entity()
         set_cur_edit_mode("")
@@ -698,11 +700,15 @@ function construct_sys:after_pickup_mapping()
             prototype = game_object.prototype,
             x = game_object.x,
             y = game_object.y,
+            disassemble_selected = game_object.disassemble_selected,
+            area = game_object.area,
+            pipe = game_object.pipe,
+            road = game_object.road,
         }
 
         local prefab = igame_object.get_prefab(game_object)
         local position = math3d.tovalue(iom.get_position(world:entity(prefab.root)))
-        igame_object.get_prefab_object(game_object):remove()
+        igame_object.get_prefab_object(game_object.game_object_id):remove()
 
         local prefab
         if game_object.disassemble_selected then

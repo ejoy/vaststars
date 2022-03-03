@@ -184,10 +184,10 @@ end
 local function flush(typedirs, entities, x, y, fluid)
     entities[x] = entities[x] or {}
 
-    local game_object = entities[x][y]
-    if game_object then
-        igame_object.remove_prefab(game_object)
-        w:sync("x:in y:in", game_object)
+    local game_object_id = entities[x][y]
+    if game_object_id then
+        local game_object = world:entity(game_object_id)
+        igame_object.remove_prefab(game_object.id)
         igameplay_adapter.remove_entity(game_object.x, game_object.y)
     end
     entities[x][y] = create_game_object(typedirs[x][y], x, y, fluid)
@@ -288,7 +288,7 @@ do
             for _, _, game_object_eid in pickup_show_set_pipe_arrow_mb:unpack() do
                 if e and e.cur_edit_mode ~= "dismantle" then
                     local game_object = world:entity(game_object_eid)
-                    local prefab = igame_object.get_prefab_object(game_object)
+                    local prefab = igame_object.get_prefab_object(game_object_eid)
                     iconstruct_arrow.show(construct_arrows, math3d.tovalue(iom.get_position(world:entity(prefab.root))))
                     is_show_arrow = true
                 end
@@ -349,10 +349,10 @@ function ipipe.dismantle(x, y)
         flush(pipe_typedirs, pipe_entities, v[1], v[2])
     end
 
-    local game_object = pipe_entities[x][y]
-    w:sync("area:in x:in y:in", game_object)
+    local game_object_eid = pipe_entities[x][y]
+    local game_object = world:entity(game_object_eid)
     iterrain.set_tile_building_type({x, y}, nil, game_object.area)
-    igame_object.remove_prefab(game_object)
+    igame_object.remove_prefab(game_object.id)
     igameplay_adapter.remove_entity(game_object.x, game_object.y)
 
     pipe_entities[x][y] = nil
@@ -360,7 +360,7 @@ function ipipe.dismantle(x, y)
 
     w:sync("pipe_typedirs:out pipe_entities:out", e)
 
-    iconstruct_arrow.hide(construct_arrows)
+    iconstruct_arrow.hide(world:entity(construct_arrows))
 end
 
 function ipipe.construct(coord_s, coord_d, dir, fluid)

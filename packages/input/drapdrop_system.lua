@@ -11,8 +11,8 @@ function drapdrop_system:data_changed()
     for _, _, state, vx, vy in mouse_mb:unpack() do
         if vx and vy then
             if state == "MOVE" then
-                for e in w:select "drapdrop_selected:in scene:in" do
-                    world:pub {"drapdrop_entity", e, vx, vy}
+                for e in w:select "drapdrop_selected:in scene:in id:in" do
+                    world:pub {"drapdrop_entity", e.id, vx, vy}
                 end
             elseif state == "UP" then
                 for e in w:select "drapdrop_selected:in" do

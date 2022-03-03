@@ -83,7 +83,7 @@ local function get_debug_prefab(debug)
         -- print(("Can not found debug component `%s`"):format(debug))
         return
     end
-    return igame_object.get_prefab_object(game_object)
+    return igame_object.get_prefab_object(game_object.game_object_id)
 end
 
 local function get_debug_prefab_object(debug)
@@ -92,7 +92,7 @@ local function get_debug_prefab_object(debug)
         -- print(("Can not found debug component `%s`"):format(debug))
         return
     end
-    return igame_object.get_prefab_object(game_object)
+    return igame_object.get_prefab_object(game_object.game_object_id)
 end
 
 local function remove_debug_prefab(debug)
@@ -107,8 +107,8 @@ end
 funcs[1] = function ()
     local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
     local prefab
-    for game_object in w:select "inserter:in" do
-        prefab = igame_object.get_prefab_object(game_object)
+    for game_object in w:select "inserter:in game_object_id:in" do
+        prefab = igame_object.get_prefab_object(game_object.game_object_id)
         prefab:send("play_animation_once", "DownToUp")
     end
 end
@@ -116,8 +116,8 @@ end
 funcs[2] = function ()
     local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
     local prefab
-    for game_object in w:select "inserter:in" do
-        prefab = igame_object.get_prefab_object(game_object)
+    for game_object in w:select "inserter:in game_object_id:in" do
+        prefab = igame_object.get_prefab_object(game_object.game_object_id)
         prefab:send("play_animation_once", "UpToDown")
     end
 end
@@ -127,7 +127,7 @@ test_funcs[1] = function ()
     for _, _, action, game_object in animation_mb:unpack() do
         local slot_name <const> = "货物挂点"
         local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
-        local prefab = igame_object.get_prefab_object(game_object)
+        local prefab = igame_object.get_prefab_object(game_object.game_object_id)
         if action == "play" then
             local sprefab = ecs.create_instance("/pkg/vaststars.resources/rock.prefab")
             sprefab.on_message = function(prefab, cmd)
@@ -255,8 +255,8 @@ end
 -- test track
 do
     local function get_endpoint_coord(id)
-        for game_object in w:select "route_endpoint:in x:in y:in" do
-            local prefab_object = igame_object.get_prefab_object(game_object)
+        for game_object in w:select "route_endpoint:in x:in y:in game_object_id:in" do
+            local prefab_object = igame_object.get_prefab_object(game_object.game_object_id)
             w:sync("scene:in ", prefab_object.root)
             w:sync("area:in", game_object)
             if prefab_object.root.scene.id == id then
@@ -332,8 +332,8 @@ do
         end
 
         local endpoint_ids = {}
-        for game_object in w:select "route_endpoint:in" do
-            local prefab_object = igame_object.get_prefab_object(game_object)
+        for game_object in w:select "route_endpoint:in game_object_id:in" do
+            local prefab_object = igame_object.get_prefab_object(game_object.game_object_id)
             w:sync("scene:in", prefab_object.root)
             endpoint_ids[#endpoint_ids + 1] = prefab_object.root.scene.id
 
