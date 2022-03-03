@@ -343,7 +343,7 @@ end
 
 function construct_sys:data_changed()
     for _ in ui_construct_begin_mb:unpack() do
-        print("construct")
+        print("construct begin")
     end
 
     for _ in ui_construct_complete_mb:unpack() do
@@ -386,14 +386,13 @@ end
 
 function construct_sys:pickup_mapping()
     for _ in pickup_mapping_canvas_mb:unpack() do
-        -- if get_cur_edit_mode() == "construct" then
-            local pos = iinput.get_mouse_world_position()
-            local coord = terrain.get_coord_by_position(pos)
-            local k = prototype.pack_coord(coord[1], coord[2])
-            local v = construct_button_canvas_items[k]
-            if v then
-                v.event()
-            end
-        -- end
+        local coord = terrain.get_coord_by_position(iinput.get_mouse_world_position())
+        local k = prototype.pack_coord(coord[1], coord[2])
+        local v = construct_button_canvas_items[k]
+        if v then
+            v.event()
+        else
+            log.error(("unknown canvas event (%s, %s)"):format(coord[1], coord[2]))
+        end
     end
 end

@@ -1,12 +1,12 @@
 local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
-local t = {}
+local m = {}
 
-function t.select(...)
+function m.select(...)
     return world.ecs:select(...)
 end
 
-function t.build(...)
+function m.build(...)
     return world:build()
 end
-return t
+return m
