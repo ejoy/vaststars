@@ -18,7 +18,8 @@ end
 
 function game_object_sys:entity_ready()
     for _, _, game_object_eid in game_object_remove_mb:unpack() do
-        igame_object.get_prefab_object(game_object_id):remove()
+        local game_object = world:entity(game_object_eid)
+        igame_object.get_prefab_object(game_object.game_object_id):remove()
     end
 end
 

@@ -288,7 +288,7 @@ do
             for _, _, game_object_eid in pickup_show_set_pipe_arrow_mb:unpack() do
                 if e and e.cur_edit_mode ~= "dismantle" then
                     local game_object = world:entity(game_object_eid)
-                    local prefab = igame_object.get_prefab_object(game_object_eid)
+                    local prefab = igame_object.get_prefab_object(game_object.game_object_id)
                     iconstruct_arrow.show(construct_arrows, math3d.tovalue(iom.get_position(world:entity(prefab.root))))
                     is_show_arrow = true
                 end
