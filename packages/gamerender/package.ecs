@@ -125,5 +125,6 @@ system "input_system"
 
 interface "iinput"
     .implement "input_system.lua"
+    .method "ray_hit_plane"
     .method "screen_to_world"
     .method "get_mouse_world_position"

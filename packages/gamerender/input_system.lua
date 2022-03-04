@@ -21,7 +21,7 @@ function input_sys:data_changed()
     end
 end
 
-local function ray_hit_plane(ray, plane_info)
+function iinput.ray_hit_plane(ray, plane_info)
 	local plane = {n = plane_info.dir, d = -math3d.dot(math3d.vector(plane_info.dir), math3d.vector(plane_info.pos))}
 
 	local rayOriginVec = ray.origin
@@ -40,7 +40,7 @@ end
 -- call in 'camera_usage' stage
 function iinput.screen_to_world(x, y)
     local main_camera = world:entity(irq.main_camera())
-    local position = ray_hit_plane(iom.ray(main_camera.camera.viewprojmat, {x, y}), {dir = mc.YAXIS, pos = mc.ZERO_PT})
+    local position = iinput.ray_hit_plane(iom.ray(main_camera.camera.viewprojmat, {x, y}), {dir = mc.YAXIS, pos = mc.ZERO_PT})
     if not position then
         return
     end
