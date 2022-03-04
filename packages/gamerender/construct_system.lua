@@ -19,6 +19,7 @@ local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
 local icanvas = ecs.import.interface "vaststars.gamerender|icanvas"
 local iinput = ecs.import.interface "vaststars.gamerender|iinput"
+local irq = ecs.import.interface "ant.render|irenderqueue"
 
 local ui_construct_begin_mb = world:sub {"ui", "construct", "construct_begin"}       -- 建造模式
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
@@ -279,9 +280,9 @@ local function construct_entity(prototype_name)
     prefab.on_message = on_prefab_message
     prefab.on_ready = on_prefab_ready
 
-    local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
-    local rect = mq.render_target.view_rect
-    local coord, position = terrain.adjust_position(iinput.screen_to_world(rect.w // 2, rect.h // 2), area)
+    local viewdir = iom.get_direction(world:entity(irq.main_camera()))
+    local origin = math3d.tovalue(iinput.ray_hit_plane({origin = mc.ZERO, dir = viewdir}, {dir = mc.YAXIS, pos = mc.ZERO_PT}))
+    local coord, position = terrain.adjust_position(origin, area)
     iom.set_position(world:entity(prefab.root), position)
 
     local game_object_eid = ecs.create_entity {
