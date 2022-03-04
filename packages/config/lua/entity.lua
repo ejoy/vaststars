@@ -91,7 +91,7 @@ prototype ("粉碎机1", {
 })
 
 prototype ("地下管1", {
-    prefab = "prefabs/assembling-1.prefab",
+    prefab = "prefabs/pipe/pipe_J.prefab",
     construct_detector = {"exclusive"},
     component = {},
 })
@@ -171,9 +171,41 @@ prototype ("车站1", {
 })
 
 prototype ("管道1-I型", {
+    prefab = "prefabs/pipe/pipe_I.prefab",
+    construct_detector = {"exclusive"},
+    component = {},
+})
+
+
+prototype ("管道1-L型", {
+    prefab = "prefabs/pipe/pipe_L.prefab",
+    construct_detector = {"exclusive"},
+    component = {},
+})
+
+prototype ("管道1-O型", {
     prefab = "prefabs/pipe/pipe_O.prefab",
     construct_detector = {"exclusive"},
     component = {},
 })
+
+prototype ("管道1-T型", {
+    prefab = "prefabs/pipe/pipe_T.prefab",
+    construct_detector = {"exclusive"},
+    component = {},
+})
+
+prototype ("管道1-U型", {
+    prefab = "prefabs/pipe/pipe_U.prefab",
+    construct_detector = {"exclusive"},
+    component = {},
+})
+
+prototype ("管道1-X型", {
+    prefab = "prefabs/pipe/pipe_X.prefab",
+    construct_detector = {"exclusive"},
+    component = {},
+})
+
 
 return t
