@@ -353,6 +353,8 @@ local function construct_complete(game_object)
     iom.set_position(world:entity(prefab.root), game_object.construct_object.position)
 
     igame_object.bind(game_object.id, prefab)
+
+    gameplay.create_entity(game_object)
 end
 
 function construct_sys:data_changed()
