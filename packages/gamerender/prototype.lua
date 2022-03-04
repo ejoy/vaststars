@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
+local entity_cfg = import_package "vaststars.config".entity
 
 local prototype = {}
 function prototype.pack_coord(x, y)
@@ -22,6 +23,16 @@ function prototype.get_area(prototype_name)
         return
     end
     return pt.area
+end
+
+function prototype.get_prefab_file(prototype_name)
+    local cfg = entity_cfg[prototype_name]
+    if not cfg then
+        log.error(("can not found entity `%s`"):format(prototype_name))
+        return
+    end
+
+    return cfg.prefab
 end
 
 function prototype.get_fluid_id(prototype_name)

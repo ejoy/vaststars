@@ -46,15 +46,18 @@ prefab_events.on_message = function(game_object, prefab)
 end
 prefab_events.on_init = function(game_object, prefab)
 end
-prefab_events.get_tag = function(game_object, prefab)
-    return prefab.tag["*"]
+
+local function create_prefab_object(prefab)
+    local prefab_object = world:create_object(prefab)
+    prefab_object.tag = prefab.tag
+    return prefab_object
 end
 
 -- 调用此接口时, 允许 game_object 与 prefab 所对应的 entity 未创建好
 function igame_object.bind(game_object_eid, prefab)
     local old_prefab_object = game_object_prefab[game_object_eid]
     if old_prefab_object then
-        for _, eid in ipairs(old_prefab_object.get_tag()) do
+        for _, eid in ipairs(old_prefab_object.tag["*"]) do
             ipickup_mapping.unmapping(eid, game_object_eid)
         end
         old_prefab_object:remove()
@@ -76,7 +79,7 @@ function igame_object.bind(game_object_eid, prefab)
         end
     end
 
-    local prefab_object = world:create_object(prefab)
+    local prefab_object = create_prefab_object(prefab)
     for _, eid in ipairs(prefab.tag["*"]) do
         ipickup_mapping.mapping(eid, game_object_eid)
     end

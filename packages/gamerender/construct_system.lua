@@ -99,11 +99,13 @@ local show_construct_button, hide_construct_button; do
                 return x + UP_LEFT[1], y + UP_LEFT[2]
             end,
             event = function()
-                for game_object in w:select "construct_pickup id:in construct_object:in" do
+                for game_object in w:select "construct_pickup construct_object:in" do
                     if prototype.is_fluidbox(game_object.construct_object.prototype_name) then
                         world:pub {"ui_message", "show_set_fluidbox", true}
                     else
+                        w:sync("id:in construct_object:in", game_object)
                         confirm_construct(game_object)
+                        w:sync("construct_pickup:out construct_queue?out drapdrop:out", game_object)
                     end
                 end
             end
@@ -194,6 +196,8 @@ local show_construct_button, hide_construct_button; do
     end
 end
 
+-- "id:in construct_object:in"
+-- "construct_pickup:out construct?out drapdrop:out"
 function confirm_construct(game_object)
     local prefab_object = igame_object.get_prefab_object(game_object.id)
     if not prefab_object then
@@ -217,7 +221,6 @@ function confirm_construct(game_object)
     game_object.construct_pickup = false
     game_object.construct_queue = true
     game_object.drapdrop = false
-    w:sync("construct_pickup:out construct?out drapdrop:out", game_object)
     hide_construct_button()
 end
 
@@ -281,7 +284,7 @@ local function construct_entity(prototype_name)
     prefab.on_ready = on_prefab_ready
 
     local viewdir = iom.get_direction(world:entity(irq.main_camera()))
-    local origin = math3d.tovalue(iinput.ray_hit_plane({origin = mc.ZERO, dir = viewdir}, {dir = mc.YAXIS, pos = mc.ZERO_PT}))
+    local origin = math3d.tovalue(iinput.ray_hit_plane({origin = mc.ZERO, dir = math3d.mul(math.maxinteger, viewdir)}, {dir = mc.YAXIS, pos = mc.ZERO_PT}))
     local coord, position = terrain.adjust_position(origin, area)
     iom.set_position(world:entity(prefab.root), position)
 
@@ -293,7 +296,6 @@ local function construct_entity(prototype_name)
             construct_pickup = true,
             construct_object = {
                 prototype_name = prototype_name,
-                prefab = cfg.prefab,
                 fluid = {},
                 dir = "N",
                 x = coord[1],
@@ -301,6 +303,7 @@ local function construct_entity(prototype_name)
             },
             pickup_mapping = {
                 ["drapdrop"] = true,
+                ["construct_pickup"] = true,
             },
         }
     }
@@ -343,20 +346,38 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
     show_construct_button(construct_object.x, construct_object.y, area)
 end
 
+-- "id:in construct_object:in"
+local function construct_complete(game_object)
+    local prefab_file = prototype.get_prefab_file(game_object.construct_object.prototype_name)
+    if not prefab_file then
+        return
+    end
+
+    local prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(prefab_file))
+    iom.set_position(world:entity(prefab.root), game_object.construct_object.position)
+
+    igame_object.bind(game_object.id, prefab)
+end
+
 function construct_sys:data_changed()
     for _ in ui_construct_begin_mb:unpack() do
         print("construct begin")
     end
 
     for _ in ui_construct_complete_mb:unpack() do
-        print("construct complete")
+        for game_object in w:select "construct_queue" do
+            w:sync("id:in construct_object:in", game_object)
+            construct_complete(game_object)
+        end
     end
 
     for _, _, _, fluidname in ui_fluidbox_construct_mb:unpack() do
-        for game_object in w:select "construct_pickup id:in construct_object:in drapdrop:in" do
+        for game_object in w:select "construct_pickup construct_object:in" do
             game_object.construct_object.fluid = {fluidname, 0}
             w:sync("construct_object?out", game_object)
+            w:sync("id:in construct_object:in", game_object)
             confirm_construct(game_object)
+            w:sync("construct_pickup:out construct_queue?out drapdrop:out", game_object)
         end
     end
 
