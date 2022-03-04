@@ -357,9 +357,7 @@ local function construct_complete(game_object)
 
     local prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(prefab_file))
     iom.set_position(world:entity(prefab.root), position)
-
     igame_object.bind(game_object.id, prefab)
-
     gameplay.create_entity(game_object)
 end
 
@@ -385,7 +383,7 @@ function construct_sys:data_changed()
     for _, _, _, confirm, fluidname in ui_fluidbox_update_mb:unpack() do
         if confirm == "confirm" then
             for _, game_object in world_select "fluidbox_selected" do
-                for v in gameplay.world().ecs:select "entity:in fluidbox:out" do
+                for v in gameplay.select "entity:in fluidbox:out" do
                     if v.entity.x == game_object.x and v.entity.y == game_object.y then
                         v.fluidbox.fluid = prototype.get_fluid_id(fluidname)
                         v.fluidbox.id = 0
