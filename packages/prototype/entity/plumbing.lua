@@ -119,6 +119,19 @@ prototype "管道1-I型" {
     }
 }
 
+prototype "管道1-J型" {
+    type = {"entity","fluidbox"},
+    area = "1x1",
+    fluidbox = {
+        capacity = 100,
+        height = 100,
+        base_level = 0,
+        connections = {
+            {type="input-output", position={0,0,"S"}},
+        }
+    }
+}
+
 prototype "管道1-L型" {
     type = {"entity","fluidbox"},
     area = "1x1",
@@ -164,6 +177,31 @@ prototype "管道1-X型" {
     }
 }
 
+prototype "管道1-O型" {
+    type = {"entity","fluidbox"},
+    area = "1x1",
+    fluidbox = {
+        capacity = 100,
+        height = 100,
+        base_level = 0,
+        connections = {
+        }
+    }
+}
+
+prototype "管道1-U型" {
+    type = {"entity","fluidbox"},
+    area = "1x1",
+    fluidbox = {
+        capacity = 100,
+        height = 100,
+        base_level = 0,
+        connections = {
+            {type="input-output", position={0,0,"N"}},
+        }
+    }
+}
+
 prototype "地下管1" {
     type ={"entity","pipe-to-ground","fluidbox"},
     area = "1x1",
@@ -173,8 +211,8 @@ prototype "地下管1" {
         height = 100,
         base_level = 0,
         connections = {
-            {type="input-output", position={0,0,"N"}},
             {type="input-output", position={0,0,"S"}},
         }
     }
 }
+
