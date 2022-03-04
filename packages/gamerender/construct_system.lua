@@ -99,7 +99,7 @@ local show_construct_button, hide_construct_button; do
                 return x + UP_LEFT[1], y + UP_LEFT[2]
             end,
             event = function()
-                for game_object in w:select "construct_selected id:in construct_object:in" do
+                for game_object in w:select "construct_pickup id:in construct_object:in" do
                     if prototype.is_fluidbox(game_object.construct_object.prototype_name) then
                         world:pub {"ui_message", "show_set_fluidbox", true}
                     else
@@ -115,7 +115,7 @@ local show_construct_button, hide_construct_button; do
                 return x + UP_RIGHT[1] * width, y + UP_RIGHT[2]
             end,
             event = function()
-                for game_object in w:select "construct_selected id:in" do
+                for game_object in w:select "construct_pickup id:in" do
                     hide_construct_button()
                     igame_object.remove(game_object.id)
                 end
@@ -145,7 +145,7 @@ local show_construct_button, hide_construct_button; do
             end,
             event = function()
                 local prefab_object
-                for game_object in w:select "construct_selected id:in construct_object:in" do
+                for game_object in w:select "construct_pickup id:in construct_object:in" do
                     game_object.construct_object.dir = dir_rotate(game_object.construct_object.dir, -1)
                     w:sync("construct_object:out", game_object)
                     prefab_object = igame_object.get_prefab_object(game_object.id)
@@ -214,10 +214,10 @@ function confirm_construct(game_object)
 
     prefab_object:send("update_basecolor", CONSTRUCT_WHITE_BASIC_COLOR)
 
-    game_object.construct_selected = false
-    game_object.construct = true
+    game_object.construct_pickup = false
+    game_object.construct_queue = true
     game_object.drapdrop = false
-    w:sync("construct_selected:out construct?out drapdrop:out", game_object)
+    w:sync("construct_pickup:out construct?out drapdrop:out", game_object)
     hide_construct_button()
 end
 
@@ -265,7 +265,7 @@ local function construct_entity(prototype_name)
         return
     end
 
-    for game_object in w:select "id:in construct_selected" do
+    for game_object in w:select "construct_pickup id:in" do
         igame_object.remove(game_object.id)
     end
 
@@ -290,7 +290,7 @@ local function construct_entity(prototype_name)
         data = {
             drapdrop = true,
             pause_animation = true,
-            construct_selected = true,
+            construct_pickup = true,
             construct_object = {
                 prototype_name = prototype_name,
                 prefab = cfg.prefab,
@@ -314,7 +314,7 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
         return
     end
 
-    if not game_object.construct_selected then
+    if not game_object.construct_pickup then
         return
     end
 
@@ -353,7 +353,7 @@ function construct_sys:data_changed()
     end
 
     for _, _, _, fluidname in ui_fluidbox_construct_mb:unpack() do
-        for game_object in w:select "construct_selected id:in construct_object:in drapdrop:in" do
+        for game_object in w:select "construct_pickup id:in construct_object:in drapdrop:in" do
             game_object.construct_object.fluid = {fluidname, 0}
             w:sync("construct_object?out", game_object)
             confirm_construct(game_object)

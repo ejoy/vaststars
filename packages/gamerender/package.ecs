@@ -14,10 +14,11 @@ component "prefab_slot_eid_cache" .type "lua"
 -- build-in
 component "pickup_mapping" .type "lua"
 component "pause_animation"
-component "drapdrop_selected" -- 当前拖动的 entitiy
+component "drapdrop_selected" -- 当前拖动的 entity
+
+component "construct_pickup"
+component "construct_queue"
 component "construct_object" .type "lua"
-component "construct"
-component "construct_selected"
 
 --
 component "drapdrop"
