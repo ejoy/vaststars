@@ -195,8 +195,6 @@ local show_construct_button, hide_construct_button; do
     end
 end
 
--- "id:in construct_object:in"
--- "construct_pickup:out construct?out drapdrop:out"
 function confirm_construct(game_object)
     local prefab_object = igame_object.get_prefab_object(game_object.id)
     if not prefab_object then
@@ -345,7 +343,6 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
     show_construct_button(construct_object.x, construct_object.y, area)
 end
 
--- "id:in construct_object:in"
 local function construct_complete(game_object)
     local prefab_file = prototype.get_prefab_file(game_object.construct_object.prototype_name)
     if not prefab_file then
@@ -367,6 +364,7 @@ function construct_sys:data_changed()
         for _, game_object in world_select "construct_queue" do
             construct_complete(game_object)
         end
+        gameplay.build()
     end
 
     for _, _, _, fluidname in ui_fluidbox_construct_mb:unpack() do
