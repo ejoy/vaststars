@@ -284,7 +284,7 @@ local function construct_entity(prototype_name)
     local coord, position = terrain.adjust_position(iinput.screen_to_world(rect.w // 2, rect.h // 2), area)
     iom.set_position(world:entity(prefab.root), position)
 
-    igame_object.create(prefab, {
+    local game_object_eid = ecs.create_entity {
         policy = {},
         data = {
             drapdrop = true,
@@ -302,7 +302,8 @@ local function construct_entity(prototype_name)
                 ["drapdrop"] = true,
             },
         }
-    })
+    }
+    igame_object.bind(game_object_eid, prefab)
 end
 
 local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)

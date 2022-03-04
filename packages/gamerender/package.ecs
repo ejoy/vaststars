@@ -74,7 +74,7 @@ system "game_object_system"
 
 interface "igame_object"
     .implement "game_object_system.lua"
-    .method "create"
+    .method "bind"
     .method "remove"
     .method "get_prefab_object"
 
@@ -101,7 +101,7 @@ system "pickup_mapping_system"
 interface "ipickup_mapping"
     .implement "pickup_mapping_system.lua"
     .method "mapping"
-
+    .method "unmapping"
 
 interface "icanvas"
     .implement "icanvas.lua"
