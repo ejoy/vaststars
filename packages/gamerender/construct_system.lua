@@ -215,9 +215,9 @@ function confirm_construct(game_object)
 
     prefab_object:send("update_basecolor", CONSTRUCT_WHITE_BASIC_COLOR)
 
+    game_object.drapdrop = false
     game_object.construct_pickup = false
     game_object.construct_queue = true
-    game_object.drapdrop = false
     hide_construct_button()
 end
 
