@@ -20,6 +20,7 @@ local mc = mathpkg.constant
 local icanvas = ecs.import.interface "vaststars.gamerender|icanvas"
 local iinput = ecs.import.interface "vaststars.gamerender|iinput"
 local irq = ecs.import.interface "ant.render|irenderqueue"
+local world_select = ecs.require "world_select"
 
 local ui_construct_begin_mb = world:sub {"ui", "construct", "construct_begin"}       -- 建造模式
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
@@ -35,6 +36,7 @@ local CONSTRUCT_WHITE_BASIC_COLOR <const> = {50.0, 50.0, 50.0, 0.8}
 local DISMANTLE_YELLOW_BASIC_COLOR <const> = {50.0, 50.0, 0.0, 0.8}
 
 local entity_cfg = import_package "vaststars.config".entity
+
 
 local function check_construct_detector(...)
     return true
@@ -99,13 +101,11 @@ local show_construct_button, hide_construct_button; do
                 return x + UP_LEFT[1], y + UP_LEFT[2]
             end,
             event = function()
-                for game_object in w:select "construct_pickup construct_object:in" do
+                for _, game_object in world_select "construct_pickup" do
                     if prototype.is_fluidbox(game_object.construct_object.prototype_name) then
                         world:pub {"ui_message", "show_set_fluidbox", true}
                     else
-                        w:sync("id:in construct_object:in", game_object)
                         confirm_construct(game_object)
-                        w:sync("construct_pickup:out construct_queue?out drapdrop:out", game_object)
                     end
                 end
             end
@@ -117,7 +117,7 @@ local show_construct_button, hide_construct_button; do
                 return x + UP_RIGHT[1] * width, y + UP_RIGHT[2]
             end,
             event = function()
-                for game_object in w:select "construct_pickup id:in" do
+                for _, game_object in world_select "construct_pickup" do
                     hide_construct_button()
                     igame_object.remove(game_object.id)
                 end
@@ -147,9 +147,8 @@ local show_construct_button, hide_construct_button; do
             end,
             event = function()
                 local prefab_object
-                for game_object in w:select "construct_pickup id:in construct_object:in" do
+                for _, game_object in world_select "construct_pickup" do
                     game_object.construct_object.dir = dir_rotate(game_object.construct_object.dir, -1)
-                    w:sync("construct_object:out", game_object)
                     prefab_object = igame_object.get_prefab_object(game_object.id)
 
                     local re = world:entity(prefab_object.root)
@@ -268,7 +267,7 @@ local function construct_entity(prototype_name)
         return
     end
 
-    for game_object in w:select "construct_pickup id:in" do
+    for _, game_object in world_select "construct_pickup" do
         igame_object.remove(game_object.id)
     end
 
@@ -365,25 +364,21 @@ function construct_sys:data_changed()
     end
 
     for _ in ui_construct_complete_mb:unpack() do
-        for game_object in w:select "construct_queue" do
-            w:sync("id:in construct_object:in", game_object)
+        for _, game_object in world_select "construct_queue" do
             construct_complete(game_object)
         end
     end
 
     for _, _, _, fluidname in ui_fluidbox_construct_mb:unpack() do
-        for game_object in w:select "construct_pickup construct_object:in" do
+        for _, game_object in world_select "construct_pickup" do
             game_object.construct_object.fluid = {fluidname, 0}
-            w:sync("construct_object?out", game_object)
-            w:sync("id:in construct_object:in", game_object)
             confirm_construct(game_object)
-            w:sync("construct_pickup:out construct_queue?out drapdrop:out", game_object)
         end
     end
 
     for _, _, _, confirm, fluidname in ui_fluidbox_update_mb:unpack() do
         if confirm == "confirm" then
-            for game_object in w:select "fluidbox_selected x:in y:in" do
+            for _, game_object in world_select "fluidbox_selected" do
                 for v in gameplay.world().ecs:select "entity:in fluidbox:out" do
                     if v.entity.x == game_object.x and v.entity.y == game_object.y then
                         v.fluidbox.fluid = prototype.get_fluid_id(fluidname)
