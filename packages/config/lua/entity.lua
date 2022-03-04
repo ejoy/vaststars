@@ -254,7 +254,7 @@ prototype ("车站1", {
 })
 
 prototype ("管道1-I型", {
-    prefab = "prefabs/pipe/pipe_O.prefab",
+    prefab = "prefabs/pipe/pipe_I.prefab",
     construct_component = {
         construct_pipe = true,
         construct_detector = {"exclusive"},
