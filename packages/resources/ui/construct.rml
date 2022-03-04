@@ -111,6 +111,39 @@
                 margin: 0.00vmin;
                 left: 1.33vmin
             }
+            .main-menu-block {
+                width: 86.67vmin;
+                height: 16.00vmin;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                position: absolute; 
+                left:0vmin; 
+                bottom: -100vmin;
+                border: 0.13vmin #fff;
+                z-index: 999;
+                background-color: rgba(200,200,200,80);
+                border-radius: 1.33vmin;
+            }
+            .main-menu-button {
+                margin : 0 0.5em;
+                width: 13.33vmin;
+                height: 13.33vmin;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            .menu-button-pic {
+                background-size: cover;
+                width: 10.67vmin;
+                height: 10.67vmin;
+            }
+            .menu-button-text {
+                font-size: 3.73vmin;
+                text-align: center;
+                -webkit-text-stroke: 0.07vmin rgb(19,175,240);
+                color:rgb(255,255,255);;
+            }
             .row {
                 flex-direction: row;
             }
@@ -203,6 +236,30 @@
             <!-- debug 按钮 -->
             <div style = "position: absolute; left: 0vmin; top: 0vmin; z-index: 999;" data-for="debug_button" >
                 <div class = "test-button" data-event-click="clickDebug(it.id)" data-style-left="it.left" style = "position: absolute; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"></div>
+            </div>
+
+            <!-- 主菜单按钮 -->
+            <div class = "main-menu-block">
+                <button  class = "main-menu-button" style="border: 0.00vmin;">
+                    <div class = "menu-button-pic" style='background-image:"construct/logistics_center.png"'/>
+                    <div class = "menu-button-text">指挥中心</div>
+                </button>
+                <button  class = "main-menu-button" style="border: 0.00vmin;">
+                    <div class = "menu-button-pic" style='background-image:"construct/goods_station.png"'/>
+                    <div class = "menu-button-text">科研中心</div>
+                </button>
+                <button  class = "main-menu-button" style="border: 0.00vmin;">
+                    <div class = "menu-button-pic" style='background-image:"factory/seacher.png"'/>
+                    <div class = "menu-button-text">统计数据</div>
+                </button>
+                <button  class = "main-menu-button" style="border: 0.00vmin;">
+                    <div class = "menu-button-pic" style='background-image:"construct/road.png"'/>
+                    <div class = "menu-button-text">地图信息</div>
+                </button>
+                <button  class = "main-menu-button" style="border: 0.00vmin;">
+                    <div class = "menu-button-pic" style='background-image:"assemble/wheel.png"'/>
+                    <div class = "menu-button-text">游戏设置</div>
+                </button>
             </div>
 
             <!-- 摄像机控制按钮 debug -->
