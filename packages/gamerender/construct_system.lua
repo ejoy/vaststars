@@ -349,8 +349,14 @@ local function construct_complete(game_object)
         return
     end
 
+    local old_prefab_object = igame_object.get_prefab_object(game_object.id)
+    if not old_prefab_object then
+        return
+    end
+    local position = iom.get_position(world:entity(old_prefab_object.root))
+
     local prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(prefab_file))
-    iom.set_position(world:entity(prefab.root), game_object.construct_object.position)
+    iom.set_position(world:entity(prefab.root), position)
 
     igame_object.bind(game_object.id, prefab)
 
