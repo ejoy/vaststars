@@ -115,13 +115,12 @@
             .item {
                 flex-direction: column;
                 align-items:flex-start;
-                justify-content:space-evenly;
+                justify-content:flex-start;
                 background-color: rgb(250, 205, 9);
                 border: 0.27vmin rgb(89, 73, 39);
                 background-size:cover;
                 width: 12.00vmin;
                 height: 12.00vmin;
-                margin: 0.27vmin auto;
                 font-size: 2.40vmin;
                 background-image: "construct/insert1.png";
             }
@@ -138,7 +137,7 @@
             .item-count {
                 text-align:left;
                 margin: 0.00vmin;
-                top:-18px;
+                top: -0.5vmin;
                 left: 0.67vmin;
                 -webkit-text-stroke: 0.07vmin rgb(39, 32, 17);
             }
@@ -149,7 +148,6 @@
                 background-size:cover;
                 width: 12.00vmin;
                 height: 12.00vmin;
-                margin: 0.27vmin auto;
                 background-image: "science/add.png";
             }
             /*分割线*/
@@ -381,7 +379,6 @@
                             <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_click(it.data.id)" data-style-width="90+'px'" data-style-height="90+'px'" data-style-left="it.left" data-style-top="it.top" data-for="view_items">
                                 <button class="item">
                                     <div class="item-count">99</div>                          
-                                    <div class="item-title">机器爪</div>
                                 </button>
                                 <!--<div>{{it.data.id}}</div>-->
                             </div>
@@ -477,21 +474,17 @@
                             <div class="row">
                                 <button class="item">
                                     <div class="item-count">99</div>                          
-                                    <div class="item-title">机器爪</div>
                                 </button>
                                 <button class="item">
                                     <div class="item-count">99</div>                          
-                                    <div class="item-title">机器爪</div>
                                 </button>
                             </div>
                             <div class="row">
                                 <button class="item">
                                     <div class="item-count">99</div>                          
-                                    <div class="item-title">机器爪</div>
                                 </button>
                                 <button class="item">
                                     <div class="item-count">99</div>                          
-                                    <div class="item-title">机器爪</div>
                                 </button>
                             </div>
                         </div>
@@ -508,27 +501,23 @@
                             <div class="row">
                                 <button class="item">
                                     <div class="item-count">99</div>                          
-                                    <div class="item-title">机器爪</div>
                                 </button>
                                 <button class="item">
                                     <div class="item-count">99</div>                          
-                                    <div class="item-title">机器爪</div>
                                 </button>
                             </div>
                             <div class="row">
                                 <button class="item">
                                     <div class="item-count">99</div>                          
-                                    <div class="item-title">机器爪</div>
                                 </button>
                                 <button class="item">
                                     <div class="item-count">99</div>                          
-                                    <div class="item-title">机器爪</div>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%;">
+                <div class="row" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%;justify-content: space-evenly;">
                     <button class="item">                       
                         <div class="item-title" style="margin-top:1.75em;">机器爪</div>
                     </button>
