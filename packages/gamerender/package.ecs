@@ -24,6 +24,7 @@ component "construct_object" .type "lua"
 -- dir = "N",
 -- x = xx,
 -- y = xx,
+component "gameplay_eid" .type "int64"
 
 --
 component "drapdrop"

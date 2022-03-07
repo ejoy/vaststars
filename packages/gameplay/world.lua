@@ -69,6 +69,10 @@ return function ()
         name = "init_fluidbox",
         type = "lua",
     }
+    ecs:register {
+        name = "id",
+        type = "int64",
+    }
     local context = ecs:context(components)
     local ptable = require "vaststars.prototype.core"
     local cworld = vaststars.create_world(context, ptable)
@@ -80,7 +84,7 @@ return function ()
         return function (init)
             local typeobject = assert(prototype.query("entity", type), "unknown entity: " .. type)
             local types = typeobject.type
-            local obj = {}
+            local obj = {id = init.id}
             for i = 1, #types do
                 local ctor = status.ctor[types[i]]
                 if ctor then

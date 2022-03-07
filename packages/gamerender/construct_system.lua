@@ -216,8 +216,8 @@ function confirm_construct(game_object)
     prefab_object:send("update_basecolor", CONSTRUCT_WHITE_BASIC_COLOR)
 
     game_object.drapdrop = false
-    game_object.construct_pickup = false
-    game_object.construct_queue = true
+    game_object.construct_pickup = false -- 去除选中状态
+    game_object.construct_queue = true -- 加入建造队列
     hide_construct_button()
 end
 
@@ -291,6 +291,7 @@ local function construct_entity(prototype_name)
             drapdrop = true,
             pause_animation = true,
             construct_pickup = true,
+            gameplay_eid = 0,
             construct_object = {
                 prototype_name = prototype_name,
                 fluid = {},
@@ -358,7 +359,8 @@ local function construct_complete(game_object)
     local prefab = ecs.create_instance(("/pkg/vaststars.resources/%s"):format(prefab_file))
     iom.set_position(world:entity(prefab.root), position)
     igame_object.bind(game_object.id, prefab)
-    gameplay.create_entity(game_object)
+
+    game_object.gameplay_eid = gameplay.create_entity(game_object)
 end
 
 function construct_sys:data_changed()
@@ -370,6 +372,7 @@ function construct_sys:data_changed()
         for _, game_object in world_select "construct_queue" do
             construct_complete(game_object)
         end
+        w:clear("construct_queue")
         gameplay.build()
     end
 

@@ -1,5 +1,6 @@
 local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
+local entity_visitor = world.ecs:make_index "id"
 local m = {}
 
 function m.select(...)
@@ -19,7 +20,7 @@ local function create(world, prototype, entity)
             return
         end
     end
-    return create_entity_cache[prototype](entity)
+    create_entity_cache[prototype](entity)
 end
 
 local function isFluidId(id)
@@ -59,9 +60,18 @@ init_func["assembling"] = function(pt, template)
     return template
 end
 
+local getentityid ; do
+    local id = 0
+    function getentityid()
+        id = id + 1
+        return id
+    end
+end
+
 function m.create_entity(game_object)
     local func
     local template = {
+        id = getentityid(),
         x = game_object.construct_object.x,
         y = game_object.construct_object.y,
         dir = game_object.construct_object.dir,
@@ -77,6 +87,7 @@ function m.create_entity(game_object)
     end
 
     create(world, game_object.construct_object.prototype_name, template)
+    return template.id
 end
 
 return m
