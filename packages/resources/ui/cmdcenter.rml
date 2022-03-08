@@ -485,18 +485,18 @@
                     </div>
                     <div class ="drone-room-block">
                         <div class="drone-room">
-                            <div class="box" style='background-image:"construct/drone1.png";'/>
-                            <div class="box" style='background-image:"construct/drone1.png";'/>
-                            <div class="box" style='background-image:"construct/drone1.png";'/>
-                            <div class="box" style='background-image:"construct/drone1.png";'/>
-                            <div class="box" style='background-image:"construct/drone1.png";'/>
+                            <button class="box" style='background-image:"construct/drone1.png";'/>
+                            <button class="box" style='background-image:"construct/drone1.png";'/>
+                            <button class="box" style='background-image:"construct/drone1.png";'/>
+                            <button class="box" style='background-image:"construct/drone1.png";'/>
+                            <button class="box" style='background-image:"construct/drone1.png";'/>
                         </div>
                         <div class="drone-room">
-                            <div class="box" style='background-image:"construct/drone1.png";'/>
-                            <div class="box" style='background-image:"construct/drone1.png";'/>
-                            <div class="box" style='background-color:rgb(255,192,0);background-image:"construct/drone1.png";'/>
-                            <div class="box" style='background-color:rgb(255,192,0);background-image:"construct/drone1.png";'/>
-                            <div class="box" style='background-color:rgb(143, 143, 143);background-image:"cmdcenter/add.png";'/>
+                            <button class="box" style='background-image:"construct/drone1.png";'/>
+                            <button class="box" style='background-image:"construct/drone1.png";'/>
+                            <button class="box" style='background-color:rgb(255,192,0);background-image:"construct/drone1.png";'/>
+                            <button class="box" style='background-color:rgb(255,192,0);background-image:"construct/drone1.png";'/>
+                            <button class="box" style='background-color:rgb(143, 143, 143);background-image:"cmdcenter/add.png";'/>
                         </div>
                         
                     </div>

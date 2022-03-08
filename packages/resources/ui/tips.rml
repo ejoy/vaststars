@@ -1,0 +1,428 @@
+<rml>
+    <head>
+        <style>
+            div {
+                font: 120% "微软雅黑";
+            }
+            button {
+                width: 10.67vmin;
+                height: 10.67vmin;
+                margin: 1.33vmin;
+                text-align: center;
+                text-decoration: none;
+                border-radius: 1.07vmin;
+                opacity: 1;
+                transition: transform 2s elastic-out;
+                transform: scale(1.0);
+            }
+            button:hover {
+                transform: scale(1.1);
+            }
+            .button-bg {
+                 width: 6.67vmin;
+                 height: 6.67vmin;
+                 margin-bottom:5px;
+                 align-self:center;
+                 background-size:cover;
+            }
+            .button-text {
+                background-color: rgb(128,156,126);
+                font-size: 2.40vmin;
+                text-align:center;
+                border-radius: 0.53vmin;
+            }
+            .panel {
+                background-color: rgb(44, 32, 18);
+                border: 0.13vmin rgb(89, 73, 39);
+                border-radius: 0.67vmin;
+                width: 48%;
+                height: 100%;
+            }
+
+            /*左侧背包栏*/
+
+            .item-container-region {
+                margin: auto;
+                height: 100%; 
+                flex-direction: row; 
+                justify-content: space-evenly;
+            }
+            /*单个物品按钮*/
+            .item-container {
+                margin:0.2rem 1em;
+                flex-direction: column;
+                align-items: flex-start;
+                font-size: 50%;
+                height: 70%;
+            }
+            .item {
+                flex-direction: column;
+                align-items:flex-start;
+                justify-content:flex-start;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 12.00vmin;
+                height: 12.00vmin;
+                font-size: 2.40vmin;
+                background-image: "construct/insert1.png";
+            }
+            .item-title {
+                text-align: center;
+                top:14%;
+                background-color: rgb(246, 237, 189);
+                border-radius: 0.67vmin;
+                color:rgb(73, 60, 32);
+                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
+                width: 11.33vmin;
+                margin: 0.00vmin;
+            }
+            .item-count {
+                text-align:left;
+                top: -0.5vmin;
+                left: 0.67vmin;
+                -webkit-text-stroke: 0.07vmin rgb(39, 32, 17);
+            }
+
+            .item-add {
+                background-color:rgb(143, 143, 143);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 12.00vmin;
+                height: 12.00vmin;
+                background-image: "science/add.png";
+            }
+            /*分割线*/
+            .draw-line {
+                margin-bottom:0.1em;
+                width: 100%;
+                border-bottom: 1.5px rgb(89, 73, 39);
+            }
+            /*tab区域*/
+            .tab-container {
+                margin:0.1rem auto;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items:flex-start;
+                width:100%;
+                height: 10%;
+            }
+            .workbutton-bg {
+                margin: auto auto;
+                top: 1.60vmin;
+                width: 6.67vmin;
+                height: 6.67vmin; 
+                background-size: cover;
+            }
+            .catalog-desc {
+                -webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
+                position:relative;
+                top:-38px; 
+                left:-42px;
+                color: rgb(221, 235, 26)
+            }
+            .property-display {
+                flex-direction: row;
+                align-items:center;
+            }
+            .property-icon {
+                width: 5.00vmin;
+                height: 5.00vmin;
+                background-size:cover;
+            }
+            .property-text {
+                margin-left: 1.33vmin;
+                font-size: 3.67vmin;
+                color: rgb(0,176,240);
+            }
+            .row {
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .column {
+                flex-direction: column;
+                align-items:center;
+            }
+            /*右侧建筑信息栏*/
+
+
+            .build-info-block {
+                width: 100%;
+                height: 30%;
+                flex-direction: column;
+                align-items: flex-start;
+                border: 0.13vmin rgb(89, 73, 39);
+            }
+            .build-recipe-block {
+                width: 100%;
+                height:20%;
+                flex-direction: column;
+                align-items: flex-start;
+                border: 0.13vmin rgb(89, 73, 39);
+            }
+            .build-recipe {
+                width:100%;
+                height:70%;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-evenly;
+                border: 0.13vmin rgb(89, 73, 39);
+            }
+            .build-raw-block {
+                width: 100%;
+                height:30%;
+                flex-direction: column;
+                border: 0.13vmin rgb(89, 73, 39);
+            }
+            .build-machine-block {
+                width: 100%;
+                height:20%;
+                flex-direction: column;
+                align-items: flex;
+                border: 0.13vmin rgb(89, 73, 39);
+            }
+            .title-block {
+                width: 13.33vmin;
+                height: 4.00vmin;
+                flex-direction: row;
+                justify-content: center;
+                background-color: rgb(255,217,102);
+                border-radius: 0.67vmin;
+                border: 0.13vmin rgb(89, 73, 39);
+                align-items: center;
+            }
+            .title-text {
+                text-align: center;
+                font-size: 3.47vmin;
+                color:rgb(255,255,255);
+                -webkit-text-stroke: 0.13vmin rgb(89, 73, 39);
+            }
+            .recipe-pointer {
+                width: 6.10vmin;
+                height: 5.00vmin;
+                background-size:cover;
+                background-image:"exchange/right_arrow.png";
+                margin: 0 0.2em;
+            }
+        </style>
+        <script type="text/x-lua" >
+            console.log("before createModel")
+            local start = window.createModel "start" {
+                items = {
+                    {id=100, icon0="correct.png", icon1="correct.png"},
+                    {id=101, icon0="correct.png", icon1="correct.png"},
+                    {id=102, icon0="correct.png", icon1="correct.png"},
+                    {id=103, icon0="correct.png", icon1="correct.png"},
+                    {id=104, icon0="correct.png", icon1="correct.png"},
+                    {id=105, icon0="correct.png", icon1="correct.png"},
+                    {id=106, icon0="correct.png", icon1="correct.png"},
+                    {id=107, icon0="correct.png", icon1="correct.png"},
+                    {id=108, icon0="correct.png", icon1="correct.png"},
+                    {id=109, icon0="correct.png", icon1="correct.png"},
+                    {id=110, icon0="correct.png", icon1="correct.png"},
+                    {id=111, icon0="correct.png", icon1="correct.png"},
+                    {id=112, icon0="correct.png", icon1="correct.png"},
+                    {id=113, icon0="correct.png", icon1="correct.png"},
+                    {id=114, icon0="correct.png", icon1="correct.png"},
+                    {id=115, icon0="correct.png", icon1="correct.png"},
+                    {id=116, icon0="correct.png", icon1="correct.png"},
+                    {id=117, icon0="correct.png", icon1="correct.png"},
+                    {id=118, icon0="correct.png", icon1="correct.png"},
+                    {id=119, icon0="correct.png", icon1="correct.png"},
+                    {id=120, icon0="correct.png", icon1="correct.png"},
+                    {id=121, icon0="correct.png", icon1="correct.png"},
+                    {id=122, icon0="correct.png", icon1="correct.png"},
+                    {id=123, icon0="correct.png", icon1="correct.png"},
+                    {id=124, icon0="correct.png", icon1="correct.png"},
+                    {id=125, icon0="correct.png", icon1="correct.png"},
+                    {id=126, icon0="correct.png", icon1="correct.png"},
+                    {id=127, icon0="correct.png", icon1="correct.png"},
+                    {id=128, icon0="correct.png", icon1="correct.png"},
+                    {id=129, icon0="correct.png", icon1="correct.png"},
+                },
+                item_size = 90,
+                view_items = {},
+                virtual_pages = {},
+                current_page = 0,
+                selected_id = 100,
+            }
+            local pageclass = require "page"
+            -- window size : 1336 750
+            local page_proxy = pageclass.create({540, 490}, start)
+            function start.pagemousedown(event)
+                console.log("pagemousedown")
+                page_proxy:on_mousedown(event)
+            end
+            
+            function start.pagedrag(event)
+                --console.log("pagedrag")
+                page_proxy:on_drag(event)
+            end
+
+            function start.pagemouseup(event)
+                console.log("pagemouseup")
+                page_proxy:on_mouseup(event)
+                start.current_page = page_proxy:get_current_page() - 1
+            end
+
+            function start.page_item_click(event, id)
+                console.log("page_item_click", id)
+                start.selected_id = id
+            end
+
+            window.addEventListener('message', function(event)
+                console.log("event.source.postMessage")
+                event.source.postMessage(event.data)
+            end)
+            window.addEventListener('mousemove', function(event)
+            end)
+        </script>
+    </head>
+    <body>
+        <div class="item-container-region"  data-model="start">
+            <div class="panel">
+            </div>
+            <div class="panel"> 
+                <div class="build-info-block">
+                    <div class="title-block">
+                        <div class = "title-text">基本信息</div>
+                    </div>
+                    <div class="row" style="width: 100%; height:85%; align-items: center; justify-content: center;">
+                        <div class="info-block">
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                <div class="property-text" style="color: rgb(0,176,240);">产能加成</div>
+                                <div class="property-text" style="color:#fff;">40%</div>
+                            </div>
+                        </div>
+                        <div class="info-block">
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"character/health.png";'/>
+                                <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                <div class="property-text" style="color:#fff;">200/990</div>
+                            </div>
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                <div class="property-text" style="color: rgb(0,176,240);">建筑能耗</div>
+                                <div class="property-text" style="color:#fff;">500kw(-250kw)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="build-recipe-block">
+                    <div class="title-block">
+                        <div class = "title-text">生产配方</div>
+                    </div>
+                    <div class = "row" style="width: 100%; height:80%; align-items: center;">
+                        <div class="item" style="width: 8.00vmin; height: 8.00vmin;margin-left: 0.5em;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                        <div class = "recipe-pointer"/>
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                    </div>
+                </div>
+                <div class="build-raw-block">
+                    <div class="title-block">
+                        <div class = "title-text">基础资源</div>
+                    </div>
+                    <div class="column" style="width: 100%; height:80%; align-items: center;justify-content: center;">
+                        <div class="row" style="width:100%; align-items:center; justify-content: center;">
+                            <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                                <div class="item-count">99</div>                          
+                            </div>
+                            <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                                <div class="item-count">99</div>                          
+                            </div>
+                            <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                                <div class="item-count">99</div>                          
+                            </div>
+                            <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                                <div class="item-count">99</div>                          
+                            </div>
+                            <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                                <div class="item-count">99</div>                          
+                            </div>
+                            <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                                <div class="item-count">99</div>                          
+                            </div>
+                        </div>
+                        <div class="row" style="width:100%;align-items:center; justify-content: center;">
+                            <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                                <div class="item-count">99</div>                          
+                            </div>
+                            <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                                <div class="item-count">99</div>                          
+                            </div>
+                            <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                                <div class="item-count">99</div>                          
+                            </div>
+                            <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                                <div class="item-count">99</div>                          
+                            </div>
+                            <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                                <div class="item-count">99</div>                          
+                            </div>
+                            <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                                <div class="item-count">99</div>                          
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="build-machine-block">
+                    <div class="title-block">
+                        <div class = "title-text">生产建筑</div>
+                    </div>
+                    <div class="row" style="width:100%; height:80%; align-items:center; justify-content: center;">
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                        <div class="item" style="width: 8.27vmin; height: 8.27vmin;">
+                            <div class="item-count">99</div>                          
+                        </div>
+                    </div>
+                </div>
+            </div>       
+        </div>
+    </body>
+</rml>
