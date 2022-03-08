@@ -208,6 +208,64 @@
                 background-image:"exchange/right_arrow.png";
                 margin: 0 0.2em;
             }
+            .button-block {
+                width: 100%;
+                height: 20%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                border: 0.13vmin #fff;
+            }
+            .button-item-name-block {
+                width:100%;
+                height:40%;
+                background-color: rgb(70, 70, 70);
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                border: 0.13vmin #fff;
+            }
+            .button-exchange-block {
+                background-color: rgb(225, 225, 225);
+                flex-direction: row;
+                width: 100%;
+                height:60%;
+                align-items: center;
+                justify-content: space-evenly;
+            }
+            .button-exchange {
+                margin: 0 0.5em;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width: 20.00vmin;
+                height: 9.33vmin;
+                background-color: rgb(52, 207, 115);
+            }
+            .button-exchange-text {
+                font-size: 3.73vmin;
+                text-align: center;
+                color: rgb(255,249,214);
+            }
+            .button-exchange-arrow {
+                width: 7.31vmin;
+                height: 5.64vmin;
+                background-size: cover;
+                background-image: "exchange/left_arrow.png";
+            }
+            .button-exchange-box {
+                width: 7.00vmin;
+                height: 7.00vmin;
+                background-size: cover;
+                background-image: "exchange/yellow_box.png";
+            }
+            .button-tips {
+                width: 9.00vmin;
+                height: 9.00vmin;
+                background-size: cover;
+                background-image: "assemble/wheel.png";
+            }
         </style>
         <script type="text/x-lua" >
             console.log("before createModel")
@@ -284,7 +342,32 @@
     </head>
     <body>
         <div class="item-container-region"  data-model="start">
-            <div class="panel">
+            <div class="panel" style="justify-content: center;">
+                <div class = "button-block">
+                    <div class = "button-item-name-block">
+                        <div class="property-icon" style='background-image:"character/timer.png";'/>
+                        <div class="property-text" style="margin-left:0; color: rgb(0,176,240);">机器爪</div>
+                        <div class="property-text" style="margin-left:0; color:#fff;">(99)</div>
+                        <button class="button-tips" style="position: absolute; right:0em"/>
+                    </div>
+                    <div class="button-exchange-block">
+                        <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
+                            <div class = "button-exchange-arrow"/>
+                            <div class = "button-exchange-text">全部</div>
+                            <div class = "button-exchange-box"/>
+                        </button>
+                        <button class="button-exchange">
+                            <div class = "button-exchange-arrow"/>
+                            <div class = "button-exchange-text">1组</div>
+                            <div class = "button-exchange-box"/>
+                        </button>
+                        <button class="button-exchange">
+                            <div class = "button-exchange-arrow"/>
+                            <div class = "button-exchange-text">1个</div>
+                            <div class = "button-exchange-box"/>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="panel"> 
                 <div class="build-info-block">
