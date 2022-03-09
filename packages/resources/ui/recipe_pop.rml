@@ -33,10 +33,11 @@
             }
             .item-container-region {
                 margin: auto;
-                height: 90%; 
+                height: 100%; 
                 flex-direction: row; 
                 justify-content: space-evenly;
                 align-items: center;
+                pointer-events: none;
             }
             .panel {
                 background-color: rgb(44, 32, 18);
@@ -48,9 +49,13 @@
             }
              /*标题栏和返回按键  */
              .header {
-                height: 8.00vmin;
+                width:100%;
+                height:10%;
                 flex-direction: row;
-                justify-content: space-between;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                background-color: rgb(203, 118, 24);
             }
             #item-name-block {
                 width: 100%; 
@@ -73,10 +78,11 @@
 
             /*左侧背包栏*/
             workbutton {
+                margin: auto auto;
                 font-size: 2.67vmin;
                 color: rgb(221, 235, 26);
                 flex-direction: column;
-                justify-content: flex-start;
+                justify-content: center;
                 align-items: center;
                 border-radius: 1.33vmin;
                 border: 0.27vmin rgb(89, 73, 39);
@@ -89,20 +95,20 @@
             workbutton:active {
                 transform: scale(1.0);
             }
-
-            .item-container-region {
-                margin: auto;
-                height: 100%; 
-                flex-direction: row; 
-                justify-content: space-evenly;
+            workbutton:hover {
+                transform: scale(1.1);
+                background-color: rgb(0,176,80);
             }
+
             /*单个物品按钮*/
             .item-container {
-                margin:0.2rem 1em;
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: center;
                 font-size: 50%;
-                height: 75%;
+                height: 68%;
+                border: 0.13vmin rgb(89, 73, 39);
+                justify-content: center;
+                padding-left: 3.5em;
             }
             .item {
                 flex-direction: column;
@@ -152,7 +158,7 @@
             }
             /*tab区域*/
             .tab-container {
-                margin:0.1rem auto;
+                margin-top:0.3em;
                 flex-direction: row;
                 justify-content: space-evenly;
                 align-items:flex-start;
@@ -160,7 +166,6 @@
                 height: 10%;
             }
             .workbutton-bg {
-                margin: auto auto;
                 top: 1.60vmin;
                 width: 6.67vmin;
                 height: 6.67vmin; 
@@ -169,7 +174,7 @@
             .catalog-desc {
                 -webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
                 position:relative;
-                top:-38px; 
+                top:-45px; 
                 left:-42px;
                 color: rgb(221, 235, 26)
             }
@@ -250,6 +255,11 @@
                 background-image: "common/delete.png";
                 background-size: cover;
             }
+            .title-text {
+                text-align: center;
+                font-size: 4.80vmin;
+                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
+            }
         </style>
         <script type="text/x-lua" >
             console.log("before createModel")
@@ -321,8 +331,12 @@
     <body>
         <div class="item-container-region"  data-model="start">
             <div class="panel">
+                <div class="header">
+                    <div class="title-text">选择配方</div>
+                    <button class = "button-close" style="position: absolute; right:-1em;bottom:-0.35em;"/>
+                </div>
                 <div class="item-container">
-                    <div style="width:100%; height:95%;">
+                    <div style="width:100%; height:85%;">
                         <div class = "item-page-block" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
                             <div class ="row">
                                 <div style="width:95%; height:100%;" data-for="virtual_pages">
@@ -338,16 +352,12 @@
                             </div>
                         </div>
                     </div>
-                    <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
+                    <div style='flex-direction: row; justify-content: center; align-items:flex-end; width:100%; height:15%;'>
                         <div data-for="virtual_pages">
                             <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" data-style-background-image="it_index == current_page ? 'common/page1.png' : 'common/page0.png'"/>
                         </div>
                     </div>         
                 </div>
-                <div class = "button-area">
-                    <button class="button-close"/>
-                </div>
-                <div class = "draw-line"/>
                 <div class = "tab-container">
                     <workbutton>
                         <div class="workbutton-bg" style='background-image:"construct/logisitic1.png";'/>
