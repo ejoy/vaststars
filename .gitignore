@@ -8,3 +8,5 @@ packages/ecs/ecs.lua
 clibs/gameplay/src/entity.h
 .DS_Store
 packages/resources/ui/json.lua
+*.xcuserstate
+*.xcbkptlist

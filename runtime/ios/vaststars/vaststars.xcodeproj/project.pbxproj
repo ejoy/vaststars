@@ -323,7 +323,7 @@
 					"-lgameplay",
 					"-lstdc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ejoy.vaststars;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ejoy.ant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -357,7 +357,7 @@
 					"-lgameplay",
 					"-lstdc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ejoy.vaststars;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ejoy.ant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

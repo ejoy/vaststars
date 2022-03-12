@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>StringsTable</key>
+	<string>vaststars</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Server</string>
+			<key>Key</key>
+			<string>server_type</string>
+			<key>DefaultValue</key>
+			<string>USB</string>
+			<key>Values</key>
+			<array>
+				<string>usb</string>
+				<string>offline</string>
+				<string>remote</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>USB</string>
+				<string>Offline</string>
+				<string>Remote</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Remote IP:Port</string>
+			<key>Key</key>
+			<string>server_address</string>
+			<key>DefaultValue</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Clean up next time</string>
+			<key>Key</key>
+			<string>clean_up_next_time</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+	</array>
+</dict>
+</plist>

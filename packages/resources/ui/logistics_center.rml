@@ -105,13 +105,12 @@
             .item {
                 flex-direction: column;
                 align-items:flex-start;
-                justify-content:space-evenly;
+                justify-content:flex-start;;
                 background-color: rgb(250, 205, 9);
                 border: 0.27vmin rgb(89, 73, 39);
                 background-size:cover;
                 width: 12.00vmin;
                 height: 12.00vmin;
-                margin: 0.27vmin auto;
                 font-size: 2.40vmin;
                 background-image: "construct/insert1.png";
             }
@@ -128,7 +127,7 @@
             .item-count {
                 text-align:left;
                 margin: 0.00vmin;
-                top:-18px;
+                top:-0.5vmin;
                 left: 0.67vmin;
                 -webkit-text-stroke: 0.07vmin rgb(39, 32, 17);
             }
@@ -401,7 +400,7 @@
             <div class="panel">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button"/>
-                    <div class = "menu-title">组装机</div>
+                    <div class = "menu-title">物流中心</div>
                 </div>
                 <div class="item-container">
                     <div style="width:100%; height:95%;">
@@ -414,7 +413,6 @@
                             <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_click(it.data.id)" data-style-width="90+'px'" data-style-height="90+'px'" data-style-left="it.left" data-style-top="it.top" data-for="view_items">
                                 <button class="item">
                                     <div class="item-count">99</div>                          
-                                    <div class="item-title">机器爪</div>
                                 </button>
                                 <!--<div>{{it.data.id}}</div>-->
                             </div>
