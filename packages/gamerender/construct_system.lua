@@ -202,6 +202,7 @@ function confirm_construct(game_object)
         return
     end
 
+    -- RETODO 此处应该使用 prototype_name 来获取 construct_detector, 如何从 gameplay entity 里获取 prototype_name?
     local construct_object = game_object.construct_object
     if construct_object.construct_detector then
         local position = math3d.tovalue(iom.get_position(world:entity(prefab_object.root)))
@@ -216,7 +217,7 @@ function confirm_construct(game_object)
     prefab_object:send("update_basecolor", CONSTRUCT_WHITE_BASIC_COLOR)
 
     game_object.drapdrop = false
-    game_object.construct_pickup = false -- 去除选中状态
+    game_object.construct_pickup = false -- 去除可选中状态
     game_object.construct_queue = true -- 加入建造队列
     hide_construct_button()
 end
