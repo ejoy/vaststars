@@ -1,0 +1,875 @@
+<rml>
+    <head>
+        <style>
+            div {
+                font: 120% "微软雅黑";
+            }
+            button {
+                width: 10.67vmin;
+                height: 10.67vmin;
+                margin: 0.1vmin;
+                text-align: center;
+                text-decoration: none;
+                border-radius: 1.07vmin;
+                opacity: 1;
+                transition: transform 2s elastic-out;
+                transform: scale(1.0);
+            }
+            button:hover {
+                transform: scale(1.1);
+            }
+            .button-bg {
+                 width: 6.67vmin;
+                 height: 6.67vmin;
+                 margin-bottom:5px;
+                 align-self:center;
+                 background-size:cover;
+            }
+            .button-text {
+                background-color: rgb(128,156,126);
+                font-size: 2.40vmin;
+                text-align:center;
+                border-radius: 0.53vmin;
+            }
+            .item-container-region {
+                margin: auto;
+                height: 100%; 
+                flex-direction: row; 
+                justify-content: space-evenly;
+            }
+            .panel {
+                background-color: rgb(44, 32, 18);
+                border: 0.13vmin rgb(89, 73, 39);
+                border-radius: 0.67vmin;
+                width: 48%;
+                height: 100%;
+            }
+             /*标题栏和返回按键  */
+             .header {
+                height: 8.00vmin;
+                flex-direction: row;
+            }
+            #item-name-block {
+                width: 100%; 
+                align-items: center; 
+                justify-content: flex-start;
+            }
+            .back-button {
+                background-image:"common/return.png"; 
+                width: 9.33vmin; 
+                height: 9.33vmin; 
+                background-size:cover;
+            }
+            .recipe-change-button {
+                background-image:"assemble/wheel.png"; 
+                width: 9.33vmin; 
+                height: 9.33vmin; 
+                background-size:cover;
+            }
+            .menu-title {
+                -webkit-text-stroke: 0.20vmin rgb(0, 112, 192); 
+                font-size:200%;
+                justify-content: flex-start;
+                width: 70%;
+            }
+            .menu-title-2 {
+                -webkit-text-stroke: 0.15vmin rgb(89, 73, 39);
+                font-size:200%;
+                justify-content: flex-start;
+                width: 70%;
+                text-align: right; 
+                color:rgb(246, 142, 14);
+            }
+
+            /*左侧背包栏*/
+            workbutton {
+                font-size: 2.67vmin;
+                color: rgb(221, 235, 26);
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                border-radius: 1.33vmin;
+                border: 0.27vmin rgb(89, 73, 39);
+                background-color: rgb(246, 142, 14);
+                height: 8.67vmin;
+                width: 17.33vmin;
+                transform: scale(1.0);
+                transition: color background-color transform 2s elastic-out;
+            }
+            workbutton:active {
+                transform: scale(1.0);
+            }
+            .workbutton-bg {
+                margin: auto auto;
+                top: 1.60vmin;
+                width: 6.67vmin;
+                height: 6.67vmin; 
+                background-size: cover;
+            }
+            workbutton:hover {
+                transform: scale(1.1);
+                background-color: rgb(0,176,80);
+            }
+            .item-container-region {
+                margin: auto;
+                height: 100%; 
+                flex-direction: row; 
+                justify-content: space-evenly;
+            }
+            /*单个物品按钮*/
+            .item-container {
+                margin:0.2rem 1em;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 50%;
+                height: 75%;
+            }
+            .item {
+                flex-direction: column;
+                align-items:flex-start;
+                justify-content:flex-start;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 12.00vmin;
+                height: 12.00vmin;
+                font-size: 2.40vmin;
+                background-image: "construct/insert1.png";
+            }
+            .item-title {
+                text-align: center;
+                top:14%;
+                background-color: rgb(246, 237, 189);
+                border-radius: 0.67vmin;
+                color:rgb(73, 60, 32);
+                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
+                width: 11.33vmin;
+                margin: 0.00vmin;
+            }
+            .item-count {
+                text-align:left;
+                margin: 0.00vmin;
+                top: -0.5vmin;
+                left: 0.67vmin;
+                -webkit-text-stroke: 0.07vmin rgb(39, 32, 17);
+            }
+
+            .item-add {
+                background-color:rgb(143, 143, 143);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 12.00vmin;
+                height: 12.00vmin;
+                background-image: "science/add.png";
+            }
+            /*分割线*/
+            .draw-line {
+                margin-bottom:0.1em;
+                width: 100%;
+                border-bottom: 1.5px rgb(89, 73, 39);
+            }
+            /*tab区域*/
+            .tab-container {
+                margin:0.1rem auto;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items:flex-start;
+                width:100%;
+                height: 10%;
+            }
+            .workbutton-bg {
+                margin: auto auto;
+                top: 1.60vmin;
+                width: 6.67vmin;
+                height: 6.67vmin; 
+                background-size: cover;
+            }
+            .catalog-desc {
+                -webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
+                position:relative;
+                top:-38px; 
+                left:-42px;
+                color: rgb(221, 235, 26)
+            }
+            .property-display {
+                flex-direction: row;
+                align-items:center;
+            }
+            .property-icon {
+                width: 4.00vmin;
+                height: 4.00vmin;
+                background-size:cover;
+            }
+            .property-text {
+                margin-left: 0.33vmin;
+                font-size: 3vmin;
+                color: rgb(0,176,240);
+            }
+            .row {
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .column {
+                flex-direction: column;
+                align-items:center;
+            }
+            /*右侧建筑信息栏*/
+            .build-info-block {
+                width: 100%;
+                height: 30%;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+            }
+            .build-picture-block {
+                margin-left: 0.5em;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                height:70%;
+            }
+            .build-power-info-block {
+                margin-left: 0.5em;
+                flex-direction: row;
+                align-items: center;
+                width: 100%;
+                height:30%;
+            }
+            .bulid-status-info {
+                margin-top: 1.5em;
+                font-size: 2.67vmin;
+                color: aquamarine;
+            }
+            .build-picture {
+                margin: 0.1em;
+                width: 10.67vmin;
+                height: 10.67vmin;
+                background-color: rgb(191,144,0);
+                background-size: cover;
+                background-image: "construct/assembler.png";
+                border: 0.27vmin rgb(92, 184, 92);
+            }
+            .progress-pic {
+                width: 4.00vmin;
+                height: 4.00vmin;
+                background-size:cover;
+                background-image:"character/flash.png";
+
+            }
+            .progress-bar-block {
+                margin:0 0 0.05em 0;
+                width: 80%;
+                height:50%;
+                justify-content: flex-start;
+                border: 0.13vmin #fff;
+            }
+            .progress-background {
+                justify-content: flex-start;
+                width: 60%;
+                height: 100%;
+                background-color: rgb(87, 238, 0);
+            }
+            .percent-num {
+                text-align:center; 
+                position:absolute; 
+                z-index: 3; 
+                font-size: 4.00vmin; 
+                top: -6px; 
+                color: rgb(255, 255, 255);
+                -webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
+            }
+            .change-recipe {
+                margin:0 0 0 3em;
+                align-items: center;
+                justify-content: space-between;
+                width: 10.67vmin;
+                height: 10.67vmin;
+                background-image:"science/book.png";
+                background-size:cover;
+            }
+            .item-page-block {
+                transition: left 0.5s linear-out; 
+                width:100%;
+                height:100%;
+            }
+            .build-info-reigon {
+                width: 100%;
+                height:75%;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-evenly;
+            }
+            .build-model-block {
+                margin-top: 2em;
+                width: 44%;
+                height:66%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            .build-model {
+                width:90%;
+                height:90%;
+                background-size: cover;
+                background-image: "assemble/engine.png";
+            }
+            .power-block {
+                margin-top: 0.3em;
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-start;
+                width:100%;
+                height:10%;
+            }
+            .info-block {
+                margin-top:1em;
+                width: 28%;
+                height:80%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-evenly;
+            }
+            .small-item {
+                margin:0.1em;
+                flex-direction: column;
+                align-items:flex-start;
+                justify-content:flex-start;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 9.00vmin;
+                height: 9.00vmin;
+                font-size: 2.00vmin;
+                background-image: "construct/insert1.png";
+            }
+            .exchange-region {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width:100%;
+                height:20%;
+                background-color: rgb(40, 40, 40);;
+                border: 0.22vmin rgb(89, 73, 39);
+            }
+            .exchange-title {
+                flex-direction: row;
+                font-size: 28px;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                height:35%;
+            }
+            .button-exchange-block {
+                flex-direction: row;
+                width: 100%;
+                height:65%;
+                align-items: center;
+                justify-content: space-evenly;
+                background-color: rgb(85, 85, 85);
+            }
+            .button-exchange {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width: 22.00vmin;
+                height: 9.53vmin;
+                background-color: rgb(52, 207, 115);
+            }
+            .button-exchange-text {
+                font-size: 3.73vmin;
+                text-align: center;
+                color: rgb(255,249,214);
+            }
+            .button-exchange-arrow {
+                width: 7.31vmin;
+                height: 5.64vmin;
+                background-size: cover;
+                background-image: "exchange/left_arrow.png";
+            }
+            .button-exchange-box {
+                width: 7.00vmin;
+                height: 7.00vmin;
+                background-size: cover;
+                background-image: "exchange/yellow_box.png";
+            }
+        </style>
+        <script type="text/x-lua" >
+            console.log("before createModel")
+            local start = window.createModel "start" {
+                show = false,
+                scale_flag = false,
+                event_state = 'none',
+                info_flag = true,
+                fuel_interaction = false,
+                material_interaction = false,
+                plugin_interaction = false,
+                reset = false,
+
+                items = {
+                    {id=100, icon0="correct.png", icon1="correct.png"},
+                    {id=101, icon0="correct.png", icon1="correct.png"},
+                    {id=102, icon0="correct.png", icon1="correct.png"},
+                    {id=103, icon0="correct.png", icon1="correct.png"},
+                    {id=104, icon0="correct.png", icon1="correct.png"},
+                    {id=105, icon0="correct.png", icon1="correct.png"},
+                    {id=106, icon0="correct.png", icon1="correct.png"},
+                    {id=107, icon0="correct.png", icon1="correct.png"},
+                    {id=108, icon0="correct.png", icon1="correct.png"},
+                    {id=109, icon0="correct.png", icon1="correct.png"},
+                    {id=110, icon0="correct.png", icon1="correct.png"},
+                    {id=111, icon0="correct.png", icon1="correct.png"},
+                    {id=112, icon0="correct.png", icon1="correct.png"},
+                    {id=113, icon0="correct.png", icon1="correct.png"},
+                    {id=114, icon0="correct.png", icon1="correct.png"},
+                    {id=115, icon0="correct.png", icon1="correct.png"},
+                    {id=116, icon0="correct.png", icon1="correct.png"},
+                    {id=117, icon0="correct.png", icon1="correct.png"},
+                    {id=118, icon0="correct.png", icon1="correct.png"},
+                    {id=119, icon0="correct.png", icon1="correct.png"},
+                    {id=120, icon0="correct.png", icon1="correct.png"},
+                    {id=121, icon0="correct.png", icon1="correct.png"},
+                    {id=122, icon0="correct.png", icon1="correct.png"},
+                    {id=123, icon0="correct.png", icon1="correct.png"},
+                    {id=124, icon0="correct.png", icon1="correct.png"},
+                    {id=125, icon0="correct.png", icon1="correct.png"},
+                    {id=126, icon0="correct.png", icon1="correct.png"},
+                    {id=127, icon0="correct.png", icon1="correct.png"},
+                    {id=128, icon0="correct.png", icon1="correct.png"},
+                    {id=129, icon0="correct.png", icon1="correct.png"},
+                },
+                item_size = 90,
+                view_items = {},
+                virtual_pages = {},
+                current_page = 0,
+                selected_id = 100,
+            }
+            function start.mousedown(event)
+                start.scale_flag = not start.scale_flag
+                local style = event.current.style
+                
+                --[[
+                if start.scale_flag then
+                    style.top = '0%'
+                    style.left = '0%'
+                    style.width = '30%'
+                    style.height = '30%'
+                else
+                    style.top = '0%'
+                    style.left = '0%'
+                    style.width = '20%'
+                    style.height = '20%'
+                end
+                ]]
+
+                start.show = start.scale_flag and true or false
+                start.event_state = start.scale_flag and 'auto' or 'none'
+            end
+
+            function start.mousedown2(event)
+                console.log("---mousedown2---")
+            end
+
+            function start.ClickFuel(event)
+                start.info_flag = not start.info_flag
+                start.fuel_interaction = not start.fuel_interaction
+                console.log("---ClickFuel---")
+            end
+
+            function start.ClickMaterial(event)
+                start.info_flag = not start.info_flag
+                start.material_interaction = not start.material_interaction
+                console.log("---ClickMaterial---")
+            end
+
+            function start.ClickPlugin(event)
+                start.info_flag = not start.info_flag
+                start.plugin_interaction = not start.plugin_interaction
+                console.log("---ClickPlugin---")
+            end
+            
+            function start.ClickBack(event)
+                start.info_flag = true
+                start.fuel_interaction = false
+                start.material_interaction = false
+                start.plugin_interaction = false
+            end
+            --------------------------
+            local pageclass = require "page"
+            -- window size : 1336 750
+            local page_proxy = pageclass.create({540, 490}, start)
+            function start.pagemousedown(event)
+                console.log("pagemousedown")
+                page_proxy:on_mousedown(event)
+            end
+            
+            function start.pagedrag(event)
+                --console.log("pagedrag")
+                page_proxy:on_drag(event)
+            end
+
+            function start.pagemouseup(event)
+                console.log("pagemouseup")
+                page_proxy:on_mouseup(event)
+                start.current_page = page_proxy:get_current_page() - 1
+            end
+
+            function start.page_item_click(event, id)
+                console.log("page_item_click", id)
+                start.selected_id = id
+            end
+
+            window.addEventListener('message', function(event)
+                console.log("event.source.postMessage")
+                event.source.postMessage(event.data)
+            end)
+            window.addEventListener('mousemove', function(event)
+            end)
+        </script>
+    </head>
+    <body>
+        <div class="item-container-region"  data-model="start">
+            <div class="panel">
+                <div class="header" id = "item-name-block">
+                    <button class = "back-button"/>
+                    <div class = "menu-title">组装机</div>
+                </div>
+                <div style="border-bottom: 1px rgb(89, 73, 39);"/>
+                <div class="column" data-if="info_flag" style="width: 100%;height: 95%;">
+                    <div class="build-info-reigon">
+                        <div class ="info-block">
+                            <div data-style-pointer-events="event_state" data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div data-style-pointer-events="event_state" data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div data-style-pointer-events="event_state" data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/health.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div data-style-pointer-events="event_state" data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                        </div>
+                        <div class="build-model-block" data-event-mousedown="mousedown()">
+                            <div class="build-model"/>
+                            <div class="power-block">
+                                <div class="progress-pic"/>
+                                <div class="progress-bar-block" style = "margin:0 0.4em 0.2em 0;">
+                                    <div class="progress-background"/>
+                                </div>   
+                            </div>
+                        </div>
+                        <div class ="info-block">
+                            <div data-style-pointer-events="event_state" data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div data-style-pointer-events="event_state" data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div data-style-pointer-events="event_state" data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/health.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div data-style-pointer-events="event_state" data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" data-event-click="ClickFuel()" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%; justify-content: center;">
+                        <div class="row" style="width: 35%; justify-content: flex-end; ">
+                            <div class="small-item">
+                                <div class="item-count">99</div>                          
+                            </div>
+                            <div class="small-item">
+                                <div class="item-count">99</div>                          
+                            </div>
+                        </div>
+                        <div class="column" style="justify-content: center; width: 30%; height:20%; margin:0.2em;">
+                            <div class="progress-bar-block" style = "width: 100%; height:80%;">
+                                <div class="progress-background" style ="width: 50%; background-color: red;"/>
+                            </div> 
+                            <div class = "percent-num">18%</div>
+                        </div>
+                        <div class="row" style="width: 35%; justify-content: flex-start; ">
+                            <div class="small-item">
+                                <div class="item-count">99</div>                          
+                            </div>
+                            <div class="small-item">
+                                <div class="item-count">99</div>                          
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column" data-if="material_interaction || fuel_interaction || plugin_interaction" style="width: 100%;height: 95%;">
+                    <div class="item-container">
+                        <div style="width:100%; height:95%;">
+                            <div class = "item-page-block" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
+                                <div class ="row">
+                                    <div style="width:95%; height:100%;" data-for="virtual_pages">
+                                        <div data-style-left="(it_index + 1) * 100 + '%'"/>
+                                    </div>
+                                </div>
+                                <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_click(it.data.id)" data-style-width="90+'px'" data-style-height="90+'px'" data-style-left="it.left" data-style-top="it.top" data-for="view_items">
+                                    <button class="item">
+                                        <div class="item-count">99</div>                          
+                                    </button>
+                                    <!--<div>{{it.data.id}}</div>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
+                            <div data-for="virtual_pages">
+                                <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" data-style-background-image="it_index == current_page ? 'common/page1.png' : 'common/page0.png'"/>
+                            </div>
+                        </div>         
+                    </div>
+                    <div class = "tab-container">
+                        <workbutton>
+                            <div class="workbutton-bg" style='background-image:"construct/logisitic1.png";'/>
+                            <div class="catalog-desc">物流</div>     
+                        </workbutton>
+                        <workbutton>
+                            <div class="workbutton-bg" style='background-image:"construct/assembler.png";'/>
+                            <div class="catalog-desc">生产</div>
+                        </workbutton>
+                        <workbutton>
+                            <div class="workbutton-bg" style='background-image:"construct/chemistry2.png";'/>
+                            <div class="catalog-desc">化工</div>
+                        </workbutton>
+                        <workbutton>
+                            <div class="workbutton-bg" style='background-image:"construct/steel-beam.png";'/>
+                            <div class="catalog-desc">金属</div>
+                        </workbutton>
+                    </div>
+                    <div class = "tab-container">
+                        <workbutton>
+                            <div class="workbutton-bg" style='background-image:"construct/processor.png";'/>
+                            <div class="catalog-desc">器件</div>
+                        </workbutton>
+                        <workbutton>
+                            <div class="workbutton-bg" style='background-image:"construct/tank3.png";'/>
+                            <div class="catalog-desc">流体</div>
+                        </workbutton>
+                        <workbutton>
+                            <div class="workbutton-bg" style='background-image:"construct/pack.png";'/>
+                            <div class="catalog-desc">打包</div>
+                        </workbutton>
+                        <workbutton>
+                            <div class="workbutton-bg" style='background-image:"construct/unpack.png";'/>
+                            <div class="catalog-desc">解包</div>
+                        </workbutton>
+                    </div>
+                </div>
+            </div>
+            <div class="panel"> 
+                <div class="header" style="justify-content: flex-end;" data-if="!fuel_interaction && !material_interaction && !plugin_interaction"> 
+                    <div class = "menu-title" style="text-align: right;">配方:铁锭1</div>
+                    <button class = "recipe-change-button"/>
+                </div>
+                <div class="header"style="justify-content: flex-end;" data-if="fuel_interaction || material_interaction || plugin_interaction">
+                    <div class = "menu-title-2" data-if="fuel_interaction">调整燃料</div>
+                    <div class = "menu-title-2" data-if="material_interaction">调整材料</div>
+                    <div class = "menu-title-2" data-if="plugin_interaction">调整插件</div>
+                    <button class = "back-button" style='background-image: "cmdcenter\yellow_arrow.png";' data-event-click="ClickBack()"/>
+                </div>
+                <div class="column" style="width: 100%; height: 28%; align-items: flex-start; justify-content: center;" data-if="fuel_interaction">
+                    <div class="row" style="width:100%; height: 20%; justify-content: center;">
+                        <div class="row" style="width: 35%; justify-content: center;">
+                            <button class="item">
+                                <div class="item-count">99</div>                          
+                            </button>
+                            <button class="item">
+                                <div class="item-count">99</div>                          
+                            </button>
+                        </div>
+                        <div class="column" style="justify-content: center; width: 30%; height:60%;">
+                            <div class="progress-bar-block" style = "width: 100%; height:90%;">
+                                <div class="progress-background" style ="width: 50%; background-color: red;"/>
+                            </div> 
+                            <div class = "percent-num">18%</div>
+                        </div>
+                        <div class="row" style="width: 35%; justify-content: center;">
+                            <button class="item">
+                                <div class="item-count">99</div>                          
+                            </button>
+                            <button class="item">
+                                <div class="item-count">99</div>                          
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="justify-content: center; align-items: center; width:100%; height:28%;" data-if="material_interaction">
+                    <div class="row" style="align-items: center; margin-top:0.5em;">
+                        <div class="column" style="justify-content: space-between; width: 35%;">
+                            <div class="row">
+                                <button class="item">
+                                    <div class="item-count">99</div>                          
+                                </button>
+                                <button class="item">
+                                    <div class="item-count">99</div>                          
+                                </button>
+                            </div>
+                            <div class="row">
+                                <button class="item">
+                                    <div class="item-count">99</div>                          
+                                </button>
+                                <button class="item">
+                                    <div class="item-count">99</div>                          
+                                </button>
+                            </div>
+                        </div>
+                        <div class="column" style="justify-content: center; width: 30%; height:50%;">
+                            <div class="progress-bar-block" style = "width: 100%; height:30%;">
+                                <div class="progress-background" style ="width: 50%;"/>
+                            </div> 
+                            <div class = "percent-num">18%</div>
+                            <div class = "progress-bar-block" style = "width: 100%; height:15%;">
+                                <div class="progress-background" style ="background-color: red; width: 20%;"/>
+                            </div> 
+                        </div>
+                        <div class="column" style="justify-content: space-between; width: 35%;">
+                            <div class="row">
+                                <button class="item">
+                                    <div class="item-count">99</div>                          
+                                </button>
+                                <button class="item">
+                                    <div class="item-count">99</div>                          
+                                </button>
+                            </div>
+                            <div class="row">
+                                <button class="item">
+                                    <div class="item-count">99</div>                          
+                                </button>
+                                <button class="item">
+                                    <div class="item-count">99</div>                          
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="align-items: center; width:100%; height:28%; justify-content: center; margin-top: 0.5em;" data-if="plugin_interaction">
+                    <button class="item"/>                       
+                    <button class="item"/>                      
+                    <button class="item"/>
+                    <button class="item"/>                       
+                    <button class="item"/>                        
+                    <button class="item-add">
+                    </button>
+                </div>
+                <div class = "exchange-region" data-if = "fuel_interaction || material_interaction || plugin_interaction">
+                    <div class = "exchange-title">机器爪(98)</div>
+                    <div class="button-exchange-block">
+                        <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
+                            <div class = "button-exchange-arrow"/>
+                            <div class = "button-exchange-text">全部</div>
+                            <div class = "button-exchange-box"/>
+                        </button>
+                        <button class="button-exchange">
+                            <div class = "button-exchange-arrow"/>
+                            <div class = "button-exchange-text">1组</div>
+                            <div class = "button-exchange-box"/>
+                        </button>
+                        <button class="button-exchange">
+                            <div class = "button-exchange-arrow"/>
+                            <div class = "button-exchange-text">1个</div>
+                            <div class = "button-exchange-box"/>
+                        </button>
+                    </div>
+                </div>
+                <div class="column" data-if="!fuel_interaction && !material_interaction && !plugin_interaction" style="width: 100%;height: 95%;">
+                    <div class="row" data-event-click="ClickMaterial()" style="border: 0.13vmin rgb(89, 73, 39); width: 100%; height: 75%;">
+                        <div class="row" style="justify-content: center;">
+                            <div class="column" style="justify-content: space-between; width: 35%;">
+                                <div class="row">
+                                    <button class="item">
+                                        <div class="item-count">99</div>                          
+                                    </button>
+                                    <button class="item">
+                                        <div class="item-count">99</div>                          
+                                    </button>
+                                </div>
+                                <div class="row">
+                                    <button class="item">
+                                        <div class="item-count">99</div>                          
+                                    </button>
+                                    <button class="item">
+                                        <div class="item-count">99</div>                          
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="column" style="justify-content: center; width: 30%; height:20%;">
+                                <div class="progress-bar-block" style = "width: 100%; height:30%;">
+                                    <div class="progress-background" style ="width: 50%;"/>
+                                </div> 
+                                <div class = "percent-num">18%</div>
+                                <div class = "progress-bar-block" style = "width: 100%; height:15%;">
+                                    <div class="progress-background" style ="background-color: red; width: 20%;"/>
+                                </div> 
+                            </div>
+                            <div class="column" style="justify-content: space-between; width: 35%;">
+                                <div class="row">
+                                    <button class="item">
+                                        <div class="item-count">99</div>                          
+                                    </button>
+                                    <button class="item">
+                                        <div class="item-count">99</div>                          
+                                    </button>
+                                </div>
+                                <div class="row">
+                                    <button class="item">
+                                        <div class="item-count">99</div>                          
+                                    </button>
+                                    <button class="item">
+                                        <div class="item-count">99</div>                          
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" data-if="!material_interaction" data-event-click="ClickPlugin()" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%; justify-content: center;">
+                        <button class="item"/>                       
+                        <button class="item"/>                      
+                        <button class="item"/>
+                        <button class="item"/>                       
+                        <button class="item"/>                        
+                        <button class="item-add">
+                        </button>
+                    </div>
+                </div>
+            </div>       
+        </div>
+    </body>
+</rml>
