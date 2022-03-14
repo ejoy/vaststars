@@ -187,9 +187,9 @@
             }
             .catalog-desc {
                 -webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
-                position:relative;
-                top:-38px; 
-                left:-42px;
+                position:absolute;
+                top:-1vmin; 
+                left:0vmin;
                 color: rgb(221, 235, 26)
             }
             .property-display {
