@@ -55,7 +55,7 @@
                 justify-content: flex-start;
             }
             .back-button {
-                background-image:"common/return.png"; 
+                background-image:"common/purple_box.png"; 
                 width: 9.33vmin; 
                 height: 9.33vmin; 
                 background-size:cover;
