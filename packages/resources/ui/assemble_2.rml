@@ -55,7 +55,7 @@
                 justify-content: flex-start;
             }
             .back-button {
-                background-image:"common/purple_box.png"; 
+                background-image:"common/return.png"; 
                 width: 9.33vmin; 
                 height: 9.33vmin; 
                 background-size:cover;
@@ -355,7 +355,7 @@
             }
             .exchange-title {
                 flex-direction: row;
-                font-size: 28px;
+                font-size: 42px;
                 text-align: center;
                 align-items: center;
                 justify-content: center;
@@ -703,7 +703,7 @@
                     <div class = "menu-title-2" data-if="fuel_interaction">调整燃料</div>
                     <div class = "menu-title-2" data-if="material_interaction">调整材料</div>
                     <div class = "menu-title-2" data-if="plugin_interaction">调整插件</div>
-                    <button class = "back-button" style='background-image: "cmdcenter\yellow_arrow.png";' data-event-click="ClickBack()"/>
+                    <button class = "back-button" style='background-image: "cmdcenter/yellow_arrow.png";' data-event-click="ClickBack()"/>
                 </div>
                 <div class="column" style="width: 100%; height: 28%; align-items: flex-start; justify-content: center;" data-if="fuel_interaction">
                     <div class="row" style="width:100%; height: 20%; justify-content: center;">
