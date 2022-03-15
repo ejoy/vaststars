@@ -1,3 +1,4 @@
+import "@ant.audio"
 import "@ant.objcontroller"
 import "@ant.rmlui"
 import "@ant.sky"
@@ -12,7 +13,6 @@ component "terrain" .type "lua"
 component "prefab_slot_eid_cache" .type "lua"
 
 -- build-in
-component "pickup_mapping" .type "lua"
 component "pause_animation"
 component "drapdrop_selected" -- 当前拖动的 entity
 
@@ -84,6 +84,21 @@ interface "igame_object"
     .method "bind"
     .method "remove"
     .method "get_prefab_object"
+    .method "create"
+    .method "set_prefab_file"
+    .method "set_state"
+    .method "set_dir"
+    .method "get_coord"
+    .method "drapdrop"
+
+system "construct_button_system"
+    .implement "construct_button_system.lua"
+    .method "pickup_mapping"
+
+interface "iconstruct_button"
+    .implement "construct_button_system.lua"
+    .method "show"
+    .method "hide"
 
 system "ui_system"
     .implement "ui_system.lua"
@@ -98,7 +113,6 @@ system "construct_system"
     .implement "construct_system.lua"
     .method "data_changed"
     .method "camera_usage"
-    .method "pickup_mapping"
 
 system "pickup_mapping_system"
     .implement "pickup_mapping_system.lua"

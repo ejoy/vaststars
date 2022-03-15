@@ -9,7 +9,7 @@ local dir = require "dir"
 local gameplay = ecs.require "gameplay"
 local dir_rotate = dir.rotate
 local world_select = ecs.require "world_select"
-local construct_button = ecs.require "construct_button"
+local iconstruct_button = ecs.import.interface "vaststars.gamerender|iconstruct_button"
 
 local ui_construct_begin_mb = world:sub {"ui", "construct", "construct_begin"}       -- 建造模式
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
@@ -68,7 +68,7 @@ local function confirm_construct(game_object)
     game_object.drapdrop = false
     game_object.construct_pickup = false
     game_object.construct_queue = true
-    construct_button.hide()
+    iconstruct_button.hide()
 end
 
 local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
@@ -96,7 +96,7 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
 
     construct_object.x, construct_object.y = x, y
     update_basecolor_by_pos(game_object)
-    construct_button.show(construct_object.x, construct_object.y, area)
+    iconstruct_button.show(construct_object.x, construct_object.y, area)
 end
 
 local construct_button_events = {}
@@ -112,7 +112,7 @@ end
 
 construct_button_events.cancel = function()
     for _, game_object in world_select "construct_pickup" do
-        construct_button.hide()
+        iconstruct_button.hide()
         igame_object.remove(game_object.id)
     end
 end
@@ -139,7 +139,7 @@ function construct_sys:data_changed()
     for _, game_object_eid in game_object_ready_mb:unpack() do
         local game_object = world:entity(game_object_eid)
         if game_object then
-            construct_button.show(game_object.construct_object.x, game_object.construct_object.y, prototype.get_area(game_object.construct_object.prototype_name))
+            iconstruct_button.show(game_object.construct_object.x, game_object.construct_object.y, prototype.get_area(game_object.construct_object.prototype_name))
         end
     end
 
