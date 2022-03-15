@@ -239,7 +239,7 @@
             </div>
 
             <!-- 主菜单按钮 -->
-            <div class = "main-menu-block">
+            <div class = "main-menu-block" data-if = "cur_edit_mode == ''">
                 <button  class = "main-menu-button" style="border: 0.00vmin;">
                     <div class = "menu-button-pic" style='background-image:"construct/logistics_center.png"'/>
                     <div class = "menu-button-text">指挥中心</div>
