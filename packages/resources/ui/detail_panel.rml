@@ -56,7 +56,7 @@
 
         </script>
     </head>
-    <body>
+    <body style = "pointer-events: none;">
         <div data-model="start">
             <!-- detail panel begin -->
             <div style = "position: absolute; left: 0.13vmin; top: 11.33vmin; width: 40.00vmin; height: 77.33vmin; background-color: rgb(250, 205, 9); border: 0.27vmin rgb(89, 73, 39);flex-direction: column; justify-content: flex-start;">

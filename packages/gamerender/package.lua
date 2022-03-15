@@ -2,6 +2,7 @@ return {
     name = "vaststars.gamerender",
     entry = "main",
     dependencies = {
+        "ant.audio",
         "ant.objcontroller",
         "ant.rmlui",
         "ant.sky",
