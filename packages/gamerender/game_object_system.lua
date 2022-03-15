@@ -2,8 +2,8 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local ipickup_mapping = ecs.import.interface "vaststars.gamerender|ipickup_mapping"
 local iani = ecs.import.interface "ant.animation|ianimation"
+local ipickup_mapping = ecs.import.interface "vaststars.gamerender|ipickup_mapping"
 local igame_object = ecs.interface "igame_object"
 local game_object_sys = ecs.system "game_object_system"
 local game_object_remove_mb = world:sub {"game_object_system", "remove"}
@@ -85,6 +85,7 @@ function igame_object.bind(game_object_eid, prefab)
     end
 
     game_object_prefab[game_object_eid] = prefab_object
+    return prefab_object
 end
 
 function igame_object.remove(game_object_eid)
@@ -103,4 +104,186 @@ function igame_object.get_prefab_object(game_object_eid)
         log.error(("can not found prefab_object `%s`"):format(game_object_eid))
     end
     return prefab_object
+end
+
+-----------------------------------------------------------------------
+local prefab_path = "/pkg/vaststars.resources/%s"
+local cr = import_package "ant.compile_resource"
+local serialize = import_package "ant.serialize"
+local imaterial = ecs.import.interface "ant.asset|imaterial"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local irq = ecs.import.interface "ant.render|irenderqueue"
+local iinput = ecs.import.interface "vaststars.gamerender|iinput"
+local mathpkg = import_package "ant.math"
+local mc = mathpkg.constant
+local prototype = ecs.require "prototype"
+local terrain = ecs.require "terrain"
+local math3d = require "math3d"
+
+local function replace_material(template)
+    for _, v in ipairs(template) do
+        for _, policy in ipairs(v.policy) do
+            if policy == "ant.render|render" or policy == "ant.render|simplerender" then
+                v.data.material = "/pkg/vaststars.resources/construct.material"
+            end
+        end
+    end
+
+    return template
+end
+
+local function update_basecolor(prefab, basecolor_factor)
+    local e
+    for _, eid in ipairs(prefab.tag["*"]) do
+        e = world:entity(eid)
+        if e.material then
+            imaterial.set_property(e, "u_basecolor_factor", basecolor_factor)
+        end
+    end
+end
+
+local function on_prefab_ready(game_object)
+    world:pub {"game_object_ready", game_object.id}
+end
+
+local on_prefab_message ; do
+    local funcs = {}
+    funcs["update_basecolor"] = function(game_object, prefab, basecolor_factor)
+        update_basecolor(prefab, basecolor_factor)
+    end
+
+    function on_prefab_message(game_object, prefab, cmd, ...)
+        local func = funcs[cmd]
+        if func then
+            func(game_object, prefab, ...)
+        end
+    end
+end
+
+function igame_object.create(prototype_name)
+    local prefab_file = prototype.get_prefab_file(prototype_name)
+    if not prefab_file then
+        return
+    end
+
+    local f = prefab_path:format(prefab_file)
+    local template = replace_material(serialize.parse(f, cr.read_file(f)))
+    local prefab = ecs.create_instance(template)
+    prefab.on_message = on_prefab_message
+    prefab.on_ready = on_prefab_ready
+
+    local area = prototype.get_area(prototype_name)
+    if not area then
+        return
+    end
+
+    local viewdir = iom.get_direction(world:entity(irq.main_camera()))
+    local origin = math3d.tovalue(iinput.ray_hit_plane({origin = mc.ZERO, dir = math3d.mul(math.maxinteger, viewdir)}, {dir = mc.YAXIS, pos = mc.ZERO_PT}))
+    local coord, position = terrain.adjust_position(origin, area)
+    iom.set_position(world:entity(prefab.root), position)
+
+    local game_object_eid = ecs.create_entity {
+        policy = {},
+        data = {
+            drapdrop = true,
+            pause_animation = true,
+            construct_pickup = true,
+            gameplay_eid = 0,
+            construct_object = {
+                prototype_name = prototype_name,
+                fluid = {},
+                dir = "N",
+                x = coord[1],
+                y = coord[2],
+            }
+        }
+    }
+    igame_object.bind(game_object_eid, prefab)
+end
+
+function igame_object.set_prefab_file(prefab_file)
+end
+
+-- state : translucent opaque
+function igame_object.set_state(game_object, state, color)
+    local prefab_file = prototype.get_prefab_file(game_object.construct_object.prototype_name)
+    if not prefab_file then
+        return
+    end
+
+    local old_prefab_object = igame_object.get_prefab_object(game_object.id)
+    if not old_prefab_object then
+        return
+    end
+    local position = iom.get_position(world:entity(old_prefab_object.root))
+
+    local template
+    local f = prefab_path:format(prefab_file)
+    if state == "translucent" then
+        template = replace_material(serialize.parse(f, cr.read_file(f)))
+    else
+        template = f
+    end
+
+    local prefab = ecs.create_instance(template)
+    iom.set_position(world:entity(prefab.root), position)
+
+    local prefab_object = igame_object.bind(game_object.id, prefab)
+    prefab_object:send("update_basecolor", color)
+end
+
+do
+    local North <const> = 0
+    local East  <const> = 1
+    local South <const> = 2
+    local West  <const> = 3
+
+    local dir_to_rotation = {
+        North = math.rad(0),
+        East = math.rad(90.0),
+        South = math.rad(180.0),
+        West = math.rad(270.0)
+    }
+
+    function igame_object.set_dir(game_object, dir)
+        local prefab_object = igame_object.get_prefab_object(game_object.id)
+        if not prefab_object then
+            return
+        end
+
+        local e = world:entity(prefab_object.root)
+        local r = assert(dir_to_rotation[dir])
+        iom.set_rotation(e, math3d.quaternion{axis = mc.YAXIS, r = r})
+    end
+end
+
+function igame_object.get_coord(game_object)
+    local prefab_object = igame_object.get_prefab_object(game_object.id)
+    if not prefab_object then
+        return
+    end
+
+    local position = math3d.tovalue(iom.get_position(world:entity(prefab_object.root)))
+    local coord = terrain.get_coord_by_position(position)
+    return coord[1], coord[2]
+end
+
+function igame_object.drapdrop(game_object, prototype_name, mouse_x, mouse_y)
+    local prefab_object = igame_object.get_prefab_object(game_object.id)
+    if not prefab_object then
+        return
+    end
+
+    local area = prototype.get_area(prototype_name)
+    if not area then
+        return
+    end
+
+    local coord, position = terrain.adjust_position(iinput.screen_to_world(mouse_x, mouse_y), area)
+    if not coord then
+        return
+    end
+
+    iom.set_position(world:entity(prefab_object.root), position)
+    return coord[1], coord[2]
 end

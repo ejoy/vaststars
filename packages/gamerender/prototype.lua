@@ -35,6 +35,16 @@ function prototype.get_prefab_file(prototype_name)
     return cfg.prefab
 end
 
+function prototype.get_construct_detector(prototype_name)
+    local cfg = entity_cfg[prototype_name]
+    if not cfg then
+        log.error(("can not found entity `%s`"):format(prototype_name))
+        return
+    end
+
+    return cfg.construct_detector
+end
+
 function prototype.get_fluid_id(prototype_name)
     local pt = gameplay.queryByName("fluid", prototype_name)
     if not pt then
