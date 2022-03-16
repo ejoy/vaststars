@@ -7,7 +7,8 @@ function m.get_prototype_name(x, y, get_entity)
         return
     end
 
-    
+    return "管道1-I型"
+    -- return entity.prototype_name
 end
 
 return m

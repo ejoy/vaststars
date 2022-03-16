@@ -76,17 +76,16 @@ local function confirm_construct(game_object)
 end
 
 local function get_entity(x, y)
-    for _, game_object in world_select "gameplay_eid" do
-        if not ((game_object.x == x and game_object.y == y) or (game_object.construct_object.x == x and game_object.construct_object.y == y)) then
-            goto continue
+    for _, game_object in world_select "gameplay_eid:in" do
+        if game_object.construct_object.x == x and game_object.construct_object.y == y then
+            return game_object.construct_object
         end
+    end
 
-        if game_object.gameplay_eid == 0 then
-            return game_object
-        else
-            return gameplay.get_entity(game_object.gameplay_eid)
+    for e in gameplay.select "entity:in" do
+        if e.entity.x == x and e.entity.y == y then
+            return e.entity
         end
-        ::continue::
     end
 end
 
@@ -104,12 +103,13 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
         log.error(("can not get coord(%s, %s)"):format(mouse_x, mouse_y))
         return
     end
+    construct_object.x, construct_object.y = x, y
 
     if prototype.is_pipe(construct_object.prototype_name) then
         local prototype_name = pipe.get_prototype_name(x, y, get_entity)
-        if prototype_name ~= construct_object.prototype_name then
+        if prototype_name and prototype_name ~= construct_object.prototype_name then
             construct_object.prototype_name = prototype_name
-            igame_object.set_prototype_name(prototype_name)
+            igame_object.set_prototype_name(game_object, prototype_name)
         end
     end
 
@@ -118,7 +118,6 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
         return
     end
 
-    construct_object.x, construct_object.y = x, y
     update_basecolor_by_pos(game_object)
     iconstruct_button.show(construct_object.x, construct_object.y, area)
 end
