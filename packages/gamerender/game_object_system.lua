@@ -264,7 +264,9 @@ function igame_object.set_state(game_object, state, color)
         if not old_prefab_object then
             return
         end
-        local position = iom.get_position(world:entity(old_prefab_object.root))
+        local re = world:entity(old_prefab_object.root)
+        local rotation = iom.get_rotation(re)
+        local position = iom.get_position(re)
 
         local template
         local f = prefab_path:format(prefab_file)
@@ -278,7 +280,9 @@ function igame_object.set_state(game_object, state, color)
         prefab.on_message = on_prefab_message
         prefab.on_ready = on_prefab_ready
 
-        iom.set_position(world:entity(prefab.root), position)
+        re = world:entity(prefab.root)
+        iom.set_position(re, position)
+        iom.set_rotation(re, rotation)
 
         prefab_object = igame_object.bind(game_object.id, prefab)
     else

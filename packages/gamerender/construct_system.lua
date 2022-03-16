@@ -75,16 +75,30 @@ local function confirm_construct(game_object)
     construct_queue[#construct_queue + 1] = {oper = "add", game_object = game_object}
 end
 
+local DIRECTION <const> = {
+    [0] = 'N',
+    [1] = 'E',
+    [2] = 'S',
+    [3] = 'W',
+}
+
 local function get_entity(x, y)
     for _, game_object in world_select "gameplay_eid:in" do
-        if game_object.construct_object.x == x and game_object.construct_object.y == y then
+        if game_object.construct_object and game_object.construct_object.x == x and game_object.construct_object.y == y then
             return game_object.construct_object
         end
     end
 
+    -- 将 gameplay entity 统一转为 game_object.construct_object 对应的格式
     for e in gameplay.select "entity:in" do
-        if e.entity.x == x and e.entity.y == y then
-            return e.entity
+        local entity = e.entity
+        if entity.x == x and entity.y == y then
+            return {
+                dir = DIRECTION[entity.direction],
+                prototype_name = prototype.get_prototype_name(entity.prototype),
+                x = entity.x,
+                y = entity.y,
+            }
         end
     end
 end
@@ -106,10 +120,13 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
     construct_object.x, construct_object.y = x, y
 
     if prototype.is_pipe(construct_object.prototype_name) then
-        local prototype_name = pipe.get_prototype_name(x, y, get_entity)
+        local prototype_name, dir = pipe.adjust_prototype_name(x, y, get_entity)
         if prototype_name and prototype_name ~= construct_object.prototype_name then
             construct_object.prototype_name = prototype_name
             igame_object.set_prototype_name(game_object, prototype_name)
+
+            construct_object.dir = dir
+            igame_object.set_dir(game_object, dir)
         end
     end
 
@@ -181,11 +198,14 @@ function construct_sys:data_changed()
     for _ in ui_construct_complete_mb:unpack() do
         for _, v in ipairs(construct_queue) do
             if v.oper == "add" then
+                --RETODO 放置水管时, 会导致四周的水管 prototype_name 变更
                 local game_object = v.game_object
                 igame_object.set_state(game_object, "opaque")
                 game_object.gameplay_eid = gameplay.create_entity(game_object)
             end
         end
+        w:clear "construct_object"
+        construct_queue = {}
         gameplay.build()
     end
 

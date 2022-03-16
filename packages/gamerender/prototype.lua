@@ -16,6 +16,15 @@ function prototype.unpack_coord(v)
     return v >> 8, v & 0xFF
 end
 
+function prototype.get_prototype_name(prototype)
+    local pt = gameplay.query(prototype)
+    if not pt then
+        log.error(("can not found prototype(%s)"):format(prototype))
+        return
+    end
+    return pt.name
+end
+
 function prototype.get_area(prototype_name)
     assert(prototype_name)
     local pt = gameplay.queryByName("entity", prototype_name)
