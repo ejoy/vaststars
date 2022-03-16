@@ -86,6 +86,19 @@ local function get_entity(x, y)
     return gameplay.get_entity(x, y)
 end
 
+local function get_game_object(x, y)
+    for _, game_object in world_select "gameplay_eid:in" do
+        if game_object.construct_object and game_object.construct_object.x == x and game_object.construct_object.y == y then
+            return game_object
+        else
+            local e = gameplay.entity(game_object.gameplay_eid)
+            if e and e.entity.x == x and e.entity.y == y then
+                return game_object
+            end
+        end
+    end
+end
+
 local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
     local game_object = world:entity(game_object_eid)
     if not game_object then
@@ -125,6 +138,7 @@ end
 local construct_button_events = {}
 construct_button_events.confirm = function()
     for _, game_object in world_select "construct_pickup" do
+        assert(game_object.construct_object)
         if prototype.is_fluidbox(game_object.construct_object.prototype_name) then
             world:pub {"ui_message", "show_set_fluidbox", true}
         else
@@ -178,11 +192,41 @@ function construct_sys:data_changed()
         end
     end
 
+    local vector2 = ecs.require "vector2"
+    local North <const> = 0
+    local East  <const> = 1
+    local South <const> = 2
+    local West  <const> = 3
+    local neighbor <const> = {
+        {vector2.DOWN, South},
+        {vector2.UP,   North},
+        {vector2.LEFT, West},
+        {vector2.RIGHT,East},
+    }
+
     for _ in ui_construct_complete_mb:unpack() do
+        for _, game_object in world_select "construct_pickup" do
+            igame_object.remove(game_object)
+        end
+
         for _, v in ipairs(construct_queue) do
             if v.oper == "add" then
-                --RETODO 放置水管时, 会导致四周的水管 prototype_name 变更
                 local game_object = v.game_object
+                local construct_object = game_object.construct_object
+
+                --RETODO 判断越界
+                for _, n in ipairs(neighbor) do
+                    local x, y = construct_object.x + n[1][1], construct_object.y + n[1][2]
+                    local new_prototype_name, dir = pipe.adjust_prototype_name(x, y, get_entity)
+                    local g = get_game_object(x, y)
+                    if new_prototype_name then
+                        igame_object.set_dir(g, dir)
+                        igame_object.set_prototype_name(g, new_prototype_name)
+                        --RETODO gameplay 需要变更
+                    end
+                end
+
+                --RETODO 放置水管时, 会导致四周的水管 prototype_name 变更
                 igame_object.set_state(game_object, "opaque")
                 game_object.gameplay_eid = gameplay.create_entity(game_object)
             end

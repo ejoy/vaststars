@@ -82,7 +82,7 @@ end
 local function check_passable_state(x, y, dir, get_entity)
     local entity = get_entity(x, y)
     if not entity then
-        -- log.error(("can not found entity(%s, %s)"):format(x, y))
+        -- log.debug(("can not found entity(%s, %s)"):format(x, y))
         return false
     end
 
@@ -103,7 +103,7 @@ function m.adjust_prototype_name(x, y, get_entity)
     -- entity 为 game_object.construct_object 或 gameplay 的 entity.entity
     local entity = get_entity(x, y)
     if not entity then
-        log.error(("can not found entity(%s, %s)"):format(x, y))
+        -- log.debug(("can not found entity(%s, %s)"):format(x, y))
         return
     end
 
@@ -111,6 +111,7 @@ function m.adjust_prototype_name(x, y, get_entity)
     local passable_state = 0
 
     for _, v in ipairs(neighbor) do
+        --RETODO 判断越界
         if check_passable_state(x + v[1][1], y + v[1][2], entity.dir, get_entity) then
             passable_state = set_passable_state(passable_state, v[2], 1)
         end
