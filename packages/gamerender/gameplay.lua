@@ -1,6 +1,15 @@
 local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
+
 local entity_visitor = world.ecs:make_index "id"
+local entity_mt = {}
+function entity_mt:__index(name)
+    return entity_visitor(self.id, name)
+end
+function entity_mt:__newindex(name, value)
+    entity_visitor(self.id, name, value)
+end
+
 local m = {}
 
 function m.select(...)
@@ -88,6 +97,14 @@ function m.create_entity(game_object)
 
     create(world, game_object.construct_object.prototype_name, template)
     return template.id
+end
+
+function m.get_entity(eid)
+    local v = entity_visitor[eid]
+	if not v then
+		return
+	end
+	return setmetatable({id=eid}, entity_mt)
 end
 
 return m

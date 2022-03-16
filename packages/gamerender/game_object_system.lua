@@ -203,7 +203,7 @@ function igame_object.create(prototype_name)
     igame_object.bind(game_object_eid, prefab)
 end
 
-function igame_object.set_prefab_file(game_object, prototype_name)
+function igame_object.set_prototype_name(game_object, prototype_name)
     local prefab_file = prototype.get_prefab_file(prototype_name)
     if not prefab_file then
         return

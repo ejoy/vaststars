@@ -3,13 +3,14 @@ local world = ecs.world
 local w = world.w
 
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
+local iconstruct_button = ecs.import.interface "vaststars.gamerender|iconstruct_button"
 local construct_sys = ecs.system "construct_system"
 local prototype = ecs.require "prototype"
 local dir = require "dir"
 local gameplay = ecs.require "gameplay"
 local dir_rotate = dir.rotate
 local world_select = ecs.require "world_select"
-local iconstruct_button = ecs.import.interface "vaststars.gamerender|iconstruct_button"
+local pipe = ecs.require "pipe"
 
 local ui_construct_begin_mb = world:sub {"ui", "construct", "construct_begin"}       -- 建造模式
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
@@ -74,6 +75,21 @@ local function confirm_construct(game_object)
     construct_queue[#construct_queue + 1] = {oper = "add", game_object = game_object}
 end
 
+local function get_entity(x, y)
+    for _, game_object in world_select "gameplay_eid" do
+        if not ((game_object.x == x and game_object.y == y) or (game_object.construct_object.x == x and game_object.construct_object.y == y)) then
+            goto continue
+        end
+
+        if game_object.gameplay_eid == 0 then
+            return game_object
+        else
+            return gameplay.get_entity(game_object.gameplay_eid)
+        end
+        ::continue::
+    end
+end
+
 local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
     local game_object = world:entity(game_object_eid)
     if not game_object then
@@ -83,14 +99,22 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
     assert(game_object.construct_pickup == true)
 
     local construct_object = game_object.construct_object
-    local area = prototype.get_area(construct_object.prototype_name)
-    if not area then
-        return
-    end
-
     local x, y = igame_object.drapdrop(game_object, construct_object.prototype_name, mouse_x, mouse_y)
     if not x or not y then
         log.error(("can not get coord(%s, %s)"):format(mouse_x, mouse_y))
+        return
+    end
+
+    if prototype.is_pipe(construct_object.prototype_name) then
+        local prototype_name = pipe.get_prototype_name(x, y, get_entity)
+        if prototype_name ~= construct_object.prototype_name then
+            construct_object.prototype_name = prototype_name
+            igame_object.set_prototype_name(prototype_name)
+        end
+    end
+
+    local area = prototype.get_area(construct_object.prototype_name)
+    if not area then
         return
     end
 

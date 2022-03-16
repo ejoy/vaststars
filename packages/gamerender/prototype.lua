@@ -69,4 +69,13 @@ function prototype.is_fluidbox(prototype_name)
     return false
 end
 
+function prototype.is_pipe(prototype_name)
+    local pt = gameplay.queryByName("entity", prototype_name)
+    if not pt then
+        log.error(("can not found entity `%s`"):format(prototype_name))
+        return
+    end
+    return pt.pipe
+end
+
 return prototype

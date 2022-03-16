@@ -106,6 +106,7 @@ prototype "空气过滤器1" {
 
 
 prototype "管道1-I型" {
+    pipe = true,
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
@@ -120,6 +121,7 @@ prototype "管道1-I型" {
 }
 
 prototype "管道1-J型" {
+    pipe = true,
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
@@ -133,6 +135,7 @@ prototype "管道1-J型" {
 }
 
 prototype "管道1-L型" {
+    pipe = true,
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
@@ -147,6 +150,7 @@ prototype "管道1-L型" {
 }
 
 prototype "管道1-T型" {
+    pipe = true,
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
@@ -162,6 +166,7 @@ prototype "管道1-T型" {
 }
 
 prototype "管道1-X型" {
+    pipe = true,
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
@@ -178,6 +183,7 @@ prototype "管道1-X型" {
 }
 
 prototype "管道1-O型" {
+    pipe = true,
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
@@ -190,6 +196,7 @@ prototype "管道1-O型" {
 }
 
 prototype "管道1-U型" {
+    pipe = true,
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
@@ -203,6 +210,7 @@ prototype "管道1-U型" {
 }
 
 prototype "地下管1" {
+    pipe = true,
     type ={"entity","pipe-to-ground","fluidbox"},
     area = "1x1",
     max_distance = 10,
