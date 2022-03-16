@@ -10,6 +10,15 @@ function entity_mt:__newindex(name, value)
     entity_visitor(self.id, name, value)
 end
 
+local function get_prototype_name(prototype)
+    local pt = gameplay.query(prototype)
+    if not pt then
+        log.error(("can not found prototype(%s)"):format(prototype))
+        return
+    end
+    return pt.name
+end
+
 local m = {}
 
 function m.select(...)
@@ -99,12 +108,36 @@ function m.create_entity(game_object)
     return template.id
 end
 
-function m.get_entity(eid)
+function m.entity(eid)
     local v = entity_visitor[eid]
 	if not v then
 		return
 	end
 	return setmetatable({id=eid}, entity_mt)
+end
+
+do
+    local DIRECTION <const> = {
+        [0] = 'N',
+        [1] = 'E',
+        [2] = 'S',
+        [3] = 'W',
+    }
+
+    -- 将 gameplay entity 转为统一的格式
+    function m.get_entity(x, y)
+        for e in world.ecs:select "entity:in" do
+            local entity = e.entity
+            if entity.x == x and entity.y == y then
+                return {
+                    dir = DIRECTION[entity.direction],
+                    prototype_name = get_prototype_name(entity.prototype),
+                    x = entity.x,
+                    y = entity.y,
+                }
+            end
+        end
+    end
 end
 
 return m

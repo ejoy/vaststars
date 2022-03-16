@@ -75,12 +75,6 @@ local function confirm_construct(game_object)
     construct_queue[#construct_queue + 1] = {oper = "add", game_object = game_object}
 end
 
-local DIRECTION <const> = {
-    [0] = 'N',
-    [1] = 'E',
-    [2] = 'S',
-    [3] = 'W',
-}
 
 local function get_entity(x, y)
     for _, game_object in world_select "gameplay_eid:in" do
@@ -89,18 +83,7 @@ local function get_entity(x, y)
         end
     end
 
-    -- 将 gameplay entity 统一转为 game_object.construct_object 对应的格式
-    for e in gameplay.select "entity:in" do
-        local entity = e.entity
-        if entity.x == x and entity.y == y then
-            return {
-                dir = DIRECTION[entity.direction],
-                prototype_name = prototype.get_prototype_name(entity.prototype),
-                x = entity.x,
-                y = entity.y,
-            }
-        end
-    end
+    return gameplay.get_entity(x, y)
 end
 
 local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
