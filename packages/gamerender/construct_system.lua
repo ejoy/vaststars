@@ -138,7 +138,8 @@ end
 function construct_sys:data_changed()
     for _, game_object_eid in game_object_ready_mb:unpack() do
         local game_object = world:entity(game_object_eid)
-        if game_object then
+        -- 只有选中状态 并且 非水管 才需要显示[建造按钮]
+        if game_object and game_object.construct_pickup then
             iconstruct_button.show(game_object.construct_object.x, game_object.construct_object.y, prototype.get_area(game_object.construct_object.prototype_name))
         end
     end
