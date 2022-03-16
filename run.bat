@@ -4,7 +4,7 @@ set current_dir=%~dp0
 set exe=bin\msvc\debug\vaststars.exe
 set titlemsg=debug
 set cachedir=.build
-set param=
+set param=startup/main.lua
 
 pushd %current_dir%
 
