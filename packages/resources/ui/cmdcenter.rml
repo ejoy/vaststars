@@ -167,9 +167,9 @@
             }
             .catalog-desc {
                 -webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
-                position:relative;
-                top:-38px; 
-                left:-42px;
+                position:absolute;
+                top:0vmin; 
+                left:0vmin;
                 color: rgb(221, 235, 26)
             }
             /*右侧建筑信息栏*/
@@ -228,10 +228,11 @@
                 background-color: rgb(87, 238, 0);
             }
             .info-block {
+                margin:auto 0.5em;
                 width:40%;
                 height:60%;
                 flex-direction: column;
-                justify-content: flex-start;
+                justify-content: center;
             }
             .drone-block {
                 width: 100%;
@@ -301,7 +302,7 @@
             }
             .property-text {
                 margin-left: 1.33vmin;
-                font-size: 2.67vmin;
+                font-size: 3.5vmin;
                 color: rgba(0,176,240,255);
             }
             .item-page-block {
@@ -309,10 +310,80 @@
                 width:100%; 
                 height:100%;
             }
+            .item-info-block {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width:100%;
+                height:30%;
+            }
+            .item-recipe-block {
+                flex-direction: column;
+                align-items: center;
+                width:100%;
+                height:20%;
+            }
+            .item-material-block {
+                flex-direction: column;
+                align-items: center;
+                width:100%;
+                height:32%;
+            }
+            .item-building-block {
+                flex-direction: column;
+                align-items: center;
+                width:100%;
+                height:18%;
+            }
+            .pre-title-block {
+                justify-content: center;
+                width:20%;
+                height:5vmin; 
+                background-color: rgb(255,217,102);
+                border-radius: 0.37vmin;
+                border: 0.13vmin rgb(89, 73, 39);
+                font-size: 3.47vmin;
+                color:rgb(255,255,255);
+                -webkit-text-stroke: 0.13vmin rgb(89, 73, 39);
+                text-align: center;
+            }
+            .small-item {
+                flex-direction: column;
+                align-items:center;
+                justify-content:flex-end;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 8.00vmin;
+                height: 8.00vmin;
+                font-size: 4.40vmin;
+                background-image: "construct/insert1.png";
+            }
+            .small-item-count {
+                bottom:-1vmin;
+                text-align:center;
+                color:rgb(87, 238, 0);
+                -webkit-text-stroke: 0.1vmin rgb(39, 32, 17);
+            }
+            .small-arrow {
+                margin: auto 0.2em;
+                width:61px;
+                height:47px;
+                background-image:"exchange/right_arrow.png";
+                background-size:cover
+            }
+            .small-building {
+                width:50px;
+                height:70px;
+                background-image: "assemble/engine.png";
+                background-size: cover;
+            }
         </style>
         <script type="text/x-lua">
             console.log("before createModel")
             local start = window.createModel "start" {
+                info_flag = false,
+
                 items = {
                     {id=100, icon0="correct.png", icon1="correct.png"},
                     {id=101, icon0="correct.png", icon1="correct.png"},
@@ -375,6 +446,16 @@
                 start.selected_id = id
             end
 
+            function start.ClickItem(event)
+                start.info_flag = true
+                console.log("---ClickItem---")
+            end
+        
+            function start.ClickInfo(event)
+                start.info_flag = false
+                console.log("---ClickBack---")
+            end
+
             window.addEventListener('message', function(event)
                 console.log("event.source.postMessage")
                 event.source.postMessage(event.data)
@@ -399,7 +480,7 @@
                                 </div>
                             </div>
                             <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_click(it.data.id)" data-style-width="90+'px'" data-style-height="90+'px'" data-style-left="it.left" data-style-top="it.top" data-for="view_items">
-                                <button class="item">
+                                <button class="item" data-event-click="ClickItem()">
                                     <div class="item-count">99</div>                          
                                     <!--div class="item-title">机器爪</div>-->
                                 </button>
@@ -452,59 +533,238 @@
                 </div>
             </div>
             <div class="panel">
-                <div class="build-info-block">
-                    <div class = "column" style="width:30%;">
-                        <div class="build-picture-block">
-                            <div class="bulid-status-info">输出正常</div>
-                            <div class="build-picture"/>
+                <div class="column" style="width:100%; height:100%;" data-if="!info_flag">
+                    <div class="build-info-block">
+                        <div class = "column" style="width:30%;">
+                            <div class="build-picture-block">
+                                <div class="bulid-status-info">输出正常</div>
+                                <div class="build-picture"/>
+                            </div>
+                            <div class="build-power-info-block">
+                                <div class="progress-pic"/>
+                                <div class="progress-bar-block">
+                                    <div class="progress-background"/>
+                                </div>   
+                            </div>
                         </div>
-                        <div class="build-power-info-block">
-                            <div class="progress-pic"/>
-                            <div class="progress-bar-block">
-                                <div class="progress-background"/>
-                            </div>   
+                        <div class="info-block">
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"character/health.png";'/>
+                                <div class="property-text">建筑生命</div>
+                                <div class="property-text" style="color: white;">200/990</div>
+                            </div>
+                            <div class="row">
+                                <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                <div class="property-text">发电功率</div>
+                                <div class="property-text" style="color: white;">500kw(-250kw)</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="info-block">
-                        <div class="row">
-                            <div class="property-icon" style='background-image:"character/health.png";'/>
-                            <div class="property-text">建筑生命</div>
-                            <div class="property-text" style="color: white;">200/990</div>
+                    <div class = "drone-block">
+                        <div class ="drone-title-block">
+                            <div class = "drone-pic"/>
+                            <div class = "drone-title">运输机舱</div>
                         </div>
-                        <div class="row">
-                            <div class="property-icon" style='background-image:"character/flash.png";'/>
-                            <div class="property-text">发电功率</div>
-                            <div class="property-text" style="color: white;">500kw(-250kw)</div>
+                        <div class ="drone-room-block">
+                            <div class="drone-room">
+                                <button class="box" style='background-image:"construct/drone1.png";'/>
+                                <button class="box" style='background-image:"construct/drone1.png";'/>
+                                <button class="box" style='background-image:"construct/drone1.png";'/>
+                                <button class="box" style='background-image:"construct/drone1.png";'/>
+                                <button class="box" style='background-image:"construct/drone1.png";'/>
+                            </div>
+                            <div class="drone-room">
+                                <button class="box" style='background-image:"construct/drone1.png";'/>
+                                <button class="box" style='background-image:"construct/drone1.png";'/>
+                                <button class="box" style='background-color:rgb(255,192,0);background-image:"construct/drone1.png";'/>
+                                <button class="box" style='background-color:rgb(255,192,0);background-image:"construct/drone1.png";'/>
+                                <button class="box" style='background-color:rgb(143, 143, 143);background-image:"cmdcenter/add.png";'/>
+                            </div>
+                            
                         </div>
+                    </div>
+                    <div class="upgrade-block">
+                        <button class = "text-production-cabin">
+                            <div style="margin-top: 0.3em;">制造舱</div>
+                        </button>
                     </div>
                 </div>
-                <div class = "drone-block">
-                    <div class ="drone-title-block">
-                        <div class = "drone-pic"/>
-                        <div class = "drone-title">运输机舱</div>
-                    </div>
-                    <div class ="drone-room-block">
-                        <div class="drone-room">
-                            <button class="box" style='background-image:"construct/drone1.png";'/>
-                            <button class="box" style='background-image:"construct/drone1.png";'/>
-                            <button class="box" style='background-image:"construct/drone1.png";'/>
-                            <button class="box" style='background-image:"construct/drone1.png";'/>
-                            <button class="box" style='background-image:"construct/drone1.png";'/>
+                <div class="column" style="width:100%; height:100%;" data-if="info_flag" data-event-click="ClickInfo()">
+                    <div class="item-info-block">
+                        <div style="flex-direction:row; justify-content: flex-start; align-items: center; width:100%;height:20%;">
+                            <div class="pre-title-block">基本信息</div>
+                            <div class="property-text" style="-webkit-text-stroke: 0.20vmin rgb(39, 32, 17);color: rgb(221, 235, 26)">一种用于抓取货物的机械手臂</div>
                         </div>
-                        <div class="drone-room">
-                            <button class="box" style='background-image:"construct/drone1.png";'/>
-                            <button class="box" style='background-image:"construct/drone1.png";'/>
-                            <button class="box" style='background-color:rgb(255,192,0);background-image:"construct/drone1.png";'/>
-                            <button class="box" style='background-color:rgb(255,192,0);background-image:"construct/drone1.png";'/>
-                            <button class="box" style='background-color:rgb(143, 143, 143);background-image:"cmdcenter/add.png";'/>
+                        <div class="row" style="width:100%; height:80%; justify-content: center; align-items: center;">
+                            <div class="info-block">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                </div>
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">产能加成</div>
+                                    <div class="property-text" style="color:#fff;">40%</div>
+                                </div>
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/health.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                    <div class="property-text" style="color:#fff;">200/990</div>
+                                </div>
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">建筑能耗</div>
+                                    <div class="property-text" style="color:#fff;">500kw(-250kw)</div>
+                                </div>
+                            </div>
+                            <div class="info-block">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                </div>
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">产能加成</div>
+                                    <div class="property-text" style="color:#fff;">40%</div>
+                                </div>
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/health.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                    <div class="property-text" style="color:#fff;">200/990</div>
+                                </div>
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">建筑能耗</div>
+                                    <div class="property-text" style="color:#fff;">500kw(-250kw)</div>
+                                </div>
+                            </div>
                         </div>
-                        
                     </div>
-                </div>
-                <div class="upgrade-block">
-                    <button class = "text-production-cabin">
-                        <div style="margin-top: 0.3em;">制造舱</div>
-                    </button>
+                    <div class = "draw-line"/>
+                    <div class="item-recipe-block">
+                        <div style="flex-direction:row; justify-content: flex-start; width:100%;">
+                            <div class="pre-title-block">生产配方</div>
+                        </div>
+                        <div style="margin:0.6em auto; flex-direction:row; justify-content: flex-start; width:100%;">
+                            <div class="small-item" style="margin-left:0.2em;">
+                                <div class="small-item-count">99</div>                          
+                            </div>
+                            <div class="small-arrow"/>
+                            <div class="small-item">
+                                <div class="small-item-count">99</div>                          
+                            </div>
+                            <div class="small-item">
+                                <div class="small-item-count">99</div>                          
+                            </div>
+                            <div class="small-item">
+                                <div class="small-item-count">99</div>                          
+                            </div>
+                            <div class="small-item">
+                                <div class="small-item-count">99</div>                          
+                            </div>
+                            <div class="small-item">
+                                <div class="small-item-count">99</div>                          
+                            </div>
+                            <div class="small-item">
+                                <div class="small-item-count">99</div>                          
+                            </div>
+                            <div class="small-item">
+                                <div class="small-item-count">99</div>                          
+                            </div>
+                            <div class="small-item">
+                                <div class="small-item-count">99</div>                          
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "draw-line"/>
+                    <div class="item-material-block ">
+                        <div style="flex-direction:row; justify-content: flex-start; width:100%;">
+                            <div class="pre-title-block">基础资源</div>
+                        </div>
+                        <div class="column" style="justify-content: center; align-items: center;width:100%;height:80%;">
+                            <div style="flex-direction:row; justify-content: center; width:100%;">
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                            </div>
+                            <div style="flex-direction:row; justify-content: center; width:100%;">
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                                <div class="small-item">
+                                    <div class="small-item-count">99</div>                          
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "draw-line"/>
+                    <div class="item-building-block ">
+                        <div style="flex-direction:row; justify-content: flex-start; width:100%;">
+                            <div class="pre-title-block">生产建筑</div>
+                        </div>
+                        <div style="flex-direction:row; justify-content: center; width:100%;">
+                            <div class="small-building"/>
+                            <div class="small-building"/>
+                            <div class="small-building"/>
+                            <div class="small-building"/>
+                            <div class="small-building"/>
+                            <div class="small-building"/>
+                            <div class="small-building"/>               
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
