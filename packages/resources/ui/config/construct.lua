@@ -74,7 +74,7 @@ local menu = {
         image = "construct/pipe.png",
         detail = {
             {
-                prototype = "管道1-I型",
+                prototype = "管道1-O型",
                 image = "construct/pipe.png",
             },
             {

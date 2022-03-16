@@ -420,9 +420,9 @@
              <div data-if="cur_construct_menu == '管道'">
                  <div class="tools-container">
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructMenuItem('管道1-I型')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('管道1-O型')">
                              <div class="workbutton-bg" style='background-image:"construct/pipe.png";'/>
-                             <div class="tools-button-title">管道1-I型</div>
+                             <div class="tools-button-title">管道1-O型</div>
                          </button>
                          <button class="tools-button" data-event-click="clickConstructMenuItem('地下管1')">
                              <div class="workbutton-bg" style='background-image:"construct/pipe.png";'/>

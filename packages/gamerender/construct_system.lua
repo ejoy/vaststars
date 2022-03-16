@@ -25,6 +25,8 @@ local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
 local CONSTRUCT_WHITE_BASIC_COLOR <const> = {50.0, 50.0, 50.0, 0.8}
 local DISMANTLE_YELLOW_BASIC_COLOR <const> = {50.0, 50.0, 0.0, 0.8}
 
+local construct_queue = {}
+
 local function check_construct_detector(prototype_name, x, y, dir)
     local construct_detector = prototype.get_construct_detector(prototype_name)
     if not construct_detector then
@@ -67,8 +69,9 @@ local function confirm_construct(game_object)
     igame_object.set_state(game_object, "translucent", CONSTRUCT_WHITE_BASIC_COLOR)
     game_object.drapdrop = false
     game_object.construct_pickup = false
-    game_object.construct_queue = true
     iconstruct_button.hide()
+
+    construct_queue[#construct_queue + 1] = {oper = "add", game_object = game_object}
 end
 
 local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
@@ -77,7 +80,7 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
         log.error(("can not found game_object `%s`"):format(game_object_eid))
         return
     end
-    assert(game_object.construct_pickup ~= true)
+    assert(game_object.construct_pickup == true)
 
     local construct_object = game_object.construct_object
     local area = prototype.get_area(construct_object.prototype_name)
@@ -153,11 +156,13 @@ function construct_sys:data_changed()
     end
 
     for _ in ui_construct_complete_mb:unpack() do
-        for _, game_object in world_select "construct_queue" do
-            igame_object.set_state(game_object, "opaque")
-            game_object.gameplay_eid = gameplay.create_entity(game_object)
+        for _, v in ipairs(construct_queue) do
+            if v.oper == "add" then
+                local game_object = v.game_object
+                igame_object.set_state(game_object, "opaque")
+                game_object.gameplay_eid = gameplay.create_entity(game_object)
+            end
         end
-        w:clear("construct_queue")
         gameplay.build()
     end
 

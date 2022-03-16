@@ -18,7 +18,6 @@ component "drapdrop_selected" -- 当前拖动的 entity
 component "game_object_state" .type "lua" -- "translucent"/"opaque"
 component "game_object_state_color" .type "lua" -- {r, g, b, a}
 component "construct_pickup"
-component "construct_queue"
 component "construct_object" .type "lua" -- {prototype_name = xx, fluid = {}, dir = "N", x = xx, y = xx,}
 component "gameplay_eid" .type "int64"
 

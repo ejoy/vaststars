@@ -292,16 +292,11 @@ function igame_object.set_state(game_object, state, color)
 end
 
 do
-    local North <const> = 0
-    local East  <const> = 1
-    local South <const> = 2
-    local West  <const> = 3
-
     local dir_to_rotation = {
-        North = math.rad(0),
-        East = math.rad(90.0),
-        South = math.rad(180.0),
-        West = math.rad(270.0)
+        N = math.rad(0),
+        E = math.rad(90.0),
+        S = math.rad(180.0),
+        W = math.rad(270.0)
     }
 
     function igame_object.set_dir(game_object, dir)
