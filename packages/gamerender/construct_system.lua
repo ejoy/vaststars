@@ -14,9 +14,9 @@ local iconstruct_button = ecs.import.interface "vaststars.gamerender|iconstruct_
 local ui_construct_begin_mb = world:sub {"ui", "construct", "construct_begin"}       -- 建造模式
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
 local ui_construct_complete_mb = world:sub {"ui", "construct", "construct_complete"} -- 开始施工
-local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local ui_fluidbox_construct_mb = world:sub {"ui", "construct", "fluidbox_construct"}
 local ui_fluidbox_update_mb = world:sub {"ui", "construct", "fluidbox_update"}
+local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_button_mb = world:sub {"construct_button"}
 local game_object_ready_mb = world:sub {"game_object_ready"}
 
@@ -77,10 +77,7 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
         log.error(("can not found game_object `%s`"):format(game_object_eid))
         return
     end
-
-    if not game_object.construct_pickup then
-        return
-    end
+    assert(game_object.construct_pickup ~= true)
 
     local construct_object = game_object.construct_object
     local area = prototype.get_area(construct_object.prototype_name)
@@ -119,7 +116,7 @@ end
 
 construct_button_events.rotate = function()
     for _, game_object in world_select "construct_pickup" do
-        local dir = dir_rotate(game_object.construct_object.dir, -1)
+        local dir = dir_rotate(game_object.construct_object.dir, -1) -- 逆时针方向旋转一次
         game_object.construct_object.dir = dir
         igame_object.set_dir(game_object, dir)
     end

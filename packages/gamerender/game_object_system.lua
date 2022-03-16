@@ -203,7 +203,37 @@ function igame_object.create(prototype_name)
     igame_object.bind(game_object_eid, prefab)
 end
 
-function igame_object.set_prefab_file(prefab_file)
+function igame_object.set_prefab_file(game_object, prototype_name)
+    local prefab_file = prototype.get_prefab_file(prototype_name)
+    if not prefab_file then
+        return
+    end
+
+    local old_prefab_object = igame_object.get_prefab_object(game_object.id)
+    if not old_prefab_object then
+        return
+    end
+    local position = iom.get_position(world:entity(old_prefab_object.root))
+
+    local template
+    local f = prefab_path:format(prefab_file)
+    if game_object.game_object_state == "translucent" then
+        template = replace_material(serialize.parse(f, cr.read_file(f)))
+    else
+        template = f
+    end
+
+    local prefab = ecs.create_instance(template)
+    prefab.on_message = on_prefab_message
+    prefab.on_ready = on_prefab_ready
+
+    iom.set_position(world:entity(prefab.root), position)
+
+    local prefab_object = igame_object.bind(game_object.id, prefab)
+
+    if game_object.game_object_state == "translucent" then
+        prefab_object:send("update_basecolor", game_object.game_object_state_color)
+    end
 end
 
 -- state : translucent opaque
