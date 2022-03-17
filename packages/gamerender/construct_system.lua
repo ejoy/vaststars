@@ -75,29 +75,35 @@ local function confirm_construct(game_object)
     construct_queue[#construct_queue + 1] = {oper = "add", game_object = game_object}
 end
 
+local function get_object(game_object)
+    local obj = {}
+    for k, v in pairs(game_object.gameplay_entity) do
+        obj[k] = v
+    end
+
+    if game_object.gameplay_eid ~= 0 then
+        local e = gameplay.entity(game_object.gameplay_eid)
+        for k, v in pairs(e) do
+            obj[k] = obj[k] or v
+        end
+    end
+    return obj
+end
 
 local function get_entity(x, y)
     for _, game_object in world_select "gameplay_eid" do
-        if game_object.gameplay_entity and game_object.gameplay_entity.x == x and game_object.gameplay_entity.y == y then
-            return game_object.gameplay_entity
+        local obj = get_object(game_object)
+        if obj.x == x and obj.y == y then
+            return obj
         end
     end
-
-    return gameplay.get_entity(x, y)
 end
 
 local function get_game_object(x, y)
     for _, game_object in world_select "gameplay_eid" do
-        if game_object.gameplay_eid == 0 then
-            assert(game_object.gameplay_entity)
-            if game_object.gameplay_entity.x == x and game_object.gameplay_entity.y == y then
-                return game_object
-            end
-        else
-            local e = gameplay.entity(game_object.gameplay_eid)
-            if e and e.entity.x == x and e.entity.y == y then
-                return game_object
-            end
+        local obj = get_object(game_object)
+        if obj.x == x and obj.y == y then
+            return game_object
         end
     end
 end
@@ -141,7 +147,7 @@ local adjust_neighbor_pipe ; do
                 goto continue
             end
 
-            local new_prototype_name, dir = pipe.adjust_prototype_name(x, y, get_entity)
+            local new_prototype_name, dir = pipe.adjust(x, y, get_entity)
             if new_prototype_name then
                 game_object.gameplay_entity.prototype_name = new_prototype_name
                 game_object.gameplay_entity.dir = dir
@@ -178,7 +184,7 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
 
         adjust_neighbor_pipe({sx, sy}, {x, y})
 
-        local prototype_name, dir = pipe.adjust_prototype_name(gameplay_entity.x, gameplay_entity.y, get_entity)
+        local prototype_name, dir = pipe.adjust(gameplay_entity.x, gameplay_entity.y, get_entity)
         if prototype_name and (prototype_name ~= gameplay_entity.prototype_name or dir ~= gameplay_entity.dir )then
             gameplay_entity.prototype_name = prototype_name
             igame_object.set_prototype_name(game_object, prototype_name)
@@ -268,9 +274,10 @@ function construct_sys:data_changed()
                 print(gameplay_entity.x, gameplay_entity.y, "opaque")
                 igame_object.set_state(v.game_object, "opaque")
                 v.game_object.gameplay_eid = gameplay.create_entity(v.game_object)
+
+                v.game_object.gameplay_entity = {}
             end
         end
-        w:clear "gameplay_entity"
         construct_queue = {}
         gameplay.build()
     end

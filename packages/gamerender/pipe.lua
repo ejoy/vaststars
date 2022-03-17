@@ -95,7 +95,7 @@ local neighbor <const> = {
     {vector2.LEFT, West},
     {vector2.RIGHT,East},
 }
-function m.adjust_prototype_name(x, y, get_entity)
+function m.adjust(x, y, get_entity)
     local entity = get_entity(x, y)
     if not entity then
         return

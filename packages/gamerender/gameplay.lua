@@ -109,14 +109,6 @@ function m.create_entity(game_object)
     return template.id
 end
 
-function m.entity(eid)
-    local v = entity_visitor[eid]
-	if not v then
-		return
-	end
-	return setmetatable({id=eid}, entity_mt)
-end
-
 do
     local DIRECTION <const> = {
         [0] = 'N',
@@ -125,19 +117,19 @@ do
         [3] = 'W',
     }
 
-    -- 将 gameplay entity 转为统一的格式
-    function m.get_entity(x, y)
-        for e in world.ecs:select "entity:in" do
-            local entity = e.entity
-            if entity.x == x and entity.y == y then
-                return {
-                    dir = DIRECTION[entity.direction],
-                    prototype_name = get_prototype_name(entity.prototype),
-                    x = entity.x,
-                    y = entity.y,
-                }
-            end
+    function m.entity(eid)
+        local v = entity_visitor[eid]
+        if not v then
+            return
         end
+
+        local entity = setmetatable({id = eid}, entity_mt).entity
+        return {
+            dir = DIRECTION[entity.direction],
+            prototype_name = get_prototype_name(entity.prototype),
+            x = entity.x,
+            y = entity.y,
+        }
     end
 end
 
