@@ -158,12 +158,12 @@ local adjust_neighbor_pipe ; do
                 goto continue
             end
 
-            local new_prototype_name, dir = pipe.adjust(x, y, get_entity)
-            if new_prototype_name then
-                game_object.gameplay_entity.prototype_name = new_prototype_name
+            local prototype_name, dir = pipe.adjust(x, y, get_entity)
+            if prototype_name then
+                game_object.gameplay_entity.prototype_name = prototype_name
                 game_object.gameplay_entity.dir = dir
 
-                igame_object.set_prototype_name(game_object, new_prototype_name)
+                igame_object.set_prototype_name(game_object, prototype_name)
                 igame_object.set_dir(game_object, dir)
             end
             ::continue::
