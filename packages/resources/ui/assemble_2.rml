@@ -141,11 +141,11 @@
                 margin: 0.00vmin;
             }
             .item-count {
-                text-align:left;
-                margin: 0.00vmin;
-                top: -0.5vmin;
-                left: 0.67vmin;
-                -webkit-text-stroke: 0.07vmin rgb(39, 32, 17);
+                font-size: 4vmin;
+                position: absolute;
+                top: -1vmin;
+                left: 0vmin;
+                -webkit-text-stroke: 0.3vmin rgb(39, 32, 17);
             }
 
             .item-add {
@@ -172,9 +172,10 @@
                 height: 10%;
             }
             .catalog-desc {
+                font-size: 4.2vmin;
                 -webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
                 position:absolute;
-                top:0vmin; 
+                top:-1vmin; 
                 left:0vmin;
                 color: rgb(221, 235, 26)
             }
@@ -188,8 +189,8 @@
                 background-size:cover;
             }
             .property-text {
-                margin-left: 0.33vmin;
-                font-size: 3vmin;
+                margin-left: 0.1vmin;
+                font-size: 4.0vmin;
                 color: rgb(0,176,240);
             }
             .row {

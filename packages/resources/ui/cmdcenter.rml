@@ -143,11 +143,11 @@
                 margin: 0.00vmin;
             }
             .item-count {
-                text-align:left;
-                top: -0.5vmin;
-                /*top:-18px;*/
-                left: 0.67vmin;
-                -webkit-text-stroke: 0.07vmin rgb(39, 32, 17);
+                font-size: 4vmin;
+                position: absolute;
+                top: -1vmin;
+                left: 0vmin;
+                -webkit-text-stroke: 0.3vmin rgb(39, 32, 17);
             }
             /*分割线*/
             .draw-line {
@@ -165,9 +165,10 @@
                 height: 10%;
             }
             .catalog-desc {
+                font-size: 4.2vmin;
                 -webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
                 position:absolute;
-                top:0vmin; 
+                top:-1vmin; 
                 left:0vmin;
                 color: rgb(221, 235, 26)
             }
@@ -359,10 +360,11 @@
                 background-image: "construct/insert1.png";
             }
             .small-item-count {
-                bottom:-1vmin;
+                margin-bottom: -0.1em;
+                font-size: 4vmin;
                 text-align:center;
                 color:rgb(87, 238, 0);
-                -webkit-text-stroke: 0.1vmin rgb(39, 32, 17);
+                -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);
             }
             .small-arrow {
                 margin: auto 0.2em;
