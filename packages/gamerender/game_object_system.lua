@@ -101,7 +101,7 @@ end
 function igame_object.get_prefab_object(game_object_eid)
     local prefab_object = game_object_prefab[game_object_eid]
     if not prefab_object then
-        log.error(("can not found prefab_object `%s`"):format(game_object_eid))
+        -- log.error(("can not found prefab_object `%s`"):format(game_object_eid))
     end
     return prefab_object
 end

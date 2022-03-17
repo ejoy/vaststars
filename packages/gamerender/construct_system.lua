@@ -92,19 +92,30 @@ end
 
 local function get_entity(x, y)
     for _, game_object in world_select "gameplay_eid" do
+        -- entity 是否已经删除?
+        if not igame_object.get_prefab_object(game_object.id) then
+            goto continue
+        end
+
         local obj = get_object(game_object)
         if obj.x == x and obj.y == y then
             return obj
         end
+        ::continue::
     end
 end
 
 local function get_game_object(x, y)
     for _, game_object in world_select "gameplay_eid" do
+        if not igame_object.get_prefab_object(game_object.id) then
+            goto continue
+        end
+
         local obj = get_object(game_object)
         if obj.x == x and obj.y == y then
             return game_object
         end
+        ::continue::
     end
 end
 
@@ -205,7 +216,6 @@ end
 local construct_button_events = {}
 construct_button_events.confirm = function()
     for _, game_object in world_select "construct_pickup" do
-        assert(game_object.gameplay_entity)
         if prototype.is_fluidbox(game_object.gameplay_entity.prototype_name) then
             world:pub {"ui_message", "show_set_fluidbox", true}
         else
@@ -231,6 +241,7 @@ end
 
 function construct_sys:camera_usage()
     for _, _, _, prototype_name in ui_construct_entity_mb:unpack() do
+        construct_button_events.cancel()
         igame_object.create(prototype_name)
     end
 
@@ -261,10 +272,19 @@ function construct_sys:data_changed()
     end
 
     for _ in ui_construct_complete_mb:unpack() do
+        local adjust = {}
         for _, game_object in world_select "construct_pickup" do
+            local obj = get_object(game_object)
+            adjust[#adjust+1] = {obj.x, obj.y}
+
             igame_object.remove(game_object.id)
         end
         iconstruct_button.hide()
+
+        -- 还原未施工的水管形状
+        for _, v in ipairs(adjust) do
+            adjust_neighbor_pipe(v)
+        end
 
         for _, v in ipairs(construct_queue) do
             if v.oper == "add" then
