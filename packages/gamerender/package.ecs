@@ -86,7 +86,6 @@ interface "igame_object"
     .method "set_state"
     .method "set_dir"
     .method "get_coord"
-    .method "drapdrop"
 
 system "construct_button_system"
     .implement "construct_button_system.lua"

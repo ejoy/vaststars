@@ -330,21 +330,3 @@ function igame_object.get_coord(game_object)
     local coord = terrain.get_coord_by_position(position)
     return coord[1], coord[2]
 end
-
-function igame_object.drapdrop(game_object, prototype_name, mouse_x, mouse_y)
-    local prefab_object = igame_object.get_prefab_object(game_object.id)
-    if not prefab_object then
-        return
-    end
-
-    local area = prototype.get_area(prototype_name)
-    if not area then
-        return
-    end
-
-    local coord, position = terrain.adjust_position(iinput.screen_to_world(mouse_x, mouse_y), area)
-    if not coord then
-        return
-    end
-    return coord[1], coord[2], position
-end

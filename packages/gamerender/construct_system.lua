@@ -160,22 +160,19 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
     assert(game_object.construct_pickup == true)
 
     local gameplay_entity = game_object.gameplay_entity
-    local x, y, position = igame_object.drapdrop(game_object, gameplay_entity.prototype_name, mouse_x, mouse_y)
-    if not x or not y then
-        log.error(("can not get coord(%s, %s)"):format(mouse_x, mouse_y))
-        return
-    end
-
-    if gameplay_entity.x == x and gameplay_entity.y == y then
+    local x, y, position = prototype.get_coord(gameplay_entity.prototype_name, mouse_x, mouse_y)
+    if x and y and gameplay_entity.x == x and gameplay_entity.y == y then
         return
     end
 
     igame_object.set_position(game_object, position)
 
-    local sx, sy = gameplay_entity.x, gameplay_entity.y
     gameplay_entity.x, gameplay_entity.y = x, y
 
+    -- 针对水管的特殊处理
     if prototype.is_pipe(gameplay_entity.prototype_name) then
+        local sx, sy = gameplay_entity.x, gameplay_entity.y
+
         adjust_neighbor_pipe({sx, sy}, {x, y})
 
         local prototype_name, dir = pipe.adjust_prototype_name(gameplay_entity.x, gameplay_entity.y, get_entity)
