@@ -82,7 +82,7 @@
                 font-size: 2.67vmin;
                 color: rgb(221, 235, 26);
                 flex-direction: column;
-                justify-content: flex-start;
+                justify-content: center;
                 align-items: center;
                 border-radius: 1.33vmin;
                 border: 0.27vmin rgb(89, 73, 39);
@@ -96,11 +96,10 @@
                 transform: scale(1.0);
             }
             .workbutton-bg {
-                margin: auto auto;
-                top: 1.60vmin;
                 width: 6.67vmin;
                 height: 6.67vmin; 
                 background-size: cover;
+                align-items: center;
             }
             workbutton:hover {
                 transform: scale(1.1);
@@ -592,7 +591,10 @@
                 <div class="column" style="width:100%; height:100%;" data-if="info_flag" data-event-click="ClickInfo()">
                     <div class="item-info-block">
                         <div style="flex-direction:row; justify-content: flex-start; align-items: center; width:100%;height:20%;">
-                            <div class="pre-title-block">基本信息</div>
+                            <div class ="drone-title-block" style="height:5vmin;">
+                                <div class = "drone-pic" style='background-image:"science/book.png";'/>
+                                <div class = "drone-title">基本信息</div>
+                            </div>
                             <div class="property-text" style="-webkit-text-stroke: 0.20vmin rgb(39, 32, 17);color: rgb(221, 235, 26)">一种用于抓取货物的机械手臂</div>
                         </div>
                         <div class="row" style="width:100%; height:80%; justify-content: center; align-items: center;">
@@ -645,10 +647,13 @@
                     <div class = "draw-line"/>
                     <div class="item-recipe-block">
                         <div style="flex-direction:row; justify-content: flex-start; width:100%;">
-                            <div class="pre-title-block">生产配方</div>
+                            <div class ="drone-title-block" style="height:5vmin;">
+                                <div class = "drone-pic" style='background-image:"property/research-packs.png";'/>
+                                <div class = "drone-title">生产配方</div>
+                            </div>
                         </div>
                         <div style="margin:0.6em auto; flex-direction:row; justify-content: flex-start; width:100%;">
-                            <div class="small-item" style="margin-left:0.2em;">
+                            <div class="small-item" style="margin-left:0.3em;">
                                 <div class="small-item-count">99</div>                          
                             </div>
                             <div class="small-arrow"/>
@@ -681,7 +686,10 @@
                     <div class = "draw-line"/>
                     <div class="item-material-block ">
                         <div style="flex-direction:row; justify-content: flex-start; width:100%;">
-                            <div class="pre-title-block">基础资源</div>
+                            <div class ="drone-title-block" style="height:5vmin;">
+                                <div class = "drone-pic" style='background-image:"construct/industry.png";'/>
+                                <div class = "drone-title">基础资源</div>
+                            </div>
                         </div>
                         <div class="column" style="justify-content: center; align-items: center;width:100%;height:80%;">
                             <div style="flex-direction:row; justify-content: center; width:100%;">
@@ -753,7 +761,10 @@
                     <div class = "draw-line"/>
                     <div class="item-building-block ">
                         <div style="flex-direction:row; justify-content: flex-start; width:100%;">
-                            <div class="pre-title-block">生产建筑</div>
+                            <div class ="drone-title-block" style="height:5vmin;">
+                                <div class = "drone-pic" style='background-image:"construct/assembler.png";'/>
+                                <div class = "drone-title">生产建筑</div>
+                            </div>
                         </div>
                         <div style="flex-direction:row; justify-content: center; width:100%;">
                             <div class="small-building"/>

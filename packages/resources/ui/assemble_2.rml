@@ -31,12 +31,6 @@
                 text-align:center;
                 border-radius: 0.53vmin;
             }
-            .item-container-region {
-                margin: auto;
-                height: 100%; 
-                flex-direction: row; 
-                justify-content: space-evenly;
-            }
             .panel {
                 background-color: rgb(44, 32, 18);
                 border: 0.13vmin rgb(89, 73, 39);
@@ -86,7 +80,7 @@
                 font-size: 2.67vmin;
                 color: rgb(221, 235, 26);
                 flex-direction: column;
-                justify-content: flex-start;
+                justify-content: center;
                 align-items: center;
                 border-radius: 1.33vmin;
                 border: 0.27vmin rgb(89, 73, 39);
@@ -100,11 +94,10 @@
                 transform: scale(1.0);
             }
             .workbutton-bg {
-                margin: auto auto;
-                top: 1.60vmin;
                 width: 6.67vmin;
                 height: 6.67vmin; 
                 background-size: cover;
+                align-items: center;
             }
             workbutton:hover {
                 transform: scale(1.1);
@@ -178,17 +171,10 @@
                 width:100%;
                 height: 10%;
             }
-            .workbutton-bg {
-                margin: auto auto;
-                top: 1.60vmin;
-                width: 6.67vmin;
-                height: 6.67vmin; 
-                background-size: cover;
-            }
             .catalog-desc {
                 -webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
                 position:absolute;
-                top:-1vmin; 
+                top:0vmin; 
                 left:0vmin;
                 color: rgb(221, 235, 26)
             }
@@ -396,6 +382,7 @@
             }
         </style>
         <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
             console.log("before createModel")
             local start = window.createModel "start" {
                 show = false,
@@ -475,12 +462,14 @@
                 start.info_flag = not start.info_flag
                 start.fuel_interaction = not start.fuel_interaction
                 console.log("---ClickFuel---")
+                ui_sys.open("pipe_build_pop.rml")
             end
 
             function start.ClickMaterial(event)
                 start.info_flag = not start.info_flag
                 start.material_interaction = not start.material_interaction
                 console.log("---ClickMaterial---")
+                ui_sys.open("exchange_pop.rml")
             end
 
             function start.ClickPlugin(event)
@@ -539,28 +528,28 @@
                 <div class="column" data-if="info_flag" style="width: 100%;height: 95%;">
                     <div class="build-info-reigon">
                         <div class ="info-block">
-                            <div data-style-pointer-events="event_state" data-if="show">
+                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"character/timer.png";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
-                            <div data-style-pointer-events="event_state" data-if="show">
+                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"character/flash.png";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
-                            <div data-style-pointer-events="event_state" data-if="show">
+                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"character/health.png";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
-                            <div data-style-pointer-events="event_state" data-if="show">
+                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"character/buffer.png";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
@@ -578,21 +567,21 @@
                             </div>
                         </div>
                         <div class ="info-block">
-                            <div data-style-pointer-events="event_state" data-if="show">
+                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"character/timer.png";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
-                            <div data-style-pointer-events="event_state" data-if="show">
+                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"character/flash.png";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
-                            <div data-style-pointer-events="event_state" data-if="show">
+                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"character/health.png";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
