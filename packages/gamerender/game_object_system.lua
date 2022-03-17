@@ -191,7 +191,7 @@ function igame_object.create(prototype_name)
             pause_animation = true,
             construct_pickup = true,
             gameplay_eid = 0,
-            construct_object = {
+            gameplay_entity = {
                 prototype_name = prototype_name,
                 fluid = {},
                 dir = "N",
@@ -255,7 +255,7 @@ function igame_object.set_state(game_object, state, color)
     if game_object.game_object_state ~= state then
         game_object.game_object_state = state
 
-        local prefab_file = prototype.get_prefab_file(game_object.construct_object.prototype_name)
+        local prefab_file = prototype.get_prefab_file(game_object.gameplay_entity.prototype_name)
         if not prefab_file then
             return
         end
@@ -296,11 +296,11 @@ function igame_object.set_state(game_object, state, color)
 end
 
 do
-    local dir_to_rotation = {
-        N = math.rad(0),
-        E = math.rad(90.0),
-        S = math.rad(180.0),
-        W = math.rad(270.0)
+    local rotators <const> = {
+        N = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(0)}),
+        E = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
+        S = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
+        W = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
     }
 
     function igame_object.set_dir(game_object, dir)
@@ -308,11 +308,16 @@ do
         if not prefab_object then
             return
         end
-
-        local e = world:entity(prefab_object.root)
-        local r = assert(dir_to_rotation[dir])
-        iom.set_rotation(e, math3d.quaternion{axis = mc.YAXIS, r = r})
+        iom.set_rotation(world:entity(prefab_object.root), rotators[dir])
     end
+end
+
+function igame_object.set_position(game_object, position)
+    local prefab_object = igame_object.get_prefab_object(game_object.id)
+    if not prefab_object then
+        return
+    end
+    iom.set_position(world:entity(prefab_object.root), position)
 end
 
 function igame_object.get_coord(game_object)
@@ -341,7 +346,5 @@ function igame_object.drapdrop(game_object, prototype_name, mouse_x, mouse_y)
     if not coord then
         return
     end
-
-    iom.set_position(world:entity(prefab_object.root), position)
-    return coord[1], coord[2]
+    return coord[1], coord[2], position
 end

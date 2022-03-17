@@ -100,7 +100,7 @@ local neighbor <const> = {
     {vector2.RIGHT,East},
 }
 function m.adjust_prototype_name(x, y, get_entity)
-    -- entity 为 game_object.construct_object 或 gameplay 的 entity.entity
+    -- entity 为 game_object.gameplay_entity 或 gameplay 的 entity.entity
     local entity = get_entity(x, y)
     if not entity then
         -- log.debug(("can not found entity(%s, %s)"):format(x, y))

@@ -87,16 +87,17 @@ local getentityid ; do
 end
 
 function m.create_entity(game_object)
+    local gameplay_entity = game_object.gameplay_entity
     local func
     local template = {
         id = getentityid(),
-        x = game_object.construct_object.x,
-        y = game_object.construct_object.y,
-        dir = game_object.construct_object.dir,
-        fluid = game_object.construct_object.fluid,
+        x = gameplay_entity.x,
+        y = gameplay_entity.y,
+        dir = gameplay_entity.dir,
+        fluid = gameplay_entity.fluid,
     }
 
-    local pt = gameplay.queryByName("entity", game_object.construct_object.prototype_name)
+    local pt = gameplay.queryByName("entity", gameplay_entity.prototype_name)
     for _, entity_type in ipairs(pt.type) do
         func = init_func[entity_type]
         if func then
@@ -104,7 +105,7 @@ function m.create_entity(game_object)
         end
     end
 
-    create(world, game_object.construct_object.prototype_name, template)
+    create(world, gameplay_entity.prototype_name, template)
     return template.id
 end
 
