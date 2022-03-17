@@ -176,12 +176,11 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
 
     igame_object.set_position(game_object, position)
 
+    local sx, sy = gameplay_entity.x, gameplay_entity.y
     gameplay_entity.x, gameplay_entity.y = x, y
 
     -- 针对水管的特殊处理
     if prototype.is_pipe(gameplay_entity.prototype_name) then
-        local sx, sy = gameplay_entity.x, gameplay_entity.y
-
         adjust_neighbor_pipe({sx, sy}, {x, y})
 
         local prototype_name, dir = pipe.adjust(gameplay_entity.x, gameplay_entity.y, get_entity)
@@ -263,18 +262,17 @@ function construct_sys:data_changed()
 
     for _ in ui_construct_complete_mb:unpack() do
         for _, game_object in world_select "construct_pickup" do
-            igame_object.remove(game_object)
+            igame_object.remove(game_object.id)
         end
+        iconstruct_button.hide()
 
         for _, v in ipairs(construct_queue) do
             if v.oper == "add" then
                 local gameplay_entity = v.game_object.gameplay_entity
                 adjust_neighbor_pipe({gameplay_entity.x, gameplay_entity.y})
 
-                print(gameplay_entity.x, gameplay_entity.y, "opaque")
                 igame_object.set_state(v.game_object, "opaque")
                 v.game_object.gameplay_eid = gameplay.create_entity(v.game_object)
-
                 v.game_object.gameplay_entity = {}
             end
         end
