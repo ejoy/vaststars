@@ -105,6 +105,7 @@ function m.create_entity(game_object)
         end
     end
 
+    print(gameplay_entity.prototype_name, template.x, template.y)
     create(world, gameplay_entity.prototype_name, template)
     return template.id
 end

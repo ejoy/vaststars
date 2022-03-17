@@ -6,11 +6,11 @@ local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iconstruct_button = ecs.import.interface "vaststars.gamerender|iconstruct_button"
 local construct_sys = ecs.system "construct_system"
 local prototype = ecs.require "prototype"
-local dir = require "dir"
 local gameplay = ecs.require "gameplay"
-local dir_rotate = dir.rotate
 local world_select = ecs.require "world_select"
 local pipe = ecs.require "pipe"
+local dir = require "dir"
+local dir_rotate = dir.rotate
 
 local ui_construct_begin_mb = world:sub {"ui", "construct", "construct_begin"}       -- 建造模式
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
