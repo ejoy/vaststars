@@ -60,7 +60,11 @@ copy_directory(input / "packages", output / "packages", function (path)
     return path:filename():string() ~= ".gitignore"
 end)
 
-local files = {"run.bat", "run_editor.bat", "clean.bat", "settings", ".mount", "main.lua", "test_gameplay.lua", "test_map.lua"}
+copy_directory(input / "startup", output / "startup", function (path)
+    return true
+end)
+
+local files = {"run.bat", "run_editor.bat", "clean.bat", "test_gameplay.lua", "test_map.lua"}
 for _, file in ipairs(files) do
 	fs.copy_file(input / file, output / file, fs.copy_options.overwrite_existing)
 end
