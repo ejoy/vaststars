@@ -6,6 +6,7 @@ prototype "指挥中心" {
     area = "5x5",
     power = "1MW",
     priority = "primary",
+    slots = 20,
 }
 
 prototype "车站1" {
