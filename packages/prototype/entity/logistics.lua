@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
 prototype "指挥中心" {
-    type ={"entity", "generator"},
+    type ={"entity", "generator", "chest"},
     area = "5x5",
     power = "1MW",
     priority = "primary",

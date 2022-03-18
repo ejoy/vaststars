@@ -1,0 +1,281 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/inserter.glb|meshes/zhuti.003_P1.meshbin
+  name: zhuti
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
+    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
+  animation_birth: aaa
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/inserter.glb|meshes/zhuti.005_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/inserter.glb|meshes/buge.005.skinbin
+  name: zhuti.001
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
+    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
+  animation_birth: aaa
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/inserter.glb|meshes/zhuti.009_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/inserter.glb|meshes/buge.005.skinbin
+  name: zhuti.002
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
+    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
+  animation_birth: aaa
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/inserter.glb|meshes/lifangti.011_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/inserter.glb|meshes/buge.005.skinbin
+  name: lifangti
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
+    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
+  animation_birth: aaa
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/inserter.glb|meshes/lifangti.014_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/inserter.glb|meshes/buge.005.skinbin
+  name: lifangti.003
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
+    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
+  animation_birth: aaa
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/inserter.glb|meshes/lifangti.015_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/inserter.glb|meshes/buge.005.skinbin
+  name: lifangti.004
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
+    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
+  animation_birth: aaa
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/inserter.glb|meshes/zhuti.011_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/inserter.glb|meshes/buge.005.skinbin
+  name: zhuti.003
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
+    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
+  animation_birth: aaa
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/inserter.glb|meshes/lifangti.016_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/inserter.glb|meshes/buge.005.skinbin
+  name: lifangti.005
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
+    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
+  animation_birth: aaa
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/inserter.glb|meshes/lifangti.001_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/inserter.glb|meshes/buge.005.skinbin
+  name: lifangti.008
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
+    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
+  animation_birth: aaa
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/inserter.glb|meshes/lifangti.002_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/inserter.glb|meshes/buge.005.skinbin
+  name: lifangti.006
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
