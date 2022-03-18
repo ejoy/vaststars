@@ -173,6 +173,7 @@ assert(loadfile "test_map.lua")(world)
 world:build()
 
 local function dump_item()
+    print "=================="
     local ecs = world.ecs
     for v in ecs:select "chest:in" do
         for i = 1, 10 do

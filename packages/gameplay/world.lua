@@ -19,17 +19,17 @@ local function pipelineFunc(world, cworld, name)
     local csystems = status.csystems
     local funcs = {}
     for _, stage in ipairs(p) do
-        for _, s in pairs(csystems) do
-            if s[stage] then
-                funcs[#funcs+1] = function()
-                    return s[stage](cworld)
-                end
-            end
-        end
         for _, s in pairs(systems) do
             if s[stage] then
                 funcs[#funcs+1] = function()
                     return s[stage](world)
+                end
+            end
+        end
+        for _, s in pairs(csystems) do
+            if s[stage] then
+                funcs[#funcs+1] = function()
+                    return s[stage](cworld)
                 end
             end
         end
