@@ -1,5 +1,6 @@
 require "system.fluidflow"
 require "system.electricpole"
+require "system.inserter"
 
 local csystem = require "register.csystem"
 
