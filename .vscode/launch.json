@@ -16,7 +16,7 @@
             "osx": {
                 "luaexe": "${workspaceRoot}/bin/macos/debug/vaststars",
             },
-            "program": "startup/main.lua",
+            "program": "",
         }
     ]
 }
