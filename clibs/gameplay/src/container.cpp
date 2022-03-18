@@ -25,6 +25,19 @@ container::item chest_container::get(uint16_t index) {
     return slots[index];
 }
 
+uint16_t chest_container::pickup(world& w, uint16_t item, uint16_t max) {
+    size_t pos = find(item);
+    if (pos == (size_t)-1) {
+        return 0;
+    }
+    auto& s = slots[pos];
+    uint16_t r = std::min(s.amount, max);
+    uint16_t newvalue = s.amount - r;
+    resize(w, s.item, s.amount, newvalue);
+    sort(pos, newvalue);
+    return r;
+}
+
 bool chest_container::place(world& w, uint16_t item, uint16_t amount) {
     size_t pos = find(item);
     if (pos == (size_t)-1) {
@@ -128,25 +141,16 @@ container::item recipe_container::get(uint16_t index) {
     return {0,0};
 }
 
-//bool recipe_container::set(uint16_t index, item item) {
-//    if (index < inslots.size()) {
-//        auto& v = inslots[index];
-//        if (v.item != item.item) {
-//            return false;
-//        }
-//        v.amount = item.amount;
-//        return true;
-//    }
-//    if (index < inslots.size() + outslots.size()) {
-//        auto& v = outslots[index-inslots.size()];
-//        if (v.item != item.item) {
-//            return false;
-//        }
-//        v.amount = item.amount;
-//        return true;
-//    }
-//    return false;
-//}
+uint16_t recipe_container::pickup(world& w, uint16_t item, uint16_t max) {
+    for (auto& s : outslots) {
+        if (s.item == item) {
+            uint16_t r = std::min(s.amount, max);
+            s.amount -= r;
+            return r;
+        }
+    }
+    return 0;
+}
 
 bool recipe_container::place(world& w, uint16_t item, uint16_t amount) {
     for (auto& s : inslots) {
@@ -268,6 +272,19 @@ lget(lua_State* L) {
     return 2;
 }
 
+
+static int
+lpickup(lua_State* L) {
+    world& w = *(world *)lua_touserdata(L, 1);
+    uint16_t id = (uint16_t)luaL_checkinteger(L, 2);
+    uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
+    uint16_t max = (uint16_t)luaL_checkinteger(L, 4);
+    container& c = w.query_container<container>(id);
+    auto ok = c.pickup(w, item, max);
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
 static int
 lplace(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
@@ -286,6 +303,7 @@ luaopen_vaststars_container_core(lua_State *L) {
 	luaL_Reg l[] = {
 		{ "create", lcreate },
 		{ "get", lget },
+		{ "pickup", lpickup },
 		{ "place", lplace },
 		{ NULL, NULL },
 	};

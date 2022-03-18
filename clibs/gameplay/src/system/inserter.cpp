@@ -61,40 +61,6 @@ pickup(world& w, container& input, chest_container& output, uint16_t max) {
     return pickup(w, input, max);
 }
 
-static uint16_t
-pickup(world& w, chest_container& input, uint16_t item, uint16_t max) {
-    size_t pos = input.find(item);
-    if (pos == (size_t)-1) {
-        return 0;
-    }
-    auto& s = input.slots[pos];
-    uint16_t r = std::min(s.amount, max);
-    uint16_t newvalue = s.amount - r;
-    input.resize(w, s.item, s.amount, newvalue);
-    input.sort(pos, newvalue);
-    return r;
-}
-
-static uint16_t
-pickup(world& w, recipe_container& input, uint16_t item, uint16_t max) {
-    for (auto& s : input.outslots) {
-        if (s.item == item) {
-            uint16_t r = std::min(s.amount, max);
-            s.amount -= r;
-            return r;
-        }
-    }
-    return 0;
-}
-
-static uint16_t
-pickup(world& w, container& input, uint16_t item, uint16_t max) {
-    if (input.type() == CONTAINER_TYPE_CHEST) {
-        return pickup(w, (chest_container&)input, item, max);
-    }
-    return pickup(w, (recipe_container&)input, item, max);
-}
-
 static container::item
 pickup(world& w, container& input, recipe_container& output, uint16_t max) {
     for (auto& s : output.outslots) {
@@ -104,7 +70,7 @@ pickup(world& w, container& input, recipe_container& output, uint16_t max) {
     }
     for (auto& s : output.inslots) {
         if (s.amount < s.limit) {
-            uint16_t amount = pickup(w, input, s.item, max);
+            uint16_t amount = input.pickup(w, s.item, max);
             if (amount != 0) {
                 return {s.item, amount};
             }
