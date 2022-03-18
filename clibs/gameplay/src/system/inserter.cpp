@@ -127,50 +127,6 @@ wait(int index) {
 }
 
 static bool
-place(world& w, chest_container& output, uint16_t item, uint16_t amount) {
-    size_t pos = output.find(item);
-    if (pos == (size_t)-1) {
-        if (output.used >= output.size) {
-            return false;
-        }
-        if (!output.resize(w, item, 0, amount)) {
-            return false;
-        }
-        output.slots.push_back(chest_container::slot {item, 0});
-        output.sort(output.slots.size()-1, amount);
-        return true;
-    }
-    uint16_t newvalue = output.slots[pos].amount + amount;
-    if (!output.resize(w, output.slots[pos].item, output.slots[pos].amount, newvalue)) {
-        return false;
-    }
-    output.sort(pos, newvalue);
-    return true;
-}
-
-static bool
-place(world& w, recipe_container& output, uint16_t item, uint16_t amount) {
-    for (auto& s : output.inslots) {
-        if (s.item == item) {
-            if (amount + s.amount > s.limit) {
-                return false;
-            }
-            s.amount += amount;
-            return true;
-        }
-    }
-    return false;
-}
-
-static bool
-place(world& w, container& output, uint16_t item, uint16_t amount) {
-    if (output.type() == CONTAINER_TYPE_CHEST) {
-        return place(w, (chest_container&)output, item, amount);
-    }
-    return place(w, (recipe_container&)output, item, amount);
-}
-
-static bool
 tryActive(world& w, inserter& i, entity& e, capacitance& c) {
     prototype_context p = w.prototype(e.prototype);
 
@@ -198,7 +154,7 @@ tryActive(world& w, inserter& i, entity& e, capacitance& c) {
     else {
         if (i.hold_amount != 0) {
             container& output = w.query_container<container>(i.output_container);
-            if (!place(w, output, i.hold_item, i.hold_amount)) {
+            if (!output.place(w, i.hold_item, i.hold_amount)) {
                 return false;
             }
             i.hold_item = 0;

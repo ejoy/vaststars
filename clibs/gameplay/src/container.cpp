@@ -25,14 +25,27 @@ container::item chest_container::get(uint16_t index) {
     return slots[index];
 }
 
-bool chest_container::set(uint16_t index, item item) {
-    if (index >= slots.size()) {
+bool chest_container::place(world& w, uint16_t item, uint16_t amount) {
+    size_t pos = find(item);
+    if (pos == (size_t)-1) {
+        if (used >= size) {
+            return false;
+        }
+        if (!resize(w, item, 0, amount)) {
+            return false;
+        }
+        slots.push_back(chest_container::slot {item, 0});
+        sort(slots.size()-1, amount);
+        return true;
+    }
+    uint16_t newvalue = slots[pos].amount + amount;
+    if (!resize(w, slots[pos].item, slots[pos].amount, newvalue)) {
         return false;
     }
-    slots[index] = item;
+    sort(pos, newvalue);
     return true;
 }
- 
+
 void chest_container::sort(size_t index, uint16_t newvalue) {
     uint16_t value = slots[index].amount;
     if (newvalue == 0) {
@@ -115,22 +128,35 @@ container::item recipe_container::get(uint16_t index) {
     return {0,0};
 }
 
-bool recipe_container::set(uint16_t index, item item) {
-    if (index < inslots.size()) {
-        auto& v = inslots[index];
-        if (v.item != item.item) {
-            return false;
+//bool recipe_container::set(uint16_t index, item item) {
+//    if (index < inslots.size()) {
+//        auto& v = inslots[index];
+//        if (v.item != item.item) {
+//            return false;
+//        }
+//        v.amount = item.amount;
+//        return true;
+//    }
+//    if (index < inslots.size() + outslots.size()) {
+//        auto& v = outslots[index-inslots.size()];
+//        if (v.item != item.item) {
+//            return false;
+//        }
+//        v.amount = item.amount;
+//        return true;
+//    }
+//    return false;
+//}
+
+bool recipe_container::place(world& w, uint16_t item, uint16_t amount) {
+    for (auto& s : inslots) {
+        if (s.item == item) {
+            if (amount + s.amount > s.limit) {
+                return false;
+            }
+            s.amount += amount;
+            return true;
         }
-        v.amount = item.amount;
-        return true;
-    }
-    if (index < inslots.size() + outslots.size()) {
-        auto& v = outslots[index-inslots.size()];
-        if (v.item != item.item) {
-            return false;
-        }
-        v.amount = item.amount;
-        return true;
     }
     return false;
 }
@@ -243,14 +269,13 @@ lget(lua_State* L) {
 }
 
 static int
-lset(lua_State* L) {
+lplace(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
     uint16_t id = (uint16_t)luaL_checkinteger(L, 2);
-    uint16_t index = (uint16_t)luaL_checkinteger(L, 3);
-    uint16_t item = (uint16_t)luaL_checkinteger(L, 4);
-    uint16_t amount = (uint16_t)luaL_checkinteger(L, 5);
+    uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
+    uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);
     container& c = w.query_container<container>(id);
-    auto ok = c.set(index-1, {item, amount});
+    auto ok = c.place(w, item, amount);
     lua_pushboolean(L, ok);
     return 1;
 }
@@ -261,7 +286,7 @@ luaopen_vaststars_container_core(lua_State *L) {
 	luaL_Reg l[] = {
 		{ "create", lcreate },
 		{ "get", lget },
-		{ "set", lset },
+		{ "place", lplace },
 		{ NULL, NULL },
 	};
 	luaL_newlib(L, l);

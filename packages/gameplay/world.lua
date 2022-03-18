@@ -140,8 +140,8 @@ return function ()
     function world:container_create(...)
         return container.create(cworld, ...)
     end
-    function world:container_set(...)
-        return container.set(cworld, ...)
+    function world:container_place(...)
+        return container.place(cworld, ...)
     end
     function world:container_get(...)
         return container.get(cworld, ...)

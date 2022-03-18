@@ -14,7 +14,7 @@ struct container {
 
     virtual int      type() const = 0;
     virtual item     get(uint16_t index) = 0;
-    virtual bool     set(uint16_t index, item item) = 0;
+    virtual bool     place(world& w, uint16_t item, uint16_t amount) = 0;
 };
 
 struct chest_container: public container {
@@ -28,7 +28,7 @@ struct chest_container: public container {
     void     sort(size_t index, uint16_t newvalue);
     bool     resize(world& w, uint16_t item, uint16_t value, uint16_t newvalue);
     item     get(uint16_t index) override;
-    bool     set(uint16_t index, item item) override;
+    bool     place(world& w, uint16_t item, uint16_t amount) override;
     int      type() const override { return 0; }
 };
 
@@ -48,7 +48,7 @@ struct recipe_container: public container {
     bool     recipe_get(slot_type type, uint16_t index, uint16_t& value);
     bool     recipe_set(slot_type type, uint16_t index, uint16_t value);
     item     get(uint16_t index) override;
-    bool     set(uint16_t index, item item) override;
+    bool     place(world& w, uint16_t item, uint16_t amount) override;
     int      type() const override { return 1; }
 };
 
