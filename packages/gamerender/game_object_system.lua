@@ -142,10 +142,6 @@ local function update_basecolor(prefab, basecolor_factor)
     end
 end
 
-local function on_prefab_ready(game_object)
-    world:pub {"game_object_ready", game_object.id}
-end
-
 local on_prefab_message ; do
     local funcs = {}
     funcs["update_basecolor"] = function(game_object, prefab, basecolor_factor)
@@ -160,7 +156,7 @@ local on_prefab_message ; do
     end
 end
 
-function igame_object.create(prototype_name)
+function igame_object.create(prototype_name, events)
     local prefab_file = prototype.get_prefab_file(prototype_name)
     if not prefab_file then
         return
@@ -170,7 +166,7 @@ function igame_object.create(prototype_name)
     local template = replace_material(serialize.parse(f, cr.read_file(f)))
     local prefab = ecs.create_instance(template)
     prefab.on_message = on_prefab_message
-    prefab.on_ready = on_prefab_ready
+    prefab.on_ready = events and events.on_ready
 
     local area = prototype.get_area(prototype_name)
     if not area then

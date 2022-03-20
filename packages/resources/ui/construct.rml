@@ -193,12 +193,12 @@
             end
             function start.clickSelectFluid(event, FluidName)
                 if not start.cur_selected_fluid[1] then
-                    ui_sys.pub("ui", "construct", "fluidbox_construct", FluidName)
+                    ui_sys.pub("ui", "construct", "fluidbox_update", FluidName)
                 else
                     if start.cur_selected_fluid[1] ~= FluidName then
                         ui_sys.open("pipe_build_pop.rml", start.cur_selected_fluid[1], start.cur_selected_fluid[2], FluidName)
                     else
-                        ui_sys.pub("ui", "construct", "fluidbox_construct", FluidName)
+                        ui_sys.pub("ui", "construct", "fluidbox_update", FluidName)
                     end
                     start.cur_selected_fluid = {}
                 end
@@ -223,6 +223,9 @@
                 ["show_set_fluidbox"] = function(visible, fluid)
                     start.show_set_fluidbox = visible
                     start.cur_selected_fluid = fluid or {}
+                end,
+                ["set_fluidbox_confirm"] = function(FluidName)
+                    ui_sys.pub("ui", "construct", "fluidbox_update", FluidName)
                 end,
             })
 

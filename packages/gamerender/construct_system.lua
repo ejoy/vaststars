@@ -7,7 +7,7 @@ local iconstruct_button = ecs.import.interface "vaststars.gamerender|iconstruct_
 local construct_sys = ecs.system "construct_system"
 local prototype = ecs.require "prototype"
 local gameplay = ecs.require "gameplay"
-local world_select = ecs.require "world_select"
+local ecswrap = ecs.require "ecswrap"
 local pipe = ecs.require "pipe"
 local dir = require "dir"
 local dir_rotate = dir.rotate
@@ -15,11 +15,9 @@ local dir_rotate = dir.rotate
 local ui_construct_begin_mb = world:sub {"ui", "construct", "construct_begin"}       -- 建造模式
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
 local ui_construct_complete_mb = world:sub {"ui", "construct", "construct_complete"} -- 开始施工
-local ui_fluidbox_construct_mb = world:sub {"ui", "construct", "fluidbox_construct"}
 local ui_fluidbox_update_mb = world:sub {"ui", "construct", "fluidbox_update"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_button_mb = world:sub {"construct_button"}
-local game_object_ready_mb = world:sub {"game_object_ready"}
 
 local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
@@ -91,7 +89,7 @@ local function get_object(game_object)
 end
 
 local function get_entity(x, y)
-    for _, game_object in world_select "gameplay_eid" do
+    for _, game_object in ecswrap.select "gameplay_eid" do
         -- entity 是否已经删除?
         if not igame_object.get_prefab_object(game_object.id) then
             goto continue
@@ -106,7 +104,7 @@ local function get_entity(x, y)
 end
 
 local function get_game_object(x, y)
-    for _, game_object in world_select "gameplay_eid" do
+    for _, game_object in ecswrap.select "gameplay_eid" do
         if not igame_object.get_prefab_object(game_object.id) then
             goto continue
         end
@@ -215,9 +213,14 @@ end
 
 local construct_button_events = {}
 construct_button_events.confirm = function()
-    for _, game_object in world_select "construct_pickup" do
+    local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
+    if game_object then
         if prototype.is_fluidbox(game_object.gameplay_entity.prototype_name) then
-            world:pub {"ui_message", "show_set_fluidbox", true}
+            if not game_object.gameplay_entity.fluid[1] then
+                world:pub {"ui_message", "show_set_fluidbox", true}
+            else
+                confirm_construct(game_object)
+            end
         else
             confirm_construct(game_object)
         end
@@ -225,14 +228,16 @@ construct_button_events.confirm = function()
 end
 
 construct_button_events.cancel = function()
-    for _, game_object in world_select "construct_pickup" do
+    local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
+    if game_object then
         iconstruct_button.hide()
         igame_object.remove(game_object.id)
     end
 end
 
 construct_button_events.rotate = function()
-    for _, game_object in world_select "construct_pickup" do
+    local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
+    if game_object then
         local dir = dir_rotate(game_object.gameplay_entity.dir, -1) -- 逆时针方向旋转一次
         game_object.gameplay_entity.dir = dir
         igame_object.set_dir(game_object, dir)
@@ -242,7 +247,15 @@ end
 function construct_sys:camera_usage()
     for _, _, _, prototype_name in ui_construct_entity_mb:unpack() do
         construct_button_events.cancel()
-        igame_object.create(prototype_name)
+        igame_object.create(prototype_name, {
+            on_ready = function(game_object)
+                local gameplay_entity = game_object.gameplay_entity
+                iconstruct_button.show(gameplay_entity.x, gameplay_entity.y, prototype.get_area(gameplay_entity.prototype_name))
+            end
+        })
+        if prototype.is_fluidbox(prototype_name) then
+            world:pub {"ui_message", "show_set_fluidbox", true}
+        end
     end
 
     for _, game_object_eid, mouse_x, mouse_y in drapdrop_entity_mb:unpack() do
@@ -251,15 +264,6 @@ function construct_sys:camera_usage()
 end
 
 function construct_sys:data_changed()
-    for _, game_object_eid in game_object_ready_mb:unpack() do
-        local game_object = world:entity(game_object_eid)
-        -- 只有选中状态 并且 非水管 才需要显示[建造按钮]
-        if game_object and game_object.construct_pickup then
-            local gameplay_entity = game_object.gameplay_entity
-            iconstruct_button.show(gameplay_entity.x, gameplay_entity.y, prototype.get_area(gameplay_entity.prototype_name))
-        end
-    end
-
     for _ in ui_construct_begin_mb:unpack() do
         print("construct begin")
     end
@@ -273,7 +277,8 @@ function construct_sys:data_changed()
 
     for _ in ui_construct_complete_mb:unpack() do
         local adjust = {}
-        for _, game_object in world_select "construct_pickup" do
+        local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
+        if game_object then
             local obj = get_object(game_object)
             adjust[#adjust+1] = {obj.x, obj.y}
 
@@ -300,25 +305,10 @@ function construct_sys:data_changed()
         gameplay.build()
     end
 
-    for _, _, _, fluidname in ui_fluidbox_construct_mb:unpack() do
-        for _, game_object in world_select "construct_pickup" do
+    for _, _, _, fluidname in ui_fluidbox_update_mb:unpack() do
+        local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
+        if game_object then
             game_object.gameplay_entity.fluid = {fluidname, 0}
-            confirm_construct(game_object)
         end
-    end
-
-    for _, _, _, confirm, fluidname in ui_fluidbox_update_mb:unpack() do
-        if confirm == "confirm" then
-            for _, game_object in world_select "fluidbox_selected" do
-                for v in gameplay.select "entity:in fluidbox:out" do
-                    if v.entity.x == game_object.x and v.entity.y == game_object.y then
-                        v.fluidbox.fluid = prototype.get_fluid_id(fluidname)
-                        v.fluidbox.id = 0
-                    end
-                end
-            end
-            gameplay.build()
-        end
-        world:pub {"ui_message", "show_set_fluidbox", false}
     end
 end
