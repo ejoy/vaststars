@@ -73,6 +73,7 @@ local function confirm_construct(game_object)
     construct_queue[#construct_queue + 1] = {oper = "add", game_object = game_object}
 end
 
+-- 通过 game_object 获取信息, 只读
 local function get_object(game_object)
     local obj = {}
     for k, v in pairs(game_object.gameplay_entity) do
@@ -88,6 +89,7 @@ local function get_object(game_object)
     return obj
 end
 
+-- 获取指定位置的 game_object 信息, 只读
 local function get_entity(x, y)
     for _, game_object in ecswrap.select "gameplay_eid" do
         -- entity 是否已经删除?
@@ -103,6 +105,7 @@ local function get_entity(x, y)
     end
 end
 
+-- 获取指定位置的 game_object, 并可以对其进行操作
 local function get_game_object(x, y)
     for _, game_object in ecswrap.select "gameplay_eid" do
         if not igame_object.get_prefab_object(game_object.id) then
