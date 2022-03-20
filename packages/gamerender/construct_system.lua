@@ -156,6 +156,11 @@ local adjust_neighbor_pipe ; do
                 goto continue
             end
 
+            local object = get_object(game_object)
+            if not prototype.is_pipe(object.prototype_name) then
+                goto continue
+            end
+
             local prototype_name, dir = pipe.adjust(x, y, get_entity)
             if prototype_name then
                 game_object.gameplay_entity.prototype_name = prototype_name
