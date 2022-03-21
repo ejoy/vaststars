@@ -7,7 +7,7 @@
             button {
                 width: 10.67vmin;
                 height: 10.67vmin;
-                margin: 1.33vmin;
+                margin: 0.1vmin;
                 text-align: center;
                 text-decoration: none;
                 border-radius: 1.07vmin;
@@ -48,7 +48,6 @@
              .header {
                 height: 8.00vmin;
                 flex-direction: row;
-                justify-content: space-between;
             }
             #item-name-block {
                 width: 100%; 
@@ -198,31 +197,34 @@
                 align-items:center;
             }
             /*右侧建筑信息栏*/
-            .build-info-block {
+            .build-info-reigon {
                 width: 100%;
-                height: 30%;
+                height:75%;
                 flex-direction: row;
                 align-items: center;
-                justify-content: flex-start;
+                justify-content: space-evenly;
             }
-            .build-picture-block {
-                margin-left: 0.5em;
+            .build-model-block {
+                margin-top: 2em;
+                width: 44%;
+                height:66%;
                 flex-direction: column;
                 align-items: center;
-                width: 100%;
-                height:70%;
+                justify-content: center;
             }
-            .build-power-info-block {
-                margin-left: 0.5em;
+            .build-model {
+                width:90%;
+                height:90%;
+                background-size: cover;
+                background-image: "assemble/engine.png";
+            }
+            .power-block {
+                margin-top: 0.3em;
                 flex-direction: row;
-                align-items: center;
-                width: 100%;
-                height:30%;
-            }
-            .bulid-status-info {
-                margin-top: 1.5em;
-                font-size: 2.67vmin;
-                color: aquamarine;
+                justify-content: center;
+                align-items: flex-start;
+                width:100%;
+                height:10%;
             }
             .build-picture {
                 margin: 0.1em;
@@ -233,11 +235,42 @@
                 background-image: "construct/assembler.png";
                 border: 0.27vmin rgb(92, 184, 92);
             }
-            .info-block {
-                width:40%;
-                height:60%;
-                flex-direction: column;
+            .progress-pic {
+                width: 4.00vmin;
+                height: 4.00vmin;
+                background-size:cover;
+                background-image:"character/flash.png";
+
+            }
+            .progress-bar-block {
+                margin:0 0 0.05em 0;
+                width: 80%;
+                height:50%;
                 justify-content: flex-start;
+                border: 0.13vmin #fff;
+            }
+            .progress-background {
+                justify-content: flex-start;
+                width: 60%;
+                height: 100%;
+                background-color: rgb(87, 238, 0);
+            }
+            .percent-num {
+                text-align:center; 
+                position:absolute; 
+                z-index: 3; 
+                font-size: 4.00vmin; 
+                top: -6px; 
+                color: rgb(255, 255, 255);
+                -webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
+            }
+            .info-block {
+                margin-top:1em;
+                width: 28%;
+                height:80%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-evenly;
             }
             .percent-num {
                 text-align:center; 
@@ -250,9 +283,8 @@
             }
             .turck-info-region {
                 flex-direction: column;
-                border: 0.13vmin rgb(89, 73, 39); 
                 width: 100%; 
-                height: 49%;
+                height: 70%;
                 align-items: center;
                 justify-content: center;
             }
@@ -325,10 +357,60 @@
                 height: 5.33vmin;
                 background-size: cover;   
             }
+            .button-exchange-block {
+                flex-direction: row;
+                width: 100%;
+                height:100%;
+                align-items: center;
+                justify-content: space-evenly;
+                background-color: rgb(85, 85, 85);
+            }
+            .button-exchange {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width: 22.00vmin;
+                height: 9.53vmin;
+                background-color: rgb(52, 207, 115);
+            }
+            .button-exchange-text {
+                font-size: 3.73vmin;
+                text-align: center;
+                color: rgb(255,249,214);
+            }
+            .button-exchange-arrow {
+                width: 7.31vmin;
+                height: 5.64vmin;
+                background-size: cover;
+                background-image: "exchange/left_arrow.png";
+            }
+            .button-exchange-box {
+                width: 7.00vmin;
+                height: 7.00vmin;
+                background-size: cover;
+                background-image: "exchange/yellow_box.png";
+            }
+            .exchange-region {
+                position: absolute; 
+                width: 100%;    
+                background-color: rgb(40, 40, 40);
+                border: 0.22vmin rgb(89, 73, 39);
+            }
+            .menu-title-2 {
+                -webkit-text-stroke: 0.15vmin rgb(89, 73, 39);
+                font-size:200%;
+                justify-content: flex-end;
+                width: 70%;
+                text-align: right; 
+                color:rgb(246, 142, 14);
+            }
         </style>
         <script type="text/x-lua" >
             console.log("before createModel")
             local start = window.createModel "start" {
+                building_info_flag = true,
+                show = false,
+
                 items = {
                     {id=100, icon0="correct.png", icon1="correct.png"},
                     {id=101, icon0="correct.png", icon1="correct.png"},
@@ -361,34 +443,112 @@
                     {id=128, icon0="correct.png", icon1="correct.png"},
                     {id=129, icon0="correct.png", icon1="correct.png"},
                 },
+                gapx = 0,
+                gapy = 0,
+                page_top = 0,
+                -- 详细信息面板高度
+                detail_height = 120,
+                -- 详细信息面板开始位置
+                detail_top = 0,
+                current_page = 0,
+                view_items = {},
                 item_size = 90,
+                interval = 200,
+                show_detail = false,
+                page_width = 540,
+                page_height = 490,
                 view_items = {},
                 virtual_pages = {},
                 current_page = 0,
-                selected_id = 100,
+                selected_id = 0,
+                selected_row = 10000,
+                item_down_time = 0,
+                current_time = 0,
+                row_count = 0,
+                page_drag = false,
+                list_drag = false,
+                draging = false,
             }
+
+        
+            function start.ClickItemInfo(event)
+                start.building_info_flag = false
+                console.log("---ClickBack---")
+            end
+
+            function start.ClickBuilding(event)
+                start.show = not start.show
+                console.log("---ClickBack---")
+            end
+
+            function start.ClickBack(event)
+                start.building_info_flag = true
+            end
+
+            local function update_time()
+                start.current_time = start.current_time + 1
+            end
+            window.setInterval(update_time, 1)
+
+            local listclass = require "list"
             local pageclass = require "page"
-            -- window size : 1336 750
-            local page_proxy = pageclass.create({540, 490}, start)
+            --local list_proxy = listclass.create(1, {start.list_width, start.list_height}, #start.item_list, {start.list_item_width, start.list_item_height})
+            local page_proxy = pageclass.create({start.page_width, start.page_height}, start)
+
             function start.pagemousedown(event)
                 console.log("pagemousedown")
                 page_proxy:on_mousedown(event)
+                start.page_drag = true
+                start.draging = false
             end
-            
+        
             function start.pagedrag(event)
-                --console.log("pagedrag")
-                page_proxy:on_drag(event)
+                if start.page_drag then
+                    console.log("pagedrag")
+                    page_proxy:on_drag(event)
+                end
             end
 
             function start.pagemouseup(event)
                 console.log("pagemouseup")
                 page_proxy:on_mouseup(event)
                 start.current_page = page_proxy:get_current_page() - 1
+                start.page_drag = false
             end
 
-            function start.page_item_click(event, id)
-                console.log("page_item_click", id)
-                start.selected_id = id
+            local function show_detail(show, id, row, top)
+                local offset = 0
+                if show then
+                    start.selected_id = id
+                    start.selected_row = row
+                    start.detail_top = top
+                    local dy = start.page_height - ((row + 1) * (start.item_size + start.gapy) + start.detail_height)
+                    offset = (dy >= 0) and 0 or dy
+                else
+                    start.selected_id = 0
+                    --TODO: max value 1000
+                    start.selected_row = 10000
+                end
+                start.show_detail = show
+                start.page_top = offset
+            end
+
+            function start.page_item_down()
+                start.item_down_time = start.current_time
+            end
+
+            function start.page_item_up(event, id, row, top)
+                console.log("page_item_click, row, top", id, row, top)
+                if start.current_time - start.item_down_time <= start.interval and not start.draging then
+                    console.log("start.draging: ", start.draging)
+                    if start.selected_id ~= id then
+                        show_detail(true, id, row, top)
+                    else
+                        show_detail(not start.show_detail, id, row, top)
+                    end
+                else
+                    show_detail(false, 0, 0, 0)
+                end
             end
 
             window.addEventListener('message', function(event)
@@ -406,19 +566,112 @@
                     <button class = "back-button"/>
                     <div class = "menu-title">物流中心</div>
                 </div>
-                <div class="item-container">
-                    <div style="width:100%; height:95%;">
-                        <div class = "item-page-block" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
+                <div class="column" data-if="building_info_flag" style="width: 100%;height: 95%;">
+                    <div class="build-info-reigon">
+                        <div class ="info-block">
+                            <div data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/health.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                        </div>
+                        <div class="build-model-block" data-event-mousedown="ClickBuilding()">
+                            <div class="build-model"/>
+                            <div class="power-block">
+                                <div class="progress-pic"/>
+                                <div class="progress-bar-block" style = "margin:0 0.4em 0.2em 0;">
+                                    <div class="progress-background"/>
+                                </div>   
+                            </div>
+                        </div>
+                        <div class ="info-block">
+                            <div data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/health.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                            <div data-style-pointer-events="event_state" data-if="show">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-container" data-if="!building_info_flag">
+                    <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
+                        <div class = "item-page-block" data-style-top="page_top + 'px'" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
                             <div class ="row">
                                 <div style="width:95%; height:100%;" data-for="virtual_pages">
                                     <div data-style-left="(it_index + 1) * 100 + '%'"/>
                                 </div>
                             </div>
-                            <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_click(it.data.id)" data-style-width="90+'px'" data-style-height="90+'px'" data-style-left="it.left" data-style-top="it.top" data-for="view_items">
+                            <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up(it.data.id, it.row, it.top)" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
                                 <button class="item">
                                     <div class="item-count">99</div>                          
+                                    <!--div class="item-title">机器爪</div>-->
                                 </button>
                                 <!--<div>{{it.data.id}}</div>-->
+                            </div>
+                            <div class="exchange-region" data-style-left="current_page * page_width + 'px'" data-style-height="detail_height+'px'" data-style-top="detail_top+item_size+'px'" data-if="show_detail">
+                                <div class="button-exchange-block">
+                                    <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
+                                        <div class = "button-exchange-arrow"/>
+                                        <div class = "button-exchange-text">全部</div>
+                                        <div class = "button-exchange-box"/>
+                                    </button>
+                                    <button class="button-exchange">
+                                        <div class = "button-exchange-arrow"/>
+                                        <div class = "button-exchange-text">1组</div>
+                                        <div class = "button-exchange-box"/>
+                                    </button>
+                                    <button class="button-exchange">
+                                        <div class = "button-exchange-arrow"/>
+                                        <div class = "button-exchange-text">1个</div>
+                                        <div class = "button-exchange-box"/>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -429,7 +682,7 @@
                     </div>         
                 </div>
                 <div class = "draw-line"/>
-                <div class = "tab-container">
+                <div class = "tab-container" data-if="!building_info_flag">
                     <workbutton>
                         <div class="workbutton-bg" style='background-image:"construct/logisitic1.png";'/>
                         <div class="catalog-desc">物流</div>
@@ -447,7 +700,7 @@
                         <div class="catalog-desc">金属</div>
                     </workbutton>
                 </div>
-                <div class = "tab-container">
+                <div class = "tab-container" data-if="!building_info_flag">
                     <workbutton>
                         <div class="workbutton-bg" style='background-image:"construct/processor.png";'/>
                         <div class="catalog-desc">器件</div>
@@ -467,41 +720,14 @@
                 </div>
             </div>
             <div class="panel"> 
-                <div class="build-info-block">
-                    <div class = "column" style="width:30%;">
-                        <div class="build-picture-block">
-                            <div class="bulid-status-info">输出正常</div>
-                            <div class="build-picture"/>
-                        </div>
-                        <div class="build-power-info-block">
-                            <div class="progress-pic"/>
-                            <div class="progress-bar-block" style = "margin:0 0 1em 0;">
-                                <div class="progress-background"/>
-                            </div>   
-                        </div>
-                    </div>
-                    <div class="info-block">
-                        <div class="row">
-                            <div class="property-icon" style='background-image:"character/buffer.png";'/>
-                            <div class="property-text" style="color: rgb(0,176,240);">容纳车辆</div>
-                            <div class="property-text" style="color:#fff;">4/10</div>
-                        </div>
-                        <div class="row">
-                            <div class="property-icon" style='background-image:"character/health.png";'/>
-                            <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
-                            <div class="property-text" style="color:#fff;">200/990</div>
-                        </div>
-                        <div class="row">
-                            <div class="property-icon" style='background-image:"character/flash.png";'/>
-                            <div class="property-text" style="color: rgb(0,176,240);">建筑能耗</div>
-                            <div class="property-text" style="color:#fff;">500kw(-250kw)</div>
-                        </div>
-                    </div>
-                    <button style = "justify-content:center; align-items: center;">
-                        <div class = "change-recipe"/>
-                    </button>
+                <div class="header" style="justify-content: flex-end;" data-if="building_info_flag"> 
+                    <div class = "menu-title" style="text-align: right;">运输站</div>
                 </div>
-                <div class="turck-info-region">
+                <div class="header"style="justify-content: flex-end;" data-if="!building_info_flag">
+                    <div class = "menu-title-2">调整运输车</div>
+                    <button class = "back-button" style='background-image: "cmdcenter/yellow_arrow.png";' data-event-click="ClickBack()"/>
+                </div>
+                <div class="turck-info-region" style = "height:40%;" data-if="!building_info_flag">
                     <div class="row">
                         <button class="truck-block">
                             <div class="truck-pic"/>                         
@@ -569,7 +795,75 @@
                         </button>
                     </div>
                 </div>
-                <div class="row" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 21%; justify-content: space-evenly;">
+                <div class="turck-info-region" data-if="building_info_flag" data-event-click="ClickItemInfo()">
+                    <div class="row">
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="row">
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block" style="background-color: rgb(246, 237, 189);">
+                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png"; '/>                         
+                        </button>
+                        <button class="truck-block" style="background-color: rgb(246, 237, 189);">
+                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png"; '/>                         
+                        </button>
+                    </div>
+                </div>
+                <div class="row" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 25%; justify-content: space-evenly;" data-if="building_info_flag">
                     <button class="button-route-examine">                       
                         <div class="button-info-pic" style='background-image: "science/timer.png";'/>
                         <div class="column">
