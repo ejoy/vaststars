@@ -649,7 +649,7 @@
                                 </div>
                             </div>
                             <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up(it.data.id, it.row, it.top)" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
-                                <button class="item" data-event-click="ClickItem()">
+                                <button class="item">
                                     <div class="item-count">99</div>                          
                                     <!--div class="item-title">机器爪</div>-->
                                 </button>
