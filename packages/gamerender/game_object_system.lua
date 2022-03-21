@@ -117,7 +117,7 @@ function igame_object.get_game_object(x, y)
 end
 
 function igame_object.animation_update(game_object, animation_name, percent)
-
+    local prefab_object = game_object_prefab[game_object.id]
 end
 
 -----------------------------------------------------------------------
