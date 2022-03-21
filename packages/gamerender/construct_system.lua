@@ -239,8 +239,7 @@ end
 
 construct_button_events.cancel = function()
     local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
-    if game_object then
-        log.error("can not found game_object")
+    if not game_object then
         return
     end
     iconstruct_button.hide()

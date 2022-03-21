@@ -27,7 +27,7 @@ prefab_events.on_ready = function(game_object, prefab)
         end
 
         if game_object.pause_animation and e._animation then
-            iani.pause(e, true)
+            iani.pause(eid, true)
         end
 
         if e.slot then
