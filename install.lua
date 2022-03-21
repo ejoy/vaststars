@@ -60,7 +60,7 @@ local directory = {
         end,
     },
     {
-        source = input / "packages", dest = output / "bin/msvc/release", func = function(path)
+        source = input / "packages", dest = output / "packages", func = function(path)
             return path:filename():string() ~= ".gitignore"
         end,
     },
