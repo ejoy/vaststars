@@ -320,6 +320,13 @@ function construct_sys:data_changed()
                     v.game_object.gameplay_id = gameplay_entity.x | (gameplay_entity.y << 8)
                     gameplay.create_entity(v.game_object)
                     v.game_object.gameplay_entity = {}
+                elseif v.oper == "mod" then
+                    local gameplay_entity = v.game_object.gameplay_entity
+                    local e = gameplay.entity(gameplay_entity.x | (gameplay_entity.y << 8))
+                    for k, v in pairs(gameplay_entity) do
+                        e[k] = v
+                    end
+                    v.game_object.gameplay_entity = {}
                 end
             end
             construct_queue = {}

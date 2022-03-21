@@ -37,14 +37,16 @@ funcs[1] = function ()
     end
 
     local ecs = world.ecs
-    for v in gameplay.select "chest:in entity:in" do
+    for v in gameplay.select "entity:in chest?in" do
         print("dump -----------------", v.entity.x, v.entity.y, DIRECTION[v.entity.direction], get_prototype_name(v.entity.prototype))
-        for i = 1, get_slots(v.entity.prototype) do
-            local c, n = gameplay.container_get(v.chest.container, i)
-            if c then
-                print(i, gameplay_raw.query(c).name, n)
-            else
-                break
+        if v.chest then
+            for i = 1, get_slots(v.entity.prototype) do
+                local c, n = gameplay.container_get(v.chest.container, i)
+                if c then
+                    print(i, gameplay_raw.query(c).name, n)
+                else
+                    break
+                end
             end
         end
     end
