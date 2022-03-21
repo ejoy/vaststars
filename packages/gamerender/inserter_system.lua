@@ -16,7 +16,7 @@ local function print_e(inserter)
     local coord = packCoord(entity.x, entity.y)
     cache[coord] = cache[coord] or {}
 
-    if not (cache[coord].status == inserter.status and cache[coord].process == cache[coord].process) then
+    if cache[coord].status ~= inserter.status or cache[coord].process ~= inserter.process then
         print("print inserter", entity.x, entity.y, inserter.status, inserter.process)
         cache[coord].status = inserter.status
         cache[coord].process = inserter.process
