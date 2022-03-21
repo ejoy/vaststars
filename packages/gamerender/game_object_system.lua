@@ -106,6 +106,20 @@ function igame_object.get_prefab_object(game_object_eid)
     return prefab_object
 end
 
+function igame_object.get_game_object(x, y)
+    for game_object_eid in pairs(game_object_prefab) do
+        local game_object = assert(world:entity(game_object_eid))
+        local gameplay_id = x | (y << 8)
+        if game_object.gameplay_id == gameplay_id then
+            return game_object
+        end
+    end
+end
+
+function igame_object.animation_update(game_object, animation_name, percent)
+
+end
+
 -----------------------------------------------------------------------
 local prefab_path = "/pkg/vaststars.resources/%s"
 local cr = import_package "ant.compile_resource"
@@ -181,6 +195,7 @@ function igame_object.create(prototype_name, events)
     local game_object_eid = ecs.create_entity {
         policy = {},
         data = {
+            game_object = true,
             game_object_state = "",
             game_object_state_color = {},
             drapdrop = true,

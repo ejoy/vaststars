@@ -15,6 +15,7 @@ component "prefab_slot_eid_cache" .type "lua"
 -- build-in
 component "pause_animation"
 component "drapdrop_selected" -- 当前拖动的 entity
+component "game_object"
 component "game_object_state" .type "lua" -- "translucent"/"opaque"
 component "game_object_state_color" .type "lua" -- {r, g, b, a}
 component "construct_pickup"
@@ -96,6 +97,8 @@ interface "igame_object"
     .method "set_state"
     .method "set_dir"
     .method "get_coord"
+    .method "get_game_object"
+    .method "animation_update"
 
 system "construct_button_system"
     .implement "construct_button_system.lua"
