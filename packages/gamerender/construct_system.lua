@@ -222,7 +222,7 @@ end
 local construct_button_events = {}
 construct_button_events.confirm = function()
     local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
-    if game_object then
+    if not game_object then
         log.error("can not found game_object")
         return
     end
@@ -248,7 +248,7 @@ end
 
 construct_button_events.rotate = function()
     local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
-    if game_object then
+    if not game_object then
         log.error("can not found game_object")
         return
     end
