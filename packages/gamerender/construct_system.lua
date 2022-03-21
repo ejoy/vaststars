@@ -56,6 +56,18 @@ local function update_basecolor_by_pos(game_object)
     igame_object.set_state(game_object, "translucent", basecolor_factor)
 end
 
+local function deepcopy(t)
+    local r = {}
+    for k, v in pairs(t) do
+        if type(v) == "table" then
+            r[k] = deepcopy(v)
+        else
+            r[k] = v
+        end
+    end
+    return r
+end
+
 local function confirm_construct(game_object)
     local gameplay_entity = game_object.gameplay_entity
     local construct_detector = prototype.get_construct_detector(gameplay_entity.prototype_name)
@@ -72,7 +84,7 @@ local function confirm_construct(game_object)
     game_object.construct_pickup = false
     iconstruct_button.hide()
 
-    construct_queue[#construct_queue + 1] = {oper = "add", game_object = game_object}
+    construct_queue[#construct_queue + 1] = {eid = game_object.id, entity = deepcopy(game_object.gameplay_entity)}
 end
 
 -- 通过 game_object 获取信息, 只读
@@ -173,6 +185,8 @@ local adjust_neighbor_pipe ; do
 
                 igame_object.set_prototype_name(game_object, prototype_name)
                 igame_object.set_dir(game_object, dir)
+
+                construct_queue[#construct_queue + 1] = {eid = game_object.id, entity = deepcopy(game_object.gameplay_entity)}
             end
             ::continue::
         end
@@ -306,22 +320,23 @@ function construct_sys:data_changed()
 
         if #construct_queue > 0 then
             for _, v in ipairs(construct_queue) do
-                if v.oper == "add" then
-                    local gameplay_entity = v.game_object.gameplay_entity
-                    adjust_neighbor_pipe({gameplay_entity.x, gameplay_entity.y})
-
-                    igame_object.set_state(v.game_object, "opaque")
-                    v.game_object.gameplay_id = gameplay_entity.x | (gameplay_entity.y << 8)
-                    gameplay.create_entity(v.game_object)
-                    v.game_object.gameplay_entity = {}
-                elseif v.oper == "mod" then
-                    local gameplay_entity = v.game_object.gameplay_entity
-                    local e = gameplay.entity(gameplay_entity.x | (gameplay_entity.y << 8))
-                    for k, v in pairs(gameplay_entity) do
-                        e[k] = v
-                    end
-                    v.game_object.gameplay_entity = {}
+                local eid = v.eid
+                local game_object = world:entity(eid)
+                if not game_object then
+                    goto continue
                 end
+
+                local entity = v.entity
+                if game_object.gameplay_id == -1 then
+                    gameplay.create_entity(entity)
+                    game_object.gameplay_id = entity.x | (entity.y << 8)
+                end
+                local gameplay_entity = gameplay.entity(entity.x | (entity.y << 8))
+
+                igame_object.set_state(game_object, "opaque")
+                game_object.gameplay_entity = {}
+
+                ::continue::
             end
             construct_queue = {}
             gameplay.build()

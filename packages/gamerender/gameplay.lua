@@ -83,17 +83,16 @@ init_func["chest"] = function(pt, template)
     return template
 end
 
-function m.create_entity(game_object)
-    local gameplay_entity = game_object.gameplay_entity
+function m.create_entity(init)
     local func
     local template = {
-        x = gameplay_entity.x,
-        y = gameplay_entity.y,
-        dir = gameplay_entity.dir,
-        fluid = gameplay_entity.fluid,
+        x = init.x,
+        y = init.y,
+        dir = init.dir,
+        fluid = init.fluid,
     }
 
-    local pt = gameplay.queryByName("entity", gameplay_entity.prototype_name)
+    local pt = gameplay.queryByName("entity", init.prototype_name)
     for _, entity_type in ipairs(pt.type) do
         func = init_func[entity_type]
         if func then
@@ -101,8 +100,8 @@ function m.create_entity(game_object)
         end
     end
 
-    print(gameplay_entity.prototype_name, template.x, template.y)
-    create(world, gameplay_entity.prototype_name, template)
+    print(init.prototype_name, template.x, template.y)
+    create(world, init.prototype_name, template)
     return template.id
 end
 
