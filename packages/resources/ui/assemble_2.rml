@@ -111,12 +111,12 @@
             }
             /*单个物品按钮*/
             .item-container {
-                margin:0.2rem 1em;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 font-size: 50%;
-                height: 75%;
+                height: 70%;
+                width: 100%;
             }
             .item {
                 flex-direction: column;
@@ -331,13 +331,13 @@
                 font-size: 2.00vmin;
                 background-image: "construct/insert1.png";
             }
-            .exchange-region {
+            .exchange-region-right {
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 width:100%;
-                height:20%;
-                background-color: rgb(40, 40, 40);;
+                height:25%;
+                background-color: rgb(40, 40, 40);
                 border: 0.22vmin rgb(89, 73, 39);
             }
             .exchange-title {
@@ -351,7 +351,7 @@
             .button-exchange-block {
                 flex-direction: row;
                 width: 100%;
-                height:65%;
+                height:100%;
                 align-items: center;
                 justify-content: space-evenly;
                 background-color: rgb(85, 85, 85);
@@ -380,6 +380,12 @@
                 height: 7.00vmin;
                 background-size: cover;
                 background-image: "exchange/yellow_box.png";
+            }
+            .exchange-region {
+                position: absolute; 
+                width: 100%;    
+                background-color: rgb(40, 40, 40);
+                border: 0.22vmin rgb(89, 73, 39);
             }
         </style>
         <script type="text/x-lua" >
@@ -427,32 +433,35 @@
                     {id=128, icon0="correct.png", icon1="correct.png"},
                     {id=129, icon0="correct.png", icon1="correct.png"},
                 },
+
+                gapx = 0,
+                gapy = 0,
+                page_top = 0,
+                -- 详细信息面板高度
+                detail_height = 120,
+                -- 详细信息面板开始位置
+                detail_top = 0,
+                current_page = 0,
+                view_items = {},
                 item_size = 90,
+                interval = 200,
+                show_detail = false,
+                page_width = 540,
+                page_height = 490,
                 view_items = {},
                 virtual_pages = {},
                 current_page = 0,
-                selected_id = 100,
+                selected_id = 0,
+                selected_row = 10000,
+                item_down_time = 0,
+                current_time = 0,
+                row_count = 0,
+                page_drag = false,
+                list_drag = false,
+                draging = false,
             }
             function start.mousedown(event)
-                start.scale_flag = not start.scale_flag
-                local style = event.current.style
-                
-                --[[
-                if start.scale_flag then
-                    style.top = '0%'
-                    style.left = '0%'
-                    style.width = '30%'
-                    style.height = '30%'
-                else
-                    style.top = '0%'
-                    style.left = '0%'
-                    style.width = '20%'
-                    style.height = '20%'
-                end
-                ]]
-
-                start.show = start.scale_flag and true or false
-                start.event_state = start.scale_flag and 'auto' or 'none'
+                start.show = not start.show
             end
 
             function start.mousedown2(event)
@@ -486,28 +495,70 @@
                 start.plugin_interaction = false
             end
             --------------------------
+            local function update_time()
+                start.current_time = start.current_time + 1
+            end
+            window.setInterval(update_time, 1)
+
+            local listclass = require "list"
             local pageclass = require "page"
-            -- window size : 1336 750
-            local page_proxy = pageclass.create({540, 490}, start)
+            --local list_proxy = listclass.create(1, {start.list_width, start.list_height}, #start.item_list, {start.list_item_width, start.list_item_height})
+            local page_proxy = pageclass.create({start.page_width, start.page_height}, start)
+
             function start.pagemousedown(event)
                 console.log("pagemousedown")
                 page_proxy:on_mousedown(event)
+                start.page_drag = true
+                start.draging = false
             end
-            
+        
             function start.pagedrag(event)
-                --console.log("pagedrag")
-                page_proxy:on_drag(event)
+                if start.page_drag then
+                    console.log("pagedrag")
+                    page_proxy:on_drag(event)
+                end
             end
 
             function start.pagemouseup(event)
                 console.log("pagemouseup")
                 page_proxy:on_mouseup(event)
                 start.current_page = page_proxy:get_current_page() - 1
+                start.page_drag = false
             end
 
-            function start.page_item_click(event, id)
-                console.log("page_item_click", id)
-                start.selected_id = id
+            local function show_detail(show, id, row, top)
+                local offset = 0
+                if show then
+                    start.selected_id = id
+                    start.selected_row = row
+                    start.detail_top = top
+                    local dy = start.page_height - ((row + 1) * (start.item_size + start.gapy) + start.detail_height)
+                    offset = (dy >= 0) and 0 or dy
+                else
+                    start.selected_id = 0
+                    --TODO: max value 1000
+                    start.selected_row = 10000
+                end
+                start.show_detail = show
+                start.page_top = offset
+            end
+
+            function start.page_item_down()
+                start.item_down_time = start.current_time
+            end
+
+            function start.page_item_up(event, id, row, top)
+                console.log("page_item_click, row, top", id, row, top)
+                if start.current_time - start.item_down_time <= start.interval and not start.draging then
+                    console.log("start.draging: ", start.draging)
+                    if start.selected_id ~= id then
+                        show_detail(true, id, row, top)
+                    else
+                        show_detail(not start.show_detail, id, row, top)
+                    end
+                else
+                    show_detail(false, 0, 0, 0)
+                end
             end
 
             window.addEventListener('message', function(event)
@@ -623,20 +674,40 @@
                         </div>
                     </div>
                 </div>
-                <div class="column" data-if="material_interaction || fuel_interaction || plugin_interaction" style="width: 100%;height: 95%;">
+                <div class="column" data-if="material_interaction || fuel_interaction || plugin_interaction" style="width: 100%; height:100%;">
                     <div class="item-container">
-                        <div style="width:100%; height:95%;">
-                            <div class = "item-page-block" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
+                        <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
+                            <div class = "item-page-block" data-style-top="page_top + 'px'" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
                                 <div class ="row">
                                     <div style="width:95%; height:100%;" data-for="virtual_pages">
                                         <div data-style-left="(it_index + 1) * 100 + '%'"/>
                                     </div>
                                 </div>
-                                <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_click(it.data.id)" data-style-width="90+'px'" data-style-height="90+'px'" data-style-left="it.left" data-style-top="it.top" data-for="view_items">
-                                    <button class="item">
+                                <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up(it.data.id, it.row, it.top)" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
+                                    <button class="item" data-event-click="ClickItem()">
                                         <div class="item-count">99</div>                          
+                                        <!--div class="item-title">机器爪</div>-->
                                     </button>
                                     <!--<div>{{it.data.id}}</div>-->
+                                </div>
+                                <div class="exchange-region" data-style-left="current_page * page_width + 'px'" data-style-height="detail_height+'px'" data-style-top="detail_top+item_size+'px'" data-if="show_detail">
+                                    <div class="button-exchange-block">
+                                        <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
+                                            <div class = "button-exchange-arrow"/>
+                                            <div class = "button-exchange-text">全部</div>
+                                            <div class = "button-exchange-box"/>
+                                        </button>
+                                        <button class="button-exchange">
+                                            <div class = "button-exchange-arrow"/>
+                                            <div class = "button-exchange-text">1组</div>
+                                            <div class = "button-exchange-box"/>
+                                        </button>
+                                        <button class="button-exchange">
+                                            <div class = "button-exchange-arrow"/>
+                                            <div class = "button-exchange-text">1个</div>
+                                            <div class = "button-exchange-box"/>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -779,9 +850,9 @@
                     <button class="item-add">
                     </button>
                 </div>
-                <div class = "exchange-region" data-if = "fuel_interaction || material_interaction || plugin_interaction">
+                <div class = "exchange-region-right" data-if = "fuel_interaction || material_interaction || plugin_interaction">
                     <div class = "exchange-title">机器爪(98)</div>
-                    <div class="button-exchange-block">
+                    <div class="button-exchange-block" style="height:65%;">
                         <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
                             <div class = "button-exchange-arrow"/>
                             <div class = "button-exchange-text">全部</div>

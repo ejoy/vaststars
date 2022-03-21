@@ -5,16 +5,14 @@
                 font: 120% "微软雅黑";
             }
             button {
-                width: 25%;
-                height: 100%;
-                margin: 0;
+                width: 10.67vmin;
+                height: 10.67vmin;
+                margin: 0.1vmin;
                 text-align: center;
                 text-decoration: none;
                 border-radius: 1.07vmin;
-                border: 0.27vmin rgb(89, 73, 39);
                 opacity: 1;
                 transition: transform 2s elastic-out;
-                background-color: rgb(197,224,180);
                 transform: scale(1.0);
             }
             button:hover {
@@ -234,6 +232,14 @@
                 flex-direction: column;
                 justify-content: center;
             }
+            .building-info {
+                margin-top:1em;
+                width: 28%;
+                height:80%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-evenly;
+            }
             .drone-block {
                 width: 100%;
                 height: 60%;
@@ -302,8 +308,8 @@
             }
             .property-text {
                 margin-left: 1.33vmin;
-                font-size: 3.5vmin;
-                color: rgba(0,176,240,255);
+                font-size: 4.0vmin;
+                color: rgb(0,176,240);
             }
             .item-page-block {
                 transition: left 0.5s linear-out; 
@@ -359,6 +365,14 @@
                 font-size: 4.40vmin;
                 background-image: "construct/insert1.png";
             }
+            .item-add {
+                background-color:rgb(143, 143, 143);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 12.00vmin;
+                height: 12.00vmin;
+                background-image: "science/add.png";
+            }
             .small-item-count {
                 margin-bottom: -0.1em;
                 font-size: 4vmin;
@@ -379,11 +393,80 @@
                 background-image: "assemble/engine.png";
                 background-size: cover;
             }
+            .build-info-reigon {
+                width: 100%;
+                height:75%;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-evenly;
+            }
+            .build-model-block {
+                margin-top: 2em;
+                width: 44%;
+                height:66%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            .build-model {
+                width:90%;
+                height:90%;
+                background-size: cover;
+                background-image: "assemble/engine.png";
+            }
+            .recipe-change-button {
+                background-image:"assemble/wheel.png"; 
+                width: 9.33vmin; 
+                height: 9.33vmin; 
+                background-size:cover;
+            }
+            .button-exchange-block {
+                flex-direction: row;
+                width: 100%;
+                height:100%;
+                align-items: center;
+                justify-content: space-evenly;
+                background-color: rgb(85, 85, 85);
+            }
+            .button-exchange {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width: 22.00vmin;
+                height: 9.53vmin;
+                background-color: rgb(52, 207, 115);
+            }
+            .button-exchange-text {
+                font-size: 3.73vmin;
+                text-align: center;
+                color: rgb(255,249,214);
+            }
+            .button-exchange-arrow {
+                width: 7.31vmin;
+                height: 5.64vmin;
+                background-size: cover;
+                background-image: "exchange/left_arrow.png";
+            }
+            .button-exchange-box {
+                width: 7.00vmin;
+                height: 7.00vmin;
+                background-size: cover;
+                background-image: "exchange/yellow_box.png";
+            }
+            .exchange-region {
+                position: absolute; 
+                width: 100%;    
+                background-color: rgb(40, 40, 40);
+                border: 0.22vmin rgb(89, 73, 39);
+            }
         </style>
         <script type="text/x-lua">
             console.log("before createModel")
             local start = window.createModel "start" {
-                info_flag = false,
+                item_info_flag = false,
+                building_info_flag = false,
+                show = false,
+                drone_interaction = false,
 
                 items = {
                     {id=100, icon0="correct.png", icon1="correct.png"},
@@ -417,44 +500,129 @@
                     {id=128, icon0="correct.png", icon1="correct.png"},
                     {id=129, icon0="correct.png", icon1="correct.png"},
                 },
+
+
+                --list_item_width = 90,
+                --list_item_height = 90,
+                --list_width = 540,
+                --list_height = 490,
+
+                gapx = 0,
+                gapy = 0,
+                page_top = 0,
+                -- 详细信息面板高度
+                detail_height = 120,
+                -- 详细信息面板开始位置
+                detail_top = 0,
+                current_page = 0,
+                view_items = {},
                 item_size = 90,
+                interval = 200,
+                show_detail = false,
+                page_width = 540,
+                page_height = 490,
                 view_items = {},
                 virtual_pages = {},
                 current_page = 0,
-                selected_id = 100,
+                selected_id = 0,
+                selected_row = 10000,
+                item_down_time = 0,
+                current_time = 0,
+                row_count = 0,
+                page_drag = false,
+                list_drag = false,
+                draging = false,
             }
+
+            local function update_time()
+                start.current_time = start.current_time + 1
+            end
+            window.setInterval(update_time, 1)
+
+            local listclass = require "list"
             local pageclass = require "page"
-            -- window size : 1336 750
-            local page_proxy = pageclass.create({540, 490}, start)
+            --local list_proxy = listclass.create(1, {start.list_width, start.list_height}, #start.item_list, {start.list_item_width, start.list_item_height})
+            local page_proxy = pageclass.create({start.page_width, start.page_height}, start)
+
             function start.pagemousedown(event)
                 console.log("pagemousedown")
                 page_proxy:on_mousedown(event)
+                start.page_drag = true
+                start.draging = false
             end
-            
+        
             function start.pagedrag(event)
-                --console.log("pagedrag")
-                page_proxy:on_drag(event)
+                if start.page_drag then
+                    console.log("pagedrag")
+                    page_proxy:on_drag(event)
+                end
             end
 
             function start.pagemouseup(event)
                 console.log("pagemouseup")
                 page_proxy:on_mouseup(event)
                 start.current_page = page_proxy:get_current_page() - 1
+                start.page_drag = false
             end
 
-            function start.page_item_click(event, id)
-                console.log("page_item_click", id)
-                start.selected_id = id
+            local function show_detail(show, id, row, top)
+                local offset = 0
+                if show then
+                    start.selected_id = id
+                    start.selected_row = row
+                    start.detail_top = top
+                    local dy = start.page_height - ((row + 1) * (start.item_size + start.gapy) + start.detail_height)
+                    offset = (dy >= 0) and 0 or dy
+                else
+                    start.selected_id = 0
+                    --TODO: max value 1000
+                    start.selected_row = 10000
+                end
+                start.show_detail = show
+                start.page_top = offset
+            end
+
+            function start.page_item_down()
+                start.item_down_time = start.current_time
+            end
+
+            function start.page_item_up(event, id, row, top)
+                console.log("page_item_click, row, top", id, row, top)
+                if start.current_time - start.item_down_time <= start.interval and not start.draging then
+                    console.log("start.draging: ", start.draging)
+                    if start.selected_id ~= id then
+                        show_detail(true, id, row, top)
+                    else
+                        show_detail(not start.show_detail, id, row, top)
+                    end
+                else
+                    show_detail(false, 0, 0, 0)
+                end
             end
 
             function start.ClickItem(event)
-                start.info_flag = true
+                start.item_info_flag = true
                 console.log("---ClickItem---")
             end
         
-            function start.ClickInfo(event)
-                start.info_flag = false
+            function start.ClickItemInfo(event)
+                start.item_info_flag = false
                 console.log("---ClickBack---")
+            end
+
+            function start.ClickBuilding(event)
+                start.show = not start.show
+                console.log("---ClickBack---")
+            end
+
+            function start.ClickDrone(event)
+                start.drone_interaction = true
+            end
+
+            function start.ClickBack(event)
+                start.item_info_flag = false
+                start.drone_interaction = false
+                start.show = false
             end
 
             window.addEventListener('message', function(event)
@@ -473,19 +641,38 @@
                     <div class = "menu-title">指挥中心</div>
                 </div>
                 <div class="item-container">
-                    <div style="width:100%; height:95%;">
-                        <div class = "item-page-block" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
+                    <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
+                        <div class = "item-page-block" data-style-top="page_top + 'px'" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
                             <div class ="row">
                                 <div style="width:95%; height:100%;" data-for="virtual_pages">
                                     <div data-style-left="(it_index + 1) * 100 + '%'"/>
                                 </div>
                             </div>
-                            <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_click(it.data.id)" data-style-width="90+'px'" data-style-height="90+'px'" data-style-left="it.left" data-style-top="it.top" data-for="view_items">
+                            <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up(it.data.id, it.row, it.top)" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
                                 <button class="item" data-event-click="ClickItem()">
                                     <div class="item-count">99</div>                          
                                     <!--div class="item-title">机器爪</div>-->
                                 </button>
                                 <!--<div>{{it.data.id}}</div>-->
+                            </div>
+                            <div class="exchange-region" data-style-left="current_page * page_width + 'px'" data-style-height="detail_height+'px'" data-style-top="detail_top+item_size+'px'" data-if="show_detail">
+                                <div class="button-exchange-block">
+                                    <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
+                                        <div class = "button-exchange-arrow"/>
+                                        <div class = "button-exchange-text">全部</div>
+                                        <div class = "button-exchange-box"/>
+                                    </button>
+                                    <button class="button-exchange">
+                                        <div class = "button-exchange-arrow"/>
+                                        <div class = "button-exchange-text">1组</div>
+                                        <div class = "button-exchange-box"/>
+                                    </button>
+                                    <button class="button-exchange">
+                                        <div class = "button-exchange-arrow"/>
+                                        <div class = "button-exchange-text">1个</div>
+                                        <div class = "button-exchange-box"/>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -534,63 +721,104 @@
                 </div>
             </div>
             <div class="panel">
-                <div class="column" style="width:100%; height:100%;" data-if="!info_flag">
-                    <div class="build-info-block">
-                        <div class = "column" style="width:30%;">
-                            <div class="build-picture-block">
-                                <div class="bulid-status-info">输出正常</div>
-                                <div class="build-picture"/>
+                <div class="column" style="width:100%; height:100%;" data-if="!item_info_flag">
+                    <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if="!drone_interaction">
+                        <div class = "menu-title" style="text-align: right;">制造舱</div>
+                        <button class = "recipe-change-button"/>  
+                    </div>
+                    <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if="drone_interaction">
+                        <div class = "menu-title" style="text-align: right;">无人机</div>
+                        <button class = "recipe-change-button" style='background-image: "cmdcenter/yellow_arrow.png";' data-event-click="ClickBack()"/>  
+                    </div>
+                    <div style="border-bottom: 1px rgb(89, 73, 39);"/>
+                    <div class="column" data-if="!item_info_flag && !drone_interaction" style="width: 100%;height: 95%;">
+                        <div class="build-info-reigon">
+                            <div class ="building-info">
+                                <div data-if="show">
+                                    <div class="row">
+                                        <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                        <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                    </div>
+                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                </div>
+                                <div data-if="show">
+                                    <div class="row">
+                                        <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                        <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
+                                    </div>
+                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                </div>
+                                <div data-if="show">
+                                    <div class="row">
+                                        <div class="property-icon" style='background-image:"character/health.png";'/>
+                                        <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                    </div>
+                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                </div>
+                                <div data-if="show">
+                                    <div class="row">
+                                        <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                        <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
+                                    </div>
+                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                </div>
                             </div>
-                            <div class="build-power-info-block">
-                                <div class="progress-pic"/>
-                                <div class="progress-bar-block">
-                                    <div class="progress-background"/>
-                                </div>   
+                            <div class="build-model-block" data-event-mousedown="ClickBuilding()">
+                                <div class="build-model"/>
+                            </div>
+                            <div class ="building-info">
+                                <div data-if="show">
+                                    <div class="row">
+                                        <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                        <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                    </div>
+                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                </div>
+                                <div data-if="show">
+                                    <div class="row">
+                                        <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                        <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
+                                    </div>
+                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                </div>
+                                <div data-if="show">
+                                    <div class="row">
+                                        <div class="property-icon" style='background-image:"character/health.png";'/>
+                                        <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                    </div>
+                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                </div>
+                                <div data-if="show">
+                                    <div class="row">
+                                        <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                        <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
+                                    </div>
+                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="info-block">
-                            <div class="row">
-                                <div class="property-icon" style='background-image:"character/health.png";'/>
-                                <div class="property-text">建筑生命</div>
-                                <div class="property-text" style="color: white;">200/990</div>
-                            </div>
-                            <div class="row">
-                                <div class="property-icon" style='background-image:"character/flash.png";'/>
-                                <div class="property-text">发电功率</div>
-                                <div class="property-text" style="color: white;">500kw(-250kw)</div>
+                        <div class="row" data-event-click="ClickDrone()" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%; justify-content: center;">
+                            <div class="row" style="width: 35%; justify-content: center; ">
+                                <div class="small-item" style='background-image: "construct/drone1.png";'/>                        
+                                <div class="small-item" style='background-image: "construct/drone1.png";'/>                        
+                                <div class="small-item" style='background-image: "construct/drone1.png";'/>                       
+                                <div class="small-item" style='background-image: "construct/drone1.png";'/>                         
+                                <div class="small-item" style='background-image: "construct/drone1.png";'/>                         
+                                <div class="small-item" style='background-image: "construct/drone1.png";'/>                         
+                                <div class="item-add" style="width:8vmin; height:8vmin;"/>
                             </div>
                         </div>
                     </div>
-                    <div class = "drone-block">
-                        <div class ="drone-title-block">
-                            <div class = "drone-pic"/>
-                            <div class = "drone-title">运输机舱</div>
-                        </div>
-                        <div class ="drone-room-block">
-                            <div class="drone-room">
-                                <button class="box" style='background-image:"construct/drone1.png";'/>
-                                <button class="box" style='background-image:"construct/drone1.png";'/>
-                                <button class="box" style='background-image:"construct/drone1.png";'/>
-                                <button class="box" style='background-image:"construct/drone1.png";'/>
-                                <button class="box" style='background-image:"construct/drone1.png";'/>
-                            </div>
-                            <div class="drone-room">
-                                <button class="box" style='background-image:"construct/drone1.png";'/>
-                                <button class="box" style='background-image:"construct/drone1.png";'/>
-                                <button class="box" style='background-color:rgb(255,192,0);background-image:"construct/drone1.png";'/>
-                                <button class="box" style='background-color:rgb(255,192,0);background-image:"construct/drone1.png";'/>
-                                <button class="box" style='background-color:rgb(143, 143, 143);background-image:"cmdcenter/add.png";'/>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div class="upgrade-block">
-                        <button class = "text-production-cabin">
-                            <div style="margin-top: 0.3em;">制造舱</div>
-                        </button>
+                    <div class="row" style="align-items: center; width:100%; height:28%; justify-content: center; margin-top: 0.5em;" data-if="drone_interaction">
+                        <button class="item" style='background-image: "construct/drone1.png";'/>                       
+                        <button class="item" style='background-image: "construct/drone1.png";'/>                      
+                        <button class="item" style='background-image: "construct/drone1.png";'/>
+                        <button class="item" style='background-image: "construct/drone1.png";'/>                       
+                        <button class="item" style='background-image: "construct/drone1.png";'/>                        
+                        <button class="item-add"/>
                     </div>
                 </div>
-                <div class="column" style="width:100%; height:100%;" data-if="info_flag" data-event-click="ClickInfo()">
+                <div class="column" style="width:100%; height:100%;" data-if="item_info_flag" data-event-click="ClickItemInfo()">
                     <div class="item-info-block">
                         <div style="flex-direction:row; justify-content: flex-start; align-items: center; width:100%;height:20%;">
                             <div class ="drone-title-block" style="height:5vmin;">
