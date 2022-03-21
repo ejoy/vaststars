@@ -223,33 +223,39 @@ local construct_button_events = {}
 construct_button_events.confirm = function()
     local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
     if game_object then
-        if prototype.is_fluidbox(game_object.gameplay_entity.prototype_name) then
-            if not game_object.gameplay_entity.fluid[1] then
-                world:pub {"ui_message", "show_set_fluidbox", true}
-            else
-                confirm_construct(game_object)
-            end
+        log.error("can not found game_object")
+        return
+    end
+    if prototype.is_fluidbox(game_object.gameplay_entity.prototype_name) then
+        if not game_object.gameplay_entity.fluid[1] then
+            world:pub {"ui_message", "show_set_fluidbox", true}
         else
             confirm_construct(game_object)
         end
+    else
+        confirm_construct(game_object)
     end
 end
 
 construct_button_events.cancel = function()
     local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
     if game_object then
-        iconstruct_button.hide()
-        igame_object.remove(game_object.id)
+        log.error("can not found game_object")
+        return
     end
+    iconstruct_button.hide()
+    igame_object.remove(game_object.id)
 end
 
 construct_button_events.rotate = function()
     local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
     if game_object then
-        local dir = dir_rotate(game_object.gameplay_entity.dir, -1) -- 逆时针方向旋转一次
-        game_object.gameplay_entity.dir = dir
-        igame_object.set_dir(game_object, dir)
+        log.error("can not found game_object")
+        return
     end
+    local dir = dir_rotate(game_object.gameplay_entity.dir, -1) -- 逆时针方向旋转一次
+    game_object.gameplay_entity.dir = dir
+    igame_object.set_dir(game_object, dir)
 end
 
 function construct_sys:camera_usage()
