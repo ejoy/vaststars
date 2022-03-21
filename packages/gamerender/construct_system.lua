@@ -53,7 +53,7 @@ local function update_basecolor_by_pos(game_object)
         basecolor_factor = CONSTRUCT_GREEN_BASIC_COLOR
     end
 
-    igame_object.set_state(game_object, "translucent", basecolor_factor)
+    igame_object.set_state(game_object, gameplay_entity.prototype_name, "translucent", basecolor_factor)
 end
 
 local function deepcopy(t)
@@ -79,7 +79,7 @@ local function confirm_construct(game_object)
         end
     end
 
-    igame_object.set_state(game_object, "translucent", CONSTRUCT_WHITE_BASIC_COLOR)
+    igame_object.set_state(game_object, gameplay_entity.prototype_name, "translucent", CONSTRUCT_WHITE_BASIC_COLOR)
     game_object.drapdrop = false
     game_object.construct_pickup = false
     iconstruct_button.hide()
@@ -333,7 +333,7 @@ function construct_sys:data_changed()
                 end
                 local gameplay_entity = gameplay.entity(entity.x | (entity.y << 8))
 
-                igame_object.set_state(game_object, "opaque")
+                igame_object.set_state(game_object, entity.prototype_name, "opaque") --RETODO prototype_name nil
                 game_object.gameplay_entity = {}
 
                 ::continue::
@@ -367,7 +367,7 @@ function construct_sys:data_changed()
             igame_object.set_state(game_object, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
 
             local gameplay_entity = game_object.gameplay_entity
-            iconstruct_button.show(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y)
+            iconstruct_button.show(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y) --RETODO prototype_name nil
         end
         ::continue::
     end

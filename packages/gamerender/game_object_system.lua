@@ -246,12 +246,12 @@ local function color_equal(c1, c2)
     return true
 end
 
-function igame_object.set_state(game_object, state, color)
+function igame_object.set_state(game_object, prototype_name, state, color)
     local prefab_object
     if game_object.game_object_state ~= state then
         game_object.game_object_state = state
 
-        local prefab_file = prototype.get_prefab_file(game_object.gameplay_entity.prototype_name)
+        local prefab_file = prototype.get_prefab_file(prototype_name)
         if not prefab_file then
             return
         end
