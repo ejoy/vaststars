@@ -19,12 +19,14 @@ local ui_construct_complete_mb = world:sub {"ui", "construct", "construct_comple
 local ui_fluidbox_update_mb = world:sub {"ui", "construct", "fluidbox_update"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_button_mb = world:sub {"construct_button"}
+local pickup_mapping_mb = world:sub {"pickup_mapping"}
 
 local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
 local CONSTRUCT_WHITE_BASIC_COLOR <const> = {50.0, 50.0, 50.0, 0.8}
 local DISMANTLE_YELLOW_BASIC_COLOR <const> = {50.0, 50.0, 0.0, 0.8}
 
+local cur_mode = ""
 local construct_queue = {}
 
 local function check_construct_detector(prototype_name, x, y, dir)
@@ -243,8 +245,21 @@ construct_button_events.cancel = function()
     if not game_object then
         return
     end
+
+    local adjust = {}
+    local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
+    if game_object then
+        local obj = get_object(game_object)
+        adjust[#adjust+1] = {obj.x, obj.y}
+
+        igame_object.remove(game_object.id)
+    end
     iconstruct_button.hide()
-    igame_object.remove(game_object.id)
+
+    -- 还原未施工的水管形状
+    for _, v in ipairs(adjust) do
+        adjust_neighbor_pipe(v)
+    end
 end
 
 construct_button_events.rotate = function()
@@ -279,6 +294,7 @@ end
 
 function construct_sys:data_changed()
     for _ in ui_construct_begin_mb:unpack() do
+        cur_mode = "construct"
         engine.set_camera("camera_construct.prefab")
     end
 
@@ -290,36 +306,25 @@ function construct_sys:data_changed()
     end
 
     for _ in ui_construct_complete_mb:unpack() do
+        cur_mode = ""
         engine.set_camera("camera_default.prefab")
+        construct_button_events.cancel()
 
-        local adjust = {}
-        local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
-        if game_object then
-            local obj = get_object(game_object)
-            adjust[#adjust+1] = {obj.x, obj.y}
+        if #construct_queue > 0 then
+            for _, v in ipairs(construct_queue) do
+                if v.oper == "add" then
+                    local gameplay_entity = v.game_object.gameplay_entity
+                    adjust_neighbor_pipe({gameplay_entity.x, gameplay_entity.y})
 
-            igame_object.remove(game_object.id)
-        end
-        iconstruct_button.hide()
-
-        -- 还原未施工的水管形状
-        for _, v in ipairs(adjust) do
-            adjust_neighbor_pipe(v)
-        end
-
-        for _, v in ipairs(construct_queue) do
-            if v.oper == "add" then
-                local gameplay_entity = v.game_object.gameplay_entity
-                adjust_neighbor_pipe({gameplay_entity.x, gameplay_entity.y})
-
-                igame_object.set_state(v.game_object, "opaque")
-                v.game_object.gameplay_id = gameplay_entity.x | (gameplay_entity.y << 8)
-                gameplay.create_entity(v.game_object)
-                v.game_object.gameplay_entity = {}
+                    igame_object.set_state(v.game_object, "opaque")
+                    v.game_object.gameplay_id = gameplay_entity.x | (gameplay_entity.y << 8)
+                    gameplay.create_entity(v.game_object)
+                    v.game_object.gameplay_entity = {}
+                end
             end
+            construct_queue = {}
+            gameplay.build()
         end
-        construct_queue = {}
-        gameplay.build()
     end
 
     for _, _, _, fluidname in ui_fluidbox_update_mb:unpack() do
@@ -327,5 +332,29 @@ function construct_sys:data_changed()
         if game_object then
             game_object.gameplay_entity.fluid = {fluidname, 0}
         end
+    end
+
+    for _, _, eid in pickup_mapping_mb:unpack() do
+        if cur_mode == "construct" then
+            local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
+            if game_object then
+                goto continue
+            end
+
+            game_object = world:entity(eid)
+            if game_object and game_object.game_object_state then
+                game_object.drapdrop = true
+                game_object.construct_pickup = true
+                igame_object.set_state(game_object, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
+
+                local gameplay_entity = game_object.gameplay_entity
+                local area = prototype.get_area(gameplay_entity.prototype_name)
+                if not area then
+                    goto continue
+                end
+                iconstruct_button.show(gameplay_entity.x, gameplay_entity.y, area)
+            end
+        end
+        ::continue::
     end
 end
