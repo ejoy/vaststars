@@ -80,8 +80,8 @@ local function get_object(game_object)
         obj[k] = v
     end
 
-    if game_object.gameplay_eid ~= 0 then
-        local e = gameplay.entity(game_object.gameplay_eid)
+    if game_object.gameplay_id ~= -1 then
+        local e = gameplay.entity(game_object.gameplay_id)
         for k, v in pairs(e) do
             obj[k] = obj[k] or v
         end
@@ -91,7 +91,7 @@ end
 
 -- 获取指定位置的 game_object 信息, 只读
 local function get_entity(x, y)
-    for _, game_object in ecswrap.select "gameplay_eid" do
+    for _, game_object in ecswrap.select "gameplay_id" do
         -- entity 是否已经删除?
         if not igame_object.get_prefab_object(game_object.id) then
             goto continue
@@ -107,7 +107,7 @@ end
 
 -- 获取指定位置的 game_object, 并可以对其进行操作
 local function get_game_object(x, y)
-    for _, game_object in ecswrap.select "gameplay_eid" do
+    for _, game_object in ecswrap.select "gameplay_id" do
         if not igame_object.get_prefab_object(game_object.id) then
             goto continue
         end
@@ -310,7 +310,8 @@ function construct_sys:data_changed()
                 adjust_neighbor_pipe({gameplay_entity.x, gameplay_entity.y})
 
                 igame_object.set_state(v.game_object, "opaque")
-                v.game_object.gameplay_eid = gameplay.create_entity(v.game_object)
+                v.game_object.gameplay_id = gameplay_entity.x | (gameplay_entity.y << 8)
+                gameplay.create_entity(v.game_object)
                 v.game_object.gameplay_entity = {}
             end
         end

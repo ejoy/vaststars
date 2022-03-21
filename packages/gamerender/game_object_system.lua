@@ -186,7 +186,7 @@ function igame_object.create(prototype_name, events)
             drapdrop = true,
             pause_animation = true,
             construct_pickup = true,
-            gameplay_eid = 0,
+            gameplay_id = -1,
             gameplay_entity = {
                 prototype_name = prototype_name,
                 fluid = {},

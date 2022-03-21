@@ -145,7 +145,7 @@ prototype ("小型铁制箱子", {
 })
 
 prototype ("机器爪1", {
-    prefab = "prefabs/goods-station-1.prefab",
+    prefab = "prefabs/inserter-1.prefab",
     construct_detector = {"exclusive"},
     component = {},
 })
