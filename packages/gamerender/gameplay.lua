@@ -1,24 +1,6 @@
 local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
 
-local entity_visitor = world.ecs:make_index "id"
-local entity_mt = {}
-function entity_mt:__index(name)
-    return entity_visitor(self.id, name)
-end
-function entity_mt:__newindex(name, value)
-    entity_visitor(self.id, name, value)
-end
-
-local function get_prototype_name(prototype)
-    local pt = gameplay.query(prototype)
-    if not pt then
-        log.error(("can not found prototype(%s)"):format(prototype))
-        return
-    end
-    return pt.name
-end
-
 local m = {}
 
 function m.select(...)
@@ -27,6 +9,10 @@ end
 
 function m.build(...)
     return world:build()
+end
+
+function m.update()
+    return world:update()
 end
 
 local create_entity_cache = {}
@@ -78,19 +64,10 @@ init_func["assembling"] = function(pt, template)
     return template
 end
 
-local getentityid ; do
-    local id = 0
-    function getentityid()
-        id = id + 1
-        return id
-    end
-end
-
 function m.create_entity(game_object)
     local gameplay_entity = game_object.gameplay_entity
     local func
     local template = {
-        id = getentityid(),
         x = gameplay_entity.x,
         y = gameplay_entity.y,
         dir = gameplay_entity.dir,
@@ -118,19 +95,27 @@ do
         [3] = 'W',
     }
 
-    function m.entity(eid)
-        local v = entity_visitor[eid]
-        if not v then
+    local function get_prototype_name(prototype)
+        local pt = gameplay.query(prototype)
+        if not pt then
+            log.error(("can not found prototype(%s)"):format(prototype))
             return
         end
+        return pt.name
+    end
 
-        local entity = setmetatable({id = eid}, entity_mt).entity
-        return {
-            dir = DIRECTION[entity.direction],
-            prototype_name = get_prototype_name(entity.prototype),
-            x = entity.x,
-            y = entity.y,
-        }
+    function m.entity(x, y)
+        for e in world.ecs:select "entity:in" do
+            local entity = e.entity
+            if entity.x == x and entity.y == y then
+                return {
+                    dir = DIRECTION[entity.direction],
+                    prototype_name = get_prototype_name(entity.prototype),
+                    x = entity.x,
+                    y = entity.y,
+                }
+            end
+        end
     end
 end
 

@@ -51,3 +51,7 @@ function m:init_world()
 
     world:pub{"camera_controller", "stop", false}
 end
+
+function m:update_world()
+
+end
