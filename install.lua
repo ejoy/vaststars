@@ -53,18 +53,28 @@ end
 
 print "copy data to vaststars-release/* ..."
 
-copy_directory(BIN, output / "bin/msvc/release", function (path)
-   return path:equal_extension '.dll' or path:equal_extension'.exe' or path:equal_extension'.lua'
-end)
-copy_directory(input / "packages", output / "packages", function (path)
-    return path:filename():string() ~= ".gitignore"
-end)
+local directory = {
+    {
+        source = BIN, dest = output / "bin/msvc/release", func = function(path)
+            return path:equal_extension '.dll' or path:equal_extension'.exe' or path:equal_extension'.lua'
+        end,
+    },
+    {
+        source = input / "packages", dest = output / "bin/msvc/release", func = function(path)
+            return path:filename():string() ~= ".gitignore"
+        end,
+    },
+    {
+        source = input / "startup", dest = output / "startup", func = function(path)
+            return true
+        end,
+    }
+}
+for _, v in ipairs(directory) do
+    copy_directory(v.source, v.dest, v.func)
+end
 
-copy_directory(input / "startup", output / "startup", function (path)
-    return true
-end)
-
-local files = {"run.bat", "run_editor.bat", "clean.bat", "test_gameplay.lua", "test_map.lua"}
+local files = {"run.bat", "run_editor.bat", "clean.bat"}
 for _, file in ipairs(files) do
 	fs.copy_file(input / file, output / file, fs.copy_options.overwrite_existing)
 end
