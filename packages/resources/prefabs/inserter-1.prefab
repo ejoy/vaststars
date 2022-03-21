@@ -25,9 +25,9 @@ data:
     joint_list: {}
     keyframe_events: {}
   animation:
-    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
-    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
-  animation_birth: aaa
+    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
+  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
   material_setting:
@@ -54,9 +54,9 @@ data:
     joint_list: {}
     keyframe_events: {}
   animation:
-    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
-    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
-  animation_birth: aaa
+    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
+  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
   material_setting:
@@ -83,9 +83,9 @@ data:
     joint_list: {}
     keyframe_events: {}
   animation:
-    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
-    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
-  animation_birth: aaa
+    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
+  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
   material_setting:
@@ -112,9 +112,9 @@ data:
     joint_list: {}
     keyframe_events: {}
   animation:
-    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
-    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
-  animation_birth: aaa
+    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
+  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
   material_setting:
@@ -141,9 +141,9 @@ data:
     joint_list: {}
     keyframe_events: {}
   animation:
-    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
-    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
-  animation_birth: aaa
+    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
+  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
   material_setting:
@@ -170,9 +170,9 @@ data:
     joint_list: {}
     keyframe_events: {}
   animation:
-    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
-    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
-  animation_birth: aaa
+    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
+  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
   material_setting:
@@ -199,9 +199,9 @@ data:
     joint_list: {}
     keyframe_events: {}
   animation:
-    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
-    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
-  animation_birth: aaa
+    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
+  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
   material_setting:
@@ -228,9 +228,9 @@ data:
     joint_list: {}
     keyframe_events: {}
   animation:
-    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
-    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
-  animation_birth: aaa
+    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
+  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
   material_setting:
@@ -257,9 +257,9 @@ data:
     joint_list: {}
     keyframe_events: {}
   animation:
-    aaa: /pkg/vaststars.resources/glb/inserter.glb|animations/aaa.ozz
-    buge.005Action.002: /pkg/vaststars.resources/glb/inserter.glb|animations/buge.005Action.002.ozz
-  animation_birth: aaa
+    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
+  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
   material_setting:
