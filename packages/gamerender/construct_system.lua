@@ -7,7 +7,6 @@ local iconstruct_button = ecs.import.interface "vaststars.gamerender|iconstruct_
 local construct_sys = ecs.system "construct_system"
 local prototype = ecs.require "prototype"
 local gameplay = ecs.require "gameplay"
-local ecswrap = ecs.require "ecswrap"
 local engine = ecs.require "engine"
 local pipe = ecs.require "pipe"
 local dir = require "dir"
@@ -94,7 +93,7 @@ end
 
 -- 获取指定位置的 game_object 信息, 只读
 local function get_entity(x, y)
-    for _, game_object in ecswrap.select "gameplay_id" do
+    for _, game_object in engine.world_select "gameplay_id" do
         -- entity 是否已经删除?
         if not igame_object.get_prefab_object(game_object.id) then
             goto continue
@@ -110,7 +109,7 @@ end
 
 -- 获取指定位置的 game_object, 并可以对其进行操作
 local function get_game_object(x, y)
-    for _, game_object in ecswrap.select "gameplay_id" do
+    for _, game_object in engine.world_select "gameplay_id" do
         if not igame_object.get_prefab_object(game_object.id) then
             goto continue
         end
@@ -213,18 +212,13 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
         end
     end
 
-    local area = prototype.get_area(gameplay_entity.prototype_name)
-    if not area then
-        return
-    end
-
     update_basecolor_by_pos(game_object)
-    iconstruct_button.show(gameplay_entity.x, gameplay_entity.y, area)
+    iconstruct_button.show(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y)
 end
 
 local construct_button_events = {}
 construct_button_events.confirm = function()
-    local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
+    local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
     if not game_object then
         log.error("can not found game_object")
         return
@@ -241,13 +235,13 @@ construct_button_events.confirm = function()
 end
 
 construct_button_events.cancel = function()
-    local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
+    local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
     if not game_object then
         return
     end
 
     local adjust = {}
-    local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
+    local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
     if game_object then
         local obj = get_object(game_object)
         adjust[#adjust+1] = {obj.x, obj.y}
@@ -263,7 +257,7 @@ construct_button_events.cancel = function()
 end
 
 construct_button_events.rotate = function()
-    local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
+    local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
     if not game_object then
         log.error("can not found game_object")
         return
@@ -279,7 +273,7 @@ function construct_sys:camera_usage()
         igame_object.create(prototype_name, {
             on_ready = function(game_object)
                 local gameplay_entity = game_object.gameplay_entity
-                iconstruct_button.show(gameplay_entity.x, gameplay_entity.y, prototype.get_area(gameplay_entity.prototype_name))
+                iconstruct_button.show(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y)
             end
         })
         if prototype.is_fluidbox(prototype_name) then
@@ -335,32 +329,30 @@ function construct_sys:data_changed()
     end
 
     for _, _, _, fluidname in ui_fluidbox_update_mb:unpack() do
-        local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
+        local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
         if game_object then
             game_object.gameplay_entity.fluid = {fluidname, 0}
         end
     end
 
     for _, _, eid in pickup_mapping_mb:unpack() do
-        if cur_mode == "construct" then
-            local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
-            if game_object then
-                goto continue
-            end
+        if cur_mode ~= "construct" then
+            goto continue
+        end
 
-            game_object = world:entity(eid)
-            if game_object and game_object.game_object_state then
-                game_object.drapdrop = true
-                game_object.construct_pickup = true
-                igame_object.set_state(game_object, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
+        local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
+        if game_object then
+            goto continue
+        end
 
-                local gameplay_entity = game_object.gameplay_entity
-                local area = prototype.get_area(gameplay_entity.prototype_name)
-                if not area then
-                    goto continue
-                end
-                iconstruct_button.show(gameplay_entity.x, gameplay_entity.y, area)
-            end
+        game_object = world:entity(eid)
+        if game_object and game_object.game_object_state then
+            game_object.drapdrop = true
+            game_object.construct_pickup = true
+            igame_object.set_state(game_object, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
+
+            local gameplay_entity = game_object.gameplay_entity
+            iconstruct_button.show(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y)
         end
         ::continue::
     end

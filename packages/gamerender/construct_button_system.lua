@@ -85,8 +85,13 @@ function iconstruct_button.hide()
     construct_button_canvas_items = {}
 end
 
-function iconstruct_button.show(x, y, area)
+function iconstruct_button.show(prototype_name, x, y)
     iconstruct_button.hide()
+
+    local area = prototype.get_area(prototype_name)
+    if not area then
+        return
+    end
 
     for _, v in ipairs(coord_offset) do
         local cx, cy, dx, dy = v.coord_func(x, y, area)

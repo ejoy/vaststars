@@ -34,4 +34,25 @@ function engine.set_camera(prefab_file_name)
     iom.set_srt(world:entity(camera_ref), get_camera_srt(prefab_file_name))
 end
 
+function engine.world_select(pat)
+    local f, t, v = w:select(pat)
+    return function(t, v)
+        local e = f(t, v)
+        if not e then
+            return
+        end
+        w:sync("id:in", e)
+        return e, world:entity(e.id)
+    end, t, v
+end
+
+function engine.world_singleton(name, pat)
+    local e = w:singleton(name, pat)
+    if not e then
+        return
+    end
+    w:sync("id:in", e)
+    return world:entity(e.id)
+end
+
 return engine
