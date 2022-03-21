@@ -1,0 +1,20 @@
+---
+data:
+  camera:
+    frustum:
+      aspect: 1.7699999809265137
+      f: 300
+      fov: 60
+      n: 1
+  name: camera1
+  scene:
+    srt:
+      r: {0.7071067690849304,0.0,0.0,0.7071067690849304}
+      t: {0, 80, -0}
+    updir: {0, 1, 0, 0}
+  tag:
+    camera
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.camera|camera

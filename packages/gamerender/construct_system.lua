@@ -8,6 +8,7 @@ local construct_sys = ecs.system "construct_system"
 local prototype = ecs.require "prototype"
 local gameplay = ecs.require "gameplay"
 local ecswrap = ecs.require "ecswrap"
+local engine = ecs.require "engine"
 local pipe = ecs.require "pipe"
 local dir = require "dir"
 local dir_rotate = dir.rotate
@@ -278,7 +279,7 @@ end
 
 function construct_sys:data_changed()
     for _ in ui_construct_begin_mb:unpack() do
-        print("construct begin")
+        engine.set_camera("camera_construct.prefab")
     end
 
     for _, button in construct_button_mb:unpack() do
@@ -289,6 +290,8 @@ function construct_sys:data_changed()
     end
 
     for _ in ui_construct_complete_mb:unpack() do
+        engine.set_camera("camera_default.prefab")
+
         local adjust = {}
         local game_object = ecswrap.singleton("construct_pickup", "construct_pickup")
         if game_object then

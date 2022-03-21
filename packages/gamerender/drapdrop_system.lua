@@ -28,6 +28,9 @@ function drapdrop_system.pickup_mapping()
     local entity
     for _, _, eid in pickup_mapping_mb:unpack() do
         entity = world:entity(eid)
+        if entity.gameplay_entity then
+            print("pickup_mapping", entity.gameplay_entity.prototype_name)
+        end
         if entity.drapdrop then
             entity.drapdrop_selected = true
         end

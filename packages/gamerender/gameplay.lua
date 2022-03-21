@@ -2,6 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
 
 local m = {}
+m.update = true
 
 function m.select(...)
     return world.ecs:select(...)
@@ -12,7 +13,13 @@ function m.build(...)
 end
 
 function m.update()
-    return world:update()
+    if m.update then
+        world:update()
+    end
+end
+
+function m.container_get(...)
+    return world:container_get(...)
 end
 
 local create_entity_cache = {}
@@ -61,6 +68,13 @@ init_func["assembling"] = function(pt, template)
         }
     end
 
+    return template
+end
+
+init_func["chest"] = function(pt, template)
+    template.items = {
+        {"铁矿石", 1},
+    }
     return template
 end
 
