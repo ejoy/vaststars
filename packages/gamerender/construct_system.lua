@@ -90,7 +90,7 @@ end
 
 -- 获取指定位置的 game_object 信息, 只读
 local function get_entity(x, y)
-    for _, game_object in engine.world_select "gameplay_id" do
+    for _, game_object in engine.world_select "game_object" do
         -- entity 是否已经删除?
         if not igame_object.get_prefab_object(game_object.id) then
             goto continue
@@ -106,7 +106,7 @@ end
 
 -- 获取指定位置的 game_object, 并可以对其进行操作
 local function get_game_object(x, y)
-    for _, game_object in engine.world_select "gameplay_id" do
+    for _, game_object in engine.world_select "game_object" do
         if not igame_object.get_prefab_object(game_object.id) then
             goto continue
         end
@@ -352,11 +352,11 @@ function construct_sys:data_changed()
 
         game_object = world:entity(eid)
         if game_object and game_object.game_object_state then
+            local gameplay_entity = game_object.gameplay_entity
+
             game_object.drapdrop = true
             game_object.construct_pickup = true
-            igame_object.set_state(game_object, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
-
-            local gameplay_entity = game_object.gameplay_entity
+            igame_object.set_state(game_object, gameplay_entity.prototype_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
             iconstruct_button.show(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y) --RETODO prototype_name nil
         end
         ::continue::
