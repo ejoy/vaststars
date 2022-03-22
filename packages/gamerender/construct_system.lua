@@ -74,18 +74,11 @@ end
 
 -- 通过 game_object 获取信息, 只读
 local function get_object(game_object)
-    local obj = {}
-    for k, v in pairs(game_object.gameplay_entity) do
-        obj[k] = v
-    end
-
+    local e
     if game_object.gameplay_id ~= -1 then
-        local e = gameplay.entity(game_object.gameplay_id)
-        for k, v in pairs(e) do
-            obj[k] = obj[k] or v
-        end
+        e = gameplay.entity(game_object.gameplay_id)
     end
-    return obj
+    return setmetatable(game_object.gameplay_entity, e or {})
 end
 
 -- 获取指定位置的 game_object 信息, 只读
@@ -295,6 +288,7 @@ end
 function construct_sys:data_changed()
     for _ in ui_construct_begin_mb:unpack() do
         cur_mode = "construct"
+        gameplay.world_update = false
         engine.set_camera("camera_construct.prefab")
     end
 
@@ -307,6 +301,7 @@ function construct_sys:data_changed()
 
     for _ in ui_construct_complete_mb:unpack() do
         cur_mode = ""
+        gameplay.world_update = true
         engine.set_camera("camera_default.prefab")
         construct_button_events.cancel()
 

@@ -257,12 +257,11 @@ local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
 local terrain = ecs.require "terrain"
 local math3d = require "math3d"
-
-
+local engine = ecs.require "engine"
 
 function igame_object.get_game_object(x, y)
-    for game_object_eid in pairs(game_object_binding) do
-        local game_object = assert(world:entity(game_object_eid))
+    -- 此处必须用 select, 不能用 game_object_binding 缓存, 因为 game_object 可能未创建好
+    for _, game_object in engine.world_select "game_object" do
         local gameplay_id = x | (y << 8)
         if game_object.gameplay_id == gameplay_id then
             return game_object

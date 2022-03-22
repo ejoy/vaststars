@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
 
 local m = {}
-m.update = true
+m.world_update = true
 
 function m.select(...)
     return world.ecs:select(...)
@@ -18,7 +18,7 @@ function m.update()
         v.capacitance.shortage = 0
     end
 
-    if m.update then
+    if m.world_update then
         world:update()
     end
 end
