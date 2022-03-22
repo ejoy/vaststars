@@ -42,20 +42,6 @@ local function check_construct_detector(prototype_name, x, y, dir)
     return true
 end
 
-local function update_basecolor_by_pos(game_object)
-    local gameplay_entity = game_object.gameplay_entity
-    local basecolor_factor
-
-    local x, y = igame_object.get_coord(game_object)
-    if not check_construct_detector(gameplay_entity.prototype_name, x, y, gameplay_entity.dir) then
-        basecolor_factor = CONSTRUCT_RED_BASIC_COLOR
-    else
-        basecolor_factor = CONSTRUCT_GREEN_BASIC_COLOR
-    end
-
-    igame_object.set_state(game_object, gameplay_entity.prototype_name, "translucent", basecolor_factor)
-end
-
 local function deepcopy(t)
     local r = {}
     for k, v in pairs(t) do
@@ -72,8 +58,7 @@ local function confirm_construct(game_object)
     local gameplay_entity = game_object.gameplay_entity
     local construct_detector = prototype.get_construct_detector(gameplay_entity.prototype_name)
     if construct_detector then
-        local x, y = igame_object.get_coord(game_object)
-        if not check_construct_detector(gameplay_entity.prototype_name, x, y, gameplay_entity.dir) then
+        if not check_construct_detector(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y, gameplay_entity.dir) then
             print("can not construct") -- todo error tips
             return
         end
@@ -226,7 +211,14 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
         end
     end
 
-    update_basecolor_by_pos(game_object)
+    local basecolor_factor
+    if not check_construct_detector(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y, gameplay_entity.dir) then
+        basecolor_factor = CONSTRUCT_RED_BASIC_COLOR
+    else
+        basecolor_factor = CONSTRUCT_GREEN_BASIC_COLOR
+    end
+    igame_object.set_state(game_object, gameplay_entity.prototype_name, "translucent", basecolor_factor)
+
     iconstruct_button.show(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y)
 end
 

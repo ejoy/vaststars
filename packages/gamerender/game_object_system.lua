@@ -427,13 +427,3 @@ do
     end
 end
 
-function igame_object.get_coord(game_object)
-    local prefab_object = igame_object.get_prefab_object(game_object.id)
-    if not prefab_object then
-        return
-    end
-
-    local position = math3d.tovalue(iom.get_position(world:entity(prefab_object.root)))
-    local coord = terrain.get_coord_by_position(position)
-    return coord[1], coord[2]
-end

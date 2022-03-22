@@ -99,7 +99,6 @@ interface "igame_object"
     .method "set_prototype_name"
     .method "set_state"
     .method "set_dir"
-    .method "get_coord"
     .method "get_game_object"
 
 system "construct_button_system"
