@@ -29,7 +29,7 @@ prototype "机器爪1" {
     model = "prefabs/inserter-1.prefab",
     type = {"entity", "inserter", "consumer"},
     area = "1x1",
-    speed = "10s",
+    speed = "1s",
     power = "12kW",
     priority = "secondary",
 }
