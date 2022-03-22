@@ -323,8 +323,6 @@ function construct_sys:data_changed()
                     gameplay.create_entity(entity)
                     game_object.gameplay_id = entity.x | (entity.y << 8)
                 end
-                local gameplay_entity = gameplay.entity(entity.x | (entity.y << 8))
-
                 igame_object.set_state(game_object, entity.prototype_name, "opaque") --RETODO prototype_name nil
                 game_object.gameplay_entity = {}
 
