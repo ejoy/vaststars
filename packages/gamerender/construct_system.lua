@@ -207,7 +207,7 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
         return
     end
 
-    igame_object.set_position(game_object, position)
+    igame_object.set_position(game_object.id, position)
 
     local sx, sy = gameplay_entity.x, gameplay_entity.y
     gameplay_entity.x, gameplay_entity.y = x, y

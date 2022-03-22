@@ -31,6 +31,13 @@ function inserter_sys.update_world()
         end
 
         local pt = assert(prototype.query(e.entity.prototype))
+
+        if inserter.hold_item ~= 0 then
+            local hold_item_pt = assert(prototype.query(inserter.hold_item))
+            igame_object.attach(game_object.id, "empty9", hold_item_pt.name)
+        else
+            igame_object.detach(game_object.id)
+        end
         igame_object.animation_update(game_object.id, animation_name, get_percent(inserter.process, assert(pt.speed)))
     end
 end

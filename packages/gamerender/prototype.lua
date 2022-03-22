@@ -48,13 +48,13 @@ end
 
 function prototype.get_prefab_file(prototype_name)
     assert(prototype_name)
-    local cfg = entity_cfg[prototype_name]
-    if not cfg then
+    local pt = gameplay.queryByName("entity", prototype_name)
+    if not pt then
         log.error(("can not found entity `%s`"):format(prototype_name))
         return
     end
 
-    return cfg.prefab
+    return pt.model
 end
 
 function prototype.get_construct_detector(prototype_name)

@@ -4,17 +4,35 @@ local w = world.w
 
 local iani = ecs.import.interface "ant.animation|ianimation"
 local ipickup_mapping = ecs.import.interface "vaststars.gamerender|ipickup_mapping"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local imaterial = ecs.import.interface "ant.asset|imaterial"
+local prototype = ecs.require "prototype"
+
 local igame_object = ecs.interface "igame_object"
 local game_object_sys = ecs.system "game_object_system"
 local game_object_remove_mb = world:sub {"game_object_system", "remove"}
+local game_object_remove_attach_mb = world:sub {"game_object_system", "remove_attach"}
+local prefab_path = "/pkg/vaststars.resources/%s"
+local game_object_binding = {}
+
+local function create_prefab_object(prefab)
+    local prefab_object = world:create_object(prefab)
+    prefab_object.tag = prefab.tag
+    return prefab_object
+end
+
+function game_object_sys:component_init()
+    for _, _, prefab_object in game_object_remove_attach_mb:unpack() do
+        ecs.method.set_parent(prefab_object.root, nil)
+        prefab_object:remove()
+    end
+end
 
 function game_object_sys:update_world()
     for _, _, game_object_eid in game_object_remove_mb:unpack() do
         world:remove_entity(game_object_eid)
     end
 end
-
-local game_object_binding = {}
 
 local prefab_events = {}
 prefab_events.on_ready = function(game_object, binding, prefab)
@@ -32,6 +50,10 @@ prefab_events.on_ready = function(game_object, binding, prefab)
             binding.animation_eid_cache[#binding.animation_eid_cache + 1] = eid
         end
 
+        if e.material then
+            binding.material_eid_cache[#binding.material_eid_cache + 1] = eid
+        end
+
         if e.slot then
             binding.slot_eid_cache[e.name] = eid
         end
@@ -39,6 +61,21 @@ prefab_events.on_ready = function(game_object, binding, prefab)
     end
 end
 prefab_events.on_update = function(game_object, binding, prefab)
+end
+
+local function detach(game_object_eid)
+    local binding = game_object_binding[game_object_eid]
+    if not binding then
+        log.error(("can not found game_object `%s`"):format(game_object_eid))
+        return
+    end
+
+    local prefab_object = assert(binding.cur_attach_prefab_object).prefab_object
+    if not prefab_object then
+        return
+    end
+    world:pub {"game_object_system", "remove_attach", prefab_object}
+    binding.cur_attach_prefab_object = {}
 end
 
 do
@@ -55,6 +92,37 @@ do
         end
     end
 
+    funcs["update_basecolor"] = function(game_object, binding, prefab, basecolor_factor)
+        for _, eid in ipairs(binding.material_eid_cache) do
+            imaterial.set_property(world:entity(eid), "u_basecolor_factor", basecolor_factor)
+        end
+    end
+
+    funcs["attach"] = function(game_object, binding, prefab, slot_name, prototype_name)
+        local prefab_file = prototype.get_prefab_file(prototype_name)
+        if not prefab_file then
+            return
+        end
+
+        if binding.cur_attach_prefab_object.slot_name == slot_name and binding.cur_attach_prefab_object.prototype_name == prototype_name then
+            return
+        end
+        detach(game_object.id)
+
+        local prefab = ecs.create_instance(prefab_path:format(prefab_file))
+        prefab.on_message = function() end
+        local prefab_object = create_prefab_object(prefab)
+
+        local eid = assert(binding.slot_eid_cache[slot_name])
+        ecs.method.set_parent(prefab_object.root, eid)
+
+        binding.cur_attach_prefab_object = {slot_name = slot_name, prototype_name = prototype_name, prefab_object = prefab_object}
+    end
+
+    funcs["detach"] = function(game_object, binding, prefab)
+        detach(game_object.id)
+    end
+
     function prefab_events.on_message(game_object, binding, prefab, cmd, ...)
         local func = funcs[cmd]
         if not func then
@@ -65,12 +133,6 @@ do
 end
 
 prefab_events.on_init = function(game_object, binding, prefab)
-end
-
-local function create_prefab_object(prefab)
-    local prefab_object = world:create_object(prefab)
-    prefab_object.tag = prefab.tag
-    return prefab_object
 end
 
 local function get_prefab_object(eid)
@@ -116,7 +178,9 @@ function igame_object.bind(game_object_eid, prefab)
     binding.pause_animation = true
     binding.slot_eid_cache = {}
     binding.animation_eid_cache = {}
+    binding.material_eid_cache = {}
     binding.cur_animation = nil
+    binding.cur_attach_prefab_object = {}
     return assert(prefab_object)
 end
 
@@ -158,7 +222,44 @@ function igame_object.animation_update(game_object_eid, animation_name, process)
     end
 end
 
+function igame_object.set_position(game_object_eid, position)
+    local prefab_object = get_prefab_object(game_object_eid)
+    if not prefab_object then
+        return
+    end
+    iom.set_position(world:entity(prefab_object.root), position)
+end
+
+function igame_object.attach(game_object_eid, slot_name, prototype_name)
+    local prefab_object = get_prefab_object(game_object_eid)
+    if not prefab_object then
+        log.error(("can not found prefab_object `%s`"):format(game_object_eid))
+        return
+    end
+    prefab_object:send("attach", slot_name, prototype_name)
+end
+
+function igame_object.detach(game_object_eid)
+    local prefab_object = get_prefab_object(game_object_eid)
+    if not prefab_object then
+        log.error(("can not found prefab_object `%s`"):format(game_object_eid))
+        return
+    end
+    prefab_object:send("detach")
+end
+
 -----------------------------------------------------------------------
+local cr = import_package "ant.compile_resource"
+local serialize = import_package "ant.serialize"
+local irq = ecs.import.interface "ant.render|irenderqueue"
+local iinput = ecs.import.interface "vaststars.gamerender|iinput"
+local mathpkg = import_package "ant.math"
+local mc = mathpkg.constant
+local terrain = ecs.require "terrain"
+local math3d = require "math3d"
+
+
+
 function igame_object.get_game_object(x, y)
     for game_object_eid in pairs(game_object_binding) do
         local game_object = assert(world:entity(game_object_eid))
@@ -168,19 +269,6 @@ function igame_object.get_game_object(x, y)
         end
     end
 end
-
-local prefab_path = "/pkg/vaststars.resources/%s"
-local cr = import_package "ant.compile_resource"
-local serialize = import_package "ant.serialize"
-local imaterial = ecs.import.interface "ant.asset|imaterial"
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-local irq = ecs.import.interface "ant.render|irenderqueue"
-local iinput = ecs.import.interface "vaststars.gamerender|iinput"
-local mathpkg = import_package "ant.math"
-local mc = mathpkg.constant
-local prototype = ecs.require "prototype"
-local terrain = ecs.require "terrain"
-local math3d = require "math3d"
 
 local function replace_material(template)
     for _, v in ipairs(template) do
@@ -194,30 +282,6 @@ local function replace_material(template)
     return template
 end
 
-local function update_basecolor(prefab, basecolor_factor)
-    local e
-    for _, eid in ipairs(prefab.tag["*"]) do
-        e = world:entity(eid)
-        if e.material then
-            imaterial.set_property(e, "u_basecolor_factor", basecolor_factor)
-        end
-    end
-end
-
-local on_prefab_message ; do
-    local funcs = {}
-    funcs["update_basecolor"] = function(game_object, binding, prefab, basecolor_factor)
-        update_basecolor(prefab, basecolor_factor)
-    end
-
-    function on_prefab_message(game_object, binding, prefab, cmd, ...)
-        local func = funcs[cmd]
-        if func then
-            func(game_object, binding, prefab, ...)
-        end
-    end
-end
-
 function igame_object.create(prototype_name, events)
     local prefab_file = prototype.get_prefab_file(prototype_name)
     if not prefab_file then
@@ -227,7 +291,6 @@ function igame_object.create(prototype_name, events)
     local f = prefab_path:format(prefab_file)
     local template = replace_material(serialize.parse(f, cr.read_file(f)))
     local prefab = ecs.create_instance(template)
-    prefab.on_message = on_prefab_message
     prefab.on_ready = events.on_ready
 
     local area = prototype.get_area(prototype_name)
@@ -282,9 +345,6 @@ function igame_object.set_prototype_name(game_object, prototype_name)
     end
 
     local prefab = ecs.create_instance(template)
-    prefab.on_message = on_prefab_message
-    prefab.on_ready = on_prefab_ready
-
     iom.set_position(world:entity(prefab.root), position)
 
     local prefab_object = igame_object.bind(game_object.id, prefab)
@@ -335,9 +395,6 @@ function igame_object.set_state(game_object, prototype_name, state, color)
         end
 
         local prefab = ecs.create_instance(template)
-        prefab.on_message = on_prefab_message
-        prefab.on_ready = on_prefab_ready
-
         re = world:entity(prefab.root)
         iom.set_position(re, position)
         iom.set_rotation(re, rotation)
@@ -368,14 +425,6 @@ do
         end
         iom.set_rotation(world:entity(prefab_object.root), rotators[dir])
     end
-end
-
-function igame_object.set_position(game_object, position)
-    local prefab_object = igame_object.get_prefab_object(game_object.id)
-    if not prefab_object then
-        return
-    end
-    iom.set_position(world:entity(prefab_object.root), position)
 end
 
 function igame_object.get_coord(game_object)

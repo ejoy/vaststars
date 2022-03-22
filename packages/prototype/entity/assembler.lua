@@ -2,6 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
 prototype "组装机1" {
+    model = "prefabs/assembling-1.prefab",
     type = {"entity", "assembling", "consumer", "fluidboxes"},
     area = "3x3",
     speed = "100%",
