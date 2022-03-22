@@ -25,8 +25,11 @@ prefab_events.on_ready = function(game_object, binding, prefab)
             goto continue
         end
 
-        if binding.pause_animation and e._animation then
-            iani.pause(eid, true)
+        if e._animation then
+            if binding.pause_animation then
+                iani.pause(eid, true)
+            end
+            binding.animation_eid_cache[#binding.animation_eid_cache + 1] = eid
         end
 
         if e.slot then
@@ -34,13 +37,33 @@ prefab_events.on_ready = function(game_object, binding, prefab)
         end
         ::continue::
     end
-
-    binding.init = true
 end
 prefab_events.on_update = function(game_object, binding, prefab)
 end
-prefab_events.on_message = function(game_object, binding, prefab)
+
+do
+    local funcs = {}
+    funcs["animation_play"] = function(game_object, binding, prefab, animation)
+        for _, eid in ipairs(binding.animation_eid_cache) do
+            iani.play(eid, animation)
+        end
+    end
+
+    funcs["animation_set_time"] = function(game_object, binding, prefab, animation_name, process)
+        for _, eid in ipairs(binding.animation_eid_cache) do
+            iani.set_time(eid, iani.get_duration(eid, animation_name) * process)
+        end
+    end
+
+    function prefab_events.on_message(game_object, binding, prefab, cmd, ...)
+        local func = funcs[cmd]
+        if not func then
+            return
+        end
+        func(game_object, binding, prefab, ...)
+    end
 end
+
 prefab_events.on_init = function(game_object, binding, prefab)
 end
 
@@ -89,10 +112,10 @@ function igame_object.bind(game_object_eid, prefab)
         ipickup_mapping.mapping(eid, game_object_eid)
     end
 
-    binding.init = false
     binding.prefab_object = prefab_object
     binding.pause_animation = true
     binding.slot_eid_cache = {}
+    binding.animation_eid_cache = {}
     binding.cur_animation = nil
     return assert(prefab_object)
 end
@@ -124,25 +147,13 @@ function igame_object.animation_update(game_object_eid, animation_name, process)
     end
 
     local prefab_object = assert(binding.prefab_object)
-    if not binding.cur_animation then
+    if not binding.cur_animation or binding.cur_animation.name ~= animation_name then
         binding.cur_animation = {name = animation_name, loop = false, manual = true, process = 0.0}
-        if binding.init then
-            for _, eid in ipairs(prefab_object.tag["*"]) do
-                iani.play(eid, binding.cur_animation)
-            end
-        end
+        prefab_object:send("animation_play", binding.cur_animation)
     end
 
     if binding.cur_animation.process ~= process then
-        if binding.init then
-            for _, eid in ipairs(prefab_object.tag["*"]) do
-                local e = world:entity(eid)
-                if e._animation then
-                    local s = iani.get_duration(eid, binding.cur_animation.animation_name)
-                    iani.set_time(eid, s * process)
-                end
-            end
-        end
+        prefab_object:send("animation_set_time", animation_name, process)
         binding.cur_animation.process = process
     end
 end
@@ -217,7 +228,7 @@ function igame_object.create(prototype_name, events)
     local template = replace_material(serialize.parse(f, cr.read_file(f)))
     local prefab = ecs.create_instance(template)
     prefab.on_message = on_prefab_message
-    prefab.on_ready = events and events.on_ready
+    prefab.on_ready = events.on_ready
 
     local area = prototype.get_area(prototype_name)
     if not area then
@@ -236,7 +247,6 @@ function igame_object.create(prototype_name, events)
             game_object_state = "",
             game_object_state_color = {},
             drapdrop = true,
-            pause_animation = true,
             construct_pickup = true,
             gameplay_id = -1,
             gameplay_entity = {
@@ -245,7 +255,7 @@ function igame_object.create(prototype_name, events)
                 dir = "N",
                 x = coord[1],
                 y = coord[2],
-            }
+            },
         }
     }
     igame_object.bind(game_object_eid, prefab)

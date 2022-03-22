@@ -7,7 +7,7 @@ local gameplay = ecs.require "gameplay"
 local prototype = ecs.require "prototype"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 
--- define packages\gameplay\type\assembling.lua
+-- define in packages\gameplay\type\assembling.lua
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
 
