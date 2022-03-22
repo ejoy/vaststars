@@ -31,6 +31,6 @@ function inserter_sys.update_world()
         end
 
         local pt = assert(prototype.query(e.entity.prototype))
-        igame_object.animation_update(game_object, animation_name, get_percent(inserter.process, assert(pt.speed)))
+        igame_object.animation_update(game_object.id, animation_name, get_percent(inserter.process, assert(pt.speed)))
     end
 end

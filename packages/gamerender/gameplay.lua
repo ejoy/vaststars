@@ -78,7 +78,7 @@ end
 
 init_func["chest"] = function(pt, template)
     template.items = {
-        {"铁矿石", 1},
+        {"铁矿石", 100},
     }
     return template
 end
