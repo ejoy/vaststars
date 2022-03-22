@@ -7,7 +7,6 @@
             local start = window.createModel "start" {
                 show = false,
                 scale_flag = false,
-                event_state = 'none',
                 info_flag = true,
                 fuel_interaction = false,
                 material_interaction = false,
@@ -254,7 +253,7 @@
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
-                            <div data-style-pointer-events="event_state" data-if="show">
+                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"character/buffer.png";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>

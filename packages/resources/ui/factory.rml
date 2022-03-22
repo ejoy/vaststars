@@ -18,7 +18,7 @@
             }
             .item-recipe-image {
                 margin: auto;
-                align-self:flex_start; 
+                align-self:flex-start;
                 background-image:"science/hand.png"; 
                 width: 10.67vmin; 
                 height: 10.67vmin; 
@@ -26,7 +26,7 @@
             }
             .item-recipe-info {
                 margin: auto;
-                align-self:flex_end; 
+                align-self:flex-end;
                 background-image:"science/book.png"; 
                 width: 10.67vmin;  
                 height: 10.67vmin; 
@@ -77,8 +77,7 @@
             }
             .recipe-item-name { 
                 width:55%;
-                margin:0.9em 0 0 0;
-                font-size: 3.17vmin;
+                font-size: 3.00vmin;
                 -webkit-text-stroke: 0.07vmin rgb(89, 73, 39);    
                 align-self: flex-start;
                 background-color: rgb(246, 237, 189);
@@ -88,14 +87,14 @@
             .recipe-item-number { 
                 width:50%;
                 margin:0.05em 0 0 0.1em;
-                font-size: 4.20vmin;
+                font-size: 3.95vmin;
                 color:rgb(243,244,221);
                 -webkit-text-stroke: 0.07vmin rgb(89, 73, 39);    
                 align-self: flex-start;
             }
             .procduction-max-num {
                 flex-direction: row;
-                -webkit-text-storke: 0.5px rgb(89, 73, 39);
+                -webkit-text-stroke: 0.07vmin rgb(89, 73, 39);    
                 align-self: flex-start;
                 font-size: 2.67vmin;
             }
@@ -112,7 +111,7 @@
             }         
             .production-current-num {
                 color:rgb(243,244,221);
-                -webkit-text-storke: 0.5px rgb(89, 73, 39);
+                -webkit-text-stroke: 0.07vmin rgb(89, 73, 39);    
                 align-self: flex-start;
                 text-align: center;
                 margin:0.5em 0 0 1.5em;
@@ -420,35 +419,35 @@
                             <div class = "recipe-title">所需材料</div>
                             <div class = "recipe-item">
                                 <div class="recipe-item-icon" style='background-image:"science/hand.png";'/>
-                                <div class="column" style="width:100%;">
+                                <div class="column" style="width:98%;">
                                     <div class="recipe-item-name">一二三四五六七八九十</div>
                                     <div class="recipe-item-number">X3 (19)</div>
                                 </div>
                             </div>   
                             <div class = "recipe-item">
                                 <div class="recipe-item-icon" style='background-image:"science/hand.png";'/>
-                                <div class="column" style="width:100%;">
+                                <div class="column" style="width:98%;">
                                     <div class="recipe-item-name">机器爪</div>
                                     <div class="recipe-item-number">X3 (19)</div>
                                 </div>
                             </div>  
                             <div class = "recipe-item">
                                 <div class="recipe-item-icon" style='background-image:"science/hand.png";'/>
-                                <div class="column" style="width:100%;">
+                                <div class="column" style="width:98%;">
                                     <div class="recipe-item-name">机器爪</div>
                                     <div class="recipe-item-number">X3 (19)</div>
                                 </div>
                             </div>  
                             <div class = "recipe-item">
                                 <div class="recipe-item-icon" style='background-image:"science/hand.png";'/>
-                                <div class="column" style="width:100%;">
+                                <div class="column" style="width:98%;">
                                     <div class="recipe-item-name">机器爪</div>
                                     <div class="recipe-item-number">X3 (19)</div>
                                 </div>
                             </div>  
                             <div class = "recipe-item">
                                 <div class="recipe-item-icon" style='background-image:"science/hand.png";'/>
-                                <div class="column" style="width:100%;">
+                                <div class="column" style="width:98%;">
                                     <div class="recipe-item-name">机器爪</div>
                                     <div class="recipe-item-number">X3 (19)</div>
                                 </div>

@@ -283,8 +283,9 @@ workbutton:hover {
 	background-size:cover;
 }
 .item-page-block {
+	margin-left:2em;
 	transition: left 0.5s linear-out; 
-	width:100%;
+	width:90%;
 	height:100%;
 }
 .build-info-reigon {
