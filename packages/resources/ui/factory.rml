@@ -1,196 +1,6 @@
 <rml>
     <head>
         <style>
-            div {
-                font: 120% "微软雅黑";
-            }
-            button {
-                width: 10.67vmin;
-                height: 10.67vmin;
-                margin: 0.1vmin;
-                text-align: center;
-                text-decoration: none;
-                border-radius: 1.07vmin;
-                border: 0.27vmin rgb(89, 73, 39);
-                opacity: 1;
-                transition: transform 2s elastic-out;
-                background-color: rgb(197,224,180);
-                transform: scale(1.0);
-            }
-            button:hover {
-                transform: scale(1.1);
-            }
-            .small_button {
-                margin: 0.00vmin;
-                opacity: 1;
-                background-color: rgb(250, 205, 9);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size: cover;
-                border-radius: 1.07vmin;
-                width: 8.00vmin;
-                height: 8.00vmin;
-            }
-            .button-bg {
-                 width: 6.67vmin;
-                 height: 6.67vmin;
-                 margin-bottom:5px;
-                 align-self:center;
-                 background-size:cover;
-            }
-            .button-text {
-                background-color: rgb(128,156,126);
-                font-size: 2.40vmin;
-                border-radius: 0.53vmin;
-            }
-            .panel {
-                background-color: rgb(44, 32, 18);
-                border: 0.13vmin rgb(89, 73, 39);
-                border-radius: 0.67vmin;
-                width: 48%;
-                height: 100%;
-            }
-            .header {
-                height: 8.00vmin;
-                flex-direction: row;
-                justify-content: space-between;
-            }
-            .row {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items:center;
-            }
-            .column {
-                flex-direction: column;
-            }
-            .property-icon {
-                width: 4.00vmin;
-                height: 4.00vmin;
-                justify-content: flex-end;
-                background-size: cover;
-            }
-            .property-text {
-                margin-left: 0.1vmin;
-                font-size: 4.0vmin;
-                color: rgb(0,176,240);
-            }
-            .item-container {
-                margin:0.2rem 1em;
-                flex-direction: column;
-                align-items: flex-start;
-                font-size: 50%;
-                height: 70%;
-            }
-            .tab-container {
-                margin:0.1rem auto;
-                flex-direction: row;
-                justify-content: space-evenly;
-                align-items:flex-start;
-                width:100%;
-                height: 10%;
-            }
-            .item {
-                flex-direction: column;
-                align-items:flex-start;
-                justify-content:flex-start;
-                background-color: rgb(250, 205, 9);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size:cover;
-                width: 12.00vmin;
-                height: 12.00vmin;
-                font-size: 2.40vmin;
-                background-image: "construct/insert1.png";
-            }
-            .item-title {
-                text-align: center;
-                top:14%;
-                background-color: rgb(246, 237, 189);
-                border-radius: 0.67vmin;
-                color:rgb(73, 60, 32);
-                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
-                width: 11.33vmin;
-                margin: 0.00vmin;
-            }
-            .item-count {
-                font-size: 4vmin;
-                position: absolute;
-                top: -1vmin;
-                left: 0vmin;
-                -webkit-text-stroke: 0.3vmin rgb(39, 32, 17);
-            }
-            workbutton {
-                font-size: 2.67vmin;
-                color: rgb(221, 235, 26);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                border-radius: 1.33vmin;
-                border: 0.27vmin rgb(89, 73, 39);
-                background-color: rgb(246, 142, 14);
-                height: 8.67vmin;
-                width: 17.33vmin;
-                transform: scale(1.0);
-                transition: color background-color transform 2s elastic-out;
-            }
-            workbutton:active {
-                transform: scale(1.0);
-            }
-            workbutton:hover {
-                transform: scale(1.1);
-                background-color: rgb(0,176,80);
-            }
-            .workbutton-bg {
-                width: 6.67vmin;
-                height: 6.67vmin; 
-                background-size: cover;
-                align-items: center;
-            }
-            .progress-background {
-                width: 6.67vmin;
-                height: 40.00vmin;
-                background-color: rgb(255,255,255);
-            }
-            .progress-fill {
-                width: 6.67vmin;
-                height: 40.00vmin;
-                background-color: rgb(112,48,160);
-            }
-            .menu-title {
-                -webkit-text-stroke: 0.20vmin rgb(0, 112, 192); 
-                font-size:200%;
-                justify-content: flex-start;
-                right:280%;
-            }
-            .back-button {
-                background-color: rgba(255, 255, 255, 0); 
-                border: 0.00vmin; 
-                background-image:"common/return.png"; 
-                width: 9.33vmin; 
-                height: 9.33vmin; 
-                background-size:cover;
-            }
-            .find-button {
-                top:0.8%; 
-                background-color: rgba(255, 255, 255, 0); 
-                border: 0.00vmin; 
-                background-image:"factory/seacher.png"; 
-                width: 9.07vmin; 
-                height: 9.07vmin; 
-                background-size:cover;
-            }
-            .catalog-desc {
-                font-size: 4.2vmin;
-                -webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
-                position:absolute;
-                top:-1vmin; 
-                left:0vmin;
-                color: rgb(221, 235, 26)
-            }
-            .item-container-region {
-                margin:auto;
-                height: 100%; 
-                flex-direction: row; 
-                justify-content: space-evenly;
-            }
             #item-name-block {
                 width: 100%; 
                 align-items: center; 
@@ -236,11 +46,6 @@
                 height: 100%; 
                 justify-content: flex-start;
             }
-            .draw-line {
-                margin-bottom:0.1em;
-                width: 100%;
-                border-bottom: 1.5px rgb(89, 73, 39);
-            }
             .recipe-title {
                 margin:0 0 0.1em 0;
                 height: 10%;
@@ -250,28 +55,30 @@
                 -webkit-text-stroke: 0.07vmin rgb(89, 73, 39);
             }
             .recipe-content {
+                width: 100%;
                 height: 80%;
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
             }
             .recipe-item {
+                width: 100%;
                 height:14%;
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: center;
             }
             .recipe-item-icon {
-                margin:auto 0.1em 0 1em;
-                width: 7.33vmin;
-                height: 7.33vmin;
+                margin:auto 0.1em 0 0.5em;
+                width: 8.33vmin;
+                height: 8.33vmin;
                 background-size: cover;
                 align-self: flex-start;
             }
             .recipe-item-name { 
-                width:50%;
-                margin:0.9em 0 0 0.1em;
-                font-size: 2.67vmin;
+                width:55%;
+                margin:0.9em 0 0 0;
+                font-size: 3.17vmin;
                 -webkit-text-stroke: 0.07vmin rgb(89, 73, 39);    
                 align-self: flex-start;
                 background-color: rgb(246, 237, 189);
@@ -281,7 +88,7 @@
             .recipe-item-number { 
                 width:50%;
                 margin:0.05em 0 0 0.1em;
-                font-size: 3.20vmin;
+                font-size: 4.20vmin;
                 color:rgb(243,244,221);
                 -webkit-text-stroke: 0.07vmin rgb(89, 73, 39);    
                 align-self: flex-start;
@@ -320,6 +127,7 @@
                 border: 0.07vmin rgb(89, 73, 39);
             }
             .button-start-production {
+                margin-left:0.5em;
                 flex-direction: column;
                 background-color: rgb(92,184,92);
                 width: 20%; 
@@ -353,46 +161,28 @@
                 align-items: center;
                 margin-top: 0.5em;
             }
-            .button-exchange-block {
-                flex-direction: row;
-                width: 100%;
-                height:100%;
-                align-items: center;
-                justify-content: space-evenly;
-                background-color: rgb(85, 85, 85);
-            }
-            .button-exchange {
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-                width: 22.00vmin;
-                height: 9.53vmin;
-                background-color: rgb(52, 207, 115);
-            }
-            .button-exchange-text {
-                font-size: 3.73vmin;
-                text-align: center;
-                color: rgb(255,249,214);
-            }
-            .button-exchange-arrow {
-                width: 7.31vmin;
-                height: 5.64vmin;
+            .small_button {
+                margin: 0.00vmin;
+                opacity: 1;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
                 background-size: cover;
-                background-image: "exchange/left_arrow.png";
+                border-radius: 1.07vmin;
+                width: 8.00vmin;
+                height: 8.00vmin;
             }
-            .button-exchange-box {
-                width: 7.00vmin;
-                height: 7.00vmin;
-                background-size: cover;
-                background-image: "exchange/yellow_box.png";
+            .progress-background {
+                width: 6.67vmin;
+                height: 40.00vmin;
+                background-color: rgb(255,255,255);
             }
-            .exchange-region {
-                position: absolute; 
-                width: 100%;    
-                background-color: rgb(40, 40, 40);
-                border: 0.22vmin rgb(89, 73, 39);
+            .progress-fill {
+                width: 6.67vmin;
+                height: 40.00vmin;
+                background-color: rgb(112,48,160);
             }
         </style>
+        <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             console.log("before createModel")
             local start = window.createModel "start" {
@@ -684,7 +474,7 @@
                                     <div class="property-text">1m36s</div>
                                 </div>
                             </div>
-                            <div class="row" style="height: 20%;">
+                            <div class="row" style="height: 20%; width:100%; justify-content: space-evenly;">
                                 <button class = "button-increase-item" style='background-image:"factory/return.png";'/>
                                 <button class = "button-increase-item" style='background-image:"factory/plus-five.png";'/>
                                 <button class = "button-increase-item" style='background-image:"factory/plus-one.png";'/>
