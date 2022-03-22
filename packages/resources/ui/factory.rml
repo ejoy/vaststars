@@ -480,7 +480,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="width:100%; height: 15%; ">
+                    <div class="row" style="width:100%; height: 15%;">
                         <div class="production-queue">
                             <div class="column" style="justify-content:center;">
                                 <div style="font-size: 3.33vmin;">制造</div>

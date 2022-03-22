@@ -285,28 +285,28 @@
                             <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"character/timer.png";'/>
-                                    <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                    <div class="property-text" style="color:rgb(0,176,240);">制造速度</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
                             <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"character/flash.png";'/>
-                                    <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
+                                    <div class="property-text" style="color:rgb(0,176,240);">工作功率</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
                             <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"character/health.png";'/>
-                                    <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                    <div class="property-text" style="color:rgb(0,176,240);">建筑生命</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
                             <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"character/buffer.png";'/>
-                                    <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
+                                    <div class="property-text" style="color:rgb(0,176,240);">待机能耗</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
@@ -462,10 +462,10 @@
                             </div>
                         </button>
                         <button class="truck-block" style="background-color: rgb(246, 237, 189);">
-                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png"; '/>                         
+                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png";'/>                         
                         </button>
                         <button class="truck-block" style="background-color: rgb(246, 237, 189);">
-                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png"; '/>                         
+                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png";'/>                         
                         </button>
                     </div>
                 </div>
@@ -530,10 +530,10 @@
                             </div>
                         </button>
                         <button class="truck-block" style="background-color: rgb(246, 237, 189);">
-                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png"; '/>                         
+                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png";'/>                         
                         </button>
                         <button class="truck-block" style="background-color: rgb(246, 237, 189);">
-                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png"; '/>                         
+                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png";'/>                         
                         </button>
                     </div>
                 </div>
