@@ -2,11 +2,12 @@
     <head>
         <style>
             .turck-info-region {
+                margin-top:1em;
                 flex-direction: column;
                 width: 100%; 
                 height: 70%;
                 align-items: center;
-                justify-content: center;
+                justify-content: flex-start;
             }
             .truck-block{
                 flex-direction: column;
@@ -77,6 +78,13 @@
                 height: 5.33vmin;
                 background-size: cover;   
             }
+            .exchange-region-1 {
+                margin:0.2em auto;
+                height:25%;
+                width: 100%;    
+                background-color: rgb(40, 40, 40);
+                border: 0.22vmin rgb(89, 73, 39);
+            }
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
@@ -84,6 +92,8 @@
             local start = window.createModel "start" {
                 building_info_flag = true,
                 show = false,
+                truck_interaction_1 = false,
+                truck_interaction_2 = false,
 
                 items = {
                     {id=100, icon0="correct.png", icon1="correct.png"},
@@ -198,6 +208,8 @@
                     start.detail_top = top
                     local dy = start.page_height - ((row + 1) * (start.item_size + start.gapy) + start.detail_height)
                     offset = (dy >= 0) and 0 or dy
+                    start.truck_interaction_1 = false
+                    start.truck_interaction_2 = false
                 else
                     start.selected_id = 0
                     --TODO: max value 1000
@@ -224,6 +236,21 @@
                     show_detail(false, 0, 0, 0)
                 end
             end
+
+            function start.ClickTruck1(event)
+                start.truck_interaction_1 = not start.truck_interaction_1
+                start.truck_interaction_2 = false
+                show_detail(false, 0, 0, 0)
+                console.log("---ClickTruck1---")
+            end
+
+            function start.ClickTruck2(event)
+                start.truck_interaction_2 = not start.truck_interaction_2
+                start.truck_interaction_1 = false
+                show_detail(false, 0, 0, 0)
+                console.log("---ClickTruck2---")
+            end
+
 
             window.addEventListener('message', function(event)
                 console.log("event.source.postMessage")
@@ -401,8 +428,8 @@
                     <div class = "menu-title-2">调整运输车</div>
                     <button class = "back-button" style='background-image: "cmdcenter/yellow_arrow.png";' data-event-click="ClickBack()"/>
                 </div>
-                <div class="turck-info-region" style = "height:40%;" data-if="!building_info_flag">
-                    <div class="row">
+                <div class="turck-info-region" style = "height:60%;" data-if="!building_info_flag">
+                    <div class="row" data-event-click="ClickTruck1()" style="height:20%">
                         <button class="truck-block">
                             <div class="truck-pic"/>                         
                             <div class="truck-info">
@@ -439,7 +466,26 @@
                             </div>
                         </button>
                     </div>
-                    <div class="row">
+                    <div class="exchange-region-1" data-if="truck_interaction_1 && !building_info_flag">
+                        <div class="button-exchange-block">
+                            <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
+                                <div class = "button-exchange-arrow"/>
+                                <div class = "button-exchange-text">全部</div>
+                                <div class = "button-exchange-box"/>
+                            </button>
+                            <button class="button-exchange">
+                                <div class = "button-exchange-arrow"/>
+                                <div class = "button-exchange-text">1组</div>
+                                <div class = "button-exchange-box"/>
+                            </button>
+                            <button class="button-exchange">
+                                <div class = "button-exchange-arrow"/>
+                                <div class = "button-exchange-text">1个</div>
+                                <div class = "button-exchange-box"/>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row" data-event-click="ClickTruck2()" style="height:20%">
                         <button class="truck-block">
                             <div class="truck-pic"/>                         
                             <div class="truck-info">
@@ -467,6 +513,25 @@
                         <button class="truck-block" style="background-color: rgb(246, 237, 189);">
                             <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png";'/>                         
                         </button>
+                    </div>
+                    <div class="exchange-region-1" data-if="truck_interaction_2 && !building_info_flag">
+                        <div class="button-exchange-block">
+                            <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
+                                <div class = "button-exchange-arrow"/>
+                                <div class = "button-exchange-text">全部</div>
+                                <div class = "button-exchange-box"/>
+                            </button>
+                            <button class="button-exchange">
+                                <div class = "button-exchange-arrow"/>
+                                <div class = "button-exchange-text">1组</div>
+                                <div class = "button-exchange-box"/>
+                            </button>
+                            <button class="button-exchange">
+                                <div class = "button-exchange-arrow"/>
+                                <div class = "button-exchange-text">1个</div>
+                                <div class = "button-exchange-box"/>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="turck-info-region" data-if="building_info_flag" data-event-click="ClickItemInfo()">
