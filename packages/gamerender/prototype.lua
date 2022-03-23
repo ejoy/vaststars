@@ -14,7 +14,7 @@ function prototype.pack_coord(x, y)
     return x | (y << 8)
 end
 
-function prototype.unpack_coord(v)
+function prototype.unpack_area(v)
     return v >> 8, v & 0xFF
 end
 
@@ -22,6 +22,15 @@ function prototype.query(prototype)
     local pt = gameplay.query(prototype)
     if not pt then
         log.error(("can not found prototype(%s)"):format(prototype))
+        return
+    end
+    return pt
+end
+
+function prototype.query_by_name(main_type, prototype_name)
+    local pt = gameplay.queryByName(main_type, prototype_name)
+    if not pt then
+        log.error(("can not found prototype_name(%s)"):format(prototype_name))
         return
     end
     return pt

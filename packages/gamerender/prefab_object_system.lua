@@ -81,7 +81,8 @@ function iprefab_object.create(prefab_file_name, state, color)
     end
 
     local prefab_object = world:create_object(prefab)
-    if color then
+    assert((state == "translucent" and color ~= nil) or (state ~= "translucent" and color == nil))
+    if state == "translucent" and color then
         prefab_object:send("update_basecolor", color)
     end
 

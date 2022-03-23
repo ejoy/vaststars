@@ -12,17 +12,10 @@ local game_object_binding = {}
 local function get_game_object_binding(game_object_eid)
     local binding = game_object_binding[game_object_eid]
     if not binding then
-        log.error(("can not found game_object `%s`"):format(game_object_eid))
+        log.error(("can not found game_object binding`%s`"):format(game_object_eid))
         return
     end
     return binding
-end
-
-local function get_prefab_object(game_object_eid)
-    if not game_object_binding[game_object_eid] then
-        return
-    end
-    return game_object_binding[game_object_eid].prefab_object
 end
 
 local function pickup_mapping(prefab_object, game_object_eid)
@@ -37,67 +30,84 @@ local function pickup_unmapping(prefab_object, game_object_eid)
     end
 end
 
--- 调用此接口时, 允许 game_object 与 prefab 所对应的 entity 未创建好
-function igame_object.bind(game_object_eid, prefab_object)
-    local old_prefab_object = get_prefab_object(game_object_eid)
-    if old_prefab_object then
-        pickup_unmapping(old_prefab_object, game_object_eid)
-        old_prefab_object:remove()
+local function set_srt(e, srt)
+    if not srt then
+        return
+    end
+    iom.set_scale(e, srt.s)
+    iom.set_rotation(e, srt.r)
+    iom.set_position(e, srt.t)
+end
+
+local function bind_prefab_object(game_object_eid, prefab_object)
+    local binding = game_object_binding[game_object_eid]
+    if not binding then
+        return
     end
 
-    local binding = game_object_binding[game_object_eid] or {}
-    game_object_binding[game_object_eid] = binding
+    if binding.prefab_object then
+        pickup_unmapping(binding.prefab_object, game_object_eid)
+        binding.prefab_object:remove()
+    end
+
     pickup_mapping(prefab_object, game_object_eid)
 
     binding.prefab_object = prefab_object
-    binding.cur_animation = nil
-    binding.cur_attach_prefab_object = {}
+    binding.animation = {}
+    binding.attach_slot_name = ""
+    binding.attach_prototype_name = ""
 end
 
 function igame_object.remove(game_object_eid)
-    local prefab_object = get_prefab_object(game_object_eid)
+    local binding = get_game_object_binding(game_object_eid)
+    if not binding then
+        return
+    end
+
+    local prefab_object = binding.prefab_object
     if prefab_object then
-        game_object_binding[game_object_eid] = nil
         prefab_object:remove()
     end
+
+    game_object_binding[game_object_eid] = nil
     world:remove_entity(game_object_eid)
 end
 
 -- process = [0, 1]
 function igame_object.animation_update(game_object_eid, animation_name, process)
-    local binding = game_object_binding[game_object_eid]
+    local binding = get_game_object_binding(game_object_eid)
     if not binding then
-        log.error(("can not found game_object `%s`"):format(game_object_eid))
         return
     end
 
     local prefab_object = assert(binding.prefab_object)
-    if not binding.cur_animation or binding.cur_animation.name ~= animation_name then
-        binding.cur_animation = {name = animation_name, loop = false, manual = true, process = 0.0}
-        prefab_object:send("animation_play", binding.cur_animation)
+    if binding.animation.name ~= animation_name then
+        binding.animation = {name = animation_name, process = process, loop = false, manual = true}
+        prefab_object:send("animation_play", binding.animation)
     end
 
-    if binding.cur_animation.process ~= process then
+    if binding.animation.process ~= process then
+        binding.animation.process = process
         prefab_object:send("animation_set_time", animation_name, process)
-        binding.cur_animation.process = process
     end
 end
 
 function igame_object.set_position(game_object_eid, position)
-    local prefab_object = get_prefab_object(game_object_eid)
-    if not prefab_object then
+    local binding = get_game_object_binding(game_object_eid)
+    if not binding then
         return
     end
-    iom.set_position(world:entity(prefab_object.root), position)
+    iom.set_position(world:entity(binding.prefab_object.root), position)
 end
 
+------------------------------------------------------------------------------------
 function igame_object.attach(game_object_eid, slot_name, prototype_name)
-    local game_object_binding = get_game_object_binding(game_object_eid)
-    if not game_object_binding then
+    local binding = get_game_object_binding(game_object_eid)
+    if not binding then
         return
     end
 
-    if game_object_binding.cur_attach_prefab_object.slot_name == slot_name and game_object_binding.cur_attach_prefab_object.prototype_name == prototype_name then
+    if binding.attach_slot_name == slot_name and binding.attach_prototype_name == prototype_name then
         return
     end
 
@@ -106,17 +116,16 @@ function igame_object.attach(game_object_eid, slot_name, prototype_name)
         return
     end
 
-    local prefab_object = assert(game_object_binding.prefab_object)
+    local prefab_object = assert(binding.prefab_object)
     prefab_object:send("attach_slot", slot_name, prefab_file_name)
 end
 
 function igame_object.detach(game_object_eid)
-    local prefab_object = get_prefab_object(game_object_eid)
-    if not prefab_object then
-        log.error(("can not found prefab_object `%s`"):format(game_object_eid))
+    local binding = get_game_object_binding(game_object_eid)
+    if not binding then
         return
     end
-    prefab_object:send("detach_slot")
+    binding.prefab_object:send("detach_slot")
 end
 
 -----------------------------------------------------------------------
@@ -144,21 +153,16 @@ function igame_object.get_game_object(x, y)
 end
 
 function igame_object.create(prototype_name, state, color)
-    local prefab_file_name = prototype.get_prefab_file(prototype_name)
-    if not prefab_file_name then
-        return
-    end
-
-    local area = prototype.get_area(prototype_name)
-    if not area then
+    local pt = prototype.query_by_name("entity", prototype_name)
+    if not pt then
         return
     end
 
     local viewdir = iom.get_direction(world:entity(irq.main_camera()))
     local origin = math3d.tovalue(iinput.ray_hit_plane({origin = mc.ZERO, dir = math3d.mul(math.maxinteger, viewdir)}, {dir = mc.YAXIS, pos = mc.ZERO_PT}))
-    local coord, position = terrain.adjust_position(origin, area)
+    local coord, position = terrain.adjust_position(origin, pt.area)
 
-    local prefab_object = iprefab_object.create(prefab_file_name, state, color)
+    local prefab_object = iprefab_object.create(pt.model, state, color)
     iom.set_position(world:entity(prefab_object.root), position)
 
     local game_object_eid = ecs.create_entity {
@@ -176,26 +180,33 @@ function igame_object.create(prototype_name, state, color)
             },
         }
     }
-    igame_object.bind(game_object_eid, prefab_object)
+    game_object_binding[game_object_eid] = {state = state, color = color}
+
+    bind_prefab_object(game_object_eid, prefab_object)
     return coord[1], coord[2]
 end
 
-function igame_object.set_prototype_name(game_object, prototype_name)
+function igame_object.set_prototype_name(game_object_eid, prototype_name)
+    local binding = get_game_object_binding(game_object_eid)
+    if not binding then
+        return
+    end
+
     local prefab_file_name = prototype.get_prefab_file(prototype_name)
     if not prefab_file_name then
         return
     end
 
-    local old_prefab_object = get_prefab_object(game_object.id)
-    if not old_prefab_object then
-        return
+    local srt
+    local old_prefab_object = binding.prefab_object
+    if old_prefab_object then
+        srt = world:entity(old_prefab_object.root).scene.srt
     end
-    local position = iom.get_position(world:entity(old_prefab_object.root))
 
-    local prefab_object = iprefab_object.create(prefab_file_name, game_object.game_object.state, game_object.game_object.color)
-    iom.set_position(world:entity(prefab_object.root), position)
+    local prefab_object = iprefab_object.create(prefab_file_name, binding.state, binding.color)
+    set_srt(world:entity(prefab_object.root), srt)
 
-    igame_object.bind(game_object.id, prefab_object)
+    bind_prefab_object(game_object_eid, prefab_object)
 end
 
 -- state : translucent opaque
@@ -212,34 +223,35 @@ local function color_equal(c1, c2)
     return true
 end
 
-function igame_object.set_state(game_object, prototype_name, state, color)
+function igame_object.set_state(game_object_eid, prototype_name, state, color)
+    local binding = get_game_object_binding(game_object_eid)
+    if not binding then
+        return
+    end
+
     local prefab_object
-    if game_object.game_object.state ~= state then
-        game_object.game_object.state = state
+    if binding.state ~= state then
+        binding.state, binding.color = state, color
 
         local prefab_file_name = prototype.get_prefab_file(prototype_name)
         if not prefab_file_name then
             return
         end
 
-        local old_prefab_object = get_prefab_object(game_object.id)
-        if not old_prefab_object then
-            return
+        local srt
+        local old_prefab_object = binding.prefab_object
+        if old_prefab_object then
+            srt = world:entity(old_prefab_object.root).scene.srt
         end
-        local re = world:entity(old_prefab_object.root)
-        local rotation = iom.get_rotation(re)
-        local position = iom.get_position(re)
 
-        prefab_object = iprefab_object.create(prefab_file_name, game_object.game_object.state, color)
-        re = world:entity(prefab_object.root)
-        iom.set_position(re, position)
-        iom.set_rotation(re, rotation)
+        local prefab_object = iprefab_object.create(prefab_file_name, binding.state, binding.color)
+        set_srt(world:entity(prefab_object.root), srt)
 
-        igame_object.bind(game_object.id, prefab_object)
+        bind_prefab_object(game_object_eid, prefab_object)
     else
-        prefab_object = get_prefab_object(game_object.id)
-        if color and not color_equal(game_object.game_object.color, color) then
-            game_object.game_object.color = color
+        prefab_object = binding.prefab_object
+        if color and not color_equal(binding.color, color) then
+            binding.color = color
             prefab_object:send("update_basecolor", color)
         end
     end
@@ -253,12 +265,11 @@ do
         W = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
     }
 
-    function igame_object.set_dir(game_object, dir)
-        local prefab_object = get_prefab_object(game_object.id)
-        if not prefab_object then
+    function igame_object.set_dir(game_object_eid, dir)
+        local binding = get_game_object_binding(game_object_eid)
+        if not binding then
             return
         end
-        iom.set_rotation(world:entity(prefab_object.root), rotators[dir])
+        iom.set_rotation(world:entity(binding.prefab_object.root), rotators[dir])
     end
 end
-

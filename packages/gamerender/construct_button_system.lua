@@ -43,7 +43,7 @@ local coord_offset = {
     {
         name = "cancel.png",
         coord_func = function(x, y, area)
-            local width = prototype.unpack_coord(area)
+            local width = prototype.unpack_area(area)
             return x + UP_RIGHT[1] * width, y + UP_RIGHT[2]
         end,
         event = function()
@@ -54,7 +54,7 @@ local coord_offset = {
         name = "rotate.png",
         coord_func = function(x, y, area)
             local dx, dy
-            local width, height = prototype.unpack_coord(area)
+            local width, height = prototype.unpack_area(area)
             -- 针对建筑宽度大于 1 的特殊处理
             if width > 1 then
                 if width % 2 == 0 then

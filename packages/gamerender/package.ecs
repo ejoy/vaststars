@@ -88,7 +88,6 @@ interface "iprefab_object"
 
 interface "igame_object"
     .implement "game_object_system.lua"
-    .method "bind"
     .method "remove"
     .method "set_position"
     .method "animation_update"

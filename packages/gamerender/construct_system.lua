@@ -70,10 +70,10 @@ local function confirm_construct(game_object)
         end
     end
 
-    igame_object.set_state(game_object, gameplay_entity.prototype_name, "translucent", CONSTRUCT_WHITE_BASIC_COLOR)
+    iconstruct_button.hide()
+    igame_object.set_state(game_object.id, gameplay_entity.prototype_name, "translucent", CONSTRUCT_WHITE_BASIC_COLOR)
     game_object.drapdrop = false
     game_object.construct_pickup = false
-    iconstruct_button.hide()
 
     local data_object = get_data_object(game_object)
     construct_queue[#construct_queue + 1] = {eid = game_object.id, x = data_object.x, y = data_object.y, entity = deepcopy(data_object)}
@@ -135,8 +135,8 @@ local adjust_neighbor_pipe ; do
                 data_object.prototype_name = prototype_name
                 data_object.dir = dir
 
-                igame_object.set_prototype_name(game_object, prototype_name)
-                igame_object.set_dir(game_object, dir)
+                igame_object.set_prototype_name(game_object.id, prototype_name)
+                igame_object.set_dir(game_object.id, dir)
 
                 construct_queue[#construct_queue + 1] = {eid = game_object.id, x = data_object.x, y = data_object.y, entity = deepcopy(data_object)}
             end
@@ -153,41 +153,40 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
     end
     assert(game_object.construct_pickup == true)
 
-    local gameplay_entity = game_object.gameplay_entity
-    local x, y, position = prototype.get_coord(gameplay_entity.prototype_name, mouse_x, mouse_y)
-    if x and y and gameplay_entity.x == x and gameplay_entity.y == y then
+    local data_object = get_data_object(game_object)
+    local x, y, position = prototype.get_coord(data_object.prototype_name, mouse_x, mouse_y)
+    if x and y and data_object.x == x and data_object.y == y then
         return
     end
 
     igame_object.set_position(game_object.id, position)
 
-    local sx, sy = gameplay_entity.x, gameplay_entity.y
-    gameplay_entity.x, gameplay_entity.y = x, y
+    local sx, sy = data_object.x, data_object.y
+    data_object.x, data_object.y = x, y
     game_object.game_object.x, game_object.game_object.y = x, y
 
-    -- 针对水管的特殊处理
-    if prototype.is_pipe(gameplay_entity.prototype_name) then
-        adjust_neighbor_pipe({sx, sy}, {x, y})
-
-        local prototype_name, dir = pipe.adjust(gameplay_entity.x, gameplay_entity.y, get_entity)
-        if prototype_name and (prototype_name ~= gameplay_entity.prototype_name or dir ~= gameplay_entity.dir )then
-            gameplay_entity.prototype_name = prototype_name
-            igame_object.set_prototype_name(game_object, prototype_name)
-
-            gameplay_entity.dir = dir
-            igame_object.set_dir(game_object, dir)
-        end
-    end
-
     local basecolor_factor
-    if not check_construct_detector(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y, gameplay_entity.dir) then
+    if not check_construct_detector(data_object.prototype_name, data_object.x, data_object.y, data_object.dir) then
         basecolor_factor = CONSTRUCT_RED_BASIC_COLOR
     else
         basecolor_factor = CONSTRUCT_GREEN_BASIC_COLOR
     end
-    igame_object.set_state(game_object, gameplay_entity.prototype_name, "translucent", basecolor_factor)
+    igame_object.set_state(game_object.id, data_object.prototype_name, "translucent", basecolor_factor)
+    iconstruct_button.show(data_object.prototype_name, data_object.x, data_object.y)
 
-    iconstruct_button.show(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y)
+    -- 针对水管的特殊处理
+    if prototype.is_pipe(data_object.prototype_name) then
+        adjust_neighbor_pipe({sx, sy}, {x, y})
+
+        local prototype_name, dir = pipe.adjust(data_object.x, data_object.y, get_entity)
+        if prototype_name and (prototype_name ~= data_object.prototype_name or dir ~= data_object.dir )then
+            data_object.prototype_name = prototype_name
+            data_object.dir = dir
+
+            igame_object.set_prototype_name(game_object.id, prototype_name)
+            igame_object.set_dir(game_object.id, dir)
+        end
+    end
 end
 
 local construct_button_events = {}
@@ -233,9 +232,8 @@ construct_button_events.rotate = function()
         log.error("can not found game_object")
         return
     end
-    local dir = dir_rotate(game_object.gameplay_entity.dir, -1) -- 逆时针方向旋转一次
-    game_object.gameplay_entity.dir = dir
-    igame_object.set_dir(game_object, dir)
+    game_object.gameplay_entity.dir = dir_rotate(game_object.gameplay_entity.dir, -1) -- 逆时针方向旋转一次
+    igame_object.set_dir(game_object.id, game_object.gameplay_entity.dir)
 end
 
 function construct_sys:camera_usage()
@@ -285,7 +283,7 @@ function construct_sys:data_changed()
                 if not gameplay.entity(v.x, v.y) then
                     gameplay.create_entity(entity)
                 end
-                igame_object.set_state(game_object, entity.prototype_name, "opaque")
+                igame_object.set_state(game_object.id, entity.prototype_name, "opaque")
                 game_object.gameplay_entity = {}
 
                 ::continue::
@@ -322,7 +320,7 @@ function construct_sys:data_changed()
 
             game_object.drapdrop = true
             game_object.construct_pickup = true
-            igame_object.set_state(game_object, gameplay_entity.prototype_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
+            igame_object.set_state(game_object.id, gameplay_entity.prototype_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
             iconstruct_button.show(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y) --RETODO prototype_name nil
         end
         ::continue::

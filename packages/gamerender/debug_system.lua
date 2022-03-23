@@ -52,6 +52,24 @@ funcs[1] = function ()
     end
 end
 
+funcs[2] = function ()
+    local engine = ecs.require "engine"
+    local gameplay = ecs.require "gameplay"
+
+    local function get_data_object(game_object)
+        return setmetatable(game_object.gameplay_entity, {
+            __index = gameplay.entity(game_object.game_object.x, game_object.game_object.y) or {}
+        })
+    end
+
+    print("dump game_object ----------------- begin")
+    for _, game_object in engine.world_select "game_object" do
+        local data_object = get_data_object(game_object)
+        print(data_object.prototype_name, data_object.x, data_object.y, data_object.dir)
+    end
+    print("dump game_object ----------------- end")
+end
+
 function debug_sys:ui_update()
     for _, i in debug_mb:unpack() do 
         local func = funcs[i]
