@@ -266,7 +266,7 @@ local function replace_material(template)
     for _, v in ipairs(template) do
         for _, policy in ipairs(v.policy) do
             if policy == "ant.render|render" or policy == "ant.render|simplerender" then
-                v.data.material = "/pkg/vaststars.resources/translucent.material"
+                v.data.material = "/pkg/vaststars.resources/materials/translucent.material"
             end
         end
     end
