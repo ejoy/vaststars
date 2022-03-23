@@ -353,11 +353,8 @@ workbutton:hover {
 	border: 0.22vmin rgb(89, 73, 39);
 }
 .exchange-title {
-	flex-direction: row;
 	font-size: 42px;
 	text-align: center;
-	align-items: center;
-	justify-content: center;
 	height:35%;
 }
 .button-exchange-block {
@@ -395,6 +392,13 @@ workbutton:hover {
 }
 .exchange-region {
 	position: absolute; 
+	width: 100%;    
+	background-color: rgb(40, 40, 40);
+	border: 0.22vmin rgb(89, 73, 39);
+}
+.exchange-region-1 {
+	margin:0.2em auto;
+	height:25%;
 	width: 100%;    
 	background-color: rgb(40, 40, 40);
 	border: 0.22vmin rgb(89, 73, 39);

@@ -78,13 +78,6 @@
                 height: 5.33vmin;
                 background-size: cover;   
             }
-            .exchange-region-1 {
-                margin:0.2em auto;
-                height:25%;
-                width: 100%;    
-                background-color: rgb(40, 40, 40);
-                border: 0.22vmin rgb(89, 73, 39);
-            }
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
