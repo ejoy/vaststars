@@ -7,8 +7,6 @@
                 show = false,
                 info_flag = true,
                 chest_interaction = false,
-                left = false,
-                right = false,
 
                 items = {
                     {id=100, icon0="correct.png", icon1="correct.png"},
@@ -82,12 +80,6 @@
                 console.log("---ClickPlugin---")
             end
             
-            function start.ClickBack(event)
-                start.info_flag = true
-                start.chest_interaction = false
-                start.show  = false 
-            end
-
             function start.mousedown(event)
                 start.show  = not start.show 
             end
@@ -200,6 +192,13 @@
                 else
                     show_detail_right(false, 0, 0, 0)
                 end
+            end
+
+            function start.ClickBack(event)
+                start.info_flag = true
+                start.chest_interaction = false
+                start.show  = false
+                show_detail_right(false, 0, 0, 0)
             end
 
             window.addEventListener('message', function(event)

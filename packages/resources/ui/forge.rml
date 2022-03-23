@@ -12,6 +12,7 @@
                 material_interaction = false,
                 plugin_interaction = false,
                 reset = false,
+                machine_item = false,
 
                 items = {
                     {id=100, icon0="correct.png", icon1="correct.png"},
@@ -46,6 +47,9 @@
                     {id=129, icon0="correct.png", icon1="correct.png"},
                 },
 
+                gapx = 0,
+                gapy = 0,
+                page_top = 0,
                 -- 详细信息面板高度
                 detail_height = 120,
                 -- 详细信息面板开始位置
@@ -84,6 +88,10 @@
                 ui_sys.open("pipe_build_pop.rml")
             end
 
+            function start.ClickMachineItem(event)
+                start.machine_item = not start.machine_item
+            end
+
             function start.ClickMaterial(event)
                 start.info_flag = not start.info_flag
                 start.material_interaction = not start.material_interaction
@@ -102,6 +110,7 @@
                 start.fuel_interaction = false
                 start.material_interaction = false
                 start.plugin_interaction = false
+                start.machine_item = false
             end
             --------------------------
             local function update_time()
@@ -136,16 +145,21 @@
             end
 
             local function show_detail(show, id, row, top)
+                local offset = 0
                 if show then
                     start.selected_id = id
                     start.selected_row = row
                     start.detail_top = top
+                    local dy = start.page_height - ((row + 1) * (start.item_size + start.gapy) + start.detail_height)
+                    offset = (dy >= 0) and 0 or dy
+                    console.log("offset" , offset)
                 else
                     start.selected_id = 0
                     --TODO: max value 1000
                     start.selected_row = 10000
                 end
                 start.show_detail = show
+                start.page_top = offset
             end
 
             function start.page_item_down()
@@ -282,14 +296,14 @@
                 <div class="column" data-if="material_interaction || fuel_interaction || plugin_interaction" style="width: 100%; height:100%;">
                     <div class="item-container">
                         <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
-                            <div class = "item-page-block" data-style-top="(selected_row == (row_count - 1) ? (0-detail_height) : 0) + 'px'" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
+                            <div class = "item-page-block" data-style-top="page_top + 'px'">
                                 <div class ="row">
                                     <div style="width:95%; height:100%;" data-for="virtual_pages">
                                         <div data-style-left="(it_index + 1) * 100 + '%'"/>
                                     </div>
                                 </div>
                                 <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up(it.data.id, it.row, it.top)" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
-                                    <button class="item">
+                                    <button class="item" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
                                         <div class="item-count">99</div>                          
                                         <!--div class="item-title">机器爪</div>-->
                                     </button>
@@ -371,27 +385,27 @@
                     <div class = "menu-title-2" data-if="plugin_interaction">调整插件</div>
                     <button class = "back-button" style='background-image: "cmdcenter/yellow_arrow.png";' data-event-click="ClickBack()"/>
                 </div>
-                <div class="column" style="width: 100%; height: 28%; align-items: flex-start; justify-content: center;" data-if="fuel_interaction">
+                <div class="column" style="width: 100%; height: 15%; align-items: flex-start; justify-content: center;" data-if="fuel_interaction">
                     <div class="row" style="width:100%; height: 20%; justify-content: center;">
                         <div class="row" style="width: 35%; justify-content: center;">
-                            <button class="item">
+                            <button class="item" data-event-click="ClickMachineItem()">
                                 <div class="item-count">99</div>                          
                             </button>
-                            <button class="item">
+                            <button class="item" data-event-click="ClickMachineItem()">
                                 <div class="item-count">99</div>                          
                             </button>
                         </div>
-                        <div class="column" style="justify-content: center; width: 30%; height:60%;">
-                            <div class="progress-bar-block" style = "width: 100%; height:90%;">
+                        <div class="column" style="justify-content: center; width: 30%; height:100%;">
+                            <div class="progress-bar-block" style = "width: 100%; height:130%;">
                                 <div class="progress-background" style ="width: 50%; background-color: red;"/>
                             </div> 
                             <div class = "percent-num">18%</div>
                         </div>
                         <div class="row" style="width: 35%; justify-content: center;">
-                            <button class="item">
+                            <button class="item" data-event-click="ClickMachineItem()">
                                 <div class="item-count">99</div>                          
                             </button>
-                            <button class="item">
+                            <button class="item" data-event-click="ClickMachineItem()">
                                 <div class="item-count">99</div>                          
                             </button>
                         </div>
@@ -401,18 +415,18 @@
                     <div class="row" style="align-items: center; margin-top:0.5em;">
                         <div class="column" style="justify-content: space-between; width: 35%;">
                             <div class="row">
-                                <button class="item">
+                                <button class="item" data-event-click="ClickMachineItem()">
                                     <div class="item-count">99</div>                          
                                 </button>
-                                <button class="item">
+                                <button class="item" data-event-click="ClickMachineItem()">
                                     <div class="item-count">99</div>                          
                                 </button>
                             </div>
                             <div class="row">
-                                <button class="item">
+                                <button class="item" data-event-click="ClickMachineItem()">
                                     <div class="item-count">99</div>                          
                                 </button>
-                                <button class="item">
+                                <button class="item" data-event-click="ClickMachineItem()">
                                     <div class="item-count">99</div>                          
                                 </button>
                             </div>
@@ -428,55 +442,34 @@
                         </div>
                         <div class="column" style="justify-content: space-between; width: 35%;">
                             <div class="row">
-                                <button class="item">
+                                <button class="item" data-event-click="ClickMachineItem()">
                                     <div class="item-count">99</div>                          
                                 </button>
-                                <button class="item">
+                                <button class="item" data-event-click="ClickMachineItem()">
                                     <div class="item-count">99</div>                          
                                 </button>
                             </div>
                             <div class="row">
-                                <button class="item">
+                                <button class="item" data-event-click="ClickMachineItem()">
                                     <div class="item-count">99</div>                          
                                 </button>
-                                <button class="item">
+                                <button class="item" data-event-click="ClickMachineItem()">
                                     <div class="item-count">99</div>                          
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row" style="align-items: center; width:100%; height:28%; justify-content: center; margin-top: 0.5em;" data-if="plugin_interaction">
-                    <button class="item"/>                       
-                    <button class="item"/>                      
-                    <button class="item"/>
-                    <button class="item"/>                       
-                    <button class="item"/>                        
-                    <button class="item-add">
-                    </button>
-                </div>
-                <div class = "exchange-region-right" data-if = "fuel_interaction || material_interaction || plugin_interaction">
-                    <div class = "exchange-title">机器爪(98)</div>
-                    <div class="button-exchange-block" style="height:65%;">
-                        <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
-                            <div class = "button-exchange-arrow"/>
-                            <div class = "button-exchange-text">全部</div>
-                            <div class = "button-exchange-box"/>
-                        </button>
-                        <button class="button-exchange">
-                            <div class = "button-exchange-arrow"/>
-                            <div class = "button-exchange-text">1组</div>
-                            <div class = "button-exchange-box"/>
-                        </button>
-                        <button class="button-exchange">
-                            <div class = "button-exchange-arrow"/>
-                            <div class = "button-exchange-text">1个</div>
-                            <div class = "button-exchange-box"/>
-                        </button>
-                    </div>
+                <div class="row" style="align-items: center; width:100%; height:15%; justify-content: center;" data-if="plugin_interaction">
+                    <button class="item" data-event-click="ClickMachineItem()"/>                       
+                    <button class="item" data-event-click="ClickMachineItem()"/>                      
+                    <button class="item" data-event-click="ClickMachineItem()"/>
+                    <button class="item" data-event-click="ClickMachineItem()"/>                       
+                    <button class="item" data-event-click="ClickMachineItem()"/>                        
+                    <button class="item-add" data-event-click="ClickMachineItem()"/>
                 </div>
                 <div class="column" data-if="!fuel_interaction && !material_interaction && !plugin_interaction" style="width: 100%;height: 95%;">
-                    <div class="row" data-event-click="ClickMaterial()" style="border: 0.13vmin rgb(89, 73, 39); width: 100%; height: 75%;">
+                    <div class="row" data-event-click="ClickMaterial()" style="border: 0.13vmin rgb(89, 73, 39); width: 100%; height: 75%; justify-content: space-evenly;">
                         <div class="row" style="justify-content: center;">
                             <div class="column" style="justify-content: space-between; width: 35%;">
                                 <div class="row">
@@ -532,6 +525,26 @@
                         <button class="item"/>                       
                         <button class="item"/>                        
                         <button class="item-add">
+                        </button>
+                    </div>
+                </div>
+                <div class="exchange-region-1" data-if="machine_item" style="flex-direction: column; align-self:center; height: 20%; margin:0;">
+                    <div class = "exchange-title">机器爪(98)</div>
+                    <div class="button-exchange-block">
+                        <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
+                            <div class = "button-exchange-arrow"/>
+                            <div class = "button-exchange-text">全部</div>
+                            <div class = "button-exchange-box"/>
+                        </button>
+                        <button class="button-exchange">
+                            <div class = "button-exchange-arrow"/>
+                            <div class = "button-exchange-text">1组</div>
+                            <div class = "button-exchange-box"/>
+                        </button>
+                        <button class="button-exchange">
+                            <div class = "button-exchange-arrow"/>
+                            <div class = "button-exchange-text">1个</div>
+                            <div class = "button-exchange-box"/>
                         </button>
                     </div>
                 </div>
