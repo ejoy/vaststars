@@ -1,6 +1,7 @@
 div {
 	font: 120% "微软雅黑";
 }
+/*按钮*/
 button {
 	width: 10.67vmin;
 	height: 10.67vmin;
@@ -28,6 +29,7 @@ button:hover {
 	text-align:center;
 	border-radius: 0.53vmin;
 }
+/*面板*/
 .panel {
 	background-color: rgb(44, 32, 18);
 	border: 0.13vmin rgb(89, 73, 39);
@@ -35,8 +37,8 @@ button:hover {
 	width: 48%;
 	height: 100%;
 }
-	/*标题栏和返回按键  */
-	.header {
+/*标题栏和返回按键*/
+.header {
 	height: 8.00vmin;
 	flex-direction: row;
 }
@@ -81,7 +83,7 @@ button:hover {
 	color:rgb(246, 142, 14);
 }
 
-/*左侧背包栏*/
+/*背包tab按钮*/
 workbutton {
 	font-size: 2.67vmin;
 	color: rgb(221, 235, 26);
@@ -244,6 +246,7 @@ workbutton:hover {
 	background-image: "construct/assembler.png";
 	border: 0.27vmin rgb(92, 184, 92);
 }
+/*进度条*/
 .progress-pic {
 	width: 4.00vmin;
 	height: 4.00vmin;
@@ -288,6 +291,7 @@ workbutton:hover {
 	width:90%;
 	height:100%;
 }
+/*建筑模型和信息*/
 .build-info-reigon {
 	width: 100%;
 	height:75%;
@@ -338,6 +342,7 @@ workbutton:hover {
 	font-size: 2.00vmin;
 	background-image: "construct/insert1.png";
 }
+/*物品按钮弹出框*/
 .exchange-region-right {
 	flex-direction: column;
 	align-items: center;
