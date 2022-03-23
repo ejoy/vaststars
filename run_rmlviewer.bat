@@ -4,6 +4,7 @@ set current_dir=%~dp0
 set exe=bin\msvc\debug\vaststars.exe
 set titlemsg=debug
 set param=.\3rd\ant\tools\rmlviewer\main.lua
+set /p rml=rml file:
 
 pushd %current_dir%
 if not exist "%exe%" (
@@ -11,7 +12,7 @@ if not exist "%exe%" (
 	set titlemsg=release
 )
 
-%current_dir%%exe% %param% %current_dir%\packages\resources\ui\construct.rml
+%current_dir%%exe% %param% %rml%
 popd
 
 pause
