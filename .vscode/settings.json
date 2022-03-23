@@ -5,7 +5,8 @@
         "import_package",
         "pipeline",
         "system",
-        "log"
+        "log",
+        "interface"
     ],
     "files.associations": {
         "*.sc": "glsl",

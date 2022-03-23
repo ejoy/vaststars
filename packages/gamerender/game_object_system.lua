@@ -2,50 +2,20 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local iani = ecs.import.interface "ant.animation|ianimation"
 local ipickup_mapping = ecs.import.interface "vaststars.gamerender|ipickup_mapping"
+local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-local imaterial = ecs.import.interface "ant.asset|imaterial"
 local prototype = ecs.require "prototype"
 
 local igame_object = ecs.interface "igame_object"
 local game_object_sys = ecs.system "game_object_system"
 local game_object_remove_mb = world:sub {"game_object_system", "remove"}
-local game_object_remove_attach_mb = world:sub {"game_object_system", "remove_attach"}
-local prefab_path = "/pkg/vaststars.resources/%s"
 local game_object_binding = {}
-
-local function create_prefab_object(prefab)
-    local prefab_object = world:create_object(prefab)
-    prefab_object.tag = prefab.tag
-    return prefab_object
-end
-
-function game_object_sys:component_init()
-    for _, _, prefab_object in game_object_remove_attach_mb:unpack() do
-        ecs.method.set_parent(prefab_object.root, nil)
-        prefab_object:remove()
-    end
-end
 
 function game_object_sys:update_world()
     for _, _, game_object_eid in game_object_remove_mb:unpack() do
         world:remove_entity(game_object_eid)
     end
-end
-
-local prefab_events = {}
-prefab_events.on_ready = function(game_object, binding, prefab)
-    for _, eid in ipairs(prefab.tag["*"]) do
-        local e = assert(world:entity(eid))
-        if e._animation then
-            if binding.pause_animation then
-                iani.pause(eid, true)
-            end
-        end
-    end
-end
-prefab_events.on_update = function(game_object, binding, prefab)
 end
 
 local function get_game_object_binding(game_object_eid)
@@ -57,69 +27,6 @@ local function get_game_object_binding(game_object_eid)
     return binding
 end
 
-do
-    local funcs = {}
-    funcs["animation_play"] = function(game_object, binding, prefab, animation)
-        for _, eid in ipairs(prefab.tag["*"]) do
-            if world:entity(eid)._animation then
-                iani.play(eid, animation)
-            end
-        end
-    end
-
-    funcs["animation_set_time"] = function(game_object, binding, prefab, animation_name, process)
-        for _, eid in ipairs(prefab.tag["*"]) do
-            if world:entity(eid)._animation then
-                iani.set_time(eid, iani.get_duration(eid, animation_name) * process)
-            end
-        end
-    end
-
-    funcs["update_basecolor"] = function(game_object, binding, prefab, basecolor_factor)
-        for _, eid in ipairs(prefab.tag["*"]) do
-            local e = assert(world:entity(eid))
-            if e.material then
-                imaterial.set_property(e, "u_basecolor_factor", basecolor_factor)
-            end
-        end
-    end
-
-    local function get_slot_eid(prefab, slot_name)
-        for _, eid in ipairs(prefab.tag["*"]) do
-            local e = assert(world:entity(eid))
-            if e.slot and e.name == slot_name then
-                return eid
-            end
-        end
-    end
-
-    funcs["attach"] = function(game_object, binding, prefab, slot_name, prefab_file_name)
-        local p = ecs.create_instance(prefab_path:format(prefab_file_name))
-        p.on_message = function() end
-        local prefab_object = create_prefab_object(p)
-        binding.slot_attach[slot_name] = prefab_object
-        ecs.method.set_parent(prefab_object.root, assert(get_slot_eid(prefab, slot_name)))
-    end
-
-    funcs["detach"] = function(game_object, binding, prefab)
-        for _, prefab_object in pairs(binding.slot_attach) do
-            world:pub {"game_object_system", "remove_attach", prefab_object}
-        end
-        binding.slot_attach = {}
-    end
-
-    function prefab_events.on_message(game_object, binding, prefab, cmd, ...)
-        local func = funcs[cmd]
-        if not func then
-            return
-        end
-        func(game_object, binding, prefab, ...)
-    end
-end
-
-prefab_events.on_init = function(game_object, binding, prefab)
-end
-
 local function get_prefab_object(game_object_eid)
     if not game_object_binding[game_object_eid] then
         return
@@ -128,7 +35,7 @@ local function get_prefab_object(game_object_eid)
 end
 
 -- 调用此接口时, 允许 game_object 与 prefab 所对应的 entity 未创建好
-function igame_object.bind(game_object_eid, prefab)
+function igame_object.bind(game_object_eid, prefab_object)
     local old_prefab_object = get_prefab_object(game_object_eid)
     if old_prefab_object then
         for _, eid in ipairs(old_prefab_object.tag["*"]) do
@@ -143,22 +50,6 @@ function igame_object.bind(game_object_eid, prefab)
         game_object_binding[game_object_eid] = binding
     end
 
-    local prefab_binding = {
-        pause_animation = true,
-        slot_attach = {},
-    }
-    for fn, func in pairs(prefab_events) do
-        local ofunc = prefab[fn]
-        prefab[fn] = function(prefab_inner, ...)
-            local game_object = world:entity(game_object_eid)
-            func(game_object, prefab_binding, prefab_inner, ...)
-            if ofunc then
-                ofunc(game_object, prefab_binding, prefab_inner, ...)
-            end
-        end
-    end
-
-    local prefab_object = create_prefab_object(prefab)
     for _, eid in ipairs(prefab_object.tag["*"]) do
         ipickup_mapping.mapping(eid, game_object_eid)
     end
@@ -166,7 +57,6 @@ function igame_object.bind(game_object_eid, prefab)
     binding.prefab_object = prefab_object
     binding.cur_animation = nil
     binding.cur_attach_prefab_object = {}
-    return assert(prefab_object)
 end
 
 function igame_object.remove(game_object_eid)
@@ -223,8 +113,8 @@ function igame_object.attach(game_object_eid, slot_name, prototype_name)
     end
 
     local prefab_object = assert(game_object_binding.prefab_object)
-    prefab_object:send("detach")
-    prefab_object:send("attach", slot_name, prefab_file)
+    prefab_object:send("detach_slot")
+    prefab_object:send("attach_slot", slot_name, prefab_file)
 end
 
 function igame_object.detach(game_object_eid)
@@ -233,12 +123,10 @@ function igame_object.detach(game_object_eid)
         log.error(("can not found prefab_object `%s`"):format(game_object_eid))
         return
     end
-    prefab_object:send("detach")
+    prefab_object:send("detach_slot")
 end
 
 -----------------------------------------------------------------------
-local cr = import_package "ant.compile_resource"
-local serialize = import_package "ant.serialize"
 local irq = ecs.import.interface "ant.render|irenderqueue"
 local iinput = ecs.import.interface "vaststars.gamerender|iinput"
 local mathpkg = import_package "ant.math"
@@ -262,28 +150,11 @@ function igame_object.get_game_object(x, y)
     end
 end
 
-local function replace_material(template)
-    for _, v in ipairs(template) do
-        for _, policy in ipairs(v.policy) do
-            if policy == "ant.render|render" or policy == "ant.render|simplerender" then
-                v.data.material = "/pkg/vaststars.resources/materials/translucent.material"
-            end
-        end
-    end
-
-    return template
-end
-
-function igame_object.create(prototype_name, events)
-    local prefab_file = prototype.get_prefab_file(prototype_name)
-    if not prefab_file then
+function igame_object.create(prototype_name)
+    local prefab_file_name = prototype.get_prefab_file(prototype_name)
+    if not prefab_file_name then
         return
     end
-
-    local f = prefab_path:format(prefab_file)
-    local template = replace_material(serialize.parse(f, cr.read_file(f)))
-    local prefab = ecs.create_instance(template)
-    prefab.on_ready = events.on_ready
 
     local area = prototype.get_area(prototype_name)
     if not area then
@@ -293,13 +164,15 @@ function igame_object.create(prototype_name, events)
     local viewdir = iom.get_direction(world:entity(irq.main_camera()))
     local origin = math3d.tovalue(iinput.ray_hit_plane({origin = mc.ZERO, dir = math3d.mul(math.maxinteger, viewdir)}, {dir = mc.YAXIS, pos = mc.ZERO_PT}))
     local coord, position = terrain.adjust_position(origin, area)
-    iom.set_position(world:entity(prefab.root), position)
 
     local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
+    local prefab_object = iprefab_object.create(prefab_file_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
+    iom.set_position(world:entity(prefab_object.root), position)
+
     local game_object_eid = ecs.create_entity {
         policy = {},
         data = {
-            game_object = {x = coord[1], y = coord[2], status = "translucent", color = CONSTRUCT_GREEN_BASIC_COLOR},
+            game_object = {x = coord[1], y = coord[2], state = "translucent", color = CONSTRUCT_GREEN_BASIC_COLOR},
             drapdrop = true,
             construct_pickup = true,
             gameplay_entity = {
@@ -311,12 +184,13 @@ function igame_object.create(prototype_name, events)
             },
         }
     }
-    igame_object.bind(game_object_eid, prefab)
+    igame_object.bind(game_object_eid, prefab_object)
+    return coord[1], coord[2]
 end
 
 function igame_object.set_prototype_name(game_object, prototype_name)
-    local prefab_file = prototype.get_prefab_file(prototype_name)
-    if not prefab_file then
+    local prefab_file_name = prototype.get_prefab_file(prototype_name)
+    if not prefab_file_name then
         return
     end
 
@@ -326,22 +200,10 @@ function igame_object.set_prototype_name(game_object, prototype_name)
     end
     local position = iom.get_position(world:entity(old_prefab_object.root))
 
-    local template
-    local f = prefab_path:format(prefab_file)
-    if game_object.game_object.state == "translucent" then
-        template = replace_material(serialize.parse(f, cr.read_file(f)))
-    else
-        template = f
-    end
+    local prefab_object = iprefab_object.create(prefab_file_name, "translucent", game_object.game_object.color)
+    iom.set_position(world:entity(prefab_object.root), position)
 
-    local prefab = ecs.create_instance(template)
-    iom.set_position(world:entity(prefab.root), position)
-
-    local prefab_object = igame_object.bind(game_object.id, prefab)
-
-    if game_object.game_object.state == "translucent" then
-        prefab_object:send("update_basecolor", game_object.game_object.color)
-    end
+    igame_object.bind(game_object.id, prefab_object)
 end
 
 -- state : translucent opaque
@@ -363,8 +225,8 @@ function igame_object.set_state(game_object, prototype_name, state, color)
     if game_object.game_object.state ~= state then
         game_object.game_object.state = state
 
-        local prefab_file = prototype.get_prefab_file(prototype_name)
-        if not prefab_file then
+        local prefab_file_name = prototype.get_prefab_file(prototype_name)
+        if not prefab_file_name then
             return
         end
 
@@ -376,27 +238,18 @@ function igame_object.set_state(game_object, prototype_name, state, color)
         local rotation = iom.get_rotation(re)
         local position = iom.get_position(re)
 
-        local template
-        local f = prefab_path:format(prefab_file)
-        if state == "translucent" then
-            template = replace_material(serialize.parse(f, cr.read_file(f)))
-        else
-            template = f
-        end
-
-        local prefab = ecs.create_instance(template)
-        re = world:entity(prefab.root)
+        prefab_object = iprefab_object.create(prefab_file_name, game_object.game_object.state, color)
+        re = world:entity(prefab_object.root)
         iom.set_position(re, position)
         iom.set_rotation(re, rotation)
 
-        prefab_object = igame_object.bind(game_object.id, prefab)
+        igame_object.bind(game_object.id, prefab_object)
     else
         prefab_object = get_prefab_object(game_object.id)
-    end
-
-    if state == "translucent" and not color_equal(game_object.game_object.color, color) then
-        game_object.game_object.color = color
-        prefab_object:send("update_basecolor", color)
+        if color and not color_equal(game_object.game_object.color, color) then
+            game_object.game_object.color = color
+            prefab_object:send("update_basecolor", color)
+        end
     end
 end
 
