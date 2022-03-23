@@ -54,6 +54,12 @@ local function deepcopy(t)
     return r
 end
 
+local function get_data_object(game_object)
+    return setmetatable(game_object.gameplay_entity, {
+        __index = gameplay.entity(game_object.game_object.x, game_object.game_object.y) or {}
+    })
+end
+
 local function confirm_construct(game_object)
     local gameplay_entity = game_object.gameplay_entity
     local construct_detector = prototype.get_construct_detector(gameplay_entity.prototype_name)
@@ -69,47 +75,16 @@ local function confirm_construct(game_object)
     game_object.construct_pickup = false
     iconstruct_button.hide()
 
-    construct_queue[#construct_queue + 1] = {eid = game_object.id, entity = deepcopy(game_object.gameplay_entity)}
+    local data_object = get_data_object(game_object)
+    construct_queue[#construct_queue + 1] = {eid = game_object.id, x = data_object.x, y = data_object.y, entity = deepcopy(data_object)}
 end
 
--- 通过 game_object 获取信息, 只读
-local function get_object(game_object)
-    local e
-    if game_object.gameplay_id ~= -1 then
-        e = gameplay.entity(game_object.gameplay_id)
-    end
-    return setmetatable(game_object.gameplay_entity, e or {})
-end
-
--- 获取指定位置的 game_object 信息, 只读
 local function get_entity(x, y)
-    for _, game_object in engine.world_select "game_object" do
-        -- entity 是否已经删除?
-        if not igame_object.get_prefab_object(game_object.id) then
-            goto continue
-        end
-
-        local obj = get_object(game_object)
-        if obj.x == x and obj.y == y then
-            return obj
-        end
-        ::continue::
+    local game_object = igame_object.get_game_object(x, y)
+    if not game_object then
+        return
     end
-end
-
--- 获取指定位置的 game_object, 并可以对其进行操作
-local function get_game_object(x, y)
-    for _, game_object in engine.world_select "game_object" do
-        if not igame_object.get_prefab_object(game_object.id) then
-            goto continue
-        end
-
-        local obj = get_object(game_object)
-        if obj.x == x and obj.y == y then
-            return game_object
-        end
-        ::continue::
-    end
+    return get_data_object(game_object), game_object
 end
 
 local adjust_neighbor_pipe ; do
@@ -146,25 +121,24 @@ local adjust_neighbor_pipe ; do
 
         for c in pairs(t) do
             x, y = unpackCoord(c)
-            local game_object = get_game_object(x, y)
-            if not game_object then
+            local data_object, game_object = get_entity(x, y)
+            if not data_object then
                 goto continue
             end
 
-            local object = get_object(game_object)
-            if not prototype.is_pipe(object.prototype_name) then
+            if not prototype.is_pipe(data_object.prototype_name) then
                 goto continue
             end
 
             local prototype_name, dir = pipe.adjust(x, y, get_entity)
             if prototype_name then
-                game_object.gameplay_entity.prototype_name = prototype_name
-                game_object.gameplay_entity.dir = dir
+                data_object.prototype_name = prototype_name
+                data_object.dir = dir
 
                 igame_object.set_prototype_name(game_object, prototype_name)
                 igame_object.set_dir(game_object, dir)
 
-                construct_queue[#construct_queue + 1] = {eid = game_object.id, entity = deepcopy(game_object.gameplay_entity)}
+                construct_queue[#construct_queue + 1] = {eid = game_object.id, x = data_object.x, y = data_object.y, entity = deepcopy(data_object)}
             end
             ::continue::
         end
@@ -189,6 +163,7 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
 
     local sx, sy = gameplay_entity.x, gameplay_entity.y
     gameplay_entity.x, gameplay_entity.y = x, y
+    game_object.game_object.x, game_object.game_object.y = x, y
 
     -- 针对水管的特殊处理
     if prototype.is_pipe(gameplay_entity.prototype_name) then
@@ -240,8 +215,8 @@ construct_button_events.cancel = function()
     end
 
     local adjust = {}
-    local obj = get_object(game_object)
-    adjust[#adjust+1] = {obj.x, obj.y}
+    local data_object = get_data_object(game_object)
+    adjust[#adjust+1] = {data_object.x, data_object.y}
 
     igame_object.remove(game_object.id)
     iconstruct_button.hide()
@@ -311,11 +286,10 @@ function construct_sys:data_changed()
                 end
 
                 local entity = v.entity
-                if game_object.gameplay_id == -1 then
+                if not gameplay.entity(v.x, v.y) then
                     gameplay.create_entity(entity)
-                    game_object.gameplay_id = entity.x | (entity.y << 8)
                 end
-                igame_object.set_state(game_object, entity.prototype_name, "opaque") --RETODO prototype_name nil
+                igame_object.set_state(game_object, entity.prototype_name, "opaque")
                 game_object.gameplay_entity = {}
 
                 ::continue::
@@ -332,7 +306,11 @@ function construct_sys:data_changed()
         end
     end
 
-    for _, _, eid in pickup_mapping_mb:unpack() do
+    for _, param, eid in pickup_mapping_mb:unpack() do
+        if param == "canvas" then
+            goto continue
+        end
+
         if cur_mode ~= "construct" then
             goto continue
         end
@@ -343,8 +321,8 @@ function construct_sys:data_changed()
         end
 
         game_object = world:entity(eid)
-        if game_object and game_object.game_object_state then
-            local gameplay_entity = game_object.gameplay_entity
+        if game_object then
+            local gameplay_entity = assert(game_object.gameplay_entity)
 
             game_object.drapdrop = true
             game_object.construct_pickup = true

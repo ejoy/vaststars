@@ -122,12 +122,7 @@ do
         return pt.name
     end
 
-    local function unpack(v)
-        return v & 0xFF, v >> 8
-    end
-
-    function m.entity(gameplay_id)
-        local x, y = unpack(gameplay_id)
+    function m.entity(x, y)
         for e in world.ecs:select "entity:in" do
             local entity = e.entity
             if entity.x == x and entity.y == y then
