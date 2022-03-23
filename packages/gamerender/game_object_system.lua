@@ -1,6 +1,5 @@
 local ecs = ...
 local world = ecs.world
-local w = world.w
 
 local ipickup_mapping = ecs.import.interface "vaststars.gamerender|ipickup_mapping"
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
@@ -8,15 +7,7 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local prototype = ecs.require "prototype"
 
 local igame_object = ecs.interface "igame_object"
-local game_object_sys = ecs.system "game_object_system"
-local game_object_remove_mb = world:sub {"game_object_system", "remove"}
 local game_object_binding = {}
-
-function game_object_sys:update_world()
-    for _, _, game_object_eid in game_object_remove_mb:unpack() do
-        world:remove_entity(game_object_eid)
-    end
-end
 
 local function get_game_object_binding(game_object_eid)
     local binding = game_object_binding[game_object_eid]
@@ -34,25 +25,29 @@ local function get_prefab_object(game_object_eid)
     return game_object_binding[game_object_eid].prefab_object
 end
 
+local function pickup_mapping(prefab_object, game_object_eid)
+    for _, eid in ipairs(prefab_object.tag["*"]) do
+        ipickup_mapping.mapping(eid, game_object_eid)
+    end
+end
+
+local function pickup_unmapping(prefab_object, game_object_eid)
+    for _, eid in ipairs(prefab_object.tag["*"]) do
+        ipickup_mapping.unmapping(eid, game_object_eid)
+    end
+end
+
 -- 调用此接口时, 允许 game_object 与 prefab 所对应的 entity 未创建好
 function igame_object.bind(game_object_eid, prefab_object)
     local old_prefab_object = get_prefab_object(game_object_eid)
     if old_prefab_object then
-        for _, eid in ipairs(old_prefab_object.tag["*"]) do
-            ipickup_mapping.unmapping(eid, game_object_eid)
-        end
+        pickup_unmapping(old_prefab_object, game_object_eid)
         old_prefab_object:remove()
     end
 
-    local binding = game_object_binding[game_object_eid]
-    if not binding then
-        binding = {}
-        game_object_binding[game_object_eid] = binding
-    end
-
-    for _, eid in ipairs(prefab_object.tag["*"]) do
-        ipickup_mapping.mapping(eid, game_object_eid)
-    end
+    local binding = game_object_binding[game_object_eid] or {}
+    game_object_binding[game_object_eid] = binding
+    pickup_mapping(prefab_object, game_object_eid)
 
     binding.prefab_object = prefab_object
     binding.cur_animation = nil
@@ -65,8 +60,7 @@ function igame_object.remove(game_object_eid)
         game_object_binding[game_object_eid] = nil
         prefab_object:remove()
     end
-    -- remove game_object entity must ensure that after prefab is deleted, in `update_world` stage
-    world:pub {"game_object_system", "remove", game_object_eid}
+    world:remove_entity(game_object_eid)
 end
 
 -- process = [0, 1]
@@ -107,14 +101,13 @@ function igame_object.attach(game_object_eid, slot_name, prototype_name)
         return
     end
 
-    local prefab_file = prototype.get_prefab_file(prototype_name)
-    if not prefab_file then
+    local prefab_file_name = prototype.get_prefab_file(prototype_name)
+    if not prefab_file_name then
         return
     end
 
     local prefab_object = assert(game_object_binding.prefab_object)
-    prefab_object:send("detach_slot")
-    prefab_object:send("attach_slot", slot_name, prefab_file)
+    prefab_object:send("attach_slot", slot_name, prefab_file_name)
 end
 
 function igame_object.detach(game_object_eid)
@@ -150,7 +143,7 @@ function igame_object.get_game_object(x, y)
     end
 end
 
-function igame_object.create(prototype_name)
+function igame_object.create(prototype_name, state, color)
     local prefab_file_name = prototype.get_prefab_file(prototype_name)
     if not prefab_file_name then
         return
@@ -165,14 +158,13 @@ function igame_object.create(prototype_name)
     local origin = math3d.tovalue(iinput.ray_hit_plane({origin = mc.ZERO, dir = math3d.mul(math.maxinteger, viewdir)}, {dir = mc.YAXIS, pos = mc.ZERO_PT}))
     local coord, position = terrain.adjust_position(origin, area)
 
-    local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
-    local prefab_object = iprefab_object.create(prefab_file_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
+    local prefab_object = iprefab_object.create(prefab_file_name, state, color)
     iom.set_position(world:entity(prefab_object.root), position)
 
     local game_object_eid = ecs.create_entity {
         policy = {},
         data = {
-            game_object = {x = coord[1], y = coord[2], state = "translucent", color = CONSTRUCT_GREEN_BASIC_COLOR},
+            game_object = {x = coord[1], y = coord[2], state = state, color = color},
             drapdrop = true,
             construct_pickup = true,
             gameplay_entity = {
@@ -200,7 +192,7 @@ function igame_object.set_prototype_name(game_object, prototype_name)
     end
     local position = iom.get_position(world:entity(old_prefab_object.root))
 
-    local prefab_object = iprefab_object.create(prefab_file_name, "translucent", game_object.game_object.color)
+    local prefab_object = iprefab_object.create(prefab_file_name, game_object.game_object.state, game_object.game_object.color)
     iom.set_position(world:entity(prefab_object.root), position)
 
     igame_object.bind(game_object.id, prefab_object)

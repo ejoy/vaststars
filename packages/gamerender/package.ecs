@@ -86,10 +86,6 @@ interface "iprefab_object"
     .implement "prefab_object_system.lua"
     .method "create"
 
-system "game_object_system"
-    .implement "game_object_system.lua"
-    .method "update_world"
-
 interface "igame_object"
     .implement "game_object_system.lua"
     .method "bind"

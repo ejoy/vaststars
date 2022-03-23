@@ -241,7 +241,7 @@ end
 function construct_sys:camera_usage()
     for _, _, _, prototype_name in ui_construct_entity_mb:unpack() do
         construct_button_events.cancel()
-        local x, y = igame_object.create(prototype_name)
+        local x, y = igame_object.create(prototype_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
         iconstruct_button.show(prototype_name, x, y)
         if prototype.is_fluidbox(prototype_name) then
             world:pub {"ui_message", "show_set_fluidbox", true}

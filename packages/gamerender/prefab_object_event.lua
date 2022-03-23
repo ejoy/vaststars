@@ -41,16 +41,23 @@ local function get_slot_eid(prefab, slot_name)
     end
 end
 
+local function detach_slot(binding)
+    for _, prefab_object in pairs(binding.slot_attach) do
+        world:pub {"prefab_object_system", "detach_slot", prefab_object}
+    end
+    binding.slot_attach = {}
+end
+
 events["attach_slot"] = function(prefab, binding, slot_name, prefab_file_name)
+    detach_slot(binding)
+
     local prefab_object = assert(iprefab_object.create(prefab_file_name))
     binding.slot_attach[slot_name] = prefab_object
     ecs.method.set_parent(prefab_object.root, assert(get_slot_eid(prefab, slot_name)))
 end
 
 events["detach_slot"] = function(prefab, binding)
-    for _, prefab_object in pairs(binding.slot_attach) do
-        world:pub {"prefab_object_system", "detach_slot", prefab_object}
-    end
+    detach_slot(binding)
 end
 
 return events
