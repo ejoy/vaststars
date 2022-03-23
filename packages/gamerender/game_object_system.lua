@@ -37,27 +37,12 @@ end
 local prefab_events = {}
 prefab_events.on_ready = function(game_object, binding, prefab)
     for _, eid in ipairs(prefab.tag["*"]) do
-        local e = world:entity(eid)
-        if not e then
-            log.error(("can nof found game_object `%s`"):format(eid))
-            goto continue
-        end
-
+        local e = assert(world:entity(eid))
         if e._animation then
             if binding.pause_animation then
                 iani.pause(eid, true)
             end
-            binding.animation_eid_cache[#binding.animation_eid_cache + 1] = eid
         end
-
-        if e.material then
-            binding.material_eid_cache[#binding.material_eid_cache + 1] = eid
-        end
-
-        if e.slot then
-            binding.slot_eid_cache[e.name] = eid
-        end
-        ::continue::
     end
 end
 prefab_events.on_update = function(game_object, binding, prefab)
@@ -72,68 +57,55 @@ local function get_game_object_binding(game_object_eid)
     return binding
 end
 
-local function detach(game_object_eid)
-    local binding = get_game_object_binding(game_object_eid)
-    if not binding then
-        return
-    end
-
-    local prefab_object = assert(binding.cur_attach_prefab_object).prefab_object
-    if not prefab_object then
-        return
-    end
-    world:pub {"game_object_system", "remove_attach", prefab_object}
-    binding.cur_attach_prefab_object = {}
-end
-
 do
     local funcs = {}
     funcs["animation_play"] = function(game_object, binding, prefab, animation)
-        for _, eid in ipairs(binding.animation_eid_cache) do
-            iani.play(eid, animation)
+        for _, eid in ipairs(prefab.tag["*"]) do
+            if world:entity(eid)._animation then
+                iani.play(eid, animation)
+            end
         end
     end
 
     funcs["animation_set_time"] = function(game_object, binding, prefab, animation_name, process)
-        for _, eid in ipairs(binding.animation_eid_cache) do
-            iani.set_time(eid, iani.get_duration(eid, animation_name) * process)
+        for _, eid in ipairs(prefab.tag["*"]) do
+            if world:entity(eid)._animation then
+                iani.set_time(eid, iani.get_duration(eid, animation_name) * process)
+            end
         end
     end
 
     funcs["update_basecolor"] = function(game_object, binding, prefab, basecolor_factor)
-        for _, eid in ipairs(binding.material_eid_cache) do
-            imaterial.set_property(world:entity(eid), "u_basecolor_factor", basecolor_factor)
+        for _, eid in ipairs(prefab.tag["*"]) do
+            local e = assert(world:entity(eid))
+            if e.material then
+                imaterial.set_property(e, "u_basecolor_factor", basecolor_factor)
+            end
         end
     end
 
-    funcs["attach"] = function(game_object, binding, prefab, slot_name, prototype_name)
-        local prefab_file = prototype.get_prefab_file(prototype_name)
-        if not prefab_file then
-            return
+    local function get_slot_eid(prefab, slot_name)
+        for _, eid in ipairs(prefab.tag["*"]) do
+            local e = assert(world:entity(eid))
+            if e.slot and e.name == slot_name then
+                return eid
+            end
         end
+    end
 
-        local game_object_binding = get_game_object_binding(game_object.id)
-        if not game_object_binding then
-            return
-        end
-
-        if game_object_binding.cur_attach_prefab_object.slot_name == slot_name and game_object_binding.cur_attach_prefab_object.prototype_name == prototype_name then
-            return
-        end
-        detach(game_object.id)
-
-        local prefab = ecs.create_instance(prefab_path:format(prefab_file))
-        prefab.on_message = function() end
-        local prefab_object = create_prefab_object(prefab)
-
-        local eid = assert(binding.slot_eid_cache[slot_name])
-        ecs.method.set_parent(prefab_object.root, eid)
-
-        game_object_binding.cur_attach_prefab_object = {slot_name = slot_name, prototype_name = prototype_name, prefab_object = prefab_object}
+    funcs["attach"] = function(game_object, binding, prefab, slot_name, prefab_file_name)
+        local p = ecs.create_instance(prefab_path:format(prefab_file_name))
+        p.on_message = function() end
+        local prefab_object = create_prefab_object(p)
+        binding.slot_attach[slot_name] = prefab_object
+        ecs.method.set_parent(prefab_object.root, assert(get_slot_eid(prefab, slot_name)))
     end
 
     funcs["detach"] = function(game_object, binding, prefab)
-        detach(game_object.id)
+        for _, prefab_object in pairs(binding.slot_attach) do
+            world:pub {"game_object_system", "remove_attach", prefab_object}
+        end
+        binding.slot_attach = {}
     end
 
     function prefab_events.on_message(game_object, binding, prefab, cmd, ...)
@@ -171,12 +143,10 @@ function igame_object.bind(game_object_eid, prefab)
         game_object_binding[game_object_eid] = binding
     end
 
-    local prefab_binding = {}
-    prefab_binding.pause_animation = true
-    prefab_binding.slot_eid_cache = {}
-    prefab_binding.animation_eid_cache = {}
-    prefab_binding.material_eid_cache = {}
-
+    local prefab_binding = {
+        pause_animation = true,
+        slot_attach = {},
+    }
     for fn, func in pairs(prefab_events) do
         local ofunc = prefab[fn]
         prefab[fn] = function(prefab_inner, ...)
@@ -238,12 +208,23 @@ function igame_object.set_position(game_object_eid, position)
 end
 
 function igame_object.attach(game_object_eid, slot_name, prototype_name)
-    local prefab_object = get_prefab_object(game_object_eid)
-    if not prefab_object then
-        log.error(("can not found prefab_object `%s`"):format(game_object_eid))
+    local game_object_binding = get_game_object_binding(game_object_eid)
+    if not game_object_binding then
         return
     end
-    prefab_object:send("attach", slot_name, prototype_name)
+
+    if game_object_binding.cur_attach_prefab_object.slot_name == slot_name and game_object_binding.cur_attach_prefab_object.prototype_name == prototype_name then
+        return
+    end
+
+    local prefab_file = prototype.get_prefab_file(prototype_name)
+    if not prefab_file then
+        return
+    end
+
+    local prefab_object = assert(game_object_binding.prefab_object)
+    prefab_object:send("detach")
+    prefab_object:send("attach", slot_name, prefab_file)
 end
 
 function igame_object.detach(game_object_eid)
