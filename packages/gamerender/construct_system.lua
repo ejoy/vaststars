@@ -240,13 +240,10 @@ construct_button_events.cancel = function()
     end
 
     local adjust = {}
-    local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
-    if game_object then
-        local obj = get_object(game_object)
-        adjust[#adjust+1] = {obj.x, obj.y}
+    local obj = get_object(game_object)
+    adjust[#adjust+1] = {obj.x, obj.y}
 
-        igame_object.remove(game_object.id)
-    end
+    igame_object.remove(game_object.id)
     iconstruct_button.hide()
 
     -- 还原未施工的水管形状
