@@ -281,6 +281,18 @@
                 <div>开始施工</div>
             </button>
 
+            <!-- 确认放置 -->
+            <button data-if = "cur_edit_mode == 'construct'" data-event-click="" style='position: absolute; left: 143.67vmin; top: 84.67vmin; width: 14.00vmin; height: 14.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <div style='margin: 0 auto; background-image:"construct/confirm.png"; width: 9.67vmin; height: 9.67vmin; background-size:cover;'/>
+                <div style="font-size: 80%;">确认放置</div>
+            </button>
+
+            <!-- 旋转建筑 -->
+            <button data-if = "cur_edit_mode == 'construct'" data-event-click="" style='position: absolute; left: 128.67vmin; top: 84.67vmin; width: 14.00vmin; height: 14.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <div style='margin: 0 auto;background-image:"construct/rotate.png"; width: 9.67vmin; height: 9.67vmin; background-size:cover;'/>
+                <div style="font-size: 80%;">旋转建筑</div>
+            </button>
+
             <!-- 开始拆除 -->
             <button data-if = "cur_edit_mode == 'dismantle'" data-event-click="clickDismantleComplete()" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
