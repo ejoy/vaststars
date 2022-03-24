@@ -197,17 +197,21 @@ construct_button_events.cancel = function()
         return
     end
 
-    local adjust = {}
     local data_object = get_data_object(game_object)
-    adjust[#adjust+1] = {data_object.x, data_object.y}
-
-    igame_object.remove(game_object.id)
+    if not gameplay.entity(game_object.game_object.x, game_object.game_object.y) then
+        igame_object.remove(game_object.id)
+    else
+        game_object.gameplay_entity = {}
+        data_object = get_data_object(game_object)
+        igame_object.set_state(game_object.id, data_object.prototype_name, "opaque")
+        game_object.drapdrop = false
+        game_object.construct_pickup = false
+    end
     iconstruct_button.hide()
+    world:pub {"ui_message", "show_set_fluidbox", false}
 
     -- 还原未施工的水管形状
-    for _, v in ipairs(adjust) do
-        adjust_neighbor_pipe(v)
-    end
+    adjust_neighbor_pipe({data_object.x, data_object.y})
 end
 
 construct_button_events.rotate = function()
@@ -302,6 +306,7 @@ function construct_sys:data_changed()
 
             game_object.drapdrop = true
             game_object.construct_pickup = true
+            print("pickup", data_object.prototype_name)
             igame_object.set_state(game_object.id, data_object.prototype_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
             iconstruct_button.show(data_object.prototype_name, data_object.x, data_object.y)
         end
