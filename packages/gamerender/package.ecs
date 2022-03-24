@@ -109,6 +109,10 @@ interface "iconstruct_button"
     .method "show"
     .method "hide"
 
+system "construct_arrow_system"
+    .implement "iconstruct_arrow.lua"
+    .method "pickup_mapping"
+
 interface "iconstruct_arrow"
     .implement "iconstruct_arrow.lua"
     .method "show"

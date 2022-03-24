@@ -22,7 +22,7 @@ end
 function inserter_sys.update_world()
     for e in gameplay.select "inserter:in entity:in" do
         local inserter = e.inserter
-        local game_object = assert(igame_object.get_game_object(e.entity.x, e.entity.y))
+        local game_object = assert(igame_object.get_game_object(e.entity.x, e.entity.y)) --RETODO game_object 有可能未创建完毕?
         local animation_name
         if inserter.status == STATUS_DONE then
             animation_name = "DownToUp"

@@ -12,6 +12,13 @@ local engine = ecs.require "engine"
 local pipe = ecs.require "pipe"
 local dir = require "dir"
 local dir_rotate = dir.rotate
+local irq = ecs.import.interface "ant.render|irenderqueue"
+local iinput = ecs.import.interface "vaststars.gamerender|iinput"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local math3d = require "math3d"
+local terrain = ecs.require "terrain"
+local mathpkg = import_package "ant.math"
+local mc = mathpkg.constant
 
 local ui_construct_begin_mb = world:sub {"ui", "construct", "construct_begin"}       -- 建造模式
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
@@ -20,6 +27,7 @@ local ui_fluidbox_update_mb = world:sub {"ui", "construct", "fluidbox_update"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_button_mb = world:sub {"construct_button"}
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
+local pipe_adjust_mb = world:sub {"construct_system", "pipe_adjust"}
 
 local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
@@ -107,25 +115,7 @@ local adjust_neighbor_pipe ; do
 
         for c in pairs(t) do
             x, y = unpackCoord(c)
-            local data_object, game_object = get_entity(x, y)
-            if not data_object then
-                goto continue
-            end
-
-            if not prototype.is_pipe(data_object.prototype_name) then
-                goto continue
-            end
-
-            local prototype_name, dir = pipe.adjust(x, y, get_entity)
-            if prototype_name then
-                data_object.prototype_name = prototype_name
-                data_object.dir = dir
-
-                game_object.construct_modify = true
-                igame_object.set_prototype_name(game_object.id, prototype_name)
-                igame_object.set_dir(game_object.id, dir)
-            end
-            ::continue::
+            world:pub {"construct_system", "pipe_adjust", x, y}
         end
     end
 end
@@ -226,11 +216,30 @@ construct_button_events.rotate = function()
     igame_object.set_dir(game_object.id, game_object.gameplay_entity.dir)
 end
 
+local function create_pipe(sx, sy, dx, dy)
+    local prototype_name, dir = pipe.construct(sx, sy, dx, dy, get_entity)
+    if prototype_name then
+        igame_object.create(prototype_name, dx, dy, dir, "translucent", CONSTRUCT_WHITE_BASIC_COLOR, false, false)
+        adjust_neighbor_pipe({dx, dy})
+    end
+    iconstruct_arrow.hide()
+end
+
 function construct_sys:camera_usage()
     for _, _, _, prototype_name in ui_construct_entity_mb:unpack() do
         construct_button_events.cancel()
-        local x, y = igame_object.create(prototype_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
-        iconstruct_button.show(prototype_name, x, y)
+
+        local pt = prototype.query_by_name("entity", prototype_name)
+        if not pt then
+            return
+        end
+
+        local viewdir = iom.get_direction(world:entity(irq.main_camera()))
+        local origin = math3d.tovalue(iinput.ray_hit_plane({origin = mc.ZERO, dir = math3d.mul(math.maxinteger, viewdir)}, {dir = mc.YAXIS, pos = mc.ZERO_PT}))
+        local coord = terrain.adjust_position(origin, pt.area)
+
+        igame_object.create(prototype_name, coord[1], coord[2], dir, "translucent", CONSTRUCT_GREEN_BASIC_COLOR, true, true)
+        iconstruct_button.show(prototype_name, coord[1], coord[2])
         if prototype.is_fluidbox(prototype_name) then
             world:pub {"ui_message", "show_set_fluidbox", true}
         end
@@ -275,6 +284,7 @@ function construct_sys:data_changed()
                 game_object.game_object.x, game_object.game_object.y = entity.x, entity.y
             end
             game_object.gameplay_entity = {}
+            game_object.construct_modify = false
         end
 
         gameplay.build()
@@ -311,8 +321,31 @@ function construct_sys:data_changed()
                 igame_object.set_state(game_object.id, data_object.prototype_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
                 iconstruct_button.show(data_object.prototype_name, data_object.x, data_object.y)
             else
-                iconstruct_arrow.show(data_object.x, data_object.y)
+                iconstruct_arrow.show(data_object.x, data_object.y, create_pipe)
             end
+        end
+        ::continue::
+    end
+
+    for _, _, x, y in pipe_adjust_mb:unpack() do
+        local data_object, game_object = get_entity(x, y)
+        if not data_object then
+            goto continue
+        end
+
+        if not prototype.is_pipe(data_object.prototype_name) then
+            goto continue
+        end
+
+        local prototype_name, dir = pipe.adjust(x, y, get_entity)
+        if prototype_name then
+            data_object.prototype_name = prototype_name
+            data_object.dir = dir
+
+            game_object.construct_modify = true
+            print(prototype_name)
+            igame_object.set_prototype_name(game_object.id, prototype_name)
+            igame_object.set_dir(game_object.id, dir)
         end
         ::continue::
     end

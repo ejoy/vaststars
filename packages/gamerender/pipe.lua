@@ -75,7 +75,7 @@ local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ;
     end
 end
 
-local function check_passable_state(x, y, dir, get_entity)
+local function check_passable_state(x, y, get_entity)
     local entity = get_entity(x, y)
     if not entity then
         -- log.debug(("can not found entity(%s, %s)"):format(x, y))
@@ -105,7 +105,29 @@ function m.adjust(x, y, get_entity)
     local passable_state = 0
 
     for _, v in ipairs(neighbor) do
-        if check_passable_state(x + v[1][1], y + v[1][2], entity.dir, get_entity) then
+        if check_passable_state(x + v[1][1], y + v[1][2], get_entity) then
+            passable_state = set_passable_state(passable_state, v[2], 1)
+        end
+    end
+
+    local typedir = passable_state_to_typedir(passable_state)
+    local new_prototype_name = prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format(typedir:sub(1, 1)))
+    return new_prototype_name, typedir:sub(2, 2)
+end
+
+function m.construct(sx, sy, dx, dy, get_entity)
+    local entity
+    entity = get_entity(sx, sy)
+    local prototype_name = entity.prototype_name
+
+    entity = get_entity(dx, dy)
+    if entity then
+        return
+    end
+
+    local passable_state = 0
+    for _, v in ipairs(neighbor) do
+        if check_passable_state(dx + v[1][1], dy + v[1][2], get_entity) then
             passable_state = set_passable_state(passable_state, v[2], 1)
         end
     end

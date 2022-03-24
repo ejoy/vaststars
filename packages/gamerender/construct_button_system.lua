@@ -24,8 +24,6 @@ function construct_button_sys:pickup_mapping()
         local v = construct_button_canvas_items[k]
         if v then
             v.event()
-        else
-            log.error(("unknown canvas event (%s, %s)"):format(coord[1], coord[2]))
         end
     end
 end

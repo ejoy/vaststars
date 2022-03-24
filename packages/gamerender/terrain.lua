@@ -127,6 +127,19 @@ function terrain.get_begin_position_by_coord(x, y)
     return {origin[1] + (x * unit), 0, origin[2] - (y * unit)}
 end
 
+function terrain.get_position_by_coord(x, y, area)
+    local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
+    local unit = e.shape_terrain.unit
+
+    local width, height = unpackCoord(area)
+    local begining = terrain.get_begin_position_by_coord(x, y)
+    if not begining then
+        return
+    end
+
+    return {begining[1] + (width * unit // 2), begining[2], begining[3] - (height * unit // 2)} --RETODO 越界判断
+end
+
 function terrain.adjust_position(position, area)
     local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
     local unit = e.shape_terrain.unit

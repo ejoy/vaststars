@@ -129,8 +129,7 @@ function igame_object.detach(game_object_eid)
 end
 
 -----------------------------------------------------------------------
-local irq = ecs.import.interface "ant.render|irenderqueue"
-local iinput = ecs.import.interface "vaststars.gamerender|iinput"
+
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
 local terrain = ecs.require "terrain"
@@ -152,15 +151,16 @@ function igame_object.get_game_object(x, y)
     end
 end
 
-function igame_object.create(prototype_name, state, color)
+function igame_object.create(prototype_name, x, y, dir, state, color, construct_pickup, drapdrop)
     local pt = prototype.query_by_name("entity", prototype_name)
     if not pt then
         return
     end
 
-    local viewdir = iom.get_direction(world:entity(irq.main_camera()))
-    local origin = math3d.tovalue(iinput.ray_hit_plane({origin = mc.ZERO, dir = math3d.mul(math.maxinteger, viewdir)}, {dir = mc.YAXIS, pos = mc.ZERO_PT}))
-    local coord, position = terrain.adjust_position(origin, pt.area)
+    local position = terrain.get_position_by_coord(x, y, pt.area)
+    if not position then
+        return
+    end
 
     local prefab_object = iprefab_object.create(pt.model, state, color)
     iom.set_position(world:entity(prefab_object.root), position)
@@ -168,23 +168,24 @@ function igame_object.create(prototype_name, state, color)
     local game_object_eid = ecs.create_entity {
         policy = {},
         data = {
-            game_object = {x = coord[1], y = coord[2], state = state, color = color},
-            drapdrop = true,
-            construct_pickup = true,
+            game_object = {x = x, y = y, state = state, color = color},
+            drapdrop = drapdrop,
+            construct_pickup = construct_pickup,
             construct_modify = true,
             gameplay_entity = {
                 prototype_name = prototype_name,
                 fluid = {},
-                dir = "N",
-                x = coord[1],
-                y = coord[2],
+                dir = dir,
+                x = x,
+                y = y,
             },
         }
     }
     game_object_binding[game_object_eid] = {state = state, color = color}
 
     bind_prefab_object(game_object_eid, prefab_object)
-    return coord[1], coord[2]
+
+    igame_object.set_dir(game_object_eid, dir)
 end
 
 function igame_object.set_prototype_name(game_object_eid, prototype_name)
