@@ -270,6 +270,7 @@ function construct_sys:data_changed()
         gameplay.world_update = true
         engine.set_camera("camera_default.prefab")
         construct_button_events.cancel()
+        world:pub {"ui_message", "show_set_fluidbox", false}
 
         if #construct_queue > 0 then
             for _, v in ipairs(construct_queue) do
