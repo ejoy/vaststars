@@ -171,6 +171,7 @@ function igame_object.create(prototype_name, state, color)
             game_object = {x = coord[1], y = coord[2], state = state, color = color},
             drapdrop = true,
             construct_pickup = true,
+            construct_modify = true,
             gameplay_entity = {
                 prototype_name = prototype_name,
                 fluid = {},

@@ -16,6 +16,7 @@ component "prefab_slot_eid_cache" .type "lua"
 component "drapdrop_selected" -- 当前拖动的 entity
 component "game_object" .type "lua" -- {x = xx, y = xx, state = "translucent"/"opaque", color = {r, g, b, a}}
 component "construct_pickup"
+component "construct_modify"
 component "gameplay_entity" .type "lua" -- {prototype_name = xx, fluid = {}, dir = "N", x = xx, y = xx,}
 
 --

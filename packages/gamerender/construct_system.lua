@@ -26,7 +26,6 @@ local CONSTRUCT_WHITE_BASIC_COLOR <const> = {50.0, 50.0, 50.0, 0.8}
 local DISMANTLE_YELLOW_BASIC_COLOR <const> = {50.0, 50.0, 0.0, 0.8}
 
 local cur_mode = ""
-local construct_queue = {}
 
 local function check_construct_detector(prototype_name, x, y, dir)
     local construct_detector = prototype.get_construct_detector(prototype_name)
@@ -40,18 +39,6 @@ local function check_construct_detector(prototype_name, x, y, dir)
     end
 
     return true
-end
-
-local function deepcopy(t)
-    local r = {}
-    for k, v in pairs(t) do
-        if type(v) == "table" then
-            r[k] = deepcopy(v)
-        else
-            r[k] = v
-        end
-    end
-    return r
 end
 
 local function get_data_object(game_object)
@@ -74,9 +61,7 @@ local function confirm_construct(game_object)
     igame_object.set_state(game_object.id, gameplay_entity.prototype_name, "translucent", CONSTRUCT_WHITE_BASIC_COLOR)
     game_object.drapdrop = false
     game_object.construct_pickup = false
-
-    local data_object = get_data_object(game_object)
-    construct_queue[#construct_queue + 1] = {eid = game_object.id, x = data_object.x, y = data_object.y, entity = deepcopy(data_object)}
+    game_object.construct_modify = true
 end
 
 local function get_entity(x, y)
@@ -135,10 +120,9 @@ local adjust_neighbor_pipe ; do
                 data_object.prototype_name = prototype_name
                 data_object.dir = dir
 
+                game_object.construct_modify = true
                 igame_object.set_prototype_name(game_object.id, prototype_name)
                 igame_object.set_dir(game_object.id, dir)
-
-                construct_queue[#construct_queue + 1] = {eid = game_object.id, x = data_object.x, y = data_object.y, entity = deepcopy(data_object)}
             end
             ::continue::
         end
@@ -232,6 +216,7 @@ construct_button_events.rotate = function()
         log.error("can not found game_object")
         return
     end
+    game_object.construct_modify = true
     game_object.gameplay_entity.dir = dir_rotate(game_object.gameplay_entity.dir, -1) -- 逆时针方向旋转一次
     igame_object.set_dir(game_object.id, game_object.gameplay_entity.dir)
 end
@@ -272,26 +257,22 @@ function construct_sys:data_changed()
         construct_button_events.cancel()
         world:pub {"ui_message", "show_set_fluidbox", false}
 
-        if #construct_queue > 0 then
-            for _, v in ipairs(construct_queue) do
-                local eid = v.eid
-                local game_object = world:entity(eid)
-                if not game_object then
-                    goto continue
-                end
-
-                local entity = v.entity
-                if not gameplay.entity(v.x, v.y) then
-                    gameplay.create_entity(entity)
+        for _, game_object in engine.world_select "construct_modify" do
+            local entity = gameplay.entity(game_object.game_object.x, game_object.game_object.y)
+            if not entity then
+                gameplay.create_entity(game_object.gameplay_entity)
+                igame_object.set_state(game_object.id, game_object.gameplay_entity.prototype_name, "opaque")
+            else
+                for k, v in pairs(game_object.gameplay_entity) do
+                    entity[k] = v
                 end
                 igame_object.set_state(game_object.id, entity.prototype_name, "opaque")
-                game_object.gameplay_entity = {}
-
-                ::continue::
+                game_object.game_object.x, game_object.game_object.y = entity.x, entity.y
             end
-            construct_queue = {}
-            gameplay.build()
+            game_object.gameplay_entity = {}
         end
+
+        gameplay.build()
     end
 
     for _, _, _, fluidname in ui_fluidbox_update_mb:unpack() do
@@ -317,12 +298,12 @@ function construct_sys:data_changed()
 
         game_object = world:entity(eid)
         if game_object then
-            local gameplay_entity = assert(game_object.gameplay_entity)
+            local data_object = get_data_object(game_object)
 
             game_object.drapdrop = true
             game_object.construct_pickup = true
-            igame_object.set_state(game_object.id, gameplay_entity.prototype_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
-            iconstruct_button.show(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y) --RETODO prototype_name nil
+            igame_object.set_state(game_object.id, data_object.prototype_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
+            iconstruct_button.show(data_object.prototype_name, data_object.x, data_object.y)
         end
         ::continue::
     end
