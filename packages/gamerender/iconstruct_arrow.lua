@@ -22,7 +22,7 @@ function construct_arrow_sys:pickup_mapping()
         local k = prototype.pack_coord(coord[1], coord[2])
         local v = construct_arrows[k]
         if v then
-            v.func(v.sx, v.sy, v.dx, v.dy)
+            v.func(v.prototype_name, v.dx, v.dy)
         end
     end
 end
@@ -34,7 +34,7 @@ function iconstruct_arrow.hide()
     construct_arrows = {}
 end
 
-function iconstruct_arrow.show(sx, sy, func)
+function iconstruct_arrow.show(prototype_name, sx, sy, func)
     -- remove all items at first
     iconstruct_arrow.hide()
 
@@ -43,6 +43,6 @@ function iconstruct_arrow.show(sx, sy, func)
         local dy = sy + coord_offset[2]
 
         local item_id = icanvas.add_items("arrow.png", dx, dy, {r = arrow_rotation[idx]})
-        construct_arrows[prototype.pack_coord(dx, dy)] = {id = item_id, func = func, sx = sx, sy = sy, dx = dx, dy = dy}
+        construct_arrows[prototype.pack_coord(dx, dy)] = {id = item_id, func = func, prototype_name = prototype_name, sx = sx, sy = sy, dx = dx, dy = dy}
     end
 end

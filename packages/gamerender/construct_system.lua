@@ -17,6 +17,7 @@ local iinput = ecs.import.interface "vaststars.gamerender|iinput"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local math3d = require "math3d"
 local terrain = ecs.require "terrain"
+local fluidbox = ecs.require "fluidbox"
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
 
@@ -71,6 +72,8 @@ local function confirm_construct(game_object)
     game_object.drapdrop = false
     game_object.construct_pickup = false
     game_object.construct_modify = true
+
+    fluidbox:set(game_object.id, gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name)
 end
 
 local function get_entity(x, y)
@@ -79,6 +82,10 @@ local function get_entity(x, y)
         return
     end
     return get_data_object(game_object), game_object
+end
+
+local function check_fluidbox(...)
+    return fluidbox:check(...)
 end
 
 local adjust_neighbor_pipe ; do
@@ -153,7 +160,7 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
     if prototype.is_pipe(data_object.prototype_name) then
         adjust_neighbor_pipe({sx, sy}, {x, y})
 
-        local prototype_name, dir = pipe.adjust(data_object.x, data_object.y, get_entity)
+        local prototype_name, dir = pipe.adjust(data_object.prototype_name, data_object.x, data_object.y, check_fluidbox)
         if prototype_name and (prototype_name ~= data_object.prototype_name or dir ~= data_object.dir )then
             data_object.prototype_name = prototype_name
             data_object.dir = dir
@@ -162,6 +169,8 @@ local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
             igame_object.set_dir(game_object.id, dir)
         end
     end
+
+    --RETODO 对fluidbox & fluidboxes 的特殊处理
 end
 
 local construct_button_events = {}
@@ -216,8 +225,8 @@ construct_button_events.rotate = function()
     igame_object.set_dir(game_object.id, game_object.gameplay_entity.dir)
 end
 
-local function create_pipe(sx, sy, dx, dy)
-    local prototype_name, dir = pipe.construct(sx, sy, dx, dy, get_entity)
+local function create_pipe(prototype_name, dx, dy)
+    local prototype_name, dir = pipe.adjust(prototype_name, dx, dy, check_fluidbox)
     if prototype_name then
         igame_object.create(prototype_name, dx, dy, dir, "translucent", CONSTRUCT_WHITE_BASIC_COLOR, false, false)
         adjust_neighbor_pipe({dx, dy})
@@ -238,7 +247,7 @@ function construct_sys:camera_usage()
         local origin = math3d.tovalue(iinput.ray_hit_plane({origin = mc.ZERO, dir = math3d.mul(math.maxinteger, viewdir)}, {dir = mc.YAXIS, pos = mc.ZERO_PT}))
         local coord = terrain.adjust_position(origin, pt.area)
 
-        igame_object.create(prototype_name, coord[1], coord[2], dir, "translucent", CONSTRUCT_GREEN_BASIC_COLOR, true, true)
+        igame_object.create(prototype_name, coord[1], coord[2], 'N', "translucent", CONSTRUCT_GREEN_BASIC_COLOR, true, true)
         iconstruct_button.show(prototype_name, coord[1], coord[2])
         if prototype.is_fluidbox(prototype_name) then
             world:pub {"ui_message", "show_set_fluidbox", true}
@@ -317,11 +326,10 @@ function construct_sys:data_changed()
             if not prototype.is_pipe(data_object.prototype_name) then
                 game_object.drapdrop = true
                 game_object.construct_pickup = true
-                print("pickup", data_object.prototype_name)
                 igame_object.set_state(game_object.id, data_object.prototype_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
                 iconstruct_button.show(data_object.prototype_name, data_object.x, data_object.y)
             else
-                iconstruct_arrow.show(data_object.x, data_object.y, create_pipe)
+                iconstruct_arrow.show(data_object.prototype_name, data_object.x, data_object.y, create_pipe)
             end
         end
         ::continue::
@@ -337,7 +345,7 @@ function construct_sys:data_changed()
             goto continue
         end
 
-        local prototype_name, dir = pipe.adjust(x, y, get_entity)
+        local prototype_name, dir = pipe.adjust(data_object.prototype_name, x, y, check_fluidbox)
         if prototype_name then
             data_object.prototype_name = prototype_name
             data_object.dir = dir

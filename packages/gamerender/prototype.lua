@@ -87,7 +87,7 @@ function prototype.get_fluid_id(prototype_name)
     return pt.id
 end
 
-function prototype.is_fluidbox(prototype_name)
+local function check_entity_type(prototype_name, types)
     assert(prototype_name)
     local pt = gameplay.queryByName("entity", prototype_name)
     if not pt then
@@ -95,12 +95,22 @@ function prototype.is_fluidbox(prototype_name)
         return
     end
 
-    for _, t in ipairs(pt.type) do
-        if t == "fluidbox" then
-            return true
+    for _, st in ipairs(pt.type) do
+        for _, dt in ipairs(types) do
+            if st == dt then
+                return true
+            end
         end
     end
     return false
+end
+
+function prototype.is_fluidbox(prototype_name)
+    return check_entity_type(prototype_name, {"fluidbox"})
+end
+
+function prototype.is_fluidboxes(prototype_name)
+    return check_entity_type(prototype_name, {"fluidboxes"})
 end
 
 function prototype.is_pipe(prototype_name)
