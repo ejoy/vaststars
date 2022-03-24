@@ -4,6 +4,7 @@ local w = world.w
 
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iconstruct_button = ecs.import.interface "vaststars.gamerender|iconstruct_button"
+local iconstruct_arrow = ecs.import.interface "vaststars.gamerender|iconstruct_arrow"
 local construct_sys = ecs.system "construct_system"
 local prototype = ecs.require "prototype"
 local gameplay = ecs.require "gameplay"
@@ -303,12 +304,15 @@ function construct_sys:data_changed()
         game_object = world:entity(eid)
         if game_object then
             local data_object = get_data_object(game_object)
-
-            game_object.drapdrop = true
-            game_object.construct_pickup = true
-            print("pickup", data_object.prototype_name)
-            igame_object.set_state(game_object.id, data_object.prototype_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
-            iconstruct_button.show(data_object.prototype_name, data_object.x, data_object.y)
+            if not prototype.is_pipe(data_object.prototype_name) then
+                game_object.drapdrop = true
+                game_object.construct_pickup = true
+                print("pickup", data_object.prototype_name)
+                igame_object.set_state(game_object.id, data_object.prototype_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
+                iconstruct_button.show(data_object.prototype_name, data_object.x, data_object.y)
+            else
+                iconstruct_arrow.show(data_object.x, data_object.y)
+            end
         end
         ::continue::
     end

@@ -109,6 +109,11 @@ interface "iconstruct_button"
     .method "show"
     .method "hide"
 
+interface "iconstruct_arrow"
+    .implement "iconstruct_arrow.lua"
+    .method "show"
+    .method "hide"
+
 system "ui_system"
     .implement "ui_system.lua"
     .method "ui_update"
