@@ -18,7 +18,7 @@ prototype "氮气" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    des = "大气层中的基本气体",
+    des = "一种纯净气体",
 }
 
 prototype "氧气" {
@@ -28,7 +28,7 @@ prototype "氧气" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    des = "大气层中的基本气体",
+    des = "一种纯净气体",
 }
 
 prototype "氢气" {
@@ -38,7 +38,7 @@ prototype "氢气" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    des = "大气层中的基本气体",
+    des = "一种纯净气体",
 }
 
 prototype "乙烯" {
@@ -48,7 +48,7 @@ prototype "乙烯" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    des = "大气层中的基本气体",
+    des = "一种化工气体",
 }
 
 prototype "甲烷" {
@@ -58,7 +58,7 @@ prototype "甲烷" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    des = "大气层中的基本气体",
+    des = "一种化工气体",
 }
 
 prototype "二氧化碳" {
@@ -68,7 +68,7 @@ prototype "二氧化碳" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    des = "大气层中的基本气体",
+    des = "一种纯净气体",
 }
 
 prototype "一氧化碳" {
@@ -78,7 +78,7 @@ prototype "一氧化碳" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    des = "大气层中的基本气体",
+    des = "一种化工气体",
 }
 
 prototype "氯气" {
@@ -88,7 +88,7 @@ prototype "氯气" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    des = "大气层中的基本气体",
+    des = "一种纯净气体",
 }
 
 prototype "海水" {
@@ -98,7 +98,7 @@ prototype "海水" {
     heat_capacity = "0.08kJ",
     default_temperature = 15,
     max_temperature = 100,
-    des = "大气层中的基本气体",
+    des = "海洋中的液体",
 }
 
 prototype "纯水" {
@@ -108,7 +108,7 @@ prototype "纯水" {
     heat_capacity = "0.08kJ",
     default_temperature = 15,
     max_temperature = 100,
-    des = "大气层中的基本气体",
+    des = "一种纯净的液体",
 }
 
 prototype "废水" {
@@ -118,7 +118,7 @@ prototype "废水" {
     heat_capacity = "0.08kJ",
     default_temperature = 20,
     max_temperature = 100,
-    des = "大气层中的基本气体",
+    des = "一种混合物组成的液体",
 }
 
 prototype "盐酸" {
@@ -128,7 +128,7 @@ prototype "盐酸" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    des = "大气层中的基本气体",
+    des = "一种化工液体",
 }
 
 prototype "碱性溶液" {
@@ -138,7 +138,7 @@ prototype "碱性溶液" {
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,
-    des = "大气层中的基本气体",
+    des = "一种化工液体",
 }
 
 prototype "蒸汽" {
@@ -148,5 +148,5 @@ prototype "蒸汽" {
     heat_capacity = "0.05KJ",
     default_temperature = 165,
     max_temperature = 200,
-    des = "大气层中的基本气体",
+    des = "一种化工气体",
 }

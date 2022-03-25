@@ -54,7 +54,7 @@ prototype "铁棒1" {
         {"铁棒", 5}
     },
     time = "4s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "使用铁锭锻造铁棒",
 }
 
 prototype "铁丝1" {
@@ -67,7 +67,7 @@ prototype "铁丝1" {
         {"铁丝", 4}
     },
     time = "4s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "使用铁棒锻造铁丝",
 }
 
 prototype "沙石粉碎" {
@@ -81,7 +81,7 @@ prototype "沙石粉碎" {
         {"碎石", 2},
     },
     time = "4s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "粉碎沙石矿获得更微小的原材料",
 }
 
 prototype "石砖" {
@@ -94,7 +94,7 @@ prototype "石砖" {
         {"石砖", 2},
     },
     time = "3s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "使用碎石炼制石砖",
 }
 
 prototype "玻璃" {
@@ -107,7 +107,7 @@ prototype "玻璃" {
         {"玻璃", 1},
     },
     time = "16s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "使用硅炼制玻璃",
 }
 
 prototype "电动机1" {
@@ -123,7 +123,7 @@ prototype "电动机1" {
         {"电动机1", 1},
     },
     time = "8s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "铁制品和塑料打造初级电动机",
 }
 
 prototype "铁齿轮" {
@@ -137,7 +137,7 @@ prototype "铁齿轮" {
         {"铁齿轮", 2},
     },
     time = "4s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "使用铁制品加工铁齿轮",
 }
 
 prototype "机器爪1" {
@@ -152,7 +152,7 @@ prototype "机器爪1" {
         {"机器爪1", 3},
     },
     time = "5s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "铁制品和电动机制造机器爪",
 }
 
 prototype "砖石公路" {
@@ -165,7 +165,7 @@ prototype "砖石公路" {
         {"砖石公路", 4},
     },
     time = "6s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "使用石砖制造公路",
 }
 
 prototype "车站1" {
@@ -179,7 +179,7 @@ prototype "车站1" {
         {"车站1", 1},
     },
     time = "4s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "使用机器爪和箱子制造车站",
 }
 
 prototype "小型铁制箱子" {
@@ -193,7 +193,7 @@ prototype "小型铁制箱子" {
         {"小型铁制箱子", 1},
     },
     time = "3s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "使用铁制品制造箱子",
 }
 
 prototype "采矿机1" {
@@ -208,7 +208,7 @@ prototype "采矿机1" {
         {"采矿机1", 2},
     },
     time = "6s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "使用铁制品和电动机制造采矿机",
 }
 
 prototype "熔炼炉1" {
@@ -223,7 +223,7 @@ prototype "熔炼炉1" {
         {"熔炼炉1", 1},
     },
     time = "8s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "使用铁制品和石砖制造熔炼炉",
 }
 
 prototype "组装机1" {
@@ -238,7 +238,7 @@ prototype "组装机1" {
         {"熔炼炉1", 1},
     },
     time = "6s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "机械原料制造组装机",
 }
 
 prototype "蒸汽发电机1" {
@@ -254,7 +254,7 @@ prototype "蒸汽发电机1" {
         {"蒸汽发电机1", 1},
     },
     time = "8s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "管道和机械原料制造蒸汽发电机",
 }
 
 prototype "风力发电机1" {
@@ -268,7 +268,7 @@ prototype "风力发电机1" {
         {"风力发电机1", 1},
     },
     time = "5s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "电传输材料和发电设施制造风力发电机",
 }
 
 prototype "铁制电线杆" {
@@ -283,7 +283,7 @@ prototype "铁制电线杆" {
         {"铁制电线杆", 1},
     },
     time = "2s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "导电材料制造电线杆",
 }
 
 prototype "液罐1" {
@@ -298,7 +298,7 @@ prototype "液罐1" {
         {"液罐1", 1},
     },
     time = "6s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "管道和铁制品制造液罐",
 }
 
 prototype "化工厂1" {
@@ -314,7 +314,7 @@ prototype "化工厂1" {
         {"化工厂1", 1},
     },
     time = "15s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "液体容器和加工设备制造化工厂",
 }
 
 prototype "铸造厂1" {
@@ -329,7 +329,7 @@ prototype "铸造厂1" {
         {"铸造厂1", 1},
     },
     time = "15s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "熔炼设备和机器爪制造铸造厂",
 }
 
 prototype "水电站1" {
@@ -343,7 +343,7 @@ prototype "水电站1" {
         {"水电站1", 1},
     },
     time = "4s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "蒸馏设施和抽水泵制造水电站",
 }
 
 prototype "蒸馏厂1" {
@@ -358,7 +358,7 @@ prototype "蒸馏厂1" {
         {"蒸馏厂1", 1},
     },
     time = "4s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "液体容器和熔炼设备制造蒸馏厂",
 }
 
 
@@ -374,7 +374,7 @@ prototype "烟囱1" {
         {"烟囱1", 1},
     },
     time = "4s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "铁制品和管道制造烟囱",
 }
 
 prototype "压力泵1" {
@@ -388,7 +388,7 @@ prototype "压力泵1" {
         {"压力泵1", 1},
     },
     time = "2s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "管道和电机制造压力泵",
 }
 
 prototype "抽水泵" {
@@ -402,7 +402,7 @@ prototype "抽水泵" {
         {"抽水泵", 1},
     },
     time = "4s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "排水设施和压力泵制造抽水泵",
 }
 
 prototype "空气过滤器1" {
@@ -417,7 +417,7 @@ prototype "空气过滤器1" {
         {"空气过滤器1", 1},
     },
     time = "8s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "压力泵和发电设施制造空气过滤器",
 }
 
 prototype "排水口1" {
@@ -431,7 +431,7 @@ prototype "排水口1" {
         {"排水口1", 1},
     },
     time = "4s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "管道制造排水口",
 }
 
 prototype "管道1" {
@@ -445,7 +445,7 @@ prototype "管道1" {
         {"碎石", 1},
     },
     time = "6s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "石砖制造管道",
 }
 
 prototype "地下管1" {
@@ -459,7 +459,7 @@ prototype "地下管1" {
         {"地下管1", 2},
     },
     time = "5s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "管道和沙子制造地下管道",
 }
 
 prototype "粉碎机1" {
@@ -474,7 +474,7 @@ prototype "粉碎机1" {
         {"粉碎机1", 1},
     },
     time = "5s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "石砖和采矿机制造粉碎机",
 }
 
 prototype "物流中心1" {
@@ -489,7 +489,7 @@ prototype "物流中心1" {
         {"物流中心1", 1},
     },
     time = "10s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "发电设施和车载设备制造物流中心",
 }
 
 prototype "运输车辆1" {
@@ -505,7 +505,7 @@ prototype "运输车辆1" {
         {"运输车辆1", 1},
     },
     time = "5s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "电动机和铁制品制造汽车",
 }
 
 prototype "电解厂1" {
@@ -519,7 +519,7 @@ prototype "电解厂1" {
         {"电解厂1", 1},
     },
     time = "10s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "液体容器和电传输设备制造电解厂",
 }
 
 prototype "科研中心1" {
@@ -535,7 +535,7 @@ prototype "科研中心1" {
         {"科研中心1", 1},
     },
     time = "10s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "机械装置和电动机制造科研中心",
 }
 
 
@@ -550,7 +550,7 @@ prototype "破损水电站" {
         {"水电站1", 1},
     },
     time = "4s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "修复损坏的水电站",
 }
 
 prototype "破损空气过滤器" {
@@ -564,7 +564,7 @@ prototype "破损空气过滤器" {
         {"空气过滤器1", 1},
     },
     time = "3s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "修复损坏的空气过滤器",
 }
 
 prototype "破损电解厂" {
@@ -578,7 +578,7 @@ prototype "破损电解厂" {
         {"电解厂1", 1},
     },
     time = "6s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "修复损坏的电解厂",
 }
 
 prototype "破损化工厂" {
@@ -592,7 +592,7 @@ prototype "破损化工厂" {
         {"化工厂1", 1},
     },
     time = "5s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "修复损坏的化工厂",
 }
 
 prototype "破损组装机" {
@@ -606,7 +606,7 @@ prototype "破损组装机" {
         {"组装机1", 1},
     },
     time = "3s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "修复损坏的组装机",
 }
 
 prototype "破损铁制电线杆" {
@@ -620,7 +620,7 @@ prototype "破损铁制电线杆" {
         {"铁制电线杆", 1},
     },
     time = "2s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "修复损坏的铁制电线杆",
 }
 
 prototype "破损太阳能板" {
@@ -634,7 +634,7 @@ prototype "破损太阳能板" {
         {"太阳能板1", 1},
     },
     time = "8s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "修复损坏的太阳能板",
 }
 
 prototype "破损蓄电池" {
@@ -648,7 +648,7 @@ prototype "破损蓄电池" {
         {"蓄电池1", 1},
     },
     time = "6s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "修复损坏的蓄电池",
 }
 
 prototype "破损物流中心" {
@@ -662,7 +662,7 @@ prototype "破损物流中心" {
         {"物流中心1", 1},
     },
     time = "6s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "修复损坏的物流中心",
 }
 
 prototype "破损运输汽车" {
@@ -676,7 +676,7 @@ prototype "破损运输汽车" {
         {"运输车辆1", 1},
     },
     time = "4s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "修复损坏的运输汽车",
 }
 
 prototype "破损车站" {
@@ -690,7 +690,7 @@ prototype "破损车站" {
         {"车站1", 1},
     },
     time = "5s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "修复损坏的车站",
 }
 
 prototype "地质科技包1" {
@@ -704,7 +704,7 @@ prototype "地质科技包1" {
         {"地质科技包", 1},
     },
     time = "15s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "地质材料制造地质科技包",
 }
 
 prototype "气候科技包1" {
@@ -718,7 +718,7 @@ prototype "气候科技包1" {
         {"气候科技包", 1},
     },
     time = "25s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "气候材料制造气候科技包",
 }
 
 prototype "机械科技包1" {
@@ -732,7 +732,7 @@ prototype "机械科技包1" {
         {"机械科技包", 1},
     },
     time = "15s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "机械原料制造机械科技包",
 }
 
 prototype "空气过滤" {
@@ -743,6 +743,7 @@ prototype "空气过滤" {
         {"空气", 50},
     },
     time = "1s",
+    description = "采集大气并过滤",
 }
 
 prototype "离岸抽水" {
@@ -753,6 +754,7 @@ prototype "离岸抽水" {
         {"海水", 1200},
     },
     time = "1s",
+    description = "抽取海洋里海水",
 }
 
 
@@ -767,7 +769,7 @@ prototype "空气分离1" {
         {"二氧化碳", 40},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "空气分离出纯净气体",
 }
 
 prototype "海水电解" {
@@ -782,7 +784,7 @@ prototype "海水电解" {
         {"氢氧化钠", 1},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "海水电解出纯净气体和化合物",
 }
 
 prototype "二氧化碳转一氧化碳" {
@@ -797,7 +799,7 @@ prototype "二氧化碳转一氧化碳" {
         {"一氧化碳", 25},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "二氧化碳转一氧化碳",
 }
 
 prototype "二氧化碳转甲烷" {
@@ -812,7 +814,7 @@ prototype "二氧化碳转甲烷" {
         {"甲烷", 24},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "二氧化碳转甲烷",
 }
 
 prototype "一氧化碳转石墨" {
@@ -827,7 +829,7 @@ prototype "一氧化碳转石墨" {
         {"石墨", 1},
     },
     time = "2s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "一氧化碳转石墨",
 }
 
 prototype "氯化氢" {
@@ -841,7 +843,7 @@ prototype "氯化氢" {
         {"盐酸", 60},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "氢气和氯气化合成氯化氢",
 }
 
 prototype "纯水电解" {
@@ -855,7 +857,7 @@ prototype "纯水电解" {
         {"氢气", 140},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "纯水电解成氧气和氢气",
 }
 
 prototype "甲烷转乙烯" {
@@ -870,7 +872,7 @@ prototype "甲烷转乙烯" {
         {"纯水", 8},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "甲烷转乙烯",
 }
 
 prototype "塑料1" {
@@ -885,7 +887,7 @@ prototype "塑料1" {
         {"塑料", 1},
     },
     time = "3s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "化工原料合成塑料",
 }
 
 prototype "塑料2" {
@@ -901,7 +903,7 @@ prototype "塑料2" {
         {"塑料", 1},
     },
     time = "4s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "化工原料合成塑料",
 }
 
 prototype "酸碱中和" {
@@ -915,7 +917,7 @@ prototype "酸碱中和" {
         {"废水", 100},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "酸碱溶液中和成废水",
 }
 
 prototype "碱性溶液" {
@@ -929,7 +931,7 @@ prototype "碱性溶液" {
         {"碱性溶液", 100},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "碱性原料融水制造碱性溶液",
 }
 
 prototype "废水排泄" {
@@ -942,7 +944,7 @@ prototype "废水排泄" {
         {"液体排泄物", 1},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "废水排泄",
 }
 
 prototype "海水排泄" {
@@ -955,7 +957,7 @@ prototype "海水排泄" {
         {"液体排泄物", 1},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "海水排泄",
 }
 
 prototype "纯水排泄" {
@@ -968,7 +970,7 @@ prototype "纯水排泄" {
         {"液体排泄物", 1},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "纯水排泄",
 }
 
 prototype "碱性溶液排泄" {
@@ -981,7 +983,7 @@ prototype "碱性溶液排泄" {
         {"液体排泄物", 1},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "碱性溶液排泄",
 }
 
 prototype "氮气排泄" {
@@ -994,7 +996,7 @@ prototype "氮气排泄" {
         {"气体排泄物", 1},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "氮气排泄",
 }
 
 prototype "氧气排泄" {
@@ -1007,7 +1009,7 @@ prototype "氧气排泄" {
         {"气体排泄物", 1},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "氧气排泄",
 }
 
 prototype "二氧化碳排泄" {
@@ -1020,7 +1022,7 @@ prototype "二氧化碳排泄" {
         {"气体排泄物", 1},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "二氧化碳排泄",
 }
 
 prototype "氢气排泄" {
@@ -1033,7 +1035,7 @@ prototype "氢气排泄" {
         {"气体排泄物", 1},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "氢气排泄",
 }
 
 prototype "蒸汽排泄" {
@@ -1046,7 +1048,7 @@ prototype "蒸汽排泄" {
         {"气体排泄物", 1},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "蒸汽排泄",
 }
 
 prototype "甲烷排泄" {
@@ -1059,5 +1061,65 @@ prototype "甲烷排泄" {
         {"气体排泄物", 1},
     },
     time = "1s",
-    description = "使用铁锭和碎石锻造铁板",
+    description = "甲烷排泄",
+}
+
+---------海水生成矿物配方----------
+prototype "海水分离铁" {
+    type = { "recipe" },
+    category = "基础化工",
+    ingredients = {
+        {"海水", 100},
+    },
+    results = {
+        {"铁矿石", 2},
+        {"碎石", 2},
+        {"纯水", 50},
+    },
+    time = "3s",
+    description = "海水中过滤铁矿石",
+}
+
+prototype "海水分离水藻" {
+    type = { "recipe" },
+    category = "基础化工",
+    ingredients = {
+        {"海水", 100},
+    },
+    results = {
+        {"海藻", 2},
+        {"沙子", 2},
+        {"纯水", 50},
+    },
+    time = "3s",
+    description = "海水中过滤水藻",
+}
+
+prototype "海水分离石头" {
+    type = { "recipe" },
+    category = "基础化工",
+    ingredients = {
+        {"海水", 100},
+    },
+    results = {
+        {"石头", 4},
+        {"沙子",1},
+        {"碎石",1},
+        {"纯水", 25},
+    },
+    time = "3s",
+    description = "海水中过滤石头",
+}
+
+prototype "提炼纤维" {
+    type = { "recipe" },
+    category = "中型制造",
+    ingredients = {
+        {"海藻", 4},
+    },
+    results = {
+        {"纤维燃料", 1},
+    },
+    time = "2s",
+    description = "海藻加工成纤维燃料",
 }
