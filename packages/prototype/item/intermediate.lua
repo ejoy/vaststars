@@ -157,7 +157,7 @@ prototype "用尽的核铀燃料" {
 }
 
 --------------------------
-prototype "水藻" {
+prototype "海藻" {
 	type = { "item" },
 	stack = 50,
     description = "一种植物",
