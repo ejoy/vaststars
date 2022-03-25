@@ -13,11 +13,23 @@ prototype "地质研究" {
     time = 3
 }
 
+---新增海水配方的对应科技---
+prototype "铁矿提取" {
+  effects = {
+    {"unlock-recipe","海水分离铁"},
+  },
+  prerequisites = {"地质研究"},
+  ingredients = {
+      {"地质科技包", 3},
+  },
+  time = 4
+}
+
 prototype "铁矿熔炼" {
   effects = {
     {"unlock-recipe","铁锭"},
   },
-  prerequisites = {"地质研究"},
+  prerequisites = {"铁矿提取"},
   ingredients = {
       {"地质科技包", 3},
   },
@@ -109,13 +121,25 @@ prototype "铁加工2" {
   time = 4
 }
 
+prototype "石头提取" {
+  effects = {
+    {"unlock-recipe","海水分离石头"},
+  },
+  prerequisites = {"铁加工2"},
+  ingredients = {
+      {"地质科技包", 8},
+  },
+  time = 2
+}
+
+
 prototype "石头处理1" {
   effects = {
     {"unlock-recipe","破损太阳能板"},
     {"unlock-recipe","沙石粉碎"},
     {"unlock-recipe","破损物流中心"},
   },
-  prerequisites = {"铁加工2"},
+  prerequisites = {"石头提取"},
   ingredients = {
       {"地质科技包", 8},
   },
@@ -353,8 +377,6 @@ prototype "金属加工1" {
   },
   time = 8
 }
-
-
 
 prototype "自动化1" {
   effects = {
