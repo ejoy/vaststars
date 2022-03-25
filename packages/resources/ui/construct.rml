@@ -279,26 +279,38 @@
             </button>
 
             <!-- 开始施工 -->
-            <button data-if = "cur_edit_mode == 'construct'" data-event-click="clickConstructComplete()" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: flex-start;'>
+            <button data-if = "cur_edit_mode == 'construct'" data-event-click="clickConstructComplete()" style='position: absolute; left: 2.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始施工</div>
             </button>
 
+            <!-- 确认放置 -->
+            <button data-if = "cur_edit_mode == 'construct'" data-event-click="" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <div style='margin: 0 auto; background-image:"construct/confirm.png"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
+                <div style="font-size: 85%;">确认放置</div>
+            </button>
+
+            <!-- 旋转建筑 -->
+            <button data-if = "cur_edit_mode == 'construct'" data-event-click="" style='position: absolute; left: 139.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <div style='margin: 0 auto;background-image:"construct/rotate.png"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
+                <div style="font-size: 85%;">旋转建筑</div>
+            </button>
+
             <!-- 开始拆除 -->
-            <button data-if = "cur_edit_mode == 'dismantle'" data-event-click="clickDismantleComplete()" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: flex-start;'>
+            <button data-if = "cur_edit_mode == 'dismantle'" data-event-click="clickDismantleComplete()" style='position: absolute; left: 2.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始拆除</div>
             </button>
             
             <!-- 拆除模式 -->
-            <div data-if = "cur_edit_mode != ''" data-event-click="clickDismantleBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 100%;'>
-                <div style='margin: 0 auto; top: 2.67vmin; background-image:"construct/demolish.png"; width: 6.67vmin; height: 6.67vmin; background-size:cover;'/>
+            <div data-if = "cur_edit_mode != ''" data-event-click="clickDismantleBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 14.00vmin; height: 14.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+                <div style='margin: 0 auto; top: 2.67vmin; background-image:"construct/demolish.png"; width: 6.00vmin; height: 6.00vmin; background-size:cover;'/>
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除模式</div>
             </div>
 
             <!-- 建造模式 -->
-            <div data-if = "cur_edit_mode != ''" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 21.33vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;'>
-                <div style='margin: 0 auto; top: 2.67vmin; background-image:"construct/construct.png"; width: 6.67vmin; height: 6.67vmin; background-size:cover;'/>
+            <div data-if = "cur_edit_mode != ''" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 14.00vmin; height: 14.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+                <div style='margin: 0 auto; top: 2.67vmin; background-image:"construct/construct.png"; width: 6.00vmin; height: 6.00vmin; background-size:cover;'/>
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">建造模式</div>
             </div>
 

@@ -43,29 +43,28 @@
 
                 gapx = 0,
                 gapy = 0,
-                page_top = 0,
+                page_top_left = 0,
                 page_top_right = 0,
                 -- 详细信息面板高度
                 detail_height = 120,
-                detail_height_right = 120,
                 -- 详细信息面板开始位置
-                detail_top = 0,
+                detail_top_left = 0,
                 detail_top_right = 0,
-                current_page = 0,
+                current_page_left = 0,
                 view_items = {},
                 item_size = 90,
                 interval = 200,
-                show_detail = false,
-                show_detail_right = false,
+                show_left_detail = false,
+                show_right_detail = false,
                 page_width = 540,
                 page_height = 490,
                 view_items = {},
                 virtual_pages = {},
                 current_page_right = 0,
-                selected_id = 0,
-                selected_row = 10000,
-                selected_id_right = 0,
-                selected_row_right = 10000,
+                selected_left_id = 0,
+                selected_left_row = 10000,
+                selected_right_id = 0,
+                selected_right_row = 10000,
                 item_down_time = 0,
                 current_time = 0,
                 row_count = 0,
@@ -108,97 +107,90 @@
                 end
             end
 
-            function start.pagemouseup(event)
+            function start.pagemouseup(event, direction)
                 console.log("pagemouseup")
                 page_proxy:on_mouseup(event)
-                start.current_page = page_proxy:get_current_page() - 1
+                if direction then
+                    start.current_page_left = page_proxy:get_current_page() - 1
+                else
+                    start.current_page_right = page_proxy:get_current_page() - 1
+                end
                 start.page_drag = false
             end
 
-            function start.pagerightmouseup(event)
-                console.log("pagemouseup")
-                page_proxy:on_mouseup(event)
-                start.current_page_right = page_proxy:get_current_page() - 1
-                start.page_drag = false
-            end
-
-            local function show_detail(show, id, row, top)
+            local function show_detail_all(show,id,row,top,direction)
                 local offset = 0
                 if show then
-                    start.selected_id = id
-                    start.selected_row = row
-                    start.detail_top = top
-                    local dy = start.page_height - ((row + 1) * (start.item_size + start.gapy) + start.detail_height)
-                    offset = (dy >= 0) and 0 or dy
+                    if direction then
+                        start.selected_left_id = id
+                        start.selected_left_row = row
+                        start.detail_top_left = top
+                        console.log("show left selected id",show, start.selected_left_id)
+                    else
+                        start.selected_right_id = id
+                        start.selected_right_row = row
+                        start.detail_top_right = top
+                        console.log("show right selected id",show, start.selected_left_id)
+                    end
+                    local dy = start.page_height - ((row + 1) * ( start.item_size + start.gapy ) + start.detail_height)
+                    offset = (dy >= 0 ) and 0 or dy 
                 else
-                    start.selected_id = 0
-                    --TODO: max value 1000
-                    start.selected_row = 10000
+                    if direction then
+                        start.selected_left_id = 0
+                        start.selected_left_row = 10000
+                        console.log("no show left selected id",show,start.selected_left_id)
+                    else
+                        start.selected_right_id = 0
+                        start.selected_right_row = 10000
+                        console.log("no show right selected id",show,start.selected_right_id)
+                    end      
                 end
-                start.show_detail = show
-                start.page_top = offset
-            end
-
-            local function show_detail_right(show, id, row, top)
-                local offset = 0
-                if show then
-                    start.selected_id_right = id
-                    start.selected_row_right = row
-                    start.detail_top_right = top
-                    local dy = start.page_height - ((row + 1) * (start.item_size + start.gapy) + start.detail_height)
-                    offset = (dy >= 0) and 0 or dy
+                if direction then
+                    start.show_left_detail = show
+                    start.page_top_left = offset
+                    console.log("left",show, offset)
                 else
-                    start.selected_id_right = 0
-                    --TODO: max value 1000
-                    start.selected_row_right = 10000
+                    start.show_right_detail = show
+                    start.page_top_right = offset
+                    console.log("right",show, offset)
                 end
-                start.show_detail_right = show
-                start.page_top_right = offset
+                
             end
 
             function start.page_item_down()
                 start.item_down_time = start.current_time
             end
 
-            function start.page_item_up(event, id, row, top)
-                console.log("page_item_click, row, top", id, row, top)
+            function start.page_item_up_all(event, id, row, top, direction)
+                console.log("page_item_click, row, top, direction", id, row, top, direction)
                 if start.current_time - start.item_down_time <= start.interval and not start.draging then
                     console.log("start.draging: ", start.draging)
-                    if start.selected_id ~= id then
-                        show_detail(true, id, row, top)
-                        show_detail_right(false, 0, 0, 0)
+                    if direction then
+                        if start.selected_left_id ~= id then
+                            show_detail_all(true, id, row, top, true)
+                            show_detail_all(false, 0, 0, 0, false)
+                        else
+                            show_detail_all(not start.show_left_detail, id, row, top, true)
+                        end
                     else
-                        show_detail(not start.show_detail, id, row, top)
+                        if start.selected_right_id ~= id then
+                            show_detail_all(true, id, row, top, false)
+                            show_detail_all(false, 0, 0, 0, true)
+                        else
+                            show_detail_all(not start.show_right_detail, id, row, top, false)
+                        end
                     end
                 else
-                    show_detail(false, 0, 0, 0)
-                end
-            end
-
-            function start.right_page_item_down()
-                start.item_down_time = start.current_time
-            end
-
-            function start.right_page_item_up(event, id, row, top)
-                console.log("page_item_click, row, top", id, row, top)
-                if start.current_time - start.item_down_time <= start.interval and not start.draging then
-                    console.log("start.draging: ", start.draging)
-                    if start.selected_id_right ~= id then
-                        show_detail_right(true, id, row, top)
-                        show_detail(false, 0, 0, 0)
-                    else
-                        show_detail_right(not start.show_detail_right, id, row, top)
-                    end
-                else
-                    show_detail_right(false, 0, 0, 0)
+                    show_detail_all(false, 0, 0, 0,true)
+                    show_detail_all(false, 0, 0, 0,false)
                 end
             end
 
             function start.ClickBack(event)
                 start.info_flag = true
                 start.chest_interaction = false
-                start.show  = false
-                show_detail_right(false, 0, 0, 0)
+                show_detail_all(false, 0, 0, 0,true)
+                show_detail_all(false, 0, 0, 0,false)
             end
 
             window.addEventListener('message', function(event)
@@ -286,20 +278,20 @@
                 </div>
                 <div class="item-container" data-if="chest_interaction">
                     <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
-                        <div class = "item-page-block" data-style-top="page_top + 'px'" data-event-mousemove="pagedrag()">
+                        <div class = "item-page-block" data-style-top="page_top_left + 'px'" data-event-mousemove="pagedrag()">
                             <div class ="row">
                                 <div style="width:95%; height:100%;" data-for="virtual_pages">
                                     <div data-style-left="(it_index + 1) * 100 + '%'"/>
                                 </div>
                             </div>
-                            <div style="position: absolute; align-items: center;" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
-                                <button class="item" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up(it.data.id, it.row, it.top)">
+                            <div style="position: absolute; align-items: center;" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_left_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
+                                <button class="item" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up_all(it.data.id, it.row, it.top, true)">
                                     <div class="item-count">99</div>                          
                                     <!--div class="item-title">机器爪</div>-->
                                 </button>
                                 <!--<div>{{it.data.id}}</div>-->
                             </div>
-                            <div class="exchange-region" data-style-left="current_page * page_width + 'px'" data-style-height="detail_height+'px'" data-style-top="detail_top+item_size+'px'" data-if="show_detail">
+                            <div class="exchange-region" data-style-left="current_page_left * page_width + 'px'" data-style-height=" detail_height + 'px'" data-style-top=" detail_top_left + item_size + 'px'" data-if="show_left_detail">
                                 <div class="button-exchange-block">
                                     <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
                                         <div class = "button-exchange-arrow"/>
@@ -322,7 +314,7 @@
                     </div>
                     <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
                         <div data-for="virtual_pages">
-                            <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" data-style-background-image="it_index == current_page ? 'common/page1.png' : 'common/page0.png'"/>
+                            <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" data-style-background-image="it_index == current_page_left ? 'common/page1.png' : 'common/page0.png'"/>
                         </div>
                     </div>         
                 </div>
@@ -379,14 +371,14 @@
                                     <div data-style-left="(it_index + 1) * 100 + '%'"/>
                                 </div>
                             </div>
-                            <div style="position: absolute; align-items: center;" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_row_right) ? (it.top + detail_height_right) : it.top) + 'px'" data-for="view_items">
-                                <button class="item" data-event-mousedown="right_page_item_down()" data-event-mouseup="right_page_item_up(it.data.id, it.row, it.top)">
+                            <div style="position: absolute; align-items: center;" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_right_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
+                                <button class="item" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up_all(it.data.id, it.row, it.top, false)">
                                     <div class="item-count">99</div>                          
                                     <!--div class="item-title">机器爪</div>-->
                                 </button>
                                 <!--<div>{{it.data.id}}</div>-->
                             </div>
-                            <div class="exchange-region" data-style-left="current_page_right * page_width + 'px'" data-style-height="detail_height_right+'px'" data-style-top="detail_top_right+item_size+'px'" data-if="show_detail_right">
+                            <div class="exchange-region" data-style-left="current_page_right * page_width + 'px'" data-style-height="detail_height+'px'" data-style-top="detail_top_right + item_size+'px'" data-if="show_right_detail">
                                 <div class="button-exchange-block">
                                     <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
                                         <div class = "button-exchange-arrow"/>
