@@ -1061,3 +1061,63 @@ prototype "甲烷排泄" {
     time = "1s",
     description = "使用铁锭和碎石锻造铁板",
 }
+
+---------海水生成矿物配方----------
+prototype "海水分离铁" {
+    type = { "recipe" },
+    category = "基础化工",
+    ingredients = {
+        {"海水", 100},
+    },
+    results = {
+        {"铁矿石", 2},
+        {"碎石", 2},
+        {"纯水", 50},
+    },
+    time = "3s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "海水分离水藻" {
+    type = { "recipe" },
+    category = "基础化工",
+    ingredients = {
+        {"海水", 100},
+    },
+    results = {
+        {"海藻", 2},
+        {"沙子", 2},
+        {"纯水", 50},
+    },
+    time = "3s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "海水分离石头" {
+    type = { "recipe" },
+    category = "基础化工",
+    ingredients = {
+        {"海水", 100},
+    },
+    results = {
+        {"石头", 4},
+        {"沙子",1},
+        {"碎石",1},
+        {"纯水", 25},
+    },
+    time = "3s",
+    description = "使用铁锭和碎石锻造铁板",
+}
+
+prototype "提炼纤维" {
+    type = { "recipe" },
+    category = "中型制造",
+    ingredients = {
+        {"海藻", 4},
+    },
+    results = {
+        {"纤维燃料", 1},
+    },
+    time = "2s",
+    description = "使用铁锭和碎石锻造铁板",
+}

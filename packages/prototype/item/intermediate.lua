@@ -155,3 +155,14 @@ prototype "用尽的核铀燃料" {
 	type = { "item" },
 	stack = 50,
 }
+
+--------------------------
+prototype "水藻" {
+	type = { "item" },
+	stack = 50,
+}
+
+prototype "纤维燃料" {
+	type = { "item" },
+	stack = 50,
+}
