@@ -27,7 +27,6 @@ local ui_construct_complete_mb = world:sub {"ui", "construct", "construct_comple
 local ui_fluidbox_update_mb = world:sub {"ui", "construct", "fluidbox_update"}
 local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
 local construct_button_mb = world:sub {"construct_button"}
-local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local pipe_adjust_mb = world:sub {"construct_system", "pipe_adjust"}
 
 local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
@@ -304,35 +303,6 @@ function construct_sys:data_changed()
         if game_object then
             game_object.gameplay_entity.fluid = {fluidname, 0}
         end
-    end
-
-    for _, param, eid in pickup_mapping_mb:unpack() do
-        if param == "canvas" then
-            goto continue
-        end
-
-        if cur_mode ~= "construct" then
-            goto continue
-        end
-
-        local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
-        if game_object then
-            goto continue
-        end
-
-        game_object = world:entity(eid)
-        if game_object then
-            local data_object = get_data_object(game_object)
-            if not prototype.is_pipe(data_object.prototype_name) then
-                game_object.drapdrop = true
-                game_object.construct_pickup = true
-                igame_object.set_state(game_object.id, data_object.prototype_name, "translucent", CONSTRUCT_GREEN_BASIC_COLOR)
-                iconstruct_button.show(data_object.prototype_name, data_object.x, data_object.y)
-            else
-                iconstruct_arrow.show(data_object.prototype_name, data_object.x, data_object.y, create_pipe)
-            end
-        end
-        ::continue::
     end
 
     for _, _, x, y in pipe_adjust_mb:unpack() do
