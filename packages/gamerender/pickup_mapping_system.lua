@@ -28,7 +28,8 @@ end
 
 function pickup_mapping_sys.after_pickup()
     local v
-    for _, eid in pickup_mb:unpack() do
+    for _, eid, x, y in pickup_mb:unpack() do
+        -- print("pickup", eid, x, y)
         v = id_mapping[eid]
         if v then
             local mapping_entity = world:entity(v.mapping_eid)
@@ -38,9 +39,9 @@ function pickup_mapping_sys.after_pickup()
             end
 
             if v.param then
-                world:pub {"pickup_mapping", v.param, v.mapping_eid}
+                world:pub {"pickup_mapping", v.param, v.mapping_eid, x, y}
             else
-                world:pub {"pickup_mapping", v.mapping_eid}
+                world:pub {"pickup_mapping", v.mapping_eid, x, y}
             end
             ::continue::
         end

@@ -7,19 +7,7 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local mc = import_package "ant.math".constant
 local math3d = require "math3d"
 
-local input_sys = ecs.system "input_system"
 local iinput = ecs.interface "iinput"
-local mouse_mb = world:sub {"mouse"}
-local last_vx = 0
-local last_vy = 0
-
-function input_sys:data_changed()
-    for _, _, state, x, y in mouse_mb:unpack() do
-        if state == "MOVE" then
-			last_vx, last_vy = x, y
-		end
-    end
-end
 
 function iinput.ray_hit_plane(ray, plane_info)
 	local plane = {n = plane_info.dir, d = -math3d.dot(math3d.vector(plane_info.dir), math3d.vector(plane_info.pos))}
@@ -45,8 +33,4 @@ function iinput.screen_to_world(x, y)
         return
     end
     return math3d.tovalue(position)
-end
-
-function iinput.get_mouse_world_position()
-    return iinput.screen_to_world(last_vx, last_vy)
 end

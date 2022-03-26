@@ -17,8 +17,8 @@ local terrain = ecs.require "terrain"
 local construct_arrows = {}
 
 function construct_arrow_sys:pickup_mapping()
-    for _ in pickup_mapping_canvas_mb:unpack() do
-        local coord = terrain.get_coord_by_position(iinput.get_mouse_world_position())
+    for _, _, _, x, y in pickup_mapping_canvas_mb:unpack() do
+        local coord = terrain.get_coord_by_position(iinput.screen_to_world(x, y))
         local k = prototype.pack_coord(coord[1], coord[2])
         local v = construct_arrows[k]
         if v then
