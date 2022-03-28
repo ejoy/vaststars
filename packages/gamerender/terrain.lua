@@ -1,7 +1,7 @@
 local ecs   = ...
 local world = ecs.world
 local w     = world.w
-local UP = require "vector2".UP
+local UP_LEFT = require "vector2".UP_LEFT
 
 local terrain = {}
 
@@ -149,7 +149,8 @@ function terrain.adjust_position(position, area)
     end
 
     local width, height = unpackCoord(area)
-    coord[2] = coord[2] + UP[2] * (height - 1)
+    coord[1] = coord[1] + UP_LEFT[1] * (width // 2)
+    coord[2] = coord[2] + UP_LEFT[2] * (height // 2)
 
     local begining = terrain.get_begin_position_by_coord(coord[1], coord[2])
     if not begining then
