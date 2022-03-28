@@ -64,13 +64,18 @@ local function update_game_object_color(game_object)
     igame_object.update(game_object.id, {color = color})
 end
 
-local function new_construct_object(prototype_name)
-    local typeobject = prototype.query_by_name("entity", prototype_name)
+local function get_central_position()
     local ce = world:entity(irq.main_camera())
     local plane = math3d.vector(0, 1, 0, 0)
     local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
     local origin = math3d.tovalue(math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o))
-    local coord = terrain.adjust_position(origin, typeobject.area)
+    origin[2] = 0.0
+    return origin
+end
+
+local function new_construct_object(prototype_name)
+    local typeobject = prototype.query_by_name("entity", prototype_name)
+    local coord = terrain.adjust_position(get_central_position(), typeobject.area)
 
     local color
     local construct_detector = prototype.get_construct_detector(prototype_name)
@@ -95,7 +100,7 @@ local function clear_construct_pickup_object()
 end
 
 local camera_move_speed <const> = 1.8
-local delta = {
+local delta_vectors = {
     ["left"]  = {-camera_move_speed, 0, 0},
     ["right"] = {camera_move_speed, 0, 0},
     ["down"]  = {0, 0, -camera_move_speed},
@@ -104,14 +109,14 @@ local delta = {
 
 function construct_sys:data_changed()
     for _, state in gesture_mb:unpack() do
-        local d = delta[state]
-        if d then
+        local delta = delta_vectors[state]
+        if delta then
             local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
             local ce = world:entity(mq.camera_ref)
             local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
-            iom.move_delta(ce, d)
+            iom.move_delta(ce, delta)
             if game_object then
-                igame_object.move_delta(game_object.id, d)
+                igame_object.move_delta(game_object.id, delta)
             end
         end
     end
@@ -119,9 +124,8 @@ function construct_sys:data_changed()
     for _ in gesture_end_mb:unpack() do
         local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
         if game_object then
-            local pt = prototype.query_by_name("entity", game_object.gameplay_entity.prototype_name)
-            local position = igame_object.get_position(game_object.id)
-            local coord, position = terrain.adjust_position(position, pt.area)
+            local typeobject = prototype.query_by_name("entity", game_object.gameplay_entity.prototype_name)
+            local coord, position = terrain.adjust_position(get_central_position(), typeobject.area)
             igame_object.set_position(game_object.id, position)
             game_object.gameplay_entity.x, game_object.gameplay_entity.y = coord[1], coord[2]
             game_object.game_object.x, game_object.game_object.y = coord[1], coord[2]
