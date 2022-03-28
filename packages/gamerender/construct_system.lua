@@ -64,6 +64,29 @@ local function update_game_object_color(game_object)
     igame_object.update(game_object.id, {color = color})
 end
 
+local function new_construct_object(prototype_name)
+    local typeobject = prototype.query_by_name("entity", prototype_name)
+    local ce = world:entity(irq.main_camera())
+    local plane = math3d.vector(0, 1, 0, 0)
+    local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
+    local origin = math3d.tovalue(math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o))
+    local coord = terrain.adjust_position(origin, typeobject.area)
+
+    local color
+    local construct_detector = prototype.get_construct_detector(prototype_name)
+    if construct_detector then
+        if not check_construct_detector(prototype_name, coord[1], coord[2], 'N') then
+            color = CONSTRUCT_RED_BASIC_COLOR
+        else
+            color = CONSTRUCT_GREEN_BASIC_COLOR
+        end
+    end
+    igame_object.create(prototype_name, coord[1], coord[2], 'N', "translucent", color, true)
+    if prototype.is_fluidbox(prototype_name) then
+        world:pub {"ui_message", "show_set_fluidbox", true}
+    end
+end
+
 local camera_move_speed <const> = 1
 local delta = {
     ["left"]  = {-camera_move_speed, 0, 0},
@@ -104,27 +127,7 @@ function construct_sys:data_changed()
         if game_object then
             igame_object.remove(game_object.id)
         end
-
-        local typeobject = prototype.query_by_name("entity", prototype_name)
-        local ce = world:entity(irq.main_camera())
-        local plane = math3d.vector(0, 1, 0, 0)
-        local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
-        local origin = math3d.tovalue(math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o))
-        local coord = terrain.adjust_position(origin, typeobject.area)
-
-        local color
-        local construct_detector = prototype.get_construct_detector(prototype_name)
-        if construct_detector then
-            if not check_construct_detector(prototype_name, coord[1], coord[2], 'N') then
-                color = CONSTRUCT_RED_BASIC_COLOR
-            else
-                color = CONSTRUCT_GREEN_BASIC_COLOR
-            end
-        end
-        igame_object.create(prototype_name, coord[1], coord[2], 'N', "translucent", color, true)
-        if prototype.is_fluidbox(prototype_name) then
-            world:pub {"ui_message", "show_set_fluidbox", true}
-        end
+        new_construct_object(prototype_name)
     end
 
     for _ in ui_construct_rotate_mb:unpack() do
@@ -151,6 +154,7 @@ function construct_sys:data_changed()
                     fluidbox:set(game_object.id, gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name)
                 end
             end
+            new_construct_object(gameplay_entity.prototype_name)
         end
     end
 
