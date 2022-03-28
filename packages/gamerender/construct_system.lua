@@ -87,6 +87,13 @@ local function new_construct_object(prototype_name)
     end
 end
 
+local function clear_construct_pickup_object()
+    local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
+    if game_object then
+        igame_object.remove(game_object.id)
+    end
+end
+
 local camera_move_speed <const> = 1.8
 local delta = {
     ["left"]  = {-camera_move_speed, 0, 0},
@@ -123,10 +130,7 @@ function construct_sys:data_changed()
     end
 
     for _, _, _, prototype_name in ui_construct_entity_mb:unpack() do
-        local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
-        if game_object then
-            igame_object.remove(game_object.id)
-        end
+        clear_construct_pickup_object()
         new_construct_object(prototype_name)
     end
 
@@ -165,6 +169,7 @@ function construct_sys:data_changed()
     end
 
     for _ in ui_construct_complete_mb:unpack() do
+        clear_construct_pickup_object()
         cur_mode = ""
         gameplay.world_update = true
         engine.set_camera_prefab("camera_default.prefab")
