@@ -100,6 +100,11 @@ function construct_sys:data_changed()
     end
 
     for _, _, _, prototype_name in ui_construct_entity_mb:unpack() do
+        local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
+        if game_object then
+            igame_object.remove(game_object.id)
+        end
+
         local typeobject = prototype.query_by_name("entity", prototype_name)
         local ce = world:entity(irq.main_camera())
         local plane = math3d.vector(0, 1, 0, 0)
