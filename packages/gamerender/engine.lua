@@ -7,11 +7,11 @@ local fs = require "filesystem"
 local datalist  = require "datalist"
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
+local math3d = require "math3d"
 local camera_prefab_path <const> = fs.path "/pkg/vaststars.resources/"
+local camera_prefab_file_name
 
----
-local engine = {}
-function engine.set_camera_prefab(prefab_file_name)
+local function get_camera_prefab_data(prefab_file_name)
     local f <close> = fs.open(camera_prefab_path .. prefab_file_name)
     if not f then
         log.error(("can nof found prefab `%s`"):format(prefab_file_name))
@@ -24,13 +24,42 @@ function engine.set_camera_prefab(prefab_file_name)
         return
     end
 
+    return data
+end
+
+---
+local engine = {}
+function engine.init_camera_prefab(prefab_file_name)
+    local data = get_camera_prefab_data(prefab_file_name)
+    if not data then
+        return
+    end
+
     local mq = w:singleton("main_queue", "camera_ref:in")
     local camera_ref = mq.camera_ref
     local e = world:entity(camera_ref)
 
-    local srt = data.scene.srt
-    iom.set_srt(e, srt.s or mc.ONE, srt.r, srt.t)
+    iom.set_srt(e, data.scene.srt.s or mc.ONE, data.scene.srt.r, data.scene.srt.t)
     iom.set_view(e, iom.get_position(e), iom.get_direction(e), data.scene.updir)
+    camera_prefab_file_name = prefab_file_name
+end
+
+function engine.set_camera_prefab(prefab_file_name)
+    local sdata, ddata = get_camera_prefab_data(camera_prefab_file_name), get_camera_prefab_data(prefab_file_name)
+    if not sdata or not ddata then
+        return
+    end
+
+    local mq = w:singleton("main_queue", "camera_ref:in")
+    local camera_ref = mq.camera_ref
+    local e = world:entity(camera_ref)
+
+    local delta = math3d.sub(iom.get_position(e), sdata.scene.srt.t)
+    local position = math3d.tovalue(math3d.add(delta, ddata.scene.srt.t))
+
+    iom.set_srt(e, ddata.scene.srt.s or mc.ONE, ddata.scene.srt.r, position)
+    iom.set_view(e, iom.get_position(e), iom.get_direction(e), ddata.scene.updir)
+    camera_prefab_file_name = prefab_file_name
 end
 
 function engine.world_select(pat)
