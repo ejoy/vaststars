@@ -17,4 +17,4 @@ data:
 policy:
   ant.general|name
   ant.general|tag
-  ant.camera|cameras
+  ant.camera|camera
