@@ -13,14 +13,10 @@ component "terrain" .type "lua"
 component "prefab_slot_eid_cache" .type "lua"
 
 -- build-in
-component "drapdrop_selected" -- 当前拖动的 entity
 component "game_object" .type "lua" -- {x = xx, y = xx, state = "translucent"/"opaque", color = {r, g, b, a}}
 component "construct_pickup"
 component "construct_modify"
 component "gameplay_entity" .type "lua" -- {prototype_name = xx, fluid = {}, dir = "N", x = xx, y = xx,}
-
---
-component "drapdrop"
 
 pipeline "init"
     .stage "init"
@@ -70,17 +66,26 @@ system "init_system"
     .require_policy "vaststars.gamerender|animation"
     .require_system "ant.terrain|shape_terrain_system"
     .require_system "ant.terrain|terrain_road_system"
+    .require_system "vaststars.gamerender|touch_simulate_system"
     .require_system "vaststars.gamerender|pickup_detect_system"
     .require_system "vaststars.gamerender|construct_system"
-    .require_system "vaststars.gamerender|drapdrop_system"
     .require_system "vaststars.gamerender|debug_system"
     .require_system "vaststars.gamerender|inserter_system"
+    .require_system "vaststars.gamerender|gesture_system"
     .implement "init_system.lua"
     .method "init_world"
     .method "update_world"
 
 system "pickup_detect_system"
     .implement "pickup_detect_system.lua"
+    .method "data_changed"
+
+system "touch_simulate_system"
+    .implement "touch_simulate_system.lua"
+    .method "data_changed"
+
+system "gesture_system"
+    .implement "gesture_system.lua"
     .method "data_changed"
 
 system "prefab_object_system"
@@ -95,32 +100,15 @@ interface "igame_object"
     .implement "game_object_system.lua"
     .method "remove"
     .method "set_position"
+    .method "get_position"
+    .method "move_delta"
     .method "animation_update"
     .method "attach"
     .method "detach"
     .method "create"
-    .method "set_prototype_name"
-    .method "set_state"
+    .method "update"
     .method "set_dir"
     .method "get_game_object"
-
-system "construct_button_system"
-    .implement "construct_button_system.lua"
-    .method "pickup_mapping"
-
-interface "iconstruct_button"
-    .implement "construct_button_system.lua"
-    .method "show"
-    .method "hide"
-
-system "construct_arrow_system"
-    .implement "iconstruct_arrow.lua"
-    .method "pickup_mapping"
-
-interface "iconstruct_arrow"
-    .implement "iconstruct_arrow.lua"
-    .method "show"
-    .method "hide"
 
 system "ui_system"
     .implement "ui_system.lua"
@@ -134,7 +122,6 @@ interface "iui"
 system "construct_system"
     .implement "construct_system.lua"
     .method "data_changed"
-    .method "camera_usage"
 
 system "pickup_mapping_system"
     .implement "pickup_mapping_system.lua"
@@ -156,16 +143,6 @@ interface "icanvas"
 system "canvas_system"
     .implement "icanvas.lua"
     .method "data_changed"
-
-system "drapdrop_system"
-    .implement "drapdrop_system.lua"
-    .method "data_changed"
-    .method "pickup_mapping"
-
-interface "iinput"
-    .implement "input_system.lua"
-    .method "ray_hit_plane"
-    .method "screen_to_world"
 
 system "debug_system"
     .implement "debug_system.lua"

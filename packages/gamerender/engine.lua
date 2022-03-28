@@ -7,31 +7,30 @@ local fs = require "filesystem"
 local datalist  = require "datalist"
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
-local math3d = require "math3d"
 local camera_prefab_path <const> = fs.path "/pkg/vaststars.resources/"
-
-local function to_quat(t)
-    for k, v in ipairs(t) do
-        t[k] = math.rad(v)
-    end
-    return math3d.tovalue(math3d.quaternion(t))
-end
-
-local function get_camera_srt(prefab_file_name)
-    local f<close> = fs.open(camera_prefab_path .. prefab_file_name)
-    if f then
-        local srt = datalist.parse(f:read "a")[1].data.scene.srt
-        return srt.s or mc.ONE, srt.r, srt.t
-    end
-    return mc.ONE, to_quat({45.0, 0, 0}), {0, 60, -60}
-end
 
 ---
 local engine = {}
-function engine.set_camera(prefab_file_name)
+function engine.set_camera_prefab(prefab_file_name)
+    local f <close> = fs.open(camera_prefab_path .. prefab_file_name)
+    if not f then
+        log.error(("can nof found prefab `%s`"):format(prefab_file_name))
+        return
+    end
+
+    local data = datalist.parse(f:read "a")[1].data
+    if not data then
+        log.error(("invalid data `%s`"):format(prefab_file_name))
+        return
+    end
+
     local mq = w:singleton("main_queue", "camera_ref:in")
     local camera_ref = mq.camera_ref
-    iom.set_srt(world:entity(camera_ref), get_camera_srt(prefab_file_name))
+    local e = world:entity(camera_ref)
+
+    local srt = data.scene.srt
+    iom.set_srt(e, srt.s or mc.ONE, srt.r, srt.t)
+    iom.set_view(e, iom.get_position(e), iom.get_direction(e), data.scene.updir)
 end
 
 function engine.world_select(pat)

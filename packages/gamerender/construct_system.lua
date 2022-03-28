@@ -3,31 +3,27 @@ local world = ecs.world
 local w = world.w
 
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
-local iconstruct_button = ecs.import.interface "vaststars.gamerender|iconstruct_button"
-local iconstruct_arrow = ecs.import.interface "vaststars.gamerender|iconstruct_arrow"
 local construct_sys = ecs.system "construct_system"
 local prototype = ecs.require "prototype"
 local gameplay = ecs.require "gameplay"
 local engine = ecs.require "engine"
-local pipe = ecs.require "pipe"
-local dir = require "dir"
-local dir_rotate = dir.rotate
 local irq = ecs.import.interface "ant.render|irenderqueue"
-local iinput = ecs.import.interface "vaststars.gamerender|iinput"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local math3d = require "math3d"
 local terrain = ecs.require "terrain"
 local fluidbox = ecs.require "fluidbox"
-local mathpkg = import_package "ant.math"
-local mc = mathpkg.constant
+local dir = require "dir"
+local dir_rotate = dir.rotate
 
 local ui_construct_begin_mb = world:sub {"ui", "construct", "construct_begin"}       -- 建造模式
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
+local ui_construct_rotate_mb = world:sub {"ui", "construct", "rotate"}
+local ui_construct_confirm_mb = world:sub {"ui", "construct", "construct_confirm"}
 local ui_construct_complete_mb = world:sub {"ui", "construct", "construct_complete"} -- 开始施工
 local ui_fluidbox_update_mb = world:sub {"ui", "construct", "fluidbox_update"}
-local drapdrop_entity_mb = world:sub {"drapdrop_entity"}
-local construct_button_mb = world:sub {"construct_button"}
-local pipe_adjust_mb = world:sub {"construct_system", "pipe_adjust"}
+local pickup_mapping_mb = world:sub {"pickup_mapping"}
+local gesture_mb = world:sub {"gesture"}
+local gesture_end_mb = world:sub {"gesture", "end"}
 
 local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
@@ -36,259 +32,145 @@ local DISMANTLE_YELLOW_BASIC_COLOR <const> = {50.0, 50.0, 0.0, 0.8}
 
 local cur_mode = ""
 
-local function check_construct_detector(prototype_name, x, y, dir)
-    local construct_detector = prototype.get_construct_detector(prototype_name)
-    if not construct_detector then
-        return true
-    end
-
-    local area = prototype.get_area(prototype_name)
-    if not area then
-        return false
-    end
-
-    return true
-end
-
 local function get_data_object(game_object)
+    if game_object.construct_pickup then
+        return game_object.gameplay_entity
+    end
+
     return setmetatable(game_object.gameplay_entity, {
         __index = gameplay.entity(game_object.game_object.x, game_object.game_object.y) or {}
     })
 end
 
-local function confirm_construct(game_object)
-    local gameplay_entity = game_object.gameplay_entity
-    local construct_detector = prototype.get_construct_detector(gameplay_entity.prototype_name)
-    if construct_detector then
-        if not check_construct_detector(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y, gameplay_entity.dir) then
-            print("can not construct") -- todo error tips
-            return
-        end
-    end
-
-    iconstruct_button.hide()
-    igame_object.set_state(game_object.id, gameplay_entity.prototype_name, "translucent", CONSTRUCT_WHITE_BASIC_COLOR)
-    game_object.drapdrop = false
-    game_object.construct_pickup = false
-    game_object.construct_modify = true
-
-    fluidbox:set(game_object.id, gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name)
-end
-
-local function get_entity(x, y)
+local function check_construct_detector(prototype_name, x, y, dir)
     local game_object = igame_object.get_game_object(x, y)
     if not game_object then
-        return
+        return true
     end
-    return get_data_object(game_object), game_object
+    return (game_object.construct_pickup == true)
 end
 
-local function check_fluidbox(...)
-    return fluidbox:check(...)
+local function update_game_object_color(game_object)
+    local data_object = get_data_object(game_object)
+    local color
+    local construct_detector = prototype.get_construct_detector(data_object.prototype_name)
+    if construct_detector then
+        if not check_construct_detector(data_object.prototype_name, data_object.x, data_object.y, data_object.dir) then
+            color = CONSTRUCT_RED_BASIC_COLOR
+        else
+            color = CONSTRUCT_GREEN_BASIC_COLOR
+        end
+    end
+    igame_object.update(game_object.id, {color = color})
 end
 
-local adjust_neighbor_pipe ; do
-    local vector2 = ecs.require "vector2"
-    local neighbor <const> = {
-        vector2.DOWN,
-        vector2.UP,
-        vector2.LEFT,
-        vector2.RIGHT,
-    }
+local camera_move_speed <const> = 1
+local delta = {
+    ["left"]  = {-camera_move_speed, 0, 0},
+    ["right"] = {camera_move_speed, 0, 0},
+    ["down"]  = {0, 0, -camera_move_speed},
+    ["up"]    = {0, 0, camera_move_speed},
+}
 
-    local function packCoord(x, y)
-        assert(x & 0xFF == x)
-        assert(y & 0xFF == y)
-        return x | (y << 8)
-    end
-
-    local function unpackCoord(v)
-        return v & 0xFF, v >> 8
-    end
-
-    function adjust_neighbor_pipe(...)
-        local t = {}
-        local a = {...}
-        local x, y
-
-        for _, n in ipairs(neighbor) do
-            for _, v in ipairs(a) do
-                x = v[1] + n[1]
-                y = v[2] + n[2]
-                t[packCoord(x, y)] = true
+function construct_sys:data_changed()
+    for _, state in gesture_mb:unpack() do
+        local d = delta[state]
+        if d then
+            local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
+            local ce = world:entity(mq.camera_ref)
+            local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
+            iom.move_delta(ce, d)
+            if game_object then
+                igame_object.move_delta(game_object.id, d)
             end
         end
-
-        for c in pairs(t) do
-            x, y = unpackCoord(c)
-            world:pub {"construct_system", "pipe_adjust", x, y}
-        end
-    end
-end
-
-local function drapdrop_entity(game_object_eid, mouse_x, mouse_y)
-    local game_object = world:entity(game_object_eid)
-    if not game_object then
-        log.error(("can not found game_object `%s`"):format(game_object_eid))
-        return
-    end
-    assert(game_object.construct_pickup == true)
-
-    local data_object = get_data_object(game_object)
-    local x, y, position = prototype.get_coord(data_object.prototype_name, mouse_x, mouse_y)
-    if x and y and data_object.x == x and data_object.y == y then
-        return
     end
 
-    igame_object.set_position(game_object.id, position)
-
-    local sx, sy = data_object.x, data_object.y
-    data_object.x, data_object.y = x, y
-    game_object.game_object.x, game_object.game_object.y = x, y
-
-    local basecolor_factor
-    if not check_construct_detector(data_object.prototype_name, data_object.x, data_object.y, data_object.dir) then
-        basecolor_factor = CONSTRUCT_RED_BASIC_COLOR
-    else
-        basecolor_factor = CONSTRUCT_GREEN_BASIC_COLOR
-    end
-    igame_object.set_state(game_object.id, data_object.prototype_name, "translucent", basecolor_factor)
-    iconstruct_button.show(data_object.prototype_name, data_object.x, data_object.y)
-
-    -- 针对水管的特殊处理
-    if prototype.is_pipe(data_object.prototype_name) then
-        adjust_neighbor_pipe({sx, sy}, {x, y})
-
-        local prototype_name, dir = pipe.adjust(data_object.prototype_name, data_object.x, data_object.y, check_fluidbox)
-        if prototype_name and (prototype_name ~= data_object.prototype_name or dir ~= data_object.dir )then
-            data_object.prototype_name = prototype_name
-            data_object.dir = dir
-
-            igame_object.set_prototype_name(game_object.id, prototype_name)
-            igame_object.set_dir(game_object.id, dir)
+    for _ in gesture_end_mb:unpack() do
+        local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
+        if game_object then
+            local pt = prototype.query_by_name("entity", game_object.gameplay_entity.prototype_name)
+            local position = igame_object.get_position(game_object.id)
+            local coord, position = terrain.adjust_position(position, pt.area)
+            igame_object.set_position(game_object.id, position)
+            game_object.gameplay_entity.x, game_object.gameplay_entity.y = coord[1], coord[2]
+            game_object.game_object.x, game_object.game_object.y = coord[1], coord[2]
+            update_game_object_color(game_object)
         end
     end
 
-    --RETODO 对fluidbox & fluidboxes 的特殊处理
-end
-
-local construct_button_events = {}
-construct_button_events.confirm = function()
-    local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
-    if not game_object then
-        log.error("can not found game_object")
-        return
-    end
-    if prototype.is_fluidbox(game_object.gameplay_entity.prototype_name) then
-        if not game_object.gameplay_entity.fluid[1] then
-            world:pub {"ui_message", "show_set_fluidbox", true}
-        else
-            confirm_construct(game_object)
-        end
-    else
-        confirm_construct(game_object)
-    end
-end
-
-construct_button_events.cancel = function()
-    local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
-    if not game_object then
-        return
-    end
-
-    local data_object = get_data_object(game_object)
-    if not gameplay.entity(game_object.game_object.x, game_object.game_object.y) then
-        igame_object.remove(game_object.id)
-    else
-        game_object.gameplay_entity = {}
-        data_object = get_data_object(game_object)
-        igame_object.set_state(game_object.id, data_object.prototype_name, "opaque")
-        game_object.drapdrop = false
-        game_object.construct_pickup = false
-    end
-    iconstruct_button.hide()
-    world:pub {"ui_message", "show_set_fluidbox", false}
-
-    -- 还原未施工的水管形状
-    adjust_neighbor_pipe({data_object.x, data_object.y})
-end
-
-construct_button_events.rotate = function()
-    local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
-    if not game_object then
-        log.error("can not found game_object")
-        return
-    end
-    game_object.construct_modify = true
-    game_object.gameplay_entity.dir = dir_rotate(game_object.gameplay_entity.dir, -1) -- 逆时针方向旋转一次
-    igame_object.set_dir(game_object.id, game_object.gameplay_entity.dir)
-end
-
-local function create_pipe(prototype_name, dx, dy)
-    local prototype_name, dir = pipe.adjust(prototype_name, dx, dy, check_fluidbox)
-    if prototype_name then
-        igame_object.create(prototype_name, dx, dy, dir, "translucent", CONSTRUCT_WHITE_BASIC_COLOR, false, false)
-        adjust_neighbor_pipe({dx, dy})
-    end
-    iconstruct_arrow.hide()
-end
-
-function construct_sys:camera_usage()
     for _, _, _, prototype_name in ui_construct_entity_mb:unpack() do
-        construct_button_events.cancel()
+        local typeobject = prototype.query_by_name("entity", prototype_name)
+        local ce = world:entity(irq.main_camera())
+        local plane = math3d.vector(0, 1, 0, 0)
+        local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
+        local origin = math3d.tovalue(math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o))
+        local coord = terrain.adjust_position(origin, typeobject.area)
 
-        local pt = prototype.query_by_name("entity", prototype_name)
-        if not pt then
-            return
+        local color
+        local construct_detector = prototype.get_construct_detector(prototype_name)
+        if construct_detector then
+            if not check_construct_detector(prototype_name, coord[1], coord[2], 'N') then
+                color = CONSTRUCT_RED_BASIC_COLOR
+            else
+                color = CONSTRUCT_GREEN_BASIC_COLOR
+            end
         end
-
-        local viewdir = iom.get_direction(world:entity(irq.main_camera()))
-        local origin = math3d.tovalue(iinput.ray_hit_plane({origin = mc.ZERO, dir = math3d.mul(math.maxinteger, viewdir)}, {dir = mc.YAXIS, pos = mc.ZERO_PT}))
-        local coord = terrain.adjust_position(origin, pt.area)
-
-        igame_object.create(prototype_name, coord[1], coord[2], 'N', "translucent", CONSTRUCT_GREEN_BASIC_COLOR, true, true)
-        iconstruct_button.show(prototype_name, coord[1], coord[2])
+        igame_object.create(prototype_name, coord[1], coord[2], 'N', "translucent", color, true)
         if prototype.is_fluidbox(prototype_name) then
             world:pub {"ui_message", "show_set_fluidbox", true}
         end
     end
 
-    for _, game_object_eid, mouse_x, mouse_y in drapdrop_entity_mb:unpack() do
-        drapdrop_entity(game_object_eid, mouse_x, mouse_y)
+    for _ in ui_construct_rotate_mb:unpack() do
+        local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
+        if game_object then
+            game_object.gameplay_entity.dir = dir_rotate(game_object.gameplay_entity.dir, -1) -- 逆时针方向旋转一次
+            igame_object.set_dir(game_object.id, game_object.gameplay_entity.dir)
+        end
     end
-end
 
-function construct_sys:data_changed()
+    for _ in ui_construct_confirm_mb:unpack() do
+        local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
+        if game_object then
+            local gameplay_entity = game_object.gameplay_entity
+            local construct_detector = prototype.get_construct_detector(gameplay_entity.prototype_name)
+            if construct_detector then
+                if not check_construct_detector(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y, gameplay_entity.dir) then
+                    print("can not construct") -- todo error tips
+                else
+                    igame_object.update(game_object.id, {state = "translucent", color = CONSTRUCT_WHITE_BASIC_COLOR})
+                    game_object.construct_pickup = false
+
+                    print("construct_confirm", gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name)
+                    fluidbox:set(game_object.id, gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name)
+                end
+            end
+        end
+    end
+
     for _ in ui_construct_begin_mb:unpack() do
         cur_mode = "construct"
         gameplay.world_update = false
-        engine.set_camera("camera_construct.prefab")
-    end
-
-    for _, button in construct_button_mb:unpack() do
-        local func = construct_button_events[button]
-        if func then
-            func()
-        end
+        engine.set_camera_prefab("camera_construct.prefab")
     end
 
     for _ in ui_construct_complete_mb:unpack() do
         cur_mode = ""
         gameplay.world_update = true
-        engine.set_camera("camera_default.prefab")
-        construct_button_events.cancel()
+        engine.set_camera_prefab("camera_default.prefab")
         world:pub {"ui_message", "show_set_fluidbox", false}
 
         for _, game_object in engine.world_select "construct_modify" do
             local entity = gameplay.entity(game_object.game_object.x, game_object.game_object.y)
             if not entity then
                 gameplay.create_entity(game_object.gameplay_entity)
-                igame_object.set_state(game_object.id, game_object.gameplay_entity.prototype_name, "opaque")
+                igame_object.update(game_object.id, {state = "opaque"})
             else
                 for k, v in pairs(game_object.gameplay_entity) do
                     entity[k] = v
                 end
-                igame_object.set_state(game_object.id, entity.prototype_name, "opaque")
+                igame_object.update(game_object.id, {state = "opaque"})
                 game_object.game_object.x, game_object.game_object.y = entity.x, entity.y
             end
             game_object.gameplay_entity = {}
@@ -305,26 +187,9 @@ function construct_sys:data_changed()
         end
     end
 
-    for _, _, x, y in pipe_adjust_mb:unpack() do
-        local data_object, game_object = get_entity(x, y)
-        if not data_object then
-            goto continue
-        end
+    for _, param, eid in pickup_mapping_mb:unpack() do
+        if cur_mode == "construct" then
 
-        if not prototype.is_pipe(data_object.prototype_name) then
-            goto continue
         end
-
-        local prototype_name, dir = pipe.adjust(data_object.prototype_name, x, y, check_fluidbox)
-        if prototype_name then
-            data_object.prototype_name = prototype_name
-            data_object.dir = dir
-
-            game_object.construct_modify = true
-            print(prototype_name)
-            igame_object.set_prototype_name(game_object.id, prototype_name)
-            igame_object.set_dir(game_object.id, dir)
-        end
-        ::continue::
     end
 end

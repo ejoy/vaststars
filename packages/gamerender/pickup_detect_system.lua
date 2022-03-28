@@ -4,7 +4,6 @@ local w     = world.w
 
 local dpd_sys = ecs.system "pickup_detect_system"
 local ipu = ecs.import.interface "ant.objcontroller|ipickup"
-local topick_mb = world:sub{"mouse", "LEFT"}
 local touch_mb = world:sub{"touch"}
 
 local function remap_xy(x, y)
@@ -14,13 +13,6 @@ local function remap_xy(x, y)
 end
 
 function dpd_sys:data_changed()
-    for _, _, state, x, y in topick_mb:unpack() do
-        if state == "DOWN" then
-            x, y = remap_xy(x, y)
-            ipu.pick(x, y)
-        end
-    end
-
     for _, state, data in touch_mb:unpack() do
         if state == "START" then
             local x, y = remap_xy(data[1].x, data[1].y)

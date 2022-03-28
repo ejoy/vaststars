@@ -5,7 +5,6 @@ local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
 local entity_cfg = import_package "vaststars.config".entity
 local terrain = ecs.require "terrain"
-local iinput = ecs.import.interface "vaststars.gamerender|iinput"
 
 local prototype = {}
 function prototype.pack_coord(x, y)
@@ -121,19 +120,6 @@ function prototype.is_pipe(prototype_name)
         return
     end
     return pt.pipe
-end
-
-function prototype.get_coord(prototype_name, mouse_x, mouse_y)
-    local area = prototype.get_area(prototype_name)
-    if not area then
-        return
-    end
-
-    local coord, position = terrain.adjust_position(iinput.screen_to_world(mouse_x, mouse_y), area)
-    if not coord then
-        return
-    end
-    return coord[1], coord[2], position
 end
 
 return prototype

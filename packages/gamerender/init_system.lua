@@ -18,7 +18,7 @@ function m:init_world()
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
 
     iui.open("construct.rml", get_fluid_category())
-    engine.set_camera("camera_default.prefab")
+    engine.set_camera_prefab("camera_default.prefab")
 
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
