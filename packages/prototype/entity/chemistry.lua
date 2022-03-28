@@ -2,6 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
 prototype "化工厂1" {
+    model = "prefabs/distillery-1.prefab",
     type ={"entity", "assembling", "consumer","fluidboxes"},
     area = "3x3",
     power = "200kW",
@@ -57,6 +58,7 @@ prototype "化工厂1" {
 }
 
 prototype "蒸馏厂1" {
+    model = "prefabs/distillery-1.prefab",
     type ={"entity", "assembling", "consumer", "fluidboxes"},
     area = "5x5",
     power = "240kW",
@@ -110,6 +112,7 @@ prototype "蒸馏厂1" {
 }
 
 prototype "电解厂1" {
+    model = "prefabs/assembling-1.prefab",
     type ={"entity", "assembling", "consumer", "fluidboxes"},
     area = "5x5",
     power = "1MW",
@@ -156,6 +159,7 @@ prototype "电解厂1" {
 }
 
 prototype "水电站1" {
+    model = "prefabs/assembling-1.prefab",
     type ={"entity", "assembling", "consumer", "fluidboxes"},
     area = "5x5",
     power = "150kW",

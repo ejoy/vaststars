@@ -173,6 +173,12 @@
                 start.cur_edit_mode = 'dismantle'
                 ui_sys.pub("ui", "construct", "dismantle_begin")
             end
+            function start.clickConstructRotate(event)
+                ui_sys.pub("ui", "construct", "rotate")
+            end
+            function start.clickConstructConfirm(event)
+            ui_sys.pub("ui", "construct", "construct_confirm")
+            end
             function start.clickConstructComplete(event)
                 start.cur_edit_mode = ''
                 ui_sys.pub("ui", "construct", "construct_complete")
@@ -193,12 +199,12 @@
             end
             function start.clickSelectFluid(event, FluidName)
                 if not start.cur_selected_fluid[1] then
-                    ui_sys.pub("ui", "construct", "fluidbox_construct", FluidName)
+                    ui_sys.pub("ui", "construct", "fluidbox_update", FluidName)
                 else
                     if start.cur_selected_fluid[1] ~= FluidName then
                         ui_sys.open("pipe_build_pop.rml", start.cur_selected_fluid[1], start.cur_selected_fluid[2], FluidName)
                     else
-                        ui_sys.pub("ui", "construct", "fluidbox_construct", FluidName)
+                        ui_sys.pub("ui", "construct", "fluidbox_update", FluidName)
                     end
                     start.cur_selected_fluid = {}
                 end
@@ -211,10 +217,10 @@
                 ui_sys.pub('camera', opt)
             end
 
-            window.onload = function(event)
-                ui_sys.pub("ui", "GET_DATA", "fluid_category")
-            end
             ui_sys.addEventListener(start, {"fluid_category"}, {
+                ["INIT"] = function(fluid_category)
+                    start.fluid_category = fluid_category
+                end,
                 ["leave"] = function()
                     start.cur_construct_menu = ''
                     start.cur_fluid_category = ''
@@ -223,6 +229,9 @@
                 ["show_set_fluidbox"] = function(visible, fluid)
                     start.show_set_fluidbox = visible
                     start.cur_selected_fluid = fluid or {}
+                end,
+                ["set_fluidbox_confirm"] = function(FluidName)
+                    ui_sys.pub("ui", "construct", "fluidbox_update", FluidName)
                 end,
             })
 
@@ -282,13 +291,13 @@
             </button>
 
             <!-- 确认放置 -->
-            <button data-if = "cur_edit_mode == 'construct'" data-event-click="" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+            <button data-if = "cur_edit_mode == 'construct'" data-event-click="clickConstructConfirm()" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/confirm.png"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
                 <div style="font-size: 85%;">确认放置</div>
             </button>
 
             <!-- 旋转建筑 -->
-            <button data-if = "cur_edit_mode == 'construct'" data-event-click="" style='position: absolute; left: 139.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+            <button data-if = "cur_edit_mode == 'construct'" data-event-click="clickConstructRotate()" style='position: absolute; left: 139.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto;background-image:"construct/rotate.png"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
                 <div style="font-size: 85%;">旋转建筑</div>
             </button>
@@ -432,9 +441,9 @@
              <div data-if="cur_construct_menu == '管道'">
                  <div class="tools-container">
                      <div class="row">
-                         <button class="tools-button" data-event-click="clickConstructMenuItem('管道1-I型')">
+                         <button class="tools-button" data-event-click="clickConstructMenuItem('管道1-O型')">
                              <div class="workbutton-bg" style='background-image:"construct/pipe.png";'/>
-                             <div class="tools-button-title">管道1-I型</div>
+                             <div class="tools-button-title">管道1-O型</div>
                          </button>
                          <button class="tools-button" data-event-click="clickConstructMenuItem('地下管1')">
                              <div class="workbutton-bg" style='background-image:"construct/pipe.png";'/>

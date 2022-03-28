@@ -2,76 +2,32 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local mathpkg = import_package "ant.math"
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
-local iui = ecs.import.interface "vaststars.ui|iui"
-local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
-local icanvas = ecs.import.interface "vaststars.gamerender|icanvas"
-local pickup_mb = world:sub {"pickup"}
-
-local FRAMES_PER_SECOND <const> = import_package "vaststars.constant".FRAMES_PER_SECOND
-local math3d = require "math3d"
-local mc = mathpkg.constant
-local fs = require "filesystem"
-local datalist  = require "datalist"
+local FRAMES_PER_SECOND <const> = 60
 local bgfx = require 'bgfx'
+local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
+local iui = ecs.import.interface "vaststars.gamerender|iui"
+local icanvas = ecs.import.interface "vaststars.gamerender|icanvas"
+local engine = ecs.require "engine"
+local terrain = ecs.require "terrain"
+local get_fluid_category = ecs.require "get_fluid_category"
+local gameplay = ecs.require "gameplay"
 
 local m = ecs.system 'init_system'
-local default_camera_path <const> = fs.path "/pkg/vaststars.resources/camera_default.prefab"
-local camera_reset_mb = world:sub {"camera", "reset"}
-local camera_lookdown_mb = world:sub {"camera", "lookdown"}
-
-local function to_quat(t)
-    for k, v in ipairs(t) do
-        t[k] = math.rad(v)
-    end
-    return math3d.tovalue(math3d.quaternion(t))
-end
-
-local function get_camera_srt()
-    local f<close> = fs.open(default_camera_path)
-    if f then
-        local srt = datalist.parse(f:read "a")[1].data.scene.srt
-        return srt.s or mc.ONE, srt.r, srt.t
-    end
-    return mc.ONE, to_quat({45.0, 0, 0}), {0, 60, -60}
-end
-
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
 
-    iui.open("construct.rml")
-
-    local mq = w:singleton("main_queue", "camera_ref:in")
-    local camera_entity = world:entity(mq.camera_ref)
-    iom.set_srt(camera_entity, get_camera_srt())
+    iui.open("construct.rml", get_fluid_category())
+    engine.set_camera_prefab("camera_default.prefab")
 
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
-    iterrain.create()
+    terrain.create()
     icanvas.create()
 
     world:pub{"camera_controller", "stop", false}
 end
 
-function m:data_changed()
-    local mq = w:singleton("main_queue", "camera_ref:in")
-    local camera_entity = world:entity(mq.camera_ref)
-
-    for _ in camera_reset_mb:unpack() do
-        iom.set_srt(camera_entity, get_camera_srt())
-    end
-
-    for _ in camera_lookdown_mb:unpack() do
-        iom.set_srt(camera_entity, mc.ONE, to_quat({90.0, 0, 0}), {0, 60, 0})
-    end
-end
-
-function m:after_pickup()
-    for _ in pickup_mb:unpack() do
-        world:pub {"ui_message", "leave"}
-        break
-    end
+function m:update_world()
+    gameplay.update()
 end

@@ -7,8 +7,8 @@ local icas   = ecs.import.interface "ant.terrain|icanvas"
 local icanvas = ecs.interface "icanvas"
 local canvas_sys = ecs.system "canvas_system"
 local canvas_new_entity_mb = world:sub {"canvas_update", "new_entity"}
-local ipickup_mapping = ecs.import.interface "vaststars.input|ipickup_mapping"
-local iterrain = ecs.import.interface "vaststars.gamerender|iterrain"
+local ipickup_mapping = ecs.import.interface "vaststars.gamerender|ipickup_mapping"
+local terrain = ecs.require "terrain"
 local datalist = require "datalist"
 local canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/canvas.cfg")):read "a")
 
@@ -18,20 +18,28 @@ local function packCoord(x, y)
     return x | (y << 8)
 end
 
+local function get_canvas_entity()
+    local canvas_entity = w:singleton("canvas", "id:in canvas:in")
+    if not canvas_entity then
+        log.error("can not found canvas entity")
+        return
+    end
+    return canvas_entity
+end
+
 function canvas_sys.data_changed()
-    local canvas_eid = w:singleton("canvas", "canvas:in")
-    if not canvas_eid then
-        log.error("failed to create canvas")
+    local canvas_entity = get_canvas_entity()
+    if not canvas_entity then
         return
     end
 
     for _, _, eid in canvas_new_entity_mb:unpack() do
-        ipickup_mapping.mapping(eid, canvas_eid, {"canvas"})
+        ipickup_mapping.mapping(eid, canvas_entity.id, "canvas")
     end
 end
 
 function icanvas.create()
-    return ecs.create_entity {
+    ecs.create_entity {
         policy = {
             "ant.scene|scene_object",
             "ant.terrain|canvas",
@@ -61,9 +69,8 @@ function icanvas.add_items(name, x, y, srt)
         log.warn(("coord(%s, %s) already has item"):format(x, y))
     end
 
-    local e = w:singleton("canvas", "canvas:in")
-    if not e then
-        log.error("can not found canvas entity")
+    local canvas_entity = get_canvas_entity()
+    if not canvas_entity then
         return
     end
 
@@ -74,7 +81,7 @@ function icanvas.add_items(name, x, y, srt)
     end
 
     -- bounds checking
-    local p = iterrain.get_begin_position_by_coord(x, y)
+    local p = terrain.get_begin_position_by_coord(x, y)
     if not p then
         return
     end
@@ -93,7 +100,7 @@ function icanvas.add_items(name, x, y, srt)
         srt = srt,
     }
 
-    local item_id = icas.add_items(e, item)[1]
+    local item_id = icas.add_items(canvas_entity, item)[1]
     if not item_id then
         log.error(("item_id is null (%s, %s)"):format(x, y))
         return
@@ -104,21 +111,20 @@ function icanvas.add_items(name, x, y, srt)
     return item_id
 end
 
-function icanvas.remove_item(id)
-    local e = w:singleton("canvas", "canvas:in")
-    if not e then
-        log.error("can not found canvas entity")
+function icanvas.remove_item(item_id)
+    local canvas_entity = get_canvas_entity()
+    if not canvas_entity then
         return
     end
 
-    local pcoord = cache_id[id]
+    local pcoord = cache_id[item_id]
     if not pcoord then
-        log.error(("can not found item `%s`"):format(id))
+        log.error(("can not found item `%s`"):format(item_id))
         return
     end
 
-    cache_id[id] = nil
+    cache_id[item_id] = nil
     cache_coord[pcoord] = nil
 
-    return icas.remove_item(e, id)
+    return icas.remove_item(canvas_entity, item_id)
 end
