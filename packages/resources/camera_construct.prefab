@@ -10,11 +10,11 @@ data:
   scene:
     srt:
       r: {0.7071067690849304,0.0,0.0,0.7071067690849304}
-      t: {0, 80, -0}
+      t: {0, 120, -0}
     updir: {0, 0, 1, 0}
   tag:
     camera
 policy:
   ant.general|name
   ant.general|tag
-  ant.camera|camera
+  ant.camera|cameras

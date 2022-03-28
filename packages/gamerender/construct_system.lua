@@ -64,7 +64,7 @@ local function update_game_object_color(game_object)
     igame_object.update(game_object.id, {color = color})
 end
 
-local camera_move_speed <const> = 1
+local camera_move_speed <const> = 1.8
 local delta = {
     ["left"]  = {-camera_move_speed, 0, 0},
     ["right"] = {camera_move_speed, 0, 0},
