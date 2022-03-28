@@ -158,7 +158,7 @@ function construct_sys:data_changed()
                     igame_object.update(game_object.id, {state = "translucent", color = CONSTRUCT_WHITE_BASIC_COLOR})
                     game_object.construct_pickup = false
 
-                    print("construct_confirm", gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name)
+                    print("construct_confirm", gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name, game_object.id)
                     fluidbox:set(game_object.id, gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name)
                 end
             end
@@ -180,6 +180,10 @@ function construct_sys:data_changed()
         world:pub {"ui_message", "show_set_fluidbox", false}
 
         for _, game_object in engine.world_select "construct_modify" do
+            if not igame_object.valid(game_object.id) then
+                goto continue
+            end
+
             local entity = gameplay.entity(game_object.game_object.x, game_object.game_object.y)
             if not entity then
                 gameplay.create_entity(game_object.gameplay_entity)
@@ -193,6 +197,7 @@ function construct_sys:data_changed()
             end
             game_object.gameplay_entity = {}
             game_object.construct_modify = false
+            ::continue::
         end
 
         gameplay.build()

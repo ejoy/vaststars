@@ -13,7 +13,7 @@ local game_object_binding = {}
 local function get_game_object_binding(game_object_eid)
     local binding = game_object_binding[game_object_eid]
     if not binding then
-        log.error(("can not found game_object binding`%s`"):format(game_object_eid))
+        log.error(("can not found game_object binding `%s`"):format(game_object_eid))
         return
     end
     return binding
@@ -57,6 +57,10 @@ local function bind_prefab_object(game_object_eid, prefab_object)
     binding.animation = {}
     binding.attach_slot_name = ""
     binding.attach_prototype_name = ""
+end
+
+function igame_object.valid(game_object_eid)
+    return (game_object_binding[game_object_eid] ~= nil)
 end
 
 function igame_object.remove(game_object_eid)

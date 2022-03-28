@@ -69,7 +69,10 @@ function engine.world_select(pat)
         if not e then
             return
         end
-        w:sync("id:in", e)
+        w:sync("id?in", e)
+        if not e.id then
+            return e
+        end
         return e, world:entity(e.id)
     end, t, v
 end
