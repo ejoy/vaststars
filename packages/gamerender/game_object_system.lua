@@ -129,6 +129,8 @@ function igame_object.detach(game_object_eid)
         return
     end
     binding.prefab_object:send("detach_slot")
+    binding.attach_slot_name = ""
+    binding.attach_prototype_name = ""
 end
 
 ------------------------------------------------------------------------------------
@@ -149,6 +151,8 @@ function igame_object.attach(game_object_eid, slot_name, prototype_name)
 
     local prefab_object = assert(binding.prefab_object)
     prefab_object:send("attach_slot", slot_name, prefab_file_name)
+    binding.attach_slot_name = slot_name
+    binding.attach_prototype_name = prototype_name
 end
 
 -----------------------------------------------------------------------
