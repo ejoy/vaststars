@@ -132,7 +132,7 @@ do
                 begin_pos = nil
 
                 local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
-                if game_object and igame_object.valid(game_object) then
+                if game_object then
                     local typeobject = prototype.query_by_name("entity", game_object.gameplay_entity.prototype_name)
                     local coord, position = terrain.adjust_position(get_central_position(), typeobject.area)
                     igame_object.set_position(game_object.id, position)
@@ -204,7 +204,7 @@ function construct_sys:data_changed()
         world:pub {"ui_message", "show_set_fluidbox", false}
 
         for _, game_object in engine.world_select "construct_modify" do
-            if not game_object or not igame_object.valid(game_object.id) then
+            if not game_object then
                 goto continue
             end
 

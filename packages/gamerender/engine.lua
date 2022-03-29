@@ -63,7 +63,7 @@ function engine.set_camera_prefab(prefab_file_name)
 end
 
 function engine.world_select(pat)
-    local f, t, v = w:select(pat)
+    local f, t, v = w:select(pat .. " REMOVED:absent")
     return function(t, v)
         local e = f(t, v)
         if not e then
@@ -78,7 +78,7 @@ function engine.world_select(pat)
 end
 
 function engine.world_singleton(name, pat)
-    local e = w:singleton(name, pat)
+    local e = w:singleton(name, pat .. " REMOVED:absent")
     if not e then
         return
     end
