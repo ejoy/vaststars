@@ -161,15 +161,9 @@ local engine = ecs.require "engine"
 function igame_object.get_game_object(x, y)
     -- 此处必须用 select, 不能用 game_object_binding 缓存, 因为 game_object 可能未创建好
     for _, game_object in engine.world_select "game_object" do
-        local binding = game_object_binding[game_object.id]
-        if not binding then
-            goto continue
-        end
-
         if game_object.game_object.x == x and game_object.game_object.y == y then
             return game_object
         end
-        ::continue::
     end
 end
 

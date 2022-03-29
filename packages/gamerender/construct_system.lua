@@ -175,6 +175,7 @@ function construct_sys:data_changed()
             if construct_detector then
                 if not check_construct_detector(gameplay_entity.prototype_name, gameplay_entity.x, gameplay_entity.y, gameplay_entity.dir) then
                     print("can not construct") -- todo error tips
+                    goto continue
                 else
                     igame_object.update(game_object.id, {state = "translucent", color = CONSTRUCT_WHITE_BASIC_COLOR})
                     game_object.construct_pickup = false
@@ -188,6 +189,7 @@ function construct_sys:data_changed()
             -- 显示"开始施工"
             world:pub {"ui_message", "show_construct_complete", true}
         end
+        ::continue::
     end
 
     for _ in ui_construct_begin_mb:unpack() do
