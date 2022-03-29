@@ -6,6 +6,8 @@ local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local prototype = ecs.require "prototype"
 local math3d = require "math3d"
+local mathpkg = import_package "ant.math"
+local mc = mathpkg.constant
 
 local igame_object = ecs.interface "igame_object"
 local game_object_binding = {}
@@ -129,6 +131,21 @@ function igame_object.detach(game_object_eid)
     binding.attach_prototype_name = ""
 end
 
+local rotators <const> = {
+    N = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(0)}),
+    E = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
+    S = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
+    W = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
+}
+
+function igame_object.set_dir(game_object_eid, dir)
+    local binding = get_game_object_binding(game_object_eid)
+    if not binding then
+        return
+    end
+    iom.set_rotation(world:entity(binding.prefab_object.root), rotators[dir])
+end
+
 ------------------------------------------------------------------------------------
 function igame_object.attach(game_object_eid, slot_name, prototype_name)
     local binding = get_game_object_binding(game_object_eid)
@@ -152,10 +169,7 @@ function igame_object.attach(game_object_eid, slot_name, prototype_name)
 end
 
 -----------------------------------------------------------------------
-local mathpkg = import_package "ant.math"
-local mc = mathpkg.constant
 local terrain = ecs.require "terrain"
-local math3d = require "math3d"
 local engine = ecs.require "engine"
 
 function igame_object.get_game_object(x, y)
@@ -180,6 +194,7 @@ function igame_object.create(prototype_name, x, y, dir, state, color, construct_
 
     local prefab_object = iprefab_object.create(pt.model, state, color)
     iom.set_position(world:entity(prefab_object.root), position)
+    iom.set_rotation(world:entity(prefab_object.root), rotators[dir])
 
     local game_object_eid = ecs.create_entity {
         policy = {},
@@ -199,8 +214,6 @@ function igame_object.create(prototype_name, x, y, dir, state, color, construct_
     game_object_binding[game_object_eid] = {state = state, color = color, prototype_name = prototype_name}
 
     bind_prefab_object(game_object_eid, prefab_object)
-
-    igame_object.set_dir(game_object_eid, dir)
 end
 
 local function color_equal(c1, c2)
@@ -244,22 +257,5 @@ function igame_object.update(game_object_eid, v)
             binding.color = v.color
             prefab_object:send("update_basecolor", v.color)
         end
-    end
-end
-
-do
-    local rotators <const> = {
-        N = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(0)}),
-        E = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
-        S = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
-        W = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
-    }
-
-    function igame_object.set_dir(game_object_eid, dir)
-        local binding = get_game_object_binding(game_object_eid)
-        if not binding then
-            return
-        end
-        iom.set_rotation(world:entity(binding.prefab_object.root), rotators[dir])
     end
 end
