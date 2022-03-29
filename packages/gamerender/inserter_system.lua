@@ -34,7 +34,7 @@ function inserter_sys.update_world()
 
         if inserter.hold_item ~= 0 then
             local hold_item_pt = assert(prototype.query(inserter.hold_item))
-            igame_object.attach(game_object.id, "empty9", hold_item_pt.name)
+            igame_object.attach(game_object.id, "empty9", prototype.get_prefab_file(hold_item_pt.name))
         else
             igame_object.detach(game_object.id)
         end

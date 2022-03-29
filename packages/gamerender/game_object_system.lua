@@ -58,7 +58,7 @@ local function bind_prefab_object(game_object_eid, prefab_object)
     binding.prefab_object = prefab_object
     binding.animation = {}
     binding.attach_slot_name = ""
-    binding.attach_prototype_name = ""
+    binding.attach_prefab_file_name = ""
 end
 
 function igame_object.remove(game_object_eid)
@@ -121,6 +121,22 @@ function igame_object.move_delta(game_object_eid, delta)
     iom.set_position(world:entity(binding.prefab_object.root), position)
 end
 
+function igame_object.attach(game_object_eid, slot_name, prefab_file_name)
+    local binding = get_game_object_binding(game_object_eid)
+    if not binding then
+        return
+    end
+
+    if binding.attach_slot_name == slot_name and binding.attach_prefab_file_name == prefab_file_name then
+        return
+    end
+
+    local prefab_object = assert(binding.prefab_object)
+    prefab_object:send("attach_slot", slot_name, prefab_file_name)
+    binding.attach_slot_name = slot_name
+    binding.attach_prefab_file_name = prefab_file_name
+end
+
 function igame_object.detach(game_object_eid)
     local binding = get_game_object_binding(game_object_eid)
     if not binding then
@@ -128,7 +144,7 @@ function igame_object.detach(game_object_eid)
     end
     binding.prefab_object:send("detach_slot")
     binding.attach_slot_name = ""
-    binding.attach_prototype_name = ""
+    binding.attach_prefab_file_name = ""
 end
 
 local rotators <const> = {
@@ -144,28 +160,6 @@ function igame_object.set_dir(game_object_eid, dir)
         return
     end
     iom.set_rotation(world:entity(binding.prefab_object.root), rotators[dir])
-end
-
-------------------------------------------------------------------------------------
-function igame_object.attach(game_object_eid, slot_name, prototype_name)
-    local binding = get_game_object_binding(game_object_eid)
-    if not binding then
-        return
-    end
-
-    if binding.attach_slot_name == slot_name and binding.attach_prototype_name == prototype_name then
-        return
-    end
-
-    local prefab_file_name = prototype.get_prefab_file(prototype_name)
-    if not prefab_file_name then
-        return
-    end
-
-    local prefab_object = assert(binding.prefab_object)
-    prefab_object:send("attach_slot", slot_name, prefab_file_name)
-    binding.attach_slot_name = slot_name
-    binding.attach_prototype_name = prototype_name
 end
 
 -----------------------------------------------------------------------
@@ -229,6 +223,7 @@ local function color_equal(c1, c2)
     return true
 end
 
+-- v = {prototype_name = xx, state = xx, color = xx}
 function igame_object.update(game_object_eid, v)
     local binding = get_game_object_binding(game_object_eid)
     if not binding then
