@@ -194,6 +194,8 @@
                 virtual_pages = {},
                 current_page = 0,
                 selected_id = 100,
+                list_drag = false,
+                draging = false,
                 item_list = {
                     {id=100, icon0="correct.png", icon1="correct.png"},
                     {id=101, icon0="correct.png", icon1="correct.png"},
@@ -218,8 +220,6 @@
                 list_container_width = 667,
                 list_container_height = 750,
             }
-
-            
 
             local listclass = require "list"
             -- window size : 1336 750
@@ -246,14 +246,18 @@
             end
 
             function start.listmousedown(event)
+                start.list_drag = true
                 list_proxy:on_mousedown(event)
             end
 
             function start.listdrag(event)
-                list_proxy:on_drag(event)
+                if start.list_drag then
+                    list_proxy:on_drag(event)
+                end
             end
 
             function start.listmouseup(event)
+                start.list_drag = false
                 list_proxy:on_mouseup(event)
             end
 
@@ -266,7 +270,7 @@
         </script>
     </head>
     <body>
-        <div data-model="start" style = "overflow:hide; flex-direction: row; width:100%; height: 100%; justify-content: flex-end;">
+        <div data-model="start" style = "overflow:hidden; flex-direction: row; width:100%; height: 100%; justify-content: flex-end;">
             <div class="road-panel" style = "flex-direction: column;">
                 <!-- header -->
                 <div class="station-name-block">
