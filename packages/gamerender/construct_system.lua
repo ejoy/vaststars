@@ -133,12 +133,16 @@ do
 
                 local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
                 if game_object then
-                    local typeobject = prototype.query_by_name("entity", game_object.gameplay_entity.prototype_name)
-                    local coord, position = terrain.adjust_position(get_central_position(), typeobject.area)
-                    igame_object.set_position(game_object.id, position)
-                    game_object.gameplay_entity.x, game_object.gameplay_entity.y = coord[1], coord[2]
-                    game_object.game_object.x, game_object.game_object.y = coord[1], coord[2]
-                    update_game_object_color(game_object)
+                    if not game_object.gameplay_entity then
+                        log.error(("invalid game_object `%s`"):format(game_object.id))
+                    else
+                        local typeobject = prototype.query_by_name("entity", game_object.gameplay_entity.prototype_name)
+                        local coord, position = terrain.adjust_position(get_central_position(), typeobject.area)
+                        igame_object.set_position(game_object.id, position)
+                        game_object.gameplay_entity.x, game_object.gameplay_entity.y = coord[1], coord[2]
+                        game_object.game_object.x, game_object.game_object.y = coord[1], coord[2]
+                        update_game_object_color(game_object)
+                    end
                 end
             end
         end
