@@ -59,10 +59,6 @@ local function bind_prefab_object(game_object_eid, prefab_object)
     binding.attach_prototype_name = ""
 end
 
-function igame_object.valid(game_object_eid)
-    return (game_object_binding[game_object_eid] ~= nil)
-end
-
 function igame_object.remove(game_object_eid)
     local binding = get_game_object_binding(game_object_eid)
     if not binding then
