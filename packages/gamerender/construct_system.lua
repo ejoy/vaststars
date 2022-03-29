@@ -64,19 +64,16 @@ local function update_game_object_color(game_object)
     igame_object.update(game_object.id, {color = color})
 end
 
-local function get_central_position()
-    local ce = world:entity(irq.main_camera())
-    local plane = math3d.vector(0, 1, 0, 0)
-    local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
-    local origin = math3d.tovalue(math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o))
-    origin[2] = 0.0
-    return origin
-end
-
 local math_util = import_package "ant.math".util
 local pt2D_to_NDC = math_util.pt2D_to_NDC
 local ndc_to_world = math_util.ndc_to_world
 local plane = math3d.ref(math3d.vector(0, 1, 0, 0))
+
+local function get_central_position()
+    local ce = world:entity(irq.main_camera())
+    local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
+    return math3d.tovalue(math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o))
+end
 
 local function screen_to_position(x, y)
     local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
