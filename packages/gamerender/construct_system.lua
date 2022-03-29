@@ -20,10 +20,10 @@ local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
 local ui_construct_rotate_mb = world:sub {"ui", "construct", "rotate"}
 local ui_construct_confirm_mb = world:sub {"ui", "construct", "construct_confirm"}
 local ui_construct_complete_mb = world:sub {"ui", "construct", "construct_complete"} -- 开始施工
+local ui_construct_cancel_mb = world:sub {"ui", "construct", "cancel"}
 local ui_fluidbox_update_mb = world:sub {"ui", "construct", "fluidbox_update"}
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
-local gesture_mb = world:sub {"gesture"}
-local gesture_end_mb = world:sub {"gesture", "end"}
+local touch_mb = world:sub {"touch"}
 
 local CONSTRUCT_RED_BASIC_COLOR <const> = {50.0, 0.0, 0.0, 0.8}
 local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
@@ -73,6 +73,27 @@ local function get_central_position()
     return origin
 end
 
+local math_util = import_package "ant.math".util
+local pt2D_to_NDC = math_util.pt2D_to_NDC
+local ndc_to_world = math_util.ndc_to_world
+local plane = math3d.ref(math3d.vector(0, 1, 0, 0))
+
+local function screen_to_position(x, y)
+    local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
+    local ce = world:entity(mq.camera_ref)
+    local vpmat = ce.camera.viewprojmat -- in `camera_usage` stage
+
+    local vr = irq.view_rect "main_queue"
+    local ndcpt = pt2D_to_NDC({x, y}, vr)
+    ndcpt[3] = 0
+    local p0 = ndc_to_world(vpmat, ndcpt)
+    ndcpt[3] = 1
+    local p1 = ndc_to_world(vpmat, ndcpt)
+
+    local ray = {o = p0, d = math3d.sub(p0, p1)}
+    return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o)
+end
+
 local function new_construct_object(prototype_name)
     local typeobject = prototype.query_by_name("entity", prototype_name)
     local coord = terrain.adjust_position(get_central_position(), typeobject.area)
@@ -99,40 +120,37 @@ local function clear_construct_pickup_object()
     end
 end
 
-local camera_move_speed <const> = 1.8
-local delta_vectors = {
-    ["left"]  = {-camera_move_speed, 0, 0},
-    ["right"] = {camera_move_speed, 0, 0},
-    ["down"]  = {0, 0, -camera_move_speed},
-    ["up"]    = {0, 0, camera_move_speed},
-}
+local click_pos
+function construct_sys:camera_usage()
+    for _, state, data in touch_mb:unpack() do
+        if state == "START" then
+            click_pos = math3d.ref(screen_to_position(data[1].x, data[1].y))
 
-function construct_sys:data_changed()
-    for _, state in gesture_mb:unpack() do
-        local delta = delta_vectors[state]
-        if delta then
+        elseif state == "MOVE" then
+            local pos = screen_to_position(data[1].x, data[1].y)
+            local delta = math3d.inverse(math3d.sub(pos, click_pos))
+
             local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
             local ce = world:entity(mq.camera_ref)
-            local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
             iom.move_delta(ce, delta)
+
+        elseif state == "CANCEL" or state == "END" then
+            click_pos = nil
+
+            local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
             if game_object then
-                igame_object.move_delta(game_object.id, delta)
+                local typeobject = prototype.query_by_name("entity", game_object.gameplay_entity.prototype_name)
+                local coord, position = terrain.adjust_position(get_central_position(), typeobject.area)
+                igame_object.set_position(game_object.id, position)
+                game_object.gameplay_entity.x, game_object.gameplay_entity.y = coord[1], coord[2]
+                game_object.game_object.x, game_object.game_object.y = coord[1], coord[2]
+                update_game_object_color(game_object)
             end
         end
     end
+end
 
-    for _ in gesture_end_mb:unpack() do
-        local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
-        if game_object then
-            local typeobject = prototype.query_by_name("entity", game_object.gameplay_entity.prototype_name)
-            local coord, position = terrain.adjust_position(get_central_position(), typeobject.area)
-            igame_object.set_position(game_object.id, position)
-            game_object.gameplay_entity.x, game_object.gameplay_entity.y = coord[1], coord[2]
-            game_object.game_object.x, game_object.game_object.y = coord[1], coord[2]
-            update_game_object_color(game_object)
-        end
-    end
-
+function construct_sys:data_changed()
     for _, _, _, prototype_name in ui_construct_entity_mb:unpack() do
         clear_construct_pickup_object()
         new_construct_object(prototype_name)
@@ -163,6 +181,9 @@ function construct_sys:data_changed()
                 end
             end
             new_construct_object(gameplay_entity.prototype_name)
+
+            -- 显示"开始施工"
+            world:pub {"ui_message", "show_construct_complete", true}
         end
     end
 
@@ -180,7 +201,7 @@ function construct_sys:data_changed()
         world:pub {"ui_message", "show_set_fluidbox", false}
 
         for _, game_object in engine.world_select "construct_modify" do
-            if not igame_object.valid(game_object.id) then
+            if not game_object or not igame_object.valid(game_object.id) then
                 goto continue
             end
 
@@ -201,6 +222,14 @@ function construct_sys:data_changed()
         end
 
         gameplay.build()
+    end
+
+    for _ in ui_construct_cancel_mb:unpack() do
+        clear_construct_pickup_object()
+        cur_mode = ""
+        gameplay.world_update = true
+        engine.set_camera_prefab("camera_default.prefab")
+        world:pub {"ui_message", "show_set_fluidbox", false}
     end
 
     for _, _, _, fluidname in ui_fluidbox_update_mb:unpack() do

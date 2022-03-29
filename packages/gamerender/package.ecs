@@ -123,6 +123,7 @@ interface "iui"
 system "construct_system"
     .implement "construct_system.lua"
     .method "data_changed"
+    .method "camera_usage"
 
 system "pickup_mapping_system"
     .implement "pickup_mapping_system.lua"

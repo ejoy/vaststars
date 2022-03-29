@@ -169,12 +169,14 @@
                 cur_edit_mode = '',       -- 当前的编辑模式, construct/dismantle
                 cur_selected_fluid = {},  -- 当前选中的流体盒中的流体
                 show_set_fluidbox = false,
+                show_construct_complete = false,
 
                 debug_button = {},
                 config_construct = require "config.construct",
             }
             function start.clickConstructBegin(event)
                 start.cur_edit_mode = 'construct'
+                start.show_construct_complete = false -- 建造模式下, 默认不显示 "开始施工"
                 ui_sys.pub("ui", "construct", "construct_begin")
             end
             function start.clickDismantleBegin(event)
@@ -238,6 +240,9 @@
                     start.show_set_fluidbox = visible
                     start.cur_selected_fluid = fluid or {}
                 end,
+                ["show_construct_complete"] = function(visible)
+                    start.show_construct_complete = visible
+                end,
                 ["set_fluidbox_confirm"] = function(FluidName)
                     ui_sys.pub("ui", "construct", "fluidbox_update", FluidName)
                 end,
@@ -293,7 +298,7 @@
             </button>
 
             <!-- 开始施工 -->
-            <button data-if = "cur_edit_mode == 'construct'" data-event-click="clickConstructComplete()" style='position: absolute; left: 2.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: flex-start;'>
+            <button data-if = "cur_edit_mode == 'construct' && show_construct_complete" data-event-click="clickConstructComplete()" style='position: absolute; left: 2.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: flex-start;'>
                 <div style='margin: 0 auto; background-image:"construct/work.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始施工</div>
             </button>
