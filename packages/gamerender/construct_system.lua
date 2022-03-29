@@ -117,32 +117,38 @@ local function clear_construct_pickup_object()
     end
 end
 
-local click_pos
-function construct_sys:camera_usage()
-    for _, state, data in touch_mb:unpack() do
-        if state == "START" then
-            click_pos = math3d.ref(screen_to_position(data[1].x, data[1].y))
+do
+    local begin_pos
+    function construct_sys:camera_usage()
+        local last_move_x, last_move_y
+        for _, state, data in touch_mb:unpack() do
+            if state == "START" then
+                begin_pos = math3d.ref(screen_to_position(data[1].x, data[1].y))
 
-        elseif state == "MOVE" then
-            local pos = screen_to_position(data[1].x, data[1].y)
-            local delta = math3d.inverse(math3d.sub(pos, click_pos))
+            elseif state == "MOVE" then
+                last_move_x, last_move_y = data[1].x, data[1].y
 
+            elseif state == "CANCEL" or state == "END" then
+                begin_pos = nil
+
+                local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
+                if game_object then
+                    local typeobject = prototype.query_by_name("entity", game_object.gameplay_entity.prototype_name)
+                    local coord, position = terrain.adjust_position(get_central_position(), typeobject.area)
+                    igame_object.set_position(game_object.id, position)
+                    game_object.gameplay_entity.x, game_object.gameplay_entity.y = coord[1], coord[2]
+                    game_object.game_object.x, game_object.game_object.y = coord[1], coord[2]
+                    update_game_object_color(game_object)
+                end
+            end
+        end
+
+        if begin_pos and last_move_x and last_move_y then
+            local pos = screen_to_position(last_move_x, last_move_y)
             local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
             local ce = world:entity(mq.camera_ref)
+            local delta = math3d.inverse(math3d.sub(pos, begin_pos))
             iom.move_delta(ce, delta)
-
-        elseif state == "CANCEL" or state == "END" then
-            click_pos = nil
-
-            local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
-            if game_object then
-                local typeobject = prototype.query_by_name("entity", game_object.gameplay_entity.prototype_name)
-                local coord, position = terrain.adjust_position(get_central_position(), typeobject.area)
-                igame_object.set_position(game_object.id, position)
-                game_object.gameplay_entity.x, game_object.gameplay_entity.y = coord[1], coord[2]
-                game_object.game_object.x, game_object.game_object.y = coord[1], coord[2]
-                update_game_object_color(game_object)
-            end
         end
     end
 end
