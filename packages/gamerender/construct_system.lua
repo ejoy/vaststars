@@ -30,6 +30,9 @@ local CONSTRUCT_GREEN_BASIC_COLOR <const> = {0.0, 50.0, 0.0, 0.8}
 local CONSTRUCT_WHITE_BASIC_COLOR <const> = {50.0, 50.0, 50.0, 0.8}
 local DISMANTLE_YELLOW_BASIC_COLOR <const> = {50.0, 50.0, 0.0, 0.8}
 
+local CONSTRUCT_BLOCK_RED_BASIC_COLOR <const> = {20000, 0.0, 0.0, 1.0}
+local CONSTRUCT_BLOCK_GREEN_BASIC_COLOR <const> = {0.0, 20000, 0.0, 1.0}
+
 local cur_mode = ""
 
 local function get_data_object(game_object)
@@ -52,16 +55,18 @@ end
 
 local function update_game_object_color(game_object)
     local data_object = get_data_object(game_object)
-    local color
+    local color, block_color
     local construct_detector = prototype.get_construct_detector(data_object.prototype_name)
     if construct_detector then
         if not check_construct_detector(data_object.prototype_name, data_object.x, data_object.y, data_object.dir) then
             color = CONSTRUCT_RED_BASIC_COLOR
+            block_color = CONSTRUCT_BLOCK_RED_BASIC_COLOR
         else
             color = CONSTRUCT_GREEN_BASIC_COLOR
+            block_color = CONSTRUCT_BLOCK_GREEN_BASIC_COLOR
         end
     end
-    igame_object.update(game_object.id, {color = color})
+    igame_object.update(game_object.id, {color = color, block_color = block_color})
 end
 
 local math_util = import_package "ant.math".util
@@ -93,18 +98,21 @@ end
 
 local function new_construct_object(prototype_name)
     local typeobject = prototype.query_by_name("entity", prototype_name)
-    local coord = terrain.adjust_position(get_central_position(), typeobject.area)
+    local coord, position = terrain.adjust_position(get_central_position(), typeobject.area)
 
-    local color
+    local color, blockcolor
     local construct_detector = prototype.get_construct_detector(prototype_name)
     if construct_detector then
         if not check_construct_detector(prototype_name, coord[1], coord[2], 'N') then
             color = CONSTRUCT_RED_BASIC_COLOR
+            blockcolor = CONSTRUCT_BLOCK_RED_BASIC_COLOR
         else
             color = CONSTRUCT_GREEN_BASIC_COLOR
+            blockcolor = CONSTRUCT_BLOCK_GREEN_BASIC_COLOR
         end
     end
-    igame_object.create(prototype_name, coord[1], coord[2], 'N', "translucent", color, true)
+    igame_object.create(prototype_name, coord[1], coord[2], 'N', "opaque", color, blockcolor, true)
+
     if prototype.is_fluidbox(prototype_name) then
         world:pub {"ui_message", "show_set_fluidbox", true}
     end
@@ -177,7 +185,7 @@ function construct_sys:data_changed()
                     print("can not construct") -- todo error tips
                     goto continue
                 else
-                    igame_object.update(game_object.id, {state = "translucent", color = CONSTRUCT_WHITE_BASIC_COLOR})
+                    igame_object.update(game_object.id, {state = "translucent", color = CONSTRUCT_WHITE_BASIC_COLOR, show_block = false})
                     game_object.construct_pickup = false
 
                     print("construct_confirm", gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name, game_object.id)
@@ -213,12 +221,12 @@ function construct_sys:data_changed()
             local entity = gameplay.entity(game_object.game_object.x, game_object.game_object.y)
             if not entity then
                 gameplay.create_entity(game_object.gameplay_entity)
-                igame_object.update(game_object.id, {state = "opaque"})
+                igame_object.update(game_object.id, {state = "opaque", show_block = false})
             else
                 for k, v in pairs(game_object.gameplay_entity) do
                     entity[k] = v
                 end
-                igame_object.update(game_object.id, {state = "opaque"})
+                igame_object.update(game_object.id, {state = "opaque", show_block = false})
                 game_object.game_object.x, game_object.game_object.y = entity.x, entity.y
             end
             game_object.gameplay_entity = {}

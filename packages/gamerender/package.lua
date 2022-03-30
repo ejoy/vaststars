@@ -11,6 +11,7 @@ return {
         "ant.json",
         "ant.math",
         "ant.serialize",
+        "ant.render",
         "ant.compile_resource",
         "vaststars.gameplay",
         "vaststars.prototype",

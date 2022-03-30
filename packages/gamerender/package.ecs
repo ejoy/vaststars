@@ -110,6 +110,10 @@ interface "igame_object"
     .method "set_dir"
     .method "get_game_object"
 
+interface "igame_object_block"
+    .implement "igame_object_block.lua"
+    .method "create"
+
 system "ui_system"
     .implement "ui_system.lua"
     .method "ui_update"

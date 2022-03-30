@@ -3,6 +3,8 @@ local world = ecs.world
 
 local ipickup_mapping = ecs.import.interface "vaststars.gamerender|ipickup_mapping"
 local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
+local imaterial	= ecs.import.interface "ant.asset|imaterial"
+local igame_object_block = ecs.import.interface "vaststars.gamerender|igame_object_block"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local prototype = ecs.require "prototype"
 local math3d = require "math3d"
@@ -72,6 +74,10 @@ function igame_object.remove(game_object_eid)
         prefab_object:remove()
     end
 
+    if binding.game_object_block_eid ~= 0 then
+        world:remove_entity(binding.game_object_block_eid)
+    end
+
     game_object_binding[game_object_eid] = nil
     world:remove_entity(game_object_eid)
 end
@@ -101,6 +107,10 @@ function igame_object.set_position(game_object_eid, position)
         return
     end
     iom.set_position(world:entity(binding.prefab_object.root), position)
+
+    if binding.game_object_block_eid ~= 0 then
+        iom.set_position(world:entity(binding.game_object_block_eid), position)
+    end
 end
 
 function igame_object.get_position(game_object_eid, position)
@@ -119,6 +129,10 @@ function igame_object.move_delta(game_object_eid, delta)
     local position = iom.get_position(world:entity(binding.prefab_object.root))
     position = math3d.add(position, delta)
     iom.set_position(world:entity(binding.prefab_object.root), position)
+
+    if binding.game_object_block_eid ~= 0 then
+        iom.set_position(world:entity(binding.game_object_block_eid), position)
+    end
 end
 
 function igame_object.attach(game_object_eid, slot_name, prefab_file_name)
@@ -160,6 +174,10 @@ function igame_object.set_dir(game_object_eid, dir)
         return
     end
     iom.set_rotation(world:entity(binding.prefab_object.root), rotators[dir])
+
+    if binding.game_object_block_eid ~= 0 then
+        iom.set_rotation(world:entity(binding.game_object_block_eid), rotators[dir])
+    end
 end
 
 -----------------------------------------------------------------------
@@ -175,7 +193,8 @@ function igame_object.get_game_object(x, y)
     end
 end
 
-function igame_object.create(prototype_name, x, y, dir, state, color, construct_pickup)
+-- state = opaque/translucent
+function igame_object.create(prototype_name, x, y, dir, state, color, block_color, construct_pickup)
     local pt = prototype.query_by_name("entity", prototype_name)
     if not pt then
         return
@@ -205,7 +224,10 @@ function igame_object.create(prototype_name, x, y, dir, state, color, construct_
             },
         }
     }
-    game_object_binding[game_object_eid] = {state = state, color = color, prototype_name = prototype_name}
+
+    local game_object_block_eid = igame_object_block.create(block_color, pt.area, position)
+
+    game_object_binding[game_object_eid] = {state = state, color = color, prototype_name = prototype_name, game_object_block_eid = game_object_block_eid}
 
     bind_prefab_object(game_object_eid, prefab_object)
 end
@@ -223,7 +245,7 @@ local function color_equal(c1, c2)
     return true
 end
 
--- v = {prototype_name = xx, state = xx, color = xx}
+-- v = {prototype_name = xx, state = xx, color = xx, block_color = xx, show_block = true/false}
 function igame_object.update(game_object_eid, v)
     local binding = get_game_object_binding(game_object_eid)
     if not binding then
@@ -246,11 +268,24 @@ function igame_object.update(game_object_eid, v)
         local prefab_object = iprefab_object.create(prefab_file_name, v.state or binding.state, v.color or binding.color)
         set_srt(world:entity(prefab_object.root), srt)
         binding.prefab_object = prefab_object
+
+        binding.state, binding.color = v.state, v.color
     else
         local prefab_object = binding.prefab_object
-        if v.color and not color_equal(binding.color, v.color) then
+        if v.state == "translucent" and v.color and not color_equal(binding.color, v.color) then
             binding.color = v.color
             prefab_object:send("update_basecolor", v.color)
+        end
+    end
+
+    if v.show_block == false then
+        world:remove_entity(binding.game_object_block_eid)
+        binding.game_object_block_eid = 0
+    end
+
+    if v.block_color then
+        if binding.game_object_block_eid ~= 0 then
+            imaterial.set_property(world:entity(binding.game_object_block_eid), "u_color", v.block_color)
         end
     end
 end
