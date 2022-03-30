@@ -11,9 +11,10 @@ local irq = ecs.import.interface "ant.render|irenderqueue"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local math3d = require "math3d"
 local terrain = ecs.require "terrain"
-local fluidbox = ecs.require "fluidbox"
+local fluidbox_map = ecs.require "fluidbox_map"
 local dir = require "dir"
 local dir_rotate = dir.rotate
+local pipe = ecs.require "pipe"
 
 local ui_construct_begin_mb = world:sub {"ui", "construct", "construct_begin"}       -- 建造模式
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
@@ -36,10 +37,6 @@ local CONSTRUCT_BLOCK_GREEN_BASIC_COLOR <const> = {0.0, 20000, 0.0, 1.0}
 local cur_mode = ""
 
 local function get_data_object(game_object)
-    if game_object.construct_pickup then
-        return game_object.gameplay_entity
-    end
-
     return setmetatable(game_object.gameplay_entity, {
         __index = gameplay.entity(game_object.game_object.x, game_object.game_object.y) or {}
     })
@@ -69,9 +66,6 @@ local function update_game_object_color(game_object)
     igame_object.update(game_object.id, {color = color, block_color = block_color})
 end
 
-local math_util = import_package "ant.math".util
-local pt2D_to_NDC = math_util.pt2D_to_NDC
-local ndc_to_world = math_util.ndc_to_world
 local plane = math3d.ref(math3d.vector(0, 1, 0, 0))
 
 local function get_central_position()
@@ -80,25 +74,9 @@ local function get_central_position()
     return math3d.tovalue(math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o))
 end
 
-local function screen_to_position(x, y)
-    local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
-    local ce = world:entity(mq.camera_ref)
-    local vpmat = ce.camera.viewprojmat -- in `camera_usage` stage
-
-    local vr = irq.view_rect "main_queue"
-    local ndcpt = pt2D_to_NDC({x, y}, vr)
-    ndcpt[3] = 0
-    local p0 = ndc_to_world(vpmat, ndcpt)
-    ndcpt[3] = 1
-    local p1 = ndc_to_world(vpmat, ndcpt)
-
-    local ray = {o = p0, d = math3d.sub(p0, p1)}
-    return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o)
-end
-
 local function new_construct_object(prototype_name)
     local typeobject = prototype.query_by_name("entity", prototype_name)
-    local coord, position = terrain.adjust_position(get_central_position(), typeobject.area)
+    local coord = terrain.adjust_position(get_central_position(), typeobject.area)
 
     local color, blockcolor
     local construct_detector = prototype.get_construct_detector(prototype_name)
@@ -125,39 +103,77 @@ local function clear_construct_pickup_object()
     end
 end
 
-do
-    local begin_pos
-    function construct_sys:camera_usage()
-        local last_move_x, last_move_y
-        for _, state, data in touch_mb:unpack() do
-            if state == "START" then
-                begin_pos = math3d.ref(screen_to_position(data[1].x, data[1].y))
+local function is_fluidbox(x, y)
+    local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
+    if game_object then
+        local gameplay_entity = game_object.gameplay_entity
+        if gameplay_entity.x == x and gameplay_entity.y == y then
+            if prototype.is_pipe(game_object.gameplay_entity.prototype_name) then
+                return true
+            end
+        end
+    end
 
-            elseif state == "MOVE" then
-                last_move_x, last_move_y = data[1].x, data[1].y
+    return fluidbox_map:check(x, y)
+end
 
-            elseif state == "CANCEL" or state == "END" then
-                begin_pos = nil
+local vector2 = ecs.require "vector2"
+local pipe_neighbor <const> = {
+    vector2.DOWN,
+    vector2.UP,
+    vector2.LEFT,
+    vector2.RIGHT,
+    {0, 0},
+}
 
-                local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
-                if game_object then
-                    local typeobject = prototype.query_by_name("entity", game_object.gameplay_entity.prototype_name)
-                    local coord, position = terrain.adjust_position(get_central_position(), typeobject.area)
-                    igame_object.set_position(game_object.id, position)
-                    game_object.gameplay_entity.x, game_object.gameplay_entity.y = coord[1], coord[2]
-                    game_object.game_object.x, game_object.game_object.y = coord[1], coord[2]
-                    update_game_object_color(game_object)
+function construct_sys:camera_usage()
+    for _, state in touch_mb:unpack() do
+        if not (state == "CANCEL" or state == "END") then
+            goto continue
+        end
+
+        local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
+        if not game_object then
+            goto continue
+        end
+
+        -- 还原由于拖动而变更过的水管
+        for _, object in engine.world_select("pipe_modified") do
+            local pipe_modified = object.pipe_modified
+            igame_object.update(object.id, {prototype_name = pipe_modified.old_prototype_name})
+            igame_object.set_dir(object.id, pipe_modified.old_dir)
+        end
+        w:clear "pipe_modified"
+
+        -- 自动吸附至附近的格子
+        local typeobject = prototype.query_by_name("entity", game_object.gameplay_entity.prototype_name)
+        local coord, position = terrain.adjust_position(get_central_position(), typeobject.area)
+        igame_object.set_position(game_object.id, position)
+        game_object.gameplay_entity.x, game_object.gameplay_entity.y = coord[1], coord[2]
+        game_object.game_object.x, game_object.game_object.y = coord[1], coord[2]
+        update_game_object_color(game_object)
+
+        -- 如果拖动的建筑是水管, 检查是否需要变更水管的形状
+        local gameplay_entity = game_object.gameplay_entity
+        if prototype.is_pipe(gameplay_entity.prototype_name) then
+            for _, v in ipairs(pipe_neighbor) do
+                local nx, ny = gameplay_entity.x + v[1], gameplay_entity.y + v[2]
+                local object = igame_object.get_game_object(nx, ny)
+                if object then
+                    local data_object = get_data_object(object)
+                    local prototype_name, dir = pipe.update(data_object.prototype_name, data_object.x, data_object.y, is_fluidbox)
+                    engine.new_component(object, "pipe_modified", {
+                        old_prototype_name = data_object.prototype_name, 
+                        old_dir = data_object.dir,
+                        prototype_name = prototype_name,
+                        dir = dir,
+                    })
+                    igame_object.update(object.id, {prototype_name = prototype_name})
+                    igame_object.set_dir(object.id, dir)
                 end
             end
         end
-
-        if begin_pos and last_move_x and last_move_y then
-            local pos = screen_to_position(last_move_x, last_move_y)
-            local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
-            local ce = world:entity(mq.camera_ref)
-            local delta = math3d.inverse(math3d.sub(pos, begin_pos))
-            iom.move_delta(ce, delta)
-        end
+        ::continue::
     end
 end
 
@@ -178,6 +194,15 @@ function construct_sys:data_changed()
     for _ in ui_construct_confirm_mb:unpack() do
         local game_object = engine.world_singleton("construct_pickup", "construct_pickup")
         if game_object then
+            -- 由于拖动水管而变更过的物体
+            for _, object in engine.world_select("pipe_modified") do
+                local gameplay_entity = object.gameplay_entity
+                local pipe_modified = object.pipe_modified
+                gameplay_entity.prototype_name = pipe_modified.prototype_name
+                gameplay_entity.dir = pipe_modified.dir
+                object.construct_modify = true
+            end
+
             local gameplay_entity = game_object.gameplay_entity
             local construct_detector = prototype.get_construct_detector(gameplay_entity.prototype_name)
             if construct_detector then
@@ -189,14 +214,17 @@ function construct_sys:data_changed()
                     game_object.construct_pickup = false
 
                     print("construct_confirm", gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name, game_object.id)
-                    fluidbox:set(game_object.id, gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name)
+                    fluidbox_map:set(game_object.id, gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name)
                 end
             end
+
             new_construct_object(gameplay_entity.prototype_name)
 
             -- 显示"开始施工"
             world:pub {"ui_message", "show_construct_complete", true}
         end
+
+        w:clear "pipe_modified"
         ::continue::
     end
 
@@ -207,6 +235,7 @@ function construct_sys:data_changed()
     end
 
     for _ in ui_construct_complete_mb:unpack() do
+        fluidbox_map:flush()
         clear_construct_pickup_object()
         cur_mode = ""
         gameplay.world_update = true

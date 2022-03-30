@@ -15,6 +15,7 @@ component "prefab_slot_eid_cache" .type "lua"
 -- build-in
 component "game_object" .type "lua" -- {x = xx, y = xx, state = "translucent"/"opaque", color = {r, g, b, a}}
 component "construct_pickup"
+component "pipe_modified" .type "lua" -- {prototype_name = xx}
 component "construct_modify"
 component "gameplay_entity" .type "lua" -- {prototype_name = xx, fluid = {}, dir = "N", x = xx, y = xx,}
 
@@ -71,10 +72,14 @@ system "init_system"
     .require_system "vaststars.gamerender|construct_system"
     .require_system "vaststars.gamerender|debug_system"
     .require_system "vaststars.gamerender|inserter_system"
-    .require_system "vaststars.gamerender|gesture_system"
+    .require_system "vaststars.gamerender|dragdrop_camera_system"
     .implement "init_system.lua"
     .method "init_world"
     .method "update_world"
+
+system "dragdrop_camera_system"
+    .implement "dragdrop_camera_system.lua"
+    .method "camera_usage"
 
 system "pickup_detect_system"
     .implement "pickup_detect_system.lua"
@@ -82,10 +87,6 @@ system "pickup_detect_system"
 
 system "touch_simulate_system"
     .implement "touch_simulate_system.lua"
-    .method "data_changed"
-
-system "gesture_system"
-    .implement "gesture_system.lua"
     .method "data_changed"
 
 system "prefab_object_system"

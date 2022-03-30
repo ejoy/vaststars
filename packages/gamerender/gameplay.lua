@@ -100,7 +100,7 @@ function m.create_entity(init)
         end
     end
 
-    print(init.prototype_name, template.x, template.y)
+    print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y)
     create(world, init.prototype_name, template)
     return template.id
 end

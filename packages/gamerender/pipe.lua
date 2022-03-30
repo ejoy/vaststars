@@ -14,7 +14,7 @@ local DIRECTION <const> = {
     W = 3,
 }
 
-local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ; do
+local to_passable_state, to_prototype_dir, set_passable_state ; do
     -- 'true' means that the direction is passable
     local passable = {
         ['U'] = {[North] = true,  [East] = false, [South] = false, [West] = false, },
@@ -31,36 +31,43 @@ local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ;
         ['I'] = {'N', 'E'},
         ['T'] = {'N', 'E', 'S', 'W'},
         ['X'] = {'N'},
-        ['O'] = {'N', 'E', 'S', 'W'},
+        ['O'] = {'N', 'E'},
     }
 
     local accel = {}
-    for type_t, v in pairs(passable) do
-        for _, dir in ipairs(directions[type_t]) do
-            local state = 0
+    for prototype, v in pairs(passable) do
+        for _, dir in ipairs(directions[prototype]) do
+            local passable_state = 0
             for b = West, North, -1 do
                 if v[(b - DIRECTION[dir]) % 4] then
-                    state = state << 1 | 1
+                    passable_state = passable_state << 1 | 1
                 else
-                    state = state << 1 | 0
+                    passable_state = passable_state << 1 | 0
                 end
             end
-            accel[type_t .. dir] = state
+            accel[prototype] = accel[prototype] or {}
+            assert(not accel[prototype][dir])
+            accel[prototype][dir] = passable_state
         end
     end
 
     local accel_reversed = {}
-    for typedir, passable_state in pairs(accel) do
-        accel_reversed[passable_state] = accel_reversed[passable_state] or {}
-        table.insert(accel_reversed[passable_state], typedir)
+    for prototype, v in pairs(accel) do
+        for dir, passable_state in pairs(v) do
+            accel_reversed[passable_state] = accel_reversed[passable_state] or {}
+            table.insert(accel_reversed[passable_state], {prototype = prototype, dir = dir})
+        end
     end
 
-    function typedir_to_passable_state(typedir)
-        return accel[typedir]
+    function to_passable_state(prototype, dir)
+        assert(accel[prototype] and accel[prototype][dir], ("invalid prototype `%s` dir `%s`"):format(prototype, dir))
+        return accel[prototype][dir]
     end
 
-    function passable_state_to_typedir(passable_state)
-        return accel_reversed[passable_state][1]
+    function to_prototype_dir(passable_state)
+        assert(accel_reversed[passable_state])
+        local t = accel_reversed[passable_state][1]
+        return t.prototype, t.dir
     end
 
     function set_passable_state(passable_state, passable_dir, state)
@@ -73,23 +80,25 @@ local typedir_to_passable_state, passable_state_to_typedir, set_passable_state ;
 end
 
 local neighbor <const> = {
-    {vector2.DOWN, South},
-    {vector2.UP,   North},
-    {vector2.LEFT, West},
-    {vector2.RIGHT,East},
+    {vector2.DOWN,  South},
+    {vector2.UP,    North},
+    {vector2.LEFT,  West},
+    {vector2.RIGHT, East},
 }
-function m.adjust(prototype_name, x, y, check)
+
+-- prototype_name 格式: 管道1-L型, 其中 L 为水管分类(prototype)
+-- is_fluidbox = function(x, y) return true/false end
+function m.update(prototype_name, x, y, is_fluidbox)
     local passable_state = 0
 
     for _, v in ipairs(neighbor) do
-        if check(x + v[1][1], y + v[1][2]) then
+        if is_fluidbox(x + v[1][1], y + v[1][2]) then
             passable_state = set_passable_state(passable_state, v[2], 1)
         end
     end
 
-    local typedir = passable_state_to_typedir(passable_state)
-    local new_prototype_name = prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format(typedir:sub(1, 1)))
-    return new_prototype_name, typedir:sub(2, 2)
+    local prototype, dir = to_prototype_dir(passable_state)
+    return prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format(prototype)), dir
 end
 
 return m

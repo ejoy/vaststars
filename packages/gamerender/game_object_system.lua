@@ -260,16 +260,20 @@ function igame_object.update(game_object_eid, v)
             old_prefab_object:remove()
         end
 
-        local prefab_file_name = prototype.get_prefab_file(v.prototype_name or binding.prototype_name)
+        local prototype_name = v.prototype_name or binding.prototype_name
+        local state = v.state or binding.state
+        local color = v.color or binding.color
+
+        local prefab_file_name = prototype.get_prefab_file(prototype_name)
         if not prefab_file_name then
             return
         end
 
-        local prefab_object = iprefab_object.create(prefab_file_name, v.state or binding.state, v.color or binding.color)
+        local prefab_object = iprefab_object.create(prefab_file_name, state, color)
         set_srt(world:entity(prefab_object.root), srt)
         binding.prefab_object = prefab_object
 
-        binding.state, binding.color = v.state, v.color
+        binding.prototype_name, binding.state, binding.color = prototype_name, state, color
     else
         local prefab_object = binding.prefab_object
         if v.state == "translucent" and v.color and not color_equal(binding.color, v.color) then
