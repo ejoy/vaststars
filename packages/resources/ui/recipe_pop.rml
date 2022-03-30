@@ -1,269 +1,12 @@
 <rml>
     <head>
-        <style>
-            div {
-                font: 120% "微软雅黑";
-            }
-            button {
-                width: 10.67vmin;
-                height: 10.67vmin;
-                margin: 1.33vmin;
-                text-align: center;
-                text-decoration: none;
-                border-radius: 1.07vmin;
-                opacity: 1;
-                transition: transform 2s elastic-out;
-                transform: scale(1.0);
-            }
-            button:hover {
-                transform: scale(1.1);
-            }
-            .button-bg {
-                 width: 6.67vmin;
-                 height: 6.67vmin;
-                 margin-bottom:5px;
-                 align-self:center;
-                 background-size:cover;
-            }
-            .button-text {
-                background-color: rgb(128,156,126);
-                font-size: 2.40vmin;
-                text-align:center;
-                border-radius: 0.53vmin;
-            }
-            .item-container-region {
-                margin: auto;
-                height: 100%; 
-                flex-direction: row; 
-                justify-content: space-evenly;
-                align-items: center;
-                pointer-events: none;
-            }
-            .panel {
-                background-color: rgb(44, 32, 18);
-                border: 0.13vmin rgb(89, 73, 39);
-                border-radius: 0.67vmin;
-                width: 48%;
-                height: 90%;
-                justify-content: space-evenly;
-            }
-             /*标题栏和返回按键  */
-             .header {
-                width:100%;
-                height:10%;
-                flex-direction: row;
-                text-align: center;
-                align-items: center;
-                justify-content: center;
-                background-color: rgb(203, 118, 24);
-            }
-            #item-name-block {
-                width: 100%; 
-                align-items: center; 
-                justify-content: flex-start;
-            }
-            .back-button {
-                border: 0.00vmin; 
-                background-image:"common/return.png"; 
-                width: 9.33vmin; 
-                height: 9.33vmin; 
-                background-size:cover;
-            }
-            .menu-title {
-                -webkit-text-stroke: 0.20vmin rgb(0, 112, 192); 
-                font-size:200%;
-                justify-content: flex-start;
-                width: 70%;
-            }
-
-            /*左侧背包栏*/
-            workbutton {
-                margin: auto auto;
-                font-size: 2.67vmin;
-                color: rgb(221, 235, 26);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                border-radius: 1.33vmin;
-                border: 0.27vmin rgb(89, 73, 39);
-                background-color: rgb(246, 142, 14);
-                height: 8.67vmin;
-                width: 17.33vmin;
-                transform: scale(1.0);
-                transition: color background-color transform 2s elastic-out;
-            }
-            workbutton:active {
-                transform: scale(1.0);
-            }
-            workbutton:hover {
-                transform: scale(1.1);
-                background-color: rgb(0,176,80);
-            }
-
-            /*单个物品按钮*/
-            .item-container {
-                flex-direction: column;
-                align-items: center;
-                font-size: 50%;
-                height: 68%;
-                border: 0.13vmin rgb(89, 73, 39);
-                justify-content: center;
-                padding-left: 3.5em;
-            }
-            .item {
-                flex-direction: column;
-                align-items:flex-start;
-                justify-content:space-evenly;
-                background-color: rgb(250, 205, 9);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size:cover;
-                width: 12.00vmin;
-                height: 12.00vmin;
-                margin: 0.27vmin auto;
-                font-size: 2.40vmin;
-                background-image: "construct/insert1.png";
-            }
-            .item-title {
-                text-align: center;
-                top:14%;
-                background-color: rgb(246, 237, 189);
-                border-radius: 0.67vmin;
-                color:rgb(73, 60, 32);
-                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
-                width: 11.33vmin;
-                margin: 0.00vmin;
-            }
-            .item-count {
-                text-align:left;
-                margin: 0.00vmin;
-                top:-18px;
-                left: 0.67vmin;
-                -webkit-text-stroke: 0.07vmin rgb(39, 32, 17);
-            }
-
-            .item-add {
-                background-color:rgb(143, 143, 143);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size:cover;
-                width: 12.00vmin;
-                height: 12.00vmin;
-                margin: 0.27vmin auto;
-                background-image: "science/add.png";
-            }
-            /*分割线*/
-            .draw-line {
-                margin-bottom:0.1em;
-                width: 100%;
-                border-bottom: 1.5px rgb(89, 73, 39);
-            }
-            /*tab区域*/
-            .tab-container {
-                margin-top:0.3em;
-                flex-direction: row;
-                justify-content: space-evenly;
-                align-items:flex-start;
-                width:100%;
-                height: 10%;
-            }
-            .workbutton-bg {
-                top: 1.60vmin;
-                width: 6.67vmin;
-                height: 6.67vmin; 
-                background-size: cover;
-            }
-            .catalog-desc {
-                -webkit-text-stroke: 0.20vmin rgb(39, 32, 17); 
-                position:relative;
-                top:-45px; 
-                left:-42px;
-                color: rgb(221, 235, 26)
-            }
-            .property-display {
-                flex-direction: row;
-                align-items:center;
-            }
-            .property-icon {
-                width: 4.00vmin;
-                height: 4.00vmin;
-                background-size:cover;
-            }
-            .property-text {
-                margin-left: 1.33vmin;
-                font-size: 2.67vmin;
-                color: rgb(0,176,240);
-            }
-            .row {
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-            }
-            .column {
-                flex-direction: column;
-                align-items:center;
-            }
-            .progress-bar-block {
-                margin:0 0 0.05em 0;
-                width: 42%;
-                height:20%;
-                justify-content: flex-start;
-                border: 0.13vmin rgb(89, 73, 39);
-            }
-            .progress-background {
-                justify-content: flex-start;
-                width: 60%;
-                height: 100%;
-                background-color: rgb(87, 238, 0);
-            }
-            .button-operater-items {
-                text-align: center;
-                background-size: cover;
-                background-color: aqua;
-                font-size: 2.67vmin;
-                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
-            }
-            .button-operate-item {
-                flex-direction: column;
-                align-items:center;
-                justify-content:space-evenly;
-                background-color: rgb(92, 184, 92);
-                border: 0.27vmin rgb(39, 89, 64);
-                background-size:cover;
-                width: 20.00vmin;
-                height: 12.00vmin;
-                margin:1.5em 2em;
-                font-size: 2.40vmin;
-            }
-            .button-operate-text {
-                color: rgb(213,236,213);
-                font-size: 3.47vmin;
-                text-align: center;
-                align-self: center;
-            }
-            .item-page-block {
-                transition: left 0.5s linear-out; 
-                width:100%; 
-                height:100%;
-            }
-            .button-area {
-                position: absolute; 
-                top: -60px; 
-                right: -70px;
-            }
-            .button-close {
-                width: 12.00vmin;
-                height: 12.00vmin;
-                background-image: "common/delete.png";
-                background-size: cover;
-            }
-            .title-text {
-                text-align: center;
-                font-size: 4.80vmin;
-                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
-            }
-        </style>
+        <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             console.log("before createModel")
             local start = window.createModel "start" {
+                show = false,
+                scale_flag = false,
+
                 items = {
                     {id=100, icon0="correct.png", icon1="correct.png"},
                     {id=101, icon0="correct.png", icon1="correct.png"},
@@ -289,35 +32,107 @@
                     {id=121, icon0="correct.png", icon1="correct.png"},
                     {id=122, icon0="correct.png", icon1="correct.png"},
                     {id=123, icon0="correct.png", icon1="correct.png"},
+                    {id=124, icon0="correct.png", icon1="correct.png"},
+                    {id=125, icon0="correct.png", icon1="correct.png"},
+                    {id=126, icon0="correct.png", icon1="correct.png"},
+                    {id=127, icon0="correct.png", icon1="correct.png"},
+                    {id=128, icon0="correct.png", icon1="correct.png"},
+                    {id=129, icon0="correct.png", icon1="correct.png"},
                 },
+                gapx = 0,
+                gapy = 0,
+                page_top = 0,
+                -- 详细信息面板高度
+                detail_height = 120,
+                -- 详细信息面板开始位置
+                detail_top = 0,
+                current_page = 0,
+                view_items = {},
                 item_size = 90,
+                interval = 200,
+                show_detail = false,
+                page_width = 540,
+                page_height = 490,
                 view_items = {},
                 virtual_pages = {},
                 current_page = 0,
-                selected_id = 100,
+                selected_id = 0,
+                selected_row = 10000,
+                item_down_time = 0,
+                current_time = 0,
+                row_count = 0,
+                page_drag = false,
+                list_drag = false,
+                draging = false,
             }
+
+            local function update_time()
+                start.current_time = start.current_time + 1
+            end
+            window.setInterval(update_time, 1)
+
+            local listclass = require "list"
             local pageclass = require "page"
-            -- window size : 1336 750
-            local page_proxy = pageclass.create({540, 440}, start)
+            --local list_proxy = listclass.create(1, {start.list_width, start.list_height}, #start.item_list, {start.list_item_width, start.list_item_height})
+            local page_proxy = pageclass.create({start.page_width, start.page_height}, start)
+
             function start.pagemousedown(event)
                 console.log("pagemousedown")
                 page_proxy:on_mousedown(event)
+                start.page_drag = true
+                start.draging = false
             end
-            
+        
             function start.pagedrag(event)
-                --console.log("pagedrag")
-                page_proxy:on_drag(event)
+                if start.page_drag then
+                    console.log("pagedrag")
+                    page_proxy:on_drag(event)
+                end
             end
 
             function start.pagemouseup(event)
                 console.log("pagemouseup")
                 page_proxy:on_mouseup(event)
                 start.current_page = page_proxy:get_current_page() - 1
+                start.page_drag = false
             end
 
-            function start.page_item_click(event, id)
-                console.log("page_item_click", id)
-                start.selected_id = id
+            --[[
+            local function show_detail(show, id, row, top)
+                local offset = 0
+                if show then
+                    start.selected_id = id
+                    start.selected_row = row
+                    start.detail_top = top
+                    local dy = start.page_height - ((row + 1) * (start.item_size + start.gapy) + start.detail_height)
+                    offset = (dy >= 0) and 0 or dy
+                    console.log("offset" , offset)
+                else
+                    start.selected_id = 0
+                    --TODO: max value 1000
+                    start.selected_row = 10000
+                end
+                --start.show_detail = show
+                start.page_top = offset
+            end
+            ]]--
+
+            function start.page_item_down()
+                start.item_down_time = start.current_time
+            end
+
+            function start.page_item_up(event, id, row, top)
+                console.log("page_item_click, row, top", id, row, top)
+                if start.current_time - start.item_down_time <= start.interval and not start.draging then
+                    console.log("start.draging: ", start.draging)
+                    if start.selected_id ~= id then
+                        --show_detail(true, id, row, top)
+                    else
+                        --show_detail(not start.show_detail, id, row, top)
+                    end
+                else
+                    --show_detail(false, 0, 0, 0)
+                end
             end
 
             window.addEventListener('message', function(event)
@@ -330,34 +145,54 @@
     </head>
     <body>
         <div class="item-container-region"  data-model="start">
-            <div class="panel">
-                <div class="header">
-                    <div class="title-text">选择配方</div>
-                    <button class = "button-close" style="position: absolute; right:-1em;bottom:-0.35em;"/>
+            <div class="panel" style= "flex-direction: column;">
+                <div class="header" id = "item-name-block">
+                    <button class = "back-button"/>
+                    <div class = "menu-title">修改配方</div>
                 </div>
                 <div class="item-container">
-                    <div style="width:100%; height:85%;">
-                        <div class = "item-page-block" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
+                    <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
+                        <div class = "item-page-block" data-style-top="page_top + 'px'" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
                             <div class ="row">
                                 <div style="width:95%; height:100%;" data-for="virtual_pages">
                                     <div data-style-left="(it_index + 1) * 100 + '%'"/>
                                 </div>
                             </div>
-                            <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_click(it.data.id)" data-style-width="90+'px'" data-style-height="90+'px'" data-style-left="it.left" data-style-top="it.top" data-for="view_items">
-                                <button class="item">
+                            <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up(it.data.id, it.row, it.top)" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
+                                <button class="item" data-event-click="ClickItem()">
                                     <div class="item-count">99</div>                          
-                                    <div class="item-title">机器爪</div>
+                                    <!--div class="item-title">机器爪</div>-->
                                 </button>
                                 <!--<div>{{it.data.id}}</div>-->
                             </div>
+                            <div class="exchange-region" data-style-left="current_page * page_width + 'px'" data-style-height="detail_height+'px'" data-style-top="detail_top+item_size+'px'" data-if="show_detail">
+                                <div class="button-exchange-block">
+                                    <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
+                                        <div class = "button-exchange-arrow"/>
+                                        <div class = "button-exchange-text">全部</div>
+                                        <div class = "button-exchange-box"/>
+                                    </button>
+                                    <button class="button-exchange">
+                                        <div class = "button-exchange-arrow"/>
+                                        <div class = "button-exchange-text">1组</div>
+                                        <div class = "button-exchange-box"/>
+                                    </button>
+                                    <button class="button-exchange">
+                                        <div class = "button-exchange-arrow"/>
+                                        <div class = "button-exchange-text">1个</div>
+                                        <div class = "button-exchange-box"/>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div style='flex-direction: row; justify-content: center; align-items:flex-end; width:100%; height:15%;'>
+                    <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
                         <div data-for="virtual_pages">
                             <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" data-style-background-image="it_index == current_page ? 'common/page1.png' : 'common/page0.png'"/>
                         </div>
                     </div>         
                 </div>
+                <div class = "draw-line"/>
                 <div class = "tab-container">
                     <workbutton>
                         <div class="workbutton-bg" style='background-image:"construct/logisitic1.png";'/>
