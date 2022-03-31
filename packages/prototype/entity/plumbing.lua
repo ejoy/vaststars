@@ -11,9 +11,9 @@ prototype "液罐1" {
         base_level = 0,
         connections = {
             {type="input-output", position={1,0,"N"}},
-            {type="input-output", position={0,1,"E"}},
+            {type="input-output", position={2,1,"E"}},
             {type="input-output", position={1,2,"S"}},
-            {type="input-output", position={2,1,"W"}},
+            {type="input-output", position={0,1,"W"}},
         }
     }
 }
