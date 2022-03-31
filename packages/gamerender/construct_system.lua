@@ -43,11 +43,12 @@ local function get_data_object(game_object)
 end
 
 local function check_construct_detector(prototype_name, x, y, dir)
-    local game_object = igame_object.get_game_object(x, y)
-    if not game_object then
-        return true
+    for _, game_object in engine.world_select "game_object" do
+        local data_object = get_data_object(game_object)
+        if data_object.x == x and data_object.y == y then
+            return (game_object.construct_pickup == true)
+        end
     end
-    return (game_object.construct_pickup == true)
 end
 
 local function update_game_object_color(game_object)
@@ -112,6 +113,12 @@ local function is_fluidbox(x, y)
                 return true
             end
         end
+
+        for _, v in ipairs(fluidbox_map:precheck(gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name)) do
+            if v[1] == x and v[2] == y then
+                return true
+            end
+        end
     end
 
     return fluidbox_map:check(x, y)
@@ -155,21 +162,37 @@ function construct_sys:camera_usage()
 
         -- 如果拖动的建筑是水管, 检查是否需要变更水管的形状
         local gameplay_entity = game_object.gameplay_entity
-        if prototype.is_pipe(gameplay_entity.prototype_name) then
-            for _, v in ipairs(pipe_neighbor) do
-                local nx, ny = gameplay_entity.x + v[1], gameplay_entity.y + v[2]
-                local object = igame_object.get_game_object(nx, ny)
-                if object then
-                    local data_object = get_data_object(object)
-                    local prototype_name, dir = pipe.update(data_object.prototype_name, data_object.x, data_object.y, is_fluidbox)
-                    engine.new_component(object, "pipe_modified", {
-                        old_prototype_name = data_object.prototype_name, 
-                        old_dir = data_object.dir,
-                        prototype_name = prototype_name,
-                        dir = dir,
-                    })
-                    igame_object.update(object.id, {prototype_name = prototype_name})
-                    igame_object.set_dir(object.id, dir)
+        if prototype.has_fluidbox(gameplay_entity.prototype_name) then
+            local check = {}
+            if prototype.is_pipe(gameplay_entity.prototype_name) then
+                for _, v in ipairs(pipe_neighbor) do
+                    check[#check+1] = {gameplay_entity.x + v[1], gameplay_entity.y + v[2]}
+                end
+            else
+                local neighbor = {vector2.DOWN, vector2.UP, vector2.LEFT, vector2.RIGHT}
+                for _, v in ipairs(fluidbox_map:precheck(gameplay_entity.x, gameplay_entity.y, gameplay_entity.prototype_name)) do
+                    for _, n in ipairs(neighbor) do
+                        check[#check+1] = {v[1] + n[1], v[2] + n[2]}
+                    end
+                end
+            end
+
+            for _, v in ipairs(check) do
+                for raw_object, object in engine.world_select "game_object pipe_modified?new" do
+                    if game_object.game_object.x == v[1] and game_object.game_object.y == v[2] then
+                        local data_object = get_data_object(object)
+                        if prototype.is_pipe(data_object.prototype_name) then
+                            local prototype_name, dir = pipe.update(data_object.prototype_name, data_object.x, data_object.y, is_fluidbox)
+                            engine.new_component(raw_object, "pipe_modified", {
+                                old_prototype_name = data_object.prototype_name,
+                                old_dir = data_object.dir,
+                                prototype_name = prototype_name,
+                                dir = dir,
+                            })
+                            igame_object.update(object.id, {prototype_name = prototype_name})
+                            igame_object.set_dir(object.id, dir)
+                        end
+                    end
                 end
             end
         end

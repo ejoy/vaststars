@@ -112,6 +112,11 @@ function prototype.is_fluidboxes(prototype_name)
     return check_entity_type(prototype_name, {"fluidboxes"})
 end
 
+local fluidbox_types <const> = {"fluidbox", "fluidboxes"}
+function prototype.has_fluidbox(prototype_name)
+    return check_entity_type(prototype_name, fluidbox_types)
+end
+
 function prototype.is_pipe(prototype_name)
     assert(prototype_name)
     local pt = gameplay.queryByName("entity", prototype_name)

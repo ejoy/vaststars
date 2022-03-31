@@ -87,9 +87,7 @@ function engine.world_singleton(name, pat)
 end
 
 function engine.new_component(e, c, v)
-    local index = world._entity_visitor
-    index[e.id][c] = v
-    w:sync(("%s:new"):format(c), index[e.id])
+    w:sync(("%s:new"):format(c), e)
 end
 
 return engine
