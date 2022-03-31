@@ -10,10 +10,10 @@ prototype "液罐1" {
         height = 200,
         base_level = 0,
         connections = {
-            {type="input-output", position={0,0,"N"}},
-            {type="input-output", position={2,2,"E"}},
-            {type="input-output", position={2,2,"S"}},
-            {type="input-output", position={0,0,"W"}},
+            {type="input-output", position={1,0,"N"}},
+            {type="input-output", position={0,1,"E"}},
+            {type="input-output", position={1,2,"S"}},
+            {type="input-output", position={2,1,"W"}},
         }
     }
 }
@@ -21,7 +21,7 @@ prototype "液罐1" {
 prototype "抽水泵" {
     model = "prefabs/offshore-pump-1.prefab",
     type ={"entity", "consumer", "assembling", "fluidboxes"},
-    area = "1x1",
+    area = "1x2",
     power = "6kW",
     priority = "secondary",
     recipe = "离岸抽水",
