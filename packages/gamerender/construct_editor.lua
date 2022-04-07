@@ -361,8 +361,11 @@ end
 
 function M:cancel()
     revert_changes({"TEMPORARY", "CONFIRM"})
-    vsobject_manager:remove(pickup_object.id)
-    pickup_object = nil
+
+    if pickup_object then
+        vsobject_manager:remove(pickup_object.id)
+        pickup_object = nil
+    end
 end
 
 function M:reset()
