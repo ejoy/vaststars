@@ -1,4 +1,3 @@
-local vector2 = require "common.vector2"
 local M = {}
 
 local North <const> = 0
@@ -32,8 +31,8 @@ local directions = {
 }
 
 local accel = {}
-for channel_type, v in pairs(passable) do
-    for _, dir in ipairs(directions[channel_type]) do
+for shape_type, v in pairs(passable) do
+    for _, dir in ipairs(directions[shape_type]) do
         local passable_state = 0
         for b = West, North, -1 do
             if v[(b - DIRECTION[dir]) % 4] then
@@ -42,39 +41,38 @@ for channel_type, v in pairs(passable) do
                 passable_state = passable_state << 1 | 0
             end
         end
-        accel[channel_type] = accel[channel_type] or {}
-        assert(not accel[channel_type][dir])
-        accel[channel_type][dir] = passable_state
+        accel[shape_type] = accel[shape_type] or {}
+        assert(not accel[shape_type][dir])
+        accel[shape_type][dir] = passable_state
     end
 end
 
 local accel_reversed = {}
-for channel_type, v in pairs(accel) do
+for shape_type, v in pairs(accel) do
     for dir, passable_state in pairs(v) do
         accel_reversed[passable_state] = accel_reversed[passable_state] or {}
-        table.insert(accel_reversed[passable_state], {channel_type = channel_type, dir = dir})
+        table.insert(accel_reversed[passable_state], {shape_type = shape_type, dir = dir})
         table.sort(accel_reversed[passable_state], function(a, b) return DIRECTION[a.dir] < DIRECTION[b.dir] end) -- 目前只有 O 型的管道会出现重复, 默认为竖向
     end
 end
 
-function M.to_passable_state(channel_type, dir)
-    assert(accel[channel_type] and accel[channel_type][dir], ("invalid channel_type `%s` dir `%s`"):format(channel_type, dir))
-    return accel[channel_type][dir]
-end
+-- function M.to_state(shape_type, dir)
+--     assert(accel[shape_type] and accel[shape_type][dir], ("invalid shape_type `%s` dir `%s`"):format(shape_type, dir))
+--     return accel[shape_type][dir]
+-- end
 
-function M.to_channel_type_dir(passable_state)
+function M.to_type_dir(passable_state)
     assert(accel_reversed[passable_state])
     local t = accel_reversed[passable_state][1]
-    return t.channel_type, t.dir
+    return t.shape_type, t.dir
 end
 
-function M.set_passable_state(passable_state, passable_dir, state)
+function M.set_state(passable_state, passable_dir, state)
     if state == 0 then
         return passable_state & ~(1 << passable_dir)
     else
         return passable_state |  (1 << passable_dir)
     end
 end
-
 
 return M

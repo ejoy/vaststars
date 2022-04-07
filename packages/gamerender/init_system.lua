@@ -8,7 +8,7 @@ local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local camera = ecs.require "camera"
 local terrain = ecs.require "terrain"
-local get_fluid_category = ecs.require "get_fluid_category"
+local get_fluid_category = ecs.require "gameplay.utility.get_fluid_category"
 local gameplay_core = ecs.require "gameplay.core"
 local construct_editor = ecs.require "construct_editor"
 

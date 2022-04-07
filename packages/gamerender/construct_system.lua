@@ -14,6 +14,7 @@ local ui_construct_begin_mb = world:sub {"ui", "construct", "construct_begin"} -
 local ui_construct_confirm_mb = world:sub {"ui", "construct", "construct_confirm"} -- 确认建造
 local ui_construct_complete_mb = world:sub {"ui", "construct", "construct_complete"} -- 开始施工
 local ui_construct_rotate_mb = world:sub {"ui", "construct", "rotate"}
+local ui_construct_cancel_mb = world:sub {"ui", "construct", "cancel"}
 local touch_end_mb = world:sub {"touch", "END"}
 
 function construct_sys:camera_usage()
@@ -33,10 +34,12 @@ function construct_sys:data_changed()
     end
 
     for _ in ui_construct_rotate_mb:unpack() do
+        assert(gameplay_core.world_update == false)
         construct_editor:rotate_pickup_object()
     end
 
     for _ in ui_construct_confirm_mb:unpack() do
+        assert(gameplay_core.world_update == false)
         if construct_editor:confirm() then
             world:pub {"ui_message", "show_construct_complete", true}
         end
@@ -44,6 +47,12 @@ function construct_sys:data_changed()
 
     for _ in ui_construct_complete_mb:unpack() do
         construct_editor:complete()
+        gameplay_core.world_update = true
+        camera.update("camera_default.prefab")
+    end
+
+    for _ in ui_construct_cancel_mb:unpack() do
+        construct_editor:cancel()
         gameplay_core.world_update = true
         camera.update("camera_default.prefab")
     end

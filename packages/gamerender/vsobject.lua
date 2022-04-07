@@ -30,11 +30,11 @@ end
 
 local function on_block_message(e, msg, ...)
     if msg == "update_color" then
-        local color = ...
-        imaterial.set_property(world:entity(e.id), "u_color", color)
+        imaterial.set_property(world:entity(e.id), "u_color", ...)
     elseif msg == "set_position" then
-        local position = ...
-        iom.set_position(e, position)
+        iom.set_position(e, ...)
+    elseif msg == "set_rotation" then
+        iom.set_rotation(e, ...)
     end
 end
 
@@ -71,7 +71,7 @@ local function set_dir(self, dir)
     iom.set_rotation(world:entity(self.game_object.root), rotators[dir])
 
     if self.block_entity_object then
-        iom.set_rotation(world:entity(self.block_entity_object.id), rotators[dir])
+        self.block_entity_object:send("set_rotation", rotators[dir])
     end
 end
 

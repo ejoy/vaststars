@@ -4,7 +4,7 @@ local w = world.w
 
 local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
-local general = require "common.general"
+local general = require "gameplay.utility.general"
 local rotate_fluidbox = general.rotate_fluidbox
 
 local funcs = {}
