@@ -74,7 +74,7 @@ for _, v in ipairs(directory) do
     copy_directory(v.source, v.dest, v.func)
 end
 
-local files = {"run.bat", "run_editor.bat", "clean.bat"}
+local files = {"run.bat", "run_editor.bat", "run_fileserver.bat", "clean.bat"}
 for _, file in ipairs(files) do
 	fs.copy_file(input / file, output / file, fs.copy_options.overwrite_existing)
 end
