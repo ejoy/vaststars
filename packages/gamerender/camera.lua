@@ -13,8 +13,7 @@ local pt2D_to_NDC = math_util.pt2D_to_NDC
 local ndc_to_world = math_util.ndc_to_world
 local irq = ecs.import.interface "ant.render|irenderqueue"
 
--- local YAXIS_PLANE <const> = math3d.ref(math3d.constant("v4", 0, 1, 0, 0))
-local YAXIS_PLANE <const> = math3d.ref(math3d.vector(0, 1, 0, 0))
+local YAXIS_PLANE <const> = math3d.ref(math3d.constant("v4", {0, 1, 0, 0}))
 
 local camera_prefab_path <const> = fs.path "/pkg/vaststars.resources/"
 local camera_prefab_file_name
