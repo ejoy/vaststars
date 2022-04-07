@@ -15,15 +15,17 @@ local ui_construct_confirm_mb = world:sub {"ui", "construct", "construct_confirm
 local ui_construct_complete_mb = world:sub {"ui", "construct", "construct_complete"} -- 开始施工
 local ui_construct_rotate_mb = world:sub {"ui", "construct", "rotate"}
 local ui_construct_cancel_mb = world:sub {"ui", "construct", "cancel"}
-local touch_end_mb = world:sub {"touch", "END"}
+local touch_mb = world:sub {"touch"}
 
 function construct_sys:camera_usage()
     for _, _, _, prototype_name in ui_construct_entity_mb:unpack() do
         construct_editor:new_pickup_object(prototype_name)
     end
 
-    for _ in touch_end_mb:unpack() do
-        construct_editor:adjust_pickup_object()
+    for _, state in touch_mb:unpack() do
+        if state == "END" or state == "CANCEL" then
+            construct_editor:adjust_pickup_object()
+        end
     end
 end
 
