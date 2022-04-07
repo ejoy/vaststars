@@ -4,7 +4,7 @@ local w = world.w
 
 local iani = ecs.import.interface "ant.animation|ianimation"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
-local iprefab_object = ecs.import.interface "vaststars.gamerender|iprefab_object"
+local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 
 local events = {}
 events["animation_play"] = function(prefab, binding, animation)
@@ -42,8 +42,8 @@ local function get_slot_eid(prefab, slot_name)
 end
 
 local function detach_slot(binding)
-    for _, prefab_object in pairs(binding.slot_attach) do
-        world:pub {"prefab_object_system", "detach_slot", prefab_object}
+    for _, game_object in pairs(binding.slot_attach) do
+        world:pub {"game_object_system", "detach_slot", game_object}
     end
     binding.slot_attach = {}
 end
@@ -51,9 +51,9 @@ end
 events["attach_slot"] = function(prefab, binding, slot_name, prefab_file_name)
     detach_slot(binding)
 
-    local prefab_object = assert(iprefab_object.create(prefab_file_name))
-    binding.slot_attach[slot_name] = prefab_object
-    ecs.method.set_parent(prefab_object.root, assert(get_slot_eid(prefab, slot_name)))
+    local game_object = assert(igame_object.create(prefab_file_name))
+    binding.slot_attach[slot_name] = game_object
+    ecs.method.set_parent(game_object.root, assert(get_slot_eid(prefab, slot_name)))
 end
 
 events["detach_slot"] = function(prefab, binding)

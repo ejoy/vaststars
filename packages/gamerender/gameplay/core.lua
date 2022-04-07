@@ -1,6 +1,6 @@
 local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
-
+local gameplay_system_update = require "gameplay.system.init"
 local m = {}
 m.world_update = true
 
@@ -12,7 +12,7 @@ function m.build(...)
     return world:build()
 end
 
-function m.update()
+function m.update(get_object_func)
     -- 发电机发电逻辑
     for v in world.ecs:select "generator capacitance:out" do
         v.capacitance.shortage = 0
@@ -20,6 +20,7 @@ function m.update()
 
     if m.world_update then
         world:update()
+        gameplay_system_update(world, get_object_func)
     end
 end
 
@@ -78,7 +79,7 @@ end
 
 init_func["chest"] = function(pt, template)
     template.items = {
-        {"铁矿石", 100},
+        {"铁矿石", 10},
     }
     return template
 end
@@ -103,38 +104,6 @@ function m.create_entity(init)
     print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y)
     create(world, init.prototype_name, template)
     return template.id
-end
-
-do
-    local DIRECTION <const> = {
-        [0] = 'N',
-        [1] = 'E',
-        [2] = 'S',
-        [3] = 'W',
-    }
-
-    local function get_prototype_name(prototype)
-        local pt = gameplay.query(prototype)
-        if not pt then
-            log.error(("can not found prototype(%s)"):format(prototype))
-            return
-        end
-        return pt.name
-    end
-
-    function m.entity(x, y)
-        for e in world.ecs:select "entity:in" do
-            local entity = e.entity
-            if entity.x == x and entity.y == y then
-                return {
-                    dir = DIRECTION[entity.direction],
-                    prototype_name = get_prototype_name(entity.prototype),
-                    x = entity.x,
-                    y = entity.y,
-                }
-            end
-        end
-    end
 end
 
 return m

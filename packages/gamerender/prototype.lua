@@ -1,130 +1,61 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
+
 local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
-local entity_cfg = import_package "vaststars.config".entity
-local terrain = ecs.require "terrain"
+local vector2 = ecs.require "common.vector2"
 
-local prototype = {}
-function prototype.pack_coord(x, y)
-    assert(x & 0xFF == x)
-    assert(y & 0xFF == y)
-    return x | (y << 8)
-end
+local M = {}
 
-function prototype.unpack_area(v)
-    return v >> 8, v & 0xFF
-end
-
-function prototype.query(prototype)
-    local pt = gameplay.query(prototype)
-    if not pt then
-        log.error(("can not found prototype(%s)"):format(prototype))
-        return
+local funcs = {}
+funcs["fluidbox"] = function(x, y, typeobject)
+    local r = {}
+    for _, conn in ipairs(typeobject.fluidbox.connections) do
+        r[#r+1] = {x = x + conn.position[1], y = y + conn.position[2]}
     end
-    return pt
+    return r
 end
 
-function prototype.query_by_name(main_type, prototype_name)
-    local pt = gameplay.queryByName(main_type, prototype_name)
-    if not pt then
-        log.error(("can not found prototype_name(%s)"):format(prototype_name))
-        return
-    end
-    return pt
-end
-
-function prototype.get_prototype_name(prototype)
-    local pt = gameplay.query(prototype)
-    if not pt then
-        log.error(("can not found prototype(%s)"):format(prototype))
-        return
-    end
-    return pt.name
-end
-
-function prototype.get_area(prototype_name)
-    assert(prototype_name)
-    local pt = gameplay.queryByName("entity", prototype_name)
-    if not pt then
-        log.error(("can not found entity `%s`"):format(prototype_name))
-        return
-    end
-    return pt.area
-end
-
-function prototype.get_prefab_file(prototype_name)
-    assert(prototype_name)
-    local pt = gameplay.queryByName("entity", prototype_name)
-    if not pt then
-        log.error(("can not found entity `%s`"):format(prototype_name))
-        return
-    end
-
-    return pt.model
-end
-
-function prototype.get_construct_detector(prototype_name)
-    assert(prototype_name)
-    local cfg = entity_cfg[prototype_name]
-    if not cfg then
-        log.error(("can not found entity `%s`"):format(prototype_name))
-        return
-    end
-
-    return cfg.construct_detector
-end
-
-function prototype.get_fluid_id(prototype_name)
-    assert(prototype_name)
-    local pt = gameplay.queryByName("fluid", prototype_name)
-    if not pt then
-        log.error(("can not found fluid `%s`"):format(prototype_name))
-        return 0
-    end
-    return pt.id
-end
-
-local function check_entity_type(prototype_name, types)
-    assert(prototype_name)
-    local pt = gameplay.queryByName("entity", prototype_name)
-    if not pt then
-        log.error(("can not found entity `%s`"):format(prototype_name))
-        return
-    end
-
-    for _, st in ipairs(pt.type) do
-        for _, dt in ipairs(types) do
-            if st == dt then
-                return true
+funcs["fluidboxes"] = function(x, y, typeobject)
+    local r = {}
+    for _, iotype in ipairs({"input", "output"}) do
+        for _, v in ipairs(typeobject.fluidboxes[iotype]) do
+            for _, conn in ipairs(v.connections) do
+                r[#r+1] = {x = x + conn.position[1], y = y + conn.position[2]}
             end
         end
     end
-    return false
+    return r
 end
 
-function prototype.is_fluidbox(prototype_name)
-    return check_entity_type(prototype_name, {"fluidbox"})
-end
-
-function prototype.is_fluidboxes(prototype_name)
-    return check_entity_type(prototype_name, {"fluidboxes"})
-end
-
-local fluidbox_types <const> = {"fluidbox", "fluidboxes"}
-function prototype.has_fluidbox(prototype_name)
-    return check_entity_type(prototype_name, fluidbox_types)
-end
-
-function prototype.is_pipe(prototype_name)
-    assert(prototype_name)
-    local pt = gameplay.queryByName("entity", prototype_name)
-    if not pt then
-        log.error(("can not found entity `%s`"):format(prototype_name))
-        return
+local pipe_neighbor <const> = {
+    vector2.DOWN,
+    vector2.UP,
+    vector2.LEFT,
+    vector2.RIGHT,
+    {0, 0},
+}
+function M.get_fluidbox_coord(prototype_name, x, y)
+    local r = {}
+    local typeobject = gameplay.queryByName("entity", prototype_name)
+    if typeobject.pipe then
+        for _, v in ipairs(pipe_neighbor) do
+            r[#r+1] = {x + v[1], y + v[2]}
+        end
+        return r
     end
-    return pt.pipe
+
+    local types = typeobject.type
+    for i = 1, #types do
+        local func = funcs[types[i]]
+        if func then
+            for _, v in ipairs(func(x, y, typeobject)) do
+                r[#r + 1] = {v.x, v.y}
+            end
+        end
+    end
+    return r
 end
 
-return prototype
+return M

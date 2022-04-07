@@ -43,6 +43,7 @@ prototype "蓄电池1" {
 
 prototype "核反应堆" {
     model = "prefabs/wind-turbine-1.prefab",
+    construct_detector = {"exclusive"},
     type = {"entity", "generator", "burner"},
     area = "3x3",
     power = "40MW",

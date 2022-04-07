@@ -1,8 +1,9 @@
 local ecs   = ...
 local world = ecs.world
 local w     = world.w
-local UP_LEFT = require "vector2".UP_LEFT
+local UP_LEFT = require "common.vector2".UP_LEFT
 
+local M = {}
 local terrain = {}
 
 local function unpackCoord(v)
@@ -23,7 +24,7 @@ local function generate_terrain_fields(w, h)
     return fields
 end
 
-function terrain.create()
+function M.create()
     local width, height = 256, 256
     local unit = 10
     local srt = {
@@ -59,28 +60,25 @@ function terrain.create()
                 shape = "/pkg/vaststars.resources/shape_terrain.material",
                 edge = "/pkg/vaststars.resources/shape_terrain_edge.material",
             },
-
-            --
-            terrain = {
-                shape = shape,
-                tile_bounds = {
-                    {0, 0},
-                    {(shape[2][1] - shape[1][1]) // unit - 1, (shape[2][3] - shape[1][3]) // unit - 1},
-                },
-                origin = {shape[1][1], shape[2][3]}, -- origin in logical coordinates
-            },
         }
     }
+
+    terrain.shape = shape
+    terrain.tile_bounds = {
+        {0, 0},
+        {(shape[2][1] - shape[1][1]) // unit - 1, (shape[2][3] - shape[1][3]) // unit - 1},
+    }
+    terrain.origin = {shape[1][1], shape[2][3]} -- origin in logical coordinates
 end
 
-function terrain.verify_coord(x, y)
-    local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
+function M.verify_coord(x, y)
+    local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
     if not e then
         log.error("can not found terrain")
         return false
     end
 
-    local tile_bounds = e.terrain.tile_bounds
+    local tile_bounds = terrain.tile_bounds
 
     if x < tile_bounds[1][1] or x > tile_bounds[2][1] then
         return false
@@ -93,10 +91,10 @@ function terrain.verify_coord(x, y)
     return true
 end
 
-function terrain.get_coord_by_position(position)
-    local e = w:singleton("terrain", "terrain:in shape_terrain:in")
-    local shape = e.terrain.shape
-    local origin = e.terrain.origin
+function M.get_coord_by_position(position)
+    local e = w:singleton("shape_terrain", "shape_terrain:in")
+    local shape = terrain.shape
+    local origin = terrain.origin
     local shape_terrain = e.shape_terrain
     local unit = shape_terrain.unit
 
@@ -113,37 +111,37 @@ function terrain.get_coord_by_position(position)
     return {math.ceil((position[1] - origin[1]) / unit) - 1, math.ceil((origin[2] - position[3]) / unit) - 1}
 end
 
-function terrain.get_begin_position_by_coord(x, y)
-    local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
-    local tile_bounds = e.terrain.tile_bounds
+function M.get_begin_position_by_coord(x, y)
+    local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
+    local tile_bounds = terrain.tile_bounds
     local shape_terrain = e.shape_terrain
     local unit = shape_terrain.unit
-    local origin = e.terrain.origin
+    local origin = terrain.origin
 
-    if not terrain.verify_coord(x, y) then
+    if not M.verify_coord(x, y) then
         log.error(("out of bounds (%s,%s) : (%s) - (%s)"):format(x, y, table.concat(tile_bounds[1], ","), table.concat(tile_bounds[2], ",")))
         return
     end
     return {origin[1] + (x * unit), 0, origin[2] - (y * unit)}
 end
 
-function terrain.get_position_by_coord(x, y, area)
-    local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
+function M.get_position_by_coord(x, y, area)
+    local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
     local unit = e.shape_terrain.unit
 
     local width, height = unpackCoord(area)
-    local begining = terrain.get_begin_position_by_coord(x, y)
+    local begining = M.get_begin_position_by_coord(x, y)
     if not begining then
         return
     end
 
-    return {begining[1] + (width * unit // 2), begining[2], begining[3] - (height * unit // 2)} --RETODO 越界判断
+    return {begining[1] + (width * unit // 2), begining[2], begining[3] - (height * unit // 2)} --TODO 越界判断
 end
 
-function terrain.adjust_position(position, area)
-    local e = w:singleton("terrain", "terrain:in shape_terrain:in scene:in")
+function M.adjust_position(position, area)
+    local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
     local unit = e.shape_terrain.unit
-    local coord = terrain.get_coord_by_position(position)
+    local coord = M.get_coord_by_position(position)
     if not coord then
         return
     end
@@ -152,7 +150,7 @@ function terrain.adjust_position(position, area)
     coord[1] = coord[1] + UP_LEFT[1] * (width // 2)
     coord[2] = coord[2] + UP_LEFT[2] * (height // 2)
 
-    local begining = terrain.get_begin_position_by_coord(coord[1], coord[2])
+    local begining = M.get_begin_position_by_coord(coord[1], coord[2])
     if not begining then
         return
     end
@@ -160,4 +158,4 @@ function terrain.adjust_position(position, area)
     return coord, {begining[1] + (width * unit // 2), position[2], begining[3] - (height * unit // 2)}
 end
 
-return terrain
+return M

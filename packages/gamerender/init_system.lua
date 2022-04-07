@@ -6,11 +6,11 @@ local FRAMES_PER_SECOND <const> = 60
 local bgfx = require 'bgfx'
 local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local icanvas = ecs.import.interface "vaststars.gamerender|icanvas"
-local engine = ecs.require "engine"
+local camera = ecs.require "camera"
 local terrain = ecs.require "terrain"
 local get_fluid_category = ecs.require "get_fluid_category"
-local gameplay = ecs.require "gameplay"
+local gameplay_core = ecs.require "gameplay.core"
+local construct_editor = ecs.require "construct_editor"
 
 local m = ecs.system 'init_system'
 function m:init_world()
@@ -18,16 +18,17 @@ function m:init_world()
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
 
     iui.open("construct.rml", get_fluid_category())
-    engine.init_camera_prefab("camera_default.prefab")
+    camera.init("camera_default.prefab")
 
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
     terrain.create()
-    icanvas.create()
+end
 
-    world:pub{"camera_controller", "stop", false}
+local function get_object(x, y)
+    return construct_editor:get_vsobject(x, y)
 end
 
 function m:update_world()
-    gameplay.update()
+    gameplay_core.update(get_object)
 end
