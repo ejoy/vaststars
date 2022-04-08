@@ -11,6 +11,7 @@ local terrain = ecs.require "terrain"
 local get_fluid_category = ecs.require "gameplay.utility.get_fluid_category"
 local gameplay_core = ecs.require "gameplay.core"
 local construct_editor = ecs.require "construct_editor"
+local fps = ecs.require "fps"
 
 local m = ecs.system 'init_system'
 function m:init_world()
@@ -31,4 +32,5 @@ end
 
 function m:update_world()
     gameplay_core.update(get_object)
+    fps()
 end
