@@ -67,6 +67,10 @@ local function set_position(self, position)
     end
 end
 
+local function get_position(self)
+    return iom.get_position(world:entity(self.game_object.root))
+end
+
 local function set_dir(self, dir)
     iom.set_rotation(world:entity(self.game_object.root), rotators[dir])
 
@@ -189,6 +193,7 @@ return function (init)
         --
         update = update,
         set_position = set_position,
+        get_position = get_position,
         set_dir = set_dir,
         remove = remove,
         attach = attach,

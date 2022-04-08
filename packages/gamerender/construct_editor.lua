@@ -324,6 +324,20 @@ function M:adjust_pickup_object()
     vsobject:update {color = color, block_color = block_color}
 end
 
+function M:move_pickup_object(delta)
+    if not pickup_object then
+        return
+    end
+
+    --
+    local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
+    local coord = terrain.adjust_position(camera.get_central_position(), typeobject.area)
+    pickup_object.x, pickup_object.y = coord[1], coord[2]
+    local vsobject = assert(vsobject_manager:get(pickup_object.id))
+
+    vsobject:set_position(math3d.add(vsobject:get_position(), delta))
+end
+
 function M:rotate_pickup_object()
     if not pickup_object then
         return

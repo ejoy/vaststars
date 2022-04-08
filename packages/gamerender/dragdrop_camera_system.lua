@@ -30,5 +30,7 @@ function dragdrop_camera_sys:camera_usage()
         local ce = world:entity(mq.camera_ref)
         local delta = math3d.inverse(math3d.sub(pos, begin_pos))
         iom.move_delta(ce, delta)
+
+        world:pub {"dragdrop_camera", math3d.ref(delta)}
     end
 end

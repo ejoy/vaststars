@@ -19,6 +19,7 @@ local ui_construct_dismantle_begin = world:sub {"ui", "construct", "dismantle_be
 local ui_construct_dismantle_complete = world:sub {"ui", "construct", "dismantle_complete"}
 local touch_mb = world:sub {"touch"}
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
+local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 
 local teardown = false
 
@@ -35,6 +36,10 @@ function construct_sys:camera_usage()
 end
 
 function construct_sys:data_changed()
+    for _, delta in dragdrop_camera_mb:unpack() do
+        construct_editor:move_pickup_object(delta)
+    end
+
     for _ in ui_construct_begin_mb:unpack() do
         gameplay_core.world_update = false
         camera.update("camera_construct.prefab")
