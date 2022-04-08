@@ -53,7 +53,7 @@ function construct_sys:data_changed()
     for _ in ui_construct_begin_mb:unpack() do
         construct_editor:construct_begin()
         gameplay_core.world_update = false
-        camera.update("camera_construct.prefab")
+        camera.set("camera_construct.prefab")
     end
 
     for _ in ui_construct_rotate_mb:unpack() do
@@ -71,28 +71,28 @@ function construct_sys:data_changed()
     for _ in ui_construct_complete_mb:unpack() do
         construct_editor:complete()
         gameplay_core.world_update = true
-        camera.update("camera_default.prefab")
+        camera.set("camera_default.prefab")
     end
 
     for _ in ui_construct_cancel_mb:unpack() do
         construct_editor:cancel()
         teardown = false
         gameplay_core.world_update = true
-        camera.update("camera_default.prefab")
+        camera.set("camera_default.prefab")
     end
 
     for _ in ui_construct_dismantle_begin:unpack() do
         construct_editor:teardown_begin()
         teardown = true
         gameplay_core.world_update = false
-        camera.update("camera_construct.prefab")
+        camera.set("camera_construct.prefab")
     end
 
     for _ in ui_construct_dismantle_complete:unpack() do
         construct_editor:teardown_complete()
         teardown = false
         gameplay_core.world_update = true
-        camera.update("camera_default.prefab")
+        camera.set("camera_default.prefab")
     end
 end
 

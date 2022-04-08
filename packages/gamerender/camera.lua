@@ -12,11 +12,13 @@ local math_util = import_package "ant.math".util
 local pt2D_to_NDC = math_util.pt2D_to_NDC
 local ndc_to_world = math_util.ndc_to_world
 local irq = ecs.import.interface "ant.render|irenderqueue"
+local create_queue = require "utility.queue"
 
 local YAXIS_PLANE <const> = math3d.ref(math3d.constant("v4", {0, 1, 0, 0}))
 
 local camera_prefab_path <const> = fs.path "/pkg/vaststars.resources/"
 local camera_prefab_file_name
+local camera_matrix = create_queue()
 
 local function get_camera_prefab_data(prefab_file_name)
     local f <close> = fs.open(camera_prefab_path .. prefab_file_name)
@@ -51,7 +53,11 @@ function camera.init(prefab_file_name)
     camera_prefab_file_name = prefab_file_name
 end
 
-function camera.update(prefab_file_name)
+local hierarchy = require "hierarchy"
+local animation = hierarchy.animation
+local skeleton = hierarchy.skeleton
+
+function camera.set(prefab_file_name)
     local sdata, ddata = get_camera_prefab_data(camera_prefab_file_name), get_camera_prefab_data(prefab_file_name)
     if not sdata or not ddata then
         return
@@ -61,12 +67,59 @@ function camera.update(prefab_file_name)
     local camera_ref = mq.camera_ref
     local e = world:entity(camera_ref)
 
-    local delta = math3d.sub(iom.get_position(e), sdata.scene.srt.t)
-    local position = math3d.tovalue(math3d.add(delta, ddata.scene.srt.t))
+    local scale = iom.get_scale(e)
+    local rotation = iom.get_rotation(e)
+    local oposition = iom.get_position(e)
 
-    iom.set_srt(e, ddata.scene.srt.s or mc.ONE, ddata.scene.srt.r, position)
-    iom.set_view(e, iom.get_position(e), iom.get_direction(e), ddata.scene.updir)
+    local delta = math3d.sub(iom.get_position(e), sdata.scene.srt.t)
+    local nposition = math3d.tovalue(math3d.add(delta, ddata.scene.srt.t))
+
+    local scene = e.scene
+    local _srt = math3d.inverse(math3d.lookto(nposition, math3d.todirection( math3d.quaternion(ddata.scene.srt.r) ), scene.updir))
+
+    local raw_animation = animation.new_raw_animation()
+    local skl = skeleton.build({{name = "root", s = mc.ONE, r = mc.IDENTITY_QUAT, t = mc.T_ZERO}})
+    raw_animation:setup(skl, 2)
+
+    raw_animation:push_prekey(
+        "root",
+        0,
+        scale,
+        rotation,
+        oposition
+    )
+
+    raw_animation:push_prekey(
+        "root",
+        1,
+        math3d.srt(_srt)
+    )
+
+    local ani = raw_animation:build()
+    local poseresult = animation.new_pose_result(#skl)
+    poseresult:setup(skl)
+
+    local ratio = 0
+    local step = 2 / 30
+
+    while ratio <= 1.0 do
+        poseresult:do_sample(animation.new_sampling_context(1), ani, ratio, 0)
+        poseresult:fetch_result()
+        camera_matrix:push( math3d.ref(poseresult:joint(1)) )
+        ratio = ratio + step
+    end
+
     camera_prefab_file_name = prefab_file_name
+end
+
+function camera.update()
+    local mat = camera_matrix:pop()
+    if mat then
+        local mq = w:singleton("main_queue", "camera_ref:in")
+        local camera_ref = mq.camera_ref
+        local e = world:entity(camera_ref)
+        iom.set_srt_matrix(e, mat)
+    end
 end
 
 -- in `camera_usage` stage
