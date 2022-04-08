@@ -116,7 +116,7 @@ local function update(self, t)
         end
     end
 
-    if t.show_block == false then
+    if t.show_block == false and self.block_entity_object then
         self.block_entity_object:remove()
         self.block_entity_object = nil
     end
