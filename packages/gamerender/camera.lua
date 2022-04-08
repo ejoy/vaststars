@@ -71,11 +71,8 @@ function camera.set(prefab_file_name)
     local rotation = iom.get_rotation(e)
     local oposition = iom.get_position(e)
 
-    local delta = math3d.sub(iom.get_position(e), sdata.scene.srt.t)
-    local nposition = math3d.tovalue(math3d.add(delta, ddata.scene.srt.t))
-
-    local scene = e.scene
-    local _srt = math3d.inverse(math3d.lookto(nposition, math3d.todirection( math3d.quaternion(ddata.scene.srt.r) ), scene.updir))
+    local delta = math3d.sub(oposition, sdata.scene.srt.t)
+    local nposition = math3d.add(delta, ddata.scene.srt.t)
 
     local raw_animation = animation.new_raw_animation()
     local skl = skeleton.build({{name = "root", s = mc.ONE, r = mc.IDENTITY_QUAT, t = mc.T_ZERO}})
@@ -92,7 +89,9 @@ function camera.set(prefab_file_name)
     raw_animation:push_prekey(
         "root",
         1,
-        math3d.srt(_srt)
+        scale,
+        ddata.scene.srt.r,
+        nposition
     )
 
     local ani = raw_animation:build()
