@@ -27,6 +27,8 @@ local DISMANTLE_YELLOW_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {5
 
 local CONSTRUCT_BLOCK_RED_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {20000, 0.0, 0.0, 1.0}))
 local CONSTRUCT_BLOCK_GREEN_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {0.0, 20000, 0.0, 1.0}))
+local CONSTRUCT_BLOCK_WHITE_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {20000, 20000, 20000, 1.0}))
+
 local DEFAULT_DIR <const> = 'N'
 
 local M = {}
@@ -284,7 +286,7 @@ function M:confirm()
     end
 
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
-    vsobject:update {state = "translucent", color = CONSTRUCT_WHITE_BASIC_COLOR, show_block = false}
+    vsobject:update {state = "translucent", color = CONSTRUCT_WHITE_BASIC_COLOR, block_color = CONSTRUCT_BLOCK_WHITE_BASIC_COLOR}
 
     objects:commit("TEMPORARY", "CONFIRM")
     tile_objects:commit("TEMPORARY", "CONFIRM")
@@ -387,7 +389,7 @@ function M:complete()
 
     for _, object in pairs(t) do
         local vsobject = assert(vsobject_manager:get(object.id))
-        vsobject:update {state = "opaque"}
+        vsobject:update {state = "opaque", show_block = false}
         gameplay_core.create_entity(object)
         needbuild = true
     end
