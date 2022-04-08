@@ -262,6 +262,10 @@ local function new_pickup_object(prototype_name, dir)
 end
 
 ---
+function M:construct_begin()
+    revert_changes({"TEMPORARY"})
+end
+
 function M:new_pickup_object(prototype_name)
     if pickup_object then
         if pickup_object.prototype_name == prototype_name then

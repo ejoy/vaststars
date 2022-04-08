@@ -51,6 +51,7 @@ function construct_sys:data_changed()
     end
 
     for _ in ui_construct_begin_mb:unpack() do
+        construct_editor:construct_begin()
         gameplay_core.world_update = false
         camera.update("camera_construct.prefab")
     end
