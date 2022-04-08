@@ -22,15 +22,25 @@ local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 
 local teardown = false
+local touch_id
 
 function construct_sys:camera_usage()
     for _, _, _, prototype_name in ui_construct_entity_mb:unpack() do
         construct_editor:new_pickup_object(prototype_name)
     end
 
-    for _, state in touch_mb:unpack() do
-        if state == "END" or state == "CANCEL" then
-            construct_editor:adjust_pickup_object()
+    for _, state, datas in touch_mb:unpack() do
+        for _, data in pairs(datas) do
+            if state == "START" then
+                if not touch_id then
+                    touch_id = data.id
+                end
+            elseif state == "END" or state == "CANCEL" then
+                if touch_id == data.id then
+                    construct_editor:adjust_pickup_object()
+                    touch_id = nil
+                end
+            end
         end
     end
 end
