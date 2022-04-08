@@ -33,9 +33,23 @@ local function commit(self, cache_name_1, cache_name_2)
     self.caches[cache_name_1] = create_cache(table.unpack(self.cache_param))
 end
 
+local function remove(self, cache_name, key)
+    local cache = assert(self.caches[cache_name])
+    return cache:remove(key)
+end
+
 local function all(self, cache_name)
     local cache = assert(self.caches[cache_name])
     return cache:all()
+end
+
+local function select(self, cache_name, index_field, cache_value)
+    local cache = assert(self.caches[cache_name])
+    return cache:select(index_field, cache_value)
+end
+
+local function clear(self, cache_name)
+    self.caches[cache_name] = create_cache(table.unpack(self.cache_param))
 end
 
 local function create(cache_names, ...)
@@ -50,9 +64,12 @@ local function create(cache_names, ...)
     M.set = set
     M.get = get
     M.all = all
+    M.select = select
     M.revert = revert
     M.commit = commit
-    
+    M.remove = remove
+    M.clear = clear
+
     return setmetatable(M, {__index = M})
 end
 return create

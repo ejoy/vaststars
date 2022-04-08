@@ -33,8 +33,11 @@ local M = {}
 local pickup_object
 
 local cache_names = {"TEMPORARY", "CONFIRM", "EXISTING"}
-local objects = create_cache(cache_names, "id", "id") -- = {[id] = object, ...}
-local tile_objects = create_cache(cache_names, "coord", "id") -- = {[coord] = {id = xx, fluidbox_dir = {[xx] = true, ...}}, ...}
+local objects_index_field = {"id", "teardown"}
+local tile_objects_index_field = {"coord", "id"}
+
+local objects = create_cache(cache_names, table.unpack(objects_index_field)) -- = {[id] = object, ...}
+local tile_objects = create_cache(cache_names, table.unpack(tile_objects_index_field)) -- = {[coord] = {id = xx, fluidbox_dir = {[xx] = true, ...}}, ...}
 
 local function check_construct_detector(prototype_name, x, y, dir, id)
     local typeobject = gameplay.queryByName("entity", prototype_name)
@@ -59,6 +62,18 @@ local function check_construct_detector(prototype_name, x, y, dir, id)
         end
     end
     return true
+end
+
+local function clone_object(object)
+    return {
+        id = object.id,
+        prototype_name = object.prototype_name,
+        dir = object.dir,
+        fluid = object.fluid,
+        x = object.x,
+        y = object.y,
+        teardown = object.teardown,
+    }
 end
 
 -- object = {id = xx, prototype_name = xx, dir = xx, fluid = xx, x = xx, y = xx}
@@ -143,8 +158,8 @@ local function refresh_pickup_pipe()
     end
 end
 
-local function refresh_pipe_connection()
-    for _, v in ipairs(get_fluidboxes(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)) do
+local function refresh_pipe_connection(object)
+    for _, v in ipairs(get_fluidboxes(object.prototype_name, object.x, object.y, object.dir)) do
         for dir in pairs(v.fluidbox_dir) do
             local c = fluidbox_dir_coord[dir]
             local dx, dy = v.x + c.x, v.y + c.y
@@ -165,6 +180,7 @@ local function refresh_pipe_connection()
                     fluid = object.fluid,
                     x = object.x,
                     y = object.y,
+                    teardown = false,
                 }
             end
         end
@@ -181,12 +197,17 @@ local function revert_changes(revert_cache_names)
         tile_objects:revert({cache_name})
     end
 
+    local pickup_object_id
+    if pickup_object then
+        pickup_object_id = pickup_object.id
+    end
+
     for id, object in pairs(t) do
-        if id ~= pickup_object.id then
+        if id ~= pickup_object_id then
             local old_object = objects:get(cache_names, id)
             if old_object then
                 local vsobject = assert(vsobject_manager:get(object.id))
-                vsobject:update {prototype_name = old_object.prototype_name}
+                vsobject:update {state = "opaque", prototype_name = old_object.prototype_name}
                 vsobject:set_dir(old_object.dir)
             else
                 -- 通常是删除已"确定建造"的建筑
@@ -227,6 +248,7 @@ local function new_pickup_object(prototype_name, dir)
         fluid = {},
         x = coord[1],
         y = coord[2],
+        teardown = false,
     }
 
     if need_set_tile_object then
@@ -294,7 +316,7 @@ function M:adjust_pickup_object()
 
         set_tile_object(pickup_object)
         refresh_pickup_pipe()
-        refresh_pipe_connection()
+        refresh_pipe_connection(pickup_object)
     end
 
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
@@ -324,7 +346,7 @@ function M:rotate_pickup_object()
 
         set_tile_object(pickup_object)
         refresh_pickup_pipe()
-        refresh_pipe_connection()
+        refresh_pipe_connection(pickup_object)
     end
 
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
@@ -369,13 +391,68 @@ function M:cancel()
 end
 
 function M:reset()
-    objects = create_cache(cache_names, "id", "id") -- = {[id] = object, ...}
-    tile_objects = create_cache(cache_names, "coord", "id") -- = {[coord] = {id = xx, fluidbox_dir = {[xx] = true, ...}}, ...}
+    objects = create_cache(cache_names, table.unpack(objects_index_field)) -- = {[id] = object, ...}
+    tile_objects = create_cache(cache_names, table.unpack(tile_objects_index_field)) -- = {[coord] = {id = xx, fluidbox_dir = {[xx] = true, ...}}, ...}
 end
 
 function M:get_vsobject(x, y)
     local tile_object = assert(tile_objects:get(cache_names, packcoord(x, y)))
     return assert(vsobject_manager:get(tile_object.id))
+end
+
+function M:teardown_begin()
+    revert_changes({"TEMPORARY", "CONFIRM"})
+    if pickup_object then
+        vsobject_manager:remove(pickup_object.id)
+        pickup_object = nil
+    end
+end
+
+function M:teardown(vsobject_id)
+    local object = clone_object(assert(objects:get(cache_names, vsobject_id)))
+    local vsobject = assert(vsobject_manager:get(vsobject_id))
+
+    object.teardown = not object.teardown
+    objects:set("TEMPORARY", object)
+
+    if object.teardown then
+        vsobject:update {state = "translucent", color = DISMANTLE_YELLOW_BASIC_COLOR}
+    else
+        vsobject:update {state = "opaque"}
+    end
+end
+
+function M:teardown_complete()
+    local removelist = {}
+    for id, object in objects:select("TEMPORARY", "teardown", true) do
+        local vsobject = assert(vsobject_manager:get(id))
+        vsobject:remove()
+
+        objects:remove("EXISTING", id)
+        for coord in tile_objects:select("EXISTING", "id", id) do
+            tile_objects:remove("EXISTING", coord)
+        end
+
+        removelist[packcoord(object.x, object.y)] = object
+    end
+
+    for _, object in pairs(removelist) do
+        refresh_pipe_connection(object)
+    end
+
+    local needbuild = false
+    for e in gameplay_core.select("entity:in") do
+        local coord = packcoord(e.entity.x, e.entity.y)
+        if removelist[coord] then
+            gameplay_core.remove_entity(e)
+            needbuild = true
+        end
+    end
+    if needbuild then
+        gameplay_core.build()
+    end
+
+    objects:clear("TEMPORARY")
 end
 
 return M

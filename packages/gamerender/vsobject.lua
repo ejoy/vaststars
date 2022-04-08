@@ -100,7 +100,7 @@ local function update(self, t)
         local color = t.color or self.color
 
         local typeobject = gameplay.queryByName("entity", prototype_name)
-        local game_object = igame_object.create(typeobject.model, state, color)
+        local game_object = igame_object.create(typeobject.model, state, color, self.id)
         set_srt(world:entity(game_object.root), srt)
 
         self.game_object, self.prototype_name, self.state, self.color = game_object, prototype_name, state, color
@@ -170,12 +170,13 @@ return function (init)
         return
     end
 
-    local game_object = assert(igame_object.create(typeobject.model, init.state, init.color))
+    local vsobject_id = gen_id()
+    local game_object = assert(igame_object.create(typeobject.model, init.state, init.color, vsobject_id))
     iom.set_position(world:entity(game_object.root), position)
     iom.set_rotation(world:entity(game_object.root), rotators[init.dir])
 
     local vsobject = {
-        id = gen_id(),
+        id = vsobject_id,
         prototype_name = init.prototype_name,
         state = init.state,
         color = init.color,

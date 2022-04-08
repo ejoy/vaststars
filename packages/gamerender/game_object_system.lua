@@ -5,6 +5,7 @@ local w = world.w
 local cr = import_package "ant.compile_resource"
 local serialize = import_package "ant.serialize"
 local iani = ecs.import.interface "ant.animation|ianimation"
+local ipickup_mapping = ecs.import.interface "vaststars.gamerender|ipickup_mapping"
 
 local igame_object = ecs.interface "igame_object"
 local game_object_sys = ecs.system "game_object_system"
@@ -46,6 +47,8 @@ local function on_prefab_ready(prefab, binding)
                 iani.pause(eid, true)
             end
         end
+
+        ipickup_mapping.mapping(eid, binding.pickup_binding)
     end
 end
 
@@ -57,7 +60,7 @@ local function on_prefab_message(prefab, binding, cmd, ...)
 end
 
 -- state: translucent
-function igame_object.create(prefab_file_name, state, color)
+function igame_object.create(prefab_file_name, state, color, pickup_binding)
     local f = prefab_path:format(prefab_file_name)
     local template
 
@@ -70,6 +73,7 @@ function igame_object.create(prefab_file_name, state, color)
     local binding = {
         pause_animation = true,
         slot_attach = {}, -- = {[name] = game_object, ...}
+        pickup_binding = pickup_binding,
     }
 
     local prefab = ecs.create_instance(template)

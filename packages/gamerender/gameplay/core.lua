@@ -28,6 +28,10 @@ function m.container_get(...)
     return world:container_get(...)
 end
 
+function m.remove_entity(v)
+    return world:remove_entity(v)
+end
+
 local create_entity_cache = {}
 local function create(world, prototype, entity)
     if not create_entity_cache[prototype] then

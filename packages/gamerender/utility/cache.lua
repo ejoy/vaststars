@@ -5,6 +5,7 @@ local function key(self, key)
 end
 
 local function select(self, index_field, cache_value)
+	assert(cache_value ~= nil)
 	if not self.cache[index_field] then
 		return EMPTY_TABLE
 	end
@@ -41,8 +42,9 @@ local function set(self, value)
 	--
 	local cache_value
 	for _, index_field in ipairs(self.index_fields) do
-		cache_value = assert(value[index_field])
-		assert(type(cache_value) == "number" or type(cache_value) == "string")
+		assert(value[index_field] ~= nil)
+		cache_value = value[index_field]
+		assert(type(cache_value) == "number" or type(cache_value) == "string" or type(cache_value) == "boolean")
 		self.cache[index_field] = self.cache[index_field] or {}
 		self.cache[index_field][cache_value] = self.cache[index_field][cache_value] or {}
 		self.cache[index_field][cache_value][key] = true
