@@ -211,8 +211,10 @@ local function revert_changes(revert_cache_names)
                 vsobject:set_dir(old_object.dir)
             else
                 -- 通常是删除已"确定建造"的建筑
-                local vsobject = assert(vsobject_manager:get(object.id))
-                vsobject:remove()
+                local vsobject = vsobject_manager:get(object.id) --TODO 找不到 object
+                if vsobject then
+                    vsobject:remove()
+                end
             end
         end
     end
