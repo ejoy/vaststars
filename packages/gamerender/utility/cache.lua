@@ -7,11 +7,11 @@ end
 local function select(self, index_field, cache_value)
 	assert(cache_value ~= nil)
 	if not self.cache[index_field] then
-		return EMPTY_TABLE
+		return next, EMPTY_TABLE, nil
 	end
 
 	if not self.cache[index_field][cache_value] then
-		return EMPTY_TABLE
+		return next, EMPTY_TABLE, nil
 	end
 
 	local value

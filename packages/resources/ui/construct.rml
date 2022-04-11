@@ -214,11 +214,13 @@
                     ui_sys.pub("ui", "construct", "cancel", true)
                 end
             end
-            function start.clickUnconfirmedDoubleConfirm(event, visible)
+            function start.clickUnconfirmedDoubleConfirm(event, confirm)
                 start.show_unconfirmed_double_confirm = false
-                if unconfirmed_double_confirm_continuation then
-                    unconfirmed_double_confirm_continuation()
-                    unconfirmed_double_confirm_continuation = nil
+                if confirm then
+                    if unconfirmed_double_confirm_continuation then
+                        unconfirmed_double_confirm_continuation()
+                        unconfirmed_double_confirm_continuation = nil
+                    end
                 end
             end
             function start.clickShowConstructMenuDetail(event, construct_menu)
