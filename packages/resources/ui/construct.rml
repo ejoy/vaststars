@@ -162,6 +162,7 @@
         <style path = "common/test-button.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
+            local unconfirmed_double_confirm_continuation = function() end
             local start = window.createModel "start" {
                 fps_text = ' ',           -- fps 信息
                 fluid_category = {},      -- 流体分类信息, 从 world 获取
@@ -172,25 +173,31 @@
                 show_set_fluidbox = false,
                 show_construct_complete = false,
                 show_unconfirmed_double_confirm = false,
-                unconfirmed_double_confirm_event = "",
 
                 debug_button = {},
                 config_construct = require "config.construct",
             }
             function start.clickConstructBegin(event)
-                start.cur_edit_mode = 'construct'
-                start.show_construct_complete = false -- 建造模式下, 默认不显示 "开始施工"
-                ui_sys.pub("ui", "construct", "construct_begin")
+                ui_sys.pub("ui", "construct", "construct_begin", false)
+
+                unconfirmed_double_confirm_continuation = function()
+                    start.cur_edit_mode = 'construct'
+                    start.show_construct_complete = false -- 建造模式下, 默认不显示 "开始施工"
+                    ui_sys.pub("ui", "construct", "construct_begin", true)
+                end
             end
             function start.clickDismantleBegin(event)
-                start.cur_edit_mode = 'dismantle'
-                ui_sys.pub("ui", "construct", "dismantle_begin")
+                ui_sys.pub("ui", "construct", "dismantle_begin", false)
+                unconfirmed_double_confirm_continuation = function()
+                    start.cur_edit_mode = 'dismantle'
+                    ui_sys.pub("ui", "construct", "dismantle_begin", true)
+                end
             end
             function start.clickConstructRotate(event)
                 ui_sys.pub("ui", "construct", "rotate")
             end
             function start.clickConstructConfirm(event)
-            ui_sys.pub("ui", "construct", "construct_confirm")
+                ui_sys.pub("ui", "construct", "construct_confirm")
             end
             function start.clickConstructComplete(event)
                 start.cur_edit_mode = ''
@@ -202,10 +209,17 @@
             end
             function start.clickCancel(event)
                 ui_sys.pub("ui", "construct", "cancel", false)
+                unconfirmed_double_confirm_continuation = function()
+                    start.cur_edit_mode = ''
+                    ui_sys.pub("ui", "construct", "cancel", true)
+                end
             end
-            function start.clickUnconfirmedDoubleConfirm(event)
-                start.cur_edit_mode = ''
-                ui_sys.pub("ui", "construct", start.unconfirmed_double_confirm_event, true)
+            function start.clickUnconfirmedDoubleConfirm(event, visible)
+                start.show_unconfirmed_double_confirm = false
+                if unconfirmed_double_confirm_continuation then
+                    unconfirmed_double_confirm_continuation()
+                    unconfirmed_double_confirm_continuation = nil
+                end
             end
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
@@ -255,12 +269,13 @@
                 ["print_fps"] = function(text)
                     start.fps_text = text
                 end,
-                ["show_unconfirmed_double_confirm"] = function(event, visible)
+                ["show_unconfirmed_double_confirm"] = function(visible)
                     start.show_unconfirmed_double_confirm = visible
-                    if visible then
-                        start.unconfirmed_double_confirm_event = event
-                    else
-                        start.unconfirmed_double_confirm_event = ""
+                end,
+                ["unconfirmed_double_confirm_continuation"] = function()
+                    if unconfirmed_double_confirm_continuation then
+                        unconfirmed_double_confirm_continuation()
+                        unconfirmed_double_confirm_continuation = nil
                     end
                 end,
             })
@@ -276,8 +291,8 @@
                 <div style='background-color: rgb(92, 184, 92); flex-direction: column; align-items: center; justify-content: flex-start; font-size: 250%;'>
                     <div>存在未确认的建筑, 是否继续?</div>
                     <div style = "justify-content: space-between; flex-wrap: nowrap;">
-                        <div style = "border: 1vmin;" data-event-click = "clickUnconfirmedDoubleConfirm()">确认</div>
-                        <div style = "border: 1vmin;" data-event-click = "show_unconfirmed_double_confirm = false">取消</div>
+                        <div style = "border: 1vmin;" data-event-click = "clickUnconfirmedDoubleConfirm(true)">确认</div>
+                        <div style = "border: 1vmin;" data-event-click = "clickUnconfirmedDoubleConfirm(false)">取消</div>
                     </div>
                 </div>
             </div>

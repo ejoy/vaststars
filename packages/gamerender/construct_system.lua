@@ -50,10 +50,20 @@ function construct_sys:data_changed()
         construct_editor:move_pickup_object(delta)
     end
 
-    for _ in ui_construct_begin_mb:unpack() do
+    for _, _, _, double_confirm in ui_construct_begin_mb:unpack() do
+        if construct_editor:check_unconfirmed(double_confirm) then
+            world:pub {"ui_message", "show_unconfirmed_double_confirm", true}
+            goto continue
+        end
+        if not double_confirm then
+            world:pub {"ui_message", "unconfirmed_double_confirm_continuation"}
+            goto continue
+        end
+
         construct_editor:construct_begin()
         gameplay_core.world_update = false
         camera.set("camera_construct.prefab")
+        ::continue::
     end
 
     for _ in ui_construct_rotate_mb:unpack() do
@@ -76,24 +86,36 @@ function construct_sys:data_changed()
 
     for _, _, _, double_confirm in ui_construct_cancel_mb:unpack() do
         if construct_editor:check_unconfirmed(double_confirm) then
-            world:pub {"ui_message", "show_unconfirmed_double_confirm", "cancel", true}
+            world:pub {"ui_message", "show_unconfirmed_double_confirm", true}
+            goto continue
+        end
+        if not double_confirm then
+            world:pub {"ui_message", "unconfirmed_double_confirm_continuation"}
             goto continue
         end
 
-        if construct_editor:cancel() then
-            world:pub {"ui_message", "show_unconfirmed_double_confirm", "cancel", false}
-            teardown = false
-            gameplay_core.world_update = true
-            camera.set("camera_default.prefab")
-        end
+        construct_editor:cancel()
+        teardown = false
+        gameplay_core.world_update = true
+        camera.set("camera_default.prefab")
         ::continue::
     end
 
-    for _ in ui_construct_dismantle_begin:unpack() do
+    for _, _, _, double_confirm in ui_construct_dismantle_begin:unpack() do
+        if construct_editor:check_unconfirmed(double_confirm) then
+            world:pub {"ui_message", "show_unconfirmed_double_confirm", true}
+            goto continue
+        end
+        if not double_confirm then
+            world:pub {"ui_message", "unconfirmed_double_confirm_continuation"}
+            goto continue
+        end
+
         construct_editor:teardown_begin()
         teardown = true
         gameplay_core.world_update = false
         camera.set("camera_construct.prefab")
+        ::continue::
     end
 
     for _ in ui_construct_dismantle_complete:unpack() do
