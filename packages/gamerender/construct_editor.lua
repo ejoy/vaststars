@@ -380,6 +380,8 @@ function M:complete()
     if pickup_object then
         vsobject_manager:remove(pickup_object.id)
         pickup_object = nil
+
+        revert_changes({"TEMPORARY"})
     end
 
     local needbuild = false

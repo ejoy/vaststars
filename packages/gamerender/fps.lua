@@ -19,11 +19,11 @@ local update_fps do
         local current = gettime()
         frames:push(current)
 
-        if current - last_print_time > maxtimecachedframe then
-            while frames:size() > 0 and current - frames:first() > maxtimecachedframe do
-                frames:pop()
-            end
+        while frames:size() > 0 and current - frames:get_head() > maxtimecachedframe do
+            frames:pop()
+        end
 
+        if current - last_print_time > maxtimecachedframe then
             local printtext = ("FPS: %.03f / %d"):format(frames:size(), maxfps)
             world:pub {"ui_message", "print_fps", printtext}
             last_print_time = current
