@@ -74,11 +74,19 @@ function construct_sys:data_changed()
         camera.set("camera_default.prefab")
     end
 
-    for _ in ui_construct_cancel_mb:unpack() do
-        construct_editor:cancel()
-        teardown = false
-        gameplay_core.world_update = true
-        camera.set("camera_default.prefab")
+    for _, _, _, double_confirm in ui_construct_cancel_mb:unpack() do
+        if construct_editor:check_unconfirmed(double_confirm) then
+            world:pub {"ui_message", "show_unconfirmed_double_confirm", "cancel", true}
+            goto continue
+        end
+
+        if construct_editor:cancel() then
+            world:pub {"ui_message", "show_unconfirmed_double_confirm", "cancel", false}
+            teardown = false
+            gameplay_core.world_update = true
+            camera.set("camera_default.prefab")
+        end
+        ::continue::
     end
 
     for _ in ui_construct_dismantle_begin:unpack() do

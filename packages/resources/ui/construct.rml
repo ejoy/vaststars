@@ -171,6 +171,8 @@
                 cur_selected_fluid = {},  -- 当前选中的流体盒中的流体
                 show_set_fluidbox = false,
                 show_construct_complete = false,
+                show_unconfirmed_double_confirm = false,
+                unconfirmed_double_confirm_event = "",
 
                 debug_button = {},
                 config_construct = require "config.construct",
@@ -198,9 +200,12 @@
                 start.cur_edit_mode = ''
                 ui_sys.pub("ui", "construct", "dismantle_complete")
             end
-            function start.clickReturn(event)
+            function start.clickCancel(event)
+                ui_sys.pub("ui", "construct", "cancel", false)
+            end
+            function start.clickUnconfirmedDoubleConfirm(event)
                 start.cur_edit_mode = ''
-                ui_sys.pub("ui", "construct", "cancel")
+                ui_sys.pub("ui", "construct", start.unconfirmed_double_confirm_event, true)
             end
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
@@ -250,6 +255,14 @@
                 ["print_fps"] = function(text)
                     start.fps_text = text
                 end,
+                ["show_unconfirmed_double_confirm"] = function(event, visible)
+                    start.show_unconfirmed_double_confirm = visible
+                    if visible then
+                        start.unconfirmed_double_confirm_event = event
+                    else
+                        start.unconfirmed_double_confirm_event = ""
+                    end
+                end,
             })
 
             for i = 1, 8 do
@@ -259,6 +272,16 @@
     </head>
     <body class = "nopointer">
         <div class = "nopointer" data-model="start">
+            <div data-if = "show_unconfirmed_double_confirm" style = "border: 1px; position: absolute; left: 0vmin; top: 0vmin; width: 100vmax; height: 100vmin; z-index: 999; justify-content: center; align-items:center;">
+                <div style='background-color: rgb(92, 184, 92); flex-direction: column; align-items: center; justify-content: flex-start; font-size: 250%;'>
+                    <div>存在未确认的建筑, 是否继续?</div>
+                    <div style = "justify-content: space-between; flex-wrap: nowrap;">
+                        <div style = "border: 1vmin;" data-event-click = "clickUnconfirmedDoubleConfirm()">确认</div>
+                        <div style = "border: 1vmin;" data-event-click = "show_unconfirmed_double_confirm = false">取消</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- debug 按钮 -->
             <div style = "position: absolute; left: 0vmin; top: 0vmin; z-index: 999;" data-for="debug_button" >
                 <div class = "test-button" data-event-click="clickDebug(it.id)" data-style-left="it.left" style = "position: absolute; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"></div>
@@ -297,7 +320,7 @@
             <div data-if = "false" style = 'position: absolute; left: 0vmin; top: 5vmin; background-image:"construct/camera_reset.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;' data-event-click = "CameraOpt('lookdown')" />
 
             <!-- 施工返回按钮 -->
-            <div data-if = "cur_edit_mode != ''" data-event-click="clickReturn()" style='position: absolute; left: 0.67vmin; top: 0.67vmin; background-image:"construct/return.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;' />
+            <div data-if = "cur_edit_mode != ''" data-event-click="clickCancel()" style='position: absolute; left: 0.67vmin; top: 0.67vmin; background-image:"construct/return.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;' />
 
             <!-- 建造 -->
             <button data-if = "cur_edit_mode == ''" data-event-click="clickConstructBegin()" style='position: absolute; left: 158.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>

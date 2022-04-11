@@ -55,6 +55,10 @@ local function remove(self, key)
 	self.kv[key] = nil
 end
 
+local function empty(self)
+	return not next(self.kv)
+end
+
 local function create(key_field, ...)
 	local m = {}
 	m.key_field = key_field
@@ -67,6 +71,7 @@ local function create(key_field, ...)
     m.all = all
 	m.select = select
 	m.remove = remove
+	m.empty = empty
 	return m
 end
 return create

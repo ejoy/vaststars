@@ -412,6 +412,16 @@ function M:cancel()
         vsobject_manager:remove(pickup_object.id)
         pickup_object = nil
     end
+    return true
+end
+
+function M:check_unconfirmed(double_confirm)
+    if not objects:empty("CONFIRM") then
+        if not double_confirm then
+            return true
+        end
+    end
+    return false
 end
 
 function M:reset()
