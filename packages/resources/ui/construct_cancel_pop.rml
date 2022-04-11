@@ -72,9 +72,7 @@
     <body>
         <div class="item-container-region" style="align-items: center;" data-model="start">
             <div class="panel" style="width:40%; height:40%; align-items: center;justify-content: flex-start;">
-                <div class="header">
-                    <div class="title-text">提示</div>
-                </div>
+                <div class = "menu-title-block">提示</div>
                 <div class ="change-desc-block">
                     <div style="font-size: 4.33vmin; margin:auto 0.6em;">该操作将取消所有待建建筑</div>
                 </div>
