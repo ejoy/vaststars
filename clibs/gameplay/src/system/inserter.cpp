@@ -88,8 +88,10 @@ pickup(world& w, container& input, container& output, uint16_t max) {
 }
 
 static void
-wait(int index) {
-    waiting.push_back(index);
+wait(inserter& inserter, int index) {
+    if (inserter.input_container != uint16_t(-1) && inserter.output_container != uint16_t(-1)) {
+        waiting.push_back(index);
+    }
 }
 
 static bool
@@ -152,11 +154,8 @@ lbuild(lua_State *L) {
 
     for (auto& e : w.select<inserter>()) {
         inserter& i = e.get<inserter>();
-        if (i.process == STATUS_DONE
-            && i.input_container != uint16_t(-1)
-            && i.output_container != uint16_t(-1)
-            ) {
-            wait(e.index);
+        if (i.process == STATUS_DONE) {
+            wait(i, e.index);
         }
     }
     return 0;
@@ -180,7 +179,7 @@ lupdate(lua_State *L) {
                 i.process--;
                 if (i.process == STATUS_DONE) {
                     i.low_power = 0;
-                    wait(e.index);
+                    wait(i, e.index);
                 }
                 else {
                     if (i.low_power > 0) i.low_power--;

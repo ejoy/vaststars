@@ -19,25 +19,41 @@ local ui_construct_dismantle_begin = world:sub {"ui", "construct", "dismantle_be
 local ui_construct_dismantle_complete = world:sub {"ui", "construct", "dismantle_complete"}
 local touch_mb = world:sub {"touch"}
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
+local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 
 local teardown = false
+local touch_id
 
 function construct_sys:camera_usage()
     for _, _, _, prototype_name in ui_construct_entity_mb:unpack() do
         construct_editor:new_pickup_object(prototype_name)
     end
 
-    for _, state in touch_mb:unpack() do
-        if state == "END" or state == "CANCEL" then
-            construct_editor:adjust_pickup_object()
+    for _, state, datas in touch_mb:unpack() do
+        for _, data in pairs(datas) do
+            if state == "START" then
+                if not touch_id then
+                    touch_id = data.id
+                end
+            elseif state == "END" or state == "CANCEL" then
+                if touch_id == data.id then
+                    construct_editor:adjust_pickup_object()
+                    touch_id = nil
+                end
+            end
         end
     end
 end
 
 function construct_sys:data_changed()
+    for _, delta in dragdrop_camera_mb:unpack() do
+        construct_editor:move_pickup_object(delta)
+    end
+
     for _ in ui_construct_begin_mb:unpack() do
+        construct_editor:construct_begin()
         gameplay_core.world_update = false
-        camera.update("camera_construct.prefab")
+        camera.set("camera_construct.prefab")
     end
 
     for _ in ui_construct_rotate_mb:unpack() do
@@ -55,28 +71,28 @@ function construct_sys:data_changed()
     for _ in ui_construct_complete_mb:unpack() do
         construct_editor:complete()
         gameplay_core.world_update = true
-        camera.update("camera_default.prefab")
+        camera.set("camera_default.prefab")
     end
 
     for _ in ui_construct_cancel_mb:unpack() do
         construct_editor:cancel()
         teardown = false
         gameplay_core.world_update = true
-        camera.update("camera_default.prefab")
+        camera.set("camera_default.prefab")
     end
 
     for _ in ui_construct_dismantle_begin:unpack() do
         construct_editor:teardown_begin()
         teardown = true
         gameplay_core.world_update = false
-        camera.update("camera_construct.prefab")
+        camera.set("camera_construct.prefab")
     end
 
     for _ in ui_construct_dismantle_complete:unpack() do
         construct_editor:teardown_complete()
         teardown = false
         gameplay_core.world_update = true
-        camera.update("camera_default.prefab")
+        camera.set("camera_default.prefab")
     end
 end
 

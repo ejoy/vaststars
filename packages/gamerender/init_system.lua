@@ -31,6 +31,7 @@ local function get_object(x, y)
 end
 
 function m:update_world()
+    camera.update()
     gameplay_core.update(get_object)
     fps()
 end

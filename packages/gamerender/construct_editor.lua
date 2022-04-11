@@ -27,6 +27,8 @@ local DISMANTLE_YELLOW_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {5
 
 local CONSTRUCT_BLOCK_RED_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {20000, 0.0, 0.0, 1.0}))
 local CONSTRUCT_BLOCK_GREEN_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {0.0, 20000, 0.0, 1.0}))
+local CONSTRUCT_BLOCK_WHITE_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {20000, 20000, 20000, 1.0}))
+
 local DEFAULT_DIR <const> = 'N'
 
 local M = {}
@@ -211,8 +213,10 @@ local function revert_changes(revert_cache_names)
                 vsobject:set_dir(old_object.dir)
             else
                 -- 通常是删除已"确定建造"的建筑
-                local vsobject = assert(vsobject_manager:get(object.id))
-                vsobject:remove()
+                local vsobject = vsobject_manager:get(object.id) --TODO 找不到 object
+                if vsobject then
+                    vsobject:remove()
+                end
             end
         end
     end
@@ -258,6 +262,10 @@ local function new_pickup_object(prototype_name, dir)
 end
 
 ---
+function M:construct_begin()
+    revert_changes({"TEMPORARY"})
+end
+
 function M:new_pickup_object(prototype_name)
     if pickup_object then
         if pickup_object.prototype_name == prototype_name then
@@ -282,7 +290,7 @@ function M:confirm()
     end
 
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
-    vsobject:update {state = "translucent", color = CONSTRUCT_WHITE_BASIC_COLOR, show_block = false}
+    vsobject:update {state = "translucent", color = CONSTRUCT_WHITE_BASIC_COLOR, block_color = CONSTRUCT_BLOCK_WHITE_BASIC_COLOR}
 
     objects:commit("TEMPORARY", "CONFIRM")
     tile_objects:commit("TEMPORARY", "CONFIRM")
@@ -324,6 +332,20 @@ function M:adjust_pickup_object()
     vsobject:update {color = color, block_color = block_color}
 end
 
+function M:move_pickup_object(delta)
+    if not pickup_object then
+        return
+    end
+
+    --
+    local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
+    local coord = terrain.adjust_position(camera.get_central_position(), typeobject.area)
+    pickup_object.x, pickup_object.y = coord[1], coord[2]
+    local vsobject = assert(vsobject_manager:get(pickup_object.id))
+
+    vsobject:set_position(math3d.add(vsobject:get_position(), delta))
+end
+
 function M:rotate_pickup_object()
     if not pickup_object then
         return
@@ -358,6 +380,8 @@ function M:complete()
     if pickup_object then
         vsobject_manager:remove(pickup_object.id)
         pickup_object = nil
+
+        revert_changes({"TEMPORARY"})
     end
 
     local needbuild = false
@@ -371,7 +395,7 @@ function M:complete()
 
     for _, object in pairs(t) do
         local vsobject = assert(vsobject_manager:get(object.id))
-        vsobject:update {state = "opaque"}
+        vsobject:update {state = "opaque", show_block = false}
         gameplay_core.create_entity(object)
         needbuild = true
     end

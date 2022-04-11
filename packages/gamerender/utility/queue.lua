@@ -16,13 +16,23 @@ local function pop(self)
 	end
 end
 
-local function first(self)
+local function get_head(self)
 	if self.head == self.tail then
 		self.head = 1
 		self.tail = 1
 		return nil
 	else
 		return self[self.head]
+	end
+end
+
+local function get_tail(self)
+	if self.head == self.tail then
+		self.head = 1
+		self.tail = 1
+		return nil
+	else
+		return self[self.tail]
 	end
 end
 
@@ -39,7 +49,8 @@ local function create()
 	q.push = push
 	q.pop = pop
 	q.size = size
-	q.first = first
+	q.get_head = get_head
+	q.get_tail = get_tail
 	return q
 end
 return create

@@ -26,14 +26,17 @@ local function update_world(world, get_object_func)
             vsobject:detach()
         end
 
-        local animation_name
-        if inserter.status == STATUS_DONE then
-            animation_name = "DownToUp"
-        else
-            animation_name = "UpToDown"
+        if inserter.process > 0 then
+            local animation_name
+            if inserter.status == STATUS_DONE then
+                animation_name = "DownToUp"
+            else
+                animation_name = "UpToDown"
+            end
+            local typeobject = assert(gameplay.query(e.entity.prototype))
+            vsobject:animation_update(animation_name, get_percent(inserter.process, assert(typeobject.speed)))
         end
-        local typeobject = assert(gameplay.query(e.entity.prototype))
-        vsobject:animation_update(animation_name, get_percent(inserter.process, assert(typeobject.speed)))
+
     end
     return t
 end
