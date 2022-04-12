@@ -38,11 +38,11 @@ local function on_block_message(e, msg, ...)
     end
 end
 
-local function create_block(color, area, position)
+local function create_block(color, area, position, rotation)
     assert(color)
     local w, h = area >> 8, area & 0xFF
     local eid = ientity.create_prim_plane_entity(
-		{t = position, s = {10.0 * w, 1.0, 10.0 * h}},
+		{r = rotation, s = {10.0 * w, 1.0, 10.0 * h}, t = position},
 		"/pkg/vaststars.resources/materials/singlecolor.material",
 		color,
 		("plane_%d"):format(gen_id())
@@ -184,7 +184,7 @@ return function (init)
         prototype_name = init.prototype_name,
         state = init.state,
         color = init.color,
-        block_entity_object = create_block(init.block_color, typeobject.area, position),
+        block_entity_object = create_block(init.block_color, typeobject.area, position, rotators[init.dir]),
         game_object = game_object,
         animation = {},
         attach_slot_name = "",

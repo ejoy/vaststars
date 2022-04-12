@@ -8,7 +8,7 @@ local entity_object_remove_mb = world:sub {"entity_object_remove"}
 local entity_object_sys = ecs.system "entity_object_system"
 local ientity_object = ecs.interface "ientity_object"
 
-function entity_object_sys:data_changed()
+function entity_object_sys:entity_ready()
     for msg in entity_object_message_mb:each() do
         local f = msg[2]
         local e = world:entity(msg[3])

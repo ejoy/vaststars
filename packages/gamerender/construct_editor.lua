@@ -224,9 +224,9 @@ end
 
 local function new_pickup_object(prototype_name, dir)
     local typeobject = gameplay.queryByName("entity", prototype_name)
-    local coord = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, dir))
+    local coord, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, dir))
     local color, block_color, need_set_tile_object
-    if not check_construct_detector(prototype_name, coord[1], coord[2], DEFAULT_DIR) then
+    if not check_construct_detector(prototype_name, coord[1], coord[2], dir) then
         color = CONSTRUCT_RED_BASIC_COLOR
         block_color = CONSTRUCT_BLOCK_RED_BASIC_COLOR
         need_set_tile_object = false
@@ -258,6 +258,8 @@ local function new_pickup_object(prototype_name, dir)
     if need_set_tile_object then
         set_tile_object(pickup_object)
     end
+    vsobject:set_position(position)
+
     return pickup_object
 end
 
