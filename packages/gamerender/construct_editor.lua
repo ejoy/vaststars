@@ -222,8 +222,7 @@ local function revert_changes(revert_cache_names)
     end
 end
 
-local function new_pickup_object(prototype_name, dir, position)
-    local coord = terrain.get_coord_by_position(position)
+local function new_pickup_object(prototype_name, dir, coord, position)
     local color, block_color, need_set_tile_object
     if not check_construct_detector(prototype_name, coord[1], coord[2], dir) then
         color = CONSTRUCT_RED_BASIC_COLOR
@@ -277,8 +276,8 @@ function M:new_pickup_object(prototype_name)
     end
 
     local typeobject = gameplay.queryByName("entity", prototype_name)
-    local _, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, DEFAULT_DIR))
-    pickup_object = new_pickup_object(prototype_name, DEFAULT_DIR, position)
+    local coord, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, DEFAULT_DIR))
+    pickup_object = new_pickup_object(prototype_name, DEFAULT_DIR, coord, position)
 end
 
 function M:confirm()
@@ -297,7 +296,7 @@ function M:confirm()
     objects:commit("TEMPORARY", "CONFIRM")
     tile_objects:commit("TEMPORARY", "CONFIRM")
 
-    pickup_object = new_pickup_object(pickup_object.prototype_name, pickup_object.dir, vsobject:get_position())
+    pickup_object = new_pickup_object(pickup_object.prototype_name, pickup_object.dir, {pickup_object.x, pickup_object.y}, vsobject:get_position())
 
     -- 显示"开始施工"
     world:pub {"ui_message", "show_construct_complete", true}
@@ -313,6 +312,9 @@ function M:adjust_pickup_object()
     --
     local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
     local coord, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, pickup_object.dir))
+    if not coord then
+        return
+    end
     pickup_object.x, pickup_object.y = coord[1], coord[2]
 
     local color, block_color
@@ -345,6 +347,9 @@ function M:move_pickup_object(delta)
     local position = math3d.add(vsobject:get_position(), delta)
 
     local coord = terrain.adjust_position(math3d.tovalue(position), rotate_area(typeobject.area, pickup_object.dir))
+    if not coord then
+        return
+    end
     pickup_object.x, pickup_object.y = coord[1], coord[2]
 
     vsobject:set_position(position)
@@ -357,11 +362,17 @@ function M:rotate_pickup_object()
 
     revert_changes({"TEMPORARY"})
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
-
-    pickup_object.dir = rotate_dir_times(pickup_object.dir, -1)
+    local dir = rotate_dir_times(pickup_object.dir, -1)
 
     local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
-    vsobject:set_position(terrain.get_adjust_position(pickup_object.x, pickup_object.y, vsobject:get_position(), rotate_area(typeobject.area, pickup_object.dir)))
+    local coord, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, dir))
+    if not position then
+        return
+    end
+
+    pickup_object.x, pickup_object.y = coord[1], coord[2]
+    pickup_object.dir = dir
+    vsobject:set_position(position)
 
     --
     local color, block_color
