@@ -125,11 +125,10 @@ function M.get_begin_position_by_coord(x, y)
     return {origin[1] + (x * unit), 0, origin[2] - (y * unit)}
 end
 
-function M.get_position_by_coord(x, y, area)
+function M.get_position_by_coord(x, y, width, height)
     local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
     local unit = e.shape_terrain.unit
 
-    local width, height = unpackCoord(area)
     local begining = M.get_begin_position_by_coord(x, y)
     if not begining then
         return

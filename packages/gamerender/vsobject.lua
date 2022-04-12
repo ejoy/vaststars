@@ -12,6 +12,8 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ientity = ecs.import.interface "ant.render|ientity"
 local imaterial	= ecs.import.interface "ant.asset|imaterial"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
+local general = require "gameplay.utility.general"
+local rotate_area = general.rotate_area
 
 local rotators <const> = {
     N = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(0)}),
@@ -28,14 +30,15 @@ local gen_id do
     end
 end
 
-local function on_block_message(e, msg, ...)
-    if msg == "update_color" then
-        imaterial.set_property(world:entity(e.id), "u_color", ...)
-    elseif msg == "set_position" then
-        iom.set_position(e, ...)
-    elseif msg == "set_rotation" then
-        iom.set_rotation(e, ...)
-    end
+local block_events = {}
+block_events.update_color = function(e, ...)
+    imaterial.set_property(world:entity(e.id), "u_color", ...)
+end
+block_events.set_position = function(e, ...)
+    iom.set_position(e, ...)
+end
+block_events.set_rotation = function(e, ...)
+    iom.set_rotation(e, ...)
 end
 
 local function create_block(color, area, position, rotation)
@@ -48,7 +51,7 @@ local function create_block(color, area, position, rotation)
 		("plane_%d"):format(gen_id())
     )
 
-    return ientity_object.create(eid, {on_message = on_block_message})
+    return ientity_object.create(eid, block_events)
 end
 
 local function set_srt(e, srt)
@@ -168,7 +171,7 @@ end
 -- }
 return function (init)
     local typeobject = gameplay.queryByName("entity", init.prototype_name)
-    local position = terrain.get_position_by_coord(init.x, init.y, typeobject.area)
+    local position = terrain.get_position_by_coord(init.x, init.y, rotate_area(typeobject.area, init.dir))
     --TODO 越界?
     if not position then
         return
