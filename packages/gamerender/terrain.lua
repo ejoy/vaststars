@@ -138,7 +138,7 @@ function M.get_position_by_coord(x, y, area)
     return {begining[1] + (width * unit // 2), begining[2], begining[3] - (height * unit // 2)} --TODO 越界判断
 end
 
-function M.adjust_position(position, area)
+function M.adjust_position(position, width, height)
     local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
     local unit = e.shape_terrain.unit
     local coord = M.get_coord_by_position(position)
@@ -146,7 +146,6 @@ function M.adjust_position(position, area)
         return
     end
 
-    local width, height = unpackCoord(area)
     coord[1] = coord[1] + UP_LEFT[1] * (width // 2)
     coord[2] = coord[2] + UP_LEFT[2] * (height // 2)
 
@@ -156,6 +155,18 @@ function M.adjust_position(position, area)
     end
 
     return coord, {begining[1] + (width * unit // 2), position[2], begining[3] - (height * unit // 2)}
+end
+
+--TODO bad taste
+function M.get_adjust_position(x, y, position, new_width, new_height)
+    local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
+    local unit = e.shape_terrain.unit
+    local begining = M.get_begin_position_by_coord(x, y)
+    if not begining then
+        return
+    end
+
+    return {begining[1] + (new_width * unit // 2), position[2], begining[3] - (new_height * unit // 2)}
 end
 
 return M

@@ -209,7 +209,7 @@ local function revert_changes(revert_cache_names)
             local old_object = objects:get(cache_names, id)
             if old_object then
                 local vsobject = assert(vsobject_manager:get(object.id))
-                vsobject:update {state = "opaque", prototype_name = old_object.prototype_name}
+                vsobject:update {state = "translucent", prototype_name = old_object.prototype_name}
                 vsobject:set_dir(old_object.dir)
             else
                 -- 通常是删除已"确定建造"的建筑
@@ -224,7 +224,7 @@ end
 
 local function new_pickup_object(prototype_name, dir)
     local typeobject = gameplay.queryByName("entity", prototype_name)
-    local coord = terrain.adjust_position(camera.get_central_position(), typeobject.area)
+    local coord = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, dir))
     local color, block_color, need_set_tile_object
     if not check_construct_detector(prototype_name, coord[1], coord[2], DEFAULT_DIR) then
         color = CONSTRUCT_RED_BASIC_COLOR
@@ -310,7 +310,7 @@ function M:adjust_pickup_object()
 
     --
     local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
-    local coord, position = terrain.adjust_position(camera.get_central_position(), typeobject.area)
+    local coord, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, pickup_object.dir))
     pickup_object.x, pickup_object.y = coord[1], coord[2]
 
     local color, block_color
@@ -339,7 +339,7 @@ function M:move_pickup_object(delta)
 
     --
     local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
-    local coord = terrain.adjust_position(camera.get_central_position(), typeobject.area)
+    local coord = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, pickup_object.dir))
     pickup_object.x, pickup_object.y = coord[1], coord[2]
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
 
@@ -352,9 +352,12 @@ function M:rotate_pickup_object()
     end
 
     revert_changes({"TEMPORARY"})
+    local vsobject = assert(vsobject_manager:get(pickup_object.id))
 
-    --
     pickup_object.dir = rotate_dir_times(pickup_object.dir, -1)
+
+    local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
+    vsobject:set_position(terrain.get_adjust_position(pickup_object.x, pickup_object.y, vsobject:get_position(), rotate_area(typeobject.area, pickup_object.dir)))
 
     --
     local color, block_color
@@ -371,7 +374,6 @@ function M:rotate_pickup_object()
         refresh_pipe_connection(pickup_object)
     end
 
-    local vsobject = assert(vsobject_manager:get(pickup_object.id))
     vsobject:set_dir(pickup_object.dir)
     vsobject:update {color = color, block_color = block_color}
 end
