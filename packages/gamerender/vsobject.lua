@@ -15,6 +15,19 @@ local imaterial	= ecs.import.interface "ant.asset|imaterial"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local general = require "gameplay.utility.general"
 local rotate_area = general.rotate_area
+local imesh = ecs.import.interface "ant.asset|imesh"
+local ifs = ecs.import.interface "ant.scene|ifilter_state"
+local block_edge_size <const> = 4
+local tile_size <const> = 10.0
+
+local plane_vb <const> = {
+	-0.5, 0, 0.5, 0, 1, 0,	--left top
+	0.5,  0, 0.5, 0, 1, 0,	--right top
+	-0.5, 0,-0.5, 0, 1, 0,	--left bottom
+	-0.5, 0,-0.5, 0, 1, 0,
+	0.5,  0, 0.5, 0, 1, 0,
+	0.5,  0,-0.5, 0, 1, 0,	--right bottom
+}
 
 local rotators <const> = {
     N = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(0)}),
@@ -33,7 +46,7 @@ end
 
 local block_events = {}
 block_events.update_color = function(e, ...)
-    imaterial.set_property(world:entity(e.id), "u_basecolor_factor", ...)
+    imaterial.set_property(world:entity(e.id), "u_color", ...)
 end
 block_events.set_position = function(e, ...)
     iom.set_position(e, ...)
@@ -41,17 +54,6 @@ end
 block_events.set_rotation = function(e, ...)
     iom.set_rotation(e, ...)
 end
-
-local imesh = ecs.import.interface "ant.asset|imesh"
-local ifs = ecs.import.interface "ant.scene|ifilter_state"
-local plane_vb<const> = {
-	-0.5, 0, 0.5, 0, 1, 0,	--left top
-	0.5,  0, 0.5, 0, 1, 0,	--right top
-	-0.5, 0,-0.5, 0, 1, 0,	--left bottom
-	-0.5, 0,-0.5, 0, 1, 0,
-	0.5,  0, 0.5, 0, 1, 0,
-	0.5,  0,-0.5, 0, 1, 0,	--right bottom
-}
 
 local function create_block(color, area, position, rotation)
     assert(color)
@@ -62,15 +64,15 @@ local function create_block(color, area, position, rotation)
 			"ant.general|name",
 		},
 		data = {
-			scene 		= { srt = {r = rotation, s = {10.0 * width, 1.0, 10.0 * height}, t = position}},
-			material 	= "/pkg/vaststars.resources/materials/translucent.material",
+			scene 		= { srt = {r = rotation, s = {tile_size * width + block_edge_size, 1.0, tile_size * height + block_edge_size}, t = position}},
+			material 	= "/pkg/vaststars.resources/materials/singlecolor.material",
 			filter_state= "main_view",
 			name 		= ("plane_%d"):format(gen_id()),
 			simplemesh 	= imesh.init_mesh(ientity.create_mesh({"p3|n3", plane_vb}, nil, math3d.ref(math3d.aabb({-0.5, 0, -0.5}, {0.5, 0, 0.5}))), true),
 			on_ready = function (e)
 				w:sync("render_object:in", e)
 				ifs.set_state(e, "main_view", true)
-				imaterial.set_property(e, "u_basecolor_factor", color)
+				imaterial.set_property(e, "u_color", color)
 				w:sync("render_object_update:out", e)
 			end
 		},
@@ -186,7 +188,7 @@ local function animation_update(self, animation_name, process)
     end
 end
 
-local CONSTRUCT_BLOCK_GREEN_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {0, 20.0, 0, 0.5}))
+local CONSTRUCT_BLOCK_GREEN_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {0.0, 20000, 0.0, 1.0}))
 
 -- init = {
 --     prototype_name = prototype_name,
