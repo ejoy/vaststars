@@ -53,7 +53,7 @@ events["attach_slot"] = function(prefab, binding, slot_name, prefab_file_name)
 
     local game_object = assert(igame_object.create(prefab_file_name))
     binding.slot_attach[slot_name] = game_object
-    ecs.method.set_parent(game_object.root, assert(get_slot_eid(prefab, slot_name)))
+    ecs.method.set_parent(game_object.root, assert(get_slot_eid(prefab, slot_name), ("can not found slot `%s`"):format(slot_name)))
 end
 
 events["detach_slot"] = function(prefab, binding)
