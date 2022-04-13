@@ -24,9 +24,6 @@
             }
 
             ui_sys.addEventListener(start, {}, {
-                ["leave"] = function()
-                    ui_sys.close("detail_panel.rml")
-                end,
                 ["INIT"] = function(x, y)
                     ui_sys.pub("ui", "GET_DATA", "entity_properties", x, y)
                 end,

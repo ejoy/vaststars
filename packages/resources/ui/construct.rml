@@ -172,7 +172,6 @@
                 cur_selected_fluid = {},  -- 当前选中的流体盒中的流体
                 show_set_fluidbox = false,
                 show_construct_complete = false,
-                show_unconfirmed_double_confirm = false,
 
                 debug_button = {},
                 config_construct = require "config.construct",
@@ -214,15 +213,6 @@
                     ui_sys.pub("ui", "construct", "cancel", true)
                 end
             end
-            function start.clickUnconfirmedDoubleConfirm(event, confirm)
-                start.show_unconfirmed_double_confirm = false
-                if confirm then
-                    if unconfirmed_double_confirm_continuation then
-                        unconfirmed_double_confirm_continuation()
-                        unconfirmed_double_confirm_continuation = nil
-                    end
-                end
-            end
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
             end
@@ -253,13 +243,9 @@
                 ["INIT"] = function(fluid_category)
                     start.fluid_category = fluid_category
                 end,
-                ["leave"] = function()
-                    start.cur_construct_menu = ''
-                    start.cur_fluid_category = ''
-                    start.show_set_fluidbox = false
-                end,
                 ["show_set_fluidbox"] = function(visible, fluid)
                     start.show_set_fluidbox = visible
+                    start.cur_fluid_category = ""
                     start.cur_selected_fluid = fluid or {}
                 end,
                 ["show_construct_complete"] = function(visible)
@@ -271,8 +257,8 @@
                 ["print_fps"] = function(text)
                     start.fps_text = text
                 end,
-                ["show_unconfirmed_double_confirm"] = function(visible)
-                    start.show_unconfirmed_double_confirm = visible
+                ["show_unconfirmed_double_confirm"] = function()
+                    ui_sys.open("construct_cancel_pop.rml")
                 end,
                 ["unconfirmed_double_confirm_continuation"] = function()
                     if unconfirmed_double_confirm_continuation then
@@ -289,16 +275,6 @@
     </head>
     <body class = "nopointer">
         <div class = "nopointer" data-model="start">
-            <div data-if = "show_unconfirmed_double_confirm" style = "border: 1px; position: absolute; left: 0vmin; top: 0vmin; width: 100vmax; height: 100vmin; z-index: 999; justify-content: center; align-items:center;">
-                <div style='background-color: rgb(92, 184, 92); flex-direction: column; align-items: center; justify-content: flex-start; font-size: 250%;'>
-                    <div>存在未确认的建筑, 是否继续?</div>
-                    <div style = "justify-content: space-between; flex-wrap: nowrap;">
-                        <div style = "border: 1vmin;" data-event-click = "clickUnconfirmedDoubleConfirm(true)">确认</div>
-                        <div style = "border: 1vmin;" data-event-click = "clickUnconfirmedDoubleConfirm(false)">取消</div>
-                    </div>
-                </div>
-            </div>
-
             <!-- debug 按钮 -->
             <div style = "position: absolute; left: 0vmin; top: 0vmin; z-index: 999;" data-for="debug_button" >
                 <div class = "test-button" data-event-click="clickDebug(it.id)" data-style-left="it.left" style = "position: absolute; top: 0vmin; width: 4.00vmin; height: 4.00vmin;"></div>

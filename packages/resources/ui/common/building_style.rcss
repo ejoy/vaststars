@@ -403,3 +403,11 @@ workbutton:hover {
 	background-color: rgb(40, 40, 40);
 	border: 0.22vmin rgb(89, 73, 39);
 }
+.menu-title-block { 
+	background-color: rgb(203, 118, 24);
+	text-align: center;
+	width: 100%; 
+	height: 20%;
+	font-size: 4.80vmin;
+	-webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
+}

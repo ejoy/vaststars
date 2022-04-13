@@ -74,11 +74,11 @@
 
             function start.clickConfirm(event)
                 ui_sys.pub("ui_message", "set_fluidbox_confirm", start.NewFluidName)
-                ui_sys.close("pipe_build_pop.rml")
+                ui_sys.close()
             end
 
             function start.clickCancel(event)
-                ui_sys.close("pipe_build_pop.rml")
+                ui_sys.close()
             end
 
             ui_sys.addEventListener(start, {}, {

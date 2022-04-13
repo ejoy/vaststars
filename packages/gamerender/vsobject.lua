@@ -32,7 +32,7 @@ end
 
 local block_events = {}
 block_events.update_color = function(e, ...)
-    imaterial.set_property(world:entity(e.id), "u_color", ...)
+    imaterial.set_property(world:entity(e.id), "u_basecolor_factor", ...)
 end
 block_events.set_position = function(e, ...)
     iom.set_position(e, ...)
@@ -46,7 +46,7 @@ local function create_block(color, area, position, rotation)
     local w, h = area >> 8, area & 0xFF
     local eid = ientity.create_prim_plane_entity(
 		{r = rotation, s = {10.0 * w, 1.0, 10.0 * h}, t = position},
-		"/pkg/vaststars.resources/materials/singlecolor.material",
+		"/pkg/vaststars.resources/materials/translucent.material",
 		color,
 		("plane_%d"):format(gen_id())
     )
@@ -161,6 +161,8 @@ local function animation_update(self, animation_name, process)
     end
 end
 
+local CONSTRUCT_BLOCK_GREEN_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {0, 20.0, 0, 0.5}))
+
 -- init = {
 --     prototype_name = prototype_name,
 --     state = "opaque"/"translucent",
@@ -182,12 +184,15 @@ return function (init)
     iom.set_position(world:entity(game_object.root), position)
     iom.set_rotation(world:entity(game_object.root), rotators[init.dir])
 
+    local block_entity_object = create_block(init.block_color, typeobject.area, position, rotators[init.dir])
+    block_entity_object:send("update_color", CONSTRUCT_BLOCK_GREEN_BASIC_COLOR)
+
     local vsobject = {
         id = vsobject_id,
         prototype_name = init.prototype_name,
         state = init.state,
         color = init.color,
-        block_entity_object = create_block(init.block_color, typeobject.area, position, rotators[init.dir]),
+        block_entity_object = block_entity_object,
         game_object = game_object,
         animation = {},
         attach_slot_name = "",

@@ -30,7 +30,7 @@ function start.addRoute(event)
         return
     end
     ui_sys.pub("ui", "route_new", "add_route", start.select_endpoint_ids)
-    ui_sys.close("route_new.rml")
+    ui_sys.close()
 end
 
 function start.clickselectEndpoint(event, select_index)
@@ -65,8 +65,4 @@ end
 window.onload = function()
     ui_sys.pub("ui", "GET_DATA", "route_endpoints")
 end
-ui_sys.addEventListener(start, {"route_endpoints"}, {
-    ["leave"] = function()
-        ui_sys.close("route_new.rml")
-    end,
-})
+
