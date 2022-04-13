@@ -21,11 +21,9 @@ end
 
 
 local function get_coord_by_begin_position(position)
-    local e = w:singleton("shape_terrain", "shape_terrain:in")
     local shape = terrain.shape
     local origin = terrain.origin
-    local shape_terrain = e.shape_terrain
-    local unit = shape_terrain.unit
+    local unit = terrain.unit
 
     if position[1] < shape[1][1] or position[1] > shape[2][1] then
         log.error(("out of bounds (%s) : (%s) - (%s)"):format(table.concat(position, ","), table.concat(shape[1], ","), table.concat(shape[2], ",")))
@@ -41,10 +39,8 @@ local function get_coord_by_begin_position(position)
 end
 
 local function get_begin_position_by_coord(x, y)
-    local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
     local tile_bounds = terrain.tile_bounds
-    local shape_terrain = e.shape_terrain
-    local unit = shape_terrain.unit
+    local unit = terrain.unit
     local origin = terrain.origin
 
     if not M.verify_coord(x, y) then
@@ -111,30 +107,7 @@ function M.create()
     shape[1] = srt.t
     shape[2] = {shape[1][1] + width * unit, shape[1][2], shape[1][3] + height * unit}
 
-    ecs.create_entity {
-        policy = {
-            "ant.scene|scene_object",
-            "ant.general|name",
-        },
-        data = {
-            name = "shape_terrain",
-            scene = {
-                srt = srt,
-            },
-            shape_terrain = {
-                terrain_fields = generate_terrain_fields(width, height),
-                width = width,
-                height = height,
-                section_size = math.max(1, width > 4 and width//4 or width//2),
-                unit = unit,
-                edge = {
-                    color = 0xffe5e5e5,
-                    thickness = 0.08,
-                },
-            },
-        }
-    }
-
+    terrain.unit = unit
     terrain.shape = shape
     terrain.tile_bounds = {
         {0, 0},
@@ -159,8 +132,7 @@ end
 
 -- 返回建筑的中心位置
 function M.get_position_by_coord(x, y, width, height)
-    local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
-    local unit = e.shape_terrain.unit
+    local unit = terrain.unit
 
     local begining = get_begin_position_by_coord(x, y)
     if not begining then
@@ -172,8 +144,7 @@ end
 
 -- position 为建筑的中心位置
 function M.adjust_position(position, width, height)
-    local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
-    local unit = e.shape_terrain.unit
+    local unit = terrain.unit
 
     local begin_position = {position[1] - (width * unit // 2), position[2], position[3] + (height * unit // 2)}
     local coord = get_coord_by_begin_position(begin_position)
