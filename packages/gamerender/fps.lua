@@ -13,18 +13,19 @@ end
 local update_fps do
     local maxfps = 60
     local last_print_time = 0
-    local maxtimecachedframe <const> = 1000
+    local max_frame_cache_time <const> = 10000
+    local print_time <const> = 1000
 
     function update_fps()
         local current = gettime()
         frames:push(current)
 
-        while frames:size() > 0 and current - frames:get_head() > maxtimecachedframe do
+        while frames:size() > 0 and current - frames:get_head() > max_frame_cache_time do
             frames:pop()
         end
 
-        if current - last_print_time > maxtimecachedframe then
-            local printtext = ("FPS: %.03f / %d"):format(frames:size(), maxfps)
+        if current - last_print_time > print_time then
+            local printtext = ("FPS: %.03f / %d"):format(frames:size() / 10, maxfps)
             world:pub {"ui_message", "print_fps", printtext}
             last_print_time = current
         end
