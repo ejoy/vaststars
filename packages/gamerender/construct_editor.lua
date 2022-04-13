@@ -26,9 +26,9 @@ local CONSTRUCT_GREEN_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {0.
 local CONSTRUCT_WHITE_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {50.0, 50.0, 50.0, 0.8}))
 local DISMANTLE_YELLOW_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {50.0, 50.0, 0.0, 0.8}))
 
-local CONSTRUCT_BLOCK_RED_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {20000, 0.0, 0.0, 1.0}))
-local CONSTRUCT_BLOCK_GREEN_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {0.0, 20000, 0.0, 1.0}))
-local CONSTRUCT_BLOCK_WHITE_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {20000, 20000, 20000, 1.0}))
+local CONSTRUCT_BLOCK_RED_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {0, 20.0, 0, 0.5}))
+local CONSTRUCT_BLOCK_GREEN_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {0, 20.0, 0, 0.5}))
+local CONSTRUCT_BLOCK_WHITE_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {0, 20.0, 0, 0.5}))
 
 local DEFAULT_DIR <const> = 'N'
 
