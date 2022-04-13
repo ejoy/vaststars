@@ -17,10 +17,9 @@ function m.open(url, ...)
     window.extern.postMessage(json_encode(ud))
 end
 
-function m.close(url)
+function m.close()
     local ud = {}
     ud.event = "__CLOSE"
-    ud.ud = {url}
     window.extern.postMessage(json_encode(ud))
 end
 

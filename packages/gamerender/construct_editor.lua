@@ -16,6 +16,7 @@ local opposite_dir = general.opposite_dir
 local dir_tonumber = general.dir_tonumber
 local rotate_dir_times = general.rotate_dir_times
 local get_fluidboxes = ecs.require "gameplay.utility.get_fluidboxes"
+local has_fluidboxes = ecs.require "gameplay.utility.has_fluidboxes"
 local vsobject_manager = ecs.require "vsobject_manager"
 local create_cache = require "utility.multiple_cache"
 local gameplay_core = ecs.require "gameplay.core"
@@ -169,21 +170,16 @@ local function refresh_pipe_connection(object)
             local prototype_name, dir = refresh_pipe(dx, dy)
             if prototype_name then
                 local tile_object = assert(tile_objects:get(cache_names, packcoord(dx, dy)))
-                local object = assert(objects:get(cache_names, tile_object.id))
 
                 local vsobject = assert(vsobject_manager:get(tile_object.id))
                 vsobject:update {prototype_name = prototype_name}
                 vsobject:set_dir(dir)
 
-                set_tile_object {
-                    id = object.id,
-                    prototype_name = prototype_name,
-                    dir = dir,
-                    fluid = object.fluid,
-                    x = object.x,
-                    y = object.y,
-                    teardown = false,
-                }
+                local object = clone_object(assert(objects:get(cache_names, tile_object.id)))
+                object.prototype_name = prototype_name
+                object.dir = dir
+
+                set_tile_object(object)
             end
         end
     end
@@ -222,7 +218,7 @@ local function revert_changes(revert_cache_names)
     end
 end
 
-local function new_pickup_object(prototype_name, dir, coord, position)
+local function new_pickup_object(prototype_name, dir, coord)
     local color, block_color, need_set_tile_object
     if not check_construct_detector(prototype_name, coord[1], coord[2], dir) then
         color = CONSTRUCT_RED_BASIC_COLOR
@@ -257,6 +253,9 @@ local function new_pickup_object(prototype_name, dir, coord, position)
         set_tile_object(pickup_object)
     end
 
+    -- 针对流体盒子的特殊处理
+    world:pub {"ui_message", "show_set_fluidbox", has_fluidboxes(prototype_name)}
+
     return pickup_object
 end
 
@@ -276,8 +275,8 @@ function M:new_pickup_object(prototype_name)
     end
 
     local typeobject = gameplay.queryByName("entity", prototype_name)
-    local coord, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, DEFAULT_DIR))
-    pickup_object = new_pickup_object(prototype_name, DEFAULT_DIR, coord, position)
+    local coord = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, DEFAULT_DIR))
+    pickup_object = new_pickup_object(prototype_name, DEFAULT_DIR, coord)
 end
 
 function M:confirm()
@@ -290,13 +289,22 @@ function M:confirm()
         return
     end
 
+    -- 针对流体盒子的特殊处理
+    if has_fluidboxes(pickup_object.prototype_name) then
+        if not pickup_object.fluid[1] then
+            print("set fluid first")
+            return
+        end
+        world:pub {"ui_message", "show_set_fluidbox", false}
+    end
+
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
     vsobject:update {state = "translucent", color = CONSTRUCT_WHITE_BASIC_COLOR, block_color = CONSTRUCT_BLOCK_WHITE_BASIC_COLOR}
 
     objects:commit("TEMPORARY", "CONFIRM")
     tile_objects:commit("TEMPORARY", "CONFIRM")
 
-    pickup_object = new_pickup_object(pickup_object.prototype_name, pickup_object.dir, {pickup_object.x, pickup_object.y}, vsobject:get_position())
+    pickup_object = new_pickup_object(pickup_object.prototype_name, pickup_object.dir, {pickup_object.x, pickup_object.y})
 
     -- 显示"开始施工"
     world:pub {"ui_message", "show_construct_complete", true}
@@ -395,6 +403,11 @@ end
 
 function M:complete()
     if pickup_object then
+        -- 针对流体盒子的特殊处理
+        if has_fluidboxes(pickup_object.prototype_name) then
+            world:pub {"ui_message", "show_set_fluidbox", false}
+        end
+
         vsobject_manager:remove(pickup_object.id)
         pickup_object = nil
 
@@ -426,6 +439,11 @@ function M:cancel()
     revert_changes({"TEMPORARY", "CONFIRM"})
 
     if pickup_object then
+        -- 针对流体盒子的特殊处理
+        if has_fluidboxes(pickup_object.prototype_name) then
+            world:pub {"ui_message", "show_set_fluidbox", false}
+        end
+
         vsobject_manager:remove(pickup_object.id)
         pickup_object = nil
     end
@@ -453,6 +471,11 @@ end
 function M:teardown_begin()
     revert_changes({"TEMPORARY", "CONFIRM"})
     if pickup_object then
+        -- 针对流体盒子的特殊处理
+        if has_fluidboxes(pickup_object.prototype_name) then
+            world:pub {"ui_message", "show_set_fluidbox", false}
+        end
+
         vsobject_manager:remove(pickup_object.id)
         pickup_object = nil
     end
@@ -503,6 +526,15 @@ function M:teardown_complete()
     end
 
     objects:clear("TEMPORARY")
+end
+
+function M:set_pickup_object_fluid(fluid_name)
+    if not pickup_object then
+        log.warn("set_pickup_object_fluid", fluid_name)
+        return
+    end
+
+    pickup_object.fluid = {fluid_name, 0}
 end
 
 return M

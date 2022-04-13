@@ -15,8 +15,10 @@ local ui_construct_confirm_mb = world:sub {"ui", "construct", "construct_confirm
 local ui_construct_complete_mb = world:sub {"ui", "construct", "construct_complete"} -- 开始施工
 local ui_construct_rotate_mb = world:sub {"ui", "construct", "rotate"}
 local ui_construct_cancel_mb = world:sub {"ui", "construct", "cancel"}
-local ui_construct_dismantle_begin = world:sub {"ui", "construct", "dismantle_begin"}
-local ui_construct_dismantle_complete = world:sub {"ui", "construct", "dismantle_complete"}
+local ui_construct_dismantle_begin_mb = world:sub {"ui", "construct", "dismantle_begin"}
+local ui_construct_dismantle_complete_mb = world:sub {"ui", "construct", "dismantle_complete"}
+local ui_construct_fluidbox_update_mb = world:sub {"ui", "construct", "fluidbox_update"}
+
 local touch_mb = world:sub {"touch"}
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
@@ -52,7 +54,7 @@ function construct_sys:data_changed()
 
     for _, _, _, double_confirm in ui_construct_begin_mb:unpack() do
         if construct_editor:check_unconfirmed(double_confirm) then
-            world:pub {"ui_message", "show_unconfirmed_double_confirm", true}
+            world:pub {"ui_message", "show_unconfirmed_double_confirm"}
             goto continue
         end
         if not double_confirm then
@@ -86,7 +88,7 @@ function construct_sys:data_changed()
 
     for _, _, _, double_confirm in ui_construct_cancel_mb:unpack() do
         if construct_editor:check_unconfirmed(double_confirm) then
-            world:pub {"ui_message", "show_unconfirmed_double_confirm", true}
+            world:pub {"ui_message", "show_unconfirmed_double_confirm"}
             goto continue
         end
         if not double_confirm then
@@ -101,9 +103,9 @@ function construct_sys:data_changed()
         ::continue::
     end
 
-    for _, _, _, double_confirm in ui_construct_dismantle_begin:unpack() do
+    for _, _, _, double_confirm in ui_construct_dismantle_begin_mb:unpack() do
         if construct_editor:check_unconfirmed(double_confirm) then
-            world:pub {"ui_message", "show_unconfirmed_double_confirm", true}
+            world:pub {"ui_message", "show_unconfirmed_double_confirm"}
             goto continue
         end
         if not double_confirm then
@@ -118,11 +120,15 @@ function construct_sys:data_changed()
         ::continue::
     end
 
-    for _ in ui_construct_dismantle_complete:unpack() do
+    for _ in ui_construct_dismantle_complete_mb:unpack() do
         construct_editor:teardown_complete()
         teardown = false
         gameplay_core.world_update = true
         camera.set("camera_default.prefab")
+    end
+
+    for _, _, _, fluid_name in ui_construct_fluidbox_update_mb:unpack() do
+        construct_editor:set_pickup_object_fluid(fluid_name)
     end
 end
 

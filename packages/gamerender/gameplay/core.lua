@@ -66,7 +66,7 @@ end
 local init_func = {}
 init_func["assembling"] = function(pt, template)
     if not pt.recipe then
-        log.error(("can not found recipe `%s`"):format(pt.name))
+        log.error(("assembling can not found recipe `%s`"):format(pt.name))
         return
     end
     local r = gameplay.queryByName("recipe", pt.recipe)
@@ -101,7 +101,7 @@ function m.create_entity(init)
     for _, entity_type in ipairs(pt.type) do
         func = init_func[entity_type]
         if func then
-            template = func(pt, template)
+            template = assert(func(pt, template))
         end
     end
 
