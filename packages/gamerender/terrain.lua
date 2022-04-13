@@ -1,7 +1,6 @@
 local ecs   = ...
 local world = ecs.world
 local w     = world.w
-local UP_LEFT = require "gameplay.utility.vector2".UP_LEFT
 
 local M = {}
 local terrain = {}
