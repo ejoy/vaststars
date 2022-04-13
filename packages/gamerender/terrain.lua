@@ -6,10 +6,6 @@ local UP_LEFT = require "gameplay.utility.vector2".UP_LEFT
 local M = {}
 local terrain = {}
 
-local function unpackCoord(v)
-    return v >> 8, v & 0xFF
-end
-
 local function generate_terrain_fields(w, h)
     local fields = {}
     for ih = 1, h do
@@ -22,6 +18,41 @@ local function generate_terrain_fields(w, h)
     end
 
     return fields
+end
+
+
+local function get_coord_by_begin_position(position)
+    local e = w:singleton("shape_terrain", "shape_terrain:in")
+    local shape = terrain.shape
+    local origin = terrain.origin
+    local shape_terrain = e.shape_terrain
+    local unit = shape_terrain.unit
+
+    if position[1] < shape[1][1] or position[1] > shape[2][1] then
+        log.error(("out of bounds (%s) : (%s) - (%s)"):format(table.concat(position, ","), table.concat(shape[1], ","), table.concat(shape[2], ",")))
+        return
+    end
+
+    if position[3] < shape[1][3] or position[3] > shape[2][3] then
+        log.error(("out of bounds (%s) : (%s) - (%s)"):format(table.concat(position, ","), table.concat(shape[1], ","), table.concat(shape[2], ",")))
+        return
+    end
+
+    return {math.ceil((position[1] - origin[1]) / unit) - 1, math.ceil((origin[2] - position[3]) / unit) - 1}
+end
+
+local function get_begin_position_by_coord(x, y)
+    local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
+    local tile_bounds = terrain.tile_bounds
+    local shape_terrain = e.shape_terrain
+    local unit = shape_terrain.unit
+    local origin = terrain.origin
+
+    if not M.verify_coord(x, y) then
+        log.error(("out of bounds (%s,%s) : (%s) - (%s)"):format(x, y, table.concat(tile_bounds[1], ","), table.concat(tile_bounds[2], ",")))
+        return
+    end
+    return {origin[1] + (x * unit), 0, origin[2] - (y * unit)}
 end
 
 function M.create()
@@ -91,46 +122,12 @@ function M.verify_coord(x, y)
     return true
 end
 
-function M.get_coord_by_position(position)
-    local e = w:singleton("shape_terrain", "shape_terrain:in")
-    local shape = terrain.shape
-    local origin = terrain.origin
-    local shape_terrain = e.shape_terrain
-    local unit = shape_terrain.unit
-
-    if position[1] < shape[1][1] or position[1] > shape[2][1] then
-        log.error(("out of bounds (%s) : (%s) - (%s)"):format(table.concat(position, ","), table.concat(shape[1], ","), table.concat(shape[2], ",")))
-        return
-    end
-
-    if position[3] < shape[1][3] or position[3] > shape[2][3] then
-        log.error(("out of bounds (%s) : (%s) - (%s)"):format(table.concat(position, ","), table.concat(shape[1], ","), table.concat(shape[2], ",")))
-        return
-    end
-
-    return {math.ceil((position[1] - origin[1]) / unit) - 1, math.ceil((origin[2] - position[3]) / unit) - 1}
-end
-
-function M.get_begin_position_by_coord(x, y)
-    local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
-    local tile_bounds = terrain.tile_bounds
-    local shape_terrain = e.shape_terrain
-    local unit = shape_terrain.unit
-    local origin = terrain.origin
-
-    if not M.verify_coord(x, y) then
-        log.error(("out of bounds (%s,%s) : (%s) - (%s)"):format(x, y, table.concat(tile_bounds[1], ","), table.concat(tile_bounds[2], ",")))
-        return
-    end
-    return {origin[1] + (x * unit), 0, origin[2] - (y * unit)}
-end
-
-function M.get_position_by_coord(x, y, area)
+-- 返回建筑的中心位置
+function M.get_position_by_coord(x, y, width, height)
     local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
     local unit = e.shape_terrain.unit
 
-    local width, height = unpackCoord(area)
-    local begining = M.get_begin_position_by_coord(x, y)
+    local begining = get_begin_position_by_coord(x, y)
     if not begining then
         return
     end
@@ -138,19 +135,18 @@ function M.get_position_by_coord(x, y, area)
     return {begining[1] + (width * unit // 2), begining[2], begining[3] - (height * unit // 2)} --TODO 越界判断
 end
 
-function M.adjust_position(position, area)
+-- position 为建筑的中心位置
+function M.adjust_position(position, width, height)
     local e = w:singleton("shape_terrain", "shape_terrain:in scene:in")
     local unit = e.shape_terrain.unit
-    local coord = M.get_coord_by_position(position)
+
+    local begin_position = {position[1] - (width * unit // 2), position[2], position[3] + (height * unit // 2)}
+    local coord = get_coord_by_begin_position(begin_position)
     if not coord then
         return
     end
 
-    local width, height = unpackCoord(area)
-    coord[1] = coord[1] + UP_LEFT[1] * (width // 2)
-    coord[2] = coord[2] + UP_LEFT[2] * (height // 2)
-
-    local begining = M.get_begin_position_by_coord(coord[1], coord[2])
+    local begining = get_begin_position_by_coord(coord[1], coord[2])
     if not begining then
         return
     end

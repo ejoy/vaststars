@@ -52,6 +52,10 @@ local function clear(self, cache_name)
     self.caches[cache_name] = create_cache(table.unpack(self.cache_param))
 end
 
+local function empty(self, cache_name)
+    return self.caches[cache_name]:empty()
+end
+
 local function create(cache_names, ...)
     local M = {}
     M.caches = {}
@@ -69,6 +73,7 @@ local function create(cache_names, ...)
     M.commit = commit
     M.remove = remove
     M.clear = clear
+    M.empty = empty
 
     return setmetatable(M, {__index = M})
 end

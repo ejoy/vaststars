@@ -120,7 +120,7 @@ interface "iconstruct"
 
 system "entity_object_system"
     .implement "entity_object_system.lua"
-    .method "data_changed"
+    .method "entity_ready"
 
 interface "ientity_object"
     .implement "entity_object_system.lua"
