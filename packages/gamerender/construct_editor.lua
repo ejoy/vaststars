@@ -230,6 +230,12 @@ local function new_pickup_object(prototype_name, dir, coord)
         need_set_tile_object = true
     end
 
+    local typeobject = gameplay.queryByName("entity", prototype_name)
+    local position = terrain.get_position_by_coord(coord[1], coord[2], rotate_area(typeobject.area, dir))
+    if not position then --TODO 越界?
+        return
+    end
+
     local vsobject = vsobject_manager:create {
         prototype_name = prototype_name,
         dir = dir,

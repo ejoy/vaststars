@@ -45,8 +45,8 @@ local gen_id do
 end
 
 local block_events = {}
-block_events.update_color = function(e, ...)
-    imaterial.set_property(world:entity(e.id), "u_color", ...)
+block_events.set_material_property = function(e, ...)
+    imaterial.set_property(world:entity(e.id), ...)
 end
 block_events.set_position = function(e, ...)
     iom.set_position(e, ...)
@@ -142,7 +142,7 @@ local function update(self, t)
         local game_object = self.game_object
         if t.state == "translucent" and t.color and not math3d.isequal(self.color, t.color) then
             self.color = t.color
-            game_object:send("update_basecolor", t.color)
+            game_object:send("set_material_property", "u_basecolor_factor", t.color)
         end
     end
 
@@ -152,7 +152,7 @@ local function update(self, t)
     end
 
     if t.block_color and self.block_entity_object then
-        self.block_entity_object:send("update_color", t.block_color)
+        self.block_entity_object:send("set_material_property", "u_color", t.block_color)
     end
 end
 
@@ -188,31 +188,22 @@ local function animation_update(self, animation_name, process)
     end
 end
 
-local CONSTRUCT_BLOCK_GREEN_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {0.0, 20000, 0.0, 1.0}))
-
 -- init = {
 --     prototype_name = prototype_name,
 --     state = "opaque"/"translucent",
 --     color = color,
---     x = xx,
---     y = xx,
+--     position = position,
 --     dir = 'N',
 -- }
 return function (init)
     local typeobject = gameplay.queryByName("entity", init.prototype_name)
-    local position = terrain.get_position_by_coord(init.x, init.y, rotate_area(typeobject.area, init.dir))
-    --TODO 越界?
-    if not position then
-        return
-    end
 
     local vsobject_id = gen_id()
     local game_object = assert(igame_object.create(typeobject.model, init.state, init.color, vsobject_id))
-    iom.set_position(world:entity(game_object.root), position)
+    iom.set_position(world:entity(game_object.root), init.position)
     iom.set_rotation(world:entity(game_object.root), rotators[init.dir])
 
-    local block_entity_object = create_block(init.block_color, typeobject.area, position, rotators[init.dir])
-    block_entity_object:send("update_color", CONSTRUCT_BLOCK_GREEN_BASIC_COLOR)
+    local block_entity_object = create_block(init.block_color, typeobject.area, init.position, rotators[init.dir])
 
     local vsobject = {
         id = vsobject_id,
