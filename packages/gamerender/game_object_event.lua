@@ -2,6 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local ifs = ecs.import.interface "ant.scene|ifilter_state"
 local iani = ecs.import.interface "ant.animation|ianimation"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
@@ -29,6 +30,12 @@ events["set_material_property"] = function(prefab, binding, ...)
         if e.material then
             imaterial.set_property(e, ...)
         end
+    end
+end
+
+events["set_filter_state"] = function(prefab, binding, ...)
+    for _, eid in ipairs(prefab.tag["*"]) do
+        ifs.set_state(world:entity(eid), ...)
     end
 end
 

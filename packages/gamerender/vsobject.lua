@@ -7,17 +7,13 @@ local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
 local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
-local terrain = ecs.require "terrain"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ientity = ecs.import.interface "ant.render|ientity"
 local imaterial	= ecs.import.interface "ant.asset|imaterial"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
-local general = require "gameplay.utility.general"
-local rotate_area = general.rotate_area
 local imesh = ecs.import.interface "ant.asset|imesh"
 local ifs = ecs.import.interface "ant.scene|ifilter_state"
-local block_edge_size <const> = 4
 local tile_size <const> = 10.0
 
 local plane_vb <const> = {
@@ -34,6 +30,25 @@ local rotators <const> = {
     E = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
     S = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
     W = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
+}
+
+local CONSTRUCT_COLOR_INVALID <const> = {}
+local CONSTRUCT_COLOR_RED <const> = math3d.ref(math3d.constant("v4", {50.0, 0.0, 0.0, 0.8}))
+local CONSTRUCT_COLOR_GREEN <const> = math3d.ref(math3d.constant("v4", {0.0, 50.0, 0.0, 0.8}))
+local CONSTRUCT_COLOR_WHITE <const> = math3d.ref(math3d.constant("v4", {50.0, 50.0, 50.0, 0.8}))
+local CONSTRUCT_COLOR_YELLOW <const> = math3d.ref(math3d.constant("v4", {50.0, 50.0, 0.0, 0.8}))
+
+local CONSTRUCT_BLOCK_COLOR_INVALID <const> = {}
+local CONSTRUCT_BLOCK_COLOR_RED <const> = math3d.ref(math3d.constant("v4", {20000, 0.0, 0.0, 1.0}))
+local CONSTRUCT_BLOCK_COLOR_GREEN <const> = math3d.ref(math3d.constant("v4", {0.0, 20000, 0.0, 1.0}))
+local CONSTRUCT_BLOCK_COLOR_WHITE <const> = math3d.ref(math3d.constant("v4", {20000, 20000, 20000, 1.0}))
+
+local typeinfos = {
+    ["construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 4}, -- 未确认, 合法
+    ["invalid_construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_RED, block_edge_size = 4}, -- 未确认, 非法
+    ["confirm"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_WHITE, block_edge_size = 0}, -- 已确认
+    ["constructed"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已施工
+    ["teardown"] = {state = "translucent", color = CONSTRUCT_COLOR_YELLOW, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 拆除
 }
 
 local gen_id do
@@ -55,7 +70,7 @@ block_events.set_rotation = function(e, ...)
     iom.set_rotation(e, ...)
 end
 
-local function create_block(color, area, position, rotation)
+local function create_block(color, block_edge_size, area, position, rotation)
     assert(color)
     local width, height = area >> 8, area & 0xFF
     local eid = ecs.create_entity{
@@ -90,6 +105,10 @@ local function set_srt(e, srt)
     iom.set_position(e, srt.t)
 end
 
+local function get_rotation(self)
+    return iom.get_rotation(world:entity(self.game_object.root))
+end
+
 local function set_position(self, position)
     iom.set_position(world:entity(self.game_object.root), position)
     if self.block_entity_object then
@@ -120,8 +139,12 @@ local function remove(self)
     end
 end
 
+--TODO bad taste
 local function update(self, t)
-    if t.prototype_name or (t.state and t.state ~= self.state) then
+    local old_typeinfo = typeinfos[self.type]
+    local new_typeinfo = typeinfos[t.type or self.type]
+
+    if t.prototype_name or new_typeinfo.state ~= old_typeinfo.state then
         local srt
         local old_game_object = self.game_object
         if old_game_object then
@@ -130,30 +153,39 @@ local function update(self, t)
         end
 
         local prototype_name = t.prototype_name or self.prototype_name
-        local state = t.state or self.state
-        local color = t.color or self.color
+        local state = new_typeinfo.state
+        local color = new_typeinfo.color
 
         local typeobject = gameplay.queryByName("entity", prototype_name)
         local game_object = igame_object.create(typeobject.model, state, color, self.id)
         set_srt(world:entity(game_object.root), srt)
 
-        self.game_object, self.prototype_name, self.state, self.color = game_object, prototype_name, state, color
+        self.game_object, self.prototype_name = game_object, prototype_name
     else
         local game_object = self.game_object
-        if t.state == "translucent" and t.color and not math3d.isequal(self.color, t.color) then
-            self.color = t.color
-            game_object:send("set_material_property", "u_basecolor_factor", t.color)
+        if new_typeinfo.state == "translucent" and new_typeinfo.color and not math3d.isequal(old_typeinfo.color, new_typeinfo.color) then
+            game_object:send("set_material_property", "u_basecolor_factor", new_typeinfo.color)
         end
     end
 
-    if t.show_block == false and self.block_entity_object then
+    if new_typeinfo.block_color == CONSTRUCT_BLOCK_COLOR_INVALID and self.block_entity_object then
         self.block_entity_object:remove()
         self.block_entity_object = nil
     end
 
-    if t.block_color and self.block_entity_object then
-        self.block_entity_object:send("set_material_property", "u_color", t.block_color)
+    if new_typeinfo.block_color and self.block_entity_object then
+        if new_typeinfo.block_edge_size then
+            self.block_entity_object:remove()
+            local typeobject = gameplay.queryByName("entity", self.prototype_name)
+            local position = self:get_position()
+            local rotation = get_rotation(self)
+            self.block_entity_object = create_block(new_typeinfo.block_color, new_typeinfo.block_edge_size, typeobject.area, position, rotation)
+        else
+            self.block_entity_object:send("set_material_property", "u_color", new_typeinfo.block_color)
+        end
     end
+
+    self.type = t.type or self.type
 end
 
 local function attach(self, slot_name, prefab_file_name)
@@ -190,26 +222,25 @@ end
 
 -- init = {
 --     prototype_name = prototype_name,
---     state = "opaque"/"translucent",
---     color = color,
+--     type = xxx,
 --     position = position,
 --     dir = 'N',
 -- }
 return function (init)
     local typeobject = gameplay.queryByName("entity", init.prototype_name)
+    local typeinfo = assert(typeinfos[init.type], ("invalid type `%s`"):format(init.type))
 
     local vsobject_id = gen_id()
-    local game_object = assert(igame_object.create(typeobject.model, init.state, init.color, vsobject_id))
+    local game_object = assert(igame_object.create(typeobject.model, typeinfo.state, typeinfo.color, vsobject_id))
     iom.set_position(world:entity(game_object.root), init.position)
     iom.set_rotation(world:entity(game_object.root), rotators[init.dir])
 
-    local block_entity_object = create_block(init.block_color, typeobject.area, init.position, rotators[init.dir])
+    local block_entity_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, init.position, rotators[init.dir])
 
     local vsobject = {
         id = vsobject_id,
         prototype_name = init.prototype_name,
-        state = init.state,
-        color = init.color,
+        type = init.type,
         block_entity_object = block_entity_object,
         game_object = game_object,
         animation = {},
