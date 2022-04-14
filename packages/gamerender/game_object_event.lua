@@ -23,11 +23,11 @@ events["animation_set_time"] = function(prefab, binding, animation_name, process
     end
 end
 
-events["update_basecolor"] = function(prefab, binding, basecolor_factor)
+events["set_material_property"] = function(prefab, binding, ...)
     for _, eid in ipairs(prefab.tag["*"]) do
         local e = assert(world:entity(eid))
         if e.material then
-            imaterial.set_property(e, "u_basecolor_factor", basecolor_factor)
+            imaterial.set_property(e, ...)
         end
     end
 end

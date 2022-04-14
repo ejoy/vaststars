@@ -86,7 +86,7 @@ function igame_object.create(prefab_file_name, state, color, pickup_binding)
 
     local game_object = world:create_object(prefab)
     if state == "translucent" and color then
-        game_object:send("update_basecolor", color)
+        game_object:send("set_material_property", "u_basecolor_factor", color)
     end
 
     local outer = {}
