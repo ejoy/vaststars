@@ -67,7 +67,7 @@ local init_func = {}
 init_func["assembling"] = function(pt, template)
     if not pt.recipe then
         log.error(("assembling can not found recipe `%s`"):format(pt.name))
-        return
+        return template --TODO 临时处理, 防止报错, 后续加上配方设置后, 去除返回
     end
     local r = gameplay.queryByName("recipe", pt.recipe)
 

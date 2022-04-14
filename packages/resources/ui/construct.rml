@@ -165,6 +165,7 @@
             local unconfirmed_double_confirm_continuation = function() end
             local start = window.createModel "start" {
                 fps_text = ' ',           -- fps 信息
+                drawcall_text = ' ',      -- drawcall 信息
                 fluid_category = {},      -- 流体分类信息, 从 world 获取
                 cur_fluid_category = "",  -- 当前选中的流体分类
                 cur_construct_menu = '',  -- 当前选中的二级建造菜单名
@@ -257,6 +258,9 @@
                 ["print_fps"] = function(text)
                     start.fps_text = text
                 end,
+                ["print_drawcall"] = function(text)
+                    start.drawcall_text = text
+                end,
                 ["show_unconfirmed_double_confirm"] = function()
                     ui_sys.open("construct_cancel_pop.rml")
                 end,
@@ -282,6 +286,10 @@
 
             <div style = "position: absolute; left: 15.00vmin; top: 5.00vmin; z-index: 999;">
                 <div style = "position: absolute; top: 0vmin; width: 50.00vmin; height: auto; font-size: 300%; color: rgb(0,255,0);">{{fps_text}}</div>
+            </div>
+
+            <div style = "position: absolute; left: 15.00vmin; top: 10.00vmin; z-index: 999;">
+                <div style = "position: absolute; top: 0vmin; width: 90.00vmax; height: auto; font-size: 300%; color: rgb(0,255,0);">{{drawcall_text}}</div>
             </div>
 
             <!-- 主菜单按钮 -->
