@@ -62,6 +62,7 @@ function construct_sys:data_changed()
             goto continue
         end
 
+        teardown = false
         construct_editor:construct_begin()
         gameplay_core.world_update = false
         camera.set("camera_construct.prefab")
