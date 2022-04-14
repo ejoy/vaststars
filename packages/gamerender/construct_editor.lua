@@ -1,6 +1,5 @@
 local ecs = ...
 local world = ecs.world
-local w = world.w
 
 local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
@@ -20,15 +19,6 @@ local has_fluidboxes = ecs.require "gameplay.utility.has_fluidboxes"
 local vsobject_manager = ecs.require "vsobject_manager"
 local create_cache = require "utility.multiple_cache"
 local gameplay_core = ecs.require "gameplay.core"
-
-local CONSTRUCT_RED_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {50.0, 0.0, 0.0, 0.8}))
-local CONSTRUCT_GREEN_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {0.0, 50.0, 0.0, 0.8}))
-local CONSTRUCT_WHITE_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {50.0, 50.0, 50.0, 0.8}))
-local DISMANTLE_YELLOW_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {50.0, 50.0, 0.0, 0.8}))
-
-local CONSTRUCT_BLOCK_RED_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {20000, 0.0, 0.0, 1.0}))
-local CONSTRUCT_BLOCK_GREEN_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {0.0, 20000, 0.0, 1.0}))
-local CONSTRUCT_BLOCK_WHITE_BASIC_COLOR <const> = math3d.ref(math3d.constant("v4", {20000, 20000, 20000, 1.0}))
 
 local DEFAULT_DIR <const> = 'N'
 
@@ -70,6 +60,7 @@ end
 local function clone_object(object)
     return {
         id = object.id,
+        vsobject_type = object.vsobject_type,
         prototype_name = object.prototype_name,
         dir = object.dir,
         fluid = object.fluid,
@@ -205,7 +196,7 @@ local function revert_changes(revert_cache_names)
             local old_object = objects:get(cache_names, id)
             if old_object then
                 local vsobject = assert(vsobject_manager:get(object.id))
-                vsobject:update {state = "translucent", prototype_name = old_object.prototype_name}
+                vsobject:update {prototype_name = old_object.prototype_name, type = old_object.vsobject_type}
                 vsobject:set_dir(old_object.dir)
             else
                 -- 通常是删除已"确定建造"的建筑
@@ -219,16 +210,12 @@ local function revert_changes(revert_cache_names)
 end
 
 local function new_pickup_object(prototype_name, dir, coord)
-    local color, block_color, block_edge_size, need_set_tile_object
+    local vsobject_type, need_set_tile_object
     if not check_construct_detector(prototype_name, coord[1], coord[2], dir) then
-        color = CONSTRUCT_RED_BASIC_COLOR
-        block_color = CONSTRUCT_BLOCK_RED_BASIC_COLOR
-        block_edge_size = 4
+        vsobject_type = "invalid_construct"
         need_set_tile_object = false
     else
-        color = CONSTRUCT_GREEN_BASIC_COLOR
-        block_color = CONSTRUCT_BLOCK_GREEN_BASIC_COLOR
-        block_edge_size = 4
+        vsobject_type = "construct"
         need_set_tile_object = true
     end
 
@@ -242,13 +229,11 @@ local function new_pickup_object(prototype_name, dir, coord)
         prototype_name = prototype_name,
         dir = dir,
         position = position,
-        state = "opaque",
-        color = color,
-        block_color = block_color,
-        block_edge_size = block_edge_size,
+        type = vsobject_type,
     }
     pickup_object = {
         id = vsobject.id,
+        vsobject_type = vsobject_type,
         prototype_name = prototype_name,
         dir = dir,
         fluid = {},
@@ -307,7 +292,8 @@ function M:confirm()
     end
 
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
-    vsobject:update {state = "translucent", color = CONSTRUCT_WHITE_BASIC_COLOR, block_color = CONSTRUCT_BLOCK_WHITE_BASIC_COLOR, block_edge_size = 0}
+    vsobject:update {type = "confirm"}
+    pickup_object.vsobject_type = "confirm"
 
     objects:commit("TEMPORARY", "CONFIRM")
     tile_objects:commit("TEMPORARY", "CONFIRM")
@@ -333,25 +319,23 @@ function M:adjust_pickup_object()
     end
     pickup_object.x, pickup_object.y = coord[1], coord[2]
 
-    local color, block_color, block_edge_size
+    local vsobject_type
     if not check_construct_detector(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) then
-        color = CONSTRUCT_RED_BASIC_COLOR
-        block_color = CONSTRUCT_BLOCK_RED_BASIC_COLOR
-        block_edge_size = 4
+        vsobject_type = "invalid_construct"
         refresh_pickup_pipe()
     else
-        color = CONSTRUCT_GREEN_BASIC_COLOR
-        block_color = CONSTRUCT_BLOCK_GREEN_BASIC_COLOR
-        block_edge_size = 4
+        vsobject_type = "construct"
 
         set_tile_object(pickup_object)
         refresh_pickup_pipe()
         refresh_pipe_connection(pickup_object)
     end
 
+    pickup_object.vsobject_type = vsobject_type
+
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
     vsobject:set_position(position)
-    vsobject:update {color = color, block_color = block_color, block_edge_size = block_edge_size}
+    vsobject:update {type = vsobject_type}
 end
 
 function M:move_pickup_object(delta)
@@ -393,24 +377,21 @@ function M:rotate_pickup_object()
     vsobject:set_position(position)
 
     --
-    local color, block_color, block_edge_size
+    local object_type
     if not check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) then
-        color = CONSTRUCT_RED_BASIC_COLOR
-        block_color = CONSTRUCT_BLOCK_RED_BASIC_COLOR
-        block_edge_size = 4
+        object_type = "invalid_construct"
         refresh_pickup_pipe()
     else
-        color = CONSTRUCT_GREEN_BASIC_COLOR
-        block_color = CONSTRUCT_BLOCK_GREEN_BASIC_COLOR
-        block_edge_size = 4
+        object_type = "construct"
 
         set_tile_object(pickup_object)
         refresh_pickup_pipe()
         refresh_pipe_connection(pickup_object)
     end
+    pickup_object.vsobject_type = object_type
 
     vsobject:set_dir(pickup_object.dir)
-    vsobject:update {color = color, block_color = block_color, block_edge_size = block_edge_size}
+    vsobject:update {type = object_type}
 end
 
 function M:complete()
@@ -430,6 +411,7 @@ function M:complete()
 
     local t = {}
     for id, object in objects:all("CONFIRM") do
+        object.vsobject_type = "constructed"
         t[id] = object
     end
     objects:commit("CONFIRM", "EXISTING")
@@ -437,7 +419,7 @@ function M:complete()
 
     for _, object in pairs(t) do
         local vsobject = assert(vsobject_manager:get(object.id))
-        vsobject:update {state = "opaque", show_block = false}
+        vsobject:update {type = "constructed"}
         gameplay_core.create_entity(object)
         needbuild = true
     end
@@ -498,13 +480,15 @@ function M:teardown(vsobject_id)
     local vsobject = assert(vsobject_manager:get(vsobject_id))
 
     object.teardown = not object.teardown
-    objects:set("TEMPORARY", object)
 
     if object.teardown then
-        vsobject:update {state = "translucent", color = DISMANTLE_YELLOW_BASIC_COLOR}
+        object.vsobject_type = "teardown"
+        vsobject:update {type = "teardown"}
     else
-        vsobject:update {state = "opaque"}
+        object.vsobject_type = "constructed"
+        vsobject:update {type = "constructed"}
     end
+    objects:set("TEMPORARY", object) --TODO 此处直接覆盖掉缓存的 object
 end
 
 function M:teardown_complete()
