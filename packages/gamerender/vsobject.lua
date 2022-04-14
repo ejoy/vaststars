@@ -7,17 +7,13 @@ local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
 local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
-local terrain = ecs.require "terrain"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ientity = ecs.import.interface "ant.render|ientity"
 local imaterial	= ecs.import.interface "ant.asset|imaterial"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
-local general = require "gameplay.utility.general"
-local rotate_area = general.rotate_area
 local imesh = ecs.import.interface "ant.asset|imesh"
 local ifs = ecs.import.interface "ant.scene|ifilter_state"
-local block_edge_size <const> = 4
 local tile_size <const> = 10.0
 
 local plane_vb <const> = {
@@ -55,7 +51,7 @@ block_events.set_rotation = function(e, ...)
     iom.set_rotation(e, ...)
 end
 
-local function create_block(color, area, position, rotation)
+local function create_block(color, block_edge_size, area, position, rotation)
     assert(color)
     local width, height = area >> 8, area & 0xFF
     local eid = ecs.create_entity{
@@ -88,6 +84,10 @@ local function set_srt(e, srt)
     iom.set_scale(e, srt.s)
     iom.set_rotation(e, srt.r)
     iom.set_position(e, srt.t)
+end
+
+local function get_rotation(self)
+    return iom.get_rotation(world:entity(self.game_object.root))
 end
 
 local function set_position(self, position)
@@ -152,7 +152,15 @@ local function update(self, t)
     end
 
     if t.block_color and self.block_entity_object then
-        self.block_entity_object:send("set_material_property", "u_color", t.block_color)
+        if t.block_edge_size then
+            self.block_entity_object:remove()
+            local typeobject = gameplay.queryByName("entity", self.prototype_name)
+            local position = self:get_position()
+            local rotation = get_rotation(self)
+            self.block_entity_object = create_block(t.block_color, t.block_edge_size, typeobject.area, position, rotation)
+        else
+            self.block_entity_object:send("set_material_property", "u_color", t.block_color)
+        end
     end
 end
 
@@ -192,6 +200,7 @@ end
 --     prototype_name = prototype_name,
 --     state = "opaque"/"translucent",
 --     color = color,
+--     block_edge_size = block_edge_size,
 --     position = position,
 --     dir = 'N',
 -- }
@@ -203,13 +212,14 @@ return function (init)
     iom.set_position(world:entity(game_object.root), init.position)
     iom.set_rotation(world:entity(game_object.root), rotators[init.dir])
 
-    local block_entity_object = create_block(init.block_color, typeobject.area, init.position, rotators[init.dir])
+    local block_entity_object = create_block(init.block_color, init.block_edge_size, typeobject.area, init.position, rotators[init.dir])
 
     local vsobject = {
         id = vsobject_id,
         prototype_name = init.prototype_name,
         state = init.state,
         color = init.color,
+        block_edge_size = init.block_edge_size,
         block_entity_object = block_entity_object,
         game_object = game_object,
         animation = {},

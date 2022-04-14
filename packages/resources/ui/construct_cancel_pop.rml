@@ -48,12 +48,11 @@
             }
 
             function start.clickConfirm(event)
-                ui_sys.pub("ui_message", "unconfirmed_double_confirm_continuation", true)
+                ui_sys.pub("ui_message", "unconfirmed_double_confirm_continuation")
                 ui_sys.close()
             end
 
             function start.clickCancel(event)
-                ui_sys.pub("ui_message", "unconfirmed_double_confirm_continuation", false)
                 ui_sys.close()
             end
         </script>

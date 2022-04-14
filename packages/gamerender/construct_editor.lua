@@ -219,14 +219,16 @@ local function revert_changes(revert_cache_names)
 end
 
 local function new_pickup_object(prototype_name, dir, coord)
-    local color, block_color, need_set_tile_object
+    local color, block_color, block_edge_size, need_set_tile_object
     if not check_construct_detector(prototype_name, coord[1], coord[2], dir) then
         color = CONSTRUCT_RED_BASIC_COLOR
         block_color = CONSTRUCT_BLOCK_RED_BASIC_COLOR
+        block_edge_size = 4
         need_set_tile_object = false
     else
         color = CONSTRUCT_GREEN_BASIC_COLOR
         block_color = CONSTRUCT_BLOCK_GREEN_BASIC_COLOR
+        block_edge_size = 4
         need_set_tile_object = true
     end
 
@@ -239,11 +241,11 @@ local function new_pickup_object(prototype_name, dir, coord)
     local vsobject = vsobject_manager:create {
         prototype_name = prototype_name,
         dir = dir,
-        x = coord[1],
-        y = coord[2],
+        position = position,
         state = "opaque",
         color = color,
         block_color = block_color,
+        block_edge_size = block_edge_size,
     }
     pickup_object = {
         id = vsobject.id,
@@ -305,7 +307,7 @@ function M:confirm()
     end
 
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
-    vsobject:update {state = "translucent", color = CONSTRUCT_WHITE_BASIC_COLOR, block_color = CONSTRUCT_BLOCK_WHITE_BASIC_COLOR}
+    vsobject:update {state = "translucent", color = CONSTRUCT_WHITE_BASIC_COLOR, block_color = CONSTRUCT_BLOCK_WHITE_BASIC_COLOR, block_edge_size = 0}
 
     objects:commit("TEMPORARY", "CONFIRM")
     tile_objects:commit("TEMPORARY", "CONFIRM")
@@ -331,14 +333,16 @@ function M:adjust_pickup_object()
     end
     pickup_object.x, pickup_object.y = coord[1], coord[2]
 
-    local color, block_color
+    local color, block_color, block_edge_size
     if not check_construct_detector(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) then
         color = CONSTRUCT_RED_BASIC_COLOR
         block_color = CONSTRUCT_BLOCK_RED_BASIC_COLOR
+        block_edge_size = 4
         refresh_pickup_pipe()
     else
         color = CONSTRUCT_GREEN_BASIC_COLOR
         block_color = CONSTRUCT_BLOCK_GREEN_BASIC_COLOR
+        block_edge_size = 4
 
         set_tile_object(pickup_object)
         refresh_pickup_pipe()
@@ -347,7 +351,7 @@ function M:adjust_pickup_object()
 
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
     vsobject:set_position(position)
-    vsobject:update {color = color, block_color = block_color}
+    vsobject:update {color = color, block_color = block_color, block_edge_size = block_edge_size}
 end
 
 function M:move_pickup_object(delta)
@@ -389,14 +393,16 @@ function M:rotate_pickup_object()
     vsobject:set_position(position)
 
     --
-    local color, block_color
+    local color, block_color, block_edge_size
     if not check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) then
         color = CONSTRUCT_RED_BASIC_COLOR
         block_color = CONSTRUCT_BLOCK_RED_BASIC_COLOR
+        block_edge_size = 4
         refresh_pickup_pipe()
     else
         color = CONSTRUCT_GREEN_BASIC_COLOR
         block_color = CONSTRUCT_BLOCK_GREEN_BASIC_COLOR
+        block_edge_size = 4
 
         set_tile_object(pickup_object)
         refresh_pickup_pipe()
@@ -404,7 +410,7 @@ function M:rotate_pickup_object()
     end
 
     vsobject:set_dir(pickup_object.dir)
-    vsobject:update {color = color, block_color = block_color}
+    vsobject:update {color = color, block_color = block_color, block_edge_size = block_edge_size}
 end
 
 function M:complete()
