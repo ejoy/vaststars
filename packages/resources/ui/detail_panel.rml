@@ -23,7 +23,7 @@
                 detail_panel_property_list = {},
             }
 
-            ui_sys.addEventListener(start, {}, {
+            ui_sys.addEventListener({
                 ["INIT"] = function(x, y)
                     ui_sys.pub("ui", "GET_DATA", "entity_properties", x, y)
                 end,

@@ -240,7 +240,7 @@
                 ui_sys.pub('camera', opt)
             end
 
-            ui_sys.addEventListener(start, {"fluid_category"}, {
+            ui_sys.addEventListener({
                 ["INIT"] = function(fluid_category)
                     start.fluid_category = fluid_category
                 end,
