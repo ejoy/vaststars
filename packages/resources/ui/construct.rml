@@ -154,6 +154,8 @@
                 cur_selected_fluid = {},  -- 当前选中的流体盒中的流体
                 show_set_fluidbox = false,
                 show_construct_complete = false,
+                show_rotate = false,  -- 是否显示[旋转建筑]
+                show_confirm = false, -- 是否显示[确认放置]
 
                 debug_button = {},
                 config_construct = require "config.construct",
@@ -240,6 +242,10 @@
                 end,
                 ["show_unconfirmed_double_confirm"] = function()
                     ui_sys.open("construct_cancel_pop.rml")
+                end,
+                ["show_rotate_confirm"] = function(rotate_visible, confirm_visible)
+                    start.show_rotate = rotate_visible
+                    start.show_confirm = confirm_visible
                 end,
                 ["unconfirmed_double_confirm_continuation"] = function()
                     if unconfirmed_double_confirm_continuation then
@@ -336,7 +342,7 @@
                 </div>
             </div>
             <!-- 水管指定液体界面 二级菜单 -->
-            <div data-if = "show_set_fluidbox" style = 'pointer-events: none; position: absolute; left: 40.00vmin; top: 66.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
+            <div data-if = "show_set_fluidbox" style = 'pointer-events: none; position: absolute; left: 40.00vmin; top: 66.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center; z-index: 999;'>
                 <div style = 'width: auto; height: 16.00vmin; background-color: rgb(99, 99, 99); flex-direction: row; align-items: center;' data-if = "cur_fluid_category != ''">
                     <div data-for = "catagory : fluid_category" style = "flex-direction: row;">
                         <div data-for = "catagory.fluid" style = "flex-direction: row;" data-if = "cur_fluid_category == catagory.catagory">
@@ -362,7 +368,7 @@
                 </button>
 
                 <!-- 确认放置 -->
-                <button data-if = "cur_edit_mode == 'construct'" data-event-click="clickConstructConfirm()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_confirm" data-event-click="clickConstructConfirm()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"construct/confirm.png"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
                     <div style="font-size: 85%;">确认放置</div>
                 </button>
@@ -371,7 +377,7 @@
                 <div style = "width: 2.67vmin;" />
 
                 <!-- 旋转建筑 -->
-                <button data-if = "cur_edit_mode == 'construct'" data-event-click="clickConstructRotate()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_rotate" data-event-click="clickConstructRotate()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto;background-image:"construct/rotate.png"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
                     <div style="font-size: 85%;">旋转建筑</div>
                 </button>

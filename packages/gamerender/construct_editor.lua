@@ -281,7 +281,13 @@ local function new_pickup_object(prototype_name, dir, coord)
 
         -- 针对流体盒子的特殊处理
         world:pub {"ui_message", "show_set_fluidbox", has_fluidboxes(prototype_name)}
+
+        refresh_pickup_pipe()
+        refresh_pipe_connection(pickup_object)
     end
+
+    -- 针对 水管 & 路块 的特殊处理
+    world:pub {"ui_message", "show_rotate_confirm", not(typeobject.pipe or typeobject.road), true}
 
     return pickup_object
 end
@@ -289,6 +295,7 @@ end
 ---
 function M:construct_begin()
     revert_changes({"TEMPORARY"})
+    world:pub {"ui_message", "show_rotate_confirm", false, false}
 end
 
 function M:new_pickup_object(prototype_name)
@@ -458,6 +465,7 @@ function M:complete()
         pickup_object = nil
 
         revert_changes({"TEMPORARY"})
+        world:pub {"ui_message", "show_rotate_confirm", false, false}
     end
 
     local needbuild = false
@@ -484,6 +492,7 @@ end
 
 function M:cancel()
     revert_changes({"TEMPORARY", "CONFIRM"})
+    world:pub {"ui_message", "show_rotate_confirm", false, false}
 
     if pickup_object then
         -- 针对流体盒子的特殊处理
@@ -517,6 +526,8 @@ end
 
 function M:teardown_begin()
     revert_changes({"TEMPORARY", "CONFIRM"})
+    world:pub {"ui_message", "show_rotate_confirm", false, false}
+
     if pickup_object then
         -- 针对流体盒子的特殊处理
         if has_fluidboxes(pickup_object.prototype_name) then
