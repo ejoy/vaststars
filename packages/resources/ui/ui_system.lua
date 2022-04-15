@@ -24,22 +24,7 @@ function m.close()
 end
 
 do
-    function m.addEventListener(data_model, bind_data, event_funcs)
-        local t = {}
-        for _, v in ipairs(bind_data) do
-            t[v] = true
-        end
-
-        assert(event_funcs["SET_DATA"] == nil)
-        event_funcs["SET_DATA"] = function(data)
-            for k, v in pairs(data) do
-                if t[k] then
-                    data_model[k] = v
-                    data_model(k)
-                end
-            end
-        end
-
+    function m.addEventListener(event_funcs)
         window.addEventListener("message", function(event)
             if not event.data then
                 console.log("event data is nil")

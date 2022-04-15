@@ -60,7 +60,7 @@
                 ui_sys.close()
             end
 
-            ui_sys.addEventListener(start, {}, {
+            ui_sys.addEventListener({
                 ["INIT"] = function(FluidName, FluidCount, NewFluidName)
                     start.FluidName = FluidName
                     start.FluidCount = FluidCount
