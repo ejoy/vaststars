@@ -18,7 +18,7 @@ animation:
 graphic:
   framebuffer:
     ratio: 1
-    scene_ratio: 1
+    scene_ratio: 0.75
   curve_world:
     curve_rate: 0.11999999731779099
     dirVS: {0, 0, 1, 0}

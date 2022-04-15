@@ -23,9 +23,10 @@ local function select(self, index_field, cache_value)
 		else
 			if value[index_field] ~= cache_value then
 				self.cache[index_field][cache_value][key] = nil
+			else
+				r[key] = value
 			end
 		end
-		r[key] = value
 	end
 
 	return next, r, nil
