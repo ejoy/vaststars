@@ -281,6 +281,9 @@ local function new_pickup_object(prototype_name, dir, coord)
 
         -- 针对流体盒子的特殊处理
         world:pub {"ui_message", "show_set_fluidbox", has_fluidboxes(prototype_name)}
+
+        refresh_pickup_pipe()
+        refresh_pipe_connection(pickup_object)
     end
 
     -- 针对 水管 & 路块 的特殊处理
