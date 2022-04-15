@@ -120,7 +120,7 @@ prototype "水电站1" {
     description = "处理海水的工厂",
 }
 
-prototype "砖石公路" {
+prototype "砖石公路-O型" {
     type = {"item"},
     stack = 100,
     description = "处理海水的工厂",

@@ -112,7 +112,7 @@ local menu = {
         image = "construct/logisitic1.png",
         detail = {
             {
-                prototype = "砖石公路",
+                prototype = "砖石公路-O型",
                 image = "construct/processor.png",
             },
             {
@@ -142,7 +142,7 @@ local menu = {
         image = "construct/modify.png",
         detail = {
             {
-                prototype = "砖石公路",
+                prototype = "砖石公路-O型",
                 image = "construct/processor.png",
             },
             {

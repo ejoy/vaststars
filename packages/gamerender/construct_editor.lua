@@ -16,6 +16,7 @@ local dir_tonumber = general.dir_tonumber
 local rotate_dir_times = general.rotate_dir_times
 local get_fluidboxes = ecs.require "gameplay.utility.get_fluidboxes"
 local has_fluidboxes = ecs.require "gameplay.utility.has_fluidboxes"
+local get_roadboxes = ecs.require "gameplay.utility.get_roadboxes"
 local vsobject_manager = ecs.require "vsobject_manager"
 local create_cache = require "utility.multiple_cache"
 local gameplay_core = ecs.require "gameplay.core"
@@ -25,22 +26,22 @@ local DEFAULT_DIR <const> = 'N'
 local M = {}
 local pickup_object
 
-local cache_names = {"TEMPORARY", "CONFIRM", "EXISTING"}
+local cache_names = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local objects_index_field = {"id", "teardown"}
 local tile_objects_index_field = {"coord", "id"}
 
 local objects = create_cache(cache_names, table.unpack(objects_index_field)) -- = {[id] = object, ...}
 local tile_objects = create_cache(cache_names, table.unpack(tile_objects_index_field)) -- = {[coord] = {id = xx, fluidbox_dir = {[xx] = true, ...}}, ...}
 
-local get_fluidbox_coord; do
-    local fluidbox_dir_coord = {
+local get_dir_coord; do
+    local dir_coord = {
         ['N'] = {x = 0,  y = -1},
         ['E'] = {x = 1,  y = 0},
         ['S'] = {x = 0,  y = 1},
         ['W'] = {x = -1, y = 0},
     }
-    function get_fluidbox_coord(x, y, dir)
-        local c = assert(fluidbox_dir_coord[dir])
+    function get_dir_coord(x, y, dir)
+        local c = assert(dir_coord[dir])
         return x + c.x, y + c.y
     end
 end
@@ -49,7 +50,7 @@ local function get_neighbor_fluid_types(prototype_name, x, y, dir)
     local fluid_types = {}
     for _, v in ipairs(get_fluidboxes(prototype_name, x, y, dir)) do
         for dir in pairs(v.fluidbox_dir) do
-            local dx, dy = get_fluidbox_coord(v.x, v.y, dir)
+            local dx, dy = get_dir_coord(v.x, v.y, dir)
             local tile_object = tile_objects:get(cache_names, packcoord(dx, dy))
             if tile_object and tile_object.fluidbox_dir then
                 if tile_object.fluidbox_dir[opposite_dir(dir)] then
@@ -134,6 +135,11 @@ local function set_tile_object(object)
     end
 
     --
+    for _, v in ipairs(get_roadboxes(object.prototype_name, object.x, object.y, object.dir)) do
+        t[packcoord(v.x, v.y)].road_dir = v.road_dir
+    end
+
+    --
     for _, tile_object in pairs(t) do
         tile_objects:set("TEMPORARY", tile_object)
     end
@@ -156,7 +162,7 @@ local function refresh_pipe(x, y)
     local state = 0
     for _, v in ipairs(get_fluidboxes(object.prototype_name, object.x, object.y, object.dir)) do
         for dir in pairs(v.fluidbox_dir) do
-            local dx, dy = get_fluidbox_coord(v.x, v.y, dir)
+            local dx, dy = get_dir_coord(v.x, v.y, dir)
             local tile_object = tile_objects:get(cache_names, packcoord(dx, dy))
             if tile_object and tile_object.fluidbox_dir then
                 if tile_object.fluidbox_dir[opposite_dir(dir)] then
@@ -170,29 +176,88 @@ local function refresh_pipe(x, y)
     return object.prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format(ntype)), dir
 end
 
-local function refresh_pickup_pipe()
-    assert(pickup_object)
-    local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
-    if not typeobject.pipe then
+local function refresh_road(x, y)
+    local tile_object = tile_objects:get(cache_names, packcoord(x, y))
+    if not tile_object then
         return
     end
 
-    local prototype_name, dir = refresh_pipe(pickup_object.x, pickup_object.y)
-    if prototype_name then
-        local vsobject = assert(vsobject_manager:get(pickup_object.id))
-        vsobject:update {prototype_name = prototype_name}
-        vsobject:set_dir(dir)
+    local object = assert(objects:get(cache_names, tile_object.id))
+    local typeobject = gameplay.queryByName("entity", object.prototype_name)
+    if not typeobject.road then
+        return
+    end
 
-        pickup_object.prototype_name = prototype_name
-        pickup_object.dir = dir
+    local state = 0
+    for _, v in ipairs(get_roadboxes(object.prototype_name, object.x, object.y, object.dir)) do
+        for dir in pairs(v.road_dir) do
+            local dx, dy = get_dir_coord(v.x, v.y, dir)
+            local tile_object = tile_objects:get(cache_names, packcoord(dx, dy))
+            if tile_object and tile_object.road_dir then
+                if tile_object.road_dir[opposite_dir(dir)] then
+                    state = flow_shape.set_state(state, dir_tonumber(dir), 1)
+                end
+            end
+        end
+    end
+
+    local ntype, dir = flow_shape.to_type_dir(state)
+    return object.prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format(ntype)), dir
+end
+
+local function refresh_pickup_flow_shape()
+    assert(pickup_object)
+    local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
+    if typeobject.pipe then
+        local prototype_name, dir = refresh_pipe(pickup_object.x, pickup_object.y)
+        if prototype_name then
+            local vsobject = assert(vsobject_manager:get(pickup_object.id))
+            vsobject:update {prototype_name = prototype_name}
+            vsobject:set_dir(dir)
+
+            pickup_object.prototype_name = prototype_name
+            pickup_object.dir = dir
+        end
+    end
+
+    if typeobject.road then
+        local prototype_name, dir = refresh_road(pickup_object.x, pickup_object.y)
+        if prototype_name then
+            local vsobject = assert(vsobject_manager:get(pickup_object.id))
+            vsobject:update {prototype_name = prototype_name}
+            vsobject:set_dir(dir)
+
+            pickup_object.prototype_name = prototype_name
+            pickup_object.dir = dir
+        end
     end
 end
 
-local function refresh_pipe_connection(object)
+local function refresh_flow_connection(object)
     for _, v in ipairs(get_fluidboxes(object.prototype_name, object.x, object.y, object.dir)) do
         for dir in pairs(v.fluidbox_dir) do
-            local dx, dy = get_fluidbox_coord(v.x, v.y, dir)
+            local dx, dy = get_dir_coord(v.x, v.y, dir)
             local prototype_name, dir = refresh_pipe(dx, dy)
+            if prototype_name then
+                local tile_object = assert(tile_objects:get(cache_names, packcoord(dx, dy)))
+
+                local vsobject = assert(vsobject_manager:get(tile_object.id))
+                vsobject:update {prototype_name = prototype_name}
+                vsobject:set_dir(dir)
+
+                local object = clone_object(assert(objects:get(cache_names, tile_object.id)))
+                object.prototype_name = prototype_name
+                object.dir = dir
+
+                set_tile_object(object)
+            end
+        end
+    end
+
+    for _, v in ipairs(get_roadboxes(object.prototype_name, object.x, object.y, object.dir)) do
+        for dir in pairs(v.road_dir) do
+            local dx, dy = get_dir_coord(v.x, v.y, dir)
+            local prototype_name, dir = refresh_road(dx, dy)
             if prototype_name then
                 local tile_object = assert(tile_objects:get(cache_names, packcoord(dx, dy)))
 
@@ -282,12 +347,28 @@ local function new_pickup_object(prototype_name, dir, coord)
         -- 针对流体盒子的特殊处理
         world:pub {"ui_message", "show_set_fluidbox", has_fluidboxes(prototype_name)}
 
-        refresh_pickup_pipe()
-        refresh_pipe_connection(pickup_object)
+        refresh_pickup_flow_shape()
+        refresh_flow_connection(pickup_object)
+    end
+
+    local show_confirm = true
+    -- 针对流体盒子的特殊处理
+    if has_fluidboxes(pickup_object.prototype_name) then
+        local fluid_types = get_neighbor_fluid_types(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir)
+        assert(#fluid_types <= 1)
+        if #fluid_types == 1 then
+            pickup_object.fluid = {assert(fluid_types[1]), 0}
+            world:pub {"ui_message", "show_set_fluidbox", false}
+            show_confirm = true
+        else
+            pickup_object.fluid = {}
+            world:pub {"ui_message", "show_set_fluidbox", true}
+            show_confirm = false
+        end
     end
 
     -- 针对 水管 & 路块 的特殊处理
-    world:pub {"ui_message", "show_rotate_confirm", not(typeobject.pipe or typeobject.road), true}
+    world:pub {"ui_message", "show_rotate_confirm", not(typeobject.pipe or typeobject.road), show_confirm}
 
     return pickup_object
 end
@@ -363,7 +444,7 @@ function M:adjust_pickup_object()
     local vsobject_type
     if not check_construct_detector(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) then
         vsobject_type = "invalid_construct"
-        refresh_pickup_pipe()
+        refresh_pickup_flow_shape()
 
         -- 针对流体盒子的特殊处理
         if has_fluidboxes(pickup_object.prototype_name) then
@@ -374,8 +455,8 @@ function M:adjust_pickup_object()
         vsobject_type = "construct"
 
         set_tile_object(pickup_object)
-        refresh_pickup_pipe()
-        refresh_pipe_connection(pickup_object)
+        refresh_pickup_flow_shape()
+        refresh_flow_connection(pickup_object)
 
         -- 针对流体盒子的特殊处理
         if has_fluidboxes(pickup_object.prototype_name) then
@@ -384,6 +465,7 @@ function M:adjust_pickup_object()
             if #fluid_types == 1 then
                 pickup_object.fluid = {assert(fluid_types[1]), 0}
                 world:pub {"ui_message", "show_set_fluidbox", false}
+                world:pub {"ui_message", "show_rotate_confirm", false, true}
             else
                 pickup_object.fluid = {}
                 world:pub {"ui_message", "show_set_fluidbox", true}
@@ -440,13 +522,13 @@ function M:rotate_pickup_object()
     local object_type
     if not check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) then
         object_type = "invalid_construct"
-        refresh_pickup_pipe()
+        refresh_pickup_flow_shape()
     else
         object_type = "construct"
 
         set_tile_object(pickup_object)
-        refresh_pickup_pipe()
-        refresh_pipe_connection(pickup_object)
+        refresh_pickup_flow_shape()
+        refresh_flow_connection(pickup_object)
     end
     pickup_object.vsobject_type = object_type
 
@@ -475,8 +557,8 @@ function M:complete()
         object.vsobject_type = "constructed"
         t[id] = object
     end
-    objects:commit("CONFIRM", "EXISTING")
-    tile_objects:commit("CONFIRM", "EXISTING")
+    objects:commit("CONFIRM", "CONSTRUCTED")
+    tile_objects:commit("CONFIRM", "CONSTRUCTED")
 
     for _, object in pairs(t) do
         local vsobject = assert(vsobject_manager:get(object.id))
@@ -561,16 +643,16 @@ function M:teardown_complete()
         local vsobject = assert(vsobject_manager:get(id))
         vsobject:remove()
 
-        objects:remove("EXISTING", id)
-        for coord in tile_objects:select("EXISTING", "id", id) do
-            tile_objects:remove("EXISTING", coord)
+        objects:remove("CONSTRUCTED", id)
+        for coord in tile_objects:select("CONSTRUCTED", "id", id) do
+            tile_objects:remove("CONSTRUCTED", coord)
         end
 
         removelist[packcoord(object.x, object.y)] = object
     end
 
     for _, object in pairs(removelist) do
-        refresh_pipe_connection(object)
+        refresh_flow_connection(object)
     end
 
     local needbuild = false
@@ -595,6 +677,7 @@ function M:set_pickup_object_fluid(fluid_name)
     end
 
     pickup_object.fluid = {fluid_name, 0}
+    world:pub {"ui_message", "show_rotate_confirm", false, true}
 end
 
 return M
