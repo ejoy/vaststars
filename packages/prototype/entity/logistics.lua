@@ -47,9 +47,50 @@ prototype "科技中心1" {
     priority = "secondary",
 }
 
-prototype "砖石公路" {
+prototype "砖石公路-O型" {
     model = "prefabs/road/road_O.prefab",
     construct_detector = {"exclusive"},
+    road = true,
+    type ={"entity"},
+    area = "1x1",
+}
+
+prototype "砖石公路-I型" {
+    model = "prefabs/road/road_I.prefab",
+    construct_detector = {"exclusive"},
+    road = true,
+    type ={"entity"},
+    area = "1x1",
+}
+
+prototype "砖石公路-L型" {
+    model = "prefabs/road/road_L.prefab",
+    construct_detector = {"exclusive"},
+    road = true,
+    type ={"entity"},
+    area = "1x1",
+}
+
+prototype "砖石公路-T型" {
+    model = "prefabs/road/road_T.prefab",
+    construct_detector = {"exclusive"},
+    road = true,
+    type ={"entity"},
+    area = "1x1",
+}
+
+prototype "砖石公路-U型" {
+    model = "prefabs/road/road_U.prefab",
+    construct_detector = {"exclusive"},
+    road = true,
+    type ={"entity"},
+    area = "1x1",
+}
+
+prototype "砖石公路-X型" {
+    model = "prefabs/road/road_X.prefab",
+    construct_detector = {"exclusive"},
+    road = true,
     type ={"entity"},
     area = "1x1",
 }

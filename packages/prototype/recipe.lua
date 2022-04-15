@@ -177,7 +177,7 @@ prototype "机器爪1" {
     description = "铁制品和电动机制造机器爪",
 }
 
-prototype "砖石公路" {
+prototype "砖石公路-O型" {
     type = { "recipe" },
     category = "中型制造",
     group = "物流",
@@ -186,7 +186,7 @@ prototype "砖石公路" {
         {"石砖", 8},
     },
     results = {
-        {"砖石公路", 4},
+        {"砖石公路-O型", 4},
     },
     time = "6s",
     description = "使用石砖制造公路",
@@ -216,7 +216,7 @@ prototype "物流中心1" {
     ingredients = {
         {"蒸汽发电机1", 1},
         {"车站1", 2},
-        {"砖石公路", 10},
+        {"砖石公路-O型", 10},
     },
     results = {
         {"物流中心1", 1},
