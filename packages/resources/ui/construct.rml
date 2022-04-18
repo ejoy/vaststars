@@ -145,13 +145,13 @@
             local ui_sys = require "ui_system"
             local unconfirmed_double_confirm_continuation = function() end
             local start = window.createModel "start" {
-                fps_text = ' ',           -- fps 信息
-                drawcall_text = ' ',      -- drawcall 信息
+                fps_text = " ",           -- fps 信息
+                drawcall_text = " ",      -- drawcall 信息
                 fluid_category = {},      -- 流体分类信息, 从 world 获取
                 cur_fluid_category = "",  -- 当前选中的流体分类
-                cur_construct_menu = '',  -- 当前选中的二级建造菜单名
-                cur_edit_mode = '',       -- 当前的编辑模式, construct/dismantle
-                cur_selected_fluid = {},  -- 当前选中的流体盒中的流体
+                cur_construct_menu = "",  -- 当前选中的二级建造菜单名
+                cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
+                cur_selected_fluid = "",  -- 当前选中的流体盒中的流体
                 show_set_fluidbox = false,
                 show_construct_complete = false,
                 show_rotate = false,  -- 是否显示[旋转建筑]
@@ -204,17 +204,8 @@
                 ui_sys.pub("ui", "construct", "construct_entity", prototype)
             end
             function start.clickSelectFluid(event, FluidName)
-                if not start.cur_selected_fluid[1] then
-                    ui_sys.pub("ui", "construct", "fluidbox_update", FluidName)
-                else
-                    if start.cur_selected_fluid[1] ~= FluidName then
-                        ui_sys.open("pipe_build_pop.rml", start.cur_selected_fluid[1], start.cur_selected_fluid[2], FluidName)
-                    else
-                        ui_sys.pub("ui", "construct", "fluidbox_update", FluidName)
-                    end
-                    start.cur_selected_fluid = {}
-                end
-                start.show_set_fluidbox = false
+                ui_sys.pub("ui", "construct", "fluidbox_update", FluidName)
+                start.cur_selected_fluid = FluidName
             end
             function start.clickDebug(event, i)
                 ui_sys.pub("debug", i)
@@ -223,10 +214,10 @@
                 ["INIT"] = function(fluid_category)
                     start.fluid_category = fluid_category
                 end,
-                ["show_set_fluidbox"] = function(visible, fluid)
+                ["show_set_fluidbox"] = function(visible)
                     start.show_set_fluidbox = visible
                     start.cur_fluid_category = ""
-                    start.cur_selected_fluid = fluid or {}
+                    start.cur_selected_fluid = ""
                 end,
                 ["show_rotate_confirm"] = function(button_state)
                     if button_state.rotate ~= nil then
@@ -336,7 +327,7 @@
                     <div data-for = "fluid_category" style = "flex-direction: row;">
                         <!-- separator -->
                         <div style = "width: 2.67vmin;" data-if="it_index == 0" />
-                        <div style='width: 13.33vmin; height: 13.33vmin; background-color: rgb(59, 137, 211); border: 0.27vmin white; flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;' data-event-click = "cur_fluid_category = it.catagory">
+                        <div style='width: 13.33vmin; height: 13.33vmin; flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;' data-event-click = "cur_fluid_category = it.catagory" data-style-background-color="cur_fluid_category == it.catagory ? 'rgb(0,176,80)' : 'rgb(59, 137, 211)'" data-style-border="cur_fluid_category == it.catagory ? '0.57vmin rgb(250, 205, 9)' : '0.37vmin white'">
                             <div style='margin: 0 auto; top: 1.33vmin; width: 6.67vmin; height: 6.67vmin; background-size:cover;' data-style-background-image = "it.icon" />
                             <div style ="font-size: 3.33vmin; top: 1.33vmin;">{{it.catagory}}</div>
                         </div>
@@ -352,7 +343,9 @@
                         <div data-for = "catagory.fluid" style = "flex-direction: row;" data-if = "cur_fluid_category == catagory.catagory">
                             <!-- separator -->
                             <div style = "width: 2.67vmin;" data-if="it_index == 0" />
-                            <div style='width: 13.33vmin; height: 13.33vmin; background-color: rgb(250, 205, 9); border: 0.27vmin white; flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;' data-event-click = "clickSelectFluid(it.name)">
+                            <div style='width: 13.33vmin; height: 13.33vmin; flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;' data-event-click = "clickSelectFluid(it.name)" 
+                                data-style-border="cur_selected_fluid == it.name ? '0.57vmin rgb(250, 205, 9)' : '0.37vmin white'"
+                                data-style-background-color="cur_selected_fluid == it.name ? 'rgb(0,176,80)' : 'rgb(250, 205, 9)'">
                                 <div style='margin: 0 auto; top: 1.33vmin; width: 6.67vmin; height: 6.67vmin; background-size:cover;' data-style-background-image = "it.icon" />
                                 <div style ="font-size: 3.33vmin; top: 1.33vmin;color:rgb(73, 60, 32);-webkit-text-stroke: 0.07vmin rgb(39, 32, 17);">{{it.name}}</div>
                             </div>

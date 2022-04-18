@@ -15,7 +15,7 @@ local opposite_dir = general.opposite_dir
 local dir_tonumber = general.dir_tonumber
 local rotate_dir_times = general.rotate_dir_times
 local get_fluidboxes = ecs.require "gameplay.utility.get_fluidboxes"
-local has_fluidboxes = ecs.require "gameplay.utility.has_fluidboxes"
+local need_set_fluid = ecs.require "gameplay.utility.need_set_fluid"
 local get_roadboxes = ecs.require "gameplay.utility.get_roadboxes"
 local vsobject_manager = ecs.require "vsobject_manager"
 local create_cache = require "utility.multiple_cache"
@@ -71,7 +71,7 @@ local function get_neighbor_fluid_types(prototype_name, x, y, dir)
     return array
 end
 
-local function check_construct_detector(prototype_name, x, y, dir, id)
+local function check_construct_detector(prototype_name, x, y, dir, id, fluid_type)
     local typeobject = gameplay.queryByName("entity", prototype_name)
     local construct_detector = typeobject.construct_detector
     if not construct_detector then
@@ -99,6 +99,10 @@ local function check_construct_detector(prototype_name, x, y, dir, id)
         return false
     end
 
+    if #fluid_types == 1 and fluid_type and fluid_types[1] ~= fluid_type then
+        return false
+    end
+
     return true
 end
 
@@ -108,6 +112,7 @@ local function clone_object(object)
         vsobject_type = object.vsobject_type,
         prototype_name = object.prototype_name,
         dir = object.dir,
+        manual_set_fluid = object.manual_set_fluid,
         fluid = object.fluid,
         x = object.x,
         y = object.y,
@@ -336,6 +341,7 @@ local function new_pickup_object(prototype_name, dir, coord)
         prototype_name = prototype_name,
         dir = dir,
         fluid = {},
+        manual_set_fluid = false,
         x = coord[1],
         y = coord[2],
         teardown = false,
@@ -344,31 +350,66 @@ local function new_pickup_object(prototype_name, dir, coord)
     if need_set_tile_object then
         set_tile_object(pickup_object)
 
-        -- 针对流体盒子的特殊处理
-        world:pub {"ui_message", "show_set_fluidbox", has_fluidboxes(prototype_name)}
-
         refresh_pickup_flow_shape()
         refresh_flow_shape(pickup_object)
     end
 
     local show_confirm = true
     -- 针对流体盒子的特殊处理
-    if has_fluidboxes(pickup_object.prototype_name) then
+    if need_set_fluid(pickup_object.prototype_name) then
         local fluid_types = get_neighbor_fluid_types(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir)
         if #fluid_types == 1 then
-            pickup_object.fluid = {assert(fluid_types[1]), 0}
-            world:pub {"ui_message", "show_set_fluidbox", false}
+            pickup_object.fluid = {fluid_types[1], 0}
             show_confirm = true
         else
             pickup_object.fluid = {}
-            world:pub {"ui_message", "show_set_fluidbox", true}
             show_confirm = false
         end
+        world:pub {"ui_message", "show_set_fluidbox", true}
+    else
+        world:pub {"ui_message", "show_set_fluidbox", false}
     end
 
     -- 针对 水管 & 路块 的特殊处理
     world:pub {"ui_message", "show_rotate_confirm", {rotate = not(typeobject.pipe or typeobject.road), confirm = show_confirm}}
 
+    return pickup_object
+end
+
+local function update_pickup_object(pickup_object)
+    local vsobject_type
+    local fluid_type
+    if pickup_object.manual_set_fluid then
+        fluid_type = pickup_object.fluid[1]
+    end
+
+    if not check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.id, fluid_type) then
+        vsobject_type = "invalid_construct"
+        refresh_pickup_flow_shape()
+    else
+        vsobject_type = "construct"
+
+        set_tile_object(pickup_object)
+        refresh_pickup_flow_shape()
+        refresh_flow_shape(pickup_object)
+
+        -- 针对流体盒子的特殊处理
+        if need_set_fluid(pickup_object.prototype_name) then
+            local fluid_types = get_neighbor_fluid_types(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
+            assert(#fluid_types <= 1)
+            if #fluid_types == 1 then
+                pickup_object.fluid = {assert(fluid_types[1]), 0}
+                world:pub {"ui_message", "show_rotate_confirm", {confirm = true}}
+            else
+                if not pickup_object.manual_set_fluid then
+                    pickup_object.fluid = {}
+                    world:pub {"ui_message", "show_rotate_confirm", {confirm = false}}
+                end
+            end
+        end
+    end
+
+    pickup_object.vsobject_type = vsobject_type
     return pickup_object
 end
 
@@ -398,13 +439,18 @@ function M:confirm()
         return
     end
 
-    if not check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.id) then
+    local fluid_type
+    if pickup_object.manual_set_fluid then
+        fluid_type = assert(pickup_object.fluid[1])
+    end
+
+    if not check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.id, fluid_type) then
         print("can not construct")
         return
     end
 
     -- 针对流体盒子的特殊处理
-    if has_fluidboxes(pickup_object.prototype_name) then
+    if need_set_fluid(pickup_object.prototype_name) then
         if not pickup_object.fluid[1] then
             print("set fluid first")
             return
@@ -432,6 +478,8 @@ function M:adjust_pickup_object()
 
     revert_changes({"TEMPORARY"})
 
+    local vsobject = assert(vsobject_manager:get(pickup_object.id))
+
     --
     local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
     local coord, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, pickup_object.dir))
@@ -439,45 +487,11 @@ function M:adjust_pickup_object()
         return
     end
     pickup_object.x, pickup_object.y = coord[1], coord[2]
-
-    local vsobject_type
-    if not check_construct_detector(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) then
-        vsobject_type = "invalid_construct"
-        refresh_pickup_flow_shape()
-
-        -- 针对流体盒子的特殊处理
-        if has_fluidboxes(pickup_object.prototype_name) then
-            pickup_object.fluid = {}
-            world:pub {"ui_message", "show_set_fluidbox", false}
-        end
-    else
-        vsobject_type = "construct"
-
-        set_tile_object(pickup_object)
-        refresh_pickup_flow_shape()
-        refresh_flow_shape(pickup_object)
-
-        -- 针对流体盒子的特殊处理
-        if has_fluidboxes(pickup_object.prototype_name) then
-            local fluid_types = get_neighbor_fluid_types(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir)
-            assert(#fluid_types <= 1)
-            if #fluid_types == 1 then
-                pickup_object.fluid = {assert(fluid_types[1]), 0}
-                world:pub {"ui_message", "show_set_fluidbox", false}
-                world:pub {"ui_message", "show_rotate_confirm", {confirm = true}}
-            else
-                pickup_object.fluid = {}
-                world:pub {"ui_message", "show_set_fluidbox", true}
-                world:pub {"ui_message", "show_rotate_confirm", {confirm = false}}
-            end
-        end
-    end
-
-    pickup_object.vsobject_type = vsobject_type
-
-    local vsobject = assert(vsobject_manager:get(pickup_object.id))
     vsobject:set_position(position)
-    vsobject:update {type = vsobject_type}
+
+    --
+    pickup_object = update_pickup_object(pickup_object)
+    vsobject:update {type = pickup_object.vsobject_type}
 end
 
 function M:move_pickup_object(delta)
@@ -520,41 +534,14 @@ function M:rotate_pickup_object()
     vsobject:set_dir(pickup_object.dir)
 
     --
-    local object_type
-    if not check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) then
-        object_type = "invalid_construct"
-        refresh_pickup_flow_shape()
-    else
-        object_type = "construct"
-
-        set_tile_object(pickup_object)
-        refresh_pickup_flow_shape()
-        refresh_flow_shape(pickup_object)
-
-        -- 针对流体盒子的特殊处理
-        if has_fluidboxes(pickup_object.prototype_name) then
-            local fluid_types = get_neighbor_fluid_types(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir)
-            assert(#fluid_types <= 1)
-            if #fluid_types == 1 then
-                pickup_object.fluid = {assert(fluid_types[1]), 0}
-                world:pub {"ui_message", "show_set_fluidbox", false}
-                world:pub {"ui_message", "show_rotate_confirm", {confirm = true}}
-            else
-                pickup_object.fluid = {}
-                world:pub {"ui_message", "show_set_fluidbox", true}
-                world:pub {"ui_message", "show_rotate_confirm", {confirm = false}}
-            end
-        end
-    end
-    pickup_object.vsobject_type = object_type
-
-    vsobject:update {type = object_type}
+    pickup_object = update_pickup_object(pickup_object)
+    vsobject:update {type = pickup_object.vsobject_type}
 end
 
 function M:complete()
     if pickup_object then
         -- 针对流体盒子的特殊处理
-        if has_fluidboxes(pickup_object.prototype_name) then
+        if need_set_fluid(pickup_object.prototype_name) then
             world:pub {"ui_message", "show_set_fluidbox", false}
         end
 
@@ -593,7 +580,7 @@ function M:cancel()
 
     if pickup_object then
         -- 针对流体盒子的特殊处理
-        if has_fluidboxes(pickup_object.prototype_name) then
+        if need_set_fluid(pickup_object.prototype_name) then
             world:pub {"ui_message", "show_set_fluidbox", false}
         end
 
@@ -627,7 +614,7 @@ function M:teardown_begin()
 
     if pickup_object then
         -- 针对流体盒子的特殊处理
-        if has_fluidboxes(pickup_object.prototype_name) then
+        if need_set_fluid(pickup_object.prototype_name) then
             world:pub {"ui_message", "show_set_fluidbox", false}
         end
 
@@ -636,9 +623,9 @@ function M:teardown_begin()
     end
 end
 
-function M:teardown(vsobject_id)
-    local object = clone_object(assert(objects:get(cache_names, vsobject_id)))
-    local vsobject = assert(vsobject_manager:get(vsobject_id))
+function M:teardown(id)
+    local object = clone_object(assert(objects:get(cache_names, id)))
+    local vsobject = assert(vsobject_manager:get(id))
 
     object.teardown = not object.teardown
 
@@ -649,7 +636,7 @@ function M:teardown(vsobject_id)
         object.vsobject_type = "constructed"
         vsobject:update {type = "constructed"}
     end
-    objects:set("TEMPORARY", object) --TODO 此处直接覆盖掉缓存的 object
+    objects:set("TEMPORARY", object)
 end
 
 function M:teardown_complete()
@@ -691,8 +678,13 @@ function M:set_pickup_object_fluid(fluid_name)
         return
     end
 
+    pickup_object.manual_set_fluid = true
     pickup_object.fluid = {fluid_name, 0}
     world:pub {"ui_message", "show_rotate_confirm", {confirm = true}}
+
+    local vsobject = assert(vsobject_manager:get(pickup_object.id))
+    pickup_object = update_pickup_object(pickup_object)
+    vsobject:update {type = pickup_object.vsobject_type}
 end
 
 return M
