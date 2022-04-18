@@ -22,12 +22,25 @@ funcs["fluidboxes"] = function(typeobject)
     return false
 end
 
-local function has_fluidboxes(prototype_name)
+local function has_type(types, type)
+    for i = 1, #types do
+        if types[i] == type then
+            return true
+        end
+    end
+    return false
+end
+
+local function need_set_fluid(prototype_name)
     local typeobject = gameplay.queryByName("entity", prototype_name)
     if typeobject.pipe then -- 管道直接认为有四个方向的流体口, 不读取配置
         return true
     else
         local types = typeobject.type
+        if has_type(types, "assembling") then -- 组装机建造时不需要手动设置流体类型, 根据组装机的配方决定流体类型
+            return false
+        end
+
         for i = 1, #types do
             local func = funcs[types[i]]
             if func then
@@ -39,4 +52,4 @@ local function has_fluidboxes(prototype_name)
         return false
     end
 end
-return has_fluidboxes
+return need_set_fluid
