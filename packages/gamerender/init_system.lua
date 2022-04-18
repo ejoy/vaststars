@@ -10,11 +10,13 @@ local camera = ecs.require "engine.camera"
 local terrain = ecs.require "terrain"
 local get_fluid_category = ecs.require "gameplay.utility.get_fluid_category"
 local gameplay_core = ecs.require "gameplay.core"
+local check_prototype = require "gameplay.check"
 local construct_editor = ecs.require "construct_editor"
 local fps = ecs.require "fps"
 
 local m = ecs.system 'init_system'
 function m:init_world()
+    check_prototype()
     bgfx.maxfps(FRAMES_PER_SECOND)
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
 

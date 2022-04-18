@@ -136,11 +136,13 @@ local function set_tile_object(object)
 
     --
     for _, v in ipairs(get_fluidboxes(object.prototype_name, object.x, object.y, object.dir)) do
+        assert(t[packcoord(v.x, v.y)])
         t[packcoord(v.x, v.y)].fluidbox_dir = v.fluidbox_dir
     end
 
     --
     for _, v in ipairs(get_roadboxes(object.prototype_name, object.x, object.y, object.dir)) do
+        assert(t[packcoord(v.x, v.y)])
         t[packcoord(v.x, v.y)].road_dir = v.road_dir
     end
 

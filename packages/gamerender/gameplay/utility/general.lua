@@ -1,6 +1,8 @@
 local M = {}
 
 function M.packcoord(x, y)
+    assert(x & 0xFF == x)
+    assert(y & 0xFF == y)
     return x | (y<<8)
 end
 
@@ -70,6 +72,15 @@ function M.rotate_fluidbox(position, direction, area)
     elseif direction == 'W' then
         return y, w - x, dir
     end
+end
+
+function M.has_type(types, type)
+    for i = 1, #types do
+        if types[i] == type then
+            return true
+        end
+    end
+    return false
 end
 
 return M

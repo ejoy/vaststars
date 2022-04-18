@@ -4,6 +4,8 @@ local w = world.w
 
 local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
+local general = require "gameplay.utility.general"
+local has_type = general.has_type
 
 local funcs = {}
 funcs["fluidbox"] = function(typeobject)
@@ -17,15 +19,6 @@ funcs["fluidboxes"] = function(typeobject)
             if #v.connections > 0 then
                 return true
             end
-        end
-    end
-    return false
-end
-
-local function has_type(types, type)
-    for i = 1, #types do
-        if types[i] == type then
-            return true
         end
     end
     return false
