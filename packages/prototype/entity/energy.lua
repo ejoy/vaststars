@@ -13,8 +13,8 @@ prototype "蒸汽发电机1" {
         height = 200,
         base_level = -100,
         connections = {
-            {type="input-output", position={0,1,"W"}},
-            {type="input-output", position={2,1,"E"}},
+            {type="input-output", position={1,0,"N"}},
+            {type="input-output", position={1,2,"S"}},
         }
     }
 }
