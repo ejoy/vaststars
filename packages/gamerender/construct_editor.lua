@@ -7,7 +7,7 @@ local math3d = require "math3d"
 
 local flow_shape = require "gameplay.utility.flow_shape"
 local terrain = ecs.require "terrain"
-local camera = ecs.require "camera"
+local camera = ecs.require "engine.camera"
 local general = require "gameplay.utility.general"
 local packcoord = general.packcoord
 local rotate_area = general.rotate_area

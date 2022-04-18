@@ -4,7 +4,7 @@ local w = world.w
 
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local math3d = require "math3d"
-local camera = ecs.require "camera"
+local camera = ecs.require "engine.camera"
 
 local dragdrop_camera_sys = ecs.system "dragdrop_camera_system"
 local single_touch_mb = world:sub {"single_touch"}

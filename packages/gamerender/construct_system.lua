@@ -4,7 +4,7 @@ local w = world.w
 
 local gameplay_core = ecs.require "gameplay.core"
 import_package "vaststars.prototype"
-local camera = ecs.require "camera"
+local camera = ecs.require "engine.camera"
 local construct_editor = ecs.require "construct_editor"
 
 local construct_sys = ecs.system "construct_system"
