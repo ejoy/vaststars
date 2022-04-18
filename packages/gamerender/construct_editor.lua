@@ -207,33 +207,33 @@ end
 
 local function refresh_pickup_flow_shape()
     assert(pickup_object)
+    local vsobject = assert(vsobject_manager:get(pickup_object.id))
     local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
+
     if typeobject.pipe then
         local prototype_name, dir = refresh_pipe(pickup_object.x, pickup_object.y)
         if prototype_name then
-            local vsobject = assert(vsobject_manager:get(pickup_object.id))
-            vsobject:update {prototype_name = prototype_name}
-            vsobject:set_dir(dir)
-
             pickup_object.prototype_name = prototype_name
             pickup_object.dir = dir
+
+            vsobject:update {prototype_name = prototype_name}
+            vsobject:set_dir(dir)
         end
     end
 
     if typeobject.road then
         local prototype_name, dir = refresh_road(pickup_object.x, pickup_object.y)
         if prototype_name then
-            local vsobject = assert(vsobject_manager:get(pickup_object.id))
-            vsobject:update {prototype_name = prototype_name}
-            vsobject:set_dir(dir)
-
             pickup_object.prototype_name = prototype_name
             pickup_object.dir = dir
+
+            vsobject:update {prototype_name = prototype_name}
+            vsobject:set_dir(dir)
         end
     end
 end
 
-local function refresh_flow_connection(object)
+local function refresh_flow_shape(object)
     for _, v in ipairs(get_fluidboxes(object.prototype_name, object.x, object.y, object.dir)) do
         for dir in pairs(v.fluidbox_dir) do
             local dx, dy = get_dir_coord(v.x, v.y, dir)
@@ -348,14 +348,13 @@ local function new_pickup_object(prototype_name, dir, coord)
         world:pub {"ui_message", "show_set_fluidbox", has_fluidboxes(prototype_name)}
 
         refresh_pickup_flow_shape()
-        refresh_flow_connection(pickup_object)
+        refresh_flow_shape(pickup_object)
     end
 
     local show_confirm = true
     -- 针对流体盒子的特殊处理
     if has_fluidboxes(pickup_object.prototype_name) then
         local fluid_types = get_neighbor_fluid_types(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir)
-        assert(#fluid_types <= 1)
         if #fluid_types == 1 then
             pickup_object.fluid = {assert(fluid_types[1]), 0}
             world:pub {"ui_message", "show_set_fluidbox", false}
@@ -368,7 +367,7 @@ local function new_pickup_object(prototype_name, dir, coord)
     end
 
     -- 针对 水管 & 路块 的特殊处理
-    world:pub {"ui_message", "show_rotate_confirm", not(typeobject.pipe or typeobject.road), show_confirm}
+    world:pub {"ui_message", "show_rotate_confirm", {rotate = not(typeobject.pipe or typeobject.road), confirm = show_confirm}}
 
     return pickup_object
 end
@@ -376,7 +375,7 @@ end
 ---
 function M:construct_begin()
     revert_changes({"TEMPORARY"})
-    world:pub {"ui_message", "show_rotate_confirm", false, false}
+    world:pub {"ui_message", "show_rotate_confirm", {rotate = false, confirm = false}}
 end
 
 function M:new_pickup_object(prototype_name)
@@ -456,7 +455,7 @@ function M:adjust_pickup_object()
 
         set_tile_object(pickup_object)
         refresh_pickup_flow_shape()
-        refresh_flow_connection(pickup_object)
+        refresh_flow_shape(pickup_object)
 
         -- 针对流体盒子的特殊处理
         if has_fluidboxes(pickup_object.prototype_name) then
@@ -465,10 +464,11 @@ function M:adjust_pickup_object()
             if #fluid_types == 1 then
                 pickup_object.fluid = {assert(fluid_types[1]), 0}
                 world:pub {"ui_message", "show_set_fluidbox", false}
-                world:pub {"ui_message", "show_rotate_confirm", false, true}
+                world:pub {"ui_message", "show_rotate_confirm", {confirm = true}}
             else
                 pickup_object.fluid = {}
                 world:pub {"ui_message", "show_set_fluidbox", true}
+                world:pub {"ui_message", "show_rotate_confirm", {confirm = false}}
             end
         end
     end
@@ -517,6 +517,7 @@ function M:rotate_pickup_object()
     pickup_object.x, pickup_object.y = coord[1], coord[2]
     pickup_object.dir = dir
     vsobject:set_position(position)
+    vsobject:set_dir(pickup_object.dir)
 
     --
     local object_type
@@ -528,11 +529,25 @@ function M:rotate_pickup_object()
 
         set_tile_object(pickup_object)
         refresh_pickup_flow_shape()
-        refresh_flow_connection(pickup_object)
+        refresh_flow_shape(pickup_object)
+
+        -- 针对流体盒子的特殊处理
+        if has_fluidboxes(pickup_object.prototype_name) then
+            local fluid_types = get_neighbor_fluid_types(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir)
+            assert(#fluid_types <= 1)
+            if #fluid_types == 1 then
+                pickup_object.fluid = {assert(fluid_types[1]), 0}
+                world:pub {"ui_message", "show_set_fluidbox", false}
+                world:pub {"ui_message", "show_rotate_confirm", {confirm = true}}
+            else
+                pickup_object.fluid = {}
+                world:pub {"ui_message", "show_set_fluidbox", true}
+                world:pub {"ui_message", "show_rotate_confirm", {confirm = false}}
+            end
+        end
     end
     pickup_object.vsobject_type = object_type
 
-    vsobject:set_dir(pickup_object.dir)
     vsobject:update {type = object_type}
 end
 
@@ -547,7 +562,7 @@ function M:complete()
         pickup_object = nil
 
         revert_changes({"TEMPORARY"})
-        world:pub {"ui_message", "show_rotate_confirm", false, false}
+        world:pub {"ui_message", "show_rotate_confirm", {rotate = false, confirm = false}}
     end
 
     local needbuild = false
@@ -574,7 +589,7 @@ end
 
 function M:cancel()
     revert_changes({"TEMPORARY", "CONFIRM"})
-    world:pub {"ui_message", "show_rotate_confirm", false, false}
+    world:pub {"ui_message", "show_rotate_confirm", {rotate = false, confirm = false}}
 
     if pickup_object then
         -- 针对流体盒子的特殊处理
@@ -608,7 +623,7 @@ end
 
 function M:teardown_begin()
     revert_changes({"TEMPORARY", "CONFIRM"})
-    world:pub {"ui_message", "show_rotate_confirm", false, false}
+    world:pub {"ui_message", "show_rotate_confirm", {rotate = false, confirm = false}}
 
     if pickup_object then
         -- 针对流体盒子的特殊处理
@@ -652,7 +667,7 @@ function M:teardown_complete()
     end
 
     for _, object in pairs(removelist) do
-        refresh_flow_connection(object)
+        refresh_flow_shape(object)
     end
 
     local needbuild = false
@@ -677,7 +692,7 @@ function M:set_pickup_object_fluid(fluid_name)
     end
 
     pickup_object.fluid = {fluid_name, 0}
-    world:pub {"ui_message", "show_rotate_confirm", false, true}
+    world:pub {"ui_message", "show_rotate_confirm", {confirm = true}}
 end
 
 return M

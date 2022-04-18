@@ -228,6 +228,14 @@
                     start.cur_fluid_category = ""
                     start.cur_selected_fluid = fluid or {}
                 end,
+                ["show_rotate_confirm"] = function(button_state)
+                    if button_state.rotate ~= nil then
+                        start.show_rotate = button_state.rotate
+                    end
+                    if button_state.confirm ~= nil then
+                        start.show_confirm = button_state.confirm
+                    end
+                end,
                 ["show_construct_complete"] = function(visible)
                     start.show_construct_complete = visible
                 end,
@@ -242,10 +250,6 @@
                 end,
                 ["show_unconfirmed_double_confirm"] = function()
                     ui_sys.open("construct_cancel_pop.rml")
-                end,
-                ["show_rotate_confirm"] = function(rotate_visible, confirm_visible)
-                    start.show_rotate = rotate_visible
-                    start.show_confirm = confirm_visible
                 end,
                 ["unconfirmed_double_confirm_continuation"] = function()
                     if unconfirmed_double_confirm_continuation then
