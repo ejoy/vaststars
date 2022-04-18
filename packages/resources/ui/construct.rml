@@ -336,7 +336,7 @@
                     <div data-for = "fluid_category" style = "flex-direction: row;">
                         <!-- separator -->
                         <div style = "width: 2.67vmin;" data-if="it_index == 0" />
-                        <div style='width: 13.33vmin; height: 13.33vmin; background-color: rgb(59, 137, 211); border: 0.27vmin white; flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;' data-event-click = "cur_fluid_category = it.catagory">
+                        <div style='width: 13.33vmin; height: 13.33vmin; flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;' data-event-click = "cur_fluid_category = it.catagory" data-style-background-color="cur_fluid_category == it.catagory ? 'rgb(0,176,80)' : 'rgb(59, 137, 211)'" data-style-border="cur_fluid_category == it.catagory ? '0.57vmin rgb(250, 205, 9)' : '0.37vmin white'">
                             <div style='margin: 0 auto; top: 1.33vmin; width: 6.67vmin; height: 6.67vmin; background-size:cover;' data-style-background-image = "it.icon" />
                             <div style ="font-size: 3.33vmin; top: 1.33vmin;">{{it.catagory}}</div>
                         </div>
@@ -352,7 +352,7 @@
                         <div data-for = "catagory.fluid" style = "flex-direction: row;" data-if = "cur_fluid_category == catagory.catagory">
                             <!-- separator -->
                             <div style = "width: 2.67vmin;" data-if="it_index == 0" />
-                            <div style='width: 13.33vmin; height: 13.33vmin; background-color: rgb(250, 205, 9); border: 0.27vmin white; flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;' data-event-click = "clickSelectFluid(it.name)">
+                            <div style='width: 13.33vmin; border: 0.37vmin white; height: 13.33vmin; background-color: rgb(250, 205, 9);flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;' data-event-click = "clickSelectFluid(it.name)">
                                 <div style='margin: 0 auto; top: 1.33vmin; width: 6.67vmin; height: 6.67vmin; background-size:cover;' data-style-background-image = "it.icon" />
                                 <div style ="font-size: 3.33vmin; top: 1.33vmin;color:rgb(73, 60, 32);-webkit-text-stroke: 0.07vmin rgb(39, 32, 17);">{{it.name}}</div>
                             </div>
