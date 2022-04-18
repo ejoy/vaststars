@@ -74,7 +74,7 @@ local menu = {
         image = "construct/pipe.png",
         detail = {
             {
-                prototype = "管道1",
+                prototype = "管道1-O型",
                 image = "construct/pipe.png",
             },
             {
@@ -112,7 +112,7 @@ local menu = {
         image = "construct/logisitic1.png",
         detail = {
             {
-                prototype = "砖石公路",
+                prototype = "砖石公路-O型",
                 image = "construct/processor.png",
             },
             {
@@ -142,7 +142,7 @@ local menu = {
         image = "construct/modify.png",
         detail = {
             {
-                prototype = "砖石公路",
+                prototype = "砖石公路-O型",
                 image = "construct/processor.png",
             },
             {
@@ -162,7 +162,7 @@ local menu = {
                 image = "construct/logisitic2.png",
             },
             {
-                prototype = "管道1",
+                prototype = "管道1-I型",
                 image = "construct/pipe.png",
             },
             {
