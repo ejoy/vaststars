@@ -11,7 +11,7 @@ local igame_object = ecs.interface "igame_object"
 local game_object_sys = ecs.system "game_object_system"
 
 local prefab_path <const> = "/pkg/vaststars.resources/%s"
-local game_object_event = ecs.require "game_object_event"
+local game_object_event = ecs.require "engine.system.game_object_event"
 
 local detach_slot_mb = world:sub {"game_object_system", "detach_slot"}
 local remove_mb = world:sub {"game_object_system", "remove"}

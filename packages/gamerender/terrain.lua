@@ -69,6 +69,11 @@ function M.create()
     terrain.origin = {shape[1][1], shape[2][3]} -- origin in logical coordinates
 
     --
+    local e = w:singleton("shape_terrain", "shape_terrain:in scene:in id:in")
+    if e then
+       world:remove_entity(e.id)
+    end
+
     ecs.create_entity {
         policy = {
             "ant.scene|scene_object",

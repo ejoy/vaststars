@@ -69,48 +69,62 @@ system "init_system"
     .method "update_world"
 
 system "ui_system"
-    .implement "ui_system.lua"
+    .implement "engine/system/ui_system.lua"
     .method "ui_update"
 
 interface "iui"
-    .implement "ui_system.lua"
+    .implement "engine/system/ui_system.lua"
     .method "open"
     .method "close"
 
 system "dragdrop_camera_system"
-    .implement "dragdrop_camera_system.lua"
+    .implement "engine/system/dragdrop_camera_system.lua"
     .method "camera_usage"
 
 system "touch_simulate_system"
-    .implement "touch_simulate_system.lua"
+    .implement "engine/system/touch_simulate_system.lua"
     .method "data_changed"
 
 system "gesture_simulate_system"
-    .implement "gesture_simulate_system.lua"
+    .implement "engine/system/gesture_simulate_system.lua"
     .method "data_changed"
 
 system "pickup_detect_system"
-    .implement "pickup_detect_system.lua"
+    .implement "engine/system/pickup_detect_system.lua"
     .method "data_changed"
 
 system "pickup_mapping_system"
-    .implement "pickup_mapping_system.lua"
+    .implement "engine/system/pickup_mapping_system.lua"
     .method "entity_remove"
     .method "after_pickup"
 
 interface "ipickup_mapping"
-    .implement "pickup_mapping_system.lua"
+    .implement "engine/system/pickup_mapping_system.lua"
     .method "mapping"
     .method "unmapping"
 
 system "game_object_system"
-    .implement "game_object_system.lua"
+    .implement "engine/system/game_object_system.lua"
     .method "component_init"
 
 interface "igame_object"
-    .implement "game_object_system.lua"
+    .implement "engine/system/game_object_system.lua"
     .method "create"
 
+system "entity_object_system"
+    .implement "engine/system/entity_object_system.lua"
+    .method "entity_ready"
+
+interface "ientity_object"
+    .implement "engine/system/entity_object_system.lua"
+    .method "create"
+
+system "single_touch_system"
+    .implement "engine/system/single_touch_system.lua"
+    .method "data_changed"
+
+----------------------------------------------------
+----------------------------------------------------
 system "construct_system"
     .implement "construct_system.lua"
     .method "camera_usage"
@@ -121,18 +135,7 @@ interface "iconstruct"
     .implement "construct_system.lua"
     .method "reset"
 
-system "entity_object_system"
-    .implement "entity_object_system.lua"
-    .method "entity_ready"
-
-interface "ientity_object"
-    .implement "entity_object_system.lua"
-    .method "create"
-
 system "debug_system"
     .implement "debug_system.lua"
     .method "ui_update"
 
-system "single_touch_system"
-    .implement "single_touch_system.lua"
-    .method "data_changed"

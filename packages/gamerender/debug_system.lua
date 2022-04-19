@@ -4,6 +4,7 @@ local w = world.w
 
 local debug_sys = ecs.system "debug_system"
 local debug_mb = world:sub {"debug"}
+local terrain = ecs.require "terrain"
 local funcs = {}
 
 -- 删除地形
@@ -14,8 +15,12 @@ funcs[1] = function ()
     end
 end
 
--- dump 所有箱子的物品
 funcs[2] = function ()
+    terrain.create()
+end
+
+-- dump 所有箱子的物品
+funcs[3] = function ()
     local DIRECTION <const> = {
         [0] = 'N',
         [1] = 'E',
