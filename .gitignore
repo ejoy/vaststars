@@ -10,3 +10,5 @@ clibs/gameplay/src/entity.h
 packages/resources/ui/json.lua
 *.xcuserstate
 *.xcbkptlist
+*.xcscheme
+/.vscode
