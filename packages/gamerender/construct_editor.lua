@@ -27,10 +27,10 @@ local DEFAULT_DIR <const> = 'N'
 local M = {}
 local pickup_object
 
-local object_manager = require "objects"
-local cache_names = object_manager.cache_names
-local objects = object_manager.objects
-local tile_objects = object_manager.tile_objects
+local global = require "global"
+local cache_names = global.cache_names
+local objects = global.objects
+local tile_objects = global.tile_objects
 
 local get_dir_coord; do
     local dir_coord = {
@@ -554,6 +554,23 @@ function M:rotate_pickup_object()
     --
     pickup_object = update_pickup_object(pickup_object)
     vsobject:update {type = pickup_object.vsobject_type}
+end
+
+function M:rotate_object(id)
+    local object = assert(objects:get(cache_names, id))
+    local vsobject = assert(vsobject_manager:get(id))
+    local dir = rotate_dir_times(object.dir, -1)
+
+    local typeobject = gameplay.queryByName("entity", object.prototype_name)
+    local coord, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, dir))
+    if not position then
+        return
+    end
+
+    object.x, object.y = coord[1], coord[2]
+    object.dir = dir
+    vsobject:set_position(position)
+    vsobject:set_dir(object.dir)
 end
 
 function M:complete()

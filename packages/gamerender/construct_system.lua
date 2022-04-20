@@ -20,6 +20,8 @@ local ui_construct_dismantle_begin_mb = world:sub {"ui", "construct", "dismantle
 local ui_construct_dismantle_complete_mb = world:sub {"ui", "construct", "dismantle_complete"}
 local ui_construct_fluidbox_update_mb = world:sub {"ui", "construct", "fluidbox_update"}
 
+local ui_menu_rotate_mb = world:sub {"ui", "build_function_pop", "rotate"}
+
 local single_touch_mb = world:sub {"single_touch"}
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
@@ -35,6 +37,24 @@ function construct_sys:camera_usage()
     for _, state in single_touch_mb:unpack() do
         if state == "END" or state == "CANCEL" then
             construct_editor:adjust_pickup_object()
+        end
+    end
+
+    local leave = true
+    for _, vsobject_id in pickup_mapping_mb:unpack() do
+        if mode == "teardown" then
+            construct_editor:teardown(vsobject_id)
+        elseif mode == "normal" then
+            if show_detail(vsobject_id) then
+                leave = false
+            end
+        end
+    end
+
+    for _ in pickup_mb:unpack() do
+        if leave then
+            world:pub {"ui_message", "leave"}
+            break
         end
     end
 end
@@ -124,26 +144,13 @@ function construct_sys:data_changed()
     for _, _, _, fluid_name in ui_construct_fluidbox_update_mb:unpack() do
         construct_editor:set_pickup_object_fluid(fluid_name)
     end
+
+    for _, _, _, vsobject_id in ui_menu_rotate_mb:unpack() do
+        construct_editor:rotate_object(vsobject_id)
+    end
 end
 
 function construct_sys:pickup_mapping()
-    local leave = true
-    for _, vsobject_id in pickup_mapping_mb:unpack() do
-        if mode == "teardown" then
-            construct_editor:teardown(vsobject_id)
-        elseif mode == "normal" then
-            if show_detail(vsobject_id) then
-                leave = false
-            end
-        end
-    end
-
-    for _ in pickup_mb:unpack() do
-        if leave then
-            world:pub {"ui_message", "leave"}
-            break
-        end
-    end
 end
 
 function iconstruct.reset()

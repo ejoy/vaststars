@@ -14,6 +14,13 @@ local windows = {}
 local function open(url, ...)
     local w = windows[url]
     if w then
+        local init = {...}
+        if #init > 0 then
+            local ud = {}
+            ud.event = "INIT"
+            ud.ud = init
+            w.postMessage(json_encode(ud))
+        end
         return
     end
 
@@ -63,7 +70,7 @@ end
 local ui_events = {
     __OPEN = open,
     __PUB = pub,
-    __CLOSE = close,
+    -- __CLOSE = close,
 }
 
 local ui_system = ecs.system 'ui_system'

@@ -13,6 +13,7 @@ return {
         "ant.serialize",
         "ant.render",
         "ant.json",
+        "ant.asset",
         "vaststars.gameplay",
         "vaststars.prototype",
         "vaststars.config",
