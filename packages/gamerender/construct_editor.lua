@@ -27,12 +27,10 @@ local DEFAULT_DIR <const> = 'N'
 local M = {}
 local pickup_object
 
-local cache_names = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
-local objects_index_field = {"id", "teardown"}
-local tile_objects_index_field = {"coord", "id"}
-
-local objects = create_cache(cache_names, table.unpack(objects_index_field)) -- = {[id] = object, ...}
-local tile_objects = create_cache(cache_names, table.unpack(tile_objects_index_field)) -- = {[coord] = {id = xx, fluidbox_dir = {[xx] = true, ...}}, ...}
+local object_manager = require "objects"
+local cache_names = object_manager.cache_names
+local objects = object_manager.objects
+local tile_objects = object_manager.tile_objects
 
 local get_dir_coord; do
     local dir_coord = {
@@ -337,6 +335,7 @@ local function new_pickup_object(prototype_name, dir, coord)
         dir = dir,
         position = position,
         type = vsobject_type,
+        fluid_icon = "fluid/chemical-liquid.png",
     }
     pickup_object = {
         id = vsobject.id,
@@ -614,8 +613,8 @@ function M:check_unconfirmed(double_confirm)
 end
 
 function M:reset()
-    objects = create_cache(cache_names, table.unpack(objects_index_field)) -- = {[id] = object, ...}
-    tile_objects = create_cache(cache_names, table.unpack(tile_objects_index_field)) -- = {[coord] = {id = xx, fluidbox_dir = {[xx] = true, ...}}, ...}
+    objects:clear()
+    tile_objects:clear()
 end
 
 function M:get_vsobject(x, y)
