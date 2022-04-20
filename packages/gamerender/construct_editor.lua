@@ -20,6 +20,7 @@ local get_roadboxes = ecs.require "gameplay.utility.get_roadboxes"
 local vsobject_manager = ecs.require "vsobject_manager"
 local create_cache = require "utility.multiple_cache"
 local gameplay_core = ecs.require "gameplay.core"
+local fluid_icon = ecs.require "fluid_icon"
 
 local DEFAULT_DIR <const> = 'N'
 
@@ -362,9 +363,11 @@ local function new_pickup_object(prototype_name, dir, coord)
         local fluid_types = get_neighbor_fluid_types(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir)
         if #fluid_types == 1 then
             pickup_object.fluid = {fluid_types[1], 0}
+            vsobject:update_fluid(fluid_types[1])
             show_confirm = true
         else
             pickup_object.fluid = {}
+            vsobject:update_fluid("")
             show_confirm = false
         end
         world:pub {"ui_message", "show_set_fluidbox", true}
@@ -378,7 +381,7 @@ local function new_pickup_object(prototype_name, dir, coord)
     return pickup_object
 end
 
-local function update_pickup_object(pickup_object)
+local function update_pickup_object(pickup_object, vsobject)
     local vsobject_type
     local fluid_type
     if pickup_object.manual_set_fluid then
@@ -401,10 +404,12 @@ local function update_pickup_object(pickup_object)
             assert(#fluid_types <= 1)
             if #fluid_types == 1 then
                 pickup_object.fluid = {assert(fluid_types[1]), 0}
+                vsobject:update_fluid(fluid_types[1])
                 world:pub {"ui_message", "show_rotate_confirm", {confirm = true}}
             else
                 if not pickup_object.manual_set_fluid then
                     pickup_object.fluid = {}
+                    vsobject:update_fluid("")
                     world:pub {"ui_message", "show_rotate_confirm", {confirm = false}}
                 end
             end
@@ -469,6 +474,18 @@ function M:confirm()
 
     pickup_object = new_pickup_object(pickup_object.prototype_name, pickup_object.dir, {pickup_object.x, pickup_object.y})
 
+    for _, dir in ipairs({'N', 'E', 'S', 'W'}) do
+        local dx, dy = get_dir_coord(pickup_object.x, pickup_object.y, dir)
+        local tile_object = tile_objects:get(cache_names, packcoord(dx, dy))
+        if tile_object then
+            local obj = assert(vsobject_manager:get(tile_object.id))
+            if obj.fluid_name ~= "" then
+                vsobject:update_fluid("")
+                break
+            end
+        end
+    end
+
     -- 显示"开始施工"
     world:pub {"ui_message", "show_construct_complete", true}
 end
@@ -492,7 +509,7 @@ function M:adjust_pickup_object()
     vsobject:set_position(position)
 
     --
-    pickup_object = update_pickup_object(pickup_object)
+    pickup_object = update_pickup_object(pickup_object, vsobject)
     vsobject:update {type = pickup_object.vsobject_type}
 end
 
@@ -555,21 +572,17 @@ function M:complete()
     end
 
     local needbuild = false
-
-    local t = {}
-    for id, object in objects:all("CONFIRM") do
+    for _, object in objects:all("CONFIRM") do
         object.vsobject_type = "constructed"
-        t[id] = object
-    end
-    objects:commit("CONFIRM", "CONSTRUCTED")
-    tile_objects:commit("CONFIRM", "CONSTRUCTED")
 
-    for _, object in pairs(t) do
         local vsobject = assert(vsobject_manager:get(object.id))
         vsobject:update {type = "constructed"}
+
         gameplay_core.create_entity(object)
         needbuild = true
     end
+    objects:commit("CONFIRM", "CONSTRUCTED")
+    tile_objects:commit("CONFIRM", "CONSTRUCTED")
 
     if needbuild then
         gameplay_core.build()
@@ -685,7 +698,9 @@ function M:set_pickup_object_fluid(fluid_name)
     world:pub {"ui_message", "show_rotate_confirm", {confirm = true}}
 
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
-    pickup_object = update_pickup_object(pickup_object)
+    vsobject:update_fluid(fluid_name)
+
+    pickup_object = update_pickup_object(pickup_object, vsobject)
     vsobject:update {type = pickup_object.vsobject_type}
 end
 

@@ -3,8 +3,8 @@ local world = ecs.world
 local w = world.w
 
 local math3d = require "math3d"
-local mathpkg = import_package "ant.math"
-local mc = mathpkg.constant
+local mathpkg = import_package"ant.math"
+local mc, mu = mathpkg.constant, mathpkg.util
 local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
@@ -14,6 +14,11 @@ local imaterial	= ecs.import.interface "ant.asset|imaterial"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local imesh = ecs.import.interface "ant.asset|imesh"
 local ifs = ecs.import.interface "ant.scene|ifilter_state"
+local irq = ecs.import.interface "ant.render|irenderqueue"
+local assetmgr = import_package "ant.asset"
+local general = require "gameplay.utility.general"
+local unpackarea = general.unpackarea
+local get_canvas_rect = require "utility.get_canvas_rect"
 local tile_size <const> = 10.0
 
 local plane_vb <const> = {
@@ -43,6 +48,8 @@ local CONSTRUCT_BLOCK_COLOR_RED <const> = math3d.ref(math3d.constant("v4", {1, 0
 local CONSTRUCT_BLOCK_COLOR_GREEN <const> = math3d.ref(math3d.constant("v4", {0.0, 1, 0.0, 1.0}))
 local CONSTRUCT_BLOCK_COLOR_WHITE <const> = math3d.ref(math3d.constant("v4", {1, 1, 1, 1.0}))
 
+local FLUID_ICON_COLOR <const> = math3d.ref(math3d.constant("v4", {1, 1, 1, 1.0}))
+
 local typeinfos = {
     ["construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 4}, -- 未确认, 合法
     ["invalid_construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_RED, block_edge_size = 4}, -- 未确认, 非法
@@ -59,20 +66,22 @@ local gen_id do
     end
 end
 
-local block_events = {}
-block_events.set_material_property = function(e, ...)
+local entity_events = {}
+entity_events.set_material_property = function(e, ...)
     imaterial.set_property(world:entity(e.id), ...)
 end
-block_events.set_position = function(e, ...)
+entity_events.set_position = function(e, ...)
     iom.set_position(e, ...)
 end
-block_events.set_rotation = function(e, ...)
+entity_events.set_rotation = function(e, ...)
     iom.set_rotation(e, ...)
+end
+entity_events.update_render_object = function(e, ...)
+    irq.update_render_object(e, true)
 end
 
 local function create_block(color, block_edge_size, area, position, rotation)
-    assert(color)
-    local width, height = area >> 8, area & 0xFF
+    local width, height = unpackarea(area)
     local eid = ecs.create_entity{
 		policy = {
 			"ant.render|simplerender",
@@ -93,7 +102,36 @@ local function create_block(color, block_edge_size, area, position, rotation)
 		},
 	}
 
-    return ientity_object.create(eid, block_events)
+    return ientity_object.create(eid, entity_events)
+end
+
+local function create_texture_plane_entity(tex, tex_rect, tex_size, position)
+    local eid = ecs.create_entity{
+        policy = {
+            "ant.render|simplerender",
+            "ant.general|name",
+        },
+        data = {
+            name = ("texture_plane"):format(gen_id()),
+            simplemesh = imesh.init_mesh(ientity.plane_mesh(mu.texture_uv(tex_rect, tex_size)), true),
+            material = "/pkg/vaststars.resources/materials/translucent_texture_plane.material",
+            filter_state= "main_view",
+            scene = {
+                srt = {
+                    s = {10, 1, 10},
+                    t = {position[1], 1.0, position[3]},
+                }
+            },
+            on_ready = function (e)
+                w:sync("render_object:in", e)
+                imaterial.set_property(e, "u_basecolor_factor", FLUID_ICON_COLOR)
+                local texobj = assetmgr.resource(tex)
+                imaterial.set_property(e, "s_basecolor", {texture=texobj, stage=0})
+            end
+        }
+    }
+
+    return ientity_object.create(eid, entity_events)
 end
 
 local function set_srt(e, srt)
@@ -114,6 +152,9 @@ local function set_position(self, position)
     if self.block_entity_object then
         self.block_entity_object:send("set_position", position)
     end
+    if self.fluid_icon_entity_object then
+        self.fluid_icon_entity_object:send("set_position", position)
+    end
 end
 
 local function get_position(self)
@@ -122,7 +163,6 @@ end
 
 local function set_dir(self, dir)
     iom.set_rotation(world:entity(self.game_object.root), rotators[dir])
-
     if self.block_entity_object then
         self.block_entity_object:send("set_rotation", rotators[dir])
     end
@@ -136,6 +176,10 @@ local function remove(self)
 
     if self.block_entity_object then
         self.block_entity_object:remove()
+    end
+
+    if self.fluid_icon_entity_object then
+        self.fluid_icon_entity_object:remove()
     end
 end
 
@@ -186,38 +230,43 @@ local function update(self, t)
     end
 
     self.type = t.type or self.type
+
+    -- 将流体图标放至渲染队列尾部, 确保画在最上方
+    if self.fluid_icon_entity_object then
+        self.fluid_icon_entity_object:send("update_render_object")
+    end
 end
 
-local function attach(self, slot_name, prefab_file_name)
-    if self.attach_slot_name == slot_name and self.attach_prefab_file_name == prefab_file_name then
+local function update_fluid(self, fluid_name)
+    print("update_fluid", fluid_name)
+    if self.fluid_name == fluid_name then
+        return
+    end
+    self.fluid_name = fluid_name
+
+    if self.fluid_icon_entity_object then
+        self.fluid_icon_entity_object:remove()
+        self.fluid_icon_entity_object = nil
+    end
+
+    if self.fluid_name == "" then
         return
     end
 
-    self.game_object:send("attach_slot", slot_name, prefab_file_name)
-    self.attach_slot_name = slot_name
-    self.attach_prefab_file_name = prefab_file_name
+    local typeobject = gameplay.queryByName("fluid", fluid_name)
+    self.fluid_icon_entity_object = create_texture_plane_entity("/pkg/vaststars.resources/textures/canvas.texture", get_canvas_rect(typeobject.icon), {w=1024, h=1024}, self:get_position())
 end
 
-local function detach(self)
-    if self.attach_slot_name == "" and self.attach_prefab_file_name == "" then
-        return
-    end
-    self.game_object:send("detach_slot")
-    self.attach_slot_name = ""
-    self.attach_prefab_file_name = ""
+local function attach(self, ...)
+    self.game_object:attach(...)
 end
 
-local function animation_update(self, animation_name, process)
-    local game_object = assert(self.game_object)
-    if self.animation.name ~= animation_name then
-        self.animation = {name = animation_name, process = process, loop = false, manual = true}
-        game_object:send("animation_play", self.animation)
-    end
+local function detach(self, ...)
+    self.game_object:detach(...)
+end
 
-    if self.animation.process ~= process then
-        self.animation.process = process
-        game_object:send("animation_set_time", animation_name, process)
-    end
+local function animation_update(self, ...)
+    self.game_object:animation_update(...)
 end
 
 -- init = {
@@ -241,14 +290,15 @@ return function (init)
         id = vsobject_id,
         prototype_name = init.prototype_name,
         type = init.type,
-        block_entity_object = block_entity_object,
+        fluid_name = init.fluid_name or "",
+
         game_object = game_object,
-        animation = {},
-        attach_slot_name = "",
-        attach_prefab_file_name = "",
+        block_entity_object = block_entity_object,
+        fluid_icon_entity_object = nil,
 
         --
         update = update,
+        update_fluid = update_fluid,
         set_position = set_position,
         get_position = get_position,
         set_dir = set_dir,

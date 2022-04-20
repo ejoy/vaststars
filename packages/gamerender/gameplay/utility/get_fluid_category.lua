@@ -1,19 +1,12 @@
 local gameplay = import_package "vaststars.gameplay"
 local fluid_list_cfg = import_package "vaststars.config".fluid_list
+local general = require "gameplay.utility.general"
+local has_type = general.has_type
 
 local get_fluid_category; do
-    local function is_type(prototype, t)
-        for _, v in ipairs(prototype.type) do
-            if v == t then
-                return true
-            end
-        end
-        return false
-    end
-
     local t = {}
     for _, v in pairs(gameplay.prototype_name) do
-        if is_type(v, "fluid") then
+        if has_type(v.type, "fluid") then
             for _, c in ipairs(v.catagory) do
                 t[c] = t[c] or {}
                 t[c][#t[c]+1] = {id = v.id, name = v.name, icon = v.icon}

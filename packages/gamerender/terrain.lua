@@ -130,6 +130,8 @@ function M.get_position_by_coord(x, y, width, height)
     return {begining[1] + (width * unit // 2), begining[2], begining[3] - (height * unit // 2)} --TODO 越界判断
 end
 
+M.get_begin_position_by_coord = get_begin_position_by_coord
+
 -- position 为建筑的中心位置
 function M.adjust_position(position, width, height)
     local unit = terrain.unit

@@ -4,7 +4,6 @@ local w     = world.w
 
 local fs = require "filesystem"
 local icas   = ecs.import.interface "ant.terrain|icanvas"
-local terrain = ecs.require "terrain"
 local datalist = require "datalist"
 local canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/canvas.cfg")):read "a")
 
@@ -18,7 +17,7 @@ local function get_canvas_entity()
 end
 
 local M = {}
-function M.create()
+function M.create(position)
     ecs.create_entity {
         policy = {
             "ant.scene|scene_object",
@@ -29,7 +28,7 @@ function M.create()
             name = "canvas",
             scene = {
                 srt = {
-                    t={0.0, 1.0, 0.0}
+                    t = position,
                 }
             },
             canvas = {
@@ -42,7 +41,7 @@ end
 
 local cache_id = {}
 
-function M.add_items(name, x, y, srt)
+function M.add_items(name, position_x, position_y, w, h, srt)
     local canvas_entity = get_canvas_entity()
     if not canvas_entity then
         return
@@ -51,12 +50,6 @@ function M.add_items(name, x, y, srt)
     local cfg = canvas_cfg[name]
     if not cfg then
         log.error(("can not found `%s`"):format(name))
-        return
-    end
-
-    -- bounds checking
-    local p = terrain.get_begin_position_by_coord(x, y)
-    if not p then
         return
     end
 
@@ -70,7 +63,7 @@ function M.add_items(name, x, y, srt)
                 h = cfg.height,
             },
         },
-        x = p[1], y = p[3] - 10, w = 10, h = 10,
+        x = position_x, y = position_y, w = w, h = h,
         srt = srt,
     }
 

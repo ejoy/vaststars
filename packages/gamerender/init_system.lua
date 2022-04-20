@@ -13,6 +13,7 @@ local gameplay_core = ecs.require "gameplay.core"
 local check_prototype = require "gameplay.check"
 local construct_editor = ecs.require "construct_editor"
 local fps = ecs.require "fps"
+local fluid_icon = ecs.require "fluid_icon"
 
 local m = ecs.system 'init_system'
 function m:init_world()
@@ -26,6 +27,7 @@ function m:init_world()
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
     terrain.create()
+    fluid_icon.create()
 end
 
 local function get_object(x, y)

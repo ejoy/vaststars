@@ -62,6 +62,45 @@ local function on_prefab_message(prefab, binding, cmd, ...)
     end
 end
 
+--
+local function remove(self)
+    self.game_object:send("detach_slot")
+    world:pub {"game_object_system", "remove", self.game_object}
+end
+
+local function attach(self, slot_name, prefab_file_name)
+    if self.attach_slot_name == slot_name and self.attach_prefab_file_name == prefab_file_name then
+        return
+    end
+
+    self.game_object:send("attach_slot", slot_name, prefab_file_name)
+    self.attach_slot_name = slot_name
+    self.attach_prefab_file_name = prefab_file_name
+end
+
+local function detach(self)
+    if self.attach_slot_name == "" and self.attach_prefab_file_name == "" then
+        return
+    end
+
+    self.game_object:send("detach_slot")
+    self.attach_slot_name = ""
+    self.attach_prefab_file_name = ""
+end
+
+local function animation_update(self, animation_name, process)
+    local game_object = assert(self.game_object)
+    if self.animation.name ~= animation_name then
+        self.animation = {name = animation_name, process = process, loop = false, manual = true}
+        game_object:send("animation_play", self.animation)
+    end
+
+    if self.animation.process ~= process then
+        self.animation.process = process
+        game_object:send("animation_set_time", animation_name, process)
+    end
+end
+
 -- state: translucent
 function igame_object.create(prefab_file_name, state, color, pickup_binding)
     local f = prefab_path:format(prefab_file_name)
@@ -93,10 +132,16 @@ function igame_object.create(prefab_file_name, state, color, pickup_binding)
     end
 
     local outer = {}
+    outer.game_object = game_object
     outer.tag = prefab.tag
-    function outer:remove()
-        self:send("detach_slot")
-        world:pub {"game_object_system", "remove", game_object}
-    end
-    return setmetatable(outer, {__index = world:create_object(prefab)})
+    outer.slot_name = ""
+    outer.prefab_file_name = ""
+    outer.animation = {}
+
+    outer.remove = remove
+    outer.attach = attach
+    outer.detach = detach
+    outer.animation_update = animation_update
+
+    return setmetatable(outer, {__index = game_object})
 end
