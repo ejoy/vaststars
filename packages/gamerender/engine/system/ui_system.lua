@@ -51,9 +51,19 @@ local function pub(...)
     world:pub {...}
 end
 
+local function close(url)
+    local w = windows[url]
+    if not w then
+        return
+    end
+    w:close()
+    windows[url] = nil
+end
+
 local ui_events = {
     __OPEN = open,
     __PUB = pub,
+    __CLOSE = close,
 }
 
 local ui_system = ecs.system 'ui_system'

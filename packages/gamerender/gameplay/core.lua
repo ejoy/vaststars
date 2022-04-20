@@ -110,4 +110,8 @@ function m.create_entity(init)
     return template.id
 end
 
+function m.fluidflow_query(...)
+    return world:fluidflow_query(...)
+end
+
 return m

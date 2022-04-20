@@ -60,6 +60,11 @@ local function empty(self)
 	return not next(self.kv)
 end
 
+local function clear(self)
+	self.kv = {}
+	self.cache = {}
+end
+
 local function create(key_field, ...)
 	local m = {}
 	m.key_field = key_field
@@ -73,6 +78,7 @@ local function create(key_field, ...)
 	m.select = select
 	m.remove = remove
 	m.empty = empty
+	m.clear = clear
 	return m
 end
 return create

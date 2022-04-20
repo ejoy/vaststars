@@ -24,10 +24,7 @@
             }
 
             ui_sys.addEventListener({
-                ["INIT"] = function(x, y)
-                    ui_sys.pub("ui", "GET_DATA", "entity_properties", x, y)
-                end,
-                ["entity_properties"] = function(entity)
+                ["INIT"] = function(entity)
                     start.detail_panel_prototype = entity.name
 
                     start.detail_panel_property_list = {}
@@ -48,6 +45,9 @@
                     end
                     table.sort(start.detail_panel_property_list, function(a, b) return a.pos < b.pos end)
                     start("detail_panel_property_list")
+                end,
+                ["leave"] = function()
+                    ui_sys.close()
                 end,
             })
 
