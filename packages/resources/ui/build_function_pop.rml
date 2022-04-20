@@ -14,7 +14,6 @@
                 flex-direction: column;
                 width: 20%;
                 height:80%;
-                border: 1px #fff;
                 align-items: center;
                 justify-content: center;
                 margin:auto;
@@ -35,7 +34,6 @@
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
-                border: 1px #fff;
             }
         </style>
         <style path = "common/building_style.rcss"/>
