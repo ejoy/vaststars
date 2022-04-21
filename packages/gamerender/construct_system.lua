@@ -7,9 +7,12 @@ import_package "vaststars.prototype"
 local camera = ecs.require "engine.camera"
 local construct_editor = ecs.require "construct_editor"
 local show_detail = ecs.require "show_detail"
+local get_recipe_menu = ecs.require "gameplay.utility.get_recipe_menu"
 
 local construct_sys = ecs.system "construct_system"
 local iconstruct = ecs.interface "iconstruct"
+local iui = ecs.import.interface "vaststars.gamerender|iui"
+
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
 local ui_construct_begin_mb = world:sub {"ui", "construct", "construct_begin"} -- 建造模式
 local ui_construct_confirm_mb = world:sub {"ui", "construct", "construct_confirm"} -- 确认建造
@@ -21,6 +24,7 @@ local ui_construct_dismantle_complete_mb = world:sub {"ui", "construct", "disman
 local ui_construct_fluidbox_update_mb = world:sub {"ui", "construct", "fluidbox_update"}
 
 local ui_menu_rotate_mb = world:sub {"ui", "build_function_pop", "rotate"}
+local ui_menu_recipe_mb = world:sub {"ui", "build_function_pop", "recipe"}
 
 local single_touch_mb = world:sub {"single_touch"}
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
@@ -158,6 +162,10 @@ function construct_sys:data_changed()
 
     for _, _, _, vsobject_id in ui_menu_rotate_mb:unpack() do
         construct_editor:rotate_object(vsobject_id)
+    end
+
+    for _, _, _, vsobject_id in ui_menu_recipe_mb:unpack() do
+        iui.open("recipe_pop.rml", get_recipe_menu(), vsobject_id)
     end
 end
 

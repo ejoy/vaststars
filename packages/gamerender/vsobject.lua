@@ -150,7 +150,8 @@ end
 local function set_position(self, position)
     iom.set_position(world:entity(self.game_object.root), position)
     if self.block_entity_object then
-        self.block_entity_object:send("set_position", position)
+        local block_pos = math3d.add(math3d.vector(position), {0, 1.0, 0})
+        self.block_entity_object:send("set_position", block_pos)
     end
     if self.fluid_icon_entity_object then
         self.fluid_icon_entity_object:send("set_position", position)
@@ -221,9 +222,9 @@ local function update(self, t)
         if new_typeinfo.block_edge_size then
             self.block_entity_object:remove()
             local typeobject = gameplay.queryByName("entity", self.prototype_name)
-            local position = self:get_position()
+            local block_pos = math3d.add(math3d.vector(self:get_position()), {0, 1.0, 0})
             local rotation = get_rotation(self)
-            self.block_entity_object = create_block(new_typeinfo.block_color, new_typeinfo.block_edge_size, typeobject.area, position, rotation)
+            self.block_entity_object = create_block(new_typeinfo.block_color, new_typeinfo.block_edge_size, typeobject.area, block_pos, rotation)
         else
             self.block_entity_object:send("set_material_property", "u_color", new_typeinfo.block_color)
         end
@@ -284,7 +285,8 @@ return function (init)
     iom.set_position(world:entity(game_object.root), init.position)
     iom.set_rotation(world:entity(game_object.root), rotators[init.dir])
 
-    local block_entity_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, init.position, rotators[init.dir])
+    local block_pos = math3d.add(math3d.vector(init.position), {0, 1.0, 0})
+    local block_entity_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir])
 
     local vsobject = {
         id = vsobject_id,

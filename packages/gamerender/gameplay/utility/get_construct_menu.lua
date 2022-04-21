@@ -17,7 +17,7 @@ local get; do
     for _, menu in ipairs(construct_menu) do
         local m = {}
         m.name = menu.name
-        m.image = menu.image
+        m.icon = menu.icon
         m.detail = {}
 
         for _, prototype_name in ipairs(menu.detail) do

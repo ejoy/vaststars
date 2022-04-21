@@ -178,6 +178,7 @@ workbutton:hover {
 	align-items:flex-start;
 	width:100%;
 	height: 10%;
+	flex-wrap: wrap;
 }
 .catalog-desc {
 	font-size: 4.2vmin;

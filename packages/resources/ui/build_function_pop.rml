@@ -40,18 +40,22 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
-                vsobject_id = nil,
+                object_id = nil,
                 left = "0vmin",
                 top = "0vmin",
             }
 
             function start.clickConstructRotate(event)
-                ui_sys.pub("ui", "build_function_pop", "rotate", start.vsobject_id)
+                ui_sys.pub("ui", "build_function_pop", "rotate", start.object_id)
+            end
+
+            function start.clickRecipe(event)
+                ui_sys.pub("ui", "build_function_pop", "recipe", start.object_id)
             end
 
             ui_sys.addEventListener({
-                ["INIT"] = function(vsobject_id, x, y)
-                    start.vsobject_id = vsobject_id
+                ["INIT"] = function(object_id, x, y)
+                    start.object_id = object_id
                     start.left = ("%0.2fvmin"):format(math.max(x - 41.5, 0))
                     start.top = ("%0.2fvmin"):format(math.max(y - 30, 0))
                 end,
@@ -67,7 +71,7 @@
                     <button class="button-function" style ='background-image: "construct/rotate.png";'/>
                     <div class="title-text">旋转</div>
                 </div>
-                <div class="button-fuction-block" style="top: -5.33vmin; left: 17.00vmin;">
+                <div class="button-fuction-block" style="top: -5.33vmin; left: 17.00vmin;" data-event-click="clickRecipe()">
                     <button class="button-function" style ='background-image: "assemble/wheel.png";'/>
                     <div class="title-text">修改配方</div>
                 </div>

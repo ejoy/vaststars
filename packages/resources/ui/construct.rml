@@ -385,7 +385,7 @@
             <div style = "pointer-events: none; position: absolute; width: 98vmax; height: 97vmin; flex-direction: row-reverse;">
                 <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;" data-if="cur_edit_mode == 'construct'" >
                     <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu">
-                        <div class="workbutton-bg" data-style-background-image = "it.image" />
+                        <div class="workbutton-bg" data-style-background-image = "it.icon" />
                         <div class="workbutton-text" >{{it.name}}</div>
                     </workbutton>
                 </div>

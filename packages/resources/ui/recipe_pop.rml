@@ -2,52 +2,16 @@
     <head>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
-            console.log("before createModel")
+            local ui_sys = require "ui_system"
             local start = window.createModel "start" {
-                show = false,
-                scale_flag = false,
 
-                items = {
-                    {id=100, icon0="correct.png", icon1="correct.png"},
-                    {id=101, icon0="correct.png", icon1="correct.png"},
-                    {id=102, icon0="correct.png", icon1="correct.png"},
-                    {id=103, icon0="correct.png", icon1="correct.png"},
-                    {id=104, icon0="correct.png", icon1="correct.png"},
-                    {id=105, icon0="correct.png", icon1="correct.png"},
-                    {id=106, icon0="correct.png", icon1="correct.png"},
-                    {id=107, icon0="correct.png", icon1="correct.png"},
-                    {id=108, icon0="correct.png", icon1="correct.png"},
-                    {id=109, icon0="correct.png", icon1="correct.png"},
-                    {id=110, icon0="correct.png", icon1="correct.png"},
-                    {id=111, icon0="correct.png", icon1="correct.png"},
-                    {id=112, icon0="correct.png", icon1="correct.png"},
-                    {id=113, icon0="correct.png", icon1="correct.png"},
-                    {id=114, icon0="correct.png", icon1="correct.png"},
-                    {id=115, icon0="correct.png", icon1="correct.png"},
-                    {id=116, icon0="correct.png", icon1="correct.png"},
-                    {id=117, icon0="correct.png", icon1="correct.png"},
-                    {id=118, icon0="correct.png", icon1="correct.png"},
-                    {id=119, icon0="correct.png", icon1="correct.png"},
-                    {id=120, icon0="correct.png", icon1="correct.png"},
-                    {id=121, icon0="correct.png", icon1="correct.png"},
-                    {id=122, icon0="correct.png", icon1="correct.png"},
-                    {id=123, icon0="correct.png", icon1="correct.png"},
-                    {id=124, icon0="correct.png", icon1="correct.png"},
-                    {id=125, icon0="correct.png", icon1="correct.png"},
-                    {id=126, icon0="correct.png", icon1="correct.png"},
-                    {id=127, icon0="correct.png", icon1="correct.png"},
-                    {id=128, icon0="correct.png", icon1="correct.png"},
-                    {id=129, icon0="correct.png", icon1="correct.png"},
-                },
-                gapx = 0,
-                gapy = 0,
+                items = {},
                 page_top = 0,
                 -- 详细信息面板高度
                 detail_height = 120,
                 -- 详细信息面板开始位置
                 detail_top = 0,
                 current_page = 0,
-                view_items = {},
                 item_size = 90,
                 interval = 200,
                 show_detail = false,
@@ -64,6 +28,9 @@
                 page_drag = false,
                 list_drag = false,
                 draging = false,
+
+                recipe_menu = {},
+                object_id = 0,
             }
 
             local function update_time()
@@ -73,7 +40,6 @@
 
             local listclass = require "list"
             local pageclass = require "page"
-            --local list_proxy = listclass.create(1, {start.list_width, start.list_height}, #start.item_list, {start.list_item_width, start.list_item_height})
             local page_proxy = pageclass.create({start.page_width, start.page_height}, start)
 
             function start.pagemousedown(event)
@@ -97,26 +63,6 @@
                 start.page_drag = false
             end
 
-            --[[
-            local function show_detail(show, id, row, top)
-                local offset = 0
-                if show then
-                    start.selected_id = id
-                    start.selected_row = row
-                    start.detail_top = top
-                    local dy = start.page_height - ((row + 1) * (start.item_size + start.gapy) + start.detail_height)
-                    offset = (dy >= 0) and 0 or dy
-                    console.log("offset" , offset)
-                else
-                    start.selected_id = 0
-                    --TODO: max value 1000
-                    start.selected_row = 10000
-                end
-                --start.show_detail = show
-                start.page_top = offset
-            end
-            ]]--
-
             function start.page_item_down()
                 start.item_down_time = start.current_time
             end
@@ -135,12 +81,24 @@
                 end
             end
 
-            window.addEventListener('message', function(event)
-                console.log("event.source.postMessage")
-                event.source.postMessage(event.data)
-            end)
-            window.addEventListener('mousemove', function(event)
-            end)
+            function start.ClickItem(event, t)
+            end
+
+            function start.clickCatalog(event, index)
+                start.items = start.recipe_menu[index].item
+                page_proxy:update_virtual_pages(start.items)
+                page_proxy:update_view_pages()
+            end
+
+            ui_sys.addEventListener({
+                ["INIT"] = function(recipe_menu, object_id)
+                    start.recipe_menu = recipe_menu
+                    start.items = start.recipe_menu[1].item or {}
+                    page_proxy:update_virtual_pages(start.items)
+                    page_proxy:update_view_pages()
+                    start.object_id = object_id
+                end,
+            })
         </script>
     </head>
     <body>
@@ -159,11 +117,7 @@
                                 </div>
                             </div>
                             <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up(it.data.id, it.row, it.top)" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
-                                <button class="item" data-event-click="ClickItem()">
-                                    <div class="item-count">99</div>                          
-                                    <!--div class="item-title">机器爪</div>-->
-                                </button>
-                                <!--<div>{{it.data.id}}</div>-->
+                                <button class="item" data-style-background-image = "it.data.icon" data-event-click="ClickItem(it.data.name)"/>
                             </div>
                             <div class="exchange-region" data-style-left="current_page * page_width + 'px'" data-style-height="detail_height+'px'" data-style-top="detail_top+item_size+'px'" data-if="show_detail">
                                 <div class="button-exchange-block">
@@ -194,39 +148,9 @@
                 </div>
                 <div class = "draw-line"/>
                 <div class = "tab-container">
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/logisitic1.png";'/>
-                        <div class="catalog-desc">物流</div>
-                    </workbutton>
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/assembler.png";'/>
-                        <div class="catalog-desc">生产</div>
-                    </workbutton>
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/chemistry2.png";'/>
-                        <div class="catalog-desc">化工</div>
-                    </workbutton>
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/steel-beam.png";'/>
-                        <div class="catalog-desc">金属</div>
-                    </workbutton>
-                </div>
-                <div class = "tab-container">
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/processor.png";'/>
-                        <div class="catalog-desc">器件</div>
-                    </workbutton>
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/tank3.png";'/>
-                        <div class="catalog-desc">流体</div>
-                    </workbutton>
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/pack.png";'/>
-                        <div class="catalog-desc">打包</div>
-                    </workbutton>
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/unpack.png";'/>
-                        <div class="catalog-desc">解包</div>
+                    <workbutton data-for = "recipe_menu" data-event-click="clickCatalog(it_index + 1)">
+                        <div class="workbutton-bg" data-style-background-image = "it.icon" />
+                        <div class="catalog-desc">{{it.name}}</div>
                     </workbutton>
                 </div>
             </div>
