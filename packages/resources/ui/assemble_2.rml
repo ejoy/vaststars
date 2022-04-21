@@ -180,6 +180,10 @@
                 end
             end
 
+            function start.ClickRecipe()
+                ui_sys.open("recipe_pop.rml")
+            end
+
             window.addEventListener('message', function(event)
                 console.log("event.source.postMessage")
                 event.source.postMessage(event.data)
@@ -375,7 +379,7 @@
                 </div>
             </div>
             <div class="panel"> 
-                <div class="header" style="justify-content: flex-end;" data-if="!fuel_interaction && !material_interaction && !plugin_interaction"> 
+                <div class="header" style="justify-content: flex-end;" data-if="!fuel_interaction && !material_interaction && !plugin_interaction" data-event-click="ClickRecipe()"> 
                     <div class = "menu-title" style="text-align: right;">配方:铁锭1</div>
                     <button class = "recipe-change-button"/>
                 </div>

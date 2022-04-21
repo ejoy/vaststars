@@ -12,12 +12,11 @@
 
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
-                detail_panel_icon = "construct/solar-panel.png",
+                detail_panel_icon = "",
                 detail_panel_prototype = " ",
                 detail_panel_status_icon = "work_status_icon/normal.png",
                 detail_panel_status_desc = "正常工作",
 
-                config_construct = require "config.construct",
                 config_property_list = require "config.property_list",
 
                 detail_panel_property_list = {},
@@ -25,6 +24,7 @@
 
             ui_sys.addEventListener({
                 ["INIT"] = function(entity)
+                    start.detail_panel_icon = entity.icon
                     start.detail_panel_prototype = entity.name
 
                     start.detail_panel_property_list = {}

@@ -27,8 +27,11 @@ local function show_detail(vsobject_id)
         return
     end
 
+    local typeobject = gameplay.queryByName("entity", object.prototype_name)
+
     local t = {}
     t.name = object.prototype_name
+    t.icon = typeobject.icon
 
     if e.fluidbox and e.fluidbox.fluid ~= 0 then
         local pt = gameplay.query(e.fluidbox.fluid)

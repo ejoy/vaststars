@@ -158,7 +158,7 @@
                 show_confirm = false, -- 是否显示[确认放置]
 
                 debug_button = {},
-                config_construct = require "config.construct",
+                construct_menu = {},
             }
             function start.clickConstructBegin(event)
                 ui_sys.pub("ui", "construct", "construct_begin", false)
@@ -211,8 +211,9 @@
                 ui_sys.pub("debug", i)
             end
             ui_sys.addEventListener({
-                ["INIT"] = function(fluid_category)
+                ["INIT"] = function(fluid_category, construct_menu)
                     start.fluid_category = fluid_category
+                    start.construct_menu = construct_menu
                 end,
                 ["show_set_fluidbox"] = function(visible)
                     start.show_set_fluidbox = visible
@@ -383,7 +384,7 @@
             <!-- 右边菜单 -->
             <div style = "pointer-events: none; position: absolute; width: 98vmax; height: 97vmin; flex-direction: row-reverse;">
                 <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;" data-if="cur_edit_mode == 'construct'" >
-                    <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "config_construct">
+                    <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu">
                         <div class="workbutton-bg" data-style-background-image = "it.image" />
                         <div class="workbutton-text" >{{it.name}}</div>
                     </workbutton>
@@ -392,10 +393,10 @@
                 <!-- separator -->
                 <div style = "width: 2.67vmin;" />
 
-                <div style = "flex-direction: row; flex-wrap: wrap; width: 30.13vmin; height: 80.00vmin; background-color: rgb(44, 32, 18); border: 0.40vmin rgb(89, 73, 39); border-radius: 0.67vmin;" data-if="cur_edit_mode == 'construct' && cur_construct_menu != '' && cur_construct_menu == it.name" data-for = "config_construct">
+                <div style = "flex-direction: row; flex-wrap: wrap; width: 30.13vmin; height: 80.00vmin; background-color: rgb(44, 32, 18); border: 0.40vmin rgb(89, 73, 39); border-radius: 0.67vmin;" data-if="cur_edit_mode == 'construct' && cur_construct_menu != '' && cur_construct_menu == it.name" data-for = "construct_menu">
                     <div class="tools-container" data-for = "menu, menu_id : it.detail">
                         <button class="tools-button" data-event-click="clickConstructMenuItem(menu.prototype)">
-                            <div class="workbutton-bg" data-style-background-image = "menu.image" />
+                            <div class="workbutton-bg" data-style-background-image = "menu.icon" />
                             <div class="tools-button-title">{{menu.prototype}}</div>
                             <div class="item-num">99</div>
                         </button>
