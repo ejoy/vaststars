@@ -26,6 +26,7 @@ local single_touch_mb = world:sub {"single_touch"}
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local pickup_mb = world:sub {"pickup"}
+local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 
 local mode = "" -- normal/construct/teardown
 
@@ -51,9 +52,19 @@ function construct_sys:camera_usage()
         end
     end
 
+    -- 点击其它建筑 或 拖动时, 将弹出窗口隐藏
     for _ in pickup_mb:unpack() do
         if leave then
             world:pub {"ui_message", "leave"}
+            leave = false
+            break
+        end
+    end
+
+    for _ in single_touch_move_mb:unpack() do
+        if leave then
+            world:pub {"ui_message", "leave"}
+            leave = false
             break
         end
     end

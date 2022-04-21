@@ -78,9 +78,13 @@ function ui_system.ui_update()
     local event, func
 
     for _, url in rmlui_message_close_mb:unpack() do
-        local w = assert(windows[url])
-        w:close()
-        windows[url] = nil
+        local w = windows[url]
+        if not w then
+            log.warn(("can not found window `%s`"):format(url))
+        else
+            w:close()
+            windows[url] = nil
+        end
     end
 
     -- rmlui to world

@@ -1,6 +1,9 @@
 <rml>
     <head>
         <style>
+            div {
+                font: 100% "微软雅黑";
+            }
             .title-text {
                 text-align: center;
                 font-size: 3.80vmin;
@@ -16,7 +19,6 @@
                 height:80%;
                 align-items: center;
                 justify-content: center;
-                margin:auto;
             }
             .button-function {
                 flex-direction: row;
@@ -32,8 +34,6 @@
                 background-image: "common/info-arc.png";
                 background-size:cover;
                 flex-direction: row;
-                justify-content: center;
-                align-items: center;
             }
         </style>
         <style path = "common/building_style.rcss"/>
@@ -63,15 +63,15 @@
     </head>
     <body style = "pointer-events: none;">
             <div class="info-panel" style="position: absolute;" data-model="start" data-style-left = "left" data-style-top = "top">
-                <div class="button-fuction-block" style="position: absolute; left:1em;top:2em" data-event-click="clickConstructRotate()">
+                <div class="button-fuction-block" style="top: 10.67vmin; left: 1.33vmin;" data-event-click="clickConstructRotate()">
                     <button class="button-function" style ='background-image: "construct/rotate.png";'/>
                     <div class="title-text">旋转</div>
                 </div>
-                <div class="button-fuction-block" style="position: absolute; bottom:3em;">
+                <div class="button-fuction-block" style="top: -5.33vmin; left: 17.00vmin;">
                     <button class="button-function" style ='background-image: "assemble/wheel.png";'/>
                     <div class="title-text">修改配方</div>
                 </div>
-                <div class="button-fuction-block" style="position: absolute; right:1em;top:2em">
+                <div class="button-fuction-block" style="top: 10.67vmin; left: 32.14vmin">
                     <button class="button-function" style ='background-image: "factory/seacher.png";'/>
                     <div class="title-text">详细</div>
                 </div>

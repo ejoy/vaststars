@@ -6,6 +6,8 @@ set titlemsg=debug
 set param=.\3rd\ant\tools\rmlviewer\main.lua
 set /p rml=rml file:
 
+:AGAIN
+
 pushd %current_dir%
 if not exist "%exe%" (
 	set exe=bin\msvc\release\vaststars.exe
@@ -14,5 +16,7 @@ if not exist "%exe%" (
 
 %current_dir%%exe% %param% %rml%
 popd
+
+goto AGAIN
 
 pause

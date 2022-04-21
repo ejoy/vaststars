@@ -35,7 +35,7 @@ local function get_coord_by_begin_position(position)
         return
     end
 
-    return {math.ceil((position[1] - origin[1]) / unit) - 1, math.ceil((origin[2] - position[3]) / unit) - 1}
+    return {math.ceil((position[1] - origin[1]) / unit), math.ceil((origin[2] - position[3]) / unit)}
 end
 
 local function get_begin_position_by_coord(x, y)
@@ -127,7 +127,7 @@ function M.get_position_by_coord(x, y, width, height)
         return
     end
 
-    return {begining[1] + (width * unit // 2), begining[2], begining[3] - (height * unit // 2)} --TODO 越界判断
+    return {begining[1] + (width / 2 * unit), begining[2], begining[3] - (height / 2 * unit)} --TODO 越界判断
 end
 
 M.get_begin_position_by_coord = get_begin_position_by_coord
@@ -136,7 +136,7 @@ M.get_begin_position_by_coord = get_begin_position_by_coord
 function M.adjust_position(position, width, height)
     local unit = terrain.unit
 
-    local begin_position = {position[1] - (width * unit // 2), position[2], position[3] + (height * unit // 2)}
+    local begin_position = {position[1] - (width / 2 * unit), position[2], position[3] + (height / 2 * unit)}
     local coord = get_coord_by_begin_position(begin_position)
     if not coord then
         return
@@ -147,7 +147,7 @@ function M.adjust_position(position, width, height)
         return
     end
 
-    return coord, {begining[1] + (width * unit // 2), position[2], begining[3] - (height * unit // 2)}
+    return coord, {begining[1] + (width / 2 * unit), position[2], begining[3] - (height / 2 * unit)}
 end
 
 return M

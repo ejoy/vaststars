@@ -22,13 +22,7 @@ end
 local function show_detail(vsobject_id)
     local object = assert(objects:get(cache_names, vsobject_id))
 
-    local e
-    for v in gameplay_core.select "entity:in fluidbox?in" do
-        if v.entity.x == object.x and v.entity.y == object.y then
-            e = v
-            break
-        end
-    end
+    local e = gameplay_core.get_entity("entity:in fluidbox?in", object.x, object.y)
     if not e then
         return
     end

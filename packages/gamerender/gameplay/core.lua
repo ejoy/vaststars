@@ -8,6 +8,10 @@ function m.select(...)
     return world.ecs:select(...)
 end
 
+function m.sync(...)
+    return world.ecs:sync(...)
+end
+
 function m.build(...)
     return world:build()
 end
@@ -112,6 +116,17 @@ end
 
 function m.fluidflow_query(...)
     return world:fluidflow_query(...)
+end
+
+function m.get_entity(pat, x, y)
+    local e
+    for v in world.ecs:select(pat) do
+        if v.entity.x == x and v.entity.y == y then
+            e = v
+            break
+        end
+    end
+    return e
 end
 
 return m

@@ -552,7 +552,7 @@ function M:rotate_pickup_object()
     vsobject:set_dir(pickup_object.dir)
 
     --
-    pickup_object = update_pickup_object(pickup_object)
+    pickup_object = update_pickup_object(pickup_object, vsobject)
     vsobject:update {type = pickup_object.vsobject_type}
 end
 
@@ -562,9 +562,19 @@ function M:rotate_object(id)
     local dir = rotate_dir_times(object.dir, -1)
 
     local typeobject = gameplay.queryByName("entity", object.prototype_name)
-    local coord, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, dir))
+
+    local coord, position = terrain.adjust_position(vsobject:get_position(), rotate_area(typeobject.area, dir))
     if not position then
         return
+    end
+    local e = gameplay_core.get_entity("entity:in", object.x, object.y)
+    if e then
+        e.entity.x = coord[1]
+        e.entity.y = coord[2]
+        e.entity.direction = dir_tonumber(dir)
+        gameplay_core.sync("entity:out", e)
+    else
+        log.error(("can not found entity (%s, %s)"):format(object.x, object.y))
     end
 
     object.x, object.y = coord[1], coord[2]
