@@ -616,7 +616,7 @@ prototype "科研中心1" {
 prototype "破损水电站" {
     type = { "recipe" },
     category = "手工制造",
-    group = "制造",
+    group = "生产",
     order = 110,
     ingredients = {
         {"管道1", 4},
@@ -632,7 +632,7 @@ prototype "破损水电站" {
 prototype "破损空气过滤器" {
     type = { "recipe" },
     category = "手工制造",
-    group = "制造",
+    group = "生产",
     order = 111,
     ingredients = {
         {"铁板", 4},
@@ -648,7 +648,7 @@ prototype "破损空气过滤器" {
 prototype "破损电解厂" {
     type = { "recipe" },
     category = "手工制造",
-    group = "制造",
+    group = "生产",
     order = 112,
     ingredients = {
         {"铁丝", 5},
@@ -664,7 +664,7 @@ prototype "破损电解厂" {
 prototype "破损化工厂" {
     type = { "recipe" },
     category = "手工制造",
-    group = "制造",
+    group = "生产",
     order = 113,
     ingredients = {
         {"压力泵1", 1},
@@ -680,7 +680,7 @@ prototype "破损化工厂" {
 prototype "破损组装机" {
     type = { "recipe" },
     category = "手工制造",
-    group = "制造",
+    group = "生产",
     order = 114,
     ingredients = {
         {"铁齿轮", 2},
@@ -696,7 +696,7 @@ prototype "破损组装机" {
 prototype "破损铁制电线杆" {
     type = { "recipe" },
     category = "手工制造",
-    group = "制造",
+    group = "生产",
     order = 115,
     ingredients = {
         {"铁棒", 2},
@@ -712,7 +712,7 @@ prototype "破损铁制电线杆" {
 prototype "破损太阳能板" {
     type = { "recipe" },
     category = "手工制造",
-    group = "制造",
+    group = "生产",
     order = 116,
     ingredients = {
         {"沙子", 1},
@@ -728,7 +728,7 @@ prototype "破损太阳能板" {
 prototype "破损蓄电池" {
     type = { "recipe" },
     category = "手工制造",
-    group = "制造",
+    group = "生产",
     order = 117,
     ingredients = {
         {"石墨", 1},
@@ -744,7 +744,7 @@ prototype "破损蓄电池" {
 prototype "破损物流中心" {
     type = { "recipe" },
     category = "手工制造",
-    group = "制造",
+    group = "生产",
     order = 118,
     ingredients = {
         {"铁板", 5},
@@ -760,7 +760,7 @@ prototype "破损物流中心" {
 prototype "破损运输汽车" {
     type = { "recipe" },
     category = "手工制造",
-    group = "制造",
+    group = "生产",
     order = 119,
     ingredients = {
         {"铁丝", 10},
@@ -776,7 +776,7 @@ prototype "破损运输汽车" {
 prototype "破损车站" {
     type = { "recipe" },
     category = "手工制造",
-    group = "制造",
+    group = "生产",
     order = 120,
     ingredients = {
         {"铁棒", 6},
@@ -1070,6 +1070,7 @@ prototype "废水排泄" {
     type = { "recipe" },
     category = "液体排泄",
     group = "流体",
+    order = 100,
     ingredients = {
         {"废水", 100},
     },
@@ -1084,6 +1085,7 @@ prototype "海水排泄" {
     type = { "recipe" },
     category = "液体排泄",
     group = "流体",
+    order = 101,
     ingredients = {
         {"海水", 100},
     },
@@ -1098,6 +1100,7 @@ prototype "纯水排泄" {
     type = { "recipe" },
     category = "液体排泄",
     group = "流体",
+    order = 102,
     ingredients = {
         {"纯水", 100},
     },
@@ -1112,6 +1115,7 @@ prototype "碱性溶液排泄" {
     type = { "recipe" },
     category = "液体排泄",
     group = "流体",
+    order = 103,
     ingredients = {
         {"碱性溶液", 100},
     },
@@ -1126,6 +1130,7 @@ prototype "氮气排泄" {
     type = { "recipe" },
     category = "气体排泄",
     group = "流体",
+    order = 104,
     ingredients = {
         {"氮气", 100},
     },
@@ -1140,6 +1145,7 @@ prototype "氧气排泄" {
     type = { "recipe" },
     category = "气体排泄",
     group = "流体",
+    order = 105,
     ingredients = {
         {"氧气", 100},
     },
@@ -1154,6 +1160,7 @@ prototype "二氧化碳排泄" {
     type = { "recipe" },
     category = "气体排泄",
     group = "流体",
+    order = 106,
     ingredients = {
         {"二氧化碳", 100},
     },
@@ -1168,6 +1175,7 @@ prototype "氢气排泄" {
     type = { "recipe" },
     category = "气体排泄",
     group = "流体",
+    order = 107,
     ingredients = {
         {"氢气", 100},
     },
@@ -1182,6 +1190,7 @@ prototype "蒸汽排泄" {
     type = { "recipe" },
     category = "气体排泄",
     group = "流体",
+    order = 108,
     ingredients = {
         {"蒸汽", 100},
     },
@@ -1196,6 +1205,7 @@ prototype "甲烷排泄" {
     type = { "recipe" },
     category = "气体排泄",
     group = "流体",
+    order = 109,
     ingredients = {
         {"甲烷", 100},
     },
@@ -1209,7 +1219,7 @@ prototype "甲烷排泄" {
 ---------海水生成矿物配方----------
 prototype "海水分离铁" {
     type = { "recipe" },
-    category = "基础化工",
+    category = "流体处理",
     group = "金属",
     order = 1,
     ingredients = {
@@ -1226,7 +1236,7 @@ prototype "海水分离铁" {
 
 prototype "海水分离水藻" {
     type = { "recipe" },
-    category = "基础化工",
+    category = "流体处理",
     group = "金属",
     order = 2,
     ingredients = {
@@ -1243,7 +1253,7 @@ prototype "海水分离水藻" {
 
 prototype "海水分离石头" {
     type = { "recipe" },
-    category = "基础化工",
+    category = "流体处理",
     group = "金属",
     order = 3,
     ingredients = {
