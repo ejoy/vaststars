@@ -102,7 +102,7 @@
         </script>
     </head>
     <body>
-        <div class="item-container-region"  data-model="start">
+        <div class="item-container-region"  style="width:100%; background-color: rgba(0,0,0,200);" data-model="start">
             <div class="panel" style= "flex-direction: column;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button"/>
