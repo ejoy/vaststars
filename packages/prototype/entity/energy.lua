@@ -3,6 +3,7 @@ local prototype = gameplay.prototype
 
 prototype "蒸汽发电机1" {
     model = "prefabs/assembling-1.prefab",
+    icon = "construct/turbine1.png",
     construct_detector = {"exclusive"},
     type ={"entity", "generator", "fluidbox"},
     area = "2x3",
@@ -21,6 +22,7 @@ prototype "蒸汽发电机1" {
 
 prototype "风力发电机1" {
     model = "prefabs/wind-turbine-1.prefab",
+    icon = "construct/wind-turbine.png",
     construct_detector = {"exclusive"},
     type ={"entity", "generator"},
     area = "3x3",
@@ -30,6 +32,7 @@ prototype "风力发电机1" {
 
 prototype "太阳能板1" {
     model = "prefabs/assembling-1.prefab",
+    icon = "construct/solar-panel.png",
     construct_detector = {"exclusive"},
     type ={"entity","generator"},
     area = "3x3",
@@ -39,6 +42,7 @@ prototype "太阳能板1" {
 
 prototype "蓄电池1" {
     model = "prefabs/small-chest.prefab",
+    icon = "construct/grid-battery.png",
     construct_detector = {"exclusive"},
     type ={"entity"},
     area = "2x2",
@@ -47,6 +51,7 @@ prototype "蓄电池1" {
 
 prototype "核反应堆" {
     model = "prefabs/wind-turbine-1.prefab",
+    icon = "construct/solar-panel.png",
     construct_detector = {"exclusive"},
     type = {"entity", "generator", "burner"},
     area = "3x3",

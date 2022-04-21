@@ -3,6 +3,7 @@ local prototype = gameplay.prototype
 
 prototype "化工厂1" {
     model = "prefabs/distillery-1.prefab",
+    icon = "construct/chemistry1.png",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer","fluidboxes"},
     area = "3x3",
@@ -60,6 +61,7 @@ prototype "化工厂1" {
 
 prototype "蒸馏厂1" {
     model = "prefabs/distillery-1.prefab",
+    icon = "construct/distillery.png",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer", "fluidboxes"},
     area = "5x5",
@@ -115,6 +117,7 @@ prototype "蒸馏厂1" {
 
 prototype "电解厂1" {
     model = "prefabs/assembling-1.prefab",
+    icon = "construct/electrolysis1.png",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer", "fluidboxes"},
     area = "5x5",
@@ -163,6 +166,7 @@ prototype "电解厂1" {
 
 prototype "水电站1" {
     model = "prefabs/assembling-1.prefab",
+    icon = "construct/hydroplant.png",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer", "fluidboxes"},
     area = "5x5",

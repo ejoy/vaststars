@@ -3,6 +3,7 @@ local prototype = gameplay.prototype
 
 prototype "液罐1" {
     model = "prefabs/storage-tank-1.prefab",
+    icon = "construct/tank1.png",
     construct_detector = {"exclusive"},
     type ={"entity", "fluidbox"},
     area = "3x3",
@@ -21,6 +22,7 @@ prototype "液罐1" {
 
 prototype "抽水泵" {
     model = "prefabs/offshore-pump-1.prefab",
+    icon = "construct/offshore-pump.png",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer", "assembling", "fluidboxes"},
     area = "1x2",
@@ -44,6 +46,7 @@ prototype "抽水泵" {
 
 prototype "压力泵1" {
     model = "prefabs/pump-1.prefab",
+    icon = "construct/pump1.png",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer", "fluidbox", "pump"},
     area = "1x2",
@@ -64,6 +67,7 @@ prototype "压力泵1" {
 
 prototype "烟囱1" {
     model = "prefabs/chimney-1.prefab",
+    icon = "construct/chimney2.png",
     construct_detector = {"exclusive"},
     type ={"entity", "fluidbox"},
     area = "2x2",
@@ -79,6 +83,7 @@ prototype "烟囱1" {
 
 prototype "排水口1" {
     model = "prefabs/outfall-1.prefab",
+    icon = "construct/outfall.png",
     construct_detector = {"exclusive"},
     type ={"entity", "fluidbox"},
     area = "3x3",
@@ -94,6 +99,7 @@ prototype "排水口1" {
 
 prototype "空气过滤器1" {
     model = "prefabs/chimney-1.prefab",
+    icon = "construct/air-filter1.png",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer","assembling","fluidboxes"},
     area = "2x2",
@@ -119,6 +125,7 @@ prototype "空气过滤器1" {
 
 prototype "管道1-I型" {
     model = "prefabs/pipe/pipe_I.prefab",
+    icon = "construct/pipe.png",
     construct_detector = {"exclusive"},
     pipe = true,
     type = {"entity","fluidbox"},
@@ -136,6 +143,7 @@ prototype "管道1-I型" {
 
 prototype "管道1-J型" {
     model = "prefabs/pipe/pipe_J.prefab",
+    icon = "construct/pipe.png",
     construct_detector = {"exclusive"},
     pipe = true,
     type = {"entity","fluidbox"},
@@ -152,6 +160,7 @@ prototype "管道1-J型" {
 
 prototype "管道1-L型" {
     model = "prefabs/pipe/pipe_L.prefab",
+    icon = "construct/pipe.png",
     construct_detector = {"exclusive"},
     pipe = true,
     type = {"entity","fluidbox"},
@@ -169,6 +178,7 @@ prototype "管道1-L型" {
 
 prototype "管道1-T型" {
     model = "prefabs/pipe/pipe_T.prefab",
+    icon = "construct/pipe.png",
     construct_detector = {"exclusive"},
     pipe = true,
     type = {"entity","fluidbox"},
@@ -187,6 +197,7 @@ prototype "管道1-T型" {
 
 prototype "管道1-X型" {
     model = "prefabs/pipe/pipe_X.prefab",
+    icon = "construct/pipe.png",
     construct_detector = {"exclusive"},
     pipe = true,
     type = {"entity","fluidbox"},
@@ -206,6 +217,7 @@ prototype "管道1-X型" {
 
 prototype "管道1-O型" {
     model = "prefabs/pipe/pipe_O.prefab",
+    icon = "construct/pipe.png",
     construct_detector = {"exclusive"},
     pipe = true,
     type = {"entity","fluidbox"},
@@ -221,6 +233,7 @@ prototype "管道1-O型" {
 
 prototype "管道1-U型" {
     model = "prefabs/pipe/pipe_U.prefab",
+    icon = "construct/pipe.png",
     construct_detector = {"exclusive"},
     pipe = true,
     type = {"entity","fluidbox"},
@@ -237,6 +250,7 @@ prototype "管道1-U型" {
 
 prototype "地下管1" {
     model = "prefabs/pipe/pipe_J.prefab",
+    icon = "construct/pipe.png",
     construct_detector = {"exclusive"},
     pipe = true,
     type ={"entity","pipe-to-ground","fluidbox"},
