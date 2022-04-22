@@ -581,6 +581,22 @@ function M:rotate_object(id)
     object.dir = dir
     vsobject:set_position(position)
     vsobject:set_dir(object.dir)
+
+    gameplay_core.build()
+end
+
+function M:set_recipe(id, recipe_name)
+    local object = assert(objects:get(cache_names, id))
+    local typeobject = gameplay.queryByName("recipe", recipe_name)
+
+    local e = gameplay_core.get_entity("entity:in assembling?in", object.x, object.y)
+    if e then
+        e.assembling.recipe = typeobject.id
+        gameplay_core.sync("assembling:out", e)
+        gameplay_core.build()
+    else
+        log.error(("can not found assembling (%s, %s)"):format(object.x, object.y))
+    end
 end
 
 function M:complete()

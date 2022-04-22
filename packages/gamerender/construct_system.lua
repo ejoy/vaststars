@@ -25,6 +25,7 @@ local ui_construct_fluidbox_update_mb = world:sub {"ui", "construct", "fluidbox_
 
 local ui_menu_rotate_mb = world:sub {"ui", "build_function_pop", "rotate"}
 local ui_menu_recipe_mb = world:sub {"ui", "build_function_pop", "recipe"}
+local ui_recipe_pop_set_recipe_mb = world:sub {"ui", "recipe_pop", "set_recipe"}
 
 local single_touch_mb = world:sub {"single_touch"}
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
@@ -160,12 +161,17 @@ function construct_sys:data_changed()
         construct_editor:set_pickup_object_fluid(fluid_name)
     end
 
+    --
     for _, _, _, vsobject_id in ui_menu_rotate_mb:unpack() do
         construct_editor:rotate_object(vsobject_id)
     end
 
     for _, _, _, vsobject_id in ui_menu_recipe_mb:unpack() do
         iui.open("recipe_pop.rml", get_recipe_menu(), vsobject_id)
+    end
+
+    for _, _, _, vsobject_id, recipe_name in ui_recipe_pop_set_recipe_mb:unpack() do
+        construct_editor:set_recipe(vsobject_id, recipe_name)
     end
 end
 

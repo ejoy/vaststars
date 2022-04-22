@@ -210,6 +210,11 @@
             function start.clickDebug(event, i)
                 ui_sys.pub("debug", i)
             end
+
+            window.addEventListener('mousedown', function(event)
+                ui_sys.pub("ui_message", "leave")
+            end)
+
             ui_sys.addEventListener({
                 ["INIT"] = function(fluid_category, construct_menu)
                     start.fluid_category = fluid_category
