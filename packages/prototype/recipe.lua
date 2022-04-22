@@ -193,7 +193,7 @@ prototype "砖石公路-O型" {
     category = "中型制造",
     group = "物流",
     order = 50,
-    icon = "construct/processor.png",
+    icon = "construct/road1.png",
     ingredients = {
         {"石砖", 8},
     },
