@@ -7,8 +7,7 @@ local container = require "vaststars.container.core"
 local fluidflow = require "vaststars.fluidflow.core"
 local road = require "vaststars.road.core"
 local luaecs = import_package "vaststars.ecs"
-local serialize = import_package "ant.serialize"
-local datalist = require "datalist"
+local saveload = require "saveload"
 
 local function pipelineFunc(world, cworld, name)
     local p = status.pipelines[name]
@@ -113,23 +112,13 @@ return function ()
         ecs:update()
     end
 
-    function world:backup()
-        local sav = {}
-        for v in ecs:select "entity" do
-            local e = deepcopy(ecs:readall(v))
-            e[1] = nil
-            e[2] = nil
-            sav[#sav+1] = e
-        end
-        return serialize.stringify(sav)
+    function world:backup(rootdir)
+        return saveload.backup(ecs, rootdir)
     end
 
-    function world:restore(sav)
-        sav = datalist.parse(sav)
+    function world:restore(rootdir)
         ecs:clearall()
-        for _, e in ipairs(sav) do
-            ecs:new(e)
-        end
+        saveload.restore(ecs, rootdir)
         ecs:update()
     end
 

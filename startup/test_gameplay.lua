@@ -166,11 +166,10 @@ end
 
 local world = gameplay.createWorld()
 assert(loadfile "test_map.lua")(world)
---local sav = game.backup()
---local f = io.open("../../test.map", "w")
---f:write(sav)
---f:close()
---game.restore(sav)
+
+--world:backup  "../../startup/.log/sav"
+--world:restore "../../startup/.log/sav"
+
 for v in world.ecs:select "assembling:update fluidboxes:update entity:in" do
     if v.assembling.recipe == 0 then
         local pt = gameplay.query(v.entity.prototype)
