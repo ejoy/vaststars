@@ -3,28 +3,28 @@ local json_encode = json.encode
 local json_decode = json.decode
 
 local m = {}
-function m.pub(...)
+function m:pub(msg)
     local ud = {}
     ud.event = "__PUB"
-    ud.ud = {...}
+    ud.ud = msg
     window.extern.postMessage(json_encode(ud))
 end
 
-function m.open(url, ...)
+function m:open(url, ...)
     local ud = {}
     ud.event = "__OPEN"
     ud.ud = {url, ...}
     window.extern.postMessage(json_encode(ud))
 end
 
-function m.close()
+function m:close()
     local ud = {}
     ud.event = "__CLOSE"
     window.extern.postMessage(json_encode(ud))
 end
 
 do
-    function m.addEventListener(event_funcs)
+    function m:addEventListener(event_funcs)
         window.addEventListener("message", function(event)
             if not event.data then
                 console.log("event data is nil")

@@ -82,7 +82,7 @@
             end
 
             function start.ClickItem(event, recipe_name)
-                ui_sys.pub("ui", "recipe_pop", "set_recipe", start.object_id, recipe_name)
+                ui_sys:pub {"ui", "recipe_pop", "set_recipe", start.object_id, recipe_name}
             end
 
             function start.clickCatalog(event, index)
@@ -91,7 +91,7 @@
                 page_proxy:update_view_pages()
             end
 
-            ui_sys.addEventListener({
+            ui_sys:addEventListener({
                 ["INIT"] = function(recipe_menu, object_id)
                     start.recipe_menu = recipe_menu
                     start.items = start.recipe_menu[1].item or {}

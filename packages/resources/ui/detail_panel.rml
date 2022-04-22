@@ -22,7 +22,7 @@
                 detail_panel_property_list = {},
             }
 
-            ui_sys.addEventListener({
+            ui_sys:addEventListener({
                 ["INIT"] = function(entity)
                     start.detail_panel_icon = entity.icon
                     start.detail_panel_prototype = entity.name
@@ -47,7 +47,7 @@
                     start("detail_panel_property_list")
                 end,
                 ["leave"] = function()
-                    ui_sys.close()
+                    ui_sys:close()
                 end,
             })
 

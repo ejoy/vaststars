@@ -40,7 +40,7 @@ local function open(url, ...)
         if res.event == "__CLOSE" then
             world:pub {"rmlui_message_close", url}
         else
-            world:pub {"rmlui_message", res.event, table.unpack(res.ud)}
+            world:pub {"rmlui_message", res.event, res.ud}
         end
     end)
 
@@ -54,8 +54,8 @@ local function open(url, ...)
     windows[url] = w
 end
 
-local function pub(...)
-    world:pub {...}
+local function pub(msg)
+    world:pub(msg)
 end
 
 local function close(url)

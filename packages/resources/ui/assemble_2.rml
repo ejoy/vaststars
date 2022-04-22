@@ -85,7 +85,7 @@
                 start.info_flag = not start.info_flag
                 start.fuel_interaction = not start.fuel_interaction
                 console.log("---ClickFuel---")
-                ui_sys.open("pipe_build_pop.rml")
+                ui_sys:open("pipe_build_pop.rml")
             end
 
             function start.ClickMachineItem(event)
@@ -96,7 +96,7 @@
                 start.info_flag = not start.info_flag
                 start.material_interaction = not start.material_interaction
                 console.log("---ClickMaterial---")
-                ui_sys.open("exchange_pop.rml")
+                ui_sys:open("exchange_pop.rml")
             end
 
             function start.ClickPlugin(event)
@@ -181,7 +181,7 @@
             end
 
             function start.ClickRecipe()
-                ui_sys.open("recipe_pop.rml")
+                ui_sys:open("recipe_pop.rml")
             end
 
             window.addEventListener('message', function(event)

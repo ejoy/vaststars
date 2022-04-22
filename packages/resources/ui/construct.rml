@@ -161,61 +161,61 @@
                 construct_menu = {},
             }
             function start.clickConstructBegin(event)
-                ui_sys.pub("ui", "construct", "construct_begin", false)
+                ui_sys:pub {"ui", "construct", "construct_begin", false}
 
                 unconfirmed_double_confirm_continuation = function()
                     start.cur_edit_mode = 'construct'
                     start.show_construct_complete = false -- 建造模式下, 默认不显示 "开始施工"
-                    ui_sys.pub("ui", "construct", "construct_begin", true)
+                    ui_sys:pub {"ui", "construct", "construct_begin", true}
                 end
             end
             function start.clickDismantleBegin(event)
-                ui_sys.pub("ui", "construct", "dismantle_begin", false)
+                ui_sys:pub {"ui", "construct", "dismantle_begin", false}
                 unconfirmed_double_confirm_continuation = function()
                     start.cur_edit_mode = 'dismantle'
-                    ui_sys.pub("ui", "construct", "dismantle_begin", true)
+                    ui_sys:pub {"ui", "construct", "dismantle_begin", true}
                 end
             end
             function start.clickConstructRotate(event)
-                ui_sys.pub("ui", "construct", "rotate")
+                ui_sys:pub {"ui", "construct", "rotate"}
             end
             function start.clickConstructConfirm(event)
-                ui_sys.pub("ui", "construct", "construct_confirm")
+                ui_sys:pub {"ui", "construct", "construct_confirm"}
             end
             function start.clickConstructComplete(event)
                 start.cur_edit_mode = ''
-                ui_sys.pub("ui", "construct", "construct_complete")
+                ui_sys:pub {"ui", "construct", "construct_complete"}
             end
             function start.clickDismantleComplete(event)
                 start.cur_edit_mode = ''
-                ui_sys.pub("ui", "construct", "dismantle_complete")
+                ui_sys:pub {"ui", "construct", "dismantle_complete"}
             end
             function start.clickCancel(event)
-                ui_sys.pub("ui", "construct", "cancel", false)
+                ui_sys:pub {"ui", "construct", "cancel", false}
                 unconfirmed_double_confirm_continuation = function()
                     start.cur_edit_mode = ''
-                    ui_sys.pub("ui", "construct", "cancel", true)
+                    ui_sys:pub {"ui", "construct", "cancel", true}
                 end
             end
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
             end
             function start.clickConstructMenuItem(event, prototype)
-                ui_sys.pub("ui", "construct", "construct_entity", prototype)
+                ui_sys:pub {"ui", "construct", "construct_entity", prototype}
             end
             function start.clickSelectFluid(event, FluidName)
-                ui_sys.pub("ui", "construct", "fluidbox_update", FluidName)
+                ui_sys:pub {"ui", "construct", "fluidbox_update", FluidName}
                 start.cur_selected_fluid = FluidName
             end
             function start.clickDebug(event, i)
-                ui_sys.pub("debug", i)
+                ui_sys:pub {"debug", i}
             end
 
             window.addEventListener('mousedown', function(event)
-                ui_sys.pub("ui_message", "leave")
+                ui_sys:pub {"ui_message", "leave"}
             end)
 
-            ui_sys.addEventListener({
+            ui_sys:addEventListener({
                 ["INIT"] = function(fluid_category, construct_menu)
                     start.fluid_category = fluid_category
                     start.construct_menu = construct_menu
@@ -237,7 +237,7 @@
                     start.show_construct_complete = visible
                 end,
                 ["set_fluidbox_confirm"] = function(FluidName)
-                    ui_sys.pub("ui", "construct", "fluidbox_update", FluidName)
+                    ui_sys:pub {"ui", "construct", "fluidbox_update", FluidName}
                 end,
                 ["print_fps"] = function(text)
                     start.fps_text = text
@@ -246,7 +246,7 @@
                     start.drawcall_text = text
                 end,
                 ["show_unconfirmed_double_confirm"] = function()
-                    ui_sys.open("construct_cancel_pop.rml")
+                    ui_sys:open("construct_cancel_pop.rml")
                 end,
                 ["unconfirmed_double_confirm_continuation"] = function()
                     if unconfirmed_double_confirm_continuation then
