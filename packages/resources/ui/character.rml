@@ -169,110 +169,110 @@
         <div class="row" style="height: 100%; justify-content: space-evenly;" data-model="start">
             <div class="panel" style="flex-direction: column;">
                 <div class="header" style="align-items: center; justify-content: flex-start;">
-                    <button style='background-color: rgba(255, 255, 255, 0); border: 0px; background-image:"common/return.png"; width:60px; height:60px; background-size:cover;'/>
+                    <button style='background-color: rgba(255, 255, 255, 0); border: 0px; background-image:"textures/common/return.texture"; width:60px; height:60px; background-size:cover;'/>
                     <div>角色</div>
                 </div>
                 <div class="row" style="color: rgba(185,212,237,255); flex-wrap:wrap;">
                     <div class="item-display">
                         <div class="item">
-                            <div class="item-icon" style='background-image:"construct/hand.png";'/>
+                            <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
                             <div class="item-title">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
                             <div class="item-desc">
-                                <div style='background-image:"icon.png"; width:30px; height:30px;'/>
+                                <div style='background-image:"textures/icon.texture"; width:30px; height:30px;'/>
                                 <div>X4</div>
                             </div>
                         </div>
                     </div>
                     <div class="item-display">
                         <div class="item">
-                            <div class="item-icon" style='background-image:"construct/hand.png";'/>
+                            <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
                             <div class="item-title">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
                             <div class="item-desc">
-                                <div style='background-image:"icon.png"; width:30px; height:30px;'/>
+                                <div style='background-image:"textures/icon.texture"; width:30px; height:30px;'/>
                                 <div>X4</div>
                             </div>
                         </div>
                     </div>
                     <div class="item-display">
                         <div class="item">
-                            <div class="item-icon" style='background-image:"construct/hand.png";'/>
+                            <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
                             <div class="item-title">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
                             <div class="item-desc">
-                                <div style='background-image:"icon.png"; width:30px; height:30px;'/>
+                                <div style='background-image:"textures/icon.texture"; width:30px; height:30px;'/>
                                 <div>X4</div>
                             </div>
                         </div>
                     </div>
                     <div class="item-display">
                         <div class="item">
-                            <div class="item-icon" style='background-image:"construct/hand.png";'/>
+                            <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
                             <div class="item-title">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
                             <div class="item-desc">
-                                <div style='background-image:"icon.png"; width:30px; height:30px;'/>
+                                <div style='background-image:"textures/icon.texture"; width:30px; height:30px;'/>
                                 <div>X4</div>
                             </div>
                         </div>
                     </div>
                     <div class="item-display">
                         <div class="item">
-                            <div class="item-icon" style='background-image:"construct/hand.png";'/>
+                            <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
                             <div class="item-title">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
                             <div class="item-desc">
-                                <div style='background-image:"icon.png"; width:30px; height:30px;'/>
+                                <div style='background-image:"textures/icon.texture"; width:30px; height:30px;'/>
                                 <div>X4</div>
                             </div>
                         </div>
                     </div>
                     <div class="item-display">
                         <div class="item">
-                            <div class="item-icon" style='background-image:"construct/hand.png";'/>
+                            <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
                             <div class="item-title">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
                             <div class="item-desc">
-                                <div style='background-image:"icon.png"; width:30px; height:30px;'/>
+                                <div style='background-image:"textures/icon.texture"; width:30px; height:30px;'/>
                                 <div>X4</div>
                             </div>
                         </div>
                     </div>
                     <div class="item-display">
                         <div class="item">
-                            <div class="item-icon" style='background-image:"construct/hand.png";'/>
+                            <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
                             <div class="item-title">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
                             <div class="item-desc">
-                                <div style='background-image:"icon.png"; width:30px; height:30px;'/>
+                                <div style='background-image:"textures/icon.texture"; width:30px; height:30px;'/>
                                 <div>X4</div>
                             </div>
                         </div>
                     </div>
                     <div class="item-display">
                         <div class="item">
-                            <div class="item-icon" style='background-image:"construct/hand.png";'/>
+                            <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
                             <div class="item-title">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
                             <div class="item-desc">
-                                <div style='background-image:"icon.png"; width:30px; height:30px;'/>
+                                <div style='background-image:"textures/icon.texture"; width:30px; height:30px;'/>
                                 <div>X4</div>
                             </div>
                         </div>
@@ -281,23 +281,23 @@
                 <div class="column" style="justify-content: space-between; height:150px;">
                     <div class="row">
                         <div class="row" style='align-items:flex-start; width:60px; height:60px;'>
-                            <button class="big-button" style='background-image:"construct/process.png";'>
+                            <button class="big-button" style='background-image:"textures/construct/process.texture";'>
                                 <div style='height:50px;'/>
                                 <div>自动化</div>
                             </button>
-                            <button class="big-button" style='background-image:"construct/chemical.png";'>
+                            <button class="big-button" style='background-image:"textures/construct/chemical.texture";'>
                                 <div style='height:50px;'/>
                                 <div>化工</div>
                             </button>
-                            <button class="big-button" style='background-image:"construct/power.png";'>
+                            <button class="big-button" style='background-image:"textures/construct/power.texture";'>
                                 <div style='height:50px;'/>
                                 <div>生产</div>
                             </button>
-                            <button class="big-button" style='background-image:"construct/express.png";'>
+                            <button class="big-button" style='background-image:"textures/construct/express.texture";'>
                                 <div style='height:50px;'/>
                                 <div>物流</div>
                             </button>
-                            <button class="big-button" style='background-image:"construct/computer.png";'>
+                            <button class="big-button" style='background-image:"textures/construct/computer.texture";'>
                                 <div style='height:50px;'/>
                                 <div>效能</div>
                             </button>
@@ -305,23 +305,23 @@
                     </div>
                     <div class="row" style="color: white; font-size:18px; align-items:center; justify-content: space-between;">
                         <div class="progress-display">
-                            <div class="progress-bg" style='background-image:"construct/process.png";'/>
+                            <div class="progress-bg" style='background-image:"textures/construct/process.texture";'/>
                             <div>18%</div>
                         </div>
                         <div class="progress-display">
-                            <div class="progress-bg" style='background-image:"construct/chemical.png";'/>
+                            <div class="progress-bg" style='background-image:"textures/construct/chemical.texture";'/>
                             <div>18%</div>
                         </div>
                         <div class="progress-display">
-                            <div class="progress-bg" style='background-image:"construct/power.png";'/>
+                            <div class="progress-bg" style='background-image:"textures/construct/power.texture";'/>
                             <div>18%</div>
                         </div>
                         <div class="progress-display">
-                            <div class="progress-bg" style='background-image:"construct/express.png";'/>
+                            <div class="progress-bg" style='background-image:"textures/construct/express.texture";'/>
                             <div>18%</div>
                         </div>
                         <div class="progress-display">
-                            <div class="progress-bg" style='background-image:"construct/computer.png";'/>
+                            <div class="progress-bg" style='background-image:"textures/construct/computer.texture";'/>
                             <div>18%</div>
                         </div>
                         <div style="font-size:25px;">容量：345/1000</div>
@@ -329,44 +329,44 @@
                 </div>
             </div>
             <div class="panel">
-                <div class="row" style='height: 100%; width: 100%; justify-content:space-between; align-items:center; background-image:"character/big_character.png"; background-size:cover;'>
+                <div class="row" style='height: 100%; width: 100%; justify-content:space-between; align-items:center; background-image:"textures/character/big_character.texture"; background-size:cover;'>
                     <div class="column" style="justify-content:space-between; width: 25%;">
                         <button class="right-button-display" style='background-color: white;'>
-                            <div class="right-button-bg" style='background-image: "character/add.png";'/>
+                            <div class="right-button-bg" style='background-image: "textures/character/add.texture";'/>
                             <div class="right-button-title">机器抓</div>
                         </button>
                         <button class="right-button-display">
-                            <div class="right-button-bg" style='background-image: "construct/hand.png";'/>
+                            <div class="right-button-bg" style='background-image: "textures/construct/hand.texture";'/>
                             <div class="right-button-title">机器抓</div>
                         </button>
                         <button class="right-button-display" style='background-color: white;'>
-                            <div class="right-button-bg" style='background-image: "character/add.png";'/>
+                            <div class="right-button-bg" style='background-image: "textures/character/add.texture";'/>
                             <div class="right-button-title">机器抓</div>
                         </button>
                         <button class="right-button-display">
-                            <div class="right-button-bg" style='background-image: "construct/hand.png";'/>
+                            <div class="right-button-bg" style='background-image: "textures/construct/hand.texture";'/>
                             <div class="right-button-title">机器抓</div>
                         </button>
                         <button class="right-button-display">
-                            <div class="right-button-bg" style='background-image: "construct/hand.png";'/>
+                            <div class="right-button-bg" style='background-image: "textures/construct/hand.texture";'/>
                             <div class="right-button-title">机器抓</div>
                         </button>
                     </div>
                     <div class="column" style="left: -160px; align-self: flex-start; justify-content: space-between;">
                         <div class="property-display">
-                            <div class="property-icon" style='background-image:"character/flash.png";'/>
+                            <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
                             <div class="property-text">机器人能耗：999kW</div>
                         </div>
                         <div class="property-display">
-                            <div class="property-icon" style='background-image:"character/timer.png";'/>
+                            <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
                             <div class="property-text">移动速度：10m/s</div>
                         </div>
                         <div class="property-display">
-                            <div class="property-icon" style='background-image:"character/health.png";'/>
+                            <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
                             <div class="property-text">机器人生命：200/990</div>
                         </div>
                         <div class="property-display">
-                            <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                            <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
                             <div class="property-text">建造加成：37%</div>
                         </div>
                     </div>

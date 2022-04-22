@@ -45,7 +45,7 @@
                 width: 8.13vmin;
                 height: 6.27vmin;
                 background-size: cover;
-                background-image: "exchange/right_arrow.png";
+                background-image: "textures/exchange/right_arrow.texture";
             }
             .change-desc-block {
                 align-items: center;
@@ -97,18 +97,18 @@
                 <div class = "fluid-number-block">
                     <div class = "change-fluid-block">
                         <div class = "change-fluid-name">{{FluidName}}</div>
-                        <div class = "change-fluid-icon" style ='background-image: "science/greenbox.png";'/>
+                        <div class = "change-fluid-icon" style ='background-image: "textures/science/greenbox.texture";'/>
                     </div>
                     <div class = "change-arrow"/>
                     <div class = "change-fluid-block">
                         <div class = "change-fluid-name">{{NewFluidName}}</div>
-                        <div class = "change-fluid-icon" style='background-image: "science/redbox.png";'/>
+                        <div class = "change-fluid-icon" style='background-image: "textures/science/redbox.texture";'/>
                     </div>
                 </div>
                 <div class ="change-desc-block">
                     <div>将删除现存</div>
                     <div>{{FluidName}}</div>
-                    <div class = "change-fluid-icon" style='background-image: "science/greenbox.png";'/>
+                    <div class = "change-fluid-icon" style='background-image: "textures/science/greenbox.texture";'/>
                     <div style="color: chartreuse;">{{FluidCount}}</div>
                     <div>单位</div>
                 </div>

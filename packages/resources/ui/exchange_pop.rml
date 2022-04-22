@@ -59,7 +59,7 @@
             }
             .back-button {
                 border: 0.00vmin; 
-                background-image:"common/return.png"; 
+                background-image:"textures/common/return.texture"; 
                 width: 9.33vmin; 
                 height: 9.33vmin; 
                 background-size:cover;
@@ -98,7 +98,7 @@
                 height: 12.00vmin;
                 margin: 0.27vmin auto;
                 font-size: 2.40vmin;
-                background-image: "construct/insert1.png";
+                background-image: "textures/construct/insert1.texture";
             }
             .item-name-background {
                 text-align: center;
@@ -125,7 +125,7 @@
                 width: 12.00vmin;
                 height: 12.00vmin;
                 margin: 0.27vmin auto;
-                background-image: "science/add.png";
+                background-image: "textures/science/add.texture";
             }
             /*分割线*/
             .draw-line {
@@ -230,7 +230,7 @@
             .button-close {
                 width: 12.00vmin;
                 height: 12.00vmin;
-                background-image: "common/delete.png";
+                background-image: "textures/common/delete.texture";
                 background-size: cover;
             }
             .item-icon-area {
@@ -241,7 +241,7 @@
             .item-icon {
                 width: 12.00vmin;
                 height: 12.00vmin;
-                background-image: "science/hand.png";
+                background-image: "textures/science/hand.texture";
                 background-size: cover;
             }
             .item-title-block {
@@ -291,7 +291,7 @@
                 width: 10.67vmin;
                 height: 10.67vmin;
                 background-size: cover;
-                background-image: "exchange/blue_character.png";
+                background-image: "textures/exchange/blue_character.texture";
             }
             .item-progress-bar {
                 width:95%;
@@ -304,7 +304,7 @@
                 width: 10.67vmin;
                 height: 10.67vmin;
                 background-size: cover;
-                background-image: "exchange/purple_bag.png";
+                background-image: "textures/exchange/purple_bag.texture";
             }
             .button-exchange-block {
                 flex-direction: row;
@@ -330,13 +330,13 @@
                 width: 7.31vmin;
                 height: 5.64vmin;
                 background-size: cover;
-                background-image: "exchange/left_arrow.png";
+                background-image: "textures/exchange/left_arrow.texture";
             }
             .button-exchange-box {
                 width: 7.00vmin;
                 height: 7.00vmin;
                 background-size: cover;
-                background-image: "exchange/yellow_box.png";
+                background-image: "textures/exchange/yellow_box.texture";
             }
         </style>
         <script type="text/x-lua" >

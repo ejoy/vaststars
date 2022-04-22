@@ -61,7 +61,7 @@ local function get_fluid_list(fluidboxes, classify, s)
         local id = string.unpack("<I2I2", s, 4*idx-3)
         if isFluidId(id) then
             local pt = gameplay.query(id)
-            r[#r + 1] = {pt.name, 0}
+            r[#r + 1] = pt.name
         end
     end
     return r

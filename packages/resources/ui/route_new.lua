@@ -65,4 +65,3 @@ end
 window.onload = function()
     ui_sys.pub("ui", "GET_DATA", "route_endpoints")
 end
-

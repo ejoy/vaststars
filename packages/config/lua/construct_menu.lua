@@ -1,7 +1,7 @@
 local menu = {
     {
         name = "电力",
-        icon = "construct/power.png",
+        icon = "textures/construct/power.texture",
         detail = {
             "铁制电线杆",
             "蒸汽发电机1",
@@ -12,7 +12,7 @@ local menu = {
     },
     {
         name = "化工",
-        icon = "construct/chemistry2.png",
+        icon = "textures/construct/chemistry2.texture",
         detail = {
             "电解厂1",
             "水电站1",
@@ -22,7 +22,7 @@ local menu = {
     },
     {
         name = "加工",
-        icon = "construct/assembler.png",
+        icon = "textures/construct/assembler.texture",
         detail = {
             "采矿机1",
             "组装机1",
@@ -32,7 +32,7 @@ local menu = {
     },
     {
         name = "管道",
-        icon = "construct/pipe.png",
+        icon = "textures/construct/pipe.texture",
         detail = {
             "管道1-O型",
             "地下管1",
@@ -46,7 +46,7 @@ local menu = {
     },
     {
         name = "物流",
-        icon = "construct/logisitic1.png",
+        icon = "textures/construct/logisitic1.texture",
         detail = {
             "砖石公路-O型",
             "车站1",
@@ -58,7 +58,7 @@ local menu = {
     },
     {
         name = "自定义",
-        icon = "construct/modify.png",
+        icon = "textures/construct/modify.texture",
         detail = {
             "砖石公路-O型",
             "车站1",

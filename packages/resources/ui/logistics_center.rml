@@ -24,7 +24,7 @@
             .truck-pic {
                 width:80%;
                 height:80%;
-                background-image: "construct/truck.png";
+                background-image: "textures/construct/truck.texture";
                 background-size:cover;
             }
             .truck-info {
@@ -40,7 +40,7 @@
             .truck-info-pic {
                 width: 3.47vmin;
                 height: 3.47vmin;
-                background-image: "cmdcenter/small_bag.png";
+                background-image: "textures/cmdcenter/small_bag.texture";
                 background-size: cover;   
             }
             .truck-info-num {
@@ -89,36 +89,36 @@
                 truck_interaction_2 = false,
 
                 items = {
-                    {id=100, icon0="correct.png", icon1="correct.png"},
-                    {id=101, icon0="correct.png", icon1="correct.png"},
-                    {id=102, icon0="correct.png", icon1="correct.png"},
-                    {id=103, icon0="correct.png", icon1="correct.png"},
-                    {id=104, icon0="correct.png", icon1="correct.png"},
-                    {id=105, icon0="correct.png", icon1="correct.png"},
-                    {id=106, icon0="correct.png", icon1="correct.png"},
-                    {id=107, icon0="correct.png", icon1="correct.png"},
-                    {id=108, icon0="correct.png", icon1="correct.png"},
-                    {id=109, icon0="correct.png", icon1="correct.png"},
-                    {id=110, icon0="correct.png", icon1="correct.png"},
-                    {id=111, icon0="correct.png", icon1="correct.png"},
-                    {id=112, icon0="correct.png", icon1="correct.png"},
-                    {id=113, icon0="correct.png", icon1="correct.png"},
-                    {id=114, icon0="correct.png", icon1="correct.png"},
-                    {id=115, icon0="correct.png", icon1="correct.png"},
-                    {id=116, icon0="correct.png", icon1="correct.png"},
-                    {id=117, icon0="correct.png", icon1="correct.png"},
-                    {id=118, icon0="correct.png", icon1="correct.png"},
-                    {id=119, icon0="correct.png", icon1="correct.png"},
-                    {id=120, icon0="correct.png", icon1="correct.png"},
-                    {id=121, icon0="correct.png", icon1="correct.png"},
-                    {id=122, icon0="correct.png", icon1="correct.png"},
-                    {id=123, icon0="correct.png", icon1="correct.png"},
-                    {id=124, icon0="correct.png", icon1="correct.png"},
-                    {id=125, icon0="correct.png", icon1="correct.png"},
-                    {id=126, icon0="correct.png", icon1="correct.png"},
-                    {id=127, icon0="correct.png", icon1="correct.png"},
-                    {id=128, icon0="correct.png", icon1="correct.png"},
-                    {id=129, icon0="correct.png", icon1="correct.png"},
+                    {id=100, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=101, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=102, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=103, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=104, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=105, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=106, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=107, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=108, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=109, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=110, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=111, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=112, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=113, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=114, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=115, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=116, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=117, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=118, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=119, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=120, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=121, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=122, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=123, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=124, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=125, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=126, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=127, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=128, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=129, icon0="textures/correct.texture", icon1="textures/correct.texture"},
                 },
                 gapx = 0,
                 gapy = 0,
@@ -265,28 +265,28 @@
                         <div class ="info-block">
                             <div data-if="show">
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
                             <div data-if="show">
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
                             <div data-if="show">
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/health.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
                             <div data-if="show">
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
@@ -304,28 +304,28 @@
                         <div class ="info-block">
                             <div data-if="show">
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
                                     <div class="property-text" style="color:rgb(0,176,240);">制造速度</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
                             <div data-if="show">
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
                                     <div class="property-text" style="color:rgb(0,176,240);">工作功率</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
                             <div data-if="show">
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/health.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
                                     <div class="property-text" style="color:rgb(0,176,240);">建筑生命</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
                             <div data-if="show">
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
                                     <div class="property-text" style="color:rgb(0,176,240);">待机能耗</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
@@ -378,37 +378,37 @@
                 <div class = "draw-line"/>
                 <div class = "tab-container" data-if="!building_info_flag">
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/logisitic1.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/logisitic1.texture";'/>
                         <div class="catalog-desc">物流</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/assembler.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/assembler.texture";'/>
                         <div class="catalog-desc">生产</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/chemistry2.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/chemistry2.texture";'/>
                         <div class="catalog-desc">化工</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/steel-beam.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/steel-beam.texture";'/>
                         <div class="catalog-desc">金属</div>
                     </workbutton>
                 </div>
                 <div class = "tab-container" data-if="!building_info_flag">
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/processor.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/processor.texture";'/>
                         <div class="catalog-desc">器件</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/tank3.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/tank3.texture";'/>
                         <div class="catalog-desc">流体</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/pack.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/pack.texture";'/>
                         <div class="catalog-desc">打包</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/unpack.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/unpack.texture";'/>
                         <div class="catalog-desc">解包</div>
                     </workbutton>
                 </div>
@@ -419,7 +419,7 @@
                 </div>
                 <div class="header"style="justify-content: flex-end;" data-if="!building_info_flag">
                     <div class = "menu-title-2">调整运输车</div>
-                    <button class = "back-button" style='background-image: "cmdcenter/yellow_arrow.png";' data-event-click="ClickBack()"/>
+                    <button class = "back-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>
                 </div>
                 <div class="turck-info-region" style = "height:60%;" data-if="!building_info_flag">
                     <div class="row" data-event-click="ClickTruck1()" style="height:20%">
@@ -501,10 +501,10 @@
                             </div>
                         </button>
                         <button class="truck-block" style="background-color: rgb(246, 237, 189);">
-                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png";'/>                         
+                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "textures/cmdcenter/add.texture";'/>                         
                         </button>
                         <button class="truck-block" style="background-color: rgb(246, 237, 189);">
-                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png";'/>                         
+                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "textures/cmdcenter/add.texture";'/>                         
                         </button>
                     </div>
                     <div class="exchange-region-1" data-if="truck_interaction_2 && !building_info_flag">
@@ -588,23 +588,23 @@
                             </div>
                         </button>
                         <button class="truck-block" style="background-color: rgb(246, 237, 189);">
-                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png";'/>                         
+                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "textures/cmdcenter/add.texture";'/>                         
                         </button>
                         <button class="truck-block" style="background-color: rgb(246, 237, 189);">
-                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "cmdcenter/add.png";'/>                         
+                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "textures/cmdcenter/add.texture";'/>                         
                         </button>
                     </div>
                 </div>
                 <div class="row" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%; align-items: center; justify-content: space-evenly;" data-if="building_info_flag">
                     <button class="button-route-examine">                       
-                        <div class="button-info-pic" style='background-image: "science/timer.png";'/>
+                        <div class="button-info-pic" style='background-image: "textures/science/timer.texture";'/>
                         <div class="column">
                             <div style="font-size: 4.00vmin;">发车间隔</div>
                             <div style="font-size: 3.00vmin;">(60秒)</div>
                         </div>
                     </button>
                     <button class="button-time-adjust">                      
-                        <div class="button-info-pic" style='background-image: "road/header.png";'/>
+                        <div class="button-info-pic" style='background-image: "textures/road/header.texture";'/>
                         <div>路线查看</div>
                     </button>
                 </div>

@@ -54,7 +54,7 @@ local function get_neighbor_fluid_types(prototype_name, x, y, dir)
             if tile_object and tile_object.fluidbox_dir then
                 if tile_object.fluidbox_dir[opposite_dir(dir)] then
                     local object = assert(objects:get(cache_names, tile_object.id))
-                    local fluid = object.fluid[1]
+                    local fluid = object.fluid
                     if fluid then
                         fluid_types[fluid] = true
                     end
@@ -361,11 +361,11 @@ local function new_pickup_object(prototype_name, dir, coord)
     if need_set_fluid(pickup_object.prototype_name) then
         local fluid_types = get_neighbor_fluid_types(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir)
         if #fluid_types == 1 then
-            pickup_object.fluid = {fluid_types[1], 0}
+            pickup_object.fluid = fluid_types[1]
             vsobject:update_fluid(fluid_types[1])
             show_confirm = true
         else
-            pickup_object.fluid = {}
+            pickup_object.fluid = ""
             vsobject:update_fluid("")
             show_confirm = false
         end
@@ -384,7 +384,7 @@ local function update_pickup_object(pickup_object, vsobject)
     local vsobject_type
     local fluid_type
     if pickup_object.manual_set_fluid then
-        fluid_type = pickup_object.fluid[1]
+        fluid_type = pickup_object.fluid
     end
 
     if not check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.id, fluid_type) then
@@ -402,12 +402,12 @@ local function update_pickup_object(pickup_object, vsobject)
             local fluid_types = get_neighbor_fluid_types(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
             assert(#fluid_types <= 1)
             if #fluid_types == 1 then
-                pickup_object.fluid = {assert(fluid_types[1]), 0}
+                pickup_object.fluid = assert(fluid_types[1])
                 vsobject:update_fluid(fluid_types[1])
                 world:pub {"ui_message", "show_rotate_confirm", {confirm = true}}
             else
                 if not pickup_object.manual_set_fluid then
-                    pickup_object.fluid = {}
+                    pickup_object.fluid = ""
                     vsobject:update_fluid("")
                     world:pub {"ui_message", "show_rotate_confirm", {confirm = false}}
                 end
@@ -447,7 +447,7 @@ function M:confirm()
 
     local fluid_type
     if pickup_object.manual_set_fluid then
-        fluid_type = assert(pickup_object.fluid[1])
+        fluid_type = pickup_object.fluid
     end
 
     if not check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.id, fluid_type) then
@@ -457,7 +457,7 @@ function M:confirm()
 
     -- 针对流体盒子的特殊处理
     if need_set_fluid(pickup_object.prototype_name) then
-        if not pickup_object.fluid[1] then
+        if pickup_object.fluid == "" then
             print("set fluid first")
             return
         end
@@ -590,7 +590,7 @@ function M:set_recipe(id, recipe_name)
     local typeobject = gameplay.queryByName("recipe", recipe_name)
 
     local e = gameplay_core.get_entity("entity:in assembling?in", object.x, object.y)
-    if e then
+    if e.assembling then
         e.assembling.recipe = typeobject.id
         gameplay_core.sync("assembling:out", e)
         gameplay_core.build()
@@ -736,7 +736,7 @@ function M:set_pickup_object_fluid(fluid_name)
     end
 
     pickup_object.manual_set_fluid = true
-    pickup_object.fluid = {fluid_name, 0}
+    pickup_object.fluid = fluid_name
     world:pub {"ui_message", "show_rotate_confirm", {confirm = true}}
 
     local vsobject = assert(vsobject_manager:get(pickup_object.id))

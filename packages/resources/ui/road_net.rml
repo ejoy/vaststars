@@ -144,104 +144,104 @@
             <div class="header" style="align-items: flex-start;">
                 <div style="align-items: flex-start;">
                     <div style="flex-direction: row;">
-                        <div style='background-image:"road/header.png"; width:60px; height:60px; background-size:cover;'></div>
+                        <div style='background-image:"textures/road/header.texture"; width:60px; height:60px; background-size:cover;'></div>
                         <div>123456</div>
                     </div>
                 </div>
                 <div style="align-items: flex-end;">
                     <div style="flex-direction: row;">
                         <div>1/10</div>
-                        <div style='background-image:"road/car.png"; width:50px; height:50px; background-size:cover;'></div>
+                        <div style='background-image:"textures/road/car.texture"; width:50px; height:50px; background-size:cover;'></div>
                     </div>
                 </div>
             </div>
             <div class="tools-container" style="height:620px">
                 <div class="tools-row" style="width:100%;">
                     <button data-event-click="clickVehicle(9)">
-                        <div class="button-bg" style='background-image:"road/car.png";'></div>
+                        <div class="button-bg" style='background-image:"textures/road/car.texture";'></div>
                         <div class="row">
-                            <div class="button-small-bg" style='background-image:"road_net/small_bag.png";'/>
+                            <div class="button-small-bg" style='background-image:"textures/road_net/small_bag.texture";'/>
                             <div class="button-text">1/10</div>
                         </div>
                     </button>
                     <button data-event-click="clickVehicle(9)">
-                        <div class="button-bg" style='background-image:"road/car.png";'></div>
+                        <div class="button-bg" style='background-image:"textures/road/car.texture";'></div>
                         <div class="row">
-                            <div class="button-small-bg" style='background-image:"road_net/small_bag.png";'/>
+                            <div class="button-small-bg" style='background-image:"textures/road_net/small_bag.texture";'/>
                             <div class="button-text">1/10</div>
                         </div>
                     </button>
                     <button data-event-click="clickVehicle(9)">
-                        <div class="button-bg" style='background-image:"road/car.png";'></div>
+                        <div class="button-bg" style='background-image:"textures/road/car.texture";'></div>
                         <div class="row">
-                            <div class="button-small-bg" style='background-image:"road_net/small_bag.png";'/>
-                            <div class="button-text">1/10</div>
-                        </div>
-                    </button>
-                </div>
-                <div class="tools-row" style="width:100%;">
-                    <button data-event-click="clickVehicle(9)">
-                        <div class="button-bg" style='background-image:"road/car.png";'></div>
-                        <div class="row">
-                            <div class="button-small-bg" style='background-image:"road_net/small_bag.png";'/>
-                            <div class="button-text">1/10</div>
-                        </div>
-                    </button>
-                    <button data-event-click="clickVehicle(9)">
-                        <div class="button-bg" style='background-image:"road/car.png";'></div>
-                        <div class="row">
-                            <div class="button-small-bg" style='background-image:"road_net/small_bag.png";'/>
-                            <div class="button-text">1/10</div>
-                        </div>
-                    </button>
-                    <button data-event-click="clickVehicle(9)">
-                        <div class="button-bg" style='background-image:"road/car.png";'></div>
-                        <div class="row">
-                            <div class="button-small-bg" style='background-image:"road_net/small_bag.png";'/>
+                            <div class="button-small-bg" style='background-image:"textures/road_net/small_bag.texture";'/>
                             <div class="button-text">1/10</div>
                         </div>
                     </button>
                 </div>
                 <div class="tools-row" style="width:100%;">
                     <button data-event-click="clickVehicle(9)">
-                        <div class="button-bg" style='background-image:"road/car.png";'></div>
+                        <div class="button-bg" style='background-image:"textures/road/car.texture";'></div>
                         <div class="row">
-                            <div class="button-small-bg" style='background-image:"road_net/small_bag.png";'/>
+                            <div class="button-small-bg" style='background-image:"textures/road_net/small_bag.texture";'/>
                             <div class="button-text">1/10</div>
                         </div>
                     </button>
                     <button data-event-click="clickVehicle(9)">
-                        <div class="button-bg" style='background-image:"road/car.png";'></div>
+                        <div class="button-bg" style='background-image:"textures/road/car.texture";'></div>
                         <div class="row">
-                            <div class="button-small-bg" style='background-image:"road_net/small_bag.png";'/>
+                            <div class="button-small-bg" style='background-image:"textures/road_net/small_bag.texture";'/>
                             <div class="button-text">1/10</div>
                         </div>
                     </button>
                     <button data-event-click="clickVehicle(9)">
-                        <div class="button-bg" style='background-image:"road/car.png";'></div>
+                        <div class="button-bg" style='background-image:"textures/road/car.texture";'></div>
                         <div class="row">
-                            <div class="button-small-bg" style='background-image:"road_net/small_bag.png";'/>
+                            <div class="button-small-bg" style='background-image:"textures/road_net/small_bag.texture";'/>
                             <div class="button-text">1/10</div>
                         </div>
                     </button>
                 </div>
                 <div class="tools-row" style="width:100%;">
                     <button data-event-click="clickVehicle(9)">
-                        <div class="button-bg" style='background-image:"road/car.png";'></div>
+                        <div class="button-bg" style='background-image:"textures/road/car.texture";'></div>
                         <div class="row">
-                            <div class="button-small-bg" style='background-image:"road_net/small_bag.png";'/>
+                            <div class="button-small-bg" style='background-image:"textures/road_net/small_bag.texture";'/>
+                            <div class="button-text">1/10</div>
+                        </div>
+                    </button>
+                    <button data-event-click="clickVehicle(9)">
+                        <div class="button-bg" style='background-image:"textures/road/car.texture";'></div>
+                        <div class="row">
+                            <div class="button-small-bg" style='background-image:"textures/road_net/small_bag.texture";'/>
+                            <div class="button-text">1/10</div>
+                        </div>
+                    </button>
+                    <button data-event-click="clickVehicle(9)">
+                        <div class="button-bg" style='background-image:"textures/road/car.texture";'></div>
+                        <div class="row">
+                            <div class="button-small-bg" style='background-image:"textures/road_net/small_bag.texture";'/>
+                            <div class="button-text">1/10</div>
+                        </div>
+                    </button>
+                </div>
+                <div class="tools-row" style="width:100%;">
+                    <button data-event-click="clickVehicle(9)">
+                        <div class="button-bg" style='background-image:"textures/road/car.texture";'></div>
+                        <div class="row">
+                            <div class="button-small-bg" style='background-image:"textures/road_net/small_bag.texture";'/>
                             <div class="button-text">1/10</div>
                         </div>
                     </button>
                     <button style='width:80px; height:80px;' data-event-click="clickVehicle(9)">
-                        <div style='align-self: center; background-image:"road/add.png"; width:40px; height:40px; background-size:cover;'/>
+                        <div style='align-self: center; background-image:"textures/road/add.texture"; width:40px; height:40px; background-size:cover;'/>
                         <div>添加</div>
                     </button>
                 </div>
             </div>
             <div class="footer" style="align-items: center;">
                 <button class="row" style='align-items:center; width: 170px;'>
-                    <div style='background-image:"road_net/big_bag.png"; width:40px; height:40px; background-size:cover;'/>
+                    <div style='background-image:"textures/road_net/big_bag.texture"; width:40px; height:40px; background-size:cover;'/>
                     <div style="font-size:100%; left: -20px;">货物回收</div>
                 </button>
                 <button data-event-click="clickWork()" style="width: 170px;">返回</button>

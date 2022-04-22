@@ -31,7 +31,7 @@
             .info-panel {
                 height: 30.00vmin;
                 width: 83.47vmin;
-                background-image: "common/info-arc.png";
+                background-image: "textures/common/info-arc.texture";
                 background-size:cover;
                 flex-direction: row;
             }
@@ -68,15 +68,15 @@
     <body style = "pointer-events: none;">
             <div class="info-panel" style="position: absolute;" data-model="start" data-style-left = "left" data-style-top = "top">
                 <div class="button-fuction-block" style="top: 10.67vmin; left: 1.33vmin;" data-event-click="clickConstructRotate()">
-                    <button class="button-function" style ='background-image: "construct/rotate.png";'/>
+                    <button class="button-function" style ='background-image: "textures/construct/rotate.texture";'/>
                     <div class="title-text">旋转</div>
                 </div>
                 <div class="button-fuction-block" style="top: -5.33vmin; left: 17.00vmin;" data-event-click="clickRecipe()">
-                    <button class="button-function" style ='background-image: "assemble/wheel.png";'/>
+                    <button class="button-function" style ='background-image: "textures/assemble/wheel.texture";'/>
                     <div class="title-text">修改配方</div>
                 </div>
                 <div class="button-fuction-block" style="top: 10.67vmin; left: 32.14vmin">
-                    <button class="button-function" style ='background-image: "factory/seacher.png";'/>
+                    <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>
                     <div class="title-text">详细</div>
                 </div>
             </div>

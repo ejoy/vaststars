@@ -1,7 +1,7 @@
 local menu = {
     {
         name = "物流",
-        icon = "construct/logisitic1.png",
+        icon = "textures/construct/logisitic1.texture",
         category = {
             "小型制造",
             "中型制造",
@@ -10,7 +10,7 @@ local menu = {
     },
     {
         name = "生产",
-        icon = "construct/assembler.png",
+        icon = "textures/construct/assembler.texture",
         category = {
             "中型制造",
             "大型制造",
@@ -19,7 +19,7 @@ local menu = {
     },
     {
         name = "化工",
-        icon = "construct/chemistry2.png",
+        icon = "textures/construct/chemistry2.texture",
         category = {
             "小型制造",
             "中型制造",
@@ -28,7 +28,7 @@ local menu = {
     },
     {
         name = "金属",
-        icon = "construct/steel-beam.png",
+        icon = "textures/construct/steel-beam.texture",
         category = {
             "流体处理",
             "金属冶炼",
@@ -39,7 +39,7 @@ local menu = {
     },
     {
         name = "器件",
-        icon = "construct/processor.png",
+        icon = "textures/construct/processor.texture",
         category = {
             "小型制造",
             "中型制造",
@@ -49,7 +49,7 @@ local menu = {
     },
     {
         name = "流体",
-        icon = "construct/tank3.png",
+        icon = "textures/construct/tank3.texture",
         category = {
             "水泵",
             "过滤",
@@ -62,14 +62,14 @@ local menu = {
     },
     {
         name = "打包",
-        icon = "construct/pack.png",
+        icon = "textures/construct/pack.texture",
         category = {
 
         },
     },
     {
         name = "解包",
-        icon = "construct/unpack.png",
+        icon = "textures/construct/unpack.texture",
         category = {
 
         },

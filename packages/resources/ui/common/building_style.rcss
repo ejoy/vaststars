@@ -48,7 +48,7 @@ button:hover {
 	justify-content: flex-start;
 }
 .back-button {
-	background-image:"common/return.png"; 
+	background-image:"textures/common/return.texture"; 
 	width: 9.33vmin; 
 	height: 9.33vmin; 
 	background-size:cover;
@@ -57,13 +57,13 @@ button:hover {
 	top:0.8%; 
 	background-color: rgba(255, 255, 255, 0); 
 	border: 0.00vmin; 
-	background-image:"factory/seacher.png"; 
+	background-image:"textures/factory/seacher.texture"; 
 	width: 9.07vmin; 
 	height: 9.07vmin; 
 	background-size:cover;
 }
 .recipe-change-button {
-	background-image:"assemble/wheel.png"; 
+	background-image:"textures/assemble/wheel.texture"; 
 	width: 9.33vmin; 
 	height: 9.33vmin; 
 	background-size:cover;
@@ -136,7 +136,7 @@ workbutton:hover {
 	width: 12.00vmin;
 	height: 12.00vmin;
 	font-size: 2.40vmin;
-	background-image: "construct/insert1.png";
+	background-image: "textures/construct/insert1.texture";
 }
 .item-title {
 	text-align: center;
@@ -162,7 +162,7 @@ workbutton:hover {
 	background-size:cover;
 	width: 12.00vmin;
 	height: 12.00vmin;
-	background-image: "science/add.png";
+	background-image: "textures/science/add.texture";
 }
 /*分割线*/
 .draw-line {
@@ -244,7 +244,7 @@ workbutton:hover {
 	height: 10.67vmin;
 	background-color: rgb(191,144,0);
 	background-size: cover;
-	background-image: "construct/assembler.png";
+	background-image: "textures/construct/assembler.texture";
 	border: 0.27vmin rgb(92, 184, 92);
 }
 /*进度条*/
@@ -252,7 +252,7 @@ workbutton:hover {
 	width: 4.00vmin;
 	height: 4.00vmin;
 	background-size:cover;
-	background-image:"character/flash.png";
+	background-image:"textures/character/flash.texture";
 
 }
 .progress-bar-block {
@@ -283,7 +283,7 @@ workbutton:hover {
 	justify-content: space-between;
 	width: 10.67vmin;
 	height: 10.67vmin;
-	background-image:"science/book.png";
+	background-image:"textures/science/book.texture";
 	background-size:cover;
 }
 .item-page-block {
@@ -312,7 +312,7 @@ workbutton:hover {
 	width:90%;
 	height:90%;
 	background-size: cover;
-	background-image: "assemble/engine.png";
+	background-image: "textures/assemble/engine.texture";
 }
 .power-block {
 	margin-top: 0.3em;
@@ -341,7 +341,7 @@ workbutton:hover {
 	width: 9.00vmin;
 	height: 9.00vmin;
 	font-size: 2.00vmin;
-	background-image: "construct/insert1.png";
+	background-image: "textures/construct/insert1.texture";
 }
 /*物品按钮弹出框*/
 .exchange-region-right {
@@ -383,13 +383,13 @@ workbutton:hover {
 	width: 7.31vmin;
 	height: 5.64vmin;
 	background-size: cover;
-	background-image: "exchange/left_arrow.png";
+	background-image: "textures/exchange/left_arrow.texture";
 }
 .button-exchange-box {
 	width: 7.00vmin;
 	height: 7.00vmin;
 	background-size: cover;
-	background-image: "exchange/yellow_box.png";
+	background-image: "textures/exchange/yellow_box.texture";
 }
 .exchange-region {
 	position: absolute; 

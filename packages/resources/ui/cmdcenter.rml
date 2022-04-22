@@ -25,7 +25,7 @@
                 width: 3.33vmin;
                 height: 3.33vmin;
                 background-size:cover;
-                background-image: "construct/drone1.png";
+                background-image: "textures/construct/drone1.texture";
             }
             .drone-title {
                 margin-bottom: 0.2em;
@@ -81,7 +81,7 @@
                 width: 8.00vmin;
                 height: 8.00vmin;
                 font-size: 4.40vmin;
-                background-image: "construct/insert1.png";
+                background-image: "textures/construct/insert1.texture";
             }
             .small-item-count {
                 margin-bottom: -0.1em;
@@ -94,13 +94,13 @@
                 margin: auto 0.2em;
                 width:61px;
                 height:47px;
-                background-image:"exchange/right_arrow.png";
+                background-image:"textures/exchange/right_arrow.texture";
                 background-size:cover
             }
             .small-building {
                 width:50px;
                 height:70px;
-                background-image: "assemble/engine.png";
+                background-image: "textures/assemble/engine.texture";
                 background-size: cover;
             }
         </style>
@@ -114,36 +114,36 @@
                 machine_item = false,
 
                 items = {
-                    {id=100, icon0="correct.png", icon1="correct.png"},
-                    {id=101, icon0="correct.png", icon1="correct.png"},
-                    {id=102, icon0="correct.png", icon1="correct.png"},
-                    {id=103, icon0="correct.png", icon1="correct.png"},
-                    {id=104, icon0="correct.png", icon1="correct.png"},
-                    {id=105, icon0="correct.png", icon1="correct.png"},
-                    {id=106, icon0="correct.png", icon1="correct.png"},
-                    {id=107, icon0="correct.png", icon1="correct.png"},
-                    {id=108, icon0="correct.png", icon1="correct.png"},
-                    {id=109, icon0="correct.png", icon1="correct.png"},
-                    {id=110, icon0="correct.png", icon1="correct.png"},
-                    {id=111, icon0="correct.png", icon1="correct.png"},
-                    {id=112, icon0="correct.png", icon1="correct.png"},
-                    {id=113, icon0="correct.png", icon1="correct.png"},
-                    {id=114, icon0="correct.png", icon1="correct.png"},
-                    {id=115, icon0="correct.png", icon1="correct.png"},
-                    {id=116, icon0="correct.png", icon1="correct.png"},
-                    {id=117, icon0="correct.png", icon1="correct.png"},
-                    {id=118, icon0="correct.png", icon1="correct.png"},
-                    {id=119, icon0="correct.png", icon1="correct.png"},
-                    {id=120, icon0="correct.png", icon1="correct.png"},
-                    {id=121, icon0="correct.png", icon1="correct.png"},
-                    {id=122, icon0="correct.png", icon1="correct.png"},
-                    {id=123, icon0="correct.png", icon1="correct.png"},
-                    {id=124, icon0="correct.png", icon1="correct.png"},
-                    {id=125, icon0="correct.png", icon1="correct.png"},
-                    {id=126, icon0="correct.png", icon1="correct.png"},
-                    {id=127, icon0="correct.png", icon1="correct.png"},
-                    {id=128, icon0="correct.png", icon1="correct.png"},
-                    {id=129, icon0="correct.png", icon1="correct.png"},
+                    {id=100, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=101, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=102, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=103, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=104, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=105, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=106, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=107, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=108, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=109, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=110, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=111, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=112, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=113, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=114, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=115, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=116, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=117, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=118, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=119, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=120, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=121, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=122, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=123, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=124, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=125, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=126, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=127, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=128, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=129, icon0="textures/correct.texture", icon1="textures/correct.texture"},
                 },
 
 
@@ -340,37 +340,37 @@
                 <div class = "draw-line"/>
                 <div class = "tab-container">
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/logisitic1.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/logisitic1.texture";'/>
                         <div class="catalog-desc">物流</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/assembler.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/assembler.texture";'/>
                         <div class="catalog-desc">生产</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/chemistry2.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/chemistry2.texture";'/>
                         <div class="catalog-desc">化工</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/steel-beam.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/steel-beam.texture";'/>
                         <div class="catalog-desc">金属</div>
                     </workbutton>
                 </div>
                 <div class = "tab-container">
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/processor.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/processor.texture";'/>
                         <div class="catalog-desc">器件</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/tank3.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/tank3.texture";'/>
                         <div class="catalog-desc">流体</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/pack.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/pack.texture";'/>
                         <div class="catalog-desc">打包</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/unpack.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/unpack.texture";'/>
                         <div class="catalog-desc">解包</div>
                     </workbutton>
                 </div>
@@ -383,7 +383,7 @@
                     </div>
                     <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if="drone_interaction">
                         <div class = "menu-title" style="text-align: right;">无人机</div>
-                        <button class = "recipe-change-button" style='background-image: "cmdcenter/yellow_arrow.png";' data-event-click="ClickBack()"/>  
+                        <button class = "recipe-change-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>  
                     </div>
                     <div style="border-bottom: 1px rgb(89, 73, 39);"/>
                     <div class="column" data-if="!item_info_flag && !drone_interaction" style="width: 100%;height: 95%;">
@@ -391,28 +391,28 @@
                             <div class ="building-info">
                                 <div data-if="show">
                                     <div class="row">
-                                        <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                        <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
                                         <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
                                     </div>
                                     <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                                 </div>
                                 <div data-if="show">
                                     <div class="row">
-                                        <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                        <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
                                         <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
                                     </div>
                                     <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                                 </div>
                                 <div data-if="show">
                                     <div class="row">
-                                        <div class="property-icon" style='background-image:"character/health.png";'/>
+                                        <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
                                         <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
                                     </div>
                                     <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                                 </div>
                                 <div data-if="show">
                                     <div class="row">
-                                        <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                        <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
                                         <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
                                     </div>
                                     <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
@@ -424,28 +424,28 @@
                             <div class ="building-info">
                                 <div data-if="show">
                                     <div class="row">
-                                        <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                        <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
                                         <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
                                     </div>
                                     <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                                 </div>
                                 <div data-if="show">
                                     <div class="row">
-                                        <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                        <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
                                         <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
                                     </div>
                                     <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                                 </div>
                                 <div data-if="show">
                                     <div class="row">
-                                        <div class="property-icon" style='background-image:"character/health.png";'/>
+                                        <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
                                         <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
                                     </div>
                                     <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                                 </div>
                                 <div data-if="show">
                                     <div class="row">
-                                        <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                        <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
                                         <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
                                     </div>
                                     <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
@@ -454,22 +454,22 @@
                         </div>
                         <div class="row" data-event-click="ClickDrone()" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 25%; justify-content: center;">
                             <div class="row" style="width: 35%; justify-content: center;">
-                                <div class="small-item" style='background-image: "construct/drone1.png";'/>                        
-                                <div class="small-item" style='background-image: "construct/drone1.png";'/>                        
-                                <div class="small-item" style='background-image: "construct/drone1.png";'/>                       
-                                <div class="small-item" style='background-image: "construct/drone1.png";'/>                         
-                                <div class="small-item" style='background-image: "construct/drone1.png";'/>                         
-                                <div class="small-item" style='background-image: "construct/drone1.png";'/>                         
+                                <div class="small-item" style='background-image: "textures/construct/drone1.texture";'/>                        
+                                <div class="small-item" style='background-image: "textures/construct/drone1.texture";'/>                        
+                                <div class="small-item" style='background-image: "textures/construct/drone1.texture";'/>                       
+                                <div class="small-item" style='background-image: "textures/construct/drone1.texture";'/>                         
+                                <div class="small-item" style='background-image: "textures/construct/drone1.texture";'/>                         
+                                <div class="small-item" style='background-image: "textures/construct/drone1.texture";'/>                         
                                 <div class="item-add" style="width:9vmin; height:9vmin;"/>
                             </div>
                         </div>
                     </div>
                     <div class="row" style="align-items: center; width:100%; height:15%; justify-content: center; margin-top: 0.5em;" data-if="drone_interaction">
-                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "construct/drone1.png";'/>                       
-                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "construct/drone1.png";'/>                      
-                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "construct/drone1.png";'/>
-                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "construct/drone1.png";'/>                       
-                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "construct/drone1.png";'/>                        
+                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "textures/construct/drone1.texture";'/>                       
+                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "textures/construct/drone1.texture";'/>                      
+                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "textures/construct/drone1.texture";'/>
+                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "textures/construct/drone1.texture";'/>                       
+                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "textures/construct/drone1.texture";'/>                        
                         <button class="item-add" data-event-click="ClickMachineItem()"/>
                     </div>
                     <div class="exchange-region-1" data-if="machine_item" style="flex-direction: column; align-self:center; height: 20%; margin:0;">
@@ -497,7 +497,7 @@
                     <div class="item-info-block">
                         <div style="flex-direction:row; justify-content: flex-start; align-items: center; width:100%;height:20%;">
                             <div class ="drone-title-block" style="height:5vmin;">
-                                <div class = "drone-pic" style='background-image:"science/book.png";'/>
+                                <div class = "drone-pic" style='background-image:"textures/science/book.texture";'/>
                                 <div class = "drone-title">基本信息</div>
                             </div>
                             <div class="property-text" style="-webkit-text-stroke: 0.20vmin rgb(39, 32, 17);color: rgb(221, 235, 26)">一种用于抓取货物的机械手臂</div>
@@ -505,44 +505,44 @@
                         <div class="row" style="width:100%; height:80%; justify-content: flex-start; align-items: center;">
                             <div class="info-block" style="margin-top:0; margin-left:1em; justify-content: center; align-items: flex-start">
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
                                     <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                                 </div>
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">产能加成</div>
                                     <div class="property-text" style="color:#fff;">40%</div>
                                 </div>
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/health.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
                                     <div class="property-text" style="color:#fff;">200/990</div>
                                 </div>
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">建筑能耗</div>
                                     <div class="property-text" style="color:#fff;">500kw(-250kw)</div>
                                 </div>
                             </div>
                             <div class="info-block" style="margin-top:0; margin-left:2.2em; justify-content: center; align-items: flex-start;">
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
                                     <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                                 </div>
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">产能加成</div>
                                     <div class="property-text" style="color:#fff;">40%</div>
                                 </div>
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/health.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
                                     <div class="property-text" style="color:#fff;">200/990</div>
                                 </div>
                                 <div class="row">
-                                    <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">建筑能耗</div>
                                     <div class="property-text" style="color:#fff;">500kw(-250kw)</div>
                                 </div>
@@ -553,7 +553,7 @@
                     <div class="item-recipe-block">
                         <div style="flex-direction:row; justify-content: flex-start; width:100%;">
                             <div class ="drone-title-block" style="height:5vmin;">
-                                <div class = "drone-pic" style='background-image:"property/research-packs.png";'/>
+                                <div class = "drone-pic" style='background-image:"textures/property/research-packs.texture";'/>
                                 <div class = "drone-title">生产配方</div>
                             </div>
                         </div>
@@ -592,7 +592,7 @@
                     <div class="item-material-block ">
                         <div style="flex-direction:row; justify-content: flex-start; width:100%;">
                             <div class ="drone-title-block" style="height:5vmin;">
-                                <div class = "drone-pic" style='background-image:"construct/industry.png";'/>
+                                <div class = "drone-pic" style='background-image:"textures/construct/industry.texture";'/>
                                 <div class = "drone-title">基础资源</div>
                             </div>
                         </div>
@@ -667,7 +667,7 @@
                     <div class="item-building-block ">
                         <div style="flex-direction:row; justify-content: flex-start; width:100%;">
                             <div class ="drone-title-block" style="height:5vmin;">
-                                <div class = "drone-pic" style='background-image:"construct/assembler.png";'/>
+                                <div class = "drone-pic" style='background-image:"textures/construct/assembler.texture";'/>
                                 <div class = "drone-title">生产建筑</div>
                             </div>
                         </div>

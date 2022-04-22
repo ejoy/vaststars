@@ -163,31 +163,31 @@
             console.log("before createModel")
             local start = window.createModel "start" {
                 items = {
-                    {id=100, icon0="correct.png", icon1="correct.png"},
-                    {id=101, icon0="correct.png", icon1="correct.png"},
-                    {id=102, icon0="correct.png", icon1="correct.png"},
-                    {id=103, icon0="correct.png", icon1="correct.png"},
-                    {id=104, icon0="correct.png", icon1="correct.png"},
-                    {id=105, icon0="correct.png", icon1="correct.png"},
-                    {id=106, icon0="correct.png", icon1="correct.png"},
-                    {id=107, icon0="correct.png", icon1="correct.png"},
-                    {id=108, icon0="correct.png", icon1="correct.png"},
-                    {id=109, icon0="correct.png", icon1="correct.png"},
-                    {id=110, icon0="correct.png", icon1="correct.png"},
-                    {id=111, icon0="correct.png", icon1="correct.png"},
-                    {id=112, icon0="correct.png", icon1="correct.png"},
-                    {id=113, icon0="correct.png", icon1="correct.png"},
-                    {id=114, icon0="correct.png", icon1="correct.png"},
-                    {id=115, icon0="correct.png", icon1="correct.png"},
-                    {id=116, icon0="correct.png", icon1="correct.png"},
-                    {id=117, icon0="correct.png", icon1="correct.png"},
-                    {id=118, icon0="correct.png", icon1="correct.png"},
-                    {id=119, icon0="correct.png", icon1="correct.png"},
-                    {id=120, icon0="correct.png", icon1="correct.png"},
-                    {id=121, icon0="correct.png", icon1="correct.png"},
-                    {id=122, icon0="correct.png", icon1="correct.png"},
-                    {id=123, icon0="correct.png", icon1="correct.png"},
-                    {id=124, icon0="correct.png", icon1="correct.png"},
+                    {id=100, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=101, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=102, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=103, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=104, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=105, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=106, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=107, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=108, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=109, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=110, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=111, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=112, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=113, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=114, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=115, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=116, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=117, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=118, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=119, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=120, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=121, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=122, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=123, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=124, icon0="textures/correct.texture", icon1="textures/correct.texture"},
                 },
                 item_size = 120,
                 view_items = {},
@@ -197,23 +197,23 @@
                 list_drag = false,
                 draging = false,
                 item_list = {
-                    {id=100, icon0="correct.png", icon1="correct.png"},
-                    {id=101, icon0="correct.png", icon1="correct.png"},
-                    {id=102, icon0="correct.png", icon1="correct.png"},
-                    {id=103, icon0="correct.png", icon1="correct.png"},
-                    {id=104, icon0="correct.png", icon1="correct.png"},
-                    {id=105, icon0="correct.png", icon1="correct.png"},
-                    {id=106, icon0="correct.png", icon1="correct.png"},
-                    {id=107, icon0="correct.png", icon1="correct.png"},
-                    {id=108, icon0="correct.png", icon1="correct.png"},
-                    {id=109, icon0="correct.png", icon1="correct.png"},
-                    {id=110, icon0="correct.png", icon1="correct.png"},
-                    {id=111, icon0="correct.png", icon1="correct.png"},
-                    {id=112, icon0="correct.png", icon1="correct.png"},
-                    {id=113, icon0="correct.png", icon1="correct.png"},
-                    {id=114, icon0="correct.png", icon1="correct.png"},
-                    {id=115, icon0="correct.png", icon1="correct.png"},
-                    {id=116, icon0="correct.png", icon1="correct.png"},
+                    {id=100, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=101, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=102, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=103, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=104, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=105, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=106, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=107, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=108, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=109, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=110, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=111, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=112, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=113, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=114, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=115, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=116, icon0="textures/correct.texture", icon1="textures/correct.texture"},
                 },
                 list_item_width = 667,
                 list_item_height = 50,
@@ -274,7 +274,7 @@
             <div class="road-panel" style = "flex-direction: column;">
                 <!-- header -->
                 <div class="station-name-block">
-                    <div class="big-bg" style='background-image:"road/header.png";'></div>
+                    <div class="big-bg" style='background-image:"textures/road/header.texture";'></div>
                     <div>12号车辆厂</div>
                 </div>
 
@@ -283,14 +283,14 @@
                     <div class="station-route-item" data-event-mousedown="listmousedown()" data-event-mouseup="listmouseup()" data-event-mousemove="listdrag()">
                         <button class="road-item-block" data-for="item_list">
                             <div class="route-name-block">
-                                <div class = "route-name-pic" style='background-image: "road/lighter.png";'/>
+                                <div class = "route-name-pic" style='background-image: "textures/road/lighter.texture";'/>
                                 <div class = "route-name-text">铁锭加工路线</div>
                             </div>
                             <div class="route-info-block">
-                                <div class = "route-name-pic" style='background-image: "road/header.png";'/>
+                                <div class = "route-name-pic" style='background-image: "textures/road/header.texture";'/>
                                 <div class = "route-name-text">1233</div>
-                                <div class = "route-name-pic" style='margin:0 0.5em;width: 4.00vmin;height: 3.07vmin;background-image: "exchange/right_arrow.png";'/>
-                                <div class = "route-name-pic" style='background-image: "road/header.png";'/>
+                                <div class = "route-name-pic" style='margin:0 0.5em;width: 4.00vmin;height: 3.07vmin;background-image: "textures/exchange/right_arrow.texture";'/>
+                                <div class = "route-name-pic" style='background-image: "textures/road/header.texture";'/>
                                 <div class = "route-name-text">1233</div>
                             </div>
                         </button>
@@ -298,7 +298,7 @@
                 </div>
                 <div class = "station-add-block">
                     <button class="route-add-button" data-event-click="showNewRoute()">
-                        <div style='align-self: center; background-image:"road/add.png"; width: 4.00vmin; height: 4.00vmin; background-size:cover;'/>
+                        <div style='align-self: center; background-image:"textures/road/add.texture"; width: 4.00vmin; height: 4.00vmin; background-size:cover;'/>
                         <div>增加路线</div>
                     </button>
                 </div>

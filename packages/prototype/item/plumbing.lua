@@ -4,55 +4,55 @@ local prototype = gameplay.prototype
 prototype "液罐1" {
     type = {"item"},
     stack = 50,
-    icon = "construct/tank1.png",
+    icon = "textures/construct/tank1.texture",
     description = "专门贮藏液体或气体的容器",
 }
 
 prototype "抽水泵" {
     type = {"item"},
     stack = 50,
-    icon = "construct/offshore-pump.png",
+    icon = "textures/construct/offshore-pump.texture",
     description = "从水源抽取水的装置",
 }
 
 prototype "压力泵1" {
     type = {"item"},
     stack = 50,
-    icon = "construct/pump1.png",
+    icon = "textures/construct/pump1.texture",
     description = "抽取并传输液体或气体的装置",
 }
 
 prototype "烟囱1" {
     type = {"item"},
     stack = 50,
-    icon = "construct/chimney2.png",
+    icon = "textures/construct/chimney2.texture",
     description = "用来排放无害气体的装置",
 }
 
 prototype "排水口1" {
     type = {"item"},
     stack = 50,
-    icon = "construct/outfall.png",
+    icon = "textures/construct/outfall.texture",
     description = "用来排放无害液体的装置",
 }
 
 prototype "空气过滤器1" {
     type = {"item"},
     stack = 25,
-    icon = "construct/air-filter1.png",
+    icon = "textures/construct/air-filter1.texture",
     description = "抽取空气的装置",
 }
 
 prototype "管道1" {
     type = {"item"},
     stack = 100,
-    icon = "construct/pipe.png",
+    icon = "textures/construct/pipe.texture",
     description = "在地上传输液体或气体的管道",
 }
 
 prototype "地下管1" {
     type = {"item"},
     stack = 100,
-    icon = "construct/pipe.png",
+    icon = "textures/construct/pipe.texture",
     description = "从地下传输液体或气体的管道",
 }

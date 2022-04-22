@@ -3,7 +3,7 @@ local prototype = gameplay.prototype
 
 prototype "组装机1" {
     model = "prefabs/assembling-1.prefab",
-    icon = "construct/assembler.png",
+    icon = "textures/construct/assembler.texture",
     construct_detector = {"exclusive"},
     type = {"entity", "assembling", "consumer", "fluidboxes"},
     area = "3x3",

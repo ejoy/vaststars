@@ -13,7 +13,7 @@
             .item-recipe-image {
                 margin: auto;
                 align-self:flex-start;
-                background-image:"science/hand.png"; 
+                background-image:"textures/science/hand.texture"; 
                 width: 10.67vmin; 
                 height: 10.67vmin; 
                 background-size:cover;
@@ -21,7 +21,7 @@
             .item-recipe-info {
                 margin: auto;
                 align-self:flex-end;
-                background-image:"science/book.png"; 
+                background-image:"textures/science/book.texture"; 
                 width: 10.67vmin;  
                 height: 10.67vmin; 
                 background-size:cover;
@@ -169,36 +169,36 @@
             console.log("before createModel")
             local start = window.createModel "start" {
                 items = {
-                    {id=100, icon0="correct.png", icon1="correct.png"},
-                    {id=101, icon0="correct.png", icon1="correct.png"},
-                    {id=102, icon0="correct.png", icon1="correct.png"},
-                    {id=103, icon0="correct.png", icon1="correct.png"},
-                    {id=104, icon0="correct.png", icon1="correct.png"},
-                    {id=105, icon0="correct.png", icon1="correct.png"},
-                    {id=106, icon0="correct.png", icon1="correct.png"},
-                    {id=107, icon0="correct.png", icon1="correct.png"},
-                    {id=108, icon0="correct.png", icon1="correct.png"},
-                    {id=109, icon0="correct.png", icon1="correct.png"},
-                    {id=110, icon0="correct.png", icon1="correct.png"},
-                    {id=111, icon0="correct.png", icon1="correct.png"},
-                    {id=112, icon0="correct.png", icon1="correct.png"},
-                    {id=113, icon0="correct.png", icon1="correct.png"},
-                    {id=114, icon0="correct.png", icon1="correct.png"},
-                    {id=115, icon0="correct.png", icon1="correct.png"},
-                    {id=116, icon0="correct.png", icon1="correct.png"},
-                    {id=117, icon0="correct.png", icon1="correct.png"},
-                    {id=118, icon0="correct.png", icon1="correct.png"},
-                    {id=119, icon0="correct.png", icon1="correct.png"},
-                    {id=120, icon0="correct.png", icon1="correct.png"},
-                    {id=121, icon0="correct.png", icon1="correct.png"},
-                    {id=122, icon0="correct.png", icon1="correct.png"},
-                    {id=123, icon0="correct.png", icon1="correct.png"},
-                    {id=124, icon0="correct.png", icon1="correct.png"},
-                    {id=125, icon0="correct.png", icon1="correct.png"},
-                    {id=126, icon0="correct.png", icon1="correct.png"},
-                    {id=127, icon0="correct.png", icon1="correct.png"},
-                    {id=128, icon0="correct.png", icon1="correct.png"},
-                    {id=129, icon0="correct.png", icon1="correct.png"},
+                    {id=100, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=101, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=102, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=103, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=104, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=105, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=106, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=107, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=108, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=109, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=110, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=111, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=112, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=113, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=114, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=115, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=116, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=117, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=118, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=119, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=120, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=121, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=122, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=123, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=124, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=125, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=126, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=127, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=128, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=129, icon0="textures/correct.texture", icon1="textures/correct.texture"},
                 },
 
                 gapx = 0,
@@ -355,37 +355,37 @@
                 <div class = "draw-line"/>
                 <div class = "tab-container">
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/logisitic1.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/logisitic1.texture";'/>
                         <div class="catalog-desc">物流</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/assembler.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/assembler.texture";'/>
                         <div class="catalog-desc">生产</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/chemistry2.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/chemistry2.texture";'/>
                         <div class="catalog-desc">化工</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/steel-beam.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/steel-beam.texture";'/>
                         <div class="catalog-desc">金属</div>
                     </workbutton>
                 </div>
                 <div class = "tab-container">
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/processor.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/processor.texture";'/>
                         <div class="catalog-desc">器件</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/tank3.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/tank3.texture";'/>
                         <div class="catalog-desc">流体</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/pack.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/pack.texture";'/>
                         <div class="catalog-desc">打包</div>
                     </workbutton>
                     <workbutton>
-                        <div class="workbutton-bg" style='background-image:"construct/unpack.png";'/>
+                        <div class="workbutton-bg" style='background-image:"textures/construct/unpack.texture";'/>
                         <div class="catalog-desc">解包</div>
                     </workbutton>
                 </div>
@@ -401,35 +401,35 @@
                         <div class="recipe-container">
                             <div class = "recipe-title">所需材料</div>
                             <div class = "recipe-item">
-                                <div class="recipe-item-icon" style='background-image:"science/hand.png";'/>
+                                <div class="recipe-item-icon" style='background-image:"textures/science/hand.texture";'/>
                                 <div class="column" style="width:98%;">
                                     <div class="recipe-item-name">一二三四五六七八九十</div>
                                     <div class="recipe-item-number">X3 (19)</div>
                                 </div>
                             </div>   
                             <div class = "recipe-item">
-                                <div class="recipe-item-icon" style='background-image:"science/hand.png";'/>
+                                <div class="recipe-item-icon" style='background-image:"textures/science/hand.texture";'/>
                                 <div class="column" style="width:98%;">
                                     <div class="recipe-item-name">机器爪</div>
                                     <div class="recipe-item-number">X3 (19)</div>
                                 </div>
                             </div>  
                             <div class = "recipe-item">
-                                <div class="recipe-item-icon" style='background-image:"science/hand.png";'/>
+                                <div class="recipe-item-icon" style='background-image:"textures/science/hand.texture";'/>
                                 <div class="column" style="width:98%;">
                                     <div class="recipe-item-name">机器爪</div>
                                     <div class="recipe-item-number">X3 (19)</div>
                                 </div>
                             </div>  
                             <div class = "recipe-item">
-                                <div class="recipe-item-icon" style='background-image:"science/hand.png";'/>
+                                <div class="recipe-item-icon" style='background-image:"textures/science/hand.texture";'/>
                                 <div class="column" style="width:98%;">
                                     <div class="recipe-item-name">机器爪</div>
                                     <div class="recipe-item-number">X3 (19)</div>
                                 </div>
                             </div>  
                             <div class = "recipe-item">
-                                <div class="recipe-item-icon" style='background-image:"science/hand.png";'/>
+                                <div class="recipe-item-icon" style='background-image:"textures/science/hand.texture";'/>
                                 <div class="column" style="width:98%;">
                                     <div class="recipe-item-name">机器爪</div>
                                     <div class="recipe-item-number">X3 (19)</div>
@@ -452,14 +452,14 @@
                                     <div class="progress-fill" style="background-color: green; position:absolute; z-index: 3; top: -150px; left: 1.33vmin; height: 13.33vmin;"/>
                                 </div>
                                 <div style="flex-direction:row; width:40%;">
-                                    <div class="property-icon" style='background-image:"science/timer.png";'/>
+                                    <div class="property-icon" style='background-image:"textures/science/timer.texture";'/>
                                     <div class="property-text">1m36s</div>
                                 </div>
                             </div>
                             <div class="row" style="height: 20%; width:100%; justify-content: space-evenly;">
-                                <button class = "button-increase-item" style='background-image:"factory/return.png";'/>
-                                <button class = "button-increase-item" style='background-image:"factory/plus-five.png";'/>
-                                <button class = "button-increase-item" style='background-image:"factory/plus-one.png";'/>
+                                <button class = "button-increase-item" style='background-image:"textures/factory/return.texture";'/>
+                                <button class = "button-increase-item" style='background-image:"textures/factory/plus-five.texture";'/>
+                                <button class = "button-increase-item" style='background-image:"textures/factory/plus-one.texture";'/>
                             </div>
                         </div>
                     </div>
@@ -470,20 +470,20 @@
                                 <div style="font-size: 3.33vmin;">队列</div>
                             </div>
                             <div class="queue-button">
-                                <button class="small_button" style='background-image:"construct/insert1.png";'/>
+                                <button class="small_button" style='background-image:"textures/construct/insert1.texture";'/>
                                 <div style="font-size: 2.40vmin;">21m23s</div>
                             </div>
                             <div class="queue-button">
-                                <button class="small_button" style='background-color:rgb(243,244,221); background-image:"cmdcenter/add.png";'/>
+                                <button class="small_button" style='background-color:rgb(243,244,221); background-image:"textures/cmdcenter/add.texture";'/>
                             </div>
                             <div class="queue-button">
-                                <button class="small_button" style='background-color:rgb(243,244,221); background-image:"cmdcenter/add.png";'/>
+                                <button class="small_button" style='background-color:rgb(243,244,221); background-image:"textures/cmdcenter/add.texture";'/>
                             </div>
                             <div class="queue-button">
-                                <button class="small_button" style='background-color:rgb(243,244,221); background-image:"cmdcenter/add.png";'/>
+                                <button class="small_button" style='background-color:rgb(243,244,221); background-image:"textures/cmdcenter/add.texture";'/>
                             </div>
                             <div class="queue-button">
-                                <button class="small_button" style='background-color:rgb(243,244,221); background-image:"cmdcenter/add.png";'/>
+                                <button class="small_button" style='background-color:rgb(243,244,221); background-image:"textures/cmdcenter/add.texture";'/>
                             </div>
                         </div>
                         <button class="button-start-production">

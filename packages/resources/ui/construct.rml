@@ -279,51 +279,51 @@
             <!-- 主菜单按钮 -->
             <div class = "main-menu-block" data-if = "cur_edit_mode == ''">
                 <button  class = "main-menu-button" style="border: 0.00vmin;">
-                    <div class = "menu-button-pic" style='background-image:"construct/logistics_center.png"'/>
+                    <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
                     <div class = "menu-button-text">指挥中心</div>
                 </button>
                 <button  class = "main-menu-button" style="border: 0.00vmin;">
-                    <div class = "menu-button-pic" style='background-image:"construct/goods_station.png"'/>
+                    <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
                     <div class = "menu-button-text">科研中心</div>
                 </button>
                 <button  class = "main-menu-button" style="border: 0.00vmin;">
-                    <div class = "menu-button-pic" style='background-image:"factory/seacher.png"'/>
+                    <div class = "menu-button-pic" style='background-image:"textures/factory/seacher.texture"'/>
                     <div class = "menu-button-text">统计数据</div>
                 </button>
                 <button  class = "main-menu-button" style="border: 0.00vmin;">
-                    <div class = "menu-button-pic" style='background-image:"construct/road.png"'/>
+                    <div class = "menu-button-pic" style='background-image:"textures/construct/road.texture"'/>
                     <div class = "menu-button-text">地图信息</div>
                 </button>
                 <button  class = "main-menu-button" style="border: 0.00vmin;">
-                    <div class = "menu-button-pic" style='background-image:"assemble/wheel.png"'/>
+                    <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
                     <div class = "menu-button-text">游戏设置</div>
                 </button>
             </div>
 
             <!-- 施工返回按钮 -->
-            <div data-if = "cur_edit_mode != ''" data-event-click="clickCancel()" style='position: absolute; left: 0.67vmin; top: 0.67vmin; background-image:"construct/return.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;' />
+            <div data-if = "cur_edit_mode != ''" data-event-click="clickCancel()" style='position: absolute; left: 0.67vmin; top: 0.67vmin; background-image:"textures/construct/return.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;' />
 
             <!-- 开始施工 -->
             <button data-if = "cur_edit_mode == 'construct' && show_construct_complete" data-event-click="clickConstructComplete()" style='position: absolute; left: 2.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: flex-start;'>
-                <div style='margin: 0 auto; background-image:"construct/work.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
+                <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始施工</div>
             </button>
 
             <!-- 开始拆除 -->
             <button data-if = "cur_edit_mode == 'dismantle'" data-event-click="clickDismantleComplete()" style='position: absolute; left: 2.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: flex-start;'>
-                <div style='margin: 0 auto; background-image:"construct/work.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
+                <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始拆除</div>
             </button>
             
             <!-- 拆除模式 -->
             <div data-if = "cur_edit_mode != ''" data-event-click="clickDismantleBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 14.00vmin; height: 14.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
-                <div style='margin: 0 auto; top: 2.67vmin; background-image:"construct/demolish.png"; width: 6.00vmin; height: 6.00vmin; background-size:cover;'/>
+                <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/demolish.texture"; width: 6.00vmin; height: 6.00vmin; background-size:cover;'/>
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除模式</div>
             </div>
 
             <!-- 建造模式 -->
             <div data-if = "cur_edit_mode != ''" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 14.00vmin; height: 14.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
-                <div style='margin: 0 auto; top: 2.67vmin; background-image:"construct/construct.png"; width: 6.00vmin; height: 6.00vmin; background-size:cover;'/>
+                <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/construct.texture"; width: 6.00vmin; height: 6.00vmin; background-size:cover;'/>
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">建造模式</div>
             </div>
 
@@ -366,13 +366,13 @@
             <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 97vmin; flex-direction: row-reverse; align-items: flex-end;">
                 <!-- 建造 -->
                 <button data-if = "cur_edit_mode == ''" data-event-click="clickConstructBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; background-image:"construct/work.png"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
+                    <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                     <div>建造</div>
                 </button>
 
                 <!-- 确认放置 -->
                 <button data-if = "cur_edit_mode == 'construct' && show_confirm" data-event-click="clickConstructConfirm()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; background-image:"construct/confirm.png"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
+                    <div style='margin: 0 auto; background-image:"textures/construct/confirm.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
                     <div style="font-size: 85%;">确认放置</div>
                 </button>
 
@@ -381,7 +381,7 @@
 
                 <!-- 旋转建筑 -->
                 <button data-if = "cur_edit_mode == 'construct' && show_rotate" data-event-click="clickConstructRotate()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto;background-image:"construct/rotate.png"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
+                    <div style='margin: 0 auto;background-image:"textures/construct/rotate.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
                     <div style="font-size: 85%;">旋转建筑</div>
                 </button>
             </div>

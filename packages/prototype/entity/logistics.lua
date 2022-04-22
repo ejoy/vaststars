@@ -3,7 +3,7 @@ local prototype = gameplay.prototype
 
 prototype "指挥中心" {
     model = "prefabs/headquater-1.prefab",
-    icon = "construct/headquater.png",
+    icon = "textures/construct/headquater.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "generator", "chest"},
     area = "5x5",
@@ -14,7 +14,7 @@ prototype "指挥中心" {
 
 prototype "车站1" {
     model = "prefabs/goods-station-1.prefab",
-    icon = "construct/logisitic1.png",
+    icon = "textures/construct/logisitic1.texture",
     construct_detector = {"exclusive"},
     type = {"entity", "chest"},
     area = "1x1",
@@ -23,7 +23,7 @@ prototype "车站1" {
 
 prototype "物流中心" {
     model = "prefabs/logistics-center-1.prefab",
-    icon = "construct/logisitic2.png",
+    icon = "textures/construct/logisitic2.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer"},
     area = "3x3",
@@ -33,7 +33,7 @@ prototype "物流中心" {
 
 prototype "机器爪1" {
     model = "prefabs/inserter-1.prefab",
-    icon = "construct/insert1.png",
+    icon = "textures/construct/insert1.texture",
     construct_detector = {"exclusive"},
     type = {"entity", "inserter", "consumer"},
     area = "1x1",
@@ -44,7 +44,7 @@ prototype "机器爪1" {
 
 prototype "科技中心1" {
     model = "prefabs/lab-1.prefab",
-    icon = "construct/manufacture.png",
+    icon = "textures/construct/manufacture.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer"},
     area = "3x3",
@@ -54,7 +54,7 @@ prototype "科技中心1" {
 
 prototype "砖石公路-O型" {
     model = "prefabs/road/road_O.prefab",
-    icon = "construct/processor.png",
+    icon = "textures/construct/processor.texture",
     construct_detector = {"exclusive"},
     road = true,
     type ={"entity"},
@@ -63,7 +63,7 @@ prototype "砖石公路-O型" {
 
 prototype "砖石公路-I型" {
     model = "prefabs/road/road_I.prefab",
-    icon = "construct/processor.png",
+    icon = "textures/construct/processor.texture",
     construct_detector = {"exclusive"},
     road = true,
     type ={"entity"},
@@ -72,7 +72,7 @@ prototype "砖石公路-I型" {
 
 prototype "砖石公路-L型" {
     model = "prefabs/road/road_L.prefab",
-    icon = "construct/processor.png",
+    icon = "textures/construct/processor.texture",
     construct_detector = {"exclusive"},
     road = true,
     type ={"entity"},
@@ -81,7 +81,7 @@ prototype "砖石公路-L型" {
 
 prototype "砖石公路-T型" {
     model = "prefabs/road/road_T.prefab",
-    icon = "construct/processor.png",
+    icon = "textures/construct/processor.texture",
     construct_detector = {"exclusive"},
     road = true,
     type ={"entity"},
@@ -90,7 +90,7 @@ prototype "砖石公路-T型" {
 
 prototype "砖石公路-U型" {
     model = "prefabs/road/road_U.prefab",
-    icon = "construct/processor.png",
+    icon = "textures/construct/processor.texture",
     construct_detector = {"exclusive"},
     road = true,
     type ={"entity"},
@@ -99,7 +99,7 @@ prototype "砖石公路-U型" {
 
 prototype "砖石公路-X型" {
     model = "prefabs/road/road_X.prefab",
-    icon = "construct/processor.png",
+    icon = "textures/construct/processor.texture",
     construct_detector = {"exclusive"},
     road = true,
     type ={"entity"},

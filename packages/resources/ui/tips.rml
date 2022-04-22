@@ -65,7 +65,7 @@
                 width: 12.00vmin;
                 height: 12.00vmin;
                 font-size: 2.40vmin;
-                background-image: "construct/insert1.png";
+                background-image: "textures/construct/insert1.texture";
             }
             .item-title {
                 text-align: center;
@@ -93,7 +93,7 @@
                 background-size:cover;
                 width: 12.00vmin;
                 height: 12.00vmin;
-                background-image: "science/add.png";
+                background-image: "textures/science/add.texture";
             }
             /*分割线*/
             .draw-line {
@@ -205,7 +205,7 @@
                 width: 6.10vmin;
                 height: 5.00vmin;
                 background-size:cover;
-                background-image:"exchange/right_arrow.png";
+                background-image:"textures/exchange/right_arrow.texture";
                 margin: 0 0.2em;
             }
             .button-block {
@@ -252,55 +252,55 @@
                 width: 7.31vmin;
                 height: 5.64vmin;
                 background-size: cover;
-                background-image: "exchange/left_arrow.png";
+                background-image: "textures/exchange/left_arrow.texture";
             }
             .button-exchange-box {
                 width: 7.00vmin;
                 height: 7.00vmin;
                 background-size: cover;
-                background-image: "exchange/yellow_box.png";
+                background-image: "textures/exchange/yellow_box.texture";
             }
             .button-tips {
                 width: 9.00vmin;
                 height: 9.00vmin;
                 background-size: cover;
-                background-image: "assemble/wheel.png";
+                background-image: "textures/assemble/wheel.texture";
             }
         </style>
         <script type="text/x-lua" >
             console.log("before createModel")
             local start = window.createModel "start" {
                 items = {
-                    {id=100, icon0="correct.png", icon1="correct.png"},
-                    {id=101, icon0="correct.png", icon1="correct.png"},
-                    {id=102, icon0="correct.png", icon1="correct.png"},
-                    {id=103, icon0="correct.png", icon1="correct.png"},
-                    {id=104, icon0="correct.png", icon1="correct.png"},
-                    {id=105, icon0="correct.png", icon1="correct.png"},
-                    {id=106, icon0="correct.png", icon1="correct.png"},
-                    {id=107, icon0="correct.png", icon1="correct.png"},
-                    {id=108, icon0="correct.png", icon1="correct.png"},
-                    {id=109, icon0="correct.png", icon1="correct.png"},
-                    {id=110, icon0="correct.png", icon1="correct.png"},
-                    {id=111, icon0="correct.png", icon1="correct.png"},
-                    {id=112, icon0="correct.png", icon1="correct.png"},
-                    {id=113, icon0="correct.png", icon1="correct.png"},
-                    {id=114, icon0="correct.png", icon1="correct.png"},
-                    {id=115, icon0="correct.png", icon1="correct.png"},
-                    {id=116, icon0="correct.png", icon1="correct.png"},
-                    {id=117, icon0="correct.png", icon1="correct.png"},
-                    {id=118, icon0="correct.png", icon1="correct.png"},
-                    {id=119, icon0="correct.png", icon1="correct.png"},
-                    {id=120, icon0="correct.png", icon1="correct.png"},
-                    {id=121, icon0="correct.png", icon1="correct.png"},
-                    {id=122, icon0="correct.png", icon1="correct.png"},
-                    {id=123, icon0="correct.png", icon1="correct.png"},
-                    {id=124, icon0="correct.png", icon1="correct.png"},
-                    {id=125, icon0="correct.png", icon1="correct.png"},
-                    {id=126, icon0="correct.png", icon1="correct.png"},
-                    {id=127, icon0="correct.png", icon1="correct.png"},
-                    {id=128, icon0="correct.png", icon1="correct.png"},
-                    {id=129, icon0="correct.png", icon1="correct.png"},
+                    {id=100, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=101, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=102, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=103, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=104, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=105, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=106, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=107, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=108, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=109, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=110, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=111, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=112, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=113, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=114, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=115, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=116, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=117, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=118, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=119, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=120, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=121, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=122, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=123, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=124, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=125, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=126, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=127, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=128, icon0="textures/correct.texture", icon1="textures/correct.texture"},
+                    {id=129, icon0="textures/correct.texture", icon1="textures/correct.texture"},
                 },
                 item_size = 90,
                 view_items = {},
@@ -345,7 +345,7 @@
             <div class="panel" style="justify-content: center;">
                 <div class = "button-block">
                     <div class = "button-item-name-block">
-                        <div class="property-icon" style='background-image:"character/timer.png";'/>
+                        <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
                         <div class="property-text" style="margin-left:0; color: rgb(0,176,240);">机器爪</div>
                         <div class="property-text" style="margin-left:0; color:#fff;">(99)</div>
                         <button class="button-tips" style="position: absolute; right:0em"/>
@@ -377,24 +377,24 @@
                     <div class="row" style="width: 100%; height:85%; align-items: center; justify-content: center;">
                         <div class="info-block">
                             <div class="row">
-                                <div class="property-icon" style='background-image:"character/timer.png";'/>
+                                <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
                                 <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
                             <div class="row">
-                                <div class="property-icon" style='background-image:"character/buffer.png";'/>
+                                <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
                                 <div class="property-text" style="color: rgb(0,176,240);">产能加成</div>
                                 <div class="property-text" style="color:#fff;">40%</div>
                             </div>
                         </div>
                         <div class="info-block">
                             <div class="row">
-                                <div class="property-icon" style='background-image:"character/health.png";'/>
+                                <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
                                 <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
                                 <div class="property-text" style="color:#fff;">200/990</div>
                             </div>
                             <div class="row">
-                                <div class="property-icon" style='background-image:"character/flash.png";'/>
+                                <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
                                 <div class="property-text" style="color: rgb(0,176,240);">建筑能耗</div>
                                 <div class="property-text" style="color:#fff;">500kw(-250kw)</div>
                             </div>
