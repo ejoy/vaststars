@@ -4,6 +4,7 @@ require "bootstrap"
 import_package "vaststars.prototype"
 
 local gameplay = import_package "vaststars.gameplay"
+local assembling = gameplay.interface "assembling"
 
 local test = gameplay.system "test"
 
@@ -146,7 +147,7 @@ function test.init(world)
     local function sync()
         for v in ecs:select "fluidbox:out entity:in" do
             local p = Map[(v.entity.x << 8)|v.entity.y]
-            assert(p.fluid ~= 0)
+            assert(p.fluid ~= 0 and p.fluid ~= nil)
             v.fluidbox.fluid = p.fluid
             v.fluidbox.id = 0
         end
@@ -170,7 +171,23 @@ assert(loadfile "test_map.lua")(world)
 --f:write(sav)
 --f:close()
 --game.restore(sav)
+for v in world.ecs:select "assembling:update fluidboxes:update entity:in" do
+    if v.assembling.recipe == 0 then
+        local pt = gameplay.query(v.entity.prototype)
+        local fluids = {
+            input = {
+                "空气"
+            },
+            output = {
+                "氮气",
+                "二氧化碳",
+            }
+        }
+        assembling.set_recipe(world, v, pt, "空气分离1", fluids)
+    end
+end
 world:build()
+
 
 local function dump_item()
     print "=================="
@@ -214,8 +231,8 @@ local function dump_fluid()
 end
 
 local function dump()
-    dump_item()
-    --dump_fluid()
+    --dump_item()
+    dump_fluid()
 end
 
 world:wait(2*50, dump)

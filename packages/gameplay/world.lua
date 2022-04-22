@@ -65,10 +65,6 @@ return function ()
         ecs:register(c)
         components[#components+1] = c.name
     end
-    ecs:register {
-        name = "init_fluidbox",
-        type = "lua",
-    }
     local context = ecs:context(components)
     local ptable = require "vaststars.prototype.core"
     local cworld = vaststars.create_world(context, ptable)
