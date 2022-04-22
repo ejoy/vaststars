@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/road/car2.png
+    path: /pkg/vaststars.resources/ui/image/road/car2.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/science/timer.png
+    path: /pkg/vaststars.resources/ui/image/science/timer.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

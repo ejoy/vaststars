@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/science/greenbox.png
+    path: /pkg/vaststars.resources/ui/image/science/greenbox.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

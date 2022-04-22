@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/common/warning.png
+    path: /pkg/vaststars.resources/ui/image/common/warning.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

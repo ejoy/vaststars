@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/property/work-power.png
+    path: /pkg/vaststars.resources/ui/image/property/work-power.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

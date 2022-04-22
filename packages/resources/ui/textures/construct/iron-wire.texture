@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/construct/iron-wire.png
+    path: /pkg/vaststars.resources/ui/image/construct/iron-wire.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

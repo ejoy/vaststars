@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/exchange/purple_bag.png
+    path: /pkg/vaststars.resources/ui/image/exchange/purple_bag.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/road/forbidden.png
+    path: /pkg/vaststars.resources/ui/image/road/forbidden.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

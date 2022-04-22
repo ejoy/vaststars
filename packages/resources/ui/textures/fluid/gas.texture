@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/fluid/gas.png
+    path: /pkg/vaststars.resources/ui/image/fluid/gas.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

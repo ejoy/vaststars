@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/property/gas-speed.png
+    path: /pkg/vaststars.resources/ui/image/property/gas-speed.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

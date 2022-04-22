@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/fluid/liquid-solution.png
+    path: /pkg/vaststars.resources/ui/image/fluid/liquid-solution.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

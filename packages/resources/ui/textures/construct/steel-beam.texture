@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/construct/steel-beam.png
+    path: /pkg/vaststars.resources/ui/image/construct/steel-beam.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

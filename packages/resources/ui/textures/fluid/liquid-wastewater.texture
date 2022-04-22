@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/fluid/liquid-wastewater.png
+    path: /pkg/vaststars.resources/ui/image/fluid/liquid-wastewater.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

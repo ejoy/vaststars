@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/road_net/light.png
+    path: /pkg/vaststars.resources/ui/image/road_net/light.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR

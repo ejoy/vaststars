@@ -5,7 +5,7 @@
       windows: BC3
     noresize: true
     normalmap: false
-    path: /pkg/vaststars.resources/ui/construct/electric-pole2.png
+    path: /pkg/vaststars.resources/ui/image/construct/electric-pole2.png
     sampler:
       MAG: LINEAR
       MIN: LINEAR
