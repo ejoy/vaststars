@@ -81,6 +81,9 @@ entity_events.update_render_object = function(e, ...)
 end
 
 local function create_block(color, block_edge_size, area, position, rotation)
+    if color == CONSTRUCT_BLOCK_COLOR_INVALID then
+        return
+    end
     local width, height = unpackarea(area)
     local eid = ecs.create_entity{
 		policy = {
@@ -144,13 +147,13 @@ local function set_srt(e, srt)
 end
 
 local function get_rotation(self)
-    return iom.get_rotation(world:entity(self.game_object.root))
+    return math3d.ref(iom.get_rotation(world:entity(self.game_object.root)))
 end
 
 local function set_position(self, position)
     iom.set_position(world:entity(self.game_object.root), position)
     if self.block_entity_object then
-        local block_pos = math3d.add(math3d.vector(position), {0, 1.0, 0})
+        local block_pos = math3d.ref(math3d.add(math3d.vector(position), {0, 1.0, 0}))
         self.block_entity_object:send("set_position", block_pos)
     end
     if self.fluid_icon_entity_object then
@@ -222,7 +225,7 @@ local function update(self, t)
         if new_typeinfo.block_edge_size then
             self.block_entity_object:remove()
             local typeobject = gameplay.queryByName("entity", self.prototype_name)
-            local block_pos = math3d.add(math3d.vector(self:get_position()), {0, 1.0, 0})
+            local block_pos = math3d.ref(math3d.add(math3d.vector(self:get_position()), {0, 1.0, 0}))
             local rotation = get_rotation(self)
             self.block_entity_object = create_block(new_typeinfo.block_color, new_typeinfo.block_edge_size, typeobject.area, block_pos, rotation)
         else
@@ -285,7 +288,7 @@ return function (init)
     iom.set_position(world:entity(game_object.root), init.position)
     iom.set_rotation(world:entity(game_object.root), rotators[init.dir])
 
-    local block_pos = math3d.add(math3d.vector(init.position), {0, 1.0, 0})
+    local block_pos = math3d.ref(math3d.add(math3d.vector(init.position), {0, 1.0, 0}))
     local block_entity_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir])
 
     local vsobject = {

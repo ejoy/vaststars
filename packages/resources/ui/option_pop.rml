@@ -87,7 +87,7 @@
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
-            console.log("before createModel")
+            local ui_sys = require "ui_system"
             local start = window.createModel "start" {
                 show = false,
                 scale_flag = false,
@@ -151,11 +151,6 @@
                 draging = false,
             }
 
-            local function update_time()
-                start.current_time = start.current_time + 1
-            end
-            window.setInterval(update_time, 1)
-
             local listclass = require "list"
             local pageclass = require "page"
             --local list_proxy = listclass.create(1, {start.list_width, start.list_height}, #start.item_list, {start.list_item_width, start.list_item_height})
@@ -182,26 +177,6 @@
                 start.page_drag = false
             end
 
-            --[[
-            local function show_detail(show, id, row, top)
-                local offset = 0
-                if show then
-                    start.selected_id = id
-                    start.selected_row = row
-                    start.detail_top = top
-                    local dy = start.page_height - ((row + 1) * (start.item_size + start.gapy) + start.detail_height)
-                    offset = (dy >= 0) and 0 or dy
-                    console.log("offset" , offset)
-                else
-                    start.selected_id = 0
-                    --TODO: max value 1000
-                    start.selected_row = 10000
-                end
-                --start.show_detail = show
-                start.page_top = offset
-            end
-            ]]--
-
             function start.page_item_down()
                 start.item_down_time = start.current_time
             end
@@ -215,20 +190,20 @@
                     else
                         --show_detail(not start.show_detail, id, row, top)
                     end
-                else
-                    --show_detail(false, 0, 0, 0)
                 end
             end
 
-            window.addEventListener('message', function(event)
-                console.log("event.source.postMessage")
-                event.source.postMessage(event.data)
-            end)
-            window.addEventListener('mousemove', function(event)
-            end)
+            function start.pub(event, ...)
+                ui_sys:pub({...})
+                ui_sys:close()
+            end
+
+            function start.clickClose()
+                ui_sys:close()
+            end
         </script>
     </head>
-    <body>
+    <body style = "background-color: black;">
         <div class="item-container-region"  data-model="start">
             <div class="recipe-panel" style = "flex-direction: column; height: 100%;">
                 <!-- 标题栏 -->
@@ -237,15 +212,19 @@
                 </div>
                 <div style="width: 100%; height:90%; flex-direction: column; justify-content: center; align-items: center;">
                     <div class = "recipe-change-block">
-                        <button class = "button-style" style="background-color:rgb(203, 118, 24);">
+                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "pub('ui', 'saveload', 'save')">
                             <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 3.73vmin;">SAVE</div>
                         </button>
-                        <button class = "button-style" style="background-color:rgb(52, 207, 115);">
+                        <button class = "button-style" style="background-color:rgb(52, 207, 115);" data-event-click = "pub('ui', 'saveload', 'restore')">
                             <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 3.73vmin;">LOAD</div>
                         </button> 
-                        <button class = "button-style" style="background-color:rgb(253, 0, 0);">
+                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "pub('ui', 'saveload', 'restart')">
+                            <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
+                            <div class = "recipe-name-text" style="font-size: 3.73vmin;">RESTART</div>
+                        </button> 
+                        <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickClose()">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 3.73vmin;">CLOSE</div>
                         </button> 

@@ -6,17 +6,9 @@ local debug_sys = ecs.system "debug_system"
 local debug_mb = world:sub {"debug"}
 local funcs = {}
 
-local saveload = ecs.require "saveload"
-
 funcs[1] = function ()
-    saveload:backup()
-end
-
-funcs[2] = function ()
-    saveload:restore()
-end
-
-funcs[3] = function ()
+    local iui = ecs.import.interface "vaststars.gamerender|iui"
+    iui.open("option_pop.rml")
 end
 
 function debug_sys:ui_update()

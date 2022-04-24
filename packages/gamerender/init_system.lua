@@ -29,6 +29,8 @@ function m:init_world()
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
     terrain.create()
     fluid_icon.create()
+
+    world:pub {"ui", "saveload", "restore"}
 end
 
 local function get_object(x, y)

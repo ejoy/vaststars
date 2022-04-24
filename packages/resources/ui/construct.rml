@@ -256,7 +256,7 @@
                 end,
             })
 
-            for i = 1, 8 do
+            for i = 1, 1 do
                 start.debug_button[i] = {id = i, left = ("%0.2fvmin"):format((6.25 * 3) + i * (6.25 + 1.0))}
             end
         </script>

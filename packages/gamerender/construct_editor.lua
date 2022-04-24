@@ -118,7 +118,7 @@ local function clone_object(object)
 end
 
 -- object = {id = xx, prototype_name = xx, dir = xx, fluid = xx, x = xx, y = xx}
-local function set_tile_object(object)
+local function set_tile_object(object, cache_name)
     local t = {}
 
     --
@@ -145,10 +145,10 @@ local function set_tile_object(object)
 
     --
     for _, tile_object in pairs(t) do
-        tile_objects:set("TEMPORARY", tile_object)
+        tile_objects:set(cache_name, tile_object)
     end
 
-    objects:set("TEMPORARY", object)
+    objects:set(cache_name, object)
 end
 
 local function refresh_pipe(x, y)
@@ -253,7 +253,7 @@ local function refresh_flow_shape(object)
                 object.prototype_name = prototype_name
                 object.dir = dir
 
-                set_tile_object(object)
+                set_tile_object(object, "TEMPORARY")
             end
         end
     end
@@ -273,7 +273,7 @@ local function refresh_flow_shape(object)
                 object.prototype_name = prototype_name
                 object.dir = dir
 
-                set_tile_object(object)
+                set_tile_object(object, "TEMPORARY")
             end
         end
     end
@@ -312,9 +312,9 @@ local function revert_changes(revert_cache_names)
     end
 end
 
-local function new_pickup_object(prototype_name, dir, coord)
+local function new_pickup_object(prototype_name, dir, x, y)
     local vsobject_type, need_set_tile_object
-    if not check_construct_detector(prototype_name, coord[1], coord[2], dir) then
+    if not check_construct_detector(prototype_name, x, y, dir) then
         vsobject_type = "invalid_construct"
         need_set_tile_object = false
     else
@@ -323,7 +323,7 @@ local function new_pickup_object(prototype_name, dir, coord)
     end
 
     local typeobject = gameplay.queryByName("entity", prototype_name)
-    local position = terrain.get_position_by_coord(coord[1], coord[2], rotate_area(typeobject.area, dir))
+    local position = terrain.get_position_by_coord(x, y, rotate_area(typeobject.area, dir))
     if not position then --TODO 越界?
         return
     end
@@ -333,7 +333,6 @@ local function new_pickup_object(prototype_name, dir, coord)
         dir = dir,
         position = position,
         type = vsobject_type,
-        fluid_icon = "fluid/chemical-liquid.png",
     }
     pickup_object = {
         id = vsobject.id,
@@ -342,13 +341,13 @@ local function new_pickup_object(prototype_name, dir, coord)
         dir = dir,
         fluid = "",
         manual_set_fluid = false,
-        x = coord[1],
-        y = coord[2],
+        x = x,
+        y = y,
         teardown = false,
     }
 
     if need_set_tile_object then
-        set_tile_object(pickup_object)
+        set_tile_object(pickup_object, "TEMPORARY")
 
         refresh_pickup_flow_shape()
         refresh_flow_shape(pickup_object)
@@ -357,7 +356,7 @@ local function new_pickup_object(prototype_name, dir, coord)
     local show_confirm = true
     -- 针对流体盒子的特殊处理
     if need_set_fluid(pickup_object.prototype_name) then
-        local fluid_types = get_neighbor_fluid_types(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir)
+        local fluid_types = get_neighbor_fluid_types(pickup_object.prototype_name, x, y, pickup_object.dir)
         if #fluid_types == 1 then
             pickup_object.fluid = fluid_types[1]
             vsobject:update_fluid(fluid_types[1])
@@ -391,7 +390,7 @@ local function update_pickup_object(pickup_object, vsobject)
     else
         vsobject_type = "construct"
 
-        set_tile_object(pickup_object)
+        set_tile_object(pickup_object, "TEMPORARY")
         refresh_pickup_flow_shape()
         refresh_flow_shape(pickup_object)
 
@@ -435,7 +434,34 @@ function M:new_pickup_object(prototype_name)
 
     local typeobject = gameplay.queryByName("entity", prototype_name)
     local coord = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, DEFAULT_DIR))
-    pickup_object = new_pickup_object(prototype_name, DEFAULT_DIR, coord)
+    pickup_object = new_pickup_object(prototype_name, DEFAULT_DIR, coord[1], coord[2])
+end
+
+function M.restore_object(prototype_name, dir, x, y)
+    local vsobject_type = "constructed"
+    local typeobject = gameplay.queryByName("entity", prototype_name)
+    local position = assert(terrain.get_position_by_coord(x, y, rotate_area(typeobject.area, dir)))
+
+    local vsobject = vsobject_manager:create {
+        prototype_name = prototype_name,
+        dir = dir,
+        position = position,
+        type = vsobject_type,
+    }
+    local object = {
+        id = vsobject.id,
+        vsobject_type = vsobject_type,
+        prototype_name = prototype_name,
+        dir = dir,
+        fluid = "",
+        manual_set_fluid = false,
+        x = x,
+        y = y,
+        teardown = false,
+    }
+    set_tile_object(object, "CONSTRUCTED")
+
+    gameplay_core.build()
 end
 
 function M:confirm()
@@ -469,7 +495,7 @@ function M:confirm()
     objects:commit("TEMPORARY", "CONFIRM")
     tile_objects:commit("TEMPORARY", "CONFIRM")
 
-    pickup_object = new_pickup_object(pickup_object.prototype_name, pickup_object.dir, {pickup_object.x, pickup_object.y})
+    pickup_object = new_pickup_object(pickup_object.prototype_name, pickup_object.dir, pickup_object.x, pickup_object.y)
 
     for _, dir in ipairs({'N', 'E', 'S', 'W'}) do
         local dx, dy = get_dir_coord(pickup_object.x, pickup_object.y, dir)
@@ -518,7 +544,7 @@ function M:move_pickup_object(delta)
     --
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
     local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
-    local position = math3d.add(vsobject:get_position(), delta)
+    local position = math3d.ref(math3d.add(vsobject:get_position(), delta))
 
     local coord = terrain.adjust_position(math3d.tovalue(position), rotate_area(typeobject.area, pickup_object.dir))
     if not coord then
@@ -611,8 +637,13 @@ function M:check_unconfirmed(double_confirm)
 end
 
 function M:reset()
-    objects:clear()
-    tile_objects:clear()
+    for _, cache_name in ipairs(cache_names) do
+        for _, object in objects:all(cache_name) do
+            vsobject_manager:remove(object.id)
+        end
+        objects:clear(cache_name)
+        tile_objects:clear(cache_name)
+    end
 end
 
 function M:get_vsobject(x, y)
