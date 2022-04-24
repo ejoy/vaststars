@@ -143,11 +143,12 @@ local function init(world)
         end
     end
     local function sync()
-        for v in ecs:select "fluidbox:out entity:in" do
+        for v in ecs:select "fluidbox:out entity:in fluidbox_changed?out" do
             local p = Map[(v.entity.x << 8)|v.entity.y]
             assert(p.fluid ~= 0 and p.fluid ~= nil)
             v.fluidbox.fluid = p.fluid
             v.fluidbox.id = 0
+            v.fluidbox_changed = true
         end
     end
 
@@ -170,22 +171,6 @@ assert(loadfile "test_map.lua")(world)
 --world:backup  "../../startup/.log/sav"
 --world:restore "../../startup/.log/sav"
 
-for v in world.ecs:select "assembling:update fluidboxes:update entity:in" do
-    if v.assembling.recipe == 0 then
-        local pt = gameplay.query(v.entity.prototype)
-        local fluids = {
-            input = {
-                "空气"
-            },
-            output = {
-                "氮气",
-                "二氧化碳",
-            }
-        }
-        assembling.set_recipe(world, v, pt, "空气分离1", fluids)
-    end
-end
-
 init(world)
 world:build()
 
@@ -207,7 +192,7 @@ end
 local function dump_fluid()
     local ecs = world.ecs
     local function display(fluid, id, fluidbox)
-        if fluid ~= 0 then
+        if fluid ~= 0 and id ~= 0 then
             local r = world:fluidflow_query(fluid, id)
             if r then
                 print(gameplay.query(fluid).name, ("%0.2f/%d\t%0.2f"):format(r.volume / r.multiple, fluidbox.capacity, r.flow / r.multiple))
