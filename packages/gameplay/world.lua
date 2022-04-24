@@ -64,6 +64,11 @@ return function ()
         ecs:register(c)
         components[#components+1] = c.name
     end
+
+    ecs:register {
+        name = "fluidbox_changed"
+    }
+
     local context = ecs:context(components)
     local ptable = require "vaststars.prototype.core"
     local cworld = vaststars.create_world(context, ptable)
@@ -139,6 +144,9 @@ return function ()
     end
     function world:fluidflow_build(...)
         return fluidflow.build(cworld, ...)
+    end
+    function world:fluidflow_teardown(...)
+        return fluidflow.teardown(cworld, ...)
     end
     function world:fluidflow_connect(...)
         return fluidflow.connect(cworld, ...)

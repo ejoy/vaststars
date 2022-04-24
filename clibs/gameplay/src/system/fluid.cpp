@@ -15,21 +15,34 @@ fluidflow::~fluidflow() {
 }
 
 uint16_t fluidflow::build(struct fluid_box *box) {
-	if (maxid >= 0xFFFF) {
-		return 0;
+	uint16_t newid = 0;
+	if (freelist.empty()) {
+		if (maxid >= 0xFFFF) {
+			return 0;
+		}
+		newid = ++maxid;
+	}
+	else {
+		newid = freelist.back();
+		freelist.pop_back();
 	}
 	box->capacity *= multiple;
 	box->height *= multiple;
 	box->base_level *= multiple;
 	box->pumping_speed *= multiple;
-	if (fluidflow_build(network, ++maxid, box)) {
+	if (fluidflow_build(network, newid, box)) {
+		freelist.push_back(newid);
 		return 0;
 	}
-	return maxid;
+	return newid;
 }
 
-int fluidflow::teardown(int id) {
-	return fluidflow_teardown(network, id);
+bool fluidflow::teardown(int id) {
+	if (0 == fluidflow_teardown(network, id)) {
+		freelist.push_back(id);
+		return true;
+	}
+	return false;
 }
 
 bool fluidflow::connect(int from, int to, bool oneway) {
@@ -130,6 +143,18 @@ lfluidflow_build(lua_State *L) {
 }
 
 static int
+lfluidflow_teardown(lua_State *L) {
+	world& w = *(world*)lua_touserdata(L, 1);
+	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
+	uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
+	bool ok = w.fluidflows[fluid].teardown(id);
+	if (!ok) {
+		return luaL_error(L, "fluidflow teardown failed.");
+	}
+	return 0;
+}
+
+static int
 lfluidflow_connect(lua_State *L) {
 	world& w = *(world*)lua_touserdata(L, 1);
 	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
@@ -196,6 +221,7 @@ luaopen_vaststars_fluidflow_core(lua_State *L) {
 	luaL_Reg l[] = {
 		{ "reset", lfluidflow_reset },
 		{ "build", lfluidflow_build },
+		{ "teardown", lfluidflow_teardown },
 		{ "connect", lfluidflow_connect },
 		{ "query", lfluidflow_query },
 		{ "set", lfluidflow_set },

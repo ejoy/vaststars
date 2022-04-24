@@ -26,6 +26,7 @@ function fb:ctor(init, pt)
         }
     end
     return {
+        fluidbox_changed = true,
         fluidbox = {
             fluid = fluidId(init.fluid),
             id = 0,

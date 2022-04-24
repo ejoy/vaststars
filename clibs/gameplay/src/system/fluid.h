@@ -14,7 +14,7 @@ struct fluidflow {
     fluidflow();
     ~fluidflow();
     uint16_t build(struct fluid_box *box);
-    int teardown(int id);
+    bool teardown(int id);
     bool connect(int from, int to, bool oneway);
     void dump();
     bool query(int id, state& state);
@@ -25,4 +25,5 @@ struct fluidflow {
     fluidflow_network* network;
     uint16_t maxid = 0;
     static const int multiple = 100;
+    std::vector<uint16_t> freelist;
 };

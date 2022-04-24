@@ -122,18 +122,25 @@ local function builder_finish(world)
     end
 end
 
+local function builder_replace(world, fluid, id, newid)
+    if id ~= 0 then
+        local volume = world:fluidflow_query(fluid, id).volume
+        world:fluidflow_teardown(fluid, id);
+        world:fluidflow_set(newid, volume)
+    end
+end
+
 function m.build(world)
     local ecs = world.ecs
-    world:fluidflow_reset()
     builder_init()
-    for v in ecs:select "fluidbox:update entity:in" do
+    for v in ecs:select "fluidbox_changed fluidbox:update entity:in" do
         local pt = query(v.entity.prototype)
         local id = builder_build(world, v.fluidbox.fluid, pt.fluidbox, pt.fluidbox.capacity)
-        local fluid = v.fluidbox.fluid
+        builder_replace(world, v.fluidbox.fluid, v.fluidbox.id, id)
         v.fluidbox.id = id
-        builder_connect_fluidbox(fluid, id, pt.fluidbox, v.entity, pt.area)
+        builder_connect_fluidbox(v.fluidbox.fluid, id, pt.fluidbox, v.entity, pt.area)
     end
-    for v in ecs:select "fluidboxes:update entity:in assembling:in" do
+    for v in ecs:select "fluidbox_changed fluidboxes:update entity:in assembling:in" do
         local pt = query(v.entity.prototype)
         local recipe = query(v.assembling.recipe)
         local k <const> = {
@@ -164,6 +171,11 @@ function m.build(world)
                         capacity = recipe_limit(classify, i)
                     end
                     local id = builder_build(world, fluid, fluidbox, capacity)
+                    builder_replace(world,
+                        fluid,
+                        v.fluidboxes[classify..i.."_id"],
+                        id
+                    )
                     v.fluidboxes[classify..i.."_id"] = id
                     builder_connect_fluidbox(fluid, id, fluidbox, v.entity, pt.area)
                 end
@@ -173,4 +185,5 @@ function m.build(world)
         init_fluidflow "out"
     end
     builder_finish(world)
+    ecs:clear "fluidbox_changed"
 end

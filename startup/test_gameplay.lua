@@ -6,9 +6,7 @@ import_package "vaststars.prototype"
 local gameplay = import_package "vaststars.gameplay"
 local assembling = gameplay.interface "assembling"
 
-local test = gameplay.system "test"
-
-function test.init(world)
+local function init(world)
     local ecs = world.ecs
     local Map = {}
     local direction <const> = {
@@ -158,6 +156,8 @@ function test.init(world)
     sync()
 end
 
+local test = gameplay.system "test"
+
 function test.update(world)
     for v in world.ecs:select "generator capacitance:out" do
         v.capacitance.shortage = 0
@@ -185,6 +185,8 @@ for v in world.ecs:select "assembling:update fluidboxes:update entity:in" do
         assembling.set_recipe(world, v, pt, "空气分离1", fluids)
     end
 end
+
+init(world)
 world:build()
 
 
