@@ -32,7 +32,6 @@
                 align-items: flex-start;
                 border: 0.10vmin rgb(89, 73, 39);
                 background-color: rgb(44, 32, 18);
-                font-size: 3.47vmin;
             }
             .recipe-button-block {
                 width: 100%;
