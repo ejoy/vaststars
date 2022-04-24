@@ -48,6 +48,10 @@ function M.dir_tonumber(dir)
     return DIRECTION[dir]
 end
 
+function M.dir_tostring(dir)
+    return DIRECTION_REV[dir]
+end
+
 function M.rotate_area(area, dir)
     local w, h = M.unpackarea(area)
     if dir == 'N' or dir == 'S' then

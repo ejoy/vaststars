@@ -6,7 +6,9 @@
         "pipeline",
         "system",
         "log",
-        "interface"
+        "interface",
+        "import",
+        "policy"
     ],
     "files.associations": {
         "*.sc": "glsl",

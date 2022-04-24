@@ -19,8 +19,60 @@ funcs[2] = function ()
     terrain.create()
 end
 
--- dump 所有箱子的物品
 funcs[3] = function ()
+    local gameplay_core = ecs.require "gameplay.core"
+    import_package "vaststars.prototype"
+    local gameplay = import_package "vaststars.gameplay"
+    local general = require "gameplay.utility.general"
+    local dir_tostring = general.dir_tostring
+
+    local function get_prototype_name(prototype)
+        local typeobject = gameplay.query(prototype)
+        if not typeobject then
+            log.error(("can not found prototype(%s)"):format(prototype))
+            return
+        end
+        return typeobject.name
+    end
+
+    local function format_vars(fmt, tbl_vars)
+        tbl_vars = tbl_vars or {}
+        return (string.gsub(fmt, "%${([%w_]+)}", tbl_vars))
+    end
+
+    local function get_fluidbox_str(fluidbox)
+        if not fluidbox then
+            return ""
+        end
+        local typeobject = gameplay.query(fluidbox.fluid)
+        return format_vars([[fluid = "${fluid}",]] , {fluid = typeobject.name})
+    end
+
+    local r = {}
+    for e in gameplay_core.select "entity:in fluidbox?in fluidboxes?in" do
+        local s = format_vars(
+        [[
+world:create_entity "${prototype}" {
+    x = ${x},
+    y = ${y},
+    dir = '${dir}',
+    ${fluid}
+}
+        ]],
+        {
+            prototype = get_prototype_name(e.entity.prototype),
+            x = e.entity.x,
+            y = e.entity.y,
+            dir = dir_tostring(e.entity.direction),
+            fluid = get_fluidbox_str(e.fluidbox)
+        })
+        r[#r+1]= s
+    end
+    print(table.concat(r, "\n"))
+end
+
+-- dump 所有箱子的物品
+funcs[4] = function ()
     local DIRECTION <const> = {
         [0] = 'N',
         [1] = 'E',

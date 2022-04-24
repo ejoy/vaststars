@@ -50,11 +50,11 @@ local function get_begin_position_by_coord(x, y)
     return {origin[1] + (x * unit), 0, origin[2] - (y * unit)}
 end
 
-function M.create()
-    local width, height = 256, 256
+function M.create(width, height)
+    width, height = width or 256, height or 256
     local unit = 10
     local srt = {
-        t = {-(width * unit)//2 + unit//2, 0.0, -(height * unit)//2 + unit//2}, -- offset
+        t = {-(width * unit)/2, 0.0, -(height * unit)/2}, -- offset
     }
     local shape = {}
     shape[1] = srt.t
@@ -148,6 +148,18 @@ function M.adjust_position(position, width, height)
     end
 
     return coord, {begining[1] + (width / 2 * unit), position[2], begining[3] - (height / 2 * unit)}
+end
+
+function M.adjust_position_by_coord(x, y, position, width, height)
+    local unit = terrain.unit
+
+    local begining = get_begin_position_by_coord(x, y)
+    if not begining then
+        return
+    end
+
+    return {x, y}, {begining[1] + (width / 2 * unit), position[2], begining[3] - (height / 2 * unit)}
+ 
 end
 
 return M

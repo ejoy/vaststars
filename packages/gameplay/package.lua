@@ -3,6 +3,7 @@ return {
     entry = "main",
     dependencies = {
         "vaststars.ecs",
-        "ant.serialize"
+        "ant.serialize",
+        "ant.json",
     }
 }

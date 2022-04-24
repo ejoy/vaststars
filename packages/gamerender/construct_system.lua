@@ -8,6 +8,7 @@ local camera = ecs.require "engine.camera"
 local construct_editor = ecs.require "construct_editor"
 local show_detail = ecs.require "show_detail"
 local get_recipe_menu = ecs.require "gameplay.utility.get_recipe_menu"
+local building_menu = ecs.require "building_menu"
 
 local construct_sys = ecs.system "construct_system"
 local iconstruct = ecs.interface "iconstruct"
@@ -163,7 +164,7 @@ function construct_sys:data_changed()
 
     --
     for _, _, _, vsobject_id in ui_menu_rotate_mb:unpack() do
-        construct_editor:rotate_object(vsobject_id)
+        building_menu:rotate_object(vsobject_id)
     end
 
     for _, _, _, vsobject_id in ui_menu_recipe_mb:unpack() do
@@ -171,7 +172,7 @@ function construct_sys:data_changed()
     end
 
     for _, _, _, vsobject_id, recipe_name in ui_recipe_pop_set_recipe_mb:unpack() do
-        construct_editor:set_recipe(vsobject_id, recipe_name)
+        building_menu:set_recipe(vsobject_id, recipe_name)
     end
 end
 

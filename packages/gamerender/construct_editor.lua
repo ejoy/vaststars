@@ -18,9 +18,7 @@ local get_fluidboxes = ecs.require "gameplay.utility.get_fluidboxes"
 local need_set_fluid = ecs.require "gameplay.utility.need_set_fluid"
 local get_roadboxes = ecs.require "gameplay.utility.get_roadboxes"
 local vsobject_manager = ecs.require "vsobject_manager"
-local create_cache = require "utility.multiple_cache"
 local gameplay_core = ecs.require "gameplay.core"
-local fluid_icon = ecs.require "fluid_icon"
 
 local DEFAULT_DIR <const> = 'N'
 
@@ -55,7 +53,7 @@ local function get_neighbor_fluid_types(prototype_name, x, y, dir)
                 if tile_object.fluidbox_dir[opposite_dir(dir)] then
                     local object = assert(objects:get(cache_names, tile_object.id))
                     local fluid = object.fluid
-                    if fluid then
+                    if fluid ~= "" then
                         fluid_types[fluid] = true
                     end
                 end
@@ -342,7 +340,7 @@ local function new_pickup_object(prototype_name, dir, coord)
         vsobject_type = vsobject_type,
         prototype_name = prototype_name,
         dir = dir,
-        fluid = {},
+        fluid = "",
         manual_set_fluid = false,
         x = coord[1],
         y = coord[2],
@@ -554,49 +552,6 @@ function M:rotate_pickup_object()
     --
     pickup_object = update_pickup_object(pickup_object, vsobject)
     vsobject:update {type = pickup_object.vsobject_type}
-end
-
-function M:rotate_object(id)
-    local object = assert(objects:get(cache_names, id))
-    local vsobject = assert(vsobject_manager:get(id))
-    local dir = rotate_dir_times(object.dir, -1)
-
-    local typeobject = gameplay.queryByName("entity", object.prototype_name)
-
-    local coord, position = terrain.adjust_position(vsobject:get_position(), rotate_area(typeobject.area, dir))
-    if not position then
-        return
-    end
-    local e = gameplay_core.get_entity("entity:in", object.x, object.y)
-    if e then
-        e.entity.x = coord[1]
-        e.entity.y = coord[2]
-        e.entity.direction = dir_tonumber(dir)
-        gameplay_core.sync("entity:out", e)
-    else
-        log.error(("can not found entity (%s, %s)"):format(object.x, object.y))
-    end
-
-    object.x, object.y = coord[1], coord[2]
-    object.dir = dir
-    vsobject:set_position(position)
-    vsobject:set_dir(object.dir)
-
-    gameplay_core.build()
-end
-
-function M:set_recipe(id, recipe_name)
-    local object = assert(objects:get(cache_names, id))
-    local typeobject = gameplay.queryByName("recipe", recipe_name)
-
-    local e = gameplay_core.get_entity("entity:in assembling?in", object.x, object.y)
-    if e.assembling then
-        e.assembling.recipe = typeobject.id
-        gameplay_core.sync("assembling:out", e)
-        gameplay_core.build()
-    else
-        log.error(("can not found assembling (%s, %s)"):format(object.x, object.y))
-    end
 end
 
 function M:complete()

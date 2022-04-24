@@ -24,6 +24,7 @@ local function open(url, ...)
         return
     end
 
+    assert(type(url) == "string")
     w = irmlui.open(url)
     w.addEventListener("message", function(event)
         if not event.data then
@@ -39,6 +40,8 @@ local function open(url, ...)
 
         if res.event == "__CLOSE" then
             world:pub {"rmlui_message_close", url}
+        elseif res.event == "__OPEN" then
+            world:pub {"rmlui_message", res.event, table.unpack(res.ud)}
         else
             world:pub {"rmlui_message", res.event, res.ud}
         end
