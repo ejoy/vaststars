@@ -12,3 +12,4 @@ packages/resources/ui/json.lua
 *.xcbkptlist
 *.xcscheme
 /.vscode
+/archiving

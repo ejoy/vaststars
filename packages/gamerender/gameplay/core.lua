@@ -129,4 +129,12 @@ function m.get_entity(pat, x, y)
     return e
 end
 
+function m.backup(rootdir)
+    return world:backup(rootdir)
+end
+
+function m.restore(rootdir)
+    world:restore(rootdir)
+end
+
 return m
