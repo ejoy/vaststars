@@ -91,7 +91,6 @@ return function ()
                     end
                 end
             end
-            obj.description = init.description
             ecs:new(obj)
             needBuild = true
         end

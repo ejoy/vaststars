@@ -93,13 +93,13 @@ world:create_entity "空气过滤器1" {
 }
 world:create_entity "液罐1" {
     x = 1,
-    y = 22,
+    y = 21,
     dir = "E",
     fluid = "氮气"
 }
 world:create_entity "液罐1" {
     x = 15,
-    y = 22,
+    y = 21,
     dir = "N",
     fluid = "氧气"
 }
@@ -174,9 +174,8 @@ create_pipe {
        xxx
        xxx
        xxx
-     ╔═╝ ║
+xxx  ╔═╝ ║    xxx
 xxx══╝   ╚════xxx
-xxx           xxx
 xxx           xxx
 ]]
 }
