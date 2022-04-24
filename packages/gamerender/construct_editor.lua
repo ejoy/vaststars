@@ -460,8 +460,6 @@ function M.restore_object(prototype_name, dir, x, y)
         teardown = false,
     }
     set_tile_object(object, "CONSTRUCTED")
-
-    gameplay_core.build()
 end
 
 function M:confirm()

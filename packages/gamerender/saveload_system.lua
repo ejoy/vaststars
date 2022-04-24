@@ -23,6 +23,7 @@ local function restore_world()
         local typeobject = gameplay.query(e.prototype)
         construct_editor.restore_object(typeobject.name, dir_tostring(e.direction), e.x, e.y)
     end
+    gameplay_core.build()
 end
 
 local M = {}

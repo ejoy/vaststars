@@ -210,6 +210,9 @@
             function start.clickDebug(event, i)
                 ui_sys:pub {"debug", i}
             end
+            function start.clickSetting(event)
+                ui_sys:open("option_pop.rml")
+            end
 
             window.addEventListener('mousedown', function(event)
                 ui_sys:pub {"ui_message", "leave"}
@@ -256,7 +259,7 @@
                 end,
             })
 
-            for i = 1, 1 do
+            for i = 1, 0 do
                 start.debug_button[i] = {id = i, left = ("%0.2fvmin"):format((6.25 * 3) + i * (6.25 + 1.0))}
             end
         </script>
@@ -294,7 +297,7 @@
                     <div class = "menu-button-pic" style='background-image:"textures/construct/road.texture"'/>
                     <div class = "menu-button-text">地图信息</div>
                 </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;">
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()">
                     <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
                     <div class = "menu-button-text">游戏设置</div>
                 </button>

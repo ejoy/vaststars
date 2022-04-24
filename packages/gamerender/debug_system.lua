@@ -7,8 +7,6 @@ local debug_mb = world:sub {"debug"}
 local funcs = {}
 
 funcs[1] = function ()
-    local iui = ecs.import.interface "vaststars.gamerender|iui"
-    iui.open("option_pop.rml")
 end
 
 function debug_sys:ui_update()
