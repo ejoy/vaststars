@@ -1,3 +1,4 @@
+local vaststars = require "vaststars.world.core"
 local luaecs = import_package "vaststars.ecs"
 local json = import_package "ant.json"
 local status = require "status"
@@ -35,13 +36,27 @@ local function ecs_restore(ecs, metafile, binfile)
     reader:close()
 end
 
-function m.backup(ecs, rootdir)
+function m.backup(rootdir, cworld, ecs)
     fs.create_directories(rootdir)
     ecs_backup(ecs, rootdir.."/ecs.json", rootdir.."/ecs.bin")
+
+    local f <close> = assert(io.open(rootdir.."/world.bin", "wb"))
+    vaststars.backup_world(cworld, f)
 end
 
-function m.restore(ecs, rootdir)
+function m.restore(rootdir, cworld, ecs)
+    local f <close> = assert(io.open(rootdir.."/world.bin", "rb"))
+    vaststars.restore_world(cworld, f)
+
+    ecs:clearall()
     ecs_restore(ecs, rootdir.."/ecs.json", rootdir.."/ecs.bin")
+    for v in ecs:select "fluidbox fluidbox_changed?out" do
+        v.fluidbox_changed = true
+    end
+    for v in ecs:select "fluidboxes fluidbox_changed?out" do
+        v.fluidbox_changed = true
+    end
+    ecs:update()
 end
 
 return m

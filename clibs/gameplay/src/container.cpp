@@ -12,6 +12,12 @@ static bool isFluidId(uint16_t id) {
     return (id & 0x0C00) == 0x0C00;
 }
 
+chest_container::chest_container()
+    : slots()
+    , used(0)
+    , size(0)
+{}
+
 chest_container::chest_container(uint16_t size)
     : slots()
     , used(0)
@@ -114,6 +120,9 @@ size_t chest_container::find(uint16_t item) {
     }
     return -1;
 }
+
+recipe_container::recipe_container()
+{}
 
 recipe_container::recipe_container(item_array in, item_array out)
     : inslots(in.size())

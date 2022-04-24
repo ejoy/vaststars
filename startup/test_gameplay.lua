@@ -165,8 +165,8 @@ function test.update(world)
 end
 
 local world = gameplay.createWorld()
-assert(loadfile "test_map.lua")(world)
 
+assert(loadfile "test_map.lua")(world)
 --world:backup  "../../startup/.log/sav"
 --world:restore "../../startup/.log/sav"
 
@@ -188,7 +188,6 @@ end
 
 init(world)
 world:build()
-
 
 local function dump_item()
     print "=================="

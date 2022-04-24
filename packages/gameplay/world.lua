@@ -118,13 +118,11 @@ return function ()
     end
 
     function world:backup(rootdir)
-        return saveload.backup(ecs, rootdir)
+        return saveload.backup(rootdir, cworld, ecs)
     end
 
     function world:restore(rootdir)
-        ecs:clearall()
-        saveload.restore(ecs, rootdir)
-        ecs:update()
+        saveload.restore(rootdir, cworld, ecs)
     end
 
     function world:container_create(...)

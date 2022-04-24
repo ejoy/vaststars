@@ -20,6 +20,7 @@ struct container {
 
 struct chest_container: public container {
     using slot = item;
+    chest_container();
     chest_container(uint16_t size);
     std::vector<slot> slots;
     uint16_t          used;
@@ -44,6 +45,7 @@ struct recipe_container: public container {
     };
     std::vector<slot> inslots;
     std::vector<slot> outslots;
+    recipe_container();
     recipe_container(item_array in, item_array out);
     bool     recipe_pickup(world& w, item const* items);
     bool     recipe_place(world& w, item const* items);
