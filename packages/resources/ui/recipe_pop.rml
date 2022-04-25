@@ -48,10 +48,6 @@
                 font-size: 3.73vmin;
                 text-align: center;
             }
-            .button-name-change {
-                width: 4.00vmin;
-                height: 4.00vmin;
-            }
             .pic-block {
                 flex-direction: row;
                 justify-content: flex-start;
@@ -116,31 +112,6 @@
                 padding-right:1em;
                 font-size: 3.73vmin;
                 text-align: center;
-            }
-            .change-button {
-                width: 10.67vmin;
-                height: 10.67vmin;
-                background-color: rgb(250, 205, 9);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size: cover;
-            }
-            .confirm-button {
-                margin-bottom: 0.5em;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-                width: 20.00vmin;
-                height: 8.00vmin;
-                background-color: rgb(250, 205, 9);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size: cover;
-            }
-            .change-arrow-pic {
-                width: 2.67vmin;
-                height: 2.00vmin;
-                transform: rotate(90deg);
-                background-size: cover; 
-                background-image: "textures/exchange/right_arrow.texture";
             }
         </style>
         <style path = "common/building_style.rcss"/>
@@ -246,7 +217,7 @@
         </script>
     </head>
     <body>
-        <div class="item-container-region"  style="width:100%; background-color: rgba(0,0,0,200);" data-model="start">
+        <div class="item-container-region"  style="width:100%; background-color: rgba(0,0,0,200); justify-content: center;" data-model="start">
             <div class="panel" style= "flex-direction: column;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button"/>

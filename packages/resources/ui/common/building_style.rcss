@@ -517,6 +517,7 @@ workbutton:hover {
 	background-size: cover;
 }
 .confirm-button {
+	margin-bottom: 0.5em;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
