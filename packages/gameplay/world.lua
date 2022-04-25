@@ -7,9 +7,8 @@ local container = require "vaststars.container.core"
 local fluidflow = require "vaststars.fluidflow.core"
 local road = require "vaststars.road.core"
 local luaecs = import_package "vaststars.ecs"
-local saveload = require "saveload"
 
-local function pipelineFunc(world, cworld, name)
+local function pipeline(world, cworld, name)
     local p = status.pipelines[name]
     if not p then
         return
@@ -20,23 +19,23 @@ local function pipelineFunc(world, cworld, name)
     for _, stage in ipairs(p) do
         for _, s in pairs(systems) do
             if s[stage] then
-                funcs[#funcs+1] = function()
-                    return s[stage](world)
+                funcs[#funcs+1] = function(...)
+                    return s[stage](world, ...)
                 end
             end
         end
         for _, s in pairs(csystems) do
             if s[stage] then
-                funcs[#funcs+1] = function()
-                    return s[stage](cworld)
+                funcs[#funcs+1] = function(...)
+                    return s[stage](cworld, ...)
                 end
             end
         end
     end
     local n = #funcs
-    return function ()
+    return function (...)
         for i = 1, n do
-            funcs[i]()
+            funcs[i](...)
         end
     end
 end
@@ -101,27 +100,30 @@ return function ()
         needBuild = true
     end
 
-    local updateFunc = pipelineFunc(world, cworld, "update")
-    local buildFunc = pipelineFunc(world, cworld, "build")
+    local pipeline_update = pipeline(world, cworld, "update")
+    local pipeline_build = pipeline(world, cworld, "build")
+    local pipeline_backup = pipeline(world, cworld, "backup")
+    local pipeline_restore = pipeline(world, cworld, "restore")
+
     function world:update()
         assert(not needBuild)
-        updateFunc()
+        pipeline_update()
         timer.update(1)
         ecs:update()
     end
     function world:build()
         needBuild = false
         ecs:update()
-        buildFunc()
+        pipeline_build()
         ecs:update()
     end
-
     function world:backup(rootdir)
-        return saveload.backup(rootdir, cworld, ecs)
+        local fs = require "bee.filesystem"
+        fs.create_directories(rootdir)
+        pipeline_backup(rootdir)
     end
-
     function world:restore(rootdir)
-        saveload.restore(rootdir, cworld, ecs)
+        pipeline_restore(rootdir)
     end
 
     function world:container_create(...)
