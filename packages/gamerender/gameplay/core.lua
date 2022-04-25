@@ -130,55 +130,14 @@ function m.get_entity(pat, x, y)
 end
 
 function m.backup(rootdir)
-    -----------------------------------------------------
-    local function writeall(file, content)
-        local f <close> = assert(io.open(file, "wb"))
-        f:write(content)
-    end
-    local serialize = import_package "ant.serialize"
-    local function deepcopy(t)
-        local r = {}
-        for k, v in pairs(t) do
-            if type(v) == "table" then
-                r[k] = deepcopy(v)
-            else
-                r[k] = v
-            end
-        end
-        return r
-    end
-
-    local sav = {}
-    for v in world.ecs:select "entity" do
-        local e = deepcopy(world.ecs:readall(v))
-        e[1] = nil
-        e[2] = nil
-        sav[#sav+1] = e
-    end
-
-    writeall(rootdir .. "/backup.bin", serialize.stringify(sav))
-    ------------------------------------------------------
-    -- return world:backup(rootdir)
+    return world:backup(rootdir)
 end
 
 function m.restore(rootdir)
-    ------------------------------------------------------
-    local function readall(file)
-        local f <close> = assert(io.open(file, "rb"))
-        return f:read "a"
-    end
-    local datalist = require "datalist"
-    local sav = datalist.parse(readall(rootdir .. "/backup.bin"))
-    world.ecs:clearall()
-    for _, e in ipairs(sav) do
-        world.ecs:new(e)
-    end
-    world.ecs:update()
-    ------------------------------------------------------
-    -- world:restore(rootdir)
+    world:restore(rootdir)
 end
 
-function m.restart()
+function m.clean()
     world.ecs:clearall()
 end
 

@@ -211,7 +211,7 @@
                 ui_sys:pub {"debug", i}
             end
             function start.clickSetting(event)
-                ui_sys:open("option_pop.rml")
+                ui_sys:pub {"ui", "construct", "show_setting"}
             end
 
             window.addEventListener('mousedown', function(event)

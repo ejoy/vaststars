@@ -34,7 +34,7 @@ local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local pickup_mb = world:sub {"pickup"}
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 
-local mode = "" -- normal/construct/teardown
+local mode = "normal" -- normal/construct/teardown
 
 function construct_sys:camera_usage()
     for _, _, _, prototype_name in ui_construct_entity_mb:unpack() do
