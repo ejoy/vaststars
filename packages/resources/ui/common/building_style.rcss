@@ -517,6 +517,7 @@ workbutton:hover {
 	background-size: cover;
 }
 .confirm-button {
+	margin-bottom: 0.5em;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
@@ -534,7 +535,7 @@ workbutton:hover {
 .button-close {
 	width: 9.33vmin;
 	height: 9.33vmin;
-	background-image: "common/delete.png";
+	background-image: "textures/common/delete.texture";
 	background-size: cover;
 }
 .change-arrow-pic {
@@ -542,5 +543,5 @@ workbutton:hover {
 	height: 2.00vmin;
 	transform: rotate(90deg);
 	background-size: cover; 
-	background-image: "exchange/right_arrow.png";
+	background-image: "textures/exchange/right_arrow.texture";
 }

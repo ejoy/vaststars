@@ -48,10 +48,6 @@
                 font-size: 3.73vmin;
                 text-align: center;
             }
-            .button-name-change {
-                width: 4.00vmin;
-                height: 4.00vmin;
-            }
             .pic-block {
                 flex-direction: row;
                 justify-content: flex-start;
@@ -117,31 +113,6 @@
                 font-size: 3.73vmin;
                 text-align: center;
             }
-            .change-button {
-                width: 10.67vmin;
-                height: 10.67vmin;
-                background-color: rgb(250, 205, 9);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size: cover;
-            }
-            .confirm-button {
-                margin-bottom: 0.5em;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-                width: 20.00vmin;
-                height: 8.00vmin;
-                background-color: rgb(250, 205, 9);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size: cover;
-            }
-            .change-arrow-pic {
-                width: 2.67vmin;
-                height: 2.00vmin;
-                transform: rotate(90deg);
-                background-size: cover; 
-                background-image: "textures/exchange/right_arrow.texture";
-            }
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
@@ -174,19 +145,14 @@
 
                 recipe_menu = {},
                 object_id = 0,
+                recipe_name = "",
             }
-
-            local function update_time()
-                start.current_time = start.current_time + 1
-            end
-            window.setInterval(update_time, 1)
 
             local listclass = require "list"
             local pageclass = require "page"
             local page_proxy = pageclass.create({start.page_width, start.page_height}, start)
 
             function start.pagemousedown(event)
-                console.log("pagemousedown")
                 page_proxy:on_mousedown(event)
                 start.page_drag = true
                 start.draging = false
@@ -194,13 +160,11 @@
         
             function start.pagedrag(event)
                 if start.page_drag then
-                    console.log("pagedrag")
                     page_proxy:on_drag(event)
                 end
             end
 
             function start.pagemouseup(event)
-                console.log("pagemouseup")
                 page_proxy:on_mouseup(event)
                 start.current_page = page_proxy:get_current_page() - 1
                 start.page_drag = false
@@ -215,23 +179,24 @@
                 if start.current_time - start.item_down_time <= start.interval and not start.draging then
                     console.log("start.draging: ", start.draging)
                     if start.selected_id ~= id then
-                        --show_detail(true, id, row, top)
                     else
-                        --show_detail(not start.show_detail, id, row, top)
                     end
                 else
-                    --show_detail(false, 0, 0, 0)
                 end
             end
 
             function start.ClickItem(event, recipe_name)
-                ui_sys:pub {"ui", "recipe_pop", "set_recipe", start.object_id, recipe_name}
+                start.recipe_name = recipe_name
             end
 
             function start.clickCatalog(event, index)
                 start.items = start.recipe_menu[index].item
                 page_proxy:update_virtual_pages(start.items)
                 page_proxy:update_view_pages()
+            end
+
+            function start.clickClose(event)
+                ui_sys:close()
             end
 
             ui_sys:addEventListener({
@@ -246,7 +211,7 @@
         </script>
     </head>
     <body>
-        <div class="item-container-region"  style="width:100%; background-color: rgba(0,0,0,200);" data-model="start">
+        <div class="item-container-region"  style="width:100%; background-color: rgba(0,0,0,200); justify-content: center;" data-model="start">
             <div class="panel" style= "flex-direction: column;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button"/>
@@ -286,7 +251,7 @@
                     </div>
                     <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
                         <div data-for="virtual_pages">
-                            <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" data-style-background-image="it_index == current_page ? 'common/page1.png' : 'common/page0.png'"/>
+                            <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" data-style-background-image="it_index == current_page ? 'textures/common/page1.texture' : 'textures/common/page0.texture'"/>
                         </div>
                     </div>         
                 </div>
@@ -298,18 +263,18 @@
                     </workbutton>
                 </div>
             </div>
-            <div class="recipe-panel" style = "flex-direction: column; height: 100%;">
+            <div class="recipe-panel" style = "flex-direction: column; height: 100%;" data-if="recipe_name != ''">
                 <!-- 标题栏 -->
                 <div class = "recipe-name-block">
                     <div class = "name-block">
-                        <div class = "small-bg" style='background-image: "science/book.png";'/>
+                        <div class = "small-bg" style='background-image: "textures/science/book.texture";'/>
                         <div class = "recipe-name-text">铁锭3</div>
                     </div>
                     <div class = "recipe-name-text">300s</div>
                 </div>
                 <div class = "recipe-change-block">
                     <div class = "pic-block">
-                        <div class = "small-bg" style='background-image: "road_net/big_bag.png";'/>
+                        <div class = "small-bg" style='background-image: "textures/road_net/big_bag.texture";'/>
                         <div class = "recipe-name-text">原料</div>
                     </div>
                     <div class = "materials-block"> 
@@ -338,7 +303,7 @@
                 </div>
                 <div class = "recipe-change-block">
                     <div class = "pic-block">
-                        <div class = "small-bg" style='background-image: "science/whitebox.png";'/>
+                        <div class = "small-bg" style='background-image: "textures/science/whitebox.texture";'/>
                         <div class = "recipe-name-text">成品</div>
                     </div> 
                     <div class = "materials-block">
@@ -366,7 +331,7 @@
                     </div> 
                 </div>
                 <div class = "recipe-button-block">
-                    <button class = "confirm-button" style="background-color:rgb(203, 118, 24);">
+                    <button class = "confirm-button" style="background-color:rgb(203, 118, 24);" data-event-click = "clickClose()">
                         <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
                         <div class = "recipe-name-text" style="font-size: 3.73vmin;">放弃修改</div>
                     </button>
