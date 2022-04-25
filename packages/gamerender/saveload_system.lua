@@ -72,7 +72,25 @@ function M:restore(index)
         return
     end
 
-    local archival_dir = archival_base_dir .. ("/%s"):format(archival_relative_dir_list[index])
+    local archival_dir
+    while index > 0 do
+        local archival_relative_dir = archival_relative_dir_list[index]
+        archival_dir = archival_base_dir .. ("/%s"):format(archival_relative_dir)
+
+        if not fs.exists(fs.path(archival_dir)) then
+            log.warn(("`%s` not exists"):format(archival_relative_dir))
+            archival_relative_dir_list[index] = nil
+            index = index - 1
+        else
+            break
+        end
+    end
+
+    if index == 0 then
+        log.error("Failed to restore")
+        return
+    end
+
     gameplay_core.restore(archival_dir)
     restore_world()
     print("restore success", archival_dir)
