@@ -82,3 +82,9 @@ component "station" {
 	"id:word",
 	"coord:word",
 }
+
+component "save_fluidflow" {
+	"fluid:word",
+	"id:word",
+	"volume:dword"
+}

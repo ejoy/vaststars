@@ -37,6 +37,30 @@ uint16_t fluidflow::build(struct fluid_box *box) {
 	return newid;
 }
 
+bool fluidflow::restore(uint16_t id, struct fluid_box *box) {
+	if (id <= maxid) {
+		freelist.erase(std::remove_if(freelist.begin(), freelist.end(),
+			[=](uint16_t x) {
+				return x == id;
+			}
+		), freelist.end());
+	}
+	else {
+		for (auto i = maxid + 1; i < id; ++i) {
+			freelist.push_back(i);
+		}
+	}
+	box->capacity *= multiple;
+	box->height *= multiple;
+	box->base_level *= multiple;
+	box->pumping_speed *= multiple;
+	if (fluidflow_build(network, id, box)) {
+		freelist.push_back(id);
+		return false;
+	}
+	return true;
+}
+
 bool fluidflow::teardown(int id) {
 	if (0 == fluidflow_teardown(network, id)) {
 		freelist.push_back(id);
@@ -141,6 +165,27 @@ lfluidflow_build(lua_State *L) {
 	lua_pushinteger(L, id);
 	return 1;
 }
+static int
+lfluidflow_restore(lua_State *L) {
+	world& w = *(world*)lua_touserdata(L, 1);
+	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
+	uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
+	int capacity = (int)luaL_checkinteger(L, 4);
+	int height = (int)luaL_checkinteger(L, 5);
+	int base_level = (int)luaL_checkinteger(L, 6);
+	int pumping_speed = (int)luaL_optinteger(L, 7, 0);
+	fluid_box box {
+		.capacity = capacity,
+		.height = height,
+		.base_level = base_level,
+		.pumping_speed = pumping_speed,
+	};
+	bool ok = w.fluidflows[fluid].restore(id, &box);
+	if (!ok) {
+		return luaL_error(L, "fluidflow restore failed.");
+	}
+	return 0;
+}
 
 static int
 lfluidflow_teardown(lua_State *L) {
@@ -221,6 +266,7 @@ luaopen_vaststars_fluidflow_core(lua_State *L) {
 	luaL_Reg l[] = {
 		{ "reset", lfluidflow_reset },
 		{ "build", lfluidflow_build },
+		{ "restore", lfluidflow_restore },
 		{ "teardown", lfluidflow_teardown },
 		{ "connect", lfluidflow_connect },
 		{ "query", lfluidflow_query },
