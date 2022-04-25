@@ -16,11 +16,11 @@ end
 local world = gameplay.createWorld()
 
 assert(loadfile "test_map.lua")(world)
+world:build()
 
 --world:backup  "../../startup/.log/sav"
---world:restore "../../startup/.log/sav"
-
-world:build()
+--world:restore  "../../startup/.log/sav"
+--world:build()
 
 local function dump_item()
     print "=================="

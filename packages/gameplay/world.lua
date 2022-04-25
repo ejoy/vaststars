@@ -144,6 +144,9 @@ return function ()
     function world:fluidflow_build(...)
         return fluidflow.build(cworld, ...)
     end
+    function world:fluidflow_restore(...)
+        return fluidflow.restore(cworld, ...)
+    end
     function world:fluidflow_teardown(...)
         return fluidflow.teardown(cworld, ...)
     end

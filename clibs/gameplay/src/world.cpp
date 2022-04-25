@@ -49,6 +49,13 @@ lcreate_world(lua_State* L) {
 	return 1;
 }
 
+static int
+lfluidflows_reset(lua_State* L) {
+	struct world* w = (struct world*)lua_touserdata(L, 1);
+	w->fluidflows.clear();
+	return 0;
+}
+
 static FILE* tofile(lua_State* L, int idx) {
     struct luaL_Stream* p = (struct luaL_Stream*)luaL_checkudata(L, 2, LUA_FILEHANDLE);
     if (!p->closef)
@@ -77,6 +84,7 @@ luaopen_vaststars_world_core(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
 		{ "create_world", lcreate_world },
+		{ "fluidflows_reset", lfluidflows_reset },
 		{ "fileno", lfileno },
 		{ NULL, NULL },
 	};

@@ -1,5 +1,6 @@
 local system = require "register.system"
 local query = require "prototype".queryById
+local vaststars = require "vaststars.world.core"
 
 local m = system "fluidflow"
 
@@ -70,6 +71,14 @@ local function builder_build(world, fluid, fluidbox, capacity)
         pumping_speed = pumping_speed // UPS
     end
     return world:fluidflow_build(fluid, capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
+end
+
+local function builder_restore(world, fluid, id, fluidbox, capacity)
+    local pumping_speed = fluidbox.pumping_speed
+    if pumping_speed then
+        pumping_speed = pumping_speed // UPS
+    end
+    return world:fluidflow_restore(fluid, id, capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
 end
 
 local function builder_connect(c, key, id, type)
@@ -195,4 +204,83 @@ function m.build(world)
     end
     builder_finish(world)
     ecs:clear "fluidbox_changed"
+end
+
+function m.backup_start(world)
+    local ecs = world.ecs
+    for v in ecs:select "fluidbox:in" do
+        local fluid = v.fluidbox.fluid
+        local id = v.fluidbox.id
+        local volume = world:fluidflow_query(fluid, id).volume
+        ecs:new {
+            save_fluidflow = {
+                fluid = fluid,
+                id = id,
+                volume = volume,
+            }
+        }
+    end
+end
+
+function m.backup_finish(world)
+    local ecs = world.ecs
+    ecs:clear "save_fluidflow"
+end
+
+function m.restore_finish(world)
+    vaststars.fluidflows_reset(world._cworld)
+    local ecs = world.ecs
+    builder_init()
+    for v in ecs:select "fluidbox:update entity:in" do
+        local pt = query(v.entity.prototype)
+        local fluid = v.fluidbox.fluid
+        local id = v.fluidbox.id
+        builder_restore(world, fluid, id, pt.fluidbox, pt.fluidbox.capacity)
+        builder_connect_fluidbox(fluid, id, pt.fluidbox, v.entity, pt.area)
+    end
+    for v in ecs:select "fluidboxes:update entity:in assembling:in" do
+        local pt = query(v.entity.prototype)
+        local recipe = query(v.assembling.recipe)
+        local k <const> = {
+            ["in"] = "ingredients",
+            ["out"] = "results",
+        }
+        local function recipe_limit(classify, i)
+            local lst = v.assembling["fluidbox_"..classify]
+            local index = (lst >> (4*(i-1))) & 0xF
+            local _, amount = string.unpack("<I2I2", recipe[k[classify]], 4*(index-1)+1)
+            return amount * 2
+        end
+        local function need_recipe_limit(fluidbox)
+            for _, conn in ipairs(fluidbox.connections) do
+                local type = PipeEdgeType[conn.type]
+                if type == INOUT or type == OUT then
+                    return false
+                end
+            end
+            return true
+        end
+        local function init_fluidflow(classify)
+            for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
+                local fluid = v.fluidboxes[classify..i.."_fluid"]
+                if fluid ~= 0 then
+                    local id = v.fluidboxes[classify..i.."_id"]
+                    local capacity = fluidbox.capacity
+                    if need_recipe_limit(fluidbox) then
+                        capacity = recipe_limit(classify, i)
+                    end
+                    builder_restore(world, fluid, id, fluidbox, capacity)
+                    builder_connect_fluidbox(fluid, id, fluidbox, v.entity, pt.area)
+                end
+            end
+        end
+        init_fluidflow "in"
+        init_fluidflow "out"
+    end
+    builder_finish(world)
+    for v in ecs:select "save_fluidflow:in" do
+        local sav = v.save_fluidflow
+        world:fluidflow_set(sav.fluid, sav.id, sav.volume)
+    end
+    ecs:clear "save_fluidflow"
 end

@@ -87,10 +87,9 @@ static FILE* createfile(lua_State* L, int idx, const char* filename, filemode mo
     return f;
 }
 
-static int
-lbackup(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
-    FILE* f = createfile(L, 2, "world.bin", filemode::write);
+static void
+container_backup(lua_State* L, world& w) {
+    FILE* f = createfile(L, 2, "container.bin", filemode::write);
     sav_header h {
         (uint16_t)w.containers.chest.size(),
         (uint16_t)w.containers.recipe.size(),
@@ -115,14 +114,11 @@ lbackup(lua_State *L) {
         file_write(f, c.outslots.data(), c.outslots.size());
     }
     fclose(f);
-    return 0;
 }
 
-static int
-lrestore(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
-    FILE* f = createfile(L, 2, "world.bin", filemode::read);
-    w.fluidflows.clear();
+static void
+container_restore(lua_State* L, world& w) {
+    FILE* f = createfile(L, 2, "container.bin", filemode::read);
     w.containers.chest.clear();
     w.containers.recipe.clear();
     auto h = file_read<sav_header>(f);
@@ -143,6 +139,19 @@ lrestore(lua_State *L) {
         file_read(f, c.outslots.data(), c.outslots.size());
     }
     fclose(f);
+}
+
+static int
+lbackup(lua_State* L) {
+    world& w = *(world*)lua_touserdata(L, 1);
+    container_backup(L, w);
+    return 0;
+}
+
+static int
+lrestore(lua_State *L) {
+    world& w = *(world*)lua_touserdata(L, 1);
+    container_restore(L, w);
     return 0;
 }
 
