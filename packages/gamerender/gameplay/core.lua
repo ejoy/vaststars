@@ -137,8 +137,8 @@ function m.restore(rootdir)
     world:restore(rootdir)
 end
 
-function m.clean()
-    world.ecs:clearall()
+function m.restart()
+    world = gameplay.createWorld()
 end
 
 return m

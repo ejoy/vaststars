@@ -97,8 +97,7 @@ function M:restore(index)
 end
 
 function M:restart()
-    -- clean
-    gameplay_core.clean()
+    gameplay_core.restart()
     construct_editor.reset()
 end
 

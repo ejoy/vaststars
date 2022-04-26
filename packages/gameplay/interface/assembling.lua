@@ -5,6 +5,16 @@ local fluidbox = require "interface.fluidbox"
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
 
+local IN <const> = 0
+local OUT <const> = 1
+local INOUT <const> = 2
+
+local PipeEdgeType <const> = {
+    ["input"] = IN,
+    ["output"] = OUT,
+    ["input-output"] = INOUT,
+}
+
 local function isFluidId(id)
     return id & 0x0C00 == 0x0C00
 end
@@ -19,7 +29,17 @@ local function findFluidbox(init, id)
     return 0
 end
 
-local function createContainerAndFluidBox(init, fluidboxes, s, max)
+local function needRecipeLimit(fb)
+    for _, conn in ipairs(fb.connections) do
+        local type = PipeEdgeType[conn.type]
+        if type == INOUT or type == OUT then
+            return false
+        end
+    end
+    return true
+end
+
+local function createContainerAndFluidBox(init, fluidboxes, s, max, needlimit)
     assert(#s <= 4 * 15)
     local container = {}
     local fluids = {}
@@ -28,7 +48,12 @@ local function createContainerAndFluidBox(init, fluidboxes, s, max)
         local limit = 0
         if isFluidId(id) then
             fluids[#fluids+1] = findFluidbox(init, id)
-            limit = fluidboxes[#fluids].capacity
+            local fb = fluidboxes[#fluids]
+            if needlimit and needRecipeLimit(fb) then
+                limit = n * 2
+            else
+                limit = fb.capacity
+            end
         else
             limit = n * 2
         end
@@ -82,8 +107,9 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
         assembling.fluidbox_out = 0
         return
     end
-    local container_in, fluidbox_in = createContainerAndFluidBox(fluids.input, pt.fluidboxes.input, recipe.ingredients, 4)
-    local container_out, fluidbox_out = createContainerAndFluidBox(fluids.output, pt.fluidboxes.output, recipe.results, 3)
+    local needlimit = #pt.fluidboxes.input > 0
+    local container_in, fluidbox_in = createContainerAndFluidBox(fluids.input, pt.fluidboxes.input, recipe.ingredients, 4, needlimit)
+    local container_out, fluidbox_out = createContainerAndFluidBox(fluids.output, pt.fluidboxes.output, recipe.results, 3, needlimit)
     assembling.recipe = recipe.id
     assembling.container = world:container_create("assembling", container_in, container_out)
     assembling.fluidbox_in = fluidbox_in

@@ -5,20 +5,17 @@ struct fluid_box;
 struct fluid_state;
 
 struct fluidflow {
-    struct state {
-        int volume;
-        int flow;
-        int multiple;
-    };
-
     fluidflow();
     ~fluidflow();
     uint16_t build(struct fluid_box *box);
+    bool rebuild(uint16_t id);
+    bool restore(uint16_t id, struct fluid_box *box);
     bool teardown(int id);
     bool connect(int from, int to, bool oneway);
     void dump();
-    bool query(int id, state& state);
+    bool query(int id, fluid_state& state);
     void set(int id, int fluid);
+    void set(int id, int fluid, int user_multiple);
     void block(int id);
     void update();
 
