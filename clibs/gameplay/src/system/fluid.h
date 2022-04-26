@@ -1,19 +1,10 @@
 #pragma once
 
-extern "C" {
-#include "../fluidflow.h"
-}
-
 struct fluidflow_network;
 struct fluid_box;
 struct fluid_state;
 
 struct fluidflow {
-    struct state {
-        int multiple;
-        fluid_state state;
-    };
-
     fluidflow();
     ~fluidflow();
     uint16_t build(struct fluid_box *box);
@@ -21,8 +12,9 @@ struct fluidflow {
     bool teardown(int id);
     bool connect(int from, int to, bool oneway);
     void dump();
-    bool query(int id, state& state);
+    bool query(int id, fluid_state& state);
     void set(int id, int fluid);
+    void set(int id, int fluid, int user_multiple);
     void block(int id);
     void update();
 
