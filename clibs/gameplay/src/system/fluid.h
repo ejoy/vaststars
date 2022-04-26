@@ -1,14 +1,17 @@
 #pragma once
 
+extern "C" {
+#include "../fluidflow.h"
+}
+
 struct fluidflow_network;
 struct fluid_box;
 struct fluid_state;
 
 struct fluidflow {
     struct state {
-        int volume;
-        int flow;
         int multiple;
+        fluid_state state;
     };
 
     fluidflow();
