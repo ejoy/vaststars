@@ -141,13 +141,6 @@ lupdate(lua_State *L) {
 }
 
 static int
-lfluidflow_reset(lua_State *L) {
-	world& w = *(world*)lua_touserdata(L, 1);
-	w.fluidflows.clear();
-	return 0;
-}
-
-static int
 lfluidflow_build(lua_State *L) {
 	world& w = *(world*)lua_touserdata(L, 1);
 	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
@@ -279,7 +272,6 @@ extern "C" int
 luaopen_vaststars_fluidflow_core(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
-		{ "reset", lfluidflow_reset },
 		{ "build", lfluidflow_build },
 		{ "restore", lfluidflow_restore },
 		{ "teardown", lfluidflow_teardown },

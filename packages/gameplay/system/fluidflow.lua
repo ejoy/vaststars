@@ -156,7 +156,7 @@ function m.build(world)
         end
         builder_connect_fluidbox(fluid, id, pt.fluidbox, v.entity, pt.area)
     end
-    for v in ecs:select "fluidboxes:update entity:in assembling:in fluidbox_changed?in" do
+    for v in ecs:select "fluidboxes:update entity:in fluidbox_changed?in" do
         local pt = query(v.entity.prototype)
         local function init_fluidflow(classify)
             for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
@@ -204,17 +204,16 @@ function m.backup_finish(world)
 end
 
 function m.restore_finish(world)
-    vaststars.fluidflows_reset(world._cworld)
     local ecs = world.ecs
     builder_init()
-    for v in ecs:select "fluidbox:update entity:in" do
+    for v in ecs:select "fluidbox:in entity:in" do
         local pt = query(v.entity.prototype)
         local fluid = v.fluidbox.fluid
         local id = v.fluidbox.id
         builder_restore(world, fluid, id, pt.fluidbox)
         builder_connect_fluidbox(fluid, id, pt.fluidbox, v.entity, pt.area)
     end
-    for v in ecs:select "fluidboxes:update entity:in assembling:in" do
+    for v in ecs:select "fluidboxes:in entity:in" do
         local pt = query(v.entity.prototype)
         local function init_fluidflow(classify)
             for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
