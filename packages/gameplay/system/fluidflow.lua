@@ -65,20 +65,20 @@ local function builder_init()
     builder = {}
 end
 
-local function builder_build(world, fluid, fluidbox, capacity)
+local function builder_build(world, fluid, fluidbox)
     local pumping_speed = fluidbox.pumping_speed
     if pumping_speed then
         pumping_speed = pumping_speed // UPS
     end
-    return world:fluidflow_build(fluid, capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
+    return world:fluidflow_build(fluid, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
 end
 
-local function builder_restore(world, fluid, id, fluidbox, capacity)
+local function builder_restore(world, fluid, id, fluidbox)
     local pumping_speed = fluidbox.pumping_speed
     if pumping_speed then
         pumping_speed = pumping_speed // UPS
     end
-    return world:fluidflow_restore(fluid, id, capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
+    return world:fluidflow_restore(fluid, id, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
 end
 
 local function builder_connect(c, key, id, type)
@@ -147,7 +147,7 @@ function m.build(world)
         local fluid = v.fluidbox.fluid
         local id = v.fluidbox.id
         if v.fluidbox_changed then
-            local newid = builder_build(world, fluid, pt.fluidbox, pt.fluidbox.capacity)
+            local newid = builder_build(world, fluid, pt.fluidbox)
             builder_replace(world, fluid, id, newid)
             v.fluidbox.id = newid
             id = newid
@@ -158,37 +158,13 @@ function m.build(world)
     end
     for v in ecs:select "fluidboxes:update entity:in assembling:in fluidbox_changed?in" do
         local pt = query(v.entity.prototype)
-        local recipe = query(v.assembling.recipe)
-        local k <const> = {
-            ["in"] = "ingredients",
-            ["out"] = "results",
-        }
-        local function recipe_limit(classify, i)
-            local lst = v.assembling["fluidbox_"..classify]
-            local index = (lst >> (4*(i-1))) & 0xF
-            local _, amount = string.unpack("<I2I2", recipe[k[classify]], 4*(index-1)+1)
-            return amount * 2
-        end
-        local function need_recipe_limit(fluidbox)
-            for _, conn in ipairs(fluidbox.connections) do
-                local type = PipeEdgeType[conn.type]
-                if type == INOUT or type == OUT then
-                    return false
-                end
-            end
-            return true
-        end
         local function init_fluidflow(classify)
             for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
                 local fluid = v.fluidboxes[classify..i.."_fluid"]
                 if fluid ~= 0 then
                     local id = v.fluidboxes[classify..i.."_id"]
                     if v.fluidbox_changed then
-                        local capacity = fluidbox.capacity
-                        if need_recipe_limit(fluidbox) then
-                            capacity = recipe_limit(classify, i)
-                        end
-                        local newid = builder_build(world, fluid, fluidbox, capacity)
+                        local newid = builder_build(world, fluid, fluidbox)
                         builder_replace(world, fluid, id, newid)
                         v.fluidboxes[classify..i.."_id"] = newid
                         id = newid
@@ -235,41 +211,17 @@ function m.restore_finish(world)
         local pt = query(v.entity.prototype)
         local fluid = v.fluidbox.fluid
         local id = v.fluidbox.id
-        builder_restore(world, fluid, id, pt.fluidbox, pt.fluidbox.capacity)
+        builder_restore(world, fluid, id, pt.fluidbox)
         builder_connect_fluidbox(fluid, id, pt.fluidbox, v.entity, pt.area)
     end
     for v in ecs:select "fluidboxes:update entity:in assembling:in" do
         local pt = query(v.entity.prototype)
-        local recipe = query(v.assembling.recipe)
-        local k <const> = {
-            ["in"] = "ingredients",
-            ["out"] = "results",
-        }
-        local function recipe_limit(classify, i)
-            local lst = v.assembling["fluidbox_"..classify]
-            local index = (lst >> (4*(i-1))) & 0xF
-            local _, amount = string.unpack("<I2I2", recipe[k[classify]], 4*(index-1)+1)
-            return amount * 2
-        end
-        local function need_recipe_limit(fluidbox)
-            for _, conn in ipairs(fluidbox.connections) do
-                local type = PipeEdgeType[conn.type]
-                if type == INOUT or type == OUT then
-                    return false
-                end
-            end
-            return true
-        end
         local function init_fluidflow(classify)
             for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
                 local fluid = v.fluidboxes[classify..i.."_fluid"]
                 if fluid ~= 0 then
                     local id = v.fluidboxes[classify..i.."_id"]
-                    local capacity = fluidbox.capacity
-                    if need_recipe_limit(fluidbox) then
-                        capacity = recipe_limit(classify, i)
-                    end
-                    builder_restore(world, fluid, id, fluidbox, capacity)
+                    builder_restore(world, fluid, id, fluidbox)
                     builder_connect_fluidbox(fluid, id, fluidbox, v.entity, pt.area)
                 end
             end

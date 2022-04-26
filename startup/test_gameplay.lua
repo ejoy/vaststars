@@ -39,25 +39,22 @@ end
 
 local function dump_fluid()
     local ecs = world.ecs
-    local function display(fluid, id, fluidbox)
+    local function display(fluid, id)
         if fluid ~= 0 and id ~= 0 then
             local r = world:fluidflow_query(fluid, id)
             if r then
-                print(gameplay.query(fluid).name, ("%0.2f/%d\t%0.2f"):format(r.volume / r.multiple, fluidbox.capacity, r.flow / r.multiple))
+                print(gameplay.query(fluid).name, ("%0.2f/%d\t%0.2f"):format(r.volume / r.multiple, r.capacity / r.multiple, r.flow / r.multiple))
             end
         end
     end
-    for v in ecs:select "fluidbox:in entity:in" do
-        local pt = gameplay.query(v.entity.prototype)
-        display(v.fluidbox.fluid, v.fluidbox.id, pt.fluidbox)
+    for v in ecs:select "fluidbox:in" do
+        display(v.fluidbox.fluid, v.fluidbox.id)
     end
-    for v in ecs:select "fluidboxes:in entity:in" do
-        local pt = gameplay.query(v.entity.prototype)
+    for v in ecs:select "fluidboxes:in" do
         for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
             local fluid = v.fluidboxes[classify.."_fluid"]
             local id = v.fluidboxes[classify.."_id"]
-            local what, i = classify:match "(%a*)(%d)"
-            display(fluid, id, pt.fluidboxes[what.."put"][tonumber(i)])
+            display(fluid, id)
         end
     end
     print "===================="
@@ -72,6 +69,7 @@ world:wait(2*50, dump)
 world:wait(10*50, dump)
 world:wait(20*50, dump)
 world:wait(30*50, dump)
+world:wait(60*50, dump)
 
 --world:loop(1, function ()
 --    world:fluidflow_dump(0x3c01)

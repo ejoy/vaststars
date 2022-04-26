@@ -12,6 +12,7 @@ struct fluid_box {
 struct fluid_state {
 	int volume;
 	int flow;
+	struct fluid_box box;
 };
  
 struct fluidflow_network * fluidflow_new();

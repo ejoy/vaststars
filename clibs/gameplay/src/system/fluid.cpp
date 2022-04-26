@@ -82,9 +82,8 @@ bool fluidflow::query(int id, state& state) {
 	if (!fluidflow_query(network, id, &output)) {
 		return false;
 	}
-	state.volume = output.volume;
-	state.flow = output.flow;
 	state.multiple = multiple;
+	state.state = output;
 	return true;
 }
 
@@ -118,7 +117,7 @@ lupdate(lua_State *L) {
 					uint8_t index = ((a.fluidbox_in >> (i*4)) & 0xF) - 1;
 					fluidflow::state state;
 					if (w.fluidflows[fluid].query(fb.in[i].id, state)) {
-						container.recipe_set(recipe_container::slot_type::in, index, state.volume / state.multiple);
+						container.recipe_set(recipe_container::slot_type::in, index, state.state.volume / state.multiple);
 					}
 				}
 			}
@@ -128,7 +127,7 @@ lupdate(lua_State *L) {
 					uint8_t index = ((a.fluidbox_out >> (i*4)) & 0xF) - 1;
 					fluidflow::state state;
 					if (w.fluidflows[fluid].query(fb.out[i].id, state)) {
-						container.recipe_set(recipe_container::slot_type::out, index, state.volume / state.multiple);
+						container.recipe_set(recipe_container::slot_type::out, index, state.state.volume / state.multiple);
 					}
 				}
 			}
@@ -231,13 +230,21 @@ lfluidflow_query(lua_State *L) {
 	if (!w.fluidflows[fluid].query(id, state)) {
 		return luaL_error(L, "fluidflow query failed.");
 	}
-	lua_createtable(L, 0, 2);
-	lua_pushinteger(L, state.volume);
-	lua_setfield(L, -2, "volume");
-	lua_pushinteger(L, state.flow);
-	lua_setfield(L, -2, "flow");
+	lua_createtable(L, 0, 6);
 	lua_pushinteger(L, state.multiple);
 	lua_setfield(L, -2, "multiple");
+	lua_pushinteger(L, state.state.volume);
+	lua_setfield(L, -2, "volume");
+	lua_pushinteger(L, state.state.flow);
+	lua_setfield(L, -2, "flow");
+	lua_pushinteger(L, state.state.box.capacity);
+	lua_setfield(L, -2, "capacity");
+	lua_pushinteger(L, state.state.box.height);
+	lua_setfield(L, -2, "height");
+	lua_pushinteger(L, state.state.box.base_level);
+	lua_setfield(L, -2, "base_level");
+	lua_pushinteger(L, state.state.box.pumping_speed);
+	lua_setfield(L, -2, "pumping_speed");
 	return 1;
 }
 
