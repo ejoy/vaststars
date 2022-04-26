@@ -119,8 +119,6 @@ container_backup(lua_State* L, world& w) {
 static void
 container_restore(lua_State* L, world& w) {
     FILE* f = createfile(L, 2, "container.bin", filemode::read);
-    w.containers.chest.clear();
-    w.containers.recipe.clear();
     auto h = file_read<sav_header>(f);
     w.containers.chest.resize(h.chest_size);
     w.containers.recipe.resize(h.recipe_size);

@@ -40,20 +40,40 @@ uint16_t world::container_id<recipe_container>() {
 }
 
 static int
+lworld_reset(lua_State* L) {
+    struct world* w = (struct world*)lua_touserdata(L, 1);
+    w->fluidflows.clear();
+    w->containers.chest.clear();
+    w->containers.recipe.clear();
+    return 0;
+}
+
+static int
+lworld_destroy(lua_State* L) {
+    struct world* w = (struct world*)lua_touserdata(L, 1);
+    w->~world();
+    return 0;
+}
+
+static int
 lcreate_world(lua_State* L) {
 	struct world* w = (struct world*)lua_newuserdatauv(L, sizeof(struct world), 0);
 	new (w) world;
 	w->c.L = L;
 	w->c.ecs = (struct ecs_context *)lua_touserdata(L, 1);
 	w->c.P = (struct prototype_cache *)lua_touserdata(L, 2);
+    if (luaL_newmetatable(L, "gameplay::world")) {
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+        luaL_Reg l[] = {
+            {"reset", lworld_reset},
+            {"__gc", lworld_destroy},
+            {nullptr, nullptr},
+        };
+        luaL_setfuncs(L, l, 0);
+    }
+    lua_setmetatable(L, -2);
 	return 1;
-}
-
-static int
-lfluidflows_reset(lua_State* L) {
-	struct world* w = (struct world*)lua_touserdata(L, 1);
-	w->fluidflows.clear();
-	return 0;
 }
 
 static FILE* tofile(lua_State* L, int idx) {
@@ -84,7 +104,6 @@ luaopen_vaststars_world_core(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
 		{ "create_world", lcreate_world },
-		{ "fluidflows_reset", lfluidflows_reset },
 		{ "fileno", lfileno },
 		{ NULL, NULL },
 	};

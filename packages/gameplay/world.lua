@@ -123,6 +123,7 @@ return function ()
         pipeline_backup(rootdir)
     end
     function world:restore(rootdir)
+        cworld:reset()
         pipeline_restore(rootdir)
     end
 
@@ -138,11 +139,11 @@ return function ()
     function world:container_get(...)
         return container.get(cworld, ...)
     end
-    function world:fluidflow_reset(...)
-        return fluidflow.reset(cworld, ...)
-    end
     function world:fluidflow_build(...)
         return fluidflow.build(cworld, ...)
+    end
+    function world:fluidflow_rebuild(...)
+        return fluidflow.rebuild(cworld, ...)
     end
     function world:fluidflow_restore(...)
         return fluidflow.restore(cworld, ...)

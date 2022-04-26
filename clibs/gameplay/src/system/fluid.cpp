@@ -37,6 +37,21 @@ uint16_t fluidflow::build(struct fluid_box *box) {
 	return newid;
 }
 
+bool fluidflow::rebuild(uint16_t id) {
+	fluid_state state;
+	if (!fluidflow_query(network, id, &state)) {
+		return false;
+	}
+	int r;
+	r = fluidflow_teardown(network, id);
+	assert(r == 0); (void)r;
+	r = fluidflow_build(network, id, &state.box);
+	assert(r == 0); (void)r;
+	r = fluidflow_set(network, id, state.volume, 1);
+	assert(r == 0); (void)r;
+	return true;
+}
+
 bool fluidflow::restore(uint16_t id, struct fluid_box *box) {
 	if (id <= maxid) {
 		freelist.erase(std::remove_if(freelist.begin(), freelist.end(),
@@ -141,13 +156,6 @@ lupdate(lua_State *L) {
 }
 
 static int
-lfluidflow_reset(lua_State *L) {
-	world& w = *(world*)lua_touserdata(L, 1);
-	w.fluidflows.clear();
-	return 0;
-}
-
-static int
 lfluidflow_build(lua_State *L) {
 	world& w = *(world*)lua_touserdata(L, 1);
 	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
@@ -168,6 +176,16 @@ lfluidflow_build(lua_State *L) {
 	lua_pushinteger(L, id);
 	return 1;
 }
+
+static int
+lfluidflow_rebuild(lua_State *L) {
+	world& w = *(world*)lua_touserdata(L, 1);
+	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
+	uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
+	w.fluidflows[fluid].rebuild(id);
+	return 0;
+}
+
 static int
 lfluidflow_restore(lua_State *L) {
 	world& w = *(world*)lua_touserdata(L, 1);
@@ -279,13 +297,13 @@ extern "C" int
 luaopen_vaststars_fluidflow_core(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
-		{ "reset", lfluidflow_reset },
 		{ "build", lfluidflow_build },
 		{ "restore", lfluidflow_restore },
 		{ "teardown", lfluidflow_teardown },
 		{ "connect", lfluidflow_connect },
 		{ "query", lfluidflow_query },
 		{ "set", lfluidflow_set },
+		{ "rebuild", lfluidflow_rebuild },
 		{ "dump", lfluidflow_dump },
 		{ NULL, NULL },
 	};

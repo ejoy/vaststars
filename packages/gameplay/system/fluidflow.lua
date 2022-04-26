@@ -1,10 +1,9 @@
 local system = require "register.system"
 local query = require "prototype".queryById
-local vaststars = require "vaststars.world.core"
 
 local m = system "fluidflow"
 
-local builder = {map={},connects = {}}
+local builder = {}
 
 local N <const> = 0
 local E <const> = 1
@@ -65,7 +64,11 @@ local function builder_init()
     builder = {}
 end
 
-local function builder_build(world, fluid, fluidbox)
+local function builder_build(world, fluid, id, fluidbox)
+    if id ~= 0 then
+        world:fluidflow_rebuild(fluid, id)
+        return
+    end
     local pumping_speed = fluidbox.pumping_speed
     if pumping_speed then
         pumping_speed = pumping_speed // UPS
@@ -131,14 +134,6 @@ local function builder_finish(world)
     end
 end
 
-local function builder_replace(world, fluid, id, newid)
-    if id ~= 0 then
-        local volume = world:fluidflow_query(fluid, id).volume
-        world:fluidflow_teardown(fluid, id);
-        world:fluidflow_set(newid, volume, 1)
-    end
-end
-
 function m.build(world)
     local ecs = world.ecs
     builder_init()
@@ -147,16 +142,17 @@ function m.build(world)
         local fluid = v.fluidbox.fluid
         local id = v.fluidbox.id
         if v.fluidbox_changed then
-            local newid = builder_build(world, fluid, pt.fluidbox)
-            builder_replace(world, fluid, id, newid)
-            v.fluidbox.id = newid
-            id = newid
+            local newid = builder_build(world, fluid, id, pt.fluidbox)
+            if newid then
+                v.fluidbox.id = newid
+                id = newid
+            end
         else
             assert(id ~= 0)
         end
         builder_connect_fluidbox(fluid, id, pt.fluidbox, v.entity, pt.area)
     end
-    for v in ecs:select "fluidboxes:update entity:in assembling:in fluidbox_changed?in" do
+    for v in ecs:select "fluidboxes:update entity:in fluidbox_changed?in" do
         local pt = query(v.entity.prototype)
         local function init_fluidflow(classify)
             for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
@@ -164,10 +160,11 @@ function m.build(world)
                 if fluid ~= 0 then
                     local id = v.fluidboxes[classify..i.."_id"]
                     if v.fluidbox_changed then
-                        local newid = builder_build(world, fluid, fluidbox)
-                        builder_replace(world, fluid, id, newid)
-                        v.fluidboxes[classify..i.."_id"] = newid
-                        id = newid
+                        local newid = builder_build(world, fluid, id, fluidbox)
+                        if newid then
+                            v.fluidboxes[classify..i.."_id"] = newid
+                            id = newid
+                        end
                     else
                         assert(id ~= 0)
                     end
@@ -204,17 +201,16 @@ function m.backup_finish(world)
 end
 
 function m.restore_finish(world)
-    vaststars.fluidflows_reset(world._cworld)
     local ecs = world.ecs
     builder_init()
-    for v in ecs:select "fluidbox:update entity:in" do
+    for v in ecs:select "fluidbox:in entity:in" do
         local pt = query(v.entity.prototype)
         local fluid = v.fluidbox.fluid
         local id = v.fluidbox.id
         builder_restore(world, fluid, id, pt.fluidbox)
         builder_connect_fluidbox(fluid, id, pt.fluidbox, v.entity, pt.area)
     end
-    for v in ecs:select "fluidboxes:update entity:in assembling:in" do
+    for v in ecs:select "fluidboxes:in entity:in" do
         local pt = query(v.entity.prototype)
         local function init_fluidflow(classify)
             for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do

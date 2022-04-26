@@ -1,10 +1,12 @@
 local world = ...
 
+
 world:create_entity "小型铁制箱子" {
     x = 1,
     y = 1,
     items = {
         {"铁矿石", 100},
+        {"沙石矿", 100},
     },
 }
 world:create_entity "机器爪1" {
@@ -29,58 +31,12 @@ world:create_entity "小型铁制箱子" {
     },
 }
 
-world:create_entity "机器爪1" {
-    x = 7,
-    y = 2,
-    dir = "N"
-}
-
-world:create_entity "组装机1" {
-    x = 7,
-    y = 3,
-    recipe = "铁棒1"
-}
-
-world:create_entity "机器爪1" {
-    x = 7,
-    y = 6,
-    dir = "N"
-}
-
-world:create_entity "小型铁制箱子" {
-    x = 7,
-    y = 7,
-    items = {
-    },
-}
-
-world:create_entity "机器爪1" {
-    x = 8,
-    y = 1,
-    dir = "W"
-}
-world:create_entity "组装机1" {
-    x = 9,
-    y = 1,
-    recipe = "铁板1"
-}
-world:create_entity "机器爪1" {
-    x = 12,
-    y = 1,
-    dir = "W"
-}
-world:create_entity "小型铁制箱子" {
-    x = 13,
-    y = 1,
-    items = {
-    },
-}
-
 world:create_entity "指挥中心" {
     x = 1,
     y = 10
 }
 
+--[==[
 world:create_entity "空气过滤器1" {
     x = 2,
     y = 16,
@@ -179,6 +135,7 @@ xxx══╝   ╚════xxx
 xxx           xxx
 ]]
 }
+]==]
 
 local gameplay = import_package "vaststars.gameplay"
 
