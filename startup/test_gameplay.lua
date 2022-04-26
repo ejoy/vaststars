@@ -61,15 +61,25 @@ local function dump_fluid()
 end
 
 local function dump()
-    --dump_item()
-    dump_fluid()
+    dump_item()
+    --dump_fluid()
 end
 
-world:wait(2*50, dump)
-world:wait(10*50, dump)
-world:wait(20*50, dump)
-world:wait(30*50, dump)
-world:wait(60*50, dump)
+world:wait( 10*50, dump)
+world:wait( 60*50, dump)
+world:wait(110*50, dump)
+world:wait(160*50, dump)
+world:wait(1060*50, dump)
+
+world:wait(100*50, function ()
+    local assembling = gameplay.interface "assembling"
+    local ecs = world.ecs
+    for e in ecs:select "assembling:update fluidboxes:update fluidbox_changed?update entity:in" do
+        local pt = gameplay.query(e.entity.prototype)
+        assembling.set_recipe(world, e, pt, "地质科技包1")
+    end
+    world:build()
+end)
 
 --world:loop(1, function ()
 --    world:fluidflow_dump(0x3c01)
