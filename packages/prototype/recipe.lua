@@ -912,9 +912,9 @@ prototype "离岸抽水" {
     ingredients = {
     },
     results = {
-        {"海水", 1200},
+        {"海水", 120},
     },
-    time = "1s",
+    time = "0.1s",
     description = "抽取海洋里海水",
 }
 
