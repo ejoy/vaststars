@@ -135,7 +135,7 @@ local function builder_replace(world, fluid, id, newid)
     if id ~= 0 then
         local volume = world:fluidflow_query(fluid, id).volume
         world:fluidflow_teardown(fluid, id);
-        world:fluidflow_set(newid, volume)
+        world:fluidflow_set(newid, volume, 1)
     end
 end
 
@@ -232,7 +232,7 @@ function m.restore_finish(world)
     builder_finish(world)
     for v in ecs:select "save_fluidflow:in" do
         local sav = v.save_fluidflow
-        world:fluidflow_set(sav.fluid, sav.id, sav.volume)
+        world:fluidflow_set(sav.fluid, sav.id, sav.volume, 1)
     end
     ecs:clear "save_fluidflow"
 end
