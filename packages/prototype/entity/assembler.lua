@@ -10,6 +10,7 @@ prototype "组装机1" {
     speed = "100%",
     power = "150kW",
     priority = "secondary",
+    craft_category = {"物流小型制造","物流中型制造","物流大型制造","生产中型制造","生产大型制造","生产手工制造","器件小型制造","器件中型制造"},
     fluidboxes = {
         input = {
             {

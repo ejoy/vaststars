@@ -71,6 +71,7 @@ prototype "烟囱1" {
     construct_detector = {"exclusive"},
     type ={"entity", "fluidbox"},
     area = "2x2",
+    craft_category = {"矿石粉碎"},
     fluidbox = {
         capacity = 1000,
         height = 100,
@@ -87,6 +88,7 @@ prototype "排水口1" {
     construct_detector = {"exclusive"},
     type ={"entity", "fluidbox"},
     area = "3x3",
+    craft_category = {"矿石粉碎"},
     fluidbox = {
         capacity = 1000,
         height = 100,

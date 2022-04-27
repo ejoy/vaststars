@@ -1,74 +1,74 @@
 local menu = {
     {
-        name = "物流",
+        group = "物流",
         icon = "textures/construct/logisitic1.texture",
         category = {
-            "小型制造",
-            "中型制造",
-            "大型制造",
+            "物流小型制造",
+            "物流中型制造",
+            "物流大型制造",
         },
     },
     {
-        name = "生产",
+        group = "生产",
         icon = "textures/construct/assembler.texture",
         category = {
-            "中型制造",
-            "大型制造",
-            "手工制造",
+            "生产中型制造",
+            "生产大型制造",
+            "生产手工制造",
         },
     },
     {
-        name = "化工",
+        group = "化工",
         icon = "textures/construct/chemistry2.texture",
         category = {
-            "小型制造",
-            "中型制造",
-            "大型制造",
+            "化工小型制造",
+            "化工中型制造",
+            "化工大型制造",
         },
     },
     {
-        name = "金属",
+        group = "金属",
         icon = "textures/construct/steel-beam.texture",
         category = {
-            "流体处理",
+            "金属流体处理",
             "金属冶炼",
             "矿石粉碎",
             "金属锻造",
-            "小型制造",
+            "金属小型制造",
         },
     },
     {
-        name = "器件",
+        group = "器件",
         icon = "textures/construct/processor.texture",
         category = {
-            "小型制造",
-            "中型制造",
-            "液体处理",
-            "基础化工",
+            "器件小型制造",
+            "器件中型制造",
+            "器件液体处理",
+            "器件基础化工",
         },
     },
     {
-        name = "流体",
+        group = "流体",
         icon = "textures/construct/tank3.texture",
         category = {
             "水泵",
             "过滤",
             "电解",
-            "基础化工",
-            "液体处理",
-            "液体排泄",
-            "气体排泄",
+            "流体基础化工",
+            "流体液体处理",
+            "流体液体排泄",
+            "流体气体排泄",
         },
     },
     {
-        name = "打包",
+        group = "打包",
         icon = "textures/construct/pack.texture",
         category = {
 
         },
     },
     {
-        name = "解包",
+        group = "解包",
         icon = "textures/construct/unpack.texture",
         category = {
 
