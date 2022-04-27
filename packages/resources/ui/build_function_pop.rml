@@ -40,6 +40,7 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
+                show_set_recipe = false,
                 object_id = nil,
                 left = "0vmin",
                 top = "0vmin",
@@ -54,7 +55,8 @@
             end
 
             ui_sys:addEventListener({
-                ["INIT"] = function(object_id, x, y)
+                ["INIT"] = function(show_set_recipe, object_id, x, y)
+                    start.show_set_recipe = show_set_recipe
                     start.object_id = object_id
                     start.left = ("%0.2fvmin"):format(math.max(x - 41.5, 0))
                     start.top = ("%0.2fvmin"):format(math.max(y - 30, 0))
@@ -71,10 +73,11 @@
                     <button class="button-function" style ='background-image: "textures/construct/rotate.texture";'/>
                     <div class="title-text">旋转</div>
                 </div>
-                <div class="button-fuction-block" style="top: -5.33vmin; left: 17.00vmin;" data-event-click="clickRecipe()">
+                <div class="button-fuction-block" style="top: -5.33vmin; left: 17.00vmin;" data-event-click="clickRecipe()" data-if = "show_set_recipe">
                     <button class="button-function" style ='background-image: "textures/assemble/wheel.texture";'/>
                     <div class="title-text">修改配方</div>
                 </div>
+                <div class="button-fuction-block" style="top: -5.33vmin; left: 17.00vmin;" data-if = "!show_set_recipe" /> <!-- TODO -->
                 <div class="button-fuction-block" style="top: 10.67vmin; left: 32.14vmin">
                     <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>
                     <div class="title-text">详细</div>
