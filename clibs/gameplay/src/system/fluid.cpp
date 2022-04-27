@@ -64,6 +64,7 @@ bool fluidflow::restore(uint16_t id, struct fluid_box *box) {
 		for (auto i = maxid + 1; i < id; ++i) {
 			freelist.push_back(i);
 		}
+		maxid = id;
 	}
 	box->capacity *= multiple;
 	box->height *= multiple;
