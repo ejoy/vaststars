@@ -5,6 +5,7 @@
                 background-color: rgb(44, 32, 18);
                 border: 0.27vmin rgb(89, 73, 39);
                 border-radius: 0.67vmin;
+                margin:auto 0.3em;
                 width: 25%;
                 height: 100%;
                 justify-content: space-evenly;
