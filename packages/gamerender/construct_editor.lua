@@ -312,7 +312,7 @@ local function revert_changes(revert_cache_names)
     end
 end
 
-local function new_pickup_object(prototype_name, dir, x, y)
+local function new_pickup_object(prototype_name, dir, x, y, fluid)
     local vsobject_type, need_set_tile_object
     if not check_construct_detector(prototype_name, x, y, dir) then
         vsobject_type = "invalid_construct"
@@ -362,7 +362,7 @@ local function new_pickup_object(prototype_name, dir, x, y)
             vsobject:update_fluid(fluid_types[1])
             show_confirm = true
         else
-            pickup_object.fluid = ""
+            pickup_object.fluid = fluid or ""
             vsobject:update_fluid("")
             show_confirm = false
         end
@@ -376,6 +376,7 @@ local function new_pickup_object(prototype_name, dir, x, y)
 
     return pickup_object
 end
+M.debug_new_pickup_object = new_pickup_object -- for debug
 
 local function update_pickup_object(pickup_object, vsobject)
     local vsobject_type
