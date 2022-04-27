@@ -9,7 +9,7 @@ local function get_name_count(s)
     for idx = 1, #s // 4 do
         local id, n = string.unpack("<I2I2", s, 4 * idx - 3)
         local typeobject = gameplay.query(id)
-        r[#r+1] = {name = typeobject.name, count = n}
+        r[#r+1] = {name = typeobject.name, count = n, icon = typeobject.icon}
     end
     return r
 end
@@ -25,6 +25,7 @@ for _, v in pairs(gameplay.prototype_name) do
             time = v.time,
             ingredients = get_name_count(v.ingredients),
             results = get_name_count(v.results),
+            group = v.group,
         }
     end
 end
@@ -32,12 +33,16 @@ end
 local t = {}
 for _, menu in ipairs(recipe_menu) do
     local m = {}
-    m.name = menu.name
+    m.group = menu.group
     m.icon = menu.icon
     m.item = {}
 
-    for _, c in ipairs(menu.category) do
-        table.move(recipes[c], 1, #recipes[c], #m.item + 1, m.item)
+    for _, category in ipairs(menu.category) do
+        for _, v in ipairs(recipes[category]) do
+            if v.group == menu.group then
+                m.item[#m.item + 1] = v
+            end
+        end
     end
     table.sort(m.item, function(a, b) return a.order < b.order end)
 

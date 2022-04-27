@@ -226,7 +226,7 @@
                 <div class = "tab-container">
                     <workbutton data-for = "recipe_menu" data-event-click="clickCatalog(it_index + 1)">
                         <div class="workbutton-bg" data-style-background-image = "it.icon" />
-                        <div class="catalog-desc">{{it.name}}</div>
+                        <div class="catalog-desc">{{it.group}}</div>
                     </workbutton>
                 </div>
             </div>
@@ -247,7 +247,7 @@
                     <div class = "materials-block"> 
                         <div class = "materials" data-for = "recipe_ingredients">
                             <div class = "materials-item">
-                                <div class = "materials-icon"/>
+                                <div class = "materials-icon" data-style-background-image = "it.icon" />
                                 <div class = "materials-name">{{it.name}}</div>
                             </div>
                             <div class = "materials-num">X{{it.count}}</div>
@@ -262,7 +262,7 @@
                     <div class = "materials-block">
                         <div class = "materials" data-for = "recipe_results">
                             <div class = "materials-item">
-                                <div class = "materials-icon"/>
+                                <div class = "materials-icon" data-style-background-image = "it.icon" />
                                 <div class = "materials-name">{{it.name}}</div>
                             </div>
                             <div class = "materials-num">X{{it.count}}</div>

@@ -14,12 +14,13 @@ local property_list = {
 	["fluid_volume"] = {
 		icon = "textures/property/fluid-volume.texture",
 		desc = "液体容量: ",
-		value = "$fluid_volume$",
+		value = "$fluid_volume$/$fluid_capacity$",
 		pos = 3,
 	},
 	["fluid_rate"] = {
 		icon = "textures/property/fluid-rate.texture",
 		desc = "液体流速: ",
+		value = "$fluid_flow$",
 		pos = 4,
 	},
 	["chest_capacity"] = {
@@ -113,5 +114,26 @@ local property_list = {
 		pos = 22,
 	},
 }
+
+-- for debug
+for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
+	local t = {
+		"fluidboxes_" .. classify .. "_volume",
+		"fluidboxes_" .. classify .. "_capacity",
+		"fluidboxes_" .. classify .. "_flow",
+		"fluidboxes_" .. classify .. "_base_level",
+		"fluidboxes_" .. classify .. "_height",
+	}
+
+	for _, name in ipairs(t) do
+		property_list[name] = {
+			icon = "textures/property/fluid-volume.texture",
+			desc = ("%s: "):format(name):gsub("fluidboxes_", ""),
+			value = ("$%s$"):format(name),
+			pos = 3,
+			debug = true,
+		}
+	end
+end
 
 return property_list

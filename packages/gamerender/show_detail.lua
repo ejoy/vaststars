@@ -22,7 +22,7 @@ end
 local function show_detail(vsobject_id)
     local object = assert(objects:get(cache_names, vsobject_id))
 
-    local e = gameplay_core.get_entity("entity:in fluidbox?in", object.x, object.y)
+    local e = gameplay_core.get_entity("entity:in fluidbox?in fluidboxes?in", object.x, object.y)
     if not e then
         return
     end
@@ -40,6 +40,42 @@ local function show_detail(vsobject_id)
         local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
         if r then
             t.fluid_volume = r.volume / r.multiple
+            t.fluid_capacity = r.capacity / r.multiple
+            t.fluid_flow = r.flow / r.multiple
+        end
+    end
+
+    if e.fluidboxes then
+        local fluidboxes_type_str = {
+            ["out"] = "output",
+            ["in"] = "input",
+        }
+
+        local function set_property(t, key, value)
+            if value == 0 then
+                return t
+            end
+            t[key] = value
+            return t
+        end
+
+        for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
+            local fluid = e.fluidboxes[classify.."_fluid"]
+            local id = e.fluidboxes[classify.."_id"]
+            if fluid ~= 0 and id ~= 0 then
+                local f = gameplay_core.fluidflow_query(fluid, id)
+                if f then
+                    set_property(t, "fluidboxes_" .. classify .. "_volume", f.volume / f.multiple)
+                    set_property(t, "fluidboxes_" .. classify .. "_capacity", f.capacity / f.multiple)
+                    set_property(t, "fluidboxes_" .. classify .. "_flow", f.flow / f.multiple)
+
+                    local fluidboxes_type, fluidboxes_index = classify:match("(%l*)(%d*)")
+                    local cfg = typeobject.fluidboxes[fluidboxes_type_str[fluidboxes_type]][tonumber(fluidboxes_index)]
+
+                    set_property(t, "fluidboxes_" .. classify .. "_base_level", cfg.base_level)
+                    set_property(t, "fluidboxes_" .. classify .. "_height", cfg.height)
+                end
+            end
         end
     end
 
