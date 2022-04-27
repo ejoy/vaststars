@@ -38,6 +38,7 @@ for _, menu in ipairs(recipe_menu) do
     m.item = {}
 
     for _, category in ipairs(menu.category) do
+        assert(recipes[category], ("can not found category `%s`, define in package.prototype.recipe"):format(category))
         for _, v in ipairs(recipes[category]) do
             if v.group == menu.group then
                 m.item[#m.item + 1] = v
