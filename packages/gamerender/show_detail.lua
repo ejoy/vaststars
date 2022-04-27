@@ -12,6 +12,8 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mu = import_package "ant.math".util
 local vsobject_manager = ecs.require "vsobject_manager"
 local math3d = require "math3d"
+local general = require "gameplay.utility.general"
+local has_type = general.has_type
 
 local function get_vmin(w, h, ratio)
     local w = w / ratio
@@ -29,6 +31,7 @@ local function show_detail(vsobject_id)
 
     local typeobject = gameplay.queryByName("entity", object.prototype_name)
 
+    -- 显示建筑详细信息
     local t = {}
     t.name = object.prototype_name
     t.icon = typeobject.icon
@@ -79,6 +82,7 @@ local function show_detail(vsobject_id)
         end
     end
 
+    -- 显示环型菜单
     local vsobject = assert(vsobject_manager:get(vsobject_id))
 
     local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
@@ -89,8 +93,14 @@ local function show_detail(vsobject_id)
     local p = math3d.tovalue(mu.world_to_screen(vp, vr, vsobject:get_position()))
     iui.open("detail_panel.rml", t)
 
+    -- 组装机才显示设置配方菜单
+    local show_set_recipe = false
+    if has_type(typeobject.type, "assembling") then
+        show_set_recipe = true
+    end
+
     local vmin = get_vmin(vr.w, vr.h, vr.ratio)
-    iui.open("build_function_pop.rml", vsobject_id, p[1] / vmin * 100, p[2] / vmin * 100)
+    iui.open("build_function_pop.rml", show_set_recipe, vsobject_id, p[1] / vmin * 100, p[2] / vmin * 100)
     return true
 end
 return show_detail
