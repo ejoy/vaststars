@@ -101,8 +101,10 @@ local function show_detail(vsobject_id)
         show_set_recipe = true
 
         if e.assembling.recipe ~= 0 then
-            local typeobject = gameplay.query()
-            recipe_name = typeobject.name
+            local typeobject = gameplay.query(e.assembling.recipe)
+            if typeobject.ingredients ~= "" then -- 配方没有原料也不需要显示[设置配方]
+                recipe_name = typeobject.name
+            end
         end
     end
 
