@@ -114,7 +114,7 @@ void fluidflow::set(int id, int fluid) {
 }
 
 void fluidflow::set(int id, int fluid, int user_multiple) {
-	int r = fluidflow_set(network, id, fluid, multiple);
+	int r = fluidflow_set(network, id, fluid, user_multiple);
 	assert(r != -1);
 }
 
