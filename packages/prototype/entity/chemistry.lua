@@ -10,6 +10,7 @@ prototype "化工厂1" {
     power = "200kW",
     drain = "6kW",
     priority = "secondary",
+    craft_category = {"化工小型制造","化工中型制造","化工大型制造","器件基础化工","流体基础化工"},
     fluidboxes = {
         input = {
             {
@@ -67,6 +68,7 @@ prototype "蒸馏厂1" {
     area = "5x5",
     power = "240kW",
     priority = "secondary",
+    craft_category = {"过滤"},
     fluidboxes = {
         input = {
             {
@@ -124,6 +126,7 @@ prototype "电解厂1" {
     power = "1MW",
     drain = "30kW",
     priority = "secondary",
+    craft_category = {"电解"},
     fluidboxes = {
         input = {
             {
@@ -172,6 +175,7 @@ prototype "水电站1" {
     area = "5x5",
     power = "150kW",
     priority = "secondary",
+    craft_category = {"流体液体处理"},
     fluidboxes = {
         input = {
             {
