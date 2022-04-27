@@ -12,3 +12,5 @@ packages/resources/ui/json.lua
 *.xcbkptlist
 *.xcscheme
 /.vscode
+/runtime/macos/FrameCapture/
+
