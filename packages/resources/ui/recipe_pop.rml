@@ -7,7 +7,7 @@
                 border-radius: 0.67vmin;
                 margin:auto 0.3em;
                 width: 25%;
-                height: 100%;
+                height: 90%;
                 justify-content: space-evenly;
             }
             .recipe-name-block {
@@ -96,6 +96,7 @@
                 margin-left: 0.5em;
                 width: 3.67vmin;
                 height: 3.67vmin;
+                background-color: rgb(221, 235, 26);;
                 background-image: "textures/science/hand.texture";
                 flex-direction: row;
                 justify-content: flex-start;
@@ -193,7 +194,7 @@
         </template>
 		<!-- RMLUITODO -->
 
-        <div class="item-container-region"  style="width:100%; background-color: rgb(0,0,0); justify-content: center;" data-model="start">
+        <div class="item-container-region"  style="width:100%;  background-color: rgb(0,0,0); justify-content: center;" data-model="start">
             <div class="panel" style= "flex-direction: column;">
                 <div class="header" id = "item-name-block" data-event-click="clickClose()">
                     <button class = "back-button"/>
@@ -214,7 +215,7 @@
                             <button class="item" data-style-background-image = "it.data.icon" data-event-click="ClickItem(it_index)"/>
                         </div>
 
-                        <div id="detail" style="width: 100%; background-color: rgba(0, 100, 150, 255);" data-if="false">
+                        <div id="detail" style="width: 100%; background-color: rgb(0, 100, 150);" data-if="false">
                             Item Detail
                         </div>
                     </div>
