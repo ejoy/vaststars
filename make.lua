@@ -1,6 +1,5 @@
 local lm = require "luamake"
 
-
 local plat = (function ()
     if lm.os == "windows" then
         if lm.compiler == "gcc" then
@@ -14,6 +13,7 @@ end)()
 lm.mode = "debug"
 lm.builddir = ("build/%s/%s"):format(plat, lm.mode)
 lm.bindir = ("bin/%s/%s"):format(plat, lm.mode)
+lm.compile_commands = "build"
 
 if lm.os == "ios" then
     lm.arch = "arm64"
