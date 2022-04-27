@@ -41,6 +41,7 @@
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
                 show_set_recipe = false,
+                recipe_name = "",
                 object_id = nil,
                 left = "0vmin",
                 top = "0vmin",
@@ -51,12 +52,13 @@
             end
 
             function start.clickRecipe(event)
-                ui_sys:pub {"ui", "build_function_pop", "recipe", start.object_id}
+                ui_sys:pub {"ui", "build_function_pop", "recipe", start.object_id, start.recipe_name}
             end
 
             ui_sys:addEventListener({
-                ["INIT"] = function(show_set_recipe, object_id, x, y)
+                ["INIT"] = function(show_set_recipe, recipe_name, object_id, x, y)
                     start.show_set_recipe = show_set_recipe
+                    start.recipe_name = recipe_name
                     start.object_id = object_id
                     start.left = ("%0.2fvmin"):format(math.max(x - 41.5, 0))
                     start.top = ("%0.2fvmin"):format(math.max(y - 30, 0))

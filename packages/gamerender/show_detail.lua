@@ -24,7 +24,7 @@ end
 local function show_detail(vsobject_id)
     local object = assert(objects:get(cache_names, vsobject_id))
 
-    local e = gameplay_core.get_entity("entity:in fluidbox?in fluidboxes?in", object.x, object.y)
+    local e = gameplay_core.get_entity("entity:in fluidbox?in fluidboxes?in assembling?in", object.x, object.y)
     if not e then
         return
     end
@@ -95,12 +95,19 @@ local function show_detail(vsobject_id)
 
     -- 组装机才显示设置配方菜单
     local show_set_recipe = false
+    local recipe_name = ""
     if has_type(typeobject.type, "assembling") then
+        assert(e.assembling)
         show_set_recipe = true
+
+        if e.assembling.recipe ~= 0 then
+            local typeobject = gameplay.query()
+            recipe_name = typeobject.name
+        end
     end
 
     local vmin = get_vmin(vr.w, vr.h, vr.ratio)
-    iui.open("build_function_pop.rml", show_set_recipe, vsobject_id, p[1] / vmin * 100, p[2] / vmin * 100)
+    iui.open("build_function_pop.rml", show_set_recipe, recipe_name, vsobject_id, p[1] / vmin * 100, p[2] / vmin * 100)
     return true
 end
 return show_detail
