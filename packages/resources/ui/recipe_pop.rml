@@ -96,8 +96,7 @@
                 margin-left: 0.5em;
                 width: 3.67vmin;
                 height: 3.67vmin;
-                background-color: rgb(221, 235, 26);;
-                background-image: "textures/science/hand.texture";
+                background-color: rgb(221, 235, 26);
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: center;
