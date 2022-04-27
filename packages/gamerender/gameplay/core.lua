@@ -1,6 +1,9 @@
 local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
 local gameplay_system_update = require "gameplay.system.init"
+local assembling = gameplay.interface "assembling"
+local STATUS_IDLE <const> = 0
+
 local m = {}
 m.world_update = true
 
@@ -139,6 +142,13 @@ end
 
 function m.restart()
     world = gameplay.createWorld()
+end
+
+function m.set_recipe(e, typeobject, recipe_name)
+    -- TODO 后续处理, 如果 process 不为 0, 那么需要将"已扣除的东西"归还给玩家
+    e.assembling.process = 0
+    e.assembling.status = STATUS_IDLE
+    assembling.set_recipe(world, e, typeobject, recipe_name)
 end
 
 return m
