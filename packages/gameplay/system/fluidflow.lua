@@ -181,9 +181,10 @@ end
 
 function m.backup_start(world)
     local ecs = world.ecs
-    for v in ecs:select "fluidbox:in" do
-        local fluid = v.fluidbox.fluid
-        local id = v.fluidbox.id
+    local function save(fluid, id)
+        if fluid == 0 or id == 0 then
+            return
+        end
         local volume = world:fluidflow_query(fluid, id).volume
         ecs:new {
             save_fluidflow = {
@@ -192,6 +193,21 @@ function m.backup_start(world)
                 volume = volume,
             }
         }
+    end
+    for v in ecs:select "fluidbox:in" do
+        local fluid = v.fluidbox.fluid
+        local id = v.fluidbox.id
+        save(fluid, id)
+    end
+    for v in ecs:select "fluidboxes:in" do
+        local fb = v.fluidboxes
+        save(fb.in1_fluid, fb.in1_id)
+        save(fb.in2_fluid, fb.in2_id)
+        save(fb.in3_fluid, fb.in3_id)
+        save(fb.in4_fluid, fb.in4_id)
+        save(fb.out1_fluid, fb.out1_id)
+        save(fb.out2_fluid, fb.out2_id)
+        save(fb.out3_fluid, fb.out3_id)
     end
 end
 
