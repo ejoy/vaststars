@@ -180,7 +180,10 @@
             end
 
             ui_sys:addEventListener({
-                ["INIT"] = function(recipe_menu, object_id)
+                ["INIT"] = function(recipe_menu, object_id, recipe_name)
+                    if recipe_name and recipe_name ~= "" then
+                        start.recipe_name = recipe_name
+                    end
                     start.recipe_menu = recipe_menu
                     -- RMLUITODO
                     start.page_data.items = start.recipe_menu[1].item or {}
