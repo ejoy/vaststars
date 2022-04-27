@@ -47,7 +47,7 @@ graphic:
     color: {0, 0, 0, 1}
     enable: true
     normal_offset: 0
-    size: 256
+    size: 512
     split_lamada: 1
     split_num: 4
     stabilize: true

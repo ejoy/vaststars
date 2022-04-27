@@ -5,7 +5,7 @@ policy:
 data:
   scene:
     srt:
-      r: {0.78, 0, 0}
+      r: {1.8, 0, 0}
       t: {0, 10, 0, 1}
   name: directional_light
   visible: true
