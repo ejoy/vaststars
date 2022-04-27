@@ -43,15 +43,13 @@ end
 
 function M:set_recipe(id, recipe_name)
     local object = assert(objects:get(cache_names, id))
-    local typeobject = gameplay.queryByName("recipe", recipe_name)
-
     local e = gameplay_core.get_entity("entity:in assembling?in", object.x, object.y)
     if e.assembling then
-        e.assembling.recipe = typeobject.id
-        gameplay_core.sync("assembling:out", e)
+        local typeobject = gameplay.query(e.entity.prototype)
+        gameplay_core.set_recipe(e, typeobject, recipe_name)
         gameplay_core.build()
     else
-        log.error(("can not found assembling (%s, %s)"):format(object.x, object.y))
+        log.error(("can not found assembling `%s`(%s, %s)"):format(object.name, object.x, object.y))
     end
 end
 return M
