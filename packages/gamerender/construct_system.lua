@@ -6,13 +6,13 @@ local gameplay_core = ecs.require "gameplay.core"
 import_package "vaststars.prototype"
 local camera = ecs.require "engine.camera"
 local construct_editor = ecs.require "construct_editor"
-local show_detail = ecs.require "show_detail"
 local get_recipe_menu = ecs.require "gameplay.utility.get_recipe_menu"
 local building_menu = ecs.require "building_menu"
 
 local construct_sys = ecs.system "construct_system"
 local iconstruct = ecs.interface "iconstruct"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
+local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 
 local ui_construct_entity_mb = world:sub {"ui", "construct", "construct_entity"}
 local ui_construct_begin_mb = world:sub {"ui", "construct", "construct_begin"} -- 建造模式
@@ -52,7 +52,7 @@ function construct_sys:camera_usage()
         if mode == "teardown" then
             construct_editor:teardown(vsobject_id)
         elseif mode == "normal" then
-            if show_detail(vsobject_id) then
+            if idetail.show(vsobject_id) then
                 leave = false
             end
         end

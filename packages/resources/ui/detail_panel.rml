@@ -16,38 +16,53 @@
                 detail_panel_prototype = " ",
                 detail_panel_status_icon = "textures/work_status_icon/normal.texture",
                 detail_panel_status_desc = "正常工作",
-
+                
+                object_id = 0,
                 config_property_list = require "config.property_list",
-
                 detail_panel_property_list = {},
             }
 
+            local function update()
+                if start.object_id ~= 0 then
+                    ui_sys:pub {"ui", "detail_panel", "update", start.object_id}
+                end
+            end
+            window.setInterval(update, 500)
+
+            local function update_property(entity)
+                start.detail_panel_property_list = {}
+                for property_name, property_value in pairs(entity) do
+                    local cfg = start.config_property_list[property_name]
+                    if not cfg then
+                        goto continue
+                    end
+
+                    local t = {}
+                    t.icon = cfg.icon
+                    t.desc = cfg.desc
+                    t.value = format_vars(cfg.value, entity)
+                    t.pos = cfg.pos
+
+                    start.detail_panel_property_list[#start.detail_panel_property_list + 1] = t
+                    ::continue::
+                end
+                table.sort(start.detail_panel_property_list, function(a, b) return a.pos < b.pos end)
+                start("detail_panel_property_list")
+            end
+
             ui_sys:addEventListener({
-                ["INIT"] = function(entity)
+                ["INIT"] = function(object_id, entity)
+                    start.object_id = object_id
                     start.detail_panel_icon = entity.icon
                     start.detail_panel_prototype = entity.name
-
-                    start.detail_panel_property_list = {}
-                    for property_name, property_value in pairs(entity) do
-                        local cfg = start.config_property_list[property_name]
-                        if not cfg then
-                            goto continue
-                        end
-
-                        local t = {}
-                        t.icon = cfg.icon
-                        t.desc = cfg.desc
-                        t.value = format_vars(cfg.value, entity)
-                        t.pos = cfg.pos
-
-                        start.detail_panel_property_list[#start.detail_panel_property_list + 1] = t
-                        ::continue::
-                    end
-                    table.sort(start.detail_panel_property_list, function(a, b) return a.pos < b.pos end)
-                    start("detail_panel_property_list")
+                    update_property(entity)
                 end,
                 ["leave"] = function()
                     ui_sys:close()
+                end,
+                ["detail_panel_update"] = function(entity)
+                    console.log(entity)
+                    update_property(entity)
                 end,
             })
 
