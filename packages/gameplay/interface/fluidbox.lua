@@ -12,7 +12,6 @@ local function update(e, pt, fluids)
     assert(e.fluidboxes ~= nil)
     assert(#pt.fluidboxes.input <= 4)
     assert(#pt.fluidboxes.output <= 3)
-    e.fluidboxes = {}
     e.fluidbox_changed = true
     for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
         local what, i = classify:match "(%a*)(%d)"
