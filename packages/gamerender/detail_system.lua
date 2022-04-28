@@ -79,12 +79,35 @@ local function get_property(prototype_name, e, typeobject)
     return t
 end
 
+--TODO
+local function get_items(x, y)
+    local r = {}
+    for v in gameplay_core.select "chest:in entity:in" do
+        if v.entity.x == x and v.entity.y == y then
+            for i = 1, 10 do
+                local c, n = gameplay_core.container_get(v.chest.container, i)
+                if c then
+                    r[gameplay.query(c).name] = r[gameplay.query(c).name] or 0
+                    r[gameplay.query(c).name] = r[gameplay.query(c).name] + n
+                else
+                    break
+                end
+            end
+        end
+    end
+    return r
+end
+
 function idetail.show(vsobject_id)
     local object = assert(objects:get(cache_names, vsobject_id))
 
-    local e = gameplay_core.get_entity("entity:in fluidbox?in fluidboxes?in assembling?in", object.x, object.y)
+    local e = gameplay_core.query_entity("entity:in fluidbox?in fluidboxes?in assembling?in", object.x, object.y)
     if not e then
         return
+    end
+
+    for item_name, item_count in pairs(get_items(object.x, object.y)) do
+        print(item_name, item_count)
     end
 
     local typeobject = gameplay.queryByName("entity", object.prototype_name)
@@ -123,7 +146,7 @@ end
 function detail_system:update_world()
     for _, _, _, object_id in ui_detail_panel_update_mb:unpack() do
         local object = assert(objects:get(cache_names, object_id))
-        local e = gameplay_core.get_entity("entity:in fluidbox?in fluidboxes?in assembling?in", object.x, object.y)
+        local e = gameplay_core.query_entity("entity:in fluidbox?in fluidboxes?in assembling?in", object.x, object.y)
         if e then
             local typeobject = gameplay.queryByName("entity", object.prototype_name)
             world:pub {"ui_message", "detail_panel_update", get_property(object.name, e, typeobject)}

@@ -20,7 +20,9 @@ local function update_world(world, get_object_func)
 
         local inserter = e.inserter
         if inserter.hold_item ~= 0 then
-            local hold_item_typeobject = gameplay.queryByName("entity", assert(gameplay.query(inserter.hold_item)).name)
+            local hold_item_typeobject = assert(gameplay.query(inserter.hold_item), ("can not found hold_item `%s`"):format(inserter.hold_item))
+            local hold_item_typeobject = assert(gameplay.queryByName("item", hold_item_typeobject.name), ("can not found item `%s`"):format(hold_item_typeobject.name))
+            assert(hold_item_typeobject.model, ("can not found item model `%s`"):format(hold_item_typeobject.name))
             vsobject:attach("empty9", hold_item_typeobject.model)
         else
             vsobject:detach()
