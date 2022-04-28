@@ -87,4 +87,8 @@ function M.has_type(types, type)
     return false
 end
 
+function M.is_fluid_id(id)
+    return id & 0x0C00 == 0x0C00
+end
+
 return M

@@ -3,6 +3,8 @@ local world = gameplay.createWorld()
 local gameplay_system_update = require "gameplay.system.init"
 local assembling = gameplay.interface "assembling"
 local STATUS_IDLE <const> = 0
+local recipe_api = require "gameplay.utility.recipe"
+local general = require "gameplay.utility.general"
 
 local m = {}
 m.world_update = true
@@ -141,7 +143,38 @@ function m.set_recipe(e, typeobject, recipe_name)
     -- TODO 后续处理, 如果 process 不为 0, 那么需要将"已扣除的东西"归还给玩家
     e.assembling.process = 0
     e.assembling.status = STATUS_IDLE
-    assembling.set_recipe(world, e, typeobject, recipe_name)
+
+    local recipe_typeobject = gameplay.queryByName("recipe", recipe_name)
+    assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
+
+    local input = {}
+    for _, v in ipairs(recipe_api.get_items(recipe_typeobject.ingredients)) do
+        if general.is_fluid_id(v.id) then
+            input[#input+1] = v.name
+        end
+    end
+    local output = {}
+    for _, v in ipairs(recipe_api.get_items(recipe_typeobject.results)) do
+        if general.is_fluid_id(v.id) then
+            output[#input+1] = v.name
+        end
+    end
+
+    local fluid
+    if #input > 0 then
+        fluid = fluid or {}
+        fluid.input = input
+    end
+    if #output > 0 then
+        fluid = fluid or {}
+        fluid.output = output
+    end
+    if next(fluid) then
+        fluid.input = fluid.input or {}
+        fluid.output = fluid.output or {}
+    end
+
+    assembling.set_recipe(world, e, typeobject, recipe_name, fluid)
     m.sync("assembling:out fluidboxes:out fluidbox_changed?out", e)
 end
 
