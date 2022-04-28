@@ -26,7 +26,9 @@ function s.build(world)
         setContainer(v.entity, v.chest.container)
     end
     for v in ecs:select "assembling:in entity:in" do
-        setContainer(v.entity, v.assembling.container)
+        if v.assembling.recipe ~= 0 then
+            setContainer(v.entity, v.assembling.container)
+        end
     end
     for v in ecs:select "inserter:update entity:in" do
         local x, y = v.entity.x, v.entity.y

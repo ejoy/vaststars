@@ -92,7 +92,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     fluidbox.update(e, pt, fluids)
     if recipe_name == nil then
         assembling.recipe = 0
-        assembling.container = 0
+        assembling.container = 0xffff
         assembling.fluidbox_in = 0
         assembling.fluidbox_out = 0
         return
