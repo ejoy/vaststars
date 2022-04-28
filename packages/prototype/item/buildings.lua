@@ -16,6 +16,14 @@ prototype "组装机1" {
     description = "用来组装或制造工业产品的工厂",
 }
 
+prototype "铸造厂1" {
+    type = {"item"},
+    stack = 25,
+    icon = "textures/construct/assembler.texture",
+    model = "prefabs/rock.prefab",
+    description = "用来加工金属的工厂",
+}
+
 prototype "熔炼炉1" {
     type = {"item"},
     stack = 25,
