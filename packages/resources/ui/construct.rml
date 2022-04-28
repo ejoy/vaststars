@@ -366,7 +366,7 @@
             </div>
 
             <!-- 右下角按钮 -->
-            <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 97vmin; flex-direction: row-reverse; align-items: flex-end;">
+            <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;">
                 <!-- 建造 -->
                 <button data-if = "cur_edit_mode == ''" data-event-click="clickConstructBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
