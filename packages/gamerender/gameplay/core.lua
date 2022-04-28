@@ -73,11 +73,11 @@ end
 local init_func = {}
 init_func["assembling"] = function(pt, template)
     if not pt.recipe then
-        log.error(("assembling can not found recipe `%s`"):format(pt.name))
-        return template --TODO 临时处理, 防止报错, 后续加上配方设置后, 去除返回
+        return template
     end
-    local r = gameplay.queryByName("recipe", pt.recipe)
 
+    -- only for 初始化设置配方
+    local r = gameplay.queryByName("recipe", pt.recipe)
     local output = get_fluid_list(pt.fluidboxes, "output", r.results)
     if #output > 0 then
         template.fluids = {
@@ -85,13 +85,6 @@ init_func["assembling"] = function(pt, template)
         }
     end
 
-    return template
-end
-
-init_func["chest"] = function(pt, template)
-    template.items = {
-        {"铁矿石", 10},
-    }
     return template
 end
 
@@ -121,7 +114,7 @@ function m.fluidflow_query(...)
     return world:fluidflow_query(...)
 end
 
-function m.get_entity(pat, x, y)
+function m.query_entity(pat, x, y)
     local e
     for v in world.ecs:select(pat) do
         if v.entity.x == x and v.entity.y == y then
@@ -149,6 +142,7 @@ function m.set_recipe(e, typeobject, recipe_name)
     e.assembling.process = 0
     e.assembling.status = STATUS_IDLE
     assembling.set_recipe(world, e, typeobject, recipe_name)
+    m.sync("assembling:out fluidboxes:out fluidbox_changed?out", e)
 end
 
 return m

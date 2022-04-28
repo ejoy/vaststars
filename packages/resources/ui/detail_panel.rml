@@ -61,7 +61,6 @@
                     ui_sys:close()
                 end,
                 ["detail_panel_update"] = function(entity)
-                    console.log(entity)
                     update_property(entity)
                 end,
             })

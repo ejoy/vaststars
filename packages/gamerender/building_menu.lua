@@ -26,7 +26,7 @@ function M:rotate_object(id)
         return
     end
 
-    local e = gameplay_core.get_entity("entity:in", object.x, object.y)
+    local e = gameplay_core.query_entity("entity:in", object.x, object.y)
     if e then
         e.entity.direction = dir_tonumber(dir)
         gameplay_core.sync("entity:out", e)
@@ -43,7 +43,7 @@ end
 
 function M:set_recipe(id, recipe_name)
     local object = assert(objects:get(cache_names, id))
-    local e = gameplay_core.get_entity("entity:in assembling?in", object.x, object.y)
+    local e = gameplay_core.query_entity("entity:in assembling?in fluidboxes:in", object.x, object.y)
     if e.assembling then
         local typeobject = gameplay.query(e.entity.prototype)
         gameplay_core.set_recipe(e, typeobject, recipe_name)
