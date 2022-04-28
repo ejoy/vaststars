@@ -7,6 +7,7 @@ local c = type "assembling"
 function c:ctor(init, pt)
     local recipe_name = pt.recipe and pt.recipe or init.recipe
     local e = {
+        fluidboxes = {},
         assembling = {
             low_power = 0,
             speed = math.floor(pt.speed * 100),

@@ -88,7 +88,6 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     local assembling = e.assembling
     assembling.process = 0
     assembling.status = STATUS_IDLE
-    e.fluidboxes = {}
     fluidbox.update(e, pt, fluids)
     if recipe_name == nil then
         assembling.recipe = 0
