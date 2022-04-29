@@ -20,6 +20,10 @@ extern "C" {
 
 std::list<int> waiting;
 
+static bool isFluidId(uint16_t id) {
+    return (id & 0x0C00) == 0x0C00;
+}
+
 static container::item
 pickup(world& w, chest_container& input, uint16_t max) {
     if (input.slots.size() == 0) {
@@ -30,13 +34,14 @@ pickup(world& w, chest_container& input, uint16_t max) {
     uint16_t newvalue = s.amount - r;
     input.resize(w, s.item, s.amount, newvalue);
     input.sort(0, newvalue);
+    assert(!isFluidId(s.item));
     return {s.item, r};
 }
 
 static container::item
 pickup(world& w, recipe_container& input, uint16_t max) {
     for (auto& s : input.outslots) {
-        if (s.amount != 0) {
+        if (!isFluidId(s.item) && s.amount != 0) {
             uint16_t r = std::min(s.amount, max);
             s.amount -= r;
             return {s.item, r};
@@ -64,12 +69,12 @@ pickup(world& w, container& input, chest_container& output, uint16_t max) {
 static container::item
 pickup(world& w, container& input, recipe_container& output, uint16_t max) {
     for (auto& s : output.outslots) {
-        if (s.amount >= s.limit) {
+        if (!isFluidId(s.item) && s.amount >= s.limit) {
             return {0, 0};
         }
     }
     for (auto& s : output.inslots) {
-        if (s.amount < s.limit) {
+        if (!isFluidId(s.item) && s.amount < s.limit) {
             uint16_t amount = input.pickup(w, s.item, max);
             if (amount != 0) {
                 return {s.item, amount};

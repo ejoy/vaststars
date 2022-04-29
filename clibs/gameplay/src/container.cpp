@@ -195,9 +195,13 @@ bool recipe_container::recipe_place(world& w, item const* items) {
     for (size_t i = 0; i < outslots.size(); ++i) {
         auto& s = outslots[i];
         auto& t = items[i];
-        if (isFluidId(s.item) && (s.amount + t.amount) > s.limit) {
+        if (s.amount + t.amount > s.limit) {
             return false;
         }
+    }
+    for (size_t i = 0; i < outslots.size(); ++i) {
+        auto& s = outslots[i];
+        auto& t = items[i];
         s.amount += t.amount;
     }
     return true;
@@ -206,12 +210,14 @@ bool recipe_container::recipe_place(world& w, item const* items) {
 bool recipe_container::recipe_get(slot_type type, uint16_t index, uint16_t& value) {
     if (type == slot_type::in) {
         if (index < inslots.size()) {
+            assert(isFluidId(inslots[index].item));
             value = inslots[index].amount;
             return true;
         }
     }
     else {
         if (index < outslots.size()) {
+            assert(isFluidId(outslots[index].item));
             value = outslots[index].amount;
             return true;
         }
@@ -222,12 +228,14 @@ bool recipe_container::recipe_get(slot_type type, uint16_t index, uint16_t& valu
 bool recipe_container::recipe_set(slot_type type, uint16_t index, uint16_t value) {
     if (type == slot_type::in) {
         if (index < inslots.size()) {
+            assert(isFluidId(inslots[index].item));
             inslots[index].amount = value;
             return true;
         }
     }
     else {
         if (index < outslots.size()) {
+            assert(isFluidId(outslots[index].item));
             outslots[index].amount = value;
             return true;
         }
