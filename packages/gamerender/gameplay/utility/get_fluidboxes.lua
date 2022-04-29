@@ -1,11 +1,6 @@
-local ecs = ...
-local world = ecs.world
-local w = world.w
-
-local gameplay = import_package "vaststars.gameplay"
-import_package "vaststars.prototype"
 local general = require "gameplay.utility.general"
 local rotate_fluidbox = general.rotate_fluidbox
+local prototype_api = require "gameplay.prototype"
 
 local funcs = {}
 funcs["fluidbox"] = function(typeobject, x, y, dir)
@@ -34,7 +29,7 @@ end
 local PIPE_FLUIDBOXES_DIR <const> = {'N', 'E', 'S', 'W'}
 local function get_fluidboxes(prototype_name, x, y, dir)
     local r = {}
-    local typeobject = gameplay.queryByName("entity", prototype_name)
+    local typeobject = prototype_api.queryByName("entity", prototype_name)
     if typeobject.pipe then -- 管道直接认为有四个方向的流体口, 不读取配置
         local dir = {}
         for _, d in ipairs(PIPE_FLUIDBOXES_DIR) do

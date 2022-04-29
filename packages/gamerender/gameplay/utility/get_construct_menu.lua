@@ -1,9 +1,9 @@
-local gameplay = import_package "vaststars.gameplay"
 local config = import_package "vaststars.config"
 local construct_menu = config.construct_menu
+local prototype_api = require "gameplay.prototype"
 
 local function get_entity_icon(prototype_name)
-    local typeobject = gameplay.queryByName("entity", prototype_name)
+    local typeobject = prototype_api.queryByName("entity", prototype_name)
     if not typeobject then
         log.err(("can not found entity `%s`"):format(prototype_name))
         return ""

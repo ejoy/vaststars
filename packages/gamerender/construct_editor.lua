@@ -1,8 +1,6 @@
 local ecs = ...
 local world = ecs.world
 
-local gameplay = import_package "vaststars.gameplay"
-import_package "vaststars.prototype"
 local math3d = require "math3d"
 
 local flow_shape = require "gameplay.utility.flow_shape"
@@ -14,11 +12,12 @@ local rotate_area = general.rotate_area
 local opposite_dir = general.opposite_dir
 local dir_tonumber = general.dir_tonumber
 local rotate_dir_times = general.rotate_dir_times
-local get_fluidboxes = ecs.require "gameplay.utility.get_fluidboxes"
-local need_set_fluid = ecs.require "gameplay.utility.need_set_fluid"
-local get_roadboxes = ecs.require "gameplay.utility.get_roadboxes"
+local get_fluidboxes = require "gameplay.utility.get_fluidboxes"
+local need_set_fluid = require "gameplay.utility.need_set_fluid"
+local get_roadboxes = require "gameplay.utility.get_roadboxes"
 local vsobject_manager = ecs.require "vsobject_manager"
-local gameplay_core = ecs.require "gameplay.core"
+local gameplay_core = require "gameplay.core"
+local prototype_api = require "gameplay.prototype"
 
 local DEFAULT_DIR <const> = 'N'
 
@@ -69,7 +68,7 @@ local function get_neighbor_fluid_types(prototype_name, x, y, dir)
 end
 
 local function check_construct_detector(prototype_name, x, y, dir, id, fluid_type)
-    local typeobject = gameplay.queryByName("entity", prototype_name)
+    local typeobject = prototype_api.queryByName("entity", prototype_name)
     local construct_detector = typeobject.construct_detector
     if not construct_detector then
         return true
@@ -122,7 +121,7 @@ local function set_tile_object(object, cache_name)
     local t = {}
 
     --
-    local typeobject = gameplay.queryByName("entity", object.prototype_name)
+    local typeobject = prototype_api.queryByName("entity", object.prototype_name)
     local w, h = rotate_area(typeobject.area, object.dir)
     for i = 0, w - 1 do
         for j = 0, h - 1 do
@@ -158,7 +157,7 @@ local function refresh_pipe(x, y)
     end
 
     local object = assert(objects:get(cache_names, tile_object.id))
-    local typeobject = gameplay.queryByName("entity", object.prototype_name)
+    local typeobject = prototype_api.queryByName("entity", object.prototype_name)
     if not typeobject.pipe then
         return
     end
@@ -187,7 +186,7 @@ local function refresh_road(x, y)
     end
 
     local object = assert(objects:get(cache_names, tile_object.id))
-    local typeobject = gameplay.queryByName("entity", object.prototype_name)
+    local typeobject = prototype_api.queryByName("entity", object.prototype_name)
     if not typeobject.road then
         return
     end
@@ -212,7 +211,7 @@ end
 local function refresh_pickup_flow_shape()
     assert(pickup_object)
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
-    local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = prototype_api.queryByName("entity", pickup_object.prototype_name)
 
     if typeobject.pipe then
         local prototype_name, dir = refresh_pipe(pickup_object.x, pickup_object.y)
@@ -322,7 +321,7 @@ local function new_pickup_object(prototype_name, dir, x, y, fluid)
         need_set_tile_object = true
     end
 
-    local typeobject = gameplay.queryByName("entity", prototype_name)
+    local typeobject = prototype_api.queryByName("entity", prototype_name)
     local position = terrain.get_position_by_coord(x, y, rotate_area(typeobject.area, dir))
     if not position then --TODO 越界?
         return
@@ -433,14 +432,14 @@ function M:new_pickup_object(prototype_name)
         vsobject_manager:remove(pickup_object.id)
     end
 
-    local typeobject = gameplay.queryByName("entity", prototype_name)
+    local typeobject = prototype_api.queryByName("entity", prototype_name)
     local coord = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, DEFAULT_DIR))
     pickup_object = new_pickup_object(prototype_name, DEFAULT_DIR, coord[1], coord[2])
 end
 
 function M.restore_object(prototype_name, dir, x, y)
     local vsobject_type = "constructed"
-    local typeobject = gameplay.queryByName("entity", prototype_name)
+    local typeobject = prototype_api.queryByName("entity", prototype_name)
     local position = assert(terrain.get_position_by_coord(x, y, rotate_area(typeobject.area, dir)))
 
     local vsobject = vsobject_manager:create {
@@ -522,7 +521,7 @@ function M:adjust_pickup_object()
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
 
     --
-    local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = prototype_api.queryByName("entity", pickup_object.prototype_name)
     local coord, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, pickup_object.dir))
     if not coord then
         return
@@ -542,7 +541,7 @@ function M:move_pickup_object(delta)
 
     --
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
-    local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = prototype_api.queryByName("entity", pickup_object.prototype_name)
     local position = math3d.ref(math3d.add(vsobject:get_position(), delta))
 
     local coord = terrain.adjust_position(math3d.tovalue(position), rotate_area(typeobject.area, pickup_object.dir))
@@ -563,7 +562,7 @@ function M:rotate_pickup_object()
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
     local dir = rotate_dir_times(pickup_object.dir, -1)
 
-    local typeobject = gameplay.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = prototype_api.queryByName("entity", pickup_object.prototype_name)
     local coord, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, dir))
     if not position then
         return

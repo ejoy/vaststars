@@ -4,7 +4,7 @@ local gameplay_system_update = require "gameplay.system.init"
 local assembling = gameplay.interface "assembling"
 local STATUS_IDLE <const> = 0
 local recipe_api = require "gameplay.utility.recipe"
-local general = require "gameplay.utility.general"
+local prototype_api = require "gameplay.prototype"
 
 local m = {}
 m.world_update = true
@@ -53,39 +53,16 @@ local function create(world, prototype, entity)
     create_entity_cache[prototype](entity)
 end
 
-local function isFluidId(id)
-    return id & 0x0C00 == 0x0C00
-end
-
-local function get_fluid_list(fluidboxes, classify, s)
-    local lst = fluidboxes[classify]
-    assert(lst)
-
-    local r = {}
-    for idx = 1, #s//4 do
-        local id = string.unpack("<I2I2", s, 4*idx-3)
-        if isFluidId(id) then
-            local pt = gameplay.query(id)
-            r[#r + 1] = pt.name
-        end
-    end
-    return r
-end
-
 local init_func = {}
 init_func["assembling"] = function(pt, template)
     if not pt.recipe then
         return template
     end
 
-    -- only for 初始化设置配方
-    local r = gameplay.queryByName("recipe", pt.recipe)
-    local output = get_fluid_list(pt.fluidboxes, "output", r.results)
-    if #output > 0 then
-        template.fluids = {
-            output = output
-        }
-    end
+    -- 摆放建筑时设置配方
+    -- 目前游戏过程中, 通常是先放置建筑后, 再设置配方
+    local recipe_typeobject = prototype_api.queryByName("recipe", pt.recipe)
+    template.fluids = recipe_api.get_fluids(recipe_typeobject)
 
     return template
 end
@@ -99,7 +76,7 @@ function m.create_entity(init)
         fluid = init.fluid,
     }
 
-    local pt = gameplay.queryByName("entity", init.prototype_name)
+    local pt = prototype_api.queryByName("entity", init.prototype_name)
     for _, entity_type in ipairs(pt.type) do
         func = init_func[entity_type]
         if func then
@@ -139,43 +116,20 @@ function m.restart()
     world = gameplay.createWorld()
 end
 
-function m.set_recipe(e, typeobject, recipe_name)
+function m.set_recipe(e, recipe_name)
     -- TODO 后续处理, 如果 process 不为 0, 那么需要将"已扣除的东西"归还给玩家
     e.assembling.process = 0
     e.assembling.status = STATUS_IDLE
 
-    local recipe_typeobject = gameplay.queryByName("recipe", recipe_name)
+    local recipe_typeobject = prototype_api.queryByName("recipe", recipe_name)
     assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
 
-    local input = {}
-    for _, v in ipairs(recipe_api.get_items(recipe_typeobject.ingredients)) do
-        if general.is_fluid_id(v.id) then
-            input[#input+1] = v.name
-        end
-    end
-    local output = {}
-    for _, v in ipairs(recipe_api.get_items(recipe_typeobject.results)) do
-        if general.is_fluid_id(v.id) then
-            output[#output+1] = v.name
-        end
-    end
+    local typeobject = prototype_api.query(e.entity.prototype)
 
-    local fluid
-    if #input > 0 then
-        fluid = fluid or {}
-        fluid.input = input
-    end
-    if #output > 0 then
-        fluid = fluid or {}
-        fluid.output = output
-    end
-    if next(fluid) then
-        fluid.input = fluid.input or {}
-        fluid.output = fluid.output or {}
-    end
-
-    assembling.set_recipe(world, e, typeobject, recipe_name, fluid)
+    assembling.set_recipe(world, e, typeobject, recipe_name, recipe_api.get_fluids(recipe_typeobject))
     m.sync("assembling:out fluidboxes:out fluidbox_changed?out", e)
+
+    print("set recipe success")
 end
 
 return m

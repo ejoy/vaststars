@@ -1,6 +1,6 @@
-local gameplay = import_package "vaststars.gameplay"
 local general = require "gameplay.utility.general"
 local unpackarea = general.unpackarea
+local prototype_api = require "gameplay.prototype"
 
 local funcs = {}
 funcs["fluidbox"] = function(typeobject)
@@ -29,7 +29,7 @@ funcs["fluidboxes"] = function(typeobject)
 end
 
 local function check()
-    for _, typeobject in pairs(gameplay.prototype_name) do
+    for _, typeobject in pairs(prototype_api.prototype_name) do
         for _, type in ipairs(typeobject.type) do
             local func = funcs[type]
             if func then
