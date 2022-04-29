@@ -3,6 +3,8 @@ local world = gameplay.createWorld()
 local gameplay_system_update = require "gameplay.system.init"
 local assembling = gameplay.interface "assembling"
 local STATUS_IDLE <const> = 0
+local recipe_api = require "gameplay.utility.recipe"
+local prototype_api = require "gameplay.prototype"
 
 local m = {}
 m.world_update = true
@@ -51,47 +53,17 @@ local function create(world, prototype, entity)
     create_entity_cache[prototype](entity)
 end
 
-local function isFluidId(id)
-    return id & 0x0C00 == 0x0C00
-end
-
-local function get_fluid_list(fluidboxes, classify, s)
-    local lst = fluidboxes[classify]
-    assert(lst)
-
-    local r = {}
-    for idx = 1, #s//4 do
-        local id = string.unpack("<I2I2", s, 4*idx-3)
-        if isFluidId(id) then
-            local pt = gameplay.query(id)
-            r[#r + 1] = pt.name
-        end
-    end
-    return r
-end
-
 local init_func = {}
 init_func["assembling"] = function(pt, template)
     if not pt.recipe then
-        log.error(("assembling can not found recipe `%s`"):format(pt.name))
-        return template --TODO 临时处理, 防止报错, 后续加上配方设置后, 去除返回
-    end
-    local r = gameplay.queryByName("recipe", pt.recipe)
-
-    local output = get_fluid_list(pt.fluidboxes, "output", r.results)
-    if #output > 0 then
-        template.fluids = {
-            output = output
-        }
+        return template
     end
 
-    return template
-end
+    -- 摆放建筑时设置配方
+    -- 目前游戏过程中, 通常是先放置建筑后, 再设置配方
+    local recipe_typeobject = prototype_api.queryByName("recipe", pt.recipe)
+    template.fluids = recipe_api.get_fluids(recipe_typeobject)
 
-init_func["chest"] = function(pt, template)
-    template.items = {
-        {"铁矿石", 10},
-    }
     return template
 end
 
@@ -104,7 +76,7 @@ function m.create_entity(init)
         fluid = init.fluid,
     }
 
-    local pt = gameplay.queryByName("entity", init.prototype_name)
+    local pt = prototype_api.queryByName("entity", init.prototype_name)
     for _, entity_type in ipairs(pt.type) do
         func = init_func[entity_type]
         if func then
@@ -121,7 +93,7 @@ function m.fluidflow_query(...)
     return world:fluidflow_query(...)
 end
 
-function m.get_entity(pat, x, y)
+function m.query_entity(pat, x, y)
     local e
     for v in world.ecs:select(pat) do
         if v.entity.x == x and v.entity.y == y then
@@ -144,11 +116,20 @@ function m.restart()
     world = gameplay.createWorld()
 end
 
-function m.set_recipe(e, typeobject, recipe_name)
+function m.set_recipe(e, recipe_name)
     -- TODO 后续处理, 如果 process 不为 0, 那么需要将"已扣除的东西"归还给玩家
     e.assembling.process = 0
     e.assembling.status = STATUS_IDLE
-    assembling.set_recipe(world, e, typeobject, recipe_name)
+
+    local recipe_typeobject = prototype_api.queryByName("recipe", recipe_name)
+    assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
+
+    local typeobject = prototype_api.query(e.entity.prototype)
+
+    assembling.set_recipe(world, e, typeobject, recipe_name, recipe_api.get_fluids(recipe_typeobject))
+    m.sync("assembling:out fluidboxes:out fluidbox_changed?out", e)
+
+    print("set recipe success")
 end
 
 return m

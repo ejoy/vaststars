@@ -1,11 +1,6 @@
-local ecs = ...
-local world = ecs.world
-local w = world.w
-
-local gameplay = import_package "vaststars.gameplay"
-import_package "vaststars.prototype"
 local general = require "gameplay.utility.general"
 local has_type = general.has_type
+local prototype_api = require "gameplay.prototype"
 
 local funcs = {}
 funcs["fluidbox"] = function(typeobject)
@@ -25,7 +20,7 @@ funcs["fluidboxes"] = function(typeobject)
 end
 
 local function need_set_fluid(prototype_name)
-    local typeobject = gameplay.queryByName("entity", prototype_name)
+    local typeobject = prototype_api.queryByName("entity", prototype_name)
     if typeobject.pipe then -- 管道直接认为有四个方向的流体口, 不读取配置
         return true
     else

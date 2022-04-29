@@ -5,8 +5,6 @@ local w = world.w
 local math3d = require "math3d"
 local mathpkg = import_package"ant.math"
 local mc, mu = mathpkg.constant, mathpkg.util
-local gameplay = import_package "vaststars.gameplay"
-import_package "vaststars.prototype"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ientity = ecs.import.interface "ant.render|ientity"
@@ -20,6 +18,7 @@ local general = require "gameplay.utility.general"
 local unpackarea = general.unpackarea
 local get_canvas_rect = require "utility.get_canvas_rect"
 local tile_size <const> = 10.0
+local prototype_api = require "gameplay.prototype"
 
 local plane_vb <const> = {
 	-0.5, 0, 0.5, 0, 1, 0,	--left top
@@ -204,7 +203,7 @@ local function update(self, t)
         local state = new_typeinfo.state
         local color = new_typeinfo.color
 
-        local typeobject = gameplay.queryByName("entity", prototype_name)
+        local typeobject = prototype_api.queryByName("entity", prototype_name)
         local game_object = igame_object.create(typeobject.model, state, color, self.id)
         set_srt(world:entity(game_object.root), srt)
 
@@ -224,7 +223,7 @@ local function update(self, t)
     if new_typeinfo.block_color and self.block_entity_object then
         if new_typeinfo.block_edge_size then
             self.block_entity_object:remove()
-            local typeobject = gameplay.queryByName("entity", self.prototype_name)
+            local typeobject = prototype_api.queryByName("entity", self.prototype_name)
             local block_pos = math3d.ref(math3d.add(math3d.vector(self:get_position()), {0, 1.0, 0}))
             local rotation = get_rotation(self)
             self.block_entity_object = create_block(new_typeinfo.block_color, new_typeinfo.block_edge_size, typeobject.area, block_pos, rotation)
@@ -257,7 +256,7 @@ local function update_fluid(self, fluid_name)
         return
     end
 
-    local typeobject = gameplay.queryByName("fluid", fluid_name)
+    local typeobject = prototype_api.queryByName("fluid", fluid_name)
     self.fluid_icon_entity_object = create_texture_plane_entity("/pkg/vaststars.resources/textures/canvas.texture", get_canvas_rect(typeobject.icon), {w=1024, h=1024}, self:get_position())
 end
 
@@ -280,7 +279,7 @@ end
 --     dir = 'N',
 -- }
 return function (init)
-    local typeobject = gameplay.queryByName("entity", init.prototype_name)
+    local typeobject = prototype_api.queryByName("entity", init.prototype_name)
     local typeinfo = assert(typeinfos[init.type], ("invalid type `%s`"):format(init.type))
 
     local vsobject_id = gen_id()

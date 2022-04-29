@@ -74,7 +74,8 @@ world:wait(1060*50, dump)
 world:wait(100*50, function ()
     local assembling = gameplay.interface "assembling"
     local ecs = world.ecs
-    for e in ecs:select "assembling:update fluidboxes:update fluidbox_changed?update entity:in" do
+    for v in ecs:select "assembling id:in" do
+        local e = world.entity[v.id]
         local pt = gameplay.query(e.entity.prototype)
         assembling.set_recipe(world, e, pt, "地质科技包1")
     end

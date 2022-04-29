@@ -1,12 +1,10 @@
 local ecs = ...
 local world = ecs.world
-local w = world.w
 
-local gameplay_core = ecs.require "gameplay.core"
-import_package "vaststars.prototype"
+local gameplay_core = require "gameplay.core"
 local camera = ecs.require "engine.camera"
 local construct_editor = ecs.require "construct_editor"
-local get_recipe_menu = ecs.require "gameplay.utility.get_recipe_menu"
+local get_recipe_menu = require "gameplay.utility.get_recipe_menu"
 local building_menu = ecs.require "building_menu"
 
 local construct_sys = ecs.system "construct_system"

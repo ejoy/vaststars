@@ -7,6 +7,7 @@ local container = require "vaststars.container.core"
 local fluidflow = require "vaststars.fluidflow.core"
 local road = require "vaststars.road.core"
 local luaecs = import_package "vaststars.ecs"
+local entity_visitor = require "entity_visitor"
 
 local function pipeline(world, cworld, name)
     local p = status.pipelines[name]
@@ -40,18 +41,6 @@ local function pipeline(world, cworld, name)
     end
 end
 
-local function deepcopy(t)
-    local r = {}
-    for k, v in pairs(t) do
-        if type(v) == "table" then
-            r[k] = deepcopy(v)
-        else
-            r[k] = v
-        end
-    end
-    return r
-end
-
 return function ()
     local world = {}
     local needBuild = false
@@ -65,8 +54,13 @@ return function ()
     end
 
     ecs:register {
+        name = "id",
+        type = "int",
+    }
+    ecs:register {
         name = "fluidbox_changed"
     }
+    ecs:make_index "id"
 
     local context = ecs:context(components)
     local ptable = require "vaststars.prototype.core"
@@ -90,8 +84,10 @@ return function ()
                     end
                 end
             end
+            obj.id = (obj.entity.y << 8) | obj.entity.x
             ecs:new(obj)
             needBuild = true
+            return obj.id
         end
     end
 
@@ -99,6 +95,8 @@ return function ()
         ecs:remove(v)
         needBuild = true
     end
+
+    world.entity = entity_visitor(ecs, "id")
 
     local pipeline_update = pipeline(world, cworld, "update")
     local pipeline_build = pipeline(world, cworld, "build")
@@ -125,6 +123,10 @@ return function ()
     function world:restore(rootdir)
         cworld:reset()
         pipeline_restore(rootdir)
+        for v in ecs:select "entity:in id:new" do
+            v.id = (v.entity.y << 8) | v.entity.x
+        end
+        needBuild = true
     end
 
     function world:container_create(...)
