@@ -87,6 +87,7 @@ return function ()
             obj.id = (obj.entity.y << 8) | obj.entity.x
             ecs:new(obj)
             needBuild = true
+            return obj.id
         end
     end
 
