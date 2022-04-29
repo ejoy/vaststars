@@ -47,8 +47,12 @@ local function createContainerAndFluidBox(init, fluidboxes, s, max, needlimit)
         local id, n = string.unpack("<I2I2", s, 4*idx-3)
         local limit = 0
         if isFluidId(id) then
-            fluids[#fluids+1] = findFluidbox(init, id)
-            local fb = fluidboxes[#fluids]
+            local fluid_idx = findFluidbox(init, id)
+            if fluid_idx > max then
+                error "The assembling does not support this recipe."
+            end
+            fluids[fluid_idx] = idx
+            local fb = fluidboxes[fluid_idx]
             if needlimit and needRecipeLimit(fb) then
                 limit = n * 2
             else
@@ -60,11 +64,8 @@ local function createContainerAndFluidBox(init, fluidboxes, s, max, needlimit)
         container[#container+1] = string.pack("<I2I2", id, limit)
     end
     container = table.concat(container)
-    if #fluids > max then
-        error "The assembling does not support this recipe."
-    end
-    for i = #fluids+1, max do
-        fluids[i] = 0
+    for i = 1, max do
+        fluids[i] = fluids[i] or 0
     end
     local fb = 0
     for i = max, 1, -1 do
