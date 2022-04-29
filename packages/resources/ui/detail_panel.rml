@@ -4,6 +4,19 @@
             div {
                 font: 100% "微软雅黑";
             }
+
+            .small-item {
+                flex-direction: column;
+                align-items:center;
+                justify-content:flex-end;
+                background-color: rgb(252, 138, 0);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 6.50vmin;
+                height: 6.50vmin;
+                font-size: 3.00vmin;
+                background-image: "textures/construct/insert1.texture";
+            }
         </style>
         <script type="text/x-lua" >
             local function format_vars(fmt, vars)
@@ -70,7 +83,7 @@
     <body style = "pointer-events: none;">
         <div data-model="start">
             <!-- detail panel begin -->
-            <div style = "overflow: hidden; position: absolute; left: 0.13vmin; top: 25.33vmin; width: 35.00vmin; height: 57.33vmin; background-color: rgb(250, 205, 9); border: 0.27vmin rgb(89, 73, 39);flex-direction: column; justify-content: flex-start;">
+            <div style = "overflow: hidden; position: absolute; left: 0.13vmin; top: 5.33vmin; width: 35.00vmin; height: 77.33vmin; background-color: rgb(250, 205, 9); border: 0.27vmin rgb(89, 73, 39);flex-direction: column; justify-content: flex-start;">
                 <!-- title -->
                 <div style = "width: 100%; height: 13.33vmin; flex-direction: row; justify-content: flex-start;">
                     <!-- icon -->
@@ -105,6 +118,43 @@
                         </div>
                     </div>
                     <div style = "height: 2.67vmin;" />
+                </div>
+                <div style="padding-top:21em; flex-direction: column; justify-content: flex-end; align-items: center;">
+                    <div style = "width:95%; border-bottom: 0.1vmin #fff; margin:0.5vmin" />
+                    <div style="width:100%; height: 6.55vmin; flex-direction: row; justify-content: space-evenly; align-items: center;">
+                        <div class="small-item">
+                            <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">68</div>
+                        </div>
+                        <div class="small-item">
+                            <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">68</div>
+                        </div>
+                        <div class="small-item">
+                            <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">68</div>
+                        </div>
+                        <div class="small-item">
+                            <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">68</div>
+                        </div>
+                        <div class="small-item">
+                            <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">68</div>
+                        </div>
+                    </div>
+                    <div style="width:100%; height: 7.33vmin; flex-direction: row; justify-content: space-evenly; align-items: center;">
+                        <div class="small-item">
+                            <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">68</div>
+                        </div>
+                        <div class="small-item">
+                            <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">68</div>
+                        </div>
+                        <div class="small-item">
+                            <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">68</div>
+                        </div>
+                        <div class="small-item">
+                            <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">68</div>
+                        </div>
+                        <div class="small-item">
+                            <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">68</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- detail panel end -->
