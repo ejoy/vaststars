@@ -2,12 +2,10 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local gameplay_core = ecs.require "gameplay.core"
+local gameplay_core = require "gameplay.core"
 local global = require "global"
 local objects = global.objects
 local cache_names = global.cache_names
-local gameplay = import_package "vaststars.gameplay"
-import_package "vaststars.prototype"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mu = import_package "ant.math".util
 local vsobject_manager = ecs.require "vsobject_manager"
@@ -15,6 +13,7 @@ local math3d = require "math3d"
 local general = require "gameplay.utility.general"
 local has_type = general.has_type
 local ui_detail_panel_update_mb = world:sub {"ui", "detail_panel", "update"}
+local prototype_api = require "gameplay.prototype"
 
 local detail_system = ecs.system "detail_system"
 local idetail = ecs.interface "idetail"
@@ -32,7 +31,7 @@ local function get_property(prototype_name, e, typeobject)
     t.icon = typeobject.icon
 
     if e.fluidbox and e.fluidbox.fluid ~= 0 then
-        local pt = gameplay.query(e.fluidbox.fluid)
+        local pt = prototype_api.query(e.fluidbox.fluid)
         t.fluid_name = pt.name
 
         local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
@@ -87,8 +86,8 @@ local function get_items(x, y)
             for i = 1, 10 do
                 local c, n = gameplay_core.container_get(v.chest.container, i)
                 if c then
-                    r[gameplay.query(c).name] = r[gameplay.query(c).name] or 0
-                    r[gameplay.query(c).name] = r[gameplay.query(c).name] + n
+                    r[prototype_api.query(c).name] = r[prototype_api.query(c).name] or 0
+                    r[prototype_api.query(c).name] = r[prototype_api.query(c).name] + n
                 else
                     break
                 end
@@ -110,7 +109,7 @@ function idetail.show(vsobject_id)
         print(item_name, item_count)
     end
 
-    local typeobject = gameplay.queryByName("entity", object.prototype_name)
+    local typeobject = prototype_api.queryByName("entity", object.prototype_name)
     iui.open("detail_panel.rml", vsobject_id, get_property(object.name, e, typeobject))
 
     -- 显示环型菜单
@@ -131,7 +130,7 @@ function idetail.show(vsobject_id)
         show_set_recipe = true
 
         if e.assembling.recipe ~= 0 then
-            local typeobject = gameplay.query(e.assembling.recipe)
+            local typeobject = prototype_api.query(e.assembling.recipe)
             if typeobject.ingredients ~= "" then -- 配方没有原料也不需要显示[设置配方]
                 recipe_name = typeobject.name
             end
@@ -148,7 +147,7 @@ function detail_system:update_world()
         local object = assert(objects:get(cache_names, object_id))
         local e = gameplay_core.query_entity("entity:in fluidbox?in fluidboxes?in assembling?in", object.x, object.y)
         if e then
-            local typeobject = gameplay.queryByName("entity", object.prototype_name)
+            local typeobject = prototype_api.queryByName("entity", object.prototype_name)
             world:pub {"ui_message", "detail_panel_update", get_property(object.name, e, typeobject)}
         else
             log.error(("can not found object `%s`"):format(object_id))

@@ -2,16 +2,16 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local gameplay_core = ecs.require "gameplay.core"
+local gameplay_core = require "gameplay.core"
 local fs = require "bee.filesystem"
 local construct_editor = ecs.require "construct_editor"
-local gameplay = import_package "vaststars.gameplay"
 local json = import_package "ant.json"
 local general = require "gameplay.utility.general"
 local dir_tostring = general.dir_tostring
 local archival_base_dir = (fs.appdata_path() / "vaststars/archiving"):string()
 local archiving_list_path = archival_base_dir .. "/archiving.json"
 local camera_setting_path = archival_base_dir .. "/camera.json"
+local prototype_api = require "gameplay.prototype"
 
 local irq = ecs.import.interface "ant.render|irenderqueue"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
@@ -29,7 +29,7 @@ local function restore_world()
     -- restore
     for v in gameplay_core.select("entity:in") do
         local e = v.entity
-        local typeobject = gameplay.query(e.prototype)
+        local typeobject = prototype_api.query(e.prototype)
         construct_editor.restore_object(typeobject.name, dir_tostring(e.direction), e.x, e.y)
     end
     gameplay_core.build()

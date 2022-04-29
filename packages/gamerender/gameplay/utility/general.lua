@@ -14,6 +14,10 @@ function M.unpackarea(area)
     return area >> 8, area & 0xFF
 end
 
+function M.is_fluid_id(id)
+    return id & 0x0C00 == 0x0C00
+end
+
 local DIRECTION <const> = {
     N = 0,
     E = 1,
@@ -85,10 +89,6 @@ function M.has_type(types, type)
         end
     end
     return false
-end
-
-function M.is_fluid_id(id)
-    return id & 0x0C00 == 0x0C00
 end
 
 return M

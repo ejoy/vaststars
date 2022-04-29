@@ -1,21 +1,12 @@
-local gameplay = import_package "vaststars.gameplay"
 local config = import_package "vaststars.config"
 local recipe_menu = config.recipe_menu
 local general = require "gameplay.utility.general"
 local has_type = general.has_type
-
-local function get_name_count(s)
-    local r = {}
-    for idx = 1, #s // 4 do
-        local id, n = string.unpack("<I2I2", s, 4 * idx - 3)
-        local typeobject = gameplay.query(id)
-        r[#r+1] = {name = typeobject.name, count = n, icon = typeobject.icon}
-    end
-    return r
-end
+local recipe_api = require "gameplay.utility.recipe"
+local prototype_api = require "gameplay.prototype"
 
 local recipes = {}
-for _, v in pairs(gameplay.prototype_name) do
+for _, v in pairs(prototype_api.prototype_name) do
     if has_type(v.type, "recipe") then
         recipes[v.category] = recipes[v.category] or {}
         recipes[v.category][#recipes[v.category] + 1] = {
@@ -23,8 +14,8 @@ for _, v in pairs(gameplay.prototype_name) do
             order = v.order,
             icon = v.icon,
             time = v.time,
-            ingredients = get_name_count(v.ingredients),
-            results = get_name_count(v.results),
+            ingredients = recipe_api.get_items(v.ingredients),
+            results = recipe_api.get_items(v.results),
             group = v.group,
         }
     end
