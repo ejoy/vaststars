@@ -156,7 +156,7 @@ function m.set_recipe(e, typeobject, recipe_name)
     local output = {}
     for _, v in ipairs(recipe_api.get_items(recipe_typeobject.results)) do
         if general.is_fluid_id(v.id) then
-            output[#input+1] = v.name
+            output[#output+1] = v.name
         end
     end
 
