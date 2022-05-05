@@ -1,12 +1,10 @@
-local general = require "gameplay.utility.general"
-local rotate_fluidbox = general.rotate_fluidbox
-local prototype_api = require "gameplay.prototype"
+local iprototype = require "gameplay.prototype"
 
 local funcs = {}
 funcs["fluidbox"] = function(typeobject, x, y, dir)
     local r = {}
     for _, conn in ipairs(typeobject.fluidbox.connections) do
-        local dx, dy, dir = rotate_fluidbox(conn.position, dir, typeobject.area)
+        local dx, dy, dir = iprototype:rotate_fluidbox(conn.position, dir, typeobject.area)
         r[#r+1] = {x = x + dx, y = y + dy, fluidbox_dir = {[dir] = true}}
     end
     return r
@@ -18,7 +16,7 @@ funcs["fluidboxes"] = function(typeobject, x, y, dir)
     for _, iotype in ipairs(iotypes) do
         for _, v in ipairs(typeobject.fluidboxes[iotype]) do
             for _, conn in ipairs(v.connections) do
-                local dx, dy, dir = rotate_fluidbox(conn.position, dir, typeobject.area)
+                local dx, dy, dir = iprototype:rotate_fluidbox(conn.position, dir, typeobject.area)
                 r[#r+1] = {x = x + dx, y = y + dy, fluidbox_dir = {[dir] = true}}
             end
         end
@@ -29,7 +27,7 @@ end
 local PIPE_FLUIDBOXES_DIR <const> = {'N', 'E', 'S', 'W'}
 local function get_fluidboxes(prototype_name, x, y, dir)
     local r = {}
-    local typeobject = prototype_api.queryByName("entity", prototype_name)
+    local typeobject = iprototype:queryByName("entity", prototype_name)
     if typeobject.pipe then -- 管道直接认为有四个方向的流体口, 不读取配置
         local dir = {}
         for _, d in ipairs(PIPE_FLUIDBOXES_DIR) do

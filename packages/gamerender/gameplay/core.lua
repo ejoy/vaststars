@@ -2,9 +2,8 @@ local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
 local gameplay_system_update = require "gameplay.system.init"
 local assembling = gameplay.interface "assembling"
-local STATUS_IDLE <const> = 0
-local recipe_api = require "gameplay.utility.recipe"
-local prototype_api = require "gameplay.prototype"
+local irecipe = require "gameplay.utility.recipe"
+local iprototype = require "gameplay.prototype"
 
 local m = {}
 m.world_update = true
@@ -50,7 +49,7 @@ local function create(world, prototype, entity)
             return
         end
     end
-    create_entity_cache[prototype](entity)
+    return create_entity_cache[prototype](entity)
 end
 
 local init_func = {}
@@ -61,8 +60,8 @@ init_func["assembling"] = function(pt, template)
 
     -- 摆放建筑时设置配方
     -- 目前游戏过程中, 通常是先放置建筑后, 再设置配方
-    local recipe_typeobject = prototype_api.queryByName("recipe", pt.recipe)
-    template.fluids = recipe_api.get_fluids(recipe_typeobject)
+    local typeobject = iprototype:queryByName("recipe", pt.recipe)
+    template.fluids = irecipe:get_init_fluids(typeobject)
 
     return template
 end
@@ -76,7 +75,7 @@ function m.create_entity(init)
         fluid = init.fluid,
     }
 
-    local pt = prototype_api.queryByName("entity", init.prototype_name)
+    local pt = iprototype:queryByName("entity", init.prototype_name)
     for _, entity_type in ipairs(pt.type) do
         func = init_func[entity_type]
         if func then
@@ -85,23 +84,19 @@ function m.create_entity(init)
     end
 
     print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y)
-    create(world, init.prototype_name, template)
-    return template.id
+    return create(world, init.prototype_name, template)
 end
 
 function m.fluidflow_query(...)
     return world:fluidflow_query(...)
 end
 
-function m.query_entity(pat, x, y)
-    local e
-    for v in world.ecs:select(pat) do
-        if v.entity.x == x and v.entity.y == y then
-            e = v
-            break
-        end
-    end
-    return e
+function m.get_entity(eid)
+    return world.entity[eid]
+end
+
+function m.debug_entity(eid)
+    return world.entity.readall(eid)
 end
 
 function m.backup(rootdir)
@@ -113,23 +108,32 @@ function m.restore(rootdir)
 end
 
 function m.restart()
+    create_entity_cache = {}
     world = gameplay.createWorld()
 end
 
 function m.set_recipe(e, recipe_name)
-    -- TODO 后续处理, 如果 process 不为 0, 那么需要将"已扣除的东西"归还给玩家
-    e.assembling.process = 0
-    e.assembling.status = STATUS_IDLE
-
-    local recipe_typeobject = prototype_api.queryByName("recipe", recipe_name)
+    local recipe_typeobject = iprototype:queryByName("recipe", recipe_name)
     assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
 
-    local typeobject = prototype_api.query(e.entity.prototype)
+    local typeobject = iprototype:query(e.entity.prototype)
+    local init_fluids = irecipe:get_init_fluids(recipe_typeobject)
 
-    assembling.set_recipe(world, e, typeobject, recipe_name, recipe_api.get_fluids(recipe_typeobject))
-    m.sync("assembling:out fluidboxes:out fluidbox_changed?out", e)
+    if init_fluids then
+        if #typeobject.fluidboxes.input ~= #init_fluids.input then
+            log.error(("failed to set recipe: input %s %s"):format(#typeobject.fluidboxes.input, #init_fluids.input))
+            return
+        end
+        if #typeobject.fluidboxes.output ~= #init_fluids.output then
+            log.error(("failed to set recipe: output %s %s"):format(#typeobject.fluidboxes.output, #init_fluids.output))
+            return
+        end
+    end
 
-    print("set recipe success")
+    assembling.set_recipe(world, e, typeobject, recipe_name, init_fluids)
+    -- m.sync("assembling:out fluidboxes:out fluidbox_changed?out", e)
+
+    log.info(("set recipe success `%s`"):format(recipe_name))
 end
 
 return m

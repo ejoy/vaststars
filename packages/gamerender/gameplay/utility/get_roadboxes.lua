@@ -1,9 +1,9 @@
-local prototype_api = require "gameplay.prototype"
+local iprototype = require "gameplay.prototype"
 
 local ROAD_DIR <const> = {'N', 'E', 'S', 'W'}
 local function get_fluidboxes(prototype_name, x, y, dir)
     local r = {}
-    local typeobject = prototype_api.queryByName("entity", prototype_name)
+    local typeobject = iprototype:queryByName("entity", prototype_name)
     if typeobject.road then -- 管道直接认为有四个方向的流体口, 不读取配置
         local dir = {}
         for _, d in ipairs(ROAD_DIR) do

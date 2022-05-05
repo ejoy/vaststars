@@ -6,18 +6,12 @@ local math3d = require "math3d"
 local flow_shape = require "gameplay.utility.flow_shape"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
-local general = require "gameplay.utility.general"
-local packcoord = general.packcoord
-local rotate_area = general.rotate_area
-local opposite_dir = general.opposite_dir
-local dir_tonumber = general.dir_tonumber
-local rotate_dir_times = general.rotate_dir_times
 local get_fluidboxes = require "gameplay.utility.get_fluidboxes"
 local need_set_fluid = require "gameplay.utility.need_set_fluid"
 local get_roadboxes = require "gameplay.utility.get_roadboxes"
 local vsobject_manager = ecs.require "vsobject_manager"
 local gameplay_core = require "gameplay.core"
-local prototype_api = require "gameplay.prototype"
+local iprototype = require "gameplay.prototype"
 
 local DEFAULT_DIR <const> = 'N'
 
@@ -47,9 +41,9 @@ local function get_neighbor_fluid_types(prototype_name, x, y, dir)
     for _, v in ipairs(get_fluidboxes(prototype_name, x, y, dir)) do
         for dir in pairs(v.fluidbox_dir) do
             local dx, dy = get_dir_coord(v.x, v.y, dir)
-            local tile_object = tile_objects:get(cache_names, packcoord(dx, dy))
+            local tile_object = tile_objects:get(cache_names, iprototype:packcoord(dx, dy))
             if tile_object and tile_object.fluidbox_dir then
-                if tile_object.fluidbox_dir[opposite_dir(dir)] then
+                if tile_object.fluidbox_dir[iprototype:opposite_dir(dir)] then
                     local object = assert(objects:get(cache_names, tile_object.id))
                     local fluid = object.fluid
                     if fluid ~= "" then
@@ -68,16 +62,16 @@ local function get_neighbor_fluid_types(prototype_name, x, y, dir)
 end
 
 local function check_construct_detector(prototype_name, x, y, dir, id, fluid_type)
-    local typeobject = prototype_api.queryByName("entity", prototype_name)
+    local typeobject = iprototype:queryByName("entity", prototype_name)
     local construct_detector = typeobject.construct_detector
     if not construct_detector then
         return true
     end
 
-    local w, h = rotate_area(typeobject.area, dir)
+    local w, h = iprototype:rotate_area(typeobject.area, dir)
     for i = 0, w - 1 do
         for j = 0, h - 1 do
-            local tile_object = tile_objects:get(cache_names, packcoord(x + i, y + j))
+            local tile_object = tile_objects:get(cache_names, iprototype:packcoord(x + i, y + j))
             if tile_object then
                 if not id then
                     return false
@@ -121,25 +115,25 @@ local function set_tile_object(object, cache_name)
     local t = {}
 
     --
-    local typeobject = prototype_api.queryByName("entity", object.prototype_name)
-    local w, h = rotate_area(typeobject.area, object.dir)
+    local typeobject = iprototype:queryByName("entity", object.prototype_name)
+    local w, h = iprototype:rotate_area(typeobject.area, object.dir)
     for i = 0, w - 1 do
         for j = 0, h - 1 do
-            local coord = packcoord(object.x + i, object.y + j)
+            local coord = iprototype:packcoord(object.x + i, object.y + j)
             t[coord] = {id = object.id, coord = coord}
         end
     end
 
     --
     for _, v in ipairs(get_fluidboxes(object.prototype_name, object.x, object.y, object.dir)) do
-        assert(t[packcoord(v.x, v.y)])
-        t[packcoord(v.x, v.y)].fluidbox_dir = v.fluidbox_dir
+        assert(t[iprototype:packcoord(v.x, v.y)])
+        t[iprototype:packcoord(v.x, v.y)].fluidbox_dir = v.fluidbox_dir
     end
 
     --
     for _, v in ipairs(get_roadboxes(object.prototype_name, object.x, object.y, object.dir)) do
-        assert(t[packcoord(v.x, v.y)])
-        t[packcoord(v.x, v.y)].road_dir = v.road_dir
+        assert(t[iprototype:packcoord(v.x, v.y)])
+        t[iprototype:packcoord(v.x, v.y)].road_dir = v.road_dir
     end
 
     --
@@ -151,13 +145,13 @@ local function set_tile_object(object, cache_name)
 end
 
 local function refresh_pipe(x, y)
-    local tile_object = tile_objects:get(cache_names, packcoord(x, y))
+    local tile_object = tile_objects:get(cache_names, iprototype:packcoord(x, y))
     if not tile_object then
         return
     end
 
     local object = assert(objects:get(cache_names, tile_object.id))
-    local typeobject = prototype_api.queryByName("entity", object.prototype_name)
+    local typeobject = iprototype:queryByName("entity", object.prototype_name)
     if not typeobject.pipe then
         return
     end
@@ -166,10 +160,10 @@ local function refresh_pipe(x, y)
     for _, v in ipairs(get_fluidboxes(object.prototype_name, object.x, object.y, object.dir)) do
         for dir in pairs(v.fluidbox_dir) do
             local dx, dy = get_dir_coord(v.x, v.y, dir)
-            local tile_object = tile_objects:get(cache_names, packcoord(dx, dy))
+            local tile_object = tile_objects:get(cache_names, iprototype:packcoord(dx, dy))
             if tile_object and tile_object.fluidbox_dir then
-                if tile_object.fluidbox_dir[opposite_dir(dir)] then
-                    state = flow_shape.set_state(state, dir_tonumber(dir), 1)
+                if tile_object.fluidbox_dir[iprototype:opposite_dir(dir)] then
+                    state = flow_shape.set_state(state, iprototype:dir_tonumber(dir), 1)
                 end
             end
         end
@@ -180,13 +174,13 @@ local function refresh_pipe(x, y)
 end
 
 local function refresh_road(x, y)
-    local tile_object = tile_objects:get(cache_names, packcoord(x, y))
+    local tile_object = tile_objects:get(cache_names, iprototype:packcoord(x, y))
     if not tile_object then
         return
     end
 
     local object = assert(objects:get(cache_names, tile_object.id))
-    local typeobject = prototype_api.queryByName("entity", object.prototype_name)
+    local typeobject = iprototype:queryByName("entity", object.prototype_name)
     if not typeobject.road then
         return
     end
@@ -195,10 +189,10 @@ local function refresh_road(x, y)
     for _, v in ipairs(get_roadboxes(object.prototype_name, object.x, object.y, object.dir)) do
         for dir in pairs(v.road_dir) do
             local dx, dy = get_dir_coord(v.x, v.y, dir)
-            local tile_object = tile_objects:get(cache_names, packcoord(dx, dy))
+            local tile_object = tile_objects:get(cache_names, iprototype:packcoord(dx, dy))
             if tile_object and tile_object.road_dir then
-                if tile_object.road_dir[opposite_dir(dir)] then
-                    state = flow_shape.set_state(state, dir_tonumber(dir), 1)
+                if tile_object.road_dir[iprototype:opposite_dir(dir)] then
+                    state = flow_shape.set_state(state, iprototype:dir_tonumber(dir), 1)
                 end
             end
         end
@@ -211,7 +205,7 @@ end
 local function refresh_pickup_flow_shape()
     assert(pickup_object)
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
-    local typeobject = prototype_api.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = iprototype:queryByName("entity", pickup_object.prototype_name)
 
     if typeobject.pipe then
         local prototype_name, dir = refresh_pipe(pickup_object.x, pickup_object.y)
@@ -242,7 +236,7 @@ local function refresh_flow_shape(object)
             local dx, dy = get_dir_coord(v.x, v.y, dir)
             local prototype_name, dir = refresh_pipe(dx, dy)
             if prototype_name then
-                local tile_object = assert(tile_objects:get(cache_names, packcoord(dx, dy)))
+                local tile_object = assert(tile_objects:get(cache_names, iprototype:packcoord(dx, dy)))
 
                 local vsobject = assert(vsobject_manager:get(tile_object.id))
                 vsobject:update {prototype_name = prototype_name}
@@ -262,7 +256,7 @@ local function refresh_flow_shape(object)
             local dx, dy = get_dir_coord(v.x, v.y, dir)
             local prototype_name, dir = refresh_road(dx, dy)
             if prototype_name then
-                local tile_object = assert(tile_objects:get(cache_names, packcoord(dx, dy)))
+                local tile_object = assert(tile_objects:get(cache_names, iprototype:packcoord(dx, dy)))
 
                 local vsobject = assert(vsobject_manager:get(tile_object.id))
                 vsobject:update {prototype_name = prototype_name}
@@ -321,8 +315,8 @@ local function new_pickup_object(prototype_name, dir, x, y, fluid)
         need_set_tile_object = true
     end
 
-    local typeobject = prototype_api.queryByName("entity", prototype_name)
-    local position = terrain.get_position_by_coord(x, y, rotate_area(typeobject.area, dir))
+    local typeobject = iprototype:queryByName("entity", prototype_name)
+    local position = terrain.get_position_by_coord(x, y, iprototype:rotate_area(typeobject.area, dir))
     if not position then --TODO 越界?
         return
     end
@@ -432,15 +426,15 @@ function M:new_pickup_object(prototype_name)
         vsobject_manager:remove(pickup_object.id)
     end
 
-    local typeobject = prototype_api.queryByName("entity", prototype_name)
-    local coord = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, DEFAULT_DIR))
+    local typeobject = iprototype:queryByName("entity", prototype_name)
+    local coord = terrain.adjust_position(camera.get_central_position(), iprototype:rotate_area(typeobject.area, DEFAULT_DIR))
     pickup_object = new_pickup_object(prototype_name, DEFAULT_DIR, coord[1], coord[2])
 end
 
-function M.restore_object(prototype_name, dir, x, y)
+function M.restore_object(gameplay_eid, prototype_name, dir, x, y)
     local vsobject_type = "constructed"
-    local typeobject = prototype_api.queryByName("entity", prototype_name)
-    local position = assert(terrain.get_position_by_coord(x, y, rotate_area(typeobject.area, dir)))
+    local typeobject = iprototype:queryByName("entity", prototype_name)
+    local position = assert(terrain.get_position_by_coord(x, y, iprototype:rotate_area(typeobject.area, dir)))
 
     local vsobject = vsobject_manager:create {
         prototype_name = prototype_name,
@@ -450,6 +444,7 @@ function M.restore_object(prototype_name, dir, x, y)
     }
     local object = {
         id = vsobject.id,
+        gameplay_eid = gameplay_eid,
         vsobject_type = vsobject_type,
         prototype_name = prototype_name,
         dir = dir,
@@ -497,7 +492,7 @@ function M:confirm()
 
     for _, dir in ipairs({'N', 'E', 'S', 'W'}) do
         local dx, dy = get_dir_coord(pickup_object.x, pickup_object.y, dir)
-        local tile_object = tile_objects:get(cache_names, packcoord(dx, dy))
+        local tile_object = tile_objects:get(cache_names, iprototype:packcoord(dx, dy))
         if tile_object then
             local obj = assert(vsobject_manager:get(tile_object.id))
             if obj.fluid_name ~= "" then
@@ -521,8 +516,8 @@ function M:adjust_pickup_object()
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
 
     --
-    local typeobject = prototype_api.queryByName("entity", pickup_object.prototype_name)
-    local coord, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, pickup_object.dir))
+    local typeobject = iprototype:queryByName("entity", pickup_object.prototype_name)
+    local coord, position = terrain.adjust_position(camera.get_central_position(), iprototype:rotate_area(typeobject.area, pickup_object.dir))
     if not coord then
         return
     end
@@ -541,10 +536,10 @@ function M:move_pickup_object(delta)
 
     --
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
-    local typeobject = prototype_api.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = iprototype:queryByName("entity", pickup_object.prototype_name)
     local position = math3d.ref(math3d.add(vsobject:get_position(), delta))
 
-    local coord = terrain.adjust_position(math3d.tovalue(position), rotate_area(typeobject.area, pickup_object.dir))
+    local coord = terrain.adjust_position(math3d.tovalue(position), iprototype:rotate_area(typeobject.area, pickup_object.dir))
     if not coord then
         return
     end
@@ -560,10 +555,10 @@ function M:rotate_pickup_object()
 
     revert_changes({"TEMPORARY"})
     local vsobject = assert(vsobject_manager:get(pickup_object.id))
-    local dir = rotate_dir_times(pickup_object.dir, -1)
+    local dir = iprototype:rotate_dir_times(pickup_object.dir, -1)
 
-    local typeobject = prototype_api.queryByName("entity", pickup_object.prototype_name)
-    local coord, position = terrain.adjust_position(camera.get_central_position(), rotate_area(typeobject.area, dir))
+    local typeobject = iprototype:queryByName("entity", pickup_object.prototype_name)
+    local coord, position = terrain.adjust_position(camera.get_central_position(), iprototype:rotate_area(typeobject.area, dir))
     if not position then
         return
     end
@@ -599,7 +594,7 @@ function M:complete()
         local vsobject = assert(vsobject_manager:get(object.id))
         vsobject:update {type = "constructed"}
 
-        gameplay_core.create_entity(object)
+        object.gameplay_eid = gameplay_core.create_entity(object)
         needbuild = true
     end
     objects:commit("CONFIRM", "CONSTRUCTED")
@@ -645,7 +640,7 @@ function M:reset()
 end
 
 function M:get_vsobject(x, y)
-    local tile_object = assert(tile_objects:get(cache_names, packcoord(x, y)))
+    local tile_object = assert(tile_objects:get(cache_names, iprototype:packcoord(x, y)))
     return assert(vsobject_manager:get(tile_object.id))
 end
 
@@ -691,7 +686,7 @@ function M:teardown_complete()
             tile_objects:remove("CONSTRUCTED", coord)
         end
 
-        removelist[packcoord(object.x, object.y)] = object
+        removelist[iprototype:packcoord(object.x, object.y)] = object
     end
 
     for _, object in pairs(removelist) do
@@ -700,7 +695,7 @@ function M:teardown_complete()
 
     local needbuild = false
     for e in gameplay_core.select("entity:in") do
-        local coord = packcoord(e.entity.x, e.entity.y)
+        local coord = iprototype:packcoord(e.entity.x, e.entity.y)
         if removelist[coord] then
             gameplay_core.remove_entity(e)
             needbuild = true

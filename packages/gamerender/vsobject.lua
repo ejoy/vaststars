@@ -14,11 +14,9 @@ local imesh = ecs.import.interface "ant.asset|imesh"
 local ifs = ecs.import.interface "ant.scene|ifilter_state"
 local irq = ecs.import.interface "ant.render|irenderqueue"
 local assetmgr = import_package "ant.asset"
-local general = require "gameplay.utility.general"
-local unpackarea = general.unpackarea
 local get_canvas_rect = require "utility.get_canvas_rect"
 local tile_size <const> = 10.0
-local prototype_api = require "gameplay.prototype"
+local iprototype = require "gameplay.prototype"
 
 local plane_vb <const> = {
 	-0.5, 0, 0.5, 0, 1, 0,	--left top
@@ -83,7 +81,7 @@ local function create_block(color, block_edge_size, area, position, rotation)
     if color == CONSTRUCT_BLOCK_COLOR_INVALID then
         return
     end
-    local width, height = unpackarea(area)
+    local width, height = iprototype:unpackarea(area)
     local eid = ecs.create_entity{
 		policy = {
 			"ant.render|simplerender",
@@ -203,7 +201,7 @@ local function update(self, t)
         local state = new_typeinfo.state
         local color = new_typeinfo.color
 
-        local typeobject = prototype_api.queryByName("entity", prototype_name)
+        local typeobject = iprototype:queryByName("entity", prototype_name)
         local game_object = igame_object.create(typeobject.model, state, color, self.id)
         set_srt(world:entity(game_object.root), srt)
 
@@ -223,7 +221,7 @@ local function update(self, t)
     if new_typeinfo.block_color and self.block_entity_object then
         if new_typeinfo.block_edge_size then
             self.block_entity_object:remove()
-            local typeobject = prototype_api.queryByName("entity", self.prototype_name)
+            local typeobject = iprototype:queryByName("entity", self.prototype_name)
             local block_pos = math3d.ref(math3d.add(math3d.vector(self:get_position()), {0, 1.0, 0}))
             local rotation = get_rotation(self)
             self.block_entity_object = create_block(new_typeinfo.block_color, new_typeinfo.block_edge_size, typeobject.area, block_pos, rotation)
@@ -256,7 +254,7 @@ local function update_fluid(self, fluid_name)
         return
     end
 
-    local typeobject = prototype_api.queryByName("fluid", fluid_name)
+    local typeobject = iprototype:queryByName("fluid", fluid_name)
     self.fluid_icon_entity_object = create_texture_plane_entity("/pkg/vaststars.resources/textures/canvas.texture", get_canvas_rect(typeobject.icon), {w=1024, h=1024}, self:get_position())
 end
 
@@ -279,7 +277,7 @@ end
 --     dir = 'N',
 -- }
 return function (init)
-    local typeobject = prototype_api.queryByName("entity", init.prototype_name)
+    local typeobject = iprototype:queryByName("entity", init.prototype_name)
     local typeinfo = assert(typeinfos[init.type], ("invalid type `%s`"):format(init.type))
 
     local vsobject_id = gen_id()

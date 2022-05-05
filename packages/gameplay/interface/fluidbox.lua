@@ -13,18 +13,20 @@ local function update(e, pt, fluids)
     assert(#pt.fluidboxes.input <= 4)
     assert(#pt.fluidboxes.output <= 3)
     e.fluidbox_changed = true
+    local fluidboxes = e.fluidboxes
     for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
         local what, i = classify:match "(%a*)(%d)"
         what = what.."put"
         i = tonumber(i)
         if fluids and fluids[what] and fluids[what][i] then
             local v = fluids[what][i]
-            e.fluidboxes[classify.."_fluid"] = fluidId(v)
+            fluidboxes[classify.."_fluid"] = fluidId(v)
         else
-            e.fluidboxes[classify.."_fluid"] = 0
+            fluidboxes[classify.."_fluid"] = 0
         end
-        e.fluidboxes[classify.."_id"] = 0
+        fluidboxes[classify.."_id"] = 0
     end
+    e.fluidboxes = fluidboxes
 end
 
 return {

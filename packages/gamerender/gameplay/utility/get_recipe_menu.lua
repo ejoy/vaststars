@@ -1,21 +1,19 @@
 local config = import_package "vaststars.config"
 local recipe_menu = config.recipe_menu
-local general = require "gameplay.utility.general"
-local has_type = general.has_type
-local recipe_api = require "gameplay.utility.recipe"
-local prototype_api = require "gameplay.prototype"
+local irecipe = require "gameplay.utility.recipe"
+local iprototype = require "gameplay.prototype"
 
 local recipes = {}
-for _, v in pairs(prototype_api.prototype_name) do
-    if has_type(v.type, "recipe") then
+for _, v in pairs(iprototype:all_prototype_name()) do
+    if iprototype:has_type(v.type, "recipe") then
         recipes[v.category] = recipes[v.category] or {}
         recipes[v.category][#recipes[v.category] + 1] = {
             name = v.name,
             order = v.order,
             icon = v.icon,
             time = v.time,
-            ingredients = recipe_api.get_items(v.ingredients),
-            results = recipe_api.get_items(v.results),
+            ingredients = irecipe:get_elements(v.ingredients),
+            results = irecipe:get_elements(v.results),
             group = v.group,
         }
     end
