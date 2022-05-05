@@ -114,25 +114,13 @@
                 font-size: 3.73vmin;
                 text-align: center;
             }
-            .pagestyle {
-                transition: left 0.5s linear-out; 
-            }
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
-                page_data = {
-                    items = {},
-                    unit = 'px',
-                    selected_id = 0,
-                    view_items = {},
-                    show_detail = false,
-                    detail_height = 120,
-                    unit = 'px',
-                },
-                item_size = "90",
-
+                page_element = nil,
+                items = {},
                 recipe_menu = {},
                 object_id = 0,
                 recipe_name = "",
@@ -141,24 +129,8 @@
                 recipe_results = {},
             }
 
-            -- RMLUITODO
-            -- event of page item
-            function start.page_item_click(event, id, row, top)
-                start.page:on_item_click(id, row, top)
-            end
-
-            window.customElements.define("template", function(e)
-                e.style.display = "none"
-            end)
-
-            local pageclass = require "page"
-            window.customElements.define("page", function(e)
-                start.page = pageclass.create(e, start.page_data, document.getElementById "pagefooter", function () start("page_data") end)
-            end)
-			-- RMLUITODO
-
             function start.ClickItem(event, it_index)
-                local recipe = start.page_data.items[it_index + 1]
+                local recipe = start.items[it_index]
                 start.recipe_name = recipe.name
                 start.recipe_time = ("%ss"):format(recipe.time // 50) -- 50 ticks per second
                 start.recipe_ingredients = recipe.ingredients
@@ -166,8 +138,8 @@
             end
 
             function start.clickCatalog(event, index)
-                start.page_data.items = start.recipe_menu[index].item
-                start.page:on_items_dirty()
+                start.items = start.recipe_menu[index].item
+                start.page:on_dirty(#start.items)
             end
 
             function start.clickClose(event)
@@ -179,28 +151,51 @@
                 ui_sys:close()
             end
 
+            ------------------------------------------------------
+            -- page
+            local function page_item_renderer(index)
+                local item = document.createElement "div"
+                item.className = "item"
+                
+                if index > #start.items then
+                    local e = document.createElement "div"
+                    e.style.width = "12.00vmin"
+                    e.style.height = "12.00vmin"
+                    return e
+                end
+                item.style.backgroundImage = start.items[index].icon
+
+                item.addEventListener('click', function(event)
+                    item.style.border = "2px green"
+                    start.ClickItem(event, index)
+                end)
+                return item
+            end
+            
+            local function page_item_detail_renderer(e)
+                local detail = document.createElement "div"
+                return item
+            end
+
+            window.customElements.define("page", function(e)
+                start.page_element = e
+            end)
+            ------------------------------------------------------
+            local pageclass = require "page"
             ui_sys:addEventListener({
                 ["INIT"] = function(recipe_menu, object_id, recipe_name)
                     if recipe_name and recipe_name ~= "" then
                         start.recipe_name = recipe_name
                     end
                     start.recipe_menu = recipe_menu
-                    -- RMLUITODO
-                    start.page_data.items = start.recipe_menu[1].item or {}
-                    start.page:on_items_dirty()
-                    -- RMLUITODO
+                    start.items = start.recipe_menu[1].item or {}
                     start.object_id = object_id
+                    start.page = pageclass.create(document, start.page_element, #start.items, page_item_renderer, page_item_detail_renderer)
                 end,
             })
         </script>
     </head>
     <body>
-		<!-- RMLUITODO -->
-        <template id="pagefooter">
-            <div style='width:20px; height:20px; background-size:cover; background-image:"textures/common/page0.texture";'/>
-        </template>
-		<!-- RMLUITODO -->
-
         <div class="item-container-region"  style="width:100%;  background-color: rgb(0,0,0); justify-content: center;" data-model="start">
             <div class="panel" style= "flex-direction: column;">
                 <div class="header" id = "item-name-block" data-event-click="clickClose()">
@@ -208,27 +203,13 @@
                     <div class = "menu-title">修改配方</div>
                 </div>
 
-				<!-- RMLUITODO -->
-                <page width = "640.32" height = "525" item_size = "90" detail_height = '0'>
-                    <div class="pagestyle">
-                        <div style="position: absolute; align-items: center;" 
-                            data-event-click="page_item_click(it.data.id, it.row, it.top)" 
-                            data-style-width="item_size + 'px'" 
-                            data-style-height="item_size + 'px'" 
-                            data-style-left="it.left + 'px'" 
-                            data-style-top="it.top + 'px'"
-                            data-for="page_data.view_items"
-                        >
-                            <button class="item" data-style-background-image = "it.data.icon" data-event-click="ClickItem(it_index)"/>
-                        </div>
-
-                        <div id="detail" style="width: 100%; background-color: rgb(0, 100, 150);" data-if="false">
-                            Item Detail
-                        </div>
-                    </div>
-                    <div/>
-                </page>
-				<!-- RMLUITODO -->
+                <!-- page -->
+                <div class="panel" style = "width: 100%; height: 525px;">
+                    <page width='640px' height='525px' row='5' col='7'>
+                        <div />
+                    </page>
+                </div>
+                <!-- page -->
 
                 <div class = "draw-line"/>
                 <div class = "tab-container">

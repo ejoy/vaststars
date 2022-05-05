@@ -1,30 +1,6 @@
 local page_meta = {}
 page_meta.__index = page_meta
 
-function page_meta:update_view_pages()
-    local vitems = {}
-    local view_page_idx = self.current_page - 1
-    local pages = self.virtual_pages
-    for i = 1, 3 do
-        if view_page_idx >= 1 and view_page_idx <= #pages then
-            for _, item in  ipairs(pages[view_page_idx].vitems) do
-                vitems[#vitems + 1] = item
-            end
-        end
-        view_page_idx = view_page_idx + 1
-    end
-    self.source.view_items = vitems
-    if self.footer then
-        for i, child in ipairs(self.footer.childNodes) do
-            child.style.backgroundImage = (i == self.current_page) and 'textures/common/page1.texture' or 'textures/common/page0.texture'
-        end
-    end
-    if self.detail then
-        self.detail.style.left = (self.current_page - 1) * self.width .. self.unit
-    end
-    self.dirty()
-end
-
 function page_meta:update_virtual_pages()
     local vpages = {}
     local count_per_page = self.row * self.col
@@ -65,70 +41,139 @@ function page_meta:update_virtual_pages()
     self.virtual_pages = vpages
 end
 
-function page_meta.create(e, source, pagefooter, dirty)
-    local width = tonumber(e.getAttribute("width"))
-    local height = tonumber(e.getAttribute("height"))
-    local item_size = tonumber(e.getAttribute("item_size"))
-    local unit = source.unit
+function page_meta.create(document, e, item_count, item_renderer, detail_renderer)
+    local width
+    local height
+    local unit = {}
+    local width_str = e.getAttribute("width")
+    local height_str = e.getAttribute("height")
+    for r in width_str:gmatch("%d+") do
+        unit[#unit + 1] = width_str:sub(#r + 1, #width_str)
+        width = tonumber(r)
+    end
+    for r in height_str:gmatch("%d+") do
+        unit[#unit + 1] = height_str:sub(#r + 1, #height_str)
+        height = tonumber(r)
+    end
+    local row = tonumber(e.getAttribute("row"))
+    local col = tonumber(e.getAttribute("col"))
+    local page_count = math.ceil(item_count / (row * col))
     local page = {
-        current_time = 0,
-        current_page = 1,
-        pos          = 0,
-        draging      = false,
-        interval     = 200,--按下到释放的时间小于0.5秒时显示详细信息
-        page_top     = 0,
-        gapx         = 0,
-        gapy         = 0,
-        drag         = {mouse_pos = 0, anchor = 0, delta = 0},
-        virtual_pages = {},
-        row          = math.floor(height / item_size),
-        col          = math.floor(width / item_size),
-        width        = width,
-        height       = height,
-        item_size    = item_size,
-        detail_height = tonumber(e.getAttribute("detail_height")),
-        source       = source,
-        unit         = unit,
-        dirty        = dirty
+        current_page    = 1,
+        pos             = 0,
+        draging         = false,
+        drag            = {mouse_pos = 0, anchor = 0, delta = 0},
+        row             = row,
+        col             = col,
+        width           = width,
+        height          = height,
+        page_count      = page_count,
+        item_count      = item_count,
+        item_renderer   = item_renderer,
+        detail_renderer = detail_renderer,
+        pages           = {},
+        container       = {},
+        document        = document,
+        unit            = unit
     }
     setmetatable(page, page_meta)
-    page:on_items_dirty()
-
     e.style.overflow = 'hidden'
+    e.style.width = width .. unit[1]
+    e.style.height = height .. unit[2]
     local panel = e.childNodes[1]
     panel.addEventListener('mousedown', function(event) page:on_mousedown(event) end)
     panel.addEventListener('mousemove', function(event) page:on_drag(event) end)
     panel.addEventListener('mouseup', function(event) page:on_mouseup(event) end)
-    page.detail = panel.getElementById("detail")
-    page.detail.style.position = 'absolute'
-    page.detail.style.height = page.detail_height .. unit
-    page.view = e
+    panel.style.height = (height - 30) .. unit[2]
+    panel.style.flexDirection = 'row'
+    panel.style.alignItems = 'center'
+    panel.style.justifyContent = 'flex-start'
     page.panel = panel
-    page.view.style.width = width .. unit
-    page.view.style.height = height .. unit
-    page.panel.style.width = #page.virtual_pages * width .. unit
-    page.panel.style.height = (height - 30) .. unit
-    local footer = e.childNodes[2]
+
+    local footer = document.createElement "div"
+    e.appendChild(footer)
     page.footer = footer
     footer.style.flexDirection = 'row'
     footer.style.justifyContent = 'center'
     footer.style.width = '100%'
     footer.style.height = '30px'
-    local page_count = #page.virtual_pages
-    for i = 1, page_count do
-        local newChild
-        for _, child in ipairs(pagefooter.childNodes) do
-            newChild = child.cloneNode()
-            newChild.style.backgroundImage = (i == page.current_page) and 'textures/common/page0.texture' or 'textures/common/page0.texture'
-            footer.appendChild(newChild)
-        end
-    end
+    page:on_dirty(item_count)
     return page
 end
 
-function page_meta:on_items_dirty()
-    self:update_virtual_pages()
-    self:update_view_pages()
+function page_meta:update_footer_status()
+    for index, e in ipairs(self.footer.childNodes) do
+        e.style.backgroundImage = (index == self.current_page) and 'textures/common/page1.texture' or 'textures/common/page0.texture'
+    end
+end
+
+function page_meta:update_footer()
+    local footcount = #self.footer.childNodes
+    if footcount > self.page_count then
+        local removenode = {}
+        for i = self.page_count + 1, footcount do
+            removenode[#removenode + 1] = self.footer.childNodes[i]
+        end
+        for _, e in ipairs(removenode) do
+            self.footer.removeChild(e)
+        end
+    elseif footcount < self.page_count then
+        for i = footcount + 1, self.page_count do
+            local footitem = self.document.createElement "div"
+            footitem.style.width = '20px'
+            footitem.style.height = '20px'
+            footitem.style.backgroundSize = 'cover'
+            self.footer.appendChild(footitem)
+        end
+    end
+    self:update_footer_status()
+end
+
+function page_meta:update_contianer()
+    for _, page in ipairs(self.pages) do
+        self.panel.removeChild(page)
+    end
+    self.pages = {}
+    self.container = {}
+    for i = 1, self.page_count do
+        local page_e = self.document.createElement "div"
+        page_e.style.flexDirection = 'column'
+        page_e.style.alignItems = 'center'
+        page_e.style.justifyContent = 'space-evenly'
+        page_e.style.width = self.width .. self.unit[1]
+        page_e.style.height = self.height .. self.unit[2]
+        local row = {}
+        for r = 1, self.row do
+            local row_e = self.document.createElement "div"
+            row_e.style.width = self.width .. self.unit[1]
+            row_e.style.flexDirection = 'row'
+            row_e.style.alignItems = 'center'
+            row_e.style.justifyContent = 'space-evenly'
+            page_e.appendChild(row_e)
+            row[#row + 1] = row_e
+        end
+        self.panel.appendChild(page_e)
+        self.pages[#self.pages + 1] = page_e
+        self.container[#self.container + 1] = row
+    end
+    local count_per_page = self.row * self.col
+    local ic = self.page_count * count_per_page
+    for index = 1, ic do
+        local pid = math.ceil(index / count_per_page)
+        local remain = index % count_per_page
+        local page = self.container[pid]
+        local rid = math.ceil((remain == 0 and count_per_page or remain) / self.col)
+        local row = page[rid]
+        row.appendChild(self.item_renderer(index))
+    end
+end
+
+function page_meta:on_dirty(item_count)
+    self.item_count = item_count
+    self.page_count = math.ceil(item_count / (self.row * self.col))
+    self.panel.style.width = self.page_count * self.width .. self.unit[1]
+    self:update_contianer()
+    self:update_footer()
 end
 
 function page_meta:set_size(width, height)
@@ -170,7 +215,7 @@ function page_meta:do_show_detail(show, id, row, top)
     end
     self.panel.style.top = offset .. self.unit
     self.source.show_detail = show
-    self.dirty()
+    --self.dirty()
 end
 
 function page_meta:on_mousedown(event)
@@ -183,8 +228,8 @@ function page_meta:on_mouseup(event)
     local old_value = self.current_page
     if self.drag.delta < -100 then
         self.current_page = self.current_page + 1
-        if self.current_page > #self.virtual_pages then
-            self.current_page = #self.virtual_pages
+        if self.current_page > self.page_count then
+            self.current_page = self.page_count
         end
     elseif self.drag.delta > 100 then
         self.current_page = self.current_page - 1
@@ -193,10 +238,10 @@ function page_meta:on_mouseup(event)
         end
     end
     if old_value ~= self.current_page then
-        self:update_view_pages()
+        self:update_footer_status()
     end
     self.pos = (1 - self.current_page) * self.width
-    self.panel.style.left = tostring(self.pos) .. self.unit
+    self.panel.style.left = tostring(self.pos) .. self.unit[1]
     return old_value ~= self.current_page
 end
 
@@ -204,11 +249,10 @@ function page_meta:on_drag(event)
     if event.button then
         self.drag.delta = event.x - self.drag.mouse_pos
         self.pos = self.drag.anchor + self.drag.delta
-        --console.log("self.pos : ", self.pos)
         local e = self.panel
         local oldClassName = e.className
         e.className = e.className .. " notransition"
-        e.style.left = tostring(math.floor(self.pos)) .. self.unit
+        e.style.left = tostring(math.floor(self.pos)) .. self.unit[1]
         e.className = oldClassName
         self.draging = true
     else
