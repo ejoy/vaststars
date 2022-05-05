@@ -95,6 +95,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
         assembling.container = 0xffff
         assembling.fluidbox_in = 0
         assembling.fluidbox_out = 0
+        e.assembling = assembling
         return
     end
     local recipe = assert(prototype.query("recipe", recipe_name), "unknown recipe: "..recipe_name)
@@ -105,6 +106,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
         assembling.container = world:container_create("assembling", container_in, container_out)
         assembling.fluidbox_in = 0
         assembling.fluidbox_out = 0
+        e.assembling = assembling
         return
     end
     local needlimit = #pt.fluidboxes.input > 0
@@ -114,6 +116,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     assembling.container = world:container_create("assembling", container_in, container_out)
     assembling.fluidbox_in = fluidbox_in
     assembling.fluidbox_out = fluidbox_out
+    e.assembling = assembling
 end
 
 
