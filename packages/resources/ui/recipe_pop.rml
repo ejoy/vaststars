@@ -119,7 +119,6 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
-                page_element = nil,
                 items = {},
                 recipe_menu = {},
                 object_id = 0,
@@ -154,34 +153,29 @@
             ------------------------------------------------------
             -- page
             local function page_item_renderer(index)
-                local item = document.createElement "div"
-                item.className = "item"
-                
                 if index > #start.items then
                     local e = document.createElement "div"
                     e.style.width = "12.00vmin"
                     e.style.height = "12.00vmin"
                     return e
                 end
-                item.style.backgroundImage = start.items[index].icon
 
+                local item = document.createElement "div"
+                item.className = "item"
+                item.style.backgroundImage = start.items[index].icon
                 item.addEventListener('click', function(event)
                     item.style.border = "2px green"
                     start.ClickItem(event, index)
                 end)
                 return item
             end
-            
-            local function page_item_detail_renderer(e)
-                local detail = document.createElement "div"
-                return item
-            end
 
+            local pageclass = require "page"
             window.customElements.define("page", function(e)
-                start.page_element = e
+                start.page = pageclass.create(document, e, page_item_renderer)
             end)
             ------------------------------------------------------
-            local pageclass = require "page"
+
             ui_sys:addEventListener({
                 ["INIT"] = function(recipe_menu, object_id, recipe_name)
                     if recipe_name and recipe_name ~= "" then
@@ -190,7 +184,7 @@
                     start.recipe_menu = recipe_menu
                     start.items = start.recipe_menu[1].item or {}
                     start.object_id = object_id
-                    start.page = pageclass.create(document, start.page_element, #start.items, page_item_renderer, page_item_detail_renderer)
+                    start.page:on_dirty(#start.items)
                 end,
             })
         </script>
@@ -205,9 +199,7 @@
 
                 <!-- page -->
                 <div class="panel" style = "width: 100%; height: 525px;">
-                    <page width='640px' height='525px' row='5' col='7'>
-                        <div />
-                    </page>
+                    <page width='640px' height='525px' row='5' col='7' />
                 </div>
                 <!-- page -->
 

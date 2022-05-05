@@ -1,47 +1,7 @@
 local page_meta = {}
 page_meta.__index = page_meta
 
-function page_meta:update_virtual_pages()
-    local vpages = {}
-    local count_per_page = self.row * self.col
-    local gapx = math.floor(math.fmod(self.width, self.item_size) / (self.col + 1))
-    local gapy = math.floor(math.fmod(self.height, self.item_size) / (self.row + 1))
-    local offset = 0
-    local index = 1
-    local items = self.source.items
-    local total_item_count = #items
-    local page_index = 0
-    while index <= total_item_count do
-        local index_offset = page_index * count_per_page
-        local remain = total_item_count - index + 1
-        local new_page = {
-            start_index = 1 + index_offset,
-            end_index = (remain > count_per_page) and (index_offset + count_per_page) or (index_offset + remain),
-            vitems = {}
-        }
-        local current_count = new_page.end_index - new_page.start_index
-        local vitems = new_page.vitems
-        for idx = 0, current_count do
-            local row = math.floor(idx/self.col)
-            local col = math.fmod(idx, self.col)
-            vitems[#vitems + 1] = {
-                left = offset + col * (self.item_size + gapx) + gapx,
-                top = row * (self.item_size + gapy) + gapy,
-                row = row,
-                data = items[index + idx]
-            }
-        end
-        vpages[#vpages + 1] = new_page
-        offset = offset + self.width
-        page_index = page_index + 1
-        index = index + count_per_page
-    end
-    self.gapx = gapx
-    self.gapy = gapy
-    self.virtual_pages = vpages
-end
-
-function page_meta.create(document, e, item_count, item_renderer, detail_renderer)
+function page_meta.create(document, e, item_renderer, detail_renderer)
     local width
     local height
     local unit = {}
@@ -57,7 +17,7 @@ function page_meta.create(document, e, item_count, item_renderer, detail_rendere
     end
     local row = tonumber(e.getAttribute("row"))
     local col = tonumber(e.getAttribute("col"))
-    local page_count = math.ceil(item_count / (row * col))
+    local page_count = 0
     local page = {
         current_page    = 1,
         pos             = 0,
@@ -68,7 +28,6 @@ function page_meta.create(document, e, item_count, item_renderer, detail_rendere
         width           = width,
         height          = height,
         page_count      = page_count,
-        item_count      = item_count,
         item_renderer   = item_renderer,
         detail_renderer = detail_renderer,
         pages           = {},
@@ -80,7 +39,8 @@ function page_meta.create(document, e, item_count, item_renderer, detail_rendere
     e.style.overflow = 'hidden'
     e.style.width = width .. unit[1]
     e.style.height = height .. unit[2]
-    local panel = e.childNodes[1]
+    local panel = document.createElement "div"
+    e.appendChild(panel)
     panel.addEventListener('mousedown', function(event) page:on_mousedown(event) end)
     panel.addEventListener('mousemove', function(event) page:on_drag(event) end)
     panel.addEventListener('mouseup', function(event) page:on_mouseup(event) end)
@@ -97,7 +57,6 @@ function page_meta.create(document, e, item_count, item_renderer, detail_rendere
     footer.style.justifyContent = 'center'
     footer.style.width = '100%'
     footer.style.height = '30px'
-    page:on_dirty(item_count)
     return page
 end
 
