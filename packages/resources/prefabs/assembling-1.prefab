@@ -39,7 +39,6 @@ data:
     keyframe_events: {}
   animation:
     ArmatureAction: /pkg/vaststars.resources/glb/assembling.glb|animations/ArmatureAction.ozz
-    ArmatureAction.001: /pkg/vaststars.resources/glb/assembling.glb|animations/ArmatureAction.001.ozz
   animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/assembling.glb|materials/Material.material
