@@ -7,6 +7,8 @@ prototype "液罐1" {
     icon = "textures/construct/tank1.texture",
     model = "prefabs/rock.prefab",
     description = "专门贮藏液体或气体的容器",
+    group = "化工",
+    order = 22,
 }
 
 prototype "抽水泵" {
@@ -15,6 +17,8 @@ prototype "抽水泵" {
     icon = "textures/construct/offshore-pump.texture",
     model = "prefabs/rock.prefab",
     description = "从水源抽取水的装置",
+    group = "化工",
+    order = 50,
 }
 
 prototype "压力泵1" {
@@ -23,6 +27,8 @@ prototype "压力泵1" {
     icon = "textures/construct/pump1.texture",
     model = "prefabs/rock.prefab",
     description = "抽取并传输液体或气体的装置",
+    group = "化工",
+    order = 40,
 }
 
 prototype "烟囱1" {
@@ -31,6 +37,8 @@ prototype "烟囱1" {
     icon = "textures/construct/chimney2.texture",
     model = "prefabs/rock.prefab",
     description = "用来排放无害气体的装置",
+    group = "化工",
+    order = 65,
 }
 
 prototype "排水口1" {
@@ -39,6 +47,8 @@ prototype "排水口1" {
     icon = "textures/construct/outfall.texture",
     model = "prefabs/rock.prefab",
     description = "用来排放无害液体的装置",
+    group = "化工",
+    order = 56,
 }
 
 prototype "空气过滤器1" {
@@ -47,6 +57,8 @@ prototype "空气过滤器1" {
     icon = "textures/construct/air-filter1.texture",
     model = "prefabs/rock.prefab",
     description = "抽取空气的装置",
+    group = "化工",
+    order = 60,
 }
 
 prototype "管道1" {
@@ -55,6 +67,8 @@ prototype "管道1" {
     icon = "textures/construct/pipe.texture",
     model = "prefabs/rock.prefab",
     description = "在地上传输液体或气体的管道",
+    group = "化工",
+    order = 10,
 }
 
 prototype "地下管1" {
@@ -63,4 +77,6 @@ prototype "地下管1" {
     icon = "textures/construct/pipe.texture",
     model = "prefabs/rock.prefab",
     description = "从地下传输液体或气体的管道",
+    group = "化工",
+    order = 12,
 }
