@@ -7,6 +7,8 @@ prototype "铁锭" {
     icon = "textures/construct/steel-beam.texture",
     model = "prefabs/rock.prefab",
     des = "铁矿石通过工业熔炼的锭",
+    group = "金属",
+    order = 10,
 }
 
 prototype "铁板" {
@@ -15,6 +17,8 @@ prototype "铁板" {
     icon = "textures/construct/steel-beam.texture",
     model = "prefabs/rock.prefab",
     description = "铁制材料锻造加工成的铁板",
+    group = "金属",
+    order = 11,
 }
 
 prototype "铁丝" {
@@ -23,6 +27,8 @@ prototype "铁丝" {
     icon = "textures/construct/iron-wire.texture",
     model = "prefabs/rock.prefab",
     description = "铁制材料锻造加工成的铁丝",
+    group = "金属",
+    order = 14,
 }
 
 prototype "铁棒" {
@@ -31,6 +37,8 @@ prototype "铁棒" {
     icon = "textures/construct/steel-beam.texture",
     model = "prefabs/rock.prefab",
     description = "铁制材料锻造加工成的铁棒",
+    group = "金属",
+    order = 13,
 }
 
 prototype "铁矿石" {
@@ -39,6 +47,8 @@ prototype "铁矿石" {
     icon = "textures/construct/iron.texture",
     model = "prefabs/rock.prefab",
     description = "含铁的矿石",
+    group = "金属",
+    order = 1,
 }
 
 prototype "碎石" {
@@ -47,6 +57,8 @@ prototype "碎石" {
     icon = "textures/construct/gravel.texture",
     model = "prefabs/rock.prefab",
     description = "伴生在矿物里的碎石",
+    group = "金属",
+    order = 3,
 }
 
 prototype "石砖" {
@@ -55,6 +67,8 @@ prototype "石砖" {
     icon = "textures/construct/stone-brick.texture",
     model = "prefabs/rock.prefab",
     description = "石头制成的砖头",
+    group = "物流",
+    order = 100,
 }
 
 prototype "石墨" {
@@ -63,6 +77,8 @@ prototype "石墨" {
     icon = "textures/construct/coal.texture",
     model = "prefabs/rock.prefab",
     description = "一种化工原料",
+    group = "器件",
+    order = 10,
 }
 
 prototype "硅" {
@@ -71,6 +87,8 @@ prototype "硅" {
     icon = "textures/construct/coal.texture",
     model = "prefabs/rock.prefab",
     description = "沙子中提炼的原料",
+    group = "器件",
+    order = 11,
 }
 
 prototype "沙石矿" {
@@ -79,6 +97,8 @@ prototype "沙石矿" {
     icon = "textures/construct/gravel.texture",
     model = "prefabs/rock.prefab",
     description = "含沙石的矿石",
+    group = "金属",
+    order = 4,
 }
 
 prototype "氢氧化钠" {
@@ -87,6 +107,8 @@ prototype "氢氧化钠" {
     icon = "textures/construct/coal.texture",
     model = "prefabs/rock.prefab",
     description = "一种化工原料",
+    group = "金属",
+    order = 20,
 }
 
 prototype "石头" {
@@ -95,6 +117,8 @@ prototype "石头" {
     icon = "textures/construct/gravel.texture",
     model = "prefabs/rock.prefab",
     description = "一种矿石",
+    group = "金属",
+    order = 5,
 }
 
 prototype "沙子" {
@@ -103,6 +127,8 @@ prototype "沙子" {
     icon = "textures/construct/gravel.texture",
     model = "prefabs/rock.prefab",
     description = "伴生在矿物里的沙子",
+    group = "金属",
+    order = 40,
 }
 
 prototype "塑料" {
@@ -111,6 +137,8 @@ prototype "塑料" {
     icon = "textures/construct/gravel.texture",
     model = "prefabs/rock.prefab",
     description = "一种化工成品",
+    group = "器件",
+    order = 20,
 }
 
 prototype "电动机1" {
@@ -119,6 +147,8 @@ prototype "电动机1" {
     icon = "textures/construct/turbine1.texture",
     model = "prefabs/rock.prefab",
     description = "一种机械加工品",
+    group = "器件",
+    order = 52,
 }
 
 prototype "铁齿轮" {
@@ -127,6 +157,8 @@ prototype "铁齿轮" {
     icon = "textures/construct/iron-gear.texture",
     model = "prefabs/rock.prefab",
     description = "一种铁制加工品",
+    group = "金属",
+    order = 15,
 }
 
 prototype "玻璃" {
@@ -135,6 +167,8 @@ prototype "玻璃" {
     icon = "textures/construct/coal.texture",
     model = "prefabs/rock.prefab",
     description = "一种硅制加工品",
+    group = "金属",
+    order = 70,
 }
 
 prototype "地质科技包" {
@@ -143,6 +177,8 @@ prototype "地质科技包" {
     icon = "textures/construct/science-pack.texture",
     model = "prefabs/rock.prefab",
     description = "一种科技研究包",
+    group = "器件",
+    order = 80,
 }
 
 prototype "气候科技包" {
@@ -151,6 +187,8 @@ prototype "气候科技包" {
     icon = "textures/construct/science-pack.texture",
     model = "prefabs/rock.prefab",
     description = "一种科技研究包",
+    group = "器件",
+    order = 82,
 }
 
 prototype "机械科技包" {
@@ -159,6 +197,8 @@ prototype "机械科技包" {
     icon = "textures/construct/science-pack.texture",
     model = "prefabs/rock.prefab",
     description = "一种科技研究包",
+    group = "器件",
+    order = 84,
 }
 
 prototype "气体排泄物" {
@@ -215,6 +255,8 @@ prototype "海藻" {
     icon = "textures/construct/seaweed.texture",
     model = "prefabs/rock.prefab",
     description = "一种植物",
+    group = "金属",
+    order = 2,
 }
 
 prototype "纤维燃料" {
@@ -223,4 +265,6 @@ prototype "纤维燃料" {
     icon = "textures/construct/seaweed.texture",
     model = "prefabs/rock.prefab",
     description = "一种燃料",
+    group = "器件",
+    order = 26,
 }
