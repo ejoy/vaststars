@@ -1,0 +1,216 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/2assembling.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/2assembling.glb|meshes/lifangti.002_P1.meshbin
+  name: lifangti
+  scene:
+    srt: {}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/2assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/2assembling.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/2assembling.glb|meshes/lifangti.014_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/2assembling.glb|meshes/Armature.skinbin
+  name: lifangti.011
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/2assembling.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/2assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/2assembling.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/2assembling.glb|meshes/lifangti2_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/2assembling.glb|meshes/Armature.skinbin
+  name: lifangti.003
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/2assembling.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/2assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/2assembling.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/2assembling.glb|meshes/lifangti2.001_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/2assembling.glb|meshes/Armature.skinbin
+  name: lifangti.004
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/2assembling.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/2assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/2assembling.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/2assembling.glb|meshes/lifangti2.004_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/2assembling.glb|meshes/Armature.skinbin
+  name: lifangti.005
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/2assembling.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/2assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/2assembling.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/2assembling.glb|meshes/lifangti2.005_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/2assembling.glb|meshes/Armature.skinbin
+  name: lifangti.006
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/2assembling.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/2assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/2assembling.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/2assembling.glb|meshes/lifangti.003_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/2assembling.glb|meshes/Armature.skinbin
+  name: lifangti.002
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/2assembling.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/2assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/2assembling.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/2assembling.glb|meshes/lifangti2.002_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/2assembling.glb|meshes/Armature.skinbin
+  name: lifangti.007
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/2assembling.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
