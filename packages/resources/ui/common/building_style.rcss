@@ -95,21 +95,12 @@ workbutton {
 	background-color: rgb(246, 142, 14);
 	height: 8.67vmin;
 	width: 17.33vmin;
-	transform: scale(1.0);
-	transition: color background-color transform 2s elastic-out;
-}
-workbutton:active {
-	transform: scale(1.0);
 }
 .workbutton-bg {
 	width: 6.67vmin;
 	height: 6.67vmin; 
 	background-size: cover;
 	align-items: center;
-}
-workbutton:hover {
-	transform: scale(1.1);
-	background-color: rgb(0,176,80);
 }
 .item-container-region {
 	margin: auto;

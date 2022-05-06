@@ -120,6 +120,7 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
+                catalog_index = 0,
                 items = {},
                 recipe_menu = {},
                 object_id = 0,
@@ -141,8 +142,9 @@
                 start.recipe_results = recipe.results
             end
 
-            function start.clickCatalog(event, index)
-                start.items = start.recipe_menu[index].item
+            function start.clickCatalog(event, it_index)
+                start.catalog_index = it_index
+                start.items = start.recipe_menu[it_index + 1].item
                 start.page:on_dirty(#start.items)
             end
 
@@ -166,11 +168,18 @@
 
                 local item = document.createElement "div"
                 item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" />]]):format(start.items[index].icon)
+                local select_style_border = "5px green"
+
+                if start.recipe_name == start.items[index].name then
+                    select_item = item
+                    item.style.border = select_style_border
+                end
+
                 item.addEventListener('click', function(event)
                     if select_item then
-                    select_item.style.border = '0px green'
+                        select_item.style.border = '0px green'
                     end
-                    item.style.border = "2px green"
+                    item.style.border = select_style_border
                     start.ClickItem(event, index)
                     select_item = item
                 end)
@@ -183,13 +192,27 @@
             end)
             -- <!-- tag page end -->
 
+            local function get_recipe_index(recipe_menu, recipe_name)
+                for index, v1 in ipairs(recipe_menu) do
+                    for _, v2 in ipairs(v1.item) do
+                        if v2.name == recipe_name then
+                            return index
+                        end
+                    end
+                end
+
+                console.log(("can not found recipe `%s`"):format(recipe_name))
+                return 0
+            end
+
             ui_sys:addEventListener({
                 ["INIT"] = function(recipe_menu, object_id, recipe_name)
+                    start.recipe_menu = recipe_menu
                     if recipe_name and recipe_name ~= "" then
+                        start.catalog_index = math.max(get_recipe_index(recipe_menu, recipe_name) - 1, 0)
                         start.recipe_name = recipe_name
                     end
-                    start.recipe_menu = recipe_menu
-                    start.items = start.recipe_menu[1].item or {}
+                    start.items = start.recipe_menu[start.catalog_index + 1].item or {}
                     start.object_id = object_id
                     start.page:on_dirty(#start.items)
                 end,
@@ -212,7 +235,7 @@
 
                 <div class = "draw-line"/>
                 <div class = "tab-container">
-                    <workbutton data-for = "recipe_menu" data-event-click="clickCatalog(it_index + 1)">
+                    <workbutton data-for = "recipe_menu" data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'">
                         <div class="workbutton-bg" data-style-background-image = "it.icon" />
                         <div class="catalog-desc">{{it.group}}</div>
                     </workbutton>
