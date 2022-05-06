@@ -174,7 +174,6 @@ function page_meta:do_show_detail(show, id, row, top)
     end
     self.panel.style.top = offset .. self.unit
     self.source.show_detail = show
-    --self.dirty()
 end
 
 function page_meta:on_mousedown(event)

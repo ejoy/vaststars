@@ -155,14 +155,12 @@
             local function page_item_renderer(index)
                 if index > #start.items then
                     local e = document.createElement "div"
-                    e.style.width = "12.00vmin"
-                    e.style.height = "12.00vmin"
+                    e.outerHTML = [[<div style = "width: 12.00vmin; height: 12.00vmin;" />]]
                     return e
                 end
 
                 local item = document.createElement "div"
-                item.className = "item"
-                item.style.backgroundImage = start.items[index].icon
+                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" />]]):format(start.items[index].icon)
                 item.addEventListener('click', function(event)
                     item.style.border = "2px green"
                     start.ClickItem(event, index)
