@@ -248,6 +248,15 @@ prototype "用尽的核铀燃料" {
     model = "prefabs/rock.prefab",
 }
 
+prototype "无人机" {
+    type = {"item"},
+    stack = 20,
+    icon = "textures/construct/drone1.texture",
+    model = "prefabs/drone.prefab",
+    des = "可飞行的小型空中运输工具",
+    group = "器件",
+    order = 70,
+}
 --------------------------
 prototype "海藻" {
 	type = { "item" },
