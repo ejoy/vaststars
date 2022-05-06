@@ -127,11 +127,14 @@
                 recipe_time = " ",
                 recipe_ingredients = {},
                 recipe_results = {},
-                testselect = {},
             }
 
             function start.ClickItem(event, it_index)
                 local recipe = start.items[it_index]
+                if not recipe then
+                    console.log(("can not found index %s"):format(it_index))
+                    return
+                end
                 start.recipe_name = recipe.name
                 start.recipe_time = ("%ss"):format(recipe.time // 50) -- 50 ticks per second
                 start.recipe_ingredients = recipe.ingredients
@@ -152,8 +155,8 @@
                 ui_sys:close()
             end
 
-            ------------------------------------------------------
-            -- page
+            -- <!-- tag page begin -->
+            local select_item
             local function page_item_renderer(index)
                 if index > #start.items then
                     local e = document.createElement "div"
@@ -164,12 +167,12 @@
                 local item = document.createElement "div"
                 item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" />]]):format(start.items[index].icon)
                 item.addEventListener('click', function(event)
-                    if start.testselect.selected then
-                        start.testselect.selected.style.border = '0px green'
+                    if select_item then
+                    select_item.style.border = '0px green'
                     end
                     item.style.border = "2px green"
                     start.ClickItem(event, index)
-                    start.testselect.selected = item
+                    select_item = item
                 end)
                 return item
             end
@@ -178,7 +181,7 @@
             window.customElements.define("page", function(e)
                 start.page = pageclass.create(document, e, page_item_renderer)
             end)
-            ------------------------------------------------------
+            -- <!-- tag page end -->
 
             ui_sys:addEventListener({
                 ["INIT"] = function(recipe_menu, object_id, recipe_name)
@@ -188,9 +191,6 @@
                     start.recipe_menu = recipe_menu
                     start.items = start.recipe_menu[1].item or {}
                     start.object_id = object_id
-                    if start.testselect.selected then
-                        start.testselect.selected.style.border = '0px green'
-                    end
                     start.page:on_dirty(#start.items)
                 end,
             })
@@ -204,11 +204,11 @@
                     <div class = "menu-title">修改配方</div>
                 </div>
 
-                <!-- page -->
+                <!-- tag page begin -->
                 <div class="panel" style = "width: 100%; height: 70.00vmin;">
                     <page width = '85.33vmin' height = '66.00vmin' footerheight= '4.00vmin' row='5' col='7' />
                 </div>
-                <!-- page -->
+                <!-- tag page end -->
 
                 <div class = "draw-line"/>
                 <div class = "tab-container">
