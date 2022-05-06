@@ -114,9 +114,6 @@ function page_meta:update_contianer()
 end
 
 function page_meta:on_dirty(item_count)
-    if item_count <= 0 then
-        return
-    end
     self.item_count = item_count
     self.page_count = math.ceil(item_count / (self.row * self.col))
     self:update_contianer()
