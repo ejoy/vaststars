@@ -142,12 +142,6 @@
                 start.recipe_results = recipe.results
             end
 
-            function start.clickCatalog(event, it_index)
-                start.catalog_index = it_index
-                start.items = start.recipe_menu[it_index + 1].item
-                start.page:on_dirty(#start.items)
-            end
-
             function start.clickClose(event)
                 ui_sys:close()
             end
@@ -159,6 +153,13 @@
 
             -- <!-- tag page begin -->
             local select_item
+            function start.clickCatalog(event, it_index)
+                start.catalog_index = it_index
+                start.items = start.recipe_menu[it_index + 1].item
+                select_item = nil
+                start.page:on_dirty(#start.items)
+            end
+
             local function page_item_renderer(index)
                 if index > #start.items then
                     local e = document.createElement "div"
