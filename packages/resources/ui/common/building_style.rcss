@@ -64,8 +64,8 @@ button:hover {
 }
 .recipe-change-button {
 	background-image:"textures/assemble/wheel.texture"; 
-	width: 9.33vmin; 
-	height: 9.33vmin; 
+	width: 8.33vmin; 
+	height: 8.33vmin; 
 	background-size:cover;
 }
 .menu-title {
