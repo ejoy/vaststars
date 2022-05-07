@@ -476,8 +476,8 @@ workbutton {
 	font-size: 3.73vmin;
 	background-size: cover;
 	border-radius: 0.27vmin;
-	width: 40%;
-	height:20%
+	width: 32%;
+	height:12%
 }
 .two-route-block {
 	flex-direction: column;

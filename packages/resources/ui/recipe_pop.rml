@@ -19,6 +19,10 @@
                 align-items: center;
                 border: 0.10vmin rgb(89, 73, 39);
             }
+            .recipe-time-block {
+                flex-direction: row;
+                align-items: center;
+            }
             .name-block {
                 background-color: rgb(203, 118, 24);
                 height:100%;
@@ -48,16 +52,6 @@
                 margin:0 0.2em;
                 font-size: 3.73vmin;
                 text-align: center;
-            }
-            .pic-block {
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-                background-color: rgb(191,144,0);
-                background-size: cover;
-                border-radius: 0.27vmin;
-                width: 30%;
-                height:12%
             }
             .two-recipe-block {
                 flex-direction: column;
@@ -247,9 +241,12 @@
                 <div class = "recipe-name-block">
                     <div class = "name-block">
                         <div class = "small-bg" style='background-image: "textures/science/book.texture";'/>
-                        <div class = "recipe-name-text">{{recipe_name}}</div>
+                        <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">{{recipe_name}}</div>
                     </div>
-                    <div class = "recipe-name-text">{{recipe_time}}</div>
+                    <div class = "recipe-time-block">
+                        <div class = "small-bg" style='background-image:"textures/character/timer.texture" ;'/>
+                        <div class = "recipe-name-text">{{recipe_time}}</div>              
+                    </div>
                 </div>
                 <div class = "recipe-change-block">
                     <div class = "pic-block">
