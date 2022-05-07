@@ -10,7 +10,7 @@ prototype "指挥中心" {
     group = "物流",
     order = 100,
 }
-prototype "组装机1" {
+prototype "组装机I" {
     type = {"item"},
     stack = 25,
     icon = "textures/construct/assembler.texture",
@@ -20,7 +20,7 @@ prototype "组装机1" {
     order = 70,
 }
 
-prototype "熔炼炉1" {
+prototype "熔炼炉I" {
     type = {"item"},
     stack = 25,
     icon = "textures/construct/furnace2.texture",
@@ -40,7 +40,7 @@ prototype "小型铁制箱子" {
     order = 10,
 }
 
-prototype "采矿机1" {
+prototype "采矿机I" {
     type = {"item"},
     stack = 100,
     icon = "textures/construct/miner.texture",
@@ -50,7 +50,7 @@ prototype "采矿机1" {
     order = 40,
 }
 
-prototype "车站1" {
+prototype "车站I" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/manufacture.texture",
@@ -60,7 +60,7 @@ prototype "车站1" {
     order = 51,
 }
 
-prototype "机器爪1" {
+prototype "机器爪I" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/insert1.texture",
@@ -70,7 +70,7 @@ prototype "机器爪1" {
     order = 40,
 }
 
-prototype "蒸汽发电机1" {
+prototype "蒸汽发电机I" {
     type = {"item"},
     stack = 25,
     icon = "textures/construct/turbine1.texture",
@@ -80,7 +80,7 @@ prototype "蒸汽发电机1" {
     order = 120,
 }
 
-prototype "化工厂1" {
+prototype "化工厂I" {
     type = {"item"},
     stack = 25,
     icon = "textures/construct/chemistry2.texture",
@@ -90,7 +90,7 @@ prototype "化工厂1" {
     order = 80,
 }
 
-prototype "铸造厂1" {
+prototype "铸造厂I" {
     type = {"item"},
     stack = 25,
     icon = "textures/construct/assembler.texture",
@@ -100,7 +100,7 @@ prototype "铸造厂1" {
     order = 63,
 }
 
-prototype "蒸馏厂1" {
+prototype "蒸馏厂I" {
     type = {"item"},
     stack = 10,
     icon = "textures/construct/distillery.texture",
@@ -110,7 +110,7 @@ prototype "蒸馏厂1" {
     order = 62,
 }
 
-prototype "粉碎机1" {
+prototype "粉碎机I" {
     type = {"item"},
     stack = 25,
     icon = "textures/construct/crusher1.texture",
@@ -120,7 +120,7 @@ prototype "粉碎机1" {
     order = 60,
 }
 
-prototype "物流中心1" {
+prototype "物流中心I" {
     type = {"item"},
     stack = 25,
     icon = "textures/construct/logisitic1.texture",
@@ -130,7 +130,7 @@ prototype "物流中心1" {
     order = 52,
 }
 
-prototype "风力发电机1" {
+prototype "风力发电机I" {
     type = {"item"},
     stack = 10,
     icon = "textures/construct/wind-turbine.texture",
@@ -150,7 +150,7 @@ prototype "铁制电线杆" {
     order = 30,
 }
 
-prototype "科研中心1" {
+prototype "科研中心I" {
     type = {"item"},
     stack = 25,
     icon = "textures/construct/manufacture.texture",
@@ -160,7 +160,7 @@ prototype "科研中心1" {
     order = 80,
 }
 
-prototype "电解厂1" {
+prototype "电解厂I" {
     type = {"item"},
     stack = 10,
     icon = "textures/construct/electrolysis1.texture",
@@ -170,7 +170,7 @@ prototype "电解厂1" {
     order = 90,
 }
 
-prototype "太阳能板1" {
+prototype "太阳能板I" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/solar-panel.texture",
@@ -181,7 +181,7 @@ prototype "太阳能板1" {
     
 }
 
-prototype "蓄电池1" {
+prototype "蓄电池I" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/grid-battery.texture",
@@ -191,7 +191,7 @@ prototype "蓄电池1" {
     order = 19,
 }
 
-prototype "水电站1" {
+prototype "水电站I" {
     type = {"item"},
     stack = 10,
     icon = "textures/construct/hydroplant.texture",
@@ -201,7 +201,7 @@ prototype "水电站1" {
     order = 70,
 }
 
-prototype "砖石公路-O型" {
+prototype "砖石公路" {
     type = {"item"},
     stack = 100,
     icon = "textures/construct/road1.texture",
@@ -211,7 +211,7 @@ prototype "砖石公路-O型" {
     order = 50,
 }
 
-prototype "运输车辆1" {
+prototype "运输车辆I" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/truck.texture",

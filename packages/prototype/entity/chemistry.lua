@@ -1,7 +1,7 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
-prototype "化工厂1" {
+prototype "化工厂I" {
     model = "prefabs/assembling-1.prefab",
     icon = "textures/construct/chemistry1.texture",
     construct_detector = {"exclusive"},
@@ -60,7 +60,7 @@ prototype "化工厂1" {
     }
 }
 
-prototype "蒸馏厂1" {
+prototype "蒸馏厂I" {
     model = "prefabs/distillery-1.prefab",
     icon = "textures/construct/distillery.texture",
     construct_detector = {"exclusive"},
@@ -117,7 +117,7 @@ prototype "蒸馏厂1" {
     }
 }
 
-prototype "电解厂1" {
+prototype "电解厂I" {
     model = "prefabs/distillery-1.prefab",
     icon = "textures/construct/electrolysis1.texture",
     construct_detector = {"exclusive"},
@@ -167,7 +167,7 @@ prototype "电解厂1" {
     }
 }
 
-prototype "水电站1" {
+prototype "水电站I" {
     model = "prefabs/distillery-1.prefab",
     icon = "textures/construct/hydroplant.texture",
     construct_detector = {"exclusive"},

@@ -147,7 +147,7 @@ prototype "电动机1" {
         {"塑料", 1},
     },
     results = {
-        {"电动机1", 1},
+        {"电动机I", 1},
     },
     time = "8s",
     description = "铁制品和塑料打造初级电动机",
@@ -179,16 +179,16 @@ prototype "机器爪1" {
     ingredients = {
         {"铁棒", 3},
         {"铁齿轮", 2},
-        {"电动机1", 1},
+        {"电动机I", 1},
     },
     results = {
-        {"机器爪1", 3},
+        {"机器爪I", 3},
     },
     time = "5s",
     description = "铁制品和电动机制造机器爪",
 }
 
-prototype "砖石公路-O型" {
+prototype "砖石公路" {
     type = { "recipe" },
     category = "物流中型制造",
     group = "物流",
@@ -198,7 +198,7 @@ prototype "砖石公路-O型" {
         {"石砖", 8},
     },
     results = {
-        {"砖石公路-O型", 4},
+        {"砖石公路", 4},
     },
     time = "6s",
     description = "使用石砖制造公路",
@@ -211,11 +211,11 @@ prototype "车站1" {
     order = 51,
     icon = "textures/construct/manufacture.texture",
     ingredients = {
-        {"机器爪1", 1},
+        {"机器爪I", 1},
         {"小型铁制箱子", 1},
     },
     results = {
-        {"车站1", 1},
+        {"车站I", 1},
     },
     time = "4s",
     description = "使用机器爪和箱子制造车站",
@@ -228,12 +228,12 @@ prototype "物流中心1" {
     order = 52,
     icon = "textures/construct/logisitic1.texture",
     ingredients = {
-        {"蒸汽发电机1", 1},
-        {"车站1", 2},
-        {"砖石公路-O型", 10},
+        {"蒸汽发电机I", 1},
+        {"车站I", 2},
+        {"砖石公路", 10},
     },
     results = {
-        {"物流中心1", 1},
+        {"物流中心I", 1},
     },
     time = "10s",
     description = "发电设施和车载设备制造物流中心",
@@ -246,13 +246,13 @@ prototype "运输车辆1" {
     order = 53,
     icon = "textures/construct/truck.texture",
     ingredients = {
-        {"电动机1", 1},
+        {"电动机I", 1},
         {"塑料", 4},
         {"铁板", 8},
         {"玻璃", 4},
     },
     results = {
-        {"运输车辆1", 1},
+        {"运输车辆I", 1},
     },
     time = "5s",
     description = "电动机和铁制品制造汽车",
@@ -302,10 +302,10 @@ prototype "采矿机1" {
     ingredients = {
         {"铁板", 4},
         {"铁齿轮", 3},
-        {"电动机1", 2},
+        {"电动机I", 2},
     },
     results = {
-        {"采矿机1", 2},
+        {"采矿机I", 2},
     },
     time = "6s",
     description = "使用铁制品和电动机制造采矿机",
@@ -323,7 +323,7 @@ prototype "熔炼炉1" {
         {"石砖", 4},
     },
     results = {
-        {"熔炼炉1", 1},
+        {"熔炼炉I", 1},
     },
     time = "8s",
     description = "使用铁制品和石砖制造熔炼炉",
@@ -337,11 +337,11 @@ prototype "组装机1" {
     icon = "textures/construct/assembler.texture",
     ingredients = {
         {"小型铁制箱子", 1},
-        {"机器爪1", 1},
+        {"机器爪I", 1},
         {"铁齿轮", 4},
     },
     results = {
-        {"组装机1", 1},
+        {"组装机I", 1},
     },
     time = "6s",
     description = "机械原料制造组装机",
@@ -354,13 +354,13 @@ prototype "蒸汽发电机1" {
     order = 120,
     icon = "textures/construct/turbine1.texture",
     ingredients = {
-        {"管道1", 2},
+        {"管道I", 2},
         {"铁齿轮", 1},
         {"铁板", 8},
-        {"电动机1", 1},
+        {"电动机I", 1},
     },
     results = {
-        {"蒸汽发电机1", 1},
+        {"蒸汽发电机I", 1},
     },
     time = "8s",
     description = "管道和机械原料制造蒸汽发电机",
@@ -374,28 +374,28 @@ prototype "风力发电机1" {
     icon = "textures/construct/wind-turbine.texture",
     ingredients = {
         {"铁制电线杆", 3},
-        {"蒸汽发电机1", 2},
+        {"蒸汽发电机I", 2},
     },
     results = {
-        {"风力发电机1", 1},
+        {"风力发电机I", 1},
     },
     time = "5s",
     description = "电传输材料和发电设施制造风力发电机",
 }
 
-prototype "液罐1" {
+prototype "液罐I" {
     type = { "recipe" },
     category = "化工大型制造",
     group = "化工",
     order = 22,
     icon = "textures/construct/tank1.texture",
     ingredients = {
-        {"管道1", 4},
+        {"管道I", 4},
         {"铁棒", 1},
         {"铁板", 6},
     },
     results = {
-        {"液罐1", 1},
+        {"液罐I", 1},
     },
     time = "6s",
     description = "管道和铁制品制造液罐",
@@ -409,12 +409,12 @@ prototype "化工厂1" {
     icon = "textures/construct/chemistry2.texture",
     ingredients = {
         {"玻璃", 4},
-        {"压力泵1", 1},
-        {"液罐1", 2},
-        {"组装机1", 1},
+        {"压力泵I", 1},
+        {"液罐I", 2},
+        {"组装机I", 1},
     },
     results = {
-        {"化工厂1", 1},
+        {"化工厂I", 1},
     },
     time = "15s",
     description = "液体容器和加工设备制造化工厂",
@@ -428,11 +428,11 @@ prototype "铸造厂1" {
     icon = "textures/construct/assembler.texture",
     ingredients = {
         {"铁板", 3},
-        {"机器爪1", 2},
-        {"熔炼炉1", 1},
+        {"机器爪I", 2},
+        {"熔炼炉I", 1},
     },
     results = {
-        {"铸造厂1", 1},
+        {"铸造厂I", 1},
     },
     time = "15s",
     description = "熔炼设备和机器爪制造铸造厂",
@@ -445,11 +445,11 @@ prototype "水电站1" {
     order = 70,
     icon = "textures/construct/hydroplant.texture",
     ingredients = {
-        {"蒸馏厂1", 1},
+        {"蒸馏厂I", 1},
         {"抽水泵", 1},
     },
     results = {
-        {"水电站1", 1},
+        {"水电站I", 1},
     },
     time = "4s",
     description = "蒸馏设施和抽水泵制造水电站",
@@ -462,12 +462,12 @@ prototype "蒸馏厂1" {
     order = 62,
     icon = "textures/construct/distillery.texture",
     ingredients = {
-        {"烟囱1", 1},
-        {"液罐1", 2},
-        {"熔炼炉1", 1}, 
+        {"烟囱I", 1},
+        {"液罐I", 2},
+        {"熔炼炉I", 1}, 
     },
     results = {
-        {"蒸馏厂1", 1},
+        {"蒸馏厂I", 1},
     },
     time = "4s",
     description = "液体容器和熔炼设备制造蒸馏厂",
@@ -482,11 +482,11 @@ prototype "烟囱1" {
     icon = "textures/construct/chimney2.texture",
     ingredients = {
         {"铁棒", 2},
-        {"管道1", 3},
+        {"管道I", 3},
         {"石砖", 3},
     },
     results = {
-        {"烟囱1", 1},
+        {"烟囱I", 1},
     },
     time = "4s",
     description = "铁制品和管道制造烟囱",
@@ -499,11 +499,11 @@ prototype "压力泵1" {
     order = 40,
     icon = "textures/construct/pump1.texture",
     ingredients = {
-        {"电动机1", 1},
-        {"管道1", 4},
+        {"电动机I", 1},
+        {"管道I", 4},
     },
     results = {
-        {"压力泵1", 1},
+        {"压力泵I", 1},
     },
     time = "2s",
     description = "管道和电机制造压力泵",
@@ -516,8 +516,8 @@ prototype "抽水泵" {
     order = 50,
     icon = "textures/construct/offshore-pump.texture",
     ingredients = {
-        {"排水口1", 1},
-        {"压力泵1", 1},
+        {"排水口I", 1},
+        {"压力泵I", 1},
     },
     results = {
         {"抽水泵", 1},
@@ -533,12 +533,12 @@ prototype "空气过滤器1" {
     order = 60,
     icon = "textures/construct/air-filter1.texture",
     ingredients = {
-        {"压力泵1", 1},
+        {"压力泵I", 1},
         {"塑料", 4},
-        {"蒸汽发电机1", 4},
+        {"蒸汽发电机I", 4},
     },
     results = {
-        {"空气过滤器1", 1},
+        {"空气过滤器I", 1},
     },
     time = "8s",
     description = "压力泵和发电设施制造空气过滤器",
@@ -551,11 +551,11 @@ prototype "排水口1" {
     order = 56,
     icon = "textures/construct/outfall.texture",
     ingredients = {
-        {"管道1", 5},
-        {"地下管1", 1},
+        {"管道I", 5},
+        {"地下管I", 1},
     },
     results = {
-        {"排水口1", 1},
+        {"排水口I", 1},
     },
     time = "4s",
     description = "管道制造排水口",
@@ -571,7 +571,7 @@ prototype "管道1" {
         {"石砖", 8},
     },
     results = {
-        {"管道1", 5},
+        {"管道I", 5},
         {"碎石", 1},
     },
     time = "6s",
@@ -585,11 +585,11 @@ prototype "地下管1" {
     order = 12,
     icon = "textures/construct/pipe.texture",
     ingredients = {
-        {"管道1", 5},
+        {"管道I", 5},
         {"沙子", 2},
     },
     results = {
-        {"地下管1", 2},
+        {"地下管I", 2},
     },
     time = "5s",
     description = "管道和沙子制造地下管道",
@@ -604,10 +604,10 @@ prototype "粉碎机1" {
     ingredients = {
         {"铁丝", 4},
         {"石砖", 8},
-        {"采矿机1", 1},
+        {"采矿机I", 1},
     },
     results = {
-        {"粉碎机1", 1},
+        {"粉碎机I", 1},
     },
     time = "5s",
     description = "石砖和采矿机制造粉碎机",
@@ -620,11 +620,11 @@ prototype "电解厂1" {
     order = 90,
     icon = "textures/construct/electrolysis1.texture",
     ingredients = {
-        {"液罐1", 4},
+        {"液罐I", 4},
         {"铁制电线杆", 8},
     },
     results = {
-        {"电解厂1", 1},
+        {"电解厂I", 1},
     },
     time = "10s",
     description = "液体容器和电传输设备制造电解厂",
@@ -637,13 +637,13 @@ prototype "科研中心1" {
     order = 80,
     icon = "textures/property/research-packs.texture",
     ingredients = {
-        {"机器爪1", 4},
+        {"机器爪I", 4},
         {"铁板", 20},
-        {"电动机1", 1},
+        {"电动机I", 1},
         {"玻璃", 4}, 
     },
     results = {
-        {"科研中心1", 1},
+        {"科研中心I", 1},
     },
     time = "10s",
     description = "机械装置和电动机制造科研中心",
@@ -657,11 +657,11 @@ prototype "破损水电站" {
     order = 110,
     icon = "textures/construct/hydroplant.texture",
     ingredients = {
-        {"管道1", 4},
+        {"管道I", 4},
         {"破损水电站", 1},
     },
     results = {
-        {"水电站1", 1},
+        {"水电站I", 1},
     },
     time = "4s",
     description = "修复损坏的水电站",
@@ -678,7 +678,7 @@ prototype "破损空气过滤器" {
         {"破损空气过滤器", 1},
     },
     results = {
-        {"空气过滤器1", 1},
+        {"空气过滤器I", 1},
     },
     time = "3s",
     description = "修复损坏的空气过滤器",
@@ -695,7 +695,7 @@ prototype "破损电解厂" {
         {"破损电解厂", 1},
     },
     results = {
-        {"电解厂1", 1},
+        {"电解厂I", 1},
     },
     time = "6s",
     description = "修复损坏的电解厂",
@@ -708,11 +708,11 @@ prototype "破损化工厂" {
     order = 113,
     icon = "textures/construct/chemistry2.texture",
     ingredients = {
-        {"压力泵1", 1},
+        {"压力泵I", 1},
         {"破损化工厂", 1},
     },
     results = {
-        {"化工厂1", 1},
+        {"化工厂I", 1},
     },
     time = "5s",
     description = "修复损坏的化工厂",
@@ -729,7 +729,7 @@ prototype "破损组装机" {
         {"破损组装机", 1},
     },
     results = {
-        {"组装机1", 1},
+        {"组装机I", 1},
     },
     time = "3s",
     description = "修复损坏的组装机",
@@ -763,7 +763,7 @@ prototype "破损太阳能板" {
         {"破损太阳能板", 1},
     },
     results = {
-        {"太阳能板1", 1},
+        {"太阳能板I", 1},
     },
     time = "8s",
     description = "修复损坏的太阳能板",
@@ -780,7 +780,7 @@ prototype "破损蓄电池" {
         {"破损蓄电池", 1},
     },
     results = {
-        {"蓄电池1", 1},
+        {"蓄电池I", 1},
     },
     time = "6s",
     description = "修复损坏的蓄电池",
@@ -797,7 +797,7 @@ prototype "破损物流中心" {
         {"破损物流中心", 1},
     },
     results = {
-        {"物流中心1", 1},
+        {"物流中心I", 1},
     },
     time = "6s",
     description = "修复损坏的物流中心",
@@ -814,7 +814,7 @@ prototype "破损运输汽车" {
         {"破损运输车辆", 1},
     },
     results = {
-        {"运输车辆1", 1},
+        {"运输车辆I", 1},
     },
     time = "4s",
     description = "修复损坏的运输汽车",
@@ -831,7 +831,7 @@ prototype "破损车站" {
         {"破损车站", 1},
     },
     results = {
-        {"车站1", 1},
+        {"车站I", 1},
     },
     time = "5s",
     description = "修复损坏的车站",
@@ -878,7 +878,7 @@ prototype "机械科技包1" {
     order = 84,
     icon = "textures/construct/processor.texture",
     ingredients = {
-        {"电动机1", 1},
+        {"电动机I", 1},
         {"铁齿轮", 3},
     },
     results = {

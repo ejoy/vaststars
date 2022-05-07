@@ -1,7 +1,7 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
-prototype "组装机1" {
+prototype "组装机I" {
     model = "prefabs/assembling-1.prefab",
     icon = "textures/construct/assembler.texture",
     construct_detector = {"exclusive"},
@@ -35,7 +35,7 @@ prototype "组装机1" {
     }
 }
 
-prototype "铸造厂1" {
+prototype "铸造厂I" {
     model = "prefabs/assembling-1.prefab",
     icon = "textures/construct/assembler.texture",
     construct_detector = {"exclusive"},

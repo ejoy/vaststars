@@ -1,7 +1,7 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
-prototype "熔炼炉1" {
+prototype "熔炼炉I" {
     model = "prefabs/furnace-1.prefab",
     icon = "textures/construct/furnace2.texture",
     construct_detector = {"exclusive"},
@@ -13,7 +13,7 @@ prototype "熔炼炉1" {
     craft_category = {"金属冶炼"},
 }
 
-prototype "粉碎机1" {
+prototype "粉碎机I" {
     model = "prefabs/assembling-1.prefab",
     icon = "textures/construct/crusher1.texture",
     construct_detector = {"exclusive"},
