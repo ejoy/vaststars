@@ -635,7 +635,7 @@ prototype "科研中心1" {
     category = "生产大型制造",
     group = "生产",
     order = 80,
-    icon = "textures/construct/manufacture.texture",
+    icon = "textures/property/research-packs.texture",
     ingredients = {
         {"机器爪1", 4},
         {"铁板", 20},
