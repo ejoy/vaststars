@@ -316,13 +316,13 @@
                                 </button>
                             </div>
                             <div class="column" style="justify-content: center; width: 30%; height:20%;">
-                                <div class="progress-bar-block" style = "width: 100%; height:30%;">
+                                <div class="progress-bar-block" style = "width: 100%; height:27%;">
                                     <div class="progress-background" data-style-width="process" />
+                                    <div class = "percent-num" style="position:absolute; left:10.5vmin;">{{process}}</div>
                                 </div> 
                                 <div class = "progress-bar-block" style = "width: 100%; height:15%;">
                                     <div class="progress-background" style ="background-color: red; width: 0%"/>
                                 </div> 
-                                <div class = "percent-num">{{process}}</div>
                             </div>
                             <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
                                 <button class="item" data-style-background = "it.icon" data-for="recipe_results">
@@ -354,7 +354,7 @@
                                 <div class="item-count">{{it.count}}</div>
                             </button>
                         </div>
-                        <div class="column" style="justify-content: center; width: 30%; height:20%;">
+                        <div class="column" style="justify-content: center; width: 30%; height:45%;">
                             <div class="progress-bar-block" style = "width: 100%; height:30%;">
                                 <div class="progress-background" data-style-width="process"/>
                             </div> 
