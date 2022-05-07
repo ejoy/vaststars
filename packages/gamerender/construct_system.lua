@@ -24,6 +24,7 @@ local ui_construct_fluidbox_update_mb = world:sub {"ui", "construct", "fluidbox_
 
 local ui_menu_rotate_mb = world:sub {"ui", "build_function_pop", "rotate"}
 local ui_menu_recipe_mb = world:sub {"ui", "build_function_pop", "recipe"}
+local ui_menu_detail_mb = world:sub {"ui", "build_function_pop", "detail"}
 local ui_recipe_pop_set_recipe_mb = world:sub {"ui", "recipe_pop", "set_recipe"}
 
 local single_touch_mb = world:sub {"single_touch"}
@@ -31,6 +32,11 @@ local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local pickup_mb = world:sub {"pickup"}
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
+local global = require "global"
+local cache_names = global.cache_names
+local objects = global.objects
+local iprototype = require "gameplay.prototype"
+local irecipe = require "gameplay.utility.recipe"
 
 local mode = "normal" -- normal/construct/teardown
 
@@ -167,6 +173,17 @@ function construct_sys:data_changed()
 
     for _, _, _, vsobject_id, recipe_name in ui_menu_recipe_mb:unpack() do
         iui.open("recipe_pop.rml", get_recipe_menu(), vsobject_id, recipe_name)
+    end
+
+    for _, _, _, vsobject_id, recipe_name in ui_menu_detail_mb:unpack() do
+        local object = assert(objects:get(cache_names, vsobject_id))
+        local typeobject = iprototype:queryByName("entity", object.prototype_name)
+        if iprototype:has_type(typeobject.type, "assembling") then
+            local recipe_typeobject = iprototype:queryByName("recipe", recipe_name)
+            iui.open("assemble_2.rml", vsobject_id, recipe_name, irecipe:get_elements(recipe_typeobject.ingredients), irecipe:get_elements(recipe_typeobject.results))
+        else
+            log.error("not assembling")
+        end
     end
 
     for _, _, _, vsobject_id, recipe_name in ui_recipe_pop_set_recipe_mb:unpack() do

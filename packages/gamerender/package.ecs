@@ -77,6 +77,7 @@ interface "iui"
     .implement "engine/system/ui_system.lua"
     .method "open"
     .method "close"
+    .method "on_data_changed"
 
 system "dragdrop_camera_system"
     .implement "engine/system/dragdrop_camera_system.lua"

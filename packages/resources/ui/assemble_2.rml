@@ -3,276 +3,195 @@
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            console.log("before createModel")
             local start = window.createModel "start" {
-                show = false,
-                scale_flag = false,
-                info_flag = true,
-                fuel_interaction = false,
-                material_interaction = false,
-                plugin_interaction = false,
-                reset = false,
+                mode = "init", -- "init"/"fuel"/"material"/"plugin"
                 machine_item = false,
+                items = {},
 
-                items = {
-                    {id=100, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=101, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=102, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=103, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=104, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=105, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=106, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=107, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=108, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=109, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=110, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=111, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=112, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=113, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=114, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=115, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=116, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=117, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=118, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=119, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=120, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=121, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=122, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=123, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=124, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=125, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=126, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=127, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=128, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=129, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                },
+                recipe_name = " ",
+                object_id = 0,
+                recipe_ingredients = {}, -- 配方成份
+                recipe_results = {},     -- 配方产出
 
-                gapx = 0,
-                gapy = 0,
-                page_top = 0,
-                -- 详细信息面板高度
-                detail_height = 120,
-                -- 详细信息面板开始位置
-                detail_top = 0,
-                current_page = 0,
-                view_items = {},
-                item_size = 90,
-                interval = 200,
-                show_detail = false,
-                page_width = 540,
-                page_height = 490,
-                view_items = {},
-                virtual_pages = {},
-                current_page = 0,
-                selected_id = 0,
-                selected_row = 10000,
-                item_down_time = 0,
-                current_time = 0,
-                row_count = 0,
-                page_drag = false,
-                list_drag = false,
-                draging = false,
+                recipe_ingredients_count = {}, -- 组装机成份材料个数 = {{icon = xx, count = xx}, ...}
+                recipe_results_count = {},     -- 组装机产出材料个数 = {{icon = xx, count = xx}, ...}
+                process = 0, -- 进度
             }
-            function start.mousedown(event)
-                start.show = not start.show
-            end
-
-            function start.mousedown2(event)
-                console.log("---mousedown2---")
-            end
-
-            function start.ClickFuel(event)
-                start.info_flag = not start.info_flag
-                start.fuel_interaction = not start.fuel_interaction
-                console.log("---ClickFuel---")
-                ui_sys:open("pipe_build_pop.rml")
-            end
 
             function start.ClickMachineItem(event)
                 start.machine_item = not start.machine_item
             end
 
+            function start.ClickFuel(event)
+                start.mode = "fuel"
+            end
+
             function start.ClickMaterial(event)
-                start.info_flag = not start.info_flag
-                start.material_interaction = not start.material_interaction
-                console.log("---ClickMaterial---")
-                ui_sys:open("exchange_pop.rml")
+                start.mode = "material"
             end
 
             function start.ClickPlugin(event)
-                start.info_flag = not start.info_flag
-                start.plugin_interaction = not start.plugin_interaction
-                console.log("---ClickPlugin---")
+                start.mode = "plugin"
             end
-            
+
             function start.ClickBack(event)
-                start.info_flag = true
-                start.fuel_interaction = false
-                start.material_interaction = false
-                start.plugin_interaction = false
+                start.mode = "init"
                 start.machine_item = false
             end
-            --------------------------
-            local function update_time()
-                start.current_time = start.current_time + 1
-            end
-            window.setInterval(update_time, 1)
 
-            local listclass = require "list"
-            local pageclass = require "page"
-            --local list_proxy = listclass.create(1, {start.list_width, start.list_height}, #start.item_list, {start.list_item_width, start.list_item_height})
-            local page_proxy = pageclass.create({start.page_width, start.page_height}, start)
-
-            function start.pagemousedown(event)
-                console.log("pagemousedown")
-                page_proxy:on_mousedown(event)
-                start.page_drag = true
-                start.draging = false
-            end
-        
-            function start.pagedrag(event)
-                if start.page_drag then
-                    console.log("pagedrag")
-                    page_proxy:on_drag(event)
-                end
+            function start.ClickClose()
+                ui_sys:close()
             end
 
-            function start.pagemouseup(event)
-                console.log("pagemouseup")
-                page_proxy:on_mouseup(event)
-                start.current_page = page_proxy:get_current_page() - 1
-                start.page_drag = false
+            function start.clickRecipe(event)
+                ui_sys:pub {"ui", "build_function_pop", "recipe", start.object_id, start.recipe_name}
             end
 
-            local function show_detail(show, id, row, top)
-                local offset = 0
-                if show then
-                    start.selected_id = id
-                    start.selected_row = row
-                    start.detail_top = top
-                    local dy = start.page_height - ((row + 1) * (start.item_size + start.gapy) + start.detail_height)
-                    offset = (dy >= 0) and 0 or dy
-                    console.log("offset" , offset)
-                else
-                    start.selected_id = 0
-                    --TODO: max value 1000
-                    start.selected_row = 10000
-                end
-                start.show_detail = show
-                start.page_top = offset
-            end
+            ui_sys:addEventListener({
+                ["INIT"] = function(object_id, recipe_name, ingredients, results)
+                    start.object_id = object_id
+                    start.recipe_name = recipe_name
+                    start.recipe_ingredients = ingredients
+                    start.recipe_results = results
 
-            function start.page_item_down()
-                start.item_down_time = start.current_time
-            end
-
-            function start.page_item_up(event, id, row, top)
-                console.log("page_item_click, row, top", id, row, top)
-                if start.current_time - start.item_down_time <= start.interval and not start.draging then
-                    console.log("start.draging: ", start.draging)
-                    if start.selected_id ~= id then
-                        show_detail(true, id, row, top)
-                    else
-                        show_detail(not start.show_detail, id, row, top)
+                    start.recipe_ingredients_count = {}
+                    for index, v in ipairs(start.recipe_ingredients) do
+                        start.recipe_ingredients_count[index] = {icon = v.icon, count = 0}
                     end
-                else
-                    show_detail(false, 0, 0, 0)
-                end
-            end
+                    start("recipe_ingredients_count")
 
-            function start.ClickRecipe()
-                ui_sys:open("recipe_pop.rml")
-            end
+                    start.recipe_results_count = {}
+                    for index, v in ipairs(start.recipe_results) do
+                        start.recipe_results_count[index] = {icon = v.icon, count = 0}
+                    end
+                    start("recipe_results_count")
 
-            window.addEventListener('message', function(event)
-                console.log("event.source.postMessage")
-                event.source.postMessage(event.data)
-            end)
-            window.addEventListener('mousemove', function(event)
-            end)
+                    ui_sys:addDataListener("recipe_changed", function(recipe_name, ingredients, results)
+                        start.recipe_name = recipe_name
+                        start.recipe_ingredients = ingredients
+                        start.recipe_results = results
+
+                        start.recipe_ingredients_count = {}
+                        for index, v in ipairs(start.recipe_ingredients) do
+                            start.recipe_ingredients_count[index] = {icon = v.icon, count = 0}
+                        end
+                        start("recipe_ingredients_count")
+
+                        start.recipe_results_count = {}
+                        for index, v in ipairs(start.recipe_results) do
+                            start.recipe_results_count[index] = {icon = v.icon, count = 0}
+                        end
+                        start("recipe_results_count")
+
+                    end, object_id)
+
+                    ui_sys:addDataListener("assembling_changed", function(object_id, items, process)
+                        if object_id ~= start.object_id then
+                            return
+                        end
+
+                        for _, v in ipairs(items) do
+                            for index, v1 in ipairs(start.recipe_ingredients) do
+                                if v1.name == v[1] then
+                                    start.recipe_ingredients_count[index].count = v[2]
+                                end
+                            end
+                            start("recipe_ingredients_count")
+                            for index, v1 in ipairs(start.recipe_results) do
+                                if v1.name == v[1] then
+                                    start.recipe_results_count[index].count = v[2]
+                                end
+                            end
+                            start("recipe_results_count")
+                        end
+
+                        start.process = ("%0.0f%%"):format(process * 100)
+                    end, object_id)
+
+                    ui_sys:addDataListener("chest_container_changed", function(object_id, items)
+                        if object_id ~= start.object_id then
+                            return
+                        end
+
+                        console.log("chest_container_changed", items)
+                    end, object_id)
+                end,
+            })
+
         </script>
     </head>
     <body>
         <div class="item-container-region"  data-model="start">
-            <div class="panel">
+            <!-- 左边面板 begin -->
+            <div class="panel" style="width: 50%;">
                 <div class="header" id = "item-name-block">
-                    <button class = "back-button"/>
+                    <button class = "back-button" data-event-click="ClickClose()"/>
                     <div class = "menu-title">组装机</div>
                 </div>
                 <div style="border-bottom: 1px rgb(89, 73, 39);"/>
-                <div class="column" data-if="info_flag" style="width: 100%;height: 95%;">
+                <div class="column" data-if="mode == 'init'" style="width: 100%;height: 95%;">
+                    <!-- 左上方建筑信息 begin -->
                     <div class="build-info-reigon">
-                        <div class ="info-block">
-                            <div data-if="show">
+                        <!-- 左边显示信息 -->
+                        <div class ="info-block" data-if = "false">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                            </div>
-                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                            </div>
-                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                            </div>
-                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                            </div>
                         </div>
-                        <div class="build-model-block" data-event-mousedown="mousedown()">
+                        <!-- 中间显示模型 -->
+                        <div class="build-model-block">
                             <div class="build-model"/>
-                            <div class="power-block">
+                            <div class="power-block" data-if = "false">
                                 <div class="progress-pic"/>
                                 <div class="progress-bar-block" style = "margin:0 0.4em 0.2em 0;">
                                     <div class="progress-background"/>
                                 </div>   
                             </div>
                         </div>
-                        <div class ="info-block">
-                            <div data-if="show">
+                        <!-- 右边显示信息 -->
+                        <div class ="info-block" data-if = "false">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                            </div>
-                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                            </div>
-                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                            </div>
-                            <div data-if="show">
                                 <div class="row">
                                     <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
                                     <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
                                 </div>
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                            </div>
                         </div>
                     </div>
-                    <div class="row" data-event-click="ClickFuel()" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%; justify-content: center;">
+                    <!-- 左上方建筑信息 end -->
+                    <!-- 左下方燃料信息 begin -->
+                    <div class="row" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%; justify-content: center;" data-if = "false">
                         <div class="row" style="width: 35%; justify-content: flex-end;">
                             <div class="small-item">
                                 <div class="item-count">99</div>                          
@@ -283,9 +202,9 @@
                         </div>
                         <div class="column" style="justify-content: center; width: 30%; height:20%; margin:0.2em;">
                             <div class="progress-bar-block" style = "width: 100%; height:80%;">
-                                <div class="progress-background" style ="width: 50%; background-color: red;"/>
+                                <div class="progress-background" style ="background-color: red; width: 0%;"/>
                             </div> 
-                            <div class = "percent-num">18%</div>
+                            <div class = "percent-num">{{process}}</div>
                         </div>
                         <div class="row" style="width: 35%; justify-content: flex-start;">
                             <div class="small-item">
@@ -296,24 +215,25 @@
                             </div>
                         </div>
                     </div>
+                    <!-- 左下方燃料信息 end -->
                 </div>
-                <div class="column" data-if="material_interaction || fuel_interaction || plugin_interaction" style="width: 100%; height:100%;">
+
+                <!-- 材料调整界面左边 begin -->
+                <div class="column" style="width: 100%; height:100%;" data-if="mode != 'init'">
                     <div class="item-container">
-                        <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
-                            <div class = "item-page-block" data-style-top="page_top + 'px'">
+                        <div style="width:100%; overflow: hidden;">
+                            <div class = "item-page-block">
                                 <div class ="row">
-                                    <div style="width:95%; height:100%;" data-for="virtual_pages">
-                                        <div data-style-left="(it_index + 1) * 100 + '%'"/>
+                                    <div style="width:95%; height:100%;" data-for="items">
+                                        <div />
                                     </div>
                                 </div>
-                                <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up(it.data.id, it.row, it.top)" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
-                                    <button class="item" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
-                                        <div class="item-count">99</div>                          
-                                        <!--div class="item-title">机器爪</div>-->
+                                <div style="position: absolute; align-items: center;">
+                                    <button class="item">
+                                        <div class="item-count">99</div>
                                     </button>
-                                    <!--<div>{{it.data.id}}</div>-->
                                 </div>
-                                <div class="exchange-region" data-style-left="current_page * page_width + 'px'" data-style-height="detail_height+'px'" data-style-top="detail_top+item_size+'px'" data-if="show_detail">
+                                <div class="exchange-region">
                                     <div class="button-exchange-block">
                                         <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
                                             <div class = "button-exchange-arrow"/>
@@ -335,8 +255,8 @@
                             </div>
                         </div>
                         <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
-                            <div data-for="virtual_pages">
-                                <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" data-style-background-image="it_index == current_page ? 'textures/common/page1.texture' : 'textures/common/page0.texture'"/>
+                            <div data-for="items">
+                                <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" />
                             </div>
                         </div>         
                     </div>
@@ -377,152 +297,41 @@
                         </workbutton>
                     </div>
                 </div>
+                <!-- 材料调整界面左边 end -->
             </div>
-            <div class="panel"> 
-                <div class="header" style="justify-content: flex-end;" data-if="!fuel_interaction && !material_interaction && !plugin_interaction" data-event-click="ClickRecipe()"> 
-                    <div class = "menu-title" style="text-align: right;">配方:铁锭1</div>
-                    <button class = "recipe-change-button"/>
+            <!-- 左边面板 end -->
+
+            <!-- 右边面板 begin -->
+            <div class="panel" style="width: 50%;">
+                <div class="header" style="justify-content: flex-end;" data-if="mode == 'init'">
+                    <div class = "menu-title" style="text-align: right;">配方:{{recipe_name}}</div>
+                    <button class = "recipe-change-button" data-event-click="clickRecipe()"/>
                 </div>
-                <div class="header"style="justify-content: flex-end;" data-if="fuel_interaction || material_interaction || plugin_interaction">
-                    <div class = "menu-title-2" data-if="fuel_interaction">调整燃料</div>
-                    <div class = "menu-title-2" data-if="material_interaction">调整材料</div>
-                    <div class = "menu-title-2" data-if="plugin_interaction">调整插件</div>
-                    <button class = "back-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>
-                </div>
-                <div class="column" style="width: 100%; height: 15%;align-items: flex-start; justify-content: center;" data-if="fuel_interaction">
-                    <div class="row" style="width:100%; height: 20%; justify-content: center;">
-                        <div class="row" style="width: 35%; justify-content: center;">
-                            <button class="item" data-event-click="ClickMachineItem()">
-                                <div class="item-count">99</div>                          
-                            </button>
-                            <button class="item" data-event-click="ClickMachineItem()">
-                                <div class="item-count">99</div>                          
-                            </button>
-                        </div>
-                        <div class="column" style="justify-content: center; width: 30%; height:100%;">
-                            <div class="progress-bar-block" style = "width: 100%; height:130%;">
-                                <div class="progress-background" style ="width: 50%; background-color: red;"/>
-                            </div> 
-                            <div class = "percent-num">18%</div>
-                        </div>
-                        <div class="row" style="width: 35%; justify-content: center;">
-                            <button class="item" data-event-click="ClickMachineItem()">
-                                <div class="item-count">99</div>                          
-                            </button>
-                            <button class="item" data-event-click="ClickMachineItem()">
-                                <div class="item-count">99</div>                          
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="justify-content: center; align-items: center; width:100%; height:28%;" data-if="material_interaction">
-                    <div class="row" style="align-items: center; margin-top:0.5em;">
-                        <div class="column" style="justify-content: space-between; width: 35%;">
-                            <div class="row">
-                                <button class="item" data-event-click="ClickMachineItem()">
-                                    <div class="item-count">99</div>                          
-                                </button>
-                                <button class="item" data-event-click="ClickMachineItem()">
-                                    <div class="item-count">99</div>                          
-                                </button>
-                            </div>
-                            <div class="row">
-                                <button class="item" data-event-click="ClickMachineItem()">
-                                    <div class="item-count">99</div>                          
-                                </button>
-                                <button class="item" data-event-click="ClickMachineItem()">
-                                    <div class="item-count">99</div>                          
-                                </button>
-                            </div>
-                        </div>
-                        <div class="column" style="justify-content: center; width: 30%; height:50%;">
-                            <div class="progress-bar-block" style = "width: 100%; height:30%;">
-                                <div class="progress-background" style ="width: 50%;"/>
-                            </div> 
-                            <div class = "percent-num">18%</div>
-                            <div class = "progress-bar-block" style = "width: 100%; height:15%;">
-                                <div class="progress-background" style ="background-color: red; width: 20%;"/>
-                            </div> 
-                        </div>
-                        <div class="column" style="justify-content: space-between; width: 35%;">
-                            <div class="row">
-                                <button class="item" data-event-click="ClickMachineItem()">
-                                    <div class="item-count">99</div>                          
-                                </button>
-                                <button class="item" data-event-click="ClickMachineItem()">
-                                    <div class="item-count">99</div>                          
-                                </button>
-                            </div>
-                            <div class="row">
-                                <button class="item" data-event-click="ClickMachineItem()">
-                                    <div class="item-count">99</div>                          
-                                </button>
-                                <button class="item" data-event-click="ClickMachineItem()">
-                                    <div class="item-count">99</div>                          
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="align-items: center; width:100%; height:15%; justify-content: center;" data-if="plugin_interaction">
-                    <button class="item" data-event-click="ClickMachineItem()"/>                       
-                    <button class="item" data-event-click="ClickMachineItem()"/>                      
-                    <button class="item" data-event-click="ClickMachineItem()"/>
-                    <button class="item" data-event-click="ClickMachineItem()"/>                       
-                    <button class="item" data-event-click="ClickMachineItem()"/>                        
-                    <button class="item-add" data-event-click="ClickMachineItem()"/>
-                </div>
-                <div class="column" data-if="!fuel_interaction && !material_interaction && !plugin_interaction" style="width: 100%;height: 95%;">
+                <div class="column" style="width: 100%;height: 95%;" data-if="mode == 'init'">
                     <div class="row" data-event-click="ClickMaterial()" style="border: 0.13vmin rgb(89, 73, 39); width: 100%; height: 75%; justify-content: space-evenly;">
-                        <div class="row" style="justify-content: center;">
-                            <div class="column" style="justify-content: space-between; width: 35%;">
-                                <div class="row">
-                                    <button class="item">
-                                        <div class="item-count">99</div>                          
-                                    </button>
-                                    <button class="item">
-                                        <div class="item-count">99</div>                          
-                                    </button>
-                                </div>
-                                <div class="row">
-                                    <button class="item">
-                                        <div class="item-count">99</div>                          
-                                    </button>
-                                    <button class="item">
-                                        <div class="item-count">99</div>                          
-                                    </button>
-                                </div>
+                        <div class="row" style="width: 100%; height:100%;">
+                            <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
+                                <button class="item" data-style-background = "it.icon" data-for="recipe_ingredients">
+                                    <div class="item-count">{{it.count}}</div>
+                                </button>
                             </div>
                             <div class="column" style="justify-content: center; width: 30%; height:20%;">
                                 <div class="progress-bar-block" style = "width: 100%; height:30%;">
-                                    <div class="progress-background" style ="width: 50%;"/>
+                                    <div class="progress-background" data-style-width="process" />
                                 </div> 
-                                <div class = "percent-num">18%</div>
                                 <div class = "progress-bar-block" style = "width: 100%; height:15%;">
-                                    <div class="progress-background" style ="background-color: red; width: 20%;"/>
+                                    <div class="progress-background" style ="background-color: red; width: 0%"/>
                                 </div> 
+                                <div class = "percent-num">{{process}}</div>
                             </div>
-                            <div class="column" style="justify-content: space-between; width: 35%;">
-                                <div class="row">
-                                    <button class="item">
-                                        <div class="item-count">99</div>                          
-                                    </button>
-                                    <button class="item">
-                                        <div class="item-count">99</div>                          
-                                    </button>
-                                </div>
-                                <div class="row">
-                                    <button class="item">
-                                        <div class="item-count">99</div>                          
-                                    </button>
-                                    <button class="item">
-                                        <div class="item-count">99</div>                          
-                                    </button>
-                                </div>
+                            <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
+                                <button class="item" data-style-background = "it.icon" data-for="recipe_results">
+                                    <div class="item-count">{{it.count}}</div>
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <div class="row" data-if="!material_interaction" data-event-click="ClickPlugin()" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%; justify-content: center;">
+                    <div class="row" data-event-click="ClickPlugin()" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%; justify-content: center;" data-if = "false">
                         <button class="item"/>                       
                         <button class="item"/>                      
                         <button class="item"/>
@@ -532,7 +341,36 @@
                         </button>
                     </div>
                 </div>
-                <div class="exchange-region-1" data-if="machine_item" style="flex-direction: column; align-self:center; height: 20%; margin:0;">
+
+                <!-- 调整材料 begin -->
+                <div class="header" style="justify-content: flex-end;" data-if="mode == 'material'">
+                    <div class = "menu-title-2">调整材料</div>
+                    <button class = "back-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>
+                </div>
+                <div class="row" style="justify-content: center; align-items: center; width:100%; height:28%;" data-if="mode == 'material'">
+                    <div class="row" style="align-items: center; margin-top:0.5em; width: 100%;">
+                        <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
+                            <button class="item" data-style-background = "it.icon" data-for="recipe_ingredients_count">
+                                <div class="item-count">{{it.count}}</div>
+                            </button>
+                        </div>
+                        <div class="column" style="justify-content: center; width: 30%; height:20%;">
+                            <div class="progress-bar-block" style = "width: 100%; height:30%;">
+                                <div class="progress-background" data-style-width="process"/>
+                            </div> 
+                            <div class = "progress-bar-block" style = "width: 100%; height:15%;">
+                                <div class="progress-background" style ="background-color: red; width: 0%" />
+                            </div> 
+                            <div class = "percent-num">{{process}}</div>
+                        </div>
+                        <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
+                            <button class="item" data-style-background = "it.icon" data-for="recipe_results_count">
+                                <div class="item-count">{{it.count}}</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="exchange-region-1" style="flex-direction: column; align-self:center; margin:0;" data-if="mode == 'material'">
                     <div class = "exchange-title">机器爪(98)</div>
                     <div class="button-exchange-block">
                         <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
@@ -552,6 +390,55 @@
                         </button>
                     </div>
                 </div>
+                <!-- 调整材料 end -->
+
+                <!-- 调整燃料 begin -->
+                <div class="header"style="justify-content: flex-end;" data-if="mode == 'fuel'">
+                    <div class = "menu-title-2">调整燃料</div>
+                    <button class = "back-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>
+                </div>
+                <div class="column" style="width: 100%; height: 15%;align-items: flex-start; justify-content: center;" data-if="mode == 'fuel'">
+                    <div class="row" style="width:100%; height: 20%; justify-content: center;">
+                        <div class="row" style="width: 35%; justify-content: center;">
+                            <button class="item" data-event-click="ClickMachineItem()">
+                                <div class="item-count">99</div>                          
+                            </button>
+                            <button class="item" data-event-click="ClickMachineItem()">
+                                <div class="item-count">99</div>                          
+                            </button>
+                        </div>
+                        <div class="column" style="justify-content: center; width: 30%; height:100%;">
+                            <div class="progress-bar-block" style = "width: 100%; height:130%;">
+                                <div class="progress-background" style ="background-color: red; width: 0%;"/>
+                            </div> 
+                            <div class = "percent-num">{{process}}</div>
+                        </div>
+                        <div class="row" style="width: 35%; justify-content: center;">
+                            <button class="item" data-event-click="ClickMachineItem()">
+                                <div class="item-count">99</div>                          
+                            </button>
+                            <button class="item" data-event-click="ClickMachineItem()">
+                                <div class="item-count">99</div>                          
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- 调整燃料 end -->
+
+                <!-- 调整插件 begin -->
+                <div class="header"style="justify-content: flex-end;" data-if="mode == 'plugin'">
+                    <div class = "menu-title-2">调整插件</div>
+                    <button class = "back-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>
+                </div>
+                <div class="row" style="align-items: center; width:100%; height:15%; justify-content: center;" data-if="mode == 'plugin'">
+                    <button class="item" data-event-click="ClickMachineItem()"/>                       
+                    <button class="item" data-event-click="ClickMachineItem()"/>                      
+                    <button class="item" data-event-click="ClickMachineItem()"/>
+                    <button class="item" data-event-click="ClickMachineItem()"/>                       
+                    <button class="item" data-event-click="ClickMachineItem()"/>                        
+                    <button class="item-add" data-event-click="ClickMachineItem()"/>
+                </div>
+                <!-- 调整插件 end -->
             </div>       
         </div>
     </body>

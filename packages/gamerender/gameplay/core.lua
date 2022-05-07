@@ -1,6 +1,5 @@
 local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
-local gameplay_system_update = require "gameplay.system.init"
 local assembling = gameplay.interface "assembling"
 local irecipe = require "gameplay.utility.recipe"
 local iprototype = require "gameplay.prototype"
@@ -20,7 +19,7 @@ function m.build(...)
     return world:build()
 end
 
-function m.update(get_object_func)
+function m.update()
     -- 发电机发电逻辑
     for v in world.ecs:select "generator capacitance:out" do
         v.capacitance.shortage = 0
@@ -28,12 +27,15 @@ function m.update(get_object_func)
 
     if m.world_update then
         world:update()
-        gameplay_system_update(world, get_object_func)
     end
 end
 
 function m.container_get(...)
     return world:container_get(...)
+end
+
+function m.container_place(...)
+    return world:container_place(...)
 end
 
 function m.remove_entity(v)
@@ -73,6 +75,7 @@ function m.create_entity(init)
         y = init.y,
         dir = init.dir,
         fluid = init.fluid,
+        items = init.items,
     }
 
     local pt = iprototype:queryByName("entity", init.prototype_name)
@@ -93,6 +96,10 @@ end
 
 function m.get_entity(eid)
     return world.entity[eid]
+end
+
+function m.get_world()
+    return world
 end
 
 function m.debug_entity(eid)

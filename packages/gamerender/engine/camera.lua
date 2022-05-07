@@ -57,7 +57,7 @@ local hierarchy = require "hierarchy"
 local animation = hierarchy.animation
 local skeleton = hierarchy.skeleton
 
-function camera.set(prefab_file_name)
+function camera.set(prefab_file_name, reset)
     local sdata, ddata = get_camera_prefab_data(camera_prefab_file_name), get_camera_prefab_data(prefab_file_name)
     if not sdata or not ddata then
         return
@@ -70,9 +70,13 @@ function camera.set(prefab_file_name)
     local scale = iom.get_scale(e)
     local rotation = iom.get_rotation(e)
     local oposition = iom.get_position(e)
-
-    local delta = math3d.sub(oposition, sdata.scene.srt.t)
-    local nposition = math3d.add(delta, ddata.scene.srt.t)
+    local nposition
+    if reset then
+        nposition = ddata.scene.srt.t
+    else
+        local delta = math3d.sub(oposition, sdata.scene.srt.t)
+        nposition = math3d.add(delta, ddata.scene.srt.t)
+    end
 
     local raw_animation = animation.new_raw_animation()
     local skl = skeleton.build({{name = "root", s = mc.ONE, r = mc.IDENTITY_QUAT, t = mc.T_ZERO}})

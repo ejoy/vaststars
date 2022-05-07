@@ -15,6 +15,7 @@ local check_prototype = require "gameplay.check"
 local construct_editor = ecs.require "construct_editor"
 local fps = ecs.require "fps"
 local fluid_icon = ecs.require "fluid_icon"
+local world_update = ecs.require "world_update.init"
 
 local m = ecs.system 'init_system'
 function m:init_world()
@@ -39,6 +40,9 @@ end
 
 function m:update_world()
     camera.update()
-    gameplay_core.update(get_object)
+    gameplay_core.update()
+    if gameplay_core.world_update then
+        world_update(gameplay_core.get_world(), get_object)
+    end
     fps()
 end
