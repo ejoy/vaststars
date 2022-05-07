@@ -1,7 +1,7 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
-prototype "蒸汽发电机1" {
+prototype "蒸汽发电机I" {
     model = "prefabs/assembling-1.prefab",
     icon = "textures/construct/turbine1.texture",
     construct_detector = {"exclusive"},
@@ -20,7 +20,7 @@ prototype "蒸汽发电机1" {
     }
 }
 
-prototype "风力发电机1" {
+prototype "风力发电机I" {
     model = "prefabs/wind-turbine-1.prefab",
     icon = "textures/construct/wind-turbine.texture",
     construct_detector = {"exclusive"},
@@ -30,7 +30,7 @@ prototype "风力发电机1" {
     priority = "primary",
 }
 
-prototype "太阳能板1" {
+prototype "太阳能板I" {
     model = "prefabs/assembling-1.prefab",
     icon = "textures/construct/solar-panel.texture",
     construct_detector = {"exclusive"},
@@ -40,7 +40,7 @@ prototype "太阳能板1" {
     priority = "primary",
 }
 
-prototype "蓄电池1" {
+prototype "蓄电池I" {
     model = "prefabs/small-chest.prefab",
     icon = "textures/construct/grid-battery.texture",
     construct_detector = {"exclusive"},

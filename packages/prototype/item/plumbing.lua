@@ -1,7 +1,7 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
-prototype "液罐1" {
+prototype "液罐I" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/tank1.texture",
@@ -21,7 +21,7 @@ prototype "抽水泵" {
     order = 50,
 }
 
-prototype "压力泵1" {
+prototype "压力泵I" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/pump1.texture",
@@ -31,7 +31,7 @@ prototype "压力泵1" {
     order = 40,
 }
 
-prototype "烟囱1" {
+prototype "烟囱I" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/chimney2.texture",
@@ -41,7 +41,7 @@ prototype "烟囱1" {
     order = 65,
 }
 
-prototype "排水口1" {
+prototype "排水口I" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/outfall.texture",
@@ -51,7 +51,7 @@ prototype "排水口1" {
     order = 56,
 }
 
-prototype "空气过滤器1" {
+prototype "空气过滤器I" {
     type = {"item"},
     stack = 25,
     icon = "textures/construct/air-filter1.texture",
@@ -61,7 +61,7 @@ prototype "空气过滤器1" {
     order = 60,
 }
 
-prototype "管道1" {
+prototype "管道I" {
     type = {"item"},
     stack = 100,
     icon = "textures/construct/pipe.texture",
@@ -71,7 +71,7 @@ prototype "管道1" {
     order = 10,
 }
 
-prototype "地下管1" {
+prototype "地下管I" {
     type = {"item"},
     stack = 100,
     icon = "textures/construct/pipe.texture",

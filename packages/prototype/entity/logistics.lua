@@ -12,7 +12,7 @@ prototype "指挥中心" {
     slots = 20,
 }
 
-prototype "车站1" {
+prototype "车站I" {
     model = "prefabs/goods-station-1.prefab",
     icon = "textures/construct/logisitic1.texture",
     construct_detector = {"exclusive"},
@@ -31,7 +31,7 @@ prototype "物流中心" {
     priority = "secondary",
 }
 
-prototype "机器爪1" {
+prototype "机器爪I" {
     model = "prefabs/inserter-1.prefab",
     icon = "textures/construct/insert1.texture",
     construct_detector = {"exclusive"},
@@ -42,7 +42,7 @@ prototype "机器爪1" {
     priority = "secondary",
 }
 
-prototype "科技中心1" {
+prototype "科技中心I" {
     model = "prefabs/lab-1.prefab",
     icon = "textures/construct/manufacture.texture",
     construct_detector = {"exclusive"},
@@ -52,7 +52,7 @@ prototype "科技中心1" {
     priority = "secondary",
 }
 
-prototype "砖石公路-O型" {
+prototype "砖石公路" {
     model = "prefabs/road/road_O.prefab",
     icon = "textures/construct/processor.texture",
     construct_detector = {"exclusive"},

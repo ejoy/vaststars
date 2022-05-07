@@ -1,7 +1,7 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
-prototype "液罐1" {
+prototype "液罐I" {
     model = "prefabs/storage-tank-1.prefab",
     icon = "textures/construct/tank1.texture",
     construct_detector = {"exclusive"},
@@ -44,7 +44,7 @@ prototype "抽水泵" {
     }
 }
 
-prototype "压力泵1" {
+prototype "压力泵I" {
     model = "prefabs/pump-1.prefab",
     icon = "textures/construct/pump1.texture",
     construct_detector = {"exclusive"},
@@ -65,7 +65,7 @@ prototype "压力泵1" {
     }
 }
 
-prototype "烟囱1" {
+prototype "烟囱I" {
     model = "prefabs/chimney-1.prefab",
     icon = "textures/construct/chimney2.texture",
     construct_detector = {"exclusive"},
@@ -82,7 +82,7 @@ prototype "烟囱1" {
     }
 }
 
-prototype "排水口1" {
+prototype "排水口I" {
     model = "prefabs/outfall-1.prefab",
     icon = "textures/construct/outfall.texture",
     construct_detector = {"exclusive"},
@@ -99,7 +99,7 @@ prototype "排水口1" {
     }
 }
 
-prototype "空气过滤器1" {
+prototype "空气过滤器I" {
     model = "prefabs/chimney-1.prefab",
     icon = "textures/construct/air-filter1.texture",
     construct_detector = {"exclusive"},
@@ -125,7 +125,7 @@ prototype "空气过滤器1" {
 }
 
 
-prototype "管道1-I型" {
+prototype "管道I" {
     model = "prefabs/pipe/pipe_I.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
@@ -250,7 +250,7 @@ prototype "管道1-U型" {
     }
 }
 
-prototype "地下管1" {
+prototype "地下管I" {
     model = "prefabs/pipe/pipe_J.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},

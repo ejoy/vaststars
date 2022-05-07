@@ -141,7 +141,7 @@ prototype "塑料" {
     order = 20,
 }
 
-prototype "电动机1" {
+prototype "电动机I" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/turbine1.texture",
