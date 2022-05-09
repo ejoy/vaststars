@@ -12,4 +12,5 @@ prototype "采矿机I" {
 
     mining_area = "5x5",
     speed = "100%",
+    group = {"加工"},
 }

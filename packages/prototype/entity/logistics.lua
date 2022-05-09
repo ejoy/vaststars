@@ -9,6 +9,7 @@ prototype "指挥中心" {
     area = "5x5",
     power = "1MW",
     priority = "primary",
+    group = {"物流"},
     slots = 20,
 }
 
@@ -19,6 +20,7 @@ prototype "车站I" {
     type = {"entity", "chest"},
     area = "1x1",
     slots = 30,
+    group = {"物流","自定义"},
 }
 
 prototype "物流中心" {
@@ -29,6 +31,7 @@ prototype "物流中心" {
     area = "3x3",
     power = "600kW",
     priority = "secondary",
+    group = {"物流"},
 }
 
 prototype "机器爪I" {
@@ -40,6 +43,7 @@ prototype "机器爪I" {
     speed = "1s",
     power = "12kW",
     priority = "secondary",
+    group = {"物流","自定义"},
 }
 
 prototype "科技中心I" {
@@ -50,6 +54,7 @@ prototype "科技中心I" {
     area = "3x3",
     power = "150kW",
     priority = "secondary",
+    group = {"物流"},
 }
 
 prototype "砖石公路" {
@@ -59,6 +64,7 @@ prototype "砖石公路" {
     road = true,
     type ={"entity"},
     area = "1x1",
+    group = {"物流","自定义"},
 }
 
 prototype "砖石公路-I型" {
