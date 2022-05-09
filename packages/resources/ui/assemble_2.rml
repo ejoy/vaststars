@@ -221,7 +221,7 @@
                 <!-- 材料调整界面左边 begin -->
                 <div class="column" style="width: 100%; height:100%;" data-if="mode != 'init'">
                     <div class="item-container">
-                        <div style="width:100%; overflow: hidden;">
+                        <div style="width:100%; overflow: hidden; padding-top: 1em;">
                             <div class = "item-page-block">
                                 <div class ="row">
                                     <div style="width:95%; height:100%;" data-for="items">
@@ -233,7 +233,7 @@
                                         <div class="item-count">99</div>
                                     </button>
                                 </div>
-                                <div class="exchange-region">
+                                <div class="exchange-region" data-if = "false">
                                     <div class="button-exchange-block">
                                         <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
                                             <div class = "button-exchange-arrow"/>
@@ -370,7 +370,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="exchange-region-1" style="flex-direction: column; align-self:center; margin:0;" data-if="mode == 'material'">
+                <div class="exchange-region-1" style="flex-direction: column; align-self:center; margin:0;" data-if="mode == 'material' && false">
                     <div class = "exchange-title">机器爪(98)</div>
                     <div class="button-exchange-block">
                         <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
