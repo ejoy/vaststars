@@ -7,6 +7,7 @@ prototype "液罐I" {
     construct_detector = {"exclusive"},
     type ={"entity", "fluidbox"},
     area = "3x3",
+    group = {"管道"},
     fluidbox = {
         capacity = 15000,
         height = 200,
@@ -29,6 +30,7 @@ prototype "抽水泵" {
     power = "6kW",
     priority = "secondary",
     recipe = "离岸抽水",
+    group = {"管道","自定义"},
     fluidboxes = {
         input = {},
         output = {
@@ -53,6 +55,7 @@ prototype "压力泵I" {
     power = "10kW",
     drain = "300W",
     priority = "secondary",
+    group = {"管道"},
     fluidbox = {
         capacity = 500,
         height = 300,
@@ -72,6 +75,7 @@ prototype "烟囱I" {
     type ={"entity", "fluidbox"},
     area = "2x2",
     craft_category = {"流体气体排泄"},
+    group = {"管道"},
     fluidbox = {
         capacity = 1000,
         height = 100,
@@ -89,6 +93,7 @@ prototype "排水口I" {
     type ={"entity", "fluidbox"},
     area = "3x3",
     craft_category = {"流体液体排泄"},
+    group = {"管道"},
     fluidbox = {
         capacity = 1000,
         height = 100,
@@ -108,6 +113,7 @@ prototype "空气过滤器I" {
     power = "50kW",
     drain = "1.5kW",
     priority = "secondary",
+    group = {"管道"},
     recipe = "空气过滤",
     fluidboxes = {
         input = {},
@@ -132,6 +138,7 @@ prototype "管道I" {
     pipe = true,
     type = {"entity","fluidbox"},
     area = "1x1",
+    group = {"管道","自定义"},
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -257,6 +264,7 @@ prototype "地下管I" {
     pipe = true,
     type ={"entity","pipe-to-ground","fluidbox"},
     area = "1x1",
+    group = {"管道"},
     max_distance = 10,
     fluidbox = {
         capacity = 100,

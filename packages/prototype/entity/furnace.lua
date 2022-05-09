@@ -10,6 +10,7 @@ prototype "熔炼炉I" {
     speed = "50%",
     power = "75kW",
     priority = "secondary",
+    group = {"加工"},
     craft_category = {"金属冶炼"},
 }
 
@@ -22,5 +23,6 @@ prototype "粉碎机I" {
     power = "100kW",
     drain = "3kW",
     priority = "secondary",
+    group = {"加工"},
     craft_category = {"矿石粉碎"},
 }

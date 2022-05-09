@@ -10,6 +10,7 @@ prototype "化工厂I" {
     power = "200kW",
     drain = "6kW",
     priority = "secondary",
+    group = {"化工"},
     craft_category = {"化工小型制造","化工中型制造","化工大型制造","器件基础化工","流体基础化工"},
     fluidboxes = {
         input = {
