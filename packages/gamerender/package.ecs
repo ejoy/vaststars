@@ -5,6 +5,7 @@ import "@ant.sky"
 import "@ant.animation"
 import "@ant.terrain"
 import "@ant.camera"
+import "@ant.efk"
 
 pipeline "init"
     .stage "init"
