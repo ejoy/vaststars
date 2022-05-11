@@ -13,6 +13,7 @@ local function create(object_id, left, top)
     local typeobject = iprototype:queryByName("entity", object.prototype_name)
 
     -- 组装机才显示设置配方菜单
+    local show_material_button = false
     local show_set_recipe = false
     local recipe_name = ""
     if iprototype:has_type(typeobject.type, "assembling") then
@@ -24,11 +25,13 @@ local function create(object_id, left, top)
             if typeobject.ingredients ~= "" then -- 配方没有原料也不需要显示[设置配方]
                 recipe_name = typeobject.name
             end
+            show_material_button = true
         end
     end
 
     return {
         show_set_recipe = show_set_recipe,
+        show_material_button = show_material_button,
         recipe_name = recipe_name,
         object_id = object_id,
         left = ("%0.2fvmin"):format(math.max(left - 41.5, 0)),
