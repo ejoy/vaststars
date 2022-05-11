@@ -1,0 +1,241 @@
+<rml>
+    <head>
+        <style path = "common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = window.createModel "start" {
+                mode = "init", -- "init"/"fuel"/"material"/"plugin"
+                machine_item = false,
+                items = {},
+
+                recipe_name = " ",
+                object_id = 0,
+                recipe_ingredients = {}, -- 配方成份
+                recipe_results = {},     -- 配方产出
+
+                recipe_ingredients_count = {}, -- 组装机成份材料个数 = {{icon = xx, count = xx}, ...}
+                recipe_results_count = {},     -- 组装机产出材料个数 = {{icon = xx, count = xx}, ...}
+                process = 0, -- 进度
+            }
+
+            function start.ClickMachineItem(event)
+                start.machine_item = not start.machine_item
+            end
+
+            function start.ClickFuel(event)
+                start.mode = "fuel"
+            end
+
+            function start.ClickMaterial(event)
+                start.mode = "material"
+            end
+
+            function start.ClickPlugin(event)
+                start.mode = "plugin"
+            end
+
+            function start.ClickBack(event)
+                start.mode = "init"
+                start.machine_item = false
+            end
+
+            function start.ClickClose()
+                ui_sys:close()
+            end
+
+            function start.clickRecipe(event)
+                ui_sys:pub {"ui", "build_function_pop", "recipe", start.object_id, start.recipe_name}
+            end
+
+            ui_sys:addEventListener({
+                ["INIT"] = function(object_id, recipe_name, ingredients, results)
+                    start.object_id = object_id
+                    start.recipe_name = recipe_name
+                    start.recipe_ingredients = ingredients
+                    start.recipe_results = results
+
+                    start.recipe_ingredients_count = {}
+                    for index, v in ipairs(start.recipe_ingredients) do
+                        start.recipe_ingredients_count[index] = {icon = v.icon, count = 0}
+                    end
+                    start("recipe_ingredients_count")
+
+                    start.recipe_results_count = {}
+                    for index, v in ipairs(start.recipe_results) do
+                        start.recipe_results_count[index] = {icon = v.icon, count = 0}
+                    end
+                    start("recipe_results_count")
+
+                    ui_sys:addDataListener("recipe_changed", function(recipe_name, ingredients, results)
+                        start.recipe_name = recipe_name
+                        start.recipe_ingredients = ingredients
+                        start.recipe_results = results
+
+                        start.recipe_ingredients_count = {}
+                        for index, v in ipairs(start.recipe_ingredients) do
+                            start.recipe_ingredients_count[index] = {icon = v.icon, count = 0}
+                        end
+                        start("recipe_ingredients_count")
+
+                        start.recipe_results_count = {}
+                        for index, v in ipairs(start.recipe_results) do
+                            start.recipe_results_count[index] = {icon = v.icon, count = 0}
+                        end
+                        start("recipe_results_count")
+
+                    end, object_id)
+
+                    ui_sys:addDataListener("assembling_changed", function(object_id, items, process)
+                        if object_id ~= start.object_id then
+                            return
+                        end
+
+                        for _, v in ipairs(items) do
+                            for index, v1 in ipairs(start.recipe_ingredients) do
+                                if v1.name == v[1] then
+                                    start.recipe_ingredients_count[index].count = v[2]
+                                end
+                            end
+                            start("recipe_ingredients_count")
+                            for index, v1 in ipairs(start.recipe_results) do
+                                if v1.name == v[1] then
+                                    start.recipe_results_count[index].count = v[2]
+                                end
+                            end
+                            start("recipe_results_count")
+                        end
+
+                        start.process = ("%0.0f%%"):format(process * 100)
+                    end, object_id)
+
+                    ui_sys:addDataListener("chest_container_changed", function(object_id, items)
+                        if object_id ~= start.object_id then
+                            return
+                        end
+
+                        console.log("chest_container_changed", items)
+                    end, object_id)
+                end,
+            })
+
+        </script>
+    </head>
+    <body>
+        <div class="item-container-region"  data-model="start">
+            <!-- 左边面板 begin -->
+            <div class="panel" style="width: 50%;">
+                <div class="header" id = "item-name-block">
+                    <button class = "back-button" data-event-click="ClickClose()"/>
+                    <div class = "menu-title">需求物流箱</div>
+                </div>
+                <div style="border-bottom: 1px rgb(89, 73, 39);"/>
+                <div class="column" data-if="mode == 'init'" style="width: 100%;height: 95%;">
+                    <!-- 左上方建筑信息 begin -->
+                    <div class="build-info-reigon">
+                        <!-- 左边显示信息 -->
+                        <div class ="info-block" data-if = "false">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                        </div>
+                        <!-- 中间显示模型 -->
+                        <div class="build-model-block">
+                            <div class="build-model"/>
+                            <div class="power-block" data-if = "false">
+                                <div class="progress-pic"/>
+                                <div class="progress-bar-block" style = "margin:0 0.4em 0.2em 0;">
+                                    <div class="progress-background"/>
+                                </div>   
+                            </div>
+                        </div>
+                        <!-- 右边显示信息 -->
+                        <div class ="info-block" data-if = "false">
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                                <div class="row">
+                                    <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
+                                    <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
+                                </div>
+                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
+                        </div>
+                    </div>
+                    <!-- 左上方建筑信息 end -->
+                </div>
+            </div>
+            <!-- 左边面板 end -->
+
+            <!-- 右边面板 begin -->
+            <div class="panel" style="width: 50%;">
+                <div class="header" style="justify-content: flex-end; border: 0.13vmin rgb(89, 73, 39);">
+                    <div class="menu-title" style="width:auto; margin-right: 1vmin;">物品</div>
+                </div>
+                <div class="column" style="width: 100%;height: 95%;">
+                    <!-- 物品栏显示 start -->
+                    <div class="item-container" style="height: 78%;">
+                        <div style="width:100%; overflow: hidden; padding-top: 1em;">
+                            <div class = "item-page-block">
+                                <div class ="row">
+                                    <div style="width:95%; height:100%;" data-for="items">
+                                        <div />
+                                    </div>
+                                </div>
+                                <div style="position: absolute; align-items: center;">
+                                    <button class="item">
+                                        <div class="item-count">99</div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
+                            <div data-for="items">
+                                <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" />
+                            </div>
+                        </div>         
+                    </div>
+                    <!-- 物品栏显示 end -->
+
+                    <!-- 物流需求栏显示 start -->
+                    <div class="row" data-event-click="false" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%; justify-content: center; align-items: center;">
+                        <button class="item"/>                       
+                        <button class="item"/>                      
+                        <button class="item"/>
+                        <button class="item"/>                       
+                        <button class="item"/>                        
+                        <button class="item-add"/>
+                    </div>
+                    <!-- 物流需求栏显示 end -->
+                </div>
+            </div>       
+        </div>
+    </body>
+</rml>
