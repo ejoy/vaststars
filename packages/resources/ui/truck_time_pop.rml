@@ -59,14 +59,6 @@
                 ui_sys:pub {"ui", "construct", "set_fluidbox", "cancel"}
                 ui_sys:close()
             end
-
-            ui_sys:addEventListener({
-                ["INIT"] = function(FluidName, FluidCount, NewFluidName)
-                    start.FluidName = FluidName
-                    start.FluidCount = FluidCount
-                    start.NewFluidName = NewFluidName
-                end,
-            })
         </script>
     </head>
     <body>

@@ -1,6 +1,6 @@
 local config = import_package "vaststars.config"
 local construct_menu = config.construct_menu
-local iprototype = require "gameplay.prototype"
+local iprototype = require "gameplay.interface.prototype"
 
 local function get_entity_icon(prototype_name)
     local typeobject = iprototype:queryByName("entity", prototype_name)

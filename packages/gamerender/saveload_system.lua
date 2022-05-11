@@ -9,7 +9,7 @@ local json = import_package "ant.json"
 local archival_base_dir = (fs.appdata_path() / "vaststars/archiving"):string()
 local archiving_list_path = archival_base_dir .. "/archiving.json"
 local camera_setting_path = archival_base_dir .. "/camera.json"
-local iprototype = require "gameplay.prototype"
+local iprototype = require "gameplay.interface.prototype"
 local startup_entities = import_package("vaststars.prototype")("item.startup").entities
 local camera = ecs.require "engine.camera"
 

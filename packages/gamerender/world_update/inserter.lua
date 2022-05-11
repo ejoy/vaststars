@@ -1,4 +1,4 @@
-local iprototype = require "gameplay.prototype"
+local iprototype = require "gameplay.interface.prototype"
 
 -- define in packages\gameplay\type\assembling.lua
 local STATUS_IDLE <const> = 0
