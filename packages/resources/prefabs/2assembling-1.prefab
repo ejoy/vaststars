@@ -221,3 +221,41 @@ policy:
   ant.animation|skinning
   ant.general|name
   ant.render|render
+---
+data:
+  name: empty1
+  scene:
+    srt:
+      r: {0, 0, -0.22351139783859253, 0.9747013449668884}
+      s: {2, 2, 2}
+      t: {10, 20, 3.4000000953674316}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    empty1
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object
+---
+data:
+  name: empty2
+  scene:
+    srt:
+      r: {0, 0, -0.2164396196603775, 0.9762960076332092}
+      s: {2, 2, 2}
+      t: {10, 20, -3.8952038288116455}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    empty2
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object
