@@ -12,6 +12,12 @@ prototype "熔炼炉I" {
     priority = "secondary",
     group = {"加工"},
     craft_category = {"金属冶炼"},
+    fluidboxes = {
+        input = {
+        },
+        output = {
+        },
+    }
 }
 
 prototype "粉碎机I" {
@@ -25,4 +31,10 @@ prototype "粉碎机I" {
     priority = "secondary",
     group = {"加工"},
     craft_category = {"矿石粉碎"},
+    fluidboxes = {
+        input = {
+        },
+        output = {
+        },
+    }
 }
