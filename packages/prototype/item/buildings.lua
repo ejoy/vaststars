@@ -16,7 +16,7 @@ prototype "组装机I" {
     icon = "textures/construct/assembler.texture",
     model = "prefabs/rock.prefab",
     description = "用来组装或制造工业产品的工厂",
-    group = "生产",
+    group = "加工",
     order = 70,
 }
 
@@ -26,7 +26,7 @@ prototype "熔炼炉I" {
     icon = "textures/construct/furnace2.texture",
     model = "prefabs/rock.prefab",
     description = "用来熔炼矿石的炉子",
-    group = "生产",
+    group = "加工",
     order = 50,
 }
 
@@ -46,7 +46,7 @@ prototype "采矿机I" {
     icon = "textures/construct/miner.texture",
     model = "prefabs/rock.prefab",
     description = "用来挖掘矿物资源的机器",
-    group = "生产",
+    group = "加工",
     order = 40,
 }
 
@@ -76,7 +76,7 @@ prototype "蒸汽发电机I" {
     icon = "textures/construct/turbine1.texture",
     model = "prefabs/rock.prefab",
     description = "将热能转换成电能的机器",
-    group = "化工",
+    group = "电力",
     order = 120,
 }
 
@@ -96,7 +96,7 @@ prototype "铸造厂I" {
     icon = "textures/construct/assembler.texture",
     model = "prefabs/rock.prefab",
     description = "铸造金属的工厂",
-    group = "生产",
+    group = "加工",
     order = 63,
 }
 
@@ -116,7 +116,7 @@ prototype "粉碎机I" {
     icon = "textures/construct/crusher1.texture",
     model = "prefabs/rock.prefab",
     description = "用于粉碎物体的装置",
-    group = "生产",
+    group = "加工",
     order = 60,
 }
 
@@ -136,7 +136,7 @@ prototype "风力发电机I" {
     icon = "textures/construct/wind-turbine.texture",
     model = "prefabs/rock.prefab",
     description = "利用风能转换电能的机器",
-    group = "生产",
+    group = "电力",
     order = 10,
 }
 
@@ -146,7 +146,7 @@ prototype "铁制电线杆" {
     icon = "textures/construct/electric-pole1.texture",
     model = "prefabs/rock.prefab",
     description = "用于传输电力的铁制电杆",
-    group = "物流",
+    group = "电力",
     order = 30,
 }
 
@@ -156,7 +156,7 @@ prototype "科研中心I" {
     icon = "textures/construct/manufacture.texture",
     model = "prefabs/rock.prefab",
     description = "研究科技技术的中心",
-    group = "生产",
+    group = "加工",
     order = 80,
 }
 
@@ -176,7 +176,7 @@ prototype "太阳能板I" {
     icon = "textures/construct/solar-panel.texture",
     model = "prefabs/rock.prefab",
     description = "用来收集太阳能发电的装置",
-    group = "生产",
+    group = "电力",
     order = 15,
     
 }
@@ -187,7 +187,7 @@ prototype "蓄电池I" {
     icon = "textures/construct/grid-battery.texture",
     model = "prefabs/rock.prefab",
     description = "可充电和放电的蓄能装置",
-    group = "生产",
+    group = "电力",
     order = 19,
 }
 
