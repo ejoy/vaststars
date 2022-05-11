@@ -16,7 +16,7 @@ local irq = ecs.import.interface "ant.render|irenderqueue"
 local assetmgr = import_package "ant.asset"
 local get_canvas_rect = require "utility.get_canvas_rect"
 local tile_size <const> = 10.0
-local iprototype = require "gameplay.prototype"
+local iprototype = require "gameplay.interface.prototype"
 
 local plane_vb <const> = {
 	-0.5, 0, 0.5, 0, 1, 0,	--left top

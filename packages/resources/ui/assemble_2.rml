@@ -1,124 +1,7 @@
 <rml>
     <head>
-        <style path = "common/building_style.rcss"/>
-        <script type="text/x-lua" >
-            local ui_sys = require "ui_system"
-            local start = window.createModel "start" {
-                mode = "init", -- "init"/"fuel"/"material"/"plugin"
-                machine_item = false,
-                items = {},
-
-                recipe_name = " ",
-                object_id = 0,
-                recipe_ingredients = {}, -- 配方成份
-                recipe_results = {},     -- 配方产出
-
-                recipe_ingredients_count = {}, -- 组装机成份材料个数 = {{icon = xx, count = xx}, ...}
-                recipe_results_count = {},     -- 组装机产出材料个数 = {{icon = xx, count = xx}, ...}
-                process = 0, -- 进度
-            }
-
-            function start.ClickMachineItem(event)
-                start.machine_item = not start.machine_item
-            end
-
-            function start.ClickFuel(event)
-                start.mode = "fuel"
-            end
-
-            function start.ClickMaterial(event)
-                start.mode = "material"
-            end
-
-            function start.ClickPlugin(event)
-                start.mode = "plugin"
-            end
-
-            function start.ClickBack(event)
-                start.mode = "init"
-                start.machine_item = false
-            end
-
-            function start.ClickClose()
-                ui_sys:close()
-            end
-
-            function start.clickRecipe(event)
-                ui_sys:pub {"ui", "build_function_pop", "recipe", start.object_id, start.recipe_name}
-            end
-
-            ui_sys:addEventListener({
-                ["INIT"] = function(object_id, recipe_name, ingredients, results)
-                    start.object_id = object_id
-                    start.recipe_name = recipe_name
-                    start.recipe_ingredients = ingredients
-                    start.recipe_results = results
-
-                    start.recipe_ingredients_count = {}
-                    for index, v in ipairs(start.recipe_ingredients) do
-                        start.recipe_ingredients_count[index] = {icon = v.icon, count = 0}
-                    end
-                    start("recipe_ingredients_count")
-
-                    start.recipe_results_count = {}
-                    for index, v in ipairs(start.recipe_results) do
-                        start.recipe_results_count[index] = {icon = v.icon, count = 0}
-                    end
-                    start("recipe_results_count")
-
-                    ui_sys:addDataListener("recipe_changed", function(recipe_name, ingredients, results)
-                        start.recipe_name = recipe_name
-                        start.recipe_ingredients = ingredients
-                        start.recipe_results = results
-
-                        start.recipe_ingredients_count = {}
-                        for index, v in ipairs(start.recipe_ingredients) do
-                            start.recipe_ingredients_count[index] = {icon = v.icon, count = 0}
-                        end
-                        start("recipe_ingredients_count")
-
-                        start.recipe_results_count = {}
-                        for index, v in ipairs(start.recipe_results) do
-                            start.recipe_results_count[index] = {icon = v.icon, count = 0}
-                        end
-                        start("recipe_results_count")
-
-                    end, object_id)
-
-                    ui_sys:addDataListener("assembling_changed", function(object_id, items, process)
-                        if object_id ~= start.object_id then
-                            return
-                        end
-
-                        for _, v in ipairs(items) do
-                            for index, v1 in ipairs(start.recipe_ingredients) do
-                                if v1.name == v[1] then
-                                    start.recipe_ingredients_count[index].count = v[2]
-                                end
-                            end
-                            start("recipe_ingredients_count")
-                            for index, v1 in ipairs(start.recipe_results) do
-                                if v1.name == v[1] then
-                                    start.recipe_results_count[index].count = v[2]
-                                end
-                            end
-                            start("recipe_results_count")
-                        end
-
-                        start.process = ("%0.0f%%"):format(process * 100)
-                    end, object_id)
-
-                    ui_sys:addDataListener("chest_container_changed", function(object_id, items)
-                        if object_id ~= start.object_id then
-                            return
-                        end
-
-                        console.log("chest_container_changed", items)
-                    end, object_id)
-                end,
-            })
-
-        </script>
+        <style path = "common/building_style.rcss" />
+        <script type="text/x-lua" path = "lua/assemble_2.lua" />
     </head>
     <body>
         <div class="item-container-region"  data-model="start">
@@ -220,46 +103,12 @@
 
                 <!-- 材料调整界面左边 begin -->
                 <div class="column" style="width: 100%; height:100%;" data-if="mode != 'init'">
-                    <div class="item-container">
-                        <div style="width:100%; overflow: hidden; padding-top: 1em;">
-                            <div class = "item-page-block">
-                                <div class ="row">
-                                    <div style="width:95%; height:100%;" data-for="items">
-                                        <div />
-                                    </div>
-                                </div>
-                                <div style="position: absolute; align-items: center;">
-                                    <button class="item">
-                                        <div class="item-count">99</div>
-                                    </button>
-                                </div>
-                                <div class="exchange-region" data-if = "false">
-                                    <div class="button-exchange-block">
-                                        <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
-                                            <div class = "button-exchange-arrow"/>
-                                            <div class = "button-exchange-text">全部</div>
-                                            <div class = "button-exchange-box"/>
-                                        </button>
-                                        <button class="button-exchange">
-                                            <div class = "button-exchange-arrow"/>
-                                            <div class = "button-exchange-text">1组</div>
-                                            <div class = "button-exchange-box"/>
-                                        </button>
-                                        <button class="button-exchange">
-                                            <div class = "button-exchange-arrow"/>
-                                            <div class = "button-exchange-text">1个</div>
-                                            <div class = "button-exchange-box"/>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
-                            <div data-for="items">
-                                <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" />
-                            </div>
-                        </div>         
+                    <!-- tag page begin -->
+                    <div class="item-container" style = "width: 100%;">
+                        <page width = '88vmin' height = '66.00vmin' footerheight= '4.00vmin' row='5' col='7' />
                     </div>
+                    <!-- tag page end -->
+
                     <div class = "tab-container">
                         <workbutton>
                             <div class="workbutton-bg" style='background-image:"textures/construct/logisitic1.texture";'/>
@@ -310,9 +159,9 @@
                 <div class="column" style="width: 100%;height: 95%;" data-if="mode == 'init'">
                     <div class="row" data-event-click="ClickMaterial()" style="border: 0.13vmin rgb(89, 73, 39); width: 100%; height: 75%; justify-content: space-evenly;">
                         <div class="row" style="width: 100%; height:100%;">
-                            <div class="row" style="flex-wrap: wrap; justify-content: flex-end; width: 35%; margin-right:0.1em;">
-                                <button class="item" data-style-background = "it.icon" data-for="recipe_ingredients">
-                                    <div class="item-count">{{it.count}}</div>
+                            <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
+                                <button class="item" data-style-background = "it.icon" data-for="recipe_ingredients_count">
+                                    <div class="item-count">{{it.count}}/{{it.need_count}}</div>
                                 </button>
                             </div>
                             <div class="column" style="justify-content: center; width: 30%; height:20%;">
@@ -324,9 +173,9 @@
                                     <div class="progress-background" style ="background-color: red; width: 0%"/>
                                 </div> 
                             </div>
-                            <div class="row" style="flex-wrap: wrap; justify-content: flex-start; margin-left:0.1em; width: 35%;">
-                                <button class="item" data-style-background = "it.icon" data-for="recipe_results">
-                                    <div class="item-count">{{it.count}}</div>
+                            <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
+                                <button class="item" data-style-background = "it.icon" data-for="recipe_results_count">
+                                    <div class="item-count">{{it.count}}/{{it.need_count}}</div>
                                 </button>
                             </div>
                         </div>
@@ -349,7 +198,7 @@
                 </div>
                 <div class="row" style="justify-content: center; align-items: center; width:100%; height:28%;" data-if="mode == 'material'">
                     <div class="row" style="align-items: center; margin-top:0.5em; width: 100%;">
-                        <div class="row" style="flex-wrap: wrap; justify-content: flex-end; width: 35%; margin-right:0.1em;">
+                        <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
                             <button class="item" data-style-background = "it.icon" data-for="recipe_ingredients_count">
                                 <div class="item-count">{{it.count}}</div>
                             </button>
@@ -363,14 +212,14 @@
                             </div> 
                             <div class = "percent-num">{{process}}</div>
                         </div>
-                        <div class="row" style="flex-wrap: wrap; justify-content: flex-start; margin-left:0.1em; width: 35%;">
+                        <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
                             <button class="item" data-style-background = "it.icon" data-for="recipe_results_count">
                                 <div class="item-count">{{it.count}}</div>
                             </button>
                         </div>
                     </div>
                 </div>
-                <div class="exchange-region-1" style="flex-direction: column; align-self:center; margin:0;" data-if="mode == 'material' && false">
+                <div class="exchange-region-1" style="flex-direction: column; align-self:center; margin:0;" data-if="mode == 'material'">
                     <div class = "exchange-title">机器爪(98)</div>
                     <div class="button-exchange-block">
                         <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">

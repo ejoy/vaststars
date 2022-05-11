@@ -11,6 +11,7 @@ prototype "指挥中心" {
     priority = "primary",
     group = {"物流"},
     slots = 20,
+    headquater = true,
 }
 
 prototype "车站I" {

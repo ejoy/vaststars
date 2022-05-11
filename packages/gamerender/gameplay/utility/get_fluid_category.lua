@@ -1,5 +1,5 @@
 local fluid_list_cfg = import_package "vaststars.config".fluid_list
-local iprototype = require "gameplay.prototype"
+local iprototype = require "gameplay.interface.prototype"
 
 local get_fluid_category; do
     local t = {}

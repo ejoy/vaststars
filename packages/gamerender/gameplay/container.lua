@@ -1,5 +1,5 @@
 local gameplay_core = require "gameplay.core"
-local iprototype = require "gameplay.prototype"
+local iprototype = require "gameplay.interface.prototype"
 
 local M = {}
 
@@ -16,7 +16,7 @@ function M:get(container)
         local c, n = gameplay_core.container_get(container, i)
         if c then
             local typeobject = assert(iprototype:query(c), ("can not found id `%s`"):format(c))
-            r[#r+1] = {typeobject.name, n}
+            r[typeobject.name] = n
         else
             break
         end

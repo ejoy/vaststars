@@ -1,7 +1,7 @@
 local config = import_package "vaststars.config"
 local recipe_menu = config.recipe_menu
-local irecipe = require "gameplay.utility.recipe"
-local iprototype = require "gameplay.prototype"
+local irecipe = require "gameplay.interface.recipe"
+local iprototype = require "gameplay.interface.prototype"
 
 local recipes = {}
 for _, v in pairs(iprototype:all_prototype_name()) do

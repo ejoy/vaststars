@@ -102,11 +102,7 @@
                 ui_sys:close()
             end
 
-            ui_sys:addEventListener({
-                ["INIT"] = function(archival_files)
-                    start.archival_files = archival_files
-                end,
-            })
+            ui_sys:setDataModel(start)
         </script>
     </head>
     <body style = "background-color: black;">

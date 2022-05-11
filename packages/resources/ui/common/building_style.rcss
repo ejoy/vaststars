@@ -10,12 +10,8 @@ button {
 	text-decoration: none;
 	border-radius: 1.07vmin;
 	opacity: 1;
-	transition: transform 2s elastic-out;
-	transform: scale(1.0);
 }
-button:hover {
-	transform: scale(1.1);
-}
+
 .button-bg {
 		width: 6.67vmin;
 		height: 6.67vmin;
@@ -382,7 +378,6 @@ workbutton {
 	background-image: "textures/exchange/yellow_box.texture";
 }
 .exchange-region {
-	position: absolute; 
 	width: 100%;    
 	background-color: rgb(40, 40, 40);
 	border: 0.22vmin rgb(89, 73, 39);

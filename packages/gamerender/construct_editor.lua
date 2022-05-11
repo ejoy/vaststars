@@ -11,7 +11,7 @@ local need_set_fluid = require "gameplay.utility.need_set_fluid"
 local get_roadboxes = require "gameplay.utility.get_roadboxes"
 local vsobject_manager = ecs.require "vsobject_manager"
 local gameplay_core = require "gameplay.core"
-local iprototype = require "gameplay.prototype"
+local iprototype = require "gameplay.interface.prototype"
 
 local DEFAULT_DIR <const> = 'N'
 

@@ -1,4 +1,4 @@
-local iprototype = require "gameplay.prototype"
+local iprototype = require "gameplay.interface.prototype"
 
 local M = {}
 
