@@ -116,11 +116,13 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
+                object_id = 0,
+                recipe_index = 1,
+                recipe_name = "",
+                recipe_menu = {},
                 catalog_index = 1,
                 items = {},
-                recipe_menu = {},
-                object_id = 0,
-                recipe_name = "",
+
                 recipe_time = " ",
                 recipe_ingredients = {},
                 recipe_results = {},
@@ -147,15 +149,17 @@
                 ui_sys:close()
             end
 
-            -- <!-- tag page begin -->
             local select_item
             function start.clickCatalog(event, it_index)
                 start.catalog_index = it_index + 1
                 start.items = start.recipe_menu[it_index + 1].item
+                -- <!-- tag page begin -->
                 select_item = nil
-                start.page:on_dirty(#start.items)
+                start.page:on_dirty_all(#start.items)
+                -- <!-- tag page end -->
             end
 
+            -- <!-- tag page begin -->
             local function page_item_renderer(index)
                 if index > #start.items then
                     local e = document.createElement "div"
@@ -189,34 +193,13 @@
             end)
             -- <!-- tag page end -->
 
-            local function get_recipe_index(recipe_menu, recipe_name)
-                for index, v1 in ipairs(recipe_menu) do
-                    for recipe_index, v2 in ipairs(v1.item) do
-                        if v2.name == recipe_name then
-                            return index, recipe_index
-                        end
-                    end
+            ui_sys:setDataModel(start, function(patch)
+                if patch.items then
+                    start.page:on_dirty_all(#start.items)
+                elseif patch.recipe_index then
+                    clickItem(patch.recipe_index)
                 end
-
-                console.log(("can not found recipe `%s`"):format(recipe_name))
-                return 1, 1
-            end
-
-            ui_sys:addEventListener({
-                ["INIT"] = function(recipe_menu, object_id, recipe_name)
-                    local recipe_index = 1
-                    start.object_id = object_id
-                    start.recipe_menu = recipe_menu
-
-                    if recipe_name and recipe_name ~= "" then
-                        start.catalog_index, recipe_index = get_recipe_index(recipe_menu, recipe_name)
-                        start.recipe_name = recipe_name
-                    end
-                    start.items = start.recipe_menu[start.catalog_index].item or {}
-                    start.page:on_dirty(#start.items)
-                    clickItem(recipe_index)
-                end,
-            })
+            end)
         </script>
     </head>
     <body>

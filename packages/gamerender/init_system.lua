@@ -23,7 +23,7 @@ function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
 
-    iui.open("construct.rml", get_fluid_category(), get_construct_menu())
+    iui.open("construct.rml")
     camera.init("camera_default.prefab")
 
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"

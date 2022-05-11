@@ -1,8 +1,7 @@
 local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
-local assembling = gameplay.interface "assembling"
-local irecipe = require "gameplay.utility.recipe"
-local iprototype = require "gameplay.prototype"
+local irecipe = require "gameplay.interface.recipe"
+local iprototype = require "gameplay.interface.prototype"
 
 local m = {}
 m.world_update = true
@@ -32,6 +31,10 @@ end
 
 function m.container_get(...)
     return world:container_get(...)
+end
+
+function m.container_pickup(...)
+    return world:container_pickup(...)
 end
 
 function m.container_place(...)
@@ -117,30 +120,6 @@ end
 function m.restart()
     create_entity_cache = {}
     world = gameplay.createWorld()
-end
-
-function m.set_recipe(e, recipe_name)
-    local recipe_typeobject = iprototype:queryByName("recipe", recipe_name)
-    assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
-
-    local typeobject = iprototype:query(e.entity.prototype)
-    local init_fluids = irecipe:get_init_fluids(recipe_typeobject)
-
-    if init_fluids then
-        if #typeobject.fluidboxes.input ~= #init_fluids.input then
-            log.error(("failed to set recipe: input %s %s"):format(#typeobject.fluidboxes.input, #init_fluids.input))
-            return
-        end
-        if #typeobject.fluidboxes.output ~= #init_fluids.output then
-            log.error(("failed to set recipe: output %s %s"):format(#typeobject.fluidboxes.output, #init_fluids.output))
-            return
-        end
-    end
-
-    assembling.set_recipe(world, e, typeobject, recipe_name, init_fluids)
-    -- m.sync("assembling:out fluidboxes:out fluidbox_changed?out", e)
-
-    log.info(("set recipe success `%s`"):format(recipe_name))
 end
 
 return m

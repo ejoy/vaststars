@@ -1,4 +1,4 @@
-local iprototype = require "gameplay.prototype"
+local iprototype = require "gameplay.interface.prototype"
 
 local ROAD_DIR <const> = {'N', 'E', 'S', 'W'}
 local function get_fluidboxes(prototype_name, x, y, dir)

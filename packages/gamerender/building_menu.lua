@@ -6,9 +6,9 @@ local objects = global.objects
 local vsobject_manager = ecs.require "vsobject_manager"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
-local iprototype = require "gameplay.prototype"
+local iprototype = require "gameplay.interface.prototype"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local irecipe = require "gameplay.utility.recipe"
+local iworld = require "gameplay.interface.world"
 
 local M = {}
 
@@ -43,11 +43,10 @@ function M:set_recipe(id, recipe_name)
     local object = assert(objects:get(cache_names, id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if e.assembling then
-        gameplay_core.set_recipe(e, recipe_name)
+        iworld:set_recipe(gameplay_core.get_world(), e, recipe_name)
         gameplay_core.build()
 
-        local typeobject = iprototype:queryByName("recipe", recipe_name)
-        iui.on_data_changed("recipe_changed", recipe_name, irecipe:get_elements(typeobject.ingredients), irecipe:get_elements(typeobject.results))
+        iui.update_datamodel("assemble_2.rml", id, recipe_name)
     else
         log.error(("can not found assembling `%s`(%s, %s)"):format(object.name, object.x, object.y))
     end

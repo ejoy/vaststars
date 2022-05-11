@@ -4,7 +4,6 @@ local world = ecs.world
 local gameplay_core = require "gameplay.core"
 local camera = ecs.require "engine.camera"
 local construct_editor = ecs.require "construct_editor"
-local get_recipe_menu = require "gameplay.utility.get_recipe_menu"
 local building_menu = ecs.require "building_menu"
 
 local construct_sys = ecs.system "construct_system"
@@ -25,6 +24,9 @@ local ui_construct_fluidbox_update_mb = world:sub {"ui", "construct", "fluidbox_
 local ui_menu_rotate_mb = world:sub {"ui", "build_function_pop", "rotate"}
 local ui_menu_recipe_mb = world:sub {"ui", "build_function_pop", "recipe"}
 local ui_menu_detail_mb = world:sub {"ui", "build_function_pop", "detail"}
+local ui_menu_pickup_material_mb = world:sub {"ui", "build_function_pop", "pickup_material"}
+local ui_menu_place_material_mb = world:sub {"ui", "build_function_pop", "place_material"}
+
 local ui_recipe_pop_set_recipe_mb = world:sub {"ui", "recipe_pop", "set_recipe"}
 
 local single_touch_mb = world:sub {"single_touch"}
@@ -35,8 +37,8 @@ local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 local global = require "global"
 local cache_names = global.cache_names
 local objects = global.objects
-local iprototype = require "gameplay.prototype"
-local irecipe = require "gameplay.utility.recipe"
+local iprototype = require "gameplay.interface.prototype"
+local iassembling = require "gameplay.interface.assembling"
 
 local mode = "normal" -- normal/construct/teardown
 
@@ -172,18 +174,29 @@ function construct_sys:data_changed()
     end
 
     for _, _, _, vsobject_id, recipe_name in ui_menu_recipe_mb:unpack() do
-        iui.open("recipe_pop.rml", get_recipe_menu(), vsobject_id, recipe_name)
+        iui.open("recipe_pop.rml", vsobject_id, recipe_name)
     end
 
     for _, _, _, vsobject_id, recipe_name in ui_menu_detail_mb:unpack() do
         local object = assert(objects:get(cache_names, vsobject_id))
         local typeobject = iprototype:queryByName("entity", object.prototype_name)
         if iprototype:has_type(typeobject.type, "assembling") then
-            local recipe_typeobject = iprototype:queryByName("recipe", recipe_name)
-            iui.open("assemble_2.rml", vsobject_id, recipe_name, irecipe:get_elements(recipe_typeobject.ingredients), irecipe:get_elements(recipe_typeobject.results))
+            iui.open("assemble_2.rml", vsobject_id, recipe_name)
         else
             log.error("not assembling")
         end
+    end
+
+    for _, _, _, vsobject_id in ui_menu_pickup_material_mb:unpack() do
+        local object = assert(objects:get(cache_names, vsobject_id))
+        local e = gameplay_core.get_entity(object.gameplay_eid)
+        iassembling:pickup_material(gameplay_core.get_world(), e)
+    end
+
+    for _, _, _, vsobject_id in ui_menu_place_material_mb:unpack() do
+        local object = assert(objects:get(cache_names, vsobject_id))
+        local e = gameplay_core.get_entity(object.gameplay_eid)
+        iassembling:place_material(gameplay_core.get_world(), e)
     end
 
     for _, _, _, vsobject_id, recipe_name in ui_recipe_pop_set_recipe_mb:unpack() do

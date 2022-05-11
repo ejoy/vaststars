@@ -59,36 +59,51 @@
                 ui_sys:pub {"ui", "build_function_pop", "detail", start.object_id, start.recipe_name}
             end
 
-            ui_sys:addEventListener({
-                ["INIT"] = function(show_set_recipe, recipe_name, object_id, x, y)
-                    start.show_set_recipe = show_set_recipe
-                    start.recipe_name = recipe_name
-                    start.object_id = object_id
-                    start.left = ("%0.2fvmin"):format(math.max(x - 41.5, 0))
-                    start.top = ("%0.2fvmin"):format(math.max(y - 30, 0))
+            function start.clickPickupMaterial(event)
+                ui_sys:pub {"ui", "build_function_pop", "pickup_material", start.object_id}
+                ui_sys:close()
+            end
 
-                    ui_sys:addDataListener("recipe_changed", function(recipe_name, ingredients, results)
-                        start.recipe_name = recipe_name
-                    end, object_id)
-                end,
+            function start.clickPlaceMaterial(event)
+                ui_sys:pub {"ui", "build_function_pop", "place_material", start.object_id}
+                ui_sys:close()
+            end
+
+            ui_sys:addEventListener({
                 ["leave"] = function()
                     ui_sys:close()
                 end,
             })
+
+            ui_sys:setDataModel(start)
         </script>
     </head>
     <body style = "pointer-events: none;">
             <div class="info-panel" style="position: absolute;" data-model="start" data-style-left = "left" data-style-top = "top">
-                <div class="button-fuction-block" style="top: 10.67vmin; left: 1.33vmin;" data-event-click="clickConstructRotate()">
+                <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickConstructRotate()">
                     <button class="button-function" style ='background-image: "textures/construct/rotate.texture";'/>
                     <div class="title-text">旋转</div>
                 </div>
-                <div class="button-fuction-block" style="top: -5.33vmin; left: 17.00vmin;" data-event-click="clickRecipe()" data-if = "show_set_recipe">
+
+                <div class="button-fuction-block" style="top: -2.33vmin;" data-event-click="clickPickupMaterial()" data-if = "show_set_recipe">
+                    <button class="button-function" style ='background-image: "textures/cmdcenter/fetch_material.texture";'/>
+                    <div class="title-text">成品取出</div>
+                </div>
+                <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_set_recipe" /> <!-- TODO -->
+
+                <div class="button-fuction-block" style="top: -5.33vmin;" data-event-click="clickRecipe()" data-if = "show_set_recipe">
                     <button class="button-function" style ='background-image: "textures/assemble/wheel.texture";'/>
                     <div class="title-text">修改配方</div>
                 </div>
-                <div class="button-fuction-block" style="top: -5.33vmin; left: 17.00vmin;" data-if = "!show_set_recipe" /> <!-- TODO -->
-                <div class="button-fuction-block" style="top: 10.67vmin; left: 32.14vmin" data-event-click="clickDetail()">
+                <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe" /> <!-- TODO -->
+
+                <div class="button-fuction-block" style="top: -2.33vmin;" data-event-click="clickPlaceMaterial()" data-if = "show_set_recipe">
+                    <button class="button-function" style ='background-image: "textures/cmdcenter/send_material.texture";'/>
+                    <div class="title-text">原料添加</div>
+                </div>
+                <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_set_recipe" /> <!-- TODO -->
+
+                <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickDetail()">
                     <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>
                     <div class="title-text">详细</div>
                 </div>
