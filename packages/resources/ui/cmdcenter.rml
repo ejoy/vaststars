@@ -291,10 +291,16 @@
     <body>
         <div class="item-container-region"  data-model="start">
             <div class="panel" style= "flex-direction: column;">
+
+                <!-- 指挥中心标题 start -->
                 <div class="header" id = "item-name-block">
                     <button class = "back-button"/>
                     <div class = "menu-title">指挥中心</div>
                 </div>
+                <!-- 指挥中心标题 end -->
+
+
+                <!-- 指挥中心物品栏 start -->
                 <div class="item-container">
                     <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
                         <div class = "item-page-block" data-style-top="page_top + 'px'" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
@@ -337,7 +343,11 @@
                         </div>
                     </div>         
                 </div>
+                <!-- 指挥中心物品栏 end -->
+
                 <div class = "draw-line"/>
+
+                <!-- 物品栏分类页签 start -->
                 <div class = "tab-container">
                     <workbutton>
                         <div class="workbutton-bg" style='background-image:"textures/construct/logisitic1.texture";'/>
@@ -374,18 +384,25 @@
                         <div class="catalog-desc">解包</div>
                     </workbutton>
                 </div>
+                <!-- 物品栏分类页签 end -->
             </div>
             <div class="panel">
                 <div class="column" style="width:100%; height:100%;" data-if="!item_info_flag">
+                    <!-- 制造舱按钮 start -->
                     <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if="!drone_interaction">
                         <div class = "menu-title" style="text-align: right;">制造舱</div>
                         <button class = "recipe-change-button"/>  
                     </div>
+                    <!-- 制造舱按钮 end -->
+
                     <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if="drone_interaction">
                         <div class = "menu-title" style="text-align: right;">无人机</div>
                         <button class = "recipe-change-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>  
                     </div>
+
                     <div style="border-bottom: 1px rgb(89, 73, 39);"/>
+
+                    <!-- 指挥中心建筑信息 start -->
                     <div class="column" data-if="!item_info_flag && !drone_interaction" style="width: 100%;height: 95%;">
                         <div class="build-info-reigon">
                             <div class ="building-info">
@@ -452,6 +469,9 @@
                                 </div>
                             </div>
                         </div>
+                         <!-- 指挥中心建筑信息 end -->
+
+                         <!-- 无人机界面 start -->
                         <div class="row" data-event-click="ClickDrone()" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 25%; justify-content: center;">
                             <div class="row" style="width: 35%; justify-content: center;">
                                 <div class="small-item" style='background-image: "textures/construct/drone1.texture";'/>                        
@@ -463,7 +483,10 @@
                                 <div class="item-add" style="width:9vmin; height:9vmin;"/>
                             </div>
                         </div>
+                         <!-- 无人机界面 end -->
                     </div>
+
+                    <!-- 无人机调整界面 start -->
                     <div class="row" style="align-items: center; width:100%; height:15%; justify-content: center; margin-top: 0.5em;" data-if="drone_interaction">
                         <button class="item" data-event-click="ClickMachineItem()" style='background-image: "textures/construct/drone1.texture";'/>                       
                         <button class="item" data-event-click="ClickMachineItem()" style='background-image: "textures/construct/drone1.texture";'/>                      
@@ -472,6 +495,9 @@
                         <button class="item" data-event-click="ClickMachineItem()" style='background-image: "textures/construct/drone1.texture";'/>                        
                         <button class="item-add" data-event-click="ClickMachineItem()"/>
                     </div>
+                    <!-- 无人机调整界面 end -->
+
+                    <!-- 无人机添加 start -->
                     <div class="exchange-region-1" data-if="machine_item" style="flex-direction: column; align-self:center; height: 20%; margin:0;">
                         <div class = "exchange-title">无人机(98)</div>
                         <div class="button-exchange-block">
@@ -492,8 +518,12 @@
                             </button>
                         </div>
                     </div>
+                    <!-- 无人机添加 end -->
                 </div>
+
+
                 <div class="column" style="width:100%; height:100%;" data-if="item_info_flag && !drone_interaction" data-event-click="ClickItemInfo()">
+                     <!-- 物品基础信息 start -->
                     <div class="item-info-block">
                         <div style="flex-direction:row; justify-content: flex-start; align-items: center; width:100%;height:20%;">
                             <div class ="drone-title-block" style="height:5vmin;">
@@ -549,7 +579,11 @@
                             </div>
                         </div>
                     </div>
+                    <!-- 物品基础信息 end -->
+
                     <div class = "draw-line"/>
+
+                    <!-- 物品配方展示 start -->
                     <div class="item-recipe-block">
                         <div style="flex-direction:row; justify-content: flex-start; width:100%;">
                             <div class ="drone-title-block" style="height:5vmin;">
@@ -588,7 +622,11 @@
                             </div>
                         </div>
                     </div>
+                    <!-- 物品配方展示 end -->
+
                     <div class = "draw-line"/>
+
+                   <!-- 物品所需资源展示 start -->
                     <div class="item-material-block ">
                         <div style="flex-direction:row; justify-content: flex-start; width:100%;">
                             <div class ="drone-title-block" style="height:5vmin;">
@@ -663,7 +701,11 @@
                             </div>
                         </div>
                     </div>
+                   <!-- 物品所需资源展示 end -->
+
                     <div class = "draw-line"/>
+
+                    <!-- 可生产该物品建筑展示 start --> 
                     <div class="item-building-block ">
                         <div style="flex-direction:row; justify-content: flex-start; width:100%;">
                             <div class ="drone-title-block" style="height:5vmin;">
@@ -681,6 +723,7 @@
                             <div class="small-building"/>               
                         </div>
                     </div>
+                    <!-- 可生产该物品建筑展示 end --> 
                 </div>
             </div>
         </div>

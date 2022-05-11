@@ -327,10 +327,12 @@
     </head>
     <body>
         <div class="item-container-region"  style="width:100%;  background-color: rgb(0,0,0); justify-content: center;" data-model="start">
+
+            <!-- 物流物品选择 start -->
             <div class="panel" style= "flex-direction: column;">
                 <div class="header" id = "item-name-block" data-event-click="clickClose()">
                     <button class = "back-button"/>
-                    <div class = "menu-title">修改配方</div>
+                    <div class = "menu-title">选择物流物品</div>
                 </div>
 
                 <!-- tag page begin -->
@@ -347,7 +349,11 @@
                     </workbutton>
                 </div>
             </div>
+            <!-- 物流物品选择 end -->
+
+
             <div class="recipe-panel" style="flex-direction: column; height:100%;">
+                <!-- 物品基本信息 start -->
                 <div class="item-info-block">
                     <div style="flex-direction:column; justify-content: flex-start; align-items: flex-start; width:100%;height:30%;">
                         <div class ="drone-title-block" style="height:5vmin;">
@@ -381,6 +387,9 @@
                         </div>
                     </div>
                 </div>
+                <!-- 物品基本信息 end -->
+
+                <!-- 物品配方信息 start -->
                 <div class="item-recipe-block" style="border:0.1vmin rgb(89, 73, 39);">
                     <div style="flex-direction:row; justify-content: flex-start; width:100%;">
                         <div class ="drone-title-block" style="height:5vmin;">
@@ -419,6 +428,9 @@
                         </div>
                     </div>
                 </div>
+                <!-- 物品配方信息 end -->
+
+                <!-- 物品生产建筑 start -->
                 <div class="item-building-block" style="border:0.1vmin rgb(89, 73, 39);">
                     <div style="flex-direction:row; justify-content: flex-start; width:100%;">
                         <div class ="drone-title-block" style="height:5vmin;">
@@ -435,7 +447,10 @@
                         <div class="small-building"/>
                         <div class="small-building"/>               
                     </div>
-                </div>         
+                </div> 
+                <!-- 物品生产建筑 end -->
+                
+                <!-- 物品确认按钮 start -->
                 <div class="item-button-block" style="border:0.1vmin rgb(89, 73, 39);">
                     <button class = "confirm-button" style="background-color:rgb(203, 118, 24); margin-bottom:0;" data-event-click = "clickClose()">
                         <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
@@ -446,6 +461,7 @@
                         <div class = "recipe-name-text" style="font-size: 3.73vmin;">确定</div>
                     </button> 
                 </div>
+                <!-- 物品确认按钮 end -->
             </div>
         </div>
     </body>
