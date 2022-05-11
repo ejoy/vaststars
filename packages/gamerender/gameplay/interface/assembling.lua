@@ -13,6 +13,12 @@ function M:pickup_material(world, e)
     end
 
     local recipe = e.assembling.recipe
+    if recipe == 0 then
+        log.error("the recipe hasn't been set")
+        return
+    end
+
+    local recipe = e.assembling.recipe
     local typeobject = iprototype:query(recipe)
     local recipe_ingredients = irecipe:get_elements(typeobject.ingredients)
     local recipe_results = irecipe:get_elements(typeobject.results)
@@ -37,7 +43,7 @@ function M:place_material(world, e)
 
     local recipe = e.assembling.recipe
     if recipe == 0 then
-        log.warn("the recipe hasn't been set")
+        log.error("the recipe hasn't been set")
         return
     end
 

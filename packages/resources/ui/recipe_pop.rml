@@ -196,7 +196,9 @@
             ui_sys:setDataModel(start, function(patch)
                 if patch.items then
                     start.page:on_dirty_all(#start.items)
-                elseif patch.recipe_index then
+                end
+                
+                if patch.recipe_index then
                     clickItem(patch.recipe_index)
                 end
             end)
