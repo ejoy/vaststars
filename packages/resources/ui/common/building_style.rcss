@@ -160,10 +160,9 @@ workbutton {
 }
 /*tab区域*/
 .tab-container {
-	margin:0.1rem auto;
 	flex-direction: row;
 	justify-content: space-evenly;
-	align-items:flex-start;
+	align-content: space-evenly;
 	width:100%;
 	flex-wrap: wrap;
 }
