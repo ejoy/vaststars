@@ -4,7 +4,10 @@ local cache_names = global.cache_names
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
 
-local function create(object_id, left, top)
+---------------
+local M = {}
+
+function M:create(object_id, left, top)
     local object = assert(objects:get(cache_names, object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -39,16 +42,12 @@ local function create(object_id, left, top)
     }
 end
 
-local function update(datamodel, param, object_id, recipe_name)
-    if param[1] ~= object_id then
+function M:update(datamodel, object_id, recipe_name)
+    if datamodel.object_id ~= object_id then
         return
     end
-
     datamodel.recipe_name = recipe_name
     return true
 end
 
-return {
-    create = create,
-    update = update,
-}
+return M

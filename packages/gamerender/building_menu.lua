@@ -46,7 +46,8 @@ function M:set_recipe(id, recipe_name)
         iworld:set_recipe(gameplay_core.get_world(), e, recipe_name)
         gameplay_core.build()
 
-        iui.update_datamodel("assemble_2.rml", id, recipe_name)
+        iui.update("assemble_2.rml", "update", id, recipe_name)
+        iui.update("build_function_pop.rml", "update", id, recipe_name)
     else
         log.error(("can not found assembling `%s`(%s, %s)"):format(object.name, object.x, object.y))
     end

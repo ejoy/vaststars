@@ -28,10 +28,10 @@ local update_fps do
 
         if current - last_print_time > print_time then
             local printtext = ("FPS: %.03f / %d"):format(frames:size() / 10, maxfps)
-            iui.set_datamodel("construct.rml", "fps_text", printtext)
+            iui.update("construct.rml", "fps_text", printtext)
 
             local bgfxstat = bgfx.get_stats "sdcpnmtv"
-            iui.set_datamodel("construct.rml", "drawcall_text", ("DrawCall: %d\nTriangle: %d\nTexture: %d\ncpu(ms): %f\ngpu(ms): %f\nfps: %d"):format(
+            iui.update("construct.rml", "drawcall_text", ("DrawCall: %d\nTriangle: %d\nTexture: %d\ncpu(ms): %f\ngpu(ms): %f\nfps: %d"):format(
                 bgfxstat.numDraw, bgfxstat.numTriList, bgfxstat.numTextures, bgfxstat.cpu, bgfxstat.gpu, bgfxstat.fps))
             last_print_time = current
         end
