@@ -45,19 +45,19 @@
                 flex-direction: column;
                 align-items: center;
                 width:100%;
-                height:20%;
+                height:50%;
             }
             .item-material-block {
                 flex-direction: column;
                 align-items: center;
                 width:100%;
-                height:32%;
+                height:30%;
             }
             .item-building-block {
                 flex-direction: column;
                 align-items: center;
                 width:100%;
-                height:18%;
+                height:20%;
             }
             .pre-title-block {
                 justify-content: center;
@@ -293,66 +293,7 @@
 
 
                 <div class="column" style="width:100%; height:100%;" data-if="item_info_flag" data-event-click="ClickItemInfo()">
-                     <!-- 物品基础信息 start -->
-                    <div class="item-info-block">
-                        <div style="flex-direction:row; justify-content: flex-start; align-items: center; width:100%;height:20%;">
-                            <div class ="drone-title-block" style="height:5vmin;">
-                                <div class = "drone-pic" style='background-image:"textures/science/book.texture";'/>
-                                <div class = "drone-title">基本信息</div>
-                            </div>
-                            <div class="property-text" style="-webkit-text-stroke: 0.20vmin rgb(39, 32, 17);color: rgb(221, 235, 26)">一种用于抓取货物的机械手臂</div>
-                        </div>
-                        <div class="row" style="width:100%; height:80%; justify-content: flex-start; align-items: center;">
-                            <div class="info-block" style="margin-top:0; margin-left:1em; justify-content: center; align-items: flex-start">
-                                <div class="row">
-                                    <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
-                                    <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
-                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                                </div>
-                                <div class="row">
-                                    <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
-                                    <div class="property-text" style="color: rgb(0,176,240);">产能加成</div>
-                                    <div class="property-text" style="color:#fff;">40%</div>
-                                </div>
-                                <div class="row">
-                                    <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
-                                    <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
-                                    <div class="property-text" style="color:#fff;">200/990</div>
-                                </div>
-                                <div class="row">
-                                    <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
-                                    <div class="property-text" style="color: rgb(0,176,240);">建筑能耗</div>
-                                    <div class="property-text" style="color:#fff;">500kw(-250kw)</div>
-                                </div>
-                            </div>
-                            <div class="info-block" style="margin-top:0; margin-left:2.2em; justify-content: center; align-items: flex-start;">
-                                <div class="row">
-                                    <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
-                                    <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
-                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                                </div>
-                                <div class="row">
-                                    <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
-                                    <div class="property-text" style="color: rgb(0,176,240);">产能加成</div>
-                                    <div class="property-text" style="color:#fff;">40%</div>
-                                </div>
-                                <div class="row">
-                                    <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
-                                    <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
-                                    <div class="property-text" style="color:#fff;">200/990</div>
-                                </div>
-                                <div class="row">
-                                    <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
-                                    <div class="property-text" style="color: rgb(0,176,240);">建筑能耗</div>
-                                    <div class="property-text" style="color:#fff;">500kw(-250kw)</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 物品基础信息 end -->
-
-                    <div class = "draw-line"/>
-
+        
                     <!-- 物品配方展示 start -->
                     <div class="item-recipe-block">
                         <div style="flex-direction:row; justify-content: flex-start; width:100%;">
