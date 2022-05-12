@@ -85,7 +85,7 @@
     <body style = "pointer-events: none;">
         <div style = "pointer-events: none; align-items: center;" class="item-container-region"  data-model="start">
             <div class="panel" style="width:40%; height:40%;  align-items: center; justify-content: flex-start;">
-                <div class = "menu-title-block">管道液体变更</div>
+                <div class = "menu-title-block" style="height: 20%;">管道液体变更</div>
                 <div class = "fluid-number-block">
                     <div class = "change-fluid-block">
                         <div class = "change-fluid-name">{{FluidName}}</div>

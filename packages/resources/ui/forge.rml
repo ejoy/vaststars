@@ -193,7 +193,7 @@
             <div class="panel">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button"/>
-                    <div class = "menu-title">熔炼炉</div>
+                    <div class = "menu-title" style="width: 70%;">熔炼炉</div>
                 </div>
                 <div style="border-bottom: 1px rgb(89, 73, 39);"/>
                 <div class="column" data-if="info_flag" style="width: 100%;height: 95%;">
@@ -232,7 +232,7 @@
                             <div class="build-model"/>
                             <div class="power-block">
                                 <div class="progress-pic"/>
-                                <div class="progress-bar-block" style = "margin:0 0.4em 0.2em 0;">
+                                <div class="progress-bar-block" style = "margin:0 0.4em 0.2em 0; width: 80%; height:50%;">
                                     <div class="progress-background"/>
                                 </div>   
                             </div>
@@ -296,7 +296,7 @@
                 <div class="column" data-if="material_interaction || fuel_interaction || plugin_interaction" style="width: 100%; height:100%;">
                     <div class="item-container">
                         <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
-                            <div class = "item-page-block" data-style-top="page_top + 'px'">
+                            <div class = "item-page-block" style="width:90%; height:100%;" data-style-top="page_top + 'px'">
                                 <div class ="row">
                                     <div style="width:95%; height:100%;" data-for="virtual_pages">
                                         <div data-style-left="(it_index + 1) * 100 + '%'"/>
@@ -305,7 +305,7 @@
                                 <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up(it.data.id, it.row, it.top)" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
                                     <button class="item" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
                                         <div class="item-count">99</div>                          
-                                        <!--div class="item-title">机器爪</div>-->
+                                        <!--div class="item-title" style="top:14%;">机器爪</div>-->
                                     </button>
                                     <!--<div>{{it.data.id}}</div>-->
                                 </div>
@@ -336,7 +336,7 @@
                             </div>
                         </div>         
                     </div>
-                    <div class = "tab-container">
+                    <div class = "tab-container" style="height: 10%;">
                         <workbutton>
                             <div class="workbutton-bg" style='background-image:"textures/construct/logisitic1.texture";'/>
                             <div class="catalog-desc">物流</div>     
@@ -354,7 +354,7 @@
                             <div class="catalog-desc">金属</div>
                         </workbutton>
                     </div>
-                    <div class = "tab-container">
+                    <div class = "tab-container" style="height: 10%;">
                         <workbutton>
                             <div class="workbutton-bg" style='background-image:"textures/construct/processor.texture";'/>
                             <div class="catalog-desc">器件</div>
@@ -380,9 +380,9 @@
                     <button class = "recipe-change-button"/>
                 </div>
                 <div class="header"style="justify-content: flex-end;" data-if="fuel_interaction || material_interaction || plugin_interaction">
-                    <div class = "menu-title-2" data-if="fuel_interaction">调整燃料</div>
-                    <div class = "menu-title-2" data-if="material_interaction">调整材料</div>
-                    <div class = "menu-title-2" data-if="plugin_interaction">调整插件</div>
+                    <div class = "menu-title-2" style="width: 70%;" data-if="fuel_interaction">调整燃料</div>
+                    <div class = "menu-title-2" style="width: 70%;" data-if="material_interaction">调整材料</div>
+                    <div class = "menu-title-2" style="width: 70%;" data-if="plugin_interaction">调整插件</div>
                     <button class = "back-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>
                 </div>
                 <div class="column" style="width: 100%; height: 15%; align-items: flex-start; justify-content: center;" data-if="fuel_interaction">
@@ -529,7 +529,7 @@
                     </div>
                 </div>
                 <div class="exchange-region-1" data-if="machine_item" style="flex-direction: column; align-self:center; height: 20%; margin:0;">
-                    <div class = "exchange-title">机器爪(98)</div>
+                    <div class = "exchange-title" style="height:35%;">机器爪(98)</div>
                     <div class="button-exchange-block">
                         <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
                             <div class = "button-exchange-arrow"/>

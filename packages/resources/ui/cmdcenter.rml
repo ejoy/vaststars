@@ -212,7 +212,7 @@
                 <!-- 指挥中心标题 start -->
                 <div class="header" id = "item-name-block">
                     <button class = "back-button" data-event-click="clickClose()" />
-                    <div class = "menu-title">指挥中心</div>
+                    <div class = "menu-title" style="width: 70%;">指挥中心</div>
                 </div>
                 <!-- 指挥中心标题 end -->
 
@@ -228,7 +228,7 @@
                 <div class = "draw-line"/>
 
                 <!-- 物品栏分类页签 start -->
-                <div class = "tab-container">
+                <div class = "tab-container" style="height: 10%;">
                     <workbutton data-for = "item_category" data-event-click="clickCategory(it.category)">
                         <div class="workbutton-bg" data-style-background-image="it.icon" />
                         <div class="catalog-desc">{{it.category}}</div>
@@ -240,7 +240,7 @@
                 <div class="column" style="width:100%; height:100%;" data-if="!item_info_flag">
                     <!-- 制造舱按钮 start -->
                     <div class="header" id = "item-name-block" style="justify-content: flex-end;">
-                        <div class = "menu-title" style="text-align: right;">制造舱</div>
+                        <div class = "menu-title" style="text-align: right; width: 70%;">制造舱</div>
                         <button class = "recipe-change-button"/>  
                     </div>
                     <!-- 制造舱按钮 end -->

@@ -332,7 +332,7 @@
             <div class="panel" style= "flex-direction: column;">
                 <div class="header" id = "item-name-block" data-event-click="clickClose()">
                     <button class = "back-button"/>
-                    <div class = "menu-title">选择物流物品</div>
+                    <div class = "menu-title" style="width: 70%;">选择物流物品</div>
                 </div>
 
                 <!-- tag page begin -->
@@ -342,7 +342,7 @@
                 <!-- tag page end -->
 
                 <div class = "draw-separator" style="margin-bottom:0;"/>
-                <div class = "tab-container">
+                <div class = "tab-container" style="height: 10%;">
                     <workbutton data-for = "recipe_menu" data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index + 1 == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'">
                         <div class="workbutton-bg" data-style-background-image = "it.icon" />
                         <div class="catalog-desc">{{it.group}}</div>

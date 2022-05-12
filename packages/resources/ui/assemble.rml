@@ -437,7 +437,7 @@
                         </div>
                         <div class="build-power-info-block">
                             <div class="progress-pic"/>
-                            <div class="progress-bar-block" style = "margin:0 0 1em 0;">
+                            <div class="progress-bar-block" style = "margin:0 0 1em 0; width: 80%; height:50%;">
                                 <div class="progress-background"/>
                             </div>   
                         </div>
