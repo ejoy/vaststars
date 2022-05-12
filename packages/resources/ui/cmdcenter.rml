@@ -470,55 +470,7 @@
                             </div>
                         </div>
                          <!-- 指挥中心建筑信息 end -->
-
-                         <!-- 无人机界面 start -->
-                        <div class="row" data-event-click="ClickDrone()" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 25%; justify-content: center;">
-                            <div class="row" style="width: 35%; justify-content: center;">
-                                <div class="small-item" style='background-image: "textures/construct/drone1.texture";'/>                        
-                                <div class="small-item" style='background-image: "textures/construct/drone1.texture";'/>                        
-                                <div class="small-item" style='background-image: "textures/construct/drone1.texture";'/>                       
-                                <div class="small-item" style='background-image: "textures/construct/drone1.texture";'/>                         
-                                <div class="small-item" style='background-image: "textures/construct/drone1.texture";'/>                         
-                                <div class="small-item" style='background-image: "textures/construct/drone1.texture";'/>                         
-                                <div class="item-add" style="width:9vmin; height:9vmin;"/>
-                            </div>
-                        </div>
-                         <!-- 无人机界面 end -->
                     </div>
-
-                    <!-- 无人机调整界面 start -->
-                    <div class="row" style="align-items: center; width:100%; height:15%; justify-content: center; margin-top: 0.5em;" data-if="drone_interaction">
-                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "textures/construct/drone1.texture";'/>                       
-                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "textures/construct/drone1.texture";'/>                      
-                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "textures/construct/drone1.texture";'/>
-                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "textures/construct/drone1.texture";'/>                       
-                        <button class="item" data-event-click="ClickMachineItem()" style='background-image: "textures/construct/drone1.texture";'/>                        
-                        <button class="item-add" data-event-click="ClickMachineItem()"/>
-                    </div>
-                    <!-- 无人机调整界面 end -->
-
-                    <!-- 无人机添加 start -->
-                    <div class="exchange-region-1" data-if="machine_item" style="flex-direction: column; align-self:center; height: 20%; margin:0;">
-                        <div class = "exchange-title">无人机(98)</div>
-                        <div class="button-exchange-block">
-                            <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
-                                <div class = "button-exchange-arrow"/>
-                                <div class = "button-exchange-text">全部</div>
-                                <div class = "button-exchange-box"/>
-                            </button>
-                            <button class="button-exchange">
-                                <div class = "button-exchange-arrow"/>
-                                <div class = "button-exchange-text">1组</div>
-                                <div class = "button-exchange-box"/>
-                            </button>
-                            <button class="button-exchange">
-                                <div class = "button-exchange-arrow"/>
-                                <div class = "button-exchange-text">1个</div>
-                                <div class = "button-exchange-box"/>
-                            </button>
-                        </div>
-                    </div>
-                    <!-- 无人机添加 end -->
                 </div>
 
 
