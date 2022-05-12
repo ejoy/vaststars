@@ -94,7 +94,10 @@ local function get_detail_panel_property_list(object_id)
     return get_property_list(entity)
 end
 
-local function create(object_id)
+---------------
+local M = {}
+
+function M:create(object_id)
     local object = assert(objects:get(cache_names, object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -111,18 +114,9 @@ local function create(object_id)
     }
 end
 
-local function update(datamodel, param, object_id)
-    assert(false)
-end
-
-local function tick(datamodel, param)
-    local object_id = param[1]
+function M:tick(datamodel, object_id)
     datamodel.detail_panel_property_list = get_detail_panel_property_list(object_id)
     return true
 end
 
-return {
-    create = create,
-    update = update,
-    tick = tick,
-}
+return M

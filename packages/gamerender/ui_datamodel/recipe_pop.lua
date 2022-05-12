@@ -13,7 +13,10 @@ local function get_recipe_index(recipe_menu, recipe_name)
     return 1, 1
 end
 
-local function create(object_id, recipe_name)
+---------------
+local M = {}
+
+function M:create(object_id, recipe_name)
     local recipe_menu = get_recipe_menu()
     local catalog_index = 1
     local recipe_index = 1
@@ -32,7 +35,7 @@ local function create(object_id, recipe_name)
     }
 end
 
-local function update(datamodel, param, object_id, recipe_name)
+function M:update(datamodel, param, object_id, recipe_name)
     if param[1] ~= object_id then
         return
     end
@@ -46,7 +49,4 @@ local function update(datamodel, param, object_id, recipe_name)
     return true
 end
 
-return {
-    create = create,
-    update = update,
-}
+return M
