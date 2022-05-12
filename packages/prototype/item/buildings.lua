@@ -76,7 +76,7 @@ prototype "蒸汽发电机I" {
     icon = "textures/construct/turbine1.texture",
     model = "prefabs/rock.prefab",
     description = "将热能转换成电能的机器",
-    group = "电力",
+    group = "物流",
     order = 120,
 }
 
@@ -136,7 +136,7 @@ prototype "风力发电机I" {
     icon = "textures/construct/wind-turbine.texture",
     model = "prefabs/rock.prefab",
     description = "利用风能转换电能的机器",
-    group = "电力",
+    group = "物流",
     order = 10,
 }
 
@@ -146,7 +146,7 @@ prototype "铁制电线杆" {
     icon = "textures/construct/electric-pole1.texture",
     model = "prefabs/rock.prefab",
     description = "用于传输电力的铁制电杆",
-    group = "电力",
+    group = "物流",
     order = 30,
 }
 
@@ -176,7 +176,7 @@ prototype "太阳能板I" {
     icon = "textures/construct/solar-panel.texture",
     model = "prefabs/rock.prefab",
     description = "用来收集太阳能发电的装置",
-    group = "电力",
+    group = "物流",
     order = 15,
     
 }
@@ -187,7 +187,7 @@ prototype "蓄电池I" {
     icon = "textures/construct/grid-battery.texture",
     model = "prefabs/rock.prefab",
     description = "可充电和放电的蓄能装置",
-    group = "电力",
+    group = "物流",
     order = 19,
 }
 
