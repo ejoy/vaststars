@@ -134,7 +134,7 @@
             local function update_category(category)
                 start.sub_inventory = {}
                 for _, v in ipairs(start.inventory) do
-                    if v.category == category then
+                    if v.category == category or category == "全部" then
                         start.sub_inventory[#start.sub_inventory + 1] = v
                     end
                 end
@@ -228,11 +228,13 @@
                 <div class = "draw-line"/>
 
                 <!-- 物品栏分类页签 start -->
-                <div class = "tab-container" style="height: 10%;">
-                    <workbutton data-for = "item_category" data-event-click="clickCategory(it.category)">
-                        <div class="workbutton-bg" data-style-background-image="it.icon" />
-                        <div class="catalog-desc">{{it.category}}</div>
-                    </workbutton>
+                <div class = "tab-container" style="flex-grow: 1;">
+                    <div data-for = "item_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
+                        <workbutton data-event-click="clickCategory(it.category)" style = "width: 100%;">
+                            <div class="workbutton-bg" data-style-background-image="it.icon" />
+                            <div class="catalog-desc">{{it.category}}</div>
+                        </workbutton>
+                    </div>
                 </div>
                 <!-- 物品栏分类页签 end -->
             </div>
