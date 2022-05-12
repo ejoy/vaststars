@@ -64,7 +64,7 @@
     <body>
         <div class="item-container-region" style="align-items: center;" data-model="start">
             <div class="panel" style="width:40%; height:40%; align-items: center;justify-content: flex-start;">
-                <div class = "menu-title-block">发车间隔</div>
+                <div class = "menu-title-block" style="height: 20%;">发车间隔</div>
                 <div class ="change-desc-block">
                     <button class="button-change" style = "width: 15.00vmin; height: 7.33vmin; background-color: rgb(112,48,160); border: 0.20vmin rgb(255,249,214);">
                         <div class = "button-change-text">-1秒</div>

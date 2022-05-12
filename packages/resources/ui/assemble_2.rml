@@ -9,7 +9,7 @@
             <div class="panel" style="width: 50%;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button" data-event-click="ClickClose()"/>
-                    <div class = "menu-title">组装机</div>
+                    <div class = "menu-title" style="width: 70%;">组装机</div>
                 </div>
                 <div style="border-bottom: 1px rgb(89, 73, 39);"/>
                 <div class="column" data-if="mode == 'init'" style="width: 100%;height: 95%;">
@@ -43,7 +43,7 @@
                             <div class="build-model"/>
                             <div class="power-block" data-if = "false">
                                 <div class="progress-pic"/>
-                                <div class="progress-bar-block" style = "margin:0 0.4em 0.2em 0;">
+                                <div class="progress-bar-block" style = "margin:0 0.4em 0.2em 0; width: 80%; height:50%;">
                                     <div class="progress-background"/>
                                 </div>   
                             </div>
@@ -109,7 +109,7 @@
                     </div>
                     <!-- tag page end -->
 
-                    <div class = "tab-container">
+                    <div class = "tab-container" style="height: 10%;">
                         <workbutton>
                             <div class="workbutton-bg" style='background-image:"textures/construct/logisitic1.texture";'/>
                             <div class="catalog-desc">物流</div>     
@@ -127,7 +127,7 @@
                             <div class="catalog-desc">金属</div>
                         </workbutton>
                     </div>
-                    <div class = "tab-container">
+                    <div class = "tab-container" style="height: 10%;">
                         <workbutton>
                             <div class="workbutton-bg" style='background-image:"textures/construct/processor.texture";'/>
                             <div class="catalog-desc">器件</div>
@@ -153,7 +153,7 @@
             <!-- 右边面板 begin -->
             <div class="panel" style="width: 50%;">
                 <div class="header" style="justify-content: flex-end;" data-if="mode == 'init'">
-                    <div class = "menu-title" style="text-align: right; font-size: 6vmin; -webkit-text-stroke: 0.05vmin rgb(0, 0, 0);">配方 : {{recipe_name}}</div>
+                    <div class = "menu-title" style="text-align: right; font-size: 6vmin; -webkit-text-stroke: 0.05vmin rgb(0, 0, 0); width: 70%;">配方 : {{recipe_name}}</div>
                     <button class = "recipe-change-button" data-event-click="clickRecipe()"/>
                 </div>
                 <div class="column" style="width: 100%;height: 95%;" data-if="mode == 'init'">
@@ -193,7 +193,7 @@
 
                 <!-- 调整材料 begin -->
                 <div class="header" style="justify-content: flex-end;" data-if="mode == 'material'">
-                    <div class = "menu-title-2">调整材料</div>
+                    <div class = "menu-title-2" style="width: 70%;">调整材料</div>
                     <button class = "back-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>
                 </div>
                 <div class="row" style="justify-content: center; align-items: center; width:100%; height:28%;" data-if="mode == 'material'">
@@ -219,8 +219,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="exchange-region-1" style="flex-direction: column; align-self:center; margin:0;" data-if="mode == 'material'">
-                    <div class = "exchange-title">机器爪(98)</div>
+                <div class="exchange-region-1" style="flex-direction: column; align-self:center; margin:0; height:25%;" data-if="mode == 'material'">
+                    <div class = "exchange-title" style="height:35%;">机器爪(98)</div>
                     <div class="button-exchange-block">
                         <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
                             <div class = "button-exchange-arrow"/>
@@ -243,7 +243,7 @@
 
                 <!-- 调整燃料 begin -->
                 <div class="header"style="justify-content: flex-end;" data-if="mode == 'fuel'">
-                    <div class = "menu-title-2">调整燃料</div>
+                    <div class = "menu-title-2" style="width: 70%;">调整燃料</div>
                     <button class = "back-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>
                 </div>
                 <div class="column" style="width: 100%; height: 15%;align-items: flex-start; justify-content: center;" data-if="mode == 'fuel'">
@@ -276,7 +276,7 @@
 
                 <!-- 调整插件 begin -->
                 <div class="header"style="justify-content: flex-end;" data-if="mode == 'plugin'">
-                    <div class = "menu-title-2">调整插件</div>
+                    <div class = "menu-title-2" style="width: 70%;">调整插件</div>
                     <button class = "back-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>
                 </div>
                 <div class="row" style="align-items: center; width:100%; height:15%; justify-content: center;" data-if="mode == 'plugin'">
