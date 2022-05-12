@@ -415,7 +415,7 @@
             </div>
             <div class="panel"> 
                 <div class="header" style="justify-content: flex-end;" data-if="building_info_flag"> 
-                    <div class = "menu-title" style="text-align: right;">运输站</div>
+                    <div class = "menu-title" style="text-align: right; padding-right: 0.2em;">运输站</div>
                 </div>
                 <div class="header"style="justify-content: flex-end;" data-if="!building_info_flag">
                     <div class = "menu-title-2">调整运输车</div>
@@ -527,7 +527,44 @@
                         </div>
                     </div>
                 </div>
-                <div class="turck-info-region" data-if="building_info_flag" data-event-click="ClickItemInfo()">
+                <div class="turck-info-region" data-if="building_info_flag" data-event-click="ClickItemInfo()" style="justify-content: center;">
+                    <div class="row">
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                    </div>
                     <div class="row">
                         <button class="truck-block">
                             <div class="truck-pic"/>                         
