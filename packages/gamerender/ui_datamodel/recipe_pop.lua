@@ -45,8 +45,6 @@ function M:update(datamodel, param, object_id, recipe_name)
         datamodel.recipe_name = recipe_name
     end
     datamodel.items = datamodel.recipe_menu[datamodel.catalog_index].item or {}
-
-    return true
 end
 
 return M

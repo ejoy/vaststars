@@ -10,6 +10,13 @@ function m:pub(msg)
     window.extern.postMessage(json_encode(ud))
 end
 
+function m:send(msg)
+    local ud = {}
+    ud.event = "__SEND"
+    ud.ud = msg
+    window.extern.postMessage(json_encode(ud))
+end
+
 function m:open(url, ...)
     local ud = {}
     ud.event = "__OPEN"

@@ -73,6 +73,10 @@ function source:diff(obj)
 	return changeset
 end
 
+function source:changed(obj)
+	return (next(obj.__change) ~= nil)
+end
+
 function source:reset(obj)
 	obj.__last = {}
 	obj.__change = {}

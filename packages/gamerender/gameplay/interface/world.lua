@@ -26,11 +26,11 @@ function M:set_recipe(world, e, recipe_name)
     local init_fluids = irecipe:get_init_fluids(recipe_typeobject)
 
     if init_fluids then
-        if #typeobject.fluidboxes.input ~= #init_fluids.input then
+        if #typeobject.fluidboxes.input < #init_fluids.input then
             log.error(("failed to set recipe: input %s %s"):format(#typeobject.fluidboxes.input, #init_fluids.input))
             return
         end
-        if #typeobject.fluidboxes.output ~= #init_fluids.output then
+        if #typeobject.fluidboxes.output < #init_fluids.output then
             log.error(("failed to set recipe: output %s %s"):format(#typeobject.fluidboxes.output, #init_fluids.output))
             return
         end

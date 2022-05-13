@@ -11,17 +11,12 @@ function M:create()
     }
 end
 
-function M:update()
-end
-
 function M:fps_text(datamodel, text)
     datamodel.fps_text = text
-    return true
 end
 
 function M:drawcall_text(datamodel, text)
     datamodel.drawcall_text = text
-    return true
 end
 
 return M

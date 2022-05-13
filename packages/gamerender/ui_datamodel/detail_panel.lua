@@ -116,7 +116,6 @@ end
 
 function M:tick(datamodel, object_id)
     datamodel.detail_panel_property_list = get_detail_panel_property_list(object_id)
-    return true
 end
 
 return M

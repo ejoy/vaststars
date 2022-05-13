@@ -65,7 +65,7 @@ function M:tick(datamodel, object_id, recipe_name)
     local object = assert(objects:get(cache_names, object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
-        return {}
+        return
     end
 
     -- 更新组装机 成分 与 产出材料 的显示个数
@@ -78,23 +78,25 @@ function M:tick(datamodel, object_id, recipe_name)
     end
 
     local recipe_ingredients_count = {}
-    for index, v in ipairs(datamodel.recipe_ingredients) do
-        local c, n = gameplay_core.get_world():container_get(e.assembling.container, index)
-        if c then
-            recipe_ingredients_count[index] = {icon = v.icon, count = n, need_count = v.count}
-        else
-            recipe_ingredients_count[index] = {icon = v.icon, count = 0, need_count = v.count}
-        end
-    end
-
     local recipe_results_count = {}
-    for index, v in ipairs(datamodel.recipe_results) do
-        local c, n = gameplay_core.get_world():container_get(e.assembling.container, #datamodel.recipe_ingredients + index)
-        if c then
-            recipe_results_count[index] = {icon = v.icon, count = n, need_count = v.count}
-        else
-            recipe_results_count[index] = {icon = v.icon, count = 0, need_count = v.count}
+    if e.assembling.container ~= 0xFFFF then
+        for index, v in ipairs(datamodel.recipe_ingredients) do
+            local c, n = gameplay_core.get_world():container_get(e.assembling.container, index)
+            if c then
+                recipe_ingredients_count[index] = {icon = v.icon, count = n, need_count = v.count}
+            else
+                recipe_ingredients_count[index] = {icon = v.icon, count = 0, need_count = v.count}
+            end
+        end
 
+        for index, v in ipairs(datamodel.recipe_results) do
+            local c, n = gameplay_core.get_world():container_get(e.assembling.container, #datamodel.recipe_ingredients + index)
+            if c then
+                recipe_results_count[index] = {icon = v.icon, count = n, need_count = v.count}
+            else
+                recipe_results_count[index] = {icon = v.icon, count = 0, need_count = v.count}
+
+            end
         end
     end
 
@@ -120,15 +122,12 @@ function M:tick(datamodel, object_id, recipe_name)
             break
         end
     end
-
-    return true
 end
 
 function M:update(datamodel, object_id, recipe_name)
     for k, v in pairs(get(object_id, recipe_name)) do
         datamodel[k] = v
     end
-    return true
 end
 
 return M

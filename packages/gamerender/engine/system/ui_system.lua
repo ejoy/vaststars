@@ -17,6 +17,16 @@ local create_template = ecs.require "ui_datamodel.init"
 local window_bindings = {} -- = {[url] = { w = xx, datamodel = xx, }, ...}
 local datamodel_changed = {}
 local datamodel_tick = {}
+local stage_ui_update = {}
+local stage_camera_usage = {}
+
+local function create_ui_mailbox(url)
+    local ui_mailbox = {}
+    function ui_mailbox:sub(message)
+        return world:sub {"rmlui_message_send", url, table.unpack(message)}
+    end
+    return ui_mailbox
+end
 
 local function open(url, ...)
     assert(type(url) == "string")
@@ -46,28 +56,49 @@ local function open(url, ...)
             world:pub {"rmlui_message_close", url}
         elseif res.event == "__OPEN" then
             world:pub {"rmlui_message", res.event, table.unpack(res.ud)}
+        elseif res.event == "__SEND" then
+            world:pub {"rmlui_message_send", url, table.unpack(res.ud)}
         else
             world:pub {"rmlui_message", res.event, res.ud}
         end
     end)
 
-    binding.template = create_template(url)
+    local func = create_template(url)
+    if not func then
+        return
+    end
+
+    binding.template = func(ecs, create_ui_mailbox(url))
     if not binding.template then
         return
+    end
+
+    function binding.template:flush()
+        local ud = {}
+        ud.event = "__DATAMODEL"
+        ud.ud = binding.source:diff(binding.datamodel)
+        binding.window.postMessage(json_encode(ud))
+
+        datamodel_changed[url] = nil
     end
 
     binding.param = {...}
     binding.source = syncobj.source()
     binding.datamodel = binding.source:new(binding.template:create(...))
 
-    local ud = {}
-    ud.event = "__DATAMODEL"
-    ud.ud = binding.source:diff(binding.datamodel)
-    binding.window.postMessage(json_encode(ud))
+    binding.template:flush()
     window_bindings[url] = binding
 
     if binding.template.tick then
         datamodel_tick[url] = true
+    end
+
+    if binding.template.stage_ui_update then
+        stage_ui_update[url] = true
+    end
+
+    if binding.template.state_camera_usage then
+        stage_camera_usage[url] = true
     end
 end
 
@@ -84,6 +115,8 @@ local function close(url)
     window_bindings[url] = nil
     datamodel_changed[url] = nil
     datamodel_tick[url] = nil
+    stage_ui_update[url] = nil
+    stage_camera_usage[url] = nil
 end
 
 local ui_events = {
@@ -97,7 +130,7 @@ local function gettime()
     return t * 10
 end
 
-local ui_system = ecs.system 'ui_system'
+local ui_system = ecs.system "ui_system"
 function ui_system.ui_update()
     local event, func
 
@@ -110,6 +143,8 @@ function ui_system.ui_update()
             window_bindings[url] = nil
             datamodel_changed[url] = nil
             datamodel_tick[url] = nil
+            stage_ui_update[url] = nil
+            stage_camera_usage[url] = nil
         end
     end
 
@@ -132,7 +167,24 @@ function ui_system.ui_update()
 
     for url in pairs(datamodel_tick) do
         local binding = window_bindings[url]
-        if binding and binding.template:tick(binding.datamodel, table_unpack(binding.param)) then
+        binding.template:tick(binding.datamodel, table_unpack(binding.param))
+        if binding.source:changed(binding.datamodel) then
+            datamodel_changed[url] = true
+        end
+    end
+
+    for url in pairs(stage_ui_update) do
+        local binding = window_bindings[url]
+        binding.template:stage_ui_update(binding.datamodel)
+        if binding.source:changed(binding.datamodel) then
+            datamodel_changed[url] = true
+        end
+    end
+
+    for url in pairs(stage_camera_usage) do
+        local binding = window_bindings[url]
+        binding.template:stage_camera_usage(binding.datamodel)
+        if binding.source:changed(binding.datamodel) then
             datamodel_changed[url] = true
         end
     end
@@ -141,7 +193,7 @@ function ui_system.ui_update()
     for url in pairs(datamodel_changed) do
         local binding = window_bindings[url]
         if binding then
-            if current - binding.last_timestamp < 500 then
+            if current - binding.last_timestamp < 1000 then
                 goto continue
             end
             binding.last_timestamp = current
@@ -157,6 +209,13 @@ function ui_system.ui_update()
             datamodel_changed[url] = nil
         end
         ::continue::
+    end
+end
+
+function ui_system.camera_usage()
+    for url in pairs(stage_camera_usage) do
+        local binding = window_bindings[url]
+        binding.template:stage_camera_usage(binding.datamodel)
     end
 end
 
@@ -181,7 +240,8 @@ function iui.update(url, event, ...)
         return
     end
 
-    if func(binding.template, binding.datamodel, ...) then
+    func(binding.template, binding.datamodel, ...)
+    if binding.source:changed(binding.datamodel) then
         datamodel_changed[url] = true
     end
 end
