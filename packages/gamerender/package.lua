@@ -14,6 +14,7 @@ return {
         "ant.render",
         "ant.json",
         "ant.asset",
+        "ant.efk",
         "vaststars.gameplay",
         "vaststars.prototype",
         "vaststars.config",
