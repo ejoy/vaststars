@@ -176,7 +176,7 @@
                     <div class="item-display">
                         <div class="item">
                             <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
-                            <div class="item-title">机器抓</div>
+                            <div class="item-title" style="top:14%;">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
@@ -189,7 +189,7 @@
                     <div class="item-display">
                         <div class="item">
                             <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
-                            <div class="item-title">机器抓</div>
+                            <div class="item-title" style="top:14%;">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
@@ -202,7 +202,7 @@
                     <div class="item-display">
                         <div class="item">
                             <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
-                            <div class="item-title">机器抓</div>
+                            <div class="item-title" style="top:14%;">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
@@ -215,7 +215,7 @@
                     <div class="item-display">
                         <div class="item">
                             <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
-                            <div class="item-title">机器抓</div>
+                            <div class="item-title" style="top:14%;">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
@@ -228,7 +228,7 @@
                     <div class="item-display">
                         <div class="item">
                             <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
-                            <div class="item-title">机器抓</div>
+                            <div class="item-title" style="top:14%;">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
@@ -241,7 +241,7 @@
                     <div class="item-display">
                         <div class="item">
                             <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
-                            <div class="item-title">机器抓</div>
+                            <div class="item-title" style="top:14%;">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
@@ -254,7 +254,7 @@
                     <div class="item-display">
                         <div class="item">
                             <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
-                            <div class="item-title">机器抓</div>
+                            <div class="item-title" style="top:14%;">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>
@@ -267,7 +267,7 @@
                     <div class="item-display">
                         <div class="item">
                             <div class="item-icon" style='background-image:"textures/construct/hand.texture";'/>
-                            <div class="item-title">机器抓</div>
+                            <div class="item-title" style="top:14%;">机器抓</div>
                         </div>
                         <div class="item-desc-display">
                             <div>总数：999</div>

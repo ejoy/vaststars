@@ -18,6 +18,12 @@ function M:pickup_material(world, e)
         return
     end
 
+    local headquater_e = iworld:get_headquater_entity(world)
+    if not headquater_e then
+        log.error("no headquater")
+        return
+    end
+
     local recipe = e.assembling.recipe
     local typeobject = iprototype:query(recipe)
     local recipe_ingredients = irecipe:get_elements(typeobject.ingredients)
@@ -28,6 +34,10 @@ function M:pickup_material(world, e)
         if c then
             if not world:container_pickup(e.assembling.container, c, n) then
                 log.error(("failed to pickup `%s` `%s`"):format(c, n))
+            else
+                if not world:container_place(headquater_e.chest.container, c, n) then
+                    log.error(("failed to place `%s` `%s`"):format(n, c))
+                end
             end
         end
     end
@@ -44,6 +54,12 @@ function M:place_material(world, e)
     local recipe = e.assembling.recipe
     if recipe == 0 then
         log.error("the recipe hasn't been set")
+        return
+    end
+
+    local headquater_e = iworld:get_headquater_entity(world)
+    if not headquater_e then
+        log.error("no headquater")
         return
     end
 
@@ -65,12 +81,6 @@ function M:place_material(world, e)
 
     if not next(assembling_item_counts) then
         log.error("no material place")
-        return
-    end
-
-    local headquater_e = iworld:get_headquater_entity(world)
-    if not headquater_e then
-        log.error("no headquater")
         return
     end
 

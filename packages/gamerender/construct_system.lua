@@ -182,8 +182,10 @@ function construct_sys:data_changed()
         local typeobject = iprototype:queryByName("entity", object.prototype_name)
         if iprototype:has_type(typeobject.type, "assembling") then
             iui.open("assemble_2.rml", vsobject_id, recipe_name)
+        elseif iprototype:has_type(typeobject.type, "chest") then
+            iui.open("cmdcenter.rml", vsobject_id)
         else
-            log.error("not assembling")
+            log.error("no detail")
         end
     end
 

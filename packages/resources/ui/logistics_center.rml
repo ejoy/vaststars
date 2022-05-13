@@ -258,7 +258,7 @@
             <div class="panel">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button"/>
-                    <div class = "menu-title">物流中心</div>
+                    <div class = "menu-title" style="width: 70%;">物流中心</div>
                 </div>
                 <div class="column" data-if="building_info_flag" style="width: 100%;height: 95%;">
                     <div class="build-info-reigon">
@@ -296,7 +296,7 @@
                             <div class="build-model"/>
                             <div class="power-block">
                                 <div class="progress-pic"/>
-                                <div class="progress-bar-block" style = "margin:0 0.4em 0.2em 0;">
+                                <div class="progress-bar-block" style = "margin:0 0.4em 0.2em 0; width: 80%; height:50%;">
                                     <div class="progress-background"/>
                                 </div>   
                             </div>
@@ -335,7 +335,7 @@
                 </div>
                 <div class="item-container" data-if="!building_info_flag">
                     <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
-                        <div class = "item-page-block" data-style-top="page_top + 'px'" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
+                        <div class = "item-page-block" style="width:90%; height:100%;" data-style-top="page_top + 'px'" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
                             <div class ="row">
                                 <div style="width:95%; height:100%;" data-for="virtual_pages">
                                     <div data-style-left="(it_index + 1) * 100 + '%'"/>
@@ -344,7 +344,7 @@
                             <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up(it.data.id, it.row, it.top)" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
                                 <button class="item">
                                     <div class="item-count">99</div>                          
-                                    <!--div class="item-title">机器爪</div>-->
+                                    <!--div class="item-title" style="top:14%;">机器爪</div>-->
                                 </button>
                                 <!--<div>{{it.data.id}}</div>-->
                             </div>
@@ -376,7 +376,7 @@
                     </div>         
                 </div>
                 <div class = "draw-line"/>
-                <div class = "tab-container" data-if="!building_info_flag">
+                <div class = "tab-container" style="height: 10%;" data-if="!building_info_flag">
                     <workbutton>
                         <div class="workbutton-bg" style='background-image:"textures/construct/logisitic1.texture";'/>
                         <div class="catalog-desc">物流</div>
@@ -394,7 +394,7 @@
                         <div class="catalog-desc">金属</div>
                     </workbutton>
                 </div>
-                <div class = "tab-container" data-if="!building_info_flag">
+                <div class = "tab-container" style="height: 10%;" data-if="!building_info_flag">
                     <workbutton>
                         <div class="workbutton-bg" style='background-image:"textures/construct/processor.texture";'/>
                         <div class="catalog-desc">器件</div>
@@ -415,10 +415,10 @@
             </div>
             <div class="panel"> 
                 <div class="header" style="justify-content: flex-end;" data-if="building_info_flag"> 
-                    <div class = "menu-title" style="text-align: right;">运输站</div>
+                    <div class = "menu-title" style="text-align: right; padding-right: 0.2em; width: 70%;">运输站</div>
                 </div>
                 <div class="header"style="justify-content: flex-end;" data-if="!building_info_flag">
-                    <div class = "menu-title-2">调整运输车</div>
+                    <div class = "menu-title-2" style="width: 70%;">调整运输车</div>
                     <button class = "back-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>
                 </div>
                 <div class="turck-info-region" style = "height:60%;" data-if="!building_info_flag">
@@ -459,7 +459,7 @@
                             </div>
                         </button>
                     </div>
-                    <div class="exchange-region-1" data-if="truck_interaction_1 && !building_info_flag">
+                    <div class="exchange-region-1" style="height:25%;" data-if="truck_interaction_1 && !building_info_flag">
                         <div class="button-exchange-block">
                             <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
                                 <div class = "button-exchange-arrow"/>
@@ -507,7 +507,7 @@
                             <div class="truck-pic"  style='width:70%; height:70%; background-image: "textures/cmdcenter/add.texture";'/>                         
                         </button>
                     </div>
-                    <div class="exchange-region-1" data-if="truck_interaction_2 && !building_info_flag">
+                    <div class="exchange-region-1" style="height:25%;" data-if="truck_interaction_2 && !building_info_flag">
                         <div class="button-exchange-block">
                             <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
                                 <div class = "button-exchange-arrow"/>
@@ -527,7 +527,44 @@
                         </div>
                     </div>
                 </div>
-                <div class="turck-info-region" data-if="building_info_flag" data-event-click="ClickItemInfo()">
+                <div class="turck-info-region" data-if="building_info_flag" data-event-click="ClickItemInfo()" style="justify-content: center;">
+                    <div class="row">
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                        <button class="truck-block">
+                            <div class="truck-pic"/>                         
+                            <div class="truck-info">
+                                <div class="truck-info-pic"/>
+                                <div class="truck-info-num">9/10</div>
+                            </div>
+                        </button>
+                    </div>
                     <div class="row">
                         <button class="truck-block">
                             <div class="truck-pic"/>                         

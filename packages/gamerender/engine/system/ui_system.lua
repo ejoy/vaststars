@@ -6,6 +6,9 @@ local json = import_package "ant.json"
 local json_encode = json.encode
 local json_decode = json.decode
 local syncobj = require "utility.syncobj"
+local ltask = require "ltask"
+local ltask_now = ltask.now
+local table_unpack = table.unpack
 
 local rmlui_message_mb = world:sub {"rmlui_message"}
 local rmlui_message_close_mb = world:sub {"rmlui_message_close"}
@@ -13,6 +16,7 @@ local ui_message_mb = world:sub {"ui_message"}
 local create_template = ecs.require "ui_datamodel.init"
 local window_bindings = {} -- = {[url] = { w = xx, datamodel = xx, }, ...}
 local datamodel_changed = {}
+local datamodel_tick = {}
 
 local function open(url, ...)
     assert(type(url) == "string")
@@ -24,6 +28,7 @@ local function open(url, ...)
     end
 
     binding = {}
+    binding.last_timestamp = 0
     binding.window = irmlui.open(url)
     binding.window.addEventListener("message", function(event)
         if not event.data then
@@ -46,21 +51,24 @@ local function open(url, ...)
         end
     end)
 
-    local template = create_template(url)
-    if not template then
+    binding.template = create_template(url)
+    if not binding.template then
         return
     end
 
-    binding.template = template
     binding.param = {...}
     binding.source = syncobj.source()
-    binding.datamodel = binding.source:new(template.create(...))
+    binding.datamodel = binding.source:new(binding.template:create(...))
 
     local ud = {}
     ud.event = "__DATAMODEL"
     ud.ud = binding.source:diff(binding.datamodel)
     binding.window.postMessage(json_encode(ud))
     window_bindings[url] = binding
+
+    if binding.template.tick then
+        datamodel_tick[url] = true
+    end
 end
 
 local function pub(msg)
@@ -74,6 +82,8 @@ local function close(url)
     end
     w:close()
     window_bindings[url] = nil
+    datamodel_changed[url] = nil
+    datamodel_tick[url] = nil
 end
 
 local ui_events = {
@@ -81,6 +91,11 @@ local ui_events = {
     __PUB = pub,
     -- __CLOSE = close,
 }
+
+local function gettime()
+    local _, t = ltask_now() --10ms
+    return t * 10
+end
 
 local ui_system = ecs.system 'ui_system'
 function ui_system.ui_update()
@@ -94,6 +109,7 @@ function ui_system.ui_update()
             binding.window:close()
             window_bindings[url] = nil
             datamodel_changed[url] = nil
+            datamodel_tick[url] = nil
         end
     end
 
@@ -114,17 +130,22 @@ function ui_system.ui_update()
         end
     end
 
-    for url, binding in pairs(window_bindings) do
-        if binding.template.tick then
-            if binding.template.tick(binding.datamodel, binding.param) then
-                datamodel_changed[url] = true
-            end
+    for url in pairs(datamodel_tick) do
+        local binding = window_bindings[url]
+        if binding and binding.template:tick(binding.datamodel, table_unpack(binding.param)) then
+            datamodel_changed[url] = true
         end
     end
 
+    local current = gettime()
     for url in pairs(datamodel_changed) do
         local binding = window_bindings[url]
         if binding then
+            if current - binding.last_timestamp < 500 then
+                goto continue
+            end
+            binding.last_timestamp = current
+
             local datamodel = binding.datamodel
             local source = binding.source
             local window = binding.window
@@ -133,9 +154,10 @@ function ui_system.ui_update()
             ud.event = "__DATAMODEL"
             ud.ud = source:diff(datamodel)
             window.postMessage(json_encode(ud))
+            datamodel_changed[url] = nil
         end
+        ::continue::
     end
-    datamodel_changed = {}
 end
 
 local iui = ecs.interface "iui"
@@ -147,23 +169,20 @@ function iui.close(url)
     world:pub {"rmlui_message", "__CLOSE", url}
 end
 
-function iui.set_datamodel(url, k, v)
+function iui.update(url, event, ...)
     local binding = window_bindings[url]
     if not binding then
         return
     end
 
-    datamodel_changed[url] = true
-    binding.datamodel[k] = v
-end
-
-function iui.update_datamodel(url, ...)
-    local binding = window_bindings[url]
-    if not binding then
+    local func = binding.template[event]
+    if not func then
+        log.error(("can not found event `%s`"):format(event))
         return
     end
-    local r = binding.template.update(binding.datamodel, binding.param, ...)
-    if r then
-        datamodel_changed[url] = r
+
+    if func(binding.template, binding.datamodel, ...) then
+        datamodel_changed[url] = true
     end
 end
+

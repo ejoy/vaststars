@@ -73,13 +73,11 @@ button:hover {
 	-webkit-text-stroke: 0.20vmin rgb(0, 112, 192); 
 	font-size:200%;
 	justify-content: flex-start;
-	width: 70%;
 }
 .menu-title-2 {
 	-webkit-text-stroke: 0.15vmin rgb(89, 73, 39);
 	font-size:200%;
 	justify-content: flex-start;
-	width: 70%;
 	text-align: right; 
 	color:rgb(246, 142, 14);
 }
@@ -131,7 +129,6 @@ workbutton {
 }
 .item-title {
 	text-align: center;
-	top:14%;
 	background-color: rgb(246, 237, 189);
 	border-radius: 0.67vmin;
 	color:rgb(73, 60, 32);
@@ -163,12 +160,10 @@ workbutton {
 }
 /*tab区域*/
 .tab-container {
-	margin:0.1rem auto;
 	flex-direction: row;
 	justify-content: space-evenly;
-	align-items:flex-start;
+	align-content: space-evenly;
 	width:100%;
-	height: 10%;
 	flex-wrap: wrap;
 }
 .catalog-desc {
@@ -205,24 +200,9 @@ workbutton {
 /*右侧建筑信息栏*/
 .build-info-block {
 	width: 100%;
-	height: 30%;
 	flex-direction: row;
 	align-items: center;
 	justify-content: flex-start;
-}
-.build-picture-block {
-	margin-left: 0.5em;
-	flex-direction: column;
-	align-items: center;
-	width: 100%;
-	height:70%;
-}
-.build-power-info-block {
-	margin-left: 0.5em;
-	flex-direction: row;
-	align-items: center;
-	width: 100%;
-	height:30%;
 }
 .bulid-status-info {
 	margin-top: 1.5em;
@@ -248,8 +228,6 @@ workbutton {
 }
 .progress-bar-block {
 	margin:0 0 0.05em 0;
-	width: 80%;
-	height:50%;
 	justify-content: flex-start;
 	border: 0.13vmin #fff;
 }
@@ -280,8 +258,6 @@ workbutton {
 .item-page-block {
 	margin-left:2em;
 	transition: left 0.5s linear-out; 
-	width:90%;
-	height:100%;
 }
 /*建筑模型和信息*/
 .build-info-reigon {
@@ -335,19 +311,9 @@ workbutton {
 	background-image: "textures/construct/insert1.texture";
 }
 /*物品按钮弹出框*/
-.exchange-region-right {
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	width:100%;
-	height:25%;
-	background-color: rgb(40, 40, 40);
-	border: 0.22vmin rgb(89, 73, 39);
-}
 .exchange-title {
 	font-size: 42px;
 	text-align: center;
-	height:35%;
 }
 .button-exchange-block {
 	flex-direction: row;
@@ -389,7 +355,6 @@ workbutton {
 }
 .exchange-region-1 {
 	margin:0.2em auto;
-	height:25%;
 	width: 100%;    
 	background-color: rgb(40, 40, 40);
 	border: 0.22vmin rgb(89, 73, 39);
@@ -398,7 +363,6 @@ workbutton {
 	background-color: rgb(203, 118, 24);
 	text-align: center;
 	width: 100%; 
-	height: 20%;
 	font-size: 4.80vmin;
 	-webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
 }
@@ -425,7 +389,6 @@ workbutton {
 .station-name-block {
 	background-color: rgb(44, 32, 18);
 	width: 100%;
-	height:10%;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
@@ -435,7 +398,6 @@ workbutton {
 .route-name-block {
 	background-color: rgb(203, 118, 24);
 	width: 100%;
-	height:5%;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
@@ -444,7 +406,6 @@ workbutton {
 }
 .route-change-block {
 	width: 100%;
-	height:25%;
 	flex-direction: column;
 	align-items: flex-start;
 	border: 0.10vmin rgb(89, 73, 39);
@@ -453,7 +414,6 @@ workbutton {
 }
 .route-button-block {
 	width: 100%;
-	height:10%;
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-evenly;
@@ -476,8 +436,6 @@ workbutton {
 	font-size: 3.73vmin;
 	background-size: cover;
 	border-radius: 0.27vmin;
-	width: 32%;
-	height:12%
 }
 .two-route-block {
 	flex-direction: column;
@@ -488,7 +446,6 @@ workbutton {
 	background-size: cover;
 	border-radius: 0.27vmin;
 	width: 100%;
-	height:80%;
 }
 .change-button-block {
 	flex-direction: row;
@@ -497,7 +454,6 @@ workbutton {
 	background-size: cover;
 	border-radius: 0.27vmin;
 	width: 100%;
-	height:80%;
 }
 .change-button {
 	width: 10.67vmin;

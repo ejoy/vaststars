@@ -209,7 +209,7 @@
             <div class="panel" style= "flex-direction: column;">
                 <div class="header" id = "item-name-block" data-event-click="clickClose()">
                     <button class = "back-button"/>
-                    <div class = "menu-title">修改配方</div>
+                    <div class = "menu-title" style="width: 70%;">修改配方</div>
                 </div>
 
                 <!-- tag page begin -->
@@ -219,7 +219,7 @@
                 <!-- tag page end -->
 
                 <div class = "draw-line"/>
-                <div class = "tab-container">
+                <div class = "tab-container" style="height: 10%;">
                     <workbutton data-for = "recipe_menu" data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index + 1 == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'">
                         <div class="workbutton-bg" data-style-background-image = "it.icon" />
                         <div class="catalog-desc">{{it.group}}</div>
@@ -239,7 +239,7 @@
                     </div>
                 </div>
                 <div class = "recipe-change-block">
-                    <div class = "pic-block">
+                    <div class = "pic-block" style="width: 32%; height:12%;">
                         <div class = "small-bg" style='background-image: "textures/road_net/big_bag.texture";'/>
                         <div class = "recipe-name-text">原料</div>
                     </div>
@@ -254,7 +254,7 @@
                     </div>
                 </div>
                 <div class = "recipe-change-block">
-                    <div class = "pic-block">
+                    <div class = "pic-block" style="width: 32%; height:12%;">
                         <div class = "small-bg" style='background-image: "textures/science/whitebox.texture";'/>
                         <div class = "recipe-name-text">成品</div>
                     </div> 

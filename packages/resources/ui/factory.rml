@@ -307,12 +307,12 @@
             <div class="panel" style="flex-direction: column;">
                 <div class = "header" id = "item-name-block">
                     <button class = "back-button"/>
-                    <div class = "menu-title">制造舱</div>
+                    <div class = "menu-title" style="width: 70%;">制造舱</div>
                     <button class = "find-button"/>
                 </div>
                 <div class="item-container">
                     <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
-                        <div class = "item-page-block" data-style-top="page_top + 'px'" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
+                        <div class = "item-page-block" style="width:90%; height:100%;" data-style-top="page_top + 'px'" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
                             <div class ="row">
                                 <div style="width:95%; height:100%;" data-for="virtual_pages">
                                     <div data-style-left="(it_index + 1) * 100 + '%'"/>
@@ -353,7 +353,7 @@
                     </div>         
                 </div>
                 <div class = "draw-line"/>
-                <div class = "tab-container">
+                <div class = "tab-container" style="height: 10%;">
                     <workbutton>
                         <div class="workbutton-bg" style='background-image:"textures/construct/logisitic1.texture";'/>
                         <div class="catalog-desc">物流</div>
@@ -371,7 +371,7 @@
                         <div class="catalog-desc">金属</div>
                     </workbutton>
                 </div>
-                <div class = "tab-container">
+                <div class = "tab-container" style="height: 10%;">
                     <workbutton>
                         <div class="workbutton-bg" style='background-image:"textures/construct/processor.texture";'/>
                         <div class="catalog-desc">器件</div>

@@ -54,23 +54,14 @@ local function get_percent(process, total)
     return (total - process) / total
 end
 
-local function create(object_id, recipe_name)
+---------------
+local M = {}
+
+function M:create(object_id, recipe_name)
     return get(object_id, recipe_name)
 end
 
-local function update(datamodel, param, object_id, recipe_name)
-    if param[1] ~= object_id then
-        return
-    end
-
-    for k, v in pairs(get(object_id, recipe_name)) do
-        datamodel[k] = v
-    end
-    return true
-end
-
-local function tick(datamodel, param)
-    local object_id = param[1]
+function M:tick(datamodel, object_id, recipe_name)
     local object = assert(objects:get(cache_names, object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -111,7 +102,7 @@ local function tick(datamodel, param)
     datamodel.recipe_results_count = recipe_results_count
     datamodel.process = ("%0.0f%%"):format(get_percent(assembling.process, total_process) * 100)
 
-    -- 更新背包界面对应的道具个数
+    -- 更新背包界面对应的道具
     for e in gameplay_core.select "chest:in entity:in" do
         local typeobject = iprototype:query(e.entity.prototype)
         if typeobject.headquater then
@@ -133,8 +124,11 @@ local function tick(datamodel, param)
     return true
 end
 
-return {
-    create = create,
-    update = update,
-    tick = tick,
-}
+function M:update(datamodel, object_id, recipe_name)
+    for k, v in pairs(get(object_id, recipe_name)) do
+        datamodel[k] = v
+    end
+    return true
+end
+
+return M

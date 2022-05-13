@@ -8,5 +8,5 @@ prototype "铁制电线杆" {
     type = {"entity", "pole"},
     area = "1x1",
     supply_area = "5x5",
-    group = {"电力","自定义"},
+    group = {"物流","自定义"},
 }
