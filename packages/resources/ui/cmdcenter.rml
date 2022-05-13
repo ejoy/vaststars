@@ -94,7 +94,8 @@
                 width:61px;
                 height:47px;
                 background-image:"textures/exchange/right_arrow.texture";
-                background-size:cover
+                background-size:cover;
+                transform: rotate(180deg)
             }
             .small-building {
                 width:50px;
