@@ -273,7 +273,7 @@ workbutton {
 /*建筑模型和信息*/
 .build-info-reigon {
 	width: 100%;
-	height:75%;
+	height:95%;
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-evenly;
@@ -290,7 +290,6 @@ workbutton {
 	width:90%;
 	height:90%;
 	background-size: cover;
-	background-image: "textures/assemble/engine.texture";
 }
 .power-block {
 	margin-top: 0.3em;
