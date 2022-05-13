@@ -113,6 +113,7 @@
                 is_headquater = false,
                 sub_inventory = {},
                 cur_item_category = "",
+                catalog_index = 1,
 
                 item_info_flag = false,
                 show = false,
@@ -150,9 +151,14 @@
                 ui_sys:close()
             end
 
-            function start.clickCategory(event, category)
-                start.cur_item_category = category
-                update_category(category)
+            local select_item
+            function start.clickCategory(event, it_index)
+                start.catalog_index = it_index + 1
+                start.cur_item_category = start.item_category[it_index + 1].category
+                -- <!-- tag page begin -->
+                select_item = nil
+                start.page:on_dirty_all(#start.cur_item_category)
+                -- <!-- tag page end -->
             end
 
             ui_sys:setDataModel(start, function(patch)
@@ -458,7 +464,7 @@
                 <!-- 物品栏分类页签 start -->
                 <div class = "tab-container" style="flex-grow: 1;">
                     <div data-for = "item_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
-                        <workbutton data-event-click="clickCategory(it.category)" style = "width: 100%;">
+                        <workbutton data-event-click="clickCategory(it_index)" data-style-background-color = "it_index + 1 == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'" style = "width: 100%;">
                             <div class="workbutton-bg" data-style-background-image="it.icon" />
                             <div class="catalog-desc">{{it.category}}</div>
                         </workbutton>

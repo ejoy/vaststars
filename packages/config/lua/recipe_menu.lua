@@ -1,5 +1,16 @@
 local menu = {
     {
+        group = "金属",
+        icon = "textures/construct/steel-beam.texture",
+        category = {
+            "金属流体处理",
+            "金属冶炼",
+            "矿石粉碎",
+            "金属锻造",
+            "金属小型制造",
+        },
+    },
+    {
         group = "物流",
         icon = "textures/construct/logisitic1.texture",
         category = {
@@ -27,17 +38,6 @@ local menu = {
         },
     },
     {
-        group = "金属",
-        icon = "textures/construct/steel-beam.texture",
-        category = {
-            "金属流体处理",
-            "金属冶炼",
-            "矿石粉碎",
-            "金属锻造",
-            "金属小型制造",
-        },
-    },
-    {
         group = "器件",
         icon = "textures/construct/processor.texture",
         category = {
@@ -58,20 +58,6 @@ local menu = {
             "流体液体处理",
             "流体液体排泄",
             "流体气体排泄",
-        },
-    },
-    {
-        group = "打包",
-        icon = "textures/construct/pack.texture",
-        category = {
-
-        },
-    },
-    {
-        group = "解包",
-        icon = "textures/construct/unpack.texture",
-        category = {
-
         },
     },
 }
