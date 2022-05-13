@@ -143,7 +143,19 @@ workbutton {
 	left: 0vmin;
 	-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);
 }
-
+.item-count-combination {
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+	position: absolute;
+	top: -1vmin;
+	left: 0vmin;
+}
+.item-count-new {
+	font-size: 4vmin;
+	-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);          
+}
 .item-add {
 	background-color:rgb(143, 143, 143);
 	border: 0.27vmin rgb(89, 73, 39);

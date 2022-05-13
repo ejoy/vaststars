@@ -161,7 +161,10 @@
                         <div class="row" style="width: 100%; height:100%;">
                             <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
                                 <button class="item" data-style-background = "it.icon" data-for="recipe_ingredients_count">
-                                    <div class="item-count">{{it.count}}/{{it.need_count}}</div>
+                                    <div class ="item-count-combination">
+                                        <div class="item-count-new" data-style-color="it.count < it.need_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                                        <div class="item-count-new" style="font-size: 3vmin;">/{{it.need_count}}</div>
+                                    </div>
                                 </button>
                             </div>
                             <div class="column" style="justify-content: center; width: 30%; height:20%;">
@@ -175,7 +178,10 @@
                             </div>
                             <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
                                 <button class="item" data-style-background = "it.icon" data-for="recipe_results_count">
-                                    <div class="item-count">{{it.count}}/{{it.need_count}}</div>
+                                    <div class ="item-count-combination">
+                                        <div class="item-count-new" data-style-color="it.count < it.need_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                                        <div class="item-count-new" style="font-size: 3vmin;">/{{it.need_count}}</div>
+                                    </div>
                                 </button>
                             </div>
                         </div>
