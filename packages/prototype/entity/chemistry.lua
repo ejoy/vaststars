@@ -145,7 +145,15 @@ prototype "电解厂I" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={0,4,"S"}},
+                    {type="output", position={0,2,"W"}},
+                }
+            },
+            {
+                capacity = 500,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={4,2,"E"}},
                 }
             },
             {
@@ -154,14 +162,6 @@ prototype "电解厂I" {
                 base_level = 150,
                 connections = {
                     {type="output", position={2,4,"S"}},
-                }
-            },
-            {
-                capacity = 500,
-                height = 100,
-                base_level = 150,
-                connections = {
-                    {type="output", position={4,4,"S"}},
                 }
             },
         },
