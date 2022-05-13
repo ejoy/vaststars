@@ -219,12 +219,17 @@
                 <!-- tag page end -->
 
                 <div class = "draw-line"/>
-                <div class = "tab-container" style="height: 10%;">
-                    <workbutton data-for = "recipe_menu" data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index + 1 == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'">
-                        <div class="workbutton-bg" data-style-background-image = "it.icon" />
-                        <div class="catalog-desc">{{it.group}}</div>
-                    </workbutton>
+
+
+                <div class = "tab-container" style="flex-grow: 1;">
+                    <div data-for = "recipe_menu" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
+                        <workbutton data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index + 1 == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'" style = "width: 100%;">
+                            <div class="workbutton-bg" data-style-background-image="it.icon" />
+                            <div class="catalog-desc">{{it.group}}</div>
+                        </workbutton>
+                    </div>
                 </div>
+
             </div>
             <div class="recipe-panel" style = "flex-direction: column; height: 100%;" data-if="recipe_name != ''">
                 <!-- 标题栏 -->

@@ -174,7 +174,6 @@ workbutton {
 .tab-container {
 	flex-direction: row;
 	justify-content: space-evenly;
-	align-content: space-evenly;
 	width:100%;
 	flex-wrap: wrap;
 }
