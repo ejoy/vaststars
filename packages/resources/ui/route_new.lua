@@ -29,7 +29,6 @@ function start.addRoute(event)
         show_error_tip(("还未选择车站"))
         return
     end
-    ui_sys:pub {"ui", "route_new", "add_route", start.select_endpoint_ids}
     ui_sys:close()
 end
 
@@ -60,8 +59,4 @@ function start.selectEndpoint(event, index)
     start.select_endpoint_ids[start.select_index] = endpoint.id
     start.show_select_route = false
     start.select_index = 0
-end
-
-window.onload = function()
-    ui_sys:pub {"ui", "GET_DATA", "route_endpoints"}
 end

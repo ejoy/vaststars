@@ -11,7 +11,6 @@ local archiving_list_path = archival_base_dir .. "/archiving.json"
 local camera_setting_path = archival_base_dir .. "/camera.json"
 local iprototype = require "gameplay.interface.prototype"
 local startup_entities = import_package("vaststars.prototype")("item.startup").entities
-local camera = ecs.require "engine.camera"
 
 local irq = ecs.import.interface "ant.render|irenderqueue"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
@@ -141,30 +140,8 @@ function M:restart()
     restore_world()
 end
 
-local saveload_sys = ecs.system "saveload_system"
-local ui_saveload_save_mb = world:sub {"ui", "saveload", "save"}
-local ui_saveload_restore_mb = world:sub {"ui", "saveload", "restore"}
-local ui_saveload_restart_mb = world:sub {"ui", "saveload", "restart"}
-local ui_construct_show_setting_mb = world:sub {"ui", "construct", "show_setting"}
-local iui = ecs.import.interface "vaststars.gamerender|iui"
-
-function saveload_sys:camera_usage()
-    for _ in ui_saveload_save_mb:unpack() do -- 存档时会保存摄像机的位置
-        M:backup()
-    end
-
-    for _, _, _, index in ui_saveload_restore_mb:unpack() do -- 读档时会还原摄像机的位置
-        M:restore(index)
-    end
-
-    for _ in ui_saveload_restart_mb:unpack() do
-        camera.set("camera_default.prefab", true)
-        M:restart()
-    end
+function M:get_archival_relative_dir_list()
+    return archival_relative_dir_list
 end
 
-function saveload_sys:update_world()
-    for _ in ui_construct_show_setting_mb:unpack() do
-        iui.open("option_pop.rml", archival_relative_dir_list)
-    end
-end
+return M

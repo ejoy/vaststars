@@ -2,188 +2,19 @@
     <head>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
-            console.log("before createModel")
             local start = window.createModel "start" {
                 show = false,
                 info_flag = true,
                 chest_interaction = false,
-
-                items = {
-                    {id=100, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=101, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=102, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=103, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=104, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=105, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=106, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=107, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=108, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=109, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=110, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=111, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=112, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=113, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=114, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=115, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=116, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=117, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=118, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=119, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=120, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=121, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=122, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=123, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=124, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=125, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=126, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=127, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=128, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=129, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                },
-
-                gapx = 0,
-                gapy = 0,
-                page_top_left = 0,
-                page_top_right = 0,
-                -- 详细信息面板高度
-                detail_height = 120,
-                -- 详细信息面板开始位置
-                detail_top_left = 0,
-                detail_top_right = 0,
-                current_page_left = 0,
-                view_items = {},
-                item_size = 90,
-                interval = 200,
-                show_left_detail = false,
-                show_right_detail = false,
-                page_width = 540,
-                page_height = 490,
-                view_items = {},
-                virtual_pages = {},
-                current_page_right = 0,
-                selected_left_id = 0,
-                selected_left_row = 10000,
-                selected_right_id = 0,
-                selected_right_row = 10000,
-                item_down_time = 0,
-                current_time = 0,
-                row_count = 0,
-                page_drag = false,
-                list_drag = false,
-                draging = false,
             }
             ------------------------------------------
             function start.ClickChest(event)
                 start.info_flag = false
                 start.chest_interaction = true
-                console.log("---ClickPlugin---")
             end
             
             function start.mousedown(event)
                 start.show  = not start.show 
-            end
-            -----------------------------------------------
-            local function update_time()
-                start.current_time = start.current_time + 1
-            end
-            window.setInterval(update_time, 1)
-
-            local listclass = require "list"
-            local pageclass = require "page"
-            --local list_proxy = listclass.create(1, {start.list_width, start.list_height}, #start.item_list, {start.list_item_width, start.list_item_height})
-            local page_proxy = pageclass.create({start.page_width, start.page_height}, start)
-
-            function start.pagemousedown(event)
-                console.log("pagemousedown")
-                page_proxy:on_mousedown(event)
-                start.page_drag = true
-                start.draging = false
-            end
-        
-            function start.pagedrag(event)
-                if start.page_drag then
-                    console.log("pagedrag")
-                    page_proxy:on_drag(event)
-                end
-            end
-
-            function start.pagemouseup(event, direction)
-                console.log("pagemouseup")
-                page_proxy:on_mouseup(event)
-                if direction then
-                    start.current_page_left = page_proxy:get_current_page() - 1
-                else
-                    start.current_page_right = page_proxy:get_current_page() - 1
-                end
-                start.page_drag = false
-            end
-
-            local function show_detail_all(show,id,row,top,direction)
-                local offset = 0
-                if show then
-                    if direction then
-                        start.selected_left_id = id
-                        start.selected_left_row = row
-                        start.detail_top_left = top
-                        console.log("show left selected id",show, start.selected_left_id)
-                    else
-                        start.selected_right_id = id
-                        start.selected_right_row = row
-                        start.detail_top_right = top
-                        console.log("show right selected id",show, start.selected_left_id)
-                    end
-                    local dy = start.page_height - ((row + 1) * ( start.item_size + start.gapy ) + start.detail_height)
-                    offset = (dy >= 0 ) and 0 or dy 
-                else
-                    if direction then
-                        start.selected_left_id = 0
-                        start.selected_left_row = 10000
-                        console.log("no show left selected id",show,start.selected_left_id)
-                    else
-                        start.selected_right_id = 0
-                        start.selected_right_row = 10000
-                        console.log("no show right selected id",show,start.selected_right_id)
-                    end      
-                end
-                if direction then
-                    start.show_left_detail = show
-                    start.page_top_left = offset
-                    console.log("left",show, offset)
-                else
-                    start.show_right_detail = show
-                    start.page_top_right = offset
-                    console.log("right",show, offset)
-                end
-                
-            end
-
-            function start.page_item_down()
-                start.item_down_time = start.current_time
-            end
-
-            function start.page_item_up_all(event, id, row, top, direction)
-                console.log("page_item_click, row, top, direction", id, row, top, direction)
-                if start.current_time - start.item_down_time <= start.interval and not start.draging then
-                    console.log("start.draging: ", start.draging)
-                    if direction then
-                        if start.selected_left_id ~= id then
-                            show_detail_all(true, id, row, top, true)
-                            show_detail_all(false, 0, 0, 0, false)
-                        else
-                            show_detail_all(not start.show_left_detail, id, row, top, true)
-                        end
-                    else
-                        if start.selected_right_id ~= id then
-                            show_detail_all(true, id, row, top, false)
-                            show_detail_all(false, 0, 0, 0, true)
-                        else
-                            show_detail_all(not start.show_right_detail, id, row, top, false)
-                        end
-                    end
-                else
-                    show_detail_all(false, 0, 0, 0,true)
-                    show_detail_all(false, 0, 0, 0,false)
-                end
             end
 
             function start.ClickBack(event)
@@ -192,13 +23,6 @@
                 show_detail_all(false, 0, 0, 0,true)
                 show_detail_all(false, 0, 0, 0,false)
             end
-
-            window.addEventListener('message', function(event)
-                console.log("event.source.postMessage")
-                event.source.postMessage(event.data)
-            end)
-            window.addEventListener('mousemove', function(event)
-            end)
         </script>
     </head>
     <body>
@@ -277,21 +101,19 @@
                     </div>
                 </div>
                 <div class="item-container" data-if="chest_interaction">
-                    <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
-                        <div class = "item-page-block" style="width:90%; height:100%;" data-style-top="page_top_left + 'px'" data-event-mousemove="pagedrag()">
+                    <div style="width:100%; overflow: hidden;">
+                        <div class = "item-page-block" style="width:90%; height:100%;">
                             <div class ="row">
-                                <div style="width:95%; height:100%;" data-for="virtual_pages">
-                                    <div data-style-left="(it_index + 1) * 100 + '%'"/>
+                                <div style="width:95%; height:100%;">
+                                    <div />
                                 </div>
                             </div>
-                            <div style="position: absolute; align-items: center;" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_left_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
-                                <button class="item" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up_all(it.data.id, it.row, it.top, true)">
+                            <div style="position: absolute; align-items: center;">
+                                <button class="item">
                                     <div class="item-count">99</div>                          
-                                    <!--div class="item-title" style="top:14%;">机器爪</div>-->
                                 </button>
-                                <!--<div>{{it.data.id}}</div>-->
                             </div>
-                            <div class="exchange-region" data-style-left="current_page_left * page_width + 'px'" data-style-height=" detail_height + 'px'" data-style-top=" detail_top_left + item_size + 'px'" data-if="show_left_detail">
+                            <div class="exchange-region">
                                 <div class="button-exchange-block">
                                     <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
                                         <div class = "button-exchange-arrow"/>
@@ -313,8 +135,8 @@
                         </div>
                     </div>
                     <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
-                        <div data-for="virtual_pages">
-                            <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" data-style-background-image="it_index == current_page_left ? 'textures/common/page1.texture' : 'textures/common/page0.texture'"/>
+                        <div>
+                            <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" />
                         </div>
                     </div>         
                 </div>
@@ -364,21 +186,20 @@
                     <button class = "back-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>
                 </div>
                 <div class="item-container" data-event-click="ClickChest()">
-                    <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
-                        <div class = "item-page-block" style="width:90%; height:100%;" data-style-top="page_top_right + 'px'" data-event-mousemove="pagedrag()">
+                    <div style="width:100%; overflow: hidden;">
+                        <div class = "item-page-block" style="width:90%; height:100%;">
                             <div class ="row">
-                                <div style="width:95%; height:100%;" data-for="virtual_pages">
+                                <div style="width:95%; height:100%;">
                                     <div data-style-left="(it_index + 1) * 100 + '%'"/>
                                 </div>
                             </div>
                             <div style="position: absolute; align-items: center;" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_right_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
-                                <button class="item" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up_all(it.data.id, it.row, it.top, false)">
+                                <button class="item">
                                     <div class="item-count">99</div>                          
-                                    <!--div class="item-title">机器爪</div>-->
                                 </button>
                                 <!--<div>{{it.data.id}}</div>-->
                             </div>
-                            <div class="exchange-region" data-style-left="current_page_right * page_width + 'px'" data-style-height="detail_height+'px'" data-style-top="detail_top_right + item_size+'px'" data-if="show_right_detail">
+                            <div class="exchange-region">
                                 <div class="button-exchange-block">
                                     <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
                                         <div class = "button-exchange-arrow"/>
@@ -400,8 +221,8 @@
                         </div>
                     </div>
                     <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
-                        <div data-for="virtual_pages">
-                            <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" data-style-background-image="it_index == current_page_right ? 'textures/common/page1.texture' : 'textures/common/page0.texture'"/>
+                        <div>
+                            <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" />
                         </div>
                     </div>         
                 </div>

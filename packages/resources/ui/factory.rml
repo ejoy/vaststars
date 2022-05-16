@@ -166,140 +166,8 @@
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
-            console.log("before createModel")
             local start = window.createModel "start" {
-                items = {
-                    {id=100, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=101, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=102, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=103, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=104, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=105, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=106, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=107, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=108, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=109, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=110, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=111, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=112, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=113, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=114, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=115, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=116, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=117, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=118, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=119, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=120, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=121, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=122, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=123, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=124, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=125, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=126, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=127, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=128, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=129, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                },
-
-                gapx = 0,
-                gapy = 0,
-                page_top = 0,
-                -- 详细信息面板高度
-                detail_height = 120,
-                -- 详细信息面板开始位置
-                detail_top = 0,
-                current_page = 0,
-                view_items = {},
-                item_size = 90,
-                interval = 200,
-                show_detail = false,
-                page_width = 540,
-                page_height = 490,
-                view_items = {},
-                virtual_pages = {},
-                current_page = 0,
-                selected_id = 0,
-                selected_row = 10000,
-                item_down_time = 0,
-                current_time = 0,
-                row_count = 0,
-                page_drag = false,
-                list_drag = false,
-                draging = false,
             }
-
-            local function update_time()
-                start.current_time = start.current_time + 1
-            end
-            window.setInterval(update_time, 1)
-
-            local listclass = require "list"
-            local pageclass = require "page"
-            --local list_proxy = listclass.create(1, {start.list_width, start.list_height}, #start.item_list, {start.list_item_width, start.list_item_height})
-            local page_proxy = pageclass.create({start.page_width, start.page_height}, start)
-
-            function start.pagemousedown(event)
-                console.log("pagemousedown")
-                page_proxy:on_mousedown(event)
-                start.page_drag = true
-                start.draging = false
-            end
-        
-            function start.pagedrag(event)
-                if start.page_drag then
-                    console.log("pagedrag")
-                    page_proxy:on_drag(event)
-                end
-            end
-
-            function start.pagemouseup(event)
-                console.log("pagemouseup")
-                page_proxy:on_mouseup(event)
-                start.current_page = page_proxy:get_current_page() - 1
-                start.page_drag = false
-            end
-
-            local function show_detail(show, id, row, top)
-                local offset = 0
-                if show then
-                    start.selected_id = id
-                    start.selected_row = row
-                    start.detail_top = top
-                    local dy = start.page_height - ((row + 1) * (start.item_size + start.gapy) + start.detail_height)
-                    offset = (dy >= 0) and 0 or dy
-                else
-                    start.selected_id = 0
-                    --TODO: max value 1000
-                    start.selected_row = 10000
-                end
-                start.show_detail = show
-                start.page_top = offset
-            end
-
-            function start.page_item_down()
-                start.item_down_time = start.current_time
-            end
-
-            function start.page_item_up(event, id, row, top)
-                console.log("page_item_click, row, top", id, row, top)
-                if start.current_time - start.item_down_time <= start.interval and not start.draging then
-                    console.log("start.draging: ", start.draging)
-                    if start.selected_id ~= id then
-                        show_detail(true, id, row, top)
-                    else
-                        show_detail(not start.show_detail, id, row, top)
-                    end
-                else
-                    show_detail(false, 0, 0, 0)
-                end
-            end
-
-            window.addEventListener('message', function(event)
-                console.log("event.source.postMessage")
-                event.source.postMessage(event.data)
-            end)
-            window.addEventListener('mousemove', function(event)
-            end)
         </script>
     </head>
     <body>
@@ -311,21 +179,21 @@
                     <button class = "find-button"/>
                 </div>
                 <div class="item-container">
-                    <div style="width:100%; overflow: hidden;" data-style-height="page_height+'px'">
-                        <div class = "item-page-block" style="width:90%; height:100%;" data-style-top="page_top + 'px'" data-event-mousedown="pagemousedown()" data-event-mouseup="pagemouseup()" data-event-mousemove="pagedrag()">
+                    <div style="width:100%; overflow: hidden;">
+                        <div class = "item-page-block" style="width:90%; height:100%;">
                             <div class ="row">
-                                <div style="width:95%; height:100%;" data-for="virtual_pages">
-                                    <div data-style-left="(it_index + 1) * 100 + '%'"/>
+                                <div style="width:95%; height:100%;">
+                                    <div />
                                 </div>
                             </div>
-                            <div style="position: absolute; align-items: center;" data-event-mousedown="page_item_down()" data-event-mouseup="page_item_up(it.data.id, it.row, it.top)" data-style-width="item_size+'px'" data-style-height="item_size+'px'" data-style-left="it.left+'px'" data-style-top="((it.row > selected_row) ? (it.top + detail_height) : it.top) + 'px'" data-for="view_items">
+                            <div style="position: absolute; align-items: center;">
                                 <button class="item">
                                     <div class="item-count">99</div>                          
                                     <!--div class="item-title">机器爪</div>-->
                                 </button>
                                 <!--<div>{{it.data.id}}</div>-->
                             </div>
-                            <div class="exchange-region" data-style-left="current_page * page_width + 'px'" data-style-height="detail_height+'px'" data-style-top="detail_top+item_size+'px'" data-if="show_detail">
+                            <div class="exchange-region">
                                 <div class="button-exchange-block">
                                     <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
                                         <div class = "button-exchange-arrow"/>
@@ -347,8 +215,8 @@
                         </div>
                     </div>
                     <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
-                        <div data-for="virtual_pages">
-                            <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" data-style-background-image="it_index == current_page ? 'textures/common/page1.texture' : 'textures/common/page0.texture'"/>
+                        <div>
+                            <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" />
                         </div>
                     </div>         
                 </div>

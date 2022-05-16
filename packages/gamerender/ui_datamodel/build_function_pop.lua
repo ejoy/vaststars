@@ -1,9 +1,21 @@
-local global = require "global"
-local objects = global.objects
-local cache_names = global.cache_names
-local iprototype = require "gameplay.interface.prototype"
-local gameplay_core = require "gameplay.core"
+local ecs, mailbox = ...
+local world = ecs.world
+local w = world.w
 
+local gameplay_core = require "gameplay.core"
+local global = require "global"
+local cache_names = global.cache_names
+local objects = global.objects
+local iprototype = require "gameplay.interface.prototype"
+local iassembling = require "gameplay.interface.assembling"
+local building_menu = ecs.require "building_menu"
+local iui = ecs.import.interface "vaststars.gamerender|iui"
+
+local rotate_mb = mailbox:sub {"rotate"}
+local recipe_mb = mailbox:sub {"recipe"}
+local detail_mb = mailbox:sub {"detail"}
+local pickup_material_mb = mailbox:sub {"pickup_material"}
+local place_material_mb = mailbox:sub {"place_material"}
 ---------------
 local M = {}
 
@@ -48,6 +60,41 @@ function M:update(datamodel, object_id, recipe_name)
     end
     datamodel.recipe_name = recipe_name
     return true
+end
+
+function M:stage_ui_update(datamodel)
+    --
+    for _, _, _, vsobject_id in rotate_mb:unpack() do
+        building_menu:rotate_object(vsobject_id)
+    end
+
+    for _, _, _, vsobject_id, recipe_name in recipe_mb:unpack() do
+        iui.open("recipe_pop.rml", vsobject_id, recipe_name)
+    end
+
+    for _, _, _, vsobject_id, recipe_name in detail_mb:unpack() do
+        local object = assert(objects:get(cache_names, vsobject_id))
+        local typeobject = iprototype:queryByName("entity", object.prototype_name)
+        if iprototype:has_type(typeobject.type, "assembling") then
+            iui.open("assemble_2.rml", vsobject_id, recipe_name)
+        elseif iprototype:has_type(typeobject.type, "chest") then
+            iui.open("cmdcenter.rml", vsobject_id)
+        else
+            log.error("no detail")
+        end
+    end
+
+    for _, _, _, vsobject_id in pickup_material_mb:unpack() do
+        local object = assert(objects:get(cache_names, vsobject_id))
+        local e = gameplay_core.get_entity(object.gameplay_eid)
+        iassembling:pickup_material(gameplay_core.get_world(), e)
+    end
+
+    for _, _, _, vsobject_id in place_material_mb:unpack() do
+        local object = assert(objects:get(cache_names, vsobject_id))
+        local e = gameplay_core.get_entity(object.gameplay_eid)
+        iassembling:place_material(gameplay_core.get_world(), e)
+    end
 end
 
 return M

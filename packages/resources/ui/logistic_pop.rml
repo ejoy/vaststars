@@ -249,7 +249,6 @@
             end
 
             function start.clickConfirm(event)
-                ui_sys:pub {"ui", "recipe_pop", "set_recipe", start.object_id, start.recipe_name}
                 ui_sys:close()
             end
 

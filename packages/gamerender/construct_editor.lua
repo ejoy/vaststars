@@ -16,6 +16,8 @@ local iprototype = require "gameplay.interface.prototype"
 local DEFAULT_DIR <const> = 'N'
 
 local M = {}
+M.mode = "normal" -- normal/construct/teardown
+
 local pickup_object
 
 local global = require "global"

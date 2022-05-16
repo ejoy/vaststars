@@ -8,20 +8,19 @@ local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local camera = ecs.require "engine.camera"
 local terrain = ecs.require "terrain"
-local get_fluid_category = require "gameplay.utility.get_fluid_category"
-local get_construct_menu = require "gameplay.utility.get_construct_menu"
 local gameplay_core = require "gameplay.core"
 local check_prototype = require "gameplay.check"
 local construct_editor = ecs.require "construct_editor"
 local fps = ecs.require "fps"
-local fluid_icon = ecs.require "fluid_icon"
 local world_update = ecs.require "world_update.init"
+local saveload = ecs.require "saveload"
 
 local m = ecs.system 'init_system'
 function m:init_world()
     check_prototype()
     bgfx.maxfps(FRAMES_PER_SECOND)
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
+    iui.preload_datamodel_dir "/pkg/vaststars.gamerender/ui_datamodel"
 
     iui.open("construct.rml")
     camera.init("camera_default.prefab")
@@ -29,9 +28,7 @@ function m:init_world()
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
     terrain.create()
-    fluid_icon.create()
-
-    world:pub {"ui", "saveload", "restore"}
+    saveload:restore()
 end
 
 local function get_object(x, y)

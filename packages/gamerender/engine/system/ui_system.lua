@@ -6,24 +6,27 @@ local json = import_package "ant.json"
 local json_encode = json.encode
 local json_decode = json.decode
 local syncobj = require "utility.syncobj"
+local syncobj_source = syncobj.source()
 local ltask = require "ltask"
 local ltask_now = ltask.now
 local table_unpack = table.unpack
+local fs = require "filesystem"
 
+local datamodel_funcs = {}
 local rmlui_message_mb = world:sub {"rmlui_message"}
 local rmlui_message_close_mb = world:sub {"rmlui_message_close"}
 local ui_message_mb = world:sub {"ui_message"}
-local create_template = ecs.require "ui_datamodel.init"
 local window_bindings = {} -- = {[url] = { w = xx, datamodel = xx, }, ...}
 local datamodel_changed = {}
 local datamodel_tick = {}
 local stage_ui_update = {}
 local stage_camera_usage = {}
+local datamodel_listener = {}
 
 local function create_ui_mailbox(url)
     local ui_mailbox = {}
     function ui_mailbox:sub(message)
-        return world:sub {"rmlui_message_send", url, table.unpack(message)}
+        return world:sub {"rmlui_message_pub", url, table_unpack(message)}
     end
     return ui_mailbox
 end
@@ -34,7 +37,7 @@ local function open(url, ...)
     local binding = window_bindings[url]
     if binding then
         datamodel_changed[url] = true
-        return
+        return binding.window
     end
 
     binding = {}
@@ -55,39 +58,45 @@ local function open(url, ...)
         if res.event == "__CLOSE" then
             world:pub {"rmlui_message_close", url}
         elseif res.event == "__OPEN" then
-            world:pub {"rmlui_message", res.event, table.unpack(res.ud)}
-        elseif res.event == "__SEND" then
-            world:pub {"rmlui_message_send", url, table.unpack(res.ud)}
+            world:pub {"rmlui_message", res.event}
+        elseif res.event == "__PUB" then
+            world:pub {"rmlui_message_pub", url, table_unpack(res.ud)}
         else
             world:pub {"rmlui_message", res.event, res.ud}
         end
     end)
+    window_bindings[url] = binding
 
-    local func = create_template(url)
+    local func = datamodel_funcs[url]
     if not func then
-        return
+        return binding.window
     end
 
     binding.template = func(ecs, create_ui_mailbox(url))
     if not binding.template then
-        return
+        return binding.window
     end
 
     function binding.template:flush()
+        datamodel_changed[url] = nil
+
+        if not syncobj_source:changed(binding.datamodel) then
+            return
+        end
+
         local ud = {}
         ud.event = "__DATAMODEL"
-        ud.ud = binding.source:diff(binding.datamodel)
+        ud.ud = syncobj_source:diff(binding.datamodel)
         binding.window.postMessage(json_encode(ud))
 
-        datamodel_changed[url] = nil
+        for _, func in ipairs(datamodel_listener) do
+            func(url, ud.ud)
+        end
     end
 
     binding.param = {...}
-    binding.source = syncobj.source()
-    binding.datamodel = binding.source:new(binding.template:create(...))
-
+    binding.datamodel = syncobj_source:new(binding.template:create(...))
     binding.template:flush()
-    window_bindings[url] = binding
 
     if binding.template.tick then
         datamodel_tick[url] = true
@@ -97,21 +106,24 @@ local function open(url, ...)
         stage_ui_update[url] = true
     end
 
-    if binding.template.state_camera_usage then
+    if binding.template.stage_camera_usage then
         stage_camera_usage[url] = true
     end
+
+    return binding.window
 end
 
-local function pub(msg)
+local function world_pub(msg)
     world:pub(msg)
 end
 
 local function close(url)
-    local w = window_bindings[url]
-    if not w then
+    local binding = window_bindings[url]
+    if not binding then
+        log.warn(("can not found window `%s`"):format(url))
         return
     end
-    w:close()
+    binding.window:close()
     window_bindings[url] = nil
     datamodel_changed[url] = nil
     datamodel_tick[url] = nil
@@ -121,8 +133,7 @@ end
 
 local ui_events = {
     __OPEN = open,
-    __PUB = pub,
-    -- __CLOSE = close,
+    __WORLD_PUB = world_pub,
 }
 
 local function gettime()
@@ -134,25 +145,11 @@ local ui_system = ecs.system "ui_system"
 function ui_system.ui_update()
     local event, func
 
-    for _, url in rmlui_message_close_mb:unpack() do
-        local binding = window_bindings[url]
-        if not binding then
-            log.warn(("can not found window `%s`"):format(url))
-        else
-            binding.window:close()
-            window_bindings[url] = nil
-            datamodel_changed[url] = nil
-            datamodel_tick[url] = nil
-            stage_ui_update[url] = nil
-            stage_camera_usage[url] = nil
-        end
-    end
-
     -- rmlui to world
     for msg in rmlui_message_mb:each() do
         event = msg[2]
         func = assert(ui_events[event], ("Can not found event `%s`"):format(event))
-        func(table.unpack(msg, 3, #msg))
+        func(table_unpack(msg, 3, #msg))
     end
 
     -- world to rmlui
@@ -160,7 +157,7 @@ function ui_system.ui_update()
         for _, binding in pairs(window_bindings) do
             local ud = {}
             ud.event = msg[2]
-            ud.ud = {table.unpack(msg, 3, #msg)}
+            ud.ud = {table_unpack(msg, 3, #msg)}
             binding.window.postMessage(json_encode(ud))
         end
     end
@@ -168,7 +165,7 @@ function ui_system.ui_update()
     for url in pairs(datamodel_tick) do
         local binding = window_bindings[url]
         binding.template:tick(binding.datamodel, table_unpack(binding.param))
-        if binding.source:changed(binding.datamodel) then
+        if syncobj_source:changed(binding.datamodel) then
             datamodel_changed[url] = true
         end
     end
@@ -176,15 +173,7 @@ function ui_system.ui_update()
     for url in pairs(stage_ui_update) do
         local binding = window_bindings[url]
         binding.template:stage_ui_update(binding.datamodel)
-        if binding.source:changed(binding.datamodel) then
-            datamodel_changed[url] = true
-        end
-    end
-
-    for url in pairs(stage_camera_usage) do
-        local binding = window_bindings[url]
-        binding.template:stage_camera_usage(binding.datamodel)
-        if binding.source:changed(binding.datamodel) then
+        if syncobj_source:changed(binding.datamodel) then
             datamodel_changed[url] = true
         end
     end
@@ -197,18 +186,14 @@ function ui_system.ui_update()
                 goto continue
             end
             binding.last_timestamp = current
-
-            local datamodel = binding.datamodel
-            local source = binding.source
-            local window = binding.window
-
-            local ud = {}
-            ud.event = "__DATAMODEL"
-            ud.ud = source:diff(datamodel)
-            window.postMessage(json_encode(ud))
-            datamodel_changed[url] = nil
+            binding.template:flush()
         end
         ::continue::
+    end
+
+    -- close 会清理 window_bindings, 必须放至最后处理
+    for _, url in rmlui_message_close_mb:unpack() do
+        close(url)
     end
 end
 
@@ -216,16 +201,19 @@ function ui_system.camera_usage()
     for url in pairs(stage_camera_usage) do
         local binding = window_bindings[url]
         binding.template:stage_camera_usage(binding.datamodel)
+        if syncobj_source:changed(binding.datamodel) then
+            datamodel_changed[url] = true
+        end
     end
 end
 
 local iui = ecs.interface "iui"
 function iui.open(url, ...)
-    world:pub {"rmlui_message", "__OPEN", url, ...}
+    return open(url, ...)
 end
 
 function iui.close(url)
-    world:pub {"rmlui_message", "__CLOSE", url}
+    close(url)
 end
 
 function iui.update(url, event, ...)
@@ -241,8 +229,23 @@ function iui.update(url, event, ...)
     end
 
     func(binding.template, binding.datamodel, ...)
-    if binding.source:changed(binding.datamodel) then
+    if syncobj_source:changed(binding.datamodel) then
         datamodel_changed[url] = true
     end
 end
 
+function iui.preload_datamodel_dir(dir)
+    for file in fs.pairs(fs.path(dir)) do
+        local f = file:string()
+        local s = file:stem():string()
+        local func, err = loadfile(f)
+        if not func then
+            error(("error loading file '%s':\n\t%s"):format(f, err))
+        end
+        datamodel_funcs[s .. ".rml"] = func
+    end
+end
+
+function iui.add_datamodel_listener(func)
+    datamodel_listener[#datamodel_listener+1] = func
+end

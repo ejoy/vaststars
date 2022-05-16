@@ -48,7 +48,7 @@
             }
 
             function start.clickConfirm(event)
-                ui_sys:pub {"ui_message", "unconfirmed_double_confirm_continuation"}
+                ui_sys:world_pub {"ui_message", "unconfirmed_double_confirm_continuation"}
                 ui_sys:close()
             end
 

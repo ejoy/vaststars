@@ -43,10 +43,6 @@
                 ui_sys:close()
             end
 
-            function start.clickRecipe(event)
-                ui_sys:pub {"ui", "build_function_pop", "recipe", start.object_id, start.recipe_name}
-            end
-
             ui_sys:addEventListener({
                 ["INIT"] = function(object_id, recipe_name, ingredients, results)
                     start.object_id = object_id

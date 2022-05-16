@@ -131,7 +131,6 @@
                 flex-direction: column;
             }
         </style>
-        <style path = "common/test-button.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local unconfirmed_double_confirm_continuation = function() end
@@ -145,63 +144,64 @@
                 cur_construct_menu = "",  -- 当前选中的二级建造菜单名
                 cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
                 cur_selected_fluid = "",  -- 当前选中的流体盒中的流体
+
                 show_set_fluidbox = false,
                 show_construct_complete = false,
                 show_rotate = false,  -- 是否显示[旋转建筑]
                 show_confirm = false, -- 是否显示[确认放置]
             }
             function start.clickConstructBegin(event)
-                ui_sys:pub {"ui", "construct", "construct_begin", false}
+                ui_sys:pub {"construct_begin", false}
 
                 unconfirmed_double_confirm_continuation = function()
                     start.cur_edit_mode = 'construct'
                     start.show_construct_complete = false -- 建造模式下, 默认不显示 "开始施工"
-                    ui_sys:pub {"ui", "construct", "construct_begin", true}
+                    ui_sys:pub {"construct_begin", true}
                 end
             end
             function start.clickDismantleBegin(event)
-                ui_sys:pub {"ui", "construct", "dismantle_begin", false}
+                ui_sys:pub {"dismantle_begin", false}
                 unconfirmed_double_confirm_continuation = function()
                     start.cur_edit_mode = 'dismantle'
-                    ui_sys:pub {"ui", "construct", "dismantle_begin", true}
+                    ui_sys:pub {"dismantle_begin", true}
                 end
             end
             function start.clickConstructRotate(event)
-                ui_sys:pub {"ui", "construct", "rotate"}
+                ui_sys:pub {"rotate"}
             end
             function start.clickConstructConfirm(event)
-                ui_sys:pub {"ui", "construct", "construct_confirm"}
+                ui_sys:pub {"construct_confirm"}
             end
             function start.clickConstructComplete(event)
                 start.cur_edit_mode = ''
-                ui_sys:pub {"ui", "construct", "construct_complete"}
+                ui_sys:pub {"construct_complete"}
             end
             function start.clickDismantleComplete(event)
                 start.cur_edit_mode = ''
-                ui_sys:pub {"ui", "construct", "dismantle_complete"}
+                ui_sys:pub {"dismantle_complete"}
             end
             function start.clickCancel(event)
-                ui_sys:pub {"ui", "construct", "cancel", false}
+                ui_sys:pub {"cancel", false}
                 unconfirmed_double_confirm_continuation = function()
                     start.cur_edit_mode = ''
-                    ui_sys:pub {"ui", "construct", "cancel", true}
+                    ui_sys:pub {"cancel", true}
                 end
             end
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
             end
             function start.clickConstructMenuItem(event, prototype)
-                ui_sys:pub {"ui", "construct", "construct_entity", prototype}
+                ui_sys:pub {"construct_entity", prototype}
             end
             function start.clickSelectFluid(event, FluidName)
-                ui_sys:pub {"ui", "construct", "fluidbox_update", FluidName}
+                ui_sys:pub {"fluidbox_update", FluidName}
                 start.cur_selected_fluid = FluidName
             end
             function start.clickSetting(event)
-                ui_sys:pub {"ui", "construct", "show_setting"}
+                ui_sys:pub {"show_setting"}
             end
             window.addEventListener('mousedown', function(event)
-                ui_sys:pub {"ui_message", "leave"}
+                ui_sys:world_pub {"ui_message", "leave"}
             end)
 
             ui_sys:addEventListener({
@@ -222,7 +222,7 @@
                     start.show_construct_complete = visible
                 end,
                 ["set_fluidbox_confirm"] = function(FluidName)
-                    ui_sys:pub {"ui", "construct", "fluidbox_update", FluidName}
+                    ui_sys:pub {"fluidbox_update", FluidName}
                 end,
                 ["show_unconfirmed_double_confirm"] = function()
                     ui_sys:open("construct_cancel_pop.rml")
