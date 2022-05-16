@@ -23,7 +23,7 @@ function start.ClickFuel(event)
 end
 
 function start.ClickMaterial(event)
-    start.mode = "material"
+    -- start.mode = "material"
 end
 
 function start.ClickPlugin(event)
@@ -94,34 +94,8 @@ local function page_item_renderer(index)
     return item
 end
 
-local function page_item_detail_renderer(index)
-    local detail = document.createElement "div"
-    detail.outerHTML = ([[
-        <div class="exchange-region" style = "width: 100%; height: 10.2vmin;">
-            <div class="button-exchange-block">
-                <button class="button-exchange" style = "background-color: rgb(203, 118, 24);">
-                    <div class = "button-exchange-arrow"/>
-                    <div class = "button-exchange-text">全部</div>
-                    <div class = "button-exchange-box"/>
-                </button>
-                <button class="button-exchange">
-                    <div class = "button-exchange-arrow"/>
-                    <div class = "button-exchange-text">1组</div>
-                    <div class = "button-exchange-box"/>
-                </button>
-                <button class="button-exchange">
-                    <div class = "button-exchange-arrow"/>
-                    <div class = "button-exchange-text">1个</div>
-                    <div class = "button-exchange-box"/>
-                </button>
-            </div>
-        </div>
-    ]])
-    return detail
-end
-
 local pageclass = require "page"
 window.customElements.define("page", function(e)
-    start.page = pageclass.create(document, e, page_item_renderer, page_item_detail_renderer)
+    start.page = pageclass.create(document, e, page_item_renderer)
 end)
 -- <!-- tag page end -->
