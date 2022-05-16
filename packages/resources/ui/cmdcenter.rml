@@ -135,6 +135,7 @@
                         start.sub_inventory[#start.sub_inventory + 1] = v
                     end
                 end
+                start("sub_inventory")
 
                 -- <!-- tag page begin -->
                 start.page:on_dirty_all(#start.sub_inventory)
@@ -192,7 +193,7 @@
                     end
                     select_item_index = index
 
-                    ui_sys:send {"click_item", start.sub_inventory[index].id}
+                    ui_sys:pub {"click_item", start.sub_inventory[index].id}
                 end)
                 return item
             end

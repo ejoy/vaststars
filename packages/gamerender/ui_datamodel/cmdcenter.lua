@@ -10,7 +10,7 @@ local global = require "global"
 local objects = global.objects
 local cache_names = global.cache_names
 local irecipe = require "gameplay.interface.recipe"
-local clickitem_mb = mailbox:sub {"click_item"}
+local click_item_mb = mailbox:sub {"click_item"}
 
 local item_id_to_info = {}
 local recipe_to_category = {}
@@ -22,7 +22,7 @@ for _, typeobject in pairs(iprototype:all_prototype_name()) do
             if iprototype:has_type(typeobject_element.type, "item") then
                 local id = typeobject_element.id
                 item_id_to_info[id] = item_id_to_info[id] or {}
-                item_id_to_info[id][#item_id_to_info[id]+1] = {icon = typeobject.icon, element = irecipe:get_elements(typeobject.results), recipe_id = typeobject.id}
+                item_id_to_info[id][#item_id_to_info[id]+1] = {icon = assert(typeobject.icon), element = irecipe:get_elements(typeobject.ingredients), recipe_id = typeobject.id}
             end
         end
         recipe_to_category[typeobject.id] = typeobject.category
@@ -95,7 +95,7 @@ function M:tick(datamodel, object_id)
 end
 
 function M:stage_ui_update(datamodel)
-    for _, _, _, prototype in clickitem_mb:unpack() do
+    for _, _, _, prototype in click_item_mb:unpack() do
         datamodel.show_item_info = true
         datamodel.item_info = item_id_to_info[tonumber(prototype)] or {}
         self:flush()

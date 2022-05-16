@@ -104,76 +104,8 @@
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
-            console.log("before createModel")
             local start = window.createModel "start" {
-                items = {
-                    {id=100, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=101, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=102, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=103, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=104, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=105, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=106, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=107, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=108, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=109, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=110, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=111, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=112, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=113, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=114, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=115, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=116, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=117, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=118, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=119, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=120, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=121, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=122, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=123, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=124, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=125, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=126, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=127, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=128, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                    {id=129, icon0="textures/correct.texture", icon1="textures/correct.texture"},
-                },
-                item_size = 90,
-                view_items = {},
-                virtual_pages = {},
-                current_page = 0,
-                selected_id = 100,
             }
-            local pageclass = require "page"
-            -- window size : 1336 750
-            local page_proxy = pageclass.create({540, 490}, start)
-            function start.pagemousedown(event)
-                console.log("pagemousedown")
-                page_proxy:on_mousedown(event)
-            end
-            
-            function start.pagedrag(event)
-                --console.log("pagedrag")
-                page_proxy:on_drag(event)
-            end
-
-            function start.pagemouseup(event)
-                console.log("pagemouseup")
-                page_proxy:on_mouseup(event)
-                start.current_page = page_proxy:get_current_page() - 1
-            end
-
-            function start.page_item_click(event, id)
-                console.log("page_item_click", id)
-                start.selected_id = id
-            end
-
-            window.addEventListener('message', function(event)
-                console.log("event.source.postMessage")
-                event.source.postMessage(event.data)
-            end)
-            window.addEventListener('mousemove', function(event)
-            end)
         </script>
     </head>
     <body>

@@ -3,16 +3,16 @@ local json_encode = json.encode
 local json_decode = json.decode
 
 local m = {}
-function m:pub(msg)
+function m:world_pub(msg)
     local ud = {}
-    ud.event = "__PUB"
+    ud.event = "__WORLD_PUB"
     ud.ud = msg
     window.extern.postMessage(json_encode(ud))
 end
 
-function m:send(msg)
+function m:pub(msg)
     local ud = {}
-    ud.event = "__SEND"
+    ud.event = "__PUB"
     ud.ud = msg
     window.extern.postMessage(json_encode(ud))
 end

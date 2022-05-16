@@ -17,6 +17,5 @@ return {
         "ant.efk",
         "vaststars.gameplay",
         "vaststars.prototype",
-        "vaststars.config",
     }
 }

@@ -93,8 +93,18 @@
                 show_archival_files = false,
             }
 
-            function start.pub(event, ...)
-                ui_sys:pub({...})
+            function start.clickSave(event)
+                ui_sys:pub {"save"}
+                ui_sys:close()
+            end
+
+            function start.clickRestart(event)
+                ui_sys:pub {"restart"}
+                ui_sys:close()
+            end
+
+            function start.clickRestore(event, index)
+                ui_sys:pub {"restore", index}
                 ui_sys:close()
             end
 
@@ -114,7 +124,7 @@
                 </div>
                 <div style="width: 100%; height:90%; flex-direction: column; justify-content: center; align-items: center;">
                     <div class = "recipe-change-block">
-                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "pub('ui', 'saveload', 'save')">
+                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-event-click = "clickSave()">
                             <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 3.73vmin;">SAVE</div>
                         </button>
@@ -122,7 +132,7 @@
                             <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 3.73vmin;">LOAD</div>
                         </button> 
-                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "pub('ui', 'saveload', 'restart')">
+                        <button class = "button-style" style="background-color: rgb(52, 207, 115)" data-event-click = "clickRestart()">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 3.73vmin;">RESTART</div>
                         </button> 
@@ -140,7 +150,7 @@
                 </div>
                 <div style="width: 100%; height:90%; flex-direction: column; justify-content: center; align-items: center;">
                     <div class = "recipe-change-block" style = "justify-content: center; align-items: center;">
-                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "archival_files" data-event-click = "pub('ui', 'saveload', 'restore', it_index + 1)">
+                        <button class = "button-style" style="background-color:rgb(203, 118, 24);" data-for = "archival_files" data-event-click = "clickRestore(it_index + 1)">
                             <div class = "recipe-name-text" style="font-size: 3.73vmin;">{{it_index}}</div>
                             <div class = "recipe-name-text" style="font-size: 2.73vmin;">{{it}}</div>
                         </button>

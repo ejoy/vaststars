@@ -51,12 +51,10 @@
             }
 
             function start.clickConfirm(event)
-                ui_sys:pub {"ui", "construct", "set_fluidbox", "confirm", start.NewFluidName}
                 ui_sys:close()
             end
 
             function start.clickCancel(event)
-                ui_sys:pub {"ui", "construct", "set_fluidbox", "cancel"}
                 ui_sys:close()
             end
         </script>

@@ -1,8 +1,0 @@
-.test-button {	
-	background-color: #0088cc;
-	opacity: 0.25;
-}
-.test-button:hover {
-	background-color: #5bb75b;
-	opacity: 1.00;
-}
