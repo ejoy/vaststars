@@ -891,7 +891,7 @@ prototype "机械科技包1" {
 prototype "空气过滤" {
     type = { "recipe" },
     category = "过滤",
-    group = "流体",
+    --group = "流体",
     order = 20,
     icon = "textures/construct/air-filter1.texture",
     ingredients = {
