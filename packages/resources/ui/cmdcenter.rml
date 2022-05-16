@@ -359,7 +359,7 @@
                                 <div class = "drone-title">生产配方</div>
                             </div>
                         </div>
-                        <div style="margin:0.6em auto; flex-direction:row; justify-content: flex-start; width:100%;" data-for = "item_info">
+                        <div style="margin:0.08em auto; flex-direction:row; justify-content: flex-start; width:100%;" data-for = "item_info">
                             <div class="small-item-1" style="margin-left:0.3em;" data-style-background-image="it.icon"/>
                             <div class="small-arrow"/>
                             <div class="small-item-1" data-for = "it_element : it.element" data-style-background-image = "it_element.icon">
