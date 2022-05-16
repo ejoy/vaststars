@@ -32,6 +32,7 @@
                 color:rgb(255,255,255);
                 -webkit-text-stroke: 0.13vmin rgb(89, 73, 39);
                 text-align: left;
+                margin-bottom: 0.2em;
             }
             .item-info-block {
                 flex-direction: column;
