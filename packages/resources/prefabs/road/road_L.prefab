@@ -8,6 +8,9 @@ policy:
   ant.scene|scene_object
 ---
 data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.023_P1.meshbin"
   name: zhuanwan
   scene:
     srt:
@@ -15,8 +18,21 @@ data:
 mount: 1
 policy:
   ant.general|name
-  ant.scene|scene_object
-  ant.scene|scene_object
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.line.material
+  mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/平面.011_P1.meshbin"
+  name: "平面.007"
+  scene:
+    srt:
+      r: {0, 0.3826834559440613, 0, -0.9238795042037964}
+      t: {0.5, 2.0999999046325684, -0.5}
+mount: 2
+policy:
+  ant.general|name
+  ant.render|render
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -31,7 +47,6 @@ mount: 2
 policy:
   ant.general|name
   ant.render|render
-  ant.scene|scene_object
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -46,7 +61,6 @@ mount: 2
 policy:
   ant.general|name
   ant.render|render
-  ant.scene|scene_object
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -61,7 +75,6 @@ mount: 2
 policy:
   ant.general|name
   ant.render|render
-  ant.scene|scene_object
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -76,7 +89,6 @@ mount: 2
 policy:
   ant.general|name
   ant.render|render
-  ant.scene|scene_object
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -92,22 +104,6 @@ mount: 2
 policy:
   ant.general|name
   ant.render|render
-  ant.scene|scene_object
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.line.material
-  mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/平面.011_P1.meshbin"
-  name: "平面.007"
-  scene:
-    srt:
-      r: {0, 0.3826834559440613, 0, -0.9238795042037964}
-      t: {0.5, 2.0999999046325684, -0.5}
-mount: 2
-policy:
-  ant.general|name
-  ant.render|render
-  ant.scene|scene_object
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -121,18 +117,16 @@ mount: 1
 policy:
   ant.general|name
   ant.render|render
-  ant.scene|scene_object
 ---
 data:
-  slot:
-    follow_flag: 1
   name: "下转右"
   scene:
     srt:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {0, 0.009999999776482582, 0}
-  
+  slot:
+    follow_flag: 1
   tag:
     empty3
 mount: 1
@@ -143,15 +137,14 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  slot:
-    follow_flag: 1
   name: "右转下"
   scene:
     srt:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {0, 0.009999999776482582, 0}
-  
+  slot:
+    follow_flag: 1
   tag:
     empty4
 mount: 1
@@ -162,15 +155,14 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  slot:
-    follow_flag: 1
   name: path_l_3
   scene:
     srt:
-      r: {-0, 0.7071067690849304, 0, 0.7071067690849304}
+      r: {0, 0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {5, 2.200000047683716, -1.5}
-  
+  slot:
+    follow_flag: 1
   tag:
     empty1
 mount: 1
@@ -181,15 +173,14 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  slot:
-    follow_flag: 1
   name: path_l_2
   scene:
     srt:
       r: {0, 0.9238795042037964, 0, 0.3826834261417389}
       s: {1, 1, 1}
       t: {0.5, 2.200000047683716, 0.5}
-  
+  slot:
+    follow_flag: 1
   tag:
     empty2
 mount: 1
@@ -200,15 +191,14 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  slot:
-    follow_flag: 1
   name: path_l_1
   scene:
     srt:
-      r: {-0, 1, -0, -4.371138828673793e-08}
+      r: {0, 1, 0, -4.371138828673793e-08}
       s: {1, 1, 1}
       t: {-1.5, 2.200000047683716, 5}
-  
+  slot:
+    follow_flag: 1
   tag:
     empty3
 mount: 1
@@ -219,15 +209,14 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  slot:
-    follow_flag: 1
   name: path_r_1
   scene:
     srt:
       r: {0, -0.7071067690849304, 0, 0.7071067690849304}
       s: {1, 1, 1}
       t: {5, 2.2000010013580322, 1.5}
-  
+  slot:
+    follow_flag: 1
   tag:
     empty4
 mount: 1
@@ -238,15 +227,14 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  slot:
-    follow_flag: 1
   name: path_r_2
   scene:
     srt:
       r: {0, -0.3826834559440613, 0, 0.9238795042037964}
       s: {1, 1, 1}
       t: {2.5, 2.2000010013580322, 2.5}
-  
+  slot:
+    follow_flag: 1
   tag:
     empty5
 mount: 1
@@ -257,15 +245,14 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  slot:
-    follow_flag: 1
   name: path_r_3
   scene:
     srt:
       r: {0, 0, 0, 1}
       s: {1, 1, 1}
       t: {1.5, 2.1999990940093994, 5}
-  
+  slot:
+    follow_flag: 1
   tag:
     empty6
 mount: 1

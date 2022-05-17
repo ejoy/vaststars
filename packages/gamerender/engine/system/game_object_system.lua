@@ -69,23 +69,21 @@ local function remove(self)
 end
 
 local function attach(self, slot_name, prefab_file_name)
-    if self.attach_slot_name == slot_name and self.attach_prefab_file_name == prefab_file_name then
+    if self.attach_slot_name[slot_name] == prefab_file_name then
         return
     end
 
     self.game_object:send("attach_slot", slot_name, prefab_file_name)
-    self.attach_slot_name = slot_name
-    self.attach_prefab_file_name = prefab_file_name
+    self.attach_slot_name[slot_name] = prefab_file_name
 end
 
 local function detach(self)
-    if self.attach_slot_name == "" and self.attach_prefab_file_name == "" then
+    if not next(self.attach_slot_name) then
         return
     end
 
     self.game_object:send("detach_slot")
-    self.attach_slot_name = ""
-    self.attach_prefab_file_name = ""
+    self.attach_slot_name = {}
 end
 
 local function animation_update(self, animation_name, process)
@@ -137,6 +135,7 @@ function igame_object.create(prefab_file_name, state, color, pickup_binding)
     outer.slot_name = ""
     outer.prefab_file_name = ""
     outer.animation = {}
+    outer.attach_slot_name = {}
 
     outer.remove = remove
     outer.attach = attach

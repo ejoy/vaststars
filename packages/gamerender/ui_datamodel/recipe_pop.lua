@@ -3,10 +3,15 @@ local world = ecs.world
 local w = world.w
 
 local set_recipe_mb = mailbox:sub {"set_recipe"}
-local building_menu = ecs.require "building_menu"
 local recipe_menu_cfg = import_package "vaststars.prototype"("recipe_category")
 local irecipe = require "gameplay.interface.recipe"
+local global = require "global"
+local cache_names = global.cache_names
+local objects = global.objects
+local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
+local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iworld = require "gameplay.interface.world"
 
 local recipe_menu = {} ; do
     local recipes = {}
@@ -61,39 +66,74 @@ end
 ---------------
 local M = {}
 
-function M:create(object_id, recipe_name)
+function M:create(object_id)
+    local object = assert(objects:get(cache_names, object_id))
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if not e then
+        return
+    end
+
+    local recipe_name = ""
+    if e.assembling.recipe ~= 0 then
+        local recipe_typeobject = iprototype:query(e.assembling.recipe)
+        recipe_name = recipe_typeobject.name
+    end
+
     local catalog_index = 1
     local recipe_index = 1
 
-    if recipe_name and recipe_name ~= "" then
+    if e.assembling.recipe ~= 0 then
         catalog_index, recipe_index = get_recipe_index(recipe_menu, recipe_name)
     end
 
     return {
         object_id = object_id,
         recipe_index = recipe_index,
-        recipe_name = recipe_name or "",
+        recipe_name = recipe_name,
         recipe_menu = recipe_menu,
         catalog_index = catalog_index,
         items = recipe_menu[catalog_index].item or {}
     }
 end
 
-function M:update(datamodel, param, object_id, recipe_name)
+function M:update(datamodel, param, object_id)
     if param[1] ~= object_id then
         return
     end
 
-    if recipe_name and recipe_name ~= "" then
+    local object = assert(objects:get(cache_names, object_id))
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if not e then
+        return
+    end
+
+    local recipe_name = ""
+    if e.assembling.recipe ~= 0 then
+        local recipe_typeobject = iprototype:query(e.assembling.recipe)
+        recipe_name = recipe_typeobject.name
+    end
+
+    if e.assembling.recipe ~= 0 then
         datamodel.catalog_index, datamodel.recipe_index = get_recipe_index(recipe_menu, recipe_name)
         datamodel.recipe_name = recipe_name
     end
+
     datamodel.items = datamodel.recipe_menu[datamodel.catalog_index].item or {}
 end
 
 function M:stage_ui_update(datamodel)
-    for _, _, _, vsobject_id, recipe_name in set_recipe_mb:unpack() do
-        building_menu:set_recipe(vsobject_id, recipe_name)
+    for _, _, _, object_id, recipe_name in set_recipe_mb:unpack() do
+        local object = assert(objects:get(cache_names, object_id))
+        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        if e.assembling then
+            iworld:set_recipe(gameplay_core.get_world(), e, recipe_name)
+            gameplay_core.build()
+
+            iui.update("assemble_2.rml", "update", object_id)
+            iui.update("build_function_pop.rml", "update", object_id)
+        else
+            log.error(("can not found assembling `%s`(%s, %s)"):format(object.name, object.x, object.y))
+        end
     end
 end
 

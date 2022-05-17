@@ -190,11 +190,6 @@ function ui_system.ui_update()
         end
         ::continue::
     end
-
-    -- close 会清理 window_bindings, 必须放至最后处理
-    for _, url in rmlui_message_close_mb:unpack() do
-        close(url)
-    end
 end
 
 function ui_system.camera_usage()
@@ -204,6 +199,12 @@ function ui_system.camera_usage()
         if syncobj_source:changed(binding.datamodel) then
             datamodel_changed[url] = true
         end
+    end
+
+    -- close 会清理 window_bindings, 必须放至最后处理
+    -- 放在 camera_usage 处理因为 camera_usage 在 ui_update 后面
+    for _, url in rmlui_message_close_mb:unpack() do
+        close(url)
     end
 end
 

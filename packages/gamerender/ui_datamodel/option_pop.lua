@@ -19,16 +19,16 @@ end
 
 function M:stage_camera_usage()
     for _ in save_mb:unpack() do -- 存档时会保存摄像机的位置
-        M:backup()
+        saveload:backup()
     end
 
     for _, _, _, index in restore_mb:unpack() do -- 读档时会还原摄像机的位置
-        M:restore(index)
+        saveload:restore(index)
     end
 
     for _ in restart_mb:unpack() do
         camera.set("camera_default.prefab", true)
-        M:restart()
+        saveload:restart()
     end
 end
 

@@ -48,15 +48,22 @@ local function get_slot_eid(prefab, slot_name)
     end
 end
 
-local function detach_slot(binding)
-    for _, game_object in pairs(binding.slot_attach) do
-        world:pub {"game_object_system", "detach_slot", game_object}
+local function detach_slot(binding, slot_name)
+    if slot_name then
+        local game_object = binding.slot_attach[slot_name]
+        if game_object then
+            world:pub {"game_object_system", "detach_slot", game_object}
+        end
+    else
+        for _, game_object in pairs(binding.slot_attach) do
+            world:pub {"game_object_system", "detach_slot", game_object}
+        end
+        binding.slot_attach = {}
     end
-    binding.slot_attach = {}
 end
 
 events["attach_slot"] = function(prefab, binding, slot_name, prefab_file_name)
-    detach_slot(binding)
+    detach_slot(binding, slot_name)
 
     local game_object = assert(igame_object.create(prefab_file_name))
     binding.slot_attach[slot_name] = game_object

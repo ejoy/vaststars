@@ -1,0 +1,11 @@
+---
+data:
+  name: Scene
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {2, 2, 2}
+      t: {0, 0, 0}
+policy:
+  ant.general|name
+  ant.scene|scene_object

@@ -1,0 +1,36 @@
+---
+data:
+  name: pipe-joint-output-1
+  scene:
+    srt:
+      r: {-4.371138828673793e-08, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0, -10}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    pipe-joint-output-1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object
+---
+data:
+  name: pipe-joint-input-1
+  scene:
+    srt:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      s: {1, 1, 1}
+      t: {0, 0, 10}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    pipe-joint-input-1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object

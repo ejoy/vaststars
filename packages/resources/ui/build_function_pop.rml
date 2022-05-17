@@ -42,7 +42,6 @@
             local start = window.createModel "start" {
                 show_material_button = false,
                 show_set_recipe = false,
-                recipe_name = "",
                 object_id = 0,
                 left = "0vmin",
                 top = "0vmin",
@@ -53,11 +52,11 @@
             end
 
             function start.clickRecipe(event)
-                ui_sys:pub {"recipe", start.object_id, start.recipe_name}
+                ui_sys:pub {"recipe", start.object_id}
             end
 
             function start.clickDetail(event)
-                ui_sys:pub {"detail", start.object_id, start.recipe_name}
+                ui_sys:pub {"detail", start.object_id}
             end
 
             function start.clickPickupMaterial(event)
