@@ -97,11 +97,21 @@
                 background-size:cover;
                 transform: rotate(180deg)
             }
+            .small-building-block{
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
             .small-building {
-                width:100px;
-                height:100px;
+                width:128px;
+                height:128px;
                 background-size: cover;
                 margin:auto 0.5vmin;
+            }
+            .small-building-name {
+                font-size: 4vmin;
+                -webkit-text-stroke: 1px rgb(0, 0, 0);
+                text-align: center;
             }
         </style>
         <script type="text/x-lua">
@@ -390,6 +400,10 @@
                         <div style="flex-direction:row; justify-content: center; width:100%; align-items: center; height:60%;">
                             <div data-for = "item_info">
                                 <div class="small-building" data-for = "entity : it.entities" data-style-background-image = "entity.icon" />
+                                <!-- <div class="small-building-block">
+                                    <div class="small-building" data-for = "entity : it.entities" data-style-background-image = "entity.icon" />
+                                    <div class="small-building-name">组装机</div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
