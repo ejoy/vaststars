@@ -125,7 +125,7 @@
                     <div class = "menu-title" style="width: 70%;">物流中心</div>
                 </div>
                 <div class="column" data-if="building_info_flag" style="width: 100%;height: 95%;">
-                    <div class="build-info-reigon" style='background-image: "image/build_pic/logistics_center.png"; background-size: cover;'>
+                    <div class="build-info-reigon" style='background-image: "textures/build_background/logistics_center.texture"; background-size: cover;'>
                         <div class ="info-block">
                             <div data-if="show">
                                 <div class="row">

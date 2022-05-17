@@ -114,6 +114,7 @@
                 sub_inventory = {},
                 cur_item_category = "",
                 item_info = {},
+                item_prototype_name = "",
 
                 show_item_info = false,
                 show = false,
@@ -221,7 +222,7 @@
 
                     <!-- 指挥中心建筑信息 start -->
                     <div class="column" style="width: 100%;height: 95%;">
-                        <div class="build-info-reigon" style='background-image: "image/build_pic/pic_headquater.png"; background-size: cover;'>
+                        <div class="build-info-reigon" style='background-image: "textures/build_background/pic_headquater.texture"; background-size: cover;'>
                             <div class ="building-info">
                                 <div data-if="show">
                                     <div class="row">
@@ -291,7 +292,6 @@
                 </div>
 
                 <!-- 物品基础信息 start -->
-                <button class = "back-button" data-event-click="clickClose()" />
                 <div class="item-info-block" data-if = "false">
                     <div style="flex-direction:row; justify-content: flex-start; align-items: center; width:100%;height:20%;">
                         <div class ="drone-title-block" style="height:5vmin;">
@@ -349,6 +349,13 @@
                 </div>
                 <!-- 物品基础信息 end -->
 
+                <!-- 物品配方展示标题 start -->
+                <div class="header" id = "item-name-block">
+                    <button class = "back-button" data-event-click="clickClose()" />
+                    <div class = "menu-title" style="width: 70%;">{{item_prototype_name}}</div>
+                </div>
+                <!-- 物品配方展示标题 end -->
+                
                 <div class = "draw-line"/>
 
                 <div class="column" style="width:100%; height:100%;" data-if="show_item_info">
