@@ -3,7 +3,7 @@ local prototype = gameplay.prototype
 
 prototype "熔炼炉I" {
     model = "prefabs/furnace-1.prefab",
-    icon = "textures/construct/furnace2.texture",
+    icon = "textures/building_pic/small_pic_furnace.texture",
     construct_detector = {"exclusive"},
     type = {"entity", "assembling", "consumer"},
     area = "3x3",
@@ -22,7 +22,7 @@ prototype "熔炼炉I" {
 
 prototype "粉碎机I" {
     model = "prefabs/assembling-1.prefab",
-    icon = "textures/construct/crusher1.texture",
+    icon = "textures/building_pic/small_pic_furnace.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer"},
     area = "3x3",

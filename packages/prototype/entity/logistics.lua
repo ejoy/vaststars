@@ -37,7 +37,7 @@ prototype "物流中心" {
 
 prototype "机器爪I" {
     model = "prefabs/inserter-1.prefab",
-    icon = "textures/construct/insert1.texture",
+    icon = "textures/building_pic/small_pic_inserter",
     construct_detector = {"exclusive"},
     type = {"entity", "inserter", "consumer"},
     area = "1x1",
@@ -49,7 +49,7 @@ prototype "机器爪I" {
 
 prototype "科技中心I" {
     model = "prefabs/lab-1.prefab",
-    icon = "textures/construct/manufacture.texture",
+    icon = "textures/building_pic/small_pic_lab.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer"},
     area = "3x3",
