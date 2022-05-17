@@ -276,7 +276,7 @@
                 <div class = "recipe-button-block">
                     <button class = "confirm-button" style="background-color:rgb(203, 118, 24);" data-event-click = "clickClose()">
                         <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
-                        <div class = "recipe-name-text" style="font-size: 3.73vmin;">放弃修改</div>
+                        <div class = "recipe-name-text" style="font-size: 3.73vmin;">取消配方</div>
                     </button>
                     <button class = "confirm-button" style="background-color:rgb(52, 207, 115);" data-event-click = "clickConfirm()">
                         <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
