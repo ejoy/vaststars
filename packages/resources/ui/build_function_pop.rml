@@ -85,7 +85,7 @@
                     <div class="title-text">旋转</div>
                 </div>
 
-                <div class="button-fuction-block" style="top: -2.33vmin;" data-event-click="clickPickupMaterial()" data-if = "show_set_recipe && show_material_button">
+                <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickPickupMaterial()" data-if = "show_set_recipe && show_material_button">
                     <button class="button-function" style ='background-image: "textures/cmdcenter/fetch_material.texture";'/>
                     <div class="title-text">成品取出</div>
                 </div>
@@ -97,7 +97,7 @@
                 </div>
                 <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe" /> <!-- TODO -->
 
-                <div class="button-fuction-block" style="top: -2.33vmin;" data-event-click="clickPlaceMaterial()" data-if = "show_set_recipe && show_material_button">
+                <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickPlaceMaterial()" data-if = "show_set_recipe && show_material_button">
                     <button class="button-function" style ='background-image: "textures/cmdcenter/send_material.texture";'/>
                     <div class="title-text">原料添加</div>
                 </div>
