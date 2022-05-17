@@ -842,7 +842,7 @@ prototype "地质科技包1" {
     category = "器件小型制造",
     --group = "器件",
     order = 80,
-    icon = "textures/construct/processor.texture",
+    icon = "textures/construct/science-pack.texture",
     ingredients = {
         {"铁矿石", 2},
         {"沙石矿", 2},
@@ -859,7 +859,7 @@ prototype "气候科技包1" {
     category = "器件液体处理",
     --group = "器件",
     order = 82,
-    icon = "textures/construct/processor.texture",
+    icon = "textures/construct/science-pack.texture",
     ingredients = {
         {"海水", 2000},
         {"空气", 3000},
@@ -876,7 +876,7 @@ prototype "机械科技包1" {
     category = "器件中型制造",
     group = "器件",
     order = 84,
-    icon = "textures/construct/processor.texture",
+    icon = "textures/construct/science-pack.texture",
     ingredients = {
         {"电动机I", 1},
         {"铁齿轮", 3},
