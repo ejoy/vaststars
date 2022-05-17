@@ -1297,13 +1297,13 @@ prototype "海水分离铁" {
     category = "金属流体处理",
     group = "金属",
     order = 1,
+    -- icon = "textures/construct/gravel.texture",
     icon = "textures/recipe/water2iron.texture",
     ingredients = {
         {"海水", 100},
     },
     results = {
         {"铁矿石", 2},
-        {"碎石", 2},
         {"纯水", 50},
     },
     time = "3s",
@@ -1315,7 +1315,7 @@ prototype "海水分离水藻" {
     category = "金属流体处理",
     --group = "金属",
     order = 2,
-    icon = "textures/construct/outfall.texture",
+    icon = "textures/construct/gravel.texture",
     ingredients = {
         {"海水", 100},
     },
@@ -1333,15 +1333,14 @@ prototype "海水分离石头" {
     category = "金属流体处理",
     group = "金属",
     order = 3,
+    -- icon = "textures/construct/gravel.texture",
     icon = "textures/recipe/water2gravel.texture",
     ingredients = {
         {"海水", 100},
     },
     results = {
-        {"石头", 4},
-        {"沙子",1},
-        {"碎石",1},
-        {"纯水", 25},
+        {"碎石",2},
+        {"纯水", 50},
     },
     time = "3s",
     description = "海水中过滤石头",

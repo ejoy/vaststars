@@ -98,8 +98,8 @@
                 transform: rotate(180deg)
             }
             .small-building {
-                width:70px;
-                height:70px;
+                width:100px;
+                height:100px;
                 background-size: cover;
                 margin:auto 0.5vmin;
             }
