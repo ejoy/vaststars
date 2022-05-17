@@ -23,7 +23,7 @@ prototype "铁板1" {
     category = "金属锻造",
     group = "金属",
     order = 11,
-    icon = "textures/construct/steel-beam.texture",
+    icon = "textures/construct/iron-ingot.texture",
     ingredients = {
         {"铁锭", 4},
     },
