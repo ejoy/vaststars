@@ -7,7 +7,7 @@ local fs = require "bee.filesystem"
 local serialize = import_package "ant.serialize".stringify
 local datalist = require "datalist"
 local prefab_dir = lfs.path("/pkg/vaststars.resources/prefabs"):localpath()
-local prefab_patch_dir = (prefab_dir / "../../../prefab-patch"):lexically_normal()
+local prefab_patch_dir = (prefab_dir / "../../../tools/data/prefab-patch"):lexically_normal()
 
 local function get_prefab_files(dir)
     local r = {}
