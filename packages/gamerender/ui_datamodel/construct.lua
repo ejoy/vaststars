@@ -29,7 +29,7 @@ local construct_menu = {} ; do
         m.detail = {}
 
         for _, prototype_name in ipairs(menu.detail) do
-            local typeobject = assert(iprototype:queryByName("entity", prototype_name))
+            local typeobject = assert(iprototype:queryByName("item", prototype_name))
 
             local d = {}
             d.prototype = prototype_name

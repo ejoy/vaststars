@@ -82,13 +82,24 @@ function M:tick(datamodel, object_id)
         local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
         for id, count in pairs(item_counts) do
             local typeobject_item = assert(iprototype:query(id))
-            local t = {}
-            t.id = typeobject_item.id
-            t.name = typeobject_item.name
-            t.icon = typeobject_item.icon
-            t.count = count
-            t.category = typeobject_item.group
-            inventory[#inventory+1] = t
+            local stack = count
+
+            while stack > 0 do
+                local t = {}
+                t.id = typeobject_item.id
+                t.name = typeobject_item.name
+                t.icon = typeobject_item.icon
+                t.category = typeobject_item.group
+
+                if stack >= typeobject_item.stack then
+                    t.count = typeobject_item.stack
+                else
+                    t.count = stack
+                end
+
+                inventory[#inventory+1] = t
+                stack = stack - typeobject_item.stack
+            end
         end
 
         datamodel.inventory = inventory
