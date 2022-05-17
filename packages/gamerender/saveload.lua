@@ -90,10 +90,12 @@ function M:restore(index)
 
     --
     if not fs.exists(fs.path(archiving_list_path)) then
+        self:restart()
         return
     end
     archival_relative_dir_list = json.decode(readall(archiving_list_path))
     if #archival_relative_dir_list <= 0 then
+        self:restart()
         return
     end
 
