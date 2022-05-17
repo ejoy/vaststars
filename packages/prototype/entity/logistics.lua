@@ -3,7 +3,7 @@ local prototype = gameplay.prototype
 
 prototype "指挥中心" {
     model = "prefabs/headquater-1.prefab",
-    icon = "textures/construct/headquater.texture",
+    icon = "textures/building_pic/small_pic_headquarter.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "generator", "chest"},
     area = "5x5",
