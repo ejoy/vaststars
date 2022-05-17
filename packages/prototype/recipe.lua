@@ -74,7 +74,7 @@ prototype "铁丝1" {
     category = "金属锻造",
     group = "金属",
     order = 14,
-    icon = "textures/construct/steel-beam.texture",
+    icon = "textures/construct/iron-wire.texture",
     ingredients = {
         {"铁棒", 3},
     },
@@ -107,7 +107,7 @@ prototype "石砖" {
     category = "物流中型制造",
     group = "物流",
     order = 100,
-    icon = "textures/construct/gravel.texture",
+    icon = "textures/construct/stone-brick.texture",
     ingredients = {
         {"碎石", 4},
     },
@@ -158,7 +158,7 @@ prototype "铁齿轮" {
     category = "金属小型制造",
     group = "金属",
     order = 15,
-    icon = "textures/construct/steel-beam.texture",
+    icon = "textures/construct/iron-gear.texture",
     ingredients = {
         {"铁棒", 1},
         {"铁板", 2},
@@ -959,7 +959,7 @@ prototype "二氧化碳转一氧化碳" {
     category = "流体基础化工",
     --group = "流体",
     order = 31,
-    icon = "textures/fluid/gas.texture",
+    icon = "textures/fluid/gas-co.texture",
     ingredients = {
         {"二氧化碳", 40},
         {"氢气", 40},
@@ -977,7 +977,7 @@ prototype "二氧化碳转甲烷" {
     category = "流体基础化工",
     group = "流体",
     order = 34,
-    icon = "textures/fluid/gas.texture",
+    icon = "textures/fluid/gas-ch4.texture",
     ingredients = {
         {"二氧化碳", 32},
         {"氢气", 110},
@@ -1048,7 +1048,7 @@ prototype "甲烷转乙烯" {
     category = "流体基础化工",
     group = "流体",
     order = 36,
-    icon = "textures/fluid/gas.texture",
+    icon = "textures/fluid/gas-ethene.texture",
     ingredients = {
         {"甲烷", 40},
         {"氧气", 40},
@@ -1297,7 +1297,7 @@ prototype "海水分离铁" {
     category = "金属流体处理",
     group = "金属",
     order = 1,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/recipe/water2iron.texture",
     ingredients = {
         {"海水", 100},
     },
@@ -1333,7 +1333,7 @@ prototype "海水分离石头" {
     category = "金属流体处理",
     group = "金属",
     order = 3,
-    icon = "textures/construct/gravel.texture",
+    icon = "textures/recipe/water2gravel.texture",
     ingredients = {
         {"海水", 100},
     },

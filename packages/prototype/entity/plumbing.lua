@@ -3,7 +3,7 @@ local prototype = gameplay.prototype
 
 prototype "液罐I" {
     model = "prefabs/storage-tank-1.prefab",
-    icon = "textures/construct/tank1.texture",
+    icon = "textures/building_pic/small_pic_tank.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "fluidbox"},
     area = "3x3",
@@ -23,7 +23,7 @@ prototype "液罐I" {
 
 prototype "抽水泵" {
     model = "prefabs/offshore-pump-1.prefab",
-    icon = "textures/construct/offshore-pump.texture",
+    icon = "textures/building_pic/small_pic_offshore.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer", "assembling", "fluidboxes"},
     area = "1x2",
@@ -48,7 +48,7 @@ prototype "抽水泵" {
 
 prototype "压力泵I" {
     model = "prefabs/pump-1.prefab",
-    icon = "textures/construct/pump1.texture",
+    icon = "textures/building_pic/small_pic_pump.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer", "fluidbox", "pump"},
     area = "1x2",
@@ -70,7 +70,7 @@ prototype "压力泵I" {
 
 prototype "烟囱I" {
     model = "prefabs/chimney-1.prefab",
-    icon = "textures/construct/chimney2.texture",
+    icon = "textures/building_pic/small_pic_pump.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "fluidbox"},
     area = "2x2",
@@ -88,7 +88,7 @@ prototype "烟囱I" {
 
 prototype "排水口I" {
     model = "prefabs/outfall-1.prefab",
-    icon = "textures/construct/outfall.texture",
+    icon = "textures/building_pic/small_pic_outfall.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "fluidbox"},
     area = "3x3",
@@ -106,7 +106,7 @@ prototype "排水口I" {
 
 prototype "空气过滤器I" {
     model = "prefabs/chimney-1.prefab",
-    icon = "textures/construct/air-filter1.texture",
+    icon = "textures/building_pic/small_pic_outfall.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer","assembling","fluidboxes"},
     area = "2x2",
