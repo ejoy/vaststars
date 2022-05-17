@@ -4,10 +4,6 @@ local menu = {
         icon = "textures/construct/power.texture",
         detail = {
             "铁制电线杆",
-            "蒸汽发电机I",
-            "风力发电机I",
-            "太阳能板I",
-            "蓄电池I",
         }
     },
     {
@@ -24,10 +20,8 @@ local menu = {
         name = "加工",
         icon = "textures/construct/assembler.texture",
         detail = {
-            "采矿机I",
             "组装机I",
             "熔炼炉I",
-            "粉碎机I",
         },
     },
     {
@@ -35,10 +29,8 @@ local menu = {
         icon = "textures/construct/pipe.texture",
         detail = {
             "管道I",
-            "地下管I",
             "液罐I",
             "抽水泵",
-            "压力泵I",
             "烟囱I",
             "排水口I",
             "空气过滤器I",
@@ -48,11 +40,8 @@ local menu = {
         name = "物流",
         icon = "textures/construct/logisitic1.texture",
         detail = {
-            "砖石公路",
-            "车站I",
             "小型铁制箱子",
             "机器爪I",
-            "物流中心I",
             "科研中心I",
         },
     },
@@ -60,14 +49,16 @@ local menu = {
         name = "自定义",
         icon = "textures/construct/modify.texture",
         detail = {
-            "砖石公路",
-            "车站I",
+            "铁制电线杆",
+            "液罐I",
+            "管道I",
+            "抽水泵",
+            "空气过滤器I",
             "机器爪I",
             "小型铁制箱子",
             "组装机I",
-            "管道I",
-            "铁制电线杆",
-            "抽水泵",
+
+
         },
     },
 }
