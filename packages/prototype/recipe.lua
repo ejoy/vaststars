@@ -72,7 +72,7 @@ prototype "铁棒1" {
 prototype "铁丝1" {
     type = { "recipe" },
     category = "金属锻造",
-    --group = "金属",
+    group = "金属",
     order = 14,
     icon = "textures/construct/steel-beam.texture",
     ingredients = {
@@ -156,7 +156,7 @@ prototype "电动机1" {
 prototype "铁齿轮" {
     type = { "recipe" },
     category = "金属小型制造",
-    --group = "金属",
+    group = "金属",
     order = 15,
     icon = "textures/construct/steel-beam.texture",
     ingredients = {
@@ -191,7 +191,7 @@ prototype "机器爪1" {
 prototype "砖石公路" {
     type = { "recipe" },
     category = "物流中型制造",
-    group = "物流",
+    --group = "物流",
     order = 104,
     icon = "textures/construct/road1.texture",
     ingredients = {
@@ -495,7 +495,7 @@ prototype "烟囱1" {
 prototype "压力泵1" {
     type = { "recipe" },
     category = "化工中型制造",
-    group = "化工",
+    --group = "化工",
     order = 40,
     icon = "textures/construct/pump1.texture",
     ingredients = {
@@ -512,7 +512,7 @@ prototype "压力泵1" {
 prototype "抽水泵" {
     type = { "recipe" },
     category = "化工中型制造",
-    group = "化工",
+    --group = "化工",
     order = 50,
     icon = "textures/construct/offshore-pump.texture",
     ingredients = {
@@ -529,7 +529,7 @@ prototype "抽水泵" {
 prototype "空气过滤器1" {
     type = { "recipe" },
     category = "化工大型制造",
-    group = "化工",
+    --group = "化工",
     order = 60,
     icon = "textures/construct/air-filter1.texture",
     ingredients = {
@@ -547,7 +547,7 @@ prototype "空气过滤器1" {
 prototype "排水口1" {
     type = { "recipe" },
     category = "化工大型制造",
-    group = "化工",
+    --group = "化工",
     order = 56,
     icon = "textures/construct/outfall.texture",
     ingredients = {
@@ -581,7 +581,7 @@ prototype "管道1" {
 prototype "地下管1" {
     type = { "recipe" },
     category = "化工小型制造",
-    group = "化工",
+    --group = "化工",
     order = 12,
     icon = "textures/construct/pipe.texture",
     ingredients = {
@@ -708,7 +708,7 @@ prototype "破损化工厂" {
     order = 113,
     icon = "textures/construct/chemistry2.texture",
     ingredients = {
-        {"压力泵I", 1},
+        {"小型铁制箱子", 1},
         {"破损化工厂", 1},
     },
     results = {
@@ -789,7 +789,7 @@ prototype "破损蓄电池" {
 prototype "破损物流中心" {
     type = { "recipe" },
     category = "生产手工制造",
-    group = "生产",
+    --group = "生产",
     order = 118,
     icon = "textures/construct/logisitic1.texture",
     ingredients = {
@@ -806,7 +806,7 @@ prototype "破损物流中心" {
 prototype "破损运输汽车" {
     type = { "recipe" },
     category = "生产手工制造",
-    group = "生产",
+    --group = "生产",
     order = 119,
     icon = "textures/construct/truck.texture",
     ingredients = {
@@ -823,7 +823,7 @@ prototype "破损运输汽车" {
 prototype "破损车站" {
     type = { "recipe" },
     category = "生产手工制造",
-    group = "生产",
+    --group = "生产",
     order = 120,
     icon = "textures/construct/manufacture.texture",
     ingredients = {
@@ -874,7 +874,7 @@ prototype "气候科技包1" {
 prototype "机械科技包1" {
     type = { "recipe" },
     category = "器件中型制造",
-    --group = "器件",
+    group = "器件",
     order = 84,
     icon = "textures/construct/processor.texture",
     ingredients = {
@@ -939,7 +939,7 @@ prototype "空气分离1" {
 prototype "海水电解" {
     type = { "recipe" },
     category = "电解",
-    group = "流体",
+    --group = "流体",
     order = 16,
     icon = "textures/construct/electrolysis1.texture",
     ingredients = {
@@ -1008,22 +1008,23 @@ prototype "一氧化碳转石墨" {
     description = "一氧化碳转石墨",
 }
 
-prototype "氯化氢" {
-    type = { "recipe" },
-    category = "流体基础化工",
-    --group = "流体",
-    order = 60,
-    icon = "textures/fluid/gas.texture",
-    ingredients = {
-        {"氯气", 30},
-        {"氢气", 30},
-    },
-    results = {
-        {"盐酸", 60},
-    },
-    time = "1s",
-    description = "氢气和氯气化合成氯化氢",
-}
+
+-- prototype "氯化氢" {
+--     type = { "recipe" },
+--     category = "流体基础化工",
+--     --group = "流体",
+--     order = 60,
+--     icon = "textures/fluid/gas.texture",
+--     ingredients = {
+--         {"氯气", 30},
+--         {"氢气", 30},
+--     },
+--     results = {
+--         {"盐酸", 60},
+--     },
+--     time = "1s",
+--     description = "氢气和氯气化合成氯化氢",
+-- }
 
 prototype "纯水电解" {
     type = { "recipe" },
@@ -1068,7 +1069,6 @@ prototype "塑料1" {
     icon = "textures/construct/processor.texture",
     ingredients = {
         {"乙烯", 30},
-        {"氯气", 30},
     },
     results = {
         {"盐酸", 20},
@@ -1100,7 +1100,7 @@ prototype "塑料2" {
 prototype "酸碱中和" {
     type = { "recipe" },
     category = "流体液体处理",
-    group = "流体",
+    --group = "流体",
     order = 65,
     icon = "textures/fluid/liquid.texture",
     ingredients = {
@@ -1117,7 +1117,7 @@ prototype "酸碱中和" {
 prototype "碱性溶液" {
     type = { "recipe" },
     category = "流体液体处理",
-    group = "流体",
+    --group = "流体",
     order = 64,
     icon = "textures/fluid/liquid.texture",
     ingredients = {
@@ -1313,7 +1313,7 @@ prototype "海水分离铁" {
 prototype "海水分离水藻" {
     type = { "recipe" },
     category = "金属流体处理",
-    group = "金属",
+    --group = "金属",
     order = 2,
     icon = "textures/construct/outfall.texture",
     ingredients = {
@@ -1350,7 +1350,7 @@ prototype "海水分离石头" {
 prototype "提炼纤维" {
     type = { "recipe" },
     category = "器件中型制造",
-    group = "器件",
+    --group = "器件",
     order = 26,
     icon = "textures/construct/industry.texture",
     ingredients = {
