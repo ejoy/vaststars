@@ -725,7 +725,7 @@ prototype "破损组装机" {
     order = 114,
     icon = "textures/construct/assembler.texture",
     ingredients = {
-        {"铁齿轮", 2},
+        {"铁丝", 6},
         {"破损组装机", 1},
     },
     results = {
