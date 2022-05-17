@@ -6,12 +6,18 @@ local cache_names = global.cache_names
 local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
 
-local function get(object_id, recipe_name)
-    local recipe_typeobject = iprototype:queryByName("recipe", recipe_name)
+local function get(object_id)
+    local object = assert(objects:get(cache_names, object_id))
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if not e then
+        return
+    end
+
+    local recipe_typeobject = iprototype:query(e.assembling.recipe)
     if not recipe_typeobject then
         return {
             object_id = object_id,
-            recipe_name = recipe_name,
+            recipe_name = recipe_typeobject.name,
             recipe_ingredients = {},
             recipe_results = {},
             recipe_ingredients_count = {},
@@ -34,7 +40,7 @@ local function get(object_id, recipe_name)
 
     return {
         object_id = object_id,
-        recipe_name = recipe_name,
+        recipe_name = recipe_typeobject.name,
         recipe_ingredients = recipe_ingredients,
         recipe_results = recipe_results,
         recipe_ingredients_count = recipe_ingredients_count,
@@ -57,11 +63,11 @@ end
 ---------------
 local M = {}
 
-function M:create(object_id, recipe_name)
-    return get(object_id, recipe_name)
+function M:create(object_id)
+    return get(object_id)
 end
 
-function M:tick(datamodel, object_id, recipe_name)
+function M:tick(datamodel, object_id)
     local object = assert(objects:get(cache_names, object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -124,8 +130,8 @@ function M:tick(datamodel, object_id, recipe_name)
     end
 end
 
-function M:update(datamodel, object_id, recipe_name)
-    for k, v in pairs(get(object_id, recipe_name)) do
+function M:update(datamodel, object_id)
+    for k, v in pairs(get(object_id)) do
         datamodel[k] = v
     end
 end

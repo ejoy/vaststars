@@ -20,15 +20,142 @@ policy:
   ant.render|render
 ---
 data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/assembling.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti.002_P1.meshbin
-  name: lifangti.001
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti.014_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/assembling.glb|meshes/Armature.skinbin
+  name: lifangti.011
+  pose_result: false
   scene:
-    srt:
-      r: {0, 1, 0, 1.6292068494294654e-07}
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/assembling.glb|animations/skeleton.ozz
+  skinning: {}
 mount: 1
 policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/assembling.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/assembling.glb|meshes/Armature.skinbin
+  name: lifangti.003
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/assembling.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/assembling.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2.001_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/assembling.glb|meshes/Armature.skinbin
+  name: lifangti.004
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/assembling.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/assembling.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2.004_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/assembling.glb|meshes/Armature.skinbin
+  name: lifangti.005
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/assembling.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/assembling.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2.005_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/assembling.glb|meshes/Armature.skinbin
+  name: lifangti.006
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/assembling.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
@@ -59,3 +186,67 @@ policy:
   ant.animation|skinning
   ant.general|name
   ant.render|render
+---
+data:
+  _animation:
+    anim_clips: {}
+    joint_list: {}
+    keyframe_events: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/assembling.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2.002_P1.meshbin
+  meshskin: /pkg/vaststars.resources/glb/assembling.glb|meshes/Armature.skinbin
+  name: lifangti.007
+  pose_result: false
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/assembling.glb|animations/skeleton.ozz
+  skinning: {}
+mount: 1
+policy:
+  ant.animation|animation
+  ant.animation|animation_controller.birth
+  ant.animation|skinning
+  ant.general|name
+  ant.render|render
+---
+data:
+  name: pipe-joint-output-1
+  scene:
+    srt:
+      r: {-4.371138828673793e-08, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0, -10}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    pipe-joint-output-1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object
+---
+data:
+  name: pipe-joint-input-1
+  scene:
+    srt:
+      r: {0, 1, 0, -4.371138828673793e-08}
+      s: {1, 1, 1}
+      t: {0, 0, 10}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    pipe-joint-input-1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object

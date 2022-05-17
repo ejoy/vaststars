@@ -40,7 +40,7 @@ function start.ClickClose(event)
 end
 
 function start.clickRecipe(event)
-    ui_sys:world_pub {"rmlui_message_pub", "build_function_pop.rml", "recipe", start.object_id, start.recipe_name}
+    ui_sys:world_pub {"rmlui_message_pub", "build_function_pop.rml", "recipe", start.object_id}
 end
 
 -- <!-- tag page begin -->

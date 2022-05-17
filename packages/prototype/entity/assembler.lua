@@ -3,6 +3,10 @@ local prototype = gameplay.prototype
 
 prototype "组装机I" {
     model = "prefabs/assembling-1.prefab",
+    assembling_slot = {
+        input = {"pipe-joint-input-1"},
+        output = {"pipe-joint-output-1"},
+    },
     icon = "textures/construct/assembler.texture",
     construct_detector = {"exclusive"},
     type = {"entity", "assembling", "consumer", "fluidboxes"},
