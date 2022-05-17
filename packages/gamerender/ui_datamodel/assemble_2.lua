@@ -17,7 +17,7 @@ local function get(object_id)
     if not recipe_typeobject then
         return {
             object_id = object_id,
-            recipe_name = recipe_typeobject.name,
+            recipe_name = "",
             recipe_ingredients = {},
             recipe_results = {},
             recipe_ingredients_count = {},

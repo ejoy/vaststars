@@ -4,7 +4,7 @@ local prototype = gameplay.prototype
 prototype "铁锭" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/steel-beam.texture",
+    icon = "textures/construct/iron-ingot.texture",
     model = "prefabs/rock.prefab",
     des = "铁矿石通过工业熔炼的锭",
     group = "金属",
@@ -34,7 +34,7 @@ prototype "铁丝" {
 prototype "铁棒" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/steel-beam.texture",
+    icon = "textures/construct/iron_stick.texture",
     model = "prefabs/rock.prefab",
     description = "铁制材料锻造加工成的铁棒",
     group = "金属",

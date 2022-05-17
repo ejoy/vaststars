@@ -6,7 +6,7 @@ prototype "铁锭" {
     category = "金属冶炼",
     group = "金属",
     order = 10,
-    icon = "textures/construct/steel-beam.texture",
+    icon = "textures/construct/iron-ingot.texture",
     ingredients = {
         {"铁矿石", 5},
     },
@@ -58,7 +58,7 @@ prototype "铁棒1" {
     category = "金属锻造",
     group = "金属",
     order = 13,
-    icon = "textures/construct/steel-beam.texture",
+    icon = "textures/construct/iron_stick.texture",
     ingredients = {
         {"铁锭", 4},
     },
