@@ -259,3 +259,38 @@ policy:
   ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
+---
+data:
+  name: empty3
+  scene:
+    srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, 0, 0}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    empty3
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object
+---
+data:
+  name: empty4
+  scene:
+    srt: {}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    empty4
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+  ant.scene|scene_object
