@@ -2,10 +2,11 @@
 event_list:
   ---
   asset_path: /pkg/vaststars.resources/effect/efk/baiyan.efk
+  breakable: false
   event_type: Effect
   life_time: 2
   link_info:
-    slot_eid: 134
+    slot_eid: 133
     slot_name: empty1
   name: Effect2
 time: 0.6
@@ -13,10 +14,11 @@ time: 0.6
 event_list:
   ---
   asset_path: /pkg/vaststars.resources/effect/efk/baiyan.efk
+  breakable: false
   event_type: Effect
   life_time: 2
   link_info:
-    slot_eid: 149
+    slot_eid: 134
     slot_name: empty2
   name: Effect4
 time: 0.64
@@ -24,10 +26,11 @@ time: 0.64
 event_list:
   ---
   asset_path: /pkg/vaststars.resources/effect/efk/baiyan.efk
+  breakable: false
   event_type: Effect
   life_time: 2
   link_info:
-    slot_eid: 134
+    slot_eid: 133
     slot_name: empty1
   name: Effect3
 time: 1.7
@@ -35,10 +38,11 @@ time: 1.7
 event_list:
   ---
   asset_path: /pkg/vaststars.resources/effect/efk/baiyan.efk
+  breakable: false
   event_type: Effect
   life_time: 2
   link_info:
-    slot_eid: 149
+    slot_eid: 134
     slot_name: empty2
   name: Effect5
 time: 1.74
