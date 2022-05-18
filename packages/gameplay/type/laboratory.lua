@@ -31,7 +31,7 @@ function c:ctor(init, pt)
             speed = math.floor(pt.speed * 100),
             low_power = 0,
             status = STATUS_IDLE,
-            process = 0,
+            progress = 0,
         }
     }
     return e
