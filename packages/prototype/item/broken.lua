@@ -4,7 +4,7 @@ local prototype = gameplay.prototype
 prototype "破损水电站" {
     type = {"item"},
     stack = 10,
-    icon = "textures/construct/hydroplant.texture",
+    icon = "textures/construct/broken-hydroplant.texture",
     model = "prefabs/rock.prefab",
     description = "损坏的水电站",
     group = "加工",
@@ -14,7 +14,7 @@ prototype "破损水电站" {
 prototype "破损空气过滤器" {
     type = {"item"},
     stack = 10,
-    icon = "textures/construct/air-filter1.texture",
+    icon = "textures/construct/broken-air-filter1.texture",
     model = "prefabs/rock.prefab",
     description = "损坏的空气过滤器",
     group = "加工",
@@ -24,7 +24,7 @@ prototype "破损空气过滤器" {
 prototype "破损电解厂" {
     type = {"item"},
     stack = 10,
-    icon = "textures/construct/electrolysis1.texture",
+    icon = "textures/construct/broken-electrolysis1.texture",
     model = "prefabs/rock.prefab",
     description = "损坏的电解厂",
     group = "加工",
@@ -34,7 +34,7 @@ prototype "破损电解厂" {
 prototype "破损化工厂" {
     type = {"item"},
     stack = 10,
-    icon = "textures/construct/chemistry2.texture",
+    icon = "textures/construct/broken-chemistry2.texture",
     model = "prefabs/rock.prefab",
     description = "损坏的化工厂",
     group = "加工",
@@ -44,7 +44,7 @@ prototype "破损化工厂" {
 prototype "破损组装机" {
     type = {"item"},
     stack = 10,
-    icon = "textures/construct/assembler.texture",
+    icon = "textures/construct/broken-assembler.texture",
     model = "prefabs/rock.prefab",
     description = "损坏的组装机",
     group = "加工",
@@ -54,7 +54,7 @@ prototype "破损组装机" {
 prototype "破损铁制电线杆" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/electric-pole1.texture",
+    icon = "textures/construct/broken-electric-pole1.texture",
     model = "prefabs/rock.prefab",
     description = "损坏的铁制电线杆",
     group = "加工",

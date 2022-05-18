@@ -264,12 +264,12 @@
 
                 local detail = document.createElement "div"
                 detail.outerHTML = ([[
-                        <div class="button-exchange-block" style = "background-color: rgb(255, 0, 255); width: 88vmin; height: 12vmin; border: 1px;">
-                            <button class="button-exchange" style = "background-color: rgb(203, 118, 24); width: 30.00vmin;" data-event-click = "clickToChest(%s)">
+                        <div class="button-exchange-block" style = "background-color: rgb(203, 118, 24); width: 88vmin; height: 12vmin; border: 1px rgb(89, 73, 39);">
+                            <button class="button-exchange" style = "background-color: rgb(0,176,80); width: 30.00vmin;" data-event-click = "clickToChest(%s)">
                                 <div class = "button-exchange-box" style='width:8vmin; height:8vmin; background-image: "textures/cmdcenter/send_material.texture";'/>
                                 <div class = "button-exchange-text">指挥中心转箱子</div>
                             </button>
-                            <button class="button-exchange" style = "background-color: rgb(203, 118, 24); width: 30.00vmin;" data-event-click = "clickToHeadquater(%s)">
+                            <button class="button-exchange" style = "background-color: rgb(0,176,80); width: 30.00vmin;" data-event-click = "clickToHeadquater(%s)">
                                 <div class = "button-exchange-box" style='width:8vmin; height:8vmin; background-image: "textures/cmdcenter/fetch_material.texture";'/>
                                 <div class = "button-exchange-text">箱子转指挥中心</div>
                             </button>
