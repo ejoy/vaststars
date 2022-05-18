@@ -1,0 +1,272 @@
+<rml>
+    <head>
+        <style>
+            .recipe-panel {
+                background-color: rgb(44, 32, 18);
+                border: 0.2vmin rgb(89, 73, 39);
+                border-radius: 0.67vmin;
+                margin:auto 0.3em;
+                width: 35%;
+                height: 90%;
+                justify-content: space-evenly;
+            }
+            .recipe-name-block {
+                background-color: rgb(203, 118, 24);
+                width: 100%;
+                height:8%;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                border: 0.10vmin rgb(89, 73, 39);
+            }
+            .recipe-time-block {
+                flex-direction: row;
+                align-items: center;
+            }
+            .name-block {
+                background-color: rgb(203, 118, 24);
+                width: 100%;
+                height:100%;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+            .recipe-change-block {
+                width: 100%;
+                height:60%;
+                flex-direction: column;
+                align-items: center;
+                background-color: rgb(44, 32, 18);
+            }
+            .recipe-button-block {
+                width: 100%;
+                height:12%;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                background-color: rgb(44, 32, 18);
+                font-size: 3.47vmin;
+            }
+            .recipe-name-text {
+                padding-bottom: 0.25em;
+                margin:0 0.5em 0 0;
+                font-size: 3.73vmin;
+                text-align: center;
+                -webkit-text-stroke: 0.05em rgb(0,0,0);
+            }
+            .two-recipe-block {
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                background-color: rgb(44, 32, 18);
+                font-size: 3.73vmin;
+                background-size: cover;
+                border-radius: 0.27vmin;
+                width: 100%;
+                height:80%;
+            }
+            .materials-block {
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                background-size: cover;
+                border-radius: 0.27vmin;
+                width: 100%;
+                height:80%;
+            }
+            .materials {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                background-size: cover;
+                width: 100%;
+                height:15%;
+            }
+            .materials-item {
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .materials-icon {
+                margin-left: 0.5em;
+                width: 3.67vmin;
+                height: 3.67vmin;
+                background-color: rgb(250, 205, 9);;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                background-size: cover;
+            }
+            .materials-name {
+                padding-bottom: 0.3em;
+                padding-left: 0.2em;
+                padding-right:1em;
+                font-size: 3.73vmin;
+                text-align: center;
+            }
+            .materials-num {
+                padding-bottom: 0.3em;
+                padding-right:1em;
+                font-size: 3.73vmin;
+                text-align: center;
+            }
+            .task-image {
+                width: 100%;
+                height: 100%;
+                background-size: cover;
+            }
+            .task-desc-block {
+                width: 100%;
+                height: 100%;
+                flex-direction: row;
+                justify-content: center;
+                word-break: break-all;
+            }
+            .task-desc {
+                width: 80%;
+                flex-direction: row;
+                align-items: center;
+                font-size: 3.5vmin;
+                text-align: left;
+            }
+            .task-count {
+                width: 20%;
+                flex-direction: row;
+                align-items: center;
+                text-align: center;
+            }
+            .task-count-start {
+                font-size: 3.5vmin;
+                color: rgb(0,255,0);
+            }
+            .task-count-end {
+                font-size: 3.5vmin;
+            }
+        </style>
+        <style path = "common/building_style.rcss"/>
+        <style path = "common/listpage_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = window.createModel "start" {
+                object_id = 0,
+                recipe_index = 1,
+                recipe_name = "",
+                recipe_menu = {},
+                catalog_index = 1,
+                items = {},
+
+                recipe_time = " ",
+                recipe_ingredients = {},
+                recipe_results = {},
+            }
+
+            local function clickItem(index)
+                local recipe = start.items[index]
+                if not recipe then
+                    console.log(("can not found index %s"):format(index))
+                    return
+                end
+                start.recipe_name = recipe.name
+                start.recipe_time = ("%ss"):format(recipe.time // 50) -- 50 ticks per second
+                start.recipe_ingredients = recipe.ingredients
+                start.recipe_results = recipe.results
+            end
+
+            function start.clickClose(event)
+                ui_sys:close()
+            end
+
+            function start.clickConfirm(event)
+                ui_sys:pub {"set_recipe", start.object_id, start.recipe_name}
+                ui_sys:close()
+            end
+
+            local select_item
+            function start.clickCatalog(event, it_index)
+                start.catalog_index = it_index + 1
+                start.items = start.recipe_menu[it_index + 1].item
+                -- <!-- tag page begin -->
+                select_item = nil
+                start.page:on_dirty_all(#start.items)
+                -- <!-- tag page end -->
+            end
+
+            -- <!-- tag page begin -->
+            local function page_item_renderer(index)
+                if index > #start.items then
+                    local e = document.createElement "div"
+                    e.outerHTML = [[<div style = "width: 12.00vmin; height: 12.00vmin;" />]]
+                    return e
+                end
+
+                local item = document.createElement "div"
+                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" />]]):format(start.items[index].icon)
+                local select_style_border = "5px green"
+
+                if start.recipe_name == start.items[index].name then
+                    select_item = item
+                    item.style.border = select_style_border
+                end
+
+                item.addEventListener('click', function(event)
+                    if select_item then
+                        select_item.style.border = '0px green'
+                    end
+                    item.style.border = select_style_border
+                    clickItem(index)
+                    select_item = item
+                end)
+                return item
+            end
+
+            local pageclass = require "page"
+            window.customElements.define("page", function(e)
+                start.page = pageclass.create(document, e, page_item_renderer)
+            end)
+            -- <!-- tag page end -->
+
+            ui_sys:setDataModel(start, function(patch)
+                if patch.items then
+                    start.page:on_dirty_all(#start.items)
+                end
+                
+                if patch.recipe_index then
+                    clickItem(patch.recipe_index)
+                end
+            end)
+        </script>
+    </head>
+    <body>
+        <div class="item-container-region"  style="width:100%;  background-color: rgb(0,0,0); justify-content: center;" data-model="start">
+            <div class="recipe-panel" style = "flex-direction: column; height: 80%;">
+                <!-- 标题栏 -->
+                <div class = "recipe-name-block">
+                    <div class = "name-block">
+                        <div class = "small-bg" style='background-image: "textures/science/book.texture";'/>
+                        <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">{{recipe_name}}</div>
+                    </div>
+                </div>
+                <div class = "recipe-change-block">
+                    <div class = "task-image" style='background-image: "textures/build_background/pic_assemble.texture";'/> 
+                </div>
+                <div style="border-bottom: 0.10vmin rgb(89, 73, 39);"/>
+                <div class = "recipe-change-block" style="width:100%; height:20%;">
+                    <div class="task-desc-block">
+                        <div class="task-desc">这里是一长串的任务描述这里是一长串的任务描述这里是一长串的任务描述这里是一长串的任务描述</div>
+                        <div class="task-count">
+                            <div class="task-count-end">(</div>
+                            <div class="task-count-start">10</div>
+                            <div class="task-count-end">/200)</div>                
+                        </div>
+                    </div>
+                </div>
+                <div class = "recipe-button-block">
+                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115);" data-event-click = "clickConfirm()">
+                        <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
+                        <div class = "recipe-name-text" style="font-size: 3.73vmin;">确定</div>
+                    </button> 
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>
