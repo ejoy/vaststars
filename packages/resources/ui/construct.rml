@@ -197,6 +197,9 @@
                 ui_sys:pub {"fluidbox_update", FluidName}
                 start.cur_selected_fluid = FluidName
             end
+            function start.clickHeadquater(event)
+                ui_sys:pub {"headquater", FluidName}
+            end
             function start.clickSetting(event)
                 ui_sys:pub {"show_setting"}
             end
@@ -249,7 +252,7 @@
             </div>
 
             <!-- 主菜单按钮 -->
-            <div class = "main-menu-block" data-if = "cur_edit_mode == ''">
+            <div class = "main-menu-block" data-if = "cur_edit_mode == ''" data-event-click = "clickHeadquater()">
                 <button  class = "main-menu-button" style="border: 0.00vmin;">
                     <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
                     <div class = "menu-button-text">指挥中心</div>

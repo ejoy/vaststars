@@ -58,7 +58,7 @@ local function open(url, ...)
         if res.event == "__CLOSE" then
             world:pub {"rmlui_message_close", url}
         elseif res.event == "__OPEN" then
-            world:pub {"rmlui_message", res.event}
+            world:pub {"rmlui_message", res.event, table_unpack(res.ud)}
         elseif res.event == "__PUB" then
             world:pub {"rmlui_message_pub", url, table_unpack(res.ud)}
         else
@@ -172,7 +172,7 @@ function ui_system.ui_update()
 
     for url in pairs(stage_ui_update) do
         local binding = window_bindings[url]
-        binding.template:stage_ui_update(binding.datamodel)
+        binding.template:stage_ui_update(binding.datamodel, table_unpack(binding.param))
         if syncobj_source:changed(binding.datamodel) then
             datamodel_changed[url] = true
         end
@@ -195,7 +195,7 @@ end
 function ui_system.camera_usage()
     for url in pairs(stage_camera_usage) do
         local binding = window_bindings[url]
-        binding.template:stage_camera_usage(binding.datamodel)
+        binding.template:stage_camera_usage(binding.datamodel, table_unpack(binding.param))
         if syncobj_source:changed(binding.datamodel) then
             datamodel_changed[url] = true
         end

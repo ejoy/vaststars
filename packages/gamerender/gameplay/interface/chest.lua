@@ -14,4 +14,14 @@ function M:item_counts(world, e)
     return r
 end
 
+function M:pickup_place(world, e1, e2, prototype, count)
+    if not world:container_pickup(e1.chest.container, prototype, count) then
+        log.error(("failed to pickup `%s` `%s`"):format(prototype, count))
+    else
+        if not world:container_place(e2.chest.container, prototype, count) then
+            log.error(("failed to place `%s` `%s`"):format(prototype, count))
+        end
+    end
+end
+
 return M

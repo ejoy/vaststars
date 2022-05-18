@@ -11,6 +11,8 @@ local objects = global.objects
 local cache_names = global.cache_names
 local irecipe = require "gameplay.interface.recipe"
 local click_item_mb = mailbox:sub {"click_item"}
+local to_chest_mb = mailbox:sub {"to_chest"}
+local to_headquater_mb = mailbox:sub {"to_headquater"}
 
 local item_id_to_info = {}
 local recipe_to_category = {}
@@ -56,6 +58,13 @@ for _, item_info in pairs(item_id_to_info) do
     end
 end
 
+-- TODO
+local function get_headquater_object()
+    for _, object in objects:select("CONSTRUCTED", "headquater", true) do
+        return object
+    end
+end
+
 ---------------
 local M = {}
 
@@ -64,10 +73,11 @@ function M:create(object_id)
     local typeobject = iprototype:queryByName("entity", object.prototype_name)
 
     return {
+        object_id = object_id,
         item_category = item_category,
         inventory = {},
         prototype_name = object.prototype_name,
-        is_headquater = typeobject.headquater,
+        is_chest = not typeobject.headquater,
         item_prototype_name = "",
         item_id_to_info = {},
     }
@@ -106,7 +116,7 @@ function M:tick(datamodel, object_id)
     end
 end
 
-function M:stage_ui_update(datamodel)
+function M:stage_ui_update(datamodel, object_id)
     for _, _, _, prototype in click_item_mb:unpack() do
         local typeobject = iprototype:query(prototype)
         datamodel.show_item_info = true
@@ -114,6 +124,99 @@ function M:stage_ui_update(datamodel)
         datamodel.item_info = item_id_to_info[tonumber(prototype)] or {}
         self:flush()
     end
+
+    for _, _, _, chest_object_id, prototype in to_chest_mb:unpack() do
+        local headquater_object = get_headquater_object()
+        if not headquater_object then
+            log.error("can not found headquater")
+            goto continue
+        end
+
+        local headquater_e = gameplay_core.get_entity(assert(headquater_object.gameplay_eid))
+        if not headquater_e then
+            log.error("can not found headquater")
+            goto continue
+        end
+
+        local headquater_item_counts = ichest:item_counts(gameplay_core.get_world(), headquater_e)
+        if not headquater_item_counts[prototype] then
+            log.info(("can not found item `%s`"):format(prototype))
+            goto continue
+        end
+
+        local chest_object = objects:get(cache_names, chest_object_id)
+        if not chest_object then
+            log.error(("can not found chest `%s`"):format(chest_object_id))
+            goto continue
+        end
+
+        local chest_e = gameplay_core.get_entity(chest_object.gameplay_eid)
+        if not chest_e then
+            log.error(("can not found chest `%s`"):format(chest_object_id))
+            goto continue
+        end
+
+        local chest_item_counts = ichest:item_counts(gameplay_core.get_world(), chest_e)
+        if not chest_item_counts[prototype] then
+            log.info(("can not found item `%s`"):format(prototype))
+            goto continue
+        end
+
+        --
+        local typeobject_item = iprototype:query(prototype)
+        if chest_item_counts[prototype] >= typeobject_item.stack then
+            log.info(("stack `%s`"):format(typeobject_item.stack))
+            goto continue
+        end
+
+        local pickup_count = math.min(typeobject_item.stack - chest_item_counts[prototype], headquater_item_counts[prototype])
+        ichest:pickup_place(gameplay_core.get_world(), headquater_e, chest_e, prototype, pickup_count)
+        self:tick(datamodel, object_id)
+        self:flush()
+        ::continue::
+    end
+
+    for _, _, _, chest_object_id, prototype in to_headquater_mb:unpack() do
+        local headquater_object = get_headquater_object()
+        if not headquater_object then
+            log.error("can not found headquater")
+            goto continue
+        end
+
+        local headquater_e = gameplay_core.get_entity(assert(headquater_object.gameplay_eid))
+        if not headquater_e then
+            log.error("can not found headquater")
+            goto continue
+        end
+
+        local chest_object = objects:get(cache_names, chest_object_id)
+        if not chest_object then
+            log.error(("can not found chest `%s`"):format(chest_object_id))
+            goto continue
+        end
+
+        local chest_e = gameplay_core.get_entity(chest_object.gameplay_eid)
+        if not chest_e then
+            log.error(("can not found chest `%s`"):format(chest_object_id))
+            goto continue
+        end
+
+        local chest_item_counts = ichest:item_counts(gameplay_core.get_world(), chest_e)
+        if not chest_item_counts[prototype] then
+            log.info(("can not found item `%s`"):format(prototype))
+            goto continue
+        end
+
+        ichest:pickup_place(gameplay_core.get_world(), chest_e, headquater_e, prototype, chest_item_counts[prototype])
+        self:tick(datamodel, object_id)
+        self:flush()
+        ::continue::
+    end
+end
+
+function M:update(datamodel)
+    self:tick(datamodel, datamodel.object_id)
+    self:flush()
 end
 
 return M

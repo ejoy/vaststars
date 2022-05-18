@@ -9,6 +9,7 @@ function M:get_entity(world, eid)
     return world.entity[eid]
 end
 
+-- TODO
 function M:get_headquater_entity(world)
     for e in world.ecs:select "id:in chest:in entity:in" do
         local typeobject = iprototype:query(e.entity.prototype)

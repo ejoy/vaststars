@@ -177,16 +177,23 @@ function page_meta:get_current_page()
     return self.current_page
 end
 
-function page_meta:show_detail(item, show)
-    local map = self.item_map[item]
+function page_meta:show_detail(item_index, show)
+    if not self.detail_renderer then
+        return
+    end
+
+    local map = self.index_map[item_index]
     if not map then
         return
     end
+
     if show then
         if not map.detail then
             self.detail = self.detail_renderer(map.index)
-            self.pages[map.page].appendChild(self.detail, map.row)
-            map.detail = true
+            if self.detail then
+                self.pages[map.page].appendChild(self.detail, map.row)
+                map.detail = true
+            end
         end
     else
         if map.detail and self.detail then
@@ -219,6 +226,10 @@ function page_meta:on_mouseup(event)
     end
     if old_value ~= self.current_page then
         self:update_footer_status()
+    end
+
+    if not self.panel.childNodes[1] then
+        return
     end
     self.pos = (1 - self.current_page) * self.panel.childNodes[1].clientWidth
     self.panel.style.left = tostring(self.pos) .. 'px'

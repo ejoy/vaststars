@@ -347,7 +347,7 @@ workbutton {
 	color: rgb(255,249,214);
 }
 .button-exchange-arrow {
-	width: 7.31vmin;
+	width: 8vmin;
 	height: 5.64vmin;
 	background-size: cover;
 	background-image: "textures/exchange/left_arrow.texture";

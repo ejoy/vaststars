@@ -109,6 +109,7 @@ local function clone_object(object)
         x = object.x,
         y = object.y,
         teardown = object.teardown,
+        headquater = object.headquater,
     }
 end
 
@@ -339,6 +340,7 @@ local function new_pickup_object(prototype_name, dir, x, y, fluid)
         x = x,
         y = y,
         teardown = false,
+        headquater = typeobject.headquater or false,
     }
 
     if need_set_tile_object then
@@ -455,6 +457,7 @@ function M.restore_object(gameplay_eid, prototype_name, dir, x, y)
         x = x,
         y = y,
         teardown = false,
+        headquater = typeobject.headquater or false,
     }
     set_tile_object(object, "CONSTRUCTED")
 end
