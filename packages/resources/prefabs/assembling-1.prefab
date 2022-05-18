@@ -108,7 +108,6 @@ data:
   name: lifangti.002
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/assembling.glb|animations/skeleton.ozz
   skinning: true
 mount: 1
 policy:
