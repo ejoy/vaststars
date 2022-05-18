@@ -8,6 +8,7 @@ prototype "组装机I" {
         output = {"pipe-joint-output-1"},
     },
     icon = "textures/building_pic/small_pic_assemble.texture",
+    background = "textures/build_background/pic_assemble.texture",
     construct_detector = {"exclusive"},
     type = {"entity", "assembling", "consumer", "fluidboxes"},
     area = "3x3",
@@ -43,6 +44,7 @@ prototype "组装机I" {
 prototype "铸造厂I" {
     model = "prefabs/assembling-1.prefab",
     icon = "textures/building_pic/small_pic_assemble.texture",
+    background = "textures/build_background/pic_assemble.texture",
     construct_detector = {"exclusive"},
     type = {"entity", "assembling", "consumer", "fluidboxes"},
     area = "3x3",

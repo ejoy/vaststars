@@ -4,6 +4,7 @@ local prototype = gameplay.prototype
 prototype "化工厂I" {
     model = "prefabs/assembling-1.prefab",
     icon = "textures/building_pic/small_pic_assemble.texture",
+    background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer","fluidboxes"},
     area = "3x3",
@@ -64,6 +65,7 @@ prototype "化工厂I" {
 prototype "蒸馏厂I" {
     model = "prefabs/distillery-1.prefab",
     icon = "textures/building_pic/small_pic_distillery.texture",
+    background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer", "fluidboxes"},
     area = "5x5",
@@ -121,6 +123,7 @@ prototype "蒸馏厂I" {
 prototype "电解厂I" {
     model = "prefabs/distillery-1.prefab",
     icon = "textures/building_pic/small_pic_distillery.texture",
+    background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer", "fluidboxes"},
     area = "5x5",
@@ -171,6 +174,7 @@ prototype "电解厂I" {
 prototype "水电站I" {
     model = "prefabs/distillery-1.prefab",
     icon = "textures/building_pic/small_pic_distillery.texture",
+    background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer", "fluidboxes"},
     area = "5x5",
