@@ -118,6 +118,7 @@
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
                 object_id = 0,
+                background = "",
                 is_chest = false,
                 item_category = {},
                 inventory = {},
@@ -303,7 +304,7 @@
 
                     <!-- 指挥中心建筑信息 start -->
                     <div class="column" style="width: 100%;height: 95%;">
-                        <div class="build-info-reigon" style='background-image: "textures/build_background/pic_headquater.texture"; background-size: cover;'>
+                        <div class="build-info-reigon" data-style-background-image="background" style='background-size: cover;'>
                             <div class ="building-info">
                                 <div data-if="show">
                                     <div class="row">

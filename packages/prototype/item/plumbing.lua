@@ -61,7 +61,8 @@ prototype "空气过滤器I" {
     order = 60,
 }
 
-prototype "管道I" {
+prototype "管道1-I型" {
+    show_prototype_name = "管道I",
     type = {"item"},
     stack = 100,
     icon = "textures/construct/pipe.texture",

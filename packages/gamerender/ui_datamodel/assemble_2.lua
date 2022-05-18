@@ -18,7 +18,7 @@ local function get(object_id)
     if not recipe_typeobject then
         return {
             object_id = object_id,
-            prototype_name = typeobject.name,
+            prototype_name = iprototype:show_prototype_name(typeobject),
             background = typeobject.background,
             recipe_name = "",
             recipe_ingredients = {},
@@ -43,7 +43,7 @@ local function get(object_id)
 
     return {
         object_id = object_id,
-        prototype_name = typeobject.name,
+        prototype_name = iprototype:show_prototype_name(typeobject),
         background = typeobject.background,
         recipe_name = recipe_typeobject.name,
         recipe_ingredients = recipe_ingredients,
