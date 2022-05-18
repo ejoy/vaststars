@@ -19,13 +19,17 @@ local maintype = {
 		maxid = 0,
 		magic = 0x0000,
 	},
+	item = {
+		maxid = 0,
+		magic = 0x0200,
+	},
 	recipe = {
 		maxid = 0,
 		magic = 0x0400,
 	},
-	item = {
+	tech = {
 		maxid = 0,
-		magic = 0x0800,
+		magic = 0x0600,
 	},
 	fluid = {
 		maxid = 0,
@@ -36,7 +40,7 @@ local function getid(mainkey, name)
 	local m = assert(maintype[mainkey])
 	local hash = hashstring(name) & 0xF000
 	m.maxid = m.maxid + 1
-	if m.maxid > 0x3FF then
+	if m.maxid > 0x1FF then
 		error "Too many prototype"
 	end
 	return m.maxid | m.magic | hash

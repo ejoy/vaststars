@@ -174,10 +174,10 @@ bool recipe_container::place(world& w, uint16_t item, uint16_t amount) {
     return false;
 }
 
-bool recipe_container::recipe_pickup(world& w, item const* items) {
+bool recipe_container::recipe_pickup(world& w, const recipe_items* r) {
     for (size_t i = 0; i < inslots.size(); ++i) {
         auto& s = inslots[i];
-        auto& t = items[i];
+        auto& t = r->items[i];
         assert(s.item == t.item);
         if (s.amount < t.amount) {
             return false;
@@ -185,23 +185,38 @@ bool recipe_container::recipe_pickup(world& w, item const* items) {
     }
     for (size_t i = 0; i < inslots.size(); ++i) {
         auto& s = inslots[i];
-        auto& t = items[i];
+        auto& t = r->items[i];
         s.amount -= t.amount;
     }
     return true;
 }
 
-bool recipe_container::recipe_place(world& w, item const* items) {
+bool recipe_container::recipe_recover(world& w, const recipe_items* r) {
+    for (size_t i = 0; i < inslots.size(); ++i) {
+        auto& s = inslots[i];
+        auto& t = r->items[i];
+        s.amount += t.amount;
+    }
+    return true;
+}
+
+void recipe_container::recipe_limit(world& w, const uint16_t* r) {
+    for (size_t i = 0; i < inslots.size(); ++i) {
+        inslots[i].limit = r[i];
+    }
+}
+
+bool recipe_container::recipe_place(world& w, const recipe_items* r) {
     for (size_t i = 0; i < outslots.size(); ++i) {
         auto& s = outslots[i];
-        auto& t = items[i];
+        auto& t = r->items[i];
         if (s.amount + t.amount > s.limit) {
             return false;
         }
     }
     for (size_t i = 0; i < outslots.size(); ++i) {
         auto& s = outslots[i];
-        auto& t = items[i];
+        auto& t = r->items[i];
         s.amount += t.amount;
     }
     return true;
@@ -288,7 +303,6 @@ lget(lua_State* L) {
     lua_pushinteger(L, r.amount);
     return 2;
 }
-
 
 static int
 lpickup(lua_State* L) {

@@ -40,6 +40,7 @@ local function needRecipeLimit(fb)
 end
 
 local function createContainerAndFluidBox(init, fluidboxes, s, max, needlimit)
+    s = s:sub(5)
     assert(#s <= 4 * 15)
     local container = {}
     local fluids = {}
@@ -76,7 +77,7 @@ end
 
 local function createContainer(s)
     local container = {}
-    for idx = 1, #s//4 do
+    for idx = 2, #s//4 do
         local id, n = string.unpack("<I2I2", s, 4*idx-3)
         assert(not isFluidId(id))
         local limit = n * 2

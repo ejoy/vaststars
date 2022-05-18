@@ -12,14 +12,23 @@ component "chest" {
 }
 
 component "assembling" {
+    "recipe:word",
     "fluidbox_in:word",
     "fluidbox_out:word",
-    "recipe:word",
     "container:word",
-    "process:int",
+    "speed:word",
     "low_power:byte",
     "status:byte",
-    "speed:word"
+    "process:int",
+}
+
+component "laboratory" {
+    "tech:word",
+    "container:word",
+    "speed:word",
+    "low_power:byte",
+    "status:byte",
+    "progress:int",
 }
 
 component "inserter" {

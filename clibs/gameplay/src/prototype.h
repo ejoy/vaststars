@@ -13,6 +13,8 @@ PROTOTYPE(stack, int)
 PROTOTYPE(time, int)
 PROTOTYPE(ingredients, string)
 PROTOTYPE(results, string)
+PROTOTYPE(inputs, string)
 PROTOTYPE(speed, int)
+PROTOTYPE(count, int)
 
 #endif

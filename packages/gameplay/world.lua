@@ -129,6 +129,38 @@ return function ()
         needBuild = true
     end
 
+    function world:is_researched(tech)
+        local pt = prototype.query("tech", tech)
+        assert(pt, "unknown tech: " .. tech)
+        return cworld:is_researched(pt.id)
+    end
+
+    function world:research_queue(queue)
+        if queue == nil then
+            local q = cworld:research_queue()
+            for i, v in ipairs(q) do
+                local pt = prototype.queryById(v)
+                assert(pt, "unknown tech: " .. v)
+                q[i] = pt.name
+            end
+            return q
+        else
+            local q = {}
+            for i, v in ipairs(queue) do
+                local pt = prototype.query("tech", v)
+                assert(pt, "unknown tech: " .. v)
+                q[i] = pt.id
+            end
+            return cworld:research_queue(q)
+        end
+    end
+
+    function world:research_progress(tech)
+        local pt = prototype.query("tech", tech)
+        assert(pt, "unknown tech: " .. tech)
+        return cworld:research_progress(pt.id)
+    end
+
     function world:container_create(...)
         return container.create(cworld, ...)
     end
