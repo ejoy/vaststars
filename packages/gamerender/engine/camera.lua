@@ -14,7 +14,7 @@ local ndc_to_world = math_util.ndc_to_world
 local irq = ecs.import.interface "ant.render|irenderqueue"
 local create_queue = require "utility.queue"
 
-local YAXIS_PLANE <const> = math3d.ref(math3d.constant("v4", {0, 1, 0, 0}))
+local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 
 local camera_prefab_path <const> = fs.path "/pkg/vaststars.resources/"
 local camera_prefab_file_name
@@ -79,7 +79,7 @@ function camera.set(prefab_file_name, reset)
     end
 
     local raw_animation = animation.new_raw_animation()
-    local skl = skeleton.build({{name = "root", s = mc.ONE, r = mc.IDENTITY_QUAT, t = mc.T_ZERO}})
+    local skl = skeleton.build({{name = "root", s = mc.T_ONE, r = mc.T_IDENTITY_QUAT, t = mc.T_ZERO}})
     raw_animation:setup(skl, 2)
 
     raw_animation:push_prekey(

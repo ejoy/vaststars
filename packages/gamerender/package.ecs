@@ -41,10 +41,7 @@ pipeline "pickup_mapping"
 
 policy "animation"
     .require_system "ant.animation|animation_system"
-    .require_system "ant.animation|animation_birth"
     .require_system "ant.animation|skinning_system"
-    .require_system "ant.animation|mesh_skinning"
-    .require_system "ant.asset|meshskin_system"
 
 ----------------------------------------------------
 ----------------------------------------------------

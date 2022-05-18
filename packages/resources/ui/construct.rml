@@ -190,8 +190,8 @@
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
             end
-            function start.clickConstructMenuItem(event, prototype)
-                ui_sys:pub {"construct_entity", prototype}
+            function start.clickConstructMenuItem(event, prototype_name)
+                ui_sys:pub {"construct_entity", prototype_name}
             end
             function start.clickSelectFluid(event, FluidName)
                 ui_sys:pub {"fluidbox_update", FluidName}
@@ -375,7 +375,7 @@
 
                 <div style = "flex-direction: row; flex-wrap: wrap; width: 30.13vmin; height: 80.00vmin; background-color: rgb(44, 32, 18); border: 0.40vmin rgb(89, 73, 39); border-radius: 0.67vmin;" data-if="cur_edit_mode == 'construct' && cur_construct_menu != '' && cur_construct_menu == it.name" data-for = "construct_menu">
                     <div class="tools-container" data-for = "menu, menu_id : it.detail">
-                        <button class="tools-button" data-event-click="clickConstructMenuItem(menu.prototype)">
+                        <button class="tools-button" data-event-click="clickConstructMenuItem(menu.prototype_name)">
                             <div class="workbutton-bg" data-style-background-image = "menu.icon" />
                             <div class="tools-button-title">{{menu.show_prototype_name}}</div>
                             <div class="item-num">99</div>

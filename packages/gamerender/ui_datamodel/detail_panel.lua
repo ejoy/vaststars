@@ -81,7 +81,7 @@ local function get_property(e, typeobject)
     return t
 end
 
-local function get_detail_panel_property_list(object_id)
+local function get_entity_property_list(object_id)
     local object = assert(objects:get(cache_names, object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -108,14 +108,14 @@ function M:create(object_id)
 
     return {
         object_id = object_id,
-        detail_panel_icon = typeobject.icon,
-        detail_panel_prototype = object.prototype_name,
-        detail_panel_property_list = get_detail_panel_property_list(object_id),
+        icon = typeobject.icon,
+        prototype_name = object.prototype_name,
+        property_list = get_entity_property_list(object_id),
     }
 end
 
 function M:tick(datamodel, object_id)
-    datamodel.detail_panel_property_list = get_detail_panel_property_list(object_id)
+    datamodel.property_list = get_entity_property_list(object_id)
 end
 
 return M

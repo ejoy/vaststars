@@ -43,7 +43,7 @@ end
 local function on_prefab_ready(prefab, binding)
     for _, eid in ipairs(prefab.tag["*"]) do
         local e = assert(world:entity(eid))
-        if e._animation then
+        if e.animation then
             if binding.pause_animation then
                 iani.pause(eid, true)
             end

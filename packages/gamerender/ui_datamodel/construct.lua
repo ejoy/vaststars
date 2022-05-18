@@ -36,7 +36,7 @@ local construct_menu = {} ; do
 
             local d = {}
             d.show_prototype_name = iprototype:show_prototype_name(typeobject)
-            d.prototype = prototype_name
+            d.prototype_name = prototype_name
             d.icon = typeobject.icon
             m.detail[#m.detail + 1] = d
         end

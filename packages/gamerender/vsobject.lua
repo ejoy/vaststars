@@ -35,17 +35,17 @@ local rotators <const> = {
 }
 
 local CONSTRUCT_COLOR_INVALID <const> = {}
-local CONSTRUCT_COLOR_RED <const> = math3d.ref(math3d.constant("v4", {2.5, 0.0, 0.0, 0.55}))
-local CONSTRUCT_COLOR_GREEN <const> = math3d.ref(math3d.constant("v4", {0.0, 2.5, 0.0, 0.55}))
-local CONSTRUCT_COLOR_WHITE <const> = math3d.ref(math3d.constant("v4", {1.5, 2.5, 1.5, 0.55}))
-local CONSTRUCT_COLOR_YELLOW <const> = math3d.ref(math3d.constant("v4", {2.5, 2.5, 0.0, 0.55}))
+local CONSTRUCT_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 0.55})
+local CONSTRUCT_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 2.5, 0.0, 0.55})
+local CONSTRUCT_COLOR_WHITE <const> = math3d.constant("v4", {1.5, 2.5, 1.5, 0.55})
+local CONSTRUCT_COLOR_YELLOW <const> = math3d.constant("v4", {2.5, 2.5, 0.0, 0.55})
 
 local CONSTRUCT_BLOCK_COLOR_INVALID <const> = {}
-local CONSTRUCT_BLOCK_COLOR_RED <const> = math3d.ref(math3d.constant("v4", {1, 0.0, 0.0, 1.0}))
-local CONSTRUCT_BLOCK_COLOR_GREEN <const> = math3d.ref(math3d.constant("v4", {0.0, 1, 0.0, 1.0}))
-local CONSTRUCT_BLOCK_COLOR_WHITE <const> = math3d.ref(math3d.constant("v4", {1, 1, 1, 1.0}))
+local CONSTRUCT_BLOCK_COLOR_RED <const> = math3d.constant("v4", {1, 0.0, 0.0, 1.0})
+local CONSTRUCT_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
+local CONSTRUCT_BLOCK_COLOR_WHITE <const> = math3d.constant("v4", {1, 1, 1, 1.0})
 
-local FLUID_ICON_COLOR <const> = math3d.ref(math3d.constant("v4", {1, 1, 1, 1.0}))
+local FLUID_ICON_COLOR <const> = math3d.constant("v4", {1, 1, 1, 1.0})
 
 local typeinfos = {
     ["construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 4}, -- 未确认, 合法
