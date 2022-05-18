@@ -267,14 +267,12 @@
                     <div class="exchange-region" style = "width: 88vmin; height: 12vmin;">
                         <div class="button-exchange-block">
                             <button class="button-exchange" style = "background-color: rgb(203, 118, 24); width: 30.00vmin;" data-event-click = "clickToChest(%s)">
-                                <div class = "button-exchange-arrow"/>
-                                <div class = "button-exchange-text">背包转箱子</div>
-                                <div class = "button-exchange-box"/>
+                                <div class = "button-exchange-box" style='width:8vmin; height:8vmin; background-image: "textures/cmdcenter/send_material.texture";'/>
+                                <div class = "button-exchange-text">指挥中心转箱子</div>
                             </button>
                             <button class="button-exchange" style = "background-color: rgb(203, 118, 24); width: 30.00vmin;" data-event-click = "clickToHeadquater(%s)">
-                                <div class = "button-exchange-arrow"/>
-                                <div class = "button-exchange-text">箱子转背包</div>
-                                <div class = "button-exchange-box"/>
+                                <div class = "button-exchange-box" style='width:8vmin; height:8vmin; background-image: "textures/cmdcenter/fetch_material.texture";'/>
+                                <div class = "button-exchange-text">箱子转指挥中心</div>
                             </button>
                         </div>
                     </div>
