@@ -845,7 +845,7 @@ prototype "地质科技包1" {
     icon = "textures/construct/science-pack.texture",
     ingredients = {
         {"铁矿石", 2},
-        {"碎石", 2},
+        --{"碎石", 2},
     },
     results = {
         {"地质科技包", 1},
@@ -1009,22 +1009,22 @@ prototype "一氧化碳转石墨" {
 }
 
 
--- prototype "氯化氢" {
---     type = { "recipe" },
---     category = "流体基础化工",
---     --group = "流体",
---     order = 60,
---     icon = "textures/fluid/gas.texture",
---     ingredients = {
---         {"氯气", 30},
---         {"氢气", 30},
---     },
---     results = {
---         {"盐酸", 60},
---     },
---     time = "1s",
---     description = "氢气和氯气化合成氯化氢",
--- }
+prototype "氯化氢" {
+    type = { "recipe" },
+    category = "流体基础化工",
+    --group = "流体",
+    order = 60,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
+        {"氯气", 30},
+        {"氢气", 30},
+    },
+    results = {
+        {"盐酸", 60},
+    },
+    time = "1s",
+    description = "氢气和氯气化合成氯化氢",
+}
 
 prototype "纯水电解" {
     type = { "recipe" },
