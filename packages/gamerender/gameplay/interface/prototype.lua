@@ -105,4 +105,12 @@ function M:rotate_fluidbox(position, direction, area)
     end
 end
 
+function M:show_prototype_name(typeobject)
+    if typeobject.show_prototype_name then
+        return typeobject.show_prototype_name
+    else
+        return typeobject.name
+    end
+end
+
 return M

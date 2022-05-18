@@ -28,7 +28,7 @@ local menu = {
         name = "管道",
         icon = "textures/construct/pipe.texture",
         detail = {
-            "管道I",
+            "管道1-I型",
             "液罐I",
             "抽水泵",
             "烟囱I",
@@ -51,7 +51,7 @@ local menu = {
         detail = {
             "铁制电线杆",
             "液罐I",
-            "管道I",
+            "管道1-I型",
             "机器爪I",
             "小型铁制箱子",
             "抽水泵",

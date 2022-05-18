@@ -354,7 +354,7 @@ prototype "蒸汽发电机1" {
     order = 120,
     icon = "textures/construct/turbine1.texture",
     ingredients = {
-        {"管道I", 2},
+        {"管道1-I型", 2},
         {"铁齿轮", 1},
         {"铁板", 8},
         {"电动机I", 1},
@@ -390,7 +390,7 @@ prototype "液罐I" {
     order = 22,
     icon = "textures/construct/tank1.texture",
     ingredients = {
-        {"管道I", 4},
+        {"管道1-I型", 4},
         {"铁棒", 1},
         {"铁板", 6},
     },
@@ -482,7 +482,7 @@ prototype "烟囱1" {
     icon = "textures/construct/chimney2.texture",
     ingredients = {
         {"铁棒", 2},
-        {"管道I", 3},
+        {"管道1-I型", 3},
         {"石砖", 3},
     },
     results = {
@@ -500,7 +500,7 @@ prototype "压力泵1" {
     icon = "textures/construct/pump1.texture",
     ingredients = {
         {"电动机I", 1},
-        {"管道I", 4},
+        {"管道1-I型", 4},
     },
     results = {
         {"压力泵I", 1},
@@ -551,7 +551,7 @@ prototype "排水口1" {
     order = 56,
     icon = "textures/construct/outfall.texture",
     ingredients = {
-        {"管道I", 5},
+        {"管道1-I型", 5},
         {"地下管I", 1},
     },
     results = {
@@ -571,7 +571,7 @@ prototype "管道1" {
         {"石砖", 8},
     },
     results = {
-        {"管道I", 5},
+        {"管道1-I型", 5},
         {"碎石", 1},
     },
     time = "6s",
@@ -585,7 +585,7 @@ prototype "地下管1" {
     order = 12,
     icon = "textures/construct/pipe.texture",
     ingredients = {
-        {"管道I", 5},
+        {"管道1-I型", 5},
         {"沙子", 2},
     },
     results = {
@@ -657,7 +657,7 @@ prototype "破损水电站" {
     order = 110,
     icon = "textures/construct/hydroplant.texture",
     ingredients = {
-        {"管道I", 4},
+        {"管道1-I型", 4},
         {"破损水电站", 1},
     },
     results = {

@@ -62,7 +62,8 @@ prototype "科技中心I" {
     group = {"物流"},
 }
 
-prototype "砖石公路" {
+prototype "砖石公路-O型" {
+    show_prototype_name = "砖石公路",
     model = "prefabs/road/road_O.prefab",
     icon = "textures/construct/processor.texture",
     construct_detector = {"exclusive"},
