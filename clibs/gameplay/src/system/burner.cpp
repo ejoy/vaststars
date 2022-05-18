@@ -17,8 +17,8 @@ checkFinish(world& w, burner& b) {
 	if (b.process == STATUS_DONE) {
 		prototype_context recipe = w.prototype(b.recipe);
 		recipe_container& container = w.query_container<recipe_container>(b.container);
-		container::item* items = (container::item*)pt_results(&recipe);
-		if (container.recipe_place(w, items)) {
+		recipe_items* r = (recipe_items*)pt_results(&recipe);
+		if (container.recipe_place(w, r)) {
 			b.process = STATUS_IDLE;
 		}
 	}
@@ -35,7 +35,7 @@ lupdate(lua_State *L) {
 		}
 		entity& e = v.get<entity>();
 		prototype_context p = w.prototype(e.prototype);
-		float power = pt_power(&p);
+		unsigned int power = pt_power(&p);
 		if (c.shortage < power) {
 			checkFinish(w, v.get<burner>());
 			continue;
@@ -45,13 +45,13 @@ lupdate(lua_State *L) {
 			prototype_context recipe = w.prototype(b.recipe);
 			recipe_container& container = w.query_container<recipe_container>(b.container);
 			if (b.process == STATUS_DONE) {
-				container::item* items = (container::item*)pt_results(&recipe);
+				recipe_items* items = (recipe_items*)pt_results(&recipe);
 				if (container.recipe_place(w, items)) {
 					b.process = STATUS_IDLE;
 				}
 			}
 			if (b.process == STATUS_IDLE) {
-				container::item* items = (container::item*)pt_ingredients(&recipe);
+				recipe_items* items = (recipe_items*)pt_ingredients(&recipe);
 				if (container.recipe_pickup(w, items)) {
 					int time = pt_time(&recipe);
 					b.process = time + STATUS_DONE;

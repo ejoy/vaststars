@@ -1,17 +1,16 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
-
 prototype "地质研究" {
-    effects = {
-      {"unlock-recipe","地质科技包1"},
-    },
-    prerequisites = {},
+    type = { "tech" },
     ingredients = {
-        {"", 5},
+        {"铁锭", 1},
     },
-    time = 3
+    count = 5,
+    time = "1s"
 }
+
+do return end
 
 ---新增海水配方的对应科技---
 prototype "铁矿提取" {

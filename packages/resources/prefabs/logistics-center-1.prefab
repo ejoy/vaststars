@@ -46,59 +46,33 @@ policy:
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/zhuti.004_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: zhuti.001
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: lifangti
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
@@ -118,88 +92,49 @@ policy:
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/zhuti.007_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: zhuti.003
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.034_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: lifangti.002
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/zhuti.008_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: zhuti.005
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
@@ -217,59 +152,33 @@ policy:
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.035_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: lifangti.003
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.037_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: lifangti.004
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
@@ -342,59 +251,33 @@ policy:
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.006_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: lifangti.006
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.004.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.006_P2.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: lifangti.006
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
@@ -497,233 +380,129 @@ policy:
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.008.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.004_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: car1
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.009.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.004_P2.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: car1
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.008.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.006_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: car2
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.009.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.006_P2.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: car2
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.008.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.007_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: car3
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.009.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.007_P2.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: car3
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.008.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.008_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: car4
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-    bone.002_bone.002_bone.002Action_bone.002_bone.002Action: /pkg/vaststars.resources/glb/logistics_center.glb|animations/bone.002_bone.002_bone.002Action_bone.002_bone.002Action.ozz
-  animation_birth: ArmatureAction
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.009.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.008_P2.meshbin
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
   name: car4
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
@@ -923,3 +702,19 @@ mount: 1
 policy:
   ant.general|name
   ant.render|render
+---
+data:
+  _animation: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
+  name: skeleton_animation
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+mount: 1
+policy:
+  ant.animation|animation
+  ant.general|name
+  ant.scene|scene_object

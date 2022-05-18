@@ -9,27 +9,27 @@ world:create_entity "小型铁制箱子" {
         {"沙石矿", 100},
     },
 }
-world:create_entity "机器爪1" {
+world:create_entity "机器爪I" {
     x = 2,
     y = 1,
     dir = "W"
 }
-world:create_entity "组装机1" {
+world:create_entity "组装机I" {
     x = 3,
     y = 1,
     recipe = "铁锭"
 }
-world:create_entity "机器爪1" {
+world:create_entity "机器爪I" {
     x = 6,
     y = 1,
     dir = "W"
 }
-world:create_entity "小型铁制箱子" {
+world:create_entity "科研中心I" {
     x = 7,
     y = 1,
-    items = {
-    },
 }
+
+world:research_queue {"地质研究"}
 
 world:create_entity "指挥中心" {
     x = 1,

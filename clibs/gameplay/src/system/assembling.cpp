@@ -66,8 +66,8 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
         prototype_context recipe = w.prototype(a.recipe);
         recipe_container& container = w.query_container<recipe_container>(a.container);
         if (a.status == STATUS_DONE) {
-            container::item* items = (container::item*)pt_results(&recipe);
-            if (!container.recipe_place(w, items)) {
+            recipe_items* r = (recipe_items*)pt_results(&recipe);
+            if (!container.recipe_place(w, r)) {
                 return;
             }
             a.status = STATUS_IDLE;
@@ -79,8 +79,8 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
             }
         }
         if (a.status == STATUS_IDLE) {
-            container::item* items = (container::item*)pt_ingredients(&recipe);
-            if (!container.recipe_pickup(w, items)) {
+            recipe_items* r = (recipe_items*)pt_ingredients(&recipe);
+            if (!container.recipe_pickup(w, r)) {
                 return;
             }
             int time = pt_time(&recipe);

@@ -60,8 +60,8 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
         prototype_context recipe = w.prototype(a.recipe);
         recipe_container& container = w.query_container<recipe_container>(a.container);
         if (a.process == STATUS_DONE) {
-            container::item* items = (container::item*)pt_results(&recipe);
-            if (container.recipe_place(w, items)) {
+            recipe_items* r = (recipe_items*)pt_results(&recipe);
+            if (container.recipe_place(w, r)) {
                 a.process = STATUS_IDLE;
                 if (a.fluidbox_out != 0) {
                     fluidboxes* fb = w.sibling<fluidboxes>(v);
@@ -72,8 +72,8 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
             }
         }
         if (a.process == STATUS_IDLE) {
-            container::item* items = (container::item*)pt_ingredients(&recipe);
-            if (container.recipe_pickup(w, items)) {
+            recipe_items* r = (recipe_items*)pt_ingredients(&recipe);
+            if (container.recipe_pickup(w, r)) {
                 int time = pt_time(&recipe);
                 a.process = time + STATUS_DONE;
                 if (a.fluidbox_in != 0) {

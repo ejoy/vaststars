@@ -5,6 +5,14 @@
 
 struct world;
 
+struct recipe_items {
+    uint32_t n;
+    struct {
+        uint16_t item;
+        uint16_t amount;
+    } items[1];
+};
+
 struct container {
     struct item {
         uint16_t item;
@@ -47,8 +55,10 @@ struct recipe_container: public container {
     std::vector<slot> outslots;
     recipe_container();
     recipe_container(item_array in, item_array out);
-    bool     recipe_pickup(world& w, item const* items);
-    bool     recipe_place(world& w, item const* items);
+    bool     recipe_pickup(world& w, const recipe_items* r);
+    bool     recipe_recover(world& w, const recipe_items* r);
+    void     recipe_limit(world& w, const uint16_t* r);
+    bool     recipe_place(world& w, const recipe_items* r);
     bool     recipe_get(slot_type type, uint16_t index, uint16_t& value);
     bool     recipe_set(slot_type type, uint16_t index, uint16_t value);
     item     get(uint16_t index) override;

@@ -133,8 +133,27 @@ register_unit("filter", "string", function(s)
 	return s
 end)
 
+register_unit("itemtypes", "string", function(s)
+	local r = {string.pack("<I2", #s)}
+	for _, t in ipairs(s) do
+		local what
+		what = prototype.query("item", t)
+		if what then
+			r[#r+1] = string.pack("<I2", what.id)
+		else
+			what = prototype.query("fluid", t)
+			if what then
+				r[#r+1] = string.pack("<I2", what.id)
+			else
+				return nil, "Unkonwn item/fluid: " .. t
+			end
+		end
+	end
+	return table.concat(r)
+end)
+
 register_unit("items", "string", function(s)
-	local r = {}
+	local r = {string.pack("<I4", #s)}
 	for _, t in ipairs(s) do
 		local what
 		what = prototype.query("item", t[1])
