@@ -127,6 +127,7 @@
                 item_info = {},
                 item_prototype_name = "",
 
+                slot_count = 0,
                 show_item_info = false,
                 show = false,
             }
@@ -152,11 +153,15 @@
                         start.sub_inventory[#start.sub_inventory + 1] = v
                     end
                 end
-                local total_count = math.ceil((#start.inventory + 1) / 35) * 35
+
+                start.slot_count = #start.sub_inventory
+                if category == "全部" then
+                    start.slot_count = math.ceil((#start.inventory + 1) / 35) * 35
+                end
                 start("sub_inventory")
 
                 -- <!-- tag page begin -->
-                start.page:on_dirty_all(total_count)
+                start.page:on_dirty_all(start.slot_count)
                 start.page:show_detail(select_item_index, true)
                 -- <!-- tag page end -->
             end
@@ -167,6 +172,8 @@
 
             function start.clickCategory(event, category)
                 start.cur_item_category = category
+                start.page:show_detail(select_item_index, false)
+                select_item_index = nil
                 update_category(category)
             end
 
@@ -186,6 +193,19 @@
                 -- <!-- tag page end -->
             end
 
+            function start.clickBlankSlot(event)
+                start.page:show_detail(select_item_index, false)
+                select_item_index = nil
+                if start.is_chest then
+                    ui_sys:open("headquater_inventory.rml", start.object_id)
+                end
+            end
+
+            function start.clickBlank(event)
+                start.page:show_detail(select_item_index, false)
+                select_item_index = nil
+            end
+
             ui_sys:setDataModel(start, function(patch)
                 if patch.inventory then
                     if start.cur_item_category == "" then
@@ -198,12 +218,15 @@
             -- <!-- tag page begin -->
             local function page_item_renderer(index)
                 if index > #start.sub_inventory then
-                    local item = document.createElement "div"
-                    item.outerHTML = ([[<div class = "item" style = "width: %0.2fvmin; height: %0.2fvmin;" />]]):format(12 + 0.27, 12 + 0.27)
-                    item.addEventListener('click', function(event)
-                        ui_sys:open("headquater_inventory.rml", start.object_id)
-                    end)    
-                    return item
+                    if index <= start.slot_count then
+                        local item = document.createElement "div"
+                        item.outerHTML = ([[<div class = "item" style = "width: %0.2fvmin; height: %0.2fvmin;" data-event-click = "clickBlankSlot()" />]]):format(12 + 0.27, 12 + 0.27)
+                        return item
+                    else
+                        local item = document.createElement "div"
+                        item.outerHTML = ([[<div style = "width: %0.2fvmin; height: %0.2fvmin;" data-event-click = "clickBlank()" />]]):format(12 + 0.27, 12 + 0.27)
+                        return item
+                    end
                 end
 
                 local item = document.createElement "div"

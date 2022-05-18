@@ -13,10 +13,13 @@ local function get(object_id)
         return
     end
 
+    local typeobject = iprototype:query(e.entity.prototype)
     local recipe_typeobject = iprototype:query(e.assembling.recipe)
     if not recipe_typeobject then
         return {
             object_id = object_id,
+            prototype_name = typeobject.name,
+            background = typeobject.background,
             recipe_name = "",
             recipe_ingredients = {},
             recipe_results = {},
@@ -40,6 +43,8 @@ local function get(object_id)
 
     return {
         object_id = object_id,
+        prototype_name = typeobject.name,
+        background = typeobject.background,
         recipe_name = recipe_typeobject.name,
         recipe_ingredients = recipe_ingredients,
         recipe_results = recipe_results,

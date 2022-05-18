@@ -3,6 +3,8 @@ local start = window.createModel "start" {
     mode = "init", -- "init"/"fuel"/"material"/"plugin"
     machine_item = false,
 
+    prototype_name = " ",
+    background = "",
     recipe_name = " ",
     object_id = 0,
     recipe_ingredients = {}, -- 配方成份
