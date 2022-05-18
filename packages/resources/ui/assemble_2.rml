@@ -9,12 +9,12 @@
             <div class="panel" style="width: 50%;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button" data-event-click="ClickClose()"/>
-                    <div class = "menu-title" style="width: 70%;">组装机</div>
+                    <div class = "menu-title" style="width: 70%;">{{prototype_name}}</div>
                 </div>
                 <div style="border-bottom: 1px rgb(89, 73, 39);"/>
                 <div class="column" data-if="mode == 'init'" style="width: 100%;height: 95%;">
                     <!-- 左上方建筑信息 begin -->
-                    <div class="build-info-reigon" style='background-image: "textures/build_background/pic_assemble.texture"; background-size: cover;'>
+                    <div class="build-info-reigon" data-style-background-image="background" style='background-size: cover;'>
                         <!-- 左边显示信息 -->
                         <div class ="info-block" data-if = "false">
                                 <div class="row">
