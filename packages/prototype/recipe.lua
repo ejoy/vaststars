@@ -655,7 +655,7 @@ prototype "破损水电站" {
     category = "生产手工制造",
     group = "生产",
     order = 110,
-    icon = "textures/construct/hydroplant.texture",
+    icon = "textures/construct/broken-hydroplant.texture",
     ingredients = {
         {"管道1-I型", 4},
         {"破损水电站", 1},
@@ -672,7 +672,7 @@ prototype "破损空气过滤器" {
     category = "生产手工制造",
     group = "生产",
     order = 111,
-    icon = "textures/construct/air-filter1.texture",
+    icon = "textures/construct/broken-air-filter1.texture",
     ingredients = {
         {"铁板", 4},
         {"破损空气过滤器", 1},
@@ -689,7 +689,7 @@ prototype "破损电解厂" {
     category = "生产手工制造",
     group = "生产",
     order = 112,
-    icon = "textures/construct/electrolysis1.texture",
+    icon = "textures/construct/broken-electrolysis1.texture",
     ingredients = {
         {"铁丝", 5},
         {"破损电解厂", 1},
@@ -706,7 +706,7 @@ prototype "破损化工厂" {
     category = "生产手工制造",
     group = "生产",
     order = 113,
-    icon = "textures/construct/chemistry2.texture",
+    icon = "textures/construct/broken-chemistry2.texture",
     ingredients = {
         {"小型铁制箱子", 1},
         {"破损化工厂", 1},
@@ -723,7 +723,7 @@ prototype "破损组装机" {
     category = "生产手工制造",
     group = "生产",
     order = 114,
-    icon = "textures/construct/assembler.texture",
+    icon = "textures/construct/broken-assembler.texture",
     ingredients = {
         {"铁丝", 6},
         {"破损组装机", 1},
@@ -740,7 +740,7 @@ prototype "破损铁制电线杆" {
     category = "生产手工制造",
     group = "生产",
     order = 115,
-    icon = "textures/construct/electric-pole1.texture",
+    icon = "textures/construct/broken-electric-pole1.texture",
     ingredients = {
         {"铁棒", 2},
         {"破损铁制电线杆", 1},
