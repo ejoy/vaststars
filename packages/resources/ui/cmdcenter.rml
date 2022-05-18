@@ -117,10 +117,11 @@
         <script type="text/x-lua">
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
+                object_id = 0,
+                is_chest = false,
                 item_category = {},
                 inventory = {},
                 prototype_name = "",
-                is_headquater = false,
                 sub_inventory = {},
                 cur_item_category = "",
                 item_info = {},
@@ -140,6 +141,10 @@
                 start.show = false
             end
 
+            -- <!-- tag page begin -->
+            local select_item_index
+            -- <!-- tag page end -->
+
             local function update_category(category)
                 start.sub_inventory = {}
                 for _, v in ipairs(start.inventory) do
@@ -147,10 +152,12 @@
                         start.sub_inventory[#start.sub_inventory + 1] = v
                     end
                 end
+                local total_count = math.ceil((#start.inventory + 1) / 35) * 35
                 start("sub_inventory")
 
                 -- <!-- tag page begin -->
-                start.page:on_dirty_all(#start.sub_inventory)
+                start.page:on_dirty_all(total_count)
+                start.page:show_detail(select_item_index, true)
                 -- <!-- tag page end -->
             end
 
@@ -163,6 +170,22 @@
                 update_category(category)
             end
 
+            function start.clickToChest(event, index)
+                ui_sys:pub {"to_chest", start.object_id, start.sub_inventory[index].id}
+                -- <!-- tag page begin -->
+                start.page:show_detail(select_item_index, false)
+                select_item_index = nil
+                -- <!-- tag page end -->
+            end
+
+            function start.clickToHeadquater(event, index)
+                ui_sys:pub {"to_headquater", start.object_id, start.sub_inventory[index].id}
+                -- <!-- tag page begin -->
+                start.page:show_detail(select_item_index, false)
+                select_item_index = nil
+                -- <!-- tag page end -->
+            end
+
             ui_sys:setDataModel(start, function(patch)
                 if patch.inventory then
                     if start.cur_item_category == "" then
@@ -173,15 +196,14 @@
             end)
 
             -- <!-- tag page begin -->
-            local select_item_index
-            -- <!-- tag page end -->
-
-            -- <!-- tag page begin -->
             local function page_item_renderer(index)
                 if index > #start.sub_inventory then
-                    local e = document.createElement "div"
-                    e.outerHTML = ([[<div style = "width: %0.2fvmin; height: %0.2fvmin;" />]]):format(12 + 0.27, 12 + 0.27)
-                    return e
+                    local item = document.createElement "div"
+                    item.outerHTML = ([[<div class = "item" style = "width: %0.2fvmin; height: %0.2fvmin;" />]]):format(12 + 0.27, 12 + 0.27)
+                    item.addEventListener('click', function(event)
+                        ui_sys:open("headquater_inventory.rml", start.object_id)
+                    end)    
+                    return item
                 end
 
                 local item = document.createElement "div"
@@ -202,17 +224,43 @@
                         if v then
                             v.item.style.border = unselect_style_border
                         end
+                        start.page:show_detail(select_item_index, false)
                     end
                     select_item_index = index
-
+                    start.page:show_detail(select_item_index, true)
                     ui_sys:pub {"click_item", start.sub_inventory[index].id}
                 end)
                 return item
             end
 
+            local function page_item_detail_renderer(index)
+                if not start.is_chest then
+                    return
+                end
+
+                local detail = document.createElement "div"
+                detail.outerHTML = ([[
+                    <div class="exchange-region" style = "width: 88vmin; height: 12vmin;">
+                        <div class="button-exchange-block">
+                            <button class="button-exchange" style = "background-color: rgb(203, 118, 24); width: 30.00vmin;" data-event-click = "clickToChest(%s)">
+                                <div class = "button-exchange-arrow"/>
+                                <div class = "button-exchange-text">背包转箱子</div>
+                                <div class = "button-exchange-box"/>
+                            </button>
+                            <button class="button-exchange" style = "background-color: rgb(203, 118, 24); width: 30.00vmin;" data-event-click = "clickToHeadquater(%s)">
+                                <div class = "button-exchange-arrow"/>
+                                <div class = "button-exchange-text">箱子转背包</div>
+                                <div class = "button-exchange-box"/>
+                            </button>
+                        </div>
+                    </div>
+                ]]):format(index, index)
+                return detail
+            end
+
             local pageclass = require "page"
             window.customElements.define("page", function(e)
-                start.page = pageclass.create(document, e, page_item_renderer)
+                start.page = pageclass.create(document, e, page_item_renderer, page_item_detail_renderer)
             end)
             -- <!-- tag page end -->
         </script>
@@ -490,10 +538,11 @@
             </div>
             <div class="panel" style= "flex-direction: column; width: 50%;">
                 <!-- 制造舱按钮 start -->
-                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if = "is_headquater">
+                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if = "!is_chest">
                     <div class = "menu-title" style="text-align: right; width: 70%;">制造舱</div>
                     <button class = "recipe-change-button"/>  
                 </div>
+                <div class="header" data-if = "is_chest"></div>
                 <!-- 制造舱按钮 end -->
 
                 <!-- 指挥中心物品栏 start -->

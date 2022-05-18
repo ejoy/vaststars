@@ -9,6 +9,8 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local fluid_list_cfg = import_package "vaststars.prototype"("fluid_category")
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local iprototype = require "gameplay.interface.prototype"
+local global = require "global"
+local objects = global.objects
 
 local construct_begin_mb = mailbox:sub {"construct_begin"}
 local dismantle_begin_mb = mailbox:sub {"dismantle_begin"}
@@ -20,6 +22,7 @@ local cancel_mb = mailbox:sub {"cancel"}
 local construct_entity_mb = mailbox:sub {"construct_entity"}
 local fluidbox_update_mb = mailbox:sub {"fluidbox_update"}
 local show_setting_mb = mailbox:sub {"show_setting"}
+local headquater_mb = mailbox:sub {"headquater"}
 
 local construct_menu = {} ; do
     for _, menu in ipairs(construct_menu_cfg) do
@@ -58,6 +61,12 @@ local fluid_category = {}; do
         table.sort(v, function(a, b) return a.id < b.id end)
     end
     table.sort(fluid_category, function(a, b) return a.pos < b.pos end)
+end
+
+local function get_headquater_object_id()
+    for id in objects:select("CONSTRUCTED", "headquater", true) do
+        return id
+    end
 end
 
 ---------------
@@ -158,6 +167,15 @@ function M:stage_ui_update(datamodel)
 
     for _, _, _, fluid_name in fluidbox_update_mb:unpack() do
         construct_editor:set_pickup_object_fluid(fluid_name)
+    end
+
+    for _ in headquater_mb:unpack() do
+        local object_id = get_headquater_object_id()
+        if object_id then
+            iui.open("cmdcenter.rml", object_id)
+        else
+            log.error("can not found headquater")
+        end
     end
 
     for _ in show_setting_mb:unpack() do

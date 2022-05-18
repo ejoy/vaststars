@@ -1,0 +1,247 @@
+<rml>
+    <head>
+        <style path = "common/building_style.rcss"/>
+        <style>
+            .building-info {
+                margin-top:1em;
+                width: 28%;
+                height:80%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-evenly;
+            }
+            .drone-title-block {
+                width:20%;
+                height:8%;
+                flex-direction: row;
+                justify-content: flex-start;
+                background-color: rgb(255,217,102);
+                border-radius: 0.67vmin;
+                border: 0.13vmin rgb(89, 73, 39);
+                align-items: center;
+            }
+            .drone-pic {
+                margin-left: 0.2em;
+                width: 3.33vmin;
+                height: 3.33vmin;
+                background-size:cover;
+                background-image: "textures/construct/drone1.texture";
+            }
+            .drone-title {
+                font-size: 3.47vmin;
+                color:rgb(255,255,255);
+                -webkit-text-stroke: 0.13vmin rgb(89, 73, 39);
+                text-align: left;
+                margin-bottom: 0.2em;
+            }
+            .item-info-block {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width:100%;
+                height:30%;
+            }
+            .item-recipe-block {
+                flex-direction: column;
+                align-items: center;
+                width:100%;
+                height:50%;
+            }
+            .item-material-block {
+                flex-direction: column;
+                align-items: center;
+                width:100%;
+                height:30%;
+            }
+            .item-building-block {
+                flex-direction: column;
+                align-items: center;
+                width:100%;
+                height:20%;
+            }
+            .pre-title-block {
+                justify-content: center;
+                width:20%;
+                height:5vmin; 
+                background-color: rgb(255,217,102);
+                border-radius: 0.37vmin;
+                border: 0.13vmin rgb(89, 73, 39);
+                font-size: 3.47vmin;
+                color:rgb(255,255,255);
+                -webkit-text-stroke: 0.13vmin rgb(89, 73, 39);
+                text-align: center;
+            }
+            .small-item-1 {
+                flex-direction: column;
+                align-items:center;
+                justify-content:flex-end;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 8.00vmin;
+                height: 8.00vmin;
+                font-size: 4.40vmin;
+            }
+            .small-item-count {
+                margin-bottom: -0.1em;
+                font-size: 4vmin;
+                text-align:center;
+                color:rgb(87, 238, 0);
+                -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);
+            }
+            .small-arrow {
+                margin: auto 0.2em;
+                width:61px;
+                height:47px;
+                background-image:"textures/exchange/right_arrow.texture";
+                background-size:cover;
+                transform: rotate(180deg)
+            }
+            .small-building-block{
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .small-building {
+                width:128px;
+                height:128px;
+                background-size: cover;
+                margin:auto 0.5vmin;
+            }
+            .small-building-name {
+                font-size: 4vmin;
+                -webkit-text-stroke: 1px rgb(0, 0, 0);
+                text-align: center;
+            }
+        </style>
+        <script type="text/x-lua">
+            local ui_sys = require "ui_system"
+            local start = window.createModel "start" {
+                chest_object_id = 0,
+                item_category = {},
+                inventory = {},
+
+                sub_inventory = {},
+                cur_item_category = "",
+            }
+
+            -- <!-- tag page begin -->
+            local select_item_index
+            -- <!-- tag page end -->
+
+            local function update_category(category)
+                start.sub_inventory = {}
+                for _, v in ipairs(start.inventory) do
+                    if v.category == category or category == "全部" then
+                        start.sub_inventory[#start.sub_inventory + 1] = v
+                    end
+                end
+                local total_count = math.ceil((#start.inventory + 1) / 35) * 35
+                start("sub_inventory")
+
+                -- <!-- tag page begin -->
+                start.page:on_dirty_all(total_count)
+                start.page:show_detail(select_item_index, true)
+                -- <!-- tag page end -->
+            end
+
+            function start.clickCategory(event, category)
+                start.cur_item_category = category
+                update_category(category)
+            end
+
+            function start.clickClose(evnet)
+                ui_sys:close()
+            end
+
+            ui_sys:setDataModel(start, function(patch)
+                if patch.inventory then
+                    if start.cur_item_category == "" then
+                        start.cur_item_category = start.item_category[1].category or ""
+                    end
+                    update_category(start.cur_item_category)
+                end
+            end)
+
+            -- <!-- tag page begin -->
+            local function page_item_renderer(index)
+                if index > #start.sub_inventory then
+                    local item = document.createElement "div"
+                    item.outerHTML = ([[<div class = "item" style = "width: %0.2fvmin; height: %0.2fvmin;" />]]):format(12 + 0.27, 12 + 0.27)
+                    item.addEventListener('click', function(event)
+                    end)    
+                    return item
+                end
+
+                local item = document.createElement "div"
+                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s"> <div class="item-count">%s</div> </div>]]):format(start.sub_inventory[index].icon, start.sub_inventory[index].count)
+
+                local select_style_border   = "0.27vmin green"
+                local unselect_style_border = "0.27vmin rgb(89, 73, 39)"
+                if select_item_index ~= index then
+                    item.style.border = unselect_style_border
+                else
+                    item.style.border = select_style_border
+                end
+
+                item.addEventListener('click', function(event)
+                    item.style.border = select_style_border
+                    if select_item_index then
+                        local v = start.page:get_item_info(select_item_index)
+                        if v then
+                            v.item.style.border = unselect_style_border
+                        end
+                        start.page:show_detail(select_item_index, false)
+                    end
+                    select_item_index = index
+                    start.page:show_detail(select_item_index, true)
+                    ui_sys:pub {"click_item", start.chest_object_id, start.sub_inventory[index].id, start.sub_inventory[index].count}
+                    ui_sys:close()
+                end)
+                return item
+            end
+
+            local pageclass = require "page"
+            window.customElements.define("page", function(e)
+                start.page = pageclass.create(document, e, page_item_renderer)
+            end)
+            -- <!-- tag page end -->
+        </script>
+    </head>
+    <body>
+        <div class="item-container-region"  data-model="start" style = "width:100%; background-color: rgb(0,0,0);">
+            <div class="panel" style= "flex-direction: column; width: 50%;">
+                <!-- 制造舱按钮 start -->
+                <div class="header" id = "item-name-block" style="justify-content: flex-end;">
+                    <div style="flex-grow: 1; justify-content: flex-start;">
+                        <button class = "back-button" data-event-click="clickClose()"/>
+                    </div>
+                    <div class = "menu-title" style="text-align: right; width: 70%;">指挥中心</div>
+                    <button class = "recipe-change-button"/>  
+                </div>
+                <!-- 制造舱按钮 end -->
+
+                <!-- 指挥中心物品栏 start -->
+                <!-- tag page begin -->
+                <div class="item-container" style = "width: 100%;">
+                    <page width = '88vmin' height = '66.00vmin' footerheight= '4.00vmin' row='5' col='7' />
+                </div>
+                <!-- tag page end -->
+                <!-- 指挥中心物品栏 end -->
+
+                <div class = "draw-line"/>
+
+                <!-- 物品栏分类页签 start -->
+                <div class = "tab-container" style="flex-grow: 1;">
+                    <div data-for = "item_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
+                        <workbutton data-event-click="clickCategory(it.category)" style = "width: 100%;" data-style-background-color="it.category == cur_item_category ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'">
+                            <div class="workbutton-bg" data-style-background-image="it.icon" />
+                            <div class="catalog-desc">{{it.category}}</div>
+                        </workbutton>
+                    </div>
+                </div>
+                <!-- 物品栏分类页签 end -->
+            </div>
+        </div>
+    </body>
+</rml>
