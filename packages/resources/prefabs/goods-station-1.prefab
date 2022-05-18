@@ -8,146 +8,81 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    DownToUp: /pkg/vaststars.resources/glb/goods_station.glb|animations/DownToUp.ozz
-    UpToDown: /pkg/vaststars.resources/glb/goods_station.glb|animations/UpToDown.ozz
-  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.003_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/animat.skinbin
   name: lifangti.003
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    DownToUp: /pkg/vaststars.resources/glb/goods_station.glb|animations/DownToUp.ozz
-    UpToDown: /pkg/vaststars.resources/glb/goods_station.glb|animations/UpToDown.ozz
-  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.001_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/animat.skinbin
   name: lifangti.002
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    DownToUp: /pkg/vaststars.resources/glb/goods_station.glb|animations/DownToUp.ozz
-    UpToDown: /pkg/vaststars.resources/glb/goods_station.glb|animations/UpToDown.ozz
-  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.004_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/animat.skinbin
   name: lifangti.004
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    DownToUp: /pkg/vaststars.resources/glb/goods_station.glb|animations/DownToUp.ozz
-    UpToDown: /pkg/vaststars.resources/glb/goods_station.glb|animations/UpToDown.ozz
-  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuti.009_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/animat.skinbin
   name: zhuti.002
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    DownToUp: /pkg/vaststars.resources/glb/goods_station.glb|animations/DownToUp.ozz
-    UpToDown: /pkg/vaststars.resources/glb/goods_station.glb|animations/UpToDown.ozz
-  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuiti_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/animat.skinbin
   name: zhuiti
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
@@ -166,59 +101,33 @@ policy:
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    DownToUp: /pkg/vaststars.resources/glb/goods_station.glb|animations/DownToUp.ozz
-    UpToDown: /pkg/vaststars.resources/glb/goods_station.glb|animations/UpToDown.ozz
-  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/plane.001_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/animat.skinbin
   name: plane.002
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
 ---
 data:
-  _animation:
-    anim_clips: {}
-    joint_list: {}
-    keyframe_events: {}
-  animation:
-    DownToUp: /pkg/vaststars.resources/glb/goods_station.glb|animations/DownToUp.ozz
-    UpToDown: /pkg/vaststars.resources/glb/goods_station.glb|animations/UpToDown.ozz
-  animation_birth: DownToUp
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
   material_setting:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuti_P1.meshbin
-  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/animat.skinbin
   name: zhuti
-  pose_result: false
   scene:
     srt: {}
-  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
-  skinning: {}
+  skinning: true
 mount: 1
 policy:
-  ant.animation|animation
-  ant.animation|animation_controller.birth
   ant.animation|skinning
   ant.general|name
   ant.render|render
@@ -274,3 +183,20 @@ mount: 1
 policy:
   ant.general|name
   ant.render|render
+---
+data:
+  _animation: {}
+  animation:
+    DownToUp: /pkg/vaststars.resources/glb/goods_station.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/goods_station.glb|animations/UpToDown.ozz
+  animation_birth: DownToUp
+  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/animat.skinbin
+  name: skeleton_animation
+  scene:
+    srt: {}
+  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
+mount: 1
+policy:
+  ant.animation|animation
+  ant.general|name
+  ant.scene|scene_object
