@@ -7,7 +7,6 @@ prototype "地质研究" {
       {"unlock-recipe","地质科技包1"},
     },
     ingredients = {
-        {},
     },
     count = 5,
     time = "1s"
