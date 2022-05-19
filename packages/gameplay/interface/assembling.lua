@@ -117,6 +117,20 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     assembling.fluidbox_out = fluidbox_out
 end
 
+local function set_direction(_, e, dir)
+    local DIRECTION <const> = {
+        N = 0, North = 0,
+        E = 1, East  = 1,
+        S = 2, South = 2,
+        W = 3, West  = 3,
+    }
+    local d = assert(DIRECTION[dir])
+    local entity = e.entity
+    if entity.direction ~= d then
+        entity.direction = d
+        e.fluidbox_changed = true
+    end
+end
 
 local function what_status(e)
     --TODO
@@ -142,5 +156,6 @@ end
 
 return {
     set_recipe = set_recipe,
+    set_direction = set_direction,
     what_status = what_status,
 }
