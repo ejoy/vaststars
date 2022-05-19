@@ -845,7 +845,7 @@ prototype "地质科技包1" {
     icon = "textures/construct/science-pack.texture",
     ingredients = {
         {"铁矿石", 2},
-        --{"碎石", 2},
+        {"碎石", 2},
     },
     results = {
         {"地质科技包", 1},
