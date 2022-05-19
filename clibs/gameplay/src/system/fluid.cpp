@@ -48,7 +48,7 @@ bool fluidflow::rebuild(uint16_t id) {
 	r = fluidflow_build(network, id, &state.box);
 	assert(r == 0); (void)r;
 	r = fluidflow_set(network, id, state.volume, 1);
-	assert(r == 0); (void)r;
+	assert(r != -1); (void)r;
 	return true;
 }
 
