@@ -14,12 +14,12 @@ extern "C" {
 
 static void
 checkFinish(world& w, burner& b) {
-	if (b.process == STATUS_DONE) {
+	if (b.progress == STATUS_DONE) {
 		prototype_context recipe = w.prototype(b.recipe);
 		recipe_container& container = w.query_container<recipe_container>(b.container);
 		recipe_items* r = (recipe_items*)pt_results(&recipe);
 		if (container.recipe_place(w, r)) {
-			b.process = STATUS_IDLE;
+			b.progress = STATUS_IDLE;
 		}
 	}
 }
@@ -41,29 +41,29 @@ lupdate(lua_State *L) {
 			continue;
 		}
 		burner& b = v.get<burner>();
-		if (b.process == STATUS_DONE || b.process == STATUS_IDLE) {
+		if (b.progress == STATUS_DONE || b.progress == STATUS_IDLE) {
 			prototype_context recipe = w.prototype(b.recipe);
 			recipe_container& container = w.query_container<recipe_container>(b.container);
-			if (b.process == STATUS_DONE) {
+			if (b.progress == STATUS_DONE) {
 				recipe_items* items = (recipe_items*)pt_results(&recipe);
 				if (container.recipe_place(w, items)) {
-					b.process = STATUS_IDLE;
+					b.progress = STATUS_IDLE;
 				}
 			}
-			if (b.process == STATUS_IDLE) {
+			if (b.progress == STATUS_IDLE) {
 				recipe_items* items = (recipe_items*)pt_ingredients(&recipe);
 				if (container.recipe_pickup(w, items)) {
 					int time = pt_time(&recipe);
-					b.process = time + STATUS_DONE;
+					b.progress = time + STATUS_DONE;
 				}
 			}
 		}
-		if (b.process == STATUS_DONE || b.process == STATUS_IDLE) {
+		if (b.progress == STATUS_DONE || b.progress == STATUS_IDLE) {
 			continue;
 		}
 
 		c.shortage -= power;
-		b.process--;
+		b.progress--;
 	}
 	return 0;
 }

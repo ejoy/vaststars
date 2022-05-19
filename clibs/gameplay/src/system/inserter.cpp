@@ -135,7 +135,7 @@ tryActive(world& w, inserter& i, entity& e, capacitance& c) {
         }
         i.status = STATUS_IN;
     }
-    i.process = pt_speed(&p);
+    i.progress = pt_speed(&p);
     return true;
 }
 
@@ -159,7 +159,7 @@ lbuild(lua_State *L) {
 
     for (auto& e : w.select<inserter>()) {
         inserter& i = e.get<inserter>();
-        if (i.process == STATUS_DONE) {
+        if (i.progress == STATUS_DONE) {
             wait(i, e.index);
         }
     }
@@ -173,7 +173,7 @@ lupdate(lua_State *L) {
 
     for (auto& e : w.select<inserter, entity, capacitance>()) {
         inserter& i = e.get<inserter>();
-        if (i.process != STATUS_DONE) {
+        if (i.progress != STATUS_DONE) {
             capacitance& c = e.get<capacitance>();
             prototype_context p = w.prototype(e.get<entity>().prototype);
             
@@ -181,8 +181,8 @@ lupdate(lua_State *L) {
             unsigned int capacitance = power * 2;
             if (c.shortage + power <= capacitance) {
                 c.shortage += power;
-                i.process--;
-                if (i.process == STATUS_DONE) {
+                i.progress--;
+                if (i.progress == STATUS_DONE) {
                     i.low_power = 0;
                     wait(i, e.index);
                 }

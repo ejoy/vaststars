@@ -66,14 +66,14 @@ end
 
 local function builder_build(world, fluid, id, fluidbox)
     if id ~= 0 then
-        world:fluidflow_rebuild(fluid, id)
+        world._cworld:fluidflow_rebuild(fluid, id)
         return
     end
     local pumping_speed = fluidbox.pumping_speed
     if pumping_speed then
         pumping_speed = pumping_speed // UPS
     end
-    return world:fluidflow_build(fluid, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
+    return world._cworld:fluidflow_build(fluid, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
 end
 
 local function builder_restore(world, fluid, id, fluidbox)
@@ -81,7 +81,7 @@ local function builder_restore(world, fluid, id, fluidbox)
     if pumping_speed then
         pumping_speed = pumping_speed // UPS
     end
-    return world:fluidflow_restore(fluid, id, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
+    return world._cworld:fluidflow_restore(fluid, id, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
 end
 
 local function builder_connect(c, key, id, type)
@@ -130,7 +130,7 @@ end
 
 local function builder_finish(world)
     for fluid, c in pairs(builder) do
-        world:fluidflow_connect(fluid, c.connects)
+        world._cworld:fluidflow_connect(fluid, c.connects)
     end
 end
 
@@ -244,7 +244,7 @@ function m.restore_finish(world)
     builder_finish(world)
     for v in ecs:select "save_fluidflow:in" do
         local sav = v.save_fluidflow
-        world:fluidflow_set(sav.fluid, sav.id, sav.volume, 1)
+        world._cworld:fluidflow_set(sav.fluid, sav.id, sav.volume, 1)
     end
     ecs:clear "save_fluidflow"
 end

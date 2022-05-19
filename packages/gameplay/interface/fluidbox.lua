@@ -26,7 +26,6 @@ local function update(e, pt, fluids)
         end
         fluidboxes[classify.."_id"] = 0
     end
-    e.fluidboxes = fluidboxes
 end
 
 return {
