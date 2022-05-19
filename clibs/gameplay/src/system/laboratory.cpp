@@ -28,7 +28,7 @@ laboratory_set_tech(world& w, entity& e, laboratory& l, uint16_t techid) {
         auto& r = w.techtree.get_ingredients(w, e.prototype, techid);
         assert(r);
         for (size_t i = 0; i < limit.size(); ++i) {
-            limit[i] = 2 * (std::min)((uint16_t)1, (*r)[i+1].amount);
+            limit[i] = 2 * (std::max)((uint16_t)1, (*r)[i+1].amount);
         }
     }
     container.recipe_limit(w, limit.data());
