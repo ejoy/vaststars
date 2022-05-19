@@ -12,7 +12,7 @@ local start = window.createModel "start" {
 
     recipe_ingredients_count = {}, -- 组装机成份材料个数 = {{icon = xx, count = xx}, ...}
     recipe_results_count = {},     -- 组装机产出材料个数 = {{icon = xx, count = xx}, ...}
-    process = 0, -- 进度
+    progress = 0, -- 进度
     inventory = {}, -- {{icon = xx, count = xx, name = xx}, ...}
 }
 

@@ -430,7 +430,7 @@ function M:new_pickup_object(prototype_name)
         vsobject_manager:remove(pickup_object.id)
     end
 
-    local typeobject = iprototype:queryByName("entity", prototype_name)
+    local typeobject = assert(iprototype:queryByName("entity", prototype_name)) -- 没有配置对应的 entity
     local coord = terrain.adjust_position(camera.get_central_position(), iprototype:rotate_area(typeobject.area, DEFAULT_DIR))
     pickup_object = new_pickup_object(prototype_name, DEFAULT_DIR, coord[1], coord[2])
 end
