@@ -30,6 +30,9 @@ function s.build(world)
             setContainer(v.entity, v.assembling.container)
         end
     end
+    for v in ecs:select "laboratory:in entity:in" do
+        setContainer(v.entity, v.laboratory.container)
+    end
     for v in ecs:select "inserter:update entity:in" do
         local x, y = v.entity.x, v.entity.y
         local sx, sy, ex, ey

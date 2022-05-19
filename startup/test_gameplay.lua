@@ -86,7 +86,7 @@ end)
 --    world:fluidflow_dump(0x3c01)
 --end)
 
-world:wait(10*60*50, function ()
+world:wait(1600*50, function ()
     world.quit = true
 end)
 

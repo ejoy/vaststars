@@ -17,19 +17,19 @@ world:create_entity "机器爪I" {
 world:create_entity "组装机I" {
     x = 3,
     y = 1,
-    recipe = "铁锭"
+    recipe = "地质科技包1"
 }
 world:create_entity "机器爪I" {
     x = 6,
     y = 1,
     dir = "W"
 }
-world:create_entity "科研中心I" {
+world:create_entity "科技中心I" {
     x = 7,
     y = 1,
 }
 
-world:research_queue {"地质研究"}
+world:research_queue {"铁矿熔炼","铁矿提取",}
 
 world:create_entity "指挥中心" {
     x = 1,
