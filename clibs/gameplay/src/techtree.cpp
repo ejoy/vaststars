@@ -47,31 +47,43 @@ struct lab_inputs {
     uint16_t items[1];
 };
 
-static uint16_t recipeFind(recipe_items& r, uint16_t item) {
+static std::optional<uint16_t> recipeFind(lab_inputs& r, uint16_t item) {
     for (uint16_t i = 0; i < r.n; ++i) {
-        if (r.items[i].item == item) {
-            return r.items[i].amount;
+        if (r.items[i] == item) {
+            return i;
         }
     }
-    return 0;
+    return std::nullopt;
 }
 
-recipe_items& techtree_mgr::get_ingredients(world& w, uint16_t labid, uint16_t techid) {
+techtree_mgr::ingredients_opt& techtree_mgr::get_ingredients(world& w, uint16_t labid, uint16_t techid) {
     auto& techcache = cache[techid];
     auto iter = techcache.find(labid);
     if (iter != techcache.end()) {
         return iter->second;
     }
-    recipe_items r;
     auto lab = w.prototype(labid);
     auto tech = w.prototype(techid);
     auto& inputs = *(lab_inputs*)pt_inputs(&lab);
     auto& ingredients = *(recipe_items*)pt_ingredients(&tech);
 
-    r.n = inputs.n;
-    for (uint16_t i = 0; i < r.n; ++i) {
-        r.items[i].item = inputs.items[i];
-        r.items[i].amount = recipeFind(ingredients, inputs.items[i]);
+    ingredients_t r(inputs.n+1);
+    r[0].item = inputs.n;
+    r[0].amount = 0;
+    for (uint16_t i = 0; i < inputs.n; ++i) {
+        uint16_t item = inputs.items[i];
+        r[i+1].item = inputs.items[i];
+        r[i+1].amount = 0;
+    }
+
+    for (uint16_t i = 0; i < ingredients.n; ++i) {
+        uint16_t item = ingredients.items[i].item;
+        auto result = recipeFind(inputs, item);
+        if (!result) {
+            auto res = techcache.emplace(labid, std::nullopt);
+            return res.first->second;
+        }
+        r[*result+1].amount = ingredients.items[i].amount;
     }
 
     auto res = techcache.emplace(labid, r);
@@ -91,10 +103,10 @@ void techtree_mgr::queue_pop() {
     }
 }
 
-void techtree_mgr::queue_set(const std::vector<uint16_t>& q) {
+void techtree_mgr::queue_set(const queue_t& q) {
     queue = q;
 }
 
-const std::vector<uint16_t>& techtree_mgr::queue_get() const {
+const techtree_mgr::queue_t& techtree_mgr::queue_get() const {
     return queue;
 }

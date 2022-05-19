@@ -12,22 +12,23 @@ extern "C" {
 
 #define STATUS_IDLE 0
 #define STATUS_DONE 1
-#define STATUS_WORKING 2
+#define STATUS_INVALID 2
 
 static void
 laboratory_set_tech(world& w, entity& e, laboratory& l, uint16_t techid) {
     l.tech = techid;
     auto& container = w.query_container<recipe_container>(l.container);
     std::vector<uint16_t> limit(container.inslots.size());
-    if (techid == 0) {
+    if (techid == 0 || l.status == STATUS_INVALID) {
         for (auto& v : limit) {
             v = 2;
         }
     }
     else {
-        recipe_items& r = w.techtree.get_ingredients(w, e.prototype, techid);
+        auto& r = w.techtree.get_ingredients(w, e.prototype, techid);
+        assert(r);
         for (size_t i = 0; i < limit.size(); ++i) {
-            limit[i] = 2 * (std::min)((uint16_t)1, r.items[i].amount);
+            limit[i] = 2 * (std::min)((uint16_t)1, (*r)[i+1].amount);
         }
     }
     container.recipe_limit(w, limit.data());
@@ -40,23 +41,36 @@ laboratory_next_tech(world& w, entity& e, laboratory& l, uint16_t techid) {
     }
     auto& container = w.query_container<recipe_container>(l.container);
     if (l.tech) {
-        recipe_items& oldr = w.techtree.get_ingredients(w, e.prototype, l.tech);
-        container.recipe_recover(w, &oldr);
-    }
-    if (techid) {
-        recipe_items& newr = w.techtree.get_ingredients(w, e.prototype, techid);
-        if (container.recipe_pickup(w, &newr)) {
-            laboratory_set_tech(w, e, l, techid);
-            prototype_context tech = w.prototype(techid);
-            int time = pt_time(&tech);
-            l.progress = time * 100;
-            l.status = STATUS_IDLE;
-            return;
+        auto& oldr = w.techtree.get_ingredients(w, e.prototype, l.tech);
+        assert(oldr);
+        if (oldr) {
+            container.recipe_recover(w, to_recipe(oldr));
         }
     }
-    laboratory_set_tech(w, e, l, 0);
-    l.progress = 0;
+    if (!techid) {
+        laboratory_set_tech(w, e, l, 0);
+        l.progress = 0;
+        l.status = STATUS_IDLE;
+        return;
+    }
+
+    auto& newr = w.techtree.get_ingredients(w, e.prototype, techid);
+    if (!newr) {
+        l.tech = techid;
+        l.progress = 0;
+        l.status = STATUS_INVALID;
+        return;
+    }
+    laboratory_set_tech(w, e, l, techid);
     l.status = STATUS_IDLE;
+    if (container.recipe_pickup(w, to_recipe(newr))) {
+        prototype_context tech = w.prototype(techid);
+        int time = pt_time(&tech);
+        l.progress = time * 100;
+    }
+    else {
+        l.progress = 0;
+    }
 }
 
 static void
@@ -71,7 +85,7 @@ laboratory_update(world& w, entity& e, laboratory& l, capacitance& c, bool& upda
         return;
     }
     c.shortage += drain;
-    if (l.tech == 0) {
+    if (l.tech == 0 || l.status == STATUS_INVALID) {
         return;
     }
 
@@ -93,8 +107,8 @@ laboratory_update(world& w, entity& e, laboratory& l, capacitance& c, bool& upda
             l.status = STATUS_IDLE;
         }
         if (l.status == STATUS_IDLE) {
-            recipe_items& r = w.techtree.get_ingredients(w, e.prototype, l.tech);
-            if (!container.recipe_pickup(w, &r)) {
+            auto& r = w.techtree.get_ingredients(w, e.prototype, l.tech);
+            if (!r || !container.recipe_pickup(w, to_recipe(r))) {
                 return;
             }
             int time = pt_time(&tech);

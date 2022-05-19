@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <vector>
 #include <map>
 #include <set>
@@ -9,18 +10,30 @@ struct world;
 
 class techtree_mgr {
 public:
-    uint16_t      get_progress(uint16_t techid) const;
-    bool          is_researched(uint16_t techid) const;
-    bool          research(uint16_t techid, uint16_t max, uint16_t inc);
-    recipe_items& get_ingredients(world& w, uint16_t labid, uint16_t techid);
-    uint16_t      queue_top() const;
-    void          queue_pop();
-    void          queue_set(const std::vector<uint16_t>& q);
-    const std::vector<uint16_t>& queue_get() const;
+    struct ingredient_t {
+        uint16_t item;
+        uint16_t amount;
+    };
+    using ingredients_t = std::vector<ingredient_t>;
+    using ingredients_opt = std::optional<ingredients_t>;
+    using queue_t = std::vector<uint16_t>;
+
+    uint16_t         get_progress(uint16_t techid) const;
+    bool             is_researched(uint16_t techid) const;
+    bool             research(uint16_t techid, uint16_t max, uint16_t inc);
+    ingredients_opt& get_ingredients(world& w, uint16_t labid, uint16_t techid);
+    uint16_t         queue_top() const;
+    void             queue_pop();
+    void             queue_set(const queue_t& q);
+    const queue_t&   queue_get() const;
 
 private:
     std::map<uint16_t, uint16_t> progress;
     std::set<uint16_t> researched;
-    std::vector<uint16_t> queue;
-    std::map<uint16_t, std::map<uint16_t, recipe_items>> cache;
+    queue_t queue;
+    std::map<uint16_t, std::map<uint16_t, ingredients_opt>> cache;
 };
+
+inline recipe_items* to_recipe(techtree_mgr::ingredients_opt& opt) {
+    return (recipe_items*)opt->data();
+}
