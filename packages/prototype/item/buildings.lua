@@ -201,7 +201,7 @@ prototype "水电站I" {
     order = 70,
 }
 
-prototype "砖石公路" {
+prototype "砖石公路-O型" {
     type = {"item"},
     stack = 100,
     icon = "textures/construct/road1.texture",
