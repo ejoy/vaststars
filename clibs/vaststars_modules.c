@@ -21,7 +21,6 @@ static void loadmodules(lua_State* L) {
     CORE(prototype)
     CORE(container)
     CORE(world)
-    CORE(fluidflow)
     CORE(road)
 }
 

@@ -17,7 +17,6 @@ world:create_entity "机器爪I" {
 world:create_entity "组装机I" {
     x = 3,
     y = 1,
-    recipe = "地质科技包1"
 }
 world:create_entity "机器爪I" {
     x = 6,

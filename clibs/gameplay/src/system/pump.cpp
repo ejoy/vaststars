@@ -56,13 +56,13 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
     c.shortage += drain;
 
     // step.2
-    if (a.process == STATUS_DONE || a.process == STATUS_IDLE) {
+    if (a.progress == STATUS_DONE || a.progress == STATUS_IDLE) {
         prototype_context recipe = w.prototype(a.recipe);
         recipe_container& container = w.query_container<recipe_container>(a.container);
-        if (a.process == STATUS_DONE) {
+        if (a.progress == STATUS_DONE) {
             recipe_items* r = (recipe_items*)pt_results(&recipe);
             if (container.recipe_place(w, r)) {
-                a.process = STATUS_IDLE;
+                a.progress = STATUS_IDLE;
                 if (a.fluidbox_out != 0) {
                     fluidboxes* fb = w.sibling<fluidboxes>(v);
                     if (fb) {
@@ -71,11 +71,11 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
                 }
             }
         }
-        if (a.process == STATUS_IDLE) {
+        if (a.progress == STATUS_IDLE) {
             recipe_items* r = (recipe_items*)pt_ingredients(&recipe);
             if (container.recipe_pickup(w, r)) {
                 int time = pt_time(&recipe);
-                a.process = time + STATUS_DONE;
+                a.progress = time + STATUS_DONE;
                 if (a.fluidbox_in != 0) {
                     fluidboxes* fb = w.sibling<fluidboxes>(v);
                     if (fb) {
@@ -85,7 +85,7 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
             }
         }
     }
-    if (a.process == STATUS_DONE || a.process == STATUS_IDLE) {
+    if (a.progress == STATUS_DONE || a.progress == STATUS_IDLE) {
         return;
     }
 
@@ -96,7 +96,7 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
     c.shortage += power;
 
     // step.4
-    a.process--;
+    a.progress--;
 }
 
 static void

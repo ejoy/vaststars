@@ -13,7 +13,7 @@ function c:ctor(_, pt)
             output_container = 0xFFFF,
             hold_item = 0,
             hold_amount = 0,
-            process = 0,
+            progress = 0,
             low_power = 0,
             status = STATUS_IN,
         }
@@ -29,7 +29,7 @@ local function what_status(e)
     if i.input_container == 0xFFFF or i.output_container == 0xFFFF then
         return "idle"
     end
-    if i.process <= 0 then
+    if i.progress <= 0 then
         if i.status == STATUS_IN then
             return "insufficient_input"
         elseif i.status == STATUS_OUT then

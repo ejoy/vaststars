@@ -70,7 +70,7 @@ function burner:ctor(init, pt)
 		burner = {
             recipe = recipe.id,
             container = id,
-            process = STATUS_IDLE,
+            progress = STATUS_IDLE,
 		}
 	}
 end

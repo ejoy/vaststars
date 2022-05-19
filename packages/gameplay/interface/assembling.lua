@@ -88,7 +88,7 @@ end
 
 local function set_recipe(world, e, pt, recipe_name, fluids)
     local assembling = e.assembling
-    assembling.process = 0
+    assembling.progress = 0
     assembling.status = STATUS_IDLE
     fluidbox.update(e, pt, fluids)
     if recipe_name == nil then
@@ -96,7 +96,6 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
         assembling.container = 0xffff
         assembling.fluidbox_in = 0
         assembling.fluidbox_out = 0
-        e.assembling = assembling
         return
     end
     local recipe = assert(prototype.query("recipe", recipe_name), "unknown recipe: "..recipe_name)
@@ -107,7 +106,6 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
         assembling.container = world:container_create("assembling", container_in, container_out)
         assembling.fluidbox_in = 0
         assembling.fluidbox_out = 0
-        e.assembling = assembling
         return
     end
     local needlimit = #pt.fluidboxes.input > 0
@@ -117,7 +115,6 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     assembling.container = world:container_create("assembling", container_in, container_out)
     assembling.fluidbox_in = fluidbox_in
     assembling.fluidbox_out = fluidbox_out
-    e.assembling = assembling
 end
 
 
@@ -130,7 +127,7 @@ local function what_status(e)
     if a.recipe == 0 then
         return "idle"
     end
-    if a.process <= 0 then
+    if a.progress <= 0 then
         if a.status == STATUS_IDLE then
             return "insufficient_input"
         elseif a.status == STATUS_DONE then
