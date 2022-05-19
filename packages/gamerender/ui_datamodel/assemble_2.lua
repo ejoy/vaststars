@@ -53,16 +53,16 @@ local function get(object_id)
     }
 end
 
-local function get_percent(process, total)
-    assert(process <= total)
+local function get_percent(progress, total)
+    assert(progress <= total)
     if total <= 0 then
         return 0
     end
 
-    if process < 0 then
-        process = 0
+    if progress < 0 then
+        progress = 0
     end
-    return (total - process) / total
+    return (total - progress) / total
 end
 
 ---------------
@@ -82,10 +82,10 @@ function M:tick(datamodel, object_id)
     -- 更新组装机 成分 与 产出材料 的显示个数
     -- 组装机箱子里已有个数 / 配方所需个数
     local assembling = e.assembling
-    local total_process = 0
+    local total_progress = 0
     if assembling.recipe ~= 0 then
         local recipe_typeobject = assert(iprototype:query(assembling.recipe))
-        total_process = recipe_typeobject.time * assembling.speed
+        total_progress = recipe_typeobject.time * assembling.speed
     end
 
     local recipe_ingredients_count = {}
@@ -113,7 +113,7 @@ function M:tick(datamodel, object_id)
 
     datamodel.recipe_ingredients_count = recipe_ingredients_count
     datamodel.recipe_results_count = recipe_results_count
-    datamodel.process = ("%0.0f%%"):format(get_percent(assembling.process, total_process) * 100)
+    datamodel.progress = ("%0.0f%%"):format(get_percent(assembling.progress, total_progress) * 100)
 
     -- 更新背包界面对应的道具
     for e in gameplay_core.select "chest:in entity:in" do

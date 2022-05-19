@@ -202,6 +202,7 @@ prototype "水电站I" {
 }
 
 prototype "砖石公路-O型" {
+    show_prototype_name = "砖石公路",
     type = {"item"},
     stack = 100,
     icon = "textures/construct/road1.texture",

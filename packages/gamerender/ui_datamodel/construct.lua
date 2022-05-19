@@ -12,17 +12,17 @@ local iprototype = require "gameplay.interface.prototype"
 local global = require "global"
 local objects = global.objects
 
-local construct_begin_mb = mailbox:sub {"construct_begin"}
-local dismantle_begin_mb = mailbox:sub {"dismantle_begin"}
-local rotate_mb = mailbox:sub {"rotate"}
-local construct_confirm_mb = mailbox:sub {"construct_confirm"} -- 确认建造
+local construct_begin_mb = mailbox:sub {"construct_begin"} -- 建造 -> 建造模式
+local dismantle_begin_mb = mailbox:sub {"dismantle_begin"} -- 建造 -> 拆除模式
+local rotate_mb = mailbox:sub {"rotate"} -- 旋转建筑
+local construct_confirm_mb = mailbox:sub {"construct_confirm"} -- 确认放置
 local construct_complete_mb = mailbox:sub {"construct_complete"} -- 开始施工
-local dismantle_complete_mb = mailbox:sub {"dismantle_complete"}
-local cancel_mb = mailbox:sub {"cancel"}
-local construct_entity_mb = mailbox:sub {"construct_entity"}
-local fluidbox_update_mb = mailbox:sub {"fluidbox_update"}
-local show_setting_mb = mailbox:sub {"show_setting"}
-local headquater_mb = mailbox:sub {"headquater"}
+local dismantle_complete_mb = mailbox:sub {"dismantle_complete"} -- 开始拆除
+local cancel_mb = mailbox:sub {"cancel"} -- 主界面左上角返回按钮
+local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> 游戏设置
+local headquater_mb = mailbox:sub {"headquater"} -- 主界面左下角 -> 指挥中心
+local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
+local fluidbox_update_mb = mailbox:sub {"fluidbox_update"} -- 设置流体工具栏
 
 local construct_menu = {} ; do
     for _, menu in ipairs(construct_menu_cfg) do
@@ -32,13 +32,12 @@ local construct_menu = {} ; do
         m.detail = {}
 
         for _, prototype_name in ipairs(menu.detail) do
-            local typeobject = assert(iprototype:queryByName("item", prototype_name))
-
-            local d = {}
-            d.show_prototype_name = iprototype:show_prototype_name(typeobject)
-            d.prototype_name = prototype_name
-            d.icon = typeobject.icon
-            m.detail[#m.detail + 1] = d
+            local typeobject = assert(iprototype:queryByName("entity", prototype_name))
+            m.detail[#m.detail + 1] = {
+                show_prototype_name = iprototype:show_prototype_name(typeobject),
+                prototype_name = prototype_name,
+                icon = typeobject.icon,
+            }
         end
 
         construct_menu[#construct_menu+1] = m
@@ -80,6 +79,7 @@ function M:create()
     }
 end
 
+-- TODO
 function M:fps_text(datamodel, text)
     datamodel.fps_text = text
 end
