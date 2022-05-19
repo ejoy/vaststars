@@ -73,11 +73,24 @@
             }
             .item-recipe-desc {
                 margin: 1rem auto; 
-                width:70%;
+                width:80%;
                 height:75%;
                 justify-content: flex-start;
-                font-size: 4.00vmin;
+                font-size: 3.50vmin;
                 word-break: break-word;
+            }
+            .item-recipe-desc-extra {
+                padding-right: 1vmin; 
+                justify-content: flex-start;
+                font-size: 3.00vmin;
+                word-break: break-word;
+                text-align: right;
+            }
+            .item-recipe-extra-icon {
+                background-image: "textures/science/spark.texture";
+                background-size: cover;
+                width:4vmin;
+                height:4vmin;
             }
             .recipe-container {
                 border: 0.13vmin rgb(89, 73, 39); 
@@ -162,6 +175,14 @@
                 align-items:flex-start; 
                 justify-content: space-around;
             }
+            .icon-sign {
+                position:absolute;
+                bottom:0.05vmin;
+                right:0.05vmin;
+                width: 6vmin;
+                height: 6vmin;
+                background-size: cover;
+            }
         </style>
         <style path = "common/building_style.rcss" />
         <script type="text/x-lua" >
@@ -204,6 +225,8 @@
                 <div class="header" id = "item-name-block">
                     <button class = "back-button"/>
                     <div class = "menu-title">科研中心</div>
+                    <!-- 已研究科技浏览界面按钮-->
+                    <button class="item-recipe-info" style="position: absolute;top:0.3vmin; right: 0.3vmin; width: 10vmin; height: 10vmin;background-color: transparent;"/>
                 </div>
 
                 <!-- 科技条目 start -->
@@ -212,10 +235,12 @@
                         <button class="item-research">
                             <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
                             <div class="item-title-new">机器爪特殊冶炼22222222222</div>
+                            <div class="icon-sign" style='background-image:"textures/science/tech-important.texture";'/>
                         </button>
                         <button class="item-research">
                             <div class="item-bg" style='background-image:"textures/science/hand1.texture";'/>
                             <div class="item-title-new">机器爪特殊冶炼2</div>
+                            <div class="icon-sign" style='background-image:"textures/science/tech-cycle.texture";'/>
                         </button>
                     </div>
                     <div class="row" style="width:100%;justify-content: space-evenly;">
@@ -275,15 +300,26 @@
             </div>
             <div class="panel">
                 <div class="column" id ="item-recipe-region">
-                    <div class="header" id = "item-recipe-title">
-                        <div class = "item-recipe-image"/>
-                        <div class = "item-recipe-desc">流水线上快速抓取的机械臂xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
-                        <button class="item" style="width: 10.67vmin; height: 10.67vmin;background-color: transparent;border: 0em;">
-                            <div class = "item-recipe-info"/>
-                        </button>
+                    <div class="column" style="width:100%; height:20%;">
+                        <!-- 科技描述 start --> 
+                        <div class="header" id = "item-recipe-title" style="width:100%;height:75%;">
+                            <div class = "item-recipe-image"/>
+                            <div class = "item-recipe-desc">流水线上快速抓取的机械臂流水线上快速抓取的机械臂流水线上快速抓取的机械臂xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+                            <button class="item" style="width: 10.67vmin; height: 10.67vmin;background-color: transparent;border: 0em;" data-if="false">
+                                <div class = "item-recipe-info"/>
+                            </button>
+                        </div>
+                        <!-- 科技描述 end --> 
+
+                        <!-- 科技额外信息描述 start -->
+                        <div class="row" style="width: 100%; height:25%; justify-content: flex-end;">
+                            <div class="item-recipe-extra-icon"/>
+                            <div class="item-recipe-desc-extra">该科技可以研究更多科技</div>
+                        </div>
+                        <!-- 科技额外信息描述 end -->
                     </div>
 
-                    <div class="row" style="width: 100%; height: 85%;">
+                    <div class="row" style="width: 100%; height: 80%;">
 
                         <!-- 研究成果 start --> 
                         <div class="recipe-container">
