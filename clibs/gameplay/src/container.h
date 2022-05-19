@@ -6,7 +6,8 @@
 struct world;
 
 struct recipe_items {
-    uint32_t n;
+    uint16_t n;
+    uint16_t unused = 0;
     struct {
         uint16_t item;
         uint16_t amount;

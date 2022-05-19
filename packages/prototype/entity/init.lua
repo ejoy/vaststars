@@ -7,6 +7,3 @@ require "entity.powerpole"
 require "entity.chest"
 require "entity.assembler"
 require "entity.furnace"
-
-local gameplay = import_package "vaststars.gameplay"
-local prototype = gameplay.prototype
