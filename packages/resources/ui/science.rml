@@ -13,14 +13,16 @@
             }
              /*标题栏和返回按键  */
             .item-research {
+                margin: 0.5vmin 0;
                 flex-direction: row;
                 align-items:center;
                 justify-content:flex-start;
                 background-color: rgb(92, 184, 92);
                 border: 0.27vmin rgb(89, 73, 39);
                 background-size:cover;
-                width: 30.67vmin;
-                height: 12.00vmin;
+                border-radius: 0.67vmin;
+                width: 60vmin;
+                height: 10.00vmin;
                 font-size: 2.40vmin;
             }
             .item-research-title {
@@ -33,8 +35,8 @@
                 margin: 0.00vmin;
             }
             .item-bg {
-                width: 10.67vmin;
-                height: 10.67vmin;
+                width: 9.8vmin;
+                height: 9.8vmin;
                 background-size: cover;
             }
             .item-title-new {
@@ -94,16 +96,24 @@
             }
             .recipe-container {
                 border: 0.13vmin rgb(89, 73, 39); 
-                width: 50%; 
-                height: 100%; 
+                width: 100%; 
+                height: 80%; 
                 justify-content: flex-start;
                 flex-direction: row;
+                align-items: center;
+            }
+            .research-req-container {
+                border: 0.13vmin rgb(89, 73, 39); 
+                width: 100%; 
+                height: 50%; 
+                justify-content: flex-start;
+                flex-direction: column;
                 align-items: center;
             }
             .recipe-queue {
                 border: 0.13vmin rgb(89, 73, 39); 
                 width: 100%; 
-                height: 15%; 
+                height: 12%; 
                 justify-content: flex-start;
                 flex-direction: row;
                 align-items: center;
@@ -183,6 +193,32 @@
                 height: 6vmin;
                 background-size: cover;
             }
+            .icon-researching {
+                position:absolute;
+                bottom:0.05vmin;
+                left:0.05vmin;
+                font-size: 3vmin;
+                text-align: center;
+                color: rgb(238, 255, 0);
+                -webkit-text-stroke: 1px rgb(0, 0, 0);
+            }
+            .progress-background-new {
+                justify-content: flex-start;
+                height: 100%;
+                /* background-color: rgba(200, 200, 200,100); */
+                background-image: "textures/science/progress.texture";
+                background-size: cover;
+            }
+            .research-req {
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                position:absolute;
+                right:1vmin;
+                top:0.2vmin;
+                width:50%;
+                height:35%;
+            }
         </style>
         <style path = "common/building_style.rcss" />
         <script type="text/x-lua" >
@@ -230,69 +266,98 @@
                 </div>
 
                 <!-- 科技条目 start -->
-                <div class="column" style=" height : 90%; justify-content: space-evenly;">
-                    <div class="row" style="width:100%; justify-content: space-evenly;">
-                        <button class="item-research">
-                            <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
-                            <div class="item-title-new">机器爪特殊冶炼22222222222</div>
-                            <div class="icon-sign" style='background-image:"textures/science/tech-important.texture";'/>
-                        </button>
-                        <button class="item-research">
-                            <div class="item-bg" style='background-image:"textures/science/hand1.texture";'/>
-                            <div class="item-title-new">机器爪特殊冶炼2</div>
-                            <div class="icon-sign" style='background-image:"textures/science/tech-cycle.texture";'/>
-                        </button>
-                    </div>
-                    <div class="row" style="width:100%;justify-content: space-evenly;">
-                        <button class="item-research">
-                            <div class="item-bg" style='background-image:"textures/science/hand2.texture";'/>
-                            <div class="item-title-new">机器爪特殊冶炼2</div>
-                        </button>
-                        <button class="item-research">
-                            <div class="item-bg" style='background-image:"textures/science/hand4.texture";'/>
-                            <div class="item-title-new">机器爪特殊冶炼2</div>
-                        </button>
-                    </div>
-                    <div class="row" style="width:100%;justify-content: space-evenly;">
-                        <button class="item-research">
-                            <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
-                            <div class="item-title-new">机器爪特殊冶炼2</div>
-                        </button>
-                        <button class="item-research">
-                            <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
-                            <div class="item-title-new">机器爪特殊冶炼2</div>
-                        </button>
-                    </div>
-                    <div class="row" style="width:100%;justify-content: space-evenly;">
-                        <button class="item-research">
-                            <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
-                            <div class="item-title-new">机器爪特殊冶炼2</div>
-                        </button>
-                        <button class="item-research" style='background-color: rgb(250, 205, 9);'>
-                            <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
-                            <div class="item-title-new">机器爪特殊冶炼2</div>
-                        </button>
-                    </div>
-                    <div class="row" style="width:100%;justify-content: space-evenly;">
-                        <button class="item-research" style='background-color: rgb(250, 205, 9);'>
-                            <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
-                            <div class="item-title-new">机器爪特殊冶炼2</div>
-                        </button>
-                        <button class="item-research" style='background-color: rgb(250, 205, 9);'>
-                            <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
-                            <div class="item-title-new">机器爪特殊冶炼2</div>
-                        </button>
-                    </div>
-                    <div class="row" style="width:100%;justify-content: space-evenly;">
-                        <button class="item-research" style='background-color: rgb(250, 205, 9);'>
-                            <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
-                            <div class="item-title-new">机器爪特殊冶炼2</div>
-                        </button>
-                        <button class="item-research" style='background-color: rgb(250, 205, 9);'>
-                            <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
-                            <div class="item-title-new">机器爪特殊冶炼2</div>
-                        </button>
-                    </div>
+                <div class="column" style=" height : 90%; justify-content: flex-start;">
+                    <button class="item-research">
+                        <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
+                        <div class="item-title-new">机器爪特殊冶炼22222222222</div>
+                        <div class="icon-sign" style='background-image:"textures/science/tech-important.texture";'/>
+                        <div class="research-req">
+                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
+                            <div style="font-size: 3.5vmin; text-align: center;">X 100</div>
+                        </div>
+                        <div class="progress-background-new" style="position:absolute; left:0; width: 60%;"/>
+                        <div class="icon-researching">研究中...</div>
+                    </button>
+                    <button class="item-research" style="border:1px ;">
+                        <div class="item-bg" style='background-image:"textures/science/hand1.texture";'/>
+                        <div class="item-title-new">机器爪特殊冶炼2</div>
+                        <div class="icon-sign" style='background-image:"textures/science/tech-cycle.texture";'/>
+                        <div class="research-req">
+                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
+                            <div style="font-size: 3.5vmin; text-align: center;">X 50</div>
+                        </div>
+                        <div class="progress-background-new" style="position:absolute; left:0; width: 80%;"/>
+                    </button>
+                    <button class="item-research">
+                        <div class="item-bg" style='background-image:"textures/science/hand2.texture";'/>
+                        <div class="item-title-new">机器爪特殊冶炼2</div>
+                        <div class="research-req">
+                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
+                            <div style="font-size: 3.5vmin; text-align: center;">X 500</div>
+                        </div>
+                        <div class="progress-background-new" style="position:absolute; left:0; width: 20%;"/>
+                    </button>
+                    <button class="item-research">
+                        <div class="item-bg" style='background-image:"textures/science/hand4.texture";'/>
+                        <div class="item-title-new">机器爪特殊冶炼2</div>
+                        <div class="research-req">
+                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
+                            <div style="font-size: 3.5vmin; text-align: center;">X 50</div>
+                        </div>
+                        <div class="progress-background-new" style="position:absolute; left:0; width: 100%;"/>
+                    </button>
+                    <button class="item-research" style="border:0.4vmin rgb(255, 251, 0);">
+                        <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
+                        <div class="item-title-new">机器爪特殊冶炼2</div>
+                        <div class="research-req">
+                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/pinkbox.texture";'/>
+                            <div style="font-size: 3.5vmin; text-align: center;">X 5000</div>
+                        </div>
+                        <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
+                    </button>
+                    <button class="item-research">
+                        <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
+                        <div class="item-title-new">机器爪特殊冶炼2</div>
+                        <div class="research-req">
+                            <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
+                            <div style="font-size: 3.5vmin; text-align: center;">X 50</div>
+                        </div>
+                        <div class="progress-background-new" style="position:absolute; left:0; width: 33%;"/>
+                    </button>
+                    <button class="item-research">
+                        <div class="item-bg" style='background-image:"textures/science/hand4.texture";'/>
+                        <div class="item-title-new">机器爪特殊冶炼2</div>
+                        <div class="research-req">
+                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
+                            <div style="font-size: 3.5vmin; text-align: center;">X 50</div>
+                        </div>
+                        <div class="progress-background-new" style="position:absolute; left:0; width: 100%;"/>
+                    </button>
+                    <button class="item-research">
+                        <div class="item-bg" style='background-image:"textures/science/hand.texture";'/>
+                        <div class="item-title-new">机器爪特殊冶炼2</div>
+                        <div class="research-req">
+                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
+                            <div style="font-size: 3.5vmin; text-align: center;">X 50</div>
+                        </div>
+                        <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
+                    </button>
                 </div>
                 
                 <!-- 科技条目 end --> 
@@ -300,7 +365,7 @@
             </div>
             <div class="panel">
                 <div class="column" id ="item-recipe-region">
-                    <div class="column" style="width:100%; height:20%;">
+                    <div class="column" style="width:100%; height:15%;">
                         <!-- 科技描述 start --> 
                         <div class="header" id = "item-recipe-title" style="width:100%;height:75%;">
                             <div class = "item-recipe-image"/>
@@ -312,154 +377,69 @@
                         <!-- 科技描述 end --> 
 
                         <!-- 科技额外信息描述 start -->
-                        <div class="row" style="width: 100%; height:25%; justify-content: flex-end;">
+                        <div class="row" style="width: 100%; height:25%; justify-content: flex-end;" data-if="false">
                             <div class="item-recipe-extra-icon"/>
                             <div class="item-recipe-desc-extra">该科技可以研究更多科技</div>
                         </div>
                         <!-- 科技额外信息描述 end -->
                     </div>
 
-                    <div class="row" style="width: 100%; height: 80%;">
-
-                        <!-- 研究成果 start --> 
-                        <div class="recipe-container">
-                            <div class="column" style="width:100%;">
+                    <div class="column" style="width: 100%; height: 73%;">
+                        <div class="recipe-name-text">科技信息</div>
+                        <div style="flex-direction: column; width:100%; height:100%;">
+                            <!-- 研究成果 start --> 
+                            <div class="recipe-container" style="flex-direction: column; border: 0px;">
+                                <button class="item-research" style="width:90%; background-color: rgb(190, 14, 243);border: 2px rgb(255, 0, 200);">
+                                    <div class="item-bg" style='background-image:"textures/science/improtant.texture";'/>
+                                    <div class="item-title-new">该科技可以激活更多后续科技</div>
+                                </button>
+                                <button class="item-research" style="width:90%; background-color: rgb(13, 107, 230);">
+                                    <div class="item-bg" style='background-image:"textures/construct/chemical.texture";'/>
+                                    <div class="item-title-new">可以使用"发电机"</div>
+                                </button>
+                                <button class="item-research" style="width:90%; background-color: rgb(114, 87, 4);">
+                                    <div class="item-bg" style='background-image:"textures/science/book.texture";'/>
+                                    <div class="item-title-new">激活配方："铁锭锻造"</div>
+                                </button>
+                                <button class="item-research" style="width:90%; background-color: rgb(114, 87, 4);">
+                                    <div class="item-bg" style='background-image:"textures/science/book.texture";'/>
+                                    <div class="item-title-new">激活配方："水电解"</div>
+                                </button>
+                                <button class="item-research" style="width:90%; background-color: rgb(114, 87, 4);">
+                                    <div class="item-bg" style='background-image:"textures/science/book.texture";'/>
+                                    <div class="item-title-new">激活配方："一氧化碳转二氧化碳"</div>
+                                </button>
+                                <button class="item-research" style="width:90%; background-color: rgb(114, 87, 4);">
+                                    <div class="item-bg" style='background-image:"textures/science/book.texture";'/>
+                                    <div class="item-title-new">激活配方："塑料2"</div>
+                                </button>
+                            </div>
+                            <!-- 研究成果 end --> 
+                            <div class="research-req-container" data-if="false">
                                 <div class = "recipe-title-block">
-                                    <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">研究成果</div>
+                                     <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">需求科技</div>
                                 </div>
-                                <div class = "recipe-content-block">
-                                    <div class="row">
-                                        <button class="recipe-item">
-                                            <div class="recipe-item-bg" style='background-image:"textures/science/hand.texture";'/>
-                                            <div class="recipe-item-title">机器爪</div>
-                                        </button>
-                                        <button class="recipe-item">
-                                            <div class="recipe-item-bg" style='background-image:"textures/science/hand.texture";'/>
-                                            <div class="recipe-item-title">机器爪</div>
-                                        </button>
-                                        <button class="recipe-item">
-                                            <div class="recipe-item-bg" style='background-image:"textures/science/hand.texture";'/>
-                                            <div class="recipe-item-title">机器爪</div>
-                                        </button>
+                                <div class = "recipe-title-block" style="height:90%; justify-content: center;">
+                                    <div class="row" style=" width: 50%;">
+                                        <div class="property-icon" style='background-image:"textures/science/hand.texture";'/>
+                                        <div class="property-text" style="padding-right: 1vmin; color: rgb(255,255,255);">电子学</div>
                                     </div>
-                                    <div class="row">
-                                        <button class="recipe-item">
-                                            <div class="recipe-item-bg" style='background-image:"textures/science/hand.texture";'/>
-                                            <div class="recipe-item-title">机器爪</div>
-                                        </button>
-                                        <button class="recipe-item">
-                                            <div class="recipe-item-bg" style='background-image:"textures/science/hand.texture";'/>
-                                            <div class="recipe-item-title">机器爪</div>
-                                        </button>
-                                        <button class="recipe-item">
-                                            <div class="recipe-item-bg" style='background-image:"textures/science/hand.texture";'/>
-                                            <div class="recipe-item-title">机器爪</div>
-                                        </button>
+                                    <div class="row" style=" width: 50%;">
+                                        <div class="property-icon" style='background-image:"textures/science/hand.texture";'/>
+                                        <div class="property-text" style="padding-right: 1vmin; color: rgb(0,255,0);">物流制造</div>
+                                    </div>
+                                    <div class="row" style=" width: 50%;">
+                                        <div class="property-icon" style='background-image:"textures/science/hand.texture";'/>
+                                        <div class="property-text" style="padding-right: 1vmin; color: rgb(255, 255, 255);">特殊冶炼技术</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- 研究成果 end --> 
+                     </div>
 
-                        <!-- 研究需求 start --> 
-                        <div class="recipe-container">
-                            <div class="column" style="width:100%;">
-                                <div class = "recipe-title-block">
-                                    <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">研究需求</div>
-                                </div>
-                                <div class = "recipe-req-block">
-                                    <div class="column" style="padding-left:0.1em; width:100%; height:90%; justify-content: center; align-items:center;">
-                                        <div class="row" style="width:90%; justify-content:space-between;">
-                                            <div class="row" style=" width: 50%;">
-                                                <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
-                                                <div class="property-text" style="padding-right: 1vmin;">自动研究包</div>
-                                            </div>
-                                            <div class="row" style="justify-content: flex-end; width: 50%;">
-                                                <div class="recipe-req-num" style="font-size:4vmin; color:rgb(92, 255, 92)">123</div>
-                                                <div class="recipe-req-num">/300</div>
-                                            </div>
-                                        </div>
-                                        <div class="row" style="width:90%; justify-content:space-between;">
-                                            <div class="row" style=" width: 50%;">
-                                                <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
-                                                <div class="property-text" style="padding-right: 1vmin;">物流研究包</div>
-                                            </div>
-                                            <div class="row" style="justify-content: flex-end; width: 50%;">
-                                                <div class="recipe-req-num" style="font-size:4vmin; color:rgb(92, 255, 92)">1233</div>
-                                                <div class="recipe-req-num">/3000</div>
-                                            </div>
-                                        </div>
-                                        <div class="row" style="width:90%; justify-content:space-between;">
-                                            <div class="row" style=" width: 50%;">
-                                                <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
-                                                <div class="property-text" style="padding-right: 1vmin;">化工研究包</div>
-                                            </div>
-                                            <div class="row" style="justify-content: flex-end; width: 50%;">
-                                                <div class="recipe-req-num" style="font-size:4vmin; color:rgb(92, 255, 92)">1233</div>
-                                                <div class="recipe-req-num">/3000</div>
-                                            </div>
-                                        </div>
-                                        <div class="row" style="width:90%; justify-content:space-between;">
-                                            <div class="row" style=" width: 50%;">
-                                                <div class="property-icon" style='background-image:"textures/science/pinkbox.texture";'/>
-                                                <div class="property-text" style="padding-right: 1vmin;">生产研究包</div>
-                                            </div>
-                                            <div class="row" style="justify-content: flex-end; width: 50%;">
-                                                <div class="recipe-req-num" style="font-size:4vmin; color:rgb(92, 255, 92)">1233</div>
-                                                <div class="recipe-req-num">/3000</div>
-                                            </div>
-                                        </div>
-                                        <div class="row" style="width:90%; justify-content:space-between;">
-                                            <div class="row" style=" width: 50%;">
-                                                <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
-                                                <div class="property-text" style="padding-right: 1vmin;">效能研究包</div>
-                                            </div>
-                                            <div class="row" style="justify-content: flex-end;width: 50%;">
-                                                <div class="recipe-req-num" style="font-size:4vmin; color:rgb(92, 255, 92)">1</div>
-                                                <div class="recipe-req-num">/3</div>
-                                            </div>
-                                        </div>
-                                        <div class="row" style="width:90%; justify-content:space-between;">
-                                            <div class="row" style=" width: 50%;">
-                                                <div class="property-icon" style='background-image:"textures/science/graybox.texture";'/>
-                                                <div class="property-text" style="padding-right: 1vmin;">军备研究包</div>
-                                            </div>
-                                            <div class="row" style="justify-content: flex-end; width: 50%;">
-                                                <div class="recipe-req-num" style="font-size:4vmin; color:rgb(92, 255, 92)">123</div>
-                                                <div class="recipe-req-num">/30</div>
-                                            </div>
-                                        </div>
-                                        <div class="row" style="width:90%; justify-content:space-between;">
-                                            <div class="row" style=" width: 50%;">
-                                                <div class="property-icon" style='background-image:"textures/science/whitebox.texture";'/>
-                                                <div class="property-text" style="padding-right: 1vmin;">太空研究包</div>
-                                            </div>
-                                            <div class="row" style="justify-content: flex-end; width: 50%;">
-                                                <div class="recipe-req-num" style="font-size:4vmin; color:rgb(92, 255, 92)">123</div>
-                                                <div class="recipe-req-num">/300</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" style="margin-right:0.05em; height:10%; width:50%; border-radius: 2.00vmin; background-color: rgb(114,106,104); justify-content: center; border: 0.13vmin #fff;" data-if="false">
-                                        <div class="property-icon" style='background-image:"textures/science/timer.texture";'/>
-                                        <div class="property-text">1m36s</div>
-                                    </div>
-
-                                    <!-- 研究按钮 start --> 
-                                    <button class="column" style="justify-content:center; background-color: rgb(0,176,240); width: 50%; height: 10%;">
-                                        <div style="font-size: 4.00vmin; text-align: center; -webkit-text-stroke: 1px #000;">开始研究</div>
-                                        <div style="font-size: 2.67vmin; text-align: center;">(21m23s)</div>
-                                    </button>
-                                    <!-- 研究按钮 end --> 
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 研究需求 end --> 
-                    </div>
-
-                    <!-- 研究队列 start --> 
-                    <div class="recipe-queue" data-if="false">
-                        <div class = "recipe-queue-item-block">
+                    <div class="recipe-queue" style="justify-content: flex-end;border: 0px;">
+                        <!-- 研究队列 start --> 
+                        <div class = "recipe-queue-item-block" data-if="false">
                             <div class="column" style="justify-content:center;">
                                 <div style="font-size: 3.33vmin;">研究</div>
                                 <div style="font-size: 3.33vmin;">队列</div>
@@ -481,12 +461,16 @@
                                 <button class="small-button" style='background-image:"textures/science/add.texture";'/>
                             </div>
                         </div>
-                        <button class="column" style="justify-content:center; background-color: rgb(0,176,240); width: 30%; height:80%;">
+                        <!-- 研究队列 end --> 
+
+                        <!-- 开始研究按钮 start --> 
+                        <button class="column" style="justify-content:center; background-color: rgb(0,176,240); width: 30%; height:70%;">
                             <div style="font-size: 4.00vmin; text-align: center;">开始研究</div>
                             <div style="font-size: 2.67vmin; text-align: center;">(21m23s)</div>
                         </button>
+                        <!-- 开始研究按钮 end --> 
                     </div>
-                    <!-- 研究队列 end --> 
+                    
                 </div>
             </div>
         </div>
