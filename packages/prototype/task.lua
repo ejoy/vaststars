@@ -1,25 +1,15 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
-prototype "制造组装机" {
-    group = "建造",
-    result = {"组装机I" , 1},
-    images = {
-        {"textures/construct/steel-beam.texture"},
-        {"textures/construct/steel-beam.texture"},
-    },
-    description = "在平地上制造一台组装机",
-}
 
-prototype "生产铁片" {
-    group = "生产",
-    result = {"铁片" , 100},
+prototype "任务名称" {
+    type = "生产",
     images = {
         {"textures/construct/steel-beam.texture"},
         {"textures/construct/steel-beam.texture"},
     },
     condition = {
-        {"pretask",{"制造组装机","制造化工厂"}},
+
         {"item",{{"铁片",10},{"铁丝",40}}},
         {"tech",{"铁熔炼","化工"}},
         {"build",{{"组装机I",2},{"机器爪I",2}}},
@@ -38,7 +28,29 @@ prototype "生产铁片" {
         {"movetoheadquarter",{{"组装机I",2},{"机器爪I",2}}},
         {"movefromheadquarter",{{"组装机I",2},{"机器爪I",2}}},
     },
-
-    
+    result = {
+        {"nexttask",{"制造组装机","制造化工厂"}},
+    },
     description = "使用熔炼炉生产100个铁片",
+}
+
+prototype "制造组装机" {
+    type = "建造",
+    result = {"组装机I" , 1},
+    images = {
+        {"textures/construct/steel-beam.texture"},
+        {"textures/construct/steel-beam.texture"},
+    },
+    description = "在平地上制造一台组装机",
+}
+
+
+prototype "制造组装机" {
+    type = "建造",
+    result = {"组装机I" , 1},
+    images = {
+        {"textures/construct/steel-beam.texture"},
+        {"textures/construct/steel-beam.texture"},
+    },
+    description = "在平地上制造一台组装机",
 }
