@@ -1340,7 +1340,6 @@ prototype "海水分离石头" {
     },
     results = {
         {"碎石",2},
-        {"纯水", 50},
     },
     time = "3s",
     description = "海水中过滤石头",
