@@ -23,6 +23,12 @@ local entities = {
         x = 126,
         y = 126,
     },
+    {
+        prototype_name = "科研中心I",
+        dir = "N",
+        x = 122,
+        y = 127,
+    },
 	{
         prototype_name = "抽水泵",
         dir = "N",
