@@ -1,8 +1,5 @@
 package.path = "engine/?.lua"
 require "bootstrap"
-for i = 2, #arg do
-    load(arg[i])()
-end
 import_package "ant.window".start {
     import = {
         "@vaststars.gamerender"
