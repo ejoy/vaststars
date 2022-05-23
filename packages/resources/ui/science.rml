@@ -221,36 +221,52 @@
             }
         </style>
         <style path = "common/building_style.rcss" />
+        <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
             local start = window.createModel "start" {
-                show_work = false,
-                --workName = {"加工", "化工", "电力", "物流", "计算机", "自定义"}
-
-                work_id = 1,
-                road_list = {{id=1}}
             }
-            function start.clickWork(self, workid)
-                if not workid then
-                    start.show_work = not start.show_work
-                    start.work_id = 1
-                else
-                    start.work_id = workid
-                end
-                console.log("workid", workid)
-            end
-            function start.clickVehicle(self, carid)
- 
-            end
-            function start.addRoad()
-                local rl = start.road_list
-                rl[#rl + 1] = {id=#rl + 1}
-                console.log("addRoad", #rl)
-            end
-            window.addEventListener('message', function(event)
-                event.source.postMessage(event.data)
-            end)
             window.addEventListener('mousemove', function(event)
                 if event.button then
+                end
+            end)
+            local function clickItem(index)
+                ui_sys:pub{"click_tech", index}
+            end
+            local function list_item_renderer(index)
+                local item_data = start.techs.items[index]
+                local item = document.createElement "div"
+                item.outerHTML = ([[
+                        <div class="progress-background-new" style="position:absolute; left:0; width: %d%%;"/>
+                        <div class="item-bg" style='background-image:"%s";'/>
+                        <div class="item-title-new">%s</div>
+                        <div class="icon-sign" style='background-image:"textures/science/tech-important.texture";'/>
+                        <div class="research-req">
+                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
+                            <div style="font-size: 3.5vmin; text-align: center;">X 100</div>
+                        </div>
+                        <div class="icon-researching">研究中...</div>]]):format(item_data.progress, item_data.detail.icon, item_data.name)
+                item.className = "item-research"
+                local select_style_border = "5px green"
+                item.addEventListener('click', function(event)
+                    if start.techs.select_item then
+                        start.techs.select_item.style.border = '0px green'
+                    end
+                    item.style.border = select_style_border
+                    clickItem(index)
+                    start.techs.select_item = item
+                end)
+                return item
+            end
+            local listclass = require "list"
+            window.customElements.define("list", function(e)
+                start.list = listclass.create(document, e, 0, list_item_renderer)
+            end)
+            ui_sys:setDataModel(start, function(patch)
+                if patch then
+                    start.list:on_dirty(#start.techs.items)
                 end
             end)
         </script>
@@ -266,77 +282,8 @@
                 </div>
 
                 <!-- 科技条目 start -->
-                <div class="column" style=" height : 90%; justify-content: flex-start;">
-                    <button class="item-research" style="border:0.4vmin rgb(255, 251, 0);">
-                        <div class="item-bg" style='background-image:"textures/science/tech-logistics.texture";'/>
-                        <div class="item-title-new">石矿提取</div>
-                        <div class="research-req">
-                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
-                            <div style="font-size: 3.5vmin; text-align: center;">X 500</div>
-                        </div>
-                        <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
-                    </button>
-                    <button class="item-research">
-                        <div class="item-bg" style='background-image:"textures/science/tech-manufacture.texture";'/>
-                        <div class="item-title-new">铁矿熔炼</div>
-                        <div class="research-req">
-                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
-                            <div style="font-size: 3.5vmin; text-align: center;">X 50</div>
-                        </div>
-                        <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
-                    </button>
-                    <button class="item-research" style="background-color: rgb(0, 225, 255);">
-                        <div class="item-bg" style='background-image:"textures/science/tech-metal.texture";'/>
-                        <div class="item-title-new">铁加工1</div>
-                        <div class="research-req">
-                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/pinkbox.texture";'/>
-                            <div style="font-size: 3.5vmin; text-align: center;">X 5000</div>
-                        </div>
-                        <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
-                    </button>
-                    <button class="item-research">
-                        <div class="item-bg" style='background-image:"textures/science/tech-metal.texture";'/>
-                        <div class="item-title-new">气候研究</div>
-                        <div class="icon-sign" style='background-image:"textures/science/tech-important.texture";'/>
-                        <div class="research-req">
-                            <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
-                            <div style="font-size: 3.5vmin; text-align: center;">X 50</div>
-                        </div>
-                        <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
-                    </button>
-                    <button class="item-research">
-                        <div class="item-bg" style='background-image:"textures/science/tech-metal.texture";'/>
-                        <div class="item-title-new">水过滤系统</div>
-                        <div class="research-req">
-                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
-                            <div style="font-size: 3.5vmin; text-align: center;">X 50</div>
-                        </div>
-                        <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
-                    </button>
-                    <button class="item-research">
-                        <div class="item-bg" style='background-image:"textures/science/tech-liquid.texture";'/>
-                        <div class="item-title-new">管道系统1</div>
-                        <div class="research-req">
-                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
-                            <div style="font-size: 3.5vmin; text-align: center;">X 50</div>
-                        </div>
-                        <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
-                    </button>
-                </div>
-                
-                <!-- 科技条目 end --> 
-
+                <list direction='1' width='100%' height='90%'/>
+                <!-- 科技条目 end -->
             </div>
             <div class="panel">
                 <div class="column" id ="item-recipe-region">

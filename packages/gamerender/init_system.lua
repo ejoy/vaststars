@@ -22,7 +22,8 @@ function m:init_world()
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
     iui.preload_datamodel_dir "/pkg/vaststars.gamerender/ui_datamodel"
 
-    iui.open("construct.rml")
+    -- iui.open("construct.rml")
+    iui.open("science.rml")
     camera.init("camera_default.prefab")
 
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
