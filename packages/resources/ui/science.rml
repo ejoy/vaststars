@@ -267,44 +267,18 @@
 
                 <!-- 科技条目 start -->
                 <div class="column" style=" height : 90%; justify-content: flex-start;">
-                    <button class="item-research">
-                        <div class="item-bg" style='background-image:"textures/science/tech-equipment.texture";'/>
-                        <div class="item-title-new">机器爪特殊冶炼22222222222</div>
-                        <div class="icon-sign" style='background-image:"textures/science/tech-important.texture";'/>
-                        <div class="research-req">
-                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
-                            <div style="font-size: 3.5vmin; text-align: center;">X 100</div>
-                        </div>
-                        <div class="progress-background-new" style="position:absolute; left:0; width: 60%;"/>
-                        <div class="icon-researching">研究中...</div>
-                    </button>
-                    <button class="item-research" style="border:1px ;">
-                        <div class="item-bg" style='background-image:"textures/science/tech-liquid.texture";'/>
-                        <div class="item-title-new">机器爪特殊冶炼2</div>
-                        <div class="icon-sign" style='background-image:"textures/science/tech-cycle.texture";'/>
-                        <div class="research-req">
-                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
-                            <div style="font-size: 3.5vmin; text-align: center;">X 50</div>
-                        </div>
-                        <div class="progress-background-new" style="position:absolute; left:0; width: 80%;"/>
-                    </button>
-                    <button class="item-research">
+                    <button class="item-research" style="border:0.4vmin rgb(255, 251, 0);">
                         <div class="item-bg" style='background-image:"textures/science/tech-logistics.texture";'/>
-                        <div class="item-title-new">机器爪特殊冶炼2</div>
+                        <div class="item-title-new">石矿提取</div>
                         <div class="research-req">
                             <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
                             <div style="font-size: 3.5vmin; text-align: center;">X 500</div>
                         </div>
-                        <div class="progress-background-new" style="position:absolute; left:0; width: 20%;"/>
+                        <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
                     </button>
                     <button class="item-research">
                         <div class="item-bg" style='background-image:"textures/science/tech-manufacture.texture";'/>
-                        <div class="item-title-new">机器爪特殊冶炼2</div>
+                        <div class="item-title-new">铁矿熔炼</div>
                         <div class="research-req">
                             <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
                             <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
@@ -312,11 +286,11 @@
                             <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
                             <div style="font-size: 3.5vmin; text-align: center;">X 50</div>
                         </div>
-                        <div class="progress-background-new" style="position:absolute; left:0; width: 100%;"/>
+                        <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
                     </button>
-                    <button class="item-research" style="border:0.4vmin rgb(255, 251, 0);">
+                    <button class="item-research" style="background-color: rgb(0, 225, 255);">
                         <div class="item-bg" style='background-image:"textures/science/tech-metal.texture";'/>
-                        <div class="item-title-new">机器爪特殊冶炼2</div>
+                        <div class="item-title-new">铁加工1</div>
                         <div class="research-req">
                             <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
                             <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
@@ -329,28 +303,29 @@
                     </button>
                     <button class="item-research">
                         <div class="item-bg" style='background-image:"textures/science/tech-metal.texture";'/>
-                        <div class="item-title-new">机器爪特殊冶炼2</div>
+                        <div class="item-title-new">气候研究</div>
+                        <div class="icon-sign" style='background-image:"textures/science/tech-important.texture";'/>
                         <div class="research-req">
                             <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
                             <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
                             <div style="font-size: 3.5vmin; text-align: center;">X 50</div>
                         </div>
-                        <div class="progress-background-new" style="position:absolute; left:0; width: 33%;"/>
+                        <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
                     </button>
                     <button class="item-research">
                         <div class="item-bg" style='background-image:"textures/science/tech-metal.texture";'/>
-                        <div class="item-title-new">机器爪特殊冶炼2</div>
+                        <div class="item-title-new">水过滤系统</div>
                         <div class="research-req">
                             <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
                             <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
                             <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
                             <div style="font-size: 3.5vmin; text-align: center;">X 50</div>
                         </div>
-                        <div class="progress-background-new" style="position:absolute; left:0; width: 100%;"/>
+                        <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
                     </button>
                     <button class="item-research">
                         <div class="item-bg" style='background-image:"textures/science/tech-liquid.texture";'/>
-                        <div class="item-title-new">机器爪特殊冶炼2</div>
+                        <div class="item-title-new">管道系统1</div>
                         <div class="research-req">
                             <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
                             <div class="property-icon" style='background-image:"textures/science/bluebox.texture";'/>
