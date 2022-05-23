@@ -280,7 +280,7 @@
                     </button>
                     <button class = "confirm-button" style="background-color:rgb(52, 207, 115);" data-event-click = "clickConfirm()">
                         <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
-                        <div class = "recipe-name-text" style="font-size: 3.73vmin;">确定修改</div>
+                        <div class = "recipe-name-text" style="font-size: 3.73vmin;">确定配方</div>
                     </button> 
                 </div>
             </div>
