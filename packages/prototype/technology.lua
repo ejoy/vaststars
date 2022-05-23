@@ -12,8 +12,10 @@ prototype "地质研究" {
     count = 5,
     time = "1s",
     desc = "科技的描述",
-    extra_desc = "科技的描述",
-    sign = "关键",
+    sign_desc = {
+      { desc = "科技的描述", icon = "textures/science/important.texture"},
+    },
+    sign_icon = "textures/science/tech-important.texture",
 }
 
 ---新增海水配方的对应科技---
