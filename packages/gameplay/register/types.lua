@@ -143,9 +143,9 @@ end)
 
 local function query(t, v)
 	if t == "item/fluid" then
-		local what = prototype.query("item", t)
+		local what = prototype.query("item", v)
 		if not what then
-			what = prototype.query("fluid", t)
+			what = prototype.query("fluid", v)
 		end
 		return what
 	end
