@@ -65,7 +65,7 @@ local function restore_world()
     end
 
     -- restore
-    for v in gameplay_core.select("id:in entity:in fluidbox?in fluidboxes:in") do
+    for v in gameplay_core.select("id:in entity:in fluidbox?in fluidboxes?in") do
         local e = v.entity
         local typeobject = iprototype:query(e.prototype)
         local fluid_name
