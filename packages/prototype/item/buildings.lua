@@ -196,7 +196,7 @@ prototype "水电站I" {
     stack = 10,
     icon = "textures/construct/hydroplant.texture",
     model = "prefabs/rock.prefab",
-    description = "处理海水的工厂",
+    description = "处理水的工厂",
     group = "化工",
     order = 70,
 }
@@ -207,7 +207,7 @@ prototype "砖石公路-O型" {
     stack = 100,
     icon = "textures/construct/road1.texture",
     model = "prefabs/rock.prefab",
-    description = "处理海水的工厂",
+    description = "供车辆行驶的砖石公路",
     group = "物流",
     order = 50,
 }

@@ -91,14 +91,14 @@ prototype "氯气" {
     des = "一种纯净气体",
 }
 
-prototype "海水" {
+prototype "水冰" {
     type = {"fluid"},
     catagory = {"普通液体"},
     icon = "textures/fluid/liquid-seawater.texture",
     heat_capacity = "0.08kJ",
     default_temperature = 15,
     max_temperature = 100,
-    des = "海洋中的液体",
+    des = "地壳深处的固态水",
 }
 
 prototype "纯水" {
