@@ -113,4 +113,8 @@ function M:show_prototype_name(typeobject)
     end
 end
 
+function M:is_batch_mode(typeobject)
+    return typeobject.pipe or typeobject.road
+end
+
 return M

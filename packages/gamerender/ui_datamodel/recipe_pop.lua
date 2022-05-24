@@ -129,6 +129,11 @@ function M:stage_ui_update(datamodel)
             iworld:set_recipe(gameplay_core.get_world(), e, recipe_name)
             gameplay_core.build()
 
+            -- TODO viewport
+            local recipe_typeobject = iprototype:queryByName("recipe", recipe_name)
+            assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
+            object.fluid_name = irecipe:get_init_fluids(recipe_typeobject)
+
             iui.update("assemble_2.rml", "update", object_id)
             iui.update("build_function_pop.rml", "update", object_id)
         else
