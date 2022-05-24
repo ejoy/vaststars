@@ -19,7 +19,7 @@ prototype "地质研究" {
 }
 
 ---新增海水配方的对应科技---
-prototype "铁矿提取" {
+prototype "海水提取铁矿" {
   type = { "tech" },
   icon = "textures/science/tech-metal.texture",
   effects = {
@@ -33,14 +33,25 @@ prototype "铁矿提取" {
   time = "1s"
 }
 
+prototype "铁矿收集" {
+  type = { "checkpoint" },
+  icon = "textures/science/tech-metal.texture",
+  effects = {
+  },
+  prerequisites = {"地质研究"},
+  ingredients = {
+      {"铁矿石", 10},
+  },
+}
+
 ---新增海水配方的对应科技---
-prototype "石矿提取" {
+prototype "海水提取石矿" {
   type = { "tech" },
   icon = "textures/science/tech-metal.texture",
   effects = {
     unlock_recipe = {"海水分离石头"},
   },
-  prerequisites = {"铁矿提取"},
+  prerequisites = {"铁矿收集"},
   ingredients = {
       {"地质科技包", 3},
   },
