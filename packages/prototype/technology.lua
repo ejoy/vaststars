@@ -33,16 +33,18 @@ prototype "水冰提取铁矿" {
   time = "1s"
 }
 
--- prototype "铁矿收集" {
---   type = { "tech" },
---   icon = "textures/science/tech-metal.texture",
---   effects = {
---   },
---   prerequisites = {"地质研究"},
---   ingredients = {
---       {"铁矿石", 10},
---   },
--- }
+prototype "铁矿收集" {
+  type = { "tech", "task" },
+  ingredients = {
+      {"任务", 1},
+  },
+  count = 10,
+  task = "stat_production/铁矿石",
+  --task = "stat_consumption/铁矿石",
+  --task = "select_entity/组装机",
+  --task = "select_chest/指挥中心/铁丝",
+  --task = "power_generator/1000",
+}
 
 ---新增水冰配方的对应科技---
 prototype "水冰提取石矿" {

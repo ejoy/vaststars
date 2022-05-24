@@ -239,6 +239,7 @@ namespace lua_world {
     create(lua_State* L) {
         struct world* w = (struct world*)lua_newuserdatauv(L, sizeof(struct world), 0);
         new (w) world;
+        memset(&w->powergrid, 0, sizeof(w->powergrid));
         w->c.L = L;
         w->c.ecs = (struct ecs_context *)lua_touserdata(L, 1);
         w->c.P = (struct prototype_cache *)lua_touserdata(L, 2);
