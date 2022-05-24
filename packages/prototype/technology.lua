@@ -27,9 +27,9 @@ prototype "铁矿提取" {
   },
   prerequisites = {"地质研究"},
   ingredients = {
-      {"地质科技包", 3},
+      {"地质科技包"},
   },
-  count = 4,
+  count = 3,
   time = "1s"
 }
 
@@ -42,9 +42,9 @@ prototype "石矿提取" {
   },
   prerequisites = {"铁矿提取"},
   ingredients = {
-      {"地质科技包", 3},
+      {"地质科技包"},
   },
-  count = 4,
+  count = 3,
   time = "1s"
 }
 
@@ -56,9 +56,9 @@ prototype "铁矿熔炼" {
   },
   prerequisites = {"铁矿提取"},
   ingredients = {
-      {"地质科技包", 3},
+      {"地质科技包"},
   },
-  count = 4,
+  count = 3,
   time = "1s"
 }
 
@@ -70,9 +70,9 @@ prototype "铁加工1" {
   },
   prerequisites = {"铁矿熔炼"},
   ingredients = {
-      {"地质科技包", 5},
+      {"地质科技包"},
   },
-  count = 3,
+  count = 5,
   time = "1s"
 }
 
@@ -85,9 +85,9 @@ prototype "气候研究" {
   },
   prerequisites = {"铁加工1"},
   ingredients = {
-      {"地质科技包", 3},
+      {"地质科技包"},
   },
-  count = 4,
+  count = 3,
   time = "1s"
 }
 
@@ -99,10 +99,10 @@ prototype "水过滤系统" {
   },
   prerequisites = {"气候研究"},
   ingredients = {
-      {"地质科技包", 2},
-      {"气候科技包", 2},
+      {"地质科技包"},
+      {"气候科技包"},
   },
-  count = 3,
+  count = 2,
   time = "1s"
 }
 
@@ -114,7 +114,7 @@ prototype "管道系统1" {
   },
   prerequisites = {"气候研究"},
   ingredients = {
-      {"地质科技包", 3},
+      {"地质科技包"},
   },
   count = 3,
   time = "1s"
@@ -128,7 +128,7 @@ prototype "电解" {
   },
   prerequisites = {"水过滤系统"},
   ingredients = {
-      {"气候科技包", 4},
+      {"气候科技包"},
   },
   count = 4,
   time = "1s"
@@ -142,7 +142,7 @@ prototype "空气分离" {
   },
   prerequisites = {"水过滤系统","管道系统1"},
   ingredients = {
-      {"气候科技包", 3},
+      {"气候科技包"},
   },
   count = 3,
   time = "1s"
@@ -156,9 +156,9 @@ prototype "铁加工2" {
   },
   prerequisites = {"铁加工1"},
   ingredients = {
-      {"地质科技包", 5},
+      {"地质科技包"},
   },
-  count = 4,
+  count = 5,
   time = "1s"
 }
 
@@ -170,9 +170,9 @@ prototype "石头提取" {
   },
   prerequisites = {"铁加工2"},
   ingredients = {
-      {"地质科技包", 8},
+      {"地质科技包"},
   },
-  count = 2,
+  count = 8,
   time = "1s"
 }
 
@@ -185,9 +185,9 @@ prototype "石头处理1" {
   },
   prerequisites = {"石头提取"},
   ingredients = {
-      {"地质科技包", 8},
+      {"地质科技包"},
   },
-  count = 2,
+  count = 8,
   time = "1s"
 }
 
@@ -200,9 +200,9 @@ prototype "基地生产1" {
   },
   prerequisites = {"铁加工2"},
   ingredients = {
-      {"地质科技包", 8},
+      {"地质科技包"},
   },
-  count = 2,
+  count = 8,
   time = "1s"
 }
 
@@ -214,10 +214,10 @@ prototype "储存1" {
   },
   prerequisites = {"铁加工2"},
   ingredients = {
-      {"地质科技包", 6},
-      {"气候科技包", 6},
+      {"地质科技包"},
+      {"气候科技包"},
   },
-  count = 3,
+  count = 6,
   time = "1s"
 }
 
@@ -229,7 +229,7 @@ prototype "碳处理1" {
   },
   prerequisites = {"电解","空气分离"},
   ingredients = {
-      {"气候科技包", 4},
+      {"气候科技包"},
   },
   count = 4,
   time = "1s"
@@ -243,9 +243,9 @@ prototype "碳处理2" {
   },
   prerequisites = {"碳处理1"},
   ingredients = {
-      {"气候科技包", 8},
+      {"气候科技包"},
   },
-  count = 4,
+  count = 8,
   time = "1s"
 }
 
@@ -257,10 +257,10 @@ prototype "管道系统2" {
   },
   prerequisites = {"管道系统1","石头处理1"},
   ingredients = {
-      {"地质科技包", 4},
-      {"气候科技包", 4},
+      {"地质科技包"},
+      {"气候科技包"},
   },
-  count = 5,
+  count = 4,
   time = "1s"
 }
 
@@ -272,10 +272,10 @@ prototype "石头处理2" {
   },
   prerequisites = {"石头处理1"},
   ingredients = {
-      {"地质科技包", 4},
-      {"气候科技包", 4},
+      {"地质科技包"},
+      {"气候科技包"},
   },
-  count = 3,
+  count = 4,
   time = "1s"
 }
 
@@ -287,9 +287,9 @@ prototype "基地生产2" {
   },
   prerequisites = {"基地生产1"},
   ingredients = {
-      {"地质科技包", 5},
+      {"地质科技包"},
   },
-  count = 4,
+  count = 5,
   time = "1s"
 }
 
@@ -301,10 +301,10 @@ prototype "有机化学" {
   },
   prerequisites = {"碳处理1"},
   ingredients = {
-    {"地质科技包", 4},
-    {"气候科技包", 4},
+    {"地质科技包"},
+    {"气候科技包"},
   },
-  count = 5,
+  count = 4,
   time = "1s"
 }
 
@@ -316,9 +316,9 @@ prototype "排放" {
   },
   prerequisites = {"管道系统2"},
   ingredients = {
-    {"气候科技包", 8},
+    {"气候科技包"},
   },
-  count = 2,
+  count = 8,
   time = "1s"
 }
 
@@ -330,9 +330,9 @@ prototype "冶金学" {
   },
   prerequisites = {"石头处理2"},
   ingredients = {
-    {"地质科技包", 5},
+    {"地质科技包"},
   },
-  count = 3,
+  count = 5,
   time = "1s"
 }
 
@@ -344,10 +344,10 @@ prototype "电磁学1" {
   },
   prerequisites = {"有机化学","排放","基地生产2"},
   ingredients = {
-    {"地质科技包", 5},
-    {"气候科技包", 5},
+    {"地质科技包"},
+    {"气候科技包"},
   },
-  count = 3,
+  count = 5,
   time = "1s"
 }
 
@@ -359,10 +359,10 @@ prototype "机械研究" {
   },
   prerequisites = {"电磁学1"},
   ingredients = {
-    {"地质科技包", 5},
-    {"气候科技包", 5},
+    {"地质科技包"},
+    {"气候科技包"},
   },
-  count = 6,
+  count = 5,
   time = "1s"
 }
 
@@ -374,11 +374,11 @@ prototype "蒸馏厂1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"机械科技包", 4},
-    {"气候科技包", 4},
+    {"机械科技包"},
+    {"气候科技包"},
   },
-  count = 7,
-  time = "1s"
+  count = 4,
+  time = "1.5s"
 }
 
 prototype "挖掘1" {
@@ -389,11 +389,11 @@ prototype "挖掘1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"地质科技包", 4},
-    {"气候科技包", 4},
+    {"地质科技包"},
+    {"气候科技包"},
   },
-  count = 7,
-  time = "1s"
+  count = 4,
+  time = "1.5s"
 }
 
 prototype "驱动1" {
@@ -404,10 +404,10 @@ prototype "驱动1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"机械科技包", 3},
+    {"机械科技包"},
   },
   count = 8,
-  time = "1s"
+  time = "0.5s"
 }
 
 prototype "电力传输1" {
@@ -418,12 +418,12 @@ prototype "电力传输1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"地质科技包", 2},
-    {"气候科技包", 2},
-    {"机械科技包", 2},
+    {"地质科技包"},
+    {"气候科技包"},
+    {"机械科技包"},
   },
-  count = 12,
-  time = "1s"
+  count = 2,
+  time = "6s"
 }
 
 prototype "物流1" {
@@ -434,10 +434,10 @@ prototype "物流1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"机械科技包", 3},
+    {"机械科技包"},
   },
-  count = 8,
-  time = "1s"
+  count = 3,
+  time = "3s"
 }
 
 prototype "泵系统1" {
@@ -448,11 +448,11 @@ prototype "泵系统1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"气候科技包", 4},
-    {"机械科技包", 4},
+    {"气候科技包"},
+    {"机械科技包"},
   },
-  count = 6,
-  time = "1s"
+  count = 4,
+  time = "1.5s"
 }
 
 prototype "金属加工1" {
@@ -463,11 +463,11 @@ prototype "金属加工1" {
   },
   prerequisites = {"挖掘1","驱动1"},
   ingredients = {
-    {"地质科技包", 4},
-    {"机械科技包", 4},
+    {"地质科技包"},
+    {"机械科技包"},
   },
-  count = 8,
-  time = "1s"
+  count = 4,
+  time = "2s"
 }
 
 prototype "自动化1" {
@@ -478,8 +478,8 @@ prototype "自动化1" {
   },
   prerequisites = {"驱动1","电力传输1","物流1"},
   ingredients = {
-    {"机械科技包", 3},
+    {"机械科技包"},
   },
-  count = 12,
-  time = "1s"
+  count = 3,
+  time = "4s"
 }
