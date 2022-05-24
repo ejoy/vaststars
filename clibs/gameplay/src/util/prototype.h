@@ -3,7 +3,7 @@
 
 #include "prototype_imp.h"
 
-PROTOTYPE(priority, int)
+PROTOTYPE(priority, uint)
 PROTOTYPE(power, uint)
 PROTOTYPE(drain, uint)
 PROTOTYPE(charge_power, uint)
