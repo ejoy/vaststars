@@ -283,7 +283,7 @@
                         </div>
                     </div>
                     <div class="row" style="height: 30%; width:100%; justify-content: space-evenly;">
-                        <button class = "button-increase-item" style='background-image:"textures/factory/return.texture";'/>
+                        <button class = "button-increase-item" style='background-image:"textures/factory/return.texture";background-color: rgb(255, 230, 0);'/>
                         <button class = "button-increase-item" style='background-image:"textures/factory/plus-five.texture";'/>
                         <button class = "button-increase-item" style='background-image:"textures/factory/plus-one.texture";'/>
                     </div>
