@@ -1,5 +1,5 @@
 #include <lua.hpp>
-#include "world.h"
+#include "core/world.h"
 
 template <typename Key, typename Mapped>
 void flatmap_increase(flatmap<Key, Mapped>& m, Key const& key, Mapped mapped) {

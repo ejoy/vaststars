@@ -1,11 +1,11 @@
 #include <lua.hpp>
 
 #include "luaecs.h"
-#include "world.h"
-#include "entity.h"
-#include "select.h"
+#include "core/world.h"
+#include "core/entity.h"
+#include "core/select.h"
 extern "C" {
-#include "prototype.h"
+#include "util/prototype.h"
 }
 
 #define STATUS_IDLE 0

@@ -15,14 +15,14 @@ struct world {
 
 #if defined(__cplusplus)
 
-#include "container.h"
-#include "select.h"
+#include "core/container.h"
+#include "core/select.h"
+#include "core/techtree.h"
+#include "core/statistics.h"
 #include "system/fluid.h"
-#include "techtree.h"
-#include "system/statistics.h"
 #include <map>
 extern "C" {
-#include "prototype.h"
+#include "util/prototype.h"
 }
 
 struct world {

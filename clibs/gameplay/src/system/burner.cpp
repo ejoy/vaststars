@@ -3,10 +3,10 @@
 #include <string.h>
 
 #include "luaecs.h"
-#include "world.h"
-#include "entity.h"
+#include "core/world.h"
+#include "core/entity.h"
 extern "C" {
-#include "prototype.h"
+#include "util/prototype.h"
 }
 
 #define STATUS_IDLE 0

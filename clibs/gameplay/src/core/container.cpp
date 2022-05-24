@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <memory.h>
 #include <assert.h>
-#include "container.h"
-#include "world.h"
+#include "core/container.h"
+#include "core/world.h"
 extern "C" {
-#include "prototype.h"
+#include "util/prototype.h"
 }
 
 static bool isFluidId(uint16_t id) {

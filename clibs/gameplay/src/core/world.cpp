@@ -2,11 +2,11 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "world.h"
-#include "container.h"
+#include "core/world.h"
+#include "core/container.h"
 #include "system/fluid.h"
 extern "C" {
-    #include "fluidflow.h"
+    #include "core/fluidflow.h"
 }
 
 #define CONTAINER_TYPE(id)  ((id) & 0x8000)

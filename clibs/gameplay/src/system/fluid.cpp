@@ -1,9 +1,9 @@
 #include <lua.hpp>
-#include "world.h"
-#include "fluid.h"
+#include "core/world.h"
+#include "system/fluid.h"
 
 extern "C" {
-    #include "fluidflow.h"
+    #include "core/fluidflow.h"
 }
 
 fluidflow::fluidflow()
