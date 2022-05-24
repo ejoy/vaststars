@@ -24,6 +24,7 @@ local dismantle_complete_mb = mailbox:sub {"dismantle_complete"} -- 开始拆除
 local cancel_mb = mailbox:sub {"cancel"} -- 主界面左上角返回按钮
 local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> 游戏设置
 local headquater_mb = mailbox:sub {"headquater"} -- 主界面左下角 -> 指挥中心
+local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研中心
 local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
 local fluidbox_update_mb = mailbox:sub {"fluidbox_update"} -- 设置流体工具栏
 local batch_mode_begin_mb = mailbox:sub {"batch_mode_begin"} --
@@ -199,6 +200,10 @@ function M:stage_ui_update(datamodel)
         else
             log.error("can not found headquater")
         end
+    end
+    
+    for _ in technology_mb:unpack() do
+        iui.open("science.rml")
     end
 
     for _ in show_setting_mb:unpack() do

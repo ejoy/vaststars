@@ -3,7 +3,9 @@ local world = ecs.world
 local w = world.w
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
+local irecipe = require "gameplay.interface.recipe"
 local click_tech_event = mailbox:sub {"click_tech"}
+local return_mb = mailbox:sub {"return"}
 local M = {}
 local first_time = true
 local tech_tree = {}
@@ -14,6 +16,10 @@ function M:create(object_id)
         techs = {
             items = {},
         },
+        current_tech_icon = " ",
+        current_tech_desc = " ",
+        -- selected_tech = nil,
+        -- selected_recipe = nil
     }
 end
 
@@ -42,7 +48,51 @@ function M:stage_ui_update(datamodel)
                 local name = string.sub(key, 7)
                 tech_tree[name] = {name = name, pretech = {}, posttech = {}, detail = value}
                 local idx = #items
-                items[idx + 1] = {index = idx + 1, name = name, progress = 50, detail = value}
+                local ingredients0 = {}
+                local ingredients = irecipe:get_elements(value.ingredients)
+                for _, ingredient in ipairs(ingredients) do
+                    ingredients0[#ingredients0 + 1] = {icon = ingredient.tech_icon, count = ingredient.count}
+                end
+                local detail = {}
+                if value.sign_desc then
+                    for _, desc in ipairs(value.sign_desc) do
+                        detail[#detail+1] = desc
+                    end
+                end
+                if value.effects.unlock_recipe then
+                    for _, recipe in ipairs(value.effects.unlock_recipe) do
+                        local recipe_detail = prototypes["(recipe)" .. recipe]
+                        if recipe_detail then
+                            local input = {}
+                            ingredients = irecipe:get_elements(recipe_detail.ingredients)
+                            for _, ingredient in ipairs(ingredients) do
+                                input[#input + 1] = {icon = ingredient.icon, count = ingredient.count}
+                            end
+                            local output = {}
+                            local results = irecipe:get_elements(recipe_detail.results)
+                            for _, ingredient in ipairs(results) do
+                                output[#output + 1] = {icon = ingredient.icon, count = ingredient.count}
+                            end
+                            detail[#detail + 1] = {
+                                name = recipe,
+                                icon = recipe_detail.icon,
+                                desc = recipe_detail.description,
+                                input = input,
+                                output = output
+                            }
+                        end
+                    end
+                end
+                items[idx + 1] = {
+                    index = idx + 1,
+                    name = name,
+                    icon = value.icon,
+                    desc = value.desc or " ",
+                    sign_icon = value.sign_icon,
+                    detail = detail,
+                    ingredients = ingredients0,
+                    progress = 50,
+                }
             end
         end
         
@@ -66,12 +116,22 @@ function M:stage_ui_update(datamodel)
                 end
                 --game_world:research_queue {current_tech.name}
             end
-            
         end
+        local tech = datamodel.techs.items[1]
+        datamodel.current_tech_desc = tech.desc
+        datamodel.current_tech_icon = tech.icon
+        datamodel.current_tech = tech
         first_time = false
     end
     for _, _, _, index in click_tech_event:unpack() do
-        print("click index : ", index)
+        datamodel.techs.selected_recipe = nil
+        local tech = datamodel.techs.items[index]
+        datamodel.current_tech = tech
+        datamodel.current_tech_desc = tech.desc
+        datamodel.current_tech_icon = tech.icon
+    end
+    for _, _, _ in return_mb:unpack() do
+        print("click return")
     end
 end
 

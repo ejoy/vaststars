@@ -61,7 +61,6 @@
             }
             .item-recipe-image {
                 margin: auto;
-                background-image:"textures/science/hand.texture"; 
                 width: 10.67vmin; 
                 height: 10.67vmin; 
                 background-size:cover;
@@ -295,57 +294,107 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
+                current_tech_icon = " ",
+                current_tech_desc = " ",
+                selected_tech = nil,
+                selected_recipe = nil
             }
             window.addEventListener('mousemove', function(event)
                 if event.button then
                 end
             end)
-            local function clickItem(index)
+            local function clickTech(index)
                 ui_sys:pub{"click_tech", index}
             end
-            local function list_item_renderer(index)
+            local function clickRecipe(index)
+                ui_sys:pub{"click_recipe", index}
+            end
+            local function tech_item_renderer(index)
                 local item_data = start.techs.items[index]
                 local item = document.createElement "div"
+                local ingredient_items = ""
+                local ingredient_count = 0
+                for _, ingredient in ipairs(item_data.ingredients) do
+                    if ingredient_count == 0 then
+                        ingredient_count = ingredient.count
+                    end
+                    ingredient_items = ingredient_items .. ([[<div class="property-icon" style='background-image:"%s";'/>]]):format(ingredient.icon)
+                end
+                if ingredient_count > 0 then
+                    ingredient_items = [[<div class="research-req">]] .. ingredient_items .. ([[<div style="font-size: 3.5vmin; text-align: center;">X %d</div></div>]]):format(ingredient_count)
+                end
+                local sign = item_data.sign_icon and ([[<div class="icon-sign" style='background-image:"%s";'/>]]):format(item_data.sign_icon) or ""
                 item.outerHTML = ([[
-                        <div class="progress-background-new" style="position:absolute; left:0; width: %d%%;"/>
-                        <div class="item-bg" style='background-image:"%s";'/>
-                        <div class="item-title-new">%s</div>
-                        <div class="icon-sign" style='background-image:"textures/science/tech-important.texture";'/>
-                        <div class="research-req">
-                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
-                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
-                            <div style="font-size: 3.5vmin; text-align: center;">X 100</div>
-                        </div>
-                        <div class="icon-researching">研究中...</div>]]):format(item_data.progress, item_data.detail.icon, item_data.name)
+                <div class="progress-background-new" style="position:absolute; left:0; width: %d%%;"/>
+                <div class="item-bg" style='background-image:"%s";'/>
+                <div class="item-title-new">%s</div>]]):format(item_data.progress, item_data.icon, item_data.name) .. ingredient_items ..
+                [[<div class="icon-researching">研究中...</div>]] .. sign
+
                 item.className = "item-research"
                 local select_style_border = "5px green"
                 item.addEventListener('click', function(event)
-                    if start.techs.select_item then
-                        start.techs.select_item.style.border = '0px green'
+                    if start.techs.selected_tech then
+                        start.techs.selected_tech.style.border = '0px green'
                     end
                     item.style.border = select_style_border
-                    clickItem(index)
-                    start.techs.select_item = item
+                    clickTech(index)
+                    start.techs.selected_tech = item
                 end)
                 return item
             end
             local listclass = require "list"
             window.customElements.define("list", function(e)
-                start.list = listclass.create(document, e, 0, list_item_renderer)
+                start.list = listclass.create(document, e, 0, tech_item_renderer)
+            end)
+
+            local function detail_item_renderer(index)
+                local item = document.createElement "div"
+                local detail = start.current_tech.detail[index]
+                local htmlstr = ([[<div class="item-bg" style='background-image:"%s";'/>]]):format(detail.icon)
+                if detail.name then
+                    htmlstr = htmlstr .. ([[<div class="item-title-new">激活配方："%s"</div>]]):format(detail.name)
+                    item.style.backgroundColor = 'rgb(114,87,4)'
+                elseif detail.desc then
+                    htmlstr = htmlstr .. ([[<div class="item-title-new">%s</div>]]):format(detail.desc)
+                    item.style.backgroundColor = 'rgb(190,14,243)'
+                    item.style.border = '2px rgb(255,0,200)'
+                end
+                item.outerHTML = htmlstr
+                item.className = "item-research"
+                item.style.width = '90%'
+                
+                item.addEventListener('click', function(event)
+                    if start.techs.selected_recipe then
+                        start.techs.selected_recipe.style.border = '0px green'
+                    end
+                    item.style.border = select_style_border
+                    clickRecipe(index)
+                    start.techs.selected_recipe = item
+                end)
+                return item
+            end
+            window.customElements.define("detaillist", function(e)
+                start.detaillist = listclass.create(document, e, 0, detail_item_renderer)
             end)
             ui_sys:setDataModel(start, function(patch)
-                if patch then
+                if patch.techs then
                     start.list:on_dirty(#start.techs.items)
                 end
+                if patch.current_tech then
+                    start.detaillist:on_dirty(#start.current_tech.detail)
+                end
             end)
+            function start.clickReturn(event)
+                ui_sys:pub {"return"}
+                ui_sys:close()
+            end
         </script>
     </head>
     <body>
         <div class="item-container-region" data-model="start">
             <div class="panel">
                 <div class="header" id = "item-name-block">
-                    <button class = "back-button"/>
+                    <button class = "back-button" data-event-click="clickReturn()"/>
                     <div class = "menu-title">科研中心</div>
                     <!-- 已研究科技浏览界面按钮-->
                     <button class="item-recipe-info" style="position: absolute;top:0.3vmin; right: 0.3vmin; width: 10vmin; height: 10vmin;background-color: transparent;"/>
@@ -360,8 +409,8 @@
                     <div class="column" style="width:100%; height:15%;">
                         <!-- 科技描述 start --> 
                         <div class="header" id = "item-recipe-title" style="width:100%;height:75%;">
-                            <div class = "item-recipe-image"/>
-                            <div class = "item-recipe-desc">流水线上快速抓取的机械臂流水线上快速抓取的机械臂流水线上快速抓取的机械臂xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+                            <div class = "item-recipe-image" data-style-background-image="current_tech_icon"/>
+                            <div class = "item-recipe-desc">{{current_tech_desc}}</div>
                             <button class="item" style="width: 10.67vmin; height: 10.67vmin;background-color: transparent;border: 0em;" data-if="false">
                                 <div class = "item-recipe-info"/>
                             </button>
@@ -379,7 +428,8 @@
                     <div class="column" style="width: 100%; height: 73%;">
                         <div class="recipe-name-text">科技信息</div>
                         <div style="flex-direction: column; width:100%; height:100%;">
-                            <!-- 研究成果 start --> 
+                            <detaillist direction='1' width='100%' height='100%'/>
+                            <!-- 
                             <div class="recipe-container" style="flex-direction: column; border: 0px;">
                                 <button class="item-research" style="width:90%; background-color: rgb(190, 14, 243);border: 2px rgb(255, 0, 200);">
                                     <div class="item-bg" style='background-image:"textures/science/improtant.texture";'/>
@@ -397,8 +447,6 @@
                                     <div class="item-bg" style='background-image:"textures/science/book.texture";'/>
                                     <div class="item-title-new">激活配方："水电解"</div>
                                 </button>
-
-                                <!-- 配方下拉详细描述框 start-->
                                 <div class="recipe-info-block">
                                     <div class="recipe-info-desc-block">
                                         <div class="recipe-info-desc-title">配方信息</div>
@@ -444,8 +492,8 @@
                                         </div>           
                                     </div>
                                 </div>>
-                                <!-- 配方下拉详细描述框 end-->
                             </div>
+                            -->
                             <!-- 研究成果 end --> 
                             <div class="research-req-container" data-if="false">
                                 <div class = "recipe-title-block">
