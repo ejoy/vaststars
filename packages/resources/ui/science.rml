@@ -219,6 +219,76 @@
                 width:50%;
                 height:35%;
             }
+            .recipe-info-block {
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                width:95%;
+                height:30%;
+                border: 1px #fff;
+            }
+            .recipe-info-desc-block {
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: flex-start;
+                text-align: center;
+                width:100%;
+                height:40%;
+                font-size: 3vmin;
+            }
+            .recipe-info-desc-title
+            {
+                width:15%;
+                font-size: 3.5vmin;
+                text-align: center;
+                -webkit-text-stroke: 0.05em rgb(0,0,0);
+                background-color: rgb(203, 118, 24);
+            }
+            .recipe-info-desc
+            {
+                width: 85%;
+                font-size: 2.8vmin;
+                text-align: left;
+                word-break: break-all;
+            }
+            .recipe-item-info-block
+            {
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                width:100%;
+                height:60%;
+            }
+            .small-item-new {
+                margin:0.05em;
+                flex-direction: column;
+                align-items:flex-start;
+                justify-content:flex-start;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 7.70vmin;
+                height: 7.70vmin;
+                font-size: 2.00vmin;
+                background-image: "textures/construct/insert1.texture";
+            }
+            .small-arrow {
+                width: 7.70vmin;
+                height: 7.70vmin;
+                background-image: "textures/exchange/left_arrow.texture";
+                background-size: cover;
+            }
+            .small-name {
+                position: absolute;
+                width: 100%;
+                bottom: 0;
+                background-color: rgba(46, 46, 45, 150);
+                border-radius: 0.5vmin;
+                text-align: center;
+                font-size: 2vmin;
+                -webkit-text-stroke: 0.05em rgb(0,0,0);
+            }
+
         </style>
         <style path = "common/building_style.rcss" />
         <style path = "common/listpage_style.rcss"/>
@@ -327,14 +397,54 @@
                                     <div class="item-bg" style='background-image:"textures/science/book.texture";'/>
                                     <div class="item-title-new">激活配方："水电解"</div>
                                 </button>
-                                <button class="item-research" style="width:90%; background-color: rgb(114, 87, 4);">
-                                    <div class="item-bg" style='background-image:"textures/science/book.texture";'/>
-                                    <div class="item-title-new">激活配方："一氧化碳转二氧化碳"</div>
-                                </button>
-                                <button class="item-research" style="width:90%; background-color: rgb(114, 87, 4);">
-                                    <div class="item-bg" style='background-image:"textures/science/book.texture";'/>
-                                    <div class="item-title-new">激活配方："塑料2"</div>
-                                </button>
+
+                                <!-- 配方下拉详细描述框 start-->
+                                <div class="recipe-info-block">
+                                    <div class="recipe-info-desc-block">
+                                        <div class="recipe-info-desc-title">配方信息</div>
+                                        <div class="recipe-info-desc">这里是配方内容的信息描述11111111111111111111111111111,这里是配方内容的信息描述11111111111111111111111111111</div>
+                                    </div>
+                                    <div class="recipe-item-info-block">
+                                        <div class="small-item-new">
+                                            <div class="item-count">99</div>
+                                            <div class="small-name">机器爪I</div>
+                                        </div>
+                                        <div class="small-item-new">
+                                            <div class="item-count">99</div>
+                                            <div class="small-name">机器爪I</div>
+                                        </div>
+                                        <div class="small-item-new">
+                                            <div class="item-count">99</div>
+                                            <div class="small-name">科研中心I</div>
+                                        </div>
+                                        <div class="small-item-new">
+                                            <div class="item-count">99</div>
+                                            <div class="small-name">电动机I</div>
+                                        </div>
+                                        <div class="small-item-new">
+                                            <div class="item-count">99</div>
+                                            <div class="small-name">机器爪I</div>
+                                        </div>
+                                        <div class="small-arrow"/>
+                                        <div class="small-item-new">
+                                            <div class="item-count">99</div>
+                                            <div class="small-name">机器爪I</div>
+                                        </div> 
+                                        <div class="small-item-new">
+                                            <div class="item-count">99</div>
+                                            <div class="small-name">机器爪I</div>
+                                        </div>
+                                        <div class="small-item-new">
+                                            <div class="item-count">99</div>
+                                            <div class="small-name">机器爪I</div>
+                                        </div>
+                                        <div class="small-item-new">
+                                            <div class="item-count">99</div>
+                                            <div class="small-name">机器爪I</div>
+                                        </div>           
+                                    </div>
+                                </div>>
+                                <!-- 配方下拉详细描述框 end-->
                             </div>
                             <!-- 研究成果 end --> 
                             <div class="research-req-container" data-if="false">
