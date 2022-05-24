@@ -31,7 +31,7 @@ local entities = {
         y = 127,
     },
 	{
-        prototype_name = "水冰挖掘机",
+        prototype_name = "地下水挖掘机",
         dir = "N",
         x = 133,
         y = 125,
