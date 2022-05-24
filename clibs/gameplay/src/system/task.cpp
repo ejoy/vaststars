@@ -76,15 +76,7 @@ uint64_t task::select_chect(world& w) {
 }
 
 uint64_t task::power_generator(world& w) {
-    powergrid& pg = w.powergrid;
-    float n = 0.f;
-    for (size_t i = 0; i < GENERATOR_PRIORITY; ++i) {
-        n += pg.generator_power[i] / p1 * pg.generator_efficiency[i];
-    }
-    if (n >= std::numeric_limits<uint64_t>::max()) {
-        return std::numeric_limits<uint64_t>::max();
-    }
-    return uint64_t(n);
+    return w.powergrid.generate_power / p1;
 }
 
 uint64_t task::eval(world& w) {

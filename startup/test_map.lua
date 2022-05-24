@@ -28,7 +28,7 @@ world:create_entity "机器爪I" {
 --     y = 1,
 -- }
 
-world:research_queue {"铁矿熔炼","铁矿提取",}
+world:research_queue {"铁矿熔炼",}
 
 world:create_entity "指挥中心" {
     x = 1,
