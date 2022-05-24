@@ -17,6 +17,7 @@ namespace ecs::select {
         };
 
     COMPONENT_ID(entity, COMPONENT_ENTITY)
+    COMPONENT_ID(chest, COMPONENT_CHEST)
     COMPONENT_ID(capacitance, COMPONENT_CAPACITANCE)
     COMPONENT_ID(burner, COMPONENT_BURNER)
     COMPONENT_ID(assembling, COMPONENT_ASSEMBLING)

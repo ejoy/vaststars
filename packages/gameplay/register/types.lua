@@ -28,6 +28,14 @@ local function number_conversion(n, u)
 	return math.floor(n)
 end
 
+local function split(s)
+	local r = {}
+	s:gsub("[^/]+", function(w)
+		r[#r+1] = w
+	end)
+	return r
+end
+
 register_unit("power", "dword", function(s)
 	local n, u = s:match "^(%d+%.?%d*)([kMG]?)W$"
 	if not n then
@@ -133,20 +141,28 @@ register_unit("filter", "string", function(s)
 	return s
 end)
 
+local function query(t, v)
+	if t == "item/fluid" then
+		local what = prototype.query("item", t)
+		if not what then
+			what = prototype.query("fluid", t)
+		end
+		return what
+	end
+	if t == "raw" then
+		return v
+	end
+	return prototype.query(t, v)
+end
+
 register_unit("itemtypes", "string", function(s)
 	local r = {string.pack("<I2", #s)}
 	for _, t in ipairs(s) do
-		local what
-		what = prototype.query("item", t)
+		local what = query("item/fluid", t)
 		if what then
 			r[#r+1] = string.pack("<I2", what.id)
 		else
-			what = prototype.query("fluid", t)
-			if what then
-				r[#r+1] = string.pack("<I2", what.id)
-			else
-				return nil, "Unkonwn item/fluid: " .. t
-			end
+			return nil, "Unkonwn item/fluid: " .. t
 		end
 	end
 	return table.concat(r)
@@ -155,17 +171,11 @@ end)
 register_unit("items", "string", function(s)
 	local r = {string.pack("<I4", #s)}
 	for _, t in ipairs(s) do
-		local what
-		what = prototype.query("item", t[1])
+		local what = query("item/fluid", t[1])
 		if what then
 			r[#r+1] = string.pack("<I2I2", what.id, t[2])
 		else
-			what = prototype.query("fluid", t[1])
-			if what then
-				r[#r+1] = string.pack("<I2I2", what.id, t[2])
-			else
-				return nil, "Unkonwn item/fluid: " .. t[1]
-			end
+			return nil, "Unkonwn item/fluid: " .. t[1]
 		end
 	end
 	return table.concat(r)
@@ -173,6 +183,33 @@ end)
 
 register_unit("fluidbox", "table", function(s)
 	return s
+end)
+
+register_unit("task", "string", function(s)
+	local TaskSchema <const> = {
+		stat_production = {0, "item/fluid"},
+		stat_consumption = {1, "item/fluid"},
+		select_entity = {2, "entity"},
+		select_chest = {3, "entity", "item"},
+		power_generator = {4, "raw"},
+	}
+	local args = split(s)
+	local schema = TaskSchema[args[1]]
+	if not schema then
+		return nil, "Unkonwn task type: " .. args[1]
+	end
+	local r = {schema[1]}
+	for i = 2, #schema do
+		local what = query(schema[i], args[i])
+		if not what then
+			return nil, "Unkonwn "..schema[i]..": " .. args[i]
+		end
+		r[i] = what.id
+	end
+	for i = 1, #r do
+		r[i] = string.pack("<I2", r[i])
+	end
+	return table.concat(r)
 end)
 
 local enum = {

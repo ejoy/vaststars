@@ -24,3 +24,8 @@ type "tech"
     .ingredients "items"
     .time "time"
     .count "number"
+
+type "task"
+    .ingredients "items"
+    .task "task"
+    .count "number"

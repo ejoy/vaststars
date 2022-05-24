@@ -17,7 +17,26 @@ bool techtree_mgr::is_researched(uint16_t techid) const {
     return researched.contains(techid);
 }
 
-bool techtree_mgr::research(uint16_t techid, uint16_t max, uint16_t inc) {
+bool techtree_mgr::research_set(uint16_t techid, uint16_t max, uint64_t val) {
+    bool finish = false;
+    if (val >= max) {
+        val = max;
+        finish = true;
+    }
+    auto iter = progress.find(techid);
+    if (iter == progress.end()) {
+        progress.emplace(techid, (uint16_t)val);
+    }
+    else {
+        iter->second = (uint16_t)val;
+    }
+    if (finish) {
+        cache.erase(techid);
+    }
+    return finish;
+}
+
+bool techtree_mgr::research_add(uint16_t techid, uint16_t max, uint16_t inc) {
     assert(inc != 0);
     bool finish = false;
     auto iter = progress.find(techid);

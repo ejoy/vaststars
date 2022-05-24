@@ -1,46 +1,27 @@
-#define LUA_LIB
-
-#include <lua.h>
-#include <lauxlib.h>
+#include <lua.hpp>
 #include <assert.h>
 #include <string.h>
 
 #include "luaecs.h"
+#include "system/powergrid.h"
 #include "core/world.h"
 #include "core/entity.h"
+extern "C" {
 #include "util/prototype.h"
-
-#define CONSUMER_PRIORITY 2
-#define GENERATOR_PRIORITY 2
-#define NORMAL_TEMPERATURE 15
-
-struct powergrid {
-	float consumer_power[CONSUMER_PRIORITY];
-	float generator_power[GENERATOR_PRIORITY];
-	float accumulator_output;
-	float accumulator_input;
-	float solar;
-	float consumer_efficiency[CONSUMER_PRIORITY];
-	float generator_efficiency[GENERATOR_PRIORITY];
-	float accumulator_efficiency;
-
-	struct ecs_context *ecs;
-	struct prototype_cache *P;
-	lua_State *L;
-};
+}
 
 static void
-stat_consumer(struct powergrid *pg) {
+stat_consumer(lua_State *L, world& w) {
 	int i;
-	struct ecs_context *ctx = pg->ecs;
-	lua_State *L = pg->L;
-	struct prototype_context p = { L, pg->P, 0 };
-	for (i=0;entity_iter(pg->ecs, TAG_CONSUMER, i);i++) {
-		struct entity *e = entity_sibling(ctx, TAG_CONSUMER, i, COMPONENT_ENTITY);
+	struct powergrid *pg = &w.powergrid;
+	struct ecs_context *ctx = w.c.ecs;
+	struct prototype_context p = w.prototype(0);
+	for (i=0;entity_iter(ctx, TAG_CONSUMER, i);i++) {
+		struct entity *e = (struct entity *)entity_sibling(ctx, TAG_CONSUMER, i, COMPONENT_ENTITY);
 		if (e == NULL)
 			luaL_error(L, "No entity");
 		p.id = e->prototype;
-		struct capacitance *c = entity_sibling(ctx, TAG_CONSUMER, i, COMPONENT_CAPACITANCE);
+		struct capacitance *c = (struct capacitance *)entity_sibling(ctx, TAG_CONSUMER, i, COMPONENT_CAPACITANCE);
 		if (c == NULL)
 			luaL_error(L, "No capacitance");
 
@@ -53,17 +34,17 @@ stat_consumer(struct powergrid *pg) {
 }
 
 static void
-stat_generator(struct powergrid *pg) {
-	struct ecs_context *ctx = pg->ecs;
-	lua_State *L = pg->L;
-	struct prototype_context p = { L, pg->P, 0 };
+stat_generator(lua_State *L, world& w) {
+	struct powergrid *pg = &w.powergrid;
+	struct ecs_context *ctx = w.c.ecs;
+	struct prototype_context p = w.prototype(0);
 	int i;
 	for (i=0;entity_iter(ctx, TAG_GENERATOR, i);i++) {
-		struct entity *e = entity_sibling(ctx, TAG_GENERATOR, i, COMPONENT_ENTITY);
+		struct entity *e = (struct entity *)entity_sibling(ctx, TAG_GENERATOR, i, COMPONENT_ENTITY);
 		if (e == NULL)
 			luaL_error(L, "No entity");
 		p.id = e->prototype;
-		struct capacitance *c = entity_sibling(ctx, TAG_GENERATOR, i, COMPONENT_CAPACITANCE);
+		struct capacitance *c = (struct capacitance *)entity_sibling(ctx, TAG_GENERATOR, i, COMPONENT_CAPACITANCE);
 		if (c == NULL)
 			luaL_error(L, "No capacitance");
 		uint64_t capacitance = pt_capacitance(&p);
@@ -73,17 +54,17 @@ stat_generator(struct powergrid *pg) {
 }
 
 static void
-stat_accumulator(struct powergrid *pg) {
-	struct ecs_context *ctx = pg->ecs;
-	lua_State *L = pg->L;
-	struct prototype_context p = { L, pg->P, 0 };
+stat_accumulator(lua_State *L, world& w) {
+	struct powergrid *pg = &w.powergrid;
+	struct ecs_context *ctx = w.c.ecs;
+	struct prototype_context p = w.prototype(0);
 	int i;
 	for (i=0;entity_iter(ctx, TAG_ACCUMULATOR, i);i++) {
-		struct entity *e = entity_sibling(ctx, TAG_ACCUMULATOR, i, COMPONENT_ENTITY);
+		struct entity *e = (struct entity *)entity_sibling(ctx, TAG_ACCUMULATOR, i, COMPONENT_ENTITY);
 		if (e == NULL)
 			luaL_error(L, "No entity");
 		p.id = e->prototype;
-		struct capacitance *c = entity_sibling(ctx, TAG_ACCUMULATOR, i, COMPONENT_CAPACITANCE);
+		struct capacitance *c = (struct capacitance *)entity_sibling(ctx, TAG_ACCUMULATOR, i, COMPONENT_CAPACITANCE);
 		if (c == NULL)
 			luaL_error(L, "No capacitance");
 		unsigned int power = pt_power(&p);
@@ -100,8 +81,9 @@ stat_accumulator(struct powergrid *pg) {
 }
 
 static void
-calc_efficiency(struct powergrid *pg) {
+calc_efficiency(lua_State *L, world& w) {
 	// todo : solar
+	struct powergrid *pg = &w.powergrid;
 	int i;
 	float need_power = 0;
 	for (i=0;i<CONSUMER_PRIORITY;i++) {
@@ -184,14 +166,14 @@ calc_efficiency(struct powergrid *pg) {
 }
 
 static void
-powergrid_run(struct powergrid *pg) {
-	struct ecs_context *ctx = pg->ecs;
-	lua_State *L = pg->L;
-	struct prototype_context p = { L, pg->P, 0 };
+powergrid_run(lua_State *L, world& w) {
+	struct powergrid *pg = &w.powergrid;
+	struct ecs_context *ctx = w.c.ecs;
+	struct prototype_context p = w.prototype(0);
 	int i;
 	struct capacitance * c;
-	for (i=0;(c = entity_iter(ctx, COMPONENT_CAPACITANCE, i));i++) {
-		struct entity *e = entity_sibling(ctx, COMPONENT_CAPACITANCE, i, COMPONENT_ENTITY);
+	for (i=0;(c = (struct capacitance *)entity_iter(ctx, COMPONENT_CAPACITANCE, i));i++) {
+		struct entity *e = (struct entity *)entity_sibling(ctx, COMPONENT_CAPACITANCE, i, COMPONENT_ENTITY);
 		if (e == NULL)
 			luaL_error(L, "No entity");
 		p.id = e->prototype;
@@ -249,30 +231,25 @@ powergrid_run(struct powergrid *pg) {
 
 static int
 lupdate(lua_State *L) {
-	struct powergrid pg;
 	// step 1: init powergrid runtime struct
-	memset(&pg, 0, sizeof(pg));
-	struct world* w = (struct world *)lua_touserdata(L, 1);
-	pg.ecs = w->ecs;
-	pg.P = w->P;
-	// todo : get from ecs (G)
-	pg.L = w->L;
+	struct world& w = *(struct world *)lua_touserdata(L, 1);
+	memset(&w.powergrid, 0, sizeof(w.powergrid));
 
 	// step 2: stat consumers in powergrid
-	stat_consumer(&pg);
+	stat_consumer(L, w);
 	// step 3: stat generators
-	stat_generator(&pg);
+	stat_generator(L, w);
 	// step 4: stat accumulators
-	stat_accumulator(&pg);
+	stat_accumulator(L, w);
 	// step 5: calc efficiency
-	calc_efficiency(&pg);
+	calc_efficiency(L, w);
 	// step 6: powergrid charge consumers' capacitance, and consume generators' capacitance
-	powergrid_run(&pg);
+	powergrid_run(L, w);
 
 	return 0;
 }
 
-LUAMOD_API int
+extern "C" int
 luaopen_vaststars_powergrid_system(lua_State *L) {
 	luaL_checkversion(L);
 

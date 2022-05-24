@@ -20,7 +20,8 @@ public:
 
     uint16_t         get_progress(uint16_t techid) const;
     bool             is_researched(uint16_t techid) const;
-    bool             research(uint16_t techid, uint16_t max, uint16_t inc);
+    bool             research_set(uint16_t techid, uint16_t max, uint64_t val);
+    bool             research_add(uint16_t techid, uint16_t max, uint16_t inc);
     ingredients_opt& get_ingredients(world& w, uint16_t labid, uint16_t techid);
     uint16_t         queue_top() const;
     void             queue_pop();

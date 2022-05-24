@@ -16,5 +16,6 @@ PROTOTYPE(results, string)
 PROTOTYPE(inputs, string)
 PROTOTYPE(speed, int)
 PROTOTYPE(count, int)
+PROTOTYPE(task, string)
 
 #endif
