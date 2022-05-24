@@ -219,7 +219,7 @@ function M:teardown_complete()
     end
 
     for _, object in pairs(removelist) do
-        self:refresh_neighbor_flow_shape(object)
+        self:refresh_neighbor_flow_shape("CONSTRUCTED", object)
     end
 
     local needbuild = false
