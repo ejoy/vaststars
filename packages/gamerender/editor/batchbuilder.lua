@@ -138,6 +138,13 @@ end
 local function show_pipe_indicator(cache_name, prototype_name, starting_x, starting_y, ending_x, ending_y, vsobject_type)
     ieditor:revert_changes({cache_name})
 
+    if starting_x > ending_x then
+        starting_x, ending_x = ending_x, starting_x
+    end
+    if starting_y > ending_y then
+        starting_y, ending_y = ending_y, starting_y
+    end
+
     local typeobject = iprototype:queryByName("entity", prototype_name)
     for x = starting_x, ending_x do
         for y = starting_y, ending_y do
@@ -323,7 +330,17 @@ local function check_fluidbox_coord(starting_x, starting_y, cur_x, cur_y, fluidb
     for coord in pairs(fluidbox_coord) do
         local x, y = iprototype:unpackcoord(coord)
         if x >= starting_x and x <= cur_x and y >= starting_y and y <= cur_y then
-            return true, fluidbox_coord[coord]
+            local dir
+            if cur_x < starting_x then
+                dir = "W"
+            elseif cur_x > starting_x then
+                dir = "E"
+            elseif cur_y > starting_y then
+                dir = "S"
+            else
+                dir = "N"
+            end
+            return true, fluidbox_coord[coord][dir] or ""
         end
     end
 end
@@ -358,6 +375,7 @@ local function touch_end(self, datamodel)
                 datamodel.show_batch_mode_begin = false
                 datamodel.show_batch_mode_end = false
                 datamodel.show_confirm = false
+                datamodel.show_construct_complete = false
                 return
             end
         end
@@ -365,39 +383,44 @@ local function touch_end(self, datamodel)
         datamodel.show_batch_mode_begin = true
         datamodel.show_batch_mode_end = false
         datamodel.show_confirm = false
+        datamodel.show_construct_complete = false
         show_indicator(pickup_object.prototype_name, ALL_CACHE, pickup_object.x, pickup_object.y)
         return
     end
 
-    if has_object(starting_coord.x, starting_coord.y, pickup_object.x, pickup_object.y) then
+    local cur_x, cur_y = get_ending_coord(starting_coord.x, starting_coord.y, pickup_object.x, pickup_object.y)
+    if has_object(starting_coord.x, starting_coord.y, cur_x, cur_y) then
         datamodel.show_batch_mode_begin = false
         datamodel.show_batch_mode_end = false
         datamodel.show_confirm = false
-        local ending_x, ending_y = get_ending_coord(starting_coord.x, starting_coord.y, pickup_object.x, pickup_object.y)
+        datamodel.show_construct_complete = false
+        local ending_x, ending_y = get_ending_coord(starting_coord.x, starting_coord.y, cur_x, cur_y)
         show_pipe_indicator("INDICATOR", pickup_object.prototype_name, starting_coord.x, starting_coord.y, ending_x, ending_y, "invalid_construct")
         return
     end
 
     local starting_object_id = get_object_id(starting_coord.x, starting_coord.y)
-    local cur_object_id = get_object_id(pickup_object.x, pickup_object.y)
+    local cur_object_id = get_object_id(cur_x, cur_y)
     if starting_object_id then
         if cur_object_id then
             if starting_object_id and cur_object_id and starting_object_id == cur_object_id then
                 datamodel.show_batch_mode_begin = false
                 datamodel.show_batch_mode_end = false
                 datamodel.show_confirm = false
-                local ending_x, ending_y = get_ending_coord(starting_coord.x, starting_coord.y, pickup_object.x, pickup_object.y)
+                datamodel.show_construct_complete = false
+                local ending_x, ending_y = get_ending_coord(starting_coord.x, starting_coord.y, cur_x, cur_y)
                 show_pipe_indicator("INDICATOR", pickup_object.prototype_name, starting_coord.x, starting_coord.y, ending_x, ending_y, "invalid_construct")
                 return
             else
                 local cur_object = objects:get(ALL_CACHE, cur_object_id)
                 local fluidbox_coord = ifluid:get_fluidbox_coord(cur_object.prototype_name, cur_object.x, cur_object.y, cur_object.dir, cur_object.fluid_name)
-                local success, fluid_name = check_fluidbox_coord(starting_coord.x, starting_coord.y, pickup_object.x, pickup_object.y, fluidbox_coord)
+                local success, fluid_name = check_fluidbox_coord(starting_coord.x, starting_coord.y, cur_x, cur_y, fluidbox_coord)
                 if not next(fluidbox_coord) or not success then
                     datamodel.show_batch_mode_begin = false
                     datamodel.show_batch_mode_end = false
                     datamodel.show_confirm = false
-                    local ending_x, ending_y = get_ending_coord(starting_coord.x, starting_coord.y, pickup_object.x, pickup_object.y)
+                    datamodel.show_construct_complete = false
+                    local ending_x, ending_y = get_ending_coord(starting_coord.x, starting_coord.y, cur_x, cur_y)
                     show_pipe_indicator("INDICATOR", pickup_object.prototype_name, starting_coord.x, starting_coord.y, ending_x, ending_y, "invalid_construct")
                     return
                 end
@@ -425,6 +448,46 @@ local function touch_end(self, datamodel)
                 show_pipe_indicator("TEMPORARY", pickup_object.prototype_name, starting_coord.x, starting_coord.y, ending_x, ending_y, "construct")
                 return
             end
+        else
+
+        end
+    else
+        if cur_object_id then
+            local cur_object = objects:get(ALL_CACHE, cur_object_id)
+            local fluidbox_coord = ifluid:get_fluidbox_coord(cur_object.prototype_name, cur_object.x, cur_object.y, cur_object.dir, cur_object.fluid_name)
+            local success, fluid_name = check_fluidbox_coord(starting_coord.x, starting_coord.y, cur_x, cur_y, fluidbox_coord)
+            if not next(fluidbox_coord) or not success then
+                datamodel.show_batch_mode_begin = false
+                datamodel.show_batch_mode_end = false
+                datamodel.show_confirm = false
+                datamodel.show_construct_complete = false
+                local ending_x, ending_y = get_ending_coord(starting_coord.x, starting_coord.y, cur_x, cur_y)
+                show_pipe_indicator("INDICATOR", pickup_object.prototype_name, starting_coord.x, starting_coord.y, ending_x, ending_y, "invalid_construct")
+                return
+            end
+
+            local cur_object = objects:get(ALL_CACHE, cur_object_id)
+            ieditor:set_object(cur_object, "TEMPORARY")
+            local typeobject = iprototype:queryByName("entity", cur_object.prototype_name)
+            if iprototype:is_batch_mode(typeobject) then
+                for _, dir in ipairs(ALL_DIR) do
+                    local coord = iprototype:packcoord( ifluid:get_dir_coord(cur_object.x, cur_object.y, dir) )
+                    local tile_object = tile_objects:get(ALL_CACHE, coord)
+                    if tile_object then
+                        local object = objects:get(ALL_CACHE, tile_object.id)
+                        ieditor:set_object(ieditor:clone_object(object), "TEMPORARY")
+                    end
+                end
+            end
+
+            self.fluid_name = fluid_name
+            show_set_fluidbox(datamodel, self.fluid_name)
+
+            local ending_x, ending_y = get_ending_coord(starting_coord.x, starting_coord.y, pickup_object.x, pickup_object.y)
+            show_pipe_indicator("TEMPORARY", pickup_object.prototype_name, starting_coord.x, starting_coord.y, ending_x, ending_y, "construct")
+            return
+        else
+
         end
     end
 
@@ -585,6 +648,8 @@ local function touch_end(self, datamodel)
 end
 
 local function confirm(self, datamodel)
+    assert(self.fluid_name ~= "")
+
     for _, object in objects:all("TEMPORARY") do
         object.fluid_name = self.fluid_name
         local vsobject = assert(vsobject_manager:get(object.id))
@@ -645,6 +710,7 @@ local function set_fluid(self, datamodel, fluid_name)
 end
 
 local function batch_mode_begin(self, datamodel)
+    assert(self.starting_coord == nil)
     local pickup_object = assert(self.pickup_object)
     self.starting_coord = {x = pickup_object.x, y = pickup_object.y}
 
@@ -668,6 +734,7 @@ local function batch_mode_begin(self, datamodel)
 end
 
 local function batch_mode_end(self, datamodel)
+    assert(self.ending_coord == nil)
     local pickup_object = assert(self.pickup_object)
     self.ending_coord = {x = pickup_object.x, y = pickup_object.y}
 
