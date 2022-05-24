@@ -10,10 +10,14 @@ local camera = ecs.require "engine.camera"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local check_prototype = require "gameplay.check"
-local construct_editor = ecs.require "construct_editor"
 local fps = ecs.require "fps"
 local world_update = ecs.require "world_update.init"
 local saveload = ecs.require "saveload"
+local global = require "global"
+local cache_names = global.cache_names
+local tile_objects = global.tile_objects
+local iprototype = require "gameplay.interface.prototype"
+local vsobject_manager = ecs.require "vsobject_manager"
 
 local m = ecs.system 'init_system'
 function m:init_world()
@@ -32,7 +36,8 @@ function m:init_world()
 end
 
 local function get_object(x, y)
-    return construct_editor:get_vsobject(x, y)
+    local tile_object = assert(tile_objects:get(cache_names, iprototype:packcoord(x, y)))
+    return assert(vsobject_manager:get(tile_object.id))
 end
 
 function m:update_world()

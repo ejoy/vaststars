@@ -77,7 +77,7 @@ function m.create_entity(init)
         x = init.x,
         y = init.y,
         dir = init.dir,
-        fluid = init.fluid,
+        fluid = init.fluid_name,
         items = init.items,
     }
 

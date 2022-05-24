@@ -132,7 +132,6 @@ prototype "空气过滤器I" {
 
 
 prototype "管道1-I型" {
-    show_prototype_name = "管道I",
     model = "prefabs/pipe/pipe_I.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
@@ -206,6 +205,7 @@ prototype "管道1-T型" {
 }
 
 prototype "管道1-X型" {
+    show_prototype_name = "管道I",
     model = "prefabs/pipe/pipe_X.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},

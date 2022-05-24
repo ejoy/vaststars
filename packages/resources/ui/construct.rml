@@ -149,6 +149,8 @@
                 show_construct_complete = false,
                 show_rotate = false,  -- 是否显示[旋转建筑]
                 show_confirm = false, -- 是否显示[确认放置]
+                show_batch_mode_begin = false, -- 显示水管开始
+                show_batch_mode_end = false,   -- 显示水管结束
             }
             function start.clickConstructBegin(event)
                 ui_sys:pub {"construct_begin", false}
@@ -202,6 +204,12 @@
             end
             function start.clickSetting(event)
                 ui_sys:pub {"show_setting"}
+            end
+            function start.clickBatchModeBegin(event)
+                ui_sys:pub {"batch_mode_begin"}
+            end
+            function start.clickBatchModeEnd(event)
+                ui_sys:pub {"batch_mode_end"}
             end
             window.addEventListener('mousedown', function(event)
                 ui_sys:world_pub {"ui_message", "leave"}
@@ -353,11 +361,26 @@
 
                 <!-- separator -->
                 <div style = "width: 2.67vmin;" />
-
                 <!-- 旋转建筑 -->
                 <button data-if = "cur_edit_mode == 'construct' && show_rotate" data-event-click="clickConstructRotate()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto;background-image:"textures/construct/rotate.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
                     <div style="font-size: 85%;">旋转建筑</div>
+                </button>
+
+                <!-- separator -->
+                <div style = "width: 2.67vmin;" />
+                <!-- 建造水管开始 -->
+                <button data-if = "cur_edit_mode == 'construct' && show_batch_mode_begin" data-event-click="clickBatchModeBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
+                    <div style="font-size: 85%;">水管开始</div>
+                </button>
+
+                <!-- separator -->
+                <div style = "width: 2.67vmin;" />
+                <!-- 建造水管结束 -->
+                <button data-if = "cur_edit_mode == 'construct' && show_batch_mode_end" data-event-click="clickBatchModeEnd()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
+                    <div style="font-size: 85%;">水管结束</div>
                 </button>
             </div>
 

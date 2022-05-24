@@ -45,7 +45,7 @@ local entities = {
     {
         prototype_name = "液罐I",
         dir = "N",
-        fluid = "纯水",
+        fluid_name = "纯水",
         x = 132,
         y = 130,
     },
