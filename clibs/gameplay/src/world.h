@@ -19,6 +19,7 @@ struct world {
 #include "select.h"
 #include "system/fluid.h"
 #include "techtree.h"
+#include "system/statistics.h"
 #include <map>
 extern "C" {
 #include "prototype.h"
@@ -29,6 +30,7 @@ struct world {
     struct container_mgr containers;
     std::map<uint16_t, fluidflow> fluidflows;
     techtree_mgr techtree;
+    statistics stat;
 
     template <typename C>
     C& query_container(uint16_t id);
