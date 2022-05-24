@@ -329,9 +329,6 @@ local function check_fluidbox_coord(starting_x, starting_y, cur_x, cur_y, fluidb
 end
 
 local function touch_end(self, datamodel)
-    ieditor:revert_changes({"INDICATOR", "TEMPORARY"})
-    self.ending_coord = nil
-
     local pickup_object = assert(self.pickup_object)
     -- 纠正 entity 的位置与格子对应
     local typeobject = iprototype:queryByName("entity", self.prototype_name)
@@ -344,6 +341,12 @@ local function touch_end(self, datamodel)
     vsobject:set_position(position)
     pickup_object.x, pickup_object.y = coord[1], coord[2]
     local starting_coord = self.starting_coord
+
+    if self.ending_coord then
+        return
+    end
+
+    ieditor:revert_changes({"INDICATOR", "TEMPORARY"})
 
     -- 还未点击开始
     if not self.starting_coord then
