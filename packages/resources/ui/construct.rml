@@ -202,6 +202,9 @@
             function start.clickHeadquater(event)
                 ui_sys:pub {"headquater", FluidName}
             end
+            function start.clickTechnology()
+                ui_sys:pub {"technology"}
+            end
             function start.clickSetting(event)
                 ui_sys:pub {"show_setting"}
             end
@@ -265,7 +268,7 @@
                     <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
                     <div class = "menu-button-text">指挥中心</div>
                 </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;">
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()">
                     <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
                     <div class = "menu-button-text">科研中心</div>
                 </button>
