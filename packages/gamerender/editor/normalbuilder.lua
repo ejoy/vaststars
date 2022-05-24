@@ -67,6 +67,7 @@ local function new_entity(self, datamodel, typeobject)
 
     if not ifluid:need_set_fluid(typeobject.name) then
         datamodel.show_confirm = true
+        datamodel.show_rotate = true
     else
         local fluid_types = self:get_neighbor_fluid_types(self.ALL_CACHE, typeobject.name, x, y, dir)
         if #fluid_types == 1 then
@@ -119,6 +120,7 @@ local function touch_end(self, datamodel)
 
     if not ifluid:need_set_fluid(typeobject.name) then
         datamodel.show_confirm = true
+        datamodel.show_rotate = true
     else
         local fluid_types = self:get_neighbor_fluid_types(self.ALL_CACHE, typeobject.name, pickup_object.x, pickup_object.y, pickup_object.dir)
         if not pickup_object.manual_set_fluid then
@@ -224,6 +226,7 @@ local function set_fluid(self, datamodel, fluid_name)
 
     if vsobject_type ~= "invalid_construct" then
         datamodel.show_confirm = true
+        datamodel.show_rotate = true
     end
 end
 
@@ -264,7 +267,9 @@ local function rotate_pickup_object(self, datamodel)
 end
 
 local function clean(self, datamodel)
+    ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
+    datamodel.show_rotate = false
     self.super.clean(self, datamodel)
 end
 
