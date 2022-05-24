@@ -21,7 +21,7 @@ prototype "液罐I" {
     }
 }
 
-prototype "抽水泵" {
+prototype "水冰挖掘机" {
     model = "prefabs/offshore-pump-1.prefab",
     icon = "textures/building_pic/small_pic_offshore.texture",
     construct_detector = {"exclusive"},

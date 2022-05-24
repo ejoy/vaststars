@@ -18,12 +18,12 @@ prototype "地质研究" {
     sign_icon = "textures/science/tech-important.texture",
 }
 
----新增海水配方的对应科技---
-prototype "海水提取铁矿" {
+---新增水冰配方的对应科技---
+prototype "水冰提取铁矿" {
   type = { "tech" },
   icon = "textures/science/tech-metal.texture",
   effects = {
-    unlock_recipe = {"海水分离铁"},
+    unlock_recipe = {"水冰分离铁"},
   },
   prerequisites = {"地质研究"},
   ingredients = {
@@ -33,23 +33,23 @@ prototype "海水提取铁矿" {
   time = "1s"
 }
 
-prototype "铁矿收集" {
-  type = { "checkpoint" },
-  icon = "textures/science/tech-metal.texture",
-  effects = {
-  },
-  prerequisites = {"地质研究"},
-  ingredients = {
-      {"铁矿石", 10},
-  },
-}
+-- prototype "铁矿收集" {
+--   type = { "tech" },
+--   icon = "textures/science/tech-metal.texture",
+--   effects = {
+--   },
+--   prerequisites = {"地质研究"},
+--   ingredients = {
+--       {"铁矿石", 10},
+--   },
+-- }
 
----新增海水配方的对应科技---
-prototype "海水提取石矿" {
+---新增水冰配方的对应科技---
+prototype "水冰提取石矿" {
   type = { "tech" },
   icon = "textures/science/tech-metal.texture",
   effects = {
-    unlock_recipe = {"海水分离石头"},
+    unlock_recipe = {"水冰分离石头"},
   },
   prerequisites = {"铁矿收集"},
   ingredients = {
@@ -135,7 +135,7 @@ prototype "电解" {
   type = { "tech" },
   icon = "textures/science/tech-liquid.texture",
   effects = {
-    unlock_recipe = {"海水电解","破损电解厂"},
+    unlock_recipe = {"水冰电解","破损电解厂"},
   },
   prerequisites = {"水过滤系统"},
   ingredients = {
@@ -177,7 +177,7 @@ prototype "石头提取" {
   type = { "tech" },
   icon = "textures/science/tech-metal.texture",
   effects = {
-    unlock_recipe = {"海水分离石头"},
+    unlock_recipe = {"水冰分离石头"},
   },
   prerequisites = {"铁加工2"},
   ingredients = {
