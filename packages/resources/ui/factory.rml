@@ -165,9 +165,98 @@
             }
         </style>
         <style path = "common/building_style.rcss"/>
-        <script type="text/x-lua" >
+        <script type="text/x-lua">
+            local ui_sys = require "ui_system"
             local start = window.createModel "start" {
+                chest_object_id = 0,
+                item_category = {},
+                inventory = {},
+
+                sub_inventory = {},
+                cur_item_category = "",
             }
+
+            -- <!-- tag page begin -->
+            local select_item_index
+            -- <!-- tag page end -->
+
+            local function update_category(category)
+                start.sub_inventory = {}
+                for _, v in ipairs(start.inventory) do
+                    if v.category == category or category == "全部" then
+                        start.sub_inventory[#start.sub_inventory + 1] = v
+                    end
+                end
+                local total_count = math.ceil((#start.inventory + 1) / 35) * 35
+                start("sub_inventory")
+
+                -- <!-- tag page begin -->
+                start.page:on_dirty_all(total_count)
+                start.page:show_detail(select_item_index, true)
+                -- <!-- tag page end -->
+            end
+
+            function start.clickCategory(event, category)
+                start.cur_item_category = category
+                update_category(category)
+            end
+
+            function start.clickClose(evnet)
+                ui_sys:close()
+            end
+
+            ui_sys:setDataModel(start, function(patch)
+                if patch.inventory then
+                    if start.cur_item_category == "" then
+                        start.cur_item_category = start.item_category[1].category or ""
+                    end
+                    update_category(start.cur_item_category)
+                end
+            end)
+
+            -- <!-- tag page begin -->
+            local function page_item_renderer(index)
+                if index > #start.sub_inventory then
+                    local item = document.createElement "div"
+                    item.outerHTML = ([[<div class = "item" style = "width: %0.2fvmin; height: %0.2fvmin;" />]]):format(12 + 0.27, 12 + 0.27)
+                    item.addEventListener('click', function(event)
+                    end)    
+                    return item
+                end
+
+                local item = document.createElement "div"
+                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s"> <div class="item-count">%s</div> </div>]]):format(start.sub_inventory[index].icon, start.sub_inventory[index].count)
+
+                local select_style_border   = "0.27vmin green"
+                local unselect_style_border = "0.27vmin rgb(89, 73, 39)"
+                if select_item_index ~= index then
+                    item.style.border = unselect_style_border
+                else
+                    item.style.border = select_style_border
+                end
+
+                item.addEventListener('click', function(event)
+                    item.style.border = select_style_border
+                    if select_item_index then
+                        local v = start.page:get_item_info(select_item_index)
+                        if v then
+                            v.item.style.border = unselect_style_border
+                        end
+                        start.page:show_detail(select_item_index, false)
+                    end
+                    select_item_index = index
+                    start.page:show_detail(select_item_index, true)
+                    ui_sys:pub {"click_item", start.chest_object_id, start.sub_inventory[index].id, start.sub_inventory[index].count}
+                    ui_sys:close()
+                end)
+                return item
+            end
+
+            local pageclass = require "page"
+            window.customElements.define("page", function(e)
+                start.page = pageclass.create(document, e, page_item_renderer)
+            end)
+            -- <!-- tag page end -->
         </script>
     </head>
     <body>
@@ -221,42 +310,16 @@
                     </div>         
                 </div>
                 <div class = "draw-line"/>
-                <div class = "tab-container" style="height: 10%;">
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"textures/construct/logisitic1.texture";'/>
-                        <div class="catalog-desc">物流</div>
-                    </workbutton>
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"textures/construct/assembler.texture";'/>
-                        <div class="catalog-desc">生产</div>
-                    </workbutton>
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"textures/construct/chemistry2.texture";'/>
-                        <div class="catalog-desc">化工</div>
-                    </workbutton>
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"textures/construct/steel-beam.texture";'/>
-                        <div class="catalog-desc">金属</div>
-                    </workbutton>
+                <!-- 物品栏分类页签 start -->
+                <div class = "tab-container" style="flex-grow: 1;">
+                    <div data-for = "item_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
+                        <workbutton data-event-click="clickCategory(it.category)" style = "width: 100%;" data-style-background-color="it.category == cur_item_category ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'">
+                            <div class="workbutton-bg" data-style-background-image="it.icon" />
+                            <div class="catalog-desc">{{it.category}}</div>
+                        </workbutton>
+                    </div>
                 </div>
-                <div class = "tab-container" style="height: 10%;">
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"textures/construct/processor.texture";'/>
-                        <div class="catalog-desc">器件</div>
-                    </workbutton>
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"textures/construct/tank3.texture";'/>
-                        <div class="catalog-desc">流体</div>
-                    </workbutton>
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"textures/construct/pack.texture";'/>
-                        <div class="catalog-desc">打包</div>
-                    </workbutton>
-                    <workbutton>
-                        <div class="workbutton-bg" style='background-image:"textures/construct/unpack.texture";'/>
-                        <div class="catalog-desc">解包</div>
-                    </workbutton>
-                </div>
+                <!-- 物品栏分类页签 end -->
             </div>
             <div class="panel">
                 <div class="column" id ="item-recipe-region">
