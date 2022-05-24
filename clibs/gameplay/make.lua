@@ -6,7 +6,7 @@ lm:build "compile_entity" {
         "../../clibs/gameplay/compile_entity.lua",
         "../../packages/gameplay/init/component.lua",
     },
-    output = "../../clibs/gameplay/src/entity.h",
+    output = "../../clibs/gameplay/src/core/entity.h",
 }
 
 local rootdir = "../../"

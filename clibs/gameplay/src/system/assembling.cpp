@@ -1,11 +1,11 @@
 #include <lua.hpp>
 
 #include "luaecs.h"
-#include "world.h"
-#include "entity.h"
-#include "select.h"
+#include "core/world.h"
+#include "core/entity.h"
+#include "core/select.h"
 extern "C" {
-#include "prototype.h"
+#include "util/prototype.h"
 }
 
 #define STATUS_IDLE 0
@@ -70,6 +70,7 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
             if (!container.recipe_place(w, r)) {
                 return;
             }
+            w.stat.finish_recipe(w, a.recipe);
             a.status = STATUS_IDLE;
             if (a.fluidbox_out != 0) {
                 fluidboxes* fb = w.sibling<fluidboxes>(v);

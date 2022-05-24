@@ -1,6 +1,6 @@
 #include <lua.hpp>
 #include <string>
-#include "world.h"
+#include "core/world.h"
 
 #if defined(_MSC_VER)
 #include <windows.h>

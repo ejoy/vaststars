@@ -6,9 +6,9 @@
 #include <string.h>
 
 #include "luaecs.h"
-#include "prototype.h"
-#include "world.h"
-#include "entity.h"
+#include "core/world.h"
+#include "core/entity.h"
+#include "util/prototype.h"
 
 #define CONSUMER_PRIORITY 2
 #define GENERATOR_PRIORITY 2

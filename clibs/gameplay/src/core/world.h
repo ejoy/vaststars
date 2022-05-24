@@ -15,13 +15,14 @@ struct world {
 
 #if defined(__cplusplus)
 
-#include "container.h"
-#include "select.h"
+#include "core/container.h"
+#include "core/select.h"
+#include "core/techtree.h"
+#include "core/statistics.h"
 #include "system/fluid.h"
-#include "techtree.h"
 #include <map>
 extern "C" {
-#include "prototype.h"
+#include "util/prototype.h"
 }
 
 struct world {
@@ -29,6 +30,7 @@ struct world {
     struct container_mgr containers;
     std::map<uint16_t, fluidflow> fluidflows;
     techtree_mgr techtree;
+    statistics stat;
 
     template <typename C>
     C& query_container(uint16_t id);

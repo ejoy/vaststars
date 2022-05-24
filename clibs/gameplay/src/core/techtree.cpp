@@ -1,8 +1,8 @@
-#include "techtree.h"
+#include "core/techtree.h"
+#include "core/world.h"
 extern "C" {
-#include "prototype.h"
+#include "util/prototype.h"
 }
-#include "world.h"
 #include <assert.h>
 
 uint16_t techtree_mgr::get_progress(uint16_t techid) const {

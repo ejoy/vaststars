@@ -1,9 +1,9 @@
-#include "fluidflow.h"
+#include "core/fluidflow.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
-#include "sort_r.h"
+#include "util/sort_r.h"
  
 #define PIPE_DEFAULT 8
 #define PIPE_MAX 0xffff
