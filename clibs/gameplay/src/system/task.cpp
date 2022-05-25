@@ -18,9 +18,9 @@ struct task {
         power_generator,
     };
     type     type;
+    uint16_t e;
     uint16_t p1;
     uint16_t p2;
-    uint16_t p3;
 
     uint64_t stat_production(world& w);
     uint64_t stat_consumption(world& w);
@@ -28,6 +28,7 @@ struct task {
     uint64_t select_chect(world& w);
     uint64_t power_generator(world& w);
     uint64_t eval(world& w);
+    uint16_t progress(world& w, uint16_t max);
 };
 
 uint64_t task::stat_production(world& w) {
@@ -76,7 +77,7 @@ uint64_t task::select_chect(world& w) {
 }
 
 uint64_t task::power_generator(world& w) {
-    return w.powergrid.generate_power / p1;
+    return w.powergrid.generate_power;
 }
 
 uint64_t task::eval(world& w) {
@@ -88,6 +89,17 @@ uint64_t task::eval(world& w) {
     case task::type::power_generator:  return power_generator(w);
     }
     return 0;
+}
+
+uint16_t task::progress(world& w, uint16_t max) {
+    uint64_t v = eval(w);
+    for (uint16_t i = 0; i < e; ++i) {
+        v /= 10;
+    }
+    if (v >= max) {
+        return max;
+    }
+    return (uint16_t)v;
 }
 
 static int
@@ -104,7 +116,7 @@ lupdate(lua_State *L) {
         }
         struct task& task = *(struct task*)pt_task(&task_prototype);
         uint16_t count = (uint16_t)pt_count(&task_prototype);
-        uint64_t value = task.eval(w);
+        uint16_t value = task.progress(w, count);
         if (!w.techtree.research_set(taskid, count, value)) {
             break;
         }
