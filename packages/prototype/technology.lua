@@ -35,12 +35,12 @@ prototype "地下水提取铁矿" {
 
 prototype "铁矿收集" {
   type = { "tech", "task" },
-  --task = "stat_production/铁矿石",
-  task = "stat_consumption/铁矿石",
+  --task = {"stat_production", "铁矿石"},
+  task = {"stat_consumption", "铁矿石"},
+  --task = {"select_entity", "组装机",
+  --task = {"select_chest", "指挥中心", "铁丝"},
+  --task = {"power_generator", "1000"},
   count = 1,
-  --task = "select_entity/组装机",
-  --task = "select_chest/指挥中心/铁丝",
-  --task = "power_generator/1000",
 }
 
 ---新增地下水配方的对应科技---

@@ -28,14 +28,6 @@ local function number_conversion(n, u)
 	return math.floor(n)
 end
 
-local function split(s)
-	local r = {}
-	s:gsub("[^/]+", function(w)
-		r[#r+1] = w
-	end)
-	return r
-end
-
 register_unit("power", "dword", function(s)
 	local n, u = s:match "^(%d+%.?%d*)([kMG]?)W$"
 	if not n then
@@ -150,7 +142,7 @@ local function query(t, v)
 		return what
 	end
 	if t == "raw" then
-		return v
+		return tonumber(v)
 	end
 	return prototype.query(t, v)
 end
@@ -185,7 +177,7 @@ register_unit("fluidbox", "table", function(s)
 	return s
 end)
 
-register_unit("task", "string", function(s)
+register_unit("task", "string", function(args)
 	local TaskSchema <const> = {
 		stat_production = {0, "item/fluid"},
 		stat_consumption = {1, "item/fluid"},
@@ -193,7 +185,6 @@ register_unit("task", "string", function(s)
 		select_chest = {3, "entity", "item"},
 		power_generator = {4, "raw"},
 	}
-	local args = split(s)
 	local schema = TaskSchema[args[1]]
 	if not schema then
 		return nil, "Unkonwn task type: " .. args[1]
