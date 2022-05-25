@@ -25,13 +25,14 @@ prototype "铁板1" {
     order = 11,
     icon = "textures/construct/steel-beam.texture",
     ingredients = {
-        {"铁锭", 4},
+        {"铁矿石", 2},
     },
     results = {
-        {"铁板", 3}
+        {"铁板", 1},
+        {"碎石", 1},
     },
     time = "3s",
-    description = "使用铁锭锻造铁板",
+    description = "使用铁矿石锻造铁板",
 
 }
 
@@ -160,8 +161,7 @@ prototype "铁齿轮" {
     order = 15,
     icon = "textures/construct/iron-gear.texture",
     ingredients = {
-        {"铁棒", 1},
-        {"铁板", 2},
+        {"铁板", 4},
     },
     results = {
         {"铁齿轮", 2},
