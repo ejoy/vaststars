@@ -42,7 +42,6 @@ laboratory_next_tech(world& w, entity& e, laboratory& l, uint16_t techid) {
     auto& container = w.query_container<recipe_container>(l.container);
     if (l.tech) {
         auto& oldr = w.techtree.get_ingredients(w, e.prototype, l.tech);
-        assert(oldr);
         if (oldr) {
             container.recipe_recover(w, to_recipe(oldr));
         }

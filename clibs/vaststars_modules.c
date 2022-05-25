@@ -18,6 +18,7 @@ static void loadmodules(lua_State* L) {
     SYSTEM(pump)
     SYSTEM(fluid)
     SYSTEM(saveload)
+    SYSTEM(task)
     CORE(prototype)
     CORE(container)
     CORE(world)

@@ -1,6 +1,6 @@
 return {
-    ctor = {},
     types = {},
+    typefuncs = {},
     unit = {},
     systems = {},
     csystems = {},

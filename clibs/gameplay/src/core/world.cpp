@@ -26,6 +26,14 @@ container& world::query_container<container>(uint16_t id) {
 }
 
 template <>
+chest_container& world::query_container<chest_container>(uint16_t id) {
+    uint16_t idx = CONTAINER_INDEX(id);
+    assert(CONTAINER_TYPE(id) == CONTAINER_TYPE_CHEST);
+    assert(containers.chest.size() > idx);
+    return containers.chest[idx];
+}
+
+template <>
 recipe_container& world::query_container<recipe_container>(uint16_t id) {
     uint16_t idx = CONTAINER_INDEX(id);
     assert(CONTAINER_TYPE(id) != CONTAINER_TYPE_CHEST);

@@ -6,7 +6,7 @@ world:create_entity "小型铁制箱子" {
     y = 1,
     items = {
         {"铁矿石", 100},
-        {"沙石矿", 100},
+        {"碎石", 100},
     },
 }
 world:create_entity "机器爪I" {
@@ -23,12 +23,12 @@ world:create_entity "机器爪I" {
     y = 1,
     dir = "W"
 }
--- world:create_entity "科研中心I" {
---     x = 7,
---     y = 1,
--- }
+world:create_entity "科研中心I" {
+    x = 7,
+    y = 1,
+}
 
-world:research_queue {"铁矿熔炼",}
+world:research_queue {"铁加工1","铁矿收集","铁矿熔炼"}
 
 world:create_entity "指挥中心" {
     x = 1,

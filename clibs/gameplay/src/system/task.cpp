@@ -99,12 +99,12 @@ lupdate(lua_State *L) {
             break;
         }
         prototype_context task_prototype = w.prototype(taskid);
-        struct task* task = (struct task*)pt_task(&task_prototype);
-        if (!task) {
+        if (0 != pt_time(&task_prototype)) {
             break;
         }
+        struct task& task = *(struct task*)pt_task(&task_prototype);
         uint16_t count = (uint16_t)pt_count(&task_prototype);
-        uint64_t value = task->eval(w);
+        uint64_t value = task.eval(w);
         if (!w.techtree.research_set(taskid, count, value)) {
             break;
         }
