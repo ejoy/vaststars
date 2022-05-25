@@ -133,7 +133,7 @@ register_unit("filter", "string", function(s)
 	return s
 end)
 
-local function query(t, v)
+local function query_(t, v)
 	if t == "item/fluid" then
 		local what = prototype.query("item", v)
 		if not what then
@@ -141,18 +141,25 @@ local function query(t, v)
 		end
 		return what
 	end
+	return prototype.query(t, v)
+end
+
+local function query(t, v)
 	if t == "raw" then
 		return tonumber(v)
 	end
-	return prototype.query(t, v)
+	local what = query_(t, v)
+	if what then
+		return what.id
+	end
 end
 
 register_unit("itemtypes", "string", function(s)
 	local r = {string.pack("<I2", #s)}
 	for _, t in ipairs(s) do
-		local what = query("item/fluid", t)
-		if what then
-			r[#r+1] = string.pack("<I2", what.id)
+		local id = query("item/fluid", t)
+		if id then
+			r[#r+1] = string.pack("<I2", id)
 		else
 			return nil, "Unkonwn item/fluid: " .. t
 		end
@@ -163,9 +170,9 @@ end)
 register_unit("items", "string", function(s)
 	local r = {string.pack("<I4", #s)}
 	for _, t in ipairs(s) do
-		local what = query("item/fluid", t[1])
-		if what then
-			r[#r+1] = string.pack("<I2I2", what.id, t[2])
+		local id = query("item/fluid", t[1])
+		if id then
+			r[#r+1] = string.pack("<I2I2", id, t[2])
 		else
 			return nil, "Unkonwn item/fluid: " .. t[1]
 		end
@@ -179,10 +186,10 @@ end)
 
 register_unit("task", "string", function(args)
 	local TaskSchema <const> = {
-		stat_production = {0, "item/fluid"},
-		stat_consumption = {1, "item/fluid"},
-		select_entity = {2, "entity"},
-		select_chest = {3, "entity", "item"},
+		stat_production = {0, "raw", "item/fluid"},
+		stat_consumption = {1, "raw", "item/fluid"},
+		select_entity = {2, "raw", "entity"},
+		select_chest = {3, "raw", "entity", "item"},
 		power_generator = {4, "raw"},
 	}
 	local schema = TaskSchema[args[1]]
@@ -191,11 +198,11 @@ register_unit("task", "string", function(args)
 	end
 	local r = {schema[1]}
 	for i = 2, #schema do
-		local what = query(schema[i], args[i])
-		if not what then
+		local id = query(schema[i], args[i])
+		if not id then
 			return nil, "Unkonwn "..schema[i]..": " .. args[i]
 		end
-		r[i] = what.id
+		r[i] = id
 	end
 	for i = 1, #r do
 		r[i] = string.pack("<I2", r[i])
