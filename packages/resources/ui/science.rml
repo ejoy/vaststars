@@ -223,7 +223,7 @@
                 justify-content: flex-start;
                 align-items: center;
                 width:95%;
-                height:30%;
+                height:100px;
                 border: 1px #fff;
             }
             .recipe-info-desc-block {
@@ -269,7 +269,6 @@
                 width: 7.70vmin;
                 height: 7.70vmin;
                 font-size: 2.00vmin;
-                background-image: "textures/construct/insert1.texture";
             }
             .small-arrow {
                 width: 7.70vmin;
@@ -362,25 +361,68 @@
                 item.outerHTML = htmlstr
                 item.className = "item-research"
                 item.style.width = '90%'
-                
+                local select_style_border = "5px green"
                 item.addEventListener('click', function(event)
                     if start.techs.selected_recipe then
                         start.techs.selected_recipe.style.border = '0px green'
+                        start.detaillist:show_detail(start.techs.selected_recipe, false)
                     end
                     item.style.border = select_style_border
-                    clickRecipe(index)
                     start.techs.selected_recipe = item
+                    if detail.name then
+                        start.detaillist:show_detail(index, true)
+                    end
+                    clickRecipe(index)
                 end)
                 return item
             end
+            local function pop_item_renderer(index)
+                local item = document.createElement "div"
+                local detail = start.current_tech.detail[index]
+                local inoutstr = ""
+                for _, idata in ipairs(detail.input) do
+                    inoutstr = inoutstr .. ([[
+                    <div class="small-item-new" style='background-image: "%s";'>
+                        <div class="item-count">%d</div>
+                        <div class="small-name">%s</div>
+                    </div>
+                    ]]):format(idata.icon, idata.count, idata.name)
+                end
+                inoutstr = inoutstr .. [[<div class="small-arrow"/>]]
+                for _, outdata in ipairs(detail.output) do
+                    inoutstr = inoutstr .. ([[
+                    <div class="small-item-new" style='background-image: "%s";'>
+                        <div class="item-count">%d</div>
+                        <div class="small-name">%s</div>
+                    </div>
+                    ]]):format(outdata.icon, outdata.count, outdata.name)
+                end
+                local htmlstr = ([[
+                <div class="recipe-info-block">
+                    <div class="recipe-info-desc-block">
+                        <div class="recipe-info-desc-title">配方信息</div>
+                        <div class="recipe-info-desc">%s</div>
+                    </div>
+                    <div class="recipe-item-info-block">
+                        %s
+                    </div>
+                </div>
+                ]]):format(detail.desc, inoutstr)
+                item.outerHTML = htmlstr
+                return item
+            end
             window.customElements.define("detaillist", function(e)
-                start.detaillist = listclass.create(document, e, 0, detail_item_renderer)
+                start.detaillist = listclass.create(document, e, 0, detail_item_renderer, pop_item_renderer)
             end)
             ui_sys:setDataModel(start, function(patch)
                 if patch.techs then
+                    console.log("techllist dirty")
+                    start.techs.selected_tech = nil
                     start.list:on_dirty(#start.techs.items)
                 end
                 if patch.current_tech then
+                    console.log("detaillist dirty")
+                    start.techs.selected_recipe = nil
                     start.detaillist:on_dirty(#start.current_tech.detail)
                 end
             end)
