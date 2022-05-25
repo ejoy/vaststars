@@ -22,13 +22,13 @@ local ALL_DIR <const> = require("gameplay.interface.constant").ALL_DIR
 local function show_fluid_setting(datamodel, fluid_name)
     datamodel.cur_selected_fluid = fluid_name
     datamodel.cur_fluid_category = ifluid:get_fluid_category(fluid_name)
-    datamodel.show_fluid_setting = true
+    datamodel.show_set_fluidbox = true
 end
 
 local function hide_fluid_setting(datamodel)
     datamodel.cur_selected_fluid = ""
     datamodel.cur_fluid_category = ""
-    datamodel.show_fluid_setting = false
+    datamodel.show_set_fluidbox = false
 end
 
 local function get_object(x, y)
@@ -44,10 +44,10 @@ local get_valid_fluidbox ; do
     local PIPE_FLUIDBOXES_DIR = ALL_DIR
 
     local funcs = {}
-    funcs["fluidbox"] = function(typeobject, x, y, dir, result)
+    funcs["fluidbox"] = function(typeobject, x, y, dir, result, fluid_name)
         for _, conn in ipairs(typeobject.fluidbox.connections) do
             local dx, dy, dir = iprototype:rotate_fluidbox(conn.position, dir, typeobject.area)
-            result[#result+1] = {x = x + dx, y = y + dy, dir = dir}
+            result[#result+1] = {x = x + dx, y = y + dy, dir = dir, fluid_name = fluid_name}
         end
         return result
     end
@@ -56,10 +56,10 @@ local get_valid_fluidbox ; do
     funcs["fluidboxes"] = function(typeobject, x, y, dir, result, fluid_name)
         for _, iotype in ipairs(iotypes) do
             for _, v in ipairs(typeobject.fluidboxes[iotype]) do
-                for _, conn in ipairs(v.connections) do
+                for index, conn in ipairs(v.connections) do
                     if fluid_name and fluid_name[iotype] then
                         local dx, dy, dir = iprototype:rotate_fluidbox(conn.position, dir, typeobject.area)
-                        result[#result+1] = {x = x + dx, y = y + dy, dir = dir}
+                        result[#result+1] = {x = x + dx, y = y + dy, dir = dir, fluid_name = fluid_name[iotype][index]}
                     end
                 end
             end
@@ -195,31 +195,6 @@ end
 
 --------------------------------------------------------------------------------------------------
 
-
-local dir_vector = {
-    N = {x = 0,  y = -1},
-    S = {x = 0,  y = 1},
-    W = {x = -1, y = 0},
-    E = {x = 1,  y = 0},
-}
-
-local function check_ending(starting_x, starting_y, x, y)
-    local object = get_object(x, y)
-    if not object then
-        return true
-    end
-
-    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
-        local dx = math_abs(starting_x - v.x)
-        local dy = math_abs(starting_y - v.y)
-        local vec = assert(dir_vector[v.dir])
-        if starting_x == v.x + vec.x * dx and starting_y == v.y + vec.y * dy then
-            return true
-        end
-    end
-    return false
-end
-
 local function __new_entity(typeobject, dir, x, y, position, vsobject_type)
     local vsobject = vsobject_manager:create {
         prototype_name = typeobject.name,
@@ -289,7 +264,6 @@ local function check_show_confirm(self, datamodel)
 end
 
 --
-
 local function new_entity(self, datamodel, typeobject)
     if self.coord_indicator then
         vsobject_manager:remove(self.coord_indicator.id)
@@ -318,6 +292,88 @@ local function touch_move(self, datamodel, delta_vec)
     end
     self.coord_indicator.x, self.coord_indicator.y = coord[1], coord[2]
     vsobject:set_position(position)
+end
+
+local function get_distance(x1, y1, x2, y2)
+    return (x1 - x2) ^ 2 + (y1 - y2) ^ 2
+end
+
+local function get_starting_fluidbox_coord(starting_x, starting_y, x, y)
+    local object = get_object(starting_x, starting_y)
+    if not object then
+        return starting_x, starting_y
+    end
+
+    -- TODO
+    local typeobject = iprototype:queryByName("entity", object.prototype_name)
+    if iprototype:is_batch_mode(typeobject) then
+        local dx = math_abs(starting_x - x)
+        local dy = math_abs(starting_y - y)
+        if dx >= dy then
+            if starting_x < x then
+                return ifluid:get_dir_coord(starting_x, starting_y, "E"), object.fluid_name, "E"
+            else
+                return ifluid:get_dir_coord(starting_x, starting_y, "W"), object.fluid_name, "W"
+            end
+        else
+            if starting_y < y then
+                return ifluid:get_dir_coord(starting_x, starting_y, "S"), object.fluid_name, "S"
+            else
+                return ifluid:get_dir_coord(starting_x, starting_y, "N"), object.fluid_name, "N"
+            end
+        end
+    end
+
+    local r
+    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+        r = r or v
+        if get_distance(r.x, r.y, x, y) > get_distance(v.x, v.y, x, y) then
+            r = v
+        end
+    end
+
+    assert(r)
+    local sx, sy = ifluid:get_dir_coord(r.x, r.y, r.dir)
+    return sx, sy, r.fluid_name, r.dir
+end
+
+local dir_vector = {
+    N = {x = 0,  y = -1},
+    S = {x = 0,  y = 1},
+    W = {x = -1, y = 0},
+    E = {x = 1,  y = 0},
+}
+
+local function get_ending_fluidbox_coord(starting_fluid_name, starting_dir, starting_x, starting_y, x, y)
+    local object = get_object(x, y)
+    if not object then
+        local dx = math_abs(starting_x - x)
+        local dy = math_abs(starting_y - y)
+        local vec = assert(dir_vector[starting_dir])
+        return starting_x + vec.x * dx, starting_y + vec.y * dy
+    end
+
+    local r
+    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+        local dx = math_abs(starting_x - v.x)
+        local dy = math_abs(starting_y - v.y)
+        local vec = assert(dir_vector[v.dir])
+        if starting_x == v.x + vec.x * dx and starting_y == v.y + vec.y * dy then
+            r = v
+        end
+    end
+
+    if not r then
+        return
+    end
+
+    if r.fluid_name ~= starting_fluid_name then
+        return
+    end
+
+    local dx = math_abs(starting_x - r.x)
+    local dy = math_abs(starting_y - r.y)
+    return ifluid:get_dir_coord(r.x, r.y, r.dir, dx, dy)
 end
 
 local function has_object(starting_coord_x, starting_coord_y, cur_x, cur_y)
@@ -366,103 +422,6 @@ local function has_object(starting_coord_x, starting_coord_y, cur_x, cur_y)
     end
 end
 
-local function get_distance(x1, y1, x2, y2)
-    return (x1 - x2) ^ 2 + (y1 - y2) ^ 2
-end
-
-local function get_dir(x1, y1, x2, y2)
-    local dx = math_abs(x1 - x2)
-    local dy = math_abs(y1 - y2)
-    if dx >= dy then
-        if x1 < x2 then
-            return "E"
-        else
-            return "W"
-        end
-    else
-        if y1 < y2 then
-            return "S"
-        else
-            return "N"
-        end
-    end
-end
-
-local function get_starting_coord(starting_x, starting_y, x, y)
-    local object = get_object(starting_x, starting_y)
-    if not object then
-        return starting_x, starting_y
-    end
-
-    -- TODO
-    local typeobject = iprototype:queryByName("entity", object.prototype_name)
-    if iprototype:is_batch_mode(typeobject) then
-        local dx = math_abs(starting_x - x)
-        local dy = math_abs(starting_y - y)
-        if dx >= dy then
-            if starting_x < x then
-                return ifluid:get_dir_coord(starting_x, starting_y, "E")
-            else
-                return ifluid:get_dir_coord(starting_x, starting_y, "W")
-            end
-        else
-            if starting_y < y then
-                return ifluid:get_dir_coord(starting_x, starting_y, "S")
-            else
-                return ifluid:get_dir_coord(starting_x, starting_y, "N")
-            end
-        end
-    end
-
-    local r
-    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
-        r = r or v
-        if get_distance(r.x, r.y, x, y) > get_distance(v.x, v.y, x, y) then
-            r = v
-        end
-    end
-    assert(r)
-    return ifluid:get_dir_coord(r.x, r.y, r.dir)
-end
-
-local function get_ending_coord(starting_x, starting_y, x, y)
-    local dx = math_abs(starting_x - x)
-    local dy = math_abs(starting_y - y)
-
-    local object = get_object(starting_x, starting_y)
-    if not object then
-        if dx >= dy then
-            return x, starting_y
-        else
-            return starting_x, y
-        end
-    end
-
-    -- TODO
-    local typeobject = iprototype:queryByName("entity", object.prototype_name)
-    if iprototype:is_batch_mode(typeobject) then
-        if dx >= dy then
-            return x, starting_y
-        else
-            return starting_x, y
-        end
-    end
-
-    local r
-    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
-        r = r or v
-        if get_distance(r.x, r.y, x, y) > get_distance(v.x, v.y, x, y) then
-            r = v
-        end
-    end
-
-    if not r then
-        return
-    else
-        return ifluid:get_dir_coord(r.x, r.y, r.dir, dx, dy)
-    end
-end
-
 local function touch_end(self, datamodel)
     --
     local coord_indicator = assert(self.coord_indicator)
@@ -470,7 +429,7 @@ local function touch_end(self, datamodel)
     if not coord then
         return
     end
-    local vsobject = assert(vsobject_manager:get(self.coord_indicator.id))
+    local vsobject = assert(vsobject_manager:get(coord_indicator.id))
     vsobject:set_position(position)
     coord_indicator.x, coord_indicator.y = coord[1], coord[2]
 
@@ -482,27 +441,30 @@ local function touch_end(self, datamodel)
         return
     end
 
-    local starting_x, starting_y = get_starting_coord(self.starting_coord.x, self.starting_coord.y, coord_indicator.x, coord_indicator.y)
-    local cur_x, cur_y = get_ending_coord(self.starting_coord.x, self.starting_coord.y, coord_indicator.x, coord_indicator.y)
-    if not cur_x then
-        local ending_x, ending_y = get_ending_coord(starting_x, starting_y, cur_x, cur_y)
+    local starting_x, starting_y, starting_fluid_name, starting_dir = get_starting_fluidbox_coord(self.starting_coord.x, self.starting_coord.y, coord_indicator.x, coord_indicator.y)
+    local ending_x, ending_y = get_ending_fluidbox_coord(starting_fluid_name, starting_dir, starting_x, starting_y, coord_indicator.x, coord_indicator.y)
+    if not ending_x then
         datamodel.show_confirm = false
-        show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, ending_x, ending_y, "invalid_construct")
+        local dx = math_abs(starting_x - coord_indicator.x)
+        local dy = math_abs(starting_y - coord_indicator.y)
+        local x, y
+        if dx > dy then
+            x, y = coord_indicator.x, starting_y
+        else
+            x, y = starting_x, coord_indicator.y
+        end
+        show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, x, y, "invalid_construct")
+        return
     end
 
-    if has_object(self.starting_coord.x, self.starting_coord.y, cur_x, cur_y) then
-        local ending_x, ending_y = get_ending_coord(starting_x, starting_y, cur_x, cur_y)
+    if has_object(self.starting_coord.x, self.starting_coord.y, ending_x, ending_y) then
         datamodel.show_confirm = false
-        if ending_x then
-            show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, ending_x, ending_y, "invalid_construct")
-        else
-            show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, coord_indicator.x, coord_indicator.y, "invalid_construct")
-        end
+        show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, ending_x, ending_y, "invalid_construct")
         return
     end
 
     local starting_object = get_object(self.starting_coord.x, self.starting_coord.y)
-    local cur_object = get_object(cur_x, cur_y)
+    local cur_object = get_object(ending_x, ending_y)
 
     -- TODO
     if starting_object then
@@ -536,13 +498,8 @@ local function touch_end(self, datamodel)
 
     --
     if not starting_object or not cur_object then
-        if check_ending(starting_x, starting_y, coord_indicator.x, coord_indicator.y) then
-            check_show_confirm(self, datamodel)
-            show_pipe_indicator("TEMPORARY", coord_indicator.prototype_name, starting_x, starting_y, cur_x, cur_y, "construct")
-        else
-            datamodel.show_confirm = false
-            show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, cur_x, cur_y, "invalid_construct")
-        end
+        check_show_confirm(self, datamodel)
+        show_pipe_indicator("TEMPORARY", coord_indicator.prototype_name, starting_x, starting_y, ending_x, ending_y, "construct")
 
         --
         if not self.fluid_name then
@@ -565,26 +522,21 @@ local function touch_end(self, datamodel)
 
     if starting_object.id == cur_object.id then
         datamodel.show_confirm = false
-        show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, cur_x, cur_y, "invalid_construct")
+        show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, ending_x, ending_y, "invalid_construct")
         return
     end
 
     for _, dir in ipairs(ALL_DIR) do
         local x, y = ifluid:get_dir_coord(starting_x, starting_y, dir)
-        if x == cur_x and y == cur_y then
+        if x == ending_x and y == ending_y then
             datamodel.show_confirm = false
-            show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, cur_x, cur_y, "invalid_construct")
+            show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, ending_x, ending_y, "invalid_construct")
             return
         end
     end
 
-    if check_ending(starting_x, starting_y, coord_indicator.x, coord_indicator.y) then
-        check_show_confirm(self, datamodel)
-        show_pipe_indicator("TEMPORARY", coord_indicator.prototype_name, starting_x, starting_y, cur_x, cur_y, "construct")
-    else
-        datamodel.show_confirm = false
-        show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, cur_x, cur_y, "invalid_construct")
-    end
+    check_show_confirm(self, datamodel)
+    show_pipe_indicator("TEMPORARY", coord_indicator.prototype_name, starting_x, starting_y, ending_x, ending_y, "construct")
 end
 
 local function confirm(self, datamodel)
