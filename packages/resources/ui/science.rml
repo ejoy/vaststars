@@ -17,7 +17,7 @@
                 flex-direction: row;
                 align-items:center;
                 justify-content:flex-start;
-                background-color: rgb(92, 184, 92);
+                background-color: rgb(184, 187, 4);
                 border: 0.27vmin rgb(89, 73, 39);
                 background-size:cover;
                 border-radius: 0.67vmin;
@@ -204,7 +204,6 @@
             .progress-background-new {
                 justify-content: flex-start;
                 height: 100%;
-                /* background-color: rgba(200, 200, 200,100); */
                 background-image: "textures/science/progress.texture";
                 background-size: cover;
             }
@@ -224,7 +223,8 @@
                 align-items: center;
                 width:95%;
                 height:100px;
-                border: 1px #fff;
+                border: 0.3vmin rgb(89, 73, 39);
+                background-color: dimgrey;
             }
             .recipe-info-desc-block {
                 flex-direction: row;
@@ -275,6 +275,7 @@
                 height: 7.70vmin;
                 background-image: "textures/exchange/left_arrow.texture";
                 background-size: cover;
+                transform: rotate(180deg);
             }
             .small-name {
                 position: absolute;
@@ -355,7 +356,7 @@
                 local detail = start.current_tech.detail[index]
                 local htmlstr = ([[<div class="item-bg" style='background-image:"%s";'/>]]):format(detail.icon)
                 if detail.name then
-                    htmlstr = htmlstr .. ([[<div class="item-title-new">激活配方："%s"</div>]]):format(detail.name)
+                    htmlstr = htmlstr .. ([[<div class="item-title-new">解锁配方："%s"</div>]]):format(detail.name)
                     item.style.backgroundColor = 'rgb(114,87,4)'
                 elseif detail.desc then
                     htmlstr = htmlstr .. ([[<div class="item-title-new">%s</div>]]):format(detail.desc)
@@ -364,7 +365,7 @@
                 end
                 item.outerHTML = htmlstr
                 item.className = "item-research"
-                item.style.width = '90%'
+                item.style.width = '96%'
                 local select_style_border = "5px green"
                 item.addEventListener('click', function(event)
                     if start.techs.selected_recipe then
@@ -463,7 +464,7 @@
                     <div class="column" style="width:100%; height:15%;">
                         <!-- 科技描述 start --> 
                         <div class="header" id = "item-recipe-title" style="width:100%;height:75%;">
-                            <div class = "item-recipe-image" data-style-background-image="current_icon"/>
+                            <div class = "item-recipe-image" style="background-color: rgb(250, 205, 9); margin-top: 2vmin;" data-style-background-image="current_icon"/>
                             <div class = "item-recipe-desc">{{current_desc}}</div>
                             <button class="item" style="width: 10.67vmin; height: 10.67vmin;background-color: transparent;border: 0em;" data-if="false">
                                 <div class = "item-recipe-info"/>
@@ -480,7 +481,7 @@
                     </div>
 
                     <div class="column" style="width: 100%; height: 73%;">
-                        <div class="recipe-name-text">科技信息</div>
+                        <div class="recipe-name-text">其他信息</div>
                         <div style="flex-direction: column; width:100%; height:100%;">
                             <detaillist direction='1' width='100%' height='100%'/>
                         </div>
