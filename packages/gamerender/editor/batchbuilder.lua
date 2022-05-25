@@ -16,28 +16,19 @@ local tile_objects = global.tile_objects
 local ieditor = ecs.require "editor.editor"
 local ALL_CACHE <const> = global.cache_names
 local get_fluidboxes = require "gameplay.utility.get_fluidboxes"
-
 local gameplay_core = require "gameplay.core"
+local ALL_DIR <const> = require("gameplay.interface.constant").ALL_DIR
 
-local function show_set_fluidbox(datamodel, fluid_name)
+local function show_fluid_setting(datamodel, fluid_name)
     datamodel.cur_selected_fluid = fluid_name
     datamodel.cur_fluid_category = ifluid:get_fluid_category(fluid_name)
-    datamodel.show_set_fluidbox = true
+    datamodel.show_fluid_setting = true
 end
 
-local function hide_set_fluidbox(datamodel)
+local function hide_fluid_setting(datamodel)
     datamodel.cur_selected_fluid = ""
     datamodel.cur_fluid_category = ""
-    datamodel.show_set_fluidbox = false
-end
-
-local function get_object_id(x, y)
-    local tile_object = tile_objects:get(ALL_CACHE, iprototype:packcoord(x, y))
-    if not tile_object then
-        return
-    end
-
-    return tile_object.id
+    datamodel.show_fluid_setting = false
 end
 
 local function get_object(x, y)
@@ -49,48 +40,60 @@ local function get_object(x, y)
     return assert(objects:get(ALL_CACHE, tile_object.id))
 end
 
-local function check_starting(x, y)
-    local object = get_object(x, y)
-    if not object then
-        return true
+local get_valid_fluidbox ; do
+    local PIPE_FLUIDBOXES_DIR = ALL_DIR
+
+    local funcs = {}
+    funcs["fluidbox"] = function(typeobject, x, y, dir, result)
+        for _, conn in ipairs(typeobject.fluidbox.connections) do
+            local dx, dy, dir = iprototype:rotate_fluidbox(conn.position, dir, typeobject.area)
+            result[#result+1] = {x = x + dx, y = y + dy, dir = dir}
+        end
+        return result
     end
 
-    return ifluid:has_fluidbox(object.prototype_name)
-end
-
-local check_ending ; do 
-    local dir_vector = {
-        N = {x = 0,  y = -1},
-        S = {x = 0,  y = 1},
-        W = {x = -1, y = 0},
-        E = {x = 1,  y = 0},
-    }
-    function check_ending(starting_x, starting_y, x, y)
-        local object = get_object(x, y)
-        if not object then
-            return true
-        end
-
-        for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
-            local dx = math_abs(starting_x - v.x)
-            local dy = math_abs(starting_y - v.y)
-            local vec = assert(dir_vector[v.dir])
-            if starting_x == v.x + vec.x * dx and starting_y == v.y + vec.y * dy then
-                return true
+    local iotypes <const> = {"input", "output"}
+    funcs["fluidboxes"] = function(typeobject, x, y, dir, result, fluid_name)
+        for _, iotype in ipairs(iotypes) do
+            for _, v in ipairs(typeobject.fluidboxes[iotype]) do
+                for _, conn in ipairs(v.connections) do
+                    if fluid_name and fluid_name[iotype] then
+                        local dx, dy, dir = iprototype:rotate_fluidbox(conn.position, dir, typeobject.area)
+                        result[#result+1] = {x = x + dx, y = y + dy, dir = dir}
+                    end
+                end
             end
         end
-        return false
+        return result
+    end
+
+    function get_valid_fluidbox(prototype_name, x, y, dir, fluid_name)
+        local r = {}
+        local typeobject = assert(iprototype:queryByName("entity", prototype_name))
+        if typeobject.pipe then
+            for _, dir in ipairs(PIPE_FLUIDBOXES_DIR) do
+                r[#r+1] = {x = x, y = y, dir = dir}
+            end
+        else
+            local types = typeobject.type
+            for i = 1, #types do
+                local func = funcs[types[i]]
+                if func then
+                    func(typeobject, x, y, dir, r, fluid_name)
+                end
+            end
+        end
+        return r
     end
 end
 
-local function update_coord_indicator(coord_indicator, vsobject_type)
-    local vsobject = assert(vsobject_manager:get(coord_indicator.id))
+local function set_object_appearance(object, vsobject_type)
+    local vsobject = assert(vsobject_manager:get(object.id))
     vsobject:update {type = vsobject_type}
 end
 
--- 刷新 pickup object 管道 的形状
+
 local function refresh_spec_flow_shape(cache_names, object)
-    assert(object)
     local vsobject = assert(vsobject_manager:get(object.id))
     local typeobject = iprototype:queryByName("entity", object.prototype_name)
 
@@ -104,20 +107,120 @@ local function refresh_spec_flow_shape(cache_names, object)
             vsobject:set_dir(dir)
         end
     end
+end
 
-    if typeobject.road then
-        local prototype_name, dir = ieditor:refresh_road(cache_names, object.prototype_name, object.x, object.y, object.dir)
-        if prototype_name then
-            object.prototype_name = prototype_name
-            object.dir = dir
+local function show_starting_indicator(prototype_name, x, y)
+    ieditor:revert_changes({"INDICATOR"})
 
-            vsobject:update {prototype_name = prototype_name}
-            vsobject:set_dir(dir)
+    local object = get_object(x, y)
+    if not object then
+        return
+    end
+    ieditor:set_object(object, "INDICATOR")
+
+    local typeobject = iprototype:queryByName("entity", object.prototype_name)
+    local coord_indicator_typeobject = iprototype:queryByName("entity", prototype_name)
+
+    for _, v in ipairs(get_fluidboxes(object.prototype_name, object.x, object.y, object.dir)) do
+        for dir in pairs(v.fluidbox_dir) do
+            local px, py = ifluid:get_dir_coord(v.x, v.y, dir)
+            local position = terrain.get_position_by_coord(px, py, iprototype:rotate_area(coord_indicator_typeobject.area, dir))
+
+            local vsobject = vsobject_manager:create {
+                prototype_name = prototype_name,
+                dir = dir,
+                position = position,
+                type = "indicator",
+            }
+
+            local indicator_object = {
+                id = vsobject.id,
+                prototype_name = prototype_name,
+                dir = dir,
+                x = px,
+                y = py,
+                teardown = false,
+                headquater = typeobject.headquater or false,
+                manual_set_fluid = false,
+                fluid_name = "",
+            }
+
+            ieditor:set_object(indicator_object, "INDICATOR")
+            refresh_spec_flow_shape({"INDICATOR"}, indicator_object)
         end
     end
 end
 
-local function __new_entity(self, typeobject, dir, x, y, position, vsobject_type)
+local function is_valid_starting(x, y)
+    local object = get_object(x, y)
+    if not object then
+        return true
+    end
+
+    local t = get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)
+    return #t > 0
+end
+
+local function prepare_starting(self, datamodel)
+    local coord_indicator = self.coord_indicator
+
+    if is_valid_starting(coord_indicator.x, coord_indicator.y) then
+        datamodel.show_batch_mode_begin = true
+        set_object_appearance(coord_indicator, "construct")
+    else
+        datamodel.show_batch_mode_begin = false
+        set_object_appearance(coord_indicator, "invalid_construct")
+    end
+
+    --
+    local object = get_object(coord_indicator.x, coord_indicator.y)
+    if object then
+        show_starting_indicator(self.prototype_name, object.x, object.y)
+    end
+
+    --
+    if object then
+        local fluid_names = ifluid:get_fluid_name(object.prototype_name, object.fluid_name or "")
+        if #fluid_names == 1 then
+            assert(type(fluid_names[1]) == "string")
+            self.fluid_name = fluid_names[1]
+            show_fluid_setting(datamodel, fluid_names[1])
+        else
+            show_fluid_setting(datamodel, "")
+        end
+    else
+        show_fluid_setting(datamodel, "")
+    end
+end
+
+--------------------------------------------------------------------------------------------------
+
+
+local dir_vector = {
+    N = {x = 0,  y = -1},
+    S = {x = 0,  y = 1},
+    W = {x = -1, y = 0},
+    E = {x = 1,  y = 0},
+}
+
+local function check_ending(starting_x, starting_y, x, y)
+    local object = get_object(x, y)
+    if not object then
+        return true
+    end
+
+    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+        local dx = math_abs(starting_x - v.x)
+        local dy = math_abs(starting_y - v.y)
+        local vec = assert(dir_vector[v.dir])
+        if starting_x == v.x + vec.x * dx and starting_y == v.y + vec.y * dy then
+            return true
+        end
+    end
+    return false
+end
+
+local function __new_entity(typeobject, dir, x, y, position, vsobject_type)
     local vsobject = vsobject_manager:create {
         prototype_name = typeobject.name,
         dir = dir,
@@ -139,51 +242,7 @@ local function __new_entity(self, typeobject, dir, x, y, position, vsobject_type
     return object
 end
 
-local function show_indicator(prototype_name, cache_names, x, y)
-    ieditor:revert_changes({"INDICATOR"})
-
-    local object = get_object(x, y)
-    if not object then
-        return {}
-    end
-    ieditor:set_object(object, "INDICATOR")
-
-    local typeobject = iprototype:queryByName("entity", object.prototype_name)
-    local coord_indicator_typeobject = iprototype:queryByName("entity", prototype_name)
-
-    for _, v in ipairs(get_fluidboxes(object.prototype_name, object.x, object.y, object.dir)) do
-        for dir in pairs(v.fluidbox_dir) do
-            local px, py = ifluid:get_dir_coord(v.x, v.y, dir)
-            local position = terrain.get_position_by_coord(px, py, iprototype:rotate_area(coord_indicator_typeobject.area, dir))
-
-            local vsobject = vsobject_manager:create {
-                prototype_name = prototype_name,
-                dir = dir,
-                position = position,
-                type = "indicator",
-            }
-
-            local nobject = {
-                id = vsobject.id,
-                prototype_name = prototype_name,
-                dir = dir,
-                x = px,
-                y = py,
-                teardown = false,
-                headquater = typeobject.headquater or false,
-                manual_set_fluid = false,
-                fluid_name = "",
-            }
-
-            ieditor:set_object(nobject, "INDICATOR")
-            refresh_spec_flow_shape({"INDICATOR"}, nobject)
-        end
-    end
-end
-
 local function show_pipe_indicator(cache_name, prototype_name, starting_x, starting_y, ending_x, ending_y, vsobject_type)
-    ieditor:revert_changes({cache_name})
-
     if starting_x > ending_x then
         starting_x, ending_x = ending_x, starting_x
     end
@@ -223,7 +282,7 @@ local function show_pipe_indicator(cache_name, prototype_name, starting_x, start
 end
 
 local function check_show_confirm(self, datamodel)
-    if self.fluid_name == "" then
+    if not self.fluid_name then
         return
     end
     datamodel.show_confirm = true
@@ -240,37 +299,10 @@ local function new_entity(self, datamodel, typeobject)
     local coord, position = terrain.adjust_position(camera.get_central_position(), iprototype:rotate_area(typeobject.area, dir))
     local x, y = coord[1], coord[2]
     self.prototype_name = typeobject.name
-    self.coord_indicator = __new_entity(self, typeobject, dir, x, y, position, "construct")
+    self.coord_indicator = __new_entity(typeobject, dir, x, y, position, "construct")
 
     --
-    if check_starting(x, y) then
-        datamodel.show_batch_mode_begin = true
-        update_coord_indicator(self.coord_indicator, "construct")
-    else
-        datamodel.show_batch_mode_begin = false
-        update_coord_indicator(self.coord_indicator, "invalid_construct")
-    end
-
-    --
-    local object = get_object(x, y)
-    if object then
-        show_indicator(typeobject.name, ALL_CACHE, object.x, object.y)
-    end
-
-    --
-    if object then
-        -- object.fluid_name 建筑可能没有流体盒子
-        local fluid_names = ifluid:get_fluidname(object.prototype_name, object.fluid_name or "")
-        if #fluid_names == 1 then
-            assert(type(fluid_names[1]) == "string")
-            self.fluid_name = fluid_names[1]
-            show_set_fluidbox(datamodel, fluid_names[1])
-        else
-            show_set_fluidbox(datamodel, "")
-        end
-    else
-        show_set_fluidbox(datamodel, "")
-    end
+    prepare_starting(self, datamodel)
 end
 
 local function touch_move(self, datamodel, delta_vec)
@@ -288,44 +320,44 @@ local function touch_move(self, datamodel, delta_vec)
     vsobject:set_position(position)
 end
 
--- TODO
-local function has_object(starting_x, starting_y, cur_x, cur_y)
-    local dx = math_abs(starting_x - cur_x)
-    local dy = math_abs(starting_y - cur_y)
+local function has_object(starting_coord_x, starting_coord_y, cur_x, cur_y)
+    local dx = math_abs(starting_coord_x - cur_x)
+    local dy = math_abs(starting_coord_y - cur_y)
     local step
+
     local find_id = {}
-    local starting_object_id = get_object_id(starting_x, starting_y)
-    if starting_object_id then
-        find_id[starting_object_id] = true
+    local starting_object = get_object(starting_coord_x, starting_coord_y)
+    if starting_object then
+        find_id[starting_object.id] = true
     end
-    local ending_object_id = get_object_id(cur_x, cur_y)
-    if ending_object_id then
-        find_id[ending_object_id] = true
+    local ending_object = get_object(cur_x, cur_y)
+    if ending_object then
+        find_id[ending_object.id] = true
     end
 
     if dx >= dy then
-        if starting_x <= cur_x then
+        if starting_coord_x <= cur_x then
             step = 1
         else
             step = -1
         end
 
-        for vx = starting_x + step, cur_x, step do
-            local object = get_object(vx, starting_y)
+        for vx = starting_coord_x + step, cur_x, step do
+            local object = get_object(vx, starting_coord_y)
             if object and not find_id[object.id] then
                 return true
             end
         end
         return false
     else
-        if starting_y <= cur_y then
+        if starting_coord_y <= cur_y then
             step = 1
         else
             step = -1
         end
 
-        for vy = starting_y, cur_y, step do
-            local object = get_object(starting_x, vy)
+        for vy = starting_coord_y, cur_y, step do
+            local object = get_object(starting_coord_x, vy)
             if object and not find_id[object.id] then
                 return true
             end
@@ -334,21 +366,106 @@ local function has_object(starting_x, starting_y, cur_x, cur_y)
     end
 end
 
-local function get_ending_coord(starting_x, starting_y, cur_x, cur_y)
-    local dx = math_abs(starting_x - cur_x)
-    local dy = math_abs(starting_y - cur_y)
+local function get_distance(x1, y1, x2, y2)
+    return (x1 - x2) ^ 2 + (y1 - y2) ^ 2
+end
+
+local function get_dir(x1, y1, x2, y2)
+    local dx = math_abs(x1 - x2)
+    local dy = math_abs(y1 - y2)
     if dx >= dy then
-        return cur_x, starting_y
+        if x1 < x2 then
+            return "E"
+        else
+            return "W"
+        end
     else
-        return starting_x, cur_y
+        if y1 < y2 then
+            return "S"
+        else
+            return "N"
+        end
+    end
+end
+
+local function get_starting_coord(starting_x, starting_y, x, y)
+    local object = get_object(starting_x, starting_y)
+    if not object then
+        return starting_x, starting_y
+    end
+
+    -- TODO
+    local typeobject = iprototype:queryByName("entity", object.prototype_name)
+    if iprototype:is_batch_mode(typeobject) then
+        local dx = math_abs(starting_x - x)
+        local dy = math_abs(starting_y - y)
+        if dx >= dy then
+            if starting_x < x then
+                return ifluid:get_dir_coord(starting_x, starting_y, "E")
+            else
+                return ifluid:get_dir_coord(starting_x, starting_y, "W")
+            end
+        else
+            if starting_y < y then
+                return ifluid:get_dir_coord(starting_x, starting_y, "S")
+            else
+                return ifluid:get_dir_coord(starting_x, starting_y, "N")
+            end
+        end
+    end
+
+    local r
+    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+        r = r or v
+        if get_distance(r.x, r.y, x, y) > get_distance(v.x, v.y, x, y) then
+            r = v
+        end
+    end
+    assert(r)
+    return ifluid:get_dir_coord(r.x, r.y, r.dir)
+end
+
+local function get_ending_coord(starting_x, starting_y, x, y)
+    local dx = math_abs(starting_x - x)
+    local dy = math_abs(starting_y - y)
+
+    local object = get_object(starting_x, starting_y)
+    if not object then
+        if dx >= dy then
+            return x, starting_y
+        else
+            return starting_x, y
+        end
+    end
+
+    -- TODO
+    local typeobject = iprototype:queryByName("entity", object.prototype_name)
+    if iprototype:is_batch_mode(typeobject) then
+        if dx >= dy then
+            return x, starting_y
+        else
+            return starting_x, y
+        end
+    end
+
+    local r
+    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+        r = r or v
+        if get_distance(r.x, r.y, x, y) > get_distance(v.x, v.y, x, y) then
+            r = v
+        end
+    end
+
+    if not r then
+        return
+    else
+        return ifluid:get_dir_coord(r.x, r.y, r.dir, dx, dy)
     end
 end
 
 local function touch_end(self, datamodel)
     --
     local coord_indicator = assert(self.coord_indicator)
-    local typeobject = iprototype:queryByName("entity", self.prototype_name)
-    assert(typeobject.pipe or typeobject.road)
     local coord, position = terrain.adjust_position(camera.get_central_position(), 1, 1) -- 1, 1 水管 / 路块的 width & height
     if not coord then
         return
@@ -356,84 +473,122 @@ local function touch_end(self, datamodel)
     local vsobject = assert(vsobject_manager:get(self.coord_indicator.id))
     vsobject:set_position(position)
     coord_indicator.x, coord_indicator.y = coord[1], coord[2]
-    local starting_coord = self.starting_coord
 
     --
     ieditor:revert_changes({"INDICATOR", "TEMPORARY"})
 
     if not self.starting_coord then
-        --
-        if check_starting(coord_indicator.x, coord_indicator.y) then
-            datamodel.show_batch_mode_begin = true
-            update_coord_indicator(self.coord_indicator, "construct")
-        else
-            datamodel.show_batch_mode_begin = false
-            update_coord_indicator(self.coord_indicator, "invalid_construct")
-        end
-
-        --
-        local object = get_object(coord_indicator.x, coord_indicator.y)
-        if object then
-            show_indicator(typeobject.name, ALL_CACHE, object.x, object.y)
-        end
+        prepare_starting(self, datamodel)
         return
     end
 
-    local cur_x, cur_y = get_ending_coord(starting_coord.x, starting_coord.y, coord_indicator.x, coord_indicator.y)
-    if has_object(starting_coord.x, starting_coord.y, cur_x, cur_y) then
-        local ending_x, ending_y = get_ending_coord(starting_coord.x, starting_coord.y, cur_x, cur_y)
+    local starting_x, starting_y = get_starting_coord(self.starting_coord.x, self.starting_coord.y, coord_indicator.x, coord_indicator.y)
+    local cur_x, cur_y = get_ending_coord(self.starting_coord.x, self.starting_coord.y, coord_indicator.x, coord_indicator.y)
+    if not cur_x then
+        local ending_x, ending_y = get_ending_coord(starting_x, starting_y, cur_x, cur_y)
         datamodel.show_confirm = false
-        show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_coord.x, starting_coord.y, ending_x, ending_y, "invalid_construct")
+        show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, ending_x, ending_y, "invalid_construct")
+    end
+
+    if has_object(self.starting_coord.x, self.starting_coord.y, cur_x, cur_y) then
+        local ending_x, ending_y = get_ending_coord(starting_x, starting_y, cur_x, cur_y)
+        datamodel.show_confirm = false
+        if ending_x then
+            show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, ending_x, ending_y, "invalid_construct")
+        else
+            show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, coord_indicator.x, coord_indicator.y, "invalid_construct")
+        end
         return
     end
 
-    local starting_object = get_object(starting_coord.x, starting_coord.y)
+    local starting_object = get_object(self.starting_coord.x, self.starting_coord.y)
     local cur_object = get_object(cur_x, cur_y)
+
+    -- TODO
+    if starting_object then
+        ieditor:set_object(starting_object, "TEMPORARY")
+        local typeobject = iprototype:queryByName("entity", starting_object.prototype_name)
+        if iprototype:is_batch_mode(typeobject) then
+            for _, dir in ipairs(ALL_DIR) do
+                local coord = iprototype:packcoord( ifluid:get_dir_coord(starting_object.x, starting_object.y, dir) )
+                local tile_object = tile_objects:get(ALL_CACHE, coord)
+                if tile_object then
+                    local object = objects:get(ALL_CACHE, tile_object.id)
+                    ieditor:set_object(ieditor:clone_object(object), "TEMPORARY")
+                end
+            end
+        end
+    end
+    if cur_object then
+        ieditor:set_object(cur_object, "TEMPORARY")
+        local typeobject = iprototype:queryByName("entity", starting_object.prototype_name)
+        if iprototype:is_batch_mode(typeobject) then
+            for _, dir in ipairs(ALL_DIR) do
+                local coord = iprototype:packcoord( ifluid:get_dir_coord(starting_object.x, starting_object.y, dir) )
+                local tile_object = tile_objects:get(ALL_CACHE, coord)
+                if tile_object then
+                    local object = objects:get(ALL_CACHE, tile_object.id)
+                    ieditor:set_object(ieditor:clone_object(object), "TEMPORARY")
+                end
+            end
+        end
+    end
 
     --
     if not starting_object or not cur_object then
-        if check_ending(starting_coord.x, starting_coord.y, coord_indicator.x, coord_indicator.y) then
+        if check_ending(starting_x, starting_y, coord_indicator.x, coord_indicator.y) then
             check_show_confirm(self, datamodel)
-            show_pipe_indicator("TEMPORARY", coord_indicator.prototype_name, starting_coord.x, starting_coord.y, cur_x, cur_y, "construct")
+            show_pipe_indicator("TEMPORARY", coord_indicator.prototype_name, starting_x, starting_y, cur_x, cur_y, "construct")
         else
             datamodel.show_confirm = false
-            show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_coord.x, starting_coord.y, cur_x, cur_y, "invalid_construct")
+            show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, cur_x, cur_y, "invalid_construct")
         end
 
         --
-        if cur_object then
-            -- object.fluid_name 建筑可能没有流体盒子
-            local fluid_names = ifluid:get_fluidname(cur_object.prototype_name, cur_object.fluid_name or "")
-            if #fluid_names == 1 then
-                assert(type(fluid_names[1]) == "string")
-                self.fluid_name = fluid_names[1]
-                show_set_fluidbox(datamodel, fluid_names[1])
+        if not self.fluid_name then
+            if cur_object then
+                -- object.fluid_name 建筑可能没有流体盒子
+                local fluid_names = ifluid:get_fluid_name(cur_object.prototype_name, cur_object.fluid_name or "")
+                if #fluid_names == 1 then
+                    assert(type(fluid_names[1]) == "string")
+                    self.fluid_name = fluid_names[1]
+                    show_fluid_setting(datamodel, fluid_names[1])
+                else
+                    show_fluid_setting(datamodel, "")
+                end
             else
-                show_set_fluidbox(datamodel, "")
+                show_fluid_setting(datamodel, "")
             end
-        else
-            show_set_fluidbox(datamodel, "")
         end
         return
     end
 
     if starting_object.id == cur_object.id then
         datamodel.show_confirm = false
-        show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_coord.x, starting_coord.y, cur_x, cur_y, "invalid_construct")
+        show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, cur_x, cur_y, "invalid_construct")
         return
     end
 
-    if check_ending(starting_coord.x, starting_coord.y, coord_indicator.x, coord_indicator.y) then
+    for _, dir in ipairs(ALL_DIR) do
+        local x, y = ifluid:get_dir_coord(starting_x, starting_y, dir)
+        if x == cur_x and y == cur_y then
+            datamodel.show_confirm = false
+            show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, cur_x, cur_y, "invalid_construct")
+            return
+        end
+    end
+
+    if check_ending(starting_x, starting_y, coord_indicator.x, coord_indicator.y) then
         check_show_confirm(self, datamodel)
-        show_pipe_indicator("TEMPORARY", coord_indicator.prototype_name, starting_coord.x, starting_coord.y, cur_x, cur_y, "construct")
+        show_pipe_indicator("TEMPORARY", coord_indicator.prototype_name, starting_x, starting_y, cur_x, cur_y, "construct")
     else
         datamodel.show_confirm = false
-        show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_coord.x, starting_coord.y, cur_x, cur_y, "invalid_construct")
+        show_pipe_indicator("INDICATOR", coord_indicator.prototype_name, starting_x, starting_y, cur_x, cur_y, "invalid_construct")
     end
 end
 
 local function confirm(self, datamodel)
-    assert(self.fluid_name ~= "")
+    assert(self.fluid_name)
 
     for _, object in objects:all("TEMPORARY") do
         object.fluid_name = self.fluid_name
@@ -447,9 +602,8 @@ local function confirm(self, datamodel)
     self:new_entity(datamodel, typeobject)
 
     self.starting_coord = nil
-    self.ending_coord = nil
-    self.fluid_name = ""
-    hide_set_fluidbox(datamodel)
+    self.fluid_name = nil
+    hide_fluid_setting(datamodel)
     datamodel.show_confirm = false
     datamodel.show_construct_complete = true
 end
@@ -462,7 +616,7 @@ local function complete(self, datamodel)
 
     datamodel.show_rotate = false
     datamodel.show_confirm = false
-    hide_set_fluidbox(datamodel)
+    hide_fluid_setting(datamodel)
 
     local needbuild = false
     for _, object in objects:all("CONFIRM") do
@@ -487,11 +641,10 @@ end
 
 local function set_fluid(self, datamodel, fluid_name)
     self.fluid_name = fluid_name
-
-
-    if self.fluid_name and self.fluid_name ~= "" then
+    if self.starting_coord then
         datamodel.show_confirm = true
     end
+    -- TODO 缺少[当前坐标]是否可以作为[结束点]的判断
 end
 
 local function batch_mode_begin(self, datamodel)
@@ -499,29 +652,23 @@ local function batch_mode_begin(self, datamodel)
     local coord_indicator = assert(self.coord_indicator)
     self.starting_coord = {x = coord_indicator.x, y = coord_indicator.y}
 
-    datamodel.show_confirm = false
+    --
+    datamodel.show_batch_mode_begin = false
+
+    --
     local object = get_object(self.starting_coord.x, self.starting_coord.y)
     if object then
-        if next(ifluid:get_fluidbox_coord(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) then
-            datamodel.show_batch_mode_begin = false
-            hide_set_fluidbox(datamodel)
+        local fluid_names = ifluid:get_fluid_name(object.prototype_name, object.fluid_name or "")
+        assert(#fluid_names > 0)
+        if #fluid_names == 1 then
+            assert(type(fluid_names[1]) == "string")
+            self.fluid_name = fluid_names[1]
+            show_fluid_setting(datamodel, fluid_names[1])
         else
-            datamodel.show_batch_mode_begin = true
-            hide_set_fluidbox(datamodel)
+            show_fluid_setting(datamodel, "")
         end
     else
-        datamodel.show_batch_mode_begin = false
-        show_set_fluidbox(datamodel, "")
-    end
-end
-
-local function batch_mode_end(self, datamodel)
-    assert(self.ending_coord == nil)
-    local coord_indicator = assert(self.coord_indicator)
-    self.ending_coord = {x = coord_indicator.x, y = coord_indicator.y}
-
-    if self.fluid_name and self.fluid_name ~= "" then
-        datamodel.show_confirm = true
+        show_fluid_setting(datamodel, "")
     end
 end
 
@@ -532,9 +679,9 @@ local function clean(self, datamodel)
     end
 
     self:revert_changes({"INDICATOR", "TEMPORARY"})
-    hide_set_fluidbox(datamodel)
-    datamodel.show_confirm = false
+    hide_fluid_setting(datamodel)
     datamodel.show_batch_mode_begin = false
+    datamodel.show_confirm = false
     self.super.clean(self, datamodel)
 end
 
@@ -551,12 +698,10 @@ local function create()
 
     M.clean = clean
 
-    M.fluid_name = ""
+    -- M.fluid_name
     M.prototype_name = ""
     -- M.starting_coord = {x = xx, y = xx}
-    -- M.ending_coord = {x = xx, y = xx}
     M.batch_mode_begin = batch_mode_begin
-    M.batch_mode_end = batch_mode_end
     return M
 end
 return create
