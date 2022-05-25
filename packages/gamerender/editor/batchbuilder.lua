@@ -72,7 +72,7 @@ local get_valid_fluidbox ; do
         local typeobject = assert(iprototype:queryByName("entity", prototype_name))
         if typeobject.pipe then
             for _, dir in ipairs(PIPE_FLUIDBOXES_DIR) do
-                r[#r+1] = {x = x, y = y, dir = dir}
+                r[#r+1] = {x = x, y = y, dir = dir, fluid_name = fluid_name}
             end
         else
             local types = typeobject.type
@@ -301,7 +301,21 @@ end
 local function get_starting_fluidbox_coord(starting_x, starting_y, x, y)
     local object = get_object(starting_x, starting_y)
     if not object then
-        return starting_x, starting_y
+        local dx = math_abs(starting_x - x)
+        local dy = math_abs(starting_y - y)
+        if dx >= dy then
+            if starting_x < x then
+                return starting_x, starting_y, nil, "E"
+            else
+                return starting_x, starting_y, nil, "W"
+            end
+        else
+            if starting_y < y then
+                return starting_x, starting_y, nil, "S"
+            else
+                return starting_x, starting_y, nil, "N"
+            end
+        end
     end
 
     -- TODO
@@ -345,10 +359,16 @@ local dir_vector = {
 }
 
 local function get_ending_fluidbox_coord(starting_fluid_name, starting_dir, starting_x, starting_y, x, y)
+    local dx = math_abs(starting_x - x)
+    local dy = math_abs(starting_y - y)
+    if dx > dy then
+        x, y = x, starting_y
+    else
+        x, y = starting_x, y
+    end
+
     local object = get_object(x, y)
     if not object then
-        local dx = math_abs(starting_x - x)
-        local dy = math_abs(starting_y - y)
         local vec = assert(dir_vector[starting_dir])
         return starting_x + vec.x * dx, starting_y + vec.y * dy
     end
@@ -367,13 +387,11 @@ local function get_ending_fluidbox_coord(starting_fluid_name, starting_dir, star
         return
     end
 
-    if r.fluid_name ~= starting_fluid_name then
+    if starting_fluid_name and r.fluid_name ~= starting_fluid_name then
         return
     end
 
-    local dx = math_abs(starting_x - r.x)
-    local dy = math_abs(starting_y - r.y)
-    return ifluid:get_dir_coord(r.x, r.y, r.dir, dx, dy)
+    return ifluid:get_dir_coord(r.x, r.y, r.dir)
 end
 
 local function has_object(starting_coord_x, starting_coord_y, cur_x, cur_y)
