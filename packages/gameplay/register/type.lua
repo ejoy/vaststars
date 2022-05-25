@@ -2,16 +2,7 @@ local status = require "status"
 
 local unit = status.unit
 local types = status.types
-local ctor = status.ctor
-
-local function ctor_function(typename, func)
-	assert(type(func) == "function")
-	local t = types[typename]
-	if t == nil then
-		error ("Unknown type : " .. typename)
-	end
-	ctor[typename] = func
-end
+local typefuncs = status.typefuncs
 
 return function (name)
 	assert(types[name] == nil)
@@ -31,8 +22,13 @@ return function (name)
 		end
 	end
 	function meta:__newindex(what, f)
-		assert(what == "ctor")
-		ctor_function(name, f)
+		assert(type(f) == "function")
+		local funcs = typefuncs[name]
+		if not funcs then
+			funcs = {}
+			typefuncs[name] = funcs
+		end
+		funcs[what] = f
 	end
 	return inserter
 end

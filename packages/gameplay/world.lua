@@ -73,9 +73,9 @@ return function ()
             local types = typeobject.type
             local obj = {}
             for i = 1, #types do
-                local ctor = status.ctor[types[i]]
-                if ctor then
-                    for k, v in pairs(ctor(world, init, typeobject)) do
+                local funcs = status.typefuncs[types[i]]
+                if funcs and funcs.ctor then
+                    for k, v in pairs(funcs.ctor(world, init, typeobject)) do
                         if obj[k] == nil then
                             obj[k] = v
                         end

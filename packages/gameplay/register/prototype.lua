@@ -2,6 +2,7 @@ local status = require "status"
 
 local unit = status.unit
 local types = status.types
+local typefuncs = status.typefuncs
 local id_lookup = status.prototype_id
 local name_lookup = status.prototype_name
 
@@ -94,8 +95,24 @@ end
 
 local ckeys = setmetatable({}, { __mode = "kv", __index = keys_union })
 
+local function init(object)
+	local typelist = assert(object.type)
+	for i = #typelist, 1, -1 do
+		local type = typelist[i]
+		local funcs = typefuncs[type]
+		if funcs and funcs.init then
+			for k, v in pairs(funcs.init()) do
+				if object[k] == nil then
+					object[k] = v
+				end
+			end
+		end
+	end
+end
+
 return function (name)
 	return function (object)
+		init(object)
 		local typelist = assert(object.type)
 		local cache_key = table.concat(typelist, ":")
 		local combine_keys = ckeys[cache_key](typelist)
