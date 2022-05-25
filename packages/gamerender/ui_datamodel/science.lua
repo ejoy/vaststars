@@ -48,10 +48,10 @@ function M:stage_ui_update(datamodel)
                 local name = string.sub(key, 7)
                 tech_tree[name] = {name = name, pretech = {}, posttech = {}, detail = value}
                 local idx = #items
-                local ingredients0 = {}
+                local simple_ingredients = {}
                 local ingredients = irecipe:get_elements(value.ingredients)
                 for _, ingredient in ipairs(ingredients) do
-                    ingredients0[#ingredients0 + 1] = {icon = ingredient.tech_icon, count = ingredient.count}
+                    simple_ingredients[#simple_ingredients + 1] = {icon = ingredient.tech_icon, count = ingredient.count}
                 end
                 local detail = {}
                 if value.sign_desc then
@@ -59,19 +59,19 @@ function M:stage_ui_update(datamodel)
                         detail[#detail+1] = desc
                     end
                 end
-                if value.effects.unlock_recipe then
+                if value.effects and value.effects.unlock_recipe then
                     for _, recipe in ipairs(value.effects.unlock_recipe) do
                         local recipe_detail = prototypes["(recipe)" .. recipe]
                         if recipe_detail then
                             local input = {}
                             ingredients = irecipe:get_elements(recipe_detail.ingredients)
                             for _, ingredient in ipairs(ingredients) do
-                                input[#input + 1] = {icon = ingredient.icon, count = ingredient.count}
+                                input[#input + 1] = {name = ingredient.name, icon = ingredient.icon, count = ingredient.count}
                             end
                             local output = {}
                             local results = irecipe:get_elements(recipe_detail.results)
                             for _, ingredient in ipairs(results) do
-                                output[#output + 1] = {icon = ingredient.icon, count = ingredient.count}
+                                output[#output + 1] = {name = ingredient.name, icon = ingredient.icon, count = ingredient.count}
                             end
                             detail[#detail + 1] = {
                                 name = recipe,
@@ -83,16 +83,18 @@ function M:stage_ui_update(datamodel)
                         end
                     end
                 end
-                items[idx + 1] = {
-                    index = idx + 1,
-                    name = name,
-                    icon = value.icon,
-                    desc = value.desc or " ",
-                    sign_icon = value.sign_icon,
-                    detail = detail,
-                    ingredients = ingredients0,
-                    progress = 50,
-                }
+                if #detail > 0 then
+                    items[idx + 1] = {
+                        index = idx + 1,
+                        name = name,
+                        icon = value.icon,
+                        desc = value.desc or " ",
+                        sign_icon = value.sign_icon,
+                        detail = detail,
+                        ingredients = simple_ingredients,
+                        progress = 50,
+                    }
+                end
             end
         end
         
@@ -124,7 +126,6 @@ function M:stage_ui_update(datamodel)
         first_time = false
     end
     for _, _, _, index in click_tech_event:unpack() do
-        datamodel.techs.selected_recipe = nil
         local tech = datamodel.techs.items[index]
         datamodel.current_tech = tech
         datamodel.current_tech_desc = tech.desc
