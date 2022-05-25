@@ -293,8 +293,11 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
-                current_tech_icon = " ",
-                current_tech_desc = " ",
+                current_icon = " ",
+                current_desc = " ",
+                current_running = false,
+                current_button_str = "开始",
+                current_lefttime = " ",
                 selected_tech = nil,
                 selected_recipe = nil
             }
@@ -323,11 +326,12 @@
                     ingredient_items = [[<div class="research-req">]] .. ingredient_items .. ([[<div style="font-size: 3.5vmin; text-align: center;">X %d</div></div>]]):format(ingredient_count)
                 end
                 local sign = item_data.sign_icon and ([[<div class="icon-sign" style='background-image:"%s";'/>]]):format(item_data.sign_icon) or ""
+                console.log("----item_data.running", item_data.running)
+                local statestr = item_data.running and [[<div class="icon-researching">研究中...</div>]] or ""
                 item.outerHTML = ([[
                 <div class="progress-background-new" style="position:absolute; left:0; width: %d%%;"/>
                 <div class="item-bg" style='background-image:"%s";'/>
-                <div class="item-title-new">%s</div>]]):format(item_data.progress, item_data.icon, item_data.name) .. ingredient_items ..
-                [[<div class="icon-researching">研究中...</div>]] .. sign
+                <div class="item-title-new">%s</div>]]):format(item_data.progress, item_data.icon, item_data.name) .. ingredient_items .. statestr .. sign
 
                 item.className = "item-research"
                 local select_style_border = "5px green"
@@ -418,17 +422,25 @@
                 if patch.techs then
                     console.log("techllist dirty")
                     start.techs.selected_tech = nil
-                    start.list:on_dirty(#start.techs.items)
+                    start.list:on_dirty_all(#start.techs.items)
                 end
                 if patch.current_tech then
                     console.log("detaillist dirty")
                     start.techs.selected_recipe = nil
-                    start.detaillist:on_dirty(#start.current_tech.detail)
+                    start.detaillist:on_dirty_all(#start.current_tech.detail)
+                end
+
+                if patch.current_running then
+                    start.techs.selected_tech = nil
+                    start.list:on_dirty(start.current_tech.index)
                 end
             end)
             function start.clickReturn(event)
                 ui_sys:pub {"return"}
                 ui_sys:close()
+            end
+            function start.startSwitch(event)
+                ui_sys:pub {"switch"}
             end
         </script>
     </head>
@@ -451,8 +463,8 @@
                     <div class="column" style="width:100%; height:15%;">
                         <!-- 科技描述 start --> 
                         <div class="header" id = "item-recipe-title" style="width:100%;height:75%;">
-                            <div class = "item-recipe-image" data-style-background-image="current_tech_icon"/>
-                            <div class = "item-recipe-desc">{{current_tech_desc}}</div>
+                            <div class = "item-recipe-image" data-style-background-image="current_icon"/>
+                            <div class = "item-recipe-desc">{{current_desc}}</div>
                             <button class="item" style="width: 10.67vmin; height: 10.67vmin;background-color: transparent;border: 0em;" data-if="false">
                                 <div class = "item-recipe-info"/>
                             </button>
@@ -471,91 +483,6 @@
                         <div class="recipe-name-text">科技信息</div>
                         <div style="flex-direction: column; width:100%; height:100%;">
                             <detaillist direction='1' width='100%' height='100%'/>
-                            <!-- 
-                            <div class="recipe-container" style="flex-direction: column; border: 0px;">
-                                <button class="item-research" style="width:90%; background-color: rgb(190, 14, 243);border: 2px rgb(255, 0, 200);">
-                                    <div class="item-bg" style='background-image:"textures/science/improtant.texture";'/>
-                                    <div class="item-title-new">该科技可以激活更多后续科技</div>
-                                </button>
-                                <button class="item-research" style="width:90%; background-color: rgb(13, 107, 230);">
-                                    <div class="item-bg" style='background-image:"textures/construct/chemical.texture";'/>
-                                    <div class="item-title-new">可以使用"发电机"</div>
-                                </button>
-                                <button class="item-research" style="width:90%; background-color: rgb(114, 87, 4);">
-                                    <div class="item-bg" style='background-image:"textures/science/book.texture";'/>
-                                    <div class="item-title-new">激活配方："铁锭锻造"</div>
-                                </button>
-                                <button class="item-research" style="width:90%; background-color: rgb(114, 87, 4);">
-                                    <div class="item-bg" style='background-image:"textures/science/book.texture";'/>
-                                    <div class="item-title-new">激活配方："水电解"</div>
-                                </button>
-                                <div class="recipe-info-block">
-                                    <div class="recipe-info-desc-block">
-                                        <div class="recipe-info-desc-title">配方信息</div>
-                                        <div class="recipe-info-desc">这里是配方内容的信息描述11111111111111111111111111111,这里是配方内容的信息描述11111111111111111111111111111</div>
-                                    </div>
-                                    <div class="recipe-item-info-block">
-                                        <div class="small-item-new">
-                                            <div class="item-count">99</div>
-                                            <div class="small-name">机器爪I</div>
-                                        </div>
-                                        <div class="small-item-new">
-                                            <div class="item-count">99</div>
-                                            <div class="small-name">机器爪I</div>
-                                        </div>
-                                        <div class="small-item-new">
-                                            <div class="item-count">99</div>
-                                            <div class="small-name">科研中心I</div>
-                                        </div>
-                                        <div class="small-item-new">
-                                            <div class="item-count">99</div>
-                                            <div class="small-name">电动机I</div>
-                                        </div>
-                                        <div class="small-item-new">
-                                            <div class="item-count">99</div>
-                                            <div class="small-name">机器爪I</div>
-                                        </div>
-                                        <div class="small-arrow"/>
-                                        <div class="small-item-new">
-                                            <div class="item-count">99</div>
-                                            <div class="small-name">机器爪I</div>
-                                        </div> 
-                                        <div class="small-item-new">
-                                            <div class="item-count">99</div>
-                                            <div class="small-name">机器爪I</div>
-                                        </div>
-                                        <div class="small-item-new">
-                                            <div class="item-count">99</div>
-                                            <div class="small-name">机器爪I</div>
-                                        </div>
-                                        <div class="small-item-new">
-                                            <div class="item-count">99</div>
-                                            <div class="small-name">机器爪I</div>
-                                        </div>           
-                                    </div>
-                                </div>>
-                            </div>
-                            -->
-                            <!-- 研究成果 end --> 
-                            <div class="research-req-container" data-if="false">
-                                <div class = "recipe-title-block">
-                                     <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">需求科技</div>
-                                </div>
-                                <div class = "recipe-title-block" style="height:90%; justify-content: center;">
-                                    <div class="row" style=" width: 50%;">
-                                        <div class="property-icon" style='background-image:"textures/science/hand.texture";'/>
-                                        <div class="property-text" style="padding-right: 1vmin; color: rgb(255,255,255);">电子学</div>
-                                    </div>
-                                    <div class="row" style=" width: 50%;">
-                                        <div class="property-icon" style='background-image:"textures/science/hand.texture";'/>
-                                        <div class="property-text" style="padding-right: 1vmin; color: rgb(0,255,0);">物流制造</div>
-                                    </div>
-                                    <div class="row" style=" width: 50%;">
-                                        <div class="property-icon" style='background-image:"textures/science/hand.texture";'/>
-                                        <div class="property-text" style="padding-right: 1vmin; color: rgb(255, 255, 255);">特殊冶炼技术</div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                      </div>
 
@@ -586,9 +513,9 @@
                         <!-- 研究队列 end --> 
 
                         <!-- 开始研究按钮 start --> 
-                        <button class="column" style="justify-content:center; background-color: rgb(0,176,240); width: 30%; height:70%;">
-                            <div style="font-size: 4.00vmin; text-align: center;">开始研究</div>
-                            <div style="font-size: 2.67vmin; text-align: center;">(21m23s)</div>
+                        <button class="column" style="justify-content:center; width: 30%; height:70%;" data-style-background-color="current_running ? 'rgb(240,76,0)' : 'rgb(0,176,240)'" data-event-click="startSwitch()">
+                            <div style="font-size: 4.00vmin; text-align: center;">{{current_button_str}}研究</div>
+                            <div style="font-size: 2.67vmin; text-align: center;">剩余({{current_lefttime}})</div>
                         </button>
                         <!-- 开始研究按钮 end --> 
                     </div>

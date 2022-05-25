@@ -6,6 +6,7 @@ local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
 local click_tech_event = mailbox:sub {"click_tech"}
 local return_mb = mailbox:sub {"return"}
+local switch_mb = mailbox:sub {"switch"}
 local M = {}
 local first_time = true
 local tech_tree = {}
@@ -37,6 +38,17 @@ function M:tick(datamodel, chest_object_id)
 end
 local techlist = {}
 function M:stage_ui_update(datamodel)
+    local function set_current_tech(tech)
+        if datamodel.current_tech == tech then
+            return
+        end
+        datamodel.current_tech = tech
+        datamodel.current_desc = tech.desc
+        datamodel.current_icon = tech.icon
+        datamodel.current_running = tech.running
+        datamodel.current_lefttime = "12h21m23s"
+        datamodel.current_button_str = tech.running and "停止" or "开始"
+    end
     if first_time then
         datamodel.techs = {
             items = {}
@@ -93,6 +105,7 @@ function M:stage_ui_update(datamodel)
                         detail = detail,
                         ingredients = simple_ingredients,
                         progress = 50,
+                        running = false
                     }
                 end
             end
@@ -119,20 +132,19 @@ function M:stage_ui_update(datamodel)
                 --game_world:research_queue {current_tech.name}
             end
         end
-        local tech = datamodel.techs.items[1]
-        datamodel.current_tech_desc = tech.desc
-        datamodel.current_tech_icon = tech.icon
-        datamodel.current_tech = tech
+        set_current_tech(datamodel.techs.items[1])
         first_time = false
     end
     for _, _, _, index in click_tech_event:unpack() do
-        local tech = datamodel.techs.items[index]
-        datamodel.current_tech = tech
-        datamodel.current_tech_desc = tech.desc
-        datamodel.current_tech_icon = tech.icon
+        set_current_tech(datamodel.techs.items[index])
     end
     for _, _, _ in return_mb:unpack() do
         print("click return")
+    end
+    for _, _, _ in switch_mb:unpack() do
+        datamodel.current_tech.running = not datamodel.current_tech.running
+        print("datamodel.current_tech.running : ", datamodel.current_tech.running)
+        datamodel.current_running = datamodel.current_tech.running
     end
 end
 
