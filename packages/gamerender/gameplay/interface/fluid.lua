@@ -135,53 +135,6 @@ do
     end
 end
 
-do
-    local funcs = {}
-    funcs["fluidbox"] = function(typeobject, x, y, dir, result)
-        for _, conn in ipairs(typeobject.fluidbox.connections) do
-            local dx, dy, dir = iprototype:rotate_fluidbox(conn.position, dir, typeobject.area)
-            result[#result+1] = {x = x + dx, y = y + dy, dir = dir}
-        end
-        return result
-    end
-
-    local iotypes <const> = {"input", "output"}
-    funcs["fluidboxes"] = function(typeobject, x, y, dir, result, fluid_name)
-        for _, iotype in ipairs(iotypes) do
-            for _, v in ipairs(typeobject.fluidboxes[iotype]) do
-                for _, conn in ipairs(v.connections) do
-                    if fluid_name and fluid_name[iotype] then
-                        local dx, dy, dir = iprototype:rotate_fluidbox(conn.position, dir, typeobject.area)
-                        result[#result+1] = {x = x + dx, y = y + dy, dir = dir}
-                    end
-                end
-            end
-        end
-        return result
-    end
-
-    function M:get_fluidbox(prototype_name, x, y, dir, fluid_name)
-        assert(fluid_name)
-
-        local r = {}
-        local typeobject = assert(iprototype:queryByName("entity", prototype_name))
-        if typeobject.pipe then -- 管道直接认为有四个方向的流体口, 不读取配置
-            for _, dir in ipairs(PIPE_FLUIDBOXES_DIR) do
-                r[#r+1] = {x = x, y = y, dir = dir}
-            end
-        else
-            local types = typeobject.type
-            for i = 1, #types do
-                local func = funcs[types[i]]
-                if func then
-                    func(typeobject, x, y, dir, r, fluid_name)
-                end
-            end
-        end
-        return r
-    end
-end
-
 -- 获取建筑的所有流体类型
 do
     local funcs = {}
@@ -206,15 +159,13 @@ do
         return result
     end
 
-    function M:get_fluidname(prototype_name, fluid_name)
+    function M:get_fluid_name(prototype_name, fluid_name)
         assert(fluid_name)
 
         local r = {}
         local typeobject = assert(iprototype:queryByName("entity", prototype_name))
         if typeobject.pipe then -- 管道直接认为有四个方向的流体口, 不读取配置
-            for _, dir in ipairs(PIPE_FLUIDBOXES_DIR) do
-                r[#r+1] = {x = x, y = y, dir = dir}
-            end
+            r[#r+1] = fluid_name
         else
             local types = typeobject.type
             for i = 1, #types do
@@ -256,9 +207,9 @@ do
         ['S'] = {x = 0,  y = 1},
         ['W'] = {x = -1, y = 0},
     }
-    function M:get_dir_coord(x, y, dir)
+    function M:get_dir_coord(x, y, dir, dx, dy)
         local c = assert(dir_coord[dir])
-        return x + c.x, y + c.y
+        return x + c.x * (dx or 1), y + c.y * (dy or 1)
     end
 end
 
