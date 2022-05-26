@@ -49,15 +49,15 @@ private:
             , dib(dib)
         {}
     };
-    using bucket = std::conditional<sizeof(bucket_kv) <= sizeof(bucket_vk), bucket_kv, bucket_vk>::type;
-
-    static_assert(sizeof(bucket) <= 3 * sizeof(size_t));
     static constexpr size_t kInvalidSlot = size_t(-1);
     static constexpr size_t kMaxLoadFactor = 80;
     static constexpr uint8_t kMaxDistance = 128;
     static constexpr size_t kMaxTryRehash = 1;
 
 public:
+    using bucket = std::conditional<sizeof(bucket_kv) <= sizeof(bucket_vk), bucket_kv, bucket_vk>::type;
+    static_assert(sizeof(bucket) <= 3 * sizeof(size_t));
+
     flatmap() noexcept
         : KeyHash()
         , KeyEqual()
@@ -265,7 +265,7 @@ private:
     static bucket* alloc_bucket(size_t n) {
         void* t = std::malloc(n * sizeof(bucket));
         if (!t) {
-            throw std::bad_alloc();
+            throw std::bad_alloc {};
         }
         std::memset(t, 0, n * sizeof(bucket));
         return reinterpret_cast<bucket*>(t);
@@ -276,10 +276,10 @@ private:
     }
 
 private:
-    bucket* m_buckets = reinterpret_cast<bucket*>(&m_mask);
     size_t  m_mask = 0;
     size_t  m_maxsize = 0;
     size_t  m_size = 0;
+    bucket* m_buckets = reinterpret_cast<bucket*>(&m_mask);
 };
 
 template <typename Key,
