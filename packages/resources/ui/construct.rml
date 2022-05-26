@@ -85,7 +85,7 @@
             }
             .main-menu-block {
                 /* width: 86.67vmin; */
-                width: 50vmin;
+                width: 52vmin;
                 height: 16.00vmin;
                 flex-direction: row;
                 align-items: center;
