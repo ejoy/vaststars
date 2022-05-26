@@ -15,15 +15,6 @@ prototype "采矿机I" {
     recipe = "铁矿石挖掘",
     fluidboxes = {
         input = {},
-        output = {
-            {
-                capacity = 1000,
-                height = 200,
-                base_level = 150,
-                connections = {
-                    {type="output", position={1,1,"S"}},
-                }
-            }
+        output = {},
         },
-    },
 }
