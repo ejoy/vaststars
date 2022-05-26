@@ -28,7 +28,6 @@ public:
     void             queue_set(const queue_t& q);
     const queue_t&   queue_get() const;
 
-private:
     flatmap<uint16_t, uint16_t> progress;
     flatset<uint16_t> researched;
     queue_t queue;
