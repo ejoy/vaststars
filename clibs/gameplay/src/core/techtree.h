@@ -3,8 +3,8 @@
 #include <optional>
 #include <vector>
 #include <map>
-#include <set>
 #include "container.h"
+#include "util/flatmap.h"
 
 struct world;
 
@@ -29,8 +29,8 @@ public:
     const queue_t&   queue_get() const;
 
 private:
-    std::map<uint16_t, uint16_t> progress;
-    std::set<uint16_t> researched;
+    flatmap<uint16_t, uint16_t> progress;
+    flatset<uint16_t> researched;
     queue_t queue;
     std::map<uint16_t, std::map<uint16_t, ingredients_opt>> cache;
 };

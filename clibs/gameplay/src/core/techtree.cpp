@@ -7,10 +7,10 @@ extern "C" {
 
 uint16_t techtree_mgr::get_progress(uint16_t techid) const {
     auto iter = progress.find(techid);
-    if (iter == progress.end()) {
+    if (!iter) {
         return 0;
     }
-    return iter->second;
+    return *iter;
 }
 
 bool techtree_mgr::is_researched(uint16_t techid) const {
@@ -23,14 +23,9 @@ bool techtree_mgr::research_set(uint16_t techid, uint16_t max, uint16_t val) {
         val = max;
         finish = true;
     }
-    auto iter = progress.find(techid);
-    if (iter == progress.end()) {
-        progress.emplace(techid, val);
-    }
-    else {
-        iter->second = val;
-    }
+    progress.insert_or_assign(techid, std::move(val));
     if (finish) {
+        researched.insert(techid);
         cache.erase(techid);
     }
     return finish;
@@ -40,22 +35,23 @@ bool techtree_mgr::research_add(uint16_t techid, uint16_t max, uint16_t inc) {
     assert(inc != 0);
     bool finish = false;
     auto iter = progress.find(techid);
-    if (iter == progress.end()) {
+    if (!iter) {
         if (inc >= max) {
             inc = max;
             finish = true;
         }
-        progress.emplace(techid, inc);
+        progress.insert_or_assign(techid, std::move(inc));
     }
     else {
-        uint32_t value = (uint32_t)iter->second + inc;
+        uint32_t value = (uint32_t)*iter + inc;
         if (value >= max) {
             value = max;
             finish = true;
         }
-        iter->second = value;
+        *iter = value;
     }
     if (finish) {
+        researched.insert(techid);
         cache.erase(techid);
     }
     return finish;
