@@ -200,17 +200,4 @@ do
     end
 end
 
-do
-    local dir_coord = {
-        ['N'] = {x = 0,  y = -1},
-        ['E'] = {x = 1,  y = 0},
-        ['S'] = {x = 0,  y = 1},
-        ['W'] = {x = -1, y = 0},
-    }
-    function M:get_dir_coord(x, y, dir, dx, dy)
-        local c = assert(dir_coord[dir])
-        return x + c.x * (dx or 1), y + c.y * (dy or 1)
-    end
-end
-
 return M

@@ -27,7 +27,7 @@ local directions = {
     ['I'] = {'N', 'E'},
     ['T'] = {'N', 'E', 'S', 'W'},
     ['X'] = {'N'},
-    ['O'] = {'N', 'E'},
+    ['O'] = {'N', 'E', 'S', 'W'},
 }
 
 local accel = {}
@@ -56,23 +56,27 @@ for shape_type, v in pairs(accel) do
     end
 end
 
--- function M.to_state(shape_type, dir)
---     assert(accel[shape_type] and accel[shape_type][dir], ("invalid shape_type `%s` dir `%s`"):format(shape_type, dir))
---     return accel[shape_type][dir]
--- end
+function M:to_state(shape_type, dir)
+    assert(accel[shape_type] and accel[shape_type][dir], ("invalid shape_type `%s` dir `%s`"):format(shape_type, dir))
+    return accel[shape_type][dir]
+end
 
-function M.to_type_dir(passable_state)
+function M:to_type_dir(passable_state)
     assert(accel_reversed[passable_state])
     local t = accel_reversed[passable_state][1]
     return t.shape_type, t.dir
 end
 
-function M.set_state(passable_state, passable_dir, state)
+function M:set_state(passable_state, passable_dir, state)
     if state == 0 then
         return passable_state & ~(1 << passable_dir)
     else
         return passable_state |  (1 << passable_dir)
     end
+end
+
+function M:get_init_prototype_name(prototype_name)
+    return prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format("O"))
 end
 
 return M
