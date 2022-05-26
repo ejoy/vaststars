@@ -153,7 +153,7 @@ prototype "铁制电线杆" {
 prototype "科研中心I" {
     type = {"item"},
     stack = 25,
-    icon = "textures/construct/manufacture.texture",
+    icon = "textures/construct/lab.texture",
     model = "prefabs/rock.prefab",
     description = "研究科技技术的中心",
     group = "加工",
