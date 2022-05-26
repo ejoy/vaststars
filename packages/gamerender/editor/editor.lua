@@ -89,116 +89,70 @@ function M:teardown_begin()
     self:revert_changes({"TEMPORARY", "CONFIRM"})
 end
 
-do
+local get_dir_coord ; do
     local dir_coord = {
         ['N'] = {x = 0,  y = -1},
         ['E'] = {x = 1,  y = 0},
         ['S'] = {x = 0,  y = 1},
         ['W'] = {x = -1, y = 0},
     }
-    function M:get_dir_coord(x, y, dir)
+    function get_dir_coord(x, y, dir, dx, dy)
         local c = assert(dir_coord[dir])
-        return x + c.x, y + c.y
+        return x + c.x * (dx or 1), y + c.y * (dy or 1)
     end
 end
+function M:get_dir_coord(...)
+    return get_dir_coord(...)
+end
 
-function M:refresh_pipe(cache_names, prototype_name, x, y, dir)
+local function refresh_pipe(prototype_name, dir, entry_dir)
     local typeobject = iprototype:queryByName("entity", prototype_name)
     if not typeobject.pipe then
         return
     end
 
-    local state = 0
-    for _, v in ipairs(get_fluidboxes(prototype_name, x, y, dir)) do
-        for dir in pairs(v.fluidbox_dir) do
-            local dx, dy = self:get_dir_coord(v.x, v.y, dir)
-            local tile_object = tile_objects:get(cache_names, iprototype:packcoord(dx, dy))
-            if tile_object and tile_object.fluidbox_dir then
-                if tile_object.fluidbox_dir[iprototype:opposite_dir(dir)] then
-                    state = flow_shape.set_state(state, iprototype:dir_tonumber(dir), 1)
-                end
-            end
-        end
-    end
-
-    local ntype, dir = flow_shape.to_type_dir(state)
+    local state = flow_shape:to_state(prototype_name:gsub(".*%-(%u).*", "%1"), dir)
+    state = flow_shape:set_state(state, iprototype:dir_tonumber(entry_dir), 1)
+    local ntype, dir = flow_shape:to_type_dir(state)
     return prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format(ntype)), dir
 end
 
-function M:refresh_road(cache_names, x, y)
-    local tile_object = tile_objects:get(cache_names, iprototype:packcoord(x, y))
-    if not tile_object then
-        return
-    end
-
-    local object = assert(objects:get(cache_names, tile_object.id))
+function M:refresh_flow_shape(get_cache_names, set_cache_name, object, entry_dir)
+    local vsobject = assert(vsobject_manager:get(object.id))
     local typeobject = iprototype:queryByName("entity", object.prototype_name)
-    if not typeobject.road then
+    if not typeobject.pipe then -- todo
         return
     end
 
-    local state = 0
-    for _, v in ipairs(get_roadboxes(object.prototype_name, object.x, object.y, object.dir)) do
-        for dir in pairs(v.road_dir) do
-            local dx, dy = self:get_dir_coord(v.x, v.y, dir)
-            local tile_object = tile_objects:get(cache_names, iprototype:packcoord(dx, dy))
-            if tile_object and tile_object.road_dir then
-                if tile_object.road_dir[iprototype:opposite_dir(dir)] then
-                    state = flow_shape.set_state(state, iprototype:dir_tonumber(dir), 1)
-                end
-            end
-        end
+    local prototype_name, dir = refresh_pipe(object.prototype_name, object.dir, entry_dir)
+    if prototype_name then
+        object = self:clone_object(object)
+        object.prototype_name = prototype_name
+        object.dir = dir
+
+        vsobject:update {prototype_name = prototype_name}
+        vsobject:set_dir(dir)
+
+        self:set_object(object, set_cache_name)
     end
 
-    local ntype, dir = flow_shape.to_type_dir(state)
-    return object.prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format(ntype)), dir
-end
-
--- 更新指定 object 周边管道的形状
-function M:refresh_neighbor_flow_shape(cache_names, object)
-    for _, v in ipairs(get_fluidboxes(object.prototype_name, object.x, object.y, object.dir)) do
-        for dir in pairs(v.fluidbox_dir) do
-            local dx, dy = self:get_dir_coord(v.x, v.y, dir)
-            local tile_object = tile_objects:get(cache_names, iprototype:packcoord(dx, dy))
-            if not tile_object then
-                goto continue
-            end
-
-            local dobject = assert(objects:get(cache_names, tile_object.id))
-
-            local prototype_name, dir = self:refresh_pipe(cache_names, dobject.prototype_name, dobject.x, dobject.y, dobject.dir)
+    local dx, dy = self:get_dir_coord(object.x, object.y, entry_dir)
+    local tile_object = tile_objects:get(get_cache_names, iprototype:packcoord(dx, dy))
+    if tile_object then
+        local object = assert(objects:get(get_cache_names, tile_object.id))
+        local typeobject = iprototype:queryByName("entity", object.prototype_name)
+        if typeobject.pipe or typeobject.road then
+            local vsobject = assert(vsobject_manager:get(object.id))
+            local prototype_name, dir = refresh_pipe(object.prototype_name, object.dir, iprototype:opposite_dir(entry_dir))
             if prototype_name then
-
-                local vsobject = assert(vsobject_manager:get(tile_object.id))
-                vsobject:update {prototype_name = prototype_name}
-                vsobject:set_dir(dir)
-
-                object = self:clone_object(dobject)
+                object = self:clone_object(object)
                 object.prototype_name = prototype_name
                 object.dir = dir
 
-                self:set_object(object, "TEMPORARY")
-            end
-            ::continue::
-        end
-    end
-
-    for _, v in ipairs(get_roadboxes(object.prototype_name, object.x, object.y, object.dir)) do
-        for dir in pairs(v.road_dir) do
-            local dx, dy = self:get_dir_coord(v.x, v.y, dir)
-            local prototype_name, dir = self:refresh_road(cache_names, dx, dy)
-            if prototype_name then
-                local tile_object = assert(tile_objects:get(cache_names, iprototype:packcoord(dx, dy)))
-
-                local vsobject = assert(vsobject_manager:get(tile_object.id))
                 vsobject:update {prototype_name = prototype_name}
                 vsobject:set_dir(dir)
 
-                local object = self:clone_object(assert(objects:get(cache_names, tile_object.id)))
-                object.prototype_name = prototype_name
-                object.dir = dir
-
-                self:set_object(object, "TEMPORARY")
+                self:set_object(object, set_cache_name)
             end
         end
     end
@@ -219,7 +173,7 @@ function M:teardown_complete()
     end
 
     for _, object in pairs(removelist) do
-        self:refresh_neighbor_flow_shape("CONSTRUCTED", object)
+        -- TODO
     end
 
     local needbuild = false

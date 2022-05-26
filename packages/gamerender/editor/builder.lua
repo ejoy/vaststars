@@ -10,19 +10,6 @@ local vsobject_manager = ecs.require "vsobject_manager"
 local get_fluidboxes = require "gameplay.utility.get_fluidboxes"
 local ieditor = ecs.require "editor.editor"
 
-local get_dir_coord; do
-    local dir_coord = {
-        ['N'] = {x = 0,  y = -1},
-        ['E'] = {x = 1,  y = 0},
-        ['S'] = {x = 0,  y = 1},
-        ['W'] = {x = -1, y = 0},
-    }
-    function get_dir_coord(x, y, dir)
-        local c = assert(dir_coord[dir])
-        return x + c.x, y + c.y
-    end
-end
-
 local function check_construct_detector(self, prototype_name, x, y, dir)
     local typeobject = iprototype:queryByName("entity", prototype_name)
     local construct_detector = typeobject.construct_detector
@@ -47,7 +34,7 @@ local function get_neighbor_fluid_types(self, cache_names, prototype_name, x, y,
     local fluid_types = {}
     for _, v in ipairs(get_fluidboxes(prototype_name, x, y, dir)) do
         for dir in pairs(v.fluidbox_dir) do
-            local dx, dy = get_dir_coord(v.x, v.y, dir)
+            local dx, dy = ieditor:get_dir_coord(v.x, v.y, dir)
             local tile_object = tile_objects:get(cache_names, iprototype:packcoord(dx, dy))
             if tile_object and tile_object.fluidbox_dir then
                 if tile_object.fluidbox_dir[iprototype:opposite_dir(dir)] then
