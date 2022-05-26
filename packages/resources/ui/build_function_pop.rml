@@ -95,6 +95,10 @@
                     <button class="button-function" style ='background-image: "textures/assemble/wheel.texture";'/>
                     <div class="title-text">修改配方</div>
                 </div>
+                <div class="button-fuction-block" style="top: -5.33vmin;" data-event-click="clickRecipe()" data-if = "false">
+                    <button class="button-function" style ='background-image: "textures/construct/takeout.texture";'/>
+                    <div class="title-text">拾取物品</div>
+                </div>
                 <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe" /> <!-- TODO -->
 
                 <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickPlaceMaterial()" data-if = "show_set_recipe && show_material_button">

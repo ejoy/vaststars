@@ -174,8 +174,8 @@ prototype "玻璃" {
 prototype "地质科技包" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/science-pack.texture",
-    tech_icon = "textures/science/yellowbox.texture",
+    icon = "textures/recipe/geology-pack.texture",
+    tech_icon = "textures/science/graybox.texture",
     model = "prefabs/rock.prefab",
     description = "一种科技研究包",
     group = "器件",
@@ -185,7 +185,7 @@ prototype "地质科技包" {
 prototype "气候科技包" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/science-pack.texture",
+    icon = "textures/recipe/climatology-pack.texture",
     tech_icon = "textures/science/bluebox.texture",
     model = "prefabs/rock.prefab",
     description = "一种科技研究包",
@@ -196,7 +196,7 @@ prototype "气候科技包" {
 prototype "机械科技包" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/science-pack.texture",
+    icon = "textures/recipe/mechanical-pack.texture",
     tech_icon = "textures/science/redbox.texture",
     model = "prefabs/rock.prefab",
     description = "一种科技研究包",
