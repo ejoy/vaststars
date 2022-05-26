@@ -114,6 +114,11 @@ public:
         }
     }
 
+    bool contains(const key_type& key) const noexcept {
+        auto slot = find_key(key);
+        return slot != kInvalidSlot;
+    }
+
     mapped_type* find(const key_type& key) noexcept {
         auto slot = find_key(key);
         if (slot == kInvalidSlot) {
@@ -275,4 +280,17 @@ private:
     size_t  m_mask = 0;
     size_t  m_maxsize = 0;
     size_t  m_size = 0;
+};
+
+template <typename Key,
+          typename KeyHash = flatmap_hash<Key>,
+          typename KeyEqual = std::equal_to<Key>>
+class flatset: public flatmap<Key, uint8_t, KeyHash, KeyEqual> {
+private:
+    using key_type = Key;
+    using mybase = flatmap<Key, uint8_t, KeyHash, KeyEqual>;
+public:
+    void insert(const key_type& key) {
+        mybase::insert_or_assign(key, 0);
+    }
 };

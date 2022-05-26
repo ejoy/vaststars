@@ -28,7 +28,7 @@ world:create_entity "科研中心I" {
     y = 1,
 }
 
-world:research_queue {"铁加工1","铁矿收集","铁矿熔炼"}
+world:research_queue {"铁加工1","铁矿熔炼"}
 
 world:create_entity "指挥中心" {
     x = 1,
