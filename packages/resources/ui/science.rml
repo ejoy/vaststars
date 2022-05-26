@@ -437,7 +437,6 @@
                 end
             end)
             function start.clickReturn(event)
-                ui_sys:pub {"return"}
                 ui_sys:close()
             end
             function start.startSwitch(event)

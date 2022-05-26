@@ -51,11 +51,11 @@ prototype "机器爪I" {
 }
 
 prototype "科研中心I" {
+    type ={"entity", "consumer","laboratory"},
     model = "prefabs/lab-1.prefab",
     icon = "textures/building_pic/small_pic_lab.texture",
     background = "textures/build_background/pic_lab.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "consumer","laboratory"},
     area = "3x3",
     power = "150kW",
     priority = "secondary",

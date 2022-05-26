@@ -102,6 +102,8 @@ function M:stage_ui_update(datamodel)
             iui.open("assemble_2.rml", object_id)
         elseif iprototype:has_type(typeobject.type, "chest") then
             iui.open("cmdcenter.rml", object_id)
+        elseif iprototype:has_type(typeobject.type, "laboratory") then
+            iui.open("lab.rml", object_id)
         else
             log.error("no detail")
         end
