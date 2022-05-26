@@ -6,6 +6,9 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mu = import_package "ant.math".util
 local vsobject_manager = ecs.require "vsobject_manager"
 local math3d = require "math3d"
+local global = require("global")
+local objects = global.objects
+local cache_names = global.cache_names
 
 local idetail = ecs.interface "idetail"
 
@@ -20,6 +23,11 @@ function idetail.show(vsobject_id)
 
     -- 显示环型菜单
     local vsobject = assert(vsobject_manager:get(vsobject_id))
+
+    do
+        local object = objects:get(cache_names, vsobject_id)
+        log.info(object.prototype_name, object.x, object.y)
+    end
 
     local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
     local ce = world:entity(mq.camera_ref)
