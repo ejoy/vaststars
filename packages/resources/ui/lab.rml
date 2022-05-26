@@ -1,5 +1,23 @@
 <rml>
     <head>
+        <style>
+            .progress-background-new {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                justify-content: flex-start;
+                height: 20%;
+                border: 1px #fff;
+                background-color: #fff;
+                align-items: center;
+            }
+            .progress-bar {
+                justify-content: flex-start;
+                height: 99%;
+                background-color: rgb(0, 247, 33);
+            }
+
+        </style>
         <style path = "common/building_style.rcss" />
         <script type="text/x-lua" path = "lua/assemble_2.lua" />
     </head>
@@ -14,7 +32,7 @@
                 <div style="border-bottom: 1px rgb(89, 73, 39);"/>
                 <div class="column" data-if="mode == 'init'" style="width: 100%;height: 95%;">
                     <!-- 左上方建筑信息 begin -->
-                    <div class="build-info-reigon" data-style-background-image="background" style='background-size: cover;'>
+                    <div class="build-info-reigon" data-style-background-image="background" style='background-image:"textures/build_background/pic_lab.texture";  background-size: cover;'>
                         <!-- 左边显示信息 -->
                         <div class ="info-block" data-if = "false">
                                 <div class="row">
@@ -153,10 +171,10 @@
             <div class="panel" style="width: 50%;">
                 <div class="header" style="justify-content: flex-end;" data-if="mode == 'init'">
                     <div class = "menu-title" style="text-align: right; font-size: 6vmin; -webkit-text-stroke: 0.05vmin rgb(0, 0, 0); width: 70%;">科技树{{recipe_name}}</div>
-                    <button class = "recipe-change-button" data-event-click="clickRecipe()"/>
+                    <button class = "recipe-change-button"/>
                 </div>
                 <div class="column" style="width: 100%;height: 95%;" data-if="mode == 'init'">
-                    <div class="row" data-event-click="ClickMaterial()" style="border: 0.13vmin rgb(89, 73, 39); width: 100%; height: 75%; justify-content: space-evenly;">
+                    <div class="row" style="border: 0.13vmin rgb(89, 73, 39); width: 100%; height: 75%; justify-content: space-evenly;">
                         <div class="row" style="width: 100%; height:100%;">
                             <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
                                 <button class="item" data-style-background = "it.icon" data-for="recipe_ingredients_count" data-style-background-color = "it.count < it.need_count ? 'rgb(128,128,128)' : it.count >= it.need_count * 2 ? 'rgb(255,255,0)' : 'rgb(0,255,0)'">
@@ -185,24 +203,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" data-event-click="ClickPlugin()" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%; justify-content: center;">
+                    <div class="row" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%; justify-content: center;">
                         <button class="item">
-                            <div class="item-count">99</div> 
+                            <div class="item-count">99</div>
+                            <div class="progress-bar-block" style = "position:absolute; bottom: -0.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
+                                <div class="progress-background" style="width:50%;"/>
+                            </div> 
                         </button>                       
                         <button class="item">
                             <div class="item-count">99</div> 
+                            <div class="progress-bar-block" style = "position:absolute; bottom: -0.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
+                                <div class="progress-background" style="width:0%;"/>
+                            </div> 
                         </button> 
                         <button class="item">
                             <div class="item-count">99</div> 
+                            <div class="progress-bar-block" style = "position:absolute; bottom: -0.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
+                                <div class="progress-background" style="width:20%;"/>
+                            </div> 
                         </button> 
-                        <button class="item">
-                            <div class="item-count">99</div> 
-                        </button> 
-                        <button class="item">
-                            <div class="item-count">99</div> 
-                        </button>                        
-                        <button class="item-add">
-                        </button>
                     </div>
                 </div>
             </div>       
