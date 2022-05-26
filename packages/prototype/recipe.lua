@@ -142,9 +142,9 @@ prototype "电动机1" {
     order = 52,
     icon = "textures/construct/turbine1.texture",
     ingredients = {
-        {"铁棒", 1},
-        {"铁丝", 2},
-        {"铁板", 2},
+        -- {"铁棒", 1},
+        -- {"铁丝", 2},
+        {"铁板", 6},
         {"塑料", 1},
     },
     results = {
@@ -177,7 +177,8 @@ prototype "机器爪1" {
     order = 40,
     icon = "textures/construct/insert1.texture",
     ingredients = {
-        {"铁棒", 3},
+        -- {"铁棒", 3},
+        {"铁板", 3},
         {"铁齿轮", 2},
         {"电动机I", 1},
     },
@@ -265,7 +266,7 @@ prototype "小型铁制箱子" {
     order = 10,
     icon = "textures/construct/chest.texture",
     ingredients = {
-        {"铁棒", 1},
+        -- {"铁棒", 1},
         {"铁板", 8},
     },
     results = {
@@ -283,8 +284,9 @@ prototype "铁制电线杆" {
     icon = "textures/construct/electric-pole1.texture",
     ingredients = {
         {"塑料", 1},
-        {"铁棒", 1},
-        {"铁丝", 2},
+        {"铁板", 2},
+        -- {"铁棒", 1},
+        -- {"铁丝", 2},
     },
     results = {
         {"铁制电线杆", 1},
@@ -318,8 +320,8 @@ prototype "熔炼炉1" {
     order = 50,
     icon = "textures/construct/furnace2.texture",
     ingredients = {
-        {"铁板", 1},
-        {"铁丝", 2},
+        {"铁板", 3},
+        -- {"铁丝", 2},
         {"石砖", 4},
     },
     results = {
@@ -391,7 +393,7 @@ prototype "液罐I" {
     icon = "textures/construct/tank1.texture",
     ingredients = {
         {"管道1-I型", 4},
-        {"铁棒", 1},
+        -- {"铁棒", 1},
         {"铁板", 6},
     },
     results = {
@@ -481,7 +483,8 @@ prototype "烟囱1" {
     order = 65,
     icon = "textures/construct/chimney2.texture",
     ingredients = {
-        {"铁棒", 2},
+        -- {"铁棒", 2},
+        {"铁板", 2},
         {"管道1-I型", 3},
         {"石砖", 3},
     },
@@ -602,7 +605,8 @@ prototype "粉碎机1" {
     order = 60,
     icon = "textures/construct/crusher1.texture",
     ingredients = {
-        {"铁丝", 4},
+        -- {"铁丝", 4},
+        {"铁板", 4},
         {"石砖", 8},
         {"采矿机I", 1},
     },
@@ -691,7 +695,8 @@ prototype "破损电解厂" {
     order = 112,
     icon = "textures/construct/broken-electrolysis1.texture",
     ingredients = {
-        {"铁丝", 5},
+        -- {"铁丝", 5},
+        {"铁板", 5},
         {"破损电解厂", 1},
     },
     results = {
@@ -725,7 +730,8 @@ prototype "破损组装机" {
     order = 114,
     icon = "textures/construct/broken-assembler.texture",
     ingredients = {
-        {"铁丝", 6},
+        -- {"铁丝", 6},
+        {"铁板", 6},
         {"破损组装机", 1},
     },
     results = {
@@ -742,7 +748,8 @@ prototype "破损铁制电线杆" {
     order = 115,
     icon = "textures/construct/broken-electric-pole1.texture",
     ingredients = {
-        {"铁棒", 2},
+        -- {"铁棒", 2},
+        {"铁板", 2},
         {"破损铁制电线杆", 1},
     },
     results = {
@@ -810,7 +817,8 @@ prototype "破损运输汽车" {
     order = 119,
     icon = "textures/construct/truck.texture",
     ingredients = {
-        {"铁丝", 10},
+        -- {"铁丝", 10},
+        {"铁板", 10},
         {"破损运输车辆", 1},
     },
     results = {
@@ -827,7 +835,8 @@ prototype "破损车站" {
     order = 120,
     icon = "textures/construct/manufacture.texture",
     ingredients = {
-        {"铁棒", 6},
+        -- {"铁棒", 6},
+        {"铁板", 6},
         {"破损车站", 1},
     },
     results = {
