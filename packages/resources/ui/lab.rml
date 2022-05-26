@@ -1,23 +1,5 @@
 <rml>
     <head>
-        <style>
-            .progress-background-new {
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                justify-content: flex-start;
-                height: 20%;
-                border: 1px #fff;
-                background-color: #fff;
-                align-items: center;
-            }
-            .progress-bar {
-                justify-content: flex-start;
-                height: 99%;
-                background-color: rgb(0, 247, 33);
-            }
-
-        </style>
         <style path = "common/building_style.rcss" />
         <script type="text/x-lua" path = "lua/assemble_2.lua" />
     </head>
