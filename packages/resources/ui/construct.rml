@@ -84,7 +84,8 @@
                 left: 1.33vmin
             }
             .main-menu-block {
-                width: 86.67vmin;
+                /* width: 86.67vmin; */
+                width: 50vmin;
                 height: 16.00vmin;
                 flex-direction: row;
                 align-items: center;
@@ -272,11 +273,11 @@
                     <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
                     <div class = "menu-button-text">科研中心</div>
                 </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;">
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-if="false">
                     <div class = "menu-button-pic" style='background-image:"textures/factory/seacher.texture"'/>
                     <div class = "menu-button-text">统计数据</div>
                 </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;">
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-if="false"> 
                     <div class = "menu-button-pic" style='background-image:"textures/construct/road.texture"'/>
                     <div class = "menu-button-text">地图信息</div>
                 </button>

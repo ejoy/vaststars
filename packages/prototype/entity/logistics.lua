@@ -55,7 +55,7 @@ prototype "科研中心I" {
     icon = "textures/building_pic/small_pic_lab.texture",
     background = "textures/build_background/pic_lab.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "consumer","laboratory"},
+    type ={"entity", "consumer","laboratory","chest"},
     area = "3x3",
     power = "150kW",
     priority = "secondary",

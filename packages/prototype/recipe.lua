@@ -888,6 +888,22 @@ prototype "机械科技包1" {
     description = "机械原料制造机械科技包",
 }
 
+prototype "铁矿石挖掘" {
+    type = { "recipe" },
+    category = "金属冶炼",
+    --group = "金属",
+    order = 20,
+    icon = "textures/construct/air-filter1.texture",
+    ingredients = {
+    },
+    results = {
+        {"铁矿石", 1},
+    },
+    time = "3s",
+    description = "采集铁矿石",
+}
+
+
 prototype "空气过滤" {
     type = { "recipe" },
     category = "过滤",
