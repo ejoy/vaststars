@@ -32,7 +32,7 @@ prototype "收集铁矿石" {
   prerequisites = {"地质研究"},
   count = 10,
   sign_desc = {
-    { desc = "收集10个铁矿石", icon = "textures/science/important.texture"},
+    { desc = "收集10个铁矿石", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -150,7 +150,7 @@ prototype "生产管道" {
   prerequisites = {"挖掘井","管道系统1"},
   count = 10,
   sign_desc = {
-    { desc = "生产10个管道", icon = "textures/science/important.texture"},
+    { desc = "生产10个管道", icon = "textures/construct/assembler.texture"},
   },
 }
 
@@ -207,7 +207,7 @@ prototype "使用破损组装机" {
   prerequisites = {"铁加工1"},
   count = 3,
   sign_desc = {
-    { desc = "使用3个破损组装机", icon = "textures/science/important.texture"},
+    { desc = "使用3个破损组装机", icon = "textures/construct/assembler.texture"},
   },
 }
 
@@ -233,7 +233,7 @@ prototype "放置太阳能板" {
   prerequisites = {"石头处理1"},
   count = 3,
   sign_desc = {
-    { desc = "使用3个破损组装机", icon = "textures/science/important.texture"},
+    { desc = "放置3个太阳能板", icon = "textures/construct/assembler.texture"},
   },
 }
 
@@ -295,7 +295,7 @@ prototype "生产储藏箱" {
   prerequisites = {"储存1","基地生产1"},
   count = 10,
   sign_desc = {
-    { desc = "生产3个小型铁制箱子", icon = "textures/science/important.texture"},
+    { desc = "生产3个小型铁制箱子", icon = "textures/construct/assembler.texture"},
   },
 }
 
@@ -417,7 +417,7 @@ prototype "生产一氧化碳" {
   prerequisites = {"碳处理2"},
   count = 1000,
   sign_desc = {
-    { desc = "生产1000个单位一氧化碳", icon = "textures/science/important.texture"},
+    { desc = "生产1000个单位一氧化碳", icon = "textures/fluid/gas.texture"},
   },
 }
 
@@ -428,7 +428,7 @@ prototype "生产塑料" {
   prerequisites = {"有机化学"},
   count = 50,
   sign_desc = {
-    { desc = "生产50个塑料", icon = "textures/science/important.texture"},
+    { desc = "生产50个塑料", icon = "textures/construct/assembler.texture"},
   },
 }
 
