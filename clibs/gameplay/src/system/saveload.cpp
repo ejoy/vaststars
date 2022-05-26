@@ -142,14 +142,8 @@ namespace sav_container {
     };
 
     struct chest_header {
-        uint16_t slot_size;
         uint16_t used;
         uint16_t size;
-    };
-
-    struct recipe_header {
-        uint16_t in_size;
-        uint16_t out_size;
     };
 
     static void backup(lua_State* L, world& w) {
@@ -161,21 +155,15 @@ namespace sav_container {
         file_write(f, h);
         for (auto const& c : w.containers.chest) {
             chest_header chest_h {
-                (uint16_t)c.slots.size(),
                 c.used,
                 c.size,
             };
             file_write(f, chest_h);
-            file_write(f, c.slots.data(), c.slots.size());
+            write_vector(f, c.slots);
         }
         for (auto const& c : w.containers.recipe) {
-            recipe_header recipe_h {
-                (uint16_t)c.inslots.size(),
-                (uint16_t)c.outslots.size(),
-            };
-            file_write(f, recipe_h);
-            file_write(f, c.inslots.data(), c.inslots.size());
-            file_write(f, c.outslots.data(), c.outslots.size());
+            write_vector(f, c.inslots);
+            write_vector(f, c.outslots);
         }
         fclose(f);
     }
@@ -187,17 +175,13 @@ namespace sav_container {
         w.containers.recipe.resize(h.recipe_size);
         for (auto& c : w.containers.chest) {
             auto chest_h = file_read<chest_header>(f);
-            c.slots.resize(chest_h.slot_size);
             c.used = chest_h.used;
             c.size = chest_h.size;
-            file_read(f, c.slots.data(), c.slots.size());
+            read_vector(f, c.slots);
         }
         for (auto& c : w.containers.recipe) {
-            auto recipe_h = file_read<recipe_header>(f);
-            c.inslots.resize(recipe_h.in_size);
-            c.outslots.resize(recipe_h.out_size);
-            file_read(f, c.inslots.data(), c.inslots.size());
-            file_read(f, c.outslots.data(), c.outslots.size());
+            read_vector(f, c.inslots);
+            read_vector(f, c.outslots);
         }
         fclose(f);
     }
