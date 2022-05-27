@@ -88,7 +88,7 @@ local function update_techlist()
             time = value.time,
             task = value.task,
             progress = (progress > 0) and ((progress + 1) * 100 // value.count) or progress,
-            running = queue and queue[1] == name or false
+            running = #queue > 0 and queue[1] == name or false
         }
     end
     local items = {}
