@@ -72,7 +72,7 @@ function M:create(object_id)
     return get(object_id)
 end
 
-function M:tick(datamodel, object_id)
+function M:stage_ui_update(datamodel, object_id)
     local object = assert(objects:get(cache_names, object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then

@@ -84,7 +84,7 @@ function M:create(object_id)
     }
 end
 
-function M:tick(datamodel, object_id)
+function M:stage_ui_update(datamodel, object_id)
     local object = assert(objects:get(cache_names, object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if e then
@@ -115,9 +115,7 @@ function M:tick(datamodel, object_id)
 
         datamodel.inventory = inventory
     end
-end
 
-function M:stage_ui_update(datamodel, object_id)
     for _, _, _, prototype in click_item_mb:unpack() do
         local typeobject = iprototype:query(prototype)
         datamodel.show_item_info = true

@@ -233,16 +233,15 @@ local function prepare_starting(self, datamodel)
     if is_valid_starting(coord_indicator.x, coord_indicator.y) then
         datamodel.show_batch_mode_begin = true
         set_object_appearance(coord_indicator, "construct")
+
+        local object = get_object(coord_indicator.x, coord_indicator.y)
+        if object then
+            local starting_fluidbox_x, starting_fluidbox_y, starting_fluid_name, starting_fluidflow_network_id, starting_dir = get_starting_fluidbox_coord(coord_indicator.x, coord_indicator.y, coord_indicator.x, coord_indicator.y)
+            show_starting_indicator(starting_fluidbox_x, starting_fluidbox_y, starting_fluid_name, starting_fluidflow_network_id, starting_dir, self.prototype_name, object.x, object.y)
+        end
     else
         datamodel.show_batch_mode_begin = false
         set_object_appearance(coord_indicator, "invalid_construct")
-    end
-
-    --
-    local object = get_object(coord_indicator.x, coord_indicator.y)
-    if object then
-        local starting_fluidbox_x, starting_fluidbox_y, starting_fluid_name, starting_fluidflow_network_id, starting_dir = get_starting_fluidbox_coord(coord_indicator.x, coord_indicator.y, coord_indicator.x, coord_indicator.y)
-        show_starting_indicator(starting_fluidbox_x, starting_fluidbox_y, starting_fluid_name, starting_fluidflow_network_id, starting_dir, self.prototype_name, object.x, object.y)
     end
 end
 

@@ -16,18 +16,11 @@ local flow_shape = require "gameplay.utility.flow_shape"
 local M = {}
 
 function M:clone_object(object)
-    return {
-        id = object.id,
-        gameplay_eid = object.gameplay_eid,
-        prototype_name = object.prototype_name,
-        dir = object.dir,
-        x = object.x,
-        y = object.y,
-        teardown = object.teardown,
-        headquater = object.headquater,
-        fluid_name = object.fluid_name,
-        fluidflow_network_id = object.fluidflow_network_id,
-    }
+    local t = {}
+    for k, v in pairs(object) do
+        t[k] = v
+    end
+    return t
 end
 
 function M:revert_changes(revert_cache_names)

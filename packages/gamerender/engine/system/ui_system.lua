@@ -18,7 +18,6 @@ local rmlui_message_close_mb = world:sub {"rmlui_message_close"}
 local ui_message_mb = world:sub {"ui_message"}
 local window_bindings = {} -- = {[url] = { w = xx, datamodel = xx, }, ...}
 local datamodel_changed = {}
-local datamodel_tick = {}
 local stage_ui_update = {}
 local stage_camera_usage = {}
 local datamodel_listener = {}
@@ -98,10 +97,6 @@ local function open(url, ...)
     binding.datamodel = syncobj_source:new(binding.template:create(...))
     binding.template:flush()
 
-    if binding.template.tick then
-        datamodel_tick[url] = true
-    end
-
     if binding.template.stage_ui_update then
         stage_ui_update[url] = true
     end
@@ -126,7 +121,6 @@ local function close(url)
     binding.window:close()
     window_bindings[url] = nil
     datamodel_changed[url] = nil
-    datamodel_tick[url] = nil
     stage_ui_update[url] = nil
     stage_camera_usage[url] = nil
 end
@@ -159,14 +153,6 @@ function ui_system.ui_update()
             ud.event = msg[2]
             ud.ud = {table_unpack(msg, 3, #msg)}
             binding.window.postMessage(json_encode(ud))
-        end
-    end
-
-    for url in pairs(datamodel_tick) do
-        local binding = window_bindings[url]
-        binding.template:tick(binding.datamodel, table_unpack(binding.param))
-        if syncobj_source:changed(binding.datamodel) then
-            datamodel_changed[url] = true
         end
     end
 
@@ -247,6 +233,7 @@ function iui.preload_datamodel_dir(dir)
     end
 end
 
+-- for debuger
 function iui.add_datamodel_listener(func)
     datamodel_listener[#datamodel_listener+1] = func
 end
