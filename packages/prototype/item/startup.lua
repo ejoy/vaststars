@@ -4,6 +4,10 @@ local entities = {
         dir = "N",
         x = 126,
         y = 126,
+        items = {
+            {"地质科技包",100},
+            {"气候科技包",100},
+        },
     },
     {
         prototype_name = "科研中心I",
