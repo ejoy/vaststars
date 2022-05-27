@@ -111,7 +111,7 @@ end
 local function get_starting_fluidbox_coord(starting_x, starting_y, x, y)
     local object = get_object(starting_x, starting_y)
     if not object then
-        return starting_x, starting_y, nil, 0, calc_dir(starting_x, starting_y, x, y)
+        return starting_x, starting_y, "", 0, calc_dir(starting_x, starting_y, x, y)
     end
 
     local typeobject = iprototype:queryByName("entity", object.prototype_name)
@@ -510,7 +510,7 @@ local function touch_move(self, datamodel, delta_vec)
     self.coord_indicator.x, self.coord_indicator.y = coord[1], coord[2]
     vsobject:set_position(position)
 
-    -- 
+    -- TODO
     local coord_indicator = assert(self.coord_indicator)
     if coord[1] == coord_indicator.x and coord[2] == coord_indicator.y then
         return
