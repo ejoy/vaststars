@@ -11,9 +11,9 @@ local M = {}
 local first_time = true
 local tech_tree = {}
 local current_tech
-local game_world
 local techlist = {}
 local function update_techlist()
+    local game_world = gameplay_core.get_world()
     techlist = {}
     for _, tnode in pairs(tech_tree) do
         local prenames = tnode.detail.prerequisites
@@ -87,7 +87,7 @@ local function update_techlist()
             count = value.count,
             time = value.time,
             task = value.task,
-            progress = (progress + 1) * 100 // value.count,
+            progress = (progress > 0) and ((progress + 1) * 100 // value.count) or progress,
             running = queue and queue[1] == name or false
         }
     end
@@ -105,9 +105,6 @@ local function get_button_str(tech)
 end
 
 function M:create(object_id)
-    if not game_world then
-        game_world = gameplay_core.get_world()
-    end
     local prototypes = iprototype.all_prototype_name()
     for key, value in pairs(prototypes) do
         if value.type[1] == "tech" then
@@ -144,9 +141,12 @@ function M:stage_ui_update(datamodel)
         datamodel.current_button_str = get_button_str(tech)
     end
     
+    local game_world = gameplay_core.get_world()
+
     for _, _, _, index in click_tech_event:unpack() do
         set_current_tech(datamodel.techitems[index])
     end
+
     for _, _, _ in switch_mb:unpack() do
         current_tech.running = not current_tech.running
         if current_tech.running then
