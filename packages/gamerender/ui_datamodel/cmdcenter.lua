@@ -172,8 +172,6 @@ function M:stage_ui_update(datamodel, object_id)
 
         local pickup_count = math.min(typeobject_item.stack - chest_item_counts[prototype], headquater_item_counts[prototype])
         ichest:pickup_place(gameplay_core.get_world(), headquater_e, chest_e, prototype, pickup_count)
-        update(datamodel, datamodel.object_id)
-        self:flush()
         ::continue::
     end
 
@@ -212,10 +210,11 @@ function M:stage_ui_update(datamodel, object_id)
         local pickup_count = math.min(typeobject_item.stack, chest_item_counts[prototype])
 
         ichest:pickup_place(gameplay_core.get_world(), chest_e, headquater_e, prototype, pickup_count)
-        update(datamodel, datamodel.object_id)
-        self:flush()
         ::continue::
     end
+
+    update(datamodel, datamodel.object_id)
+    self:flush()
 end
 
 function M:update(datamodel)
