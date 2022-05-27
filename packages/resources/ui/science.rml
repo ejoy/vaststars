@@ -298,7 +298,6 @@
                 current_desc = " ",
                 current_running = false,
                 current_button_str = "开始",
-                current_lefttime = " ",
                 selected_tech = nil,
                 selected_recipe = nil
             }
@@ -313,21 +312,22 @@
                 ui_sys:pub{"click_recipe", index}
             end
             local function tech_item_renderer(index)
-                local item_data = start.techs.items[index]
+                local item_data = start.techitems[index]
                 local item = document.createElement "div"
                 local ingredient_items = ""
-                local ingredient_count = 0
-                for _, ingredient in ipairs(item_data.ingredients) do
-                    if ingredient_count == 0 then
-                        ingredient_count = ingredient.count
+                if not item_data.task then
+                    local ingredient_count = 0
+                    for _, ingredient in ipairs(item_data.ingredients) do
+                        if ingredient_count == 0 then
+                            ingredient_count = ingredient.count
+                        end
+                        ingredient_items = ingredient_items .. ([[<div class="property-icon" style='background-image:"%s";'/>]]):format(ingredient.icon)
                     end
-                    ingredient_items = ingredient_items .. ([[<div class="property-icon" style='background-image:"%s";'/>]]):format(ingredient.icon)
-                end
-                if ingredient_count > 0 then
-                    ingredient_items = [[<div class="research-req">]] .. ingredient_items .. ([[<div style="font-size: 3.5vmin; text-align: center;">X %d</div></div>]]):format(ingredient_count)
+                    if ingredient_count > 0 then
+                        ingredient_items = [[<div class="research-req">]] .. ingredient_items .. ([[<div style="font-size: 3.5vmin; text-align: center;">X %d</div></div>]]):format(ingredient_count)
+                    end
                 end
                 local sign = item_data.sign_icon and ([[<div class="icon-sign" style='background-image:"%s";'/>]]):format(item_data.sign_icon) or ""
-                console.log("----item_data.running", item_data.running)
                 local statestr = item_data.running and [[<div class="icon-researching">研究中...</div>]] or ""
                 item.outerHTML = ([[
                 <div class="progress-background-new" style="position:absolute; left:0; width: %d%%;"/>
@@ -337,12 +337,12 @@
                 item.className = "item-research"
                 local select_style_border = "5px green"
                 item.addEventListener('click', function(event)
-                    if start.techs.selected_tech then
-                        start.techs.selected_tech.style.border = '0px green'
+                    if start.selected_tech then
+                        start.selected_tech.style.border = '0px green'
                     end
                     item.style.border = select_style_border
                     clickTech(index)
-                    start.techs.selected_tech = item
+                    start.selected_tech = item
                 end)
                 return item
             end
@@ -368,12 +368,12 @@
                 item.style.width = '96%'
                 local select_style_border = "5px green"
                 item.addEventListener('click', function(event)
-                    if start.techs.selected_recipe then
-                        start.techs.selected_recipe.style.border = '0px green'
-                        start.detaillist:show_detail(start.techs.selected_recipe, false)
+                    if start.selected_recipe then
+                        start.selected_recipe.style.border = '0px green'
+                        start.detaillist:show_detail(start.selected_recipe, false)
                     end
                     item.style.border = select_style_border
-                    start.techs.selected_recipe = item
+                    start.selected_recipe = item
                     if detail.name then
                         start.detaillist:show_detail(index, true)
                     end
@@ -420,19 +420,20 @@
                 start.detaillist = listclass.create(document, e, 0, detail_item_renderer, pop_item_renderer)
             end)
             ui_sys:setDataModel(start, function(patch)
-                if patch.techs then
-                    console.log("techllist dirty")
-                    start.techs.selected_tech = nil
-                    start.list:on_dirty_all(#start.techs.items)
+                if patch.techitems then
+                    console.log("techllist dirty all")
+                    start.selected_tech = nil
+                    start.list:on_dirty_all(#start.techitems)
                 end
                 if patch.current_tech then
                     console.log("detaillist dirty")
-                    start.techs.selected_recipe = nil
+                    start.selected_recipe = nil
                     start.detaillist:on_dirty_all(#start.current_tech.detail)
                 end
 
-                if patch.current_running then
-                    start.techs.selected_tech = nil
+                if patch.current_progress then
+                    console.log("techllist dirty", start.current_tech.index)
+                    start.selected_tech = nil
                     start.list:on_dirty(start.current_tech.index)
                 end
             end)
@@ -514,8 +515,7 @@
 
                         <!-- 开始研究按钮 start --> 
                         <button class="column" style="justify-content:center; width: 30%; height:70%;" data-style-background-color="current_running ? 'rgb(240,76,0)' : 'rgb(0,176,240)'" data-event-click="startSwitch()">
-                            <div style="font-size: 4.00vmin; text-align: center;">{{current_button_str}}研究</div>
-                            <div style="font-size: 2.67vmin; text-align: center;">剩余({{current_lefttime}})</div>
+                            <div style="font-size: 4.00vmin; text-align: center;">{{current_button_str}}</div>
                         </button>
                         <!-- 开始研究按钮 end --> 
                     </div>
