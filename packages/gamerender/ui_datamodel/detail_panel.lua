@@ -114,7 +114,7 @@ function M:create(object_id)
     }
 end
 
-function M:tick(datamodel, object_id)
+function M:stage_ui_update(datamodel, object_id)
     datamodel.property_list = get_entity_property_list(object_id)
 end
 
