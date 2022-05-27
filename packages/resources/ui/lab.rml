@@ -9,7 +9,6 @@
                 items = {}
             }
             ui_sys:setDataModel(start, function(patch)
-                console.log("setDataModel")
             end)
             function start.clickReturn(event)
                 ui_sys:close()
