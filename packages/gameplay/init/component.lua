@@ -51,6 +51,13 @@ component "burner" {
 	"progress:word",
 }
 
+component "chimney" {
+    "recipe:word",
+    "speed:word",
+    "status:byte",
+    "progress:int",
+}
+
 component "consumer" {
 }
 
