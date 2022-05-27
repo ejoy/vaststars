@@ -69,7 +69,7 @@ namespace lua_world {
             lua_createtable(L, (int)N, 0);
             for (size_t i = 0; i < N; ++i) {
                 lua_pushinteger(L, q[i]);
-                lua_rawseti(L, -2, i);
+                lua_rawseti(L, -2, i+1);
             }
             return 1;
         }
