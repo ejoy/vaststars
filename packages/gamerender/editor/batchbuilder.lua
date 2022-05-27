@@ -33,10 +33,10 @@ local get_valid_fluidbox ; do
     local PIPE_FLUIDBOXES_DIR = ALL_DIR
 
     local funcs = {}
-    funcs["fluidbox"] = function(typeobject, x, y, dir, result, fluid_name, fluidflow_network_id)
+    funcs["fluidbox"] = function(typeobject, x, y, dir, result, fluid_name)
         for _, conn in ipairs(typeobject.fluidbox.connections) do
             local dx, dy, dir = iprototype:rotate_fluidbox(conn.position, dir, typeobject.area)
-            result[#result+1] = {x = x + dx, y = y + dy, dir = dir, fluid_name = fluid_name, fluidflow_network_id = fluidflow_network_id}
+            result[#result+1] = {x = x + dx, y = y + dy, dir = dir, fluid_name = fluid_name}
         end
         return result
     end
@@ -49,7 +49,7 @@ local get_valid_fluidbox ; do
     end
 
     local iotypes <const> = {"input", "output"}
-    funcs["fluidboxes"] = function(typeobject, x, y, dir, result, fluid_name, fluidflow_network_id)
+    funcs["fluidboxes"] = function(typeobject, x, y, dir, result, fluid_name)
         for _, iotype in ipairs(iotypes) do
             for _, v in ipairs(typeobject.fluidboxes[iotype]) do
                 for index, conn in ipairs(v.connections) do
@@ -61,7 +61,7 @@ local get_valid_fluidbox ; do
         return result
     end
 
-    function get_valid_fluidbox(prototype_name, x, y, dir, fluid_name, fluidflow_network_id)
+    function get_valid_fluidbox(prototype_name, x, y, dir, fluid_name)
         local r = {}
         local typeobject = assert(iprototype:queryByName("entity", prototype_name))
         if typeobject.pipe then
@@ -73,7 +73,7 @@ local get_valid_fluidbox ; do
             for i = 1, #types do
                 local func = funcs[types[i]]
                 if func then
-                    func(typeobject, x, y, dir, r, fluid_name, fluidflow_network_id)
+                    func(typeobject, x, y, dir, r, fluid_name)
                 end
             end
         end
@@ -120,15 +120,12 @@ local function get_starting_fluidbox_coord(starting_x, starting_y, x, y)
     end
 
     local r
-    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name, object.fluidflow_network_id)) do
+    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
         r = r or v
         if get_distance(r.x, r.y, x, y) > get_distance(v.x, v.y, x, y) then
             r = v
         end
     end
-
-    assert(r)
-    assert(object.fluidflow_network_id) -- TODO
     return r.x, r.y, r.fluid_name, object.fluidflow_network_id, r.dir
 end
 
@@ -150,7 +147,7 @@ local function get_ending_fluidbox_coord(starting_x, starting_y, starting_fluid_
     end
 
     local r
-    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name, object.fluidflow_network_id)) do
+    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
         local dx = math_abs(starting_x - v.x)
         local dy = math_abs(starting_y - v.y)
         local vec = assert(dir_vector[v.dir])
@@ -160,16 +157,14 @@ local function get_ending_fluidbox_coord(starting_x, starting_y, starting_fluid_
     end
 
     if not r then
-        assert(object.fluid_name and object.fluidflow_network_id) -- TODO
-        return false, x, y, object.fluid_name, object.fluidflow_network_id
+        return false, x, y, "", object.fluidflow_network_id
     end
 
-    assert(starting_fluid_name)
     if starting_fluid_name ~= "" and r.fluid_name ~= "" and r.fluid_name ~= starting_fluid_name then
-        return false, x, y, object.fluid_name, object.fluidflow_network_id
+        return false, x, y, r.fluid_name, object.fluidflow_network_id
     end
 
-    return true, r.x, r.y, object.fluid_name, object.fluidflow_network_id
+    return true, r.x, r.y, r.fluid_name, object.fluidflow_network_id
 end
 
 local function show_starting_indicator(starting_x, starting_y, starting_fluid_name, starting_fluidflow_network_id, starting_dir, prototype_name, x, y)
@@ -223,7 +218,7 @@ local function is_valid_starting(x, y)
         return true
     end
 
-    local t = get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name, object.fluidflow_network_id)
+    local t = get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)
     return #t > 0
 end
 
@@ -396,7 +391,7 @@ local function start(self, datamodel)
         local object = starting_object or ending_object
         local fluid_name, fluidflow_network_id
         if object then
-            fluid_name = object.fluid_name
+            fluid_name = starting_fluid_name
             fluidflow_network_id = object.fluidflow_network_id
         else
             global.fluidflow_network_id = global.fluidflow_network_id + 1
