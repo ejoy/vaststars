@@ -870,7 +870,7 @@ prototype "气候科技包1" {
     order = 82,
     icon = "textures/recipe/climatology-pack.texture",
     ingredients = {
-        {"地下水", 2000},
+        {"地下卤水", 2000},
         {"空气", 3000},
     },
     results = {
@@ -937,10 +937,10 @@ prototype "离岸抽水" {
     ingredients = {
     },
     results = {
-        {"地下水", 120},
+        {"地下卤水", 120},
     },
     time = "0.1s",
-    description = "抽取地表下的地下水",
+    description = "抽取地表下的地下卤水",
 }
 
 
@@ -961,14 +961,14 @@ prototype "空气分离1" {
     description = "空气分离出纯净气体",
 }
 
-prototype "地下水电解" {
+prototype "地下卤水电解" {
     type = { "recipe" },
     category = "电解",
     --group = "流体",
     order = 16,
     icon = "textures/construct/electrolysis1.texture",
     ingredients = {
-        {"地下水", 40},
+        {"地下卤水", 40},
     },
     results = {
         {"氢气", 110},
@@ -976,7 +976,7 @@ prototype "地下水电解" {
         {"氢氧化钠", 1},
     },
     time = "1s",
-    description = "地下水电解出纯净气体和化合物",
+    description = "地下卤水电解出纯净气体和化合物",
 }
 
 prototype "二氧化碳转一氧化碳" {
@@ -1049,6 +1049,23 @@ prototype "氯化氢" {
     },
     time = "1s",
     description = "氢气和氯气化合成氯化氢",
+}
+
+prototype "地下卤水电解" {
+    type = { "recipe" },
+    category = "电解",
+    group = "流体",
+    order = 15,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
+        {"纯水", 45},
+    },
+    results = {
+        {"氧气", 70},
+        {"氢气", 140},
+    },
+    time = "1s",
+    description = "纯水电解成氧气和氢气",
 }
 
 prototype "纯水电解" {
@@ -1172,20 +1189,20 @@ prototype "废水排泄" {
     description = "废水排泄",
 }
 
-prototype "地下水排泄" {
+prototype "地下卤水排泄" {
     type = { "recipe" },
     category = "流体液体排泄",
     --group = "流体",
     order = 101,
     icon = "textures/fluid/liquid.texture",
     ingredients = {
-        {"地下水", 100},
+        {"地下卤水", 100},
     },
     results = {
         {"液体排泄物", 1},
     },
     time = "1s",
-    description = "地下水排泄",
+    description = "地下卤水排泄",
 }
 
 prototype "纯水排泄" {
@@ -1316,8 +1333,8 @@ prototype "甲烷排泄" {
     description = "甲烷排泄",
 }
 
----------地下水生成矿物配方----------
-prototype "地下水分离铁" {
+---------地下卤水生成矿物配方----------
+prototype "地下卤水分离铁" {
     type = { "recipe" },
     category = "金属流体处理",
     group = "金属",
@@ -1325,24 +1342,24 @@ prototype "地下水分离铁" {
     -- icon = "textures/construct/gravel.texture",
     icon = "textures/recipe/water2iron.texture",
     ingredients = {
-        {"地下水", 100},
+        {"地下卤水", 100},
     },
     results = {
         {"铁矿石", 2},
         {"纯水", 50},
     },
     time = "3s",
-    description = "地下水中分离铁矿石",
+    description = "地下卤水中分离铁矿石",
 }
 
-prototype "地下水分离水藻" {
+prototype "地下卤水分离水藻" {
     type = { "recipe" },
     category = "金属流体处理",
     --group = "金属",
     order = 2,
     icon = "textures/construct/gravel.texture",
     ingredients = {
-        {"地下水", 100},
+        {"地下卤水", 100},
     },
     results = {
         {"海藻", 2},
@@ -1350,10 +1367,10 @@ prototype "地下水分离水藻" {
         {"纯水", 50},
     },
     time = "3s",
-    description = "地下水中分离水藻",
+    description = "地下卤水中分离水藻",
 }
 
-prototype "地下水分离石头" {
+prototype "地下卤水分离石头" {
     type = { "recipe" },
     category = "金属流体处理",
     group = "金属",
@@ -1361,13 +1378,13 @@ prototype "地下水分离石头" {
     -- icon = "textures/construct/gravel.texture",
     icon = "textures/recipe/water2gravel.texture",
     ingredients = {
-        {"地下水", 100},
+        {"地下卤水", 100},
     },
     results = {
         {"碎石",2},
     },
     time = "3s",
-    description = "地下水中分离石头",
+    description = "地下卤水中分离石头",
 }
 
 prototype "提炼纤维" {

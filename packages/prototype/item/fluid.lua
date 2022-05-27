@@ -91,7 +91,7 @@ prototype "氯气" {
     des = "一种纯净气体",
 }
 
-prototype "地下水" {
+prototype "地下卤水" {
     type = {"fluid"},
     catagory = {"普通液体"},
     icon = "textures/fluid/liquid-seawater.texture",
