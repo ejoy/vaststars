@@ -26,7 +26,7 @@ prototype "地质研究" {
 }
 
 prototype "收集铁矿石" {
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"地质研究"},
@@ -60,6 +60,21 @@ prototype "生产铁板" {
   sign_desc = {
     { desc = "生产10个铁板", icon = "textures/science/tech-metal.texture"},
   },
+}
+
+prototype "石头处理1" {
+  desc = "获得火星岩石加工成石砖的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-metal.texture",
+  effects = {
+    unlock_recipe = {"石砖"},
+  },
+  prerequisites = {"生产铁板"},
+  ingredients = {
+      {"地质科技包", 1},
+  },
+  count = 5,
+  time = "2s"
 }
 
 prototype "气候研究" {
@@ -211,7 +226,7 @@ prototype "使用破损组装机" {
   },
 }
 
-prototype "石头处理1" {
+prototype "石头处理2" {
   desc = "对火星岩石成分的研究",
   type = { "tech" },
   icon = "textures/science/tech-metal.texture",
@@ -230,27 +245,11 @@ prototype "放置太阳能板" {
   icon = "textures/science/tech-equipment.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "太阳能板I"},
-  prerequisites = {"石头处理1"},
+  prerequisites = {"石头处理2"},
   count = 3,
   sign_desc = {
     { desc = "放置3个太阳能板", icon = "textures/construct/assembler.texture"},
   },
-}
-
-prototype "石头处理2" {
-  desc = "获得火星岩石加工成石砖的工艺",
-  type = { "tech" },
-  icon = "textures/science/tech-metal.texture",
-  effects = {
-    unlock_recipe = {"石砖"},
-  },
-  prerequisites = {"放置太阳能板"},
-  ingredients = {
-      {"地质科技包", 1},
-      {"气候科技包", 1},
-  },
-  count = 4,
-  time = "1s"
 }
 
 prototype "基地生产1" {
@@ -402,7 +401,7 @@ prototype "冶金学" {
   effects = {
     unlock_recipe = {"熔炼炉1"},
   },
-  prerequisites = {"石头处理2"},
+  prerequisites = {"放置太阳能板"},
   ingredients = {
     {"地质科技包", 1},
   },
