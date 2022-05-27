@@ -5,7 +5,6 @@ local w = world.w
 local camera = ecs.require "engine.camera"
 local gameplay_core = require "gameplay.core"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local fluid_list_cfg = import_package "vaststars.prototype"("fluid_category")
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local iprototype = require "gameplay.interface.prototype"
 local create_normalbuilder = ecs.require "editor.normalbuilder"
@@ -26,7 +25,6 @@ local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> �
 local headquater_mb = mailbox:sub {"headquater"} -- 主界面左下角 -> 指挥中心
 local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研中心
 local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
-local fluidbox_update_mb = mailbox:sub {"fluidbox_update"} -- 设置流体工具栏
 local batch_mode_begin_mb = mailbox:sub {"batch_mode_begin"} --
 local batch_mode_end_mb = mailbox:sub {"batch_mode_end"} --
 local single_touch_mb = world:sub {"single_touch"}
@@ -53,25 +51,6 @@ local construct_menu = {} ; do
     end
 end
 
--- = {{catagory = xxx, icon = xxx, fluid = {{id = xxx, name = xxx, icon = xxx}, ...} }, ...}
-local fluid_category = {}; do
-    local t = {}
-    for _, v in pairs(iprototype:all_prototype_name()) do
-        if iprototype:has_type(v.type, "fluid") then
-            for _, c in ipairs(v.catagory) do
-                t[c] = t[c] or {}
-                t[c][#t[c]+1] = {id = v.id, name = v.name, icon = v.icon}
-            end
-        end
-    end
-
-    for catagory, v in pairs(t) do
-        fluid_category[#fluid_category+1] = {catagory = catagory, icon = fluid_list_cfg[catagory].icon, pos = fluid_list_cfg[catagory].pos, fluid = v}
-        table.sort(v, function(a, b) return a.id < b.id end)
-    end
-    table.sort(fluid_category, function(a, b) return a.pos < b.pos end)
-end
-
 local function get_headquater_object_id()
     for id in objects:select("CONSTRUCTED", "headquater", true) do
         return id
@@ -83,7 +62,6 @@ local M = {}
 
 function M:create()
     return {
-        fluid_category = fluid_category,
         construct_menu = construct_menu,
     }
 end
@@ -186,11 +164,6 @@ function M:stage_ui_update(datamodel)
         global.mode = "normal"
         camera.set("camera_default.prefab")
         ::continue::
-    end
-
-    for _, _, _, fluid_name in fluidbox_update_mb:unpack() do
-        builder:set_fluid(datamodel, fluid_name)
-        self:flush()
     end
 
     for _ in headquater_mb:unpack() do

@@ -35,13 +35,12 @@ function M:create(object_id, left, top)
     local recipe_name = ""
     if iprototype:has_type(typeobject.type, "assembling") then
         assert(e.assembling)
-        show_set_recipe = true
 
+        -- typeobject.recipe == nil means need to set recipe
+        show_set_recipe = (typeobject.recipe == nil)
         if e.assembling.recipe ~= 0 then
             local typeobject = iprototype:query(e.assembling.recipe)
-            if typeobject.ingredients ~= "" then -- 配方没有原料也不需要显示[设置配方]
-                recipe_name = typeobject.name
-            end
+            recipe_name = typeobject.name
             show_material_button = true
         end
     end

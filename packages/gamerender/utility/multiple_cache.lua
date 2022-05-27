@@ -48,6 +48,20 @@ local function select(self, cache_name, index_field, cache_value)
     return cache:select(index_field, cache_value)
 end
 
+local function selectall(self, cache_names, index_field, cache_value)
+    local r = {}
+
+    for i = #cache_names, 1, -1 do
+        for k, v in select(self, cache_names[i], index_field, cache_value) do
+            if not r[k] then
+                r[k] = v
+            end
+        end
+    end
+
+    return next, r, nil
+end
+
 local function clear(self, cache_name)
     self.caches[cache_name] = create_cache(table.unpack(self.cache_param))
 end
@@ -69,6 +83,7 @@ local function create(cache_names, ...)
     M.get = get
     M.all = all
     M.select = select
+    M.selectall = selectall
     M.revert = revert
     M.commit = commit
     M.remove = remove

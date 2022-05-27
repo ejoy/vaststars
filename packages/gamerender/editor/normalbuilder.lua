@@ -17,18 +17,6 @@ local tile_objects = global.tile_objects
 
 local DEFAULT_DIR <const> = 'N'
 
-local function show_set_fluidbox(datamodel, fluid_name)
-    datamodel.cur_selected_fluid = fluid_name
-    datamodel.cur_fluid_category = ifluid:get_fluid_category(fluid_name)
-    datamodel.show_set_fluidbox = true
-end
-
-local function hide_set_fluidbox(datamodel)
-    datamodel.cur_selected_fluid = ""
-    datamodel.cur_fluid_category = ""
-    datamodel.show_set_fluidbox = false
-end
-
 --
 local function new_entity(self, datamodel, typeobject)
     if self.pickup_object then
@@ -61,8 +49,8 @@ local function new_entity(self, datamodel, typeobject)
         y = y,
         teardown = false,
         headquater = typeobject.headquater or false, -- 用于 objects 查找[科技中心]
-        manual_set_fluid = false, -- 没有手动设置液体的情况下, 会自动将液体设置为附近流体系统的液体
-        -- fluid_name,
+        fluid_name = "",
+        pipe_network_id = 0,
     }
 
     if not ifluid:need_set_fluid(typeobject.name) then
@@ -72,7 +60,6 @@ local function new_entity(self, datamodel, typeobject)
         local fluid_types = self:get_neighbor_fluid_types(self.ALL_CACHE, typeobject.name, x, y, dir)
         if #fluid_types == 1 then
             object.fluid_name = fluid_types[1]
-            show_set_fluidbox(datamodel, object.fluid_name)
         end
     end
 
@@ -114,30 +101,31 @@ local function touch_end(self, datamodel)
     local vsobject_type
     if not self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) then
         vsobject_type = "invalid_construct"
-    else
-        vsobject_type = "construct"
+        vsobject:update {type = vsobject_type}
+        return
     end
 
     if not ifluid:need_set_fluid(typeobject.name) then
+        vsobject_type = "construct"
+        vsobject:update {type = vsobject_type}
         datamodel.show_confirm = true
         datamodel.show_rotate = true
-    else
-        local fluid_types = self:get_neighbor_fluid_types(self.ALL_CACHE, typeobject.name, pickup_object.x, pickup_object.y, pickup_object.dir)
-        if not pickup_object.manual_set_fluid then
-            if #fluid_types == 1 then
-                pickup_object.fluid_name = fluid_types[1]
-            else
-                pickup_object.fluid_name = ""
-            end
-            show_set_fluidbox(datamodel, pickup_object.fluid_name)
-        else
-            if #fluid_types == 1 and pickup_object.fluid_name ~= fluid_types[1] then
-                vsobject_type = "invalid_construct"
-            end
-        end
+        return
     end
 
-    vsobject:update {type = vsobject_type}
+    local fluid_types = self:get_neighbor_fluid_types(self.ALL_CACHE, typeobject.name, pickup_object.x, pickup_object.y, pickup_object.dir)
+    if #fluid_types <= 1 then
+        pickup_object.fluid_name = fluid_types[1] or ""
+        vsobject_type = "construct"
+        vsobject:update {type = vsobject_type}
+        datamodel.show_confirm = true
+        datamodel.show_rotate = true
+        return
+    else
+        pickup_object.fluid_name = ""
+        vsobject_type = "invalid_construct"
+        vsobject:update {type = vsobject_type}
+    end
 end
 
 local function confirm(self, datamodel)
@@ -148,13 +136,6 @@ local function confirm(self, datamodel)
         log.info("can not construct")
         return
     end
-
-    if ifluid:need_set_fluid(pickup_object.prototype_name) and pickup_object.fluid_name == "" then
-        log.info("can not construct")
-        return
-    end
-
-    hide_set_fluidbox(datamodel)
 
     local vsobject = assert(vsobject_manager:get(self.pickup_object.id))
     vsobject:update {type = "confirm"}
@@ -180,7 +161,6 @@ local function complete(self, datamodel)
 
     datamodel.show_rotate = false
     datamodel.show_confirm = false
-    datamodel.show_set_fluidbox = false
 
     local needbuild = false
     for _, object in objects:all("CONFIRM") do
@@ -200,34 +180,6 @@ local function complete(self, datamodel)
     end
 
     datamodel.show_construct_complete = false
-end
-
-local function set_fluid(self, datamodel, fluid_name)
-    assert(self.pickup_object)
-    local pickup_object = self.pickup_object
-    pickup_object.fluid_name = fluid_name
-    pickup_object.manual_set_fluid = true
-
-    local vsobject = assert(vsobject_manager:get(pickup_object.id))
-    local fluid_types = self:get_neighbor_fluid_types(self.ALL_CACHE, pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
-
-    local vsobject_type
-    if #fluid_types > 1 then
-        vsobject_type = "invalid_construct"
-    else
-        if pickup_object.fluid_name ~= "" and #fluid_types == 1 and fluid_types[1] ~= pickup_object.fluid_name then
-            vsobject_type = "invalid_construct"
-        else
-            vsobject_type = "construct"
-        end
-    end
-
-    vsobject:update {type = vsobject_type}
-
-    if vsobject_type ~= "invalid_construct" then
-        datamodel.show_confirm = true
-        datamodel.show_rotate = true
-    end
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
@@ -282,7 +234,6 @@ local function create()
     M.touch_end = touch_end
     M.confirm = confirm
     M.complete = complete
-    M.set_fluid = set_fluid
     M.rotate_pickup_object = rotate_pickup_object
 
     M.check_construct_detector = check_construct_detector
