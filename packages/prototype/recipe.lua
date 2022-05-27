@@ -1202,7 +1202,6 @@ prototype "废水排泄" {
         {"废水", 100},
     },
     results = {
-        {"液体排泄物", 1},
     },
     time = "1s",
     description = "废水排泄",
@@ -1218,7 +1217,6 @@ prototype "地下卤水排泄" {
         {"地下卤水", 100},
     },
     results = {
-        {"液体排泄物", 1},
     },
     time = "1s",
     description = "地下卤水排泄",
@@ -1234,7 +1232,6 @@ prototype "纯水排泄" {
         {"纯水", 100},
     },
     results = {
-        {"液体排泄物", 1},
     },
     time = "1s",
     description = "纯水排泄",
@@ -1250,7 +1247,6 @@ prototype "碱性溶液排泄" {
         {"碱性溶液", 100},
     },
     results = {
-        {"液体排泄物", 1},
     },
     time = "1s",
     description = "碱性溶液排泄",
@@ -1266,7 +1262,6 @@ prototype "氮气排泄" {
         {"氮气", 100},
     },
     results = {
-        {"气体排泄物", 1},
     },
     time = "1s",
     description = "氮气排泄",
@@ -1282,7 +1277,6 @@ prototype "氧气排泄" {
         {"氧气", 100},
     },
     results = {
-        {"气体排泄物", 1},
     },
     time = "1s",
     description = "氧气排泄",
@@ -1298,7 +1292,6 @@ prototype "二氧化碳排泄" {
         {"二氧化碳", 100},
     },
     results = {
-        {"气体排泄物", 1},
     },
     time = "1s",
     description = "二氧化碳排泄",
@@ -1314,11 +1307,11 @@ prototype "氢气排泄" {
         {"氢气", 100},
     },
     results = {
-        {"气体排泄物", 1},
     },
     time = "1s",
     description = "氢气排泄",
 }
+
 
 prototype "蒸汽排泄" {
     type = { "recipe" },
@@ -1330,7 +1323,6 @@ prototype "蒸汽排泄" {
         {"蒸汽", 100},
     },
     results = {
-        {"气体排泄物", 1},
     },
     time = "1s",
     description = "蒸汽排泄",
@@ -1346,12 +1338,25 @@ prototype "甲烷排泄" {
         {"甲烷", 100},
     },
     results = {
-        {"气体排泄物", 1},
     },
     time = "1s",
     description = "甲烷排泄",
 }
 
+prototype "氯气排泄" {
+    type = { "recipe" },
+    category = "流体气体排泄",
+    --group = "流体",
+    order = 110,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
+        {"氯气", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "氢气排泄",
+}
 ---------地下卤水生成矿物配方----------
 prototype "地下卤水分离铁" {
     type = { "recipe" },

@@ -75,6 +75,7 @@ prototype "烟囱I" {
     type ={"entity", "fluidbox", "chimney"},
     area = "2x2",
     craft_category = {"流体气体排泄"},
+    speed = "100%",
     group = {"管道"},
     fluidbox = {
         capacity = 1000,
@@ -93,6 +94,7 @@ prototype "排水口I" {
     type ={"entity", "fluidbox", "chimney"},
     area = "3x3",
     craft_category = {"流体液体排泄"},
+    speed = "100%",
     group = {"管道"},
     fluidbox = {
         capacity = 1000,
