@@ -118,6 +118,8 @@ function M:create(object_id)
 end
 
 function M:stage_ui_update(datamodel, object_id)
+    update(datamodel, datamodel.object_id)
+
     for _, _, _, prototype in click_item_mb:unpack() do
         local typeobject = iprototype:query(prototype)
         datamodel.show_item_info = true
@@ -172,6 +174,7 @@ function M:stage_ui_update(datamodel, object_id)
 
         local pickup_count = math.min(typeobject_item.stack - chest_item_counts[prototype], headquater_item_counts[prototype])
         ichest:pickup_place(gameplay_core.get_world(), headquater_e, chest_e, prototype, pickup_count)
+        self:flush()
         ::continue::
     end
 
@@ -210,11 +213,9 @@ function M:stage_ui_update(datamodel, object_id)
         local pickup_count = math.min(typeobject_item.stack, chest_item_counts[prototype])
 
         ichest:pickup_place(gameplay_core.get_world(), chest_e, headquater_e, prototype, pickup_count)
+        self:flush()
         ::continue::
     end
-
-    update(datamodel, datamodel.object_id)
-    self:flush()
 end
 
 function M:update(datamodel)
