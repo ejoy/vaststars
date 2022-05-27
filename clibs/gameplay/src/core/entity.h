@@ -10,18 +10,19 @@ enum COMPONENT {
 	COMPONENT_INSERTER = 5,
 	COMPONENT_CAPACITANCE = 6,
 	COMPONENT_BURNER = 7,
-	TAG_CONSUMER = 8,
-	TAG_GENERATOR = 9,
-	TAG_ACCUMULATOR = 10,
-	TAG_POLE = 11,
-	TAG_POWER = 12,
-	COMPONENT_FLUIDBOX = 13,
-	COMPONENT_FLUIDBOXES = 14,
-	TAG_PUMP = 15,
-	TAG_MINING = 16,
-	COMPONENT_ROAD = 17,
-	COMPONENT_STATION = 18,
-	COMPONENT_SAVE_FLUIDFLOW = 19,
+	COMPONENT_CHIMNEY = 8,
+	TAG_CONSUMER = 9,
+	TAG_GENERATOR = 10,
+	TAG_ACCUMULATOR = 11,
+	TAG_POLE = 12,
+	TAG_POWER = 13,
+	COMPONENT_FLUIDBOX = 14,
+	COMPONENT_FLUIDBOXES = 15,
+	TAG_PUMP = 16,
+	TAG_MINING = 17,
+	COMPONENT_ROAD = 18,
+	COMPONENT_STATION = 19,
+	COMPONENT_SAVE_FLUIDFLOW = 20,
 };
 
 struct entity {
@@ -73,6 +74,13 @@ struct burner {
 	uint16_t recipe;
 	uint16_t container;
 	uint16_t progress;
+};
+
+struct chimney {
+	uint16_t recipe;
+	uint16_t speed;
+	uint8_t status;
+	int32_t progress;
 };
 
 struct fluidbox {

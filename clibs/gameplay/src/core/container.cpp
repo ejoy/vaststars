@@ -24,11 +24,11 @@ chest_container::chest_container(uint16_t size)
     , size(size)
 {}
 
-container::item chest_container::get(uint16_t index) {
+container::slot chest_container::get(uint16_t index) {
     if (index >= slots.size()) {
-        return {0,0};
+        return {0,0,0};
     }
-    return slots[index];
+    return {slots[index], 0};
 }
 
 uint16_t chest_container::pickup(world& w, uint16_t item, uint16_t max) {
@@ -140,14 +140,14 @@ recipe_container::recipe_container(item_array in, item_array out)
     }
 }
 
-container::item recipe_container::get(uint16_t index) {
+container::slot recipe_container::get(uint16_t index) {
     if (index < inslots.size()) {
         return inslots[index];
     }
     if (index < inslots.size() + outslots.size()) {
         return outslots[index-inslots.size()];
     }
-    return {0,0};
+    return {0,0,0};
 }
 
 uint16_t recipe_container::pickup(world& w, uint16_t item, uint16_t max) {
@@ -301,7 +301,8 @@ lget(lua_State* L) {
     }
     lua_pushinteger(L, r.item);
     lua_pushinteger(L, r.amount);
-    return 2;
+    lua_pushinteger(L, r.limit);
+    return 3;
 }
 
 static int
