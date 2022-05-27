@@ -20,10 +20,15 @@ function M:get_headquater_entity(world)
 end
 
 function M:set_recipe(world, e, recipe_name)
+    local typeobject = iprototype:query(e.entity.prototype)
+    if not recipe_name then
+        assembling.set_recipe(world, e, typeobject, recipe_name)
+        log.info(("clean recipe success"))
+        return
+    end
+
     local recipe_typeobject = iprototype:queryByName("recipe", recipe_name)
     assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
-
-    local typeobject = iprototype:query(e.entity.prototype)
     local init_fluids = irecipe:get_init_fluids(recipe_typeobject)
 
     if init_fluids then

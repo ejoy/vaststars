@@ -12,6 +12,7 @@ local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iworld = require "gameplay.interface.world"
+local clear_recipe_mb = mailbox:sub {"clear_recipe"}
 
 local recipe_menu = {} ; do
     local recipes = {}
@@ -121,7 +122,7 @@ function M:update(datamodel, param, object_id)
     datamodel.items = datamodel.recipe_menu[datamodel.catalog_index].item or {}
 end
 
-function M:stage_ui_update(datamodel)
+function M:stage_ui_update(datamodel, object_id)
     for _, _, _, object_id, recipe_name in set_recipe_mb:unpack() do
         local object = assert(objects:get(cache_names, object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
@@ -139,6 +140,13 @@ function M:stage_ui_update(datamodel)
         else
             log.error(("can not found assembling `%s`(%s, %s)"):format(object.name, object.x, object.y))
         end
+    end
+
+    for _ in clear_recipe_mb:unpack() do
+        local object = assert(objects:get(cache_names, object_id))
+        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        iworld:set_recipe(gameplay_core.get_world(), e, nil)
+        gameplay_core.build()
     end
 end
 
