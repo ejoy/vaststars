@@ -39,13 +39,13 @@ world:create_entity "指挥中心" {
     y = 0,
 }
 
-world:create_entity "地下水挖掘机" {
+world:create_entity "地下卤水挖掘机" {
     dir = "N",
     x = 128,
     y = 128,
     fluids = {
         output = {
-            {'地下水', 0},
+            {'地下卤水', 0},
         }
     },
 }
@@ -54,7 +54,7 @@ world:create_entity "管道1-I型" {
     x = 128,
     y = 129,
     dir = "N",
-    fluid = {'地下水', 0},
+    fluid = {'地下卤水', 0},
 }
 
 world:build()
@@ -78,7 +78,7 @@ world:create_entity "管道1-I型" {
     x = 128,
     y = 129,
     dir = "N",
-    fluid = {'地下水', 0},
+    fluid = {'地下卤水', 0},
 }
 world:build()
 

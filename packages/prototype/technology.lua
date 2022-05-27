@@ -97,12 +97,12 @@ prototype "挖掘井" {
   time = "1s"
 }
 
--- ---新增地下水配方的对应科技---
--- prototype "地下水提取铁矿" {
+-- ---新增地下卤水配方的对应科技---
+-- prototype "地下卤水提取铁矿" {
 --   type = { "tech" },
 --   icon = "textures/science/tech-metal.texture",
 --   effects = {
---     unlock_recipe = {"地下水分离铁"},
+--     unlock_recipe = {"地下卤水分离铁"},
 --   },
 --   prerequisites = {"地质研究"},
 --   ingredients = {
@@ -112,12 +112,12 @@ prototype "挖掘井" {
 --   time = "1s"
 -- }
 
--- ---新增地下水配方的对应科技---
--- prototype "地下水提取石矿" {
+-- ---新增地下卤水配方的对应科技---
+-- prototype "地下卤水提取石矿" {
 --   type = { "tech" },
 --   icon = "textures/science/tech-metal.texture",
 --   effects = {
---     unlock_recipe = {"地下水分离石头"},
+--     unlock_recipe = {"地下卤水分离石头"},
 --   },
 --   prerequisites = {"铁矿收集"},
 --   ingredients = {
@@ -160,7 +160,7 @@ prototype "电解" {
   type = { "tech" },
   icon = "textures/science/tech-liquid.texture",
   effects = {
-    unlock_recipe = {"地下水电解","破损电解厂"},
+    unlock_recipe = {"地下卤水电解","破损电解厂"},
   },
   prerequisites = {"生产管道"},
   ingredients = {
