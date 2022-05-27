@@ -84,18 +84,8 @@ static FILE* createfile(lua_State* L, int idx, const char* filename, filemode mo
 }
 
 template <typename Map>
-struct mapdata {
-    struct {
-        size_t mask;
-        size_t maxsize;
-        size_t size;
-    } h;
-    typename Map::bucket* buckets;
-};
-
-template <typename Map>
 static void write_flatmap(FILE* f, const Map& map) {
-    const mapdata<Map>& data = reinterpret_cast<const mapdata<Map>&>(map);
+    auto const& data = map.toraw();
     file_write(f, data.h);
     if (data.h.mask !=0 ) {
         file_write(f, data.buckets, data.h.size);
@@ -104,7 +94,7 @@ static void write_flatmap(FILE* f, const Map& map) {
 
 template <typename Map>
 static void read_flatmap(FILE* f, Map& map) {
-    mapdata<Map>& data = reinterpret_cast<mapdata<Map>&>(map);
+    auto& data = map.toraw();
     if (data.h.mask != 0) {
         std::free(data.buckets);
     }

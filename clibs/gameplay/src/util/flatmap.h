@@ -160,6 +160,21 @@ public:
         rehash(c, false);
     }
 
+    struct rawdata {
+        struct {
+            size_t mask;
+            size_t maxsize;
+            size_t size;
+        } h;
+        bucket* buckets;
+    };
+    rawdata const& toraw() const {
+        return *reinterpret_cast<const rawdata*>(&m_mask);
+    }
+    rawdata& toraw() {
+        return *reinterpret_cast<rawdata*>(&m_mask);
+    }
+
 #if 0
     size_t max_distance() const noexcept {
         uint8_t distance = 0;
