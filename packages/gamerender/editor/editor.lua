@@ -26,7 +26,7 @@ function M:clone_object(object)
         teardown = object.teardown,
         headquater = object.headquater,
         fluid_name = object.fluid_name,
-        pipe_network_id = object.pipe_network_id,
+        fluidflow_network_id = object.fluidflow_network_id,
     }
 end
 
@@ -118,26 +118,24 @@ local function refresh_pipe(prototype_name, dir, entry_dir)
     return prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format(ntype)), dir
 end
 
-function M:refresh_flow_shape(get_cache_names, set_cache_name, object, entry_dir)
+function M:refresh_flow_shape(get_cache_names, set_cache_name, object, entry_dir, raw_x, raw_y) -- TODO
     local vsobject = assert(vsobject_manager:get(object.id))
     local typeobject = iprototype:queryByName("entity", object.prototype_name)
-    if not typeobject.pipe then -- todo
-        return
+    if typeobject.pipe then
+        local prototype_name, dir = refresh_pipe(object.prototype_name, object.dir, entry_dir)
+        if prototype_name then
+            object = self:clone_object(object)
+            object.prototype_name = prototype_name
+            object.dir = dir
+
+            vsobject:update {prototype_name = prototype_name}
+            vsobject:set_dir(dir)
+
+            self:set_object(object, set_cache_name)
+        end
     end
 
-    local prototype_name, dir = refresh_pipe(object.prototype_name, object.dir, entry_dir)
-    if prototype_name then
-        object = self:clone_object(object)
-        object.prototype_name = prototype_name
-        object.dir = dir
-
-        vsobject:update {prototype_name = prototype_name}
-        vsobject:set_dir(dir)
-
-        self:set_object(object, set_cache_name)
-    end
-
-    local dx, dy = self:get_dir_coord(object.x, object.y, entry_dir)
+    local dx, dy = self:get_dir_coord(raw_x, raw_y, entry_dir)
     local tile_object = tile_objects:get(get_cache_names, iprototype:packcoord(dx, dy))
     if tile_object then
         local object = assert(objects:get(get_cache_names, tile_object.id))

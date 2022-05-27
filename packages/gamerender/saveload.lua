@@ -28,7 +28,7 @@ local MAX_ARCHIVING_COUNT <const> = 9
 
 local archival_relative_dir_list = {}
 
-local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, pipe_network_id)
+local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_network_id)
     local vsobject_type = "constructed"
     local typeobject = iprototype:queryByName("entity", prototype_name)
     local position = assert(terrain.get_position_by_coord(x, y, iprototype:rotate_area(typeobject.area, dir)))
@@ -49,7 +49,7 @@ local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_nam
         teardown = false,
         headquater = typeobject.headquater or false,
         fluid_name = fluid_name,
-        pipe_network_id = pipe_network_id,
+        fluidflow_network_id = fluidflow_network_id,
     }
     ieditor:set_object(object, "CONSTRUCTED")
 end
@@ -79,13 +79,13 @@ local function restore_world()
         local e = v.entity
         local typeobject = iprototype:query(e.prototype)
         local fluid_name = ""
-        local pipe_network_id = 0
+        local fluidflow_network_id = 0
         if v.fluidbox then
             if v.fluidbox.fluid ~= 0 then
                 local typeobject_fluid = assert(iprototype:query(v.fluidbox.fluid))
                 fluid_name = typeobject_fluid.name
             else
-                pipe_network_id = get_network_id(v.fluidbox.id)
+                fluidflow_network_id = get_network_id(v.fluidbox.id)
             end
         end
         if v.fluidboxes then
@@ -103,7 +103,7 @@ local function restore_world()
                 end
             end
         end
-        restore_object(v.id, typeobject.name, iprototype:dir_tostring(e.direction), e.x, e.y, fluid_name, pipe_network_id)
+        restore_object(v.id, typeobject.name, iprototype:dir_tostring(e.direction), e.x, e.y, fluid_name, fluidflow_network_id)
     end
 end
 

@@ -1,5 +1,7 @@
 local iprototype = require "gameplay.interface.prototype"
 local PIPE_FLUIDBOXES_DIR <const> = {'N', 'E', 'S', 'W'}
+local gameplay = import_package "vaststars.gameplay"
+local ifluidbox = gameplay.interface "fluidbox"
 
 local M = {}
 
@@ -176,6 +178,15 @@ do
             end
         end
         return r
+    end
+end
+
+function M:update_fluidbox(e, fluid_name)
+    local typeobject = iprototype:queryByName("fluid", fluid_name)
+    if not typeobject then
+        ifluidbox.update_fluidbox(e, 0)
+    else
+        ifluidbox.update_fluidbox(e, typeobject.id)
     end
 end
 

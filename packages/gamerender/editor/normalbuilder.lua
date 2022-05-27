@@ -50,7 +50,7 @@ local function new_entity(self, datamodel, typeobject)
         teardown = false,
         headquater = typeobject.headquater or false, -- 用于 objects 查找[科技中心]
         fluid_name = "",
-        pipe_network_id = 0,
+        fluidflow_network_id = 0,
     }
 
     if not ifluid:need_set_fluid(typeobject.name) then
