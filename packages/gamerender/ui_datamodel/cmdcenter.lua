@@ -65,6 +65,39 @@ local function get_headquater_object()
     end
 end
 
+local function update(datamodel, object_id)
+    local object = assert(objects:get(cache_names, object_id))
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if e then
+        -- 更新背包界面对应的道具
+        local inventory = {}
+        local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
+        for id, count in pairs(item_counts) do
+            local typeobject_item = assert(iprototype:query(id))
+            local stack = count
+
+            while stack > 0 do
+                local t = {}
+                t.id = typeobject_item.id
+                t.name = typeobject_item.name
+                t.icon = typeobject_item.icon
+                t.category = typeobject_item.group
+
+                if stack >= typeobject_item.stack then
+                    t.count = typeobject_item.stack
+                else
+                    t.count = stack
+                end
+
+                inventory[#inventory+1] = t
+                stack = stack - typeobject_item.stack
+            end
+        end
+
+        datamodel.inventory = inventory
+    end
+end
+
 ---------------
 local M = {}
 
@@ -139,6 +172,7 @@ function M:stage_ui_update(datamodel, object_id)
 
         local pickup_count = math.min(typeobject_item.stack - chest_item_counts[prototype], headquater_item_counts[prototype])
         ichest:pickup_place(gameplay_core.get_world(), headquater_e, chest_e, prototype, pickup_count)
+        update(datamodel, datamodel.object_id)
         self:flush()
         ::continue::
     end
@@ -178,44 +212,14 @@ function M:stage_ui_update(datamodel, object_id)
         local pickup_count = math.min(typeobject_item.stack, chest_item_counts[prototype])
 
         ichest:pickup_place(gameplay_core.get_world(), chest_e, headquater_e, prototype, pickup_count)
+        update(datamodel, datamodel.object_id)
         self:flush()
         ::continue::
-    end
-
-    local object = assert(objects:get(cache_names, object_id))
-    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-    if e then
-        -- 更新背包界面对应的道具
-        local inventory = {}
-        local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
-        for id, count in pairs(item_counts) do
-            local typeobject_item = assert(iprototype:query(id))
-            local stack = count
-
-            while stack > 0 do
-                local t = {}
-                t.id = typeobject_item.id
-                t.name = typeobject_item.name
-                t.icon = typeobject_item.icon
-                t.category = typeobject_item.group
-
-                if stack >= typeobject_item.stack then
-                    t.count = typeobject_item.stack
-                else
-                    t.count = stack
-                end
-
-                inventory[#inventory+1] = t
-                stack = stack - typeobject_item.stack
-            end
-        end
-
-        datamodel.inventory = inventory
     end
 end
 
 function M:update(datamodel)
-    self:tick(datamodel, datamodel.object_id)
+    update(datamodel, datamodel.object_id)
     self:flush()
 end
 

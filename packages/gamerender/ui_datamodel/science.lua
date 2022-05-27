@@ -124,10 +124,6 @@ function M:create(object_id)
     }
 end
 
-function M:tick(datamodel, chest_object_id)
-    
-end
-
 function M:stage_ui_update(datamodel)
     local function set_current_tech(tech)
         if current_tech == tech then

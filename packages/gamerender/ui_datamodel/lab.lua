@@ -31,10 +31,6 @@ function M:create(object_id)
     }
 end
 
-function M:tick(datamodel, object_id)
-
-end
-
 function M:stage_ui_update(datamodel)
     --tech.process
     local game_world = gameplay_core.get_world()
