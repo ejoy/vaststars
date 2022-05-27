@@ -9,7 +9,6 @@ local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
 local get_fluidboxes = require "gameplay.utility.get_fluidboxes"
-local get_roadboxes = require "gameplay.utility.get_roadboxes"
 local flow_shape = require "gameplay.utility.flow_shape"
 
 --
@@ -63,12 +62,6 @@ function M:set_object(object, cache_name)
     for _, v in ipairs(get_fluidboxes(object.prototype_name, object.x, object.y, object.dir)) do
         assert(t[iprototype:packcoord(v.x, v.y)])
         t[iprototype:packcoord(v.x, v.y)].fluidbox_dir = v.fluidbox_dir
-    end
-
-    --
-    for _, v in ipairs(get_roadboxes(object.prototype_name, object.x, object.y, object.dir)) do
-        assert(t[iprototype:packcoord(v.x, v.y)])
-        t[iprototype:packcoord(v.x, v.y)].road_dir = v.road_dir
     end
 
     --

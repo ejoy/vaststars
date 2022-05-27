@@ -15,7 +15,6 @@ local objects = global.objects
 local tile_objects = global.tile_objects
 local ieditor = ecs.require "editor.editor"
 local ALL_CACHE <const> = global.cache_names
-local get_fluidboxes = require "gameplay.utility.get_fluidboxes"
 local gameplay_core = require "gameplay.core"
 local ALL_DIR <const> = require("gameplay.interface.constant").ALL_DIR
 local flow_shape = require "gameplay.utility.flow_shape"
@@ -27,58 +26,6 @@ local function get_object(x, y)
     end
 
     return assert(objects:get(ALL_CACHE, tile_object.id))
-end
-
-local get_valid_fluidbox ; do
-    local PIPE_FLUIDBOXES_DIR = ALL_DIR
-
-    local funcs = {}
-    funcs["fluidbox"] = function(typeobject, x, y, dir, result, fluid_name)
-        for _, conn in ipairs(typeobject.fluidbox.connections) do
-            local dx, dy, dir = iprototype:rotate_fluidbox(conn.position, dir, typeobject.area)
-            result[#result+1] = {x = x + dx, y = y + dy, dir = dir, fluid_name = fluid_name}
-        end
-        return result
-    end
-
-    local function get_fluidboxes_fluid_name(fluid_name, iotype, index)
-        if not fluid_name[iotype] then
-            return ""
-        end
-        return fluid_name[iotype][index] or ""
-    end
-
-    local iotypes <const> = {"input", "output"}
-    funcs["fluidboxes"] = function(typeobject, x, y, dir, result, fluid_name)
-        for _, iotype in ipairs(iotypes) do
-            for _, v in ipairs(typeobject.fluidboxes[iotype]) do
-                for index, conn in ipairs(v.connections) do
-                        local dx, dy, dir = iprototype:rotate_fluidbox(conn.position, dir, typeobject.area)
-                        result[#result+1] = {x = x + dx, y = y + dy, dir = dir, fluid_name = get_fluidboxes_fluid_name(fluid_name, iotype, index)}
-                end
-            end
-        end
-        return result
-    end
-
-    function get_valid_fluidbox(prototype_name, x, y, dir, fluid_name)
-        local r = {}
-        local typeobject = assert(iprototype:queryByName("entity", prototype_name))
-        if typeobject.pipe then
-            for _, dir in ipairs(PIPE_FLUIDBOXES_DIR) do
-                r[#r+1] = {x = x, y = y, dir = dir, fluid_name = fluid_name}
-            end
-        else
-            local types = typeobject.type
-            for i = 1, #types do
-                local func = funcs[types[i]]
-                if func then
-                    func(typeobject, x, y, dir, r, fluid_name)
-                end
-            end
-        end
-        return r
-    end
 end
 
 local function set_object_appearance(object, vsobject_type)
@@ -120,7 +67,7 @@ local function get_starting_fluidbox_coord(starting_x, starting_y, x, y)
     end
 
     local r
-    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+    for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
         r = r or v
         if get_distance(r.x, r.y, x, y) > get_distance(v.x, v.y, x, y) then
             r = v
@@ -147,7 +94,7 @@ local function get_ending_fluidbox_coord(starting_x, starting_y, starting_fluid_
     end
 
     local r
-    for _, v in ipairs(get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+    for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
         local dx = math_abs(starting_x - v.x)
         local dy = math_abs(starting_y - v.y)
         local vec = assert(dir_vector[v.dir])
@@ -179,35 +126,33 @@ local function show_starting_indicator(starting_x, starting_y, starting_fluid_na
     local typeobject = iprototype:queryByName("entity", object.prototype_name)
     local coord_indicator_typeobject = iprototype:queryByName("entity", prototype_name)
 
-    for _, v in ipairs(get_fluidboxes(object.prototype_name, object.x, object.y, object.dir)) do
-        for dir in pairs(v.fluidbox_dir) do
-            local px, py = ieditor:get_dir_coord(v.x, v.y, dir)
-            if get_ending_fluidbox_coord(starting_x, starting_y, starting_fluid_name, starting_fluidflow_network_id, starting_dir, px, py) then
-                local position = terrain.get_position_by_coord(px, py, iprototype:rotate_area(coord_indicator_typeobject.area, dir))
+    for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+        local px, py = ieditor:get_dir_coord(v.x, v.y, v.dir)
+        if get_ending_fluidbox_coord(starting_x, starting_y, starting_fluid_name, starting_fluidflow_network_id, starting_dir, px, py) then
+            local position = terrain.get_position_by_coord(px, py, iprototype:rotate_area(coord_indicator_typeobject.area, v.dir))
 
-                local vsobject = vsobject_manager:create {
-                    prototype_name = flow_shape:get_init_prototype_name(prototype_name),
-                    dir = dir,
-                    position = position,
-                    type = "indicator",
-                }
+            local vsobject = vsobject_manager:create {
+                prototype_name = flow_shape:get_init_prototype_name(prototype_name),
+                dir = v.dir,
+                position = position,
+                type = "indicator",
+            }
 
-                local indicator_object = {
-                    id = vsobject.id,
-                    gameplay_eid = 0,
-                    prototype_name = flow_shape:get_init_prototype_name(prototype_name),
-                    dir = dir,
-                    x = px,
-                    y = py,
-                    teardown = false,
-                    headquater = typeobject.headquater or false,
-                    fluid_name = "",
-                    fluidflow_network_id = 0,
-                }
+            local indicator_object = {
+                id = vsobject.id,
+                gameplay_eid = 0,
+                prototype_name = flow_shape:get_init_prototype_name(prototype_name),
+                dir = v.dir,
+                x = px,
+                y = py,
+                teardown = false,
+                headquater = typeobject.headquater or false,
+                fluid_name = "",
+                fluidflow_network_id = 0,
+            }
 
-                ieditor:set_object(indicator_object, "INDICATOR")
-                ieditor:refresh_flow_shape({"INDICATOR"}, "INDICATOR", indicator_object, iprototype:opposite_dir(dir), px, py)
-            end
+            ieditor:set_object(indicator_object, "INDICATOR")
+            ieditor:refresh_flow_shape({"INDICATOR"}, "INDICATOR", indicator_object, iprototype:opposite_dir(v.dir), px, py)
         end
     end
 end
@@ -218,7 +163,7 @@ local function is_valid_starting(x, y)
         return true
     end
 
-    local t = get_valid_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)
+    local t = ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)
     return #t > 0
 end
 

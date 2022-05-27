@@ -7,8 +7,8 @@ local ALL_CACHE <const> = global.cache_names
 local objects = global.objects
 local tile_objects = global.tile_objects
 local vsobject_manager = ecs.require "vsobject_manager"
-local get_fluidboxes = require "gameplay.utility.get_fluidboxes"
 local ieditor = ecs.require "editor.editor"
+local ifluid = require "gameplay.interface.fluid"
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
     local typeobject = iprototype:queryByName("entity", prototype_name)
@@ -30,19 +30,18 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     return true
 end
 
-local function get_neighbor_fluid_types(self, cache_names, prototype_name, x, y, dir)
+local function get_neighbor_fluid_types(self, cache_names, prototype_name, x, y, dir) -- TODO
     local fluid_types = {}
-    for _, v in ipairs(get_fluidboxes(prototype_name, x, y, dir)) do
-        for dir in pairs(v.fluidbox_dir) do
-            local dx, dy = ieditor:get_dir_coord(v.x, v.y, dir)
-            local tile_object = tile_objects:get(cache_names, iprototype:packcoord(dx, dy))
-            if tile_object and tile_object.fluidbox_dir then
-                if tile_object.fluidbox_dir[iprototype:opposite_dir(dir)] then
-                    local object = assert(objects:get(cache_names, tile_object.id))
-                    local fluid = object.fluid_name
-                    if fluid ~= "" then
-                        fluid_types[fluid] = true
-                    end
+
+    for _, v in ipairs(ifluid:get_fluidbox(prototype_name, x, y, dir, "")) do
+        local dx, dy = ieditor:get_dir_coord(v.x, v.y, dir)
+        local tile_object = tile_objects:get(cache_names, iprototype:packcoord(dx, dy))
+        if tile_object and tile_object.fluidbox_dir then
+            if tile_object.fluidbox_dir[iprototype:opposite_dir(dir)] then
+                local object = assert(objects:get(cache_names, tile_object.id))
+                local fluid = object.fluid_name
+                if fluid ~= "" then
+                    fluid_types[fluid] = true
                 end
             end
         end

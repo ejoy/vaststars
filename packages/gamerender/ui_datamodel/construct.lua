@@ -102,6 +102,9 @@ function M:stage_ui_update(datamodel)
                 world:pub {"ui_message", "show_unconfirmed_double_confirm"}
                 goto continue
             end
+
+            builder:clean(datamodel)
+            builder = nil
         end
 
         if not double_confirm then
@@ -174,7 +177,7 @@ function M:stage_ui_update(datamodel)
             log.error("can not found headquater")
         end
     end
-    
+
     for _ in technology_mb:unpack() do
         iui.open("science.rml")
     end
