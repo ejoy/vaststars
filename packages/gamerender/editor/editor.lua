@@ -18,14 +18,15 @@ local M = {}
 function M:clone_object(object)
     return {
         id = object.id,
-        vsobject_type = object.vsobject_type,
+        gameplay_eid = object.gameplay_eid,
         prototype_name = object.prototype_name,
         dir = object.dir,
-        fluid_name = object.fluid_name,
         x = object.x,
         y = object.y,
         teardown = object.teardown,
         headquater = object.headquater,
+        fluid_name = object.fluid_name,
+        pipe_network_id = object.pipe_network_id,
     }
 end
 

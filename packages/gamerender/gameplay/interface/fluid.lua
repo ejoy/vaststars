@@ -179,25 +179,4 @@ do
     end
 end
 
-do
-    local fluid_category = {}; do
-        for _, v in pairs(iprototype:all_prototype_name()) do
-            if iprototype:has_type(v.type, "fluid") then
-                for _, c in ipairs(v.catagory) do
-                    fluid_category[v.name] = fluid_category[v.name] or {}
-                    table.insert(fluid_category[v.name], c)
-                end
-            end
-        end
-    end
-
-    function M:get_fluid_category(fluid_name)
-        local v = fluid_category[fluid_name]
-        if not v then
-            return ""
-        end
-        return v[1]
-    end
-end
-
 return M

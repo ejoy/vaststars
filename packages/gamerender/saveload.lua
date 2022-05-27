@@ -28,7 +28,7 @@ local MAX_ARCHIVING_COUNT <const> = 9
 
 local archival_relative_dir_list = {}
 
-local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name)
+local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, pipe_network_id)
     local vsobject_type = "constructed"
     local typeobject = iprototype:queryByName("entity", prototype_name)
     local position = assert(terrain.get_position_by_coord(x, y, iprototype:rotate_area(typeobject.area, dir)))
@@ -42,7 +42,6 @@ local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_nam
     local object = {
         id = vsobject.id,
         gameplay_eid = gameplay_eid,
-        vsobject_type = vsobject_type,
         prototype_name = prototype_name,
         dir = dir,
         x = x,
@@ -50,6 +49,7 @@ local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_nam
         teardown = false,
         headquater = typeobject.headquater or false,
         fluid_name = fluid_name,
+        pipe_network_id = pipe_network_id,
     }
     ieditor:set_object(object, "CONSTRUCTED")
 end
@@ -64,16 +64,32 @@ local function restore_world()
         tile_objects:clear(cache_name)
     end
 
+    local duplicate = {}
+    local network_id = 0
+    local function get_network_id(id)
+        if not duplicate[id] then
+            network_id = network_id + 1
+            duplicate[id] = network_id
+        end
+        return duplicate[id]
+    end
+
     -- restore
     for v in gameplay_core.select("id:in entity:in fluidbox?in fluidboxes?in") do
         local e = v.entity
         local typeobject = iprototype:query(e.prototype)
-        local fluid_name
+        local fluid_name = ""
+        local pipe_network_id = 0
         if v.fluidbox then
-            local typeobject_fluid = assert(iprototype:query(v.fluidbox.fluid))
-            fluid_name = typeobject_fluid.name
+            if v.fluidbox.fluid ~= 0 then
+                local typeobject_fluid = assert(iprototype:query(v.fluidbox.fluid))
+                fluid_name = typeobject_fluid.name
+            else
+                pipe_network_id = get_network_id(v.fluidbox.id)
+            end
         end
         if v.fluidboxes then
+            fluid_name = {}
             for id, fluid in pairs(v.fluidboxes) do
                 if fluid ~= 0 then
                     local iotype, index = id:match("(%a+)(%d+)%_fluid")
@@ -81,14 +97,13 @@ local function restore_world()
                         local classity = ifluid:iotype_to_classity(iotype)
                         local typeobject_fluid = assert(iprototype:query(fluid))
 
-                        fluid_name = fluid_name or {}
                         fluid_name[classity] = fluid_name[classity] or {}
                         fluid_name[classity][tonumber(index)] = typeobject_fluid.name
                     end
                 end
             end
         end
-        restore_object(v.id, typeobject.name, iprototype:dir_tostring(e.direction), e.x, e.y, fluid_name)
+        restore_object(v.id, typeobject.name, iprototype:dir_tostring(e.direction), e.x, e.y, fluid_name, pipe_network_id)
     end
 end
 
