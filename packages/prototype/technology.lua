@@ -6,7 +6,7 @@ local prototype = gameplay.prototype
   --task = {"select_entity", 0, "组装机"},
   --task = {"select_chest", 0, "指挥中心", "铁丝"},
   --task = {"power_generator", 0},
-
+  --time是指1个count所需的时间
 
 prototype "地质研究" {
     desc = "对火星地质结构进行标本采集和研究",
@@ -18,7 +18,7 @@ prototype "地质研究" {
     ingredients = {
     },
     count = 5,
-    time = "1s",
+    time = "3s",
     sign_desc = {
       { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
     },
@@ -45,7 +45,7 @@ prototype "铁矿熔炼" {
   },
   prerequisites = {"收集铁矿石"},
   ingredients = {
-      {"地质科技包", 3},
+      {"地质科技包", 1},
   },
   count = 4,
   time = "1s"
@@ -71,7 +71,7 @@ prototype "气候研究" {
   },
   prerequisites = {"铁加工1"},
   ingredients = {
-      {"地质科技包", 3},
+      {"地质科技包", 1},
   },
   sign_desc = {
     { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
@@ -90,8 +90,8 @@ prototype "挖掘井" {
   },
   prerequisites = {"气候研究"},
   ingredients = {
-      {"地质科技包", 2},
-      {"气候科技包", 2},
+      {"地质科技包", 1},
+      {"气候科技包", 1},
   },
   count = 3,
   time = "1s"
@@ -137,7 +137,7 @@ prototype "管道系统1" {
   },
   prerequisites = {"气候研究"},
   ingredients = {
-      {"地质科技包", 3},
+      {"地质科技包", 1},
   },
   count = 3,
   time = "1s"
@@ -164,7 +164,7 @@ prototype "电解" {
   },
   prerequisites = {"生产管道"},
   ingredients = {
-      {"气候科技包", 4},
+      {"气候科技包", 1},
   },
   count = 4,
   time = "1s"
@@ -179,7 +179,7 @@ prototype "空气分离" {
   },
   prerequisites = {"生产管道"},
   ingredients = {
-      {"气候科技包", 3},
+      {"气候科技包", 1},
   },
   count = 3,
   time = "1s"
@@ -194,9 +194,9 @@ prototype "铁加工1" {
   },
   prerequisites = {"生产管道"},
   ingredients = {
-      {"地质科技包", 5},
+      {"地质科技包", 1},
   },
-  count = 4,
+  count = 5,
   time = "1s"
 }
 
@@ -220,9 +220,9 @@ prototype "石头处理1" {
   },
   prerequisites = {"使用破损组装机"},
   ingredients = {
-      {"地质科技包", 8},
+      {"地质科技包", 1},
   },
-  count = 2,
+  count = 8,
   time = "1s"
 }
 
@@ -246,10 +246,10 @@ prototype "石头处理2" {
   },
   prerequisites = {"放置太阳能板"},
   ingredients = {
-      {"地质科技包", 4},
-      {"气候科技包", 4},
+      {"地质科技包", 1},
+      {"气候科技包", 1},
   },
-  count = 3,
+  count = 4,
   time = "1s"
 }
 
@@ -262,10 +262,10 @@ prototype "基地生产1" {
   },
   prerequisites = {"使用破损组装机"},
   ingredients = {
-      {"地质科技包", 8},
+      {"地质科技包", 1},
   },
-  count = 2,
-  time = "1s",
+  count = 8,
+  time = "2s",
   sign_desc = {
     { desc = "该科技可以持续地提高某项能力", icon = "textures/science/recycle.texture"},
   },
@@ -281,10 +281,10 @@ prototype "储存1" {
   },
   prerequisites = {"使用破损组装机"},
   ingredients = {
-      {"地质科技包", 6},
-      {"气候科技包", 6},
+      {"地质科技包", 1},
+      {"气候科技包", 1},
   },
-  count = 3,
+  count = 6,
   time = "1s"
 }
 
@@ -308,9 +308,9 @@ prototype "基地生产2" {
   },
   prerequisites = {"生产储藏箱"},
   ingredients = {
-      {"地质科技包", 5},
+      {"地质科技包", 1},
   },
-  count = 4,
+  count = 5,
   time = "1s",
   sign_desc = {
     { desc = "该科技可以持续地提高某项能力", icon = "textures/science/recycle.texture"},
@@ -327,7 +327,7 @@ prototype "碳处理1" {
   },
   prerequisites = {"电解","空气分离"},
   ingredients = {
-      {"气候科技包", 4},
+      {"气候科技包", 1},
   },
   count = 4,
   time = "1s"
@@ -342,9 +342,9 @@ prototype "碳处理2" {
   },
   prerequisites = {"碳处理1"},
   ingredients = {
-      {"气候科技包", 8},
+      {"气候科技包", 1},
   },
-  count = 4,
+  count = 8,
   time = "1s"
 }
 
@@ -357,10 +357,10 @@ prototype "管道系统2" {
   },
   prerequisites = {"空气分离"},
   ingredients = {
-      {"地质科技包", 4},
-      {"气候科技包", 4},
+      {"地质科技包", 1},
+      {"气候科技包", 1},
   },
-  count = 5,
+  count = 4,
   time = "1s"
 }
 
@@ -373,8 +373,8 @@ prototype "有机化学" {
   },
   prerequisites = {"碳处理1"},
   ingredients = {
-    {"地质科技包", 4},
-    {"气候科技包", 4},
+    {"地质科技包", 1},
+    {"气候科技包", 1},
   },
   count = 5,
   time = "1s"
@@ -404,9 +404,9 @@ prototype "冶金学" {
   },
   prerequisites = {"石头处理2"},
   ingredients = {
-    {"地质科技包", 5},
+    {"地质科技包", 1},
   },
-  count = 3,
+  count = 5,
   time = "1s"
 }
 
@@ -441,10 +441,10 @@ prototype "电磁学1" {
   },
   prerequisites = {"生产一氧化碳","生产塑料","基地生产2"},
   ingredients = {
-    {"地质科技包", 5},
-    {"气候科技包", 5},
+    {"地质科技包", 1},
+    {"气候科技包", 1},
   },
-  count = 3,
+  count = 5,
   time = "1s"
 }
 
@@ -457,8 +457,8 @@ prototype "机械研究" {
   },
   prerequisites = {"电磁学1"},
   ingredients = {
-    {"地质科技包", 5},
-    {"气候科技包", 5},
+    {"地质科技包", 1},
+    {"气候科技包", 1},
   },
   count = 6,
   time = "1s",
@@ -477,10 +477,10 @@ prototype "蒸馏厂1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"机械科技包", 4},
-    {"气候科技包", 4},
+    {"机械科技包", 1},
+    {"气候科技包", 1},
   },
-  count = 7,
+  count = 8,
   time = "1s"
 }
 
@@ -493,10 +493,10 @@ prototype "挖掘1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"地质科技包", 4},
-    {"气候科技包", 4},
+    {"地质科技包", 1},
+    {"气候科技包", 1},
   },
-  count = 7,
+  count = 8,
   time = "1s"
 }
 
@@ -509,7 +509,7 @@ prototype "驱动1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"机械科技包", 3},
+    {"机械科技包", 1},
   },
   count = 8,
   time = "1s"
@@ -524,9 +524,9 @@ prototype "电力传输1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"地质科技包", 2},
-    {"气候科技包", 2},
-    {"机械科技包", 2},
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
   },
   count = 12,
   time = "1s"
@@ -541,7 +541,7 @@ prototype "物流1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"机械科技包", 3},
+    {"机械科技包", 1},
   },
   count = 8,
   time = "1s"
@@ -556,8 +556,8 @@ prototype "泵系统1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"气候科技包", 4},
-    {"机械科技包", 4},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
   },
   count = 6,
   time = "1s"
@@ -572,8 +572,8 @@ prototype "金属加工1" {
   },
   prerequisites = {"挖掘1","驱动1"},
   ingredients = {
-    {"地质科技包", 4},
-    {"机械科技包", 4},
+    {"地质科技包", 1},
+    {"机械科技包", 1},
   },
   count = 8,
   time = "1s"
@@ -588,7 +588,7 @@ prototype "自动化1" {
   },
   prerequisites = {"驱动1","电力传输1","物流1"},
   ingredients = {
-    {"机械科技包", 3},
+    {"机械科技包", 1},
   },
   count = 12,
   time = "1s"
