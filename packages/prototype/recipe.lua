@@ -4,17 +4,17 @@ local prototype = gameplay.prototype
 prototype "铁锭" {
     type = { "recipe" },
     category = "金属冶炼",
-    group = "金属",
+    --group = "金属",
     order = 10,
     icon = "textures/construct/iron-ingot.texture",
     ingredients = {
-        {"铁矿石", 5},
+        {"铁矿石", 3},
     },
     results = {
-        {"铁锭", 2},
-        {"碎石", 1}
+        {"铁锭", 1},
+        {"碎石", 2}
     },
-    time = "8s",
+    time = "4s",
     description = "铁矿石通过金属冶炼获得铁锭",
 }
 
@@ -25,14 +25,14 @@ prototype "铁板1" {
     order = 11,
     icon = "textures/construct/iron-ingot.texture",
     ingredients = {
-        {"铁矿石", 2},
+        {"铁矿石", 5},
     },
     results = {
-        {"铁板", 1},
+        {"铁板", 2},
         {"碎石", 1},
     },
     time = "3s",
-    description = "使用铁矿石锻造铁板",
+    description = "铁矿石通过金属冶炼获得铁板",
 
 }
 
@@ -57,7 +57,7 @@ prototype "铁板2" {
 prototype "铁棒1" {
     type = { "recipe" },
     category = "金属锻造",
-    group = "金属",
+    --group = "金属",
     order = 13,
     icon = "textures/construct/iron_stick.texture",
     ingredients = {
@@ -73,7 +73,7 @@ prototype "铁棒1" {
 prototype "铁丝1" {
     type = { "recipe" },
     category = "金属锻造",
-    group = "金属",
+    --group = "金属",
     order = 14,
     icon = "textures/construct/iron-wire.texture",
     ingredients = {
@@ -961,24 +961,6 @@ prototype "空气分离1" {
     description = "空气分离出纯净气体",
 }
 
-prototype "地下卤水电解" {
-    type = { "recipe" },
-    category = "电解",
-    --group = "流体",
-    order = 16,
-    icon = "textures/construct/electrolysis1.texture",
-    ingredients = {
-        {"地下卤水", 40},
-    },
-    results = {
-        {"氢气", 110},
-        {"氯气", 15},
-        {"氢氧化钠", 1},
-    },
-    time = "1s",
-    description = "地下卤水电解出纯净气体和化合物",
-}
-
 prototype "二氧化碳转一氧化碳" {
     type = { "recipe" },
     category = "流体基础化工",
@@ -1058,6 +1040,42 @@ prototype "地下卤水电解" {
     order = 15,
     icon = "textures/fluid/gas.texture",
     ingredients = {
+        {"地下卤水", 45},
+    },
+    results = {
+        {"氧气", 45},
+        {"氢气", 110},
+        {"氯气", 14},
+        {"氢氧化钠", 1},
+    },
+    time = "1s",
+    description = "卤水电解成氧气、氢气和氯气",
+}
+
+prototype "地下卤水净化" {
+    type = { "recipe" },
+    category = "流体基础化工",
+    group = "流体",
+    order = 15,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
+        {"地下卤水", 100},
+    },
+    results = {
+        {"纯水", 70},
+        {"废水", 30},
+    },
+    time = "1s",
+    description = "卤水净化成纯水",
+}
+
+prototype "地下卤水电解-backup" {
+    type = { "recipe" },
+    category = "电解",
+    --group = "流体",
+    order = 15,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
         {"纯水", 45},
     },
     results = {
@@ -1110,6 +1128,7 @@ prototype "塑料1" {
     order = 20,
     icon = "textures/construct/processor.texture",
     ingredients = {
+        {"氯气", 30},
         {"乙烯", 30},
     },
     results = {
