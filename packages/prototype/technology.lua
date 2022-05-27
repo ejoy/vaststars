@@ -48,7 +48,7 @@ prototype "铁矿熔炼" {
       {"地质科技包", 1},
   },
   count = 4,
-  time = "1s"
+  time = "3s"
 }
 
 prototype "生产铁板" {
@@ -93,7 +93,7 @@ prototype "挖掘井" {
       {"地质科技包", 1},
       {"气候科技包", 1},
   },
-  count = 3,
+  count = 4,
   time = "1s"
 }
 
@@ -139,7 +139,7 @@ prototype "管道系统1" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 3,
+  count = 4,
   time = "1s"
 }
 
@@ -166,8 +166,8 @@ prototype "电解" {
   ingredients = {
       {"气候科技包", 1},
   },
-  count = 4,
-  time = "1s"
+  count = 5,
+  time = "2s"
 }
 
 prototype "空气分离" {
@@ -181,8 +181,8 @@ prototype "空气分离" {
   ingredients = {
       {"气候科技包", 1},
   },
-  count = 3,
-  time = "1s"
+  count = 4,
+  time = "1.5s"
 }
 
 prototype "铁加工1" {
@@ -265,7 +265,7 @@ prototype "基地生产1" {
       {"地质科技包", 1},
   },
   count = 8,
-  time = "2s",
+  time = "1s",
   sign_desc = {
     { desc = "该科技可以持续地提高某项能力", icon = "textures/science/recycle.texture"},
   },
@@ -310,8 +310,8 @@ prototype "基地生产2" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 5,
-  time = "1s",
+  count = 10,
+  time = "2s",
   sign_desc = {
     { desc = "该科技可以持续地提高某项能力", icon = "textures/science/recycle.texture"},
   },
@@ -330,7 +330,7 @@ prototype "碳处理1" {
       {"气候科技包", 1},
   },
   count = 4,
-  time = "1s"
+  time = "2s"
 }
 
 prototype "碳处理2" {
@@ -345,7 +345,7 @@ prototype "碳处理2" {
       {"气候科技包", 1},
   },
   count = 8,
-  time = "1s"
+  time = "2s"
 }
 
 prototype "管道系统2" {
@@ -361,7 +361,7 @@ prototype "管道系统2" {
       {"气候科技包", 1},
   },
   count = 4,
-  time = "1s"
+  time = "3s"
 }
 
 prototype "有机化学" {
@@ -377,7 +377,7 @@ prototype "有机化学" {
     {"气候科技包", 1},
   },
   count = 5,
-  time = "1s"
+  time = "10s"
 }
 
 prototype "排放" {
@@ -389,10 +389,10 @@ prototype "排放" {
   },
   prerequisites = {"管道系统2"},
   ingredients = {
-    {"气候科技包", 8},
+    {"气候科技包", 1},
   },
-  count = 2,
-  time = "1s"
+  count = 8,
+  time = "2s"
 }
 
 prototype "冶金学" {
@@ -407,7 +407,7 @@ prototype "冶金学" {
     {"地质科技包", 1},
   },
   count = 5,
-  time = "1s"
+  time = "4s"
 }
 
 prototype "生产一氧化碳" {
@@ -444,8 +444,8 @@ prototype "电磁学1" {
     {"地质科技包", 1},
     {"气候科技包", 1},
   },
-  count = 5,
-  time = "1s"
+  count = 10,
+  time = "6s"
 }
 
 prototype "机械研究" {
@@ -497,7 +497,7 @@ prototype "挖掘1" {
     {"气候科技包", 1},
   },
   count = 8,
-  time = "1s"
+  time = "2s"
 }
 
 prototype "驱动1" {
@@ -512,7 +512,7 @@ prototype "驱动1" {
     {"机械科技包", 1},
   },
   count = 8,
-  time = "1s"
+  time = "2s"
 }
 
 prototype "电力传输1" {
@@ -529,7 +529,7 @@ prototype "电力传输1" {
     {"机械科技包", 1},
   },
   count = 12,
-  time = "1s"
+  time = "2s"
 }
 
 prototype "物流1" {
@@ -544,7 +544,7 @@ prototype "物流1" {
     {"机械科技包", 1},
   },
   count = 8,
-  time = "1s"
+  time = "2s"
 }
 
 prototype "泵系统1" {
@@ -560,7 +560,7 @@ prototype "泵系统1" {
     {"机械科技包", 1},
   },
   count = 6,
-  time = "1s"
+  time = "2s"
 }
 
 prototype "金属加工1" {
@@ -576,7 +576,7 @@ prototype "金属加工1" {
     {"机械科技包", 1},
   },
   count = 8,
-  time = "1s"
+  time = "2s"
 }
 
 prototype "自动化1" {
@@ -591,5 +591,5 @@ prototype "自动化1" {
     {"机械科技包", 1},
   },
   count = 12,
-  time = "1s"
+  time = "3s"
 }
