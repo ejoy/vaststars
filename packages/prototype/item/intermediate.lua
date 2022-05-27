@@ -14,7 +14,7 @@ prototype "铁锭" {
 prototype "铁板" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/steel-beam.texture",
+    icon = "textures/construct/iron-ingot.texture",
     model = "prefabs/rock.prefab",
     description = "铁制材料锻造加工成的铁板",
     group = "金属",
