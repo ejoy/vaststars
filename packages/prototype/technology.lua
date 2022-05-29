@@ -29,7 +29,8 @@ prototype "收集铁矿石" {
   desc = "收集足够的铁矿石可以开始进行锻造",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
-  task = {"select_chest", 0, "指挥中心", "铁矿石"},
+  task = {"stat_production", 0, "铁矿石"},
+  -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"地质研究"},
   count = 10,
   sign_desc = {
@@ -58,9 +59,9 @@ prototype "生产铁板" {
   type = { "tech", "task" },
   task = {"stat_production", 0, "铁板"},
   prerequisites = {"铁矿熔炼"},
-  count = 10,
+  count = 6,
   sign_desc = {
-    { desc = "生产10个铁板", icon = "textures/science/tech-metal.texture"},
+    { desc = "生产6个铁板", icon = "textures/science/tech-metal.texture"},
   },
 }
 
