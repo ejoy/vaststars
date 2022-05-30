@@ -32,9 +32,9 @@ prototype "收集铁矿石" {
   task = {"stat_production", 0, "铁矿石"},
   -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"地质研究"},
-  count = 10,
+  count = 15,
   sign_desc = {
-    { desc = "收集10个铁矿石", icon = "textures/construct/industry.texture"},
+    { desc = "收集15个铁矿石", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -54,14 +54,14 @@ prototype "铁矿熔炼" {
 }
 
 prototype "生产铁板" {
-  desc = "铁板可以打造坚固的房屋和器材，对于基地建设多多益善",
-  icon = "textures/science/tech-equipment.texture",
+  desc = "铁板可以打造坚固器材，对于基地建设多多益善",
+  icon = "textures/construct/iron-ingot.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "铁板"},
   prerequisites = {"铁矿熔炼"},
-  count = 6,
+  count = 8,
   sign_desc = {
-    { desc = "生产6个铁板", icon = "textures/science/tech-metal.texture"},
+    { desc = "使用熔炼炉生产8个铁板", icon = "textures/construct/iron-ingot.texture"},
   },
 }
 
@@ -80,6 +80,18 @@ prototype "石头处理1" {
   time = "2s"
 }
 
+prototype "生产石砖" {
+  desc = "石砖可以打造基础建筑，对于基地建设多多益善",
+  icon = "textures/construct/stone-brick.texture",
+  type = { "tech", "task" },
+  task = {"stat_production", 0, "石砖"},
+  prerequisites = {"石头处理1"},
+  count = 5,
+  sign_desc = {
+    { desc = "使用组装机生产5个石砖", icon = "textures/construct/stone-brick.texture"},
+  },
+}
+
 prototype "气候研究" {
   desc = "对火星大气成分进行标本采集和研究",
   type = { "tech" },
@@ -87,7 +99,7 @@ prototype "气候研究" {
   effects = {
     unlock_recipe = {"生产铁板"},
   },
-  prerequisites = {"石头处理1"},
+  prerequisites = {"生产石砖"},
   ingredients = {
       {"地质科技包", 1},
   },
