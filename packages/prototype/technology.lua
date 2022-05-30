@@ -87,7 +87,7 @@ prototype "气候研究" {
   effects = {
     unlock_recipe = {"生产铁板"},
   },
-  prerequisites = {"铁加工1"},
+  prerequisites = {"石头处理1"},
   ingredients = {
       {"地质科技包", 1},
   },
