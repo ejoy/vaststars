@@ -37,7 +37,7 @@ local function new_entity(self, datamodel, typeobject)
     end
 
     -- 主要处理某些组装机有默认配方的情况
-    local fluid_name
+    local fluid_name = ""
     if typeobject.recipe then
         local recipe_typeobject = iprototype:queryByName("recipe", typeobject.recipe)
         if recipe_typeobject then
@@ -144,9 +144,15 @@ local function confirm(self, datamodel)
 
     local prototype_name = pickup_object.prototype_name
     local typeobject = iprototype:queryByName("entity", prototype_name)
-    if iprototype:has_type(typeobject.type, "fluidbox") and pickup_object.fluid_name == "" then
-        global.fluidflow_network_id = global.fluidflow_network_id + 1
-        pickup_object.fluidflow_network_id = global.fluidflow_network_id
+    if iprototype:has_type(typeobject.type, "fluidbox") then
+        if pickup_object.fluid_name == "" then
+            global.fluidflow_network_id = global.fluidflow_network_id + 1
+            pickup_object.fluidflow_network_id = global.fluidflow_network_id
+        end
+    end
+
+    if iprototype:has_type(typeobject.type, "fluidbox") or iprototype:has_type(typeobject.type, "fluidboxes") then
+        self:update_fluidbox(EDITOR_CACHE_NAMES, "CONFIRM", pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.fluid_name)
     end
 
     local vsobject = assert(vsobject_manager:get(self.pickup_object.id))
