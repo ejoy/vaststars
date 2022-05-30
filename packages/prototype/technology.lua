@@ -358,7 +358,7 @@ prototype "碳处理2" {
   effects = {
     unlock_recipe = {"二氧化碳转一氧化碳","一氧化碳转石墨"},
   },
-  prerequisites = {"碳处理1"},
+  prerequisites = {"碳处理1","放置太阳能板"},
   ingredients = {
       {"气候科技包", 1},
   },
@@ -389,7 +389,7 @@ prototype "有机化学" {
   effects = {
     unlock_recipe = {"甲烷转乙烯","塑料1"},
   },
-  prerequisites = {"碳处理1"},
+  prerequisites = {"碳处理2"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
