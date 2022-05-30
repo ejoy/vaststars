@@ -64,6 +64,11 @@ local M = {}
 function M:create()
     return {
         construct_menu = construct_menu,
+        tech_count = global.science.tech_list and #global.science.tech_list or 0,
+        show_tech_progress = false,
+        current_tech_icon = " ",    --当前科技图标
+        current_tech_name = " ",    --当前科技名字
+        current_tech_progress = " ",--当前科技进度
     }
 end
 
@@ -74,6 +79,18 @@ end
 
 function M:drawcall_text(datamodel, text)
     datamodel.drawcall_text = text
+end
+
+function M:update_tech(datamodel, tech, progress)
+    if tech then
+        datamodel.show_tech_progress = true
+        datamodel.current_tech_name = tech.name
+        datamodel.current_tech_icon = tech.detail.icon
+        datamodel.current_tech_progress = (progress * 100) // tech.detail.count .. '%'
+    else
+        datamodel.show_tech_progress = false
+        datamodel.tech_count = global.science.tech_list and #global.science.tech_list or 0
+    end
 end
 
 function M:stage_ui_update(datamodel)
