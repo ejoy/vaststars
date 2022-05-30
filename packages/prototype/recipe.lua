@@ -385,7 +385,7 @@ prototype "风力发电机1" {
     description = "电传输材料和发电设施制造风力发电机",
 }
 
-prototype "液罐I" {
+prototype "液罐1" {
     type = { "recipe" },
     category = "化工大型制造",
     group = "化工",
@@ -565,6 +565,22 @@ prototype "排水口1" {
 }
 
 prototype "管道1" {
+    type = { "recipe" },
+    category = "化工小型制造",
+    group = "化工",
+    order = 10,
+    icon = "textures/construct/pipe.texture",
+    ingredients = {
+        {"铁板", 2},
+    },
+    results = {
+        {"管道1-I型", 3},
+    },
+    time = "6s",
+    description = "石砖制造管道",
+}
+
+prototype "管道2" {
     type = { "recipe" },
     category = "化工小型制造",
     group = "化工",
