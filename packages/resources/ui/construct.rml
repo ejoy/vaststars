@@ -255,6 +255,11 @@
                 <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()">
                     <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
                     <div class = "menu-button-text">科研中心</div>
+                    <!-- 科研中心可研究科技标识 start-->
+                    <div class = "menu-button-pic" style='width:3.6vmin; height:3.6vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/shutdown.texture"'>
+                        <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">10</div>
+                    </div>
+                    <!-- 科研中心可研究科技标识 end-->
                 </button>
                 <button  class = "main-menu-button" style="border: 0.00vmin;" data-if="false">
                     <div class = "menu-button-pic" style='background-image:"textures/factory/seacher.texture"'/>
