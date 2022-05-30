@@ -204,6 +204,18 @@ prototype "空气分离" {
   time = "1.5s"
 }
 
+prototype "收集空气" {
+  desc = "采集火星上的空气",
+  type = { "tech", "task" },
+  icon = "textures/science/tech-liquid.texture",
+  task = {"stat_production", 0, "空气"},
+  prerequisites = {"空气分离"},
+  count = 4000,
+  sign_desc = {
+    { desc = "用空气过滤器生产并用液罐存储4000单位空气", icon = "textures/science/tech-liquid.texture",},
+  },
+}
+
 prototype "铁加工1" {
   desc = "获得铁板加工铁齿轮的工艺",
   type = { "tech" },
@@ -361,7 +373,7 @@ prototype "管道系统2" {
   effects = {
     unlock_recipe = {"破损化工厂","地下管1"},
   },
-  prerequisites = {"空气分离","放置太阳能板"},
+  prerequisites = {"收集空气","放置太阳能板"},
   ingredients = {
       {"地质科技包", 1},
       {"气候科技包", 1},
