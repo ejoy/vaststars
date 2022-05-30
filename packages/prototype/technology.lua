@@ -336,7 +336,7 @@ prototype "基地生产2" {
   effects = {
     modifier = {["headquarter-craft-speed"] = 0.2},
   },
-  prerequisites = {"生产储藏箱"},
+  prerequisites = {"生产铁制箱子"},
   ingredients = {
       {"地质科技包", 1},
   },
