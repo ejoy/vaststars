@@ -361,7 +361,7 @@ prototype "管道系统2" {
   effects = {
     unlock_recipe = {"破损化工厂","地下管1"},
   },
-  prerequisites = {"空气分离"},
+  prerequisites = {"空气分离","放置太阳能板"},
   ingredients = {
       {"地质科技包", 1},
       {"气候科技包", 1},
