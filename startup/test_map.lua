@@ -6,7 +6,7 @@ world:create_entity "小型铁制箱子" {
     y = 1,
     items = {
         {"铁矿石", 100},
-        {"沙石矿", 100},
+        {"碎石", 100},
     },
 }
 world:create_entity "机器爪I" {
@@ -17,19 +17,18 @@ world:create_entity "机器爪I" {
 world:create_entity "组装机I" {
     x = 3,
     y = 1,
-    recipe = "地质科技包1"
 }
 world:create_entity "机器爪I" {
     x = 6,
     y = 1,
     dir = "W"
 }
-world:create_entity "科技中心I" {
+world:create_entity "科研中心I" {
     x = 7,
     y = 1,
 }
 
-world:research_queue {"铁矿熔炼","铁矿提取",}
+world:research_queue {"铁加工1","铁矿熔炼"}
 
 world:create_entity "指挥中心" {
     x = 1,
@@ -142,25 +141,21 @@ local gameplay = import_package "vaststars.gameplay"
 local function init_fluid()
     local ecs = world.ecs
     local Map = {}
-    local direction <const> = {
-        [0] = {0,-1}, --N
-        {1,0}, --E
-        {0,1}, --S
-        {-1,0}, --W
-        N = {0,-1},
-        E = {1,0},
-        S = {0,1},
-        W = {-1,0},
-    }
     local N <const> = 0
     local E <const> = 1
     local S <const> = 2
     local W <const> = 3
+    local Direction <const> = {
+        [N] = {0,-1},
+        [E] = {1,0},
+        [S] = {0,1},
+        [W] = {-1,0},
+    }
     local PipeDirection <const> = {
-        ["N"] = 0,
-        ["E"] = 1,
-        ["S"] = 2,
-        ["W"] = 3,
+        N = N,
+        E = E,
+        S = S,
+        W = W,
     }
 
     local function rotate(position, direction, area)
@@ -182,7 +177,7 @@ local function init_fluid()
 
     local function pipePostion(e, position, area)
         local x, y, dir = rotate(position, e.direction, area)
-        return e.x + x + direction[dir][1], e.y + y + direction[dir][2]
+        return e.x + x + Direction[dir][1], e.y + y + Direction[dir][2]
     end
 
     local function walk_pipe(fluid, start_x, start_y)

@@ -1,0 +1,298 @@
+<rml>
+    <head>
+        <style>
+            .recipe-panel {
+                background-color: rgb(44, 32, 18);
+                border: 0.2vmin rgb(89, 73, 39);
+                border-radius: 0.67vmin;
+                margin:auto 0.3em;
+                width: 25%;
+                height: 90%;
+                justify-content: space-evenly;
+            }
+            .recipe-name-block {
+                background-color: rgb(203, 118, 24);
+                width: 100%;
+                height:5%;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                border: 0.10vmin rgb(89, 73, 39);
+            }
+            .recipe-time-block {
+                flex-direction: row;
+                align-items: center;
+            }
+            .name-block {
+                background-color: rgb(203, 118, 24);
+                height:100%;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .recipe-change-block {
+                width: 100%;
+                height:40%;
+                flex-direction: column;
+                align-items: flex-start;
+                border: 0.10vmin rgb(89, 73, 39);
+                background-color: rgb(44, 32, 18);
+            }
+            .recipe-button-block {
+                width: 100%;
+                height:15%;
+                flex-direction: row;
+                align-items: flex-end;
+                justify-content: space-evenly;
+                background-color: rgb(44, 32, 18);
+                font-size: 3.47vmin;
+            }
+            .recipe-name-text {
+                padding-bottom: 1vmin;
+                margin:0 0.5em 0 0;
+                font-size: 3.73vmin;
+                text-align: center;
+                -webkit-text-stroke: 0.05em rgb(0,0,0);
+            }
+            .two-recipe-block {
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                background-color: rgb(44, 32, 18);
+                font-size: 3.73vmin;
+                background-size: cover;
+                border-radius: 0.27vmin;
+                width: 100%;
+                height:80%;
+            }
+            .materials-block {
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                background-size: cover;
+                border-radius: 0.27vmin;
+                width: 100%;
+                height:80%;
+            }
+            .materials {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                background-size: cover;
+                width: 100%;
+                height:15%;
+            }
+            .materials-item {
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .materials-icon {
+                margin-left: 0.5em;
+                width: 3.67vmin;
+                height: 3.67vmin;
+                background-color: rgb(250, 205, 9);;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                background-size: cover;
+            }
+            .materials-name {
+                padding-bottom: 0.3em;
+                padding-left: 0.2em;
+                padding-right:1em;
+                font-size: 3.73vmin;
+                text-align: center;
+            }
+            .materials-num {
+                padding-bottom: 0.3em;
+                padding-right:1em;
+                font-size: 3.73vmin;
+                text-align: center;
+            }
+            .button-increase-item {
+                background-color: rgb(19,175,240);
+                background-size:cover;
+            }
+        </style>
+        <style path = "common/building_style.rcss"/>
+        <style path = "common/listpage_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = window.createModel "start" {
+                object_id = 0,
+                recipe_index = 1,
+                recipe_name = "",
+                recipe_menu = {},
+                catalog_index = 1,
+                items = {},
+
+                recipe_time = " ",
+                recipe_ingredients = {},
+                recipe_results = {},
+            }
+
+            local function clickItem(index)
+            end
+
+            function start.clickClose(event)
+                ui_sys:close()
+            end
+
+            function start.clickConfirm(event)
+                ui_sys:pub {"set_recipe", start.object_id, start.recipe_name}
+                ui_sys:close()
+            end
+
+            local select_item
+            function start.clickCatalog(event, it_index)
+                start.catalog_index = it_index + 1
+                start.items = start.recipe_menu[it_index + 1].item
+                -- <!-- tag page begin -->
+                select_item = nil
+                start.page:on_dirty_all(#start.items)
+                -- <!-- tag page end -->
+            end
+
+            -- <!-- tag page begin -->
+            local function page_item_renderer(index)
+                if index > #start.items then
+                    local e = document.createElement "div"
+                    e.outerHTML = [[<div style = "width: 12.00vmin; height: 12.00vmin;" />]]
+                    return e
+                end
+
+                local item = document.createElement "div"
+                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" />]]):format(start.items[index].icon)
+                local select_style_border = "5px green"
+
+                if start.recipe_name == start.items[index].name then
+                    select_item = item
+                    item.style.border = select_style_border
+                end
+
+                item.addEventListener('click', function(event)
+                    if select_item then
+                        select_item.style.border = '0px green'
+                    end
+                    item.style.border = select_style_border
+                    clickItem(index)
+                    select_item = item
+                end)
+                return item
+            end
+
+            local pageclass = require "page"
+            window.customElements.define("page", function(e)
+                start.page = pageclass.create(document, e, page_item_renderer)
+            end)
+            -- <!-- tag page end -->
+
+            ui_sys:setDataModel(start, function(patch)
+                if patch.items then
+                    start.page:on_dirty_all(#start.items)
+                end
+                
+                if patch.recipe_index then
+                    clickItem(patch.recipe_index)
+                end
+            end)
+        </script>
+    </head>
+    <body>
+        <div class="item-container-region"  style="width:100%;  background-color: rgb(0,0,0); justify-content: center;" data-model="start">
+            <div class="panel" style= "flex-direction: column;">
+                <div class="header" id = "item-name-block" data-event-click="clickClose()">
+                    <button class = "back-button"/>
+                    <div class = "menu-title" style="width: 70%;">选择生产物品</div>
+                    <button class = "find-button" style="position:absolute; right:0;"/>   
+                </div>
+
+                <!-- tag page begin -->
+                <div class="panel" style = "width: 100%; height: 70.00vmin;">
+                    <page width = '85.33vmin' height = '66.00vmin' footerheight= '4.00vmin' row='5' col='7' />
+                </div>
+                <!-- tag page end -->
+
+                <div class = "draw-line"/>
+
+
+                <div class = "tab-container" style="flex-grow: 1;">
+                    <div data-for = "recipe_menu" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
+                        <workbutton data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index + 1 == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'" style = "width: 100%;">
+                            <div class="workbutton-bg" data-style-background-image="it.icon" />
+                            <div class="catalog-desc">{{it.group}}</div>
+                        </workbutton>
+                    </div>
+                </div>
+
+            </div>
+            <div class="recipe-panel" style = "flex-direction: column; height: 100%;">
+                <!-- 标题栏 -->
+                <div class = "recipe-name-block">
+                    <div class = "name-block">
+                        <div class = "small-bg" style='background-image: "textures/science/book.texture";'/>
+                        <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">{{recipe_name}}</div>
+                    </div>
+                    <div class = "recipe-time-block">
+                        <div class = "small-bg" style='background-image:"textures/character/timer.texture" ;'/>
+                        <div class = "recipe-name-text">{{recipe_time}}</div>           
+                    </div>
+                </div>
+
+                <!-- 物品所需原料 start -->
+                <div class = "recipe-change-block">
+                    <div class = "pic-block" style="width: 32%; height:12%;">
+                        <div class = "small-bg" style='background-image: "textures/road_net/big_bag.texture";'/>
+                        <div class = "recipe-name-text">原料</div>
+                    </div>
+                    <div class = "materials-block"> 
+                        <div class = "materials" data-for = "recipe_ingredients">
+                            <div class = "materials-item">
+                                <div class = "materials-icon" data-style-background-image = "it.icon" />
+                                <div class = "materials-name">{{it.name}}</div>
+                            </div>
+                            <div class = "materials-num">X{{it.count}}</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 物品所需原料 end -->
+
+                <!-- 物品生产数量 start -->
+                <div class = "recipe-change-block">
+                    <div class = "pic-block" style="width: 32%; height:12%;">
+                        <div class = "small-bg" style='background-image: "textures/science/whitebox.texture";'/>
+                        <div class = "recipe-name-text">添加</div>
+                    </div> 
+                    <div class = "materials-block" style="height:58%;">
+                        <div class = "materials" data-for = "recipe_results">
+                            <div class = "materials-item">
+                                <div class = "materials-icon" data-style-background-image = "it.icon" />
+                                <div class = "materials-name">{{it.name}}</div>
+                            </div>
+                            <div class = "materials-num">X{{it.count}}</div>
+                        </div>
+                    </div>
+                    <div class="row" style="height: 30%; width:100%; justify-content: space-evenly;">
+                        <button class = "button-increase-item" style='background-image:"textures/factory/return.texture";background-color: rgb(255, 230, 0);'/>
+                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-five.texture";'/>
+                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-one.texture";'/>
+                    </div>
+                </div>
+                <!-- 物品生产数量 end -->
+
+                <!-- 开始生产按钮 start -->
+                <div class = "recipe-button-block">
+                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115);" data-event-click = "clickConfirm()">
+                        <div class = "recipe-name-text" style="font-size: 4vmin; margin:0; padding-bottom: 3.3vmin;">开始生产</div>
+                        <div style="position: absolute;width: 100%; bottom:0; flex-direction: row; align-items: center; justify-content: center;">
+                            <div class = "small-bg" style='background-image:"textures/character/timer.texture"; width: 2.6vmin;height: 2.6vmin;'/>
+                            <div style="font-size: 3vmin;">11m30s</div>
+                        </div>
+                    </button>
+                </div>
+                <!-- 开始生产按钮 end -->
+            </div>
+        </div>
+    </body>
+</rml>

@@ -1,9 +1,9 @@
 #include <lua.hpp>
-#include "world.h"
-#include "fluid.h"
+#include "core/world.h"
+#include "system/fluid.h"
 
 extern "C" {
-    #include "fluidflow.h"
+    #include "core/fluidflow.h"
 }
 
 fluidflow::fluidflow()
@@ -48,7 +48,7 @@ bool fluidflow::rebuild(uint16_t id) {
 	r = fluidflow_build(network, id, &state.box);
 	assert(r == 0); (void)r;
 	r = fluidflow_set(network, id, state.volume, 1);
-	assert(r == 0); (void)r;
+	assert(r != -1); (void)r;
 	return true;
 }
 
@@ -154,162 +154,6 @@ lupdate(lua_State *L) {
 		}
 	}
 	return 0;
-}
-
-static int
-lfluidflow_build(lua_State *L) {
-	world& w = *(world*)lua_touserdata(L, 1);
-	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-	int capacity = (int)luaL_checkinteger(L, 3);
-	int height = (int)luaL_checkinteger(L, 4);
-	int base_level = (int)luaL_checkinteger(L, 5);
-	int pumping_speed = (int)luaL_optinteger(L, 6, 0);
-	fluid_box box {
-		.capacity = capacity,
-		.height = height,
-		.base_level = base_level,
-		.pumping_speed = pumping_speed,
-	};
-	uint16_t id = w.fluidflows[fluid].build(&box);
-	if (id == 0) {
-		return luaL_error(L, "fluidflow build failed.");
-	}
-	lua_pushinteger(L, id);
-	return 1;
-}
-
-static int
-lfluidflow_rebuild(lua_State *L) {
-	world& w = *(world*)lua_touserdata(L, 1);
-	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-	uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
-	w.fluidflows[fluid].rebuild(id);
-	return 0;
-}
-
-static int
-lfluidflow_restore(lua_State *L) {
-	world& w = *(world*)lua_touserdata(L, 1);
-	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-	uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
-	int capacity = (int)luaL_checkinteger(L, 4);
-	int height = (int)luaL_checkinteger(L, 5);
-	int base_level = (int)luaL_checkinteger(L, 6);
-	int pumping_speed = (int)luaL_optinteger(L, 7, 0);
-	fluid_box box {
-		.capacity = capacity,
-		.height = height,
-		.base_level = base_level,
-		.pumping_speed = pumping_speed,
-	};
-	bool ok = w.fluidflows[fluid].restore(id, &box);
-	if (!ok) {
-		return luaL_error(L, "fluidflow restore failed.");
-	}
-	return 0;
-}
-
-static int
-lfluidflow_teardown(lua_State *L) {
-	world& w = *(world*)lua_touserdata(L, 1);
-	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-	uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
-	bool ok = w.fluidflows[fluid].teardown(id);
-	if (!ok) {
-		return luaL_error(L, "fluidflow teardown failed.");
-	}
-	return 0;
-}
-
-static int
-lfluidflow_connect(lua_State *L) {
-	world& w = *(world*)lua_touserdata(L, 1);
-	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-	fluidflow& flow = w.fluidflows[fluid];
-	luaL_checktype(L, 3, LUA_TTABLE);
-	lua_Integer n = luaL_len(L, 3);
-	for (lua_Integer i = 1; i+2 <= n; i += 3) {
-		lua_rawgeti(L, 3, i);
-		lua_rawgeti(L, 3, i+1);
-		lua_rawgeti(L, 3, i+2);
-		uint16_t from = (uint16_t)luaL_checkinteger(L, -3);
-		uint16_t to = (uint16_t)luaL_checkinteger(L, -2);
-		bool oneway = !!lua_toboolean(L, -1);
-		bool ok =  flow.connect(from, to, oneway);
-		if (!ok) {
-			return luaL_error(L, "fluidflow connect failed.");
-		}
-		lua_pop(L, 3);
-	}
-	return 0;
-}
-
-static int
-lfluidflow_query(lua_State *L) {
-	world& w = *(world*)lua_touserdata(L, 1);
-	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-
-	auto& f = w.fluidflows[fluid];
-	uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
-	fluid_state state;
-	if (!f.query(id, state)) {
-		return luaL_error(L, "fluidflow query failed.");
-	}
-	lua_createtable(L, 0, 7);
-	lua_pushinteger(L, f.multiple);
-	lua_setfield(L, -2, "multiple");
-	lua_pushinteger(L, state.volume);
-	lua_setfield(L, -2, "volume");
-	lua_pushinteger(L, state.flow);
-	lua_setfield(L, -2, "flow");
-	lua_pushinteger(L, state.box.capacity);
-	lua_setfield(L, -2, "capacity");
-	lua_pushinteger(L, state.box.height);
-	lua_setfield(L, -2, "height");
-	lua_pushinteger(L, state.box.base_level);
-	lua_setfield(L, -2, "base_level");
-	lua_pushinteger(L, state.box.pumping_speed);
-	lua_setfield(L, -2, "pumping_speed");
-	return 1;
-}
-
-static int
-lfluidflow_set(lua_State *L) {
-	world& w = *(world*)lua_touserdata(L, 1);
-	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-
-	auto& f = w.fluidflows[fluid];
-	uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
-	int value = (int)luaL_checkinteger(L, 4);
-	int multiple = (int)luaL_optinteger(L, 5, f.multiple);
-	f.set(id, value, multiple);
-	return 0;
-}
-
-static int
-lfluidflow_dump(lua_State *L) {
-	world& w = *(world*)lua_touserdata(L, 1);
-	uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-	w.fluidflows[fluid].dump();
-	return 0;
-}
-
-extern "C" int
-luaopen_vaststars_fluidflow_core(lua_State *L) {
-	luaL_checkversion(L);
-	luaL_Reg l[] = {
-		{ "build", lfluidflow_build },
-		{ "restore", lfluidflow_restore },
-		{ "teardown", lfluidflow_teardown },
-		{ "connect", lfluidflow_connect },
-		{ "query", lfluidflow_query },
-		{ "set", lfluidflow_set },
-		{ "rebuild", lfluidflow_rebuild },
-		{ "dump", lfluidflow_dump },
-		{ NULL, NULL },
-	};
-	luaL_newlib(L, l);
-	return 1;
 }
 
 extern "C" int

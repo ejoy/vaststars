@@ -73,7 +73,6 @@
             }
 
             function start.clickConfirm(event)
-                ui_sys:world_pub {"ui_message", "set_fluidbox_confirm", start.NewFluidName}
                 ui_sys:close()
             end
 

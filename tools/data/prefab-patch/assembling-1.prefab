@@ -41,9 +41,9 @@ data:
   name: empty3
   scene:
     srt:
-      r: {0, 0, 0, 1}
-      s: {1, 1, 1}
-      t: {0, 0, 0}
+      r: {0, 0, 0.22351381182670593, 0.9747007489204407}
+      s: {2, 2, 2}
+      t: {-10, 20, 3.4000000953674316}
   slot:
     follow_flag: 1
     joint_name: None
@@ -59,7 +59,10 @@ policy:
 data:
   name: empty4
   scene:
-    srt: {}
+    srt:
+      r: {0, 0, 0.22351381182670593, 0.9747007489204407}
+      s: {2, 2, 2}
+      t: {-10, 20, -3.4000000953674316}
   slot:
     follow_flag: 1
     joint_name: None

@@ -19,7 +19,7 @@ component "assembling" {
     "speed:word",
     "low_power:byte",
     "status:byte",
-    "process:int",
+    "progress:int",
 }
 
 component "laboratory" {
@@ -36,7 +36,7 @@ component "inserter" {
     "output_container:word",
     "hold_item:word",
     "hold_amount:word",
-    "process:word",
+    "progress:word",
     "low_power:byte",
     "status:byte",
 }
@@ -48,7 +48,14 @@ component "capacitance" {
 component "burner" {
 	"recipe:word",
 	"container:word",
-	"process:word",
+	"progress:word",
+}
+
+component "chimney" {
+    "recipe:word",
+    "speed:word",
+    "status:byte",
+    "progress:int",
 }
 
 component "consumer" {

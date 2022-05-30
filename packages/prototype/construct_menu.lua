@@ -4,6 +4,7 @@ local menu = {
         icon = "textures/construct/power.texture",
         detail = {
             "铁制电线杆",
+            "太阳能板I",
         }
     },
     {
@@ -28,9 +29,9 @@ local menu = {
         name = "管道",
         icon = "textures/construct/pipe.texture",
         detail = {
-            "管道1-I型",
+            "管道1-X型",
             "液罐I",
-            "抽水泵",
+            "地下水挖掘机",
             "烟囱I",
             "排水口I",
             "空气过滤器I",
@@ -43,7 +44,8 @@ local menu = {
             "小型铁制箱子",
             "机器爪I",
             "科研中心I",
-            "砖石公路",
+            "砖石公路-O型",
+            "采矿机I",
         },
     },
     {
@@ -55,10 +57,9 @@ local menu = {
             "管道1-I型",
             "机器爪I",
             "小型铁制箱子",
-            "抽水泵",
+            "地下水挖掘机",
             "熔炼炉I",
             "组装机I",
-
 
         },
     },

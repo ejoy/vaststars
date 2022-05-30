@@ -21,7 +21,7 @@ prototype "液罐I" {
     }
 }
 
-prototype "抽水泵" {
+prototype "地下水挖掘机" {
     model = "prefabs/offshore-pump-1.prefab",
     icon = "textures/building_pic/small_pic_offshore.texture",
     construct_detector = {"exclusive"},
@@ -72,9 +72,10 @@ prototype "烟囱I" {
     model = "prefabs/chimney-1.prefab",
     icon = "textures/building_pic/small_pic_pump.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "fluidbox"},
+    type ={"entity", "fluidbox", "chimney"},
     area = "2x2",
     craft_category = {"流体气体排泄"},
+    speed = "100%",
     group = {"管道"},
     fluidbox = {
         capacity = 1000,
@@ -90,9 +91,10 @@ prototype "排水口I" {
     model = "prefabs/outfall-1.prefab",
     icon = "textures/building_pic/small_pic_outfall.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "fluidbox"},
+    type ={"entity", "fluidbox", "chimney"},
     area = "3x3",
     craft_category = {"流体液体排泄"},
+    speed = "100%",
     group = {"管道"},
     fluidbox = {
         capacity = 1000,
@@ -119,7 +121,7 @@ prototype "空气过滤器I" {
         input = {},
         output = {
             {
-                capacity = 1000,
+                capacity = 100,
                 height = 200,
                 base_level = 150,
                 connections = {
@@ -132,7 +134,6 @@ prototype "空气过滤器I" {
 
 
 prototype "管道1-I型" {
-    show_prototype_name = "管道I",
     model = "prefabs/pipe/pipe_I.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
@@ -206,6 +207,7 @@ prototype "管道1-T型" {
 }
 
 prototype "管道1-X型" {
+    show_prototype_name = "管道I",
     model = "prefabs/pipe/pipe_X.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},

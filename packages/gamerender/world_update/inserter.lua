@@ -4,12 +4,12 @@ local iprototype = require "gameplay.interface.prototype"
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
 
-local function get_percent(process, total)
-    assert(process <= total)
-    if process < 0 then
-        process = 0
+local function get_percent(progress, total)
+    assert(progress <= total)
+    if progress < 0 then
+        progress = 0
     end
-    return (total - process) / total -- 爪子进度是递减
+    return (total - progress) / total -- 爪子进度是递减
 end
 
 local function update_world(world, get_object_func)
@@ -27,7 +27,7 @@ local function update_world(world, get_object_func)
             vsobject:detach()
         end
 
-        if inserter.process > 0 then
+        if inserter.progress > 0 then
             local animation_name
             if inserter.status == STATUS_DONE then
                 animation_name = "DownToUp"
@@ -35,7 +35,7 @@ local function update_world(world, get_object_func)
                 animation_name = "UpToDown"
             end
             local typeobject = assert(iprototype:query(e.entity.prototype))
-            vsobject:animation_update(animation_name, get_percent(inserter.process, assert(typeobject.speed)))
+            vsobject:animation_update(animation_name, get_percent(inserter.progress, assert(typeobject.speed)))
         end
 
     end

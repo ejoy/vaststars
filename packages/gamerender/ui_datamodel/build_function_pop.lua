@@ -3,11 +3,10 @@ local world = ecs.world
 local w = world.w
 
 local gameplay_core = require "gameplay.core"
-local global = require "global"
-local cache_names = global.cache_names
-local objects = global.objects
+local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local iassembling = require "gameplay.interface.assembling"
+local ientity = require "gameplay.interface.entity"
 local vsobject_manager = ecs.require "vsobject_manager"
 local terrain = ecs.require "terrain"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
@@ -21,7 +20,7 @@ local place_material_mb = mailbox:sub {"place_material"}
 local M = {}
 
 function M:create(object_id, left, top)
-    local object = assert(objects:get(cache_names, object_id))
+    local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
         return
@@ -34,13 +33,12 @@ function M:create(object_id, left, top)
     local recipe_name = ""
     if iprototype:has_type(typeobject.type, "assembling") then
         assert(e.assembling)
-        show_set_recipe = true
 
+        -- typeobject.recipe == nil means need to set recipe
+        show_set_recipe = (typeobject.recipe == nil)
         if e.assembling.recipe ~= 0 then
             local typeobject = iprototype:query(e.assembling.recipe)
-            if typeobject.ingredients ~= "" then -- 配方没有原料也不需要显示[设置配方]
-                recipe_name = typeobject.name
-            end
+            recipe_name = typeobject.name
             show_material_button = true
         end
     end
@@ -66,7 +64,7 @@ end
 function M:stage_ui_update(datamodel)
     --
     for _, _, _, object_id in rotate_mb:unpack() do
-        local object = assert(objects:get(cache_names, object_id))
+        local object = assert(objects:get(object_id))
         local vsobject = assert(vsobject_manager:get(object_id))
         local dir = iprototype:rotate_dir_times(object.dir, -1)
 
@@ -78,44 +76,44 @@ function M:stage_ui_update(datamodel)
 
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if e then
-            local entity = e.entity
-            entity.direction = iprototype:dir_tonumber(dir)
-            e.entity = entity
+            ientity:set_direction(gameplay_core.get_world(), e, dir)
+
+            object.dir = dir
+            vsobject:set_position(position)
+            vsobject:set_dir(object.dir)
+
+            gameplay_core.build()
         else
             log.error(("can not found entity (%s, %s)"):format(object.x, object.y))
         end
-
-        object.dir = dir
-        vsobject:set_position(position)
-        vsobject:set_dir(object.dir)
-
-        gameplay_core.build()
     end
 
     for _, _, _, object_id in recipe_mb:unpack() do
         iui.open("recipe_pop.rml", object_id)
     end
 
-    for _, _, _, object_id, recipe_name in detail_mb:unpack() do
-        local object = assert(objects:get(cache_names, object_id))
+    for _, _, _, object_id in detail_mb:unpack() do
+        local object = assert(objects:get(object_id))
         local typeobject = iprototype:queryByName("entity", object.prototype_name)
         if iprototype:has_type(typeobject.type, "assembling") then
             iui.open("assemble_2.rml", object_id)
         elseif iprototype:has_type(typeobject.type, "chest") then
             iui.open("cmdcenter.rml", object_id)
+        elseif iprototype:has_type(typeobject.type, "laboratory") then
+            iui.open("lab.rml", object_id)
         else
             log.error("no detail")
         end
     end
 
     for _, _, _, object_id in pickup_material_mb:unpack() do
-        local object = assert(objects:get(cache_names, object_id))
+        local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(object.gameplay_eid)
         iassembling:pickup_material(gameplay_core.get_world(), e)
     end
 
     for _, _, _, object_id in place_material_mb:unpack() do
-        local object = assert(objects:get(cache_names, object_id))
+        local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(object.gameplay_eid)
         iassembling:place_material(gameplay_core.get_world(), e)
     end

@@ -3,11 +3,11 @@
 #include <algorithm>
 
 #include "luaecs.h"
-#include "world.h"
-#include "entity.h"
-#include "select.h"
+#include "core/world.h"
+#include "core/entity.h"
+#include "core/select.h"
 extern "C" {
-#include "prototype.h"
+#include "util/prototype.h"
 }
 
 #define STATUS_IDLE 0
@@ -42,7 +42,6 @@ laboratory_next_tech(world& w, entity& e, laboratory& l, uint16_t techid) {
     auto& container = w.query_container<recipe_container>(l.container);
     if (l.tech) {
         auto& oldr = w.techtree.get_ingredients(w, e.prototype, l.tech);
-        assert(oldr);
         if (oldr) {
             container.recipe_recover(w, to_recipe(oldr));
         }
@@ -96,7 +95,7 @@ laboratory_update(world& w, entity& e, laboratory& l, capacitance& c, bool& upda
         recipe_container& container = w.query_container<recipe_container>(l.container);
         if (l.status == STATUS_DONE) {
             int count = pt_count(&tech);
-            if (w.techtree.research(l.tech, count, 1)) {
+            if (w.techtree.research_add(l.tech, count, 1)) {
                 w.techtree.queue_pop();
                 l.tech = 0;
                 l.progress = 0;

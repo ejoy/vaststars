@@ -64,7 +64,7 @@ prototype "破损铁制电线杆" {
 prototype "破损太阳能板" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/solar-panel.texture",
+    icon = "textures/construct/broken-solar-panel.texture",
     model = "prefabs/rock.prefab",
     description = "损坏的太阳能板",
     group = "加工",

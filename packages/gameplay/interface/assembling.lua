@@ -88,15 +88,14 @@ end
 
 local function set_recipe(world, e, pt, recipe_name, fluids)
     local assembling = e.assembling
-    assembling.process = 0
+    assembling.progress = 0
     assembling.status = STATUS_IDLE
-    fluidbox.update(e, pt, fluids)
+    fluidbox.update_fluidboxes(e, pt, fluids)
     if recipe_name == nil then
         assembling.recipe = 0
         assembling.container = 0xffff
         assembling.fluidbox_in = 0
         assembling.fluidbox_out = 0
-        e.assembling = assembling
         return
     end
     local recipe = assert(prototype.query("recipe", recipe_name), "unknown recipe: "..recipe_name)
@@ -107,7 +106,6 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
         assembling.container = world:container_create("assembling", container_in, container_out)
         assembling.fluidbox_in = 0
         assembling.fluidbox_out = 0
-        e.assembling = assembling
         return
     end
     local needlimit = #pt.fluidboxes.input > 0
@@ -117,9 +115,22 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     assembling.container = world:container_create("assembling", container_in, container_out)
     assembling.fluidbox_in = fluidbox_in
     assembling.fluidbox_out = fluidbox_out
-    e.assembling = assembling
 end
 
+local function set_direction(_, e, dir)
+    local DIRECTION <const> = {
+        N = 0, North = 0,
+        E = 1, East  = 1,
+        S = 2, South = 2,
+        W = 3, West  = 3,
+    }
+    local d = assert(DIRECTION[dir])
+    local entity = e.entity
+    if entity.direction ~= d then
+        entity.direction = d
+        e.fluidbox_changed = true
+    end
+end
 
 local function what_status(e)
     --TODO
@@ -130,7 +141,7 @@ local function what_status(e)
     if a.recipe == 0 then
         return "idle"
     end
-    if a.process <= 0 then
+    if a.progress <= 0 then
         if a.status == STATUS_IDLE then
             return "insufficient_input"
         elseif a.status == STATUS_DONE then
@@ -145,5 +156,6 @@ end
 
 return {
     set_recipe = set_recipe,
+    set_direction = set_direction,
     what_status = what_status,
 }

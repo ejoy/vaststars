@@ -11,7 +11,7 @@ prototype "液罐I" {
     order = 22,
 }
 
-prototype "抽水泵" {
+prototype "地下水挖掘机" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/offshore-pump.texture",

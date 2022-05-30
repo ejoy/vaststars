@@ -4,34 +4,102 @@ local w = world.w
 
 local gameplay_core = require "gameplay.core"
 local fs = require "bee.filesystem"
-local construct_editor = ecs.require "construct_editor"
 local json = import_package "ant.json"
 local archival_base_dir = (fs.appdata_path() / "vaststars/archiving"):string()
 local archiving_list_path = archival_base_dir .. "/archiving.json"
 local camera_setting_path = archival_base_dir .. "/camera.json"
 local iprototype = require "gameplay.interface.prototype"
 local startup_entities = import_package("vaststars.prototype")("item.startup").entities
+local objects = require "objects"
+local vsobject_manager = ecs.require "vsobject_manager"
+local ifluid = require "gameplay.interface.fluid"
 
 local irq = ecs.import.interface "ant.render|irenderqueue"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ic = ecs.import.interface "ant.camera|icamera"
 local math3d = require "math3d"
+local terrain = ecs.require "terrain"
+local ieditor = ecs.require "editor.editor"
 
 local MAX_ARCHIVING_COUNT <const> = 9
 
 local archival_relative_dir_list = {}
 
+local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_network_id)
+    local vsobject_type = "constructed"
+    local typeobject = iprototype:queryByName("entity", prototype_name)
+    local position = assert(terrain.get_position_by_coord(x, y, iprototype:rotate_area(typeobject.area, dir)))
+
+    local vsobject = vsobject_manager:create {
+        prototype_name = prototype_name,
+        dir = dir,
+        position = position,
+        type = vsobject_type,
+    }
+    local object = {
+        id = vsobject.id,
+        gameplay_eid = gameplay_eid,
+        prototype_name = prototype_name,
+        dir = dir,
+        x = x,
+        y = y,
+        teardown = false,
+        headquater = typeobject.headquater or false,
+        fluid_name = fluid_name,
+        fluidflow_network_id = fluidflow_network_id,
+        state = vsobject_type,
+    }
+    objects:set(object)
+end
+
 local function restore_world()
     -- clean
-    construct_editor.reset()
+    for _, object in objects:all() do
+        vsobject_manager:remove(object.id)
+    end
+    objects:clear()
+
+    local duplicate = {}
+    local network_id = 0
+    local function get_network_id(id)
+        if not duplicate[id] then
+            network_id = network_id + 1
+            duplicate[id] = network_id
+        end
+        return duplicate[id]
+    end
 
     -- restore
-    for v in gameplay_core.select("id:in entity:in") do
+    for v in gameplay_core.select("id:in entity:in fluidbox?in fluidboxes?in") do
         local e = v.entity
         local typeobject = iprototype:query(e.prototype)
-        construct_editor.restore_object(v.id, typeobject.name, iprototype:dir_tostring(e.direction), e.x, e.y)
+        local fluid_name = ""
+        local fluidflow_network_id = 0
+        if v.fluidbox then
+            if v.fluidbox.fluid ~= 0 then
+                local typeobject_fluid = assert(iprototype:query(v.fluidbox.fluid))
+                fluid_name = typeobject_fluid.name
+            else
+                fluidflow_network_id = get_network_id(v.fluidbox.id)
+            end
+        end
+        if v.fluidboxes then
+            fluid_name = {}
+            for id, fluid in pairs(v.fluidboxes) do
+                if fluid ~= 0 then
+                    local iotype, index = id:match("(%a+)(%d+)%_fluid")
+                    if iotype then
+                        local classity = ifluid:iotype_to_classity(iotype)
+                        local typeobject_fluid = assert(iprototype:query(fluid))
+
+                        fluid_name[classity] = fluid_name[classity] or {}
+                        fluid_name[classity][tonumber(index)] = typeobject_fluid.name
+                    end
+                end
+            end
+        end
+        restore_object(v.id, typeobject.name, iprototype:dir_tostring(e.direction), e.x, e.y, fluid_name, fluidflow_network_id)
     end
-    gameplay_core.build()
 end
 
 local function writeall(file, content)
@@ -125,6 +193,7 @@ function M:restore(index)
     end
 
     gameplay_core.restore(archival_dir)
+    gameplay_core.build()
     restore_world()
 
     if camera_setting then
@@ -139,6 +208,7 @@ function M:restart()
     for _, e in ipairs(startup_entities) do
         gameplay_core.create_entity(e)
     end
+    gameplay_core.build()
     restore_world()
 end
 

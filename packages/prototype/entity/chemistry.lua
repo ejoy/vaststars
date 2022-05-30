@@ -184,7 +184,7 @@ prototype "水电站I" {
     fluidboxes = {
         input = {
             {
-                capacity = 500,
+                capacity = 3000,
                 height = 100,
                 base_level = -100,
                 connections = {
@@ -192,7 +192,7 @@ prototype "水电站I" {
                 }
             },
             {
-                capacity = 500,
+                capacity = 3000,
                 height = 100,
                 base_level = -100,
                 connections = {

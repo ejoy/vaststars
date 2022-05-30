@@ -1,0 +1,315 @@
+<rml>
+    <head>
+        <style>
+            .small-button {
+                margin: 0.00vmin;
+                opacity: 1;
+                background-color: rgb(246, 237, 189);
+                background-size: cover;
+                border: 0.27vmin rgba(84,130,53,255);
+                border-radius: 1.07vmin;
+                width: 8.00vmin;
+                height: 8.00vmin;
+            }
+             /*标题栏和返回按键  */
+            .item-research {
+                margin: 0.5vmin 0;
+                flex-direction: row;
+                align-items:center;
+                justify-content:flex-start;
+                background-size:cover;
+                border-radius: 0.67vmin;
+                width: 60vmin;
+                height: 10.00vmin;
+                font-size: 2.40vmin;
+            }
+            .item-research-title {
+                text-align: center;
+                background-color: rgb(246, 237, 189);
+                border-radius: 0.67vmin;
+                color:rgb(73, 60, 32);
+                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
+                width: 11.33vmin;
+                margin: 0.00vmin;
+            }
+            .item-bg {
+                width: 9.8vmin;
+                height: 9.8vmin;
+                background-size: cover;
+            }
+            .item-title-new {
+                text-align: left;
+                border-radius: 0.67vmin;
+                color:rgb(255, 255, 255);
+                -webkit-text-stroke: 0.07vmin rgb(0, 0, 0);
+                word-break: break-all;
+                font-size: 3.2vmin;
+            }
+            /*分割线*/
+            #item-recipe-region {
+                justify-content: space-between; 
+                align-items:center; 
+                height: 100%; 
+                width: 100%;
+            }
+            #item-recipe-title {
+                width: 100%; 
+                height: 15%; 
+            }
+            .recipe-container {
+                border: 0.13vmin rgb(89, 73, 39); 
+                width: 100%; 
+                height: 80%; 
+                justify-content: flex-start;
+                flex-direction: row;
+                align-items: center;
+            }
+            .research-req-container {
+                border: 0.13vmin rgb(89, 73, 39); 
+                width: 100%; 
+                height: 50%; 
+                justify-content: flex-start;
+                flex-direction: column;
+                align-items: center;
+            }
+            .recipe-queue {
+                border: 0.13vmin rgb(89, 73, 39); 
+                width: 100%; 
+                height: 12%; 
+                justify-content: flex-start;
+                flex-direction: row;
+                align-items: center;
+            }
+            .recipe-item {
+                flex-direction: column;
+                align-items:center;
+                justify-content:flex-start;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 12.00vmin;
+                height: 12.00vmin;
+                font-size: 2.40vmin;
+            }
+            .recipe-item-bg {
+                width: 8.00vmin;
+                height: 8.00vmin;
+                background-size: cover;
+            }
+            .recipe-item-title {
+                text-align: center;
+                border-radius: 0.67vmin;
+                background-color: rgb(246, 237, 189);
+                border-radius: 0.67vmin;
+                color:rgb(73, 60, 32);
+                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
+                width: 11.33vmin;
+                margin: 0.00vmin;
+            }
+            .recipe-title-block {
+                width: 100%;
+                height:10%;
+                align-items: center;
+                flex-direction: column;
+                justify-content: flex-start;
+            }
+            .recipe-name-text {
+                width: 100%;
+                /*padding-bottom: 0.25em;*/
+                font-size: 4vmin;
+                text-align: center;
+                -webkit-text-stroke: 0.05em rgb(0,0,0);
+                background-color: rgb(203, 118, 24);
+            }
+            .recipe-content-block {
+                width: 100%;
+                height:90%;
+                align-items: center;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .recipe-req-block {
+                width: 100%;
+                height:90%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-end;
+            }
+            .recipe-req-num {
+                text-align: center;
+                font-size: 3.1vmin;
+            }
+            .recipe-queue-item-block {
+                padding-top: 0.5em;
+                flex-direction: row;
+                width:70%; 
+                height:100%;
+                align-items:flex-start; 
+                justify-content: space-around;
+            }
+            .icon-sign {
+                position:absolute;
+                bottom:0.05vmin;
+                right:0.05vmin;
+                width: 6vmin;
+                height: 6vmin;
+                background-size: cover;
+            }
+            .icon-researching {
+                position:absolute;
+                bottom:0.05vmin;
+                left:0.05vmin;
+                font-size: 3vmin;
+                text-align: center;
+                color: rgb(238, 255, 0);
+                -webkit-text-stroke: 1px rgb(0, 0, 0);
+            }
+            .progress-background-new {
+                justify-content: flex-start;
+                height: 100%;
+                /* background-color: rgba(200, 200, 200,100); */
+                background-image: "textures/science/progress.texture";
+                background-size: cover;
+            }
+            .research-req {
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                position:absolute;
+                right:1vmin;
+                top:0.2vmin;
+                width:50%;
+                height:35%;
+            }
+        </style>
+        <style path = "common/building_style.rcss" />
+        <style path = "common/listpage_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = window.createModel "start" {
+            }
+            window.addEventListener('mousemove', function(event)
+                if event.button then
+                end
+            end)
+            local function clickItem(index)
+                ui_sys:pub{"click_tech", index}
+            end
+            local function list_item_renderer(index)
+                local item_data = start.techs.items[index]
+                local item = document.createElement "div"
+                item.outerHTML = ([[
+                        <div class="progress-background-new" style="position:absolute; left:0; width: %d%%;"/>
+                        <div class="item-bg" style='background-image:"%s";'/>
+                        <div class="item-title-new">%s</div>
+                        <div class="icon-sign" style='background-image:"textures/science/tech-important.texture";'/>
+                        <div class="research-req">
+                            <div class="property-icon" style='background-image:"textures/science/redbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/greenbox.texture";'/>
+                            <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
+                            <div style="font-size: 3.5vmin; text-align: center;">X 100</div>
+                        </div>
+                        <div class="icon-researching">研究中...</div>]]):format(item_data.progress, item_data.detail.icon, item_data.name)
+                item.className = "item-research"
+                local select_style_border = "5px green"
+                item.addEventListener('click', function(event)
+                    if start.techs.select_item then
+                        start.techs.select_item.style.border = '0px green'
+                    end
+                    item.style.border = select_style_border
+                    clickItem(index)
+                    start.techs.select_item = item
+                end)
+                return item
+            end
+            local listclass = require "list"
+            window.customElements.define("list", function(e)
+                start.list = listclass.create(document, e, 0, list_item_renderer)
+            end)
+            ui_sys:setDataModel(start, function(patch)
+                if patch then
+                    start.list:on_dirty(#start.techs.items)
+                end
+            end)
+        </script>
+    </head>
+    <body>
+        <div class="item-container-region" data-model="start">
+            <div class="panel">
+                <div class="header" id = "item-name-block">
+                    <button class = "back-button"/>
+                    <div class = "menu-title">制造舱空间</div>
+                </div>
+                <div class = "draw-line"/>
+                <!-- 指挥中心物品栏 start -->
+                <!-- tag page begin -->
+                <div class="item-container" style = "width: 100%;">
+                    <page width = '88vmin' height = '66.00vmin' footerheight= '4.00vmin' row='5' col='7' />
+                </div>
+                <!-- tag page end -->
+                <!-- 指挥中心物品栏 end -->
+            </div>
+            <div class="panel">
+                <div class="column" style="width: 100%; height: 73%;">
+                    <div class="recipe-name-text">生产队列</div>
+                    <div style="flex-direction: column; width:100%; height:100%;">
+                        <!-- 生产队列 start --> 
+                        <div class="recipe-container" style="flex-direction: column; border: 0px;">
+                            <div class="item-research" style="width:90%;">
+                                <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
+                                    <div class="item-count">99</div>
+                                    <div class="small-name">机器爪I</div>
+                                </div> 
+                                <div style="flex-direction:row; align-items:center; justify-content:center; width:85%;height:100%; background-color: rgb(92, 184, 92);border: 0.27vmin rgb(89, 73, 39);">
+                                    <div class="progress-background-new" style="position:absolute; left:0; width: 50%;"/>
+                                    <div class="item-title-new">50%</div>
+                                </div>
+                            </div>
+                            <div class="item-research" style="width:90%;">
+                                <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
+                                    <div class="item-count">99</div>
+                                    <div class="small-name">机器爪I</div>
+                                </div> 
+                                <div style="flex-direction:row; align-items:center; justify-content:center; width:85%;height:100%; background-color: rgb(114, 87, 4);border: 0.27vmin rgb(89, 73, 39);">
+                                    <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
+                                    <div class="item-title-new">0%</div>
+                                </div>
+                            </div>
+                            <div class="item-research" style="width:90%;">
+                                <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
+                                    <div class="item-count">99</div>
+                                    <div class="small-name">机器爪I</div>
+                                </div> 
+                                <div style="flex-direction:row; align-items:center; justify-content:center; width:85%;height:100%; background-color: rgb(114, 87, 4);border: 0.27vmin rgb(89, 73, 39);">
+                                    <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
+                                    <div class="item-title-new">0%</div>
+                                </div>
+                            </div>
+                            <div class="item-research" style="width:90%;">
+                                <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
+                                    <div class="item-count">99</div>
+                                    <div class="small-name">机器爪I</div>
+                                </div> 
+                                <div style="flex-direction:row; align-items:center; justify-content:center; width:85%;height:100%; background-color: rgb(114, 87, 4);border: 0.27vmin rgb(89, 73, 39);">
+                                    <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
+                                    <div class="item-title-new">0%</div>
+                                </div>
+                            </div>
+                            <div class="item-research" style="width:90%;">
+                                <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
+                                    <div class="item-count">99</div>
+                                    <div class="small-name">机器爪I</div>
+                                </div> 
+                                <div style="flex-direction:row; align-items:center; justify-content:center; width:85%;height:100%; background-color: rgb(114, 87, 4);border: 0.27vmin rgb(89, 73, 39);">
+                                    <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
+                                    <div class="item-title-new">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 生产队列 end --> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>

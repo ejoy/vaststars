@@ -4,8 +4,6 @@ local status = require "status"
 local prototype = require "prototype"
 local vaststars = require "vaststars.world.core"
 local container = require "vaststars.container.core"
-local fluidflow = require "vaststars.fluidflow.core"
-local road = require "vaststars.road.core"
 local luaecs = import_package "vaststars.ecs"
 local entity_visitor = require "entity_visitor"
 
@@ -75,9 +73,9 @@ return function ()
             local types = typeobject.type
             local obj = {}
             for i = 1, #types do
-                local ctor = status.ctor[types[i]]
-                if ctor then
-                    for k, v in pairs(ctor(world, init, typeobject)) do
+                local funcs = status.typefuncs[types[i]]
+                if funcs and funcs.ctor then
+                    for k, v in pairs(funcs.ctor(world, init, typeobject)) do
                         if obj[k] == nil then
                             obj[k] = v
                         end
@@ -161,6 +159,10 @@ return function ()
         return cworld:research_progress(pt.id)
     end
 
+    function world:fluidflow_query(fluid, id)
+        return cworld:fluidflow_query(fluid, id)
+    end
+
     function world:container_create(...)
         return container.create(cworld, ...)
     end
@@ -172,33 +174,6 @@ return function ()
     end
     function world:container_get(...)
         return container.get(cworld, ...)
-    end
-    function world:fluidflow_build(...)
-        return fluidflow.build(cworld, ...)
-    end
-    function world:fluidflow_rebuild(...)
-        return fluidflow.rebuild(cworld, ...)
-    end
-    function world:fluidflow_restore(...)
-        return fluidflow.restore(cworld, ...)
-    end
-    function world:fluidflow_teardown(...)
-        return fluidflow.teardown(cworld, ...)
-    end
-    function world:fluidflow_connect(...)
-        return fluidflow.connect(cworld, ...)
-    end
-    function world:fluidflow_query(...)
-        return fluidflow.query(cworld, ...)
-    end
-    function world:fluidflow_set(...)
-        return fluidflow.set(cworld, ...)
-    end
-    function world:fluidflow_dump(...)
-        return fluidflow.dump(cworld, ...)
-    end
-    function world:road_path(begining, ending)
-        return road.path(context, begining, ending)
     end
 
     function world:wait(...)

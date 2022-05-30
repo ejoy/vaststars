@@ -4,17 +4,17 @@ local prototype = gameplay.prototype
 prototype "铁锭" {
     type = { "recipe" },
     category = "金属冶炼",
-    group = "金属",
+    --group = "金属",
     order = 10,
     icon = "textures/construct/iron-ingot.texture",
     ingredients = {
-        {"铁矿石", 5},
+        {"铁矿石", 3},
     },
     results = {
-        {"铁锭", 2},
-        {"碎石", 1}
+        {"铁锭", 1},
+        {"碎石", 2}
     },
-    time = "8s",
+    time = "4s",
     description = "铁矿石通过金属冶炼获得铁锭",
 }
 
@@ -23,15 +23,16 @@ prototype "铁板1" {
     category = "金属锻造",
     group = "金属",
     order = 11,
-    icon = "textures/construct/steel-beam.texture",
+    icon = "textures/construct/iron-ingot.texture",
     ingredients = {
-        {"铁锭", 4},
+        {"铁矿石", 5},
     },
     results = {
-        {"铁板", 3}
+        {"铁板", 2},
+        {"碎石", 1},
     },
     time = "3s",
-    description = "使用铁锭锻造铁板",
+    description = "铁矿石通过金属冶炼获得铁板",
 
 }
 
@@ -40,7 +41,7 @@ prototype "铁板2" {
     category = "金属锻造",
     --group = "金属",
     order = 12,
-    icon = "textures/construct/steel-beam.texture",
+    icon = "textures/construct/iron-ingot.texture",
     ingredients = {
         {"铁锭", 4},
         {"碎石", 2}
@@ -56,7 +57,7 @@ prototype "铁板2" {
 prototype "铁棒1" {
     type = { "recipe" },
     category = "金属锻造",
-    group = "金属",
+    --group = "金属",
     order = 13,
     icon = "textures/construct/iron_stick.texture",
     ingredients = {
@@ -72,7 +73,7 @@ prototype "铁棒1" {
 prototype "铁丝1" {
     type = { "recipe" },
     category = "金属锻造",
-    group = "金属",
+    --group = "金属",
     order = 14,
     icon = "textures/construct/iron-wire.texture",
     ingredients = {
@@ -141,9 +142,9 @@ prototype "电动机1" {
     order = 52,
     icon = "textures/construct/turbine1.texture",
     ingredients = {
-        {"铁棒", 1},
-        {"铁丝", 2},
-        {"铁板", 2},
+        -- {"铁棒", 1},
+        -- {"铁丝", 2},
+        {"铁板", 6},
         {"塑料", 1},
     },
     results = {
@@ -160,8 +161,7 @@ prototype "铁齿轮" {
     order = 15,
     icon = "textures/construct/iron-gear.texture",
     ingredients = {
-        {"铁棒", 1},
-        {"铁板", 2},
+        {"铁板", 4},
     },
     results = {
         {"铁齿轮", 2},
@@ -177,7 +177,8 @@ prototype "机器爪1" {
     order = 40,
     icon = "textures/construct/insert1.texture",
     ingredients = {
-        {"铁棒", 3},
+        -- {"铁棒", 3},
+        {"铁板", 3},
         {"铁齿轮", 2},
         {"电动机I", 1},
     },
@@ -198,7 +199,7 @@ prototype "砖石公路" {
         {"石砖", 8},
     },
     results = {
-        {"砖石公路", 4},
+        {"砖石公路-O型", 4},
     },
     time = "6s",
     description = "使用石砖制造公路",
@@ -230,7 +231,7 @@ prototype "物流中心1" {
     ingredients = {
         {"蒸汽发电机I", 1},
         {"车站I", 2},
-        {"砖石公路", 10},
+        {"砖石公路-O型", 10},
     },
     results = {
         {"物流中心I", 1},
@@ -265,7 +266,7 @@ prototype "小型铁制箱子" {
     order = 10,
     icon = "textures/construct/chest.texture",
     ingredients = {
-        {"铁棒", 1},
+        -- {"铁棒", 1},
         {"铁板", 8},
     },
     results = {
@@ -283,8 +284,9 @@ prototype "铁制电线杆" {
     icon = "textures/construct/electric-pole1.texture",
     ingredients = {
         {"塑料", 1},
-        {"铁棒", 1},
-        {"铁丝", 2},
+        {"铁板", 2},
+        -- {"铁棒", 1},
+        -- {"铁丝", 2},
     },
     results = {
         {"铁制电线杆", 1},
@@ -318,8 +320,8 @@ prototype "熔炼炉1" {
     order = 50,
     icon = "textures/construct/furnace2.texture",
     ingredients = {
-        {"铁板", 1},
-        {"铁丝", 2},
+        {"铁板", 3},
+        -- {"铁丝", 2},
         {"石砖", 4},
     },
     results = {
@@ -383,7 +385,7 @@ prototype "风力发电机1" {
     description = "电传输材料和发电设施制造风力发电机",
 }
 
-prototype "液罐I" {
+prototype "液罐1" {
     type = { "recipe" },
     category = "化工大型制造",
     group = "化工",
@@ -391,7 +393,7 @@ prototype "液罐I" {
     icon = "textures/construct/tank1.texture",
     ingredients = {
         {"管道1-I型", 4},
-        {"铁棒", 1},
+        -- {"铁棒", 1},
         {"铁板", 6},
     },
     results = {
@@ -446,13 +448,13 @@ prototype "水电站1" {
     icon = "textures/construct/hydroplant.texture",
     ingredients = {
         {"蒸馏厂I", 1},
-        {"抽水泵", 1},
+        {"地下水挖掘机", 1},
     },
     results = {
         {"水电站I", 1},
     },
     time = "4s",
-    description = "蒸馏设施和抽水泵制造水电站",
+    description = "蒸馏设施和地下水挖掘机制造水电站",
 }
 
 prototype "蒸馏厂1" {
@@ -481,7 +483,8 @@ prototype "烟囱1" {
     order = 65,
     icon = "textures/construct/chimney2.texture",
     ingredients = {
-        {"铁棒", 2},
+        -- {"铁棒", 2},
+        {"铁板", 2},
         {"管道1-I型", 3},
         {"石砖", 3},
     },
@@ -509,7 +512,7 @@ prototype "压力泵1" {
     description = "管道和电机制造压力泵",
 }
 
-prototype "抽水泵" {
+prototype "地下水挖掘机" {
     type = { "recipe" },
     category = "化工中型制造",
     --group = "化工",
@@ -520,7 +523,7 @@ prototype "抽水泵" {
         {"压力泵I", 1},
     },
     results = {
-        {"抽水泵", 1},
+        {"地下水挖掘机", 1},
     },
     time = "4s",
     description = "排水设施和压力泵制造抽水泵",
@@ -568,6 +571,22 @@ prototype "管道1" {
     order = 10,
     icon = "textures/construct/pipe.texture",
     ingredients = {
+        {"铁板", 2},
+    },
+    results = {
+        {"管道1-I型", 3},
+    },
+    time = "6s",
+    description = "石砖制造管道",
+}
+
+prototype "管道2" {
+    type = { "recipe" },
+    category = "化工小型制造",
+    group = "化工",
+    order = 10,
+    icon = "textures/construct/pipe.texture",
+    ingredients = {
         {"石砖", 8},
     },
     results = {
@@ -602,7 +621,8 @@ prototype "粉碎机1" {
     order = 60,
     icon = "textures/construct/crusher1.texture",
     ingredients = {
-        {"铁丝", 4},
+        -- {"铁丝", 4},
+        {"铁板", 4},
         {"石砖", 8},
         {"采矿机I", 1},
     },
@@ -691,7 +711,8 @@ prototype "破损电解厂" {
     order = 112,
     icon = "textures/construct/broken-electrolysis1.texture",
     ingredients = {
-        {"铁丝", 5},
+        -- {"铁丝", 5},
+        {"铁板", 5},
         {"破损电解厂", 1},
     },
     results = {
@@ -725,7 +746,8 @@ prototype "破损组装机" {
     order = 114,
     icon = "textures/construct/broken-assembler.texture",
     ingredients = {
-        {"铁丝", 6},
+        -- {"铁丝", 6},
+        {"铁板", 6},
         {"破损组装机", 1},
     },
     results = {
@@ -742,7 +764,8 @@ prototype "破损铁制电线杆" {
     order = 115,
     icon = "textures/construct/broken-electric-pole1.texture",
     ingredients = {
-        {"铁棒", 2},
+        -- {"铁棒", 2},
+        {"铁板", 2},
         {"破损铁制电线杆", 1},
     },
     results = {
@@ -755,11 +778,11 @@ prototype "破损铁制电线杆" {
 prototype "破损太阳能板" {
     type = { "recipe" },
     category = "生产手工制造",
-    --group = "生产",
+    group = "生产",
     order = 116,
-    icon = "textures/construct/solar-panel.texture",
+    icon = "textures/construct/broken-solar-panel.texture",
     ingredients = {
-        {"沙子", 1},
+        {"石砖", 10},
         {"破损太阳能板", 1},
     },
     results = {
@@ -810,7 +833,8 @@ prototype "破损运输汽车" {
     order = 119,
     icon = "textures/construct/truck.texture",
     ingredients = {
-        {"铁丝", 10},
+        -- {"铁丝", 10},
+        {"铁板", 10},
         {"破损运输车辆", 1},
     },
     results = {
@@ -827,7 +851,8 @@ prototype "破损车站" {
     order = 120,
     icon = "textures/construct/manufacture.texture",
     ingredients = {
-        {"铁棒", 6},
+        -- {"铁棒", 6},
+        {"铁板", 6},
         {"破损车站", 1},
     },
     results = {
@@ -840,12 +865,12 @@ prototype "破损车站" {
 prototype "地质科技包1" {
     type = { "recipe" },
     category = "器件小型制造",
-    --group = "器件",
+    group = "器件",
     order = 80,
-    icon = "textures/construct/science-pack.texture",
+    icon = "textures/recipe/geology-pack.texture",
     ingredients = {
         {"铁矿石", 2},
-        --{"碎石", 2},
+        {"碎石", 2},
     },
     results = {
         {"地质科技包", 1},
@@ -857,11 +882,11 @@ prototype "地质科技包1" {
 prototype "气候科技包1" {
     type = { "recipe" },
     category = "器件液体处理",
-    --group = "器件",
+    group = "器件",
     order = 82,
-    icon = "textures/construct/science-pack.texture",
+    icon = "textures/recipe/climatology-pack.texture",
     ingredients = {
-        {"海水", 2000},
+        {"地下卤水", 2000},
         {"空气", 3000},
     },
     results = {
@@ -876,7 +901,7 @@ prototype "机械科技包1" {
     category = "器件中型制造",
     group = "器件",
     order = 84,
-    icon = "textures/construct/science-pack.texture",
+    icon = "textures/recipe/mechanical-pack.texture",
     ingredients = {
         {"电动机I", 1},
         {"铁齿轮", 3},
@@ -887,6 +912,22 @@ prototype "机械科技包1" {
     time = "15s",
     description = "机械原料制造机械科技包",
 }
+
+prototype "铁矿石挖掘" {
+    type = { "recipe" },
+    category = "金属冶炼",
+    --group = "金属",
+    order = 20,
+    icon = "textures/construct/air-filter1.texture",
+    ingredients = {
+    },
+    results = {
+        {"铁矿石", 1},
+    },
+    time = "3s",
+    description = "采集铁矿石",
+}
+
 
 prototype "空气过滤" {
     type = { "recipe" },
@@ -912,10 +953,10 @@ prototype "离岸抽水" {
     ingredients = {
     },
     results = {
-        {"海水", 120},
+        {"地下卤水", 120},
     },
     time = "0.1s",
-    description = "抽取海洋里海水",
+    description = "抽取地表下的地下卤水",
 }
 
 
@@ -934,24 +975,6 @@ prototype "空气分离1" {
     },
     time = "1s",
     description = "空气分离出纯净气体",
-}
-
-prototype "海水电解" {
-    type = { "recipe" },
-    category = "电解",
-    --group = "流体",
-    order = 16,
-    icon = "textures/construct/electrolysis1.texture",
-    ingredients = {
-        {"海水", 40},
-    },
-    results = {
-        {"氢气", 110},
-        {"氯气", 15},
-        {"氢氧化钠", 1},
-    },
-    time = "1s",
-    description = "海水电解出纯净气体和化合物",
 }
 
 prototype "二氧化碳转一氧化碳" {
@@ -1026,6 +1049,59 @@ prototype "氯化氢" {
     description = "氢气和氯气化合成氯化氢",
 }
 
+prototype "地下卤水电解" {
+    type = { "recipe" },
+    category = "电解",
+    group = "流体",
+    order = 15,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
+        {"地下卤水", 45},
+    },
+    results = {
+        {"氧气", 45},
+        {"氢气", 110},
+        {"氯气", 14},
+        {"氢氧化钠", 1},
+    },
+    time = "1s",
+    description = "卤水电解成氧气、氢气和氯气",
+}
+
+prototype "地下卤水净化" {
+    type = { "recipe" },
+    category = "流体基础化工",
+    group = "流体",
+    order = 15,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
+        {"地下卤水", 100},
+    },
+    results = {
+        {"纯水", 70},
+        {"废水", 30},
+    },
+    time = "1s",
+    description = "卤水净化成纯水",
+}
+
+prototype "地下卤水电解-backup" {
+    type = { "recipe" },
+    category = "电解",
+    --group = "流体",
+    order = 15,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
+        {"纯水", 45},
+    },
+    results = {
+        {"氧气", 70},
+        {"氢气", 140},
+    },
+    time = "1s",
+    description = "纯水电解成氧气和氢气",
+}
+
 prototype "纯水电解" {
     type = { "recipe" },
     category = "电解",
@@ -1068,6 +1144,7 @@ prototype "塑料1" {
     order = 20,
     icon = "textures/construct/processor.texture",
     ingredients = {
+        {"氯气", 30},
         {"乙烯", 30},
     },
     results = {
@@ -1141,26 +1218,24 @@ prototype "废水排泄" {
         {"废水", 100},
     },
     results = {
-        {"液体排泄物", 1},
     },
     time = "1s",
     description = "废水排泄",
 }
 
-prototype "海水排泄" {
+prototype "地下卤水排泄" {
     type = { "recipe" },
     category = "流体液体排泄",
     --group = "流体",
     order = 101,
     icon = "textures/fluid/liquid.texture",
     ingredients = {
-        {"海水", 100},
+        {"地下卤水", 100},
     },
     results = {
-        {"液体排泄物", 1},
     },
     time = "1s",
-    description = "海水排泄",
+    description = "地下卤水排泄",
 }
 
 prototype "纯水排泄" {
@@ -1173,7 +1248,6 @@ prototype "纯水排泄" {
         {"纯水", 100},
     },
     results = {
-        {"液体排泄物", 1},
     },
     time = "1s",
     description = "纯水排泄",
@@ -1189,7 +1263,6 @@ prototype "碱性溶液排泄" {
         {"碱性溶液", 100},
     },
     results = {
-        {"液体排泄物", 1},
     },
     time = "1s",
     description = "碱性溶液排泄",
@@ -1205,7 +1278,6 @@ prototype "氮气排泄" {
         {"氮气", 100},
     },
     results = {
-        {"气体排泄物", 1},
     },
     time = "1s",
     description = "氮气排泄",
@@ -1221,7 +1293,6 @@ prototype "氧气排泄" {
         {"氧气", 100},
     },
     results = {
-        {"气体排泄物", 1},
     },
     time = "1s",
     description = "氧气排泄",
@@ -1237,7 +1308,6 @@ prototype "二氧化碳排泄" {
         {"二氧化碳", 100},
     },
     results = {
-        {"气体排泄物", 1},
     },
     time = "1s",
     description = "二氧化碳排泄",
@@ -1253,11 +1323,11 @@ prototype "氢气排泄" {
         {"氢气", 100},
     },
     results = {
-        {"气体排泄物", 1},
     },
     time = "1s",
     description = "氢气排泄",
 }
+
 
 prototype "蒸汽排泄" {
     type = { "recipe" },
@@ -1269,7 +1339,6 @@ prototype "蒸汽排泄" {
         {"蒸汽", 100},
     },
     results = {
-        {"气体排泄物", 1},
     },
     time = "1s",
     description = "蒸汽排泄",
@@ -1285,14 +1354,27 @@ prototype "甲烷排泄" {
         {"甲烷", 100},
     },
     results = {
-        {"气体排泄物", 1},
     },
     time = "1s",
     description = "甲烷排泄",
 }
 
----------海水生成矿物配方----------
-prototype "海水分离铁" {
+prototype "氯气排泄" {
+    type = { "recipe" },
+    category = "流体气体排泄",
+    --group = "流体",
+    order = 110,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
+        {"氯气", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "氢气排泄",
+}
+---------地下卤水生成矿物配方----------
+prototype "地下卤水分离铁" {
     type = { "recipe" },
     category = "金属流体处理",
     group = "金属",
@@ -1300,24 +1382,24 @@ prototype "海水分离铁" {
     -- icon = "textures/construct/gravel.texture",
     icon = "textures/recipe/water2iron.texture",
     ingredients = {
-        {"海水", 100},
+        {"地下卤水", 100},
     },
     results = {
         {"铁矿石", 2},
         {"纯水", 50},
     },
     time = "3s",
-    description = "海水中过滤铁矿石",
+    description = "地下卤水中分离铁矿石",
 }
 
-prototype "海水分离水藻" {
+prototype "地下卤水分离水藻" {
     type = { "recipe" },
     category = "金属流体处理",
     --group = "金属",
     order = 2,
     icon = "textures/construct/gravel.texture",
     ingredients = {
-        {"海水", 100},
+        {"地下卤水", 100},
     },
     results = {
         {"海藻", 2},
@@ -1325,10 +1407,10 @@ prototype "海水分离水藻" {
         {"纯水", 50},
     },
     time = "3s",
-    description = "海水中过滤水藻",
+    description = "地下卤水中分离水藻",
 }
 
-prototype "海水分离石头" {
+prototype "地下卤水分离石头" {
     type = { "recipe" },
     category = "金属流体处理",
     group = "金属",
@@ -1336,14 +1418,13 @@ prototype "海水分离石头" {
     -- icon = "textures/construct/gravel.texture",
     icon = "textures/recipe/water2gravel.texture",
     ingredients = {
-        {"海水", 100},
+        {"地下卤水", 100},
     },
     results = {
         {"碎石",2},
-        {"纯水", 50},
     },
     time = "3s",
-    description = "海水中过滤石头",
+    description = "地下卤水中分离石头",
 }
 
 prototype "提炼纤维" {

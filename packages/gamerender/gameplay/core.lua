@@ -41,8 +41,8 @@ function m.container_place(...)
     return world:container_place(...)
 end
 
-function m.remove_entity(v)
-    return world:remove_entity(v)
+function m.remove_entity(eid)
+    world.entity[eid] = nil
 end
 
 local create_entity_cache = {}
@@ -77,7 +77,7 @@ function m.create_entity(init)
         x = init.x,
         y = init.y,
         dir = init.dir,
-        fluid = init.fluid,
+        fluid = init.fluid_name,
         items = init.items,
     }
 

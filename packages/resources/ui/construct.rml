@@ -84,7 +84,8 @@
                 left: 1.33vmin
             }
             .main-menu-block {
-                width: 86.67vmin;
+                /* width: 86.67vmin; */
+                width: 52vmin;
                 height: 16.00vmin;
                 flex-direction: row;
                 align-items: center;
@@ -137,18 +138,15 @@
             local start = window.createModel "start" {
                 fps_text = " ",           -- fps 信息
                 drawcall_text = " ",      -- drawcall 信息
-                fluid_category = {},      -- 流体分类信息, 从 world 获取
                 construct_menu = {},
 
-                cur_fluid_category = "",  -- 当前选中的流体分类
                 cur_construct_menu = "",  -- 当前选中的二级建造菜单名
                 cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
-                cur_selected_fluid = "",  -- 当前选中的流体盒中的流体
 
-                show_set_fluidbox = false,
                 show_construct_complete = false,
                 show_rotate = false,  -- 是否显示[旋转建筑]
                 show_confirm = false, -- 是否显示[确认放置]
+                show_batch_mode_begin = false, -- 显示水管开始
             }
             function start.clickConstructBegin(event)
                 ui_sys:pub {"construct_begin", false}
@@ -193,26 +191,26 @@
             function start.clickConstructMenuItem(event, prototype_name)
                 ui_sys:pub {"construct_entity", prototype_name}
             end
-            function start.clickSelectFluid(event, FluidName)
-                ui_sys:pub {"fluidbox_update", FluidName}
-                start.cur_selected_fluid = FluidName
-            end
             function start.clickHeadquater(event)
-                ui_sys:pub {"headquater", FluidName}
+                ui_sys:pub {"headquater"}
+            end
+            function start.clickTechnology()
+                ui_sys:pub {"technology"}
             end
             function start.clickSetting(event)
                 ui_sys:pub {"show_setting"}
+            end
+            function start.clickBatchModeBegin(event)
+                ui_sys:pub {"batch_mode_begin"}
+            end
+            function start.clickBatchModeEnd(event)
+                ui_sys:pub {"batch_mode_end"}
             end
             window.addEventListener('mousedown', function(event)
                 ui_sys:world_pub {"ui_message", "leave"}
             end)
 
             ui_sys:addEventListener({
-                ["show_set_fluidbox"] = function(visible)
-                    start.show_set_fluidbox = visible
-                    start.cur_fluid_category = ""
-                    start.cur_selected_fluid = ""
-                end,
                 ["show_rotate_confirm"] = function(button_state)
                     if button_state.rotate ~= nil then
                         start.show_rotate = button_state.rotate
@@ -223,9 +221,6 @@
                 end,
                 ["show_construct_complete"] = function(visible)
                     start.show_construct_complete = visible
-                end,
-                ["set_fluidbox_confirm"] = function(FluidName)
-                    ui_sys:pub {"fluidbox_update", FluidName}
                 end,
                 ["show_unconfirmed_double_confirm"] = function()
                     ui_sys:open("construct_cancel_pop.rml")
@@ -257,15 +252,20 @@
                     <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
                     <div class = "menu-button-text">指挥中心</div>
                 </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;">
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()">
                     <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
                     <div class = "menu-button-text">科研中心</div>
+                    <!-- 科研中心可研究科技标识 start-->
+                    <div class = "menu-button-pic" style='width:3.6vmin; height:3.6vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/shutdown.texture"'>
+                        <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">10</div>
+                    </div>
+                    <!-- 科研中心可研究科技标识 end-->
                 </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;">
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-if="false">
                     <div class = "menu-button-pic" style='background-image:"textures/factory/seacher.texture"'/>
                     <div class = "menu-button-text">统计数据</div>
                 </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;">
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-if="false"> 
                     <div class = "menu-button-pic" style='background-image:"textures/construct/road.texture"'/>
                     <div class = "menu-button-text">地图信息</div>
                 </button>
@@ -302,39 +302,13 @@
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">建造模式</div>
             </div>
 
-            <!-- 水管指定液体界面 一级菜单 -->
-            <div data-if = "show_set_fluidbox" style = 'pointer-events: none; position: absolute; left: 40.00vmin; top: 82.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center;'>
-                <div style = 'width: auto; height: 16.00vmin; background-color: rgb(99, 99, 99); flex-direction: row; align-items: center;'>
-                    <div data-for = "fluid_category" style = "flex-direction: row;">
-                        <!-- separator -->
-                        <div style = "width: 2.67vmin;" data-if="it_index == 0" />
-                        <div style='width: 13.33vmin; height: 13.33vmin; flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;' data-event-click = "cur_fluid_category = it.catagory" data-style-background-color="cur_fluid_category == it.catagory ? 'rgb(0,176,80)' : 'rgb(59, 137, 211)'" data-style-border="cur_fluid_category == it.catagory ? '0.57vmin rgb(250, 205, 9)' : '0.37vmin white'">
-                            <div style='margin: 0 auto; top: 1.33vmin; width: 6.67vmin; height: 6.67vmin; background-size:cover;' data-style-background-image = "it.icon" />
-                            <div style ="font-size: 3.33vmin; top: 1.33vmin;">{{it.catagory}}</div>
-                        </div>
-                        <!-- separator -->
-                        <div style = "width: 2.67vmin;" />
-                    </div>
-                </div>
-            </div>
-            <!-- 水管指定液体界面 二级菜单 -->
-            <div data-if = "show_set_fluidbox" style = 'pointer-events: none; position: absolute; left: 40.00vmin; top: 66.67vmin; width: 106.67vmin; height: 16.00vmin; justify-content: center; align-items: center; z-index: 999;'>
-                <div style = 'width: auto; height: 16.00vmin; background-color: rgb(99, 99, 99); flex-direction: row; align-items: center;' data-if = "cur_fluid_category != ''">
-                    <div data-for = "catagory : fluid_category" style = "flex-direction: row;">
-                        <div data-for = "catagory.fluid" style = "flex-direction: row;" data-if = "cur_fluid_category == catagory.catagory">
-                            <!-- separator -->
-                            <div style = "width: 2.67vmin;" data-if="it_index == 0" />
-                            <div style='width: 13.33vmin; height: 13.33vmin; flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 100%;' data-event-click = "clickSelectFluid(it.name)" 
-                                data-style-border="cur_selected_fluid == it.name ? '0.57vmin rgb(250, 205, 9)' : '0.37vmin white'"
-                                data-style-background-color="cur_selected_fluid == it.name ? 'rgb(0,176,80)' : 'rgb(250, 205, 9)'">
-                                <div style='margin: 0 auto; top: 1.33vmin; width: 6.67vmin; height: 6.67vmin; background-size:cover;' data-style-background-image = "it.icon" />
-                                <div style ="font-size: 3.33vmin; top: 1.33vmin;color:rgb(73, 60, 32);-webkit-text-stroke: 0.07vmin rgb(39, 32, 17);">{{it.name}}</div>
-                            </div>
-                            <!-- separator -->
-                            <div style = "width: 2.67vmin;" />
-                        </div>
-                    </div>
-                </div>
+            <!-- 右上角按钮 -->
+            <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start;">
+                <!-- 建造 -->
+                <button data-if = "cur_edit_mode == ''" data-event-click="clickConstructBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
+                    <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
+                    <div>科技进度</div>
+                </button>
             </div>
 
             <!-- 右下角按钮 -->
@@ -352,12 +326,17 @@
                 </button>
 
                 <!-- separator -->
-                <div style = "width: 2.67vmin;" />
-
+                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_rotate" />
                 <!-- 旋转建筑 -->
                 <button data-if = "cur_edit_mode == 'construct' && show_rotate" data-event-click="clickConstructRotate()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto;background-image:"textures/construct/rotate.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
                     <div style="font-size: 85%;">旋转建筑</div>
+                </button>
+
+                <!-- 建造水管开始 -->
+                <button data-if = "cur_edit_mode == 'construct' && show_batch_mode_begin" data-event-click="clickBatchModeBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; pointer-events: none;'/>
+                    <div style="font-size: 85%; pointer-events: none;">水管开始</div>
                 </button>
             </div>
 

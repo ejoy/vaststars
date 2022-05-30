@@ -6,9 +6,7 @@ local item_category = import_package "vaststars.prototype"("item_category")
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
 local iprototype = require "gameplay.interface.prototype"
-local global = require "global"
-local objects = global.objects
-local cache_names = global.cache_names
+local objects = require "objects"
 local irecipe = require "gameplay.interface.recipe"
 local click_item_mb = mailbox:sub {"click_item"}
 local to_chest_mb = mailbox:sub {"to_chest"}
@@ -65,27 +63,8 @@ local function get_headquater_object()
     end
 end
 
----------------
-local M = {}
-
-function M:create(object_id)
-    local object = assert(objects:get(cache_names, object_id))
-    local typeobject = iprototype:queryByName("entity", object.prototype_name)
-
-    return {
-        object_id = object_id,
-        prototype_name = iprototype:show_prototype_name(typeobject),
-        background = typeobject.background,
-        item_category = item_category,
-        inventory = {},
-        is_chest = not typeobject.headquater,
-        item_prototype_name = "",
-        item_id_to_info = {},
-    }
-end
-
-function M:tick(datamodel, object_id)
-    local object = assert(objects:get(cache_names, object_id))
+local function update(datamodel, object_id)
+    local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if e then
         -- 更新背包界面对应的道具
@@ -117,7 +96,28 @@ function M:tick(datamodel, object_id)
     end
 end
 
+---------------
+local M = {}
+
+function M:create(object_id)
+    local object = assert(objects:get(object_id))
+    local typeobject = iprototype:queryByName("entity", object.prototype_name)
+
+    return {
+        object_id = object_id,
+        prototype_name = iprototype:show_prototype_name(typeobject),
+        background = typeobject.background,
+        item_category = item_category,
+        inventory = {},
+        is_chest = not typeobject.headquater,
+        item_prototype_name = "",
+        item_id_to_info = {},
+    }
+end
+
 function M:stage_ui_update(datamodel, object_id)
+    update(datamodel, datamodel.object_id)
+
     for _, _, _, prototype in click_item_mb:unpack() do
         local typeobject = iprototype:query(prototype)
         datamodel.show_item_info = true
@@ -145,7 +145,7 @@ function M:stage_ui_update(datamodel, object_id)
             goto continue
         end
 
-        local chest_object = objects:get(cache_names, chest_object_id)
+        local chest_object = objects:get(chest_object_id)
         if not chest_object then
             log.error(("can not found chest `%s`"):format(chest_object_id))
             goto continue
@@ -172,7 +172,6 @@ function M:stage_ui_update(datamodel, object_id)
 
         local pickup_count = math.min(typeobject_item.stack - chest_item_counts[prototype], headquater_item_counts[prototype])
         ichest:pickup_place(gameplay_core.get_world(), headquater_e, chest_e, prototype, pickup_count)
-        self:tick(datamodel, object_id)
         self:flush()
         ::continue::
     end
@@ -190,7 +189,7 @@ function M:stage_ui_update(datamodel, object_id)
             goto continue
         end
 
-        local chest_object = objects:get(cache_names, chest_object_id)
+        local chest_object = objects:get(chest_object_id)
         if not chest_object then
             log.error(("can not found chest `%s`"):format(chest_object_id))
             goto continue
@@ -208,15 +207,17 @@ function M:stage_ui_update(datamodel, object_id)
             goto continue
         end
 
-        ichest:pickup_place(gameplay_core.get_world(), chest_e, headquater_e, prototype, chest_item_counts[prototype])
-        self:tick(datamodel, object_id)
+        local typeobject_item = iprototype:query(prototype)
+        local pickup_count = math.min(typeobject_item.stack, chest_item_counts[prototype])
+
+        ichest:pickup_place(gameplay_core.get_world(), chest_e, headquater_e, prototype, pickup_count)
         self:flush()
         ::continue::
     end
 end
 
 function M:update(datamodel)
-    self:tick(datamodel, datamodel.object_id)
+    update(datamodel, datamodel.object_id)
     self:flush()
 end
 

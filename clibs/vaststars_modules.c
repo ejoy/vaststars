@@ -13,15 +13,16 @@ static void loadmodules(lua_State* L) {
     SYSTEM(assembling)
     SYSTEM(laboratory)
     SYSTEM(burner)
+    SYSTEM(chimney)
     SYSTEM(inserter)
     SYSTEM(powergrid)
     SYSTEM(pump)
     SYSTEM(fluid)
     SYSTEM(saveload)
+    SYSTEM(task)
     CORE(prototype)
     CORE(container)
     CORE(world)
-    CORE(fluidflow)
     CORE(road)
 }
 
