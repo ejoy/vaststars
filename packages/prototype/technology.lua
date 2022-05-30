@@ -317,13 +317,13 @@ prototype "储存1" {
   time = "1s"
 }
 
-prototype "生产储藏箱" {
+prototype "生产铁制箱子" {
   desc = "生产小型铁制箱子用于存储基地的资源",
   icon = "textures/science/tech-equipment.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "小型铁制箱子"},
   prerequisites = {"储存1","基地生产1"},
-  count = 10,
+  count = 3,
   sign_desc = {
     { desc = "生产3个小型铁制箱子", icon = "textures/construct/assembler.texture"},
   },
