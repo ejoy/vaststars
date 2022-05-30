@@ -151,7 +151,7 @@ prototype "管道系统1" {
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"管道1","液罐1"},
+    unlock_recipe = {"管道1","管道2","液罐1"},
   },
   prerequisites = {"气候研究"},
   ingredients = {
