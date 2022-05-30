@@ -111,7 +111,7 @@ prototype "气候研究" {
   time = "1s"
 }
 
-prototype "挖掘井" {
+prototype "水利研究" {
   desc = "对火星地层下的水源进行开采",
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
@@ -178,7 +178,7 @@ prototype "生产管道" {
   icon = "textures/science/tech-equipment.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "管道1-I型"},
-  prerequisites = {"挖掘井","管道系统1"},
+  prerequisites = {"水利研究","管道系统1"},
   count = 10,
   sign_desc = {
     { desc = "生产10个管道", icon = "textures/construct/assembler.texture"},
