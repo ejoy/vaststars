@@ -318,9 +318,8 @@
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">建造模式</div>
             </div>
 
-            <!-- 右上角按钮 -->
+            <!-- 右上角：当前科技进度 -->
             <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start;">
-                <!-- 建造 -->
                 <button style='background-color:rgb(250,205,9); background-size:cover;' data-style-background-image="current_tech_icon">
                     <div>{{current_tech_name}}</div>
                     <div class="progress-bar-block" style = "position:absolute; bottom: -0.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
