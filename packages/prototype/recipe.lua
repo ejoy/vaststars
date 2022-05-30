@@ -780,7 +780,7 @@ prototype "破损太阳能板" {
     category = "生产手工制造",
     group = "生产",
     order = 116,
-    icon = "textures/construct/solar-panel.texture",
+    icon = "textures/construct/broken-solar-panel.texture",
     ingredients = {
         {"石砖", 10},
         {"破损太阳能板", 1},
