@@ -1,0 +1,944 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.316_P1.meshbin"
+  name: Detail_295
+  scene:
+    srt:
+      r: {-0.7071068286895752, 0.7071067690849304, 0, -5.338507946817117e-08}
+      s: {0.3159065246582031, 0.3159065246582031, 0.3159065246582031}
+      t: {0, 0, 15.043684005737305}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.003_P1.meshbin
+  name: SM_Bld_Section_Corner_03__7_
+  scene:
+    srt:
+      r: {-0.5, -0.49999988079071045, -0.4999999701976776, -0.5000001192092896}
+      s: {0.007928685285151005, 0.007928685285151005, 0.006856637541204691}
+      t: {0, 0, 16.51621437072754}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.004_P1.meshbin
+  name: SM_Bld_Large_Part_08__10_
+  scene:
+    srt:
+      r: {0, 0, 0.7071072459220886, -0.7071062922477722}
+      s: {0.009999999776482582, 0.009999999776482582, 0.009999999776482582}
+      t: {0, 0, 4.634134292602539}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.006_P1.meshbin
+  name: SM_Bld_Underpass_01
+  scene:
+    srt:
+      r: {0.7071068286895752, 0, 0, -0.7071067094802856}
+      s: {0.015627963468432426, 0.015627963468432426, 0.015627963468432426}
+      t: {0, 1, 1.3728513717651367}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.001_P1.meshbin
+  name: SM_Bld_Large_05__3_
+  scene:
+    srt:
+      r: {0, -0.7071067094802856, -0.7071068286895752, -9.595422625352512e-07}
+      s: {0.017192674800753593, 0.017192674800753593, 0.017192674800753593}
+      t: {0, 0.034423828125, 8.750185012817383}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.007_P1.meshbin
+  name: SM_Bld_Large_02__4_
+  scene:
+    srt:
+      r: {0.49999991059303284, -0.5000000596046448, -0.5000001788139343, -0.49999988079071045}
+      s: {0.003901185467839241, 0.003901185467839241, 0.0039011859335005283}
+      t: {-7.050164222717285, 7.625582218170166, 3.0212717056274414}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.008_P1.meshbin
+  name: SM_Bld_Large_Part_07__6_
+  scene:
+    srt:
+      r: {0.7071068286895752, 0, 0, -0.7071067094802856}
+      s: {0.006237401627004147, 0.006237401627004147, 0.006237402558326721}
+      t: {5.698368549346924, 7.465106010437012, 1.9443199634552002}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.084_P1.meshbin"
+  name: Detail_69
+  scene:
+    srt:
+      t: {0, 0, -3.8279004096984863}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.005_P1.meshbin"
+  name: Detail_184
+  scene:
+    srt:
+      r: {-0.19839096069335938, -0.1983908861875534, 0.6787053942680359, -0.6787053942680359}
+      s: {0.2584007978439331, 0.2584007978439331, 0.2584007978439331}
+      t: {-0.007343292236328125, 1.3737514019012451, -2.848170042037964}
+mount: 9
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.092_P1.meshbin"
+  name: Detail_99
+  scene:
+    srt:
+      r: {0.6655635833740234, -0.6655636429786682, 0.23879939317703247, -0.23879919946193695}
+      s: {-1.2928717136383057, -1.2928718328475952, -1.2928718328475952}
+      t: {0.7303962707519531, 0.02841680496931076, -19.597522735595703}
+mount: 10
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.323_P1.meshbin"
+  name: Detail_300
+  scene:
+    srt:
+      r: {0, -1, 0, -7.549790126404332e-08}
+      s: {-2.993302822113037, -2.993303060531616, -2.993303060531616}
+      t: {0, 0.11522674560546875, -10.961654663085938}
+mount: 11
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.291_P1.meshbin"
+  name: Detail_292
+  scene:
+    srt:
+      t: {0, -0.13444280624389648, -3.395108222961426}
+mount: 12
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  name: lun1
+  scene:
+    srt:
+      t: {0.00032435357570648193, -0.1257622241973877, -3.4013376235961914}
+mount: 12
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.013_P1.meshbin
+  name: SM_Bld_Power_02__4_.001
+  scene:
+    srt:
+      r: {0.5404244065284729, -0.45600616931915283, 0.5404242873191833, -0.4560060203075409}
+      s: {0.002232585335150361, 0.0022325858008116484, 0.002232585335150361}
+      t: {0, 2.278254508972168, 2.585312843322754}
+mount: 14
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/柱体_P1.meshbin"
+  name: "柱体"
+  scene:
+    srt:
+      s: {1, 0.7857661843299866, 0.7857661843299866}
+      t: {-0.00032435357570648193, -0.031223297119140625, -0.007495880126953125}
+mount: 14
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/柱体.001_P1.meshbin"
+  name: "柱体.001"
+  scene:
+    srt:
+      s: {1, 0.7857661843299866, 0.7857661843299866}
+      t: {0, -0.002601146697998047, -0.0006237030029296875}
+mount: 14
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/柱体.002_P1.meshbin"
+  name: "柱体.002"
+  scene:
+    srt:
+      r: {0.9391485452651978, 0, 0, -0.3435113728046417}
+      s: {1, 0.7857661247253418, 0.7857661247253418}
+      t: {0, -0.002601146697998047, -0.0006237030029296875}
+mount: 14
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.002_P1.meshbin
+  name: SM_Bld_Power_02__4_
+  scene:
+    srt:
+      r: {0.5404243469238281, -0.45600607991218567, 0.5404243469238281, -0.4560060501098633}
+      s: {0.002232585335150361, 0.0022325858008116484, 0.002232585335150361}
+      t: {0.000324249267578125, -0.1257622241973877, -3.4013376235961914}
+mount: 12
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.323_P1.meshbin"
+  name: Detail_300
+  scene:
+    srt:
+      r: {0, -1, 0, -7.549790126404332e-08}
+      s: {-2.993302822113037, -2.993303060531616, -2.993303060531616}
+      t: {0, 0.11522674560546875, -10.961654663085938}
+mount: 11
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.191_P1.meshbin"
+  name: Detail_339
+  scene:
+    srt:
+      r: {-0.5332372784614563, 0.5332372784614563, -0.4643900394439697, -0.4643899202346802}
+      s: {-0.08512535691261292, -0.08512535691261292, -0.08512535691261292}
+      t: {0, -8.458791732788086, 1.6965980529785156}
+mount: 11
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.080_P1.meshbin"
+  name: Detail_65
+  scene:
+    srt:
+      r: {0, -0.8856931924819946, 0.46427100896835327, -8.336284906818037e-08}
+      s: {-0.5763536691665649, -0.5763536095619202, -0.5763536095619202}
+      t: {0, -8.548501968383789, 1.70556640625}
+mount: 11
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.092_P1.meshbin"
+  name: Detail_99
+  scene:
+    srt:
+      r: {0.6655635833740234, -0.6655636429786682, 0.23879939317703247, -0.23879919946193695}
+      s: {-1.2928717136383057, -1.2928718328475952, -1.2928718328475952}
+      t: {0.7303962707519531, 0.02841680496931076, -19.597522735595703}
+mount: 10
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.014_P1.meshbin
+  name: SM_Bld_Power_02__4_.002
+  scene:
+    srt:
+      r: {0.4253003001213074, 0.5649067759513855, 0.5649068355560303, -0.425300270318985}
+      s: {0.008640008978545666, 0.00864001177251339, 0.008640008047223091}
+      t: {0.7680549621582031, 0.02967117540538311, -19.52745246887207}
+mount: 10
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.005_P1.meshbin"
+  name: Detail_184
+  scene:
+    srt:
+      r: {-0.19839096069335938, -0.1983908861875534, 0.6787053942680359, -0.6787053942680359}
+      s: {0.2584007978439331, 0.2584007978439331, 0.2584007978439331}
+      t: {-0.007343292236328125, 1.3737514019012451, -2.848170042037964}
+mount: 9
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.084_P1.meshbin"
+  name: Detail_69
+  scene:
+    srt:
+      t: {0, 0, -3.8279004096984863}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.406_P1.meshbin"
+  name: Detail_69.001
+  scene:
+    srt:
+      t: {-6.874930381774902, 0, -3.8279004096984863}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.403_P1.meshbin"
+  name: Detail_184.001
+  scene:
+    srt:
+      r: {-0.579645574092865, -0.5796455144882202, 0.4049827754497528, -0.4049827754497528}
+      s: {0.2584007978439331, 0.2584007978439331, 0.2584007978439331}
+      t: {-0.007343292236328125, 1.3737514019012451, -2.848170042037964}
+mount: 27
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.407_P1.meshbin"
+  name: Detail_99.001
+  scene:
+    srt:
+      r: {0.2888626754283905, -0.28886276483535767, 0.645413339138031, -0.6454132795333862}
+      s: {-1.2928717136383057, -1.2928717136383057, -1.2928717136383057}
+      t: {0.7303943634033203, 0.028417587280273438, -19.597522735595703}
+mount: 28
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.409_P1.meshbin"
+  name: Detail_300.001
+  scene:
+    srt:
+      r: {0, -1, 0, -7.549790836947068e-08}
+      s: {-2.993302822113037, -2.993302822113037, -2.993302822113037}
+      t: {0, 0.11522769927978516, -10.961650848388672}
+mount: 29
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.404_P1.meshbin"
+  name: Detail_292.001
+  scene:
+    srt:
+      t: {0, -0.1344432830810547, -3.3951072692871094}
+mount: 30
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  name: lun1.001
+  scene:
+    srt:
+      t: {0.0003247261047363281, -0.1257619857788086, -3.401336669921875}
+mount: 30
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.016_P1.meshbin
+  name: SM_Bld_Power_02__4_.004
+  scene:
+    srt:
+      r: {0.5404244065284729, -0.45600616931915283, 0.5404243469238281, -0.4560059905052185}
+      s: {0.0022325851023197174, 0.0022325855679810047, 0.002232585335150361}
+      t: {0, 2.278254747390747, 2.585312843322754}
+mount: 32
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/柱体.004_P1.meshbin"
+  name: "柱体.003"
+  scene:
+    srt:
+      s: {1, 0.7857661247253418, 0.7857661247253418}
+      t: {-0.0003237724304199219, -0.031222820281982422, -0.007495880126953125}
+mount: 32
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/柱体.005_P1.meshbin"
+  name: "柱体.004"
+  scene:
+    srt:
+      s: {1, 0.7857661247253418, 0.7857661247253418}
+      t: {0, -0.002601146697998047, -0.0006237030029296875}
+mount: 32
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/柱体.006_P1.meshbin"
+  name: "柱体.005"
+  scene:
+    srt:
+      r: {0.9391485452651978, 0, 0, -0.3435113728046417}
+      s: {1, 0.7857661247253418, 0.7857661247253418}
+      t: {0, -0.002601146697998047, -0.0006237030029296875}
+mount: 32
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.015_P1.meshbin
+  name: SM_Bld_Power_02__4_.003
+  scene:
+    srt:
+      r: {0.5404243469238281, -0.45600613951683044, 0.5404243469238281, -0.4560060501098633}
+      s: {0.002232585335150361, 0.0022325858008116484, 0.0022325855679810047}
+      t: {0.0003247261047363281, -0.1257619857788086, -3.401336669921875}
+mount: 30
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.409_P1.meshbin"
+  name: Detail_300.001
+  scene:
+    srt:
+      r: {0, -1, 0, -7.549790836947068e-08}
+      s: {-2.993302822113037, -2.993302822113037, -2.993302822113037}
+      t: {0, 0.11522769927978516, -10.961650848388672}
+mount: 29
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.408_P1.meshbin"
+  name: Detail_339.001
+  scene:
+    srt:
+      r: {-0.5332372784614563, 0.5332372784614563, -0.4643900394439697, -0.4643899202346802}
+      s: {-0.08512535691261292, -0.08512535691261292, -0.08512535691261292}
+      t: {0, -8.458793640136719, 1.6965961456298828}
+mount: 29
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.405_P1.meshbin"
+  name: Detail_65.001
+  scene:
+    srt:
+      r: {0, -0.7554197907447815, 0.6552411913871765, -5.7283457977064245e-08}
+      s: {-0.5763536691665649, -0.5763536095619202, -0.5763536095619202}
+      t: {0, -8.548502922058105, 1.7055683135986328}
+mount: 29
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.407_P1.meshbin"
+  name: Detail_99.001
+  scene:
+    srt:
+      r: {0.2888626754283905, -0.28886276483535767, 0.645413339138031, -0.6454132795333862}
+      s: {-1.2928717136383057, -1.2928717136383057, -1.2928717136383057}
+      t: {0.7303943634033203, 0.028417587280273438, -19.597522735595703}
+mount: 28
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.017_P1.meshbin
+  name: SM_Bld_Power_02__4_.005
+  scene:
+    srt:
+      r: {0.425300270318985, 0.5649067759513855, 0.5649068355560303, -0.425300270318985}
+      s: {0.008640008047223091, 0.008640010841190815, 0.008640008047223091}
+      t: {0.7680511474609375, 0.029672622680664062, -19.527448654174805}
+mount: 28
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.403_P1.meshbin"
+  name: Detail_184.001
+  scene:
+    srt:
+      r: {-0.579645574092865, -0.5796455144882202, 0.4049827754497528, -0.4049827754497528}
+      s: {0.2584007978439331, 0.2584007978439331, 0.2584007978439331}
+      t: {-0.007343292236328125, 1.3737514019012451, -2.848170042037964}
+mount: 27
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.406_P1.meshbin"
+  name: Detail_69.001
+  scene:
+    srt:
+      t: {-6.874930381774902, 0, -3.8279004096984863}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.413_P1.meshbin"
+  name: Detail_69.002
+  scene:
+    srt:
+      t: {6.836451530456543, 0, -3.8279004096984863}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.410_P1.meshbin"
+  name: Detail_184.002
+  scene:
+    srt:
+      r: {-0.47727441787719727, -0.4772743582725525, 0.5217366814613342, -0.5217366814613342}
+      s: {0.2584007978439331, 0.2584007978439331, 0.2584007978439331}
+      t: {-0.007343292236328125, 1.3737514019012451, -2.848170042037964}
+mount: 45
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.414_P1.meshbin"
+  name: Detail_99.002
+  scene:
+    srt:
+      r: {0.6246010661125183, -0.6246011257171631, 0.3314717710018158, -0.33147159218788147}
+      s: {-1.2928717136383057, -1.2928718328475952, -1.2928718328475952}
+      t: {0.7303962707519531, 0.028417587280273438, -19.597522735595703}
+mount: 46
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.416_P1.meshbin"
+  name: Detail_300.002
+  scene:
+    srt:
+      r: {0, -1, 0, -7.549790836947068e-08}
+      s: {-2.993302822113037, -2.993302822113037, -2.993302822113037}
+      t: {5.7220458984375e-06, 0.11522769927978516, -10.961650848388672}
+mount: 47
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.411_P1.meshbin"
+  name: Detail_292.002
+  scene:
+    srt:
+      t: {0, -0.13444232940673828, -3.395109176635742}
+mount: 48
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  name: lun1.002
+  scene:
+    srt:
+      t: {0.00032520294189453125, -0.1257624626159668, -3.4013376235961914}
+mount: 48
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.019_P1.meshbin
+  name: SM_Bld_Power_02__4_.007
+  scene:
+    srt:
+      r: {0.5404244065284729, -0.45600616931915283, 0.5404242873191833, -0.4560060203075409}
+      s: {0.0022325848694890738, 0.0022325858008116484, 0.002232585335150361}
+      t: {0, 2.278254508972168, 2.585312843322754}
+mount: 50
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/柱体.007_P1.meshbin"
+  name: "柱体.006"
+  scene:
+    srt:
+      s: {1, 0.7857661247253418, 0.7857661247253418}
+      t: {-0.0003237724304199219, -0.031223773956298828, -0.007495880126953125}
+mount: 50
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/柱体.008_P1.meshbin"
+  name: "柱体.007"
+  scene:
+    srt:
+      s: {1, 0.7857661247253418, 0.7857661247253418}
+      t: {0, -0.0026006698608398438, -0.0006246566772460938}
+mount: 50
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/柱体.009_P1.meshbin"
+  name: "柱体.008"
+  scene:
+    srt:
+      r: {0.9391485452651978, 0, 0, -0.3435113728046417}
+      s: {1, 0.7857661247253418, 0.7857661247253418}
+      t: {0, -0.0026006698608398438, -0.0006246566772460938}
+mount: 50
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.018_P1.meshbin
+  name: SM_Bld_Power_02__4_.006
+  scene:
+    srt:
+      r: {0.5404243469238281, -0.45600613951683044, 0.5404243469238281, -0.4560060501098633}
+      s: {0.002232585335150361, 0.0022325858008116484, 0.0022325855679810047}
+      t: {0.00032520294189453125, -0.1257624626159668, -3.4013376235961914}
+mount: 48
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.416_P1.meshbin"
+  name: Detail_300.002
+  scene:
+    srt:
+      r: {0, -1, 0, -7.549790836947068e-08}
+      s: {-2.993302822113037, -2.993302822113037, -2.993302822113037}
+      t: {5.7220458984375e-06, 0.11522769927978516, -10.961650848388672}
+mount: 47
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.415_P1.meshbin"
+  name: Detail_339.002
+  scene:
+    srt:
+      r: {-0.5332372784614563, 0.5332373380661011, -0.46439000964164734, -0.4643898904323578}
+      s: {-0.08512534946203232, -0.08512535691261292, -0.08512534946203232}
+      t: {3.814697265625e-06, -8.458789825439453, 1.6965970993041992}
+mount: 47
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.412_P1.meshbin"
+  name: Detail_65.002
+  scene:
+    srt:
+      r: {0, -0.9684276580810547, 0.24929465353488922, -8.804671125517416e-08}
+      s: {-0.5763536691665649, -0.5763536095619202, -0.5763536095619202}
+      t: {0, -8.54849910736084, 1.7055692672729492}
+mount: 47
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.414_P1.meshbin"
+  name: Detail_99.002
+  scene:
+    srt:
+      r: {0.6246010661125183, -0.6246011257171631, 0.3314717710018158, -0.33147159218788147}
+      s: {-1.2928717136383057, -1.2928718328475952, -1.2928718328475952}
+      t: {0.7303962707519531, 0.028417587280273438, -19.597522735595703}
+mount: 46
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.020_P1.meshbin
+  name: SM_Bld_Power_02__4_.008
+  scene:
+    srt:
+      r: {0.42530035972595215, 0.5649067759513855, 0.5649067759513855, -0.4253003001213074}
+      s: {0.008640008978545666, 0.00864001177251339, 0.008640008047223091}
+      t: {0.7680511474609375, 0.029672622680664062, -19.527450561523438}
+mount: 46
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.410_P1.meshbin"
+  name: Detail_184.002
+  scene:
+    srt:
+      r: {-0.47727441787719727, -0.4772743582725525, 0.5217366814613342, -0.5217366814613342}
+      s: {0.2584007978439331, 0.2584007978439331, 0.2584007978439331}
+      t: {-0.007343292236328125, 1.3737514019012451, -2.848170042037964}
+mount: 45
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.413_P1.meshbin"
+  name: Detail_69.002
+  scene:
+    srt:
+      t: {6.836451530456543, 0, -3.8279004096984863}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.021_P1.meshbin
+  name: SM_Bld_Underpass_01.001
+  scene:
+    srt:
+      r: {0.7071068286895752, 0, 0, -0.7071067094802856}
+      s: {0.017461653798818588, 0.017461653798818588, 0.017461653798818588}
+      t: {0, 1, -1.6577270030975342}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.023_P1.meshbin
+  name: SM_Bld_Large_Part_07__6_.001
+  scene:
+    srt:
+      r: {0.7071068286895752, 0, 0, -0.7071067094802856}
+      s: {0.006237401627004147, 0.006237401627004147, 0.006237402558326721}
+      t: {7.468407154083252, 7.465106010437012, 1.9443199634552002}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.025_P1.meshbin
+  name: SM_Bld_Large_Part_07__6_.002
+  scene:
+    srt:
+      r: {0.7071068286895752, 0, 0, -0.7071067094802856}
+      s: {0.006237401627004147, 0.006237401627004147, 0.006237402558326721}
+      t: {5.698368549346924, 7.465106010437012, 4.11770486831665}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Scene.026_P1.meshbin
+  name: SM_Bld_Large_Part_07__6_.003
+  scene:
+    srt:
+      r: {0.7071068286895752, 0, 0, -0.7071067094802856}
+      s: {0.006237401627004147, 0.006237401627004147, 0.006237402558326721}
+      t: {7.468407154083252, 7.465106010437012, 4.11770486831665}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
