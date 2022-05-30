@@ -15,6 +15,7 @@ local world_update = ecs.require "world_update.init"
 local saveload = ecs.require "saveload"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
+local iscience = require "gameplay.interface.science"
 local vsobject_manager = ecs.require "vsobject_manager"
 
 local m = ecs.system 'init_system'
@@ -24,13 +25,15 @@ function m:init_world()
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
     iui.preload_datamodel_dir "/pkg/vaststars.gamerender/ui_datamodel"
 
-    iui.open("construct.rml")
     camera.init("camera_default.prefab")
 
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
     terrain.create()
     saveload:restore()
+    iscience.update_tech_list(gameplay_core.get_world())
+    
+    iui.open("construct.rml")
 end
 
 local function get_object(x, y)

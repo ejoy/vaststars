@@ -131,6 +131,17 @@
             .column {
                 flex-direction: column;
             }
+            .progress-bar-block {
+                margin:0 0 0.05em 0;
+                justify-content: flex-start;
+                border: 0.13vmin #fff;
+            }
+            .progress-background {
+                justify-content: flex-start;
+                width: 60%;
+                height: 100%;
+                background-color: rgb(87, 238, 0);
+            }
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
@@ -147,6 +158,11 @@
                 show_rotate = false,  -- 是否显示[旋转建筑]
                 show_confirm = false, -- 是否显示[确认放置]
                 show_batch_mode_begin = false, -- 显示水管开始
+                tech_count = 0,             --当前可研究的科技数量
+                show_tech_progress = false, --是否显示科技进度
+                current_tech_icon = " ",    --当前科技图标
+                current_tech_name = " ",    --当前科技名字
+                current_tech_progress = "0%",--当前科技进度
             }
             function start.clickConstructBegin(event)
                 ui_sys:pub {"construct_begin", false}
@@ -256,8 +272,8 @@
                     <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
                     <div class = "menu-button-text">科研中心</div>
                     <!-- 科研中心可研究科技标识 start-->
-                    <div class = "menu-button-pic" style='width:3.6vmin; height:3.6vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/shutdown.texture"'>
-                        <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">10</div>
+                    <div class = "menu-button-pic" data-if = "tech_count > 0" style='width:3.6vmin; height:3.6vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/shutdown.texture"'>
+                        <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{tech_count}}</div>
                     </div>
                     <!-- 科研中心可研究科技标识 end-->
                 </button>
@@ -303,11 +319,13 @@
             </div>
 
             <!-- 右上角按钮 -->
-            <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start;">
+            <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start;">
                 <!-- 建造 -->
-                <button data-if = "cur_edit_mode == ''" data-event-click="clickConstructBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
-                    <div>科技进度</div>
+                <button style='background-color:rgb(250,205,9); background-size:cover;' data-style-background-image="current_tech_icon">
+                    <div>{{current_tech_name}}</div>
+                    <div class="progress-bar-block" style = "position:absolute; bottom: -0.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
+                        <div class="progress-background" data-style-width="current_tech_progress"/>
+                    </div> 
                 </button>
             </div>
 
