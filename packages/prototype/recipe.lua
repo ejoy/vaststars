@@ -29,7 +29,7 @@ prototype "铁板1" {
     },
     results = {
         {"铁板", 2},
-        {"碎石", 1},
+        {"碎石", 2},
     },
     time = "3s",
     description = "铁矿石通过金属冶炼获得铁板",
@@ -980,7 +980,7 @@ prototype "空气分离1" {
 prototype "二氧化碳转一氧化碳" {
     type = { "recipe" },
     category = "流体基础化工",
-    --group = "流体",
+    group = "流体",
     order = 31,
     icon = "textures/fluid/gas-co.texture",
     ingredients = {
@@ -1377,7 +1377,7 @@ prototype "氯气排泄" {
 prototype "地下卤水分离铁" {
     type = { "recipe" },
     category = "金属流体处理",
-    group = "金属",
+    --group = "金属",
     order = 1,
     -- icon = "textures/construct/gravel.texture",
     icon = "textures/recipe/water2iron.texture",
@@ -1413,7 +1413,7 @@ prototype "地下卤水分离水藻" {
 prototype "地下卤水分离石头" {
     type = { "recipe" },
     category = "金属流体处理",
-    group = "金属",
+    --group = "金属",
     order = 3,
     -- icon = "textures/construct/gravel.texture",
     icon = "textures/recipe/water2gravel.texture",
