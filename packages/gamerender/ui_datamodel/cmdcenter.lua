@@ -6,9 +6,7 @@ local item_category = import_package "vaststars.prototype"("item_category")
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
 local iprototype = require "gameplay.interface.prototype"
-local global = require "global"
-local objects = global.objects
-local cache_names = global.cache_names
+local objects = require "objects"
 local irecipe = require "gameplay.interface.recipe"
 local click_item_mb = mailbox:sub {"click_item"}
 local to_chest_mb = mailbox:sub {"to_chest"}
@@ -66,7 +64,7 @@ local function get_headquater_object()
 end
 
 local function update(datamodel, object_id)
-    local object = assert(objects:get(cache_names, object_id))
+    local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if e then
         -- 更新背包界面对应的道具
@@ -102,7 +100,7 @@ end
 local M = {}
 
 function M:create(object_id)
-    local object = assert(objects:get(cache_names, object_id))
+    local object = assert(objects:get(object_id))
     local typeobject = iprototype:queryByName("entity", object.prototype_name)
 
     return {
@@ -147,7 +145,7 @@ function M:stage_ui_update(datamodel, object_id)
             goto continue
         end
 
-        local chest_object = objects:get(cache_names, chest_object_id)
+        local chest_object = objects:get(chest_object_id)
         if not chest_object then
             log.error(("can not found chest `%s`"):format(chest_object_id))
             goto continue
@@ -191,7 +189,7 @@ function M:stage_ui_update(datamodel, object_id)
             goto continue
         end
 
-        local chest_object = objects:get(cache_names, chest_object_id)
+        local chest_object = objects:get(chest_object_id)
         if not chest_object then
             log.error(("can not found chest `%s`"):format(chest_object_id))
             goto continue

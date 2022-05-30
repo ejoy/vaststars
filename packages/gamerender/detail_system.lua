@@ -6,9 +6,7 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mu = import_package "ant.math".util
 local vsobject_manager = ecs.require "vsobject_manager"
 local math3d = require "math3d"
-local global = require("global")
-local objects = global.objects
-local cache_names = global.cache_names
+local objects = require "objects"
 
 local idetail = ecs.interface "idetail"
 
@@ -25,7 +23,7 @@ function idetail.show(vsobject_id)
     local vsobject = assert(vsobject_manager:get(vsobject_id))
 
     do
-        local object = objects:get(cache_names, vsobject_id)
+        local object = objects:get(vsobject_id)
         log.info(object.prototype_name, object.x, object.y)
     end
 

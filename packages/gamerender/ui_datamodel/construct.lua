@@ -9,9 +9,9 @@ local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu"
 local iprototype = require "gameplay.interface.prototype"
 local create_normalbuilder = ecs.require "editor.normalbuilder"
 local create_batchbuilder = ecs.require "editor.batchbuilder"
-local global = require "global"
-local objects = global.objects
+local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
+local global = require "global"
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local construct_begin_mb = mailbox:sub {"construct_begin"} -- 建造 -> 建造模式
@@ -51,6 +51,7 @@ local construct_menu = {} ; do
     end
 end
 
+-- TODO
 local function get_headquater_object_id()
     for id in objects:select("CONSTRUCTED", "headquater", true) do
         return id
@@ -162,7 +163,7 @@ function M:stage_ui_update(datamodel)
             goto continue
         end
 
-
+        ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
         gameplay_core.world_update = true
         global.mode = "normal"
         camera.set("camera_default.prefab")

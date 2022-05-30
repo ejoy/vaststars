@@ -131,7 +131,6 @@
             local function clickItem(index)
                 local recipe = start.items[index]
                 if not recipe then
-                    console.log(("can not found index %s"):format(index))
                     return
                 end
                 start.recipe_name = recipe.name

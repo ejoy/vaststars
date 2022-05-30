@@ -1,7 +1,5 @@
 local property_list = import_package "vaststars.prototype"("property_list")
-local global = require "global"
-local objects = global.objects
-local cache_names = global.cache_names
+local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
 
@@ -82,7 +80,7 @@ local function get_property(e, typeobject)
 end
 
 local function get_entity_property_list(object_id)
-    local object = assert(objects:get(cache_names, object_id))
+    local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
         return {}
@@ -98,7 +96,7 @@ end
 local M = {}
 
 function M:create(object_id)
-    local object = assert(objects:get(cache_names, object_id))
+    local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
         return {}

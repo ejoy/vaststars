@@ -2,13 +2,12 @@ local ecs = ...
 local world = ecs.world
 
 local iprototype = require "gameplay.interface.prototype"
-local global = require "global"
-local ALL_CACHE <const> = global.cache_names
-local objects = global.objects
-local tile_objects = global.tile_objects
+local objects = require "objects"
+local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local vsobject_manager = ecs.require "vsobject_manager"
 local ieditor = ecs.require "editor.editor"
 local ifluid = require "gameplay.interface.fluid"
+local gameplay_core = require "gameplay.core"
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
     local typeobject = iprototype:queryByName("entity", prototype_name)
@@ -20,8 +19,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     local w, h = iprototype:rotate_area(typeobject.area, dir)
     for i = 0, w - 1 do
         for j = 0, h - 1 do
-            local tile_object = tile_objects:get(ALL_CACHE, iprototype:packcoord(x + i, y + j))
-            if tile_object then
+            if objects:coord(x + i, y + j, EDITOR_CACHE_NAMES) then
                 return false
             end
         end
@@ -30,28 +28,34 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     return true
 end
 
-local function get_neighbor_fluid_types(self, cache_names, prototype_name, x, y, dir) -- TODO
-    local fluid_types = {}
+local get_neighbor_fluid_types; do
+    local function is_neighbor(x1, y1, dir1, x2, y2, dir2)
+        local dx1, dy1 = ieditor:get_dir_coord(x1, y1, dir1)
+        local dx2, dy2 = ieditor:get_dir_coord(x2, y2, dir2)
+        return (dx1 == x2 and dy1 == y2) and (dx2 == x1 and dy2 == y1)
+    end
 
-    for _, v in ipairs(ifluid:get_fluidbox(prototype_name, x, y, dir, "")) do
-        local dx, dy = ieditor:get_dir_coord(v.x, v.y, dir)
-        local tile_object = tile_objects:get(cache_names, iprototype:packcoord(dx, dy))
-        if tile_object and tile_object.fluidbox_dir then
-            if tile_object.fluidbox_dir[iprototype:opposite_dir(dir)] then
-                local object = assert(objects:get(cache_names, tile_object.id))
-                local fluid = object.fluid_name
-                if fluid ~= "" then
-                    fluid_types[fluid] = true
+    function get_neighbor_fluid_types(self, cache_names_r, prototype_name, x, y, dir)
+        local fluid_names = {}
+
+        for _, v in ipairs(ifluid:get_fluidbox(prototype_name, x, y, dir, "")) do
+            local dx, dy = ieditor:get_dir_coord(v.x, v.y, v.dir)
+            local object = objects:coord(dx, dy, cache_names_r)
+            if object then
+                for _, v1 in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+                    if is_neighbor(v.x, v.y, v.dir, v1.x, v1.y, v1.dir) then
+                        fluid_names[v1.fluid_name] = true
+                    end
                 end
             end
         end
-    end
 
-    local array = {}
-    for fluid in pairs(fluid_types) do
-        array[#array + 1] = fluid
+        local array = {}
+        for fluid in pairs(fluid_names) do
+            array[#array + 1] = fluid
+        end
+        return array
     end
-    return array
 end
 
 local function clean(self, datamodel)
@@ -71,16 +75,40 @@ local function check_unconfirmed(self, double_confirm)
     return false
 end
 
+local function complete(self)
+    local needbuild = false
+    for _, object in objects:all("CONFIRM") do
+        object.state = "constructed"
+
+        local vsobject = assert(vsobject_manager:get(object.id))
+        vsobject:update {type = "constructed"}
+
+        if object.gameplay_eid == 0 then
+            object.gameplay_eid = gameplay_core.create_entity(object)
+        else
+            local typeobject = iprototype:queryByName("entity", object.prototype_name)
+            if iprototype:has_type(typeobject.type, "fluidbox") then
+                ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
+            end
+        end
+        needbuild = true
+    end
+    objects:commit("CONFIRM", "CONSTRUCTED")
+
+    if needbuild then
+        gameplay_core.build()
+    end
+end
+
 local function create()
     local M = {}
     -- M.pickup_object
     M.check_construct_detector = check_construct_detector
     M.revert_changes = ieditor.revert_changes
-    M.set_object = ieditor.set_object
     M.get_neighbor_fluid_types = get_neighbor_fluid_types
     M.clean = clean
     M.check_unconfirmed = check_unconfirmed
-    M.ALL_CACHE = ALL_CACHE
+    M.complete = complete
 
     return M
 end

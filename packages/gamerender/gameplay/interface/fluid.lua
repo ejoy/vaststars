@@ -79,17 +79,10 @@ do
     function M:get_fluidbox(prototype_name, x, y, dir, fluid_name)
         local result = {}
         local typeobject = assert(iprototype:queryByName("entity", prototype_name))
-        if typeobject.pipe then
-            for _, dir in ipairs(PIPE_FLUIDBOXES_DIR) do
-                result[#result+1] = {x = x, y = y, dir = dir, fluid_name = fluid_name}
-            end
-        else
-            local types = typeobject.type
-            for i = 1, #types do
-                local func = funcs[types[i]]
-                if func then
-                    result = func(typeobject, x, y, dir, result, fluid_name)
-                end
+        for _, t in ipairs(typeobject.type) do
+            local func = funcs[t]
+            if func then
+                result = func(typeobject, x, y, dir, result, fluid_name)
             end
         end
         return result

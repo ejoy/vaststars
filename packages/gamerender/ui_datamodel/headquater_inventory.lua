@@ -2,9 +2,7 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
-local global = require "global"
-local cache_names = global.cache_names
-local objects = global.objects
+local objects = require "objects"
 local item_category = import_package "vaststars.prototype"("item_category")
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
@@ -78,7 +76,7 @@ function M:stage_ui_update(datamodel)
             goto continue
         end
 
-        local chest_object = objects:get(cache_names, chest_object_id)
+        local chest_object = objects:get(chest_object_id)
         if not chest_object then
             log.error(("can not found chest `%s`"):format(chest_object_id))
             goto continue
