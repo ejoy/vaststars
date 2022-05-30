@@ -233,15 +233,6 @@
             }
 
             local function clickItem(index)
-                local recipe = start.items[index]
-                if not recipe then
-                    console.log(("can not found index %s"):format(index))
-                    return
-                end
-                start.recipe_name = recipe.name
-                start.recipe_time = ("%ss"):format(recipe.time // 50) -- 50 ticks per second
-                start.recipe_ingredients = recipe.ingredients
-                start.recipe_results = recipe.results
             end
 
             function start.clickClose(event)

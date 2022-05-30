@@ -41,8 +41,12 @@ function m.container_place(...)
     return world:container_place(...)
 end
 
-function m.remove_entity(v)
-    return world:remove_entity(v)
+function m.remove_entity(eid)
+    for v in world.ecs:select "id:in" do
+        if v.id == eid then
+            return world:remove_entity(v)
+        end
+    end
 end
 
 local create_entity_cache = {}

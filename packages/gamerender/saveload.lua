@@ -10,10 +10,7 @@ local archiving_list_path = archival_base_dir .. "/archiving.json"
 local camera_setting_path = archival_base_dir .. "/camera.json"
 local iprototype = require "gameplay.interface.prototype"
 local startup_entities = import_package("vaststars.prototype")("item.startup").entities
-local global = require "global"
-local cache_names = global.cache_names
-local objects = global.objects
-local tile_objects = global.tile_objects
+local objects = require "objects"
 local vsobject_manager = ecs.require "vsobject_manager"
 local ifluid = require "gameplay.interface.fluid"
 
@@ -50,19 +47,17 @@ local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_nam
         headquater = typeobject.headquater or false,
         fluid_name = fluid_name,
         fluidflow_network_id = fluidflow_network_id,
+        state = vsobject_type,
     }
-    ieditor:set_object(object, "CONSTRUCTED")
+    objects:set(object)
 end
 
 local function restore_world()
     -- clean
-    for _, cache_name in ipairs(cache_names) do
-        for _, object in objects:all(cache_name) do
-            vsobject_manager:remove(object.id)
-        end
-        objects:clear(cache_name)
-        tile_objects:clear(cache_name)
+    for _, object in objects:all() do
+        vsobject_manager:remove(object.id)
     end
+    objects:clear()
 
     local duplicate = {}
     local network_id = 0

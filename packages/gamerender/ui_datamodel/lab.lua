@@ -4,16 +4,15 @@ local w = world.w
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
 local ilaboratory = require "gameplay.interface.laboratory"
-local global = require "global"
-local objects = global.objects
-local cache_names = global.cache_names
+local objects = require "objects"
+
 local M = {}
 local current_inputs
 local inputs_count
 local current_e
 function M:create(object_id)
     local game_world = gameplay_core.get_world()
-    local object = assert(objects:get(cache_names, object_id))
+    local object = assert(objects:get(object_id))
     current_e = gameplay_core.get_entity(assert(object.gameplay_eid))
     local typeobject = iprototype:queryByName("entity", object.prototype_name)
     current_inputs = ilaboratory:get_elements(typeobject.inputs)

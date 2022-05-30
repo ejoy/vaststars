@@ -1,15 +1,14 @@
 local ecs = ...
 local world = ecs.world
 
-local global = require "global"
-local ALL_CACHE <const> = global.cache_names
-local objects = global.objects
-local tile_objects = global.tile_objects
+local objects = require "objects"
+local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
-local get_fluidboxes = require "gameplay.utility.get_fluidboxes"
 local flow_shape = require "gameplay.utility.flow_shape"
+local ifluid = require "gameplay.interface.fluid"
+local terrain = ecs.require "terrain"
 
 --
 local M = {}
@@ -28,48 +27,20 @@ function M:revert_changes(revert_cache_names)
         for id, object in objects:all(cache_name) do
             t[id] = object
         end
-        objects:revert({cache_name})
-        tile_objects:revert({cache_name})
     end
+    objects:revert(revert_cache_names)
 
     for id, object in pairs(t) do
-        local old_object = objects:get(ALL_CACHE, id)
+        local old_object = objects:get(id, EDITOR_CACHE_NAMES)
         if old_object then
             local vsobject = assert(vsobject_manager:get(object.id))
-            vsobject:update {prototype_name = old_object.prototype_name, type = old_object.vsobject_type}
+            vsobject:update {prototype_name = old_object.prototype_name, type = old_object.state}
             vsobject:set_dir(old_object.dir)
         else
             local vsobject = assert(vsobject_manager:get(object.id))
             vsobject:remove()
         end
     end
-end
-
-function M:set_object(object, cache_name)
-    local t = {}
-
-    --
-    local typeobject = iprototype:queryByName("entity", object.prototype_name)
-    local w, h = iprototype:rotate_area(typeobject.area, object.dir)
-    for i = 0, w - 1 do
-        for j = 0, h - 1 do
-            local coord = iprototype:packcoord(object.x + i, object.y + j)
-            t[coord] = {id = object.id, coord = coord}
-        end
-    end
-
-    --
-    for _, v in ipairs(get_fluidboxes(object.prototype_name, object.x, object.y, object.dir)) do
-        assert(t[iprototype:packcoord(v.x, v.y)])
-        t[iprototype:packcoord(v.x, v.y)].fluidbox_dir = v.fluidbox_dir
-    end
-
-    --
-    for _, tile_object in pairs(t) do
-        tile_objects:set(cache_name, tile_object)
-    end
-
-    objects:set(cache_name, object)
 end
 
 function M:teardown_begin()
@@ -92,19 +63,23 @@ function M:get_dir_coord(...)
     return get_dir_coord(...)
 end
 
-local function refresh_pipe(prototype_name, dir, entry_dir)
+local function refresh_pipe(prototype_name, dir, entry_dir, value)
     local typeobject = iprototype:queryByName("entity", prototype_name)
     if not typeobject.pipe then
         return
     end
 
     local state = flow_shape:to_state(prototype_name:gsub(".*%-(%u).*", "%1"), dir)
-    state = flow_shape:set_state(state, iprototype:dir_tonumber(entry_dir), 1)
+    state = flow_shape:set_state(state, iprototype:dir_tonumber(entry_dir), value or 1)
     local ntype, dir = flow_shape:to_type_dir(state)
     return prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format(ntype)), dir
 end
 
-function M:refresh_flow_shape(get_cache_names, set_cache_name, object, entry_dir, raw_x, raw_y) -- TODO
+function M:refresh_pipe(...)
+    return refresh_pipe(...)
+end
+
+function M:refresh_flow_shape(cache_names_r, cache_name_w, object, entry_dir, raw_x, raw_y) -- TODO
     local vsobject = assert(vsobject_manager:get(object.id))
     local typeobject = iprototype:queryByName("entity", object.prototype_name)
     if typeobject.pipe then
@@ -117,14 +92,13 @@ function M:refresh_flow_shape(get_cache_names, set_cache_name, object, entry_dir
             vsobject:update {prototype_name = prototype_name}
             vsobject:set_dir(dir)
 
-            self:set_object(object, set_cache_name)
+            objects:set(object, cache_name_w)
         end
     end
 
     local dx, dy = self:get_dir_coord(raw_x, raw_y, entry_dir)
-    local tile_object = tile_objects:get(get_cache_names, iprototype:packcoord(dx, dy))
-    if tile_object then
-        local object = assert(objects:get(get_cache_names, tile_object.id))
+    local object = assert(objects:coord(dx, dy, cache_names_r))
+    if object then
         local typeobject = iprototype:queryByName("entity", object.prototype_name)
         if typeobject.pipe or typeobject.road then
             local vsobject = assert(vsobject_manager:get(object.id))
@@ -137,59 +111,105 @@ function M:refresh_flow_shape(get_cache_names, set_cache_name, object, entry_dir
                 vsobject:update {prototype_name = prototype_name}
                 vsobject:set_dir(dir)
 
-                self:set_object(object, set_cache_name)
+                objects:set(object, cache_name_w)
+            end
+        end
+    end
+end
+
+local function shift_pipe(self, object, prototype_name, dir)
+    local typeobject = iprototype:queryByName("entity", object.prototype_name)
+    if not typeobject.pipe then
+        return
+    end
+
+    vsobject_manager:remove(object.id)
+    gameplay_core.remove_entity(object.gameplay_eid)
+    objects:remove(object.id)
+
+    local position = assert(terrain.get_position_by_coord(object.x, object.y, iprototype:rotate_area(typeobject.area, object.dir)))
+    object = self:clone_object(object)
+    object.prototype_name = prototype_name
+    object.dir = dir
+
+    local vsobject = vsobject_manager:create {
+        prototype_name = prototype_name,
+        dir = dir,
+        position = position,
+        type = "constructed",
+    }
+    object.id = vsobject.id
+    object.gameplay_eid = gameplay_core.create_entity(object)
+
+    objects:set(object)
+end
+
+local function is_connection(self, x1, y1, dir1, x2, y2, dir2)
+    local dx1, dy1 = self:get_dir_coord(x1, y1, dir1)
+    local dx2, dy2 = self:get_dir_coord(x2, y2, dir2)
+    return (dx1 == x2 and dy1 == y2) and (dx2 == x1 and dy2 == y1)
+end
+
+local function teardown(self, object, changed_set)
+    for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, "")) do
+        local dx, dy = self:get_dir_coord(v.x, v.y, v.dir)
+        local nobject = objects:coord(dx, dy)
+        if nobject then
+            local typeobject = iprototype:queryByName("entity", nobject.prototype_name)
+            if typeobject.pipe then
+                for _, v1 in ipairs(ifluid:get_fluidbox(nobject.prototype_name, nobject.x, nobject.y, nobject.dir, nobject.fluid_name)) do
+                    if is_connection(self, v.x, v.y, v.dir, v1.x, v1.y, v1.dir) then
+                        local prototype_name, dir = self:refresh_pipe(nobject.prototype_name, nobject.dir, v1.dir, 0)
+                        if prototype_name ~= nobject.prototype_name or dir ~= nobject.dir then
+                            nobject.prototype_name = prototype_name
+                            nobject.dir = dir
+                            changed_set[nobject.id] = nobject
+                        end
+                    end
+                end
             end
         end
     end
 end
 
 function M:teardown_complete()
-    local removelist = {}
+    local changed_set = {}
+    local removed_set = {}
     for id, object in objects:select("TEMPORARY", "teardown", true) do
-        local vsobject = assert(vsobject_manager:get(id))
-        vsobject:remove()
-
-        objects:remove("CONSTRUCTED", id)
-        for coord in tile_objects:select("CONSTRUCTED", "id", id) do
-            tile_objects:remove("CONSTRUCTED", coord)
-        end
-
-        removelist[iprototype:packcoord(object.x, object.y)] = object
+        teardown(self, object, changed_set)
+        removed_set[object.id] = object
     end
 
-    for _, object in pairs(removelist) do
-        -- TODO
+    for id, object in pairs(removed_set) do
+        vsobject_manager:remove(id)
+        objects:remove(object.id)
+        gameplay_core.remove_entity(object.gameplay_eid)
+        changed_set[id] = nil
     end
 
-    local needbuild = false
-    for e in gameplay_core.select("entity:in") do
-        local coord = iprototype:packcoord(e.entity.x, e.entity.y)
-        if removelist[coord] then
-            gameplay_core.remove_entity(e)
-            needbuild = true
-        end
-    end
-    if needbuild then
-        gameplay_core.build()
+    for id, object in pairs(changed_set) do
+        shift_pipe(self, object, object.prototype_name, object.dir)
     end
 
-    objects:clear("TEMPORARY")
+    gameplay_core.build()
+
+    objects:clear({"TEMPORARY"})
 end
 
 function M:teardown(id)
-    local object = self:clone_object(assert(objects:get(ALL_CACHE, id)))
+    local object = self:clone_object(assert(objects:get(id, EDITOR_CACHE_NAMES)))
     local vsobject = assert(vsobject_manager:get(id))
 
     object.teardown = not object.teardown
 
     if object.teardown then
-        object.vsobject_type = "teardown"
+        object.state = "teardown"
         vsobject:update {type = "teardown"}
     else
-        object.vsobject_type = "constructed"
+        object.state = "constructed"
         vsobject:update {type = "constructed"}
     end
-    objects:set("TEMPORARY", object)
+    objects:set(object, "TEMPORARY")
 end
 
 return M

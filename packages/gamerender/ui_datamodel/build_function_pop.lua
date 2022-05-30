@@ -3,9 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local gameplay_core = require "gameplay.core"
-local global = require "global"
-local cache_names = global.cache_names
-local objects = global.objects
+local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local iassembling = require "gameplay.interface.assembling"
 local ientity = require "gameplay.interface.entity"
@@ -22,7 +20,7 @@ local place_material_mb = mailbox:sub {"place_material"}
 local M = {}
 
 function M:create(object_id, left, top)
-    local object = assert(objects:get(cache_names, object_id))
+    local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
         return
@@ -66,7 +64,7 @@ end
 function M:stage_ui_update(datamodel)
     --
     for _, _, _, object_id in rotate_mb:unpack() do
-        local object = assert(objects:get(cache_names, object_id))
+        local object = assert(objects:get(object_id))
         local vsobject = assert(vsobject_manager:get(object_id))
         local dir = iprototype:rotate_dir_times(object.dir, -1)
 
@@ -95,7 +93,7 @@ function M:stage_ui_update(datamodel)
     end
 
     for _, _, _, object_id in detail_mb:unpack() do
-        local object = assert(objects:get(cache_names, object_id))
+        local object = assert(objects:get(object_id))
         local typeobject = iprototype:queryByName("entity", object.prototype_name)
         if iprototype:has_type(typeobject.type, "assembling") then
             iui.open("assemble_2.rml", object_id)
@@ -109,13 +107,13 @@ function M:stage_ui_update(datamodel)
     end
 
     for _, _, _, object_id in pickup_material_mb:unpack() do
-        local object = assert(objects:get(cache_names, object_id))
+        local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(object.gameplay_eid)
         iassembling:pickup_material(gameplay_core.get_world(), e)
     end
 
     for _, _, _, object_id in place_material_mb:unpack() do
-        local object = assert(objects:get(cache_names, object_id))
+        local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(object.gameplay_eid)
         iassembling:place_material(gameplay_core.get_world(), e)
     end

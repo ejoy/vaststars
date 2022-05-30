@@ -79,7 +79,7 @@
         </script>
     </head>
     <body style = "pointer-events: none;">
-            <div class="info-panel" style="position: absolute;" data-model="start" data-style-left = "left" data-style-top = "top">
+            <div class="info-panel" style="position: absolute; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top">
                 <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickConstructRotate()">
                     <button class="button-function" style ='background-image: "textures/construct/rotate.texture";'/>
                     <div class="title-text">旋转</div>

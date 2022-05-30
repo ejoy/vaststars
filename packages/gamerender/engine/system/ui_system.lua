@@ -35,6 +35,9 @@ local function open(url, ...)
 
     local binding = window_bindings[url]
     if binding then
+        binding.param = {...}
+        binding.datamodel = syncobj_source:new(binding.template:create(...))
+        binding.template:flush()
         datamodel_changed[url] = true
         return binding.window
     end

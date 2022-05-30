@@ -5,14 +5,16 @@ local w = world.w
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local recipe_menu_cfg = import_package "vaststars.prototype"("recipe_category")
 local irecipe = require "gameplay.interface.recipe"
-local global = require "global"
-local cache_names = global.cache_names
-local objects = global.objects
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iworld = require "gameplay.interface.world"
 local clear_recipe_mb = mailbox:sub {"clear_recipe"}
+local objects = require "objects"
+local ieditor = ecs.require "editor.editor"
+local ifluid = require "gameplay.interface.fluid"
+local vsobject_manager = ecs.require "vsobject_manager"
+local terrain = ecs.require "terrain"
 
 local recipe_menu = {} ; do
     local recipes = {}
@@ -64,11 +66,69 @@ local function get_recipe_index(recipe_menu, recipe_name)
     return 1, 1
 end
 
+local function is_connection(x1, y1, dir1, x2, y2, dir2)
+    local dx1, dy1 = ieditor:get_dir_coord(x1, y1, dir1)
+    local dx2, dy2 = ieditor:get_dir_coord(x2, y2, dir2)
+    return (dx1 == x2 and dy1 == y2) and (dx2 == x1 and dy2 == y1)
+end
+
+local function shift_pipe(prototype_name, x, y, dir, fluid_name)
+    for _, v in ipairs(ifluid:get_fluidbox(prototype_name, x, y, dir, fluid_name)) do
+        local dx, dy = ieditor:get_dir_coord(v.x, v.y, v.dir)
+        local object = objects:coord(dx, dy)
+        if object then
+            local typeobject = iprototype:queryByName("entity", object.prototype_name)
+            if typeobject.pipe then
+                for _, v1 in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+                    if is_connection(v.x, v.y, v.dir, v1.x, v1.y, v1.dir) then
+                        if object.fluidflow_network_id ~= 0 then
+                            for _, object in objects:selectall("fluidflow_network_id", object.fluidflow_network_id, {"CONSTRUCTED"}) do
+                                local o = ieditor:clone_object(object)
+                                o.fluidflow_network_id = 0
+                                o.fluid_name = v.fluid_name
+                                objects:set(o, "CONSTRUCTED")
+
+                                ifluid:update_fluidbox(gameplay_core.get_entity(o.gameplay_eid), o.fluid_name)
+                            end
+                        else
+                            if object.fluid_name ~= v.fluid_name then
+                                local prototype_name, dir = ieditor:refresh_pipe(object.prototype_name, object.dir, v1.dir, 0)
+                                if prototype_name ~= object.prototype_name or dir ~= object.dir then
+                                    vsobject_manager:remove(object.id)
+                                    gameplay_core.remove_entity(object.gameplay_eid)
+                                    objects:remove(object.id)
+
+                                    local position = assert(terrain.get_position_by_coord(object.x, object.y, iprototype:rotate_area(typeobject.area, object.dir)))
+                                    object = ieditor:clone_object(object)
+                                    object.prototype_name = prototype_name
+                                    object.dir = dir
+
+                                    local vsobject = vsobject_manager:create {
+                                        prototype_name = prototype_name,
+                                        dir = dir,
+                                        position = position,
+                                        type = "constructed",
+                                    }
+                                    object.id = vsobject.id
+                                    object.gameplay_eid = gameplay_core.create_entity(object)
+
+                                    objects:set(object)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    gameplay_core.build()
+end
+
 ---------------
 local M = {}
 
 function M:create(object_id)
-    local object = assert(objects:get(cache_names, object_id))
+    local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
         return
@@ -81,10 +141,15 @@ function M:create(object_id)
     end
 
     local catalog_index = 1
-    local recipe_index = 1
+    local recipe_index = 0
+    local items
 
     if e.assembling.recipe ~= 0 then
         catalog_index, recipe_index = get_recipe_index(recipe_menu, recipe_name)
+    end
+
+    if recipe_menu[catalog_index] then
+        items = recipe_menu[catalog_index].item
     end
 
     return {
@@ -93,7 +158,7 @@ function M:create(object_id)
         recipe_name = recipe_name,
         recipe_menu = recipe_menu,
         catalog_index = catalog_index,
-        items = recipe_menu[catalog_index].item or {}
+        items = items or {}
     }
 end
 
@@ -102,21 +167,16 @@ function M:update(datamodel, param, object_id)
         return
     end
 
-    local object = assert(objects:get(cache_names, object_id))
+    local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
         return
     end
 
-    local recipe_name = ""
     if e.assembling.recipe ~= 0 then
         local recipe_typeobject = iprototype:query(e.assembling.recipe)
-        recipe_name = recipe_typeobject.name
-    end
-
-    if e.assembling.recipe ~= 0 then
-        datamodel.catalog_index, datamodel.recipe_index = get_recipe_index(recipe_menu, recipe_name)
-        datamodel.recipe_name = recipe_name
+        datamodel.recipe_name = recipe_typeobject.name
+        datamodel.catalog_index, datamodel.recipe_index = get_recipe_index(recipe_menu, datamodel.recipe_name)
     end
 
     datamodel.items = datamodel.recipe_menu[datamodel.catalog_index].item or {}
@@ -124,7 +184,7 @@ end
 
 function M:stage_ui_update(datamodel, object_id)
     for _, _, _, object_id, recipe_name in set_recipe_mb:unpack() do
-        local object = assert(objects:get(cache_names, object_id))
+        local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if e.assembling then
             iworld:set_recipe(gameplay_core.get_world(), e, recipe_name)
@@ -135,6 +195,9 @@ function M:stage_ui_update(datamodel, object_id)
             assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
             object.fluid_name = irecipe:get_init_fluids(recipe_typeobject)
 
+            shift_pipe(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)
+            gameplay_core.build()
+
             iui.update("assemble_2.rml", "update", object_id)
             iui.update("build_function_pop.rml", "update", object_id)
         else
@@ -143,9 +206,12 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     for _ in clear_recipe_mb:unpack() do
-        local object = assert(objects:get(cache_names, object_id))
+        local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         iworld:set_recipe(gameplay_core.get_world(), e, nil)
+        object.fluid_name = {}
+
+        shift_pipe(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)
         gameplay_core.build()
     end
 end

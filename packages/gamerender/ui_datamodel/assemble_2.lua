@@ -1,13 +1,11 @@
 local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
-local global = require "global"
-local objects = global.objects
-local cache_names = global.cache_names
+local objects = require "objects"
 local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
 
 local function get(object_id)
-    local object = assert(objects:get(cache_names, object_id))
+    local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
         return
@@ -73,7 +71,7 @@ function M:create(object_id)
 end
 
 function M:stage_ui_update(datamodel, object_id)
-    local object = assert(objects:get(cache_names, object_id))
+    local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
         return
@@ -142,6 +140,7 @@ function M:update(datamodel, object_id)
     for k, v in pairs(get(object_id)) do
         datamodel[k] = v
     end
+    self:flush()
 end
 
 return M

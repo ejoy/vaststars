@@ -6,16 +6,14 @@ local ifluid = require "gameplay.interface.fluid"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
 local vsobject_manager = ecs.require "vsobject_manager"
-local global = require "global"
 local math3d = require "math3d"
-local gameplay_core = require "gameplay.core"
 local create_builder = ecs.require "editor.builder"
 local ieditor = ecs.require "editor.editor"
-
-local objects = global.objects
-local tile_objects = global.tile_objects
-
+local objects = require "objects"
 local DEFAULT_DIR <const> = 'N'
+local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+local irecipe = require "gameplay.interface.recipe"
+local global = require "global"
 
 --
 local function new_entity(self, datamodel, typeobject)
@@ -30,8 +28,23 @@ local function new_entity(self, datamodel, typeobject)
     local vsobject_type
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
         vsobject_type = "invalid_construct"
+        datamodel.show_confirm = false
+        datamodel.show_rotate = true
     else
         vsobject_type = "construct"
+        datamodel.show_confirm = true
+        datamodel.show_rotate = true
+    end
+
+    -- 主要处理某些组装机有默认配方的情况
+    local fluid_name
+    if typeobject.recipe then
+        local recipe_typeobject = iprototype:queryByName("recipe", typeobject.recipe)
+        if recipe_typeobject then
+            fluid_name = irecipe:get_init_fluids(recipe_typeobject)
+        else
+            fluid_name = ""
+        end
     end
 
     local vsobject = vsobject_manager:create {
@@ -43,25 +56,17 @@ local function new_entity(self, datamodel, typeobject)
 
     local object = {
         id = vsobject.id,
+        gameplay_eid = 0,
         prototype_name = typeobject.name,
         dir = dir,
         x = x,
         y = y,
         teardown = false,
         headquater = typeobject.headquater or false, -- 用于 objects 查找[科技中心]
-        fluid_name = "",
+        fluid_name = fluid_name,
         fluidflow_network_id = 0,
+        state = vsobject_type,
     }
-
-    if not ifluid:need_set_fluid(typeobject.name) then
-        datamodel.show_confirm = true
-        datamodel.show_rotate = true
-    else
-        local fluid_types = self:get_neighbor_fluid_types(self.ALL_CACHE, typeobject.name, x, y, dir)
-        if #fluid_types == 1 then
-            object.fluid_name = fluid_types[1]
-        end
-    end
 
     self.pickup_object = object
 end
@@ -113,7 +118,7 @@ local function touch_end(self, datamodel)
         return
     end
 
-    local fluid_types = self:get_neighbor_fluid_types(self.ALL_CACHE, typeobject.name, pickup_object.x, pickup_object.y, pickup_object.dir)
+    local fluid_types = self:get_neighbor_fluid_types(EDITOR_CACHE_NAMES, typeobject.name, pickup_object.x, pickup_object.y, pickup_object.dir)
     if #fluid_types <= 1 then
         pickup_object.fluid_name = fluid_types[1] or ""
         vsobject_type = "construct"
@@ -137,15 +142,21 @@ local function confirm(self, datamodel)
         return
     end
 
+    local prototype_name = pickup_object.prototype_name
+    local typeobject = iprototype:queryByName("entity", prototype_name)
+    if iprototype:has_type(typeobject.type, "fluidbox") and pickup_object.fluid_name == "" then
+        global.fluidflow_network_id = global.fluidflow_network_id + 1
+        pickup_object.fluidflow_network_id = global.fluidflow_network_id
+    end
+
     local vsobject = assert(vsobject_manager:get(self.pickup_object.id))
+    self.pickup_object.state = "confirm"
     vsobject:update {type = "confirm"}
 
-    ieditor:set_object(self.pickup_object, "CONFIRM")
+    objects:set(pickup_object, "CONFIRM")
 
-    local prototype_name = self.pickup_object.prototype_name
     self.pickup_object = nil
 
-    local typeobject = iprototype:queryByName("entity", prototype_name)
     self:new_entity(datamodel, typeobject)
 
     datamodel.show_construct_complete = true
@@ -162,22 +173,7 @@ local function complete(self, datamodel)
     datamodel.show_rotate = false
     datamodel.show_confirm = false
 
-    local needbuild = false
-    for _, object in objects:all("CONFIRM") do
-        object.vsobject_type = "constructed"
-
-        local vsobject = assert(vsobject_manager:get(object.id))
-        vsobject:update {type = "constructed"}
-
-        object.gameplay_eid = gameplay_core.create_entity(object)
-        needbuild = true
-    end
-    objects:commit("CONFIRM", "CONSTRUCTED")
-    tile_objects:commit("CONFIRM", "CONSTRUCTED")
-
-    if needbuild then
-        gameplay_core.build()
-    end
+    self.super.complete(self)
 
     datamodel.show_construct_complete = false
 end
@@ -191,7 +187,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
         return true
     end
 
-    local fluid_types = self:get_neighbor_fluid_types(self.ALL_CACHE, prototype_name, x, y, dir)
+    local fluid_types = self:get_neighbor_fluid_types(EDITOR_CACHE_NAMES, prototype_name, x, y, dir)
     if #fluid_types > 1 then
         return false
     end
@@ -215,6 +211,7 @@ local function rotate_pickup_object(self, datamodel)
     pickup_object.dir = dir
     vsobject:set_position(position)
     vsobject:set_dir(pickup_object.dir)
+    pickup_object.state = pickup_object.vsobject_type
     vsobject:update {type = pickup_object.vsobject_type}
 end
 
