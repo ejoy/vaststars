@@ -107,6 +107,41 @@ local function complete(self)
     end
 end
 
+-- TODO recipe_pop.lua
+local function is_connection(x1, y1, dir1, x2, y2, dir2)
+    local dx1, dy1 = ieditor:get_dir_coord(x1, y1, dir1)
+    local dx2, dy2 = ieditor:get_dir_coord(x2, y2, dir2)
+    return (dx1 == x2 and dy1 == y2) and (dx2 == x1 and dy2 == y1)
+end
+
+local function update_fluidbox(self, cache_names_r, cache_name_w, prototype_name, x, y, dir, fluid_name)
+    for _, v in ipairs(ifluid:get_fluidbox(prototype_name, x, y, dir, fluid_name)) do
+        local dx, dy = ieditor:get_dir_coord(v.x, v.y, v.dir)
+        local object = objects:coord(dx, dy, cache_names_r)
+        if object then
+            for _, v1 in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+                if is_connection(v.x, v.y, v.dir, v1.x, v1.y, v1.dir) then
+                    if object.fluidflow_network_id ~= 0 then
+                        for _, object in objects:selectall("fluidflow_network_id", object.fluidflow_network_id, cache_names_r) do
+                            local o = ieditor:clone_object(object)
+                            o.fluidflow_network_id = 0
+                            o.fluid_name = v.fluid_name
+                            objects:set(o, cache_name_w)
+                        end
+                    else
+                        if object.fluid_name ~= v.fluid_name then
+                            local prototype_name, dir = ieditor:refresh_pipe(object.prototype_name, object.dir, v1.dir, 0)
+                            if prototype_name then
+                                object.prototype_name, object.dir = prototype_name, dir
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
 local function create()
     local M = {}
     -- M.pickup_object
@@ -116,6 +151,7 @@ local function create()
     M.clean = clean
     M.check_unconfirmed = check_unconfirmed
     M.complete = complete
+    M.update_fluidbox = update_fluidbox
 
     return M
 end
