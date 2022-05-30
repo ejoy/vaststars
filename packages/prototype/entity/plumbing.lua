@@ -121,7 +121,7 @@ prototype "空气过滤器I" {
         input = {},
         output = {
             {
-                capacity = 1000,
+                capacity = 100,
                 height = 200,
                 base_level = 150,
                 connections = {

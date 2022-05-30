@@ -4,6 +4,7 @@ local menu = {
         icon = "textures/construct/power.texture",
         detail = {
             "铁制电线杆",
+            "太阳能板I",
         }
     },
     {
