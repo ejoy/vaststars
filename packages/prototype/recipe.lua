@@ -778,11 +778,11 @@ prototype "破损铁制电线杆" {
 prototype "破损太阳能板" {
     type = { "recipe" },
     category = "生产手工制造",
-    --group = "生产",
+    group = "生产",
     order = 116,
     icon = "textures/construct/solar-panel.texture",
     ingredients = {
-        {"沙子", 1},
+        {"石砖", 10},
         {"破损太阳能板", 1},
     },
     results = {
