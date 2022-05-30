@@ -86,9 +86,16 @@ local function complete(self)
         if object.gameplay_eid == 0 then
             object.gameplay_eid = gameplay_core.create_entity(object)
         else
-            local typeobject = iprototype:queryByName("entity", object.prototype_name)
-            if iprototype:has_type(typeobject.type, "fluidbox") then
-                ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
+            local old_object = objects:get(object.id)
+            -- 水管变形需要重建 gameplay entity 的情况
+            if old_object.prototype_name ~= object.prototype_name or old_object.dir ~= object.dir then
+                gameplay_core.remove_entity(object.gameplay_eid)
+                object.gameplay_eid = gameplay_core.create_entity(object)
+            else
+                local typeobject = iprototype:queryByName("entity", object.prototype_name)
+                if iprototype:has_type(typeobject.type, "fluidbox") then
+                    ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
+                end
             end
         end
         needbuild = true
