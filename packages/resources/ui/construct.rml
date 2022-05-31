@@ -160,8 +160,8 @@
                 show_batch_mode_begin = false, -- 显示水管开始
                 tech_count = 0,             --当前可研究的科技数量
                 show_tech_progress = false, --是否显示科技进度
-                current_tech_icon = " ",    --当前科技图标
-                current_tech_name = " ",    --当前科技名字
+                current_tech_icon = "none",    --当前科技图标
+                current_tech_name = "none",    --当前科技名字
                 current_tech_progress = "0%",--当前科技进度
             }
             function start.clickConstructBegin(event)

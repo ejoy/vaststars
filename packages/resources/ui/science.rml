@@ -294,8 +294,8 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
-                current_icon = " ",
-                current_desc = " ",
+                current_icon = "none",
+                current_desc = "none",
                 current_running = false,
                 current_button_str = "开始",
                 selected_tech = nil,

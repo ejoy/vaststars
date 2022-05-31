@@ -100,6 +100,8 @@ local function restore_world()
         end
         restore_object(v.id, typeobject.name, iprototype:dir_tostring(e.direction), e.x, e.y, fluid_name, fluidflow_network_id)
     end
+    local iscience = require "gameplay.interface.science"
+    iscience.update_tech_list(gameplay_core.get_world())
 end
 
 local function writeall(file, content)
