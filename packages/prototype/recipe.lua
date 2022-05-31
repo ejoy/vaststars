@@ -110,10 +110,10 @@ prototype "石砖" {
     order = 100,
     icon = "textures/construct/stone-brick.texture",
     ingredients = {
-        {"碎石", 4},
+        {"碎石", 3},
     },
     results = {
-        {"石砖", 2},
+        {"石砖", 1},
     },
     time = "3s",
     description = "使用碎石炼制石砖",
