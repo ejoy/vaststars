@@ -35,8 +35,7 @@ world:create_entity "指挥中心" {
     y = 10
 }
 
---[==[
-world:create_entity "空气过滤器1" {
+world:create_entity "空气过滤器I" {
     x = 2,
     y = 16,
     dir = "W",
@@ -46,24 +45,24 @@ world:create_entity "空气过滤器1" {
         }
     }
 }
-world:create_entity "液罐1" {
+world:create_entity "液罐I" {
     x = 1,
     y = 21,
     dir = "E",
     fluid = "氮气"
 }
-world:create_entity "液罐1" {
+world:create_entity "液罐I" {
     x = 15,
     y = 21,
     dir = "N",
     fluid = "氧气"
 }
-world:create_entity "压力泵1" {
-    x = 5,
-    y = 16,
-    dir = "E",
-}
-world:create_entity "化工厂1" {
+--world:create_entity "压力泵I" {
+--    x = 5,
+--    y = 16,
+--    dir = "E",
+--}
+world:create_entity "化工厂I" {
     x = 8,
     y = 18,
     recipe = "空气分离1",
@@ -90,6 +89,10 @@ local convertPipeType = {
     ["╗"] = {"管道1-L型", "S"},
     ["╣"] = {"管道1-T型", "E"},
     ["╝"] = {"管道1-L型", "W"},
+    ["^"] = {"地下管I", "N"},
+    [">"] = {"地下管I", "E"},
+    ["v"] = {"地下管I", "S"},
+    ["<"] = {"地下管I", "W"},
 }
 
 local function create_pipe(t)
@@ -124,17 +127,16 @@ create_pipe {
     graph = [[
 
 
- xx═>>═╗
+ xx════╗
  xx    ║
        xxx
        xxx
        xxx
 xxx  ╔═╝ ║    xxx
-xxx══╝   ╚════xxx
+xxx══╝   ╚>  <xxx
 xxx           xxx
 ]]
 }
-]==]
 
 local gameplay = import_package "vaststars.gameplay"
 
@@ -180,10 +182,38 @@ local function init_fluid()
         return e.x + x + Direction[dir][1], e.y + y + Direction[dir][2]
     end
 
+    local function pipeConnect(e, area, conn)
+        local x, y, dir = rotate(conn.position, e.direction, area)
+        return {
+            x = e.x + x,
+            y = e.y + y,
+            dx = Direction[dir][1],
+            dy = Direction[dir][2],
+            ground = conn.ground,
+        }
+    end
+
     local function walk_pipe(fluid, start_x, start_y)
         local task = {}
         local function push(x, y)
             task[#task+1] = { x, y }
+        end
+        local function find_next(conn)
+            if not conn.ground then
+                return conn.x + conn.dx, conn.y + conn.dy
+            end
+            local x, y = conn.x, conn.y
+            for _ = 1, conn.ground do
+                x, y = x + conn.dx, y + conn.dy
+                local p = Map[(x << 8)|y]
+                if p then
+                    for _, c in ipairs(p.connections) do
+                        if c.ground then
+                            return x, y
+                        end
+                    end
+                end
+            end
         end
         local function pop()
             local n = #task
@@ -199,7 +229,10 @@ local function init_fluid()
                 if p.fluid == nil then
                     p.fluid = fluid
                     for _, conn in ipairs(p.connections) do
-                        push(conn[1], conn[2])
+                        local nx, ny = find_next(conn)
+                        if nx then
+                            push(nx, ny)
+                        end
                     end
                 else
                     assert(p.fluid == fluid)
@@ -226,17 +259,16 @@ local function init_fluid()
             local e = v.entity
             local pt = gameplay.query(e.prototype)
             local fluidbox = pt.fluidbox
-            local connections = {}
+            local entity = {
+                connections = {}
+            }
             for _, conn in ipairs(fluidbox.connections) do
-                connections[#connections+1] = {pipePostion(e, conn.position, pt.area)}
+                entity.connections[#entity.connections+1] = pipeConnect(e, pt.area, conn)
             end
             local w, h = pt.area >> 8, pt.area & 0xFF
             if e.direction == E or e.direction == W then
                 w, h = h, w
             end
-            local entity = {
-                connections = connections
-            }
             for i = 0, w-1 do
                 for j = 0, h-1 do
                     local x = e.x + i
