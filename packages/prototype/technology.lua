@@ -39,7 +39,7 @@ prototype "收集铁矿石" {
 }
 
 prototype "生产地质科技包" {
-  desc = "铁板可以打造坚固器材，对于基地建设多多益善",
+  desc = "生产科技包用于科技研究",
   icon = "textures/construct/iron-ingot.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "地质科技包"},
@@ -109,7 +109,7 @@ prototype "气候研究" {
   type = { "tech" },
   icon = "textures/science/tech-equipment.texture",
   effects = {
-    unlock_recipe = {"生产铁板"},
+    unlock_recipe = {"破损空气过滤器","破损地下水挖掘机"},
   },
   prerequisites = {"生产石砖"},
   ingredients = {
@@ -153,6 +153,41 @@ prototype "气候研究" {
 --   time = "1s"
 -- }
 
+prototype "维修破损空气过滤器" {
+  desc = "将破损的机器修复会大大节省建设时间和资源",
+  icon = "textures/construct/modify.texture",
+  type = { "tech", "task" },
+  task = {"stat_consumption", 0, "破损空气过滤器"},
+  prerequisites = {"气候研究"},
+  count = 1,
+  sign_desc = {
+    { desc = "使用组装机维修1个破损空气过滤器", icon = "textures/construct/modify.texture"},
+  },
+}
+
+prototype "维修破损地下水挖掘机" {
+  desc = "将破损的机器修复会大大节省建设时间和资源",
+  icon = "textures/construct/modify.texture",
+  type = { "tech", "task" },
+  task = {"stat_consumption", 0, "破损地下水挖掘机"},
+  prerequisites = {"气候研究"},
+  count = 1,
+  sign_desc = {
+    { desc = "使用组装机维修1个破损地下水挖掘机", icon = "textures/construct/modify.texture"},
+  },
+}
+
+prototype "生产气候科技包" {
+  desc = "生产科技包用于科技研究",
+  icon = "textures/construct/assembler.texture",
+  type = { "tech", "task" },
+  task = {"stat_production", 0, "气候科技包"},
+  prerequisites = {"维修破损空气过滤器","维修破损地下水挖掘机"},
+  count = 2,
+  sign_desc = {
+    { desc = "使用水电站生产2个气候科技包", icon = "textures/construct/assembler.texture"},
+  },
+}
 
 prototype "管道系统1" {
   desc = "研究装载和运输液体或气体的管道",
@@ -161,7 +196,7 @@ prototype "管道系统1" {
   effects = {
     unlock_recipe = {"管道1","管道2","液罐1"},
   },
-  prerequisites = {"气候研究"},
+  prerequisites = {"生产气候科技包"},
   ingredients = {
       {"地质科技包", 1},
   },
@@ -255,15 +290,15 @@ prototype "铁加工1" {
   time = "1s"
 }
 
-prototype "使用破损组装机" {
+prototype "维修破损组装机" {
   desc = "将破损的机器修复会大大节省建设时间和资源",
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/construct/modify.texture",
   type = { "tech", "task" },
   task = {"stat_consumption", 0, "破损组装机"},
   prerequisites = {"铁加工1"},
   count = 3,
   sign_desc = {
-    { desc = "使用3个破损组装机", icon = "textures/construct/assembler.texture"},
+    { desc = "使用组装机维修3个破损组装机", icon = "textures/construct/modify.texture"},
   },
 }
 
@@ -274,7 +309,7 @@ prototype "石头处理2" {
   effects = {
     unlock_recipe = {"破损太阳能板"},
   },
-  prerequisites = {"使用破损组装机"},
+  prerequisites = {"维修破损组装机"},
   ingredients = {
       {"地质科技包", 1},
   },
@@ -301,7 +336,7 @@ prototype "基地生产1" {
   effects = {
     modifier = {["headquarter-mining-speed"] = 0.1},
   },
-  prerequisites = {"使用破损组装机"},
+  prerequisites = {"维修破损组装机"},
   ingredients = {
       {"地质科技包", 1},
   },
@@ -320,7 +355,7 @@ prototype "储存1" {
   effects = {
     unlock_recipe = {"小型铁制箱子"},
   },
-  prerequisites = {"使用破损组装机"},
+  prerequisites = {"维修破损组装机"},
   ingredients = {
       {"地质科技包", 1},
       {"气候科技包", 1},

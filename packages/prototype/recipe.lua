@@ -704,11 +704,28 @@ prototype "破损空气过滤器" {
     description = "修复损坏的空气过滤器",
 }
 
-prototype "破损电解厂" {
+prototype "破损地下水挖掘机" {
     type = { "recipe" },
     category = "生产手工制造",
     group = "生产",
     order = 112,
+    icon = "textures/construct/broken-pump.texture",
+    ingredients = {
+        {"铁板", 4},
+        {"破损地下水挖掘机", 1},
+    },
+    results = {
+        {"地下水挖掘机", 1},
+    },
+    time = "3s",
+    description = "修复损坏的空气过滤器",
+}
+
+prototype "破损电解厂" {
+    type = { "recipe" },
+    category = "生产手工制造",
+    group = "生产",
+    order = 114,
     icon = "textures/construct/broken-electrolysis1.texture",
     ingredients = {
         -- {"铁丝", 5},
@@ -726,7 +743,7 @@ prototype "破损化工厂" {
     type = { "recipe" },
     category = "生产手工制造",
     group = "生产",
-    order = 113,
+    order = 116,
     icon = "textures/construct/broken-chemistry2.texture",
     ingredients = {
         {"小型铁制箱子", 1},
@@ -743,7 +760,7 @@ prototype "破损组装机" {
     type = { "recipe" },
     category = "生产手工制造",
     group = "生产",
-    order = 114,
+    order = 118,
     icon = "textures/construct/broken-assembler.texture",
     ingredients = {
         -- {"铁丝", 6},
@@ -761,7 +778,7 @@ prototype "破损铁制电线杆" {
     type = { "recipe" },
     category = "生产手工制造",
     group = "生产",
-    order = 115,
+    order = 120,
     icon = "textures/construct/broken-electric-pole1.texture",
     ingredients = {
         -- {"铁棒", 2},
@@ -779,7 +796,7 @@ prototype "破损太阳能板" {
     type = { "recipe" },
     category = "生产手工制造",
     group = "生产",
-    order = 116,
+    order = 122,
     icon = "textures/construct/broken-solar-panel.texture",
     ingredients = {
         {"石砖", 10},
@@ -796,7 +813,7 @@ prototype "破损蓄电池" {
     type = { "recipe" },
     category = "生产手工制造",
     --group = "生产",
-    order = 117,
+    order = 124,
     icon = "textures/construct/grid-battery.texture",
     ingredients = {
         {"石墨", 1},
@@ -813,7 +830,7 @@ prototype "破损物流中心" {
     type = { "recipe" },
     category = "生产手工制造",
     --group = "生产",
-    order = 118,
+    order = 126,
     icon = "textures/construct/logisitic1.texture",
     ingredients = {
         {"铁板", 5},
@@ -830,7 +847,7 @@ prototype "破损运输汽车" {
     type = { "recipe" },
     category = "生产手工制造",
     --group = "生产",
-    order = 119,
+    order = 128,
     icon = "textures/construct/truck.texture",
     ingredients = {
         -- {"铁丝", 10},
@@ -848,7 +865,7 @@ prototype "破损车站" {
     type = { "recipe" },
     category = "生产手工制造",
     --group = "生产",
-    order = 120,
+    order = 130,
     icon = "textures/construct/manufacture.texture",
     ingredients = {
         -- {"铁棒", 6},
