@@ -138,6 +138,7 @@ prototype "管道1-I型" {
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
     group = {"管道","自定义"},
@@ -157,6 +158,7 @@ prototype "管道1-J型" {
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
@@ -174,6 +176,7 @@ prototype "管道1-L型" {
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
@@ -192,6 +195,7 @@ prototype "管道1-T型" {
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
@@ -212,6 +216,7 @@ prototype "管道1-X型" {
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
@@ -232,6 +237,7 @@ prototype "管道1-O型" {
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
@@ -248,6 +254,7 @@ prototype "管道1-U型" {
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
     fluidbox = {
@@ -265,6 +272,7 @@ prototype "地下管I" {
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    show_build_function = false,
     type ={"entity","pipe-to-ground","fluidbox"},
     area = "1x1",
     group = {"管道"},

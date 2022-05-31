@@ -340,15 +340,21 @@ local function start(self, datamodel)
     -- the case where there is no building at one of the starting and ending points
     if not starting_object or not ending_object then
         datamodel.show_confirm = true
-        local object = starting_object or ending_object
-        local fluid_name, fluidflow_network_id
+        local object, fluid_name
+        if starting_object then
+            object = starting_object
+            fluid_name = starting_fluid_name
+        else
+            object = starting_object or ending_object
+            fluid_name = ending_fluid_name
+        end
+
+        local fluidflow_network_id
         if object then
-            if not is_pipe(object) and starting_fluid_name == "" then
+            if not is_pipe(object) and fluid_name == "" then
                 global.fluidflow_network_id = global.fluidflow_network_id + 1
-                fluid_name = ""
                 fluidflow_network_id = global.fluidflow_network_id
             else
-                fluid_name = starting_fluid_name
                 fluidflow_network_id = object.fluidflow_network_id
             end
         else
@@ -551,8 +557,10 @@ local function clean(self, datamodel)
     end
 
     self:revert_changes({"INDICATOR", "TEMPORARY"})
-    datamodel.show_batch_mode_begin = false
+    datamodel.show_construct_complete = false
+    datamodel.show_rotate = false
     datamodel.show_confirm = false
+    datamodel.show_batch_mode_begin = false
     self.super.clean(self, datamodel)
 end
 

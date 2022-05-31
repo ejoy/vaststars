@@ -50,10 +50,8 @@ end
 
 function M:clear(cache_names)
     cache_names = cache_names or ALL_CACHE_NAMES
-    for _, cache_name in ipairs(cache_names) do
-        objects:clear(cache_name)
-        tile_objects:clear(cache_name)
-    end
+    objects:clear(cache_names)
+    tile_objects:clear(cache_names)
 end
 
 function M:all(cache_name)
@@ -78,8 +76,4 @@ function M:empty(...)
     return objects:empty(...)
 end
 
-function M:revert(...)
-    objects:revert(...)
-    tile_objects:revert(...)
-end
 return M
