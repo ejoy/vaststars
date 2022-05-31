@@ -123,22 +123,6 @@ prototype "气候研究" {
   time = "1s"
 }
 
-prototype "水利研究" {
-  desc = "对火星地层下的水源进行开采",
-  type = { "tech" },
-  icon = "textures/science/tech-chemical.texture",
-  effects = {
-    unlock_recipe = {"破损水电站"},
-  },
-  prerequisites = {"气候研究"},
-  ingredients = {
-      {"地质科技包", 1},
-      {"气候科技包", 1},
-  },
-  count = 4,
-  time = "1s"
-}
-
 -- ---新增地下卤水配方的对应科技---
 -- prototype "地下卤水提取铁矿" {
 --   type = { "tech" },
@@ -190,11 +174,27 @@ prototype "生产管道" {
   icon = "textures/science/tech-equipment.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "管道1-I型"},
-  prerequisites = {"水利研究","管道系统1"},
+  prerequisites = {"管道系统1"},
   count = 10,
   sign_desc = {
     { desc = "生产10个管道", icon = "textures/construct/assembler.texture"},
   },
+}
+
+prototype "水利研究" {
+  desc = "对火星地层下的水源进行开采",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"破损水电站"},
+  },
+  prerequisites = {"生产管道"},
+  ingredients = {
+      {"地质科技包", 1},
+      {"气候科技包", 1},
+  },
+  count = 4,
+  time = "1s"
 }
 
 
@@ -205,7 +205,7 @@ prototype "电解" {
   effects = {
     unlock_recipe = {"地下卤水电解","破损电解厂"},
   },
-  prerequisites = {"生产管道"},
+  prerequisites = {"水利研究"},
   ingredients = {
       {"气候科技包", 1},
   },
@@ -220,7 +220,7 @@ prototype "空气分离" {
   effects = {
     unlock_recipe = {"空气分离1","破损空气过滤器"},
   },
-  prerequisites = {"生产管道"},
+  prerequisites = {"水利研究"},
   ingredients = {
       {"气候科技包", 1},
   },
