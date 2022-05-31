@@ -32,9 +32,21 @@ prototype "收集铁矿石" {
   task = {"stat_production", 0, "铁矿石"},
   -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"地质研究"},
-  count = 15,
+  count = 10,
   sign_desc = {
-    { desc = "收集15个铁矿石", icon = "textures/construct/industry.texture"},
+    { desc = "放置采矿机收集10个铁矿石", icon = "textures/construct/industry.texture"},
+  },
+}
+
+prototype "生产地质科技包" {
+  desc = "铁板可以打造坚固器材，对于基地建设多多益善",
+  icon = "textures/construct/iron-ingot.texture",
+  type = { "tech", "task" },
+  task = {"stat_production", 0, "地质科技包"},
+  prerequisites = {"收集铁矿石"},
+  count = 3,
+  sign_desc = {
+    { desc = "使用组装机生产3个地质科技包", icon = "textures/construct/iron-ingot.texture"},
   },
 }
 
@@ -45,7 +57,7 @@ prototype "铁矿熔炼" {
   effects = {
     unlock_recipe = {"铁板1"},
   },
-  prerequisites = {"收集铁矿石"},
+  prerequisites = {"生产地质科技包"},
   ingredients = {
       {"地质科技包", 1},
   },
