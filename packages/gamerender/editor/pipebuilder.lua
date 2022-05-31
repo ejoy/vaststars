@@ -315,7 +315,7 @@ local function is_pipe(object)
     end
 
     local typeobject = iprototype:queryByName("entity", object.prototype_name)
-    return typeobject.pipe
+    return iprototype:is_pipe(typeobject)
 end
 
 local function start(self, datamodel)

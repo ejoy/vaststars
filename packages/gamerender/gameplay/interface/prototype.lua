@@ -113,8 +113,12 @@ function M:show_prototype_name(typeobject)
     end
 end
 
-function M:is_batch_mode(typeobject)
-    return typeobject.pipe or typeobject.road
+function M:is_pipe(typeobject)
+    return typeobject.pipe
+end
+
+function M:is_pipe_to_ground(typeobject)
+    return typeobject.pipe_to_ground
 end
 
 return M

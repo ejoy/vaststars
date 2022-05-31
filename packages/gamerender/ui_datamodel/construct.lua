@@ -8,7 +8,8 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local iprototype = require "gameplay.interface.prototype"
 local create_normalbuilder = ecs.require "editor.normalbuilder"
-local create_batchbuilder = ecs.require "editor.batchbuilder"
+local create_pipebuilder = ecs.require "editor.pipebuilder"
+local create_pgbuilder = ecs.require "editor.pgbuilder"
 local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
 local global = require "global"
@@ -229,8 +230,10 @@ function M:stage_camera_usage(datamodel)
         end
 
         local typeobject = iprototype:queryByName("entity", prototype_name)
-        if iprototype:is_batch_mode(typeobject) then
-            builder = create_batchbuilder()
+        if iprototype:is_pipe_to_ground(typeobject) then
+            builder = create_pgbuilder()
+        elseif iprototype:is_pipe(typeobject) then
+            builder = create_pipebuilder()
         else
             builder = create_normalbuilder()
         end
