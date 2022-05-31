@@ -276,7 +276,6 @@ prototype "地下管I" {
     type ={"entity","fluidbox"},
     area = "1x1",
     group = {"管道"},
-    max_distance = 10,
     fluidbox = {
         capacity = 100,
         height = 100,
