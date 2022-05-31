@@ -66,9 +66,9 @@ function M:create()
         construct_menu = construct_menu,
         tech_count = global.science.tech_list and #global.science.tech_list or 0,
         show_tech_progress = false,
-        current_tech_icon = " ",    --当前科技图标
-        current_tech_name = " ",    --当前科技名字
-        current_tech_progress = " ",--当前科技进度
+        current_tech_icon = "none",    --当前科技图标
+        current_tech_name = "none",    --当前科技名字
+        current_tech_progress = "0%",  --当前科技进度
     }
 end
 
