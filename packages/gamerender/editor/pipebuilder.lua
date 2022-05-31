@@ -391,21 +391,23 @@ local function start(self, datamodel)
         local objecta, objectb
         if starting_fluidflow_network_id == 0 then
             objecta, objectb = starting_object, ending_object
+            fluid_name = starting_fluid_name
         else
             objecta, objectb = ending_object, starting_object
+            fluid_name = ending_fluid_name
         end
         local typeobject = iprototype:queryByName("entity", objecta.prototype_name)
         if iprototype:has_type(typeobject.type, "fluidbox") then
             for _, object in objects:selectall("fluidflow_network_id", objectb.fluidflow_network_id, EDITOR_CACHE_NAMES) do
                 local o = ieditor:clone_object(object)
                 o.fluidflow_network_id = objecta.fluidflow_network_id
-                o.fluid_name = objecta.fluid_name
+                o.fluid_name = fluid_name
                 objects:set(o, "TEMPORARY")
             end
         else
             assert(iprototype:has_type(typeobject.type, "fluidboxes"))
         end
-        fluid_name, fluidflow_network_id = objecta.fluid_name, objecta.fluidflow_network_id
+        fluid_name, fluidflow_network_id = fluid_name, objecta.fluidflow_network_id
     else
         fluid_name, fluidflow_network_id = starting_fluid_name, 0
     end
