@@ -28,7 +28,7 @@ function M:revert_changes(revert_cache_names)
             t[id] = object
         end
     end
-    objects:revert(revert_cache_names)
+    objects:clear(revert_cache_names)
 
     for id, object in pairs(t) do
         local old_object = objects:get(id, EDITOR_CACHE_NAMES)

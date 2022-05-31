@@ -175,13 +175,11 @@ local function complete(self, datamodel)
     self.pickup_object = nil
 
     ieditor:revert_changes({"TEMPORARY"})
-
+    datamodel.show_construct_complete = false
     datamodel.show_rotate = false
     datamodel.show_confirm = false
 
     self.super.complete(self)
-
-    datamodel.show_construct_complete = false
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
@@ -225,6 +223,7 @@ local function clean(self, datamodel)
     ieditor:revert_changes({"TEMPORARY"})
     datamodel.show_confirm = false
     datamodel.show_rotate = false
+    datamodel.show_construct_complete = false
     self.super.clean(self, datamodel)
 end
 

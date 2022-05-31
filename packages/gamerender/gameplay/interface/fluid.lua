@@ -1,7 +1,6 @@
 local iprototype = require "gameplay.interface.prototype"
 local gameplay = import_package "vaststars.gameplay"
 local ifluidbox = gameplay.interface "fluidbox"
-local ALL_DIR <const> = require("gameplay.interface.constant").ALL_DIR
 
 local M = {}
 
@@ -45,8 +44,6 @@ function M:update_fluidbox(e, fluid_name)
 end
 
 do
-    local PIPE_FLUIDBOXES_DIR = ALL_DIR
-
     local funcs = {}
     funcs["fluidbox"] = function(typeobject, x, y, dir, result, fluid_name)
         for _, conn in ipairs(typeobject.fluidbox.connections) do
@@ -66,10 +63,12 @@ do
     local iotypes <const> = {"input", "output"}
     funcs["fluidboxes"] = function(typeobject, x, y, dir, result, fluid_name)
         for _, iotype in ipairs(iotypes) do
+            local i = 0
             for _, v in ipairs(typeobject.fluidboxes[iotype]) do
-                for index, conn in ipairs(v.connections) do
+                for _, conn in ipairs(v.connections) do
+                    i = i + 1
                     local dx, dy, dir = iprototype:rotate_fluidbox(conn.position, dir, typeobject.area)
-                    result[#result+1] = {x = x + dx, y = y + dy, dir = dir, fluid_name = get_fluidboxes_fluid_name(fluid_name, iotype, index)}
+                    result[#result+1] = {x = x + dx, y = y + dy, dir = dir, fluid_name = get_fluidboxes_fluid_name(fluid_name, iotype, i)}
                 end
             end
         end

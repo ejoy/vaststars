@@ -17,12 +17,6 @@ local function get(self, cache_names, key)
     end
 end
 
-local function revert(self, cache_names)
-    for _, cache_name in ipairs(cache_names) do
-        self.caches[cache_name] = create_cache(table.unpack(self.cache_param))
-    end
-end
-
 local function commit(self, cache_name_1, cache_name_2)
     local cache_1 = assert(self.caches[cache_name_1])
     local cache_2 = assert(self.caches[cache_name_2])
@@ -62,8 +56,10 @@ local function selectall(self, cache_names, index_field, cache_value)
     return next, r, nil
 end
 
-local function clear(self, cache_name)
-    self.caches[cache_name] = create_cache(table.unpack(self.cache_param))
+local function clear(self, cache_names)
+    for _, cache_name in ipairs(cache_names) do
+        self.caches[cache_name]:clear()
+    end
 end
 
 local function empty(self, cache_name)
@@ -84,7 +80,6 @@ local function create(cache_names, ...)
     M.all = all
     M.select = select
     M.selectall = selectall
-    M.revert = revert
     M.commit = commit
     M.remove = remove
     M.clear = clear
