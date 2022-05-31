@@ -309,7 +309,7 @@ prototype "石头处理2" {
   effects = {
     unlock_recipe = {"破损太阳能板"},
   },
-  prerequisites = {"维修破损组装机"},
+  prerequisites = {"维修破损组装机","电解"},
   ingredients = {
       {"地质科技包", 1},
   },
@@ -402,7 +402,7 @@ prototype "碳处理1" {
   effects = {
     unlock_recipe = {"二氧化碳转甲烷"},
   },
-  prerequisites = {"电解","空气分离"},
+  prerequisites = {"电解","空气分离","放置太阳能板"},
   ingredients = {
       {"气候科技包", 1},
   },

@@ -12,7 +12,7 @@ prototype "铁锭" {
     },
     results = {
         {"铁锭", 1},
-        {"碎石", 2}
+        {"碎石", 1}
     },
     time = "4s",
     description = "铁矿石通过金属冶炼获得铁锭",
@@ -267,7 +267,7 @@ prototype "小型铁制箱子" {
     icon = "textures/construct/chest.texture",
     ingredients = {
         -- {"铁棒", 1},
-        {"铁板", 8},
+        {"铁板", 10},
     },
     results = {
         {"小型铁制箱子", 1},
@@ -574,7 +574,7 @@ prototype "管道1" {
         {"铁板", 2},
     },
     results = {
-        {"管道1-I型", 3},
+        {"管道1-I型", 2},
     },
     time = "6s",
     description = "石砖制造管道",
@@ -677,7 +677,7 @@ prototype "破损水电站" {
     order = 110,
     icon = "textures/construct/broken-hydroplant.texture",
     ingredients = {
-        {"管道1-I型", 4},
+        {"管道1-I型", 6},
         {"破损水电站", 1},
     },
     results = {
@@ -694,7 +694,8 @@ prototype "破损空气过滤器" {
     order = 111,
     icon = "textures/construct/broken-air-filter1.texture",
     ingredients = {
-        {"铁板", 4},
+        {"石砖", 4},
+        {"铁板", 8},
         {"破损空气过滤器", 1},
     },
     results = {
@@ -711,7 +712,7 @@ prototype "破损地下水挖掘机" {
     order = 112,
     icon = "textures/construct/broken-pump.texture",
     ingredients = {
-        {"铁板", 4},
+        {"铁板", 8},
         {"破损地下水挖掘机", 1},
     },
     results = {
@@ -728,8 +729,8 @@ prototype "破损电解厂" {
     order = 114,
     icon = "textures/construct/broken-electrolysis1.texture",
     ingredients = {
-        -- {"铁丝", 5},
-        {"铁板", 5},
+        {"石砖", 10},
+        {"铁板", 10},
         {"破损电解厂", 1},
     },
     results = {
@@ -746,7 +747,8 @@ prototype "破损化工厂" {
     order = 116,
     icon = "textures/construct/broken-chemistry2.texture",
     ingredients = {
-        {"小型铁制箱子", 1},
+        {"小型铁制箱子", 2},
+        {"石砖", 10},
         {"破损化工厂", 1},
     },
     results = {
@@ -764,7 +766,8 @@ prototype "破损组装机" {
     icon = "textures/construct/broken-assembler.texture",
     ingredients = {
         -- {"铁丝", 6},
-        {"铁板", 6},
+        {"石砖", 8},
+        {"铁板", 12},
         {"破损组装机", 1},
     },
     results = {
@@ -799,7 +802,7 @@ prototype "破损太阳能板" {
     order = 122,
     icon = "textures/construct/broken-solar-panel.texture",
     ingredients = {
-        {"石砖", 10},
+        {"石砖", 16},
         {"破损太阳能板", 1},
     },
     results = {
