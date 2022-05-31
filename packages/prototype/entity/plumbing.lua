@@ -273,7 +273,7 @@ prototype "地下管I" {
     construct_detector = {"exclusive"},
     pipe = true,
     show_build_function = false,
-    type ={"entity","pipe-to-ground","fluidbox"},
+    type ={"entity","fluidbox"},
     area = "1x1",
     group = {"管道"},
     max_distance = 10,
@@ -283,6 +283,7 @@ prototype "地下管I" {
         base_level = 0,
         connections = {
             {type="input-output", position={0,0,"S"}},
+            {type="input-output", position={0,0,"N"}, ground = 10},
         }
     }
 }

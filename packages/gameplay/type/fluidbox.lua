@@ -33,10 +33,3 @@ function fb:ctor(init, pt)
         },
     }
 end
-
-local pg = type "pipe-to-ground"
-    .max_distance "number"
-
-function pg:ctor(init, pt)
-    return {}
-end

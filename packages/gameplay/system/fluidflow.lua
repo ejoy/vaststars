@@ -84,31 +84,35 @@ local function builder_restore(world, fluid, id, fluidbox)
     return world._cworld:fluidflow_restore(fluid, id, fluidbox.capacity, fluidbox.height, fluidbox.base_level, pumping_speed)
 end
 
+local function connect(connects, a_id, a_type, b_id, b_type)
+    local from, to
+    local oneway = true
+    if a_type ~= IN and b_type ~= OUT then
+        from = a_id
+        to = b_id
+    end
+    if b_type ~= IN and a_type ~= OUT then
+        if from then
+            oneway = false
+        else
+            from = b_id
+            to = a_id
+        end
+    end
+    if from then
+        connects[#connects+1] = from
+        connects[#connects+1] = to
+        connects[#connects+1] = oneway
+    end
+end
+
 local function builder_connect(c, key, id, type)
     local neighbor = c.map[key]
     if not neighbor then
         c.map[key] = { id = id, type = type }
         return
     end
-    local from, to
-    local oneway = true
-    if type ~= IN and neighbor.type ~= OUT then
-        from = id
-        to = neighbor.id
-    end
-    if neighbor.type ~= IN and type ~= OUT then
-        if from then
-            oneway = false
-        else
-            from = neighbor.id
-            to = id
-        end
-    end
-    if from then
-        c.connects[#c.connects+1] = from
-        c.connects[#c.connects+1] = to
-        c.connects[#c.connects+1] = oneway
-    end
+    connect(c.connects, id, type, neighbor.id, neighbor.type)
     c.map[key] = nil
 end
 
@@ -118,18 +122,104 @@ local function builder_connect_fluidbox(fluid, id, fluidbox, entity, area)
         c = {
             map = {},
             connects = {},
+            ground = {},
         }
         builder[fluid] = c
     end
     for _, conn in ipairs(fluidbox.connections) do
         local x, y, dir = rotate(conn.position, entity.direction, area)
-        local key = uniquekey(entity.x + x, entity.y + y, dir)
-        builder_connect(c, key, id, PipeEdgeType[conn.type])
+        x = entity.x + x
+        y = entity.y + y
+        if conn.ground then
+            local key = (y << 8)|x
+            local t = c.ground[key]
+            if not t then
+                t = {
+                    id = id,
+                    x = x,
+                    y = y,
+                    connections = {}
+                }
+                c.ground[key] = t
+            end
+            t.connections[dir] = {
+                type = PipeEdgeType[conn.type],
+                max = conn.ground,
+            }
+        else
+            local key = uniquekey(x, y, dir)
+            builder_connect(c, key, id, PipeEdgeType[conn.type])
+        end
+    end
+end
+
+local function builder_groud(c)
+    local function move(d)
+        if d == N then
+            return 0, 1
+        elseif d == E then
+            return 1, 0
+        elseif d == S then
+            return 0, -1
+        elseif d == W then
+            return -1, 0
+        end
+    end
+    local function reverse(d)
+        if d == N then
+            return S
+        elseif d == E then
+            return W
+        elseif d == S then
+            return N
+        elseif d == W then
+            return E
+        end
+    end
+    local function find_neighbor(x,y,dir,conn)
+        local dx, dy = move(dir)
+        for _ = 1, conn.max do
+            x,y = x+dx, y+dy
+            if x < 0 or y < 0 or x > 255 or y > 255 then
+                return
+            end
+            local key = (y<<8)|x
+            local t = c.ground[key]
+            if t then
+                if t.connections[dir] then
+                    return
+                end
+                local rdir = reverse(dir)
+                local rconn = t.connections[rdir]
+                if rconn then
+                    if rconn == true then
+                        return
+                    end
+                    if rconn.max ~= conn.max then
+                        return
+                    end
+                    t.connections[rdir] = true
+                    return t.id, rconn.type
+                end
+            end
+        end
+    end
+    for key, t in pairs(c.ground) do
+        for dir, conn in pairs(t.connections) do
+            if conn ~= true then
+                local neighbor_id, neighbor_type = find_neighbor(key & 0xff, key >> 8, dir, conn)
+                if neighbor_id then
+                    t.connections[dir] = true
+                    connect(c.connects, t.id, conn.type, neighbor_id, neighbor_type)
+                end
+            end
+        end
     end
 end
 
 local function builder_finish(world)
     for fluid, c in pairs(builder) do
+        builder_groud(c)
         world._cworld:fluidflow_connect(fluid, c.connects)
     end
 end
