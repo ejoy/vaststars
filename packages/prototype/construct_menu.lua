@@ -30,6 +30,7 @@ local menu = {
         icon = "textures/construct/pipe.texture",
         detail = {
             "管道1-X型",
+            "地下管I",
             "液罐I",
             "地下水挖掘机",
             "烟囱I",
