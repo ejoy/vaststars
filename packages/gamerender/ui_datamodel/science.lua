@@ -119,9 +119,11 @@ function M:stage_ui_update(datamodel)
                 end
             end
             game_world:research_queue {current_tech.name}
+            global.science.current_tech = global.science.tech_tree[current_tech.name]
             print("开始研究：", current_tech.name)
         else
             game_world:research_queue {}
+            global.science.current_tech = nil
             print("停止研究：", current_tech.name)
         end
         datamodel.current_running = current_tech.running
