@@ -31,6 +31,14 @@ lm.ios = {
     }
 }
 
+if lm.mode == "debug" then
+    --lm.flags = "-fsanitize=address"
+    lm:msvc_copydll "copy_asan" {
+        type = "asan",
+        output = lm.bindir,
+    }
+end
+
 lm.antdir = lm.antdir or "3rd/ant/"
 
 lm:import(lm.antdir .. "make.lua")
@@ -61,6 +69,7 @@ lm:copy "copy_json" {
 
 lm:default {
     lm.os == "windows" and "fmod_dll",
+    lm.mode == "debug" and "copy_asan",
     "copy_luaecs",
     "copy_json",
     "vaststars"
