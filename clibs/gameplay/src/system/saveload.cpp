@@ -87,8 +87,8 @@ template <typename Map>
 static void write_flatmap(FILE* f, const Map& map) {
     auto const& data = map.toraw();
     file_write(f, data.h);
-    if (data.h.mask !=0 ) {
-        file_write(f, data.buckets, data.h.size);
+    if (data.h.mask != 0) {
+        file_write(f, data.buckets, data.h.mask + 1);
     }
 }
 
@@ -103,11 +103,11 @@ static void read_flatmap(FILE* f, Map& map) {
         data.buckets = reinterpret_cast<decltype(data.buckets)>(&data.h.mask);
     }
     else {
-        data.buckets = static_cast<decltype(data.buckets)>(std::malloc(sizeof(data.buckets[0]) * data.h.size));
+        data.buckets = static_cast<decltype(data.buckets)>(std::malloc(sizeof(data.buckets[0]) * (data.h.mask + 1)));
         if (!data.buckets) {
             throw std::bad_alloc {};
         }
-        file_read(f, data.buckets, data.h.size);
+        file_read(f, data.buckets, data.h.mask + 1);
     }
 }
 
