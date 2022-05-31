@@ -29,7 +29,7 @@ prototype "铁板1" {
     },
     results = {
         {"铁板", 2},
-        {"碎石", 2},
+        -- {"碎石", 2},
     },
     time = "3s",
     description = "铁矿石通过金属冶炼获得铁板",
@@ -923,6 +923,7 @@ prototype "铁矿石挖掘" {
     },
     results = {
         {"铁矿石", 1},
+        {"碎石", 1},
     },
     time = "3s",
     description = "采集铁矿石",
