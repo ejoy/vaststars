@@ -319,13 +319,15 @@
             </div>
 
             <!-- 右上角：当前科技进度 -->
-            <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start;">
-                <button style='background-color:rgb(250,205,9); background-size:cover;' data-style-background-image="current_tech_icon">
-                    <div>{{current_tech_name}}</div>
-                    <div class="progress-bar-block" style = "position:absolute; bottom: -0.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
+            <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
+                <button style='background-color:rgb(250,205,9); background-size:cover; width: 16.00vmin; height: 16.00vmin;' data-style-background-image="current_tech_icon">
+                    <div style="-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 3.5vmin;">{{current_tech_name}}</div>
+                    <div class="progress-bar-block" style = "position:absolute; bottom: -0.2vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
                         <div class="progress-background" data-style-width="current_tech_progress"/>
                     </div> 
+                    <div style='width:2.8vmin; height:7.6vmin; background-image: "textures/common/exclamation2.texture"; background-size: cover; position: absolute; left:-1vmin; top:-0.75vmin;'/>
                 </button>
+
             </div>
 
             <!-- 右下角按钮 -->
