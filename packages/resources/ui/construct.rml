@@ -142,6 +142,18 @@
                 height: 100%;
                 background-color: rgb(87, 238, 0);
             }
+            p {
+                animation:0.5s linear 0.1s infinite alternate rotation;
+            }
+            @keyframes rotation {
+                from {
+                    transform: rotate(0);
+                }
+
+                to {
+                    transform: rotate(-10deg);
+                }
+            }
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
@@ -325,9 +337,10 @@
                     <div class="progress-bar-block" style = "position:absolute; bottom: -0.2vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
                         <div class="progress-background" data-style-width="current_tech_progress"/>
                     </div> 
-                    <div style='transform: rotate(-10deg);  width:2.8vmin; height:7.6vmin; background-image: "textures/common/exclamation2.texture"; background-size: cover; position: absolute; left:-1vmin; top:-0.75vmin;'/>
+                    <p style="position: absolute; left:-1vmin; top:-0.75vmin;">
+                        <div style='width:2.8vmin; height:7.6vmin; background-image: "textures/common/exclamation2.texture"; background-size: cover; '/>
+                    </p>
                 </button>
-
             </div>
 
             <!-- 右下角按钮 -->
