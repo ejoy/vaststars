@@ -88,8 +88,8 @@ prototype "石头处理1" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 5,
-  time = "2s"
+  count = 4,
+  time = "1s"
 }
 
 prototype "生产石砖" {
@@ -109,7 +109,7 @@ prototype "气候研究" {
   type = { "tech" },
   icon = "textures/science/tech-equipment.texture",
   effects = {
-    unlock_recipe = {"破损空气过滤器","破损地下水挖掘机"},
+    unlock_recipe = {"破损空气过滤器","破损地下水挖掘机","气候科技包"},
   },
   prerequisites = {"生产石砖"},
   ingredients = {
@@ -119,8 +119,8 @@ prototype "气候研究" {
     { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
   },
   sign_icon = "textures/science/tech-important.texture",
-  count = 4,
-  time = "1s"
+  count = 5,
+  time = "2s"
 }
 
 -- ---新增地下卤水配方的对应科技---
