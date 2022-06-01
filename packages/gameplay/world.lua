@@ -97,6 +97,7 @@ return function ()
     world.entity = entity_visitor(ecs, "id")
 
     local pipeline_update = pipeline(world, cworld, "update")
+    local pipeline_clean = pipeline(world, cworld, "clean")
     local pipeline_build = pipeline(world, cworld, "build")
     local pipeline_backup = pipeline(world, cworld, "backup")
     local pipeline_restore = pipeline(world, cworld, "restore")
@@ -109,6 +110,7 @@ return function ()
     end
     function world:build()
         needBuild = false
+        pipeline_clean()
         ecs:update()
         pipeline_build()
         ecs:update()

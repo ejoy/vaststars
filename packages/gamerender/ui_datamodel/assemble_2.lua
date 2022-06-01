@@ -3,6 +3,10 @@ local irecipe = require "gameplay.interface.recipe"
 local objects = require "objects"
 local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
+local math_max = math.max
+
+local STATUS_IDLE <const> = 0
+local STATUS_DONE <const> = 1
 
 local function get(object_id)
     local object = assert(objects:get(object_id))
@@ -53,13 +57,7 @@ end
 
 local function get_percent(progress, total)
     assert(progress <= total)
-    if total <= 0 then
-        return 0
-    end
-
-    if progress < 0 then
-        progress = 0
-    end
+    progress = math_max(progress, 0)
     return (total - progress) / total
 end
 
@@ -85,7 +83,7 @@ function M:stage_ui_update(datamodel, object_id)
 
     if assembling.recipe ~= 0 then
         local recipe_typeobject = assert(iprototype:query(assembling.recipe))
-        total_progress = recipe_typeobject.time * assembling.speed
+        total_progress = recipe_typeobject.time * 100
         progress = assembling.progress
     end
 
@@ -114,7 +112,12 @@ function M:stage_ui_update(datamodel, object_id)
 
     datamodel.recipe_ingredients_count = recipe_ingredients_count
     datamodel.recipe_results_count = recipe_results_count
-    datamodel.progress = ("%0.0f%%"):format(get_percent(progress, total_progress) * 100)
+
+    if assembling.status == STATUS_IDLE then
+        datamodel.progress = "0%"
+    else
+        datamodel.progress = ("%0.0f%%"):format(get_percent(progress, total_progress) * 100)
+    end
 
     -- 更新背包界面对应的道具
     for e in gameplay_core.select "chest:in entity:in" do

@@ -16,10 +16,8 @@ local function update_world(world, get_object_func)
         if not science.current_tech then
             science.current_tech = science.tech_tree[queue[1]]
         end
-        local progress = world:research_progress(queue[1])
-        if progress then
-            iui.update("construct.rml", "update_tech", science.current_tech, progress)
-        end
+        science.current_tech.progress = world:research_progress(queue[1]) or 0
+        iui.update("construct.rml", "update_tech", science.current_tech)
     elseif science.current_tech then
         science.current_tech = nil
     end

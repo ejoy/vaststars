@@ -21,6 +21,16 @@ prototype "破损空气过滤器" {
     order = 111,
 }
 
+prototype "破损地下水挖掘机" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/broken-pump.texture",
+    model = "prefabs/rock.prefab",
+    description = "破损地下水挖掘机",
+    group = "加工",
+    order = 112,
+}
+
 prototype "破损电解厂" {
     type = {"item"},
     stack = 10,
@@ -28,7 +38,7 @@ prototype "破损电解厂" {
     model = "prefabs/rock.prefab",
     description = "损坏的电解厂",
     group = "加工",
-    order = 112,
+    order = 114,
 }
 
 prototype "破损化工厂" {
@@ -38,7 +48,7 @@ prototype "破损化工厂" {
     model = "prefabs/rock.prefab",
     description = "损坏的化工厂",
     group = "加工",
-    order = 113,
+    order = 116,
 }
 
 prototype "破损组装机" {
@@ -48,7 +58,7 @@ prototype "破损组装机" {
     model = "prefabs/rock.prefab",
     description = "损坏的组装机",
     group = "加工",
-    order = 114,
+    order = 118,
 }
 
 prototype "破损铁制电线杆" {
@@ -58,7 +68,7 @@ prototype "破损铁制电线杆" {
     model = "prefabs/rock.prefab",
     description = "损坏的铁制电线杆",
     group = "加工",
-    order = 115,
+    order = 120,
 }
 
 prototype "破损太阳能板" {
@@ -68,7 +78,7 @@ prototype "破损太阳能板" {
     model = "prefabs/rock.prefab",
     description = "损坏的太阳能板",
     group = "加工",
-    order = 116,
+    order = 122,
 }
 
 prototype "破损蓄电池" {
@@ -78,7 +88,7 @@ prototype "破损蓄电池" {
     model = "prefabs/rock.prefab",
     description = "损坏的蓄电池",
     group = "加工",
-    order = 117,
+    order = 124,
 }
 
 prototype "破损物流中心" {
@@ -88,7 +98,7 @@ prototype "破损物流中心" {
     model = "prefabs/rock.prefab",
     description = "损坏的物流中心",
     group = "加工",
-    order = 118,
+    order = 126,
 }
 
 prototype "破损运输车辆" {
@@ -98,7 +108,7 @@ prototype "破损运输车辆" {
     model = "prefabs/rock.prefab",
     description = "损坏的运输车辆",
     group = "加工",
-    order = 119,
+    order = 128,
 }
 
 prototype "破损车站" {
@@ -108,5 +118,5 @@ prototype "破损车站" {
     model = "prefabs/rock.prefab",
     description = "损坏的车站",
     group = "加工",
-    order = 120,
+    order = 130,
 }

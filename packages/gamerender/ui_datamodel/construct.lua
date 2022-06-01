@@ -8,7 +8,8 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local iprototype = require "gameplay.interface.prototype"
 local create_normalbuilder = ecs.require "editor.normalbuilder"
-local create_batchbuilder = ecs.require "editor.batchbuilder"
+local create_pipebuilder = ecs.require "editor.pipebuilder"
+local create_pgbuilder = ecs.require "editor.pgbuilder"
 local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
 local global = require "global"
@@ -81,12 +82,13 @@ function M:drawcall_text(datamodel, text)
     datamodel.drawcall_text = text
 end
 
-function M:update_tech(datamodel, tech, progress)
+function M:update_tech(datamodel, tech)
     if tech then
         datamodel.show_tech_progress = true
+        datamodel.is_task = tech.task
         datamodel.current_tech_name = tech.name
         datamodel.current_tech_icon = tech.detail.icon
-        datamodel.current_tech_progress = (progress * 100) // tech.detail.count .. '%'
+        datamodel.current_tech_progress = (tech.progress * 100) // tech.detail.count .. '%'
     else
         datamodel.show_tech_progress = false
         datamodel.tech_count = global.science.tech_list and #global.science.tech_list or 0
@@ -229,8 +231,10 @@ function M:stage_camera_usage(datamodel)
         end
 
         local typeobject = iprototype:queryByName("entity", prototype_name)
-        if iprototype:is_batch_mode(typeobject) then
-            builder = create_batchbuilder()
+        if iprototype:is_pipe_to_ground(typeobject) then
+            builder = create_pgbuilder()
+        elseif iprototype:is_pipe(typeobject) then
+            builder = create_pipebuilder()
         else
             builder = create_normalbuilder()
         end
