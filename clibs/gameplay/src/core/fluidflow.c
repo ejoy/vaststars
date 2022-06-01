@@ -4,13 +4,13 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "util/sort_r.h"
- 
+
 #define PIPE_DEFAULT 8
 #define PIPE_MAX 0xffff
 #define PIPE_CONNECTION 4
 #define PIPE_INVALID_CONNECTION 0xffff
 #define FIXSHIFT 256
- 
+
 struct pipe {
 	int id;
 	int fluid;
@@ -23,7 +23,7 @@ struct pipe {
 	unsigned short downlink[PIPE_CONNECTION];
 	int reservation[PIPE_CONNECTION];
 };
- 
+
 struct fluidflow_network {
 	struct pipe *p;
 	unsigned short *order;
@@ -34,7 +34,7 @@ struct fluidflow_network {
 	int blocking_n;
 	int blocking_cap;
 };
- 
+
 void
 fluidflow_delete(struct fluidflow_network *net) {
 	if (net == NULL)
@@ -44,7 +44,7 @@ fluidflow_delete(struct fluidflow_network *net) {
 	free(net->blocking);
 	free(net);
 }
- 
+
 struct fluidflow_network *
 fluidflow_new() {
 	struct fluidflow_network *net = (struct fluidflow_network *)malloc(sizeof(*net));
@@ -65,8 +65,8 @@ fluidflow_new() {
 	net->blocking_cap = 0;
 	return net;
 }
- 
- 
+
+
 static inline void
 clear_order(struct fluidflow_network *net) {
 	if (net->order) {
@@ -74,7 +74,7 @@ clear_order(struct fluidflow_network *net) {
 		net->order = NULL;
 	}
 }
- 
+
 static void
 change_downlink(struct pipe *p, unsigned short from, unsigned short to) {
 	int i;
@@ -83,7 +83,7 @@ change_downlink(struct pipe *p, unsigned short from, unsigned short to) {
 			p->downlink[i] = to;
 	}
 }
- 
+
 static void
 change_uplink(struct pipe *p, unsigned short from, unsigned short to) {
 	int i;
@@ -92,7 +92,7 @@ change_uplink(struct pipe *p, unsigned short from, unsigned short to) {
 			p->uplink[i] = to;
 	}
 }
- 
+
 // move fist pipe to the last
 static void
 shift_pipe(struct fluidflow_network *net) {
@@ -114,7 +114,7 @@ shift_pipe(struct fluidflow_network *net) {
 		change_uplink(&net->p[c], from, to);
 	}
 }
- 
+
 int
 fluidflow_build(struct fluidflow_network *net, int id, struct fluid_box *box) {
 	clear_order(net);
@@ -159,7 +159,7 @@ fluidflow_build(struct fluidflow_network *net, int id, struct fluid_box *box) {
 	}
 	return 0;
 }
- 
+
 static void
 remove_connection(struct pipe *p, int idx) {
 	int i,j;
@@ -184,9 +184,9 @@ remove_connection(struct pipe *p, int idx) {
 		}
 	}
 }
- 
+
 static int find_id(struct fluidflow_network *net, int id);
- 
+
 static void
 adjust_connection(struct pipe *p, int idx) {
 	int i;
@@ -207,7 +207,7 @@ adjust_connection(struct pipe *p, int idx) {
 		}
 	}
 }
- 
+
 int
 fluidflow_teardown(struct fluidflow_network *net, int id) {
 	clear_order(net);
@@ -245,10 +245,10 @@ fluidflow_teardown(struct fluidflow_network *net, int id) {
 	}
 	return 0;
 }
- 
+
 #define FAIL 1
 #define SUCC 0
- 
+
 static int
 add_downlink(struct pipe *p, int idx) {
 	int i;
@@ -264,7 +264,7 @@ add_downlink(struct pipe *p, int idx) {
 	}
 	return FAIL;
 }
- 
+
 static int
 add_uplink(struct pipe *p, int idx) {
 	int i;
@@ -281,7 +281,7 @@ add_uplink(struct pipe *p, int idx) {
 	}
 	return FAIL;
 }
- 
+
 static int
 add_connection(struct fluidflow_network *net, int from_idx, int to_idx) {
 	struct pipe *from_pipe = &net->p[from_idx];
@@ -292,7 +292,7 @@ add_connection(struct fluidflow_network *net, int from_idx, int to_idx) {
 		return FAIL;
 	return SUCC;
 }
- 
+
 int
 fluidflow_connect(struct fluidflow_network *net, int from, int to, int oneway) {
 	int from_idx = find_id(net, from);
@@ -309,7 +309,7 @@ fluidflow_connect(struct fluidflow_network *net, int from, int to, int oneway) {
 	}
 	return SUCC;
 }
- 
+
 static struct fluid_state *
 get_state(struct pipe *p, struct fluid_state *output) {
 	output->volume = p->fluid;
@@ -320,7 +320,7 @@ get_state(struct pipe *p, struct fluid_state *output) {
 	output->box.pumping_speed = p->pumping_speed;
 	return output;
 }
- 
+
 struct fluid_state *
 fluidflow_query(struct fluidflow_network *net, int id, struct fluid_state *output) {
 	// todo :  cache id map
@@ -329,7 +329,7 @@ fluidflow_query(struct fluidflow_network *net, int id, struct fluid_state *outpu
 		return NULL;
 	return get_state(&net->p[idx], output);
 }
- 
+
 static int
 set_fluid(struct fluidflow_network *net, int idx, int fluid, int multiple) {
 	if (idx == PIPE_INVALID_CONNECTION)
@@ -340,20 +340,21 @@ set_fluid(struct fluidflow_network *net, int idx, int fluid, int multiple) {
 		return 0;
 	}
 	fluid *= multiple;
+	fluid += p->fluid % multiple;
 	if (fluid >= p->capacity) {
 		p->fluid = p->capacity;
 	} else {
-		p->fluid = fluid + p->fluid % multiple;
+		p->fluid = fluid;
 	}
 	return p->fluid;
 }
- 
+
 int
 fluidflow_set(struct fluidflow_network *net, int id, int fluid, int multiple) {
 	int idx = find_id(net, id);
 	return set_fluid(net, idx, fluid, multiple);
 }
- 
+
 void
 fluidflow_block(struct fluidflow_network *net, int id) {
 	if (net->blocking == NULL) {
@@ -372,14 +373,14 @@ fluidflow_block(struct fluidflow_network *net, int id) {
 	}
 	net->blocking[net->blocking_n++] = id;
 }
- 
+
 static int
 compar_blocking(const void *aa, const void *bb) {
 	const int * a = (const int *)aa;
 	const int * b = (const int *)bb;
 	return *a - *b;
 }
- 
+
 static void
 sort_blocking(struct fluidflow_network *net) {
 	if (net->blocking_n == 0) {
@@ -387,7 +388,7 @@ sort_blocking(struct fluidflow_network *net) {
 	}
 	qsort(net->blocking, net->blocking_n, sizeof(int), compar_blocking);
 }
- 
+
 static inline int
 is_blocking(struct fluidflow_network *net, int id) {
 	int begin = 0;
@@ -404,7 +405,7 @@ is_blocking(struct fluidflow_network *net, int id) {
 	}
 	return 0;
 }
- 
+
 static inline void
 reset_blocking(struct fluidflow_network *net) {
 	if (net->blocking_n * 2 < net->blocking_cap) {
@@ -415,7 +416,7 @@ reset_blocking(struct fluidflow_network *net) {
 	}
 	net->blocking_n = 0;
 }
- 
+
 static void
 set_reservation(struct fluidflow_network *net, int from, int to, int r) {
 	struct pipe *p = &net->p[to];
@@ -428,12 +429,12 @@ set_reservation(struct fluidflow_network *net, int from, int to, int r) {
 		}
 	}
 }
- 
+
 static inline int
 fluid_level(struct pipe *p) {
 	return (uint64_t)p->fluid * p->height / p->capacity;
 }
- 
+
 static void
 attempt_flow(struct fluidflow_network *net, int idx) {
 	struct pipe *p = &net->p[idx];
@@ -442,7 +443,7 @@ attempt_flow(struct fluidflow_network *net, int idx) {
 		p->flow = 0;
 		return;
 	}
- 
+
 	int total = 0;
 	int i;
 	int f[PIPE_CONNECTION];
@@ -480,7 +481,7 @@ attempt_flow(struct fluidflow_network *net, int idx) {
 		set_reservation(net, idx, p->downlink[i], f[i]);
 	}
 }
- 
+
 static void
 reservation_fluid(struct fluidflow_network *net) {
 	int i;
@@ -490,29 +491,29 @@ reservation_fluid(struct fluidflow_network *net) {
 		attempt_flow(net, i);
 	}
 }
- 
+
 struct bitset {
-	unsigned int bits[(PIPE_MAX+7)/8];
+	unsigned int bits[(PIPE_MAX+31)/32];
 };
- 
+
 static inline void
 bitset_init(struct bitset *s, int n) {
-	int c = (n + 7)/8;
+	int c = (n + 31)/32 * sizeof(unsigned int);
 	memset(s->bits, 0, c);
 }
- 
+
 static inline int
 bitset_isset(struct bitset *s, int idx) {
-	int n = idx / 8;
-	return s->bits[n] & (1 << (idx % 8));
+	int n = idx / 32;
+	return s->bits[n] & (1 << (idx % 32));
 }
- 
+
 static inline void
 bitset_set(struct bitset *s, int idx) {
-	int n = idx / 8;
-	s->bits[n] |= (1 << (idx % 8));
+	int n = idx / 32;
+	s->bits[n] |= (1 << (idx % 32));
 }
- 
+
 static int
 compar_sorted_index(const void *a, const void *b, void *arg) {
 	const unsigned short *aa = (const unsigned short *)a;
@@ -520,7 +521,7 @@ compar_sorted_index(const void *a, const void *b, void *arg) {
 	struct pipe *p = (struct pipe *)arg;
 	return p[*aa].id - p[*bb].id;
 }
- 
+
 static unsigned short *
 init_order(struct fluidflow_network *net) {
 	int i;
@@ -530,19 +531,19 @@ init_order(struct fluidflow_network *net) {
 	for (i=0;i<net->pipe_n;i++) {
 		order[i] = base + i;
 	}
- 
+
 	unsigned short * sorted = order + net->pipe_n;
- 
+
 	for (i=0;i<n;i++) {
 		sorted[i] = i;
 	}
- 
+
 	sort_r(sorted, n, sizeof(sorted[0]), compar_sorted_index, net->p);
- 
+
 	net->order = order;
 	return order;
 }
- 
+
 static unsigned short *
 prev_order(struct fluidflow_network *net) {
 	if (net->order == NULL) {
@@ -550,7 +551,7 @@ prev_order(struct fluidflow_network *net) {
 	}
 	return net->order;
 }
- 
+
 static inline unsigned short *
 sorted_index(struct fluidflow_network *net) {
 	if (net->order == NULL) {
@@ -558,7 +559,7 @@ sorted_index(struct fluidflow_network *net) {
 	}
 	return net->order + net->pipe_n;
 }
- 
+
 static int
 find_id(struct fluidflow_network *net, int id) {
 	unsigned short * sorted = sorted_index(net);
@@ -577,7 +578,7 @@ find_id(struct fluidflow_network *net, int id) {
 	}
 	return PIPE_INVALID_CONNECTION;
 }
- 
+
 static inline int
 flow_to(struct pipe *p, int idx) {
 	int i;
@@ -588,8 +589,8 @@ flow_to(struct pipe *p, int idx) {
 	}
 	return 0;
 }
- 
- 
+
+
 static int
 check_order(struct fluidflow_network *net, int idx, struct bitset *set) {
 	struct pipe *p = &net->p[idx];
@@ -598,13 +599,25 @@ check_order(struct fluidflow_network *net, int idx, struct bitset *set) {
 		int to_idx = p->downlink[i];
 		if (to_idx == PIPE_INVALID_CONNECTION)
 			break;
-		if (to_idx >= net->pump_n && !bitset_isset(set, to_idx) && flow_to(&net->p[to_idx], idx)) {
-			return to_idx;
+		if (to_idx >= net->pump_n) {
+			// to_idx is not a pump
+			if (bitset_isset(set, to_idx)) {
+				// to_idx is before idx
+				if (flow_to(&net->p[idx], to_idx)) {
+					// idx->to_idx, order reverse
+					return to_idx;
+				}
+			} else {
+				if (flow_to(&net->p[to_idx], idx)) {
+					//to_idx->idx, order reverse
+					return to_idx;
+				}
+			}
 		}
 	}
 	return PIPE_INVALID_CONNECTION;
 }
- 
+
 static void
 print_order(struct fluidflow_network *net) {
 	int i;
@@ -614,7 +627,7 @@ print_order(struct fluidflow_network *net) {
 	}
 	printf("\n");
 }
- 
+
 static void
 print_reservation(struct fluidflow_network *net) {
 	int i, j;
@@ -630,7 +643,17 @@ print_reservation(struct fluidflow_network *net) {
 	}
 	printf("\n");
 }
- 
+
+static int
+find_pipe(unsigned short *order, unsigned short id, struct bitset *set) {
+	int i = 0;
+	while (order[i] != id) {
+		bitset_set(set, order[i]);
+		++i;
+	}
+	return i;
+}
+
 static void
 topology_sort(struct fluidflow_network *net) {
 	int n = net->pipe_n;
@@ -640,24 +663,32 @@ topology_sort(struct fluidflow_network *net) {
 	int idx = 0;
 	while (idx < n) {
 		int current = order[idx];
-		int downstream = check_order(net, current, &set);
-		if (downstream == PIPE_INVALID_CONNECTION) {
+		int id = check_order(net, current, &set);
+		if (id == PIPE_INVALID_CONNECTION) {
 			bitset_set(&set, current);
 			++idx;
 		} else {
-			order[idx] = downstream;
-			int i;
-			for (i=idx+1;i<net->pipe_n;i++) {
-				if (order[i] == downstream) {
-					order[i] = current;
-					break;
+			if (bitset_isset(&set, id)) {
+				order[idx] = id;	// id is downstream
+				bitset_init(&set, n);	// reset bitset
+				idx = find_pipe(order, id, &set);
+				order[idx] = current;
+				bitset_set(&set, current);
+			} else {
+				order[idx] = id;	// id is upstream
+				int i;
+				for (i=idx+1;i<net->pipe_n;i++) {
+					if (order[i] == id) {
+						order[i] = current;
+						break;
+					}
 				}
 			}
 		}
 	}
  
 }
- 
+
 static inline int
 get_reservation(struct pipe *p, int from_idx) {
 	int i;
@@ -670,7 +701,7 @@ get_reservation(struct pipe *p, int from_idx) {
 	}
 	return 0;
 }
- 
+
 static void
 divide_fluid(int n, int f[PIPE_CONNECTION], int total, int space) {
 	int radio = space * FIXSHIFT / total;
@@ -693,7 +724,7 @@ divide_fluid(int n, int f[PIPE_CONNECTION], int total, int space) {
 			index = 0;
 	}
 }
- 
+
 static void
 flow(struct fluidflow_network *net, int idx) {
 	struct pipe *p = &net->p[idx];
@@ -731,7 +762,7 @@ flow(struct fluidflow_network *net, int idx) {
 		}
 	}
 }
- 
+
 static void
 adjust_reservation(struct fluidflow_network *net, int idx) {
 	struct pipe *p = &net->p[idx];
@@ -763,7 +794,7 @@ adjust_reservation(struct fluidflow_network *net, int idx) {
 		divide_fluid(n, p->reservation, total, space);
 	}
 }
- 
+
 static void
 draw_fluid(struct fluidflow_network *net, struct pipe *p) {
 	if (is_blocking(net, p->id)) {
@@ -812,7 +843,7 @@ draw_fluid(struct fluidflow_network *net, struct pipe *p) {
 		}
 	}
 }
- 
+
 static void
 pump_fluid(struct fluidflow_network *net) {
 	int i;
@@ -824,7 +855,7 @@ pump_fluid(struct fluidflow_network *net) {
 		net->p[i].fluid += net->p[i].flow;
 	}
 }
- 
+
 void
 fluidflow_update(struct fluidflow_network *net) {
 	sort_blocking(net);
@@ -845,7 +876,7 @@ fluidflow_update(struct fluidflow_network *net) {
 	}
 	reset_blocking(net);
 }
- 
+
 void
 fluidflow_dump(struct fluidflow_network *net) {
 	int i, j;
@@ -878,14 +909,14 @@ fluidflow_dump(struct fluidflow_network *net) {
 		printf(" %d[%d]", sorted[i], net->p[sorted[i]].id);
 	}
 	printf("\n");
- 
+
 }
- 
+
 #ifdef TEST_MAIN
- 
+
 #include <stdio.h>
- 
- 
+
+
 static void
 update(struct fluidflow_network *net, int fluid[]) {
 	fluidflow_set(net, 1, fluid[0] + 20000, 1);
@@ -899,7 +930,7 @@ update(struct fluidflow_network *net, int fluid[]) {
 	}
 	printf("\n");
 }
- 
+
 int
 main() {
 	struct fluidflow_network *net = fluidflow_new();
@@ -951,17 +982,17 @@ main() {
 		fluidflow_connect(net, c[i], c[i+1], 0);
 	}
 	fluidflow_dump(net);
- 
+
 	int fluid[12] = {0};
 	for (i=0;i<20;i++) {
 		if (i % 2 == 1)
 			fluidflow_block(net, 2);
 		update(net, fluid);
 	}
- 
+
 	fluidflow_teardown(net, 1);
 	fluidflow_delete(net);
 	return 0;
 }
- 
+
 #endif

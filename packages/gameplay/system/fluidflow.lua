@@ -126,6 +126,7 @@ local function builder_connect_fluidbox(fluid, id, fluidbox, entity, area)
         }
         builder[fluid] = c
     end
+    assert(#fluidbox.connections <= 4)
     for _, conn in ipairs(fluidbox.connections) do
         local x, y, dir = rotate(conn.position, entity.direction, area)
         x = entity.x + x
