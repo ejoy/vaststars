@@ -3,7 +3,7 @@ local prototype = gameplay.prototype
 
 prototype "采矿机I" {
     model = "prefabs/miner.prefab",
-    icon = "textures/construct/miner1.texture",
+    icon = "textures/building_pic/small_pic_miner.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer", "mining", "assembling","fluidboxes"},
     area = "3x3",

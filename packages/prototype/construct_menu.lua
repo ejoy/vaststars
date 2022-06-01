@@ -32,19 +32,19 @@ local menu = {
             "管道1-X型",
             "地下管I",
             "液罐I",
-            "地下水挖掘机",
             "烟囱I",
             "排水口I",
             "空气过滤器I",
+            "地下水挖掘机",
         },
     },
     {
         name = "物流",
         icon = "textures/construct/logisitic1.texture",
         detail = {
+            "科研中心I",
             "小型铁制箱子",
             "机器爪I",
-            "科研中心I",
             "砖石公路-O型",
             "采矿机I",
         },
@@ -53,7 +53,6 @@ local menu = {
         name = "自定义",
         icon = "textures/construct/modify.texture",
         detail = {
-            "铁制电线杆",
             "液罐I",
             "管道1-I型",
             "机器爪I",
@@ -61,7 +60,7 @@ local menu = {
             "地下水挖掘机",
             "熔炼炉I",
             "组装机I",
-
+            "采矿机I",
         },
     },
 }

@@ -33,6 +33,13 @@ prototype "收集铁矿石" {
   -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"地质研究"},
   count = 10,
+  tips_pic = {
+    "textures/task_tips_pic/task_click_build.texture",
+    "textures/task_tips_pic/task_produce_ore1.texture",
+    "textures/task_tips_pic/task_produce_ore2.texture",
+    "textures/task_tips_pic/start_construct.texture",
+    "textures/task_tips_pic/task_produce_ore3.texture",
+  },
   sign_desc = {
     { desc = "放置采矿机收集10个铁矿石", icon = "textures/construct/industry.texture"},
   },
@@ -45,6 +52,16 @@ prototype "生产地质科技包" {
   task = {"stat_production", 0, "地质科技包"},
   prerequisites = {"收集铁矿石"},
   count = 3,
+  tips_pic = {
+    "textures/task_tips_pic/task_click_build.texture",
+    "textures/task_tips_pic/task_produce_geopack1.texture",
+    "textures/task_tips_pic/task_produce_geopack2.texture",
+    "textures/task_tips_pic/start_construct.texture",
+    "textures/task_tips_pic/task_produce_geopack3.texture",
+    "textures/task_tips_pic/task_produce_geopack4.texture",
+    "textures/task_tips_pic/task_produce_geopack5.texture",
+    "textures/task_tips_pic/task_produce_geopack6.texture",
+  },
   sign_desc = {
     { desc = "使用组装机生产3个地质科技包", icon = "textures/construct/iron-ingot.texture"},
   },
@@ -72,6 +89,13 @@ prototype "生产铁板" {
   task = {"stat_production", 0, "铁板"},
   prerequisites = {"铁矿熔炼"},
   count = 8,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_ironplate1.texture",
+    "textures/task_tips_pic/task_produce_ironplate2.texture",
+    "textures/task_tips_pic/task_produce_ironplate3.texture",
+    "textures/task_tips_pic/task_produce_ironplate4.texture",
+    "textures/task_tips_pic/task_produce_ironplate5.texture",
+  },
   sign_desc = {
     { desc = "使用熔炼炉生产8个铁板", icon = "textures/construct/iron-ingot.texture"},
   },
@@ -99,6 +123,9 @@ prototype "生产石砖" {
   task = {"stat_production", 0, "石砖"},
   prerequisites = {"石头处理1"},
   count = 5,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_stonebrick.texture",
+  },
   sign_desc = {
     { desc = "使用组装机生产5个石砖", icon = "textures/construct/stone-brick.texture"},
   },
@@ -160,6 +187,9 @@ prototype "维修破损空气过滤器" {
   task = {"stat_consumption", 0, "破损空气过滤器"},
   prerequisites = {"气候研究"},
   count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_repair_airfilter.texture",
+  },
   sign_desc = {
     { desc = "使用组装机维修1个破损空气过滤器", icon = "textures/construct/modify.texture"},
   },
@@ -172,6 +202,9 @@ prototype "维修破损地下水挖掘机" {
   task = {"stat_consumption", 0, "破损地下水挖掘机"},
   prerequisites = {"气候研究"},
   count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_repair_digger.texture",
+  },
   sign_desc = {
     { desc = "使用组装机维修1个破损地下水挖掘机", icon = "textures/construct/modify.texture"},
   },
@@ -184,6 +217,13 @@ prototype "生产气候科技包" {
   task = {"stat_production", 0, "气候科技包"},
   prerequisites = {"维修破损空气过滤器","维修破损地下水挖掘机"},
   count = 2,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_climatepack1.texture",
+    "textures/task_tips_pic/task_produce_climatepack2.texture",
+    "textures/task_tips_pic/task_produce_climatepack3.texture",
+    "textures/task_tips_pic/task_produce_climatepack4.texture",
+    "textures/task_tips_pic/task_produce_climatepack5.texture",
+  },
   sign_desc = {
     { desc = "使用水电站生产2个气候科技包", icon = "textures/construct/assembler.texture"},
   },
@@ -211,8 +251,11 @@ prototype "生产管道" {
   task = {"stat_production", 0, "管道1-I型"},
   prerequisites = {"管道系统1"},
   count = 10,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_pipe1.texture",
+  },
   sign_desc = {
-    { desc = "生产10个管道", icon = "textures/construct/assembler.texture"},
+    { desc = "使用组装机生产10个管道", icon = "textures/construct/assembler.texture"},
   },
 }
 
@@ -297,6 +340,9 @@ prototype "维修破损组装机" {
   task = {"stat_consumption", 0, "破损组装机"},
   prerequisites = {"铁加工1"},
   count = 3,
+  tips_pic = {
+    "textures/task_tips_pic/task_repair_assembler.texture",
+  },
   sign_desc = {
     { desc = "使用组装机维修3个破损组装机", icon = "textures/construct/modify.texture"},
   },
@@ -324,6 +370,9 @@ prototype "放置太阳能板" {
   task = {"select_entity", 0, "太阳能板I"},
   prerequisites = {"石头处理2"},
   count = 3,
+  tips_pic = {
+    "textures/task_tips_pic/task_place_solarpanel.texture",
+  },
   sign_desc = {
     { desc = "放置3个太阳能板", icon = "textures/construct/assembler.texture"},
   },
@@ -371,6 +420,9 @@ prototype "生产铁制箱子" {
   task = {"stat_production", 0, "小型铁制箱子"},
   prerequisites = {"储存1","基地生产1"},
   count = 3,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_chest.texture",
+  },
   sign_desc = {
     { desc = "生产3个小型铁制箱子", icon = "textures/construct/assembler.texture"},
   },
