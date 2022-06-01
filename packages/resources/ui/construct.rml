@@ -344,7 +344,7 @@
                         <div class="progress-background" data-style-width="current_tech_progress"/>
                     </div> 
                     <p data-if="is_task" style="position: absolute; left:-1vmin; top:-0.75vmin;">
-                        <div style='width:2.8vmin; height:7.6vmin; background-image: "textures/common/exclamation2.texture"; background-size: cover; '/>
+                        <div style='width:2.8vmin; height:7.6vmin; background-image: "textures/common/exclamation2.texture"; background-size: cover;'/>
                     </p>
                 </button>
             </div>
