@@ -143,7 +143,7 @@
                 background-color: rgb(87, 238, 0);
             }
             p {
-                animation:0.5s linear 0.1s infinite alternate rotation;
+                animation:0.5s linear 0s infinite alternate rotation;
             }
             @keyframes rotation {
                 from {
