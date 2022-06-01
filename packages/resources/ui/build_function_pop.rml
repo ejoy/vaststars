@@ -40,8 +40,10 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
-                show_material_button = false,
+                show_rotate = false,
+                show_pickup_material = false,
                 show_set_recipe = false,
+                show_place_material = false,
                 object_id = 0,
                 left = "0vmin",
                 top = "0vmin",
@@ -80,32 +82,29 @@
     </head>
     <body style = "pointer-events: none;">
             <div class="info-panel" style="position: absolute; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top">
-                <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickConstructRotate()">
+                <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickConstructRotate()" data-if = "show_rotate">
                     <button class="button-function" style ='background-image: "textures/construct/rotate.texture";'/>
                     <div class="title-text">旋转</div>
                 </div>
+                <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!(show_rotate)" /> <!-- TODO -->
 
-                <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickPickupMaterial()" data-if = "show_set_recipe && show_material_button">
+                <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickPickupMaterial()" data-if = "show_pickup_material">
                     <button class="button-function" style ='background-image: "textures/cmdcenter/fetch_material.texture";'/>
                     <div class="title-text">成品取出</div>
                 </div>
-                <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!(show_set_recipe && show_material_button)" /> <!-- TODO -->
+                <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!(show_pickup_material)" /> <!-- TODO -->
 
                 <div class="button-fuction-block" style="top: -5.33vmin;" data-event-click="clickRecipe()" data-if = "show_set_recipe">
                     <button class="button-function" style ='background-image: "textures/assemble/wheel.texture";'/>
                     <div class="title-text">修改配方</div>
                 </div>
-                <div class="button-fuction-block" style="top: -5.33vmin;" data-event-click="clickRecipe()" data-if = "false">
-                    <button class="button-function" style ='background-image: "textures/construct/takeout.texture";'/>
-                    <div class="title-text">拾取物品</div>
-                </div>
                 <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe" /> <!-- TODO -->
 
-                <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickPlaceMaterial()" data-if = "show_set_recipe && show_material_button">
+                <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickPlaceMaterial()" data-if = "show_place_material">
                     <button class="button-function" style ='background-image: "textures/cmdcenter/send_material.texture";'/>
                     <div class="title-text">原料添加</div>
                 </div>
-                <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!(show_set_recipe && show_material_button)" /> <!-- TODO -->
+                <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!(show_place_material)" /> <!-- TODO -->
 
                 <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickDetail()">
                     <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>
