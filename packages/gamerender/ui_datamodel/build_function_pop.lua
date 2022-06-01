@@ -6,6 +6,7 @@ local gameplay_core = require "gameplay.core"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local iassembling = require "gameplay.interface.assembling"
+local ilaboratory = require "gameplay.interface.laboratory"
 local ientity = require "gameplay.interface.entity"
 local vsobject_manager = ecs.require "vsobject_manager"
 local terrain = ecs.require "terrain"
@@ -17,6 +18,16 @@ local recipe_mb = mailbox:sub {"recipe"}
 local detail_mb = mailbox:sub {"detail"}
 local pickup_material_mb = mailbox:sub {"pickup_material"}
 local place_material_mb = mailbox:sub {"place_material"}
+
+local place_material_func = {}
+place_material_func["assembling"] = function(gameplay_world, e)
+    iassembling:place_material(gameplay_world, e)
+end
+
+place_material_func["laboratory"] = function(gameplay_world, e)
+    ilaboratory:place_material(gameplay_world, e)
+end
+
 ---------------
 local M = {}
 
@@ -48,6 +59,10 @@ function M:create(object_id, left, top)
                 show_pickup_material = true
             end
         end
+    end
+
+    if iprototype:has_type(typeobject.type, "laboratory") then
+        show_place_material = true
     end
 
     return {
@@ -124,7 +139,14 @@ function M:stage_ui_update(datamodel)
     for _, _, _, object_id in place_material_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(object.gameplay_eid)
-        iassembling:place_material(gameplay_core.get_world(), e)
+        local typeobject = iprototype:queryByName("entity", object.prototype_name)
+        for _, type in ipairs(typeobject.type) do
+            local func = place_material_func[type]
+            if func then
+                func(gameplay_core.get_world(), e)
+                break
+            end
+        end
     end
 end
 
