@@ -82,12 +82,13 @@ function M:drawcall_text(datamodel, text)
     datamodel.drawcall_text = text
 end
 
-function M:update_tech(datamodel, tech, progress)
+function M:update_tech(datamodel, tech)
     if tech then
         datamodel.show_tech_progress = true
+        datamodel.is_task = tech.task
         datamodel.current_tech_name = tech.name
         datamodel.current_tech_icon = tech.detail.icon
-        datamodel.current_tech_progress = (progress * 100) // tech.detail.count .. '%'
+        datamodel.current_tech_progress = (tech.progress * 100) // tech.detail.count .. '%'
     else
         datamodel.show_tech_progress = false
         datamodel.tech_count = global.science.tech_list and #global.science.tech_list or 0
