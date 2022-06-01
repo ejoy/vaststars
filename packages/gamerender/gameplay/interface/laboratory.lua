@@ -71,7 +71,7 @@ function M:place_material(world, e)
                 if not world:container_pickup(headquater_e.chest.container, id, c) then
                     log.error(("failed to pickup `%s` `%s`"):format(id, c))
                 else
-                    if not world:container_place(e.assembling.container, id, c) then
+                    if not world:container_place(e.laboratory.container, id, c) then
                         log.error(("failed to place `%s` `%s`"):format(id, c))
                     end
                 end
