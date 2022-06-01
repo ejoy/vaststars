@@ -35,6 +35,11 @@
                 background-size:cover;
                 flex-direction: row;
             }
+            .menu-button-pic {
+                background-size: cover;
+                width: 10.67vmin;
+                height: 10.67vmin;
+            }
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
@@ -91,6 +96,11 @@
                 <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickPickupMaterial()" data-if = "show_pickup_material">
                     <button class="button-function" style ='background-image: "textures/cmdcenter/fetch_material.texture";'/>
                     <div class="title-text">成品取出</div>
+                    <!-- 可获取成品数量 start-->
+                    <div class = "menu-button-pic" data-if = "true" style='width:3.6vmin; height:3.6vmin; position:absolute; right:10%; bottom:63%; background-image:"textures/work_status_icon/shutdown.texture"'>
+                        <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">1</div>
+                    </div>
+                    <!-- 可获取成品数量 end-->
                 </div>
                 <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!(show_pickup_material)" /> <!-- TODO -->
 
