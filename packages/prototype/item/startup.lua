@@ -19,7 +19,7 @@ local entities = {
     --     y = 127,
     -- },
     {
-        prototype_name = "破损的组装机残骸",
+        prototype_name = "组装机残骸",
         dir = "W",
         items = {
             {"科研中心I",1},
@@ -31,7 +31,7 @@ local entities = {
         y = 129,
     },
     {
-        prototype_name = "破损的抽水泵残骸",
+        prototype_name = "抽水泵残骸",
         dir = "N",
         items = {
             {"破损水电站",2},
@@ -46,7 +46,7 @@ local entities = {
         y = 134,
     },
     {
-        prototype_name = "破损的排水口残骸",
+        prototype_name = "排水口残骸",
         dir = "E",
         items = {
             {"组装机I",3},
