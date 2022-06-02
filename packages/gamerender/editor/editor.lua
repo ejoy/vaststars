@@ -183,17 +183,22 @@ function M:teardown_complete()
         removed_set[object.id] = object
     end
 
+    local item_counts = {}
     for id, object in pairs(removed_set) do
         vsobject_manager:remove(id)
         objects:remove(object.id)
 
         -- TODO
-        local item_counts = {}
         local e = gameplay_core.get_entity(object.gameplay_eid)
         if e.assembling then
             for prototype_name, count in pairs(iassembling:item_counts(gameplay_core.get_world(), e)) do
-                item_counts[prototype_name] = item_counts[prototype_name] or 0
-                item_counts[prototype_name] = item_counts[prototype_name] + count
+                local typeobject_item = iprototype:queryByName("item", prototype_name)
+                if not typeobject_item then
+                    log.error(("can not found item `%s`"):format(prototype_name))
+                else
+                    item_counts[typeobject_item.id] = item_counts[typeobject_item.id] or 0
+                    item_counts[typeobject_item.id] = item_counts[typeobject_item.id] + count
+                end
             end
         end
         if e.chest then
@@ -210,19 +215,19 @@ function M:teardown_complete()
             item_counts[typeobject_item.id] = item_counts[typeobject_item.id] + 1
         end
 
-        local headquater_e = iworld:get_headquater_entity(gameplay_core.get_world())
-        if headquater_e then
-            for prototype, count in pairs(item_counts) do
-                if not gameplay_core.get_world():container_place(headquater_e.chest.container, prototype, count) then
-                    log.error(("failed to place `%s` `%s`"):format(prototype, count))
-                end
-            end
-        else
-            log.error("no headquater")
-        end
-
         gameplay_core.remove_entity(object.gameplay_eid)
         changed_set[id] = nil
+    end
+
+    local headquater_e = iworld:get_headquater_entity(gameplay_core.get_world())
+    if headquater_e then
+        for prototype, count in pairs(item_counts) do
+            if not gameplay_core.get_world():container_place(headquater_e.chest.container, prototype, count) then
+                log.error(("failed to place `%s` `%s`"):format(prototype, count))
+            end
+        end
+    else
+        log.error("no headquater")
     end
 
     for id, object in pairs(changed_set) do

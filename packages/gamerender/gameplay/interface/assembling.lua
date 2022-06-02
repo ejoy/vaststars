@@ -103,17 +103,22 @@ function M:place_material(world, e)
 end
 
 function M:item_counts(world, e)
+    local r = {}
+
     if not e.assembling then
         log.error("not assembling")
-        return
+        return r
     end
 
     local recipe = e.assembling.recipe
+    if recipe == 0 then
+        return r
+    end
+
     local typeobject = iprototype:query(recipe)
     local recipe_ingredients = irecipe:get_elements(typeobject.ingredients)
     local recipe_results = irecipe:get_elements(typeobject.results)
 
-    local r = {}
     for i = 1, #recipe_ingredients + #recipe_results do
         local c, n = world:container_get(e.assembling.container, i)
         if c then

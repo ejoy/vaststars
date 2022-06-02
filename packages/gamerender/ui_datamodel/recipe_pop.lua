@@ -15,6 +15,7 @@ local ieditor = ecs.require "editor.editor"
 local ifluid = require "gameplay.interface.fluid"
 local vsobject_manager = ecs.require "vsobject_manager"
 local terrain = ecs.require "terrain"
+local iassembling = require "gameplay.interface.assembling"
 
 local recipe_menu = {} ; do
     local recipes = {}
@@ -187,6 +188,32 @@ function M:stage_ui_update(datamodel, object_id)
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if e.assembling then
+            -- TODO
+            -- 修改配方前回收组装机里的物品
+            local item_counts = {}
+            local e = gameplay_core.get_entity(object.gameplay_eid)
+            if e.assembling then
+                for prototype_name, count in pairs(iassembling:item_counts(gameplay_core.get_world(), e)) do
+                    local typeobject_item = iprototype:queryByName("item", prototype_name)
+                    if not typeobject_item then
+                        log.error(("can not found item `%s`"):format(prototype_name))
+                    else
+                        item_counts[typeobject_item.id] = item_counts[typeobject_item.id] or 0
+                        item_counts[typeobject_item.id] = item_counts[typeobject_item.id] + count
+                    end
+                end
+            end
+            local headquater_e = iworld:get_headquater_entity(gameplay_core.get_world())
+            if headquater_e then
+                for prototype, count in pairs(item_counts) do
+                    if not gameplay_core.get_world():container_place(headquater_e.chest.container, prototype, count) then
+                        log.error(("failed to place `%s` `%s`"):format(prototype, count))
+                    end
+                end
+            else
+                log.error("no headquater")
+            end
+
             iworld:set_recipe(gameplay_core.get_world(), e, recipe_name)
             gameplay_core.build()
 
