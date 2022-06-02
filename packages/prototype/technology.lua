@@ -239,6 +239,7 @@ prototype "管道系统1" {
   prerequisites = {"生产气候科技包"},
   ingredients = {
       {"地质科技包", 1},
+      {"气候科技包", 1},
   },
   count = 4,
   time = "1s"
