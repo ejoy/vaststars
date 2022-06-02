@@ -24,7 +24,7 @@ function M:set_recipe(world, e, recipe_name)
     if not recipe_name then
         assembling.set_recipe(world, e, typeobject, recipe_name)
         log.info(("clean recipe success"))
-        return
+        return true
     end
 
     local recipe_typeobject = iprototype:queryByName("recipe", recipe_name)
@@ -34,11 +34,11 @@ function M:set_recipe(world, e, recipe_name)
     if init_fluids then
         if #typeobject.fluidboxes.input < #init_fluids.input then
             log.error(("failed to set recipe: input %s %s"):format(#typeobject.fluidboxes.input, #init_fluids.input))
-            return
+            return false
         end
         if #typeobject.fluidboxes.output < #init_fluids.output then
             log.error(("failed to set recipe: output %s %s"):format(#typeobject.fluidboxes.output, #init_fluids.output))
-            return
+            return false
         end
     end
 
@@ -46,6 +46,7 @@ function M:set_recipe(world, e, recipe_name)
     -- m.sync("assembling:out fluidboxes:out fluidbox_changed?out", e)
 
     log.info(("set recipe success `%s`"):format(recipe_name))
+    return true
 end
 
 return M
