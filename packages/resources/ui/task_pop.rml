@@ -96,6 +96,7 @@
             }
 
             function start.clickConfirm(event)
+                ui_sys:pub {"close_taskui"}
                 ui_sys:close()
             end
 

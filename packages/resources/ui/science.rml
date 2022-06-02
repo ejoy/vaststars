@@ -438,6 +438,7 @@
                 end
             end)
             function start.clickReturn(event)
+                ui_sys:pub {"close_techui"}
                 ui_sys:close()
             end
             function start.startSwitch(event)

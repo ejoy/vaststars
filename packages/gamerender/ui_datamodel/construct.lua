@@ -28,6 +28,7 @@ local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研
 local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
 local batch_mode_begin_mb = mailbox:sub {"batch_mode_begin"} --
 local batch_mode_end_mb = mailbox:sub {"batch_mode_end"} --
+local open_taskui_event = mailbox:sub {"open_taskui"}
 local single_touch_mb = world:sub {"single_touch"}
 
 local builder
@@ -197,8 +198,13 @@ function M:stage_ui_update(datamodel)
             log.error("can not found headquater")
         end
     end
+    
+    for _ in open_taskui_event:unpack() do
+        gameplay_core.world_update = false
+    end
 
     for _ in technology_mb:unpack() do
+        gameplay_core.world_update = false
         iui.open("science.rml")
     end
 

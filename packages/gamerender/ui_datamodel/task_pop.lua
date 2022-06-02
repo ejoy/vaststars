@@ -1,7 +1,9 @@
 local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
+local gameplay_core = require "gameplay.core"
 local global = require "global"
+local close_taskui_event = mailbox:sub {"close_taskui"}
 local M = {}
 
 function M:create(object_id)
@@ -15,14 +17,17 @@ function M:create(object_id)
     return {
         items = tips,
         task_name = current_tech and current_tech.name or "任务名称",
-        task_desc = current_tech and current_tech.detail.desc or "任务描述",
+        task_desc = current_tech and current_tech.detail.sign_desc[1].desc or "任务描述",
         current_count = current_tech and current_tech.progress or 0,
         total_count = current_tech and current_tech.detail.count or 100
     }
 end
 
 function M:stage_ui_update(datamodel)
-    
+    for _, _, _ in close_taskui_event:unpack() do
+        gameplay_core.world_update = true
+    end
+
 end
 
 return M

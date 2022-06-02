@@ -6,6 +6,7 @@ local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
 local click_tech_event = mailbox:sub {"click_tech"}
+local close_techui_event = mailbox:sub {"close_techui"}
 local switch_mb = mailbox:sub {"switch"}
 local M = {}
 local current_tech
@@ -107,6 +108,10 @@ function M:stage_ui_update(datamodel)
 
     for _, _, _, index in click_tech_event:unpack() do
         set_current_tech(datamodel.techitems[index])
+    end
+    
+    for _, _, _ in close_techui_event:unpack() do
+        gameplay_core.world_update = true
     end
 
     local game_world = gameplay_core.get_world()
