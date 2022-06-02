@@ -297,7 +297,7 @@ prototype "空气分离" {
   type = { "tech" },
   icon = "textures/science/tech-liquid.texture",
   effects = {
-    unlock_recipe = {"空气分离1","破损空气过滤器"},
+    unlock_recipe = {"空气分离1"},
   },
   prerequisites = {"水利研究"},
   ingredients = {
