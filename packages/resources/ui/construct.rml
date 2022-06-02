@@ -142,8 +142,18 @@
                 height: 100%;
                 background-color: rgb(87, 238, 0);
             }
+            .accomplished {
+                position: absolute;
+                right: 1vmin; 
+                top: 15vmin;
+                color:chartreuse;
+                -webkit-text-stroke: 0.3vmin rgb(0,0,0);
+            }
             p {
                 animation:0.5s linear 0s infinite alternate rotation;
+            }
+            p2 {
+                animation:0.75s linear 0s enlarge;
             }
             @keyframes rotation {
                 from {
@@ -152,6 +162,15 @@
 
                 to {
                     transform: rotate(-10deg);
+                }
+            }
+            @keyframes enlarge {
+                from {
+                    font-size: 4vmin;
+                }
+
+                to {
+                    font-size: 8vmin;
                 }
             }
         </style>
@@ -337,7 +356,7 @@
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">建造模式</div>
             </div>
 
-            <!-- 右上角：当前科技进度 -->
+            <!-- 右上角：当前科技进度 data-if = "cur_edit_mode == '' && show_tech_progress"-->
             <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
                 <button style='background-color:rgb(250,205,9); background-size:cover; width: 16.00vmin; height: 16.00vmin;' data-style-background-image="current_tech_icon" data-event-click="clickTask(is_task)">
                     <div style="-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 3.5vmin; word-break: break-all;">{{current_tech_name}}</div>
@@ -349,6 +368,7 @@
                     </p>
                 </button>
             </div>
+            <p2 class="accomplished" data-if = "current_tech_progress == '100%'">研究完成</p2>
 
             <!-- 右下角按钮 -->
             <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;">
