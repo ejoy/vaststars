@@ -29,7 +29,6 @@ function c:ctor(init, pt)
             tech = 0,
             container = createContainer(world, pt.inputs),
             speed = math.floor(pt.speed * 100),
-            low_power = 0,
             status = STATUS_IDLE,
             progress = 0,
         }

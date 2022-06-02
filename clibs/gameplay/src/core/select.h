@@ -5,9 +5,9 @@
 
 namespace ecs::tag {
     struct pump {};
-    struct consumer {};
     struct generator {};
     struct accumulator {};
+    struct solar_panel {};
 }
 
 namespace ecs::select {
@@ -29,10 +29,11 @@ namespace ecs::select {
     COMPONENT_ID(inserter, COMPONENT_INSERTER)
     COMPONENT_ID(fluidboxes, COMPONENT_FLUIDBOXES)
     COMPONENT_ID(fluidbox, COMPONENT_FLUIDBOX)
+    COMPONENT_ID(consumer, COMPONENT_CONSUMER)
     COMPONENT_ID(tag::pump, TAG_PUMP)
-    COMPONENT_ID(tag::consumer, TAG_CONSUMER)
     COMPONENT_ID(tag::generator, TAG_GENERATOR)
     COMPONENT_ID(tag::accumulator, TAG_ACCUMULATOR)
+    COMPONENT_ID(tag::solar_panel, TAG_SOLAR_PANEL)
 
     #undef COMPONENT_ID
 

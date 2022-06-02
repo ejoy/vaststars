@@ -17,7 +17,6 @@ component "assembling" {
     "fluidbox_out:word",
     "container:word",
     "speed:word",
-    "low_power:byte",
     "status:byte",
     "progress:int",
 }
@@ -26,7 +25,6 @@ component "laboratory" {
     "tech:word",
     "container:word",
     "speed:word",
-    "low_power:byte",
     "status:byte",
     "progress:int",
 }
@@ -37,12 +35,12 @@ component "inserter" {
     "hold_item:word",
     "hold_amount:word",
     "progress:word",
-    "low_power:byte",
     "status:byte",
 }
 
 component "capacitance" {
-	"shortage:dword"
+	"shortage:dword",
+    "network:byte"
 }
 
 component "burner" {
@@ -59,9 +57,13 @@ component "chimney" {
 }
 
 component "consumer" {
+    "low_power:byte",
 }
 
 component "generator" {
+}
+
+component "solar_panel" {
 }
 
 component "accumulator" {

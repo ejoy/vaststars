@@ -134,9 +134,11 @@ end
 
 local function what_status(e)
     --TODO
-    --  no_power
     --  disabled
     --  no_minable_resources
+    if e.capacitance.network == 0 then
+        return "no_power"
+    end
     local a = e.assembling
     if a.recipe == 0 then
         return "idle"
@@ -148,7 +150,7 @@ local function what_status(e)
             return "full_output"
         end
     end
-    if a.low_power ~= 0 then
+    if e.consumer.low_power ~= 0 then
         return "low_power"
     end
     return "working"

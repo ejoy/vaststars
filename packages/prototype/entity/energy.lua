@@ -36,7 +36,7 @@ prototype "太阳能板I" {
     model = "prefabs/assembling-1.prefab",
     icon = "textures/construct/solar-panel.texture",
     construct_detector = {"exclusive"},
-    type ={"entity","generator"},
+    type ={"entity","generator","solar_panel"},
     area = "3x3",
     power = "100kW",
     priority = "primary",

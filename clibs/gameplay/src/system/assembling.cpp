@@ -41,10 +41,11 @@ sync_output_fluidbox(world& w, assembling& a, fluidboxes& fb, recipe_container& 
 }
 
 static void
-assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>& v) {
+assembling_update(world& w, ecs::select::entity<assembling, entity, consumer, capacitance>& v) {
     assembling& a = v.get<assembling>();
     entity& e = v.get<entity>();
     capacitance& c = v.get<capacitance>();
+    consumer& co = v.get<consumer>();
     prototype_context p = w.prototype(e.prototype);
 
     // step.1
@@ -62,7 +63,7 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
 
     // step.2
     while (a.progress <= 0) {
-        a.low_power = 0;
+        co.low_power = 0;
         prototype_context recipe = w.prototype(a.recipe);
         recipe_container& container = w.query_container<recipe_container>(a.container);
         if (a.status == STATUS_DONE) {
@@ -98,20 +99,20 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
 
     // step.3
     if (c.shortage + power > capacitance) {
-        a.low_power = 50;
+        co.low_power = 50;
         return;
     }
     c.shortage += power;
 
     // step.4
     a.progress -= a.speed;
-    if (a.low_power > 0) a.low_power--;
+    if (co.low_power > 0) co.low_power--;
 }
 
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (auto& v : w.select<assembling, entity, capacitance>()) {
+    for (auto& v : w.select<assembling, entity, consumer, capacitance>()) {
         assembling_update(w, v);
     }
     return 0;

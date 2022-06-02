@@ -73,7 +73,7 @@ laboratory_next_tech(world& w, entity& e, laboratory& l, uint16_t techid) {
 }
 
 static void
-laboratory_update(world& w, entity& e, laboratory& l, capacitance& c, bool& updated) {
+laboratory_update(world& w, entity& e, laboratory& l, consumer& consumer, capacitance& c, bool& updated) {
     prototype_context p = w.prototype(e.prototype);
 
     // step.1
@@ -90,7 +90,7 @@ laboratory_update(world& w, entity& e, laboratory& l, capacitance& c, bool& upda
 
     // step.2
     while (l.progress <= 0) {
-        l.low_power = 0;
+        consumer.low_power = 0;
         prototype_context tech = w.prototype(l.tech);
         recipe_container& container = w.query_container<recipe_container>(l.container);
         if (l.status == STATUS_DONE) {
@@ -118,14 +118,14 @@ laboratory_update(world& w, entity& e, laboratory& l, capacitance& c, bool& upda
 
     // step.3
     if (c.shortage + power > capacitance) {
-        l.low_power = 50;
+        consumer.low_power = 50;
         return;
     }
     c.shortage += power;
 
     // step.4
     l.progress -= l.speed;
-    if (l.low_power > 0) l.low_power--;
+    if (consumer.low_power > 0) consumer.low_power--;
 }
 
 static int
@@ -143,15 +143,16 @@ static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     bool updated = false;
-    for (auto& v : w.select<laboratory, entity, capacitance>()) {
+    for (auto& v : w.select<laboratory, entity, consumer, capacitance>()) {
         entity& e = v.get<entity>();
         laboratory& l = v.get<laboratory>();
         capacitance& c = v.get<capacitance>();
+        consumer& co = v.get<consumer>();
         uint16_t techid = w.techtree.queue_top();
         if (techid != l.tech) {
             laboratory_next_tech(w, e, l, techid);
         }
-        laboratory_update(w, e, l, c, updated);
+        laboratory_update(w, e, l, co, c, updated);
     }
     if (updated) {
         uint16_t techid = w.techtree.queue_top();

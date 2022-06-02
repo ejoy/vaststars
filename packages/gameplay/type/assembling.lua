@@ -9,7 +9,6 @@ function c:ctor(init, pt)
     local e = {
         fluidboxes = {},
         assembling = {
-            low_power = 0,
             speed = math.floor(pt.speed * 100),
         }
     }

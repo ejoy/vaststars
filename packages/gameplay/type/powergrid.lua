@@ -27,7 +27,8 @@ local accumulator = type "accumulator"
 function generator:ctor(init, pt)
 	return {
 		capacitance = {
-			shortage = pt.capacitance
+			shortage = pt.capacitance,
+			network = 1,
 		},
 		generator = true,
 	}
@@ -36,16 +37,20 @@ end
 function consumer:ctor(init, pt)
 	return {
 		capacitance = {
-			shortage = pt.capacitance
+			shortage = pt.capacitance,
+			network = 1,
 		},
-		consumer = true,
+		consumer = {
+			low_power = 0,
+		},
 	}
 end
 
 function accumulator:ctor(init, pt)
 	return {
 		capacitance = {
-			shortage = pt.capacitance
+			shortage = pt.capacitance,
+			network = 1,
 		},
 		accumulator = true,
 	}

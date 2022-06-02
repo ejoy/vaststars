@@ -20,7 +20,6 @@ struct world {
 #include "core/techtree.h"
 #include "core/statistics.h"
 #include "system/fluid.h"
-#include "system/powergrid.h"
 #include <map>
 extern "C" {
 #include "util/prototype.h"
@@ -32,7 +31,7 @@ struct world {
     std::map<uint16_t, fluidflow> fluidflows;
     techtree_mgr techtree;
     statistics stat;
-    powergrid powergrid;
+    uint64_t time = 0;
 
     template <typename C>
     C& query_container(uint16_t id);

@@ -171,10 +171,11 @@ lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     updateWaiting(w);
 
-    for (auto& e : w.select<inserter, entity, capacitance>()) {
+    for (auto& e : w.select<inserter, entity, consumer, capacitance>()) {
         inserter& i = e.get<inserter>();
         if (i.progress != STATUS_DONE) {
             capacitance& c = e.get<capacitance>();
+            consumer& co = e.get<consumer>();
             prototype_context p = w.prototype(e.get<entity>().prototype);
             
             unsigned int power = pt_power(&p);
@@ -183,15 +184,15 @@ lupdate(lua_State *L) {
                 c.shortage += power;
                 i.progress--;
                 if (i.progress == STATUS_DONE) {
-                    i.low_power = 0;
+                    co.low_power = 0;
                     wait(i, e.index);
                 }
                 else {
-                    if (i.low_power > 0) i.low_power--;
+                    if (co.low_power > 0) co.low_power--;
                 }
             }
             else {
-                i.low_power = 50;
+                co.low_power = 50;
             }
         }
     }

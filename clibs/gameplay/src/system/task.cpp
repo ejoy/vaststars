@@ -77,7 +77,7 @@ uint64_t task::select_chect(world& w) {
 }
 
 uint64_t task::power_generator(world& w) {
-    return w.powergrid.generate_power;
+    return w.stat.generate_power;
 }
 
 uint64_t task::eval(world& w) {
