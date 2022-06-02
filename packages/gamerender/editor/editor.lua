@@ -9,6 +9,9 @@ local gameplay_core = require "gameplay.core"
 local flow_shape = require "gameplay.utility.flow_shape"
 local ifluid = require "gameplay.interface.fluid"
 local terrain = ecs.require "terrain"
+local iassembling = require "gameplay.interface.assembling"
+local ichest = require "gameplay.interface.chest"
+local iworld = require "gameplay.interface.world"
 
 --
 local M = {}
@@ -183,6 +186,41 @@ function M:teardown_complete()
     for id, object in pairs(removed_set) do
         vsobject_manager:remove(id)
         objects:remove(object.id)
+
+        -- TODO
+        local item_counts = {}
+        local e = gameplay_core.get_entity(object.gameplay_eid)
+        if e.assembling then
+            for prototype_name, count in pairs(iassembling:item_counts(gameplay_core.get_world(), e)) do
+                item_counts[prototype_name] = item_counts[prototype_name] or 0
+                item_counts[prototype_name] = item_counts[prototype_name] + count
+            end
+        end
+        if e.chest then
+            for prototype_name, count in pairs(ichest:item_counts(gameplay_core.get_world(), e)) do
+                item_counts[prototype_name] = item_counts[prototype_name] or 0
+                item_counts[prototype_name] = item_counts[prototype_name] + count
+            end
+        end
+        local typeobject_item = iprototype:queryByName("item", object.prototype_name)
+        if not typeobject_item then
+            log.error(("can not found item `%s`"):format(object.prototype_name))
+        else
+            item_counts[typeobject_item.id] = item_counts[typeobject_item.id] or 0
+            item_counts[typeobject_item.id] = item_counts[typeobject_item.id] + 1
+        end
+
+        local headquater_e = iworld:get_headquater_entity(gameplay_core.get_world())
+        if headquater_e then
+            for prototype, count in pairs(item_counts) do
+                if not gameplay_core.get_world():container_place(headquater_e.chest.container, prototype, count) then
+                    log.error(("failed to place `%s` `%s`"):format(prototype, count))
+                end
+            end
+        else
+            log.error("no headquater")
+        end
+
         gameplay_core.remove_entity(object.gameplay_eid)
         changed_set[id] = nil
     end
@@ -198,8 +236,13 @@ end
 
 function M:teardown(id)
     local object = self:clone_object(assert(objects:get(id, EDITOR_CACHE_NAMES)))
-    local vsobject = assert(vsobject_manager:get(id))
+    local typeobject = iprototype:queryByName("entity", object.prototype_name)
+    if typeobject.teardown == false then
+        log.info(("`%s` cannot be demolished"):format(object.prototype_name))
+        return
+    end
 
+    local vsobject = assert(vsobject_manager:get(id))
     object.teardown = not object.teardown
 
     if object.teardown then
