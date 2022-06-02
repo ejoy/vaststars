@@ -2,30 +2,6 @@
 
 #include <stdint.h>
 
-enum COMPONENT {
-	COMPONENT_ENTITY = 1,
-	COMPONENT_CHEST = 2,
-	COMPONENT_ASSEMBLING = 3,
-	COMPONENT_LABORATORY = 4,
-	COMPONENT_INSERTER = 5,
-	COMPONENT_CAPACITANCE = 6,
-	COMPONENT_BURNER = 7,
-	COMPONENT_CHIMNEY = 8,
-	COMPONENT_CONSUMER = 9,
-	TAG_GENERATOR = 10,
-	TAG_SOLAR_PANEL = 11,
-	TAG_ACCUMULATOR = 12,
-	TAG_POLE = 13,
-	TAG_POWER = 14,
-	COMPONENT_FLUIDBOX = 15,
-	COMPONENT_FLUIDBOXES = 16,
-	TAG_PUMP = 17,
-	TAG_MINING = 18,
-	COMPONENT_ROAD = 19,
-	COMPONENT_STATION = 20,
-	COMPONENT_SAVE_FLUIDFLOW = 21,
-};
-
 struct entity {
 	uint8_t x;
 	uint8_t y;
@@ -86,6 +62,16 @@ struct consumer {
 	uint8_t low_power;
 };
 
+struct generator {};
+
+struct solar_panel {};
+
+struct accumulator {};
+
+struct pole {};
+
+struct power {};
+
 struct fluidbox {
 	uint16_t fluid;
 	uint16_t id;
@@ -95,6 +81,10 @@ struct fluidboxes {
 	struct fluidbox in[4];
 	struct fluidbox out[3];
 };
+
+struct pump {};
+
+struct mining {};
 
 struct road {
 	uint16_t road_type;
@@ -110,4 +100,111 @@ struct save_fluidflow {
 	uint16_t fluid;
 	uint16_t id;
 	uint32_t volume;
+};
+
+template <typename T> struct component {};
+
+template <> struct component<entity> {
+	static inline const int id = 1;
+	static inline const char name[] = "entity";
+};
+
+template <> struct component<chest> {
+	static inline const int id = 2;
+	static inline const char name[] = "chest";
+};
+
+template <> struct component<assembling> {
+	static inline const int id = 3;
+	static inline const char name[] = "assembling";
+};
+
+template <> struct component<laboratory> {
+	static inline const int id = 4;
+	static inline const char name[] = "laboratory";
+};
+
+template <> struct component<inserter> {
+	static inline const int id = 5;
+	static inline const char name[] = "inserter";
+};
+
+template <> struct component<capacitance> {
+	static inline const int id = 6;
+	static inline const char name[] = "capacitance";
+};
+
+template <> struct component<burner> {
+	static inline const int id = 7;
+	static inline const char name[] = "burner";
+};
+
+template <> struct component<chimney> {
+	static inline const int id = 8;
+	static inline const char name[] = "chimney";
+};
+
+template <> struct component<consumer> {
+	static inline const int id = 9;
+	static inline const char name[] = "consumer";
+};
+
+template <> struct component<generator> {
+	static inline const int id = 10;
+	static inline const char name[] = "generator";
+};
+
+template <> struct component<solar_panel> {
+	static inline const int id = 11;
+	static inline const char name[] = "solar_panel";
+};
+
+template <> struct component<accumulator> {
+	static inline const int id = 12;
+	static inline const char name[] = "accumulator";
+};
+
+template <> struct component<pole> {
+	static inline const int id = 13;
+	static inline const char name[] = "pole";
+};
+
+template <> struct component<power> {
+	static inline const int id = 14;
+	static inline const char name[] = "power";
+};
+
+template <> struct component<fluidbox> {
+	static inline const int id = 15;
+	static inline const char name[] = "fluidbox";
+};
+
+template <> struct component<fluidboxes> {
+	static inline const int id = 16;
+	static inline const char name[] = "fluidboxes";
+};
+
+template <> struct component<pump> {
+	static inline const int id = 17;
+	static inline const char name[] = "pump";
+};
+
+template <> struct component<mining> {
+	static inline const int id = 18;
+	static inline const char name[] = "mining";
+};
+
+template <> struct component<road> {
+	static inline const int id = 19;
+	static inline const char name[] = "road";
+};
+
+template <> struct component<station> {
+	static inline const int id = 20;
+	static inline const char name[] = "station";
+};
+
+template <> struct component<save_fluidflow> {
+	static inline const int id = 21;
+	static inline const char name[] = "save_fluidflow";
 };

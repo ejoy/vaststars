@@ -3,40 +3,7 @@
 #include "entity.h"
 #include "luaecs.h"
 
-namespace ecs::tag {
-    struct pump {};
-    struct generator {};
-    struct accumulator {};
-    struct solar_panel {};
-}
-
 namespace ecs::select {
-    template <typename T> struct component {};
-    #define COMPONENT_ID(TYPE, ID) \
-        template <> \
-        struct component<TYPE> { \
-            static inline const int id = ID; \
-            static inline const char name[] = #TYPE; \
-        };
-
-    COMPONENT_ID(entity, COMPONENT_ENTITY)
-    COMPONENT_ID(chest, COMPONENT_CHEST)
-    COMPONENT_ID(capacitance, COMPONENT_CAPACITANCE)
-    COMPONENT_ID(burner, COMPONENT_BURNER)
-    COMPONENT_ID(chimney, COMPONENT_CHIMNEY)
-    COMPONENT_ID(assembling, COMPONENT_ASSEMBLING)
-    COMPONENT_ID(laboratory, COMPONENT_LABORATORY)
-    COMPONENT_ID(inserter, COMPONENT_INSERTER)
-    COMPONENT_ID(fluidboxes, COMPONENT_FLUIDBOXES)
-    COMPONENT_ID(fluidbox, COMPONENT_FLUIDBOX)
-    COMPONENT_ID(consumer, COMPONENT_CONSUMER)
-    COMPONENT_ID(tag::pump, TAG_PUMP)
-    COMPONENT_ID(tag::generator, TAG_GENERATOR)
-    COMPONENT_ID(tag::accumulator, TAG_ACCUMULATOR)
-    COMPONENT_ID(tag::solar_panel, TAG_SOLAR_PANEL)
-
-    #undef COMPONENT_ID
-
     template <typename ...Components>
     struct entity_;
 

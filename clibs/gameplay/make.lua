@@ -22,8 +22,8 @@ lm:lib "gameplay" {
         "src/"
     },
     sources = {
-        "src/**.c",
-        "src/**.cpp",
-        "!src/mining.cpp"
+        "src/**/*.c",
+        "src/**/*.cpp",
+        "!src/core/road.c",
     }
 }

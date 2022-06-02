@@ -45,7 +45,7 @@ stat_consumer(lua_State *L, world& w, powergrid pg[]) {
 static void
 stat_generator(lua_State *L, world& w, powergrid pg[]) {
 	struct prototype_context p = w.prototype(0);
-	for (auto& v : w.select<ecs::tag::generator, capacitance, entity>()) {
+	for (auto& v : w.select<generator, capacitance, entity>()) {
 		capacitance& c = v.get<capacitance>();
 		if (c.network == 0) {
 			continue;
@@ -62,7 +62,7 @@ stat_generator(lua_State *L, world& w, powergrid pg[]) {
 static void
 stat_accumulator(lua_State *L, world& w, powergrid pg[]) {
 	struct prototype_context p = w.prototype(0);
-	for (auto& v : w.select<ecs::tag::accumulator, capacitance, entity>()) {
+	for (auto& v : w.select<accumulator, capacitance, entity>()) {
 		capacitance& c = v.get<capacitance>();
 		if (c.network == 0) {
 			continue;
@@ -205,7 +205,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 				}
 			}
 		}
-		else if (w.sibling<ecs::tag::generator>(v)) {
+		else if (w.sibling<generator>(v)) {
 			// It's a generator, and must be not a consumer
 			float eff = pg[c.network].generator_efficiency[pt_priority(&p)];
 			if (eff > 0) {
@@ -214,7 +214,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 				generate_power += power;
 			}
 		}
-		else if (pg[c.network].accumulator_efficiency != 0 && w.sibling<ecs::tag::accumulator>(v)) {
+		else if (pg[c.network].accumulator_efficiency != 0 && w.sibling<accumulator>(v)) {
 			float eff = pg[c.network].accumulator_efficiency;
 			if (eff > 0) {
 				// discharge
