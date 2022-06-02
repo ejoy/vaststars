@@ -66,12 +66,6 @@ component "generator" {
 component "accumulator" {
 }
 
-component "pole" {
-}
-
-component "power" {
-}
-
 component "fluidbox" {
     "fluid:word",
     "id:word",

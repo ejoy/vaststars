@@ -4,7 +4,5 @@ local c = type "pole"
     .supply_area "size"
 
 function c:ctor(init, pt)
-    return {
-        pole = true
-    }
+    return {}
 end

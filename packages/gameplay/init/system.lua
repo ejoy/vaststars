@@ -1,5 +1,4 @@
 require "system.fluidflow"
-require "system.electricpole"
 require "system.inserter"
 require "system.saveload"
 
