@@ -1,5 +1,7 @@
 #pragma once
 
+struct lua_State;
+
 #include "entity.h"
 #include "luaecs.h"
 

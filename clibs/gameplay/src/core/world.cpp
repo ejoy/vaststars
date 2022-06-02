@@ -247,9 +247,9 @@ namespace lua_world {
     create(lua_State* L) {
         struct world* w = (struct world*)lua_newuserdatauv(L, sizeof(struct world), 0);
         new (w) world;
-        w->c.L = L;
-        w->c.ecs = (struct ecs_context *)lua_touserdata(L, 1);
-        w->c.P = (struct prototype_cache *)lua_touserdata(L, 2);
+        w->L = L;
+        w->ecs = (struct ecs_context *)lua_touserdata(L, 1);
+        w->P = (struct prototype_cache *)lua_touserdata(L, 2);
         if (luaL_newmetatable(L, "gameplay::world")) {
             lua_pushvalue(L, -1);
             lua_setfield(L, -2, "__index");

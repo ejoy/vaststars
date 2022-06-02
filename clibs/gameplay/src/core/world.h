@@ -1,20 +1,5 @@
 #pragma once
 
-struct ecs_context;
-struct prototype_cache;
-
-#if defined(__cplusplus)
-struct cworld {
-#else
-struct world {
-#endif
-    struct lua_State*       L;
-    struct ecs_context*     ecs;
-    struct prototype_cache* P;
-};
-
-#if defined(__cplusplus)
-
 #include "core/container.h"
 #include "core/select.h"
 #include "core/techtree.h"
@@ -25,8 +10,14 @@ extern "C" {
 #include "util/prototype.h"
 }
 
+struct lua_State;
+struct ecs_context;
+struct prototype_cache;
+
 struct world {
-    struct cworld c;
+    struct lua_State*       L;
+    struct ecs_context*     ecs;
+    struct prototype_cache* P;
     struct container_mgr containers;
     std::map<uint16_t, fluidflow> fluidflows;
     techtree_mgr techtree;
@@ -40,22 +31,20 @@ struct world {
 
     template <typename ...Args>
     bool visit_entity(ecs::select::entity<Args...>& e, int i) {
-        return ecs::select::visit_entity(c.L, c.ecs, i, e);
+        return ecs::select::visit_entity(L, ecs, i, e);
     }
 
     template <typename Component, typename MainKey, typename ...SubKey>
     Component* sibling(ecs::select::entity<MainKey, SubKey...>& e) {
-        return ecs::select::sibling<Component, MainKey>(c.ecs, e.index);
+        return ecs::select::sibling<Component, MainKey>(ecs, e.index);
     }
 
     template <typename ...Args>
     ecs::select::each_range<Args...> select() {
-        return ecs::select::each<Args...>(c.L, c.ecs);
+        return ecs::select::each<Args...>(L, ecs);
     }
 
     prototype_context prototype(int id) {
-        return {c.L, c.P, id};
+        return {L, P, id};
     }
 };
-
-#endif

@@ -98,7 +98,7 @@ void chest_container::sort(size_t index, uint16_t newvalue) {
 }
 
 bool chest_container::resize(world& w, uint16_t item, uint16_t value, uint16_t newvalue) {
-    struct prototype_context p = { w.c.L, w.c.P, item };
+    struct prototype_context p = { w.L, w.P, item };
     uint16_t stack = pt_stack(&p);
     assert (value != newvalue);
 
