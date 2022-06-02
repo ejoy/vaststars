@@ -20,7 +20,7 @@ end
 
 function m.update()
     -- 发电机发电逻辑
-    for v in world.ecs:select "generator capacitance:out" do
+    for v in world.ecs:select "generator capacitance:update" do
         v.capacitance.shortage = 0
     end
 
