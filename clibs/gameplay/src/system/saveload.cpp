@@ -177,53 +177,33 @@ namespace sav_container {
     }
 }
 
-namespace sav_statistics {
-    static void backup(lua_State* L, world& w) {
-        FILE* f = createfile(L, 2, "statistics.bin", filemode::write);
-        write_flatmap(f, w.stat.production);
-        write_flatmap(f, w.stat.consumption);
-        fclose(f);
-    }
-    static void restore(lua_State* L, world& w) {
-        FILE* f = createfile(L, 2, "statistics.bin", filemode::read);
-        read_flatmap(f, w.stat.production);
-        read_flatmap(f, w.stat.consumption);
-        fclose(f);
-    }
-}
-
-namespace sav_techtree {
-    static void backup(lua_State* L, world& w) {
-        FILE* f = createfile(L, 2, "techtree.bin", filemode::write);
-        write_vector(f, w.techtree.queue);
-        write_flatmap(f, w.techtree.researched);
-        write_flatmap(f, w.techtree.progress);
-        fclose(f);
-    }
-    static void restore(lua_State* L, world& w) {
-        FILE* f = createfile(L, 2, "techtree.bin", filemode::read);
-        read_vector(f, w.techtree.queue);
-        read_flatmap(f, w.techtree.researched);
-        read_flatmap(f, w.techtree.progress);
-        fclose(f);
-    }
-}
-
 static int
 lbackup(lua_State* L) {
     world& w = *(world*)lua_touserdata(L, 1);
+    FILE* f = createfile(L, 2, "world.bin", filemode::write);
+    file_write(f, w.time);
+    write_flatmap(f, w.stat.production);
+    write_flatmap(f, w.stat.consumption);
+    write_vector(f, w.techtree.queue);
+    write_flatmap(f, w.techtree.researched);
+    write_flatmap(f, w.techtree.progress);
+    fclose(f);
     sav_container::backup(L, w);
-    sav_statistics::backup(L, w);
-    sav_techtree::backup(L, w);
     return 0;
 }
 
 static int
 lrestore(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
+    FILE* f = createfile(L, 2, "world.bin", filemode::read);
+    file_read(f, w.time);
+    read_flatmap(f, w.stat.production);
+    read_flatmap(f, w.stat.consumption);
+    read_vector(f, w.techtree.queue);
+    read_flatmap(f, w.techtree.researched);
+    read_flatmap(f, w.techtree.progress);
+    fclose(f);
     sav_container::restore(L, w);
-    sav_statistics::restore(L, w);
-    sav_techtree::restore(L, w);
     return 0;
 }
 
