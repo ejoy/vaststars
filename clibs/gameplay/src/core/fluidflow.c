@@ -210,7 +210,6 @@ adjust_connection(struct pipe *p, int idx) {
 
 int
 fluidflow_teardown(struct fluidflow_network *net, int id) {
-	clear_order(net);
 	int idx = find_id(net, id);
 	if (idx == PIPE_INVALID_CONNECTION)
 		return 1;
@@ -243,6 +242,7 @@ fluidflow_teardown(struct fluidflow_network *net, int id) {
 	} else {
 		--net->pipe_n;
 	}
+	clear_order(net);
 	return 0;
 }
 
