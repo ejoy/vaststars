@@ -64,8 +64,6 @@ struct consumer {
 
 struct generator {};
 
-struct solar_panel {};
-
 struct accumulator {};
 
 struct pole {};
@@ -101,6 +99,10 @@ struct save_fluidflow {
 	uint16_t id;
 	uint32_t volume;
 };
+
+struct solar_panel {};
+
+struct base {};
 
 template <typename T> struct component {};
 
@@ -154,57 +156,62 @@ template <> struct component<generator> {
 	static inline const char name[] = "generator";
 };
 
-template <> struct component<solar_panel> {
-	static inline const int id = 11;
-	static inline const char name[] = "solar_panel";
-};
-
 template <> struct component<accumulator> {
-	static inline const int id = 12;
+	static inline const int id = 11;
 	static inline const char name[] = "accumulator";
 };
 
 template <> struct component<pole> {
-	static inline const int id = 13;
+	static inline const int id = 12;
 	static inline const char name[] = "pole";
 };
 
 template <> struct component<power> {
-	static inline const int id = 14;
+	static inline const int id = 13;
 	static inline const char name[] = "power";
 };
 
 template <> struct component<fluidbox> {
-	static inline const int id = 15;
+	static inline const int id = 14;
 	static inline const char name[] = "fluidbox";
 };
 
 template <> struct component<fluidboxes> {
-	static inline const int id = 16;
+	static inline const int id = 15;
 	static inline const char name[] = "fluidboxes";
 };
 
 template <> struct component<pump> {
-	static inline const int id = 17;
+	static inline const int id = 16;
 	static inline const char name[] = "pump";
 };
 
 template <> struct component<mining> {
-	static inline const int id = 18;
+	static inline const int id = 17;
 	static inline const char name[] = "mining";
 };
 
 template <> struct component<road> {
-	static inline const int id = 19;
+	static inline const int id = 18;
 	static inline const char name[] = "road";
 };
 
 template <> struct component<station> {
-	static inline const int id = 20;
+	static inline const int id = 19;
 	static inline const char name[] = "station";
 };
 
 template <> struct component<save_fluidflow> {
-	static inline const int id = 21;
+	static inline const int id = 20;
 	static inline const char name[] = "save_fluidflow";
+};
+
+template <> struct component<solar_panel> {
+	static inline const int id = 21;
+	static inline const char name[] = "solar_panel";
+};
+
+template <> struct component<base> {
+	static inline const int id = 22;
+	static inline const char name[] = "base";
 };

@@ -37,16 +37,27 @@ static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     w.time++;
-
     uint64_t eff = solar_efficiency(w.time / DayTick);
-    if (eff == 0) {
-        return 0;
+    if (eff != 0) {
+        for (auto& v : w.select<solar_panel, capacitance, entity>()) {
+            entity& e = v.get<entity>();
+            capacitance& c = v.get<capacitance>();
+            prototype_context p = w.prototype(e.prototype);
+            unsigned int power = (unsigned int)(eff * pt_power(&p) / FixedPoint);
+            if (power < c.shortage) {
+                c.shortage -= power;
+            }
+            else {
+                c.shortage = 0;
+            }
+        }
     }
-    for (auto& v : w.select<solar_panel, capacitance, entity>()) {
+    
+    for (auto& v : w.select<base, capacitance, entity>()) {
         entity& e = v.get<entity>();
         capacitance& c = v.get<capacitance>();
         prototype_context p = w.prototype(e.prototype);
-        unsigned int power = (unsigned int)(eff * pt_power(&p) / FixedPoint);
+        unsigned int power = (unsigned int)pt_power(&p);
         if (power < c.shortage) {
             c.shortage -= power;
         }

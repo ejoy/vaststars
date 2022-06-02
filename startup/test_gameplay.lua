@@ -5,14 +5,6 @@ import_package "vaststars.prototype"
 
 local gameplay = import_package "vaststars.gameplay"
 
-local test = gameplay.system "test"
-
-function test.update(world)
-    for v in world.ecs:select "generator capacitance:update" do
-        v.capacitance.shortage = 0
-    end
-end
-
 local world = gameplay.createWorld()
 
 assert(loadfile "test_map.lua")(world)

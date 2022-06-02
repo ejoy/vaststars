@@ -6,7 +6,7 @@ prototype "指挥中心" {
     icon = "textures/building_pic/small_pic_headquarter.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "generator", "chest"},
+    type ={"entity", "generator", "chest", "base"},
     area = "5x5",
     power = "1MW",
     priority = "primary",

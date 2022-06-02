@@ -63,9 +63,6 @@ component "consumer" {
 component "generator" {
 }
 
-component "solar_panel" {
-}
-
 component "accumulator" {
 }
 
@@ -105,4 +102,10 @@ component "save_fluidflow" {
 	"fluid:word",
 	"id:word",
 	"volume:dword"
+}
+
+component "solar_panel" {
+}
+
+component "base" {
 }
