@@ -193,24 +193,20 @@ function M:teardown_complete()
         if e.assembling then
             for prototype_name, count in pairs(iassembling:item_counts(gameplay_core.get_world(), e)) do
                 local typeobject_item = iprototype:queryByName("item", prototype_name)
-                if not typeobject_item then
-                    log.error(("can not found item `%s`"):format(prototype_name))
-                else
+                if typeobject_item then
                     item_counts[typeobject_item.id] = item_counts[typeobject_item.id] or 0
                     item_counts[typeobject_item.id] = item_counts[typeobject_item.id] + count
                 end
             end
         end
         if e.chest then
-            for prototype_name, count in pairs(ichest:item_counts(gameplay_core.get_world(), e)) do
-                item_counts[prototype_name] = item_counts[prototype_name] or 0
-                item_counts[prototype_name] = item_counts[prototype_name] + count
+            for prototype, count in pairs(ichest:item_counts(gameplay_core.get_world(), e)) do
+                item_counts[prototype] = item_counts[prototype] or 0
+                item_counts[prototype] = item_counts[prototype] + count
             end
         end
         local typeobject_item = iprototype:queryByName("item", object.prototype_name)
-        if not typeobject_item then
-            log.error(("can not found item `%s`"):format(object.prototype_name))
-        else
+        if typeobject_item then
             item_counts[typeobject_item.id] = item_counts[typeobject_item.id] or 0
             item_counts[typeobject_item.id] = item_counts[typeobject_item.id] + 1
         end
