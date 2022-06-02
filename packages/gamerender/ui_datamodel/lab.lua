@@ -5,7 +5,7 @@ local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
 local ilaboratory = require "gameplay.interface.laboratory"
 local objects = require "objects"
-
+local open_techui_mb = mailbox:sub {"open_techui"}
 local M = {}
 local current_inputs
 local inputs_count
@@ -40,6 +40,10 @@ function M:stage_ui_update(datamodel)
         end
     end
     datamodel.items = datamodel.items
+
+    for _, _, _ in open_techui_mb:unpack() do
+        gameplay_core.world_update = false
+    end
 end
 
 return M
