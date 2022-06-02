@@ -124,10 +124,10 @@ lupdate(lua_State *L) {
 	for (auto& [_,f] : w.fluidflows) {
 		f.update();
 	}
-	for (auto& e : w.select<fluidboxes, assembling>()) {
-		assembling& a = e.get<assembling>();
+	for (auto& e : w.select<ecs::fluidboxes, ecs::assembling>()) {
+		ecs::assembling& a = e.get<ecs::assembling>();
 		if (a.recipe != 0) {
-			fluidboxes& fb = e.get<fluidboxes>();
+			ecs::fluidboxes& fb = e.get<ecs::fluidboxes>();
 			recipe_container& container = w.query_container<recipe_container>(a.container);
 			for (size_t i = 0; i < 4; ++i) {
 				uint16_t fluid = fb.in[i].fluid;

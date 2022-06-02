@@ -13,7 +13,7 @@ extern "C" {
 #define STATUS_DONE 1
 #define STATUS_WORKING 2
 
-static bool fluidbox_pickup(world& w, fluidbox& f, recipe_items& r) {
+static bool fluidbox_pickup(world& w, ecs::fluidbox& f, recipe_items& r) {
     if (r.n != 1 || r.items[0].item != f.fluid) {
         return false;
     }
@@ -32,8 +32,8 @@ static bool fluidbox_pickup(world& w, fluidbox& f, recipe_items& r) {
 }
 
 static void
-chimney_update(world& w, ecs::select::entity<chimney, fluidbox>& v) {
-    chimney& c = v.get<chimney>();
+chimney_update(world& w, ecs::select::entity<ecs::chimney, ecs::fluidbox>& v) {
+    ecs::chimney& c = v.get<ecs::chimney>();
     if (c.recipe == 0) {
         return;
     }
@@ -51,7 +51,7 @@ chimney_update(world& w, ecs::select::entity<chimney, fluidbox>& v) {
         }
         if (c.status == STATUS_IDLE) {
             recipe_items* r = (recipe_items*)pt_ingredients(&recipe);
-            fluidbox& f = v.get<fluidbox>();
+            ecs::fluidbox& f = v.get<ecs::fluidbox>();
             if (!fluidbox_pickup(w, f, *r)) {
                 return;
             }
@@ -67,7 +67,7 @@ chimney_update(world& w, ecs::select::entity<chimney, fluidbox>& v) {
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (auto& v : w.select<chimney, fluidbox>()) {
+    for (auto& v : w.select<ecs::chimney, ecs::fluidbox>()) {
         chimney_update(w, v);
     }
     return 0;

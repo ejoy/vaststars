@@ -13,7 +13,7 @@ extern "C" {
 #define STATUS_DONE 1
 
 static void
-checkFinish(world& w, burner& b) {
+checkFinish(world& w, ecs::burner& b) {
 	if (b.progress == STATUS_DONE) {
 		prototype_context recipe = w.prototype(b.recipe);
 		recipe_container& container = w.query_container<recipe_container>(b.container);
@@ -27,20 +27,20 @@ checkFinish(world& w, burner& b) {
 static int
 lupdate(lua_State *L) {
 	world& w = *(world*)lua_touserdata(L, 1);
-	for (auto& v: w.select<burner, entity, capacitance>()) {
-		capacitance& c = v.get<capacitance>();
+	for (auto& v: w.select<ecs::burner, ecs::entity, ecs::capacitance>()) {
+		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.shortage <= 0) {
-			checkFinish(w, v.get<burner>());
+			checkFinish(w, v.get<ecs::burner>());
 			continue;
 		}
-		entity& e = v.get<entity>();
+		ecs::entity& e = v.get<ecs::entity>();
 		prototype_context p = w.prototype(e.prototype);
 		unsigned int power = pt_power(&p);
 		if (c.shortage < power) {
-			checkFinish(w, v.get<burner>());
+			checkFinish(w, v.get<ecs::burner>());
 			continue;
 		}
-		burner& b = v.get<burner>();
+		ecs::burner& b = v.get<ecs::burner>();
 		if (b.progress == STATUS_DONE || b.progress == STATUS_IDLE) {
 			prototype_context recipe = w.prototype(b.recipe);
 			recipe_container& container = w.query_container<recipe_container>(b.container);

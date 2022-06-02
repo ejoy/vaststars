@@ -49,8 +49,8 @@ uint64_t task::stat_consumption(world& w) {
 
 uint64_t task::select_entity(world& w) {
     uint64_t n = 0;
-    for (auto& v : w.select<entity>()) {
-        entity& e = v.get<entity>();
+    for (auto& v : w.select<ecs::entity>()) {
+        ecs::entity& e = v.get<ecs::entity>();
         if (e.prototype == p1) {
             ++n;
         }
@@ -60,10 +60,10 @@ uint64_t task::select_entity(world& w) {
 
 uint64_t task::select_chect(world& w) {
     uint64_t n = 0;
-    for (auto& v : w.select<chest, entity>()) {
-        entity& e = v.get<entity>();
+    for (auto& v : w.select<ecs::chest, ecs::entity>()) {
+        ecs::entity& e = v.get<ecs::entity>();
         if (e.prototype == p1) {
-            chest& c = v.get<chest>();
+            ecs::chest& c = v.get<ecs::chest>();
             auto& container = w.query_container<chest_container>(c.container);
             for (auto& slot : container.slots) {
                 if (slot.item == p2) {

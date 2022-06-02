@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 
+namespace ecs {
+
 struct entity {
 	uint8_t x;
 	uint8_t y;
@@ -201,3 +203,5 @@ template <> struct component<base> {
 	static inline const int id = 20;
 	static inline const char name[] = "base";
 };
+
+}

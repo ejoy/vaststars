@@ -39,9 +39,9 @@ lupdate(lua_State *L) {
     w.time++;
     uint64_t eff = solar_efficiency(w.time / DayTick);
     if (eff != 0) {
-        for (auto& v : w.select<solar_panel, capacitance, entity>()) {
-            entity& e = v.get<entity>();
-            capacitance& c = v.get<capacitance>();
+        for (auto& v : w.select<ecs::solar_panel, ecs::capacitance, ecs::entity>()) {
+            ecs::entity& e = v.get<ecs::entity>();
+            ecs::capacitance& c = v.get<ecs::capacitance>();
             prototype_context p = w.prototype(e.prototype);
             unsigned int power = (unsigned int)(eff * pt_power(&p) / FixedPoint);
             if (power < c.shortage) {
@@ -53,9 +53,9 @@ lupdate(lua_State *L) {
         }
     }
     
-    for (auto& v : w.select<base, capacitance, entity>()) {
-        entity& e = v.get<entity>();
-        capacitance& c = v.get<capacitance>();
+    for (auto& v : w.select<ecs::base, ecs::capacitance, ecs::entity>()) {
+        ecs::entity& e = v.get<ecs::entity>();
+        ecs::capacitance& c = v.get<ecs::capacitance>();
         prototype_context p = w.prototype(e.prototype);
         unsigned int power = (unsigned int)pt_power(&p);
         if (power < c.shortage) {

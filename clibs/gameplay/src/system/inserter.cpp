@@ -93,14 +93,14 @@ pickup(world& w, container& input, container& output, uint16_t max) {
 }
 
 static void
-wait(inserter& inserter, int index) {
+wait(ecs::inserter& inserter, int index) {
     if (inserter.input_container != uint16_t(-1) && inserter.output_container != uint16_t(-1)) {
         waiting.push_back(index);
     }
 }
 
 static bool
-tryActive(world& w, inserter& i, entity& e, capacitance& c) {
+tryActive(world& w, ecs::inserter& i, ecs::entity& e, ecs::capacitance& c) {
     prototype_context p = w.prototype(e.prototype);
 
     unsigned int power = pt_power(&p);
@@ -141,9 +141,9 @@ tryActive(world& w, inserter& i, entity& e, capacitance& c) {
 
 static void
 updateWaiting(world& w) {
-    ecs::select::entity<inserter, entity, capacitance> e;
+    ecs::select::entity<ecs::inserter, ecs::entity, ecs::capacitance> e;
     for (auto iter = waiting.begin(); iter != waiting.end();) {
-        if (!w.visit_entity(e, *iter) || tryActive(w, e.get<inserter>(), e.get<entity>(), e.get<capacitance>())) {
+        if (!w.visit_entity(e, *iter) || tryActive(w, e.get<ecs::inserter>(), e.get<ecs::entity>(), e.get<ecs::capacitance>())) {
             iter = waiting.erase(iter);
         }
         else {
@@ -157,8 +157,8 @@ lbuild(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     waiting.clear();
 
-    for (auto& e : w.select<inserter>()) {
-        inserter& i = e.get<inserter>();
+    for (auto& e : w.select<ecs::inserter>()) {
+        ecs::inserter& i = e.get<ecs::inserter>();
         if (i.progress == STATUS_DONE) {
             wait(i, e.index);
         }
@@ -171,12 +171,12 @@ lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     updateWaiting(w);
 
-    for (auto& e : w.select<inserter, entity, consumer, capacitance>()) {
-        inserter& i = e.get<inserter>();
+    for (auto& e : w.select<ecs::inserter, ecs::entity, ecs::consumer, ecs::capacitance>()) {
+        ecs::inserter& i = e.get<ecs::inserter>();
         if (i.progress != STATUS_DONE) {
-            capacitance& c = e.get<capacitance>();
-            consumer& co = e.get<consumer>();
-            prototype_context p = w.prototype(e.get<entity>().prototype);
+            ecs::capacitance& c = e.get<ecs::capacitance>();
+            ecs::consumer& co = e.get<ecs::consumer>();
+            prototype_context p = w.prototype(e.get<ecs::entity>().prototype);
             
             unsigned int power = pt_power(&p);
             unsigned int capacitance = power * 2;

@@ -12,7 +12,7 @@ extern "C" {
 #define STATUS_DONE 1
 
 static void
-sync_input_fluidbox(world& w, assembling& a, fluidboxes& fb, recipe_container& container) {
+sync_input_fluidbox(world& w, ecs::assembling& a, ecs::fluidboxes& fb, recipe_container& container) {
 	for (size_t i = 0; i < 4; ++i) {
 		uint16_t fluid = fb.in[i].fluid;
 		if (fluid != 0) {
@@ -26,7 +26,7 @@ sync_input_fluidbox(world& w, assembling& a, fluidboxes& fb, recipe_container& c
 }
 
 static void
-sync_output_fluidbox(world& w, assembling& a, fluidboxes& fb, recipe_container& container) {
+sync_output_fluidbox(world& w, ecs::assembling& a, ecs::fluidboxes& fb, recipe_container& container) {
 	for (size_t i = 0; i < 3; ++i) {
 		uint16_t fluid = fb.out[i].fluid;
 		if (fluid != 0) {
@@ -40,10 +40,10 @@ sync_output_fluidbox(world& w, assembling& a, fluidboxes& fb, recipe_container& 
 }
 
 static void
-assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>& v) {
-    assembling& a = v.get<assembling>();
-    entity& e = v.get<entity>();
-    capacitance& c = v.get<capacitance>();
+assembling_update(world& w, ecs::select::entity<ecs::assembling, ecs::entity, ecs::capacitance>& v) {
+    ecs::assembling& a = v.get<ecs::assembling>();
+    ecs::entity& e = v.get<ecs::entity>();
+    ecs::capacitance& c = v.get<ecs::capacitance>();
     prototype_context p = w.prototype(e.prototype);
 
     // step.1
@@ -64,7 +64,7 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
             if (container.recipe_place(w, r)) {
                 a.progress = STATUS_IDLE;
                 if (a.fluidbox_out != 0) {
-                    fluidboxes* fb = w.sibling<fluidboxes>(v);
+                    ecs::fluidboxes* fb = w.sibling<ecs::fluidboxes>(v);
                     if (fb) {
                         sync_output_fluidbox(w, a, *fb, container);
                     }
@@ -77,7 +77,7 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
                 int time = pt_time(&recipe);
                 a.progress = time + STATUS_DONE;
                 if (a.fluidbox_in != 0) {
-                    fluidboxes* fb = w.sibling<fluidboxes>(v);
+                    ecs::fluidboxes* fb = w.sibling<ecs::fluidboxes>(v);
                     if (fb) {
                         sync_input_fluidbox(w, a, *fb, container);
                     }
@@ -100,29 +100,29 @@ assembling_update(world& w, ecs::select::entity<assembling, entity, capacitance>
 }
 
 static void
-block(world& w, fluidbox const& fb) {
+block(world& w, ecs::fluidbox const& fb) {
     w.fluidflows[fb.fluid].block(fb.id);
 }
 
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (auto& v : w.select<pump, entity, capacitance, fluidbox>()) {
-        entity& e = v.get<entity>();
-        capacitance& c = v.get<capacitance>();
+    for (auto& v : w.select<ecs::pump, ecs::entity, ecs::capacitance, ecs::fluidbox>()) {
+        ecs::entity& e = v.get<ecs::entity>();
+        ecs::capacitance& c = v.get<ecs::capacitance>();
         prototype_context p = w.prototype(e.prototype);
 
         unsigned int power = pt_power(&p);
         unsigned int drain = pt_drain(&p);
         unsigned int capacitance = power * 2;
         if (c.shortage + drain > capacitance) {
-            block(w, v.get<fluidbox>());
+            block(w, v.get<ecs::fluidbox>());
             continue;
         }
         c.shortage += drain;
 
         if (c.shortage + power > capacitance) {
-            block(w, v.get<fluidbox>());
+            block(w, v.get<ecs::fluidbox>());
             continue;
         }
         c.shortage += power;

@@ -43,6 +43,8 @@ local function writeEntityH(components)
     write ""
     write "#include <stdint.h>"
     write ""
+    write "namespace ecs {"
+    write ""
 
     for _, c in ipairs(components) do
         if isTag(c) then
@@ -75,6 +77,9 @@ local function writeEntityH(components)
         write "};"
         write ""
     end
+
+    write "}"
+    write ""
 
     return table.concat(out, "\n")
 end
