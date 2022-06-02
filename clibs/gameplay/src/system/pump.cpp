@@ -107,7 +107,7 @@ block(world& w, fluidbox const& fb) {
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (auto& v : w.select<ecs::tag::pump, entity, capacitance, fluidbox>()) {
+    for (auto& v : w.select<pump, entity, capacitance, fluidbox>()) {
         entity& e = v.get<entity>();
         capacitance& c = v.get<capacitance>();
         prototype_context p = w.prototype(e.prototype);

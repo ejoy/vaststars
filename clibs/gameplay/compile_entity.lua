@@ -43,14 +43,12 @@ local function writeEntityH(components)
     write ""
     write "#include <stdint.h>"
     write ""
-    write "enum COMPONENT {"
-    for i, c in ipairs(components) do
-        write(("\t%s_%s = %d,"):format(isTag(c) and "TAG" or "COMPONENT", c.name:upper(), i))
-    end
-    write "};"
-    write ""
+
     for _, c in ipairs(components) do
-        if not isTag(c) then
+        if isTag(c) then
+            write("struct "..c.name.." {};")
+            write ""
+        else
             write("struct "..c.name.." {")
             for _, field in ipairs(c) do
                 local name, typename, n = field:match "^([%w_]+):(%w+)%[(%d+)%]$"
@@ -66,6 +64,16 @@ local function writeEntityH(components)
             write "};"
             write ""
         end
+    end
+
+    write "template <typename T> struct component {};"
+    write ""
+    for i, c in ipairs(components) do
+        write("template <> struct component<"..c.name.."> {")
+        write("\tstatic inline const int id = "..i..";")
+        write("\tstatic inline const char name[] = \""..c.name.."\";")
+        write "};"
+        write ""
     end
 
     return table.concat(out, "\n")

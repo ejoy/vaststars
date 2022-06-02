@@ -42,7 +42,7 @@ lupdate(lua_State *L) {
     if (eff == 0) {
         return 0;
     }
-    for (auto& v : w.select<ecs::tag::solar_panel, capacitance, entity>()) {
+    for (auto& v : w.select<solar_panel, capacitance, entity>()) {
         entity& e = v.get<entity>();
         capacitance& c = v.get<capacitance>();
         prototype_context p = w.prototype(e.prototype);
