@@ -7,10 +7,11 @@ local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
 local click_tech_event = mailbox:sub {"click_tech"}
 local close_techui_event = mailbox:sub {"close_techui"}
+local show_list_event = mailbox:sub {"show_list"}
 local switch_mb = mailbox:sub {"switch"}
 local M = {}
 local current_tech
-local function get_techlist()
+local function get_techlist(tech_list)
     local function get_display_item(technode)
         local name = technode.name
         local value = technode.detail
@@ -68,7 +69,7 @@ local function get_techlist()
         }
     end
     local items = {}
-    for _, technode in ipairs(global.science.tech_list) do
+    for _, technode in ipairs(tech_list) do
         local di = get_display_item(technode)
         di.index = #items + 1
         items[#items + 1] = di
@@ -81,10 +82,12 @@ local function get_button_str(tech)
 end
 
 function M:create(object_id)
-    local items = get_techlist()
+    local items = get_techlist(global.science.tech_list)
     current_tech = items[1]
     return {
         techitems = items,
+        show_finish = false,
+        return_title = "科研中心",
         current_tech = current_tech,
         current_desc = current_tech.desc,
         current_icon = current_tech.icon,
@@ -113,7 +116,13 @@ function M:stage_ui_update(datamodel)
     for _, _, _ in close_techui_event:unpack() do
         gameplay_core.world_update = true
     end
-
+    for _, _, _, list in show_list_event:unpack() do
+        local items = get_techlist((list == "todo") and global.science.tech_list or global.science.finish_list)
+        datamodel.techitems = items
+        if items[1] then
+            set_current_tech(items[1])
+        end
+    end
     local game_world = gameplay_core.get_world()
     for _, _, _ in switch_mb:unpack() do
         current_tech.running = not current_tech.running

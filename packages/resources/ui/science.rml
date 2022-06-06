@@ -294,10 +294,12 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
+                show_finish = false,
                 current_icon = "none",
                 current_desc = "none",
                 current_running = false,
                 current_button_str = "开始",
+                return_title = " ",
                 selected_tech = nil,
                 selected_recipe = nil
             }
@@ -437,9 +439,20 @@
                     start.list:on_dirty(start.current_tech.index)
                 end
             end)
+            function start.showFinish(event)
+                start.show_finish = true
+                start.return_title = "已完成科技"
+                ui_sys:pub {"show_list", "finish"}
+            end
             function start.clickReturn(event)
-                ui_sys:pub {"close_techui"}
-                ui_sys:close()
+                if start.show_finish then
+                    start.show_finish = false
+                    start.return_title = "科研中心"
+                    ui_sys:pub {"show_list", "todo"}
+                else
+                    ui_sys:pub {"close_techui"}
+                    ui_sys:close()
+                end
             end
             function start.startSwitch(event)
                 ui_sys:pub {"switch"}
@@ -451,9 +464,9 @@
             <div class="panel" style="width: 50%;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button" data-event-click="clickReturn()"/>
-                    <div class = "menu-title">科研中心</div>
+                    <div class = "menu-title">{{return_title}}</div>
                     <!-- 已研究科技浏览界面按钮-->
-                    <button class="item-recipe-info" style="position: absolute;top:0.3vmin; right: 0.3vmin; width: 10vmin; height: 10vmin;background-color: transparent;"/>
+                    <button data-if="!show_finish" class="item-recipe-info" style="position: absolute;top:0.3vmin; right: 0.3vmin; width: 10vmin; height: 10vmin;background-color: transparent;"  data-event-click="showFinish()"/>
                 </div>
 
                 <!-- 科技条目 start -->
@@ -515,7 +528,7 @@
                         <!-- 研究队列 end --> 
 
                         <!-- 开始研究按钮 start --> 
-                        <button class="column" style="justify-content:center; width: 30%; height:70%;" data-style-background-color="current_running ? 'rgb(240,76,0)' : 'rgb(0,176,240)'" data-event-click="startSwitch()">
+                        <button data-if="!show_finish" class="column" style="justify-content:center; width: 30%; height:70%;" data-style-background-color="current_running ? 'rgb(240,76,0)' : 'rgb(0,176,240)'" data-event-click="startSwitch()">
                             <div style="font-size: 4.00vmin; text-align: center;">{{current_button_str}}</div>
                         </button>
                         <!-- 开始研究按钮 end --> 

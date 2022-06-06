@@ -108,7 +108,12 @@
                 end
 
                 local item = document.createElement "div"
-                item.outerHTML = ([[<div style = "width:61.7vmin; height:45.7vmin; background-size: cover; background-image: %s;" />]]):format(start.items[index].icon)
+                local icon = start.items[index].icon
+                if icon then
+                    item.outerHTML = ([[<div style = "width:61.7vmin; height:45.7vmin; background-size: cover; background-image: %s;" />]]):format(icon)
+                else
+                    item.outerHTML = [[<div style = "width:61.7vmin; height:45.7vmin;" />]]
+                end
                 return item
             end
 

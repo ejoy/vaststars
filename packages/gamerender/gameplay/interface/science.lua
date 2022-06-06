@@ -37,6 +37,7 @@ function M.update_tech_list(gw)
     end
     local tech_tree = global.science.tech_tree
     local techlist = {}
+    local finishlist = {}
     for _, tnode in pairs(tech_tree) do
         local prenames = tnode.detail.prerequisites
         local can_research = true
@@ -50,10 +51,15 @@ function M.update_tech_list(gw)
                 end
             end
         end
-        if can_research and not gw:is_researched(tnode.name) then
-            techlist[#techlist + 1] = tnode
+        if gw:is_researched(tnode.name) then
+            finishlist[#finishlist + 1] = tnode
+        else
+            if can_research then
+                techlist[#techlist + 1] = tnode
+            end
         end
     end
     global.science.tech_list = techlist
+    global.science.finish_list = finishlist
 end
 return M
