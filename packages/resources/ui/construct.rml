@@ -337,7 +337,7 @@
             </div>
 
             <!-- 施工返回按钮 -->
-            <div data-if = "cur_edit_mode != ''" data-event-click="clickCancel()" style='position: absolute; left: 0.67vmin; top: 0.67vmin; background-image:"textures/construct/return.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;' />
+            <div data-if = "cur_edit_mode != ''" data-event-click="clickCancel()" style='position: absolute; left: 0.67vmin; top: 0.67vmin; background-image:"textures/construct/return.texture"; width: 14.67vmin; height: 14.67vmin; background-size:cover;' />
 
             <!-- 开始施工 -->
             <button data-if = "cur_edit_mode == 'construct' && show_construct_complete" data-event-click="clickConstructComplete()" style='position: absolute; left: 2.67vmin; top: 78.67vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: center;'>
