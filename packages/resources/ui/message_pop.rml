@@ -82,9 +82,18 @@
                 text-align: left;
                 color: rgb(79, 250, 0);
             }
+            p {
+                animation:1.2s linear 0s slideup;
+            }
             @keyframes slideup {
-                from { margin-bottom: 30%; }
-                to   { margin-bottom: 45%; }
+                from {
+                     margin-bottom: 30%; 
+                     opacity: 1;
+                }
+                to   { 
+                    margin-bottom: 45%; 
+                    opacity: 0;
+                }
             }
         </style>
         <style path = "common/building_style.rcss"/>
@@ -174,18 +183,50 @@
     <body>
         <div class="item-container-region"  style="width:100%;  background-color: rgb(0,0,0); justify-content: center;" data-model="start">
             <!-- 警告上漂框 -->
-            <div class="warning-panel" data-if="false">
+            <p class="warning-panel" data-if="true">
                 <div class="warning-icon"/>
                 <div class="warning-message">指挥中心空间不足请及时清理指挥中心空间不足请及时清理指挥中心</div>
-            </div>
+            </p>
 
             <!-- 物品获得上漂框 -->
-            <div class = "materials" data-if="true">
-                <div class = "materials-item">
-                    <div class = "materials-icon"/>
-                    <div class = "materials-name">组装机</div>
+            <div class="item-collect-panel" data-if="false">
+                <div class = "materials-block"> 
+                    <div class = "materials">
+                        <div class = "materials-item">
+                            <div class = "materials-icon"/>
+                            <div class = "materials-name">组装机</div>
+                        </div>
+                        <div class = "materials-num">X3</div>
+                    </div>
+                    <div class = "materials">
+                        <div class = "materials-item">
+                            <div class = "materials-icon"/>
+                            <div class = "materials-name">组装机</div>
+                        </div>
+                        <div class = "materials-num">X3</div>
+                    </div>
+                    <div class = "materials">
+                        <div class = "materials-item">
+                            <div class = "materials-icon"/>
+                            <div class = "materials-name">组装机</div>
+                        </div>
+                        <div class = "materials-num">X3</div>
+                    </div>
+                    <div class = "materials">
+                        <div class = "materials-item">
+                            <div class = "materials-icon"/>
+                            <div class = "materials-name">小型组装机</div>
+                        </div>
+                        <div class = "materials-num">X3</div>
+                    </div>
+                    <div class = "materials">
+                        <div class = "materials-item">
+                            <div class = "materials-icon"/>
+                            <div class = "materials-name">中型组装机</div>
+                        </div>
+                        <div class = "materials-num">X3</div>
+                    </div>
                 </div>
-                <div class = "materials-num">X3</div>
             </div>
         </div>
     </body>
