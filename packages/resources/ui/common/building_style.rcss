@@ -477,8 +477,8 @@ workbutton {
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	width: 20.00vmin;
-	height: 8.00vmin;
+	width: 26.00vmin;
+	height: 11.00vmin;
 	background-color: rgb(250, 205, 9);
 	border: 0.27vmin rgb(89, 73, 39);
 	background-size: cover;

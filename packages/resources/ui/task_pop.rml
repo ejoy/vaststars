@@ -44,8 +44,8 @@
                 font-size: 3.47vmin;
             }
             .recipe-name-text {
-                padding-bottom: 0.25em;
-                margin:0 0.5em 0 0;
+                padding-bottom: 0.05em;
+                margin:0 0.1em 0 0;
                 font-size: 3.73vmin;
                 text-align: center;
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
@@ -155,8 +155,8 @@
                 </div>
                 <div class = "recipe-button-block">
                     <button class = "confirm-button" style="background-color:rgb(52, 207, 115);" data-event-click = "clickConfirm()">
-                        <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
-                        <div class = "recipe-name-text" style="font-size: 3.73vmin;">确定</div>
+                        <div class="middle-bg" style='width: 7.67vmin; height: 7.67vmin; background-image: "textures/construct/work.texture";'/>
+                        <div class = "recipe-name-text" style="font-size: 7.2vmin;">确定</div>
                     </button> 
                 </div>
             </div>
