@@ -153,7 +153,7 @@
                 animation:0.5s linear 0s infinite alternate rotation;
             }
             p2 {
-                animation:1.2s linear 0s enlarge;
+                animation:1.5s linear 0s enlarge;
             }
             @keyframes rotation {
                 from {
@@ -166,7 +166,7 @@
             }
             @keyframes enlarge {
                 0% {
-                    font-size: 4vmin;
+                    font-size: 2vmin;
                     opacity: 1;
                 }
 
