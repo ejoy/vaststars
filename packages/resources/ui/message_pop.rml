@@ -10,7 +10,7 @@
                 height: 11%;
                 justify-content: space-evenly;
                 flex-direction: row;
-                animation: 3s ease-in-out 0s slideup;
+                animation: 3s cubic-out 0s slideup;
             }
             .warning-message {
                 width: 95%;
@@ -36,7 +36,7 @@
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
-                animation: 3s ease-in 0s slideup;
+                animation: 3s cubic-out 0s slideup;
             }
             .materials-block {
                 flex-direction: row;
