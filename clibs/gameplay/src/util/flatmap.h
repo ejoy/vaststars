@@ -55,7 +55,7 @@ private:
     static constexpr size_t kMaxTryRehash = 1;
 
 public:
-    using bucket = std::conditional<sizeof(bucket_kv) <= sizeof(bucket_vk), bucket_kv, bucket_vk>::type;
+    using bucket = typename std::conditional<sizeof(bucket_kv) <= sizeof(bucket_vk), bucket_kv, bucket_vk>::type;
     static_assert(sizeof(bucket) <= 3 * sizeof(size_t));
 
     flatmap() noexcept

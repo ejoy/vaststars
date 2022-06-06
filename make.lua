@@ -14,6 +14,7 @@ lm.mode = "debug"
 lm.builddir = ("build/%s/%s"):format(plat, lm.mode)
 lm.bindir = ("bin/%s/%s"):format(plat, lm.mode)
 lm.compile_commands = "build"
+lm.visibility = "default"
 
 if lm.os == "ios" then
     lm.arch = "arm64"
@@ -69,7 +70,7 @@ lm:copy "copy_json" {
 
 lm:default {
     lm.os == "windows" and "fmod_dll",
-    lm.mode == "debug" and "copy_asan",
+    lm.compiler == "msvc" and lm.mode == "debug" and "copy_asan",
     "copy_luaecs",
     "copy_json",
     "vaststars"
