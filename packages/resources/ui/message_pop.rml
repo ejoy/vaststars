@@ -174,50 +174,18 @@
     <body>
         <div class="item-container-region"  style="width:100%;  background-color: rgb(0,0,0); justify-content: center;" data-model="start">
             <!-- 警告上漂框 -->
-            <div class="warning-panel" data-if="true">
+            <div class="warning-panel" data-if="false">
                 <div class="warning-icon"/>
                 <div class="warning-message">指挥中心空间不足请及时清理指挥中心空间不足请及时清理指挥中心</div>
             </div>
 
             <!-- 物品获得上漂框 -->
-            <div class="item-collect-panel" data-if="false">
-                <div class = "materials-block"> 
-                    <div class = "materials">
-                        <div class = "materials-item">
-                            <div class = "materials-icon"/>
-                            <div class = "materials-name">组装机</div>
-                        </div>
-                        <div class = "materials-num">X3</div>
-                    </div>
-                    <div class = "materials">
-                        <div class = "materials-item">
-                            <div class = "materials-icon"/>
-                            <div class = "materials-name">组装机</div>
-                        </div>
-                        <div class = "materials-num">X3</div>
-                    </div>
-                    <div class = "materials">
-                        <div class = "materials-item">
-                            <div class = "materials-icon"/>
-                            <div class = "materials-name">组装机</div>
-                        </div>
-                        <div class = "materials-num">X3</div>
-                    </div>
-                    <div class = "materials">
-                        <div class = "materials-item">
-                            <div class = "materials-icon"/>
-                            <div class = "materials-name">小型组装机</div>
-                        </div>
-                        <div class = "materials-num">X3</div>
-                    </div>
-                    <div class = "materials">
-                        <div class = "materials-item">
-                            <div class = "materials-icon"/>
-                            <div class = "materials-name">中型组装机</div>
-                        </div>
-                        <div class = "materials-num">X3</div>
-                    </div>
+            <div class = "materials" data-if="true">
+                <div class = "materials-item">
+                    <div class = "materials-icon"/>
+                    <div class = "materials-name">组装机</div>
                 </div>
+                <div class = "materials-num">X3</div>
             </div>
         </div>
     </body>
