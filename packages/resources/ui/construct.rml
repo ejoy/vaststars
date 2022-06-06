@@ -85,8 +85,8 @@
             }
             .main-menu-block {
                 /* width: 86.67vmin; */
-                width: 52vmin;
-                height: 16.00vmin;
+                width: 58vmin;
+                height: 20.00vmin;
                 flex-direction: row;
                 align-items: center;
                 justify-content: flex-start;
@@ -100,19 +100,19 @@
             }
             .main-menu-button {
                 margin : 0 0.5em;
-                width: 13.33vmin;
-                height: 13.33vmin;
+                width: 15.33vmin;
+                height: 15.33vmin;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
             }
             .menu-button-pic {
                 background-size: cover;
-                width: 10.67vmin;
-                height: 10.67vmin;
+                width: 12.67vmin;
+                height: 12.67vmin;
             }
             .menu-button-text {
-                font-size: 3.73vmin;
+                font-size: 4.5vmin;
                 text-align: center;
                 -webkit-text-stroke: 0.07vmin rgb(19,175,240);
                 color:rgb(255,255,255);;
@@ -340,27 +340,27 @@
             <div data-if = "cur_edit_mode != ''" data-event-click="clickCancel()" style='position: absolute; left: 0.67vmin; top: 0.67vmin; background-image:"textures/construct/return.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;' />
 
             <!-- 开始施工 -->
-            <button data-if = "cur_edit_mode == 'construct' && show_construct_complete" data-event-click="clickConstructComplete()" style='position: absolute; left: 2.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: flex-start;'>
+            <button data-if = "cur_edit_mode == 'construct' && show_construct_complete" data-event-click="clickConstructComplete()" style='position: absolute; left: 2.67vmin; top: 78.67vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: center;'>
                 <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始施工</div>
             </button>
 
             <!-- 开始拆除 -->
-            <button data-if = "cur_edit_mode == 'dismantle'" data-event-click="clickDismantleComplete()" style='position: absolute; left: 2.67vmin; top: 82.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: flex-start;'>
+            <button data-if = "cur_edit_mode == 'dismantle'" data-event-click="clickDismantleComplete()" style='position: absolute; left: 2.67vmin; top: 78.67vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: center;'>
                 <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始拆除</div>
             </button>
             
             <!-- 拆除模式 -->
-            <div data-if = "cur_edit_mode != ''" data-event-click="clickDismantleBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 14.00vmin; height: 14.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
-                <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/demolish.texture"; width: 6.00vmin; height: 6.00vmin; background-size:cover;'/>
+            <div data-if = "cur_edit_mode != ''" data-event-click="clickDismantleBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+                <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/demolish.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除模式</div>
             </div>
 
             <!-- 建造模式 -->
-            <div data-if = "cur_edit_mode != ''" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 14.00vmin; height: 14.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
-                <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/construct.texture"; width: 6.00vmin; height: 6.00vmin; background-size:cover;'/>
-                <div style ="font-size: 3.73vmin; top: 2.67vmin;">建造模式</div>
+            <div data-if = "cur_edit_mode != ''" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+                <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/construct.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
+                <div style ="font-size: 4vmin; top: 2.67vmin;">建造模式</div>
             </div>
 
             <!-- 右上角：当前科技进度 data-if = "cur_edit_mode == '' && show_tech_progress"-->
@@ -375,14 +375,14 @@
                     </p>
                 </button>
             </div>
-            <p2 class="accomplished" data-if = "current_tech_progress == '0%'">研究完成</p2>
+            <p2 class="accomplished" data-if = "current_tech_progress == '100%'">研究完成</p2>
 
             <!-- 右下角按钮 -->
             <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;">
                 <!-- 建造 -->
-                <button data-if = "cur_edit_mode == ''" data-event-click="clickConstructBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
-                    <div>建造</div>
+                <button data-if = "cur_edit_mode == ''" data-event-click="clickConstructBegin()" style='width: 20.00vmin; height: 20.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
+                    <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 13.67vmin; height: 13.67vmin; background-size:cover;'/>
+                    <div style="font-size: 5vmin;">建造</div>
                 </button>
 
                 <!-- 确认放置 -->
