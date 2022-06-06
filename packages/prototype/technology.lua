@@ -146,8 +146,8 @@ prototype "气候研究" {
     { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
   },
   sign_icon = "textures/science/tech-important.texture",
-  count = 5,
-  time = "2s"
+  count = 6,
+  time = "1.5s"
 }
 
 -- ---新增地下卤水配方的对应科技---
@@ -330,8 +330,8 @@ prototype "铁加工1" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 5,
-  time = "1s"
+  count = 6,
+  time = "2s"
 }
 
 prototype "维修破损组装机" {
@@ -361,7 +361,7 @@ prototype "石头处理2" {
       {"地质科技包", 1},
   },
   count = 8,
-  time = "1s"
+  time = "2s"
 }
 
 prototype "放置太阳能板" {
@@ -411,7 +411,7 @@ prototype "储存1" {
       {"气候科技包", 1},
   },
   count = 6,
-  time = "1s"
+  time = "2s"
 }
 
 prototype "生产铁制箱子" {
@@ -491,8 +491,8 @@ prototype "管道系统2" {
       {"地质科技包", 1},
       {"气候科技包", 1},
   },
-  count = 4,
-  time = "3s"
+  count = 5,
+  time = "2s"
 }
 
 prototype "有机化学" {
@@ -507,7 +507,7 @@ prototype "有机化学" {
     {"地质科技包", 1},
     {"气候科技包", 1},
   },
-  count = 5,
+  count = 6,
   time = "10s"
 }
 
@@ -594,7 +594,7 @@ prototype "机械研究" {
     {"气候科技包", 1},
   },
   count = 6,
-  time = "1s",
+  time = "2s",
   sign_desc = {
     { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
   },
