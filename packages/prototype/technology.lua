@@ -468,7 +468,8 @@ prototype "碳处理2" {
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"二氧化碳转一氧化碳","一氧化碳转石墨"},
+    unlock_recipe = {"甲烷转乙烯"},
+    -- unlock_recipe = {"二氧化碳转一氧化碳","一氧化碳转石墨"},
   },
   prerequisites = {"碳处理1","放置太阳能板"},
   ingredients = {
@@ -499,9 +500,9 @@ prototype "有机化学" {
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"甲烷转乙烯","塑料1"},
+    unlock_recipe = {"塑料1"},
   },
-  prerequisites = {"碳处理2"},
+  prerequisites = {"生产甲烷"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -540,15 +541,15 @@ prototype "冶金学" {
   time = "4s"
 }
 
-prototype "生产一氧化碳" {
-  desc = "尝试生产初级化工气体一氧化碳",
+prototype "生产甲烷" {
+  desc = "用化工厂生产初级化工气体甲烷",
   icon = "textures/science/tech-equipment.texture",
   type = { "tech", "task" },
-  task = {"stat_production", 0, "一氧化碳"},
+  task = {"stat_production", 0, "甲烷"},
   prerequisites = {"碳处理2"},
   count = 1000,
   sign_desc = {
-    { desc = "生产1000个单位一氧化碳", icon = "textures/fluid/gas.texture"},
+    { desc = "生产1000个单位甲烷", icon = "textures/fluid/gas.texture"},
   },
 }
 
@@ -558,9 +559,9 @@ prototype "生产塑料" {
   type = { "tech", "task" },
   task = {"stat_production", 0, "塑料"},
   prerequisites = {"有机化学"},
-  count = 50,
+  count = 30,
   sign_desc = {
-    { desc = "生产50个塑料", icon = "textures/construct/assembler.texture"},
+    { desc = "生产30个塑料", icon = "textures/construct/assembler.texture"},
   },
 }
 
@@ -571,7 +572,7 @@ prototype "电磁学1" {
   effects = {
     unlock_recipe = {"电动机1"},
   },
-  prerequisites = {"生产一氧化碳","生产塑料","基地生产2"},
+  prerequisites = {"生产塑料","基地生产2","排放"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
