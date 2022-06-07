@@ -71,7 +71,7 @@ button:hover {
 }
 .menu-title {
 	-webkit-text-stroke: 0.20vmin rgb(0, 112, 192); 
-	font-size:250%;
+	font-size:225%;
 	justify-content: flex-start;
 }
 .menu-title-2 {
