@@ -32,11 +32,14 @@ function M:pickup_material(world, e)
     for i = 1, #recipe_results do
         local c, n = world:container_get(e.assembling.container, #recipe_ingredients + i)
         if c then
-            if not world:container_pickup(e.assembling.container, c, n) then
-                log.error(("failed to pickup `%s` `%s`"):format(c, n))
-            else
-                if not world:container_place(headquater_e.chest.container, c, n) then
-                    log.error(("failed to place `%s` `%s`"):format(n, c))
+            local item_typeobject = iprototype:query(c)
+            if iprototype:queryByName("item", item_typeobject.name) then
+                if not world:container_pickup(e.assembling.container, c, n) then
+                    log.error(("failed to pickup `%s` `%s`"):format(c, n))
+                else
+                    if not world:container_place(headquater_e.chest.container, c, n) then
+                        log.error(("failed to place `%s` `%s`"):format(n, c))
+                    end
                 end
             end
         end
