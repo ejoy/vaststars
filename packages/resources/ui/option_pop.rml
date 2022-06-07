@@ -138,7 +138,7 @@
                         </button> 
                         <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickClose()">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 3.73vmin;">CLOSE</div>
+                            <div class = "recipe-name-text" style="font-size: 3.73vmin;">RETURN</div>
                         </button> 
                     </div>
                 </div>
