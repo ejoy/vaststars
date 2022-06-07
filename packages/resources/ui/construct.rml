@@ -401,8 +401,14 @@
 
                 <!-- 建造水管开始 -->
                 <button data-if = "cur_edit_mode == 'construct' && show_batch_mode_begin" data-event-click="clickBatchModeBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; pointer-events: none;'/>
-                    <div style="font-size: 85%; pointer-events: none;">水管开始</div>
+                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/pipe-begin.texture"; background-size:cover; pointer-events: none;'/>
+                    <div style="font-size: 85%; pointer-events: none;">铺管开始</div>
+                </button>
+
+                <!-- 确认放置水管 -->
+                <button data-if = "cur_edit_mode == 'construct' && false" data-event-click="clickConstructConfirm()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                    <div style='margin: 0 auto; background-image:"textures/construct/pipe-end.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
+                    <div style="font-size: 85%; pointer-events: none;">铺管结束</div>
                 </button>
             </div>
 

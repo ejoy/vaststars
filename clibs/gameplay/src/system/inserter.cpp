@@ -25,21 +25,21 @@ static bool isFluidId(uint16_t id) {
 }
 
 static container::item
-pickup(world& w, chest_container& input, uint16_t max) {
+pickup(lua_State* L, world& w, chest_container& input, uint16_t max) {
     if (input.slots.size() == 0) {
         return {0,0};
     }
     auto& s = input.slots[0];
     uint16_t r = std::min(s.amount, max);
     uint16_t newvalue = s.amount - r;
-    input.resize(w, s.item, s.amount, newvalue);
+    input.resize(L, w, s.item, s.amount, newvalue);
     input.sort(0, newvalue);
     assert(!isFluidId(s.item));
     return {s.item, r};
 }
 
 static container::item
-pickup(world& w, recipe_container& input, uint16_t max) {
+pickup(lua_State* L, world& w, recipe_container& input, uint16_t max) {
     for (auto& s : input.outslots) {
         if (!isFluidId(s.item) && s.amount != 0) {
             uint16_t r = std::min(s.amount, max);
@@ -51,23 +51,23 @@ pickup(world& w, recipe_container& input, uint16_t max) {
 }
 
 static container::item
-pickup(world& w, container& input, uint16_t max) {
+pickup(lua_State* L, world& w, container& input, uint16_t max) {
     if (input.type() == CONTAINER_TYPE_CHEST) {
-        return pickup(w, (chest_container&)input, max);
+        return pickup(L, w, (chest_container&)input, max);
     }
-    return pickup(w, (recipe_container&)input, max);
+    return pickup(L, w, (recipe_container&)input, max);
 }
 
 static container::item
-pickup(world& w, container& input, chest_container& output, uint16_t max) {
+pickup(lua_State* L, world& w, container& input, chest_container& output, uint16_t max) {
     if (output.used >= output.size) {
         return {0, 0};
     }
-    return pickup(w, input, max);
+    return pickup(L, w, input, max);
 }
 
 static container::item
-pickup(world& w, container& input, recipe_container& output, uint16_t max) {
+pickup(lua_State* L, world& w, container& input, recipe_container& output, uint16_t max) {
     for (auto& s : output.outslots) {
         if (!isFluidId(s.item) && s.amount >= s.limit) {
             return {0, 0};
@@ -75,7 +75,7 @@ pickup(world& w, container& input, recipe_container& output, uint16_t max) {
     }
     for (auto& s : output.inslots) {
         if (!isFluidId(s.item) && s.amount < s.limit) {
-            uint16_t amount = input.pickup(w, s.item, max);
+            uint16_t amount = input.pickup(L, w, s.item, max);
             if (amount != 0) {
                 return {s.item, amount};
             }
@@ -85,11 +85,11 @@ pickup(world& w, container& input, recipe_container& output, uint16_t max) {
 }
 
 static container::item
-pickup(world& w, container& input, container& output, uint16_t max) {
+pickup(lua_State* L, world& w, container& input, container& output, uint16_t max) {
     if (output.type() == CONTAINER_TYPE_CHEST) {
-        return pickup(w, input, (chest_container&)output, max);
+        return pickup(L, w, input, (chest_container&)output, max);
     }
-    return pickup(w, input, (recipe_container&)output, max);
+    return pickup(L, w, input, (recipe_container&)output, max);
 }
 
 static void
@@ -100,8 +100,8 @@ wait(ecs::inserter& inserter, int index) {
 }
 
 static bool
-tryActive(world& w, ecs::inserter& i, ecs::entity& e, ecs::capacitance& c) {
-    prototype_context p = w.prototype(e.prototype);
+tryActive(lua_State* L, world& w, ecs::inserter& i, ecs::entity& e, ecs::capacitance& c) {
+    prototype_context p = w.prototype(L, e.prototype);
 
     unsigned int power = pt_power(&p);
     unsigned int drain = pt_drain(&p);
@@ -115,7 +115,7 @@ tryActive(world& w, ecs::inserter& i, ecs::entity& e, ecs::capacitance& c) {
         if (i.hold_amount == 0) {
             container& input = w.query_container<container>(i.input_container);
             container& output = w.query_container<container>(i.output_container);
-            auto r = pickup(w, input, output, 1);
+            auto r = pickup(L, w, input, output, 1);
             if (r.amount == 0) {
                 return false;
             }
@@ -127,7 +127,7 @@ tryActive(world& w, ecs::inserter& i, ecs::entity& e, ecs::capacitance& c) {
     else {
         if (i.hold_amount != 0) {
             container& output = w.query_container<container>(i.output_container);
-            if (!output.place(w, i.hold_item, i.hold_amount)) {
+            if (!output.place(L, w, i.hold_item, i.hold_amount)) {
                 return false;
             }
             i.hold_item = 0;
@@ -140,10 +140,10 @@ tryActive(world& w, ecs::inserter& i, ecs::entity& e, ecs::capacitance& c) {
 }
 
 static void
-updateWaiting(world& w) {
+updateWaiting(lua_State* L, world& w) {
     ecs::select::entity<ecs::inserter, ecs::entity, ecs::capacitance> e;
     for (auto iter = waiting.begin(); iter != waiting.end();) {
-        if (!w.visit_entity(e, *iter) || tryActive(w, e.get<ecs::inserter>(), e.get<ecs::entity>(), e.get<ecs::capacitance>())) {
+        if (!w.visit_entity(L, e, *iter) || tryActive(L, w, e.get<ecs::inserter>(), e.get<ecs::entity>(), e.get<ecs::capacitance>())) {
             iter = waiting.erase(iter);
         }
         else {
@@ -157,7 +157,7 @@ lbuild(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     waiting.clear();
 
-    for (auto& e : w.select<ecs::inserter>()) {
+    for (auto& e : w.select<ecs::inserter>(L)) {
         ecs::inserter& i = e.get<ecs::inserter>();
         if (i.progress == STATUS_DONE) {
             wait(i, e.index);
@@ -169,14 +169,14 @@ lbuild(lua_State *L) {
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    updateWaiting(w);
+    updateWaiting(L, w);
 
-    for (auto& e : w.select<ecs::inserter, ecs::entity, ecs::consumer, ecs::capacitance>()) {
+    for (auto& e : w.select<ecs::inserter, ecs::entity, ecs::consumer, ecs::capacitance>(L)) {
         ecs::inserter& i = e.get<ecs::inserter>();
         if (i.progress != STATUS_DONE) {
             ecs::capacitance& c = e.get<ecs::capacitance>();
             ecs::consumer& co = e.get<ecs::consumer>();
-            prototype_context p = w.prototype(e.get<ecs::entity>().prototype);
+            prototype_context p = w.prototype(L, e.get<ecs::entity>().prototype);
             
             unsigned int power = pt_power(&p);
             unsigned int capacitance = power * 2;
