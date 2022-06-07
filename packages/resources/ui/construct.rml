@@ -399,6 +399,12 @@
                     <div style="font-size: 85%;">旋转建筑</div>
                 </button>
 
+                <!-- 取消铺管 -->
+                <button data-if = "cur_edit_mode == 'construct' && false" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                    <div style='margin: 0 auto;background-image:"textures/construct/cancel.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
+                    <div style="font-size: 85%;">取消铺管</div>
+                </button>
+
                 <!-- 建造水管开始 -->
                 <button data-if = "cur_edit_mode == 'construct' && show_batch_mode_begin" data-event-click="clickBatchModeBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/pipe-begin.texture"; background-size:cover; pointer-events: none;'/>
