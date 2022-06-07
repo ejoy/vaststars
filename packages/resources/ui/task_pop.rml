@@ -2,7 +2,7 @@
     <head>
         <style>
             .recipe-panel {
-                background-color: rgb(44, 32, 18);
+                background-color: rgb(112, 183, 241);
                 border: 0.2vmin rgb(89, 73, 39);
                 border-radius: 0.67vmin;
                 margin:auto 0.3em;
@@ -32,7 +32,7 @@
                 height: 60%;
                 flex-direction: column;
                 align-items: center;
-                background-color: rgb(44, 32, 18);
+                background-color: rgb(112, 183, 241);
             }
             .recipe-button-block {
                 width: 100%;
@@ -40,7 +40,7 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
-                background-color: rgb(44, 32, 18);
+                background-color: rgb(112, 183, 241);
                 font-size: 3.47vmin;
             }
             .recipe-name-text {
@@ -48,7 +48,7 @@
                 margin:0 0.1em 0 0;
                 font-size: 6vmin;
                 text-align: center;
-                -webkit-text-stroke: 0.05em rgb(0,0,0);
+                -webkit-text-stroke: 0.05vmin rgb(0,0,0);
             }
             .task-image {
                 width: 100%;
@@ -68,6 +68,7 @@
                 align-items: center;
                 font-size: 5vmin;
                 text-align: left;
+                -webkit-text-stroke: 0.1vmin rgb(0,0,0);
             }
             .task-count {
                 width: 20%;
@@ -78,9 +79,11 @@
             .task-count-start {
                 font-size: 5vmin;
                 color: rgb(0,255,0);
+                -webkit-text-stroke: 0.1vmin rgb(0,0,0);
             }
             .task-count-end {
                 font-size: 5vmin;
+                -webkit-text-stroke: 0.1vmin rgb(0,0,0);
             }
         </style>
         <style path = "common/building_style.rcss"/>
