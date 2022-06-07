@@ -50,8 +50,8 @@ button:hover {
 }
 .back-button {
 	background-image:"textures/common/return.texture"; 
-	width: 9.33vmin; 
-	height: 9.33vmin; 
+	width: 10.33vmin; 
+	height: 10.33vmin; 
 	background-size:cover;
 }
 .find-button {
