@@ -83,6 +83,7 @@ function M:drawcall_text(datamodel, text)
     datamodel.drawcall_text = text
 end
 
+local tech_finish_switch = false
 function M:update_tech(datamodel, tech)
     if tech then
         datamodel.show_tech_progress = true
@@ -93,6 +94,13 @@ function M:update_tech(datamodel, tech)
     else
         datamodel.show_tech_progress = false
         datamodel.tech_count = global.science.tech_list and #global.science.tech_list or 0
+        tech_finish_switch = not tech_finish_switch
+        --TODO: trigger animation
+        if tech_finish_switch then
+            datamodel.finish_animation = "1.5s linear 0s enlarge"
+        else
+            datamodel.finish_animation = "1.49s linear 0s enlarge"
+        end
     end
 end
 
