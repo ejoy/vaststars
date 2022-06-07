@@ -23,7 +23,7 @@
                 border-radius: 0.67vmin;
                 width: 60vmin;
                 height: 10.00vmin;
-                font-size: 2.40vmin;
+                font-size: 3.40vmin;
             }
             .item-research-title {
                 text-align: center;
@@ -46,7 +46,7 @@
                 -webkit-text-stroke: 0.07vmin rgb(0, 0, 0);
                 width: 65%;
                 word-break: break-all;
-                font-size: 3.2vmin;
+                font-size: 4.5vmin;
             }
             /*分割线*/
             #item-recipe-region {
@@ -77,13 +77,13 @@
                 width:80%;
                 height:75%;
                 justify-content: flex-start;
-                font-size: 3.50vmin;
+                font-size: 4.50vmin;
                 word-break: break-word;
             }
             .item-recipe-desc-extra {
                 padding-right: 1vmin; 
                 justify-content: flex-start;
-                font-size: 3.00vmin;
+                font-size: 4.50vmin;
                 word-break: break-word;
                 text-align: right;
             }
@@ -126,7 +126,7 @@
                 background-size:cover;
                 width: 12.00vmin;
                 height: 12.00vmin;
-                font-size: 2.40vmin;
+                font-size: 4.50vmin;
             }
             .recipe-item-bg {
                 width: 8.00vmin;
@@ -153,7 +153,7 @@
             .recipe-name-text {
                 width: 100%;
                 /*padding-bottom: 0.25em;*/
-                font-size: 4vmin;
+                font-size: 4.5vmin;
                 text-align: center;
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
                 background-color: rgb(203, 118, 24);
@@ -174,7 +174,7 @@
             }
             .recipe-req-num {
                 text-align: center;
-                font-size: 3.1vmin;
+                font-size: 4.0vmin;
             }
             .recipe-queue-item-block {
                 padding-top: 0.5em;
@@ -198,7 +198,7 @@
                 left:0.05vmin;
                 font-size: 3vmin;
                 text-align: center;
-                color: rgb(238, 255, 0);
+                color: rgb(0, 255, 34);
                 -webkit-text-stroke: 1px rgb(0, 0, 0);
             }
             .progress-background-new {
@@ -246,7 +246,7 @@
             .recipe-info-desc
             {
                 width: 85%;
-                font-size: 2.8vmin;
+                font-size: 3.2vmin;
                 text-align: left;
                 word-break: break-all;
             }
@@ -284,7 +284,7 @@
                 background-color: rgba(46, 46, 45, 150);
                 border-radius: 0.5vmin;
                 text-align: center;
-                font-size: 2vmin;
+                font-size: 3vmin;
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
             }
 
@@ -501,7 +501,7 @@
                         </div>
                      </div>
 
-                    <div class="recipe-queue" style="justify-content: flex-end;border: 0px;">
+                    <div class="recipe-queue" style="justify-content: flex-end;border: 0px; padding:0 2vmin 2vmin 0;">
                         <!-- 研究队列 start --> 
                         <div class = "recipe-queue-item-block" data-if="false">
                             <div class="column" style="justify-content:center;">
@@ -528,8 +528,8 @@
                         <!-- 研究队列 end --> 
 
                         <!-- 开始研究按钮 start --> 
-                        <button data-if="!show_finish" class="column" style="justify-content:center; width: 30%; height:70%;" data-style-background-color="current_running ? 'rgb(240,76,0)' : 'rgb(0,176,240)'" data-event-click="startSwitch()">
-                            <div style="font-size: 4.00vmin; text-align: center;">{{current_button_str}}</div>
+                        <button data-if="!show_finish" class="column" style="justify-content:center; width: 35%; height:100%;" data-style-background-color="current_running ? 'rgb(240,76,0)' : 'rgb(0,176,240)'" data-event-click="startSwitch()">
+                            <div style="font-size: 6.00vmin; text-align: center;">{{current_button_str}}</div>
                         </button>
                         <!-- 开始研究按钮 end --> 
                     </div>

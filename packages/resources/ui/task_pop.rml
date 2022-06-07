@@ -46,7 +46,7 @@
             .recipe-name-text {
                 padding-bottom: 0.05em;
                 margin:0 0.1em 0 0;
-                font-size: 4.73vmin;
+                font-size: 6vmin;
                 text-align: center;
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
             }
@@ -66,7 +66,7 @@
                 width: 80%;
                 flex-direction: row;
                 align-items: center;
-                font-size: 4.5vmin;
+                font-size: 5vmin;
                 text-align: left;
             }
             .task-count {
@@ -76,11 +76,11 @@
                 text-align: center;
             }
             .task-count-start {
-                font-size: 4.5vmin;
+                font-size: 5vmin;
                 color: rgb(0,255,0);
             }
             .task-count-end {
-                font-size: 4.5vmin;
+                font-size: 5vmin;
             }
         </style>
         <style path = "common/building_style.rcss"/>
@@ -136,7 +136,7 @@
                 <!-- 标题栏 -->
                 <div class = "recipe-name-block">
                     <div class = "name-block">
-                        <div class = "small-bg" style='background-image: "textures/science/book.texture";'/>
+                        <div class = "small-bg" style='background-image: "textures/science/book.texture"; width:6vmin; height:6vmin;'/>
                         <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">{{task_name}}</div>
                     </div>
                 </div>
@@ -154,7 +154,7 @@
                     </div>
                 </div>
                 <div class = "recipe-button-block">
-                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115);" data-event-click = "clickConfirm()">
+                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115); height: 10.00vmin;" data-event-click = "clickConfirm()">
                         <div class="middle-bg" style='width: 7.67vmin; height: 7.67vmin; background-image: "textures/construct/work.texture";'/>
                         <div class = "recipe-name-text" style="font-size: 7.2vmin;">确定</div>
                     </button> 
