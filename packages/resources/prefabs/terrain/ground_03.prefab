@@ -1,0 +1,21 @@
+---
+data:
+  name: Scene
+  scene:
+    srt: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/terrain/ground_03.glb|materials/Material.001.material
+  mesh: /pkg/vaststars.resources/glb/terrain/ground_03.glb|meshes/Plane.008_P1.meshbin
+  name: Plane.008
+  scene:
+    srt:
+      r: {0, 0.7071068286895752, 0, -0.7071068286895752}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
