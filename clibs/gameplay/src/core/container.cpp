@@ -31,7 +31,7 @@ container::slot chest_container::get(uint16_t index) {
     return {slots[index], 0};
 }
 
-uint16_t chest_container::pickup(world& w, uint16_t item, uint16_t max) {
+uint16_t chest_container::pickup(lua_State* L, world& w, uint16_t item, uint16_t max) {
     size_t pos = find(item);
     if (pos == (size_t)-1) {
         return 0;
@@ -39,18 +39,18 @@ uint16_t chest_container::pickup(world& w, uint16_t item, uint16_t max) {
     auto& s = slots[pos];
     uint16_t r = std::min(s.amount, max);
     uint16_t newvalue = s.amount - r;
-    resize(w, s.item, s.amount, newvalue);
+    resize(L, w, s.item, s.amount, newvalue);
     sort(pos, newvalue);
     return r;
 }
 
-bool chest_container::place(world& w, uint16_t item, uint16_t amount) {
+bool chest_container::place(lua_State* L, world& w, uint16_t item, uint16_t amount) {
     size_t pos = find(item);
     if (pos == (size_t)-1) {
         if (used >= size) {
             return false;
         }
-        if (!resize(w, item, 0, amount)) {
+        if (!resize(L, w, item, 0, amount)) {
             return false;
         }
         slots.push_back(chest_container::slot {item, 0});
@@ -58,7 +58,7 @@ bool chest_container::place(world& w, uint16_t item, uint16_t amount) {
         return true;
     }
     uint16_t newvalue = slots[pos].amount + amount;
-    if (!resize(w, slots[pos].item, slots[pos].amount, newvalue)) {
+    if (!resize(L, w, slots[pos].item, slots[pos].amount, newvalue)) {
         return false;
     }
     sort(pos, newvalue);
@@ -97,8 +97,8 @@ void chest_container::sort(size_t index, uint16_t newvalue) {
     }
 }
 
-bool chest_container::resize(world& w, uint16_t item, uint16_t value, uint16_t newvalue) {
-    struct prototype_context p = { w.L, w.P, item };
+bool chest_container::resize(lua_State* L, world& w, uint16_t item, uint16_t value, uint16_t newvalue) {
+    struct prototype_context p = w.prototype(L, item);
     uint16_t stack = pt_stack(&p);
     assert (value != newvalue);
 
@@ -150,7 +150,7 @@ container::slot recipe_container::get(uint16_t index) {
     return {0,0,0};
 }
 
-uint16_t recipe_container::pickup(world& w, uint16_t item, uint16_t max) {
+uint16_t recipe_container::pickup(lua_State* L, world& w, uint16_t item, uint16_t max) {
     for (auto& s : outslots) {
         if (s.item == item) {
             uint16_t r = std::min(s.amount, max);
@@ -161,7 +161,7 @@ uint16_t recipe_container::pickup(world& w, uint16_t item, uint16_t max) {
     return 0;
 }
 
-bool recipe_container::place(world& w, uint16_t item, uint16_t amount) {
+bool recipe_container::place(lua_State* L, world& w, uint16_t item, uint16_t amount) {
     for (auto& s : inslots) {
         if (s.item == item) {
             if (amount + s.amount > s.limit) {
@@ -312,7 +312,7 @@ lpickup(lua_State* L) {
     uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
     uint16_t max = (uint16_t)luaL_checkinteger(L, 4);
     container& c = w.query_container<container>(id);
-    auto ok = c.pickup(w, item, max);
+    auto ok = c.pickup(L, w, item, max);
     lua_pushboolean(L, ok);
     return 1;
 }
@@ -324,7 +324,7 @@ lplace(lua_State* L) {
     uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
     uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);
     container& c = w.query_container<container>(id);
-    auto ok = c.place(w, item, amount);
+    auto ok = c.place(L, w, item, amount);
     lua_pushboolean(L, ok);
     return 1;
 }

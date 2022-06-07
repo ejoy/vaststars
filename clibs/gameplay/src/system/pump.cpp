@@ -40,11 +40,11 @@ sync_output_fluidbox(world& w, ecs::assembling& a, ecs::fluidboxes& fb, recipe_c
 }
 
 static void
-assembling_update(world& w, ecs::select::entity<ecs::assembling, ecs::entity, ecs::capacitance>& v) {
+assembling_update(lua_State* L, world& w, ecs::select::entity<ecs::assembling, ecs::entity, ecs::capacitance>& v) {
     ecs::assembling& a = v.get<ecs::assembling>();
     ecs::entity& e = v.get<ecs::entity>();
     ecs::capacitance& c = v.get<ecs::capacitance>();
-    prototype_context p = w.prototype(e.prototype);
+    prototype_context p = w.prototype(L, e.prototype);
 
     // step.1
     unsigned int power = pt_power(&p);
@@ -57,7 +57,7 @@ assembling_update(world& w, ecs::select::entity<ecs::assembling, ecs::entity, ec
 
     // step.2
     if (a.progress == STATUS_DONE || a.progress == STATUS_IDLE) {
-        prototype_context recipe = w.prototype(a.recipe);
+        prototype_context recipe = w.prototype(L, a.recipe);
         recipe_container& container = w.query_container<recipe_container>(a.container);
         if (a.progress == STATUS_DONE) {
             recipe_items* r = (recipe_items*)pt_results(&recipe);
@@ -107,10 +107,10 @@ block(world& w, ecs::fluidbox const& fb) {
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (auto& v : w.select<ecs::pump, ecs::entity, ecs::capacitance, ecs::fluidbox>()) {
+    for (auto& v : w.select<ecs::pump, ecs::entity, ecs::capacitance, ecs::fluidbox>(L)) {
         ecs::entity& e = v.get<ecs::entity>();
         ecs::capacitance& c = v.get<ecs::capacitance>();
-        prototype_context p = w.prototype(e.prototype);
+        prototype_context p = w.prototype(L, e.prototype);
 
         unsigned int power = pt_power(&p);
         unsigned int drain = pt_drain(&p);

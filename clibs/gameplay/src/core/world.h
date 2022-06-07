@@ -15,7 +15,6 @@ struct ecs_context;
 struct prototype_cache;
 
 struct world {
-    struct lua_State*       L;
     struct ecs_context*     ecs;
     struct prototype_cache* P;
     struct container_mgr containers;
@@ -30,7 +29,7 @@ struct world {
     uint16_t container_id();
 
     template <typename ...Args>
-    bool visit_entity(ecs::select::entity<Args...>& e, int i) {
+    bool visit_entity(lua_State* L, ecs::select::entity<Args...>& e, int i) {
         return ecs::select::visit_entity(L, ecs, i, e);
     }
 
@@ -40,11 +39,11 @@ struct world {
     }
 
     template <typename ...Args>
-    ecs::select::each_range<Args...> select() {
+    ecs::select::each_range<Args...> select(lua_State* L) {
         return ecs::select::each<Args...>(L, ecs);
     }
 
-    prototype_context prototype(int id) {
+    prototype_context prototype(lua_State* L, int id) {
         return {L, P, id};
     }
 };

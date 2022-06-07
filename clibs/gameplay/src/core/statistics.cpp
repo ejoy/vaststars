@@ -17,8 +17,8 @@ void flatmap_stat(flatmap<Key, Mapped>& m, recipe_items& r) {
     }
 }
 
-void statistics::finish_recipe(world& w, uint16_t id) {
-    prototype_context recipe = w.prototype(id);
+void statistics::finish_recipe(lua_State* L, world& w, uint16_t id) {
+    prototype_context recipe = w.prototype(L, id);
     flatmap_stat(consumption, *(recipe_items*)pt_ingredients(&recipe));
     flatmap_stat(production, *(recipe_items*)pt_results(&recipe));
 }

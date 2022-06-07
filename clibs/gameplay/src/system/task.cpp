@@ -22,16 +22,16 @@ struct task {
     uint16_t p1;
     uint16_t p2;
 
-    uint64_t stat_production(world& w);
-    uint64_t stat_consumption(world& w);
-    uint64_t select_entity(world& w);
-    uint64_t select_chect(world& w);
-    uint64_t power_generator(world& w);
-    uint64_t eval(world& w);
-    uint16_t progress(world& w, uint16_t max);
+    uint64_t stat_production(lua_State* L, world& w);
+    uint64_t stat_consumption(lua_State* L, world& w);
+    uint64_t select_entity(lua_State* L, world& w);
+    uint64_t select_chect(lua_State* L, world& w);
+    uint64_t power_generator(lua_State* L, world& w);
+    uint64_t eval(lua_State* L, world& w);
+    uint16_t progress(lua_State* L, world& w, uint16_t max);
 };
 
-uint64_t task::stat_production(world& w) {
+uint64_t task::stat_production(lua_State* L, world& w) {
     auto iter = w.stat.production.find(p1);
     if (iter) {
         return *iter;
@@ -39,7 +39,7 @@ uint64_t task::stat_production(world& w) {
     return 0;
 }
 
-uint64_t task::stat_consumption(world& w) {
+uint64_t task::stat_consumption(lua_State* L, world& w) {
     auto iter = w.stat.consumption.find(p1);
     if (iter) {
         return *iter;
@@ -47,9 +47,9 @@ uint64_t task::stat_consumption(world& w) {
     return 0;
 }
 
-uint64_t task::select_entity(world& w) {
+uint64_t task::select_entity(lua_State* L, world& w) {
     uint64_t n = 0;
-    for (auto& v : w.select<ecs::entity>()) {
+    for (auto& v : w.select<ecs::entity>(L)) {
         ecs::entity& e = v.get<ecs::entity>();
         if (e.prototype == p1) {
             ++n;
@@ -58,9 +58,9 @@ uint64_t task::select_entity(world& w) {
     return n;
 }
 
-uint64_t task::select_chect(world& w) {
+uint64_t task::select_chect(lua_State* L, world& w) {
     uint64_t n = 0;
-    for (auto& v : w.select<ecs::chest, ecs::entity>()) {
+    for (auto& v : w.select<ecs::chest, ecs::entity>(L)) {
         ecs::entity& e = v.get<ecs::entity>();
         if (e.prototype == p1) {
             ecs::chest& c = v.get<ecs::chest>();
@@ -76,23 +76,23 @@ uint64_t task::select_chect(world& w) {
     return n;
 }
 
-uint64_t task::power_generator(world& w) {
+uint64_t task::power_generator(lua_State* L, world& w) {
     return w.stat.generate_power;
 }
 
-uint64_t task::eval(world& w) {
+uint64_t task::eval(lua_State* L, world& w) {
     switch (type) {
-    case task::type::stat_production:  return stat_production(w);
-    case task::type::stat_consumption: return stat_consumption(w);
-    case task::type::select_entity:    return select_entity(w);
-    case task::type::select_chect:     return select_chect(w);
-    case task::type::power_generator:  return power_generator(w);
+    case task::type::stat_production:  return stat_production(L, w);
+    case task::type::stat_consumption: return stat_consumption(L, w);
+    case task::type::select_entity:    return select_entity(L, w);
+    case task::type::select_chect:     return select_chect(L, w);
+    case task::type::power_generator:  return power_generator(L, w);
     }
     return 0;
 }
 
-uint16_t task::progress(world& w, uint16_t max) {
-    uint64_t v = eval(w);
+uint16_t task::progress(lua_State* L, world& w, uint16_t max) {
+    uint64_t v = eval(L, w);
     for (uint16_t i = 0; i < e; ++i) {
         v /= 10;
     }
@@ -110,13 +110,13 @@ lupdate(lua_State *L) {
         if (taskid == 0) {
             break;
         }
-        prototype_context task_prototype = w.prototype(taskid);
+        prototype_context task_prototype = w.prototype(L, taskid);
         if (0 != pt_time(&task_prototype)) {
             break;
         }
         struct task& task = *(struct task*)pt_task(&task_prototype);
         uint16_t count = (uint16_t)pt_count(&task_prototype);
-        uint16_t value = task.progress(w, count);
+        uint16_t value = task.progress(L, w, count);
         if (!w.techtree.research_set(taskid, count, value)) {
             break;
         }
