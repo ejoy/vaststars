@@ -71,7 +71,7 @@ button:hover {
 }
 .menu-title {
 	-webkit-text-stroke: 0.20vmin rgb(0, 112, 192); 
-	font-size:200%;
+	font-size:250%;
 	justify-content: flex-start;
 }
 .menu-title-2 {
@@ -392,8 +392,8 @@ workbutton {
 	background-size: cover;
 }
 .small-bg {
-	width: 4.53vmin;
-	height: 4.53vmin;
+	width: 4.43vmin;
+	height: 4.43vmin;
 	background-size: cover;
 }
 .station-name-block {
@@ -477,8 +477,8 @@ workbutton {
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	width: 26.00vmin;
-	height: 11.00vmin;
+	width: 30.00vmin;
+	height: 14.00vmin;
 	background-color: rgb(250, 205, 9);
 	border: 0.27vmin rgb(89, 73, 39);
 	background-size: cover;

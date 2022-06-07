@@ -6,14 +6,14 @@
                 border: 0.2vmin rgb(89, 73, 39);
                 border-radius: 0.67vmin;
                 margin:auto 0.3em;
-                width: 25%;
+                width: 35%;
                 height: 90%;
                 justify-content: space-evenly;
             }
             .recipe-name-block {
                 background-color: rgb(203, 118, 24);
                 width: 100%;
-                height:5%;
+                height:8%;
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
@@ -32,7 +32,7 @@
             }
             .recipe-change-block {
                 width: 100%;
-                height:40%;
+                height:36%;
                 flex-direction: column;
                 align-items: flex-start;
                 border: 0.10vmin rgb(89, 73, 39);
@@ -40,9 +40,9 @@
             }
             .recipe-button-block {
                 width: 100%;
-                height:15%;
+                height:20%;
                 flex-direction: row;
-                align-items: flex-end;
+                align-items: center;
                 justify-content: space-evenly;
                 background-color: rgb(44, 32, 18);
                 font-size: 3.47vmin;
@@ -50,7 +50,7 @@
             .recipe-name-text {
                 padding-bottom: 0.25em;
                 margin:0 0.5em 0 0;
-                font-size: 3.73vmin;
+                font-size: 4.73vmin;
                 text-align: center;
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
             }
@@ -72,7 +72,7 @@
                 background-size: cover;
                 border-radius: 0.27vmin;
                 width: 100%;
-                height:80%;
+                height:88%;
             }
             .materials {
                 flex-direction: row;
@@ -89,8 +89,8 @@
             }
             .materials-icon {
                 margin-left: 0.5em;
-                width: 3.67vmin;
-                height: 3.67vmin;
+                width: 4.67vmin;
+                height: 4.67vmin;
                 background-color: rgb(250, 205, 9);;
                 flex-direction: row;
                 justify-content: flex-start;
@@ -101,13 +101,13 @@
                 padding-bottom: 0.3em;
                 padding-left: 0.2em;
                 padding-right:1em;
-                font-size: 3.73vmin;
+                font-size: 4.73vmin;
                 text-align: center;
             }
             .materials-num {
                 padding-bottom: 0.3em;
                 padding-right:1em;
-                font-size: 3.73vmin;
+                font-size: 4.73vmin;
                 text-align: center;
             }
         </style>
@@ -239,8 +239,8 @@
                 <!-- 标题栏 -->
                 <div class = "recipe-name-block">
                     <div class = "name-block">
-                        <div class = "small-bg" style='background-image: "textures/science/book.texture";'/>
-                        <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">{{recipe_name}}</div>
+                        <div class = "small-bg" style='background-image: "textures/science/book.texture"; width:4.8vmin; height:4.8vmin;'/>
+                        <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192); font-size: 5vmin;">{{recipe_name}}</div>
                     </div>
                     <div class = "recipe-time-block">
                         <div class = "small-bg" style='background-image:"textures/character/timer.texture" ;'/>
@@ -248,7 +248,7 @@
                     </div>
                 </div>
                 <div class = "recipe-change-block">
-                    <div class = "pic-block" style="width: 32%; height:12%;">
+                    <div class = "pic-block" style="width: 29%; height:12%;">
                         <div class = "small-bg" style='background-image: "textures/road_net/big_bag.texture";'/>
                         <div class = "recipe-name-text">原料</div>
                     </div>
@@ -263,7 +263,7 @@
                     </div>
                 </div>
                 <div class = "recipe-change-block">
-                    <div class = "pic-block" style="width: 32%; height:12%;">
+                    <div class = "pic-block" style="width: 29%; height:12%;">
                         <div class = "small-bg" style='background-image: "textures/science/whitebox.texture";'/>
                         <div class = "recipe-name-text">成品</div>
                     </div> 
@@ -280,11 +280,11 @@
                 <div class = "recipe-button-block">
                     <button class = "confirm-button" style="background-color:rgb(203, 118, 24);" data-event-click = "clickClearRecipe()">
                         <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
-                        <div class = "recipe-name-text" style="font-size: 3.73vmin;">取消配方</div>
+                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">取消配方</div>
                     </button>
                     <button class = "confirm-button" style="background-color:rgb(52, 207, 115);" data-event-click = "clickConfirm()">
                         <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
-                        <div class = "recipe-name-text" style="font-size: 3.73vmin;">确定配方</div>
+                        <div class = "recipe-name-text" style="font-size: 5.73vmin;">确定配方</div>
                     </button> 
                 </div>
             </div>
