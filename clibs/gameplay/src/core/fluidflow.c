@@ -315,8 +315,8 @@ get_state(struct pipe *p, struct fluid_state *output) {
 	output->volume = p->fluid;
 	output->flow = p->flow;
 	output->box.capacity = p->capacity;
-	output->box.height = p->height;
-	output->box.base_level = p->base_level;
+	output->box.height = p->height / FIXSHIFT;
+	output->box.base_level = p->base_level / FIXSHIFT;
 	output->box.pumping_speed = p->pumping_speed;
 	return output;
 }
