@@ -97,9 +97,9 @@ function M:update_tech(datamodel, tech)
         tech_finish_switch = not tech_finish_switch
         --TODO: trigger animation
         if tech_finish_switch then
-            datamodel.finish_animation = "1.5s linear 0s enlarge"
+            datamodel.finish_animation = "3s sine-in-out 0s enlarge"
         else
-            datamodel.finish_animation = "1.49s linear 0s enlarge"
+            datamodel.finish_animation = "2.99s sine-in-out 0s enlarge"
         end
     end
 end
