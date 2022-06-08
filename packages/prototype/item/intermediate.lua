@@ -144,7 +144,7 @@ prototype "塑料" {
 prototype "电动机I" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/turbine1.texture",
+    icon = "textures/construct/electric-motor.texture",
     model = "prefabs/rock.prefab",
     description = "一种机械加工品",
     group = "器件",
