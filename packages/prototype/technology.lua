@@ -47,7 +47,7 @@ prototype "收集铁矿石" {
 
 prototype "生产地质科技包" {
   desc = "生产科技包用于科技研究",
-  icon = "textures/construct/iron-ingot.texture",
+  icon = "textures/construct/assembler.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "地质科技包"},
   prerequisites = {"收集铁矿石"},
@@ -247,7 +247,7 @@ prototype "管道系统1" {
 
 prototype "生产管道" {
   desc = "管道可以承载液体和气体，将需要相同气液的机器彼此联通起来",
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/construct/pipe.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "管道1-I型"},
   prerequisites = {"管道系统1"},
@@ -366,7 +366,7 @@ prototype "石头处理2" {
 
 prototype "放置太阳能板" {
   desc = "放置太阳能板将光热转换成电能",
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/construct/construct.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "太阳能板I"},
   prerequisites = {"石头处理2"},
@@ -416,7 +416,7 @@ prototype "储存1" {
 
 prototype "生产铁制箱子" {
   desc = "生产小型铁制箱子用于存储基地的资源",
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/construct/assembler.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "小型铁制箱子"},
   prerequisites = {"储存1","基地生产1"},
@@ -543,7 +543,7 @@ prototype "冶金学" {
 
 prototype "生产甲烷" {
   desc = "用化工厂生产初级化工气体甲烷",
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/science/tech-liquid.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "甲烷"},
   prerequisites = {"碳处理2"},
@@ -555,7 +555,7 @@ prototype "生产甲烷" {
 
 prototype "生产塑料" {
   desc = "使用有机化学的科学成果生产质量轻、耐腐蚀的工业材料塑料",
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/construct/assembler.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "塑料"},
   prerequisites = {"有机化学"},
