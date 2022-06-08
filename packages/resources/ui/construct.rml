@@ -167,14 +167,16 @@
                     font-size: 2vmin;
                     opacity: 1;
                 }
-
-                55% {
+                20% {
                     font-size: 8vmin;
                     opacity: 1;
                 }
-
-                100% {
+                60% {
                     font-size: 8vmin;
+                    opacity: 1;
+                }
+                100% {
+                    font-size: 2vmin;
                     opacity: 0;
                 }
             }
