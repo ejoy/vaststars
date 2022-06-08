@@ -208,7 +208,10 @@ function M:stage_ui_update(datamodel)
     end
     
     for _ in open_taskui_event:unpack() do
-        gameplay_core.world_update = false
+        if gameplay_core.world_update and global.science.current_tech then
+            gameplay_core.world_update = false
+            iui.open("task_pop.rml")
+        end
     end
 
     for _ in technology_mb:unpack() do

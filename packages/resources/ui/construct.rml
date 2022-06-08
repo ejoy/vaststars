@@ -265,7 +265,6 @@
             function start.clickTask(event, is_task)
                 if is_task then
                     ui_sys:pub {"open_taskui"}
-                    ui_sys:open("task_pop.rml")
                 end
             end
             window.addEventListener('mousedown', function(event)
