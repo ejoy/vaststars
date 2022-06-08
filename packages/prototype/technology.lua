@@ -311,11 +311,11 @@ prototype "收集空气" {
   desc = "采集火星上的空气",
   type = { "tech", "task" },
   icon = "textures/science/tech-liquid.texture",
-  task = {"stat_production", 2, "空气"},
+  task = {"stat_production", 1, "空气"},
   prerequisites = {"空气分离"},
-  count = 6000,
+  count = 5000,
   sign_desc = {
-    { desc = "用空气过滤器生产600000单位空气", icon = "textures/science/tech-liquid.texture",},
+    { desc = "用空气过滤器生产50000单位空气", icon = "textures/science/tech-liquid.texture",},
   },
 }
 
