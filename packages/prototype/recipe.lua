@@ -1163,10 +1163,10 @@ prototype "塑料1" {
     category = "器件基础化工",
     group = "器件",
     order = 20,
-    icon = "textures/construct/processor.texture",
+    icon = "textures/construct/plastic.texture",
     ingredients = {
         {"氯气", 30},
-        {"乙烯", 30},
+        {"乙烯", 30},pl
     },
     results = {
         {"盐酸", 20},

@@ -134,7 +134,7 @@ prototype "沙子" {
 prototype "塑料" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/gravel.texture",
+    icon = "textures/construct/plastic.texture",
     model = "prefabs/rock.prefab",
     description = "一种化工成品",
     group = "器件",
