@@ -140,7 +140,7 @@ prototype "电动机1" {
     category = "器件中型制造",
     group = "器件",
     order = 52,
-    icon = "textures/construct/turbine1.texture",
+    icon = "textures/construct/electric-motor.texture",
     ingredients = {
         -- {"铁棒", 1},
         -- {"铁丝", 2},
@@ -986,7 +986,7 @@ prototype "空气分离1" {
     category = "过滤",
     group = "流体",
     order = 11,
-    icon = "textures/construct/air-filter1.texture",
+    icon = "textures/fluid/gas-seperate.texture",
     ingredients = {
         {"空气", 150},
     },
@@ -1075,7 +1075,7 @@ prototype "地下卤水电解" {
     category = "电解",
     group = "流体",
     order = 15,
-    icon = "textures/fluid/gas.texture",
+    icon = "textures/fluid/liquid-electrolysis.texture",
     ingredients = {
         {"地下卤水", 45},
     },
@@ -1094,7 +1094,7 @@ prototype "地下卤水净化" {
     category = "流体基础化工",
     group = "流体",
     order = 15,
-    icon = "textures/fluid/gas.texture",
+    icon = "textures/fluid/liquid-purify.texture",
     ingredients = {
         {"地下卤水", 100},
     },
@@ -1111,7 +1111,7 @@ prototype "地下卤水电解-backup" {
     category = "电解",
     --group = "流体",
     order = 15,
-    icon = "textures/fluid/gas.texture",
+    icon = "textures/fluid/liquid-electrolysis.texture",
     ingredients = {
         {"纯水", 45},
     },
@@ -1128,7 +1128,7 @@ prototype "纯水电解" {
     category = "电解",
     group = "流体",
     order = 15,
-    icon = "textures/fluid/gas.texture",
+    icon = "textures/fluid/liquid-electrolysis.texture",
     ingredients = {
         {"纯水", 45},
     },
