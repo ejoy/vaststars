@@ -50,7 +50,7 @@ prototype "生产地质科技包" {
   icon = "textures/construct/assembler.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "地质科技包"},
-  prerequisites = {"收集铁矿石"},
+  prerequisites = {"挖掘铁矿石"},
   count = 3,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
