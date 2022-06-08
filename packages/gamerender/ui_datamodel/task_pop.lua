@@ -20,13 +20,12 @@ function M:create(object_id)
         end
     end
     local multiple = get_multiple(current_tech.detail.task)
-    local total = current_tech and (current_tech.detail.count * 10^multiple) or 100
     return {
         items = tips,
         task_name = current_tech and current_tech.name or "任务名称",
         task_desc = current_tech and current_tech.detail.sign_desc[1].desc or "任务描述",
-        current_count = current_tech and current_tech.progress or 0,
-        total_count = total
+        current_count = current_tech and (current_tech.progress * 10^multiple) or 0,
+        total_count = current_tech and (current_tech.detail.count * 10^multiple) or 100
     }
 end
 
