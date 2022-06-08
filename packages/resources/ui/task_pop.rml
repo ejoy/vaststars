@@ -63,7 +63,7 @@
                 word-break: break-all;
             }
             .task-desc {
-                width: 80%;
+                width: 79%;
                 flex-direction: row;
                 align-items: center;
                 font-size: 5vmin;
@@ -71,18 +71,18 @@
                 -webkit-text-stroke: 0.1vmin rgb(0,0,0);
             }
             .task-count {
-                width: 20%;
+                width: 21%;
                 flex-direction: row;
                 align-items: center;
                 text-align: center;
             }
             .task-count-start {
-                font-size: 5vmin;
+                font-size: 4.8vmin;
                 color: rgb(0,255,0);
                 -webkit-text-stroke: 0.1vmin rgb(0,0,0);
             }
             .task-count-end {
-                font-size: 5vmin;
+                font-size: 4vmin;
                 -webkit-text-stroke: 0.1vmin rgb(0,0,0);
             }
         </style>
