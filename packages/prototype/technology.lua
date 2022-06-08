@@ -11,7 +11,7 @@ local prototype = gameplay.prototype
 prototype "地质研究" {
     desc = "对火星地质结构进行标本采集和研究",
     type = { "tech" },
-    icon = "textures/science/tech-equipment.texture",
+    icon = "textures/science/tech-research.texture",
     effects = {
       unlock_recipe = {"地质科技包1"},
     },
@@ -25,8 +25,8 @@ prototype "地质研究" {
     sign_icon = "textures/science/tech-important.texture",
 }
 
-prototype "收集铁矿石" {
-  desc = "收集足够的铁矿石可以开始进行锻造",
+prototype "挖掘铁矿石" {
+  desc = "挖掘足够的铁矿石可以开始进行锻造",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "铁矿石"},
@@ -41,7 +41,7 @@ prototype "收集铁矿石" {
     "textures/task_tips_pic/task_produce_ore3.texture",
   },
   sign_desc = {
-    { desc = "放置采矿机收集10个铁矿石", icon = "textures/construct/industry.texture"},
+    { desc = "放置采矿机挖掘10个铁矿石", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -134,7 +134,7 @@ prototype "生产石砖" {
 prototype "气候研究" {
   desc = "对火星大气成分进行标本采集和研究",
   type = { "tech" },
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"破损空气过滤器","破损地下水挖掘机","气候科技包"},
   },
@@ -498,7 +498,7 @@ prototype "管道系统2" {
 prototype "有机化学" {
   desc = "研究碳化合物组成、结构和制备方法",
   type = { "tech" },
-  icon = "textures/science/tech-chemical.texture",
+  icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"塑料1"},
   },
@@ -584,7 +584,7 @@ prototype "电磁学1" {
 prototype "机械研究" {
   desc = "对适合在火星表面作业的机械装置进行改进和开发",
   type = { "tech" },
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"机械科技包1"},
   },
