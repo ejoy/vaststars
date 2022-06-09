@@ -110,6 +110,24 @@
                 font-size: 4.73vmin;
                 text-align: center;
             }
+            .new-coming {
+                position: absolute; 
+                right:0.5vmin; bottom:0; 
+                font-size:4vmin; 
+                color:rgb(0, 255, 21); 
+                -webkit-text-stroke: 1px #000;
+            }
+            p {
+                animation:0.5s linear 0s infinite alternate enlarge;
+            }
+            @keyframes enlarge {
+                0% {
+                    font-size: 3.6vmin;
+                }
+                100% {
+                    font-size: 4vmin;
+                }
+            }
         </style>
         <style path = "common/building_style.rcss"/>
         <style path = "common/listpage_style.rcss"/>
@@ -172,8 +190,9 @@
                 end
 
                 local item = document.createElement "div"
-                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" />]]):format(start.items[index].icon)
+                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s"><p class = "new-coming">新</p></div>]]):format(start.items[index].icon)
                 local select_style_border = "5px green"
+
 
                 if start.recipe_name == start.items[index].name then
                     select_item = item
@@ -228,8 +247,10 @@
                 <div class = "tab-container" style="flex-grow: 1;">
                     <div data-for = "recipe_menu" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
                         <workbutton data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index + 1 == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'" style = "width: 100%;">
-                            <div class="workbutton-bg" data-style-background-image="it.icon" />
+                            <div class="workbutton-bg" data-style-background-image="it.icon"/>
                             <div class="catalog-desc">{{it.group}}</div>
+                            <!--新配方的标识和动画-->
+                            <p class="new-coming">新</p>
                         </workbutton>
                     </div>
                 </div>
