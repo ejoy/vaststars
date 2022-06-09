@@ -49,7 +49,7 @@ function M:create(object_id, left, top)
     if iprototype:has_type(typeobject.type, "assembling") then
         show_set_recipe = (typeobject.recipe == nil)
         if e.assembling.recipe ~= 0 then
-            local recipe_typeobject = iprototype:query(e.assembling.recipe)
+            local recipe_typeobject = iprototype:queryById(e.assembling.recipe)
             recipe_name = recipe_typeobject.name
 
             if #irecipe:get_elements(recipe_typeobject.ingredients) > 0 then

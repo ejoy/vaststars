@@ -5,11 +5,11 @@ local function update_world(world, get_object_func)
     local t = {}
     for e in world.ecs:select "assembling:in entity:in fluidbox?in fluidboxes?in" do
         local vsobject = get_object_func(e.entity.x, e.entity.y)
-        local typeobject = iprototype:query(e.entity.prototype)
+        local typeobject = iprototype:queryById(e.entity.prototype)
         if typeobject.assembling_slot then
             local assembling = e.assembling
             if assembling.recipe ~= 0 then
-                local typeobject_recipe = iprototype:query(assembling.recipe)
+                local typeobject_recipe = iprototype:queryById(assembling.recipe)
                 local recipe_fluids = irecipe:get_init_fluids(typeobject_recipe)
                 if recipe_fluids then
                     for i = 1, #recipe_fluids.input do

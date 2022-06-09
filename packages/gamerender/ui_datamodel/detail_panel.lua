@@ -32,7 +32,7 @@ local function get_property(e, typeobject)
     -- 显示建筑详细信息
     local t = {}
     if e.fluidbox and e.fluidbox.fluid ~= 0 then
-        local pt = iprototype:query(e.fluidbox.fluid)
+        local pt = iprototype:queryById(e.fluidbox.fluid)
         t.fluid_name = pt.name
 
         local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)

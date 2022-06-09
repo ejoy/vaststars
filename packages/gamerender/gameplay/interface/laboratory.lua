@@ -9,7 +9,7 @@ local function get_elements(s)
     local r = {}
     for idx = 2, #s // 2 do
         local id = string.unpack("<I2", s, 2 * idx - 1)
-        local typeobject = assert(iprototype:query(id), ("can not found id `%s`"):format(id))
+        local typeobject = assert(iprototype:queryById(id), ("can not found id `%s`"):format(id))
         r[#r+1] = {id = id, name = typeobject.name, icon = typeobject.icon, tech_icon = typeobject.tech_icon, stack = typeobject.stack}
     end
     return r
@@ -38,7 +38,7 @@ function M:place_material(world, e)
         return
     end
 
-    local tech_typeobject = iprototype:query(tech)
+    local tech_typeobject = iprototype:queryById(tech)
     if iprototype:has_type(tech_typeobject.type, "task") then
         log.info("task")
         return

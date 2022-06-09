@@ -8,11 +8,9 @@ function M.update_tech_tree()
         return
     end
     local tech_tree = {}
-    local prototypes = iprototype.all_prototype_name()
-    for key, value in pairs(prototypes) do
-        if value.type[1] == "tech" then
-            local name = string.sub(key, 7)
-            tech_tree[name] = {name = name, pretech = {}, posttech = {}, detail = value, task = value.task and true or false }
+    for _, typeobject in pairs(iprototype:all_prototype_name("tech")) do
+        if iprototype:has_type(typeobject.type, "tech") then
+            tech_tree[typeobject.name] = {name = typeobject.name, pretech = {}, posttech = {}, detail = typeobject, task = typeobject.task and true or false }
         end
     end
     for _, tnode in pairs(tech_tree) do
