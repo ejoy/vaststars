@@ -1,6 +1,11 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
+
+-- allow_manual：允许手工打造，默认为true。如果一个物品被禁止手工打造那么它也不会成为中间产物
+-- allow_as_intermediate：允许在手工打造过程中作为中间产物，默认为true
+-- results里面的第一个物品为主产物，只有主产物才可以被手工打造
+
 prototype "铁锭" {
     type = { "recipe" },
     category = "金属冶炼",
@@ -91,6 +96,7 @@ prototype "沙石粉碎" {
     category = "矿石粉碎",
     --group = "金属",
     order = 40,
+    allow_manual = false,
     icon = "textures/construct/gravel.texture",
     ingredients = {
         {"沙石矿", 5},
@@ -585,6 +591,7 @@ prototype "管道2" {
     category = "化工小型制造",
     group = "化工",
     order = 10,
+    allow_as_intermediate = false,
     icon = "textures/construct/pipe.texture",
     ingredients = {
         {"石砖", 8},
@@ -675,6 +682,7 @@ prototype "破损水电站" {
     category = "生产手工制造",
     group = "生产",
     order = 110,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-hydroplant.texture",
     ingredients = {
         {"管道1-I型", 6},
@@ -692,6 +700,7 @@ prototype "破损空气过滤器" {
     category = "生产手工制造",
     group = "生产",
     order = 111,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-air-filter1.texture",
     ingredients = {
         {"石砖", 4},
@@ -710,6 +719,7 @@ prototype "破损地下水挖掘机" {
     category = "生产手工制造",
     group = "生产",
     order = 112,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-pump.texture",
     ingredients = {
         {"铁板", 8},
@@ -727,6 +737,7 @@ prototype "破损电解厂" {
     category = "生产手工制造",
     group = "生产",
     order = 114,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-electrolysis1.texture",
     ingredients = {
         {"石砖", 10},
@@ -745,6 +756,7 @@ prototype "破损化工厂" {
     category = "生产手工制造",
     group = "生产",
     order = 116,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-chemistry2.texture",
     ingredients = {
         {"小型铁制箱子", 2},
@@ -763,6 +775,7 @@ prototype "破损组装机" {
     category = "生产手工制造",
     group = "生产",
     order = 118,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-assembler.texture",
     ingredients = {
         -- {"铁丝", 6},
@@ -782,6 +795,7 @@ prototype "破损铁制电线杆" {
     category = "生产手工制造",
     group = "生产",
     order = 120,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-electric-pole1.texture",
     ingredients = {
         -- {"铁棒", 2},
@@ -800,10 +814,11 @@ prototype "破损太阳能板" {
     category = "生产手工制造",
     group = "生产",
     order = 122,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-solar-panel.texture",
     ingredients = {
-        {"铁板", 12},
-        {"石砖", 12},
+        {"铁板", 10},
+        {"石砖", 10},
         {"破损太阳能板", 1},
     },
     results = {
@@ -816,8 +831,9 @@ prototype "破损太阳能板" {
 prototype "破损蓄电池" {
     type = { "recipe" },
     category = "生产手工制造",
-    --group = "生产",
+    group = "生产",
     order = 124,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-grid-battery.texture",
     ingredients = {
         {"铁板", 8},
@@ -835,6 +851,7 @@ prototype "破损物流中心" {
     category = "生产手工制造",
     --group = "生产",
     order = 126,
+    allow_as_intermediate = false,
     icon = "textures/construct/logisitic1.texture",
     ingredients = {
         {"铁板", 5},
@@ -852,6 +869,7 @@ prototype "破损运输汽车" {
     category = "生产手工制造",
     --group = "生产",
     order = 128,
+    allow_as_intermediate = false,
     icon = "textures/construct/truck.texture",
     ingredients = {
         -- {"铁丝", 10},
@@ -870,6 +888,7 @@ prototype "破损车站" {
     category = "生产手工制造",
     --group = "生产",
     order = 130,
+    allow_as_intermediate = false,
     icon = "textures/construct/manufacture.texture",
     ingredients = {
         -- {"铁棒", 6},
