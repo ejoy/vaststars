@@ -354,7 +354,7 @@ prototype "石头处理2" {
   type = { "tech" },
   icon = "textures/science/tech-metal.texture",
   effects = {
-    unlock_recipe = {"破损太阳能板"},
+    unlock_recipe = {"破损太阳能板","破损蓄电池"},
   },
   prerequisites = {"维修破损组装机","电解"},
   ingredients = {
@@ -370,12 +370,12 @@ prototype "放置太阳能板" {
   type = { "tech", "task" },
   task = {"select_entity", 0, "太阳能板I"},
   prerequisites = {"石头处理2"},
-  count = 3,
+  count = 8,
   tips_pic = {
     "textures/task_tips_pic/task_place_solarpanel.texture",
   },
   sign_desc = {
-    { desc = "放置3个太阳能板", icon = "textures/construct/assembler.texture"},
+    { desc = "放置8个太阳能板", icon = "textures/construct/assembler.texture"},
   },
 }
 
@@ -453,7 +453,7 @@ prototype "碳处理1" {
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"二氧化碳转甲烷"},
+    unlock_recipe = {"二氧化碳转甲烷","破损化工厂"},
   },
   prerequisites = {"电解","空气分离","放置太阳能板"},
   ingredients = {
