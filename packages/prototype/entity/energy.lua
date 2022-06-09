@@ -38,7 +38,7 @@ prototype "太阳能板I" {
     construct_detector = {"exclusive"},
     type ={"entity","generator","solar_panel"},
     area = "3x3",
-    power = "100kW",
+    power = "300kW",
     priority = "primary",
     group = {"物流"},
 }

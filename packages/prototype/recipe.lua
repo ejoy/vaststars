@@ -817,7 +817,7 @@ prototype "破损蓄电池" {
     category = "生产手工制造",
     --group = "生产",
     order = 124,
-    icon = "textures/construct/grid-battery.texture",
+    icon = "textures/construct/broken-grid-battery.texture",
     ingredients = {
         {"石墨", 1},
         {"破损蓄电池", 1},

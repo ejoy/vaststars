@@ -104,7 +104,7 @@ prototype "生产铁板" {
 prototype "石头处理1" {
   desc = "获得火星岩石加工成石砖的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-metal.texture",
+  icon = "textures/construct/stone-brick.texture",
   effects = {
     unlock_recipe = {"石砖"},
   },
