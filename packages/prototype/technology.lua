@@ -463,6 +463,30 @@ prototype "碳处理1" {
   time = "2s"
 }
 
+prototype "生产氢气" {
+  desc = "用电解厂电解卤水产出氢气",
+  icon = "textures/science/tech-liquid.texture",
+  type = { "tech", "task" },
+  task = {"stat_production", 0, "氢气"},
+  prerequisites = {"碳处理1"},
+  count = 500,
+  sign_desc = {
+    { desc = "生产500个单位氢气", icon = "textures/fluid/gas.texture"},
+  },
+}
+
+prototype "生产二氧化碳" {
+  desc = "用蒸馏厂分离空气产出二氧化碳",
+  icon = "textures/science/tech-liquid.texture",
+  type = { "tech", "task" },
+  task = {"stat_production", 0, "二氧化碳"},
+  prerequisites = {"碳处理1"},
+  count = 500,
+  sign_desc = {
+    { desc = "生产500个单位二氧化碳", icon = "textures/fluid/gas.texture"},
+  },
+}
+
 prototype "碳处理2" {
   desc = "含碳气体化合成其他物质的工艺",
   type = { "tech" },
@@ -471,7 +495,7 @@ prototype "碳处理2" {
     unlock_recipe = {"甲烷转乙烯"},
     -- unlock_recipe = {"二氧化碳转一氧化碳","一氧化碳转石墨"},
   },
-  prerequisites = {"碳处理1","放置太阳能板"},
+  prerequisites = {"生产氢气","生产二氧化碳"},
   ingredients = {
       {"气候科技包", 1},
   },
