@@ -15,8 +15,8 @@ local function get(object_id)
         return
     end
 
-    local typeobject = iprototype:query(e.entity.prototype)
-    local recipe_typeobject = iprototype:query(e.assembling.recipe)
+    local typeobject = iprototype:queryById(e.entity.prototype)
+    local recipe_typeobject = iprototype:queryById(e.assembling.recipe)
     if not recipe_typeobject then
         return {
             object_id = object_id,
@@ -82,7 +82,7 @@ function M:stage_ui_update(datamodel, object_id)
     local progress = 0
 
     if assembling.recipe ~= 0 then
-        local recipe_typeobject = assert(iprototype:query(assembling.recipe))
+        local recipe_typeobject = assert(iprototype:queryById(assembling.recipe))
         total_progress = recipe_typeobject.time * 100
         progress = assembling.progress
     end
@@ -121,12 +121,12 @@ function M:stage_ui_update(datamodel, object_id)
 
     -- 更新背包界面对应的道具
     for e in gameplay_core.select "chest:in entity:in" do
-        local typeobject = iprototype:query(e.entity.prototype)
+        local typeobject = iprototype:queryById(e.entity.prototype)
         if typeobject.headquater then
             local inventory = {}
             local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
             for id, count in pairs(item_counts) do
-                local typeobject_item = assert(iprototype:query(id))
+                local typeobject_item = assert(iprototype:queryById(id))
                 local t = {}
                 t.name = typeobject_item.name
                 t.icon = typeobject_item.icon

@@ -38,7 +38,7 @@ function M:stage_ui_update(datamodel)
             local inventory = {}
             local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
             for id, count in pairs(item_counts) do
-                local typeobject_item = assert(iprototype:query(id))
+                local typeobject_item = assert(iprototype:queryById(id))
                 local stack = count
 
                 while stack > 0 do

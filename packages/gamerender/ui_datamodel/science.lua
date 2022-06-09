@@ -27,9 +27,9 @@ local function get_techlist(tech_list)
             end
         end
         if value.effects and value.effects.unlock_recipe then
-            local prototypes = iprototype.all_prototype_name()
+            local prototypes = iprototype:all_prototype_name("recipe")
             for _, recipe in ipairs(value.effects.unlock_recipe) do
-                local recipe_detail = prototypes["(recipe)" .. recipe]
+                local recipe_detail = prototypes[recipe]
                 if recipe_detail then
                     local input = {}
                     ingredients = irecipe:get_elements(recipe_detail.ingredients)

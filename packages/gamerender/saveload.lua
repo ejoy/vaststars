@@ -72,12 +72,12 @@ local function restore_world()
     -- restore
     for v in gameplay_core.select("id:in entity:in fluidbox?in fluidboxes?in") do
         local e = v.entity
-        local typeobject = iprototype:query(e.prototype)
+        local typeobject = iprototype:queryById(e.prototype)
         local fluid_name = ""
         local fluidflow_network_id = 0
         if v.fluidbox then
             if v.fluidbox.fluid ~= 0 then
-                local typeobject_fluid = assert(iprototype:query(v.fluidbox.fluid))
+                local typeobject_fluid = assert(iprototype:queryById(v.fluidbox.fluid))
                 fluid_name = typeobject_fluid.name
             else
                 fluidflow_network_id = get_network_id(v.fluidbox.id)
@@ -90,7 +90,7 @@ local function restore_world()
                     local iotype, index = id:match("(%a+)(%d+)%_fluid")
                     if iotype then
                         local classity = ifluid:iotype_to_classity(iotype)
-                        local typeobject_fluid = assert(iprototype:query(fluid))
+                        local typeobject_fluid = assert(iprototype:queryById(fluid))
 
                         fluid_name[classity] = fluid_name[classity] or {}
                         fluid_name[classity][tonumber(index)] = typeobject_fluid.name

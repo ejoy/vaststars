@@ -19,19 +19,17 @@ local iassembling = require "gameplay.interface.assembling"
 
 local recipe_menu = {} ; do
     local recipes = {}
-    for _, v in pairs(iprototype:all_prototype_name()) do
-        if iprototype:has_type(v.type, "recipe") then
-            recipes[v.category] = recipes[v.category] or {}
-            recipes[v.category][#recipes[v.category] + 1] = {
-                name = v.name,
-                order = v.order,
-                icon = v.icon,
-                time = v.time,
-                ingredients = irecipe:get_elements(v.ingredients),
-                results = irecipe:get_elements(v.results),
-                group = v.group,
-            }
-        end
+    for _, v in pairs(iprototype:all_prototype_name("recipe")) do
+        recipes[v.category] = recipes[v.category] or {}
+        recipes[v.category][#recipes[v.category] + 1] = {
+            name = v.name,
+            order = v.order,
+            icon = v.icon,
+            time = v.time,
+            ingredients = irecipe:get_elements(v.ingredients),
+            results = irecipe:get_elements(v.results),
+            group = v.group,
+        }
     end
 
     for _, menu in ipairs(recipe_menu_cfg) do
@@ -137,7 +135,7 @@ function M:create(object_id)
 
     local recipe_name = ""
     if e.assembling.recipe ~= 0 then
-        local recipe_typeobject = iprototype:query(e.assembling.recipe)
+        local recipe_typeobject = iprototype:queryById(e.assembling.recipe)
         recipe_name = recipe_typeobject.name
     end
 
@@ -175,7 +173,7 @@ function M:update(datamodel, param, object_id)
     end
 
     if e.assembling.recipe ~= 0 then
-        local recipe_typeobject = iprototype:query(e.assembling.recipe)
+        local recipe_typeobject = iprototype:queryById(e.assembling.recipe)
         datamodel.recipe_name = recipe_typeobject.name
         datamodel.catalog_index, datamodel.recipe_index = get_recipe_index(recipe_menu, datamodel.recipe_name)
     end

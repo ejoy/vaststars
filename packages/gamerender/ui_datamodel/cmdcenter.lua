@@ -15,18 +15,16 @@ local to_headquater_mb = mailbox:sub {"to_headquater"}
 local item_id_to_info = {}
 local recipe_to_category = {}
 local category_to_entity = {}
-for _, typeobject in pairs(iprototype:all_prototype_name()) do
-    if iprototype:has_type(typeobject.type, "recipe") then
-        for _, element in ipairs(irecipe:get_elements(typeobject.results)) do
-            local typeobject_element = assert(iprototype:query(element.id))
-            if iprototype:has_type(typeobject_element.type, "item") then
-                local id = typeobject_element.id
-                item_id_to_info[id] = item_id_to_info[id] or {}
-                item_id_to_info[id][#item_id_to_info[id]+1] = {icon = assert(typeobject.icon), element = irecipe:get_elements(typeobject.ingredients), recipe_id = typeobject.id}
-            end
+for _, typeobject in pairs(iprototype:all_prototype_name("recipe")) do
+    for _, element in ipairs(irecipe:get_elements(typeobject.results)) do
+        local typeobject_element = assert(iprototype:queryById(element.id))
+        if iprototype:has_type(typeobject_element.type, "item") then
+            local id = typeobject_element.id
+            item_id_to_info[id] = item_id_to_info[id] or {}
+            item_id_to_info[id][#item_id_to_info[id]+1] = {icon = assert(typeobject.icon), element = irecipe:get_elements(typeobject.ingredients), recipe_id = typeobject.id}
         end
-        recipe_to_category[typeobject.id] = typeobject.category
     end
+    recipe_to_category[typeobject.id] = typeobject.category
 
     if iprototype:has_type(typeobject.type, "assembling") then
         if typeobject.recipe then -- 固定配方的组装机
@@ -71,7 +69,7 @@ local function update(datamodel, object_id)
         local inventory = {}
         local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
         for id, count in pairs(item_counts) do
-            local typeobject_item = assert(iprototype:query(id))
+            local typeobject_item = assert(iprototype:queryById(id))
             local stack = count
 
             while stack > 0 do
@@ -119,7 +117,7 @@ function M:stage_ui_update(datamodel, object_id)
     update(datamodel, datamodel.object_id)
 
     for _, _, _, prototype in click_item_mb:unpack() do
-        local typeobject = iprototype:query(prototype)
+        local typeobject = iprototype:queryById(prototype)
         datamodel.show_item_info = true
         datamodel.item_prototype_name = iprototype:show_prototype_name(typeobject)
         datamodel.item_info = item_id_to_info[tonumber(prototype)] or {}
@@ -164,7 +162,7 @@ function M:stage_ui_update(datamodel, object_id)
         end
 
         --
-        local typeobject_item = iprototype:query(prototype)
+        local typeobject_item = iprototype:queryById(prototype)
         if chest_item_counts[prototype] >= typeobject_item.stack then
             log.info(("stack `%s`"):format(typeobject_item.stack))
             goto continue
@@ -207,7 +205,7 @@ function M:stage_ui_update(datamodel, object_id)
             goto continue
         end
 
-        local typeobject_item = iprototype:query(prototype)
+        local typeobject_item = iprototype:queryById(prototype)
         local pickup_count = math.min(typeobject_item.stack, chest_item_counts[prototype])
 
         ichest:pickup_place(gameplay_core.get_world(), chest_e, headquater_e, prototype, pickup_count)

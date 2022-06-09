@@ -2,16 +2,16 @@ local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
 
 local M = {}
-function M:query(...)
-    return gameplay.query(...)
+function M:queryById(...)
+    return gameplay.prototype.queryById(...)
 end
 
 function M:queryByName(...)
-    return gameplay.queryByName(...)
+    return gameplay.prototype.queryByName(...)
 end
 
-function M:all_prototype_name(...)
-    return gameplay.prototype_name
+function M:all_prototype_name(maintype)
+    return gameplay.prototype.each(maintype)
 end
 
 function M:packcoord(x, y)
