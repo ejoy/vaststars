@@ -802,7 +802,8 @@ prototype "破损太阳能板" {
     order = 122,
     icon = "textures/construct/broken-solar-panel.texture",
     ingredients = {
-        {"石砖", 16},
+        {"铁板", 12},
+        {"石砖", 12},
         {"破损太阳能板", 1},
     },
     results = {
@@ -819,7 +820,7 @@ prototype "破损蓄电池" {
     order = 124,
     icon = "textures/construct/broken-grid-battery.texture",
     ingredients = {
-        {"石墨", 1},
+        {"铁板", 8},
         {"破损蓄电池", 1},
     },
     results = {
