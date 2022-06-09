@@ -98,7 +98,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
         assembling.fluidbox_out = 0
         return
     end
-    local recipe = assert(prototype.query("recipe", recipe_name), "unknown recipe: "..recipe_name)
+    local recipe = assert(prototype.queryByName("recipe", recipe_name), "unknown recipe: "..recipe_name)
     if not fluids or not pt.fluidboxes then
         local container_in = createContainer(recipe.ingredients)
         local container_out = createContainer(recipe.results)

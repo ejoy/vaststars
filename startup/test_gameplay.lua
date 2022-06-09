@@ -7,8 +7,7 @@ local gameplay = import_package "vaststars.gameplay"
 
 local world = gameplay.createWorld()
 
-dofile "test_manual.lua"
-
+assert(loadfile "test_manual.lua")(world)
 assert(loadfile "test_map.lua")(world)
 world:build()
 

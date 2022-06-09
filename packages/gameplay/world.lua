@@ -69,7 +69,7 @@ return function ()
 
     function world:create_entity(type)
         return function (init)
-            local typeobject = assert(prototype.query("entity", type), "unknown entity: " .. type)
+            local typeobject = assert(prototype.queryByName("entity", type), "unknown entity: " .. type)
             local types = typeobject.type
             local obj = {}
             for i = 1, #types do
@@ -130,7 +130,7 @@ return function ()
     end
 
     function world:is_researched(tech)
-        local pt = prototype.query("tech", tech)
+        local pt = prototype.queryByName("tech", tech)
         assert(pt, "unknown tech: " .. tech)
         return cworld:is_researched(pt.id)
     end
@@ -147,7 +147,7 @@ return function ()
         else
             local q = {}
             for i, v in ipairs(queue) do
-                local pt = prototype.query("tech", v)
+                local pt = prototype.queryByName("tech", v)
                 assert(pt, "unknown tech: " .. v)
                 q[i] = pt.id
             end
@@ -156,7 +156,7 @@ return function ()
     end
 
     function world:research_progress(tech)
-        local pt = prototype.query("tech", tech)
+        local pt = prototype.queryByName("tech", tech)
         assert(pt, "unknown tech: " .. tech)
         return cworld:research_progress(pt.id)
     end
