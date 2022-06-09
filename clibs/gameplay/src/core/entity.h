@@ -102,6 +102,13 @@ struct solar_panel {};
 
 struct base {};
 
+struct manual {
+	uint16_t recipe;
+	uint16_t speed;
+	uint8_t status;
+	int32_t progress;
+};
+
 template <typename T> struct component {};
 
 template <> struct component<entity> {
@@ -202,6 +209,11 @@ template <> struct component<solar_panel> {
 template <> struct component<base> {
 	static inline const int id = 20;
 	static inline const char name[] = "base";
+};
+
+template <> struct component<manual> {
+	static inline const int id = 21;
+	static inline const char name[] = "manual";
 };
 
 }

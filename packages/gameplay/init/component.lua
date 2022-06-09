@@ -103,3 +103,10 @@ component "solar_panel" {
 
 component "base" {
 }
+
+component "manual" {
+    "recipe:word",
+    "speed:word",
+    "status:byte",
+    "progress:int",
+}

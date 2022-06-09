@@ -5,6 +5,7 @@
 #include "core/techtree.h"
 #include "core/statistics.h"
 #include "system/fluid.h"
+#include "system/manual.h"
 #include <map>
 extern "C" {
 #include "util/prototype.h"
@@ -21,6 +22,7 @@ struct world {
     std::map<uint16_t, fluidflow> fluidflows;
     techtree_mgr techtree;
     statistics stat;
+    manual_crafting manual;
     uint64_t time = 0;
 
     template <typename C>

@@ -40,6 +40,7 @@ struct chest_container: public container {
 
     size_t   find(uint16_t item);
     void     sort(size_t index, uint16_t newvalue);
+    bool     resize(lua_State* L, world& w);
     bool     resize(lua_State* L, world& w, uint16_t item, uint16_t value, uint16_t newvalue);
     slot     get(uint16_t index) override;
     uint16_t pickup(lua_State* L, world& w, uint16_t item, uint16_t max) override;

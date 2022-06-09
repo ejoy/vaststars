@@ -97,6 +97,25 @@ void chest_container::sort(size_t index, uint16_t newvalue) {
     }
 }
 
+bool chest_container::resize(lua_State* L, world& w) {
+    for (auto it = slots.begin(); it != slots.end();) {
+        if (it->amount == 0) {
+            slots.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
+    used = 0;
+    for (auto& s : slots) {
+        struct prototype_context p = w.prototype(L, s.item);
+        uint16_t stack = pt_stack(&p);
+        uint16_t capacity = s.amount / stack + 1;
+        used += capacity;
+    }
+    return used <= size;
+}
+
 bool chest_container::resize(lua_State* L, world& w, uint16_t item, uint16_t value, uint16_t newvalue) {
     struct prototype_context p = w.prototype(L, item);
     uint16_t stack = pt_stack(&p);
