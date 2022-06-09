@@ -313,9 +313,9 @@ prototype "收集空气" {
   icon = "textures/science/tech-liquid.texture",
   task = {"stat_production", 1, "空气"},
   prerequisites = {"空气分离"},
-  count = 5000,
+  count = 6000,
   sign_desc = {
-    { desc = "用空气过滤器生产50000单位空气", icon = "textures/science/tech-liquid.texture",},
+    { desc = "用空气过滤器生产60000单位空气", icon = "textures/science/tech-liquid.texture",},
   },
 }
 
@@ -425,7 +425,7 @@ prototype "生产铁制箱子" {
     "textures/task_tips_pic/task_produce_chest.texture",
   },
   sign_desc = {
-    { desc = "生产3个小型铁制箱子", icon = "textures/construct/assembler.texture"},
+    { desc = "使用组装机生产3个小型铁制箱子", icon = "textures/construct/assembler.texture"},
   },
 }
 
@@ -436,7 +436,7 @@ prototype "基地生产2" {
   effects = {
     modifier = {["headquarter-craft-speed"] = 0.2},
   },
-  prerequisites = {"生产铁制箱子"},
+  prerequisites = {"冶金学"},
   ingredients = {
       {"地质科技包", 1},
   },
@@ -533,7 +533,7 @@ prototype "冶金学" {
   effects = {
     unlock_recipe = {"熔炼炉1"},
   },
-  prerequisites = {"放置太阳能板"},
+  prerequisites = {"放置太阳能板","生产铁制箱子"},
   ingredients = {
     {"地质科技包", 1},
   },
