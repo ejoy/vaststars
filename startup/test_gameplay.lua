@@ -7,6 +7,8 @@ local gameplay = import_package "vaststars.gameplay"
 
 local world = gameplay.createWorld()
 
+dofile "test_manual.lua"
+
 assert(loadfile "test_map.lua")(world)
 world:build()
 
@@ -35,7 +37,7 @@ local function dump_fluid()
         if fluid ~= 0 and id ~= 0 then
             local r = world:fluidflow_query(fluid, id)
             if r then
-                print(gameplay.query(fluid).name, ("%0.2f/%d\t%0.2f"):format(r.volume / r.multiple, r.capacity / r.multiple, r.flow / r.multiple))
+                print(gameplay.prototype.queryById(fluid).name, ("%0.2f/%d\t%0.2f"):format(r.volume / r.multiple, r.capacity / r.multiple, r.flow / r.multiple))
             end
         end
     end
@@ -68,7 +70,7 @@ world:wait(100*50, function ()
     local ecs = world.ecs
     for v in ecs:select "assembling id:in" do
         local e = world.entity[v.id]
-        local pt = gameplay.query(e.entity.prototype)
+        local pt = gameplay.prototype.queryById(e.entity.prototype)
         assembling.set_recipe(world, e, pt, "地质科技包1")
     end
     world:build()
