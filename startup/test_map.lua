@@ -242,7 +242,7 @@ local function init_fluid()
     end
 
     local function walk_fluidbox(fluidboxes, classify, e)
-        local pt = gameplay.query(e.prototype)
+        local pt = gameplay.prototype.queryById(e.prototype)
         for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
             local fluid = fluidboxes[classify..i.."_fluid"]
             if fluid ~= 0 then
@@ -257,7 +257,7 @@ local function init_fluid()
     local function init()
         for v in ecs:select "fluidbox:in entity:in" do
             local e = v.entity
-            local pt = gameplay.query(e.prototype)
+            local pt = gameplay.prototype.queryById(e.prototype)
             local fluidbox = pt.fluidbox
             local entity = {
                 connections = {}

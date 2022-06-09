@@ -1,5 +1,5 @@
 local gameplay = import_package "vaststars.gameplay"
-local prototype = gameplay.prototype
+local prototype = gameplay.register.prototype
 
 prototype "蒸汽发电机I" {
     model = "prefabs/assembling-1.prefab",

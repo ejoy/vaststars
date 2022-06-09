@@ -1,5 +1,5 @@
 local gameplay = import_package "vaststars.gameplay"
-local prototype = gameplay.prototype
+local prototype = gameplay.register.prototype
 
   --task = {"stat_production", 0, "铁矿石"},
   --task = {"stat_consumption", 0, "铁矿石"},
