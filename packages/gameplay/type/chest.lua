@@ -8,7 +8,7 @@ function c:ctor(init, pt)
     local id = self:container_create("chest", pt.slots)
     if init.items then
         for _, item in pairs(init.items) do
-            local what = prototype.query("item", item[1])
+            local what = prototype.queryByName("item", item[1])
             self:container_place(id, what.id, item[2])
         end
     end

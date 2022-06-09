@@ -60,11 +60,11 @@ local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
 
 function burner:ctor(init, pt)
-    local recipe = assert(prototype.query("recipe", init.recipe))
+    local recipe = assert(prototype.queryByName("recipe", init.recipe))
 	local id = self:container_create("assembling", recipe.ingredients, recipe.results)
 	if init.items then
         for _, item in pairs(init.items) do
-            local what = prototype.query("item", item[1])
+            local what = prototype.queryByName("item", item[1])
             self:container_place(id, what.id, item[2])
         end
     end
