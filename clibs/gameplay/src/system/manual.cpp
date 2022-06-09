@@ -14,9 +14,8 @@ extern "C" {
 
 #define STATUS_IDLE 0
 #define STATUS_DONE 1
-#define STATUS_FINISH_IDLE 2
-#define STATUS_FINISH_DONE 3
-#define STATUS_REBUILD 4
+#define STATUS_FINISH 2
+#define STATUS_REBUILD 3
 
 bool manual_container::pickup(recipe_items& r) {
     for (size_t i = 0; i < r.n; ++i) {
@@ -33,11 +32,10 @@ bool manual_container::pickup(recipe_items& r) {
     return true;
 }
 
-bool manual_container::place(recipe_items& r) {
+void manual_container::place(recipe_items& r) {
     for (size_t i = 0; i < r.n; ++i) {
         place(r.items[i].item, r.items[i].amount);
     }
-    return true;
 }
 
 uint16_t manual_container::pickup(uint16_t item, uint16_t amount) {
@@ -64,7 +62,20 @@ void manual_container::place(uint16_t item, uint16_t amount) {
     }
 }
 
-void manual_crafting::next(ecs::manual& m) {
+void manual_crafting::next() {
+    if (todos.empty()) {
+        return;
+    }
+    todo& td = todos.back();
+    if (td.count > 1) {
+        td.count--;
+    }
+    else {
+        todos.pop_back();
+    }
+}
+
+void manual_crafting::sync(ecs::manual& m) {
     m.progress = 0;
     if (todos.empty()) {
         m.recipe = 0;
@@ -78,14 +89,8 @@ void manual_crafting::next(ecs::manual& m) {
     m.recipe = td.id;
     m.status = (td.type == type::craft)
         ? STATUS_IDLE
-        : STATUS_FINISH_IDLE
+        : STATUS_FINISH
         ;
-    if (td.count > 1) {
-        td.count--;
-    }
-    else {
-        todos.pop_back();
-    }
 }
 
 static manual_container sub(manual_container const& a, manual_container const& b) {
@@ -171,51 +176,41 @@ lupdate(lua_State *L) {
             if (!w.manual.rebuild(L, w, c.container)) {
                 continue;
             }
-            w.manual.next(m);
+            w.manual.sync(m);
         }
-        if (m.status == STATUS_FINISH_IDLE) {
-            recipe_items r;
-            r.n = 1;
-            r.items[0].item = m.recipe;
-            r.items[0].amount = 1;
-            if (!w.manual.container.pickup(r)) {
+        if (m.status == STATUS_FINISH) {
+            if (!w.manual.container.pickup(m.recipe, 1)) {
                 continue;
             }
-            m.status = STATUS_FINISH_DONE;
-        }
-        if (m.status == STATUS_FINISH_DONE) {
             chest_container& container = w.query_container<chest_container>(c.container);
             if (!container.place(L, w, m.recipe, 1)) {
+                w.manual.container.place(m.recipe, 1);
                 continue;
             }
-            w.manual.next(m);
-            continue;
+            w.manual.next();
+            w.manual.sync(m);
         }
-
-        if (m.recipe == 0) {
-            continue;
-        }
-        while (m.progress <= 0) {
+        if (m.recipe != 0 && m.progress <= 0 && m.status == STATUS_DONE) {
             prototype_context recipe = w.prototype(L, m.recipe);
-            if (m.status == STATUS_DONE) {
-                recipe_items* r = (recipe_items*)pt_results(&recipe);
-                if (!w.manual.container.place(*r)) {
-                    continue;
-                }
-                w.stat.finish_recipe(L, w, m.recipe);
-                w.manual.next(m);
+            recipe_items& in = *(recipe_items*)pt_ingredients(&recipe);
+            recipe_items& out = *(recipe_items*)pt_results(&recipe);
+            if (!w.manual.container.pickup(in)) {
+                continue;
             }
-            if (m.status == STATUS_IDLE) {
-                recipe_items* r = (recipe_items*)pt_ingredients(&recipe);
-                if (!w.manual.container.pickup(*r)) {
-                    continue;
-                }
-                int time = pt_time(&recipe);
-                m.progress += time * 100;
-                m.status = STATUS_DONE;
-            }
+            w.manual.container.place(out);
+            w.stat.finish_recipe(L, w, m.recipe);
+            w.manual.next();
+            w.manual.sync(m);
         }
-        m.progress -= m.speed;
+        if (m.recipe != 0 && m.progress <= 0 && m.status == STATUS_IDLE) {
+            prototype_context recipe = w.prototype(L, m.recipe);
+            int time = pt_time(&recipe);
+            m.progress += time * 100;
+            m.status = STATUS_DONE;
+        }
+        if (m.recipe != 0 && m.progress > 0) {
+            m.progress -= m.speed;
+        }
     }
     return 0;
 }
