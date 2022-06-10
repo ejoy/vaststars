@@ -405,7 +405,7 @@ prototype "基地生产1" {
 prototype "储存1" {
   desc = "研究更便捷的存储方式",
   type = { "tech" },
-  icon = "textures/science/tech-logistics.texture",
+  icon = "textures/construct/chest.texture",
   effects = {
     unlock_recipe = {"小型铁制箱子"},
   },
