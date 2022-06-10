@@ -314,6 +314,10 @@ prototype "收集空气" {
   task = {"stat_production", 1, "空气"},
   prerequisites = {"空气分离"},
   count = 6000,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_air1.texture",
+    "textures/task_tips_pic/task_produce_air2.texture",
+  },
   sign_desc = {
     { desc = "用空气过滤器生产60000单位空气", icon = "textures/science/tech-liquid.texture",},
   },
@@ -470,6 +474,10 @@ prototype "生产氢气" {
   task = {"stat_production", 0, "氢气"},
   prerequisites = {"碳处理1"},
   count = 500,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_h21.texture",
+    "textures/task_tips_pic/task_produce_h22.texture",
+  },
   sign_desc = {
     { desc = "生产500个单位氢气", icon = "textures/fluid/gas.texture"},
   },
@@ -482,6 +490,10 @@ prototype "生产二氧化碳" {
   task = {"stat_production", 0, "二氧化碳"},
   prerequisites = {"碳处理1"},
   count = 500,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_co21.texture",
+    "textures/task_tips_pic/task_produce_co22.texture",
+  },
   sign_desc = {
     { desc = "生产500个单位二氧化碳", icon = "textures/fluid/gas.texture"},
   },
@@ -572,6 +584,9 @@ prototype "生产甲烷" {
   task = {"stat_production", 0, "甲烷"},
   prerequisites = {"碳处理2"},
   count = 1000,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_ch4.texture",
+  },
   sign_desc = {
     { desc = "生产1000个单位甲烷", icon = "textures/fluid/gas.texture"},
   },
@@ -584,6 +599,9 @@ prototype "生产塑料" {
   task = {"stat_production", 0, "塑料"},
   prerequisites = {"有机化学"},
   count = 30,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_plastic.texture",
+  },
   sign_desc = {
     { desc = "生产30个塑料", icon = "textures/construct/assembler.texture"},
   },
