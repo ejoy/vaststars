@@ -16,7 +16,7 @@ local function get_techlist(tech_list)
         local name = technode.name
         local value = technode.detail
         local simple_ingredients = {}
-        local ingredients = irecipe:get_elements(value.ingredients)
+        local ingredients = irecipe.get_elements(value.ingredients)
         for _, ingredient in ipairs(ingredients) do
             simple_ingredients[#simple_ingredients + 1] = {icon = ingredient.tech_icon, count = ingredient.count}
         end
@@ -32,12 +32,12 @@ local function get_techlist(tech_list)
                 local recipe_detail = prototypes[recipe]
                 if recipe_detail then
                     local input = {}
-                    ingredients = irecipe:get_elements(recipe_detail.ingredients)
+                    ingredients = irecipe.get_elements(recipe_detail.ingredients)
                     for _, ingredient in ipairs(ingredients) do
                         input[#input + 1] = {name = ingredient.name, icon = ingredient.icon, count = ingredient.count}
                     end
                     local output = {}
-                    local results = irecipe:get_elements(recipe_detail.results)
+                    local results = irecipe.get_elements(recipe_detail.results)
                     for _, ingredient in ipairs(results) do
                         output[#output + 1] = {name = ingredient.name, icon = ingredient.icon, count = ingredient.count}
                     end

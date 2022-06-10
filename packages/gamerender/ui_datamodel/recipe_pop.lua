@@ -25,8 +25,8 @@ local recipe_menu = {} ; do
             order = v.order,
             icon = v.icon,
             time = v.time,
-            ingredients = irecipe:get_elements(v.ingredients),
-            results = irecipe:get_elements(v.results),
+            ingredients = irecipe.get_elements(v.ingredients),
+            results = irecipe.get_elements(v.results),
             group = v.group,
         }
     end
@@ -204,7 +204,7 @@ function M:stage_ui_update(datamodel, object_id)
             -- TODO viewport
             local recipe_typeobject = iprototype.queryByName("recipe", recipe_name)
             assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
-            object.fluid_name = irecipe:get_init_fluids(recipe_typeobject) or {} -- 配方中没有流体的情况
+            object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or {} -- 配方中没有流体的情况
 
             shift_pipe(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)
             gameplay_core.build()

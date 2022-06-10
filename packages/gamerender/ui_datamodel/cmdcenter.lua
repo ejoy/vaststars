@@ -16,12 +16,12 @@ local item_id_to_info = {}
 local recipe_to_category = {}
 local category_to_entity = {}
 for _, typeobject in pairs(iprototype.all_prototype_name("recipe")) do
-    for _, element in ipairs(irecipe:get_elements(typeobject.results)) do
+    for _, element in ipairs(irecipe.get_elements(typeobject.results)) do
         local typeobject_element = assert(iprototype.queryById(element.id))
         if iprototype.has_type(typeobject_element.type, "item") then
             local id = typeobject_element.id
             item_id_to_info[id] = item_id_to_info[id] or {}
-            item_id_to_info[id][#item_id_to_info[id]+1] = {icon = assert(typeobject.icon), element = irecipe:get_elements(typeobject.ingredients), recipe_id = typeobject.id}
+            item_id_to_info[id][#item_id_to_info[id]+1] = {icon = assert(typeobject.icon), element = irecipe.get_elements(typeobject.ingredients), recipe_id = typeobject.id}
         end
     end
     recipe_to_category[typeobject.id] = typeobject.category

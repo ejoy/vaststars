@@ -10,7 +10,7 @@ local function update_world(world, get_object_func)
             local assembling = e.assembling
             if assembling.recipe ~= 0 then
                 local typeobject_recipe = iprototype.queryById(assembling.recipe)
-                local recipe_fluids = irecipe:get_init_fluids(typeobject_recipe)
+                local recipe_fluids = irecipe.get_init_fluids(typeobject_recipe)
                 if recipe_fluids then
                     for i = 1, #recipe_fluids.input do
                         vsobject:attach(typeobject.assembling_slot.input[i], "prefabs/pipeJonit.prefab")

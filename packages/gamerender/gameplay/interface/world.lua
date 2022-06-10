@@ -29,7 +29,7 @@ function M:set_recipe(world, e, recipe_name)
 
     local recipe_typeobject = iprototype.queryByName("recipe", recipe_name)
     assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
-    local init_fluids = irecipe:get_init_fluids(recipe_typeobject)
+    local init_fluids = irecipe.get_init_fluids(recipe_typeobject)
 
     if init_fluids then
         if #typeobject.fluidboxes.input < #init_fluids.input then

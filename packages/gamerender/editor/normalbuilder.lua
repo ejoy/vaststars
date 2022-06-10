@@ -40,7 +40,7 @@ local function new_entity(self, datamodel, typeobject)
     if typeobject.recipe then
         local recipe_typeobject = iprototype.queryByName("recipe", typeobject.recipe)
         if recipe_typeobject then
-            fluid_name = irecipe:get_init_fluids(recipe_typeobject)
+            fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- 有配方 and 配方中没有流体
         else
             fluid_name = ""
         end
