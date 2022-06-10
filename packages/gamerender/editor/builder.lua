@@ -79,7 +79,7 @@ local function complete(self)
             gameplay_core.remove_entity(object.gameplay_eid)
         else
             object.state = "constructed"
-            local old = objects:get(object_id, "CONSTRUCTED")
+            local old = objects:get(object_id, {"CONSTRUCTED"})
             if not old then
                 object.gameplay_eid = gameplay_core.create_entity(object)
             else

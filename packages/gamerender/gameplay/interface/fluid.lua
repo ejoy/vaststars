@@ -53,7 +53,9 @@ function M:get_fluidbox(prototype_name, x, y, dir, fluid_name)
         if fluid_name == "" then
             return ""
         end
-        assert(fluid_name[iotype], iotype)
+        if not fluid_name[iotype] then
+            return ""
+        end
         return fluid_name[iotype][index] or ""
     end
 

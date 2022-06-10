@@ -94,7 +94,7 @@ function M:refresh_flow_shape(cache_names_r, cache_name_w, object, entry_dir, ra
     end
 
     local dx, dy = self:get_dir_coord(raw_x, raw_y, entry_dir)
-    local object = assert(objects:coord(dx, dy, cache_names_r))
+    local object = objects:coord(dx, dy, cache_names_r)
     if object then
         local typeobject = iprototype.queryByName("entity", object.prototype_name)
         if typeobject.pipe or typeobject.road then

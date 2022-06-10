@@ -9,13 +9,13 @@ local camera = ecs.require "engine.camera"
 local get_object_id = require "global".get_object_id
 local changeset = {}
 
-local function new(init)
-    local function object_newindex(self, key, value)
-        self.__object[key] = value
-        self.__change[key] = value
-        changeset[self.__object.id] = self
-    end
+local function object_newindex(self, key, value)
+    self.__object[key] = value
+    self.__change[key] = value
+    changeset[self.__object.id] = self
+end
 
+local function new(init)
     local object = {
         id = get_object_id(),
         prototype_name = assert(init.prototype_name),
@@ -33,12 +33,6 @@ local function new(init)
 end
 
 local function clone(outer)
-    local function object_newindex(self, key, value)
-        self.__object[key] = value
-        self.__change[key] = value
-        changeset[self.__object.id] = self
-    end
-
     local object = {
         id = outer.id,
         prototype_name = assert(outer.prototype_name),
@@ -49,11 +43,12 @@ local function clone(outer)
         fluidflow_network_id = assert(outer.fluidflow_network_id),
         state = assert(outer.state),
         gameplay_eid = outer.gameplay_eid, --TODO
+        teardown = outer.teardown,
     }
 
-    local outer = setmetatable({__object = object, __change = {}}, {__index = object, __newindex = object_newindex})
-    changeset[object.id] = outer
-    return outer
+    local clone = setmetatable({__object = object, __change = {}}, {__index = object, __newindex = object_newindex})
+    changeset[object.id] = clone
+    return clone
 end
 
 local function remove(outer)
