@@ -12,6 +12,7 @@ local tile_objects = create_cache(ALL_CACHE_NAMES, "coord", "id") -- = {[coord] 
 local M = {}
 function M:get(id, cache_names)
     cache_names = cache_names or DEFAULT_CACHE_NAMES
+    assert(type(cache_names) == "table")
     local object = objects:get(cache_names, id)
     if object and object.REMOVED then
         return

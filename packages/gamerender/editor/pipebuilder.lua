@@ -113,7 +113,6 @@ local function show_starting_indicator(starting_x, starting_y, starting_fluid_na
     if not object then
         return
     end
-    objects:set(object, "INDICATOR")
 
     for _, v in ipairs(ifluid:get_fluidbox(shift_pipe_prototype_name(object.prototype_name), object.x, object.y, object.dir, object.fluid_name)) do
         local px, py = ieditor:get_dir_coord(v.x, v.y, v.dir)
@@ -270,15 +269,6 @@ local function has_object(starting_coord_x, starting_coord_y, cur_x, cur_y, star
     end
 end
 
--- TODO
-local function is_pipe(object)
-    if not object then
-        return true
-    end
-
-    return iprototype.is_pipe(object.prototype_name)
-end
-
 local function start(self, datamodel)
     local coord_indicator = self.coord_indicator
     local starting_fluidbox_x, starting_fluidbox_y, starting_fluid_name, starting_fluidflow_network_id, starting_dir = get_starting_fluidbox_coord(self.starting_coord.x, self.starting_coord.y, coord_indicator.x, coord_indicator.y)
@@ -315,7 +305,7 @@ local function start(self, datamodel)
 
         local fluidflow_network_id
         if object then
-            if not is_pipe(object) and fluid_name == "" then
+            if not iprototype.is_pipe(object.prototype_name) and fluid_name == "" then
                 global.fluidflow_network_id = global.fluidflow_network_id + 1
                 fluidflow_network_id = global.fluidflow_network_id
             else
@@ -338,7 +328,7 @@ local function start(self, datamodel)
     end
 
     -- the start point and end point are not pipes and adjacent buildings
-    if not is_pipe(starting_object) and not is_pipe(ending_object) then
+    if not iprototype.is_pipe(starting_object.prototype_name) and not iprototype.is_pipe(ending_object.prototype_name) then
         for _, dir in ipairs(ALL_DIR) do
             local x, y = ieditor:get_dir_coord(starting_fluidbox_x, starting_fluidbox_y, dir)
             if x == ending_fluidbox_x and y == ending_fluidbox_y then
