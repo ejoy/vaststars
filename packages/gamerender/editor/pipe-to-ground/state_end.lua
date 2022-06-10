@@ -80,9 +80,6 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y)
             show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
             return false
         end
-        if x == to_x and y == to_y then
-            break
-        end
 
         local object = objects:coord(x, y, EDITOR_CACHE_CONSTRUCTED)
         if object then
@@ -107,32 +104,29 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y)
             replace_pipe = false
             break
         end
+
+        if x == to_x and y == to_y then
+            break
+        end
     end
 
     if replace_pipe then
         for _, object in ipairs(pipe) do
-            local o = iobject.clone(object)
-            o.REMOVED = true
-            objects:set(o, EDITOR_CACHE_TEMPORARY[1])
+            local clone = iobject.clone(object)
+            iobject.remove(clone)
+            objects:set(clone, EDITOR_CACHE_TEMPORARY[1])
         end
 
         --
         local prototype_name, typeobject, object
         typeobject = iprototype.queryByName("entity", starting_object.prototype_name)
-        object = iobject.new {
-            prototype_name = typeobject.name,
-            dir = starting_object.dir,
-            x = starting_object.x,
-            y = starting_object.y,
-            fluid_name = starting_object.fluid_name,
-            fluidflow_network_id = starting_object.fluidflow_network_id,
-            state = "construct",
-        }
+        object = iobject.clone(starting_object)
+        object.prototype_name = typeobject.name
         objects:set(object, EDITOR_CACHE_TEMPORARY[1])
 
         --
         local shape
-        if flow_shape:get_state(ending_object.prototype_name, iprototype.opposite_dir(starting_object.dir)) then
+        if flow_shape:get_state(ending_object.prototype_name, ending_object.dir, iprototype.opposite_dir(starting_object.dir)) then
             shape = "JI"
         else
             shape = "JU"
@@ -172,7 +166,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y)
 
         --
         local shape
-        if flow_shape:get_state(ending_object.prototype_name, iprototype.opposite_dir(starting_object.dir)) then
+        if flow_shape:get_state(ending_object.prototype_name, ending_object.dir, iprototype.opposite_dir(starting_object.dir)) then
             shape = "JI"
         else
             shape = "JU"

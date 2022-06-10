@@ -14,7 +14,7 @@ function M:get(id, cache_names)
     cache_names = cache_names or DEFAULT_CACHE_NAMES
     assert(type(cache_names) == "table")
     local object = objects:get(cache_names, id)
-    if object and object.REMOVED then
+    if object and object.OBJECT_REMOVED then
         return
     else
         return object
@@ -43,7 +43,7 @@ function M:coord(x, y, cache_names)
         return
     end
     local object = assert(self:get(tile.id, cache_names))
-    if object and object.REMOVED then
+    if object and object.OBJECT_REMOVED then
         return
     else
         return object
@@ -77,7 +77,7 @@ end
 function M:selectall(index_field, cache_value, cache_names)
     local t = {}
     for id, obj in objects:selectall(cache_names, index_field, cache_value) do
-        if not obj.REMOVED then
+        if not obj.OBJECT_REMOVED then
             t[id] = obj
         end
     end

@@ -79,9 +79,9 @@ function M:get_init_prototype_name(prototype_name)
     return prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format("O"))
 end
 
-function M:get_state(prototype_name, dir)
+function M:get_state(prototype_name, dir, check_dir)
     local shape_type = assert(prototype_name:match(".*%-(%u).*"))
-    return M:to_state(shape_type, dir) == 1
+    return M:to_state(shape_type, dir) & (1 << DIRECTION[check_dir]) == (1 << DIRECTION[check_dir])
 end
 
 function M:get_shape(prototype_name)

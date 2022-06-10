@@ -96,17 +96,15 @@ local function flush()
         teardown = function (outer, value)
             outer.__object.teardown = value
         end,
-        REMOVED = function (outer, value)
-            outer.__object.REMOVED = value
-        end
     }
 
     local vsobject
     for object_id, outer in pairs(changeset) do
         if outer.__object.OBJECT_REMOVED then
-            assert(outer.__object.REMOVED == nil)
-            outer.__object.REMOVED = true
-            vsobject_manager:remove(outer.id)
+            if not outer.__object.REMOVED then
+                outer.__object.REMOVED = true
+                vsobject_manager:remove(outer.id)
+            end
         else
             vsobject = vsobject_manager:get(object_id)
             if not vsobject then
