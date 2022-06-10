@@ -468,7 +468,7 @@ prototype "碳处理1" {
 }
 
 prototype "生产氢气" {
-  desc = "用电解厂电解卤水产出氢气",
+  desc = "生产工业气体氢气",
   icon = "textures/science/tech-liquid.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "氢气"},
@@ -479,12 +479,12 @@ prototype "生产氢气" {
     "textures/task_tips_pic/task_produce_h22.texture",
   },
   sign_desc = {
-    { desc = "生产500个单位氢气", icon = "textures/fluid/gas.texture"},
+    { desc = "电解厂电解卤水生产500个单位氢气", icon = "textures/fluid/gas.texture"},
   },
 }
 
 prototype "生产二氧化碳" {
-  desc = "用蒸馏厂分离空气产出二氧化碳",
+  desc = "生产工业气体二氧化碳",
   icon = "textures/science/tech-liquid.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "二氧化碳"},
@@ -495,7 +495,7 @@ prototype "生产二氧化碳" {
     "textures/task_tips_pic/task_produce_co22.texture",
   },
   sign_desc = {
-    { desc = "生产500个单位二氧化碳", icon = "textures/fluid/gas.texture"},
+    { desc = "蒸馏厂分离空气生产500个单位二氧化碳", icon = "textures/fluid/gas.texture"},
   },
 }
 
@@ -578,7 +578,7 @@ prototype "冶金学" {
 }
 
 prototype "生产甲烷" {
-  desc = "用化工厂生产初级化工气体甲烷",
+  desc = "生产工业气体甲烷",
   icon = "textures/science/tech-liquid.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "甲烷"},
@@ -588,7 +588,7 @@ prototype "生产甲烷" {
     "textures/task_tips_pic/task_produce_ch4.texture",
   },
   sign_desc = {
-    { desc = "生产1000个单位甲烷", icon = "textures/fluid/gas.texture"},
+    { desc = "用化工厂生产1000个单位甲烷", icon = "textures/fluid/gas.texture"},
   },
 }
 
