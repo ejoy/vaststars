@@ -66,13 +66,7 @@ void manual_crafting::next() {
     if (todos.empty()) {
         return;
     }
-    todo& td = todos.back();
-    if (td.count > 1) {
-        td.count--;
-    }
-    else {
-        todos.pop_back();
-    }
+    todos.pop_back();
 }
 
 void manual_crafting::sync(ecs::manual& m) {
@@ -119,22 +113,20 @@ bool manual_crafting::rebuild(lua_State* L, world& w, int id) {
             prototype_context recipe = w.prototype(L, todo.id);
             recipe_items& in  = *(recipe_items*)pt_ingredients(&recipe);
             recipe_items& out = *(recipe_items*)pt_results(&recipe);
-            for (uint8_t i = 0; i < todo.count; ++i) {
-                for (uint8_t j = 0; j < in.n; ++j) {
-                    auto& s = in.items[j];
-                    uint16_t r = current.pickup(s.item, s.amount);
-                    if (r > 0) {
-                        expected.place(s.item, r);
-                    }
+            for (uint8_t j = 0; j < in.n; ++j) {
+                auto& s = in.items[j];
+                uint16_t r = current.pickup(s.item, s.amount);
+                if (r > 0) {
+                    expected.place(s.item, r);
                 }
-                for (uint8_t j = 0; j < out.n; ++j) {
-                    auto& s = out.items[j];
-                    current.place(s.item, s.amount);
-                }
+            }
+            for (uint8_t j = 0; j < out.n; ++j) {
+                auto& s = out.items[j];
+                current.place(s.item, s.amount);
             }
         }
         else {
-            if (0 != current.pickup(todo.id, todo.count)) {
+            if (0 != current.pickup(todo.id, 1)) {
                 return false;
             }
         }
