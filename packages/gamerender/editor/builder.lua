@@ -4,19 +4,15 @@ local world = ecs.world
 local iprototype = require "gameplay.interface.prototype"
 local objects = require "objects"
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
-local vsobject_manager = ecs.require "vsobject_manager"
 local ieditor = ecs.require "editor.editor"
 local ifluid = require "gameplay.interface.fluid"
 local gameplay_core = require "gameplay.core"
+local ientity = require "gameplay.interface.entity"
+local iobject = ecs.require "object"
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
-    local typeobject = iprototype:queryByName("entity", prototype_name)
-    local construct_detector = typeobject.construct_detector
-    if not construct_detector then
-        return true
-    end
-
-    local w, h = iprototype:rotate_area(typeobject.area, dir)
+    local typeobject = iprototype.queryByName("entity", prototype_name)
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
     for i = 0, w - 1 do
         for j = 0, h - 1 do
             if objects:coord(x + i, y + j, EDITOR_CACHE_NAMES) then
@@ -60,7 +56,7 @@ end
 
 local function clean(self, datamodel)
     if self.pickup_object then
-        vsobject_manager:remove(self.pickup_object.id)
+        iobject.remove(self.pickup_object)
     end
 
     ieditor:revert_changes({"TEMPORARY"})
@@ -77,23 +73,22 @@ end
 
 local function complete(self)
     local needbuild = false
-    for _, object in objects:all("CONFIRM") do
-        object.state = "constructed"
-
-        local vsobject = assert(vsobject_manager:get(object.id))
-        vsobject:update {type = "constructed"}
-
-        if object.gameplay_eid == 0 then
-            object.gameplay_eid = gameplay_core.create_entity(object)
+    for object_id, object in objects:all("CONFIRM") do
+        if object.REMOVED then
+            objects:remove(object_id, "CONFIRM")
+            gameplay_core.remove_entity(object.gameplay_eid)
         else
-            local old_object = objects:get(object.id)
-            -- 水管变形需要重建 gameplay entity 的情况
-            if old_object.prototype_name ~= object.prototype_name or old_object.dir ~= object.dir then
-                gameplay_core.remove_entity(object.gameplay_eid)
+            object.state = "constructed"
+            local old = objects:get(object_id, "CONSTRUCTED")
+            if not old then
                 object.gameplay_eid = gameplay_core.create_entity(object)
             else
-                local typeobject = iprototype:queryByName("entity", object.prototype_name)
-                if iprototype:has_type(typeobject.type, "fluidbox") then
+                if old.prototype_name ~= object.prototype_name then
+                    gameplay_core.remove_entity(object.gameplay_eid)
+                    object.gameplay_eid = gameplay_core.create_entity(object)
+                elseif old.dir ~= object.dir then
+                    ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
+                elseif old.fluid_name ~= object.fluid_name then
                     ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
                 end
             end
@@ -123,7 +118,7 @@ local function update_fluidbox(self, cache_names_r, cache_name_w, prototype_name
                 if is_connection(v.x, v.y, v.dir, v1.x, v1.y, v1.dir) then
                     if object.fluidflow_network_id ~= 0 then
                         for _, object in objects:selectall("fluidflow_network_id", object.fluidflow_network_id, cache_names_r) do
-                            local o = ieditor:clone_object(object)
+                            local o = iobject.clone(object)
                             o.fluidflow_network_id = 0
                             o.fluid_name = v.fluid_name
                             objects:set(o, cache_name_w)

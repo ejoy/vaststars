@@ -1,84 +1,114 @@
 local EMPTY_TABLE = {}
+local support_types = {["string"] = true, ["number"] = true, ["boolean"] = true}
 
-local function key(self, key)
-	return self.kv[key]
-end
-
-local function select(self, index_field, cache_value)
-	assert(cache_value ~= nil)
-	if not self.cache[index_field] then
-		return next, EMPTY_TABLE, nil
+local function _sync_cache(self, obj, field_name)
+	local key = assert(obj[self.key_field_name])
+	local value = obj[field_name]
+	if value == nil then
+		return
 	end
 
-	if not self.cache[index_field][cache_value] then
-		return next, EMPTY_TABLE, nil
-	end
-
-	local value
-	local r = {}
-	for key in pairs(self.cache[index_field][cache_value]) do
-		value = self.kv[key]
-		if not value then
-			self.cache[index_field][cache_value][key] = nil
-		else
-			if value[index_field] ~= cache_value then
-				self.cache[index_field][cache_value][key] = nil
-			else
-				r[key] = value
-			end
-		end
-	end
-
-	return next, r, nil
+	assert(support_types[type(value)])
+	self.cache[field_name] = self.cache[field_name] or {}
+	self.cache[field_name][value] = self.cache[field_name][value] or {}
+	self.cache[field_name][value][key] = true
 end
 
-local function all(self)
-    return next, self.kv, nil
-end
+local function set(self, obj)
+	local key = assert(obj[self.key_field_name])
+	-- assert(self.objs[key] == nil, ("duplicate key `%s`"):format(key))
+	self.objs[key] = obj
 
-local function set(self, value)
-	local key = value[self.key_field]
-	self.kv[key] = value
-
-	--
-	local cache_value
-	for _, index_field in ipairs(self.index_fields) do
-		assert(value[index_field] ~= nil)
-		cache_value = value[index_field]
-		assert(type(cache_value) == "number" or type(cache_value) == "string" or type(cache_value) == "boolean")
-		self.cache[index_field] = self.cache[index_field] or {}
-		self.cache[index_field][cache_value] = self.cache[index_field][cache_value] or {}
-		self.cache[index_field][cache_value][key] = true
+	for field_name in pairs(self.index_field_names) do
+		_sync_cache(self, obj, field_name)
 	end
 end
 
 local function remove(self, key)
-	self.kv[key] = nil
+	assert(self.objs[key])
+	self.objs[key] = nil
+end
+
+local function sync(self, syncobj, ...)
+	local key = assert(syncobj[self.key_field_name])
+	local obj = assert(self.objs[key], ("duplicate key `%s`"):format(key))
+
+	local field_names = {...}
+	assert(#field_names >= 1)
+	for _, field_name in ipairs(field_names) do
+		assert(type(field_name) == "string")
+		obj[field_name] = syncobj[field_name]
+
+		if self.index_field_names[field_name] then
+			_sync_cache(self, obj, field_name)
+		end
+	end
+end
+
+local function select(self, field_name, value)
+	assert(value ~= nil)
+	assert(self.index_field_names[field_name], ("must specify the field_name `%s` as index field name"):format(field_name))
+
+	if not self.cache[field_name] then
+		return next, EMPTY_TABLE, nil
+	end
+
+	if not self.cache[field_name][value] then
+		return next, EMPTY_TABLE, nil
+	end
+
+	local obj
+	local result = {}
+	for key in pairs(self.cache[field_name][value]) do
+		obj = self.objs[key]
+		if not obj then
+			self.cache[field_name][value][key] = nil
+		else
+			if obj[field_name] ~= value then
+				self.cache[field_name][value][key] = nil
+			else
+				result[key] = obj
+			end
+		end
+	end
+
+	return next, result, nil
+end
+
+local function selectkey(self, key)
+	return self.objs[key]
+end
+
+local function selectall(self)
+    return next, self.objs, nil
 end
 
 local function empty(self)
-	return not next(self.kv)
+	return not next(self.objs)
 end
 
 local function clear(self)
-	self.kv = {}
+	self.objs = {}
 	self.cache = {}
 end
 
-local function create(key_field, ...)
+return function(key_field_name, ...)
 	local m = {}
-	m.key_field = key_field
-	m.index_fields = {...}
-	m.kv = {}
+	m.key_field_name = key_field_name
+	m.index_field_names = {}
+	for _, field_name in ipairs({...}) do
+		m.index_field_names[field_name] = true
+	end
+	m.objs = {}
 	m.cache = {}
 
 	m.set = set
-	m.key = key
-    m.all = all
-	m.select = select
 	m.remove = remove
+	m.sync = sync
+	m.select = select
+	m.selectkey = selectkey
+	m.selectall = selectall
 	m.empty = empty
 	m.clear = clear
 	return m
 end
-return create

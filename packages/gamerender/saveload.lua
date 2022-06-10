@@ -11,51 +11,23 @@ local camera_setting_path = archival_base_dir .. "/camera.json"
 local iprototype = require "gameplay.interface.prototype"
 local startup_entities = import_package("vaststars.prototype")("item.startup").entities
 local objects = require "objects"
-local vsobject_manager = ecs.require "vsobject_manager"
 local ifluid = require "gameplay.interface.fluid"
+local iscience = require "gameplay.interface.science"
 
 local irq = ecs.import.interface "ant.render|irenderqueue"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ic = ecs.import.interface "ant.camera|icamera"
 local math3d = require "math3d"
-local terrain = ecs.require "terrain"
-local ieditor = ecs.require "editor.editor"
+local iobject = ecs.require "object"
 
 local MAX_ARCHIVING_COUNT <const> = 9
 
 local archival_relative_dir_list = {}
 
-local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_network_id)
-    local vsobject_type = "constructed"
-    local typeobject = iprototype:queryByName("entity", prototype_name)
-    local position = assert(terrain.get_position_by_coord(x, y, iprototype:rotate_area(typeobject.area, dir)))
-
-    local vsobject = vsobject_manager:create {
-        prototype_name = prototype_name,
-        dir = dir,
-        position = position,
-        type = vsobject_type,
-    }
-    local object = {
-        id = vsobject.id,
-        gameplay_eid = gameplay_eid,
-        prototype_name = prototype_name,
-        dir = dir,
-        x = x,
-        y = y,
-        teardown = false,
-        headquater = typeobject.headquater or false,
-        fluid_name = fluid_name,
-        fluidflow_network_id = fluidflow_network_id,
-        state = vsobject_type,
-    }
-    objects:set(object)
-end
-
 local function restore_world()
     -- clean
     for _, object in objects:all() do
-        vsobject_manager:remove(object.id)
+        iobject.remove(object)
     end
     objects:clear()
 
@@ -69,15 +41,32 @@ local function restore_world()
         return duplicate[id]
     end
 
+    local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_network_id)
+        local typeobject = iprototype.queryByName("entity", prototype_name)
+
+        local object = iobject.new {
+            prototype_name = prototype_name,
+            dir = dir,
+            x = x,
+            y = y,
+            fluid_name = fluid_name,
+            fluidflow_network_id = fluidflow_network_id,
+            headquater = typeobject.headquater or false,
+            state = "constructed",
+        }
+        object.gameplay_eid = gameplay_eid
+        objects:set(object)
+    end
+
     -- restore
     for v in gameplay_core.select("id:in entity:in fluidbox?in fluidboxes?in") do
         local e = v.entity
-        local typeobject = iprototype:queryById(e.prototype)
+        local typeobject = iprototype.queryById(e.prototype)
         local fluid_name = ""
         local fluidflow_network_id = 0
         if v.fluidbox then
             if v.fluidbox.fluid ~= 0 then
-                local typeobject_fluid = assert(iprototype:queryById(v.fluidbox.fluid))
+                local typeobject_fluid = assert(iprototype.queryById(v.fluidbox.fluid))
                 fluid_name = typeobject_fluid.name
             else
                 fluidflow_network_id = get_network_id(v.fluidbox.id)
@@ -90,7 +79,7 @@ local function restore_world()
                     local iotype, index = id:match("(%a+)(%d+)%_fluid")
                     if iotype then
                         local classity = ifluid:iotype_to_classity(iotype)
-                        local typeobject_fluid = assert(iprototype:queryById(fluid))
+                        local typeobject_fluid = assert(iprototype.queryById(fluid))
 
                         fluid_name[classity] = fluid_name[classity] or {}
                         fluid_name[classity][tonumber(index)] = typeobject_fluid.name
@@ -98,9 +87,9 @@ local function restore_world()
                 end
             end
         end
-        restore_object(v.id, typeobject.name, iprototype:dir_tostring(e.direction), e.x, e.y, fluid_name, fluidflow_network_id)
+        restore_object(v.id, typeobject.name, iprototype.dir_tostring(e.direction), e.x, e.y, fluid_name, fluidflow_network_id)
     end
-    local iscience = require "gameplay.interface.science"
+    iobject.flush()
     iscience.update_tech_list(gameplay_core.get_world())
 end
 
