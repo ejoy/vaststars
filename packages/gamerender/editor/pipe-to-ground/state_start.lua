@@ -25,9 +25,9 @@ function condition_pipe(self, datamodel)
     local ground = get_ground(self.coord_indicator.prototype_name)
 
     local succ
-    _, to_x, to_y = iprototype.move_coord(from_x, from_y, dir,
+    succ, to_x, to_y = iprototype.move_coord(from_x, from_y, dir,
         math.min(math.abs(from_x - to_x), ground),
-        math.min(math.abs(from_x - to_y), ground)
+        math.min(math.abs(from_y - to_y), ground)
     )
 
     local starting_object = assert(objects:coord(from_x, from_y, EDITOR_CACHE_CONSTRUCTED))
@@ -44,10 +44,6 @@ function condition_pipe(self, datamodel)
         end
     end
 
-    succ, to_x, to_y = iprototype.move_coord(from_x, from_y, dir,
-        math.min(math.abs(from_x - to_x), ground),
-        math.min(math.abs(from_x - to_y), ground)
-    )
     if not succ then
         show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
         return
