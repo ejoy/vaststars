@@ -21,11 +21,18 @@ local condition_pipe, condition_pipe_to_ground, condition_normal, condition_none
 function condition_pipe(self, datamodel)
     local from_x, from_y = self.from_x, self.from_y
     local to_x, to_y = self.coord_indicator.x, self.coord_indicator.y
-    local starting_object = assert(objects:coord(from_x, from_y, EDITOR_CACHE_CONSTRUCTED))
-    assert(iprototype.is_pipe(starting_object.prototype_name))
+    local dir = iprototype.calc_dir(from_x, from_y, to_x, to_y)
     local ground = get_ground(self.coord_indicator.prototype_name)
 
-    local dir = iprototype.calc_dir(from_x, from_y, to_x, to_y)
+    local succ
+    _, to_x, to_y = iprototype.move_coord(from_x, from_y, dir,
+        math.min(math.abs(from_x - to_x), ground),
+        math.min(math.abs(from_x - to_y), ground)
+    )
+
+    local starting_object = assert(objects:coord(from_x, from_y, EDITOR_CACHE_CONSTRUCTED))
+    assert(iprototype.is_pipe(starting_object.prototype_name))
+
     local t = {
         [dir] = true,
         [iprototype.opposite_dir(dir)] = true,
@@ -37,7 +44,6 @@ function condition_pipe(self, datamodel)
         end
     end
 
-    local succ
     succ, to_x, to_y = iprototype.move_coord(from_x, from_y, dir,
         math.min(math.abs(from_x - to_x), ground),
         math.min(math.abs(from_x - to_y), ground)
