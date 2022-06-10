@@ -95,6 +95,9 @@ local function flush()
         end,
         teardown = function (outer, value)
             outer.__object.teardown = value
+        end,
+        REMOVED = function (outer, value)
+            outer.__object.REMOVED = value
         end
     }
 
