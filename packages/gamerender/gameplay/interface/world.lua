@@ -12,7 +12,7 @@ end
 -- TODO
 function M:get_headquater_entity(world)
     for e in world.ecs:select "id:in chest:in entity:in" do
-        local typeobject = iprototype:queryById(e.entity.prototype)
+        local typeobject = iprototype.queryById(e.entity.prototype)
         if typeobject.headquater then
             return world.entity[e.id]
         end
@@ -20,14 +20,14 @@ function M:get_headquater_entity(world)
 end
 
 function M:set_recipe(world, e, recipe_name)
-    local typeobject = iprototype:queryById(e.entity.prototype)
+    local typeobject = iprototype.queryById(e.entity.prototype)
     if not recipe_name then
         assembling.set_recipe(world, e, typeobject, recipe_name)
         log.info(("clean recipe success"))
         return true
     end
 
-    local recipe_typeobject = iprototype:queryByName("recipe", recipe_name)
+    local recipe_typeobject = iprototype.queryByName("recipe", recipe_name)
     assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
     local init_fluids = irecipe:get_init_fluids(recipe_typeobject)
 

@@ -13,10 +13,10 @@ function M:create(init)
     return vsobject
 end
 
-function M:remove(vsobject_id)
-    local vsobject = assert(vsobjects[vsobject_id])
+function M:remove(object_id)
+    local vsobject = assert(vsobjects[object_id])
     vsobject:remove()
-    vsobjects[vsobject_id] = nil
+    vsobjects[object_id] = nil
 end
 
 function M:get(id)

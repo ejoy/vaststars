@@ -267,8 +267,28 @@ prototype "管道1-U型" {
     }
 }
 
-prototype "地下管I" {
-    model = "prefabs/pipe/pipe_J.prefab",
+prototype "地下管1-JU型" {
+    show_prototype_name = "地下管I",
+    model = "prefabs/pipe/pipe_JU.prefab",
+    icon = "textures/construct/pipe.texture",
+    construct_detector = {"exclusive"},
+    show_build_function = false,
+    pipe_to_ground = true,
+    type ={"entity","fluidbox"},
+    area = "1x1",
+    group = {"管道"},
+    fluidbox = {
+        capacity = 100,
+        height = 100,
+        base_level = 0,
+        connections = {
+            {type="input-output", position={0,0,"N"}, ground = 10},
+        }
+    }
+}
+
+prototype "地下管1-JI型" {
+    model = "prefabs/pipe/pipe_JI.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     show_build_function = false,
