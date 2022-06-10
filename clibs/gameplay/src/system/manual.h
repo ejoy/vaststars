@@ -13,13 +13,12 @@ struct manual_container : public flatmap<uint16_t, uint16_t> {
 };
 
 struct manual_crafting {
-    enum class type : uint8_t {
+    enum class type : uint16_t {
         craft,
         finish,
     };
     struct todo {
         type type;
-        uint8_t count;
         uint16_t id;
     };
     std::vector<todo> todos;
