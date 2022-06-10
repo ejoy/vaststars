@@ -30,8 +30,8 @@ local function get(object_id)
         }
     end
 
-    local recipe_ingredients = irecipe:get_elements(recipe_typeobject.ingredients)
-    local recipe_results = irecipe:get_elements(recipe_typeobject.results)
+    local recipe_ingredients = irecipe.get_elements(recipe_typeobject.ingredients)
+    local recipe_results = irecipe.get_elements(recipe_typeobject.results)
 
     local recipe_ingredients_count = {}
     for index, v in ipairs(recipe_ingredients) do

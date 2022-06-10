@@ -44,7 +44,7 @@ function M:place_material(world, e)
         return
     end
 
-    local tech_ingredients = irecipe:get_elements(tech_typeobject.ingredients)
+    local tech_ingredients = irecipe.get_elements(tech_typeobject.ingredients)
     local laboratory_item_counts = {}
     for i, v in ipairs(tech_ingredients) do
         local c, n = world:container_get(e.laboratory.container, i)

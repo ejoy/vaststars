@@ -53,10 +53,10 @@ function M:create(object_id, left, top)
             local recipe_typeobject = iprototype.queryById(e.assembling.recipe)
             recipe_name = recipe_typeobject.name
 
-            if #irecipe:get_elements(recipe_typeobject.ingredients) > 0 then
+            if #irecipe.get_elements(recipe_typeobject.ingredients) > 0 then
                 show_place_material = true
             end
-            if #irecipe:get_elements(recipe_typeobject.results) > 0 then
+            if #irecipe.get_elements(recipe_typeobject.results) > 0 then
                 show_pickup_material = true
             end
         end

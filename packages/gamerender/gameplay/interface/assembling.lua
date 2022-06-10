@@ -26,8 +26,8 @@ function M:pickup_material(world, e)
 
     local recipe = e.assembling.recipe
     local typeobject = iprototype.queryById(recipe)
-    local recipe_ingredients = irecipe:get_elements(typeobject.ingredients)
-    local recipe_results = irecipe:get_elements(typeobject.results)
+    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
+    local recipe_results = irecipe.get_elements(typeobject.results)
 
     for i = 1, #recipe_results do
         local c, n = world:container_get(e.assembling.container, #recipe_ingredients + i)
@@ -67,7 +67,7 @@ function M:place_material(world, e)
     end
 
     local typeobject = iprototype.queryById(recipe)
-    local recipe_ingredients = irecipe:get_elements(typeobject.ingredients)
+    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
 
     local assembling_item_counts = {}
     for i, v in ipairs(recipe_ingredients) do
@@ -119,8 +119,8 @@ function M:item_counts(world, e)
     end
 
     local typeobject = iprototype.queryById(recipe)
-    local recipe_ingredients = irecipe:get_elements(typeobject.ingredients)
-    local recipe_results = irecipe:get_elements(typeobject.results)
+    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
+    local recipe_results = irecipe.get_elements(typeobject.results)
 
     for i = 1, #recipe_ingredients + #recipe_results do
         local c, n = world:container_get(e.assembling.container, i)
