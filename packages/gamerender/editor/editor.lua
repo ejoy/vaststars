@@ -15,7 +15,6 @@ local iobject = ecs.require "object"
 --
 local M = {}
 
--- TODO
 function M:revert_changes(revert_cache_names)
     local t = {}
     for _, cache_name in ipairs(revert_cache_names) do
@@ -26,13 +25,14 @@ function M:revert_changes(revert_cache_names)
     objects:clear(revert_cache_names)
 
     for id, object in pairs(t) do
-        local old_object = objects:get(id, EDITOR_CACHE_NAMES)
+        local old_object = objects:get(id, {"CONFIRM", "CONSTRUCTED"})
         if old_object then
             object.prototype_name = old_object.prototype_name
             object.dir = old_object.dir
             object.state = old_object.state
             object.fluid_name = old_object.fluid_name
             object.fluidflow_network_id = old_object.fluidflow_network_id
+            object.__object.OBJECT_REMOVED = nil
         else
             iobject.remove(object)
         end

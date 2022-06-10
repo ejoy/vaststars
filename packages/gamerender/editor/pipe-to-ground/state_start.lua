@@ -16,6 +16,8 @@ local is_overlap = ecs.require "editor.pipe-to-ground.util".is_overlap
 local show_indicator = ecs.require "editor.pipe-to-ground.util".show_indicator
 
 local EDITOR_CACHE_CONSTRUCTED = {"CONFIRM", "CONSTRUCTED"}
+local EDITOR_CACHE_TEMPORARY   = {"TEMPORARY"}
+
 local condition_pipe, condition_pipe_to_ground, condition_normal, condition_none
 
 function condition_pipe(self, datamodel)
@@ -50,7 +52,7 @@ function condition_pipe(self, datamodel)
     end
 
     local shape
-    if flow_shape:get_state(starting_object.prototype_name, iprototype.opposite_dir(dir)) then
+    if flow_shape:get_state(starting_object.prototype_name, starting_object.dir, iprototype.opposite_dir(dir)) then
         shape = "JI"
     else
         shape = "JU"
@@ -61,6 +63,7 @@ function condition_pipe(self, datamodel)
     starting_object.fluid_name = starting_object.fluid_name
     starting_object.fluidflow_network_id = starting_object.fluidflow_network_id
     starting_object.state = "construct"
+    objects:set(starting_object, EDITOR_CACHE_TEMPORARY[1])
 
     state_end(self, datamodel, starting_object, to_x, to_y)
 end
@@ -95,7 +98,7 @@ function condition_pipe_to_ground(self, datamodel)
     end
 
     local shape
-    if flow_shape:get_state(starting_object.prototype_name, iprototype.opposite_dir(dir)) then
+    if flow_shape:get_state(starting_object.prototype_name, starting_object.dir, iprototype.opposite_dir(dir)) then
         shape = "JI"
     else
         shape = "JU"
@@ -107,6 +110,8 @@ function condition_pipe_to_ground(self, datamodel)
     starting_object.fluid_name = starting_object.fluid_name
     starting_object.fluidflow_network_id = starting_object.fluidflow_network_id
     starting_object.state = "construct"
+    objects:set(starting_object, EDITOR_CACHE_TEMPORARY[1])
+
     state_end(self, datamodel, starting_object, to_x, to_y)
 end
 
