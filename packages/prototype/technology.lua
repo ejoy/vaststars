@@ -313,13 +313,13 @@ prototype "收集空气" {
   icon = "textures/science/tech-liquid.texture",
   task = {"stat_production", 1, "空气"},
   prerequisites = {"空气分离"},
-  count = 6000,
+  count = 8000,
   tips_pic = {
     "textures/task_tips_pic/task_produce_air1.texture",
     "textures/task_tips_pic/task_produce_air2.texture",
   },
   sign_desc = {
-    { desc = "用空气过滤器生产60000单位空气", icon = "textures/science/tech-liquid.texture",},
+    { desc = "用空气过滤器生产80000单位空气", icon = "textures/science/tech-liquid.texture",},
   },
 }
 
