@@ -95,7 +95,7 @@
                 height:47px;
                 background-image:"textures/exchange/right_arrow.texture";
                 background-size:cover;
-                /* transform: rotate(180deg) */
+                transform: rotate(180deg)
             }
             .small-building-block{
                 flex-direction: column;
@@ -277,11 +277,14 @@
                             </div>
                         </div>
                         <div style="margin:0.08em auto; flex-direction:row; justify-content: flex-start; width:100%;" data-for = "item_info">
+                            <div class="small-item-1" style="margin-left:0.3em;" data-style-background-image="it.icon"/>
+                            <div class="small-arrow">
+                                <div style="position:absolute; left: 2vmin; bottom: 1.7vmin; text-align: center; font-size: 2.5vmin; transform: rotate(180deg)">10s</div>
+                            </div>
                             <div class="small-item-1" data-for = "it_element : it.element" data-style-background-image = "it_element.icon">
                                 <div class="small-item-count">{{it_element.count}}</div>
                             </div>
-                            <div class="small-arrow"/>
-                            <div class="small-item-1" style="margin-left:0.3em;" data-style-background-image="it.icon"/>
+
                         </div>
                     </div>
                     <!-- 物品配方展示 end -->
