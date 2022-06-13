@@ -44,7 +44,7 @@
                 border-radius: 0.67vmin;
                 color:rgb(255, 255, 255);
                 -webkit-text-stroke: 0.07vmin rgb(0, 0, 0);
-                width: 90%;
+                width: 85%;
                 word-break: break-all;
                 font-size: 4.5vmin;
             }
@@ -366,7 +366,7 @@
                 end
                 item.outerHTML = htmlstr
                 item.className = "item-research"
-                item.style.width = '96%'
+                item.style.width = '90%'
                 local select_style_border = "5px green"
                 item.addEventListener('click', function(event)
                     if start.selected_recipe then
