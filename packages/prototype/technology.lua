@@ -433,25 +433,6 @@ prototype "生产铁制箱子" {
   },
 }
 
-prototype "基地生产2" {
-  desc = "提高指挥中心的生产效率",
-  type = { "tech" },
-  icon = "textures/science/tech-manufacture.texture",
-  effects = {
-    modifier = {["headquarter-craft-speed"] = 0.2},
-  },
-  prerequisites = {"冶金学"},
-  ingredients = {
-      {"地质科技包", 1},
-  },
-  count = 10,
-  time = "2s",
-  sign_desc = {
-    { desc = "该科技可以持续地提高某项能力", icon = "textures/science/recycle.texture"},
-  },
-  sign_icon = "textures/science/tech-cycle.texture",
-}
-
 prototype "碳处理1" {
   desc = "含碳气体化合成其他物质的工艺",
   type = { "tech" },
@@ -577,6 +558,25 @@ prototype "冶金学" {
   time = "4s"
 }
 
+prototype "基地生产2" {
+  desc = "提高指挥中心的生产效率",
+  type = { "tech" },
+  icon = "textures/science/tech-manufacture.texture",
+  effects = {
+    modifier = {["headquarter-craft-speed"] = 0.2},
+  },
+  prerequisites = {"冶金学"},
+  ingredients = {
+      {"地质科技包", 1},
+  },
+  count = 10,
+  time = "2s",
+  sign_desc = {
+    { desc = "该科技可以持续地提高某项能力", icon = "textures/science/recycle.texture"},
+  },
+  sign_icon = "textures/science/tech-cycle.texture",
+}
+
 prototype "生产甲烷" {
   desc = "生产工业气体甲烷",
   icon = "textures/science/tech-liquid.texture",
@@ -623,6 +623,7 @@ prototype "电磁学1" {
   time = "6s"
 }
 
+--研究机械科技瓶
 prototype "机械研究" {
   desc = "对适合在火星表面作业的机械装置进行改进和开发",
   type = { "tech" },
@@ -643,7 +644,7 @@ prototype "机械研究" {
   sign_icon = "textures/science/tech-important.texture",
 }
 
-prototype "蒸馏厂1" {
+prototype "蒸馏法1" {
   desc = "科技的描述",
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
@@ -738,22 +739,6 @@ prototype "泵系统1" {
   time = "2s"
 }
 
-prototype "金属加工1" {
-  desc = "科技的描述",
-  type = { "tech" },
-  icon = "textures/science/tech-manufacture.texture",
-  effects = {
-    unlock_recipe = {"铸造厂1"},
-  },
-  prerequisites = {"挖掘1","驱动1"},
-  ingredients = {
-    {"地质科技包", 1},
-    {"机械科技包", 1},
-  },
-  count = 8,
-  time = "2s"
-}
-
 prototype "自动化1" {
   desc = "科技的描述",
   type = { "tech" },
@@ -761,7 +746,7 @@ prototype "自动化1" {
   effects = {
     unlock_recipe = {"组装机1"},
   },
-  prerequisites = {"驱动1","电力传输1","物流1"},
+  prerequisites = {"驱动1","电力传输1"},
   ingredients = {
     {"机械科技包", 1},
   },
