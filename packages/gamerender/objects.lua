@@ -42,7 +42,7 @@ function M:coord(x, y, cache_names)
     if not tile then
         return
     end
-    local object = assert(self:get(tile.id, cache_names))
+    local object = self:get(tile.id, cache_names)
     if object and object.OBJECT_REMOVED then
         return
     else
@@ -87,6 +87,14 @@ end
 function M:commit(cache_name_1, cache_name_2)
     objects:commit(cache_name_1, cache_name_2)
     tile_objects:commit(cache_name_1, cache_name_2)
+end
+
+function M:cleanup(cache_name)
+    for id, obj in objects:all(cache_name) do
+        if obj.REMOVED then
+            self:remove(id, cache_name)
+        end
+    end
 end
 
 function M:empty(...)
