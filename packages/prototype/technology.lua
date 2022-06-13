@@ -645,7 +645,7 @@ prototype "机械研究" {
 }
 
 prototype "蒸馏1" {
-  desc = "科技的描述",
+  desc = "将液体混合物汽化进行成分分离的技术",
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
@@ -661,7 +661,7 @@ prototype "蒸馏1" {
 }
 
 prototype "挖掘1" {
-  desc = "科技的描述",
+  desc = "研究对火星岩石的开采技术",
   type = { "tech" },
   icon = "textures/science/tech-manufacture.texture",
   effects = {
@@ -677,7 +677,7 @@ prototype "挖掘1" {
 }
 
 prototype "驱动1" {
-  desc = "科技的描述",
+  desc = "使用机械手臂快速转移物品",
   type = { "tech" },
   icon = "textures/science/tech-manufacture.texture",
   effects = {
@@ -692,7 +692,7 @@ prototype "驱动1" {
 }
 
 prototype "电力传输1" {
-  desc = "科技的描述",
+  desc = "将电能远距离传输的技术",
   type = { "tech" },
   icon = "textures/science/tech-manufacture.texture",
   effects = {
@@ -709,7 +709,7 @@ prototype "电力传输1" {
 }
 
 prototype "物流1" {
-  desc = "科技的描述",
+  desc = "使用交通工具进行远程运输",
   type = { "tech" },
   icon = "textures/science/tech-logistics.texture",
   effects = {
@@ -724,7 +724,7 @@ prototype "物流1" {
 }
 
 prototype "泵系统1" {
-  desc = "科技的描述",
+  desc = "使用机械方式加快液体流动",
   type = { "tech" },
   icon = "textures/science/tech-manufacture.texture",
   effects = {
@@ -740,7 +740,7 @@ prototype "泵系统1" {
 }
 
 prototype "自动化1" {
-  desc = "科技的描述",
+  desc = "使用3D打印技术快速复制物品",
   type = { "tech" },
   icon = "textures/science/tech-manufacture.texture",
   effects = {
@@ -755,7 +755,7 @@ prototype "自动化1" {
 }
 
 prototype "地下水净化" {
-  desc = "科技的描述",
+  desc = "火星地下开采卤水进行过滤净化工艺",
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
@@ -772,7 +772,7 @@ prototype "地下水净化" {
 }
 
 prototype "炼钢" {
-  desc = "科技的描述",
+  desc = "将铁再锻造成更坚硬金属的工艺",
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
@@ -789,7 +789,7 @@ prototype "炼钢" {
 }
 
 prototype "发电机1" {
-  desc = "科技的描述",
+  desc = "使用蒸汽作为工质将热能转为机械能的发电装置",
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
@@ -805,7 +805,7 @@ prototype "发电机1" {
 }
 
 prototype "空气过滤" {
-  desc = "科技的描述",
+  desc = "研究将火星混合气体分离的装置",
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
@@ -820,7 +820,7 @@ prototype "空气过滤" {
 }
 
 prototype "矿物处理1" {
-  desc = "科技的描述",
+  desc = "将矿物进行碾碎并收集的机械工艺",
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
@@ -833,4 +833,20 @@ prototype "矿物处理1" {
   },
   count = 5,
   time = "2s"
+}
+
+prototype "钢加工" {
+  desc = "钢制产品更多的铸造技术",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"钢齿轮"},
+  },
+  prerequisites = {"炼钢"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 8,
+  time = "1s"
 }
