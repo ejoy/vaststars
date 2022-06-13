@@ -51,6 +51,16 @@ prototype "钢板" {
     order = 20,
 }
 
+prototype "钢齿轮" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/iron-ingot.texture",
+    model = "prefabs/rock.prefab",
+    description = "一种钢制加工品",
+    group = "金属",
+    order = 22,
+}
+
 prototype "铁矿石" {
     type = {"item"},
     stack = 100,

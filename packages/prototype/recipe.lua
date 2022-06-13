@@ -1252,7 +1252,7 @@ prototype "钢板1" {
     type = { "recipe" },
     category = "金属锻造",
     group = "金属",
-    order = 11,
+    order = 20,
     icon = "textures/construct/iron-ingot.texture",
     ingredients = {
         {"铁板", 5},
@@ -1265,6 +1265,22 @@ prototype "钢板1" {
     },
     time = "12s",
     description = "铁板通过金属冶炼获得钢板",
+}
+
+prototype "钢齿轮" {
+    type = { "recipe" },
+    category = "金属小型制造",
+    group = "金属",
+    order = 22,
+    icon = "textures/construct/iron-gear.texture",
+    ingredients = {
+        {"钢板", 3},
+    },
+    results = {
+        {"钢齿轮", 2},
+    },
+    time = "6s",
+    description = "使用钢制品加工钢齿轮",
 }
 
 prototype "废水排泄" {
