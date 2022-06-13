@@ -24,7 +24,7 @@ function condition_pipe(self, datamodel)
     local from_x, from_y = self.from_x, self.from_y
     local to_x, to_y = self.coord_indicator.x, self.coord_indicator.y
     local dir = iprototype.calc_dir(from_x, from_y, to_x, to_y)
-    local ground = get_ground(self.coord_indicator.prototype_name)
+    local ground = get_ground(self.coord_indicator.prototype_name) - 1
 
     local succ
     succ, to_x, to_y = iprototype.move_coord(from_x, from_y, dir,
@@ -59,7 +59,7 @@ function condition_pipe(self, datamodel)
     end
 
     starting_object = iobject.clone(starting_object)
-    starting_object.dir = iprototype.opposite_dir(dir)
+    starting_object.dir = dir
     starting_object.prototype_name = format_prototype_name(self.coord_indicator.prototype_name, shape)
     starting_object.fluid_name = starting_object.fluid_name
     starting_object.fluidflow_network_id = starting_object.fluidflow_network_id
@@ -74,7 +74,7 @@ function condition_pipe_to_ground(self, datamodel)
     local to_x, to_y = self.coord_indicator.x, self.coord_indicator.y
     local starting_object = assert(objects:coord(from_x, from_y, EDITOR_CACHE_CONSTRUCTED))
     assert(iprototype.is_pipe_to_ground(starting_object.prototype_name))
-    local ground = get_ground(self.coord_indicator.prototype_name)
+    local ground = get_ground(self.coord_indicator.prototype_name) - 1
 
     local dir = iprototype.calc_dir(from_x, from_y, to_x, to_y)
     local t = {

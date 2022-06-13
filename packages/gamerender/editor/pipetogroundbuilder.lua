@@ -90,7 +90,12 @@ local function laying_pipe_begin(self, datamodel)
 end
 
 local function laying_pipe_cancel(self, datamodel)
-
+    ieditor:revert_changes(EDITOR_CACHE_TEMPORARY)
+    self:clean(datamodel)
+    self:new_entity(datamodel, self.typeobject)
+    datamodel.show_laying_pipe_confirm = false
+    datamodel.show_laying_pipe_cancel = false
+    datamodel.show_construct_complete = true
 end
 
 local function laying_pipe_confirm(self, datamodel)
@@ -160,7 +165,6 @@ local function create()
     M.new_entity = new_entity
     M.touch_move = touch_move
     M.touch_end = touch_end
-    M.confirm = confirm
     M.complete = complete
 
     M.clean = clean
