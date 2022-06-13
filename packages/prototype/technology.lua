@@ -644,7 +644,7 @@ prototype "机械研究" {
   sign_icon = "textures/science/tech-important.texture",
 }
 
-prototype "蒸馏法1" {
+prototype "蒸馏1" {
   desc = "科技的描述",
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
@@ -653,11 +653,11 @@ prototype "蒸馏法1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"机械科技包", 1},
     {"气候科技包", 1},
+    {"机械科技包", 1},
   },
-  count = 8,
-  time = "1s"
+  count = 4,
+  time = "2s"
 }
 
 prototype "挖掘1" {
@@ -672,7 +672,7 @@ prototype "挖掘1" {
     {"地质科技包", 1},
     {"气候科技包", 1},
   },
-  count = 8,
+  count = 4,
   time = "2s"
 }
 
@@ -687,8 +687,8 @@ prototype "驱动1" {
   ingredients = {
     {"机械科技包", 1},
   },
-  count = 8,
-  time = "2s"
+  count = 3,
+  time = "3s"
 }
 
 prototype "电力传输1" {
@@ -704,8 +704,8 @@ prototype "电力传输1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 12,
-  time = "2s"
+  count = 2,
+  time = "6s"
 }
 
 prototype "物流1" {
@@ -719,7 +719,7 @@ prototype "物流1" {
   ingredients = {
     {"机械科技包", 1},
   },
-  count = 8,
+  count = 5,
   time = "2s"
 }
 
@@ -735,7 +735,7 @@ prototype "泵系统1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 6,
+  count = 4,
   time = "2s"
 }
 
@@ -750,6 +750,87 @@ prototype "自动化1" {
   ingredients = {
     {"机械科技包", 1},
   },
-  count = 12,
+  count = 4,
   time = "3s"
+}
+
+prototype "地下水净化" {
+  desc = "科技的描述",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"地下卤水净化"},
+  },
+  prerequisites = {"蒸馏1"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 4,
+  time = "2.5s"
+}
+
+prototype "炼钢" {
+  desc = "科技的描述",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"钢板1"},
+  },
+  prerequisites = {"挖掘1"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 4,
+  time = "2.5s"
+}
+
+prototype "发电机1" {
+  desc = "科技的描述",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"蒸汽发电机1"},
+  },
+  prerequisites = {"电力传输1"},
+  ingredients = {
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 4,
+  time = "2s"
+}
+
+prototype "空气过滤" {
+  desc = "科技的描述",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"空气过滤器1"},
+  },
+  prerequisites = {"泵系统1","发电机1"},
+  ingredients = {
+    {"气候科技包", 1},
+  },
+  count = 5,
+  time = "2s"
+}
+
+prototype "矿物处理1" {
+  desc = "科技的描述",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"粉碎机1"},
+  },
+  prerequisites = {"挖掘1","自动化1"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 5,
+  time = "2s"
 }

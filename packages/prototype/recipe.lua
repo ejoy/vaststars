@@ -38,7 +38,6 @@ prototype "铁板1" {
     },
     time = "3s",
     description = "铁矿石通过金属冶炼获得铁板",
-
 }
 
 prototype "铁板2" {
@@ -544,7 +543,7 @@ prototype "空气过滤器1" {
     ingredients = {
         {"压力泵I", 1},
         {"塑料", 4},
-        {"蒸汽发电机I", 4},
+        {"蒸汽发电机I", 1},
     },
     results = {
         {"空气过滤器I", 1},
@@ -1247,6 +1246,25 @@ prototype "碱性溶液" {
     },
     time = "1s",
     description = "碱性原料融水制造碱性溶液",
+}
+
+prototype "钢板1" {
+    type = { "recipe" },
+    category = "金属锻造",
+    group = "金属",
+    order = 11,
+    icon = "textures/construct/iron-ingot.texture",
+    ingredients = {
+        {"铁板", 5},
+        {"氧气", 60},
+    },
+    results = {
+        {"钢板", 2},
+        {"二氧化碳", 25},
+        -- {"碎石", 1},
+    },
+    time = "12s",
+    description = "铁板通过金属冶炼获得钢板",
 }
 
 prototype "废水排泄" {
