@@ -59,13 +59,14 @@ function condition_pipe(self, datamodel)
     end
 
     starting_object = iobject.clone(starting_object)
+    starting_object.dir = iprototype.opposite_dir(dir)
     starting_object.prototype_name = format_prototype_name(self.coord_indicator.prototype_name, shape)
     starting_object.fluid_name = starting_object.fluid_name
     starting_object.fluidflow_network_id = starting_object.fluidflow_network_id
     starting_object.state = "construct"
     objects:set(starting_object, EDITOR_CACHE_TEMPORARY[1])
 
-    state_end(self, datamodel, starting_object, to_x, to_y)
+    state_end(self, datamodel, starting_object, to_x, to_y, dir)
 end
 
 function condition_pipe_to_ground(self, datamodel)

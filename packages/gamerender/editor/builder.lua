@@ -75,7 +75,6 @@ local function complete(self)
     local needbuild = false
     for object_id, object in objects:all("CONFIRM") do
         if object.REMOVED then
-            objects:remove(object_id, "CONFIRM")
             gameplay_core.remove_entity(object.gameplay_eid)
         else
             object.state = "constructed"
@@ -96,6 +95,8 @@ local function complete(self)
         needbuild = true
     end
     objects:commit("CONFIRM", "CONSTRUCTED")
+    objects:cleanup("CONFIRM")
+    objects:cleanup("CONSTRUCTED")
 
     if needbuild then
         gameplay_core.build()

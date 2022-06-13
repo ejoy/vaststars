@@ -44,7 +44,8 @@ local function check_channel(self, datamodel, starting_object, to_x, to_y)
     return true
 end
 
-function condition_pipe(self, datamodel, starting_object, to_x, to_y)
+function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir)
+    dir = dir or starting_object.dir -- TODO
     local ending_object = assert(objects:coord(to_x, to_y, EDITOR_CACHE_CONSTRUCTED))
 
     if ending_object.fluid_name ~= "" then
@@ -75,7 +76,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y)
     local x, y = starting_object.x, starting_object.y
     local pipe = {}
     while true do
-        succ, x, y = iprototype.move_coord(x, y, starting_object.dir, 1)
+        succ, x, y = iprototype.move_coord(x, y, dir, 1)
         if not succ then
             show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
             return false
@@ -135,7 +136,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y)
         typeobject = iprototype.queryByName("entity", prototype_name)
         object = iobject.new {
             prototype_name = typeobject.name,
-            dir = iprototype.opposite_dir(starting_object.dir),
+            dir = starting_object.dir,
             x = to_x,
             y = to_y,
             fluid_name = starting_object.fluid_name,
@@ -144,7 +145,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y)
         }
         objects:set(object, EDITOR_CACHE_TEMPORARY[1])
 
-        show_dotted_line(self, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
+        show_dotted_line(self, starting_object.x, starting_object.y, dir, to_x, to_y)
 
         datamodel.show_laying_pipe_confirm = true
         datamodel.show_laying_pipe_cancel = true
@@ -364,7 +365,7 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, shape)
     self.coord_indicator.state = "construct"
 end
 
-return function(self, datamodel, starting_object, to_x, to_y)
+return function(self, datamodel, starting_object, to_x, to_y, dir)
     if is_overlap(starting_object.x, starting_object.y, to_x, to_y) then
         datamodel.show_laying_pipe_begin = false
         self.coord_indicator.state = "invalid_construct"
@@ -374,7 +375,7 @@ return function(self, datamodel, starting_object, to_x, to_y)
     local object = objects:coord(to_x, to_y, EDITOR_CACHE_CONSTRUCTED)
     if object then
         if iprototype.is_pipe(object.prototype_name) then
-            condition_pipe(self, datamodel, starting_object, to_x, to_y)
+            condition_pipe(self, datamodel, starting_object, to_x, to_y, dir)
         elseif iprototype.is_pipe_to_ground(object.prototype_name) then
             condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y)
         else

@@ -29,7 +29,9 @@ end
 
 local function remove(self, cache_name, key)
     local cache = assert(self.caches[cache_name])
-    return cache:remove(key)
+    if cache:selectkey(key) then
+        return cache:remove(key)
+    end
 end
 
 local function all(self, cache_name)
