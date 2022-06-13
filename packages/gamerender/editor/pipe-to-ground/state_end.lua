@@ -123,6 +123,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir)
         typeobject = iprototype.queryByName("entity", starting_object.prototype_name)
         object = iobject.clone(starting_object)
         object.prototype_name = typeobject.name
+        object.dir = starting_object.dir
         objects:set(object, EDITOR_CACHE_TEMPORARY[1])
 
         --
@@ -136,7 +137,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir)
         typeobject = iprototype.queryByName("entity", prototype_name)
         object = iobject.new {
             prototype_name = typeobject.name,
-            dir = starting_object.dir,
+            dir = iprototype.opposite_dir(starting_object.dir),
             x = to_x,
             y = to_y,
             fluid_name = starting_object.fluid_name,
