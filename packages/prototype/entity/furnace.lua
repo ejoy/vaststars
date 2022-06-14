@@ -40,3 +40,55 @@ prototype "粉碎机I" {
         },
     }
 }
+
+prototype "浮选器I" {
+    model = "prefabs/distillery-1.prefab",
+    icon = "textures/building_pic/small_pic_distillery.texture",
+    background = "textures/build_background/pic_distillery.texture",
+    construct_detector = {"exclusive"},
+    type ={"entity", "assembling", "consumer"},
+    area = "5x5",
+    power = "200kW",
+    drain = "6kW",
+    priority = "secondary",
+    group = {"加工"},
+    craft_category = {"矿石浮选"},
+    fluidboxes = {
+        input = {
+            {
+                capacity = 3000,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input", position={1,0,"N"}},
+                }
+            },
+            {
+                capacity = 3000,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input", position={3,0,"N"}},
+                }
+            },
+        },
+        output = {
+            {
+                capacity = 500,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={1,4,"S"}},
+                }
+            },
+            {
+                capacity = 500,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={3,4,"S"}},
+                }
+            },
+        },
+    },
+}
