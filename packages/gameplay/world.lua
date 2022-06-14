@@ -162,6 +162,16 @@ return function ()
     end
 
     function world:manual(lst)
+        if lst == nil then
+            lst = {}
+            for _, v in ipairs(cworld:manual()) do
+                local type, id = v[1], v[2]
+                local pt = prototype.queryById(id)
+                assert(pt, "unknown ID: " .. id)
+                lst[#lst+1] = {type, pt.name}
+            end
+            return lst
+        end
         local todos = {}
         for i, v in ipairs(lst) do
             local type, id = v[1], v[2]
@@ -196,7 +206,7 @@ return function ()
         local cc = cworld:manual_container()
         for k, v in pairs(cc) do
             local pt = prototype.queryById(k)
-            assert(pt, "unknown item: " .. k)
+            assert(pt, "unknown ID: " .. k)
             c[pt.name] = v
         end
         return c

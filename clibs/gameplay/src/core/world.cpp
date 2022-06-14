@@ -246,8 +246,32 @@ namespace lua_world {
     static int
     manual(lua_State *L) {
         world& w = *(world*)lua_touserdata(L, 1);
-        luaL_checktype(L, 2, LUA_TTABLE);
+        if (lua_gettop(L) == 1) {
+            auto& q = w.manual.todos;
+            size_t N = q.size();
+            lua_createtable(L, (int)N, 0);
+            for (size_t i = 0; i < N; ++i) {
+                lua_createtable(L, 2, 0);
+                switch (q[i].type) {
+                case manual_crafting::type::crafting:
+                    lua_pushstring(L, "crafting");
+                    break;
+                case manual_crafting::type::finish:
+                    lua_pushstring(L, "finish");
+                    break;
+                default:
+                    return 0;
+                }
+                lua_rawseti(L, -2, 1);
+                lua_pushinteger(L, q[i].id);
+                lua_rawseti(L, -2, 2);
 
+                lua_rawseti(L, -2, i+1);
+            }
+            return 1;
+        }
+
+        luaL_checktype(L, 2, LUA_TTABLE);
         std::vector<manual_crafting::todo> todos;
         lua_Integer n = luaL_len(L, 2);
         for (lua_Integer i = 1; i <= n; ++i) {
@@ -288,7 +312,7 @@ namespace lua_world {
     static int
     manual_container(lua_State *L) {
         world& w = *(world*)lua_touserdata(L, 1);
-        lua_createtable(L, 0, w.manual.container.size());
+        lua_createtable(L, 0, (int)w.manual.container.size());
         for (auto [item, amount] : w.manual.container) {
             lua_pushinteger(L, item);
             lua_pushinteger(L, amount);
