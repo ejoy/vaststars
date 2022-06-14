@@ -656,6 +656,24 @@ prototype "电解厂1" {
     description = "液体容器和电传输设备制造电解厂",
 }
 
+prototype "浮选器1" {
+    type = { "recipe" },
+    category = "生产大型制造",
+    --group = "生产",
+    order = 64,
+    icon = "textures/construct/crusher1.texture",
+    ingredients = {
+        {"粉碎机I", 1},
+        {"水电站I", 1},
+    },
+    results = {
+        {"浮选器I", 1},
+    },
+    time = "5s",
+    description = "将矿石浮沉进行筛选",
+}
+
+
 prototype "科研中心1" {
     type = { "recipe" },
     category = "生产大型制造",
