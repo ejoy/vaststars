@@ -203,7 +203,7 @@ end
 
 return function(self, datamodel)
     local from_x, from_y = self.from_x, self.from_y
-    local object = objects:coord(from_x, from_y)
+    local object = objects:coord(from_x, from_y, EDITOR_CACHE_CONSTRUCTED)
     if object then
         if iprototype.is_pipe(object.prototype_name) then
             condition_pipe(self, datamodel)

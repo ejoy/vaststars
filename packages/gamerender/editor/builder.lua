@@ -75,7 +75,9 @@ local function complete(self)
     local needbuild = false
     for object_id, object in objects:all("CONFIRM") do
         if object.REMOVED then
-            gameplay_core.remove_entity(object.gameplay_eid)
+            if object.gameplay_eid then
+                gameplay_core.remove_entity(object.gameplay_eid)
+            end
         else
             object.state = "constructed"
             local old = objects:get(object_id, {"CONSTRUCTED"})

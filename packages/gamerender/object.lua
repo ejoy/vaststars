@@ -35,7 +35,7 @@ end
 
 local function clone(outer)
     local object = {
-        id = outer.id,
+        id = outer.id or get_object_id(),
         prototype_name = assert(outer.prototype_name),
         dir = assert(outer.dir),
         x = assert(outer.x),
