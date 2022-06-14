@@ -225,27 +225,32 @@ local function builder_finish(world)
     end
 end
 
+local function teardown(w, fluid, id)
+    if id ~= 0 then
+        w._cworld:fluidflow_teardown(fluid, id)
+    end
+end
+
 function m.clean(world)
     local ecs = world.ecs
     for v in ecs:select "REMOVED fluidbox:in" do
         local fluid = v.fluidbox.fluid
         local id = v.fluidbox.id
-        assert(id ~= 0)
-        world._cworld:fluidflow_teardown(fluid, id)
+        teardown(world, fluid, id)
     end
     for v in ecs:select "REMOVED fluidboxes:in" do
         for i = 1, 4 do
             local fluid = v.fluidboxes["in"..i.."_fluid"]
             if fluid ~= 0 then
                 local id = v.fluidboxes["in"..i.."_id"]
-                world._cworld:fluidflow_teardown(fluid, id)
+                teardown(world, fluid, id)
             end
         end
         for i = 1, 3 do
             local fluid = v.fluidboxes["out"..i.."_fluid"]
             if fluid ~= 0 then
                 local id = v.fluidboxes["out"..i.."_id"]
-                world._cworld:fluidflow_teardown(fluid, id)
+                teardown(world, fluid, id)
             end
         end
     end
