@@ -26,7 +26,9 @@ for _, typeobject in pairs(iprototype.all_prototype_name("recipe")) do
         end
     end
     recipe_to_category[typeobject.id] = typeobject.category
+end
 
+for _, typeobject in pairs(iprototype.all_prototype_name("entity")) do
     if iprototype.has_type(typeobject.type, "assembling") then
         if typeobject.recipe then -- 固定配方的组装机
             local typeobject_recipe = assert(iprototype.queryByName("recipe", typeobject.recipe))
