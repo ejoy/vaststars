@@ -48,14 +48,15 @@ prototype "铁板2" {
     allow_as_intermediate = false,
     icon = "textures/construct/iron-ingot.texture",
     ingredients = {
-        {"铁锭", 4},
-        {"碎石", 2}
+        {"碾碎铁矿石", 8},
+        {"石墨", 1}
     },
     results = {
-        {"铁板", 5}
+        {"铁板", 6},
+        {"碎石", 2},
     },
-    time = "5s",
-    description = "使用铁锭和碎石锻造铁板",
+    time = "15s",
+    description = "使用碾碎铁矿石和石墨锻造铁板",
 
 }
 
@@ -91,7 +92,7 @@ prototype "铁丝1" {
     description = "使用铁棒锻造铁丝",
 }
 
-prototype "沙石粉碎" {
+prototype "沙子1" {
     type = { "recipe" },
     category = "矿石粉碎",
     --group = "金属",
@@ -99,11 +100,10 @@ prototype "沙石粉碎" {
     allow_manual = false,
     icon = "textures/construct/gravel.texture",
     ingredients = {
-        {"沙石矿", 5},
+        {"碎石", 5},
     },
     results = {
         {"沙子", 3},
-        {"碎石", 2},
     },
     time = "4s",
     description = "粉碎沙石矿获得更微小的原材料",
@@ -124,6 +124,23 @@ prototype "石砖" {
     time = "3s",
     description = "使用碎石炼制石砖",
 }
+
+prototype "硅1" {
+    type = { "recipe" },
+    category = "金属锻造",
+    --group = "金属",
+    order = 68,
+    icon = "textures/construct/iron.texture",
+    ingredients = {
+        {"沙子", 8},
+    },
+    results = {
+        {"硅", 4},
+    },
+    time = "4s",
+    description = "使用硅炼制玻璃",
+}
+
 
 prototype "玻璃" {
     type = { "recipe" },
@@ -1196,6 +1213,40 @@ prototype "甲烷转乙烯" {
     description = "甲烷转乙烯",
 }
 
+prototype "乙烯转丁二烯" {
+    type = { "recipe" },
+    category = "流体基础化工",
+    group = "流体",
+    order = 38,
+    icon = "textures/fluid/gas-ethene.texture",
+    ingredients = {
+        {"乙烯", 50},
+        {"蒸汽", 150},
+    },
+    results = {
+        {"丁二烯", 20},
+        {"氢气", 30},
+    },
+    time = "1s",
+    description = "甲烷转乙烯",
+}
+
+prototype "纯水转蒸汽" {
+    type = { "recipe" },
+    category = "流体基础化工",
+    --group = "流体",
+    order = 112,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
+        {"纯水", 70},
+    },
+    results = {
+        {"蒸汽", 270},
+    },
+    time = "1s",
+    description = "蒸汽排泄",
+}
+
 prototype "塑料1" {
     type = { "recipe" },
     category = "器件基础化工",
@@ -1204,7 +1255,7 @@ prototype "塑料1" {
     icon = "textures/construct/plastic.texture",
     ingredients = {
         {"氯气", 30},
-        {"乙烯", 30},pl
+        {"乙烯", 30},
     },
     results = {
         {"盐酸", 20},

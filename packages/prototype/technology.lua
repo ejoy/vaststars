@@ -824,7 +824,7 @@ prototype "矿物处理1" {
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"粉碎机1"},
+    unlock_recipe = {"粉碎机1","沙子1"},
   },
   prerequisites = {"挖掘1","自动化1"},
   ingredients = {
@@ -866,4 +866,52 @@ prototype "浮选" {
   },
   count = 8,
   time = "1s"
+}
+
+prototype "硅处理" {
+  desc = "从沙子中提炼硅的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"硅1","玻璃"},
+  },
+  prerequisites = {"浮选"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 8,
+  time = "0.75s"
+}
+
+prototype "铁矿熔炼2" {
+  desc = "掌握熔炼铁矿石冶炼成铁板的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-metal.texture",
+  effects = {
+    unlock_recipe = {"铁板2"},
+  },
+  prerequisites = {"钢加工","空气过滤"},
+  ingredients = {
+      {"地质科技包", 1},
+      {"机械科技包", 1},
+  },
+  count = 6,
+  time = "1.5s"
+}
+
+prototype "有机化学2" {
+  desc = "掌握熔炼铁矿石冶炼成铁板的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-metal.texture",
+  effects = {
+    unlock_recipe = {"乙烯转丁二烯","纯水转蒸汽"},
+  },
+  prerequisites = {"硅处理","空气过滤"},
+  ingredients = {
+      {"气候科技包", 1},
+      {"机械科技包", 1},
+  },
+  count = 8,
+  time = "8s"
 }
