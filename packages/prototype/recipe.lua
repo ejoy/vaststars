@@ -11,7 +11,7 @@ prototype "铁锭" {
     category = "金属冶炼",
     --group = "金属",
     order = 10,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/plate-Fe.texture",
     ingredients = {
         {"铁矿石", 3},
     },
@@ -28,7 +28,7 @@ prototype "铁板1" {
     category = "金属锻造",
     group = "金属",
     order = 11,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/plate-Fe.texture",
     ingredients = {
         {"铁矿石", 5},
     },
@@ -46,7 +46,7 @@ prototype "铁板2" {
     --group = "金属",
     order = 12,
     allow_as_intermediate = false,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/plate-Fe.texture",
     ingredients = {
         {"碾碎铁矿石", 8},
         {"石墨", 1}
@@ -138,7 +138,7 @@ prototype "铝板1" {
     --group = "金属",
     order = 18,
     allow_as_intermediate = false,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/plate-Ai.texture",
     ingredients = {
         {"氧化铝", 9},
         {"石墨", 5}
@@ -189,7 +189,7 @@ prototype "沙子1" {
     --group = "金属",
     order = 40,
     allow_manual = false,
-    icon = "textures/construct/gravel.texture",
+    icon = "textures/construct/sand.texture",
     ingredients = {
         {"碎石", 5},
     },
@@ -221,7 +221,7 @@ prototype "硅1" {
     category = "矿石浮选",
     --group = "金属",
     order = 68,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/construct/ore-Si.texture",
     ingredients = {
         {"沙子", 8},
     },
@@ -253,7 +253,7 @@ prototype "坩埚" {
     category = "器件中型制造",
     --group = "金属",
     order = 72,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/construct/crucible.texture",
     ingredients = {
         {"硅", 15},
     },
@@ -444,7 +444,7 @@ prototype "大铁制箱子1" {
     category = "物流中型制造",
     group = "物流",
     order = 10,
-    icon = "textures/construct/chest.texture",
+    icon = "textures/construct/large-chest.texture",
     ingredients = {
         {"铝板", 4},
         {"小铁制箱子II", 5},

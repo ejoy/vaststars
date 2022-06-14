@@ -14,7 +14,7 @@ prototype "铁锭" {
 prototype "铁板" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/plate-Fe.texture",
     model = "prefabs/rock.prefab",
     description = "铁制材料锻造加工成的铁板",
     group = "金属",
@@ -64,7 +64,7 @@ prototype "钢齿轮" {
 prototype "铁矿石" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/construct/ore-Fe.texture",
     model = "prefabs/rock.prefab",
     description = "含铁的矿石",
     group = "金属",
@@ -74,7 +74,7 @@ prototype "铁矿石" {
 prototype "铝矿石" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/construct/ore-Al.texture",
     model = "prefabs/rock.prefab",
     description = "含铝的矿石",
     group = "金属",
@@ -164,7 +164,7 @@ prototype "石墨" {
 prototype "硅" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/coal.texture",
+    icon = "textures/construct/ore-Si.texture",
     model = "prefabs/rock.prefab",
     description = "沙子中提炼的原料",
     group = "器件",
@@ -204,7 +204,7 @@ prototype "石头" {
 prototype "沙子" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/gravel.texture",
+    icon = "textures/construct/sand.texture",
     model = "prefabs/rock.prefab",
     description = "伴生在矿物里的沙子",
     group = "金属",
@@ -254,10 +254,10 @@ prototype "玻璃" {
 prototype "坩埚" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/coal.texture",
+    icon = "textures/construct/crucible.texture",
     model = "prefabs/rock.prefab",
     description = "一种硅制加工品",
-    group = "金属",
+    group = "器件",
     order = 72,
 }
 
@@ -274,7 +274,7 @@ prototype "橡胶" {
 prototype "铝板" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/coal.texture",
+    icon = "textures/construct/plate-Al.texture",
     model = "prefabs/rock.prefab",
     description = "一种高弹性聚合物材料",
     group = "金属",
