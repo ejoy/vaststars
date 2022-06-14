@@ -10,6 +10,12 @@ end
 local c2 = type "base"
 function c2:ctor(init, pt)
     return {
-        base = true
+        base = true,
+        manual = {
+            recipe = 0,
+            speed = 100,
+            status = 0,
+            progress = 0,
+        }
     }
 end

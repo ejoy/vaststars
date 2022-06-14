@@ -167,23 +167,33 @@ public:
     struct iterator {
         flatmap const& m;
         size_t n;
+        iterator(flatmap const& m, size_t n)
+            : m(m)
+            , n(n)
+        {
+            next_valid();
+        }
         bool operator!=(iterator& rhs) const {
             return &m != &rhs.m || n != rhs.n;
         }
         void operator++() {
-            while (n != (m.m_mask + 1) && m.m_buckets[n].dib == 0) {
-                n++;
-            }
+            n++;
+            next_valid();
         }
         std::pair<key_type, mapped_type> operator*() {
             auto& bucket = m.m_buckets[n];
             return {bucket.key, bucket.obj};
         }
+        void next_valid() {
+            while (n != (m.m_mask + 1) && m.m_buckets[n].dib == 0) {
+                n++;
+            }
+        }
     };
     using const_iterator = iterator;
 
     const_iterator begin() const {
-        return const_iterator {*this, 0};
+        return const_iterator { *this, 0 };
     }
     const_iterator end() const {
         return const_iterator {*this, m_mask+1};

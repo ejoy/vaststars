@@ -7,9 +7,41 @@ local gameplay = import_package "vaststars.gameplay"
 
 local world = gameplay.createWorld()
 
-assert(loadfile "test_manual.lua")(world)
+local manual = assert(loadfile "test_manual.lua")(world)
 assert(loadfile "test_map.lua")(world)
 world:build()
+
+local function manual_chest()
+    local chest = {}
+    local ecs = world.ecs
+    for v in ecs:select "manual chest:in" do
+        local i = 1
+        while true do
+            local c, n = world:container_get(v.chest.container, i)
+            if c then
+                chest[gameplay.queryById(c).name] = n
+            else
+                break
+            end
+            i = i + 1
+        end
+        break
+    end
+    return chest
+end
+
+local function manual_update(input)
+    local solver = manual.create()
+    local output = manual.evaluate(solver, manual_chest(), world:manual_container(), input)
+    world:manual(output)
+end
+
+manual_update {
+    {"铁棒1", 5},
+    {"铁棒1", 5},
+    {"铁棒1", 5},
+    {"铁棒1", 5},
+}
 
 --world:backup  "../../startup/.log/sav"
 --world:restore  "../../startup/.log/sav"

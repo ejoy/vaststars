@@ -244,6 +244,60 @@ namespace lua_world {
     }
 
     static int
+    manual(lua_State *L) {
+        world& w = *(world*)lua_touserdata(L, 1);
+        luaL_checktype(L, 2, LUA_TTABLE);
+
+        std::vector<manual_crafting::todo> todos;
+        lua_Integer n = luaL_len(L, 2);
+        for (lua_Integer i = 1; i <= n; ++i) {
+            if (LUA_TTABLE != lua_rawgeti(L, 2, i)) {
+                lua_pushstring(L, "failed");
+                return 1;
+            }
+            manual_crafting::todo todo;
+            {
+                lua_rawgeti(L, -1, 1);
+                static const char *const opts[] = {"crafting", "finish", NULL};
+                static const manual_crafting::type optsnum[] = {manual_crafting::type::crafting, manual_crafting::type::finish};
+                todo.type = optsnum[luaL_checkoption(L, -1, NULL, opts)];
+                lua_pop(L, 1);
+            }
+            {
+                lua_rawgeti(L, -1, 2);
+                todo.id = (uint16_t)luaL_checkinteger(L, -1);
+                lua_pop(L, 1);
+            }
+            todos.emplace_back(todo);
+            lua_pop(L, 1);
+        }
+
+        bool reserve = false;
+        if (w.manual.todos.size() > 0 && todos.size() > 0) {
+            if (w.manual.todos[1].id == todos[1].id) {
+                if (w.manual.todos[1].type == todos[1].type && todos[1].type == manual_crafting::type::crafting) {
+                    reserve = true;
+                }
+            }
+        }
+        std::swap(w.manual.todos, todos);
+        lua_pushstring(L, reserve? "ok": "reset");
+        return 1;
+    }
+
+    static int
+    manual_container(lua_State *L) {
+        world& w = *(world*)lua_touserdata(L, 1);
+        lua_createtable(L, 0, w.manual.container.size());
+        for (auto [item, amount] : w.manual.container) {
+            lua_pushinteger(L, item);
+            lua_pushinteger(L, amount);
+            lua_rawset(L, -3);
+        }
+        return 1;
+    }
+
+    static int
     create(lua_State* L) {
         struct world* w = (struct world*)lua_newuserdatauv(L, sizeof(struct world), 0);
         new (w) world;
@@ -265,6 +319,9 @@ namespace lua_world {
                 { "fluidflow_query", fluidflow_query },
                 { "fluidflow_set", fluidflow_set },
                 { "fluidflow_rebuild", fluidflow_rebuild },
+                // manual
+                { "manual", manual },
+                { "manual_container", manual_container },
                 // misc
                 {"reset", reset},
                 {"__gc", destroy},

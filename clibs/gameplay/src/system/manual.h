@@ -14,7 +14,7 @@ struct manual_container : public flatmap<uint16_t, uint16_t> {
 
 struct manual_crafting {
     enum class type : uint16_t {
-        craft,
+        crafting,
         finish,
     };
     struct todo {

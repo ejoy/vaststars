@@ -157,19 +157,7 @@ local function solverEvaluate(solver, memory, register, input)
     return output
 end
 
-local solver = solverCreate()
-local memory = {
-    ["铁矿石"] = 1000,
-    ["铁锭"] = 10,
+return {
+    create = solverCreate,
+    evaluate = solverEvaluate,
 }
-local register = {
-}
-local input = {
-    {"铁棒1", 5},
-    {"铁棒1", 5},
-    {"铁棒1", 5},
-    {"铁棒1", 5},
-}
-local output = solverEvaluate(solver, memory, register, input)
-
---os.exit()

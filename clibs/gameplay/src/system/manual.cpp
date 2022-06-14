@@ -81,7 +81,7 @@ void manual_crafting::sync(ecs::manual& m) {
     }
     todo& td = todos.back();
     m.recipe = td.id;
-    m.status = (td.type == type::craft)
+    m.status = (td.type == type::crafting)
         ? STATUS_IDLE
         : STATUS_FINISH
         ;
@@ -109,7 +109,7 @@ bool manual_crafting::rebuild(lua_State* L, world& w, int id) {
     manual_container expected;
     manual_container current;
     for (auto& todo: todos) {
-        if (todo.type == type::craft) {
+        if (todo.type == type::crafting) {
             prototype_context recipe = w.prototype(L, todo.id);
             recipe_items& in  = *(recipe_items*)pt_ingredients(&recipe);
             recipe_items& out = *(recipe_items*)pt_results(&recipe);
