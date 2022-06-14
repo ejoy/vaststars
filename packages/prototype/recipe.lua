@@ -45,6 +45,7 @@ prototype "铁板2" {
     category = "金属锻造",
     --group = "金属",
     order = 12,
+    allow_as_intermediate = false,
     icon = "textures/construct/iron-ingot.texture",
     ingredients = {
         {"铁锭", 4},
