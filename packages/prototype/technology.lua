@@ -850,3 +850,20 @@ prototype "钢加工" {
   count = 8,
   time = "1s"
 }
+
+prototype "浮选" {
+  desc = "使用浮选对矿石实行筛选",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"浮选器1"},
+  },
+  prerequisites = {"矿物处理1","地下水净化"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 8,
+  time = "1s"
+}
