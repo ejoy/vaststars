@@ -6,6 +6,7 @@ local item_category = import_package "vaststars.prototype"("item_category")
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
 local iprototype = require "gameplay.interface.prototype"
+local itypes = require "gameplay.interface.types"
 local objects = require "objects"
 local irecipe = require "gameplay.interface.recipe"
 local click_item_mb = mailbox:sub {"click_item"}
@@ -21,7 +22,7 @@ for _, typeobject in pairs(iprototype.all_prototype_name("recipe")) do
         if iprototype.has_type(typeobject_element.type, "item") then
             local id = typeobject_element.id
             item_id_to_info[id] = item_id_to_info[id] or {}
-            item_id_to_info[id][#item_id_to_info[id]+1] = {icon = assert(typeobject.icon), element = irecipe.get_elements(typeobject.ingredients), recipe_id = typeobject.id}
+            item_id_to_info[id][#item_id_to_info[id]+1] = {icon = assert(typeobject.icon), element = irecipe.get_elements(typeobject.ingredients), recipe_id = typeobject.id, time = itypes.time(typeobject.time)}
         end
     end
     recipe_to_category[typeobject.id] = typeobject.category

@@ -25,6 +25,7 @@ local function new(init)
         fluid_name = assert(init.fluid_name),
         fluidflow_network_id = assert(init.fluidflow_network_id),
         state = assert(init.state),
+        headquater = init.headquater,
     }
 
     local outer = setmetatable({__object = object, __change = {}}, {__index = object, __newindex = object_newindex})
