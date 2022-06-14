@@ -71,6 +71,16 @@ prototype "铁矿石" {
     order = 1,
 }
 
+prototype "碾碎铁矿石" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/iron.texture",
+    model = "prefabs/rock.prefab",
+    description = "被粉碎的铁矿石",
+    group = "金属",
+    order = 20,
+}
+
 prototype "碎石" {
     type = {"item"},
     stack = 100,

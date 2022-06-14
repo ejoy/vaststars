@@ -150,3 +150,13 @@ prototype "蒸汽" {
     max_temperature = 200,
     des = "一种化工气体",
 }
+
+prototype "丁二烯" {
+    type = {"fluid"},
+    catagory = {"普通气体"},
+    icon = "textures/fluid/gas-steam.texture",
+    heat_capacity = "0.05KJ",
+    default_temperature = 25,
+    max_temperature = 200,
+    des = "一种化工气体",
+}
