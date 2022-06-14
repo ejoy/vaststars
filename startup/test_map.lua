@@ -1,7 +1,7 @@
 local world = ...
 
 
-world:create_entity "小铁制箱子" {
+world:create_entity "小铁制箱子I" {
     x = 1,
     y = 1,
     items = {
