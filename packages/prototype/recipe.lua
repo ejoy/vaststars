@@ -1,5 +1,10 @@
 local gameplay = import_package "vaststars.gameplay"
-local prototype = gameplay.prototype
+local prototype = gameplay.register.prototype
+
+
+-- allow_manual：允许手工打造，默认为true。如果一个物品被禁止手工打造那么它也不会成为中间产物
+-- allow_as_intermediate：允许在手工打造过程中作为中间产物，默认为true
+-- results里面的第一个物品为主产物，只有主产物才可以被手工打造
 
 prototype "铁锭" {
     type = { "recipe" },
@@ -33,7 +38,6 @@ prototype "铁板1" {
     },
     time = "3s",
     description = "铁矿石通过金属冶炼获得铁板",
-
 }
 
 prototype "铁板2" {
@@ -41,6 +45,7 @@ prototype "铁板2" {
     category = "金属锻造",
     --group = "金属",
     order = 12,
+    allow_as_intermediate = false,
     icon = "textures/construct/iron-ingot.texture",
     ingredients = {
         {"铁锭", 4},
@@ -91,6 +96,7 @@ prototype "沙石粉碎" {
     category = "矿石粉碎",
     --group = "金属",
     order = 40,
+    allow_manual = false,
     icon = "textures/construct/gravel.texture",
     ingredients = {
         {"沙石矿", 5},
@@ -140,7 +146,7 @@ prototype "电动机1" {
     category = "器件中型制造",
     group = "器件",
     order = 52,
-    icon = "textures/construct/turbine1.texture",
+    icon = "textures/construct/electric-motor.texture",
     ingredients = {
         -- {"铁棒", 1},
         -- {"铁丝", 2},
@@ -538,7 +544,7 @@ prototype "空气过滤器1" {
     ingredients = {
         {"压力泵I", 1},
         {"塑料", 4},
-        {"蒸汽发电机I", 4},
+        {"蒸汽发电机I", 1},
     },
     results = {
         {"空气过滤器I", 1},
@@ -585,6 +591,7 @@ prototype "管道2" {
     category = "化工小型制造",
     group = "化工",
     order = 10,
+    allow_as_intermediate = false,
     icon = "textures/construct/pipe.texture",
     ingredients = {
         {"石砖", 8},
@@ -650,6 +657,24 @@ prototype "电解厂1" {
     description = "液体容器和电传输设备制造电解厂",
 }
 
+prototype "浮选器1" {
+    type = { "recipe" },
+    category = "生产大型制造",
+    --group = "生产",
+    order = 64,
+    icon = "textures/construct/crusher1.texture",
+    ingredients = {
+        {"粉碎机I", 1},
+        {"水电站I", 1},
+    },
+    results = {
+        {"浮选器I", 1},
+    },
+    time = "5s",
+    description = "将矿石浮沉进行筛选",
+}
+
+
 prototype "科研中心1" {
     type = { "recipe" },
     category = "生产大型制造",
@@ -675,6 +700,7 @@ prototype "破损水电站" {
     category = "生产手工制造",
     group = "生产",
     order = 110,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-hydroplant.texture",
     ingredients = {
         {"管道1-I型", 6},
@@ -692,6 +718,7 @@ prototype "破损空气过滤器" {
     category = "生产手工制造",
     group = "生产",
     order = 111,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-air-filter1.texture",
     ingredients = {
         {"石砖", 4},
@@ -710,6 +737,7 @@ prototype "破损地下水挖掘机" {
     category = "生产手工制造",
     group = "生产",
     order = 112,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-pump.texture",
     ingredients = {
         {"铁板", 8},
@@ -727,6 +755,7 @@ prototype "破损电解厂" {
     category = "生产手工制造",
     group = "生产",
     order = 114,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-electrolysis1.texture",
     ingredients = {
         {"石砖", 10},
@@ -745,6 +774,7 @@ prototype "破损化工厂" {
     category = "生产手工制造",
     group = "生产",
     order = 116,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-chemistry2.texture",
     ingredients = {
         {"小型铁制箱子", 2},
@@ -763,6 +793,7 @@ prototype "破损组装机" {
     category = "生产手工制造",
     group = "生产",
     order = 118,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-assembler.texture",
     ingredients = {
         -- {"铁丝", 6},
@@ -782,6 +813,7 @@ prototype "破损铁制电线杆" {
     category = "生产手工制造",
     group = "生产",
     order = 120,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-electric-pole1.texture",
     ingredients = {
         -- {"铁棒", 2},
@@ -800,9 +832,11 @@ prototype "破损太阳能板" {
     category = "生产手工制造",
     group = "生产",
     order = 122,
+    allow_as_intermediate = false,
     icon = "textures/construct/broken-solar-panel.texture",
     ingredients = {
-        {"石砖", 16},
+        {"铁板", 10},
+        {"石砖", 10},
         {"破损太阳能板", 1},
     },
     results = {
@@ -815,11 +849,12 @@ prototype "破损太阳能板" {
 prototype "破损蓄电池" {
     type = { "recipe" },
     category = "生产手工制造",
-    --group = "生产",
+    group = "生产",
     order = 124,
-    icon = "textures/construct/grid-battery.texture",
+    allow_as_intermediate = false,
+    icon = "textures/construct/broken-grid-battery.texture",
     ingredients = {
-        {"石墨", 1},
+        {"铁板", 8},
         {"破损蓄电池", 1},
     },
     results = {
@@ -834,6 +869,7 @@ prototype "破损物流中心" {
     category = "生产手工制造",
     --group = "生产",
     order = 126,
+    allow_as_intermediate = false,
     icon = "textures/construct/logisitic1.texture",
     ingredients = {
         {"铁板", 5},
@@ -851,6 +887,7 @@ prototype "破损运输汽车" {
     category = "生产手工制造",
     --group = "生产",
     order = 128,
+    allow_as_intermediate = false,
     icon = "textures/construct/truck.texture",
     ingredients = {
         -- {"铁丝", 10},
@@ -869,6 +906,7 @@ prototype "破损车站" {
     category = "生产手工制造",
     --group = "生产",
     order = 130,
+    allow_as_intermediate = false,
     icon = "textures/construct/manufacture.texture",
     ingredients = {
         -- {"铁棒", 6},
@@ -986,7 +1024,7 @@ prototype "空气分离1" {
     category = "过滤",
     group = "流体",
     order = 11,
-    icon = "textures/construct/air-filter1.texture",
+    icon = "textures/fluid/gas-seperate.texture",
     ingredients = {
         {"空气", 150},
     },
@@ -1075,7 +1113,7 @@ prototype "地下卤水电解" {
     category = "电解",
     group = "流体",
     order = 15,
-    icon = "textures/fluid/gas.texture",
+    icon = "textures/fluid/liquid-electrolysis.texture",
     ingredients = {
         {"地下卤水", 45},
     },
@@ -1094,7 +1132,7 @@ prototype "地下卤水净化" {
     category = "流体基础化工",
     group = "流体",
     order = 15,
-    icon = "textures/fluid/gas.texture",
+    icon = "textures/fluid/liquid-purify.texture",
     ingredients = {
         {"地下卤水", 100},
     },
@@ -1111,7 +1149,7 @@ prototype "地下卤水电解-backup" {
     category = "电解",
     --group = "流体",
     order = 15,
-    icon = "textures/fluid/gas.texture",
+    icon = "textures/fluid/liquid-electrolysis.texture",
     ingredients = {
         {"纯水", 45},
     },
@@ -1128,7 +1166,7 @@ prototype "纯水电解" {
     category = "电解",
     group = "流体",
     order = 15,
-    icon = "textures/fluid/gas.texture",
+    icon = "textures/fluid/liquid-electrolysis.texture",
     ingredients = {
         {"纯水", 45},
     },
@@ -1163,10 +1201,10 @@ prototype "塑料1" {
     category = "器件基础化工",
     group = "器件",
     order = 20,
-    icon = "textures/construct/processor.texture",
+    icon = "textures/construct/plastic.texture",
     ingredients = {
         {"氯气", 30},
-        {"乙烯", 30},
+        {"乙烯", 30},pl
     },
     results = {
         {"盐酸", 20},
@@ -1227,6 +1265,41 @@ prototype "碱性溶液" {
     },
     time = "1s",
     description = "碱性原料融水制造碱性溶液",
+}
+
+prototype "钢板1" {
+    type = { "recipe" },
+    category = "金属锻造",
+    group = "金属",
+    order = 20,
+    icon = "textures/construct/iron-ingot.texture",
+    ingredients = {
+        {"铁板", 5},
+        {"氧气", 60},
+    },
+    results = {
+        {"钢板", 2},
+        {"二氧化碳", 25},
+        -- {"碎石", 1},
+    },
+    time = "12s",
+    description = "铁板通过金属冶炼获得钢板",
+}
+
+prototype "钢齿轮" {
+    type = { "recipe" },
+    category = "金属小型制造",
+    group = "金属",
+    order = 22,
+    icon = "textures/construct/iron-gear.texture",
+    ingredients = {
+        {"钢板", 3},
+    },
+    results = {
+        {"钢齿轮", 2},
+    },
+    time = "6s",
+    description = "使用钢制品加工钢齿轮",
 }
 
 prototype "废水排泄" {

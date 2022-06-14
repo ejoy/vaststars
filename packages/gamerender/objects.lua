@@ -6,24 +6,30 @@ local DEFAULT_CACHE_NAME <const> = "CONSTRUCTED"
 
 local ALL_CACHE_NAMES = {"INDICATOR", "TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 
-local objects = create_cache(ALL_CACHE_NAMES, "id", "teardown", "headquater", "fluidflow_network_id") -- = {[id] = object, ...}
+local objects = create_cache(ALL_CACHE_NAMES, "id", "REMOVED", "OBJECT_REMOVED", "teardown", "headquater", "fluidflow_network_id") -- = {[id] = object, ...}
 local tile_objects = create_cache(ALL_CACHE_NAMES, "coord", "id") -- = {[coord] = {id = xx, coord = coord}
 
 local M = {}
 function M:get(id, cache_names)
     cache_names = cache_names or DEFAULT_CACHE_NAMES
-    return objects:get(cache_names, id)
+    assert(type(cache_names) == "table")
+    local object = objects:get(cache_names, id)
+    if object and object.OBJECT_REMOVED then
+        return
+    else
+        return object
+    end
 end
 
 function M:set(object, cache_name)
     cache_name = cache_name or DEFAULT_CACHE_NAME
 
-    local typeobject = iprototype:queryByName("entity", object.prototype_name)
-    local w, h = iprototype:rotate_area(typeobject.area, object.dir)
+    local typeobject = iprototype.queryByName("entity", object.prototype_name)
+    local w, h = iprototype.rotate_area(typeobject.area, object.dir)
     for i = 0, w - 1 do
         for j = 0, h - 1 do
-            local coord = iprototype:packcoord(object.x + i, object.y + j)
-            tile_objects:set(cache_name, {id = object.id, coord = coord})
+            local coord = iprototype.packcoord(object.x + i, object.y + j)
+            tile_objects:set(cache_name, {coord = coord, id = object.id})
         end
     end
 
@@ -32,11 +38,16 @@ end
 
 function M:coord(x, y, cache_names)
     cache_names = cache_names or DEFAULT_CACHE_NAMES
-    local tile = tile_objects:get(cache_names, iprototype:packcoord(x, y))
+    local tile = tile_objects:get(cache_names, iprototype.packcoord(x, y))
     if not tile then
         return
     end
-    return assert(self:get(tile.id, cache_names))
+    local object = self:get(tile.id, cache_names)
+    if object and object.OBJECT_REMOVED then
+        return
+    else
+        return object
+    end
 end
 
 function M:remove(id, cache_name)
@@ -64,12 +75,26 @@ function M:select(...)
 end
 
 function M:selectall(index_field, cache_value, cache_names)
-    return objects:selectall(cache_names, index_field, cache_value)
+    local t = {}
+    for id, obj in objects:selectall(cache_names, index_field, cache_value) do
+        if not obj.OBJECT_REMOVED then
+            t[id] = obj
+        end
+    end
+    return next, t, nil
 end
 
 function M:commit(cache_name_1, cache_name_2)
     objects:commit(cache_name_1, cache_name_2)
     tile_objects:commit(cache_name_1, cache_name_2)
+end
+
+function M:cleanup(cache_name)
+    for id, obj in objects:all(cache_name) do
+        if obj.REMOVED then
+            self:remove(id, cache_name)
+        end
+    end
 end
 
 function M:empty(...)

@@ -1,5 +1,5 @@
 local gameplay = import_package "vaststars.gameplay"
-local prototype = gameplay.prototype
+local prototype = gameplay.register.prototype
 
 prototype "破损水电站" {
     type = {"item"},
@@ -84,7 +84,7 @@ prototype "破损太阳能板" {
 prototype "破损蓄电池" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/grid-battery.texture",
+    icon = "textures/construct/broken-grid-battery.texture",
     model = "prefabs/rock.prefab",
     description = "损坏的蓄电池",
     group = "加工",

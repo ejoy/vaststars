@@ -1,5 +1,5 @@
 local gameplay = import_package "vaststars.gameplay"
-local prototype = gameplay.prototype
+local prototype = gameplay.register.prototype
 
 prototype "铁锭" {
     type = {"item"},
@@ -39,6 +39,26 @@ prototype "铁棒" {
     description = "铁制材料锻造加工成的铁棒",
     group = "金属",
     order = 13,
+}
+
+prototype "钢板" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/iron-ingot.texture",
+    model = "prefabs/rock.prefab",
+    description = "铁板锻造加工成的钢板",
+    group = "金属",
+    order = 20,
+}
+
+prototype "钢齿轮" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/iron-ingot.texture",
+    model = "prefabs/rock.prefab",
+    description = "一种钢制加工品",
+    group = "金属",
+    order = 22,
 }
 
 prototype "铁矿石" {
@@ -134,7 +154,7 @@ prototype "沙子" {
 prototype "塑料" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/gravel.texture",
+    icon = "textures/construct/plastic.texture",
     model = "prefabs/rock.prefab",
     description = "一种化工成品",
     group = "器件",
@@ -144,7 +164,7 @@ prototype "塑料" {
 prototype "电动机I" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/turbine1.texture",
+    icon = "textures/construct/electric-motor.texture",
     model = "prefabs/rock.prefab",
     description = "一种机械加工品",
     group = "器件",

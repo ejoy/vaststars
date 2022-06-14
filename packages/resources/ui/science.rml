@@ -21,7 +21,7 @@
                 border: 0.27vmin rgb(89, 73, 39);
                 background-size:cover;
                 border-radius: 0.67vmin;
-                width: 60vmin;
+                width: 70vmin;
                 height: 10.00vmin;
                 font-size: 3.40vmin;
             }
@@ -44,7 +44,7 @@
                 border-radius: 0.67vmin;
                 color:rgb(255, 255, 255);
                 -webkit-text-stroke: 0.07vmin rgb(0, 0, 0);
-                width: 65%;
+                width: 85%;
                 word-break: break-all;
                 font-size: 4.5vmin;
             }
@@ -362,12 +362,11 @@
                     item.style.backgroundColor = 'rgb(114,87,4)'
                 elseif detail.desc then
                     htmlstr = htmlstr .. ([[<div class="item-title-new">%s</div>]]):format(detail.desc)
-                    item.style.backgroundColor = 'rgb(190,14,243)'
-                    item.style.border = '2px rgb(255,0,200)'
+                    item.style.backgroundColor = 'rgb(112,48,160)'
                 end
                 item.outerHTML = htmlstr
                 item.className = "item-research"
-                item.style.width = '96%'
+                item.style.width = '90%'
                 local select_style_border = "5px green"
                 item.addEventListener('click', function(event)
                     if start.selected_recipe then

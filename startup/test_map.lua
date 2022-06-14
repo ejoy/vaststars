@@ -89,10 +89,10 @@ local convertPipeType = {
     ["╗"] = {"管道1-L型", "S"},
     ["╣"] = {"管道1-T型", "E"},
     ["╝"] = {"管道1-L型", "W"},
-    ["^"] = {"地下管I", "N"},
-    [">"] = {"地下管I", "E"},
-    ["v"] = {"地下管I", "S"},
-    ["<"] = {"地下管I", "W"},
+    ["^"] = {"地下管1-JI型", "N"},
+    [">"] = {"地下管1-JI型", "E"},
+    ["v"] = {"地下管1-JI型", "S"},
+    ["<"] = {"地下管1-JI型", "W"},
 }
 
 local function create_pipe(t)
@@ -242,7 +242,7 @@ local function init_fluid()
     end
 
     local function walk_fluidbox(fluidboxes, classify, e)
-        local pt = gameplay.query(e.prototype)
+        local pt = gameplay.prototype.queryById(e.prototype)
         for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
             local fluid = fluidboxes[classify..i.."_fluid"]
             if fluid ~= 0 then
@@ -257,7 +257,7 @@ local function init_fluid()
     local function init()
         for v in ecs:select "fluidbox:in entity:in" do
             local e = v.entity
-            local pt = gameplay.query(e.prototype)
+            local pt = gameplay.prototype.queryById(e.prototype)
             local fluidbox = pt.fluidbox
             local entity = {
                 connections = {}

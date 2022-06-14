@@ -159,7 +159,10 @@ function M.adjust_position_by_coord(x, y, position, width, height)
     end
 
     return {x, y}, {begining[1] + (width / 2 * unit), position[2], begining[3] - (height / 2 * unit)}
- 
+end
+
+function M.can_place(x, y)
+    return true
 end
 
 return M

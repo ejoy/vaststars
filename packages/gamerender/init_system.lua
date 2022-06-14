@@ -14,7 +14,6 @@ local fps = ecs.require "fps"
 local world_update = ecs.require "world_update.init"
 local saveload = ecs.require "saveload"
 local objects = require "objects"
-local iprototype = require "gameplay.interface.prototype"
 local iscience = require "gameplay.interface.science"
 local vsobject_manager = ecs.require "vsobject_manager"
 
@@ -32,7 +31,7 @@ function m:init_world()
     terrain.create()
     saveload:restore()
     iscience.update_tech_list(gameplay_core.get_world())
-    
+
     iui.open("construct.rml")
 end
 

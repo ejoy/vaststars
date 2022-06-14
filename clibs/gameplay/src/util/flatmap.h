@@ -119,6 +119,10 @@ public:
         return slot != kInvalidSlot;
     }
 
+    size_t size() const {
+        return m_size;
+    }
+
     mapped_type* find(const key_type& key) noexcept {
         auto slot = find_key(key);
         if (slot == kInvalidSlot) {
@@ -158,6 +162,38 @@ public:
 
     void reserve(size_t c) {
         rehash(c, false);
+    }
+
+    struct iterator {
+        flatmap const& m;
+        size_t n;
+        bool operator!=(iterator& rhs) const {
+            return &m != &rhs.m || n != rhs.n;
+        }
+        void operator++() {
+            while (n != (m.m_mask + 1) && m.m_buckets[n].dib == 0) {
+                n++;
+            }
+        }
+        std::pair<key_type, mapped_type> operator*() {
+            auto& bucket = m.m_buckets[n];
+            return {bucket.key, bucket.obj};
+        }
+    };
+    using const_iterator = iterator;
+
+    const_iterator begin() const {
+        return const_iterator {*this, 0};
+    }
+    const_iterator end() const {
+        return const_iterator {*this, m_mask+1};
+    }
+
+    iterator begin() {
+        return iterator {*this, 0};
+    }
+    iterator end() {
+        return iterator {*this, m_mask+1};
     }
 
     struct rawdata {

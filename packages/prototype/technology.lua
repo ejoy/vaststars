@@ -1,5 +1,5 @@
 local gameplay = import_package "vaststars.gameplay"
-local prototype = gameplay.prototype
+local prototype = gameplay.register.prototype
 
   --task = {"stat_production", 0, "铁矿石"},
   --task = {"stat_consumption", 0, "铁矿石"},
@@ -11,7 +11,7 @@ local prototype = gameplay.prototype
 prototype "地质研究" {
     desc = "对火星地质结构进行标本采集和研究",
     type = { "tech" },
-    icon = "textures/science/tech-equipment.texture",
+    icon = "textures/science/tech-research.texture",
     effects = {
       unlock_recipe = {"地质科技包1"},
     },
@@ -25,8 +25,8 @@ prototype "地质研究" {
     sign_icon = "textures/science/tech-important.texture",
 }
 
-prototype "收集铁矿石" {
-  desc = "收集足够的铁矿石可以开始进行锻造",
+prototype "挖掘铁矿石" {
+  desc = "挖掘足够的铁矿石可以开始进行锻造",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "铁矿石"},
@@ -41,16 +41,16 @@ prototype "收集铁矿石" {
     "textures/task_tips_pic/task_produce_ore3.texture",
   },
   sign_desc = {
-    { desc = "放置采矿机收集10个铁矿石", icon = "textures/construct/industry.texture"},
+    { desc = "放置采矿机挖掘10个铁矿石", icon = "textures/construct/industry.texture"},
   },
 }
 
 prototype "生产地质科技包" {
   desc = "生产科技包用于科技研究",
-  icon = "textures/construct/iron-ingot.texture",
+  icon = "textures/construct/assembler.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "地质科技包"},
-  prerequisites = {"收集铁矿石"},
+  prerequisites = {"挖掘铁矿石"},
   count = 3,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
@@ -104,7 +104,7 @@ prototype "生产铁板" {
 prototype "石头处理1" {
   desc = "获得火星岩石加工成石砖的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-metal.texture",
+  icon = "textures/construct/stone-brick.texture",
   effects = {
     unlock_recipe = {"石砖"},
   },
@@ -134,7 +134,7 @@ prototype "生产石砖" {
 prototype "气候研究" {
   desc = "对火星大气成分进行标本采集和研究",
   type = { "tech" },
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"破损空气过滤器","破损地下水挖掘机","气候科技包"},
   },
@@ -247,7 +247,7 @@ prototype "管道系统1" {
 
 prototype "生产管道" {
   desc = "管道可以承载液体和气体，将需要相同气液的机器彼此联通起来",
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/construct/pipe.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "管道1-I型"},
   prerequisites = {"管道系统1"},
@@ -311,11 +311,15 @@ prototype "收集空气" {
   desc = "采集火星上的空气",
   type = { "tech", "task" },
   icon = "textures/science/tech-liquid.texture",
-  task = {"stat_production", 0, "空气"},
+  task = {"stat_production", 1, "空气"},
   prerequisites = {"空气分离"},
-  count = 15000,
+  count = 8000,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_air1.texture",
+    "textures/task_tips_pic/task_produce_air2.texture",
+  },
   sign_desc = {
-    { desc = "用空气过滤器生产15000单位空气", icon = "textures/science/tech-liquid.texture",},
+    { desc = "用空气过滤器生产80000单位空气", icon = "textures/science/tech-liquid.texture",},
   },
 }
 
@@ -354,7 +358,7 @@ prototype "石头处理2" {
   type = { "tech" },
   icon = "textures/science/tech-metal.texture",
   effects = {
-    unlock_recipe = {"破损太阳能板"},
+    unlock_recipe = {"破损太阳能板","破损蓄电池"},
   },
   prerequisites = {"维修破损组装机","电解"},
   ingredients = {
@@ -366,16 +370,16 @@ prototype "石头处理2" {
 
 prototype "放置太阳能板" {
   desc = "放置太阳能板将光热转换成电能",
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/construct/construct.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "太阳能板I"},
   prerequisites = {"石头处理2"},
-  count = 3,
+  count = 8,
   tips_pic = {
     "textures/task_tips_pic/task_place_solarpanel.texture",
   },
   sign_desc = {
-    { desc = "放置3个太阳能板", icon = "textures/construct/assembler.texture"},
+    { desc = "放置8个太阳能板", icon = "textures/construct/assembler.texture"},
   },
 }
 
@@ -401,7 +405,7 @@ prototype "基地生产1" {
 prototype "储存1" {
   desc = "研究更便捷的存储方式",
   type = { "tech" },
-  icon = "textures/science/tech-logistics.texture",
+  icon = "textures/construct/chest.texture",
   effects = {
     unlock_recipe = {"小型铁制箱子"},
   },
@@ -416,7 +420,7 @@ prototype "储存1" {
 
 prototype "生产铁制箱子" {
   desc = "生产小型铁制箱子用于存储基地的资源",
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/construct/assembler.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "小型铁制箱子"},
   prerequisites = {"储存1","基地生产1"},
@@ -425,27 +429,8 @@ prototype "生产铁制箱子" {
     "textures/task_tips_pic/task_produce_chest.texture",
   },
   sign_desc = {
-    { desc = "生产3个小型铁制箱子", icon = "textures/construct/assembler.texture"},
+    { desc = "使用组装机生产3个小型铁制箱子", icon = "textures/construct/assembler.texture"},
   },
-}
-
-prototype "基地生产2" {
-  desc = "提高指挥中心的生产效率",
-  type = { "tech" },
-  icon = "textures/science/tech-manufacture.texture",
-  effects = {
-    modifier = {["headquarter-craft-speed"] = 0.2},
-  },
-  prerequisites = {"生产铁制箱子"},
-  ingredients = {
-      {"地质科技包", 1},
-  },
-  count = 10,
-  time = "2s",
-  sign_desc = {
-    { desc = "该科技可以持续地提高某项能力", icon = "textures/science/recycle.texture"},
-  },
-  sign_icon = "textures/science/tech-cycle.texture",
 }
 
 prototype "碳处理1" {
@@ -453,7 +438,7 @@ prototype "碳处理1" {
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"二氧化碳转甲烷"},
+    unlock_recipe = {"二氧化碳转甲烷","破损化工厂"},
   },
   prerequisites = {"电解","空气分离","放置太阳能板"},
   ingredients = {
@@ -461,6 +446,38 @@ prototype "碳处理1" {
   },
   count = 4,
   time = "2s"
+}
+
+prototype "生产氢气" {
+  desc = "生产工业气体氢气",
+  icon = "textures/science/tech-liquid.texture",
+  type = { "tech", "task" },
+  task = {"stat_production", 0, "氢气"},
+  prerequisites = {"碳处理1"},
+  count = 500,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_h21.texture",
+    "textures/task_tips_pic/task_produce_h22.texture",
+  },
+  sign_desc = {
+    { desc = "电解厂电解卤水生产500个单位氢气", icon = "textures/fluid/gas.texture"},
+  },
+}
+
+prototype "生产二氧化碳" {
+  desc = "生产工业气体二氧化碳",
+  icon = "textures/science/tech-liquid.texture",
+  type = { "tech", "task" },
+  task = {"stat_production", 0, "二氧化碳"},
+  prerequisites = {"碳处理1"},
+  count = 500,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_co21.texture",
+    "textures/task_tips_pic/task_produce_co22.texture",
+  },
+  sign_desc = {
+    { desc = "蒸馏厂分离空气生产500个单位二氧化碳", icon = "textures/fluid/gas.texture"},
+  },
 }
 
 prototype "碳处理2" {
@@ -471,7 +488,7 @@ prototype "碳处理2" {
     unlock_recipe = {"甲烷转乙烯"},
     -- unlock_recipe = {"二氧化碳转一氧化碳","一氧化碳转石墨"},
   },
-  prerequisites = {"碳处理1","放置太阳能板"},
+  prerequisites = {"生产氢气","生产二氧化碳"},
   ingredients = {
       {"气候科技包", 1},
   },
@@ -498,7 +515,7 @@ prototype "管道系统2" {
 prototype "有机化学" {
   desc = "研究碳化合物组成、结构和制备方法",
   type = { "tech" },
-  icon = "textures/science/tech-chemical.texture",
+  icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"塑料1"},
   },
@@ -533,7 +550,7 @@ prototype "冶金学" {
   effects = {
     unlock_recipe = {"熔炼炉1"},
   },
-  prerequisites = {"放置太阳能板"},
+  prerequisites = {"放置太阳能板","生产铁制箱子"},
   ingredients = {
     {"地质科技包", 1},
   },
@@ -541,25 +558,50 @@ prototype "冶金学" {
   time = "4s"
 }
 
+prototype "基地生产2" {
+  desc = "提高指挥中心的生产效率",
+  type = { "tech" },
+  icon = "textures/science/tech-manufacture.texture",
+  effects = {
+    modifier = {["headquarter-craft-speed"] = 0.2},
+  },
+  prerequisites = {"冶金学"},
+  ingredients = {
+      {"地质科技包", 1},
+  },
+  count = 10,
+  time = "2s",
+  sign_desc = {
+    { desc = "该科技可以持续地提高某项能力", icon = "textures/science/recycle.texture"},
+  },
+  sign_icon = "textures/science/tech-cycle.texture",
+}
+
 prototype "生产甲烷" {
-  desc = "用化工厂生产初级化工气体甲烷",
-  icon = "textures/science/tech-equipment.texture",
+  desc = "生产工业气体甲烷",
+  icon = "textures/science/tech-liquid.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "甲烷"},
   prerequisites = {"碳处理2"},
   count = 1000,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_ch4.texture",
+  },
   sign_desc = {
-    { desc = "生产1000个单位甲烷", icon = "textures/fluid/gas.texture"},
+    { desc = "用化工厂生产1000个单位甲烷", icon = "textures/fluid/gas.texture"},
   },
 }
 
 prototype "生产塑料" {
   desc = "使用有机化学的科学成果生产质量轻、耐腐蚀的工业材料塑料",
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/construct/assembler.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "塑料"},
   prerequisites = {"有机化学"},
   count = 30,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_plastic.texture",
+  },
   sign_desc = {
     { desc = "生产30个塑料", icon = "textures/construct/assembler.texture"},
   },
@@ -581,10 +623,11 @@ prototype "电磁学1" {
   time = "6s"
 }
 
+--研究机械科技瓶
 prototype "机械研究" {
   desc = "对适合在火星表面作业的机械装置进行改进和开发",
   type = { "tech" },
-  icon = "textures/science/tech-equipment.texture",
+  icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"机械科技包1"},
   },
@@ -601,8 +644,8 @@ prototype "机械研究" {
   sign_icon = "textures/science/tech-important.texture",
 }
 
-prototype "蒸馏厂1" {
-  desc = "科技的描述",
+prototype "蒸馏1" {
+  desc = "将液体混合物汽化进行成分分离的技术",
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
@@ -610,15 +653,15 @@ prototype "蒸馏厂1" {
   },
   prerequisites = {"机械研究"},
   ingredients = {
-    {"机械科技包", 1},
     {"气候科技包", 1},
+    {"机械科技包", 1},
   },
-  count = 8,
-  time = "1s"
+  count = 4,
+  time = "2s"
 }
 
 prototype "挖掘1" {
-  desc = "科技的描述",
+  desc = "研究对火星岩石的开采技术",
   type = { "tech" },
   icon = "textures/science/tech-manufacture.texture",
   effects = {
@@ -629,12 +672,12 @@ prototype "挖掘1" {
     {"地质科技包", 1},
     {"气候科技包", 1},
   },
-  count = 8,
+  count = 4,
   time = "2s"
 }
 
 prototype "驱动1" {
-  desc = "科技的描述",
+  desc = "使用机械手臂快速转移物品",
   type = { "tech" },
   icon = "textures/science/tech-manufacture.texture",
   effects = {
@@ -644,12 +687,12 @@ prototype "驱动1" {
   ingredients = {
     {"机械科技包", 1},
   },
-  count = 8,
-  time = "2s"
+  count = 3,
+  time = "3s"
 }
 
 prototype "电力传输1" {
-  desc = "科技的描述",
+  desc = "将电能远距离传输的技术",
   type = { "tech" },
   icon = "textures/science/tech-manufacture.texture",
   effects = {
@@ -661,12 +704,12 @@ prototype "电力传输1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 12,
-  time = "2s"
+  count = 2,
+  time = "6s"
 }
 
 prototype "物流1" {
-  desc = "科技的描述",
+  desc = "使用交通工具进行远程运输",
   type = { "tech" },
   icon = "textures/science/tech-logistics.texture",
   effects = {
@@ -676,12 +719,12 @@ prototype "物流1" {
   ingredients = {
     {"机械科技包", 1},
   },
-  count = 8,
+  count = 5,
   time = "2s"
 }
 
 prototype "泵系统1" {
-  desc = "科技的描述",
+  desc = "使用机械方式加快液体流动",
   type = { "tech" },
   icon = "textures/science/tech-manufacture.texture",
   effects = {
@@ -692,37 +735,135 @@ prototype "泵系统1" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 6,
-  time = "2s"
-}
-
-prototype "金属加工1" {
-  desc = "科技的描述",
-  type = { "tech" },
-  icon = "textures/science/tech-manufacture.texture",
-  effects = {
-    unlock_recipe = {"铸造厂1"},
-  },
-  prerequisites = {"挖掘1","驱动1"},
-  ingredients = {
-    {"地质科技包", 1},
-    {"机械科技包", 1},
-  },
-  count = 8,
+  count = 4,
   time = "2s"
 }
 
 prototype "自动化1" {
-  desc = "科技的描述",
+  desc = "使用3D打印技术快速复制物品",
   type = { "tech" },
   icon = "textures/science/tech-manufacture.texture",
   effects = {
     unlock_recipe = {"组装机1"},
   },
-  prerequisites = {"驱动1","电力传输1","物流1"},
+  prerequisites = {"驱动1","电力传输1"},
   ingredients = {
     {"机械科技包", 1},
   },
-  count = 12,
+  count = 4,
   time = "3s"
+}
+
+prototype "地下水净化" {
+  desc = "火星地下开采卤水进行过滤净化工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"地下卤水净化"},
+  },
+  prerequisites = {"蒸馏1"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 4,
+  time = "2.5s"
+}
+
+prototype "炼钢" {
+  desc = "将铁再锻造成更坚硬金属的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"钢板1"},
+  },
+  prerequisites = {"挖掘1"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 4,
+  time = "2.5s"
+}
+
+prototype "发电机1" {
+  desc = "使用蒸汽作为工质将热能转为机械能的发电装置",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"蒸汽发电机1"},
+  },
+  prerequisites = {"电力传输1"},
+  ingredients = {
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 4,
+  time = "2s"
+}
+
+prototype "空气过滤" {
+  desc = "研究将火星混合气体分离的装置",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"空气过滤器1"},
+  },
+  prerequisites = {"泵系统1","发电机1"},
+  ingredients = {
+    {"气候科技包", 1},
+  },
+  count = 5,
+  time = "2s"
+}
+
+prototype "矿物处理1" {
+  desc = "将矿物进行碾碎并收集的机械工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"粉碎机1"},
+  },
+  prerequisites = {"挖掘1","自动化1"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 5,
+  time = "2s"
+}
+
+prototype "钢加工" {
+  desc = "钢制产品更多的铸造技术",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"钢齿轮"},
+  },
+  prerequisites = {"炼钢"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 8,
+  time = "1s"
+}
+
+prototype "浮选" {
+  desc = "使用浮选对矿石实行筛选",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"浮选器1"},
+  },
+  prerequisites = {"矿物处理1","地下水净化"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 8,
+  time = "1s"
 }

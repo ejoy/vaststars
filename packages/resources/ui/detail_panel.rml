@@ -107,7 +107,7 @@
             </div -->
 
             <!-- detail panel begin -->
-            <div style = "overflow: hidden; position: absolute; left: 0.13vmin; top: 10.33vmin; width: 35.00vmin; height: 72.33vmin; background-color: rgb(250, 205, 9); border: 0.27vmin rgb(89, 73, 39);flex-direction: column; justify-content: flex-start;">
+            <div style = "overflow: hidden; position: absolute; left: 0.13vmin; top: 7vmin; width: 35.00vmin; height: 72.33vmin; background-color: rgb(250, 205, 9); border: 0.27vmin rgb(89, 73, 39);flex-direction: column; justify-content: flex-start;">
                 <!-- title -->
                 <div style = "width: 100%; height: 13.33vmin; flex-direction: row; justify-content: flex-start;">
                     <!-- icon -->

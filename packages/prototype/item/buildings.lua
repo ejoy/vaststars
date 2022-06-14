@@ -1,5 +1,5 @@
 local gameplay = import_package "vaststars.gameplay"
-local prototype = gameplay.prototype
+local prototype = gameplay.register.prototype
 
 prototype "指挥中心" {
     type = {"item"},
@@ -120,6 +120,16 @@ prototype "粉碎机I" {
     order = 60,
 }
 
+prototype "浮选器I" {
+    type = {"item"},
+    stack = 25,
+    icon = "textures/construct/hydroplant.texture",
+    model = "prefabs/rock.prefab",
+    description = "用于浮沉矿石的机器",
+    group = "加工",
+    order = 65,
+}
+
 prototype "物流中心I" {
     type = {"item"},
     stack = 25,
@@ -221,3 +231,4 @@ prototype "运输车辆I" {
     group = "物流",
     order = 53,
 }
+

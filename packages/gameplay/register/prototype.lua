@@ -118,8 +118,8 @@ return function (name)
 		local combine_keys = ckeys[cache_key](typelist)
 		local mainkey = object.type[1]
 		local namekey = "("..mainkey..")"..name
-		if name_lookup[namekey] ~= nil then
-			local o = name_lookup[namekey]
+		if name_lookup[mainkey][name] ~= nil then
+			local o = name_lookup[mainkey][name]
 			error(("Duplicate %s: %s"):format(o.type[1], o.name))
 		end
 		local id = getid(mainkey, name)
@@ -140,7 +140,7 @@ return function (name)
 			end
 			object[key.key] = r
 		end
-		name_lookup[namekey] = object
+		name_lookup[mainkey][name] = object
 		id_lookup[id] = object
 	end
 end

@@ -1,34 +1,35 @@
 local gameplay = import_package "vaststars.gameplay"
 import_package "vaststars.prototype"
+local math_abs = math.abs
 
 local M = {}
-function M:query(...)
-    return gameplay.query(...)
+function M.queryById(...)
+    return gameplay.prototype.queryById(...)
 end
 
-function M:queryByName(...)
-    return gameplay.queryByName(...)
+function M.queryByName(...)
+    return gameplay.prototype.queryByName(...)
 end
 
-function M:all_prototype_name(...)
-    return gameplay.prototype_name
+function M.all_prototype_name(maintype)
+    return gameplay.prototype.each(maintype)
 end
 
-function M:packcoord(x, y)
+function M.packcoord(x, y)
     assert(x & 0xFF == x)
     assert(y & 0xFF == y)
     return x | (y<<8)
 end
 
-function M:unpackcoord(coord)
+function M.unpackcoord(coord)
     return coord & 0xFF, coord >> 8
 end
 
-function M:unpackarea(area)
+function M.unpackarea(area)
     return area >> 8, area & 0xFF
 end
 
-function M:has_type(types, type)
+function M.has_type(types, type)
     for i = 1, #types do
         if types[i] == type then
             return true
@@ -37,7 +38,7 @@ function M:has_type(types, type)
     return false
 end
 
-function M:is_fluid_id(id)
+function M.is_fluid_id(id)
     return id & 0x0C00 == 0x0C00
 end
 
@@ -53,11 +54,11 @@ for dir, v in pairs(DIRECTION) do
     DIRECTION_REV[v] = dir
 end
 
-function M:rotate_dir(dir, rotate_dir)
+function M.rotate_dir(dir, rotate_dir)
     return DIRECTION_REV[(DIRECTION[dir] + DIRECTION[rotate_dir]) % 4]
 end
 
-function M:rotate_dir_times(dir, times)
+function M.rotate_dir_times(dir, times)
     return DIRECTION_REV[(DIRECTION[dir] + times) % 4]
 end
 
@@ -67,20 +68,38 @@ local OPPOSITE <const> = {
     S = 'N',
     W = 'E',
 }
-function M:opposite_dir(dir)
+function M.opposite_dir(dir)
     return OPPOSITE[dir]
 end
 
-function M:dir_tonumber(dir)
+function M.dir_tonumber(dir)
     return assert(DIRECTION[dir])
 end
 
-function M:dir_tostring(dir)
+function M.dir_tostring(dir)
     return assert(DIRECTION_REV[dir])
 end
 
-function M:rotate_area(area, dir)
-    local w, h = self:unpackarea(area)
+function M.calc_dir(x1, y1, x2, y2)
+    local dx = math_abs(x1 - x2)
+    local dy = math_abs(y1 - y2)
+    if dx > dy then
+        if x1 < x2 then
+            return 'E'
+        else
+            return 'W'
+        end
+    else
+        if y1 < y2 then
+            return 'S'
+        else
+            return 'N'
+        end
+    end
+end
+
+function M.rotate_area(area, dir)
+    local w, h = M.unpackarea(area)
     if dir == 'N' or dir == 'S' then
         return w, h
     elseif dir == 'E' or dir == 'W' then
@@ -88,10 +107,34 @@ function M:rotate_area(area, dir)
     end
 end
 
-function M:rotate_fluidbox(position, direction, area)
-    local w, h = self:unpackarea(area)
+function M.move_coord(x, y, dir, dx, dy)
+    dx = dx or 1
+    dy = dy or dx
+
+    local dir_coord = {
+        ['N'] = {x = 0,  y = -1},
+        ['E'] = {x = 1,  y = 0},
+        ['S'] = {x = 0,  y = 1},
+        ['W'] = {x = -1, y = 0},
+    }
+
+    local function valid_value(v)
+        return not (v < 0 or v > 255)
+    end
+
+    local c = assert(dir_coord[dir])
+    local rx, ry = x + c.x * dx, y + c.y * dy
+    if valid_value(rx) and valid_value(ry) then
+        return true, rx, ry
+    else
+        return false, rx, ry
+    end
+end
+
+function M.rotate_fluidbox(position, direction, area)
+    local w, h = M.unpackarea(area)
     local x, y = position[1], position[2]
-    local dir = self:rotate_dir(position[3], direction)
+    local dir = M.rotate_dir(position[3], direction)
     w = w - 1
     h = h - 1
     if direction == 'N' then
@@ -105,7 +148,7 @@ function M:rotate_fluidbox(position, direction, area)
     end
 end
 
-function M:show_prototype_name(typeobject)
+function M.show_prototype_name(typeobject)
     if typeobject.show_prototype_name then
         return typeobject.show_prototype_name
     else
@@ -113,11 +156,13 @@ function M:show_prototype_name(typeobject)
     end
 end
 
-function M:is_pipe(typeobject)
+function M.is_pipe(prototype_name)
+    local typeobject = assert(M.queryByName("entity", prototype_name))
     return typeobject.pipe
 end
 
-function M:is_pipe_to_ground(typeobject)
+function M.is_pipe_to_ground(prototype_name)
+    local typeobject = assert(M.queryByName("entity", prototype_name))
     return typeobject.pipe_to_ground
 end
 

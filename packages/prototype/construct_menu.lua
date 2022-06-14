@@ -5,6 +5,7 @@ local menu = {
         detail = {
             "铁制电线杆",
             "太阳能板I",
+            "蓄电池I",
         }
     },
     {
@@ -30,7 +31,7 @@ local menu = {
         icon = "textures/construct/pipe.texture",
         detail = {
             "管道1-X型",
-            "地下管I",
+            "地下管1-JU型",
             "液罐I",
             "烟囱I",
             "排水口I",

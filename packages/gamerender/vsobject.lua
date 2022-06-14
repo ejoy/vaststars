@@ -65,16 +65,16 @@ local gen_id do
 end
 
 local entity_events = {}
-entity_events.set_material_property = function(e, ...)
+entity_events.set_material_property = function(_, e, ...)
     imaterial.set_property(world:entity(e.id), ...)
 end
-entity_events.set_position = function(e, ...)
+entity_events.set_position = function(_, e, ...)
     iom.set_position(e, ...)
 end
-entity_events.set_rotation = function(e, ...)
+entity_events.set_rotation = function(_, e, ...)
     iom.set_rotation(e, ...)
 end
-entity_events.update_render_object = function(e, ...)
+entity_events.update_render_object = function(_, e, ...)
     irq.update_render_object(e, true)
 end
 
@@ -82,7 +82,7 @@ local function create_block(color, block_edge_size, area, position, rotation)
     if color == CONSTRUCT_BLOCK_COLOR_INVALID then
         return
     end
-    local width, height = iprototype:unpackarea(area)
+    local width, height = iprototype.unpackarea(area)
     local eid = ecs.create_entity{
 		policy = {
 			"ant.render|simplerender",
@@ -202,7 +202,7 @@ local function update(self, t)
         local state = new_typeinfo.state
         local color = new_typeinfo.color
 
-        local typeobject = iprototype:queryByName("entity", prototype_name)
+        local typeobject = iprototype.queryByName("entity", prototype_name)
         local game_object = igame_object.create(typeobject.model, state, color, self.id)
         set_srt(world:entity(game_object.root), srt)
 
@@ -222,7 +222,7 @@ local function update(self, t)
     if new_typeinfo.block_color and self.block_entity_object then
         if new_typeinfo.block_edge_size then
             self.block_entity_object:remove()
-            local typeobject = iprototype:queryByName("entity", self.prototype_name)
+            local typeobject = iprototype.queryByName("entity", self.prototype_name)
             local block_pos = math3d.ref(math3d.add(math3d.vector(self:get_position()), {0, 1.0, 0}))
             local rotation = get_rotation(self)
             self.block_entity_object = create_block(new_typeinfo.block_color, new_typeinfo.block_edge_size, typeobject.area, block_pos, rotation)
@@ -255,7 +255,7 @@ local function update_fluid(self, fluid_name)
         return
     end
 
-    local typeobject = iprototype:queryByName("fluid", fluid_name)
+    local typeobject = iprototype.queryByName("fluid", fluid_name)
     self.fluid_icon_entity_object = create_texture_plane_entity("/pkg/vaststars.resources/textures/canvas.texture", get_canvas_rect(typeobject.icon), {w=1024, h=1024}, self:get_position())
 end
 
@@ -278,11 +278,10 @@ end
 --     dir = 'N',
 -- }
 return function (init)
-    local typeobject = iprototype:queryByName("entity", init.prototype_name)
+    local typeobject = iprototype.queryByName("entity", init.prototype_name)
     local typeinfo = assert(typeinfos[init.type], ("invalid type `%s`"):format(init.type))
 
-    local vsobject_id = gen_id()
-    local game_object = assert(igame_object.create(typeobject.model, typeinfo.state, typeinfo.color, vsobject_id))
+    local game_object = assert(igame_object.create(typeobject.model, typeinfo.state, typeinfo.color, init.id))
     iom.set_position(world:entity(game_object.root), init.position)
     iom.set_rotation(world:entity(game_object.root), rotators[init.dir])
 
@@ -290,7 +289,7 @@ return function (init)
     local block_entity_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir])
 
     local vsobject = {
-        id = vsobject_id,
+        id = init.id,
         prototype_name = init.prototype_name,
         type = init.type,
         fluid_name = init.fluid_name or "",

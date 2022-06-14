@@ -50,8 +50,8 @@ button:hover {
 }
 .back-button {
 	background-image:"textures/common/return.texture"; 
-	width: 9.33vmin; 
-	height: 9.33vmin; 
+	width: 10.33vmin; 
+	height: 10.33vmin; 
 	background-size:cover;
 }
 .find-button {
@@ -71,7 +71,7 @@ button:hover {
 }
 .menu-title {
 	-webkit-text-stroke: 0.20vmin rgb(0, 112, 192); 
-	font-size:250%;
+	font-size:225%;
 	justify-content: flex-start;
 }
 .menu-title-2 {

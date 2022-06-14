@@ -24,7 +24,7 @@ local passable = {
 local directions = {
     ['U'] = {'N', 'E', 'S', 'W'},
     ['L'] = {'N', 'E', 'S', 'W'},
-    ['I'] = {'N', 'E'},
+    ['I'] = {'N', 'E', 'S', 'W'},
     ['T'] = {'N', 'E', 'S', 'W'},
     ['X'] = {'N'},
     ['O'] = {'N', 'E', 'S', 'W'},
@@ -77,6 +77,15 @@ end
 
 function M:get_init_prototype_name(prototype_name)
     return prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format("O"))
+end
+
+function M:get_state(prototype_name, dir, check_dir)
+    local shape_type = assert(prototype_name:match(".*%-(%u).*"))
+    return M:to_state(shape_type, dir) & (1 << DIRECTION[check_dir]) == (1 << DIRECTION[check_dir])
+end
+
+function M:get_shape(prototype_name)
+    return assert(prototype_name:match(".*%-(%u*).*"))
 end
 
 return M

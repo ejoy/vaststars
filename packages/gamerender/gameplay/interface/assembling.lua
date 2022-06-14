@@ -25,18 +25,21 @@ function M:pickup_material(world, e)
     end
 
     local recipe = e.assembling.recipe
-    local typeobject = iprototype:query(recipe)
-    local recipe_ingredients = irecipe:get_elements(typeobject.ingredients)
-    local recipe_results = irecipe:get_elements(typeobject.results)
+    local typeobject = iprototype.queryById(recipe)
+    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
+    local recipe_results = irecipe.get_elements(typeobject.results)
 
     for i = 1, #recipe_results do
         local c, n = world:container_get(e.assembling.container, #recipe_ingredients + i)
         if c then
-            if not world:container_pickup(e.assembling.container, c, n) then
-                log.error(("failed to pickup `%s` `%s`"):format(c, n))
-            else
-                if not world:container_place(headquater_e.chest.container, c, n) then
-                    log.error(("failed to place `%s` `%s`"):format(n, c))
+            local item_typeobject = iprototype.queryById(c)
+            if iprototype.queryByName("item", item_typeobject.name) then
+                if not world:container_pickup(e.assembling.container, c, n) then
+                    log.error(("failed to pickup `%s` `%s`"):format(c, n))
+                else
+                    if not world:container_place(headquater_e.chest.container, c, n) then
+                        log.error(("failed to place `%s` `%s`"):format(n, c))
+                    end
                 end
             end
         end
@@ -63,8 +66,8 @@ function M:place_material(world, e)
         return
     end
 
-    local typeobject = iprototype:query(recipe)
-    local recipe_ingredients = irecipe:get_elements(typeobject.ingredients)
+    local typeobject = iprototype.queryById(recipe)
+    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
 
     local assembling_item_counts = {}
     for i, v in ipairs(recipe_ingredients) do
@@ -115,14 +118,14 @@ function M:item_counts(world, e)
         return r
     end
 
-    local typeobject = iprototype:query(recipe)
-    local recipe_ingredients = irecipe:get_elements(typeobject.ingredients)
-    local recipe_results = irecipe:get_elements(typeobject.results)
+    local typeobject = iprototype.queryById(recipe)
+    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
+    local recipe_results = irecipe.get_elements(typeobject.results)
 
     for i = 1, #recipe_ingredients + #recipe_results do
         local c, n = world:container_get(e.assembling.container, i)
         if c then
-            local item_typeobject = iprototype:query(c)
+            local item_typeobject = iprototype.queryById(c)
             r[item_typeobject.name] = n
         end
     end

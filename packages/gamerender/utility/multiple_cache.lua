@@ -3,14 +3,14 @@ local create_cache = require "utility.cache"
 local function set(self, cache_name, value)
     assert(self.caches[cache_name])
     local key = self.cache_param[1]
-    assert(not self.caches[cache_name]:key(key))
+    assert(not self.caches[cache_name]:selectkey(key))
     self.caches[cache_name]:set(value)
 end
 
 local function get(self, cache_names, key)
     local value
     for _, cache_name in ipairs(cache_names) do
-        value = self.caches[cache_name]:key(key)
+        value = self.caches[cache_name]:selectkey(key)
         if value then
             return value
         end
@@ -21,7 +21,7 @@ local function commit(self, cache_name_1, cache_name_2)
     local cache_1 = assert(self.caches[cache_name_1])
     local cache_2 = assert(self.caches[cache_name_2])
 
-    for _, v in cache_1:all() do
+    for _, v in cache_1:selectall() do
         cache_2:set(v)
     end
     self.caches[cache_name_1] = create_cache(table.unpack(self.cache_param))
@@ -29,12 +29,19 @@ end
 
 local function remove(self, cache_name, key)
     local cache = assert(self.caches[cache_name])
-    return cache:remove(key)
+    if cache:selectkey(key) then
+        return cache:remove(key)
+    end
 end
 
 local function all(self, cache_name)
     local cache = assert(self.caches[cache_name])
-    return cache:all()
+    return cache:selectall()
+end
+
+local function sync(self, cache_name, syncobj, ...)
+    local cache = assert(self.caches[cache_name])
+    return cache:sync(syncobj, ...)
 end
 
 local function select(self, cache_name, index_field, cache_value)
@@ -78,6 +85,7 @@ local function create(cache_names, ...)
     M.set = set
     M.get = get
     M.all = all
+    M.sync = sync
     M.select = select
     M.selectall = selectall
     M.commit = commit

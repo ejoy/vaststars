@@ -3,7 +3,7 @@ local world = ecs.world
 local w     = world.w
 
 local fs = require "filesystem"
-local icas   = ecs.import.interface "ant.terrain|icanvas"
+local icas = ecs.import.interface "ant.terrain|icanvas"
 local datalist = require "datalist"
 local canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/canvas.cfg")):read "a")
 

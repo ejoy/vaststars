@@ -283,8 +283,8 @@
 
                 <!-- 开始生产按钮 start -->
                 <div class = "recipe-button-block">
-                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115);" data-event-click = "clickConfirm()">
-                        <div class = "recipe-name-text" style="font-size: 4vmin; margin:0; padding-bottom: 3.3vmin;">开始生产</div>
+                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115); height: 12vmin;" data-event-click = "clickConfirm()">
+                        <div class = "recipe-name-text" style="font-size: 4vmin; margin:0; padding-bottom: 1vmin;">开始生产</div>
                         <div style="position: absolute;width: 100%; bottom:0; flex-direction: row; align-items: center; justify-content: center;">
                             <div class = "small-bg" style='background-image:"textures/character/timer.texture"; width: 2.6vmin;height: 2.6vmin;'/>
                             <div style="font-size: 3vmin;">11m30s</div>

@@ -12,11 +12,11 @@ local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 
 function construct_sys:camera_usage()
     local leave = true
-    for _, vsobject_id in pickup_mapping_mb:unpack() do
+    for _, object_id in pickup_mapping_mb:unpack() do
         if global.mode == "teardown" then
-            ieditor:teardown(vsobject_id)
+            ieditor:teardown(object_id)
         elseif global.mode == "normal" then
-            if idetail.show(vsobject_id) then
+            if idetail.show(object_id) then
                 leave = false
             end
         end

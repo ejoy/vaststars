@@ -37,6 +37,7 @@ function m.container_place(...)
 end
 
 function m.remove_entity(eid)
+    print("remove_entity", eid)
     world.entity[eid] = nil
 end
 
@@ -60,8 +61,8 @@ init_func["assembling"] = function(pt, template)
 
     -- 摆放建筑时设置配方
     -- 目前游戏过程中, 通常是先放置建筑后, 再设置配方
-    local typeobject = iprototype:queryByName("recipe", pt.recipe)
-    template.fluids = irecipe:get_init_fluids(typeobject)
+    local typeobject = iprototype.queryByName("recipe", pt.recipe)
+    template.fluids = irecipe.get_init_fluids(typeobject)
 
     return template
 end
@@ -76,7 +77,7 @@ function m.create_entity(init)
         items = init.items,
     }
 
-    local pt = iprototype:queryByName("entity", init.prototype_name)
+    local pt = iprototype.queryByName("entity", init.prototype_name)
     for _, entity_type in ipairs(pt.type) do
         func = init_func[entity_type]
         if func then
@@ -84,8 +85,9 @@ function m.create_entity(init)
         end
     end
 
-    print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y)
-    return create(world, init.prototype_name, template)
+    local eid = create(world, init.prototype_name, template)
+    print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y, eid)
+    return eid
 end
 
 function m.fluidflow_query(...)

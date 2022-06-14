@@ -12,6 +12,7 @@ local vsobject_manager = ecs.require "vsobject_manager"
 local terrain = ecs.require "terrain"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local irecipe = require "gameplay.interface.recipe"
+local iobject = ecs.require "object"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local recipe_mb = mailbox:sub {"recipe"}
@@ -37,7 +38,7 @@ function M:create(object_id, left, top)
     if not e then
         return
     end
-    local typeobject = iprototype:queryByName("entity", object.prototype_name)
+    local typeobject = iprototype.queryByName("entity", object.prototype_name)
 
     -- 组装机才显示设置配方菜单
     local show_rotate = true
@@ -46,22 +47,22 @@ function M:create(object_id, left, top)
     local show_place_material = false
     local recipe_name = ""
 
-    if iprototype:has_type(typeobject.type, "assembling") then
+    if iprototype.has_type(typeobject.type, "assembling") then
         show_set_recipe = (typeobject.recipe == nil)
         if e.assembling.recipe ~= 0 then
-            local recipe_typeobject = iprototype:query(e.assembling.recipe)
+            local recipe_typeobject = iprototype.queryById(e.assembling.recipe)
             recipe_name = recipe_typeobject.name
 
-            if #irecipe:get_elements(recipe_typeobject.ingredients) > 0 then
+            if #irecipe.get_elements(recipe_typeobject.ingredients) > 0 then
                 show_place_material = true
             end
-            if #irecipe:get_elements(recipe_typeobject.results) > 0 then
+            if #irecipe.get_elements(recipe_typeobject.results) > 0 then
                 show_pickup_material = true
             end
         end
     end
 
-    if iprototype:has_type(typeobject.type, "laboratory") then
+    if iprototype.has_type(typeobject.type, "laboratory") then
         show_place_material = true
     end
 
@@ -89,23 +90,19 @@ function M:stage_ui_update(datamodel)
     --
     for _, _, _, object_id in rotate_mb:unpack() do
         local object = assert(objects:get(object_id))
-        local vsobject = assert(vsobject_manager:get(object_id))
-        local dir = iprototype:rotate_dir_times(object.dir, -1)
+        local vsobject = assert(vsobject_manager:get(object.id))
+        local dir = iprototype.rotate_dir_times(object.dir, -1)
 
-        local typeobject = iprototype:queryByName("entity", object.prototype_name)
-        local _, position = terrain.adjust_position_by_coord(object.x, object.y, vsobject:get_position(), iprototype:rotate_area(typeobject.area, dir))
+        local typeobject = iprototype.queryByName("entity", object.prototype_name)
+        local _, position = terrain.adjust_position_by_coord(object.x, object.y, vsobject:get_position(), iprototype.rotate_area(typeobject.area, dir))
         if not position then
             return
         end
 
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if e then
-            ientity:set_direction(gameplay_core.get_world(), e, dir)
-
             object.dir = dir
-            vsobject:set_position(position)
-            vsobject:set_dir(object.dir)
-
+            ientity:set_direction(gameplay_core.get_world(), e, dir)
             gameplay_core.build()
         else
             log.error(("can not found entity (%s, %s)"):format(object.x, object.y))
@@ -118,12 +115,12 @@ function M:stage_ui_update(datamodel)
 
     for _, _, _, object_id in detail_mb:unpack() do
         local object = assert(objects:get(object_id))
-        local typeobject = iprototype:queryByName("entity", object.prototype_name)
-        if iprototype:has_type(typeobject.type, "assembling") then
+        local typeobject = iprototype.queryByName("entity", object.prototype_name)
+        if iprototype.has_type(typeobject.type, "assembling") then
             iui.open("assemble_2.rml", object_id)
-        elseif iprototype:has_type(typeobject.type, "chest") then
+        elseif iprototype.has_type(typeobject.type, "chest") then
             iui.open("cmdcenter.rml", object_id)
-        elseif iprototype:has_type(typeobject.type, "laboratory") then
+        elseif iprototype.has_type(typeobject.type, "laboratory") then
             iui.open("lab.rml", object_id)
         else
             log.error("no detail")
@@ -139,7 +136,7 @@ function M:stage_ui_update(datamodel)
     for _, _, _, object_id in place_material_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(object.gameplay_eid)
-        local typeobject = iprototype:queryByName("entity", object.prototype_name)
+        local typeobject = iprototype.queryByName("entity", object.prototype_name)
         for _, type in ipairs(typeobject.type) do
             local func = place_material_func[type]
             if func then

@@ -145,15 +145,13 @@
             .accomplished {
                 position: absolute;
                 right: 1vmin; 
-                top: 15vmin;
+                top: 2vmin;
                 color:chartreuse;
                 -webkit-text-stroke: 0.3vmin rgb(0,0,0);
+                opacity: 0;
             }
             p {
                 animation:0.5s linear 0s infinite alternate rotation;
-            }
-            p2 {
-                animation:1.5s linear 0s enlarge;
             }
             @keyframes rotation {
                 from {
@@ -169,14 +167,16 @@
                     font-size: 2vmin;
                     opacity: 1;
                 }
-
-                55% {
-                    font-size: 8vmin;
+                20% {
+                    font-size: 10vmin;
                     opacity: 1;
                 }
-
+                70% {
+                    font-size: 10vmin;
+                    opacity: 1;
+                }
                 100% {
-                    font-size: 8vmin;
+                    font-size: 2vmin;
                     opacity: 0;
                 }
             }
@@ -195,13 +195,17 @@
                 show_construct_complete = false,
                 show_rotate = false,  -- 是否显示[旋转建筑]
                 show_confirm = false, -- 是否显示[确认放置]
-                show_batch_mode_begin = false, -- 显示水管开始
+                show_laying_pipe_begin   = false, -- 显示水管开始
+                show_laying_pipe_cancel  = false, -- 显示铺管取消
+                show_laying_pipe_confirm = false, -- 显示铺管结束
+
                 tech_count = 0,                 --当前可研究的科技数量
                 show_tech_progress = false,     --是否显示科技进度
                 is_task = false,                --是否是任务
                 current_tech_icon = "none",     --当前科技图标
                 current_tech_name = "none",     --当前科技名字
                 current_tech_progress = "0%",   --当前科技进度
+                finish_animation = "0s linear 0s enlarge"
             }
             function start.clickConstructBegin(event)
                 ui_sys:pub {"construct_begin", false}
@@ -255,16 +259,18 @@
             function start.clickSetting(event)
                 ui_sys:pub {"show_setting"}
             end
-            function start.clickBatchModeBegin(event)
-                ui_sys:pub {"batch_mode_begin"}
+            function start.clickLayingPipeBegin(event)
+                ui_sys:pub {"laying_pipe_begin"}
             end
-            function start.clickBatchModeEnd(event)
-                ui_sys:pub {"batch_mode_end"}
+            function start.clickLayingPipeCancel(event)
+                ui_sys:pub {"laying_pipe_cancel"}
+            end
+            function start.clickLayingPipeConfirm(event)
+                ui_sys:pub {"laying_pipe_confirm"}
             end
             function start.clickTask(event, is_task)
                 if is_task then
                     ui_sys:pub {"open_taskui"}
-                    ui_sys:open("task_pop.rml")
                 end
             end
             window.addEventListener('mousedown', function(event)
@@ -375,7 +381,7 @@
                     </p>
                 </button>
             </div>
-            <p2 class="accomplished" data-if = "current_tech_progress == '100%'">研究完成</p2>
+            <div class="accomplished" data-style-animation="finish_animation" data-if = "!show_tech_progress">研究完成</div>
 
             <!-- 右下角按钮 -->
             <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;">
@@ -399,16 +405,24 @@
                     <div style="font-size: 85%;">旋转建筑</div>
                 </button>
 
+                <!-- 确认放置水管 -->
+                <!-- separator -->
+                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_pipe_confirm" />
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_confirm" data-event-click="clickLayingPipeConfirm()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/pipe-end.texture"; background-size:cover;'/>
+                    <div style="font-size: 85%; pointer-events: none;">铺管结束</div>
+                </button>
+          
                 <!-- 建造水管开始 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_batch_mode_begin" data-event-click="clickBatchModeBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_begin" data-event-click="clickLayingPipeBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/pipe-begin.texture"; background-size:cover; pointer-events: none;'/>
                     <div style="font-size: 85%; pointer-events: none;">铺管开始</div>
                 </button>
 
-                <!-- 确认放置水管 -->
-                <button data-if = "cur_edit_mode == 'construct' && false" data-event-click="clickConstructConfirm()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; background-image:"textures/construct/pipe-end.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
-                    <div style="font-size: 85%; pointer-events: none;">铺管结束</div>
+                <!-- 取消铺管 -->
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_cancel" data-event-click="clickLayingPipeCancel()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/cancel.texture"; background-size:cover;'/>
+                    <div style="font-size: 85%; pointer-events: none;">取消铺管</div>
                 </button>
             </div>
 

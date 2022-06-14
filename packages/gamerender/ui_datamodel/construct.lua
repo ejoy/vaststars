@@ -9,10 +9,11 @@ local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu"
 local iprototype = require "gameplay.interface.prototype"
 local create_normalbuilder = ecs.require "editor.normalbuilder"
 local create_pipebuilder = ecs.require "editor.pipebuilder"
-local create_pgbuilder = ecs.require "editor.pgbuilder"
+local create_pipetogroundbuilder = ecs.require "editor.pipetogroundbuilder"
 local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
 local global = require "global"
+local iobject = ecs.require "object"
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local construct_begin_mb = mailbox:sub {"construct_begin"} -- 建造 -> 建造模式
@@ -26,8 +27,9 @@ local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> �
 local headquater_mb = mailbox:sub {"headquater"} -- 主界面左下角 -> 指挥中心
 local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研中心
 local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
-local batch_mode_begin_mb = mailbox:sub {"batch_mode_begin"} --
-local batch_mode_end_mb = mailbox:sub {"batch_mode_end"} --
+local laying_pipe_begin_mb = mailbox:sub {"laying_pipe_begin"} -- 铺管开始
+local laying_pipe_cancel_mb = mailbox:sub {"laying_pipe_cancel"} -- 铺管取消
+local laying_pipe_confirm_mb = mailbox:sub {"laying_pipe_confirm"} -- 铺管结束
 local open_taskui_event = mailbox:sub {"open_taskui"}
 local single_touch_mb = world:sub {"single_touch"}
 
@@ -41,9 +43,9 @@ local construct_menu = {} ; do
         m.detail = {}
 
         for _, prototype_name in ipairs(menu.detail) do
-            local typeobject = assert(iprototype:queryByName("entity", prototype_name))
+            local typeobject = assert(iprototype.queryByName("entity", prototype_name))
             m.detail[#m.detail + 1] = {
-                show_prototype_name = iprototype:show_prototype_name(typeobject),
+                show_prototype_name = iprototype.show_prototype_name(typeobject),
                 prototype_name = prototype_name,
                 icon = typeobject.icon,
             }
@@ -83,6 +85,7 @@ function M:drawcall_text(datamodel, text)
     datamodel.drawcall_text = text
 end
 
+local tech_finish_switch = false
 function M:update_tech(datamodel, tech)
     if tech then
         datamodel.show_tech_progress = true
@@ -93,6 +96,13 @@ function M:update_tech(datamodel, tech)
     else
         datamodel.show_tech_progress = false
         datamodel.tech_count = global.science.tech_list and #global.science.tech_list or 0
+        tech_finish_switch = not tech_finish_switch
+        --TODO: trigger animation
+        if tech_finish_switch then
+            datamodel.finish_animation = "3s sine-in-out 0s enlarge"
+        else
+            datamodel.finish_animation = "2.99s sine-in-out 0s enlarge"
+        end
     end
 end
 
@@ -198,9 +208,12 @@ function M:stage_ui_update(datamodel)
             log.error("can not found headquater")
         end
     end
-    
+
     for _ in open_taskui_event:unpack() do
-        gameplay_core.world_update = false
+        if gameplay_core.world_update and global.science.current_tech then
+            gameplay_core.world_update = false
+            iui.open("task_pop.rml")
+        end
     end
 
     for _ in technology_mb:unpack() do
@@ -212,39 +225,44 @@ function M:stage_ui_update(datamodel)
         iui.open("option_pop.rml")
     end
 
-    for _ in batch_mode_begin_mb:unpack() do
-        builder:batch_mode_begin(datamodel)
+    for _ in laying_pipe_begin_mb:unpack() do
+        builder:laying_pipe_begin(datamodel)
         self:flush()
     end
 
-    for _ in batch_mode_end_mb:unpack() do
-        builder:batch_mode_end(datamodel)
+    for _ in laying_pipe_cancel_mb:unpack() do
+        builder:laying_pipe_cancel(datamodel)
         self:flush()
     end
 
+    for _ in laying_pipe_confirm_mb:unpack() do
+        builder:laying_pipe_confirm(datamodel)
+        self:flush()
+    end
+end
+
+function M:stage_camera_usage(datamodel)
     for _, delta in dragdrop_camera_mb:unpack() do
         if builder then
             builder:touch_move(datamodel, delta)
             self:flush()
         end
     end
-end
 
-function M:stage_camera_usage(datamodel)
     for _, _, _, prototype_name in construct_entity_mb:unpack() do
         if builder then
             builder:clean(datamodel)
         end
 
-        local typeobject = iprototype:queryByName("entity", prototype_name)
-        if iprototype:is_pipe_to_ground(typeobject) then
-            builder = create_pgbuilder()
-        elseif iprototype:is_pipe(typeobject) then
+        if iprototype.is_pipe_to_ground(prototype_name) then
+            builder = create_pipetogroundbuilder()
+        elseif iprototype.is_pipe(prototype_name) then
             builder = create_pipebuilder()
         else
             builder = create_normalbuilder()
         end
 
+        local typeobject = iprototype.queryByName("entity", prototype_name)
         builder:new_entity(datamodel, typeobject)
         self:flush()
     end
@@ -257,5 +275,7 @@ function M:stage_camera_usage(datamodel)
             end
         end
     end
+
+    iobject.flush()
 end
 return M
