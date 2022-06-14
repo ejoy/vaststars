@@ -407,7 +407,7 @@ prototype "储存1" {
   type = { "tech" },
   icon = "textures/construct/chest.texture",
   effects = {
-    unlock_recipe = {"小型铁制箱子"},
+    unlock_recipe = {"小铁制箱子1"},
   },
   prerequisites = {"维修破损组装机"},
   ingredients = {
@@ -419,17 +419,17 @@ prototype "储存1" {
 }
 
 prototype "生产铁制箱子" {
-  desc = "生产小型铁制箱子用于存储基地的资源",
+  desc = "生产小铁制箱子用于存储基地的资源",
   icon = "textures/construct/assembler.texture",
   type = { "tech", "task" },
-  task = {"stat_production", 0, "小型铁制箱子"},
+  task = {"stat_production", 0, "小铁制箱子I"},
   prerequisites = {"储存1","基地生产1"},
   count = 3,
   tips_pic = {
     "textures/task_tips_pic/task_produce_chest.texture",
   },
   sign_desc = {
-    { desc = "使用组装机生产3个小型铁制箱子", icon = "textures/construct/assembler.texture"},
+    { desc = "使用组装机生产3个小铁制箱子", icon = "textures/construct/assembler.texture"},
   },
 }
 
@@ -885,7 +885,7 @@ prototype "硅处理" {
 }
 
 prototype "铁矿熔炼2" {
-  desc = "掌握熔炼铁矿石冶炼成铁板的工艺",
+  desc = "熔炼铁矿石冶炼成铁板的工艺",
   type = { "tech" },
   icon = "textures/science/tech-metal.texture",
   effects = {
@@ -901,9 +901,9 @@ prototype "铁矿熔炼2" {
 }
 
 prototype "有机化学2" {
-  desc = "掌握熔炼铁矿石冶炼成铁板的工艺",
+  desc = "更多的有机化学制取工业气体工艺",
   type = { "tech" },
-  icon = "textures/science/tech-metal.texture",
+  icon = "textures/science/tech-chemical.texture",
   effects = {
     unlock_recipe = {"乙烯转丁二烯","纯水转蒸汽"},
   },
@@ -914,4 +914,70 @@ prototype "有机化学2" {
   },
   count = 8,
   time = "8s"
+}
+
+prototype "化学工程" {
+  desc = "使用大型设施生产化工产品",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"化工厂1"},
+  },
+  prerequisites = {"有机化学2"},
+  ingredients = {
+      {"地质科技包", 1},
+      {"气候科技包", 1},
+      {"机械科技包", 1},
+  },
+  count = 5,
+  time = "2s"
+}
+
+prototype "石头处理3" {
+  desc = "获得将硅加工成坩埚的工艺",
+  type = { "tech" },
+  icon = "textures/construct/stone-brick.texture",
+  effects = {
+    unlock_recipe = {"坩埚"},
+  },
+  prerequisites = {"硅处理"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 12,
+  time = "1s"
+}
+
+prototype "有机化学3" {
+  desc = "更多的有机化学制取工业气体工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"橡胶"},
+  },
+  prerequisites = {"化学工程"},
+  ingredients = {
+      {"气候科技包", 1},
+      {"机械科技包", 1},
+  },
+  count = 12,
+  time = "0.75s"
+}
+
+prototype "储存2" {
+  desc = "研究更便捷的存储方式",
+  type = { "tech" },
+  icon = "textures/construct/chest.texture",
+  effects = {
+    unlock_recipe = {"大铁制箱子1","小铁制箱子2"},
+  },
+  prerequisites = {"有机化学3","炼钢"},
+  ingredients = {
+      {"气候科技包", 1},
+      {"机械科技包", 1},
+  },
+  count = 15,
+  time = "0.6s"
 }

@@ -57,7 +57,98 @@ prototype "铁板2" {
     },
     time = "15s",
     description = "使用碾碎铁矿石和石墨锻造铁板",
+}
 
+prototype "碾碎铁矿石" {
+    type = { "recipe" },
+    category = "矿石粉碎",
+    --group = "金属",
+    order = 14,
+    allow_as_intermediate = false,
+    icon = "textures/construct/iron-ingot.texture",
+    ingredients = {
+        {"铁矿石", 8},
+    },
+    results = {
+        {"碾碎铁矿石", 7},
+        {"碎石", 1},
+    },
+    time = "6s",
+    description = "使用氧化铝和石墨烧制铝板",
+}
+
+prototype "碾碎铝矿石" {
+    type = { "recipe" },
+    category = "矿石粉碎",
+    --group = "金属",
+    order = 14,
+    allow_as_intermediate = false,
+    icon = "textures/construct/iron-ingot.texture",
+    ingredients = {
+        {"铝矿石", 7},
+    },
+    results = {
+        {"碾碎铝矿石", 5},
+        {"沙子", 1},
+        {"碾碎铁矿石", 1},
+    },
+    time = "5s",
+    description = "使用氧化铝和石墨烧制铝板",
+}
+
+prototype "氢氧化铝" {
+    type = { "recipe" },
+    category = "矿石浮选",
+    --group = "金属",
+    order = 14,
+    allow_as_intermediate = false,
+    icon = "textures/construct/iron-ingot.texture",
+    ingredients = {
+        {"碾碎铝矿石", 4},
+        {"碱性溶液", 30}
+    },
+    results = {
+        {"氢氧化铝", 3},
+        {"废水", 12},
+    },
+    time = "4s",
+    description = "使用氧化铝和石墨烧制铝板",
+}
+
+prototype "氧化铝" {
+    type = { "recipe" },
+    category = "金属冶炼",
+    --group = "金属",
+    order = 16,
+    allow_as_intermediate = false,
+    icon = "textures/construct/iron-ingot.texture",
+    ingredients = {
+        {"氢氧化铝", 4},
+    },
+    results = {
+        {"氧化铝", 3},
+    },
+    time = "2s",
+    description = "使用氧化铝和石墨烧制铝板",
+}
+
+prototype "铝板1" {
+    type = { "recipe" },
+    category = "金属冶炼",
+    --group = "金属",
+    order = 18,
+    allow_as_intermediate = false,
+    icon = "textures/construct/iron-ingot.texture",
+    ingredients = {
+        {"氧化铝", 9},
+        {"石墨", 5}
+    },
+    results = {
+        {"铝板", 3},
+        {"碳化铝", 4},
+    },
+    time = "10s",
+    description = "使用氧化铝和石墨烧制铝板",
 }
 
 prototype "铁棒1" {
@@ -127,7 +218,7 @@ prototype "石砖" {
 
 prototype "硅1" {
     type = { "recipe" },
-    category = "金属锻造",
+    category = "矿石浮选",
     --group = "金属",
     order = 68,
     icon = "textures/construct/iron.texture",
@@ -141,10 +232,9 @@ prototype "硅1" {
     description = "使用硅炼制玻璃",
 }
 
-
 prototype "玻璃" {
     type = { "recipe" },
-    category = "金属锻造",
+    category = "器件中型制造",
     --group = "金属",
     order = 70,
     icon = "textures/construct/iron.texture",
@@ -156,6 +246,38 @@ prototype "玻璃" {
     },
     time = "16s",
     description = "使用硅炼制玻璃",
+}
+
+prototype "坩埚" {
+    type = { "recipe" },
+    category = "器件中型制造",
+    --group = "金属",
+    order = 72,
+    icon = "textures/construct/iron.texture",
+    ingredients = {
+        {"硅", 15},
+    },
+    results = {
+        {"坩埚", 1},
+    },
+    time = "30s",
+    description = "使用硅烧制坩埚",
+}
+
+prototype "橡胶" {
+    type = { "recipe" },
+    category = "矿石浮选",
+    --group = "金属",
+    order = 76,
+    icon = "textures/construct/iron.texture",
+    ingredients = {
+        {"丁二烯", 15},
+    },
+    results = {
+        {"橡胶", 1},
+    },
+    time = "3s",
+    description = "使用丁二烯合成橡胶",
 }
 
 prototype "电动机1" {
@@ -236,7 +358,7 @@ prototype "车站1" {
     icon = "textures/construct/manufacture.texture",
     ingredients = {
         {"机器爪I", 1},
-        {"小型铁制箱子", 1},
+        {"小铁制箱子I", 1},
     },
     results = {
         {"车站I", 1},
@@ -282,7 +404,7 @@ prototype "运输车辆1" {
     description = "电动机和铁制品制造汽车",
 }
 
-prototype "小型铁制箱子" {
+prototype "小铁制箱子1" {
     type = { "recipe" },
     category = "物流中型制造",
     group = "物流",
@@ -293,9 +415,44 @@ prototype "小型铁制箱子" {
         {"铁板", 10},
     },
     results = {
-        {"小型铁制箱子", 1},
+        {"小铁制箱子I", 1},
+    },
+    time = "2s",
+    description = "使用铁制品制造箱子",
+}
+
+prototype "小铁制箱子2" {
+    type = { "recipe" },
+    category = "物流中型制造",
+    group = "物流",
+    order = 10,
+    icon = "textures/construct/chest.texture",
+    ingredients = {
+        {"橡胶", 1},
+        {"钢板", 6},
+        {"小铁制箱子I", 1},
+    },
+    results = {
+        {"小铁制箱子II", 1},
     },
     time = "3s",
+    description = "使用铁制品制造箱子",
+}
+
+prototype "大铁制箱子1" {
+    type = { "recipe" },
+    category = "物流中型制造",
+    group = "物流",
+    order = 10,
+    icon = "textures/construct/chest.texture",
+    ingredients = {
+        {"铝板", 4},
+        {"小铁制箱子II", 5},
+    },
+    results = {
+        {"大铁制箱子I", 1},
+    },
+    time = "5s",
     description = "使用铁制品制造箱子",
 }
 
@@ -361,7 +518,7 @@ prototype "组装机1" {
     order = 70,
     icon = "textures/construct/assembler.texture",
     ingredients = {
-        {"小型铁制箱子", 1},
+        {"小铁制箱子I", 1},
         {"机器爪I", 1},
         {"铁齿轮", 4},
     },
@@ -794,7 +951,7 @@ prototype "破损化工厂" {
     allow_as_intermediate = false,
     icon = "textures/construct/broken-chemistry2.texture",
     ingredients = {
-        {"小型铁制箱子", 2},
+        {"小铁制箱子I", 2},
         {"石砖", 10},
         {"破损化工厂", 1},
     },

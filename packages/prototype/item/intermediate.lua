@@ -71,6 +71,16 @@ prototype "铁矿石" {
     order = 1,
 }
 
+prototype "铝矿石" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/iron.texture",
+    model = "prefabs/rock.prefab",
+    description = "含铝的矿石",
+    group = "金属",
+    order = 30,
+}
+
 prototype "碾碎铁矿石" {
     type = {"item"},
     stack = 100,
@@ -78,7 +88,47 @@ prototype "碾碎铁矿石" {
     model = "prefabs/rock.prefab",
     description = "被粉碎的铁矿石",
     group = "金属",
-    order = 20,
+    order = 28,
+}
+
+prototype "碾碎铝矿石" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/iron.texture",
+    model = "prefabs/rock.prefab",
+    description = "被粉碎的铝矿石",
+    group = "金属",
+    order = 32,
+}
+
+prototype "氢氧化铝" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/iron.texture",
+    model = "prefabs/rock.prefab",
+    description = "含铝的化合物",
+    group = "金属",
+    order = 32,
+}
+
+prototype "氧化铝" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/iron.texture",
+    model = "prefabs/rock.prefab",
+    description = "含铝的氧化物",
+    group = "金属",
+    order = 32,
+}
+
+prototype "碳化铝" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/iron.texture",
+    model = "prefabs/rock.prefab",
+    description = "氧化铝燃烧后的剩余物",
+    group = "金属",
+    order = 32,
 }
 
 prototype "碎石" {
@@ -201,6 +251,36 @@ prototype "玻璃" {
     order = 70,
 }
 
+prototype "坩埚" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/coal.texture",
+    model = "prefabs/rock.prefab",
+    description = "一种硅制加工品",
+    group = "金属",
+    order = 72,
+}
+
+prototype "橡胶" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/coal.texture",
+    model = "prefabs/rock.prefab",
+    description = "一种高弹性聚合物材料",
+    group = "器件",
+    order = 70,
+}
+
+prototype "铝板" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/coal.texture",
+    model = "prefabs/rock.prefab",
+    description = "一种高弹性聚合物材料",
+    group = "金属",
+    order = 72,
+}
+
 prototype "地质科技包" {
     type = {"item"},
     stack = 100,
@@ -260,6 +340,7 @@ prototype "铜丝" {
     icon = "textures/construct/iron-wire.texture",
     model = "prefabs/rock.prefab",
 }
+
 prototype "电路板" {
     type = {"item"},
     stack = 100,

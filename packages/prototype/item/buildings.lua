@@ -30,7 +30,7 @@ prototype "熔炼炉I" {
     order = 50,
 }
 
-prototype "小型铁制箱子" {
+prototype "小铁制箱子I" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/chest.texture",
@@ -38,6 +38,26 @@ prototype "小型铁制箱子" {
     description = "贮藏物品的容器",
     group = "物流",
     order = 10,
+}
+
+prototype "小铁制箱子II" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/chest.texture",
+    model = "prefabs/rock.prefab",
+    description = "贮藏物品的容器",
+    group = "物流",
+    order = 12,
+}
+
+prototype "大铁制箱子I" {
+    type = {"item"},
+    stack = 25,
+    icon = "textures/construct/chest.texture",
+    model = "prefabs/rock.prefab",
+    description = "贮藏物品的容器",
+    group = "物流",
+    order = 14,
 }
 
 prototype "采矿机I" {

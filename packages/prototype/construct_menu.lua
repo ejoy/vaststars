@@ -44,7 +44,7 @@ local menu = {
         icon = "textures/construct/logisitic1.texture",
         detail = {
             "科研中心I",
-            "小型铁制箱子",
+            "小铁制箱子I",
             "机器爪I",
             "砖石公路-O型",
             "采矿机I",
@@ -57,7 +57,7 @@ local menu = {
             "液罐I",
             "管道1-I型",
             "机器爪I",
-            "小型铁制箱子",
+            "小铁制箱子I",
             "地下水挖掘机",
             "熔炼炉I",
             "组装机I",
