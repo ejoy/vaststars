@@ -103,6 +103,7 @@ local function laying_pipe_confirm(self, datamodel)
 
     for _, object in objects:all("TEMPORARY") do
         object.state = "confirm"
+        object.PREPARE = true
     end
     objects:commit("TEMPORARY", "CONFIRM")
 
