@@ -15,6 +15,7 @@ return {
         "ant.json",
         "ant.asset",
         "ant.efk",
+        "ant.modifier",
         "vaststars.gameplay",
         "vaststars.prototype",
     }
