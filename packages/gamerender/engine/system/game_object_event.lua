@@ -77,15 +77,15 @@ events["detach_slot"] = function(prefab, binding)
 end
 
 events["normal_motion"] = function(prefab, binding, motions)
-    -- if motions == "select" then
-    --     imodifier.start(prefab.srt_modifier, "talk", true)
-    -- elseif motions == "unselect" then
-    --     imodifier.start(prefab.srt_modifier, "over", true)
-    -- end
+    if motions == "select" then
+        imodifier.start(prefab.srt_modifier, "talk", true)
+    elseif motions == "unselect" then
+        imodifier.start(prefab.srt_modifier, "over", true)
+    end
 end
 
 events["on_object_create"] = function(prefab, binding)
-    --imodifier.start(prefab.srt_modifier, "confirm")
+
 end
 
 return events
