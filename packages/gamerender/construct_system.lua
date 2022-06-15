@@ -9,6 +9,7 @@ local ieditor = ecs.require "editor.editor"
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local pickup_mb = world:sub {"pickup"}
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
+local vsobject_manager = ecs.require "vsobject_manager"
 
 function construct_sys:camera_usage()
     local leave = true

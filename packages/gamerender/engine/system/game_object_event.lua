@@ -6,6 +6,8 @@ local ifs = ecs.import.interface "ant.scene|ifilter_state"
 local iani = ecs.import.interface "ant.animation|ianimation"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
+--local imotion = ecs.import.interface "ant.animation|imotion"
+local imodifier = ecs.import.interface "ant.modifier|imodifier"
 
 local events = {}
 events["animation_play"] = function(prefab, binding, animation)
@@ -72,6 +74,18 @@ end
 
 events["detach_slot"] = function(prefab, binding)
     detach_slot(binding)
+end
+
+events["normal_motion"] = function(prefab, binding, motions)
+    -- if motions == "select" then
+    --     imodifier.start(prefab.srt_modifier, "talk", true)
+    -- elseif motions == "unselect" then
+    --     imodifier.start(prefab.srt_modifier, "over", true)
+    -- end
+end
+
+events["on_object_create"] = function(prefab, binding)
+    --imodifier.start(prefab.srt_modifier, "confirm")
 end
 
 return events

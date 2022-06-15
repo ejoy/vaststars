@@ -113,13 +113,14 @@ local function flush()
                 local position = iterrain.get_position_by_coord(outer.x, outer.y, iprototype.rotate_area(typeobject.area, outer.dir))
                 assert(position)
 
-                vsobject_manager:create {
+                vsobject = vsobject_manager:create {
                     id = outer.id,
                     prototype_name = outer.prototype_name,
                     dir = outer.dir,
                     position = position,
                     type = outer.state,
                 }
+                world:pub {"on_object_create", vsobject}
             else
                 for k, v in pairs(outer.__change) do
                     local func = assert(funcs[k])

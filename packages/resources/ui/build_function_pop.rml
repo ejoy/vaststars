@@ -68,21 +68,27 @@
 
             function start.clickPickupMaterial(event)
                 ui_sys:pub {"pickup_material", start.object_id}
+                ui_sys:pub {"close_build_function_pop", start.object_id}
                 ui_sys:close()
             end
 
             function start.clickPlaceMaterial(event)
                 ui_sys:pub {"place_material", start.object_id}
+                ui_sys:pub {"close_build_function_pop", start.object_id}
                 ui_sys:close()
             end
 
             ui_sys:addEventListener({
                 ["leave"] = function()
+                    ui_sys:pub {"close_build_function_pop", start.object_id}
                     ui_sys:close()
                 end,
             })
 
             ui_sys:setDataModel(start)
+            window.onload = function()
+                ui_sys:pub {"open_build_function_pop", start.object_id}
+            end
         </script>
     </head>
     <body style = "pointer-events: none;">

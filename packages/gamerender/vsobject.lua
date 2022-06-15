@@ -17,6 +17,7 @@ local assetmgr = import_package "ant.asset"
 local get_canvas_rect = require "utility.get_canvas_rect"
 local tile_size <const> = 10.0
 local iprototype = require "gameplay.interface.prototype"
+local imodifier = ecs.import.interface "ant.modifier|imodifier"
 
 local plane_vb <const> = {
 	-0.5, 0, 0.5, 0, 1, 0,	--left top
@@ -271,6 +272,17 @@ local function animation_update(self, ...)
     self.game_object:animation_update(...)
 end
 
+local function on_normal_select(self, ...)
+    self.game_object:on_normal_select(...)
+end
+
+local function on_normal_unselect(self, ...)
+    self.game_object:on_normal_unselect(...)
+end
+
+local function on_object_create(self, ...)
+    self.game_object:on_object_create(...)
+end
 -- init = {
 --     prototype_name = prototype_name,
 --     type = xxx,
@@ -284,6 +296,8 @@ return function (init)
     local game_object = assert(igame_object.create(typeobject.model, typeinfo.state, typeinfo.color, init.id))
     iom.set_position(world:entity(game_object.root), init.position)
     iom.set_rotation(world:entity(game_object.root), rotators[init.dir])
+
+    game_object.game_object.srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone")
 
     local block_pos = math3d.ref(math3d.add(math3d.vector(init.position), {0, 1.0, 0}))
     local block_entity_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir])
@@ -308,6 +322,9 @@ return function (init)
         attach = attach,
         detach = detach,
         animation_update = animation_update,
+        on_normal_select = on_normal_select,
+        on_normal_unselect = on_normal_unselect,
+        on_object_create = on_object_create
     }
     return vsobject
 end

@@ -19,7 +19,8 @@ local recipe_mb = mailbox:sub {"recipe"}
 local detail_mb = mailbox:sub {"detail"}
 local pickup_material_mb = mailbox:sub {"pickup_material"}
 local place_material_mb = mailbox:sub {"place_material"}
-
+local open_mb = mailbox:sub {"open_build_function_pop"}
+local close_mb = mailbox:sub {"close_build_function_pop"}
 local place_material_func = {}
 place_material_func["assembling"] = function(gameplay_world, e)
     iassembling:place_material(gameplay_world, e)
@@ -31,8 +32,17 @@ end
 
 ---------------
 local M = {}
-
+local current_object_id
 function M:create(object_id, left, top)
+    if current_object_id and current_object_id ~= object_id then
+        local vsobject = vsobject_manager:get(current_object_id)
+        vsobject:on_normal_unselect()
+    end
+    if current_object_id ~= object_id then
+        local vsobject = vsobject_manager:get(object_id)
+        vsobject:on_normal_select()
+    end
+    current_object_id = object_id
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -65,7 +75,7 @@ function M:create(object_id, left, top)
     if iprototype.has_type(typeobject.type, "laboratory") then
         show_place_material = true
     end
-
+    
     return {
         show_rotate = show_rotate,
         show_pickup_material = show_pickup_material,
@@ -144,6 +154,11 @@ function M:stage_ui_update(datamodel)
                 break
             end
         end
+    end
+
+    for _, _, _, object_id in close_mb:unpack() do
+        local vsobject = vsobject_manager:get(object_id)
+        vsobject:on_normal_unselect()
     end
 end
 

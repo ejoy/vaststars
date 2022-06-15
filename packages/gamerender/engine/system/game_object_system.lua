@@ -4,6 +4,8 @@ local w = world.w
 
 local cr = import_package "ant.compile_resource"
 local serialize = import_package "ant.serialize"
+local mathpkg	= import_package "ant.math"
+local mu	    = mathpkg.util
 local iani = ecs.import.interface "ant.animation|ianimation"
 local ipickup_mapping = ecs.import.interface "vaststars.gamerender|ipickup_mapping"
 
@@ -24,6 +26,7 @@ function game_object_sys:component_init()
     end
 
     for _, _, game_object in remove_mb:unpack() do
+        --ecs.method.set_parent(game_object.srt_modifier.eid, nil)
         game_object:remove()
     end
 end
@@ -92,6 +95,42 @@ local function animation_update(self, animation_name, process)
     end
 end
 
+local function on_normal_select(self)
+    self.game_object:send("normal_motion", "select")
+    -- self.game_object:send("normal_motion", {
+    --     {
+    --         tween_type = mu.TWEEN_CUBIC_IN,
+    --         duration = 0.05,
+    --         time = 0.0,
+    --         from = { scale = {1.0, 1.0, 1.0} },
+    --         to = { scale = {1.4, 1.4, 1.4} },
+    --     },
+    --     {
+    --         tween_type = mu.TWEEN_CUBIC_IN,
+    --         duration = 0.15,
+    --         time = 0.0,
+    --         from = { scale = {1.4, 1.4, 1.4} },
+    --         to = { scale = {1.2, 1.2, 1.2} },
+    --     }
+    -- })
+end
+local function on_normal_unselect(self)
+    self.game_object:send("normal_motion", "unselect")
+    -- self.game_object:send("normal_motion", {
+    --     {
+    --         tween_type = mu.TWEEN_CUBIC_IN,
+    --         duration = 0.5,
+    --         time = 0.0,
+    --         from = { scale = {1.2, 1.2, 1.2} },
+    --         to = { scale = {1.0, 1.0, 1.0} },
+    --     }
+    -- })
+end
+
+local function on_object_create(self)
+    self.game_object:send("on_object_create")
+end
+
 -- state: translucent
 function igame_object.create(prefab_file_name, state, color, pickup_binding)
     local f = prefab_path:format(prefab_file_name)
@@ -121,7 +160,7 @@ function igame_object.create(prefab_file_name, state, color, pickup_binding)
     if state == "translucent" and color then
         game_object:send("set_material_property", "u_basecolor_factor", color)
     end
-
+    
     local outer = {}
     outer.game_object = game_object
     outer.tag = prefab.tag
@@ -134,6 +173,8 @@ function igame_object.create(prefab_file_name, state, color, pickup_binding)
     outer.attach = attach
     outer.detach = detach
     outer.animation_update = animation_update
-
+    outer.on_normal_select = on_normal_select
+    outer.on_normal_unselect = on_normal_unselect
+    outer.on_object_create = on_object_create
     return setmetatable(outer, {__index = game_object})
 end
