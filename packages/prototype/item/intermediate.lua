@@ -84,7 +84,7 @@ prototype "铝矿石" {
 prototype "碾碎铁矿石" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/construct/crush-ore-Fe.texture",
     model = "prefabs/rock.prefab",
     description = "被粉碎的铁矿石",
     group = "金属",
@@ -94,7 +94,7 @@ prototype "碾碎铁矿石" {
 prototype "碾碎铝矿石" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/construct/crush-ore-Al.texture",
     model = "prefabs/rock.prefab",
     description = "被粉碎的铝矿石",
     group = "金属",

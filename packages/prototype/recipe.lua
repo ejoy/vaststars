@@ -65,7 +65,7 @@ prototype "碾碎铁矿石" {
     --group = "金属",
     order = 14,
     allow_as_intermediate = false,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/crush-ore-Fe.texture",
     ingredients = {
         {"铁矿石", 8},
     },
@@ -83,7 +83,7 @@ prototype "碾碎铝矿石" {
     --group = "金属",
     order = 14,
     allow_as_intermediate = false,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/crush-ore-Al.texture",
     ingredients = {
         {"铝矿石", 7},
     },
