@@ -97,7 +97,12 @@ local function flush()
         teardown = function (outer, value)
             outer.__object.teardown = value
         end,
+        PREPARE = function (outer, value)
+            outer.__object.PREPARE = value
+        end
     }
+
+    local prepare = {}
 
     local vsobject
     for object_id, outer in pairs(changeset) do
@@ -138,8 +143,18 @@ local function flush()
                 outer.__change = {}
             end
         end
+
+        if outer.__object.PREPARE then
+            prepare[#prepare+1] = outer
+            outer.__object.PREPARE = nil
+        end
     end
     changeset = {}
+
+    for _, outer in ipairs(prepare) do
+        local vsobject = assert(vsobject_manager:get(outer.id))
+        vsobject:send("modifier", vsobject.game_object.game_object.srt_modifier, "start", "confirm")
+    end
 end
 
 local function move_delta(object, delta_vec)

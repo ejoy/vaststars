@@ -113,6 +113,7 @@ local function confirm(self, datamodel)
 
     pickup_object.state = "confirm"
     objects:set(pickup_object, "CONFIRM")
+    pickup_object.PREPARE = true
 
     self.pickup_object = nil
     self:new_entity(datamodel, typeobject)

@@ -97,6 +97,10 @@ local function animation_update(self, animation_name, process)
     end
 end
 
+local function send(self, ...)
+    self.game_object:send(...)
+end
+
 local function on_normal_select(self)
     self.game_object:send("normal_motion", "select")
     -- self.game_object:send("normal_motion", {
@@ -162,7 +166,7 @@ function igame_object.create(prefab_file_name, state, color, pickup_binding)
     if state == "translucent" and color then
         game_object:send("set_material_property", "u_basecolor_factor", color)
     end
-    
+
     local outer = {}
     outer.game_object = game_object
     outer.tag = prefab.tag
@@ -174,6 +178,7 @@ function igame_object.create(prefab_file_name, state, color, pickup_binding)
     outer.remove = remove
     outer.attach = attach
     outer.detach = detach
+    outer.send   = send
     outer.animation_update = animation_update
     outer.on_normal_select = on_normal_select
     outer.on_normal_unselect = on_normal_unselect

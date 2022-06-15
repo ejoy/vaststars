@@ -41,6 +41,12 @@ events["set_filter_state"] = function(prefab, binding, ...)
     end
 end
 
+events["modifier"] = function(prefab, binding, modifier_eid, oper, ...)
+    if oper == "start" then
+        imodifier.start(modifier_eid, ...)
+    end
+end
+
 local function get_slot_eid(prefab, slot_name)
     for _, eid in ipairs(prefab.tag["*"]) do
         local e = assert(world:entity(eid))

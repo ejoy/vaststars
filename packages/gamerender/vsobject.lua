@@ -206,6 +206,7 @@ local function update(self, t)
         local typeobject = iprototype.queryByName("entity", prototype_name)
         local game_object = igame_object.create(typeobject.model, state, color, self.id)
         set_srt(world:entity(game_object.root), srt)
+        game_object.game_object.srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone") -- TODO
 
         self.game_object, self.prototype_name = game_object, prototype_name
     else
@@ -260,6 +261,10 @@ local function update_fluid(self, fluid_name)
     self.fluid_icon_entity_object = create_texture_plane_entity("/pkg/vaststars.resources/textures/canvas.texture", get_canvas_rect(typeobject.icon), {w=1024, h=1024}, self:get_position())
 end
 
+local function send(self, ...)
+    self.game_object:send(...)
+end
+
 local function attach(self, ...)
     self.game_object:attach(...)
 end
@@ -297,7 +302,7 @@ return function (init)
     iom.set_position(world:entity(game_object.root), init.position)
     iom.set_rotation(world:entity(game_object.root), rotators[init.dir])
 
-    game_object.game_object.srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone")
+    game_object.game_object.srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone") -- TODO
 
     local block_pos = math3d.ref(math3d.add(math3d.vector(init.position), {0, 1.0, 0}))
     local block_entity_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir])
@@ -321,6 +326,7 @@ return function (init)
         remove = remove,
         attach = attach,
         detach = detach,
+        send   = send,
         animation_update = animation_update,
         on_normal_select = on_normal_select,
         on_normal_unselect = on_normal_unselect,
