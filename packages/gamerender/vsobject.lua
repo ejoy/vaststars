@@ -277,17 +277,6 @@ local function animation_update(self, ...)
     self.game_object:animation_update(...)
 end
 
-local function on_normal_select(self, ...)
-    self.game_object:on_normal_select(...)
-end
-
-local function on_normal_unselect(self, ...)
-    self.game_object:on_normal_unselect(...)
-end
-
-local function on_object_create(self, ...)
-    self.game_object:on_object_create(...)
-end
 -- init = {
 --     prototype_name = prototype_name,
 --     type = xxx,
@@ -328,9 +317,6 @@ return function (init)
         detach = detach,
         send   = send,
         animation_update = animation_update,
-        on_normal_select = on_normal_select,
-        on_normal_unselect = on_normal_unselect,
-        on_object_create = on_object_create
     }
     return vsobject
 end

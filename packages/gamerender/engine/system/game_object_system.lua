@@ -98,42 +98,6 @@ local function send(self, ...)
     self.game_object:send(...)
 end
 
-local function on_normal_select(self)
-    self.game_object:send("normal_motion", "select")
-    -- self.game_object:send("normal_motion", {
-    --     {
-    --         tween_type = mu.TWEEN_CUBIC_IN,
-    --         duration = 0.05,
-    --         time = 0.0,
-    --         from = { scale = {1.0, 1.0, 1.0} },
-    --         to = { scale = {1.4, 1.4, 1.4} },
-    --     },
-    --     {
-    --         tween_type = mu.TWEEN_CUBIC_IN,
-    --         duration = 0.15,
-    --         time = 0.0,
-    --         from = { scale = {1.4, 1.4, 1.4} },
-    --         to = { scale = {1.2, 1.2, 1.2} },
-    --     }
-    -- })
-end
-local function on_normal_unselect(self)
-    self.game_object:send("normal_motion", "unselect")
-    -- self.game_object:send("normal_motion", {
-    --     {
-    --         tween_type = mu.TWEEN_CUBIC_IN,
-    --         duration = 0.5,
-    --         time = 0.0,
-    --         from = { scale = {1.2, 1.2, 1.2} },
-    --         to = { scale = {1.0, 1.0, 1.0} },
-    --     }
-    -- })
-end
-
-local function on_object_create(self)
-    self.game_object:send("on_object_create")
-end
-
 -- state: translucent
 function igame_object.create(prefab_file_name, state, color, pickup_binding)
     local f = prefab_path:format(prefab_file_name)
@@ -177,8 +141,5 @@ function igame_object.create(prefab_file_name, state, color, pickup_binding)
     outer.detach = detach
     outer.send   = send
     outer.animation_update = animation_update
-    outer.on_normal_select = on_normal_select
-    outer.on_normal_unselect = on_normal_unselect
-    outer.on_object_create = on_object_create
     return setmetatable(outer, {__index = game_object})
 end

@@ -125,7 +125,6 @@ local function flush()
                     position = position,
                     type = outer.state,
                 }
-                world:pub {"on_object_create", vsobject}
             else
                 for k, v in pairs(outer.__change) do
                     local func = assert(funcs[k])
@@ -153,7 +152,7 @@ local function flush()
 
     for _, outer in ipairs(prepare) do
         local vsobject = assert(vsobject_manager:get(outer.id))
-        vsobject:send("modifier", vsobject.game_object.game_object.srt_modifier, "start", "confirm")
+        vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, "confirm")
     end
 end
 
