@@ -273,6 +273,7 @@
             .small-arrow {
                 width: 7.70vmin;
                 height: 7.70vmin;
+                margin:0 0.5vmin;
                 background-image: "textures/exchange/left_arrow.texture";
                 background-size: cover;
                 transform: rotate(180deg);
@@ -287,7 +288,15 @@
                 font-size: 3vmin;
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
             }
-
+            .recipe-time {
+                position:absolute; 
+                left: 3vmin; 
+                top: 2.5vmin; 
+                text-align: center; 
+                font-size: 2.5vmin; 
+                transform: rotate(180deg);
+            }
+            
         </style>
         <style path = "common/building_style.rcss" />
         <style path = "common/listpage_style.rcss"/>
@@ -394,7 +403,7 @@
                     </div>
                     ]]):format(idata.icon, idata.count, idata.name)
                 end
-                inoutstr = inoutstr .. [[<div class="small-arrow"/>]]
+                inoutstr = inoutstr .. [[<div class="small-arrow"><div class="recipe-time">10s</div></div>]]
                 for _, outdata in ipairs(detail.output) do
                     inoutstr = inoutstr .. ([[
                     <div class="small-item-new" style='background-image: "%s";'>
