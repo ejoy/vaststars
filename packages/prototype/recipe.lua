@@ -1339,7 +1339,7 @@ prototype "地下卤水电解" {
     category = "电解",
     group = "流体",
     order = 15,
-    icon = "textures/fluid/liquid-electrolysis.texture",
+    icon = "textures/fluid/brine-electrolysis.texture",
     ingredients = {
         {"地下卤水", 45},
     },
@@ -1392,7 +1392,7 @@ prototype "纯水电解" {
     category = "电解",
     group = "流体",
     order = 15,
-    icon = "textures/fluid/liquid-electrolysis.texture",
+    icon = "textures/fluid/water-electrolysis.texture",
     ingredients = {
         {"纯水", 45},
     },
