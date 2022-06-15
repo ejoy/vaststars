@@ -30,6 +30,16 @@ prototype "熔炼炉I" {
     order = 50,
 }
 
+prototype "熔炼炉II" {
+    type = {"item"},
+    stack = 25,
+    icon = "textures/construct/furnace2.texture",
+    model = "prefabs/rock.prefab",
+    description = "用来熔炼矿石的炉子",
+    group = "加工",
+    order = 51,
+}
+
 prototype "小铁制箱子I" {
     type = {"item"},
     stack = 50,

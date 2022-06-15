@@ -171,6 +171,16 @@ prototype "硅" {
     order = 11,
 }
 
+prototype "硅锭I" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/plate-Si.texture",
+    model = "prefabs/rock.prefab",
+    description = "硅制成的硅锭",
+    group = "器件",
+    order = 11,
+}
+
 prototype "沙石矿" {
     type = {"item"},
     stack = 100,

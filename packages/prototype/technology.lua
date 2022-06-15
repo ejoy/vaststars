@@ -543,7 +543,7 @@ prototype "排放" {
   time = "2s"
 }
 
-prototype "冶金学" {
+prototype "冶金学1" {
   desc = "研究工业高温熔炼的装置",
   type = { "tech" },
   icon = "textures/science/tech-metal.texture",
@@ -565,7 +565,7 @@ prototype "基地生产2" {
   effects = {
     modifier = {["headquarter-craft-speed"] = 0.2},
   },
-  prerequisites = {"冶金学"},
+  prerequisites = {"冶金学1"},
   ingredients = {
       {"地质科技包", 1},
   },
@@ -949,14 +949,31 @@ prototype "管道系统3" {
   time = "1.5s"
 }
 
+prototype "无机化学" {
+  desc = "使用无机化合物合成物质的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"酸碱中和","碱性溶液","盐酸"},
+  },
+  prerequisites = {"化学工程","管道系统3"},
+  ingredients = {
+      {"地质科技包", 1},
+      {"气候科技包", 1},
+      {"机械科技包", 1},
+  },
+  count = 10,
+  time = "1s"
+}
+
 prototype "废料回收1" {
   desc = "回收工业废料",
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"铁矿石回收","碎石回收","沙子回收"},
+    unlock_recipe = {"铁矿石回收","碎石回收","沙子回收","废料中和"},
   },
-  prerequisites = {"管道系统3"},
+  prerequisites = {"无机化学"},
   ingredients = {
       {"地质科技包", 1},
       {"气候科技包", 1},
@@ -1013,4 +1030,51 @@ prototype "储存2" {
   },
   count = 15,
   time = "0.6s"
+}
+
+prototype "冶金学2" {
+  desc = "研究工业高温熔炼的装置",
+  type = { "tech" },
+  icon = "textures/science/tech-metal.texture",
+  effects = {
+    unlock_recipe = {"熔炼炉2"},
+  },
+  prerequisites = {"石头处理3","铁矿熔炼2"},
+  ingredients = {
+    {"地质科技包", 1},
+  },
+  count = 5,
+  time = "4s"
+}
+
+prototype "铝生产" {
+  desc = "加工铝矿的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-metal.texture",
+  effects = {
+    unlock_recipe = {"碾碎铝矿石","氢氧化铝","氧化铝","铝板1"},
+  },
+  prerequisites = {"无机化学"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 20,
+  time = "0.5s"
+}
+
+prototype "硅生产" {
+  desc = "将硅加工硅锭的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"硅锭1"},
+  },
+  prerequisites = {"无机化学","冶金学2"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 30,
+  time = "0.5s"
 }
