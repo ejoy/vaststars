@@ -185,7 +185,7 @@ policy:
   ant.render|render
 ---
 data:
-  _animation: {}
+  anim_ctrl: {}
   animation:
     DownToUp: /pkg/vaststars.resources/glb/goods_station.glb|animations/DownToUp.ozz
     UpToDown: /pkg/vaststars.resources/glb/goods_station.glb|animations/UpToDown.ozz
@@ -198,5 +198,6 @@ data:
 mount: 1
 policy:
   ant.animation|animation
+  ant.animation|meshskin
   ant.general|name
   ant.scene|scene_object

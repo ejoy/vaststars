@@ -280,7 +280,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  _animation: {}
+  anim_ctrl: {}
   animation:
     ArmatureAction.001: /pkg/vaststars.resources/glb/assembling.glb|animations/ArmatureAction.ozz
     chongchen: /pkg/vaststars.resources/prefabs/assembling-1.anim
@@ -293,5 +293,6 @@ data:
 mount: 1
 policy:
   ant.animation|animation
+  ant.animation|meshskin
   ant.general|name
   ant.scene|scene_object

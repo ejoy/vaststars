@@ -10,7 +10,7 @@ local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local events = {}
 events["animation_play"] = function(prefab, binding, animation)
     for _, eid in ipairs(prefab.tag["*"]) do
-        if world:entity(eid)._animation then
+        if world:entity(eid).anim_ctrl then
             iani.play(eid, animation)
         end
     end
@@ -18,7 +18,7 @@ end
 
 events["animation_set_time"] = function(prefab, binding, animation_name, process)
     for _, eid in ipairs(prefab.tag["*"]) do
-        if world:entity(eid)._animation then
+        if world:entity(eid).anim_ctrl then
             iani.set_time(eid, iani.get_duration(eid, animation_name) * process)
         end
     end

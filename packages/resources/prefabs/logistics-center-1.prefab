@@ -704,7 +704,7 @@ policy:
   ant.render|render
 ---
 data:
-  _animation: {}
+  anim_ctrl: {}
   animation:
     ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
   animation_birth: ArmatureAction
@@ -716,5 +716,6 @@ data:
 mount: 1
 policy:
   ant.animation|animation
+  ant.animation|meshskin
   ant.general|name
   ant.scene|scene_object
