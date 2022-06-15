@@ -98,6 +98,9 @@ local function open(url, ...)
 
     binding.param = {...}
     binding.datamodel = syncobj_source:new(binding.template:create(...))
+    if binding.template.onload then
+        binding.template.onload(...)
+    end
     binding.template:flush()
 
     if binding.template.stage_ui_update then
