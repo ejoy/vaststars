@@ -8,8 +8,28 @@ prototype "熔炼炉I" {
     construct_detector = {"exclusive"},
     type = {"entity", "assembling", "consumer"},
     area = "3x3",
-    speed = "50%",
+    speed = "25%",
     power = "75kW",
+    priority = "secondary",
+    group = {"加工"},
+    craft_category = {"金属冶炼"},
+    fluidboxes = {
+        input = {
+        },
+        output = {
+        },
+    }
+}
+
+prototype "熔炼炉II" {
+    model = "prefabs/furnace-1.prefab",
+    icon = "textures/building_pic/small_pic_furnace.texture",
+    background = "textures/build_background/pic_furnace.texture",
+    construct_detector = {"exclusive"},
+    type = {"entity", "assembling", "consumer"},
+    area = "3x3",
+    speed = "50%",
+    power = "150kW",
     priority = "secondary",
     group = {"加工"},
     craft_category = {"金属冶炼"},

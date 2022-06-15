@@ -84,7 +84,7 @@ prototype "铝矿石" {
 prototype "碾碎铁矿石" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/construct/crush-ore-Fe.texture",
     model = "prefabs/rock.prefab",
     description = "被粉碎的铁矿石",
     group = "金属",
@@ -94,7 +94,7 @@ prototype "碾碎铁矿石" {
 prototype "碾碎铝矿石" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/construct/crush-ore-Al.texture",
     model = "prefabs/rock.prefab",
     description = "被粉碎的铝矿石",
     group = "金属",
@@ -167,6 +167,16 @@ prototype "硅" {
     icon = "textures/construct/ore-Si.texture",
     model = "prefabs/rock.prefab",
     description = "沙子中提炼的原料",
+    group = "器件",
+    order = 11,
+}
+
+prototype "硅锭I" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/plate-Si.texture",
+    model = "prefabs/rock.prefab",
+    description = "硅制成的硅锭",
     group = "器件",
     order = 11,
 }

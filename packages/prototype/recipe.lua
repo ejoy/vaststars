@@ -65,7 +65,7 @@ prototype "碾碎铁矿石" {
     --group = "金属",
     order = 14,
     allow_as_intermediate = false,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/crush-ore-Fe.texture",
     ingredients = {
         {"铁矿石", 8},
     },
@@ -83,7 +83,7 @@ prototype "碾碎铝矿石" {
     --group = "金属",
     order = 14,
     allow_as_intermediate = false,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/crush-ore-Al.texture",
     ingredients = {
         {"铝矿石", 7},
     },
@@ -262,6 +262,23 @@ prototype "坩埚" {
     },
     time = "30s",
     description = "使用硅烧制坩埚",
+}
+
+prototype "硅锭1" {
+    type = { "recipe" },
+    category = "金属冶炼",
+    --group = "金属",
+    order = 68,
+    icon = "textures/construct/plate-Si.texture",
+    ingredients = {
+        {"硅", 5},
+        {"石墨", 2},
+    },
+    results = {
+        {"硅锭I", 3},
+    },
+    time = "10s",
+    description = "使用硅炼制硅锭",
 }
 
 prototype "橡胶" {
@@ -508,6 +525,24 @@ prototype "熔炼炉1" {
         {"熔炼炉I", 1},
     },
     time = "8s",
+    description = "使用铁制品和石砖制造熔炼炉",
+}
+
+prototype "熔炼炉2" {
+    type = { "recipe" },
+    category = "生产中型制造",
+    group = "生产",
+    order = 51,
+    icon = "textures/construct/furnace2.texture",
+    ingredients = {
+        {"钢板", 4},
+        {"坩埚", 2},
+        {"熔炼炉I", 1},
+    },
+    results = {
+        {"熔炼炉II", 1},
+    },
+    time = "15s",
     description = "使用铁制品和石砖制造熔炼炉",
 }
 
@@ -1282,8 +1317,7 @@ prototype "一氧化碳转石墨" {
     description = "一氧化碳转石墨",
 }
 
-
-prototype "氯化氢" {
+prototype "盐酸" {
     type = { "recipe" },
     category = "流体基础化工",
     --group = "流体",
@@ -1297,7 +1331,7 @@ prototype "氯化氢" {
         {"盐酸", 60},
     },
     time = "1s",
-    description = "氢气和氯气化合成氯化氢",
+    description = "氢气和氯气化合成盐酸",
 }
 
 prototype "地下卤水电解" {
@@ -1562,7 +1596,7 @@ prototype "铁矿石回收" {
 
 prototype "碎石回收" {
     type = { "recipe" },
-    category = "矿石粉碎",
+    category = "矿石浮选",
     allow_manual = false,
     --group = "流体",
     order = 106,
@@ -1592,6 +1626,24 @@ prototype "沙子回收" {
     },
     time = "1s",
     description = "沙子排泄",
+}
+
+prototype "废料中和" {
+    type = { "recipe" },
+    category = "流体液体排泄",
+    --group = "流体",
+    order = 102,
+    icon = "textures/fluid/liquid.texture",
+    ingredients = {
+        {"盐酸", 10},
+        {"废料", 1},
+    },
+    results = {
+        {"废液", 6},
+        {"二氧化碳", 5},
+    },
+    time = "1s",
+    description = "废料中和",
 }
 
 prototype "地下卤水排泄" {
@@ -1728,6 +1780,21 @@ prototype "甲烷排泄" {
     },
     time = "1s",
     description = "甲烷排泄",
+}
+
+prototype "废液排泄" {
+    type = { "recipe" },
+    category = "流体气体排泄",
+    --group = "流体",
+    order = 109,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
+        {"废液", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "废液排泄",
 }
 
 prototype "氯气排泄" {
