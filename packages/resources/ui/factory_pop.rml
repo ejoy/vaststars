@@ -247,12 +247,12 @@
                         <div class = "recipe-name-text">原料</div>
                     </div>
                     <div class = "materials-block"> 
-                        <div class = "materials" data-for = "recipe_ingredients">
+                        <div class = "materials">
                             <div class = "materials-item">
                                 <div class = "materials-icon" data-style-background-image = "it.icon" />
-                                <div class = "materials-name">{{it.name}}</div>
+                                <div class = "materials-name">{{名字}}</div>
                             </div>
-                            <div class = "materials-num">X{{it.count}}</div>
+                            <div class = "materials-num">X{{10}}</div>
                         </div>
                     </div>
                 </div>
@@ -262,15 +262,15 @@
                 <div class = "recipe-change-block">
                     <div class = "pic-block" style="width: 32%; height:12%;">
                         <div class = "small-bg" style='background-image: "textures/science/whitebox.texture";'/>
-                        <div class = "recipe-name-text">添加</div>
+                        <div class = "recipe-name-text">物品</div>
                     </div> 
                     <div class = "materials-block" style="height:58%;">
-                        <div class = "materials" data-for = "recipe_results">
+                        <div class = "materials">
                             <div class = "materials-item">
                                 <div class = "materials-icon" data-style-background-image = "it.icon" />
-                                <div class = "materials-name">{{it.name}}</div>
+                                <div class = "materials-name">{{名字}}</div>
                             </div>
-                            <div class = "materials-num">X{{it.count}}</div>
+                            <div class = "materials-num">X{{10}}</div>
                         </div>
                     </div>
                     <div class="row" style="height: 30%; width:100%; justify-content: space-evenly;">
@@ -284,11 +284,7 @@
                 <!-- 开始生产按钮 start -->
                 <div class = "recipe-button-block">
                     <button class = "confirm-button" style="background-color:rgb(52, 207, 115); height: 12vmin;" data-event-click = "clickConfirm()">
-                        <div class = "recipe-name-text" style="font-size: 4vmin; margin:0; padding-bottom: 1vmin;">开始生产</div>
-                        <div style="position: absolute;width: 100%; bottom:0; flex-direction: row; align-items: center; justify-content: center;">
-                            <div class = "small-bg" style='background-image:"textures/character/timer.texture"; width: 2.6vmin;height: 2.6vmin;'/>
-                            <div style="font-size: 3vmin;">11m30s</div>
-                        </div>
+                        <div class = "recipe-name-text" style="font-size: 5vmin; margin:0; padding-bottom: 1vmin;">开始生产</div>
                     </button>
                 </div>
                 <!-- 开始生产按钮 end -->

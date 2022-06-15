@@ -181,6 +181,14 @@
                 width:50%;
                 height:35%;
             }
+            .cancel {
+                position: absolute;
+                right:1vmin;
+                width: 10vmin;
+                height:10vmin;
+                background-image: "textures/construct/cancel.texture";
+                background-size: cover;
+            }
         </style>
         <style path = "common/building_style.rcss" />
         <style path = "common/listpage_style.rcss"/>
@@ -264,6 +272,7 @@
                                     <div class="progress-background-new" style="position:absolute; left:0; width: 50%;"/>
                                     <div class="item-title-new">50%</div>
                                 </div>
+                                <button class="cancel"/>
                             </div>
                             <div class="item-research" style="width:90%;">
                                 <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
@@ -274,6 +283,7 @@
                                     <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
                                     <div class="item-title-new">0%</div>
                                 </div>
+                                <button class="cancel"/>
                             </div>
                             <div class="item-research" style="width:90%;">
                                 <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
@@ -284,6 +294,7 @@
                                     <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
                                     <div class="item-title-new">0%</div>
                                 </div>
+                                <button class="cancel"/>
                             </div>
                             <div class="item-research" style="width:90%;">
                                 <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
@@ -294,6 +305,7 @@
                                     <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
                                     <div class="item-title-new">0%</div>
                                 </div>
+                                <button class="cancel"/>
                             </div>
                             <div class="item-research" style="width:90%;">
                                 <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
@@ -304,6 +316,7 @@
                                     <div class="progress-background-new" style="position:absolute; left:0; width: 0%;"/>
                                     <div class="item-title-new">0%</div>
                                 </div>
+                                <button class="cancel"/>
                             </div>
                         </div>
                         <!-- 生产队列 end --> 
