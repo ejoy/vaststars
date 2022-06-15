@@ -81,3 +81,13 @@ prototype "地下管I" {
     group = "管道",
     order = 12,
 }
+
+prototype "地下管II" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/pipe.texture",
+    model = "prefabs/rock.prefab",
+    description = "从地下传输液体或气体的管道",
+    group = "管道",
+    order = 14,
+}

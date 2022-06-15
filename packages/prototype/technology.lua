@@ -933,6 +933,39 @@ prototype "化学工程" {
   time = "2s"
 }
 
+prototype "管道系统3" {
+  desc = "研究装载和运输液体或气体的管道",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"地下管2"},
+  },
+  prerequisites = {"空气过滤","浮选"},
+  ingredients = {
+      {"气候科技包", 1},
+      {"机械科技包", 1},
+  },
+  count = 6,
+  time = "1.5s"
+}
+
+prototype "废料回收1" {
+  desc = "回收工业废料",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"铁矿石回收","碎石回收","沙子回收"},
+  },
+  prerequisites = {"管道系统3"},
+  ingredients = {
+      {"地质科技包", 1},
+      {"气候科技包", 1},
+      {"机械科技包", 1},
+  },
+  count = 12,
+  time = "0.75s"
+}
+
 prototype "石头处理3" {
   desc = "获得将硅加工成坩埚的工艺",
   type = { "tech" },

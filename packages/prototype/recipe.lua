@@ -795,6 +795,24 @@ prototype "地下管1" {
     description = "管道和沙子制造地下管道",
 }
 
+prototype "地下管2" {
+    type = { "recipe" },
+    category = "化工小型制造",
+    --group = "化工",
+    order = 14,
+    icon = "textures/construct/pipe.texture",
+    ingredients = {
+        {"地下管I", 1},
+        {"钢板", 3},
+        {"碎石", 2},
+    },
+    results = {
+        {"地下管II", 2},
+    },
+    time = "5s",
+    description = "管道和钢板制造地下管道",
+}
+
 prototype "粉碎机1" {
     type = { "recipe" },
     category = "生产大型制造",
@@ -1523,6 +1541,57 @@ prototype "废水排泄" {
     },
     time = "1s",
     description = "废水排泄",
+}
+
+prototype "铁矿石回收" {
+    type = { "recipe" },
+    category = "矿石粉碎",
+    allow_manual = false,
+    --group = "流体",
+    order = 104,
+    icon = "textures/fluid/liquid.texture",
+    ingredients = {
+        {"碾碎铁矿石", 4},
+    },
+    results = {
+        {"碎石", 3},
+    },
+    time = "2s",
+    description = "铁矿石回收",
+}
+
+prototype "碎石回收" {
+    type = { "recipe" },
+    category = "矿石粉碎",
+    allow_manual = false,
+    --group = "流体",
+    order = 106,
+    icon = "textures/fluid/liquid.texture",
+    ingredients = {
+        {"碎石", 4},
+    },
+    results = {
+        {"废料", 3},
+    },
+    time = "2s",
+    description = "碎石回收",
+}
+
+prototype "沙子回收" {
+    type = { "recipe" },
+    category = "流体液体排泄",
+    --group = "流体",
+    order = 102,
+    icon = "textures/fluid/liquid.texture",
+    ingredients = {
+        {"地下卤水", 80},
+        {"沙子", 4},
+    },
+    results = {
+        {"废液", 100},
+    },
+    time = "1s",
+    description = "沙子排泄",
 }
 
 prototype "地下卤水排泄" {

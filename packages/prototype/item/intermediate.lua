@@ -314,18 +314,25 @@ prototype "机械科技包" {
     order = 84,
 }
 
-prototype "气体排泄物" {
+prototype "废气" {
     type = {"item"},
     stack = 100,
     icon = "textures/fluid/gas.texture",
     description = "一种废弃气体",
 }
 
-prototype "液体排泄物" {
+prototype "废液" {
     type = {"item"},
     stack = 100,
     icon = "textures/fluid/liquid.texture",
     description = "一种废弃液体",
+}
+
+prototype "废料" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/fluid/liquid.texture",
+    description = "一种废弃固体",
 }
 
 prototype "铜片" {
