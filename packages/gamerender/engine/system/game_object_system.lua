@@ -26,7 +26,7 @@ function game_object_sys:component_init()
     end
 
     for _, _, game_object in remove_mb:unpack() do
-        --ecs.method.set_parent(game_object.srt_modifier.eid, nil)
+        ecs.method.set_parent(game_object.srt_modifier.eid, nil)
         game_object:remove()
     end
 end
