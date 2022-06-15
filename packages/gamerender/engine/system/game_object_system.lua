@@ -21,7 +21,7 @@ local remove_mb = world:sub {"game_object_system", "remove"}
 function game_object_sys:component_init()
     for _, _, game_object in detach_slot_mb:unpack() do
         game_object:send("set_filter_state", "main_view", false)
-        ecs.method.set_parent(game_object.root, nil) --TODO 如果没有先去除 parent 再 remove, remove parent 时会出现死循环
+        ecs.method.set_parent(game_object.root, nil)
         game_object:remove()
     end
 
