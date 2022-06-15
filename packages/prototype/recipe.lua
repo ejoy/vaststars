@@ -1427,7 +1427,7 @@ prototype "乙烯转丁二烯" {
     category = "流体基础化工",
     group = "流体",
     order = 38,
-    icon = "textures/fluid/gas-ethene.texture",
+    icon = "textures/fluid/gas-butadiene.texture",
     ingredients = {
         {"乙烯", 50},
         {"蒸汽", 150},
