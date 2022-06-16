@@ -392,11 +392,10 @@
             </div>
             <div class="panel" style= "flex-direction: column; width: 50%;">
                 <!-- 制造舱按钮 start -->
-                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if = "!is_chest">
+                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-event-click="clickManual()">
                     <div class = "menu-title" style="text-align: right; width: 70%;">制造舱</div>
                     <button class = "recipe-change-button"/>  
                 </div>
-                <div class="header" data-if = "is_chest"></div>
                 <!-- 制造舱按钮 end -->
 
                 <!-- 指挥中心物品栏 start -->

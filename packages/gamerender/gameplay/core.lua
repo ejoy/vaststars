@@ -119,4 +119,23 @@ function m.restart()
     world = gameplay.createWorld()
 end
 
+function m.manual_chest()
+    local chest = {}
+    local ecs = world.ecs
+    for v in ecs:select "manual chest:in" do
+        local i = 1
+        while true do
+            local c, n = world:container_get(v.chest.container, i)
+            if c then
+                chest[gameplay.prototype.queryById(c).name] = n
+            else
+                break
+            end
+            i = i + 1
+        end
+        break
+    end
+    return chest
+end
+
 return m

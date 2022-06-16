@@ -15,7 +15,7 @@ local global = require "global"
 local iobject = ecs.require "object"
 
 --
-local function new_entity(self, datamodel, typeobject)
+local function __new_entity(self, datamodel, typeobject)
     iobject.remove(self.pickup_object)
 
     local dir = DEFAULT_DIR
@@ -55,6 +55,11 @@ local function new_entity(self, datamodel, typeobject)
         fluidflow_network_id = 0,
         state = state,
     }
+end
+
+local function new_entity(self, datamodel, typeobject)
+    __new_entity(self, datamodel, typeobject)
+    -- self.pickup_object.APPEAR = true
 end
 
 local function touch_move(self, datamodel, delta_vec)
@@ -116,7 +121,7 @@ local function confirm(self, datamodel)
     pickup_object.PREPARE = true
 
     self.pickup_object = nil
-    self:new_entity(datamodel, typeobject)
+    __new_entity(self, datamodel, typeobject)
 
     datamodel.show_construct_complete = true
 end

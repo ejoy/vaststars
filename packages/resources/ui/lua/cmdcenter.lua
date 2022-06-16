@@ -94,6 +94,10 @@ function start.clickBlank(event)
     select_item_index = nil
 end
 
+function start.clickManual(event)
+    ui_sys:open("manual_pop.rml")
+end
+
 ui_sys:setDataModel(start, function(patch)
     if patch.inventory then
         if start.cur_item_category == "" then
