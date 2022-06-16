@@ -254,7 +254,7 @@
         <div class="item-container-region" data-model="start">
             <div class="panel">
                 <div class="header" id = "item-name-block">
-                    <button class = "back-button"/>
+                    <button class = "back-button" data-event-click = "clickClose" />
                     <div class = "menu-title">制造所需材料</div>
                 </div>
                 <div class = "draw-line"/>
