@@ -26,7 +26,7 @@ prototype "铁锭" {
 
 prototype "铁板1" {
     type = { "recipe" },
-    category = "金属锻造",
+    category = "金属冶炼",
     group = "金属",
     order = 11,
     allow_manual = false,
@@ -44,7 +44,7 @@ prototype "铁板1" {
 
 prototype "铁板2" {
     type = { "recipe" },
-    category = "金属锻造",
+    category = "金属冶炼",
     --group = "金属",
     order = 12,
     allow_manual = false,
@@ -1205,6 +1205,7 @@ prototype "铁矿石挖掘" {
     type = { "recipe" },
     category = "金属冶炼",
     --group = "金属",
+    allow_manual = false,
     order = 20,
     icon = "textures/construct/air-filter1.texture",
     ingredients = {
