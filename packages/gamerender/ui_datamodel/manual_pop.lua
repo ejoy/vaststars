@@ -79,7 +79,7 @@ function M:stage_ui_update(datamodel)
             log.error("raw material shortages")
         else
             table.move(output, 1, #output, #t + 1, t)
-            gameplay_core.get_world():manual(output)
+            gameplay_core.get_world():manual(t)
         end
     end
 end

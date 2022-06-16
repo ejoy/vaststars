@@ -176,6 +176,10 @@
                 start.select_item_count = 0
             end
 
+            function start.clickManualQueue(event)
+                ui_sys:open("manual_queue.rml")
+            end
+
             -- <!-- tag page begin -->
             local function clickItem(index)
                 local item = start.page_items[index]
@@ -233,10 +237,10 @@
     <body>
         <div class="item-container-region"  style="width:100%;  background-color: rgb(0,0,0); justify-content: center;" data-model="start">
             <div class="panel" style= "flex-direction: column;">
-                <div class="header" id = "item-name-block" data-event-click="clickClose()">
-                    <button class = "back-button"/>
+                <div class="header" id = "item-name-block">
+                    <button class = "back-button" data-event-click="clickClose()" />
                     <div class = "menu-title" style="width: 70%;">选择生产物品</div>
-                    <button class = "find-button" style="position:absolute; right:0;"/>   
+                    <button class = "find-button" style="position:absolute; right:0;" data-event-click="clickManualQueue()"/>
                 </div>
 
                 <!-- tag page begin -->

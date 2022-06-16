@@ -199,7 +199,6 @@
                 font-size: 3vmin;
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
             }
-
         </style>
         <style path = "common/building_style.rcss" />
         <style path = "common/listpage_style.rcss"/>
@@ -207,13 +206,11 @@
             local ui_sys = require "ui_system"
             local start = window.createModel "start" {
             }
-            window.addEventListener('mousemove', function(event)
-                if event.button then
-                end
-            end)
-            local function clickItem(index)
-                ui_sys:pub{"click_tech", index}
+
+            function start.clickClose(event)
+                ui_sys:close()
             end
+
             local function list_item_renderer(index)
                 local item_data = start.techs.items[index]
                 local item = document.createElement "div"
@@ -228,7 +225,8 @@
                             <div class="property-icon" style='background-image:"textures/science/yellowbox.texture";'/>
                             <div style="font-size: 3.5vmin; text-align: center;">X 100</div>
                         </div>
-                        <div class="icon-researching">研究中...</div>]]):format(item_data.progress, item_data.detail.icon, item_data.name)
+                        <div class="icon-researching">研究中...</div>
+                    ]]):format(item_data.progress, item_data.detail.icon, item_data.name)
                 item.className = "item-research"
                 local select_style_border = "5px green"
                 item.addEventListener('click', function(event)
