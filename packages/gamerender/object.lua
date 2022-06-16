@@ -97,12 +97,13 @@ local function flush()
         teardown = function (outer, value)
             outer.__object.teardown = value
         end,
-        PREPARE = function (outer, value)
+        PREPARE = function (outer, value) -- 放置建筑后
             outer.__object.PREPARE = value
-        end
+        end,
     }
 
     local prepare = {}
+    local appear = {}
 
     local vsobject
     for object_id, outer in pairs(changeset) do
@@ -147,12 +148,26 @@ local function flush()
             prepare[#prepare+1] = outer
             outer.__object.PREPARE = nil
         end
+
+        if outer.__object.APPEAR then
+            appear[#appear+1] = outer
+            outer.__object.APPEAR = nil
+        end
     end
     changeset = {}
 
     for _, outer in ipairs(prepare) do
-        local vsobject = assert(vsobject_manager:get(outer.id))
-        vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, "confirm")
+        local vsobject = vsobject_manager:get(outer.id)
+        if vsobject then
+            vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, "confirm")
+        end
+    end
+
+    for _, outer in ipairs(appear) do
+        local vsobject = vsobject_manager:get(outer.id)
+        if vsobject then
+            vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, "appear", true)
+        end
     end
 end
 

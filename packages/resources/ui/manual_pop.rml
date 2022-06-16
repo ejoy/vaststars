@@ -119,54 +119,85 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
+            local default_select_item = {name = " ", time = 0, ingredients = {}}
             local start = window.createModel "start" {
-                object_id = 0,
-                recipe_index = 1,
-                recipe_name = "",
-                recipe_menu = {},
-                catalog_index = 1,
-                items = {},
+                item_category = {},
+                manual_items = {},
 
-                recipe_time = " ",
-                recipe_ingredients = {},
-                recipe_results = {},
+                catalog_index = 0,
+                page_items = {},
+                select_item = default_select_item,
+                select_item_count = 0,
             }
 
-            local function clickItem(index)
-            end
-
             function start.clickClose(event)
-                ui_sys:close()
-            end
-
-            function start.clickConfirm(event)
-                ui_sys:pub {"set_recipe", start.object_id, start.recipe_name}
                 ui_sys:close()
             end
 
             local select_item
             function start.clickCatalog(event, it_index)
                 start.catalog_index = it_index + 1
-                start.items = start.recipe_menu[it_index + 1].item
+                start.page_items = {}
+
+                local select_category = start.item_category[start.catalog_index].category
+                for _, item in ipairs(start.manual_items) do
+                    if item.category == select_category or select_category == "全部" then
+                        start.page_items[#start.page_items + 1] = item
+                    end
+                end
+
+                start.select_item = default_select_item
+                start.select_item_count = 0
+
                 -- <!-- tag page begin -->
                 select_item = nil
-                start.page:on_dirty_all(#start.items)
+                start.page:on_dirty_all(#start.page_items)
                 -- <!-- tag page end -->
             end
 
+            function start.clickStartManual(event)
+                if start.select_item.name == " " then
+                    console.log("found no select item")
+                    return
+                end
+                if start.select_item_count <= 0 then
+                    console.log("item count <= 0")
+                    return
+                end
+                ui_sys:pub {"manual_add", start.select_item.name, start.select_item_count}
+                ui_sys:close()
+            end
+
+            function start.clickItemCountPreTime(event, count)
+                start.select_item_count = math.floor(start.select_item_count + count)
+            end
+
+            function start.clickResetItemCount(event)
+                start.select_item_count = 0
+            end
+
             -- <!-- tag page begin -->
+            local function clickItem(index)
+                local item = start.page_items[index]
+                if not item then
+                    return
+                end
+                start.select_item = item
+                start.select_item_count = 0
+            end
+
             local function page_item_renderer(index)
-                if index > #start.items then
+                if index > #start.page_items then
                     local e = document.createElement "div"
                     e.outerHTML = [[<div style = "width: 12.00vmin; height: 12.00vmin;" />]]
                     return e
                 end
 
                 local item = document.createElement "div"
-                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" />]]):format(start.items[index].icon)
+                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" />]]):format(start.page_items[index].icon)
                 local select_style_border = "5px green"
 
-                if start.recipe_name == start.items[index].name then
+                if start.select_item.name == start.page_items[index].name then
                     select_item = item
                     item.style.border = select_style_border
                 end
@@ -189,10 +220,10 @@
             -- <!-- tag page end -->
 
             ui_sys:setDataModel(start, function(patch)
-                if patch.items then
-                    start.page:on_dirty_all(#start.items)
-                end
-                
+                if patch.manual_items then
+                    start.page_items = start.manual_items
+                    start.page:on_dirty_all(#start.page_items)
+                end             
                 if patch.recipe_index then
                     clickItem(patch.recipe_index)
                 end
@@ -218,10 +249,10 @@
 
 
                 <div class = "tab-container" style="flex-grow: 1;">
-                    <div data-for = "recipe_menu" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
+                    <div data-for = "item_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
                         <workbutton data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index + 1 == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'" style = "width: 100%;">
                             <div class="workbutton-bg" data-style-background-image="it.icon" />
-                            <div class="catalog-desc">{{it.group}}</div>
+                            <div class="catalog-desc">{{it.category}}</div>
                         </workbutton>
                     </div>
                 </div>
@@ -232,11 +263,7 @@
                 <div class = "recipe-name-block">
                     <div class = "name-block">
                         <div class = "small-bg" style='background-image: "textures/science/book.texture";'/>
-                        <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">{{recipe_name}}</div>
-                    </div>
-                    <div class = "recipe-time-block">
-                        <div class = "small-bg" style='background-image:"textures/character/timer.texture" ;'/>
-                        <div class = "recipe-name-text">{{recipe_time}}</div>           
+                        <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">{{select_item.name}}</div>
                     </div>
                 </div>
 
@@ -246,13 +273,13 @@
                         <div class = "small-bg" style='background-image: "textures/road_net/big_bag.texture";'/>
                         <div class = "recipe-name-text">原料</div>
                     </div>
-                    <div class = "materials-block"> 
+                    <div class = "materials-block" data-for = "select_item.ingredients"> 
                         <div class = "materials">
                             <div class = "materials-item">
                                 <div class = "materials-icon" data-style-background-image = "it.icon" />
-                                <div class = "materials-name">{{名字}}</div>
+                                <div class = "materials-name">{{it.name}}</div>
                             </div>
-                            <div class = "materials-num">X{{10}}</div>
+                            <div class = "materials-num">X{{it.count}}</div>
                         </div>
                     </div>
                 </div>
@@ -265,25 +292,25 @@
                         <div class = "recipe-name-text">物品</div>
                     </div> 
                     <div class = "materials-block" style="height:58%;">
-                        <div class = "materials">
+                        <div class = "materials" data-if = "select_item.name != ' '">
                             <div class = "materials-item">
-                                <div class = "materials-icon" data-style-background-image = "it.icon" />
-                                <div class = "materials-name">{{名字}}</div>
+                                <div class = "materials-icon" data-style-background-image = "select_item.icon" />
+                                <div class = "materials-name">{{select_item.name}}</div>
                             </div>
-                            <div class = "materials-num">X{{10}}</div>
+                            <div class = "materials-num">X{{select_item_count}}</div>
                         </div>
                     </div>
                     <div class="row" style="height: 30%; width:100%; justify-content: space-evenly;">
-                        <button class = "button-increase-item" style='background-image:"textures/factory/return.texture";background-color: rgb(255, 230, 0);'/>
-                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-five.texture";'/>
-                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-one.texture";'/>
+                        <button class = "button-increase-item" style='background-image:"textures/factory/return.texture";background-color: rgb(255, 230, 0);' data-event-click = "clickResetItemCount()"/>
+                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-five.texture";' data-event-click = "clickItemCountPreTime(5)" />
+                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-one.texture";'  data-event-click = "clickItemCountPreTime(1)" />
                     </div>
                 </div>
                 <!-- 物品生产数量 end -->
 
                 <!-- 开始生产按钮 start -->
                 <div class = "recipe-button-block">
-                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115); height: 12vmin;" data-event-click = "clickConfirm()">
+                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115); height: 12vmin;" data-event-click = "clickStartManual()" data-if = "select_item.name != ' '">
                         <div class = "recipe-name-text" style="font-size: 5vmin; margin:0; padding-bottom: 1vmin;">开始生产</div>
                     </button>
                 </div>

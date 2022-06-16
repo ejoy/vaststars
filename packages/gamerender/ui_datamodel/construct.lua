@@ -34,6 +34,7 @@ local open_taskui_event = mailbox:sub {"open_taskui"}
 local single_touch_mb = world:sub {"single_touch"}
 
 local builder
+local last_prototype_name
 
 local construct_menu = {} ; do
     for _, menu in ipairs(construct_menu_cfg) do
@@ -124,6 +125,8 @@ function M:stage_ui_update(datamodel)
         gameplay_core.world_update = false
         global.mode = "construct"
         camera.set("camera_construct.prefab")
+        last_prototype_name = nil
+
         ::continue::
     end
 
@@ -250,21 +253,25 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _, _, _, prototype_name in construct_entity_mb:unpack() do
-        if builder then
-            builder:clean(datamodel)
-        end
+        if last_prototype_name ~= prototype_name then
+            if builder then
+                builder:clean(datamodel)
+            end
 
-        if iprototype.is_pipe_to_ground(prototype_name) then
-            builder = create_pipetogroundbuilder()
-        elseif iprototype.is_pipe(prototype_name) then
-            builder = create_pipebuilder()
-        else
-            builder = create_normalbuilder()
-        end
+            if iprototype.is_pipe_to_ground(prototype_name) then
+                builder = create_pipetogroundbuilder()
+            elseif iprototype.is_pipe(prototype_name) then
+                builder = create_pipebuilder()
+            else
+                builder = create_normalbuilder()
+            end
 
-        local typeobject = iprototype.queryByName("entity", prototype_name)
-        builder:new_entity(datamodel, typeobject)
-        self:flush()
+            local typeobject = iprototype.queryByName("entity", prototype_name)
+            builder:new_entity(datamodel, typeobject)
+            self:flush()
+
+            last_prototype_name = prototype_name
+        end
     end
 
     for _, state in single_touch_mb:unpack() do

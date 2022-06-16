@@ -154,7 +154,7 @@ prototype "蒸汽" {
 prototype "丁二烯" {
     type = {"fluid"},
     catagory = {"普通气体"},
-    icon = "textures/fluid/gas-steam.texture",
+    icon = "textures/fluid/gas-butadiene.texture",
     heat_capacity = "0.05KJ",
     default_temperature = 25,
     max_temperature = 200,
