@@ -7,6 +7,24 @@ prototype "采矿机I" {
     construct_detector = {"exclusive"},
     type ={"entity", "consumer", "mining", "assembling","fluidboxes"},
     area = "3x3",
+    power = "75kW",
+    priority = "secondary",
+    mining_area = "5x5",
+    speed = "50%",
+    group = {"加工"},
+    recipe = "铁矿石挖掘",
+    fluidboxes = {
+        input = {},
+        output = {},
+        },
+}
+
+prototype "采矿机II" {
+    model = "prefabs/miner.prefab",
+    icon = "textures/building_pic/small_pic_miner.texture",
+    construct_detector = {"exclusive"},
+    type ={"entity", "consumer", "mining", "assembling","fluidboxes"},
+    area = "3x3",
     power = "150kW",
     priority = "secondary",
     mining_area = "5x5",

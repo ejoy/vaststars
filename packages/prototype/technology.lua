@@ -1066,7 +1066,7 @@ prototype "铝生产" {
 prototype "硅生产" {
   desc = "将硅加工硅板的工艺",
   type = { "tech" },
-  icon = "textures/science/tech-chemical.texture",
+  icon = "textures/science/tech-metal.texture",
   effects = {
     unlock_recipe = {"硅板1"},
   },
@@ -1076,5 +1076,94 @@ prototype "硅生产" {
     {"机械科技包", 1},
   },
   count = 30,
+  time = "0.5s"
+}
+
+prototype "润滑" {
+  desc = "研究工业润滑油制作工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"润滑油"},
+  },
+  prerequisites = {"硅生产"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 30,
+  time = "0.5s"
+}
+
+prototype "铝加工" {
+  desc = "使用铝加工其他零器件的工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-metal.texture",
+  effects = {
+    unlock_recipe = {"铝丝1","铝棒1"},
+  },
+  prerequisites = {"铝生产","冶金学2"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 25,
+  time = "0.4s"
+}
+
+prototype "电子器件" {
+  desc = "生产精密的电子元器件",
+  type = { "tech" },
+  icon = "textures/science/tech-equipment.texture",
+  effects = {
+    unlock_recipe = {"电容1","绝缘线1","逻辑电路1"},
+  },
+  prerequisites = {"铝加工","硅生产"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 40,
+  time = "0.5s"
+}
+
+prototype "批量生产1" {
+  desc = "研究大规模生产的技术",
+  type = { "tech" },
+  icon = "textures/science/tech-equipment.texture",
+  effects = {
+    unlock_recipe = {"组装机2","采矿机2"},
+  },
+  prerequisites = {"废料回收1"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 30,
+  time = "0.5s"
+}
+
+prototype "电子研究" {
+  desc = "对电子设备进行深度研究",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"电子科技包"},
+  },
+  prerequisites = {"批量生产1","电子器件"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  sign_desc = {
+    { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
+  },
+  sign_icon = "textures/science/tech-important.texture",
+  count = 50,
   time = "0.5s"
 }

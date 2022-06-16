@@ -160,3 +160,13 @@ prototype "丁二烯" {
     max_temperature = 200,
     des = "一种化工气体",
 }
+
+prototype "润滑油" {
+    type = {"fluid"},
+    catagory = {"化学液体"},
+    icon = "textures/fluid/lubricant.texture",
+    heat_capacity = "0.05KJ",
+    default_temperature = 25,
+    max_temperature = 200,
+    des = "一种化工液体",
+}

@@ -131,6 +131,36 @@ prototype "碳化铝" {
     order = 32,
 }
 
+prototype "铝板" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/plate-Al.texture",
+    model = "prefabs/rock.prefab",
+    description = "一种高弹性聚合物材料",
+    group = "金属",
+    order = 72,
+}
+
+prototype "铝棒" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/iron_stick.texture",
+    model = "prefabs/rock.prefab",
+    description = "铝制材料锻造加工成的铝棒",
+    group = "金属",
+    order = 74,
+}
+
+prototype "铝丝" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/iron-wire.texture",
+    model = "prefabs/rock.prefab",
+    description = "铝制材料锻造加工成的铝丝",
+    group = "金属",
+    order = 76,
+}
+
 prototype "碎石" {
     type = {"item"},
     stack = 100,
@@ -171,7 +201,7 @@ prototype "硅" {
     order = 11,
 }
 
-prototype "硅板I" {
+prototype "硅板" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/plate-Si.texture",
@@ -281,14 +311,34 @@ prototype "橡胶" {
     order = 70,
 }
 
-prototype "铝板" {
+prototype "电容" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/plate-Al.texture",
+    icon = "textures/construct/coal.texture",
     model = "prefabs/rock.prefab",
     description = "一种高弹性聚合物材料",
-    group = "金属",
-    order = 72,
+    group = "器件",
+    order = 70,
+}
+
+prototype "绝缘线" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/coal.texture",
+    model = "prefabs/rock.prefab",
+    description = "一种高弹性聚合物材料",
+    group = "器件",
+    order = 70,
+}
+
+prototype "逻辑电路" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/coal.texture",
+    model = "prefabs/rock.prefab",
+    description = "一种高弹性聚合物材料",
+    group = "器件",
+    order = 70,
 }
 
 prototype "地质科技包" {
@@ -322,6 +372,17 @@ prototype "机械科技包" {
     description = "一种科技研究包",
     group = "器件",
     order = 84,
+}
+
+prototype "电子科技包" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/recipe/mechanical-pack.texture",
+    tech_icon = "textures/science/pinkbox.texture",
+    model = "prefabs/rock.prefab",
+    description = "一种科技研究包",
+    group = "器件",
+    order = 86,
 }
 
 prototype "废气" {

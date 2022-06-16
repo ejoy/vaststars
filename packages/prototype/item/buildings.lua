@@ -20,6 +20,16 @@ prototype "组装机I" {
     order = 70,
 }
 
+prototype "组装机II" {
+    type = {"item"},
+    stack = 25,
+    icon = "textures/construct/assembler.texture",
+    model = "prefabs/rock.prefab",
+    description = "用来组装或制造工业产品的工厂",
+    group = "加工",
+    order = 72,
+}
+
 prototype "熔炼炉I" {
     type = {"item"},
     stack = 25,
@@ -78,6 +88,16 @@ prototype "采矿机I" {
     description = "用来挖掘矿物资源的机器",
     group = "加工",
     order = 40,
+}
+
+prototype "采矿机II" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/miner.texture",
+    model = "prefabs/rock.prefab",
+    description = "用来挖掘矿物资源的机器",
+    group = "加工",
+    order = 42,
 }
 
 prototype "车站I" {

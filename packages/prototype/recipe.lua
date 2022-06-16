@@ -152,6 +152,38 @@ prototype "铝板1" {
     description = "使用氧化铝和石墨烧制铝板",
 }
 
+prototype "铝棒1" {
+    type = { "recipe" },
+    category = "金属锻造",
+    --group = "金属",
+    order = 20,
+    icon = "textures/construct/iron_stick.texture",
+    ingredients = {
+        {"铝板", 4},
+    },
+    results = {
+        {"铝棒", 5}
+    },
+    time = "4s",
+    description = "使用铝板锻造铝棒",
+}
+
+prototype "铝丝1" {
+    type = { "recipe" },
+    category = "金属锻造",
+    --group = "金属",
+    order = 22,
+    icon = "textures/construct/iron-wire.texture",
+    ingredients = {
+        {"铝棒", 5},
+    },
+    results = {
+        {"铝丝", 7}
+    },
+    time = "5s",
+    description = "使用铝棒锻造铝丝",
+}
+
 prototype "铁棒1" {
     type = { "recipe" },
     category = "金属锻造",
@@ -278,7 +310,7 @@ prototype "硅板1" {
         {"石墨", 2},
     },
     results = {
-        {"硅板I", 3},
+        {"硅板", 3},
     },
     time = "10s",
     description = "使用硅炼制硅板",
@@ -513,6 +545,23 @@ prototype "采矿机1" {
     description = "使用铁制品和电动机制造采矿机",
 }
 
+prototype "采矿机2" {
+    type = { "recipe" },
+    category = "生产中型制造",
+    --group = "生产",
+    order = 40,
+    icon = "textures/construct/miner.texture",
+    ingredients = {
+        {"钢板", 3},
+        {"采矿机I", 2},
+    },
+    results = {
+        {"采矿机II", 1},
+    },
+    time = "10s",
+    description = "使用铁制品和电动机制造采矿机",
+}
+
 prototype "熔炼炉1" {
     type = { "recipe" },
     category = "生产中型制造",
@@ -564,6 +613,23 @@ prototype "组装机1" {
         {"组装机I", 1},
     },
     time = "6s",
+    description = "机械原料制造组装机",
+}
+
+prototype "组装机2" {
+    type = { "recipe" },
+    category = "生产大型制造",
+    --group = "生产",
+    order = 70,
+    icon = "textures/construct/assembler.texture",
+    ingredients = {
+        {"钢板", 2},
+        {"组装机I", 2},
+    },
+    results = {
+        {"组装机II", 1},
+    },
+    time = "10s",
     description = "机械原料制造组装机",
 }
 
@@ -1201,6 +1267,24 @@ prototype "机械科技包1" {
     description = "机械原料制造机械科技包",
 }
 
+prototype "电子科技包1" {
+    type = { "recipe" },
+    category = "器件中型制造",
+    group = "器件",
+    order = 84,
+    icon = "textures/recipe/mechanical-pack.texture",
+    ingredients = {
+        {"电容", 1},
+        {"绝缘线", 2},
+        {"逻辑电路", 1},
+    },
+    results = {
+        {"电子科技包", 1},
+    },
+    time = "12s",
+    description = "电子元件制造电子科技包",
+}
+
 prototype "铁矿石挖掘" {
     type = { "recipe" },
     category = "金属冶炼",
@@ -1218,6 +1302,60 @@ prototype "铁矿石挖掘" {
     description = "采集铁矿石",
 }
 
+prototype "绝缘线1" {
+    type = { "recipe" },
+    category = "器件小型制造",
+    group = "器件",
+    order = 82,
+    icon = "textures/recipe/geology-pack.texture",
+    ingredients = {
+        {"橡胶", 2},
+        {"铝丝", 3},
+    },
+    results = {
+        {"绝缘线", 4},
+    },
+    time = "4s",
+    description = "生产外部绝缘的导线",
+}
+
+prototype "电容1" {
+    type = { "recipe" },
+    category = "金属锻造",
+    --group = "金属",
+    order = 84,
+    icon = "textures/construct/iron_stick.texture",
+    ingredients = {
+        {"石墨", 1},
+        {"氧化铝", 1},
+        {"塑料", 3},
+        {"铝板", 2},
+    },
+    results = {
+        {"电容", 2}
+    },
+    time = "5s",
+    description = "生产电子元器件电容",
+}
+
+prototype "逻辑电路1" {
+    type = { "recipe" },
+    category = "器件小型制造",
+    group = "器件",
+    order = 86,
+    icon = "textures/recipe/geology-pack.texture",
+    ingredients = {
+        {"石墨", 1},
+        {"铝丝", 4},
+        {"塑料", 3},
+        {"硅板", 3},
+    },
+    results = {
+        {"逻辑电路", 3},
+    },
+    time = "5s",
+    description = "生产电子元器件逻辑电路",
+}
 
 prototype "空气过滤" {
     type = { "recipe" },
@@ -1326,7 +1464,7 @@ prototype "盐酸" {
     category = "流体基础化工",
     --group = "流体",
     order = 60,
-    icon = "textures/fluid/gas.texture",
+    icon = "textures/fluid/liquid.texture",
     ingredients = {
         {"氯气", 30},
         {"氢气", 30},
@@ -1336,6 +1474,23 @@ prototype "盐酸" {
     },
     time = "1s",
     description = "氢气和氯气化合成盐酸",
+}
+
+prototype "润滑油" {
+    type = { "recipe" },
+    category = "流体基础化工",
+    --group = "流体",
+    order = 60,
+    icon = "textures/fluid/lubricant.texture",
+    ingredients = {
+        {"硅板", 1},
+        {"盐酸", 50},
+    },
+    results = {
+        {"润滑油", 10},
+    },
+    time = "4s",
+    description = "盐酸和硅板合成润滑油",
 }
 
 prototype "地下卤水电解" {
