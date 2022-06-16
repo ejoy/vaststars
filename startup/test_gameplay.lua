@@ -37,10 +37,10 @@ local function manual_update(input)
 end
 
 manual_update {
-    {"铁棒1", 5},
-    {"铁棒1", 5},
-    {"铁棒1", 5},
-    {"铁棒1", 5},
+    {"铁棒", 5},
+    {"铁棒", 5},
+    {"铁棒", 5},
+    {"铁棒", 5},
 }
 
 --world:backup  "../../startup/.log/sav"
@@ -54,7 +54,7 @@ local function dump_item()
         for i = 1, 10 do
             local c, n = world:container_get(v.chest.container, i)
             if c then
-                print(gameplay.query(c).name, n)
+                print(gameplay.prototype.queryById(c).name, n)
             else
                 break
             end
@@ -86,8 +86,8 @@ local function dump_fluid()
 end
 
 local function dump()
-    --dump_item()
-    dump_fluid()
+    dump_item()
+    -- dump_fluid()
 end
 
 world:wait( 10*50, dump)

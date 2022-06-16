@@ -1,5 +1,3 @@
-local world = ...
-
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.prototype
 
@@ -25,8 +23,8 @@ local function solverCreate()
     local manual = {}
     local intermediate = {}
 
-    local function insertManual(_, info)
-        manual[info.name] = info
+    local function insertManual(mainoutput, info)
+        manual[mainoutput] = info
     end
 
     for name, info in pairs(prototype.each "recipe") do
