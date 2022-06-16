@@ -1064,11 +1064,11 @@ prototype "铝生产" {
 }
 
 prototype "硅生产" {
-  desc = "将硅加工硅锭的工艺",
+  desc = "将硅加工硅板的工艺",
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"硅锭1"},
+    unlock_recipe = {"硅板1"},
   },
   prerequisites = {"无机化学","冶金学2"},
   ingredients = {

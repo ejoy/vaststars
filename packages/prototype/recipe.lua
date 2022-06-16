@@ -11,6 +11,7 @@ prototype "铁锭" {
     category = "金属冶炼",
     --group = "金属",
     order = 10,
+    allow_manual = false,
     icon = "textures/construct/plate-Fe.texture",
     ingredients = {
         {"铁矿石", 3},
@@ -28,6 +29,7 @@ prototype "铁板1" {
     category = "金属锻造",
     group = "金属",
     order = 11,
+    allow_manual = false,
     icon = "textures/construct/plate-Fe.texture",
     ingredients = {
         {"铁矿石", 5},
@@ -45,7 +47,7 @@ prototype "铁板2" {
     category = "金属锻造",
     --group = "金属",
     order = 12,
-    allow_as_intermediate = false,
+    allow_manual = false,
     icon = "textures/construct/plate-Fe.texture",
     ingredients = {
         {"碾碎铁矿石", 8},
@@ -64,7 +66,7 @@ prototype "碾碎铁矿石" {
     category = "矿石粉碎",
     --group = "金属",
     order = 14,
-    allow_as_intermediate = false,
+    allow_manual = false,
     icon = "textures/construct/crush-ore-Fe.texture",
     ingredients = {
         {"铁矿石", 8},
@@ -82,7 +84,7 @@ prototype "碾碎铝矿石" {
     category = "矿石粉碎",
     --group = "金属",
     order = 14,
-    allow_as_intermediate = false,
+    allow_manual = false,
     icon = "textures/construct/crush-ore-Al.texture",
     ingredients = {
         {"铝矿石", 7},
@@ -101,7 +103,6 @@ prototype "氢氧化铝" {
     category = "矿石浮选",
     --group = "金属",
     order = 14,
-    allow_as_intermediate = false,
     icon = "textures/construct/iron-ingot.texture",
     ingredients = {
         {"碾碎铝矿石", 4},
@@ -120,7 +121,7 @@ prototype "氧化铝" {
     category = "金属冶炼",
     --group = "金属",
     order = 16,
-    allow_as_intermediate = false,
+    allow_manual = false,
     icon = "textures/construct/iron-ingot.texture",
     ingredients = {
         {"氢氧化铝", 4},
@@ -137,7 +138,7 @@ prototype "铝板1" {
     category = "金属冶炼",
     --group = "金属",
     order = 18,
-    allow_as_intermediate = false,
+    allow_manual = false,
     icon = "textures/construct/plate-Ai.texture",
     ingredients = {
         {"氧化铝", 9},
@@ -221,6 +222,7 @@ prototype "硅1" {
     category = "矿石浮选",
     --group = "金属",
     order = 68,
+    allow_manual = false,
     icon = "textures/construct/ore-Si.texture",
     ingredients = {
         {"沙子", 8},
@@ -264,21 +266,22 @@ prototype "坩埚" {
     description = "使用硅烧制坩埚",
 }
 
-prototype "硅锭1" {
+prototype "硅板1" {
     type = { "recipe" },
     category = "金属冶炼",
     --group = "金属",
     order = 68,
+    allow_manual = false,
     icon = "textures/construct/plate-Si.texture",
     ingredients = {
         {"硅", 5},
         {"石墨", 2},
     },
     results = {
-        {"硅锭I", 3},
+        {"硅板I", 3},
     },
     time = "10s",
-    description = "使用硅炼制硅锭",
+    description = "使用硅炼制硅板",
 }
 
 prototype "橡胶" {
