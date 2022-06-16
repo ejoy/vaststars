@@ -321,7 +321,7 @@ prototype "橡胶" {
     category = "矿石浮选",
     --group = "金属",
     order = 76,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/construct/rubber.texture",
     ingredients = {
         {"丁二烯", 15},
     },

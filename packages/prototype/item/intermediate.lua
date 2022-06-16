@@ -304,7 +304,7 @@ prototype "坩埚" {
 prototype "橡胶" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/coal.texture",
+    icon = "textures/construct/rubber.texture",
     model = "prefabs/rock.prefab",
     description = "一种高弹性聚合物材料",
     group = "器件",
