@@ -32,7 +32,10 @@ world:research_queue {"铁加工1","铁矿熔炼"}
 
 world:create_entity "指挥中心" {
     x = 1,
-    y = 10
+    y = 10,
+    items = {
+        {"铁锭",400},
+    },
 }
 
 world:create_entity "空气过滤器I" {

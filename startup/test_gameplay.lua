@@ -19,7 +19,7 @@ local function manual_chest()
         while true do
             local c, n = world:container_get(v.chest.container, i)
             if c then
-                chest[gameplay.queryById(c).name] = n
+                chest[gameplay.prototype.queryById(c).name] = n
             else
                 break
             end

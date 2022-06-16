@@ -98,23 +98,28 @@ local function solverEvaluate(solver, memory, register, input)
             return
         end
         mark[item] = true
+
+        if count <= memory[item] + register[item] then
+            return true
+        end
+
         local recipe = intermediate[item]
         if not recipe then
             return
         end
-    
+
         local mainoutput = recipe.output[1]
         local mul = mainoutput[2]
-        if count > memory[item] + register[item] then
-            local todo = recipe.input
-            local last = count - (memory[item] + register[item])
-            local n = 1 + (last-1) // mul
-            for i = 1, #todo do
-                if not solve_intermediate(mark, todo[i][1], todo[i][2] * n) then
-                    return
-                end
+
+        local todo = recipe.input
+        local last = count - (memory[item] + register[item])
+        local n = 1 + (last-1) // mul
+        for i = 1, #todo do
+            if not solve_intermediate(mark, todo[i][1], todo[i][2] * n) then
+                return
             end
         end
+
         while register[item] + memory[item] < count do
             do_crafting(recipe)
         end
