@@ -328,7 +328,9 @@
                     <!-- 材料条目 end -->
                 </div>
                 <div style="flex-direction: row; width:100%; height:10%; justify-content: flex-end; align-items: center;">
-                    <div class="item-title-new" style=" align-items: center; margin-top:1vmin;">45/55</div>
+                    <div class="item-title-new" style=" align-items: center; margin-top:1vmin; -webkit-text-stroke: 0.20vmin rgb(0, 112, 192); ">材料数量：</div>
+                    <div class="item-title-new" style=" align-items: center; margin-top:1vmin; color: rgb(0,255,0);">145</div>
+                    <div class="item-title-new" style=" align-items: center; margin-top:1vmin;">/155</div>
                 </div>
             </div>
             <div class="panel">
