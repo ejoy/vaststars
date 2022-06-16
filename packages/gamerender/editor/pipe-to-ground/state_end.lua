@@ -214,7 +214,7 @@ function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y)
 
     local prototype_name, typeobject, object
 
-    --
+    -- TODO
     typeobject = iprototype.queryByName("entity", starting_object.prototype_name)
     object = iobject.new {
         prototype_name = typeobject.name,

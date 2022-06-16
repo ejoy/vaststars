@@ -98,18 +98,7 @@ function condition_pipe_to_ground(self, datamodel)
         return
     end
 
-    local shape
-    if flow_shape:get_state(starting_object.prototype_name, starting_object.dir, iprototype.opposite_dir(dir)) then
-        shape = "JI"
-    else
-        shape = "JU"
-    end
-
     starting_object = iobject.clone(starting_object)
-    starting_object.prototype_name = format_prototype_name(self.coord_indicator.prototype_name, shape)
-    starting_object.dir = dir
-    starting_object.fluid_name = starting_object.fluid_name
-    starting_object.fluidflow_network_id = starting_object.fluidflow_network_id
     starting_object.state = "construct"
     objects:set(starting_object, EDITOR_CACHE_TEMPORARY[1])
 
