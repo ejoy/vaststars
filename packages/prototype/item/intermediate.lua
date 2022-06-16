@@ -314,7 +314,7 @@ prototype "橡胶" {
 prototype "电容" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/coal.texture",
+    icon = "textures/construct/capacitor.texture",
     model = "prefabs/rock.prefab",
     description = "一种高弹性聚合物材料",
     group = "器件",
@@ -324,7 +324,7 @@ prototype "电容" {
 prototype "绝缘线" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/coal.texture",
+    icon = "textures/construct/insulated-wire.texture",
     model = "prefabs/rock.prefab",
     description = "一种高弹性聚合物材料",
     group = "器件",
@@ -334,7 +334,7 @@ prototype "绝缘线" {
 prototype "逻辑电路" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/coal.texture",
+    icon = "textures/construct/logic-circuit.texture",
     model = "prefabs/rock.prefab",
     description = "一种高弹性聚合物材料",
     group = "器件",

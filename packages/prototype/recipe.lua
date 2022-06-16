@@ -1307,7 +1307,7 @@ prototype "绝缘线1" {
     category = "器件小型制造",
     group = "器件",
     order = 82,
-    icon = "textures/recipe/geology-pack.texture",
+    icon = "textures/construct/insulated-wire.texture",
     ingredients = {
         {"橡胶", 2},
         {"铝丝", 3},
@@ -1324,7 +1324,7 @@ prototype "电容1" {
     category = "金属锻造",
     --group = "金属",
     order = 84,
-    icon = "textures/construct/iron_stick.texture",
+    icon = "textures/construct/capacitor.texture",
     ingredients = {
         {"石墨", 1},
         {"氧化铝", 1},
@@ -1343,7 +1343,7 @@ prototype "逻辑电路1" {
     category = "器件小型制造",
     group = "器件",
     order = 86,
-    icon = "textures/recipe/geology-pack.texture",
+    icon = "textures/construct/logic-circuit.texture",
     ingredients = {
         {"石墨", 1},
         {"铝丝", 4},
