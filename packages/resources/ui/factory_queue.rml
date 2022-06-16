@@ -41,9 +41,9 @@
                 text-align: left;
                 border-radius: 0.67vmin;
                 color:rgb(255, 255, 255);
-                -webkit-text-stroke: 0.07vmin rgb(0, 0, 0);
+                -webkit-text-stroke: 0.1vmin rgb(0, 0, 0);
                 word-break: break-all;
-                font-size: 3.2vmin;
+                font-size: 5.2vmin;
             }
             /*分割线*/
             #item-recipe-region {
@@ -199,6 +199,7 @@
                 font-size: 3vmin;
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
             }
+
         </style>
         <style path = "common/building_style.rcss" />
         <style path = "common/listpage_style.rcss"/>
@@ -256,20 +257,83 @@
             <div class="panel">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button"/>
-                    <div class = "menu-title">制造舱空间</div>
+                    <div class = "menu-title">制造所需材料</div>
                 </div>
                 <div class = "draw-line"/>
                 <!-- 指挥中心物品栏 start -->
                 <!-- tag page begin -->
-                <div class="item-container" style = "width: 100%;">
-                    <page width = '88vmin' height = '66.00vmin' footerheight= '4.00vmin' row='5' col='7' />
+                <div class="item-container" style = "width: 100%; height:80%; justify-content: flex-start;">
+                    <div style="flex-direction: row; justify-content:space-evenly; align-items: center; width: 100%;">
+                        <div class="item-research" style="width:45%;">
+                            <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
+                                <div class="small-name">机器爪I</div>
+                            </div> 
+                            <div style="flex-direction:row; align-items:center; justify-content:center; width:71%;height:100%; background-color: rgb(0, 225, 255);border: 0.27vmin rgb(89, 73, 39);">
+                                <div class="progress-background-new" style="position:absolute; left:0; width: 50%;"/>
+                                <div class="item-title-new">X 37</div>
+                            </div>
+                        </div>
+                        <div class="item-research" style="width:45%;">
+                            <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
+                                <div class="small-name">机器爪I</div>
+                            </div> 
+                            <div style="flex-direction:row; align-items:center; justify-content:center; width:71%;height:100%; background-color: rgb(0, 225, 255);border: 0.27vmin rgb(89, 73, 39);">
+                                <div class="progress-background-new" style="position:absolute; left:0; width: 50%;"/>
+                                <div class="item-title-new">X 99</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="flex-direction: row; justify-content:space-evenly; align-items: center; width: 100%;">
+                        <div class="item-research" style="width:45%;">
+                            <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
+                                <div class="small-name">机器爪I</div>
+                            </div> 
+                            <div style="flex-direction:row; align-items:center; justify-content:center; width:71%;height:100%; background-color: rgb(0, 225, 255);border: 0.27vmin rgb(89, 73, 39);">
+                                <div class="progress-background-new" style="position:absolute; left:0; width: 50%;"/>
+                                <div class="item-title-new">X 37</div>
+                            </div>
+                        </div>
+                        <div class="item-research" style="width:45%;">
+                            <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
+                                <div class="small-name">机器爪I</div>
+                            </div> 
+                            <div style="flex-direction:row; align-items:center; justify-content:center; width:71%;height:100%; background-color: rgb(0, 225, 255);border: 0.27vmin rgb(89, 73, 39);">
+                                <div class="progress-background-new" style="position:absolute; left:0; width: 50%;"/>
+                                <div class="item-title-new">X 99</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="flex-direction: row; justify-content:space-evenly; align-items: center; width: 100%;">
+                        <div class="item-research" style="width:45%;">
+                            <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
+                                <div class="small-name">机器爪I</div>
+                            </div> 
+                            <div style="flex-direction:row; align-items:center; justify-content:center; width:71%;height:100%; background-color: rgb(0, 225, 255);border: 0.27vmin rgb(89, 73, 39);">
+                                <div class="progress-background-new" style="position:absolute; left:0; width: 50%;"/>
+                                <div class="item-title-new">X 37</div>
+                            </div>
+                        </div>
+                        <div class="item-research" style="width:45%;">
+                            <div class="small-item" style='background-image:"textures/construct/chemical.texture";	width: 10.00vmin;height: 10.00vmin;'>
+                                <div class="small-name">机器爪I</div>
+                            </div> 
+                            <div style="flex-direction:row; align-items:center; justify-content:center; width:71%;height:100%; background-color: rgb(0, 225, 255);border: 0.27vmin rgb(89, 73, 39);">
+                                <div class="progress-background-new" style="position:absolute; left:0; width: 50%;"/>
+                                <div class="item-title-new">X 99</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 材料条目 start -->
+                    <!-- list direction='1' width='100%' height='90%'/-->
+                    <!-- 材料条目 end -->
                 </div>
-                <!-- tag page end -->
-                <!-- 指挥中心物品栏 end -->
+                <div style="flex-direction: row; width:100%; height:10%; justify-content: flex-end; align-items: center;">
+                    <div class="item-title-new" style=" align-items: center; margin-top:1vmin;">45/55</div>
+                </div>
             </div>
             <div class="panel">
                 <div class="column" style="width: 100%; height: 73%;">
-                    <div class="recipe-name-text">生产队列</div>
+                    <div class="recipe-name-text">制造物品队列</div>
                     <div style="flex-direction: column; width:100%; height:100%;">
                         <!-- 生产队列 start --> 
                         <div class="recipe-container" style="flex-direction: column; border: 0px;">

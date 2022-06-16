@@ -1555,6 +1555,7 @@ prototype "钢齿轮" {
     category = "金属小型制造",
     group = "金属",
     order = 22,
+    allow_manual = false,
     icon = "textures/construct/iron-gear.texture",
     ingredients = {
         {"钢板", 3},
