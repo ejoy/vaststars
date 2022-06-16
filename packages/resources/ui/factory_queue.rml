@@ -189,6 +189,16 @@
                 background-image: "textures/construct/cancel.texture";
                 background-size: cover;
             }
+            .small-name {
+                position: absolute;
+                width: 100%;
+                bottom: 0;
+                background-color: rgba(46, 46, 45, 150);
+                border-radius: 0.5vmin;
+                text-align: center;
+                font-size: 3vmin;
+                -webkit-text-stroke: 0.05em rgb(0,0,0);
+            }
         </style>
         <style path = "common/building_style.rcss" />
         <style path = "common/listpage_style.rcss"/>
