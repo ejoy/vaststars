@@ -180,6 +180,43 @@
                     opacity: 0;
                 }
             }
+            .collapse {
+                width: 12.77vmin;
+                transition: width transform 0.4s linear-out;
+            }
+            .expanded {
+                width: 51.08vmin;
+                transition: width transform 0.4s linear-in;
+            }
+            .progressbar-half-cycle-container {
+                position: absolute;
+                top: 0vmin;
+                width: 50%;
+                height: 100%;
+                overflow: hidden;
+            }
+            .progressbar-half-cycle-left {
+                position: absolute;
+                top: -50%;
+                left: -100%;
+                width: 200%;
+                height: 200%;
+                background-color: black;
+                transform: rotate(0deg);
+                transform-origin: 100% 50%;
+                opacity: 0.5;
+            }
+            .progressbar-half-cycle-right {
+                position: absolute;
+                top: -50%;
+                left: 0%;
+                width: 200%;
+                height: 200%;
+                background-color: black;
+                transform: rotate(0deg);
+                transform-origin: 0% 50%;
+                opacity: 0.5;
+            }
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
@@ -188,6 +225,7 @@
                 fps_text = " ",           -- fps 信息
                 drawcall_text = " ",      -- drawcall 信息
                 construct_menu = {},
+                manual_queue = {},
 
                 cur_construct_menu = "",  -- 当前选中的二级建造菜单名
                 cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
@@ -298,8 +336,44 @@
                         unconfirmed_double_confirm_continuation = nil
                     end
                 end,
+                ["set_percent"] = function(percent) -- TODO
+                    local full_value <const> = 100
+                    local half_value <const> = math.floor(full_value / 2)
+
+                    percent = math.floor(percent)
+                    percent = math.max(percent, 0)
+                    percent = math.min(percent, full_value)
+
+                    if percent <= half_value then
+                        local deg
+                        start.progress_bar_left = "rotate(0deg)"
+                    else
+                        local deg = math.floor(180 * ((percent - half_value)/ half_value))
+                        start.progress_bar_left = string.format("rotate(%ddeg)", math.floor(deg))
+                    end
+
+                    if percent >= half_value then
+                        start.progress_bar_right = "rotate(180deg)"
+                    else
+                        local deg = math.floor(180 * (percent / half_value))
+                        start.progress_bar_right = string.format("rotate(%ddeg)", math.floor(deg))
+                    end
+                end,
             })
             ui_sys:setDataModel(start)
+
+            start.expanded = false
+            function start.clickExpand(event)
+                start.expanded = not start.expanded
+                local element = document.getElementById("manual-queue-icon")
+                element.className = start.expanded and "expanded" or "collapse"
+
+                ui_sys:pub {"test"}
+            end
+
+            start.progress_bar_left = "rotate(0deg)"
+            start.progress_bar_right = "rotate(0deg)"
+
         </script>
     </head>
     <body class = "nopointer">
@@ -382,6 +456,27 @@
                 </button>
             </div>
             <div class="accomplished" data-style-animation="finish_animation" data-if = "!show_tech_progress">研究完成</div>
+
+            <!-- 右下角手搓队列 -->
+            <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "cur_edit_mode == ''">
+                <div id = "manual-queue-icon" class = "collapse" style = "height: 35vmin; flex-direction: row; overflow: hidden;">
+                    <div data-for = "manual_queue" style = "flex-direction: row; pointer-events: none;">
+                        <div style = "width: 0.5vmin;" />
+                        <workbutton data-event-click="clickExpand()">
+                            <div class="workbutton-bg" data-style-background-image = "it.icon" style = "pointer-events: none;" />
+                            <div class="workbutton-text" style = "pointer-events: none;">{{it.name}}</div>
+                            <div class = "progressbar-half-cycle-container" style = "left: 0%; pointer-events: none;">
+                                <div class = "progressbar-half-cycle-left" data-style-transform = "progress_bar_left" style = "pointer-events: none;" data-if = "it_index == 0" />
+                                <div class = "progressbar-half-cycle-left" style = "pointer-events: none;" data-if = "it_index > 0" />
+                            </div>
+                            <div class = "progressbar-half-cycle-container" style = "left: 50%; pointer-events: none;">
+                                <div class = "progressbar-half-cycle-right" data-style-transform = "progress_bar_right" style = "pointer-events: none;" data-if = "it_index == 0" />
+                                <div class = "progressbar-half-cycle-right" style = "pointer-events: none;" data-if = "it_index > 0"/>
+                            </div>
+                        </workbutton>
+                    </div>
+                </div>
+            </div>
 
             <!-- 右下角按钮 -->
             <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;">
