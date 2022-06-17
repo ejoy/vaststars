@@ -477,7 +477,7 @@ prototype "小铁制箱子2" {
     type = { "recipe" },
     category = "物流中型制造",
     group = "物流",
-    order = 10,
+    order = 11,
     icon = "textures/construct/chest2.texture",
     ingredients = {
         {"橡胶", 1},
@@ -495,7 +495,7 @@ prototype "大铁制箱子1" {
     type = { "recipe" },
     category = "物流中型制造",
     group = "物流",
-    order = 10,
+    order = 13,
     icon = "textures/construct/large-chest.texture",
     ingredients = {
         {"铝板", 4},
@@ -1271,7 +1271,7 @@ prototype "电子科技包1" {
     type = { "recipe" },
     category = "器件中型制造",
     group = "器件",
-    order = 84,
+    order = 85,
     icon = "textures/recipe/electrical-pack.texture",
     ingredients = {
         {"电容", 1},
@@ -1306,7 +1306,7 @@ prototype "绝缘线1" {
     type = { "recipe" },
     category = "器件小型制造",
     group = "器件",
-    order = 82,
+    order = 70,
     icon = "textures/construct/insulated-wire.texture",
     ingredients = {
         {"橡胶", 2},
@@ -1323,7 +1323,7 @@ prototype "电容1" {
     type = { "recipe" },
     category = "金属锻造",
     --group = "金属",
-    order = 84,
+    order = 72,
     icon = "textures/construct/capacitor.texture",
     ingredients = {
         {"石墨", 1},
@@ -1342,7 +1342,7 @@ prototype "逻辑电路1" {
     type = { "recipe" },
     category = "器件小型制造",
     group = "器件",
-    order = 86,
+    order = 74,
     icon = "textures/construct/logic-circuit.texture",
     ingredients = {
         {"石墨", 1},
