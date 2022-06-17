@@ -1052,7 +1052,7 @@ prototype "铝生产" {
   type = { "tech" },
   icon = "textures/science/tech-metal.texture",
   effects = {
-    unlock_recipe = {"碾碎铝矿石","氢氧化铝","氧化铝","铝板1"},
+    unlock_recipe = {"碾碎铝矿石","铝矿石浮选","氧化铝","铝板1"},
   },
   prerequisites = {"无机化学"},
   ingredients = {

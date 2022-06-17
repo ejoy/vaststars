@@ -98,7 +98,7 @@ prototype "碾碎铝矿石" {
     description = "使用氧化铝和石墨烧制铝板",
 }
 
-prototype "氢氧化铝" {
+prototype "铝矿石浮选" {
     type = { "recipe" },
     category = "矿石浮选",
     --group = "金属",
@@ -112,7 +112,7 @@ prototype "氢氧化铝" {
         {"氢氧化铝", 3},
         {"废水", 12},
     },
-    time = "4s",
+    time = "5s",
     description = "使用氧化铝和石墨烧制铝板",
 }
 
@@ -269,7 +269,7 @@ prototype "硅1" {
 prototype "玻璃" {
     type = { "recipe" },
     category = "器件中型制造",
-    --group = "金属",
+    --group = "器件",
     order = 70,
     icon = "textures/construct/iron.texture",
     ingredients = {
@@ -284,8 +284,8 @@ prototype "玻璃" {
 
 prototype "坩埚" {
     type = { "recipe" },
-    category = "器件中型制造",
-    --group = "金属",
+    category = "金属冶炼",
+    --group = "器件",
     order = 72,
     icon = "textures/construct/crucible.texture",
     ingredients = {
@@ -319,7 +319,7 @@ prototype "硅板1" {
 prototype "橡胶" {
     type = { "recipe" },
     category = "矿石浮选",
-    --group = "金属",
+    --group = "器件",
     order = 76,
     icon = "textures/construct/rubber.texture",
     ingredients = {
@@ -618,7 +618,7 @@ prototype "组装机1" {
 
 prototype "组装机2" {
     type = { "recipe" },
-    category = "生产大型制造",
+    category = "生产中型制造",
     --group = "生产",
     order = 70,
     icon = "textures/construct/assembler.texture",
@@ -1671,7 +1671,7 @@ prototype "酸碱中和" {
 
 prototype "碱性溶液" {
     type = { "recipe" },
-    category = "流体液体处理",
+    category = "流体基础化工",
     --group = "流体",
     order = 64,
     icon = "textures/fluid/liquid.texture",
@@ -1773,7 +1773,7 @@ prototype "碎石回收" {
 
 prototype "沙子回收" {
     type = { "recipe" },
-    category = "流体液体排泄",
+    category = "流体液体处理",
     --group = "流体",
     order = 102,
     icon = "textures/fluid/liquid.texture",
@@ -1944,7 +1944,7 @@ prototype "甲烷排泄" {
 
 prototype "废液排泄" {
     type = { "recipe" },
-    category = "流体气体排泄",
+    category = "流体液体排泄",
     --group = "流体",
     order = 109,
     icon = "textures/fluid/gas.texture",
