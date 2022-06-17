@@ -13,7 +13,7 @@ prototype "指挥中心" {
 prototype "组装机I" {
     type = {"item"},
     stack = 25,
-    icon = "textures/construct/assembler.texture",
+    icon = "textures/construct/assembler1.texture",
     model = "prefabs/rock.prefab",
     description = "用来组装或制造工业产品的工厂",
     group = "加工",
@@ -23,7 +23,7 @@ prototype "组装机I" {
 prototype "组装机II" {
     type = {"item"},
     stack = 25,
-    icon = "textures/construct/assembler.texture",
+    icon = "textures/construct/assembler2.texture",
     model = "prefabs/rock.prefab",
     description = "用来组装或制造工业产品的工厂",
     group = "加工",
@@ -33,7 +33,7 @@ prototype "组装机II" {
 prototype "熔炼炉I" {
     type = {"item"},
     stack = 25,
-    icon = "textures/construct/furnace2.texture",
+    icon = "textures/construct/furnace1.texture",
     model = "prefabs/rock.prefab",
     description = "用来熔炼矿石的炉子",
     group = "加工",
@@ -53,7 +53,7 @@ prototype "熔炼炉II" {
 prototype "小铁制箱子I" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/chest.texture",
+    icon = "textures/construct/chest1.texture",
     model = "prefabs/rock.prefab",
     description = "贮藏物品的容器",
     group = "物流",
@@ -63,7 +63,7 @@ prototype "小铁制箱子I" {
 prototype "小铁制箱子II" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/chest.texture",
+    icon = "textures/construct/chest2.texture",
     model = "prefabs/rock.prefab",
     description = "贮藏物品的容器",
     group = "物流",
@@ -237,8 +237,7 @@ prototype "太阳能板I" {
     model = "prefabs/rock.prefab",
     description = "用来收集太阳能发电的装置",
     group = "物流",
-    order = 15,
-    
+    order = 15,  
 }
 
 prototype "蓄电池I" {

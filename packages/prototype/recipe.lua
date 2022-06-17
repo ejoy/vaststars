@@ -461,7 +461,7 @@ prototype "小铁制箱子1" {
     category = "物流中型制造",
     group = "物流",
     order = 10,
-    icon = "textures/construct/chest.texture",
+    icon = "textures/construct/chest1.texture",
     ingredients = {
         -- {"铁棒", 1},
         {"铁板", 10},
@@ -478,7 +478,7 @@ prototype "小铁制箱子2" {
     category = "物流中型制造",
     group = "物流",
     order = 10,
-    icon = "textures/construct/chest.texture",
+    icon = "textures/construct/chest2.texture",
     ingredients = {
         {"橡胶", 1},
         {"钢板", 6},
@@ -567,7 +567,7 @@ prototype "熔炼炉1" {
     category = "生产中型制造",
     group = "生产",
     order = 50,
-    icon = "textures/construct/furnace2.texture",
+    icon = "textures/construct/furnace1.texture",
     ingredients = {
         {"铁板", 3},
         -- {"铁丝", 2},
@@ -603,7 +603,7 @@ prototype "组装机1" {
     category = "生产中型制造",
     --group = "生产",
     order = 70,
-    icon = "textures/construct/assembler.texture",
+    icon = "textures/construct/assembler1.texture",
     ingredients = {
         {"小铁制箱子I", 1},
         {"机器爪I", 1},
@@ -621,7 +621,7 @@ prototype "组装机2" {
     category = "生产中型制造",
     --group = "生产",
     order = 70,
-    icon = "textures/construct/assembler.texture",
+    icon = "textures/construct/assembler2.texture",
     ingredients = {
         {"钢板", 2},
         {"组装机I", 2},
@@ -1711,7 +1711,7 @@ prototype "钢齿轮" {
     group = "金属",
     order = 22,
     allow_manual = false,
-    icon = "textures/construct/iron-gear.texture",
+    icon = "textures/construct/steel-gear.texture",
     ingredients = {
         {"钢板", 3},
     },
