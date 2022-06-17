@@ -159,14 +159,14 @@ local function flush()
     for _, outer in ipairs(prepare) do
         local vsobject = vsobject_manager:get(outer.id)
         if vsobject then
-            vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, "confirm")
+            vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, {name = "confirm"})
         end
     end
 
     for _, outer in ipairs(appear) do
         local vsobject = vsobject_manager:get(outer.id)
         if vsobject then
-            vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, "appear", true)
+            vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, {name = "appear", forwards = true})
         end
     end
 end

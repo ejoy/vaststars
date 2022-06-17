@@ -36,11 +36,11 @@ local current_object_id
 function M:create(object_id, left, top)
     if current_object_id and current_object_id ~= object_id then
         local vsobject = vsobject_manager:get(current_object_id)
-        vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, "over", true)
+        vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, {name = "over", forwards = true})
     end
     if current_object_id ~= object_id then
         local vsobject = vsobject_manager:get(object_id)
-        vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, "talk", true)
+        vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, {name = "talk", forwards = true})
     end
     current_object_id = object_id
     local object = assert(objects:get(object_id))
@@ -158,7 +158,7 @@ function M:stage_ui_update(datamodel)
 
     for _, _, _, object_id in close_mb:unpack() do
         local vsobject = vsobject_manager:get(object_id)
-        vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, "over", true)
+        vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, {name = "over", forwards = true})
     end
 end
 
