@@ -37,10 +37,10 @@ local function manual_update(input)
 end
 
 manual_update {
-    {"铁棒", 5},
-    {"铁棒", 5},
-    {"铁棒", 5},
-    {"铁棒", 5},
+    {"铁棒1", 5},
+    {"铁棒1", 5},
+    {"铁棒1", 5},
+    {"铁棒1", 5},
 }
 
 --world:backup  "../../startup/.log/sav"

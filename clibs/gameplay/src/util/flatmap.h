@@ -63,8 +63,27 @@ public:
         , KeyEqual()
     {}
 
-    flatmap(flatmap&&) = default;
-    flatmap& operator=(flatmap&&) = default;
+    flatmap(flatmap&& rhs) {
+        m_mask = rhs.m_mask;
+        m_maxsize = rhs.m_maxsize;
+        m_size = rhs.m_size;
+        if (rhs.m_mask == 0) {
+            m_buckets = reinterpret_cast<bucket*>(&m_mask);
+        }
+        else {
+            m_buckets = rhs.m_buckets;
+        }
+        rhs.m_mask = 0;
+        rhs.m_maxsize = 0;
+        rhs.m_size = 0;
+        rhs.m_buckets = reinterpret_cast<bucket*>(&rhs.m_mask);
+    }
+
+    flatmap& operator=(flatmap&& rhs) {
+        std::swap(*this, rhs);
+        return *this;
+    }
+
     flatmap(const flatmap&) = delete;
     flatmap& operator=(const flatmap&) = delete;
 

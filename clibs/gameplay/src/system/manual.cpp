@@ -17,6 +17,15 @@ extern "C" {
 #define STATUS_FINISH 2
 #define STATUS_REBUILD 3
 
+template <typename T>
+struct reversion_wrapper {
+	auto begin() { return std::rbegin(iterable); }
+	auto end () { return std::rend(iterable); }
+	T& iterable;
+};
+template <typename T>
+reversion_wrapper<T> reverse(T&& iterable) { return { iterable }; }
+
 bool manual_container::pickup(recipe_items& r) {
     for (size_t i = 0; i < r.n; ++i) {
         uint16_t item = r.items[i].item;
@@ -108,7 +117,7 @@ bool manual_crafting::rebuild(lua_State* L, world& w, int id) {
 
     manual_container expected;
     manual_container current;
-    for (auto& todo: todos) {
+    for (auto& todo: reverse(todos)) {
         if (todo.type == type::crafting) {
             prototype_context recipe = w.prototype(L, todo.id);
             recipe_items& in  = *(recipe_items*)pt_ingredients(&recipe);

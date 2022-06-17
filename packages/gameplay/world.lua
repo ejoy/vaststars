@@ -191,11 +191,14 @@ return function ()
         if errcode == "failed" then
             return false
         end
-        if errcode == "reset" then
-            for v in ecs:select "manual:update" do
-                v.recipe = 0
-                v.status = 0
-                v.progress = 0
+
+        local STATUS_REBUILD <const> = 3
+        for v in ecs:select "manual:update" do
+            local manual = v.manual
+            manual.status = STATUS_REBUILD
+            if errcode == "reset" then
+                manual.recipe = 0
+                manual.progress = 0
             end
         end
         return true

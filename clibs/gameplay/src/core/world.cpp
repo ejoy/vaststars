@@ -296,16 +296,16 @@ namespace lua_world {
             lua_pop(L, 1);
         }
 
-        bool reserve = false;
+        bool reset = true;
         if (w.manual.todos.size() > 0 && todos.size() > 0) {
             if (w.manual.todos[1].id == todos[1].id) {
                 if (w.manual.todos[1].type == todos[1].type && todos[1].type == manual_crafting::type::crafting) {
-                    reserve = true;
+                    reset = false;
                 }
             }
         }
         std::swap(w.manual.todos, todos);
-        lua_pushstring(L, reserve? "ok": "reset");
+        lua_pushstring(L, reset? "reset": "ok");
         return 1;
     }
 
