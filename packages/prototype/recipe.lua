@@ -271,7 +271,7 @@ prototype "玻璃" {
     category = "器件中型制造",
     --group = "器件",
     order = 70,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/construct/glass.texture",
     ingredients = {
         {"硅", 3},
     },
@@ -801,7 +801,7 @@ prototype "地下水挖掘机" {
     category = "化工中型制造",
     --group = "化工",
     order = 50,
-    icon = "textures/construct/offshore-pump.texture",
+    icon = "textures/construct/pumpjack1.texture",
     ingredients = {
         {"排水口I", 1},
         {"压力泵I", 1},
@@ -958,7 +958,7 @@ prototype "浮选器1" {
     category = "生产大型制造",
     --group = "生产",
     order = 64,
-    icon = "textures/construct/crusher1.texture",
+    icon = "textures/construct/flotation-cell.texture",
     ingredients = {
         {"粉碎机I", 1},
         {"水电站I", 1},
@@ -1272,7 +1272,7 @@ prototype "电子科技包1" {
     category = "器件中型制造",
     group = "器件",
     order = 84,
-    icon = "textures/recipe/mechanical-pack.texture",
+    icon = "textures/recipe/electrical-pack.texture",
     ingredients = {
         {"电容", 1},
         {"绝缘线", 2},
@@ -1416,8 +1416,8 @@ prototype "二氧化碳转一氧化碳" {
         {"氢气", 40},
     },
     results = {
-        {"纯水", 8},
         {"一氧化碳", 25},
+        {"纯水", 8},
     },
     time = "1s",
     description = "二氧化碳转一氧化碳",
@@ -1434,8 +1434,8 @@ prototype "二氧化碳转甲烷" {
         {"氢气", 110},
     },
     results = {
-        {"纯水", 10},
         {"甲烷", 24},
+        {"纯水", 10},
     },
     time = "1s",
     description = "二氧化碳转甲烷",
@@ -1452,8 +1452,8 @@ prototype "一氧化碳转石墨" {
         {"氢气", 36},
     },
     results = {
-        {"纯水", 5},
         {"石墨", 1},
+        {"纯水", 5},
     },
     time = "2s",
     description = "一氧化碳转石墨",
@@ -1464,7 +1464,7 @@ prototype "盐酸" {
     category = "流体基础化工",
     --group = "流体",
     order = 60,
-    icon = "textures/fluid/liquid.texture",
+    icon = "textures/fluid/liquid-hydrochloric.texture",
     ingredients = {
         {"氯气", 30},
         {"氢气", 30},
@@ -1626,8 +1626,8 @@ prototype "塑料1" {
         {"乙烯", 30},
     },
     results = {
-        {"盐酸", 20},
         {"塑料", 1},
+        {"盐酸", 20},
     },
     time = "3s",
     description = "化工原料合成塑料",
@@ -1645,8 +1645,8 @@ prototype "塑料2" {
         {"氯气", 20},
     },
     results = {
-        {"盐酸", 25},
         {"塑料", 1},
+        {"盐酸", 25},
     },
     time = "4s",
     description = "化工原料合成塑料",
@@ -1691,7 +1691,7 @@ prototype "钢板1" {
     category = "金属锻造",
     group = "金属",
     order = 20,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/steel-beam.texture",
     ingredients = {
         {"铁板", 5},
         {"氧气", 60},
@@ -1726,7 +1726,7 @@ prototype "铁矿石回收" {
     type = { "recipe" },
     category = "矿石粉碎",
     allow_manual = false,
-    --group = "流体",
+    --group = "金属",
     order = 104,
     icon = "textures/fluid/liquid.texture",
     ingredients = {
@@ -1743,7 +1743,7 @@ prototype "碎石回收" {
     type = { "recipe" },
     category = "矿石浮选",
     allow_manual = false,
-    --group = "流体",
+    --group = "金属",
     order = 106,
     icon = "textures/fluid/liquid.texture",
     ingredients = {
@@ -1759,7 +1759,7 @@ prototype "碎石回收" {
 prototype "沙子回收" {
     type = { "recipe" },
     category = "流体液体处理",
-    --group = "流体",
+    --group = "金属",
     order = 102,
     icon = "textures/fluid/liquid.texture",
     ingredients = {
@@ -1776,7 +1776,7 @@ prototype "沙子回收" {
 prototype "废料中和" {
     type = { "recipe" },
     category = "流体液体排泄",
-    --group = "流体",
+    --group = "金属",
     order = 102,
     icon = "textures/fluid/liquid.texture",
     ingredients = {

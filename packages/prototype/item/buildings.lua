@@ -173,7 +173,7 @@ prototype "粉碎机I" {
 prototype "浮选器I" {
     type = {"item"},
     stack = 25,
-    icon = "textures/construct/hydroplant.texture",
+    icon = "textures/construct/flotation-cell.texture",
     model = "prefabs/rock.prefab",
     description = "用于浮沉矿石的机器",
     group = "加工",

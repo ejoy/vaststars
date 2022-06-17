@@ -14,7 +14,7 @@ prototype "液罐I" {
 prototype "地下水挖掘机" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/offshore-pump.texture",
+    icon = "textures/construct/pumpjack1.texture",
     model = "prefabs/rock.prefab",
     description = "从水源抽取水的装置",
     group = "管道",

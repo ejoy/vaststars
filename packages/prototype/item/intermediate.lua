@@ -44,7 +44,7 @@ prototype "铁棒" {
 prototype "钢板" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/steel-beam.texture",
     model = "prefabs/rock.prefab",
     description = "铁板锻造加工成的钢板",
     group = "金属",
@@ -54,7 +54,7 @@ prototype "钢板" {
 prototype "钢齿轮" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/steel-gear.texture",
     model = "prefabs/rock.prefab",
     description = "一种钢制加工品",
     group = "金属",
@@ -284,7 +284,7 @@ prototype "铁齿轮" {
 prototype "玻璃" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/coal.texture",
+    icon = "textures/construct/glass.texture",
     model = "prefabs/rock.prefab",
     description = "一种硅制加工品",
     group = "金属",
@@ -377,7 +377,7 @@ prototype "机械科技包" {
 prototype "电子科技包" {
     type = {"item"},
     stack = 100,
-    icon = "textures/recipe/mechanical-pack.texture",
+    icon = "textures/recipe/electrical-pack.texture",
     tech_icon = "textures/science/pinkbox.texture",
     model = "prefabs/rock.prefab",
     description = "一种科技研究包",
