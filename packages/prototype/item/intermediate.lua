@@ -392,13 +392,6 @@ prototype "废气" {
     description = "一种废弃气体",
 }
 
-prototype "废液" {
-    type = {"item"},
-    stack = 100,
-    icon = "textures/fluid/liquid.texture",
-    description = "一种废弃液体",
-}
-
 prototype "废料" {
     type = {"item"},
     stack = 100,

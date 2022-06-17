@@ -1722,21 +1722,6 @@ prototype "钢齿轮" {
     description = "使用钢制品加工钢齿轮",
 }
 
-prototype "废水排泄" {
-    type = { "recipe" },
-    category = "流体液体排泄",
-    --group = "流体",
-    order = 100,
-    icon = "textures/fluid/liquid.texture",
-    ingredients = {
-        {"废水", 100},
-    },
-    results = {
-    },
-    time = "1s",
-    description = "废水排泄",
-}
-
 prototype "铁矿石回收" {
     type = { "recipe" },
     category = "矿石粉碎",
@@ -1782,7 +1767,7 @@ prototype "沙子回收" {
         {"沙子", 4},
     },
     results = {
-        {"废液", 100},
+        {"废水", 100},
     },
     time = "1s",
     description = "沙子排泄",
@@ -1799,7 +1784,7 @@ prototype "废料中和" {
         {"废料", 1},
     },
     results = {
-        {"废液", 6},
+        {"废水", 6},
         {"二氧化碳", 5},
     },
     time = "1s",
@@ -1942,19 +1927,19 @@ prototype "甲烷排泄" {
     description = "甲烷排泄",
 }
 
-prototype "废液排泄" {
+prototype "废水排泄" {
     type = { "recipe" },
     category = "流体液体排泄",
     --group = "流体",
     order = 109,
-    icon = "textures/fluid/gas.texture",
+    icon = "textures/fluid/liquid-wastewater.texture",
     ingredients = {
-        {"废液", 100},
+        {"废水", 100},
     },
     results = {
     },
     time = "1s",
-    description = "废液排泄",
+    description = "废水排泄",
 }
 
 prototype "氯气排泄" {
