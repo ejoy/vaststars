@@ -34,9 +34,21 @@ function M:create()
         end
     end
 
+    -- TODO
+    local function getter()
+        local t = {}
+        for _, typeobject in pairs(iprototype.all_prototype_name("item")) do
+            t[#t+1] = {name = typeobject.name, count = math.random(1, 5), icon = typeobject.icon, progress = math.random(1, 100)}
+            if #t > 10 then
+                break
+            end
+        end
+        return t
+    end
+
     return {
-        item_category = item_category,
-        manual_items = manual_items,
+        queue = getter(),
+        ingredients = getter(),
     }
 end
 

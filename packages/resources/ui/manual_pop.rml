@@ -121,10 +121,10 @@
             local ui_sys = require "ui_system"
             local default_select_item = {name = " ", time = 0, ingredients = {}}
             local start = window.createModel "start" {
-                item_category = {},
-                manual_items = {},
+                recipe_category = {},
+                manual_recipe = {},
 
-                catalog_index = 0,
+                catalog_index = 1,
                 page_items = {},
                 select_item = default_select_item,
                 select_item_count = 0,
@@ -139,12 +139,13 @@
                 start.catalog_index = it_index + 1
                 start.page_items = {}
 
-                local select_category = start.item_category[start.catalog_index].category
-                for _, item in ipairs(start.manual_items) do
-                    if item.category == select_category or select_category == "全部" then
+                local select_category = start.recipe_category[start.catalog_index].group
+                for _, item in pairs(start.manual_recipe) do
+                    if item.category == select_category then
                         start.page_items[#start.page_items + 1] = item
                     end
                 end
+                table.sort(start.page_items, function(a, b) return a.order < b.order end)
 
                 start.select_item = default_select_item
                 start.select_item_count = 0
@@ -224,8 +225,15 @@
             -- <!-- tag page end -->
 
             ui_sys:setDataModel(start, function(patch)
-                if patch.manual_items then
-                    start.page_items = start.manual_items
+                if patch.manual_recipe and start.recipe_category[1] then
+                    local category = start.recipe_category[1].group
+                    for _, item in pairs(start.manual_recipe) do
+                        if item.category == category then
+                            start.page_items[#start.page_items + 1] = item
+                        end
+                    end
+                    table.sort(start.page_items, function(a, b) return a.order < b.order end)
+                    
                     start.page:on_dirty_all(#start.page_items)
                 end             
                 if patch.recipe_index then
@@ -253,10 +261,10 @@
 
 
                 <div class = "tab-container" style="flex-grow: 1;">
-                    <div data-for = "item_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
+                    <div data-for = "recipe_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
                         <workbutton data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index + 1 == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'" style = "width: 100%;">
                             <div class="workbutton-bg" data-style-background-image="it.icon" />
-                            <div class="catalog-desc">{{it.category}}</div>
+                            <div class="catalog-desc">{{it.group}}</div>
                         </workbutton>
                     </div>
                 </div>

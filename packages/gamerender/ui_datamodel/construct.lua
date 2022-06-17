@@ -32,6 +32,7 @@ local laying_pipe_cancel_mb = mailbox:sub {"laying_pipe_cancel"} -- 铺管取消
 local laying_pipe_confirm_mb = mailbox:sub {"laying_pipe_confirm"} -- 铺管结束
 local open_taskui_event = mailbox:sub {"open_taskui"}
 local single_touch_mb = world:sub {"single_touch"}
+local test_mb = mailbox:sub {"test"}
 
 local builder
 local last_prototype_name
@@ -67,6 +68,18 @@ end
 local M = {}
 
 function M:create()
+    -- TODO
+    local function getter()
+        local t = {}
+        for _, typeobject in pairs(iprototype.all_prototype_name("item")) do
+            t[#t+1] = {name = typeobject.name, count = math.random(1, 5), icon = typeobject.icon, progress = math.random(1, 100)}
+            if #t >= 4 then
+                break
+            end
+        end
+        return t
+    end
+
     return {
         construct_menu = construct_menu,
         tech_count = global.science.tech_list and #global.science.tech_list or 0,
@@ -74,6 +87,7 @@ function M:create()
         current_tech_icon = "none",    --当前科技图标
         current_tech_name = "none",    --当前科技名字
         current_tech_progress = "0%",  --当前科技进度
+        manual_queue = getter(),
     }
 end
 
@@ -244,6 +258,7 @@ function M:stage_ui_update(datamodel)
     end
 end
 
+local percent = 101
 function M:stage_camera_usage(datamodel)
     for _, delta in dragdrop_camera_mb:unpack() do
         if builder then
@@ -281,6 +296,15 @@ function M:stage_camera_usage(datamodel)
                 self:flush()
             end
         end
+    end
+
+    for _ in test_mb:unpack() do
+        percent = 0
+    end
+
+    if percent <= 100 then
+        percent = percent + 1
+        world:pub {"ui_message", "set_percent", percent}
     end
 
     iobject.flush()
