@@ -461,9 +461,9 @@
                 <collapsed-bar id = "manual-queue" init-expanded = "false" min-width = "12.50vmin" max-width = "auto" style = "height: 35vmin; flex-direction: row; overflow: hidden;">
                     <div data-for = "manual_queue" sprite="abc" style = "flex-direction: row; pointer-events: none;">
                         <div style = "width: 0.5vmin;" />
-                        <workbutton data-event-click="clickCollapsedBar(it_index)">
+                        <workbutton data-event-click="clickCollapsedBar(it_index)" style="background-color:rgb(250,205,9);width: 13vmin; height: 13vmin;">
                             <div class="workbutton-bg" data-style-background-image = "it.icon" style = "pointer-events: none;" />
-                            <div class="workbutton-text" style = "pointer-events: none;">{{it.name}}</div>
+                            <div class="workbutton-text" style = "pointer-events: none; -webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 2.5vmin; color: #fff; word-break: break-all; text-align: center;">{{it.name}}</div>
                             <div class = "progressbar-half-cycle-container" style = "left: 0%; pointer-events: none;">
                                 <div class = "progressbar-half-cycle-left" data-style-transform = "progress_bar_left" style = "pointer-events: none;" data-if = "it_index == 0" />
                                 <div class = "progressbar-half-cycle-left" style = "pointer-events: none;" data-if = "it_index > 0" />
