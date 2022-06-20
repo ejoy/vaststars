@@ -90,8 +90,6 @@ function M:stage_ui_update(datamodel)
     end
 
     for _, _, _, name, count in check_material_mb:unpack() do
-        print("check_material", name, count)
-
         local output = imanual.evaluate(solver, gameplay_core.manual_chest(), gameplay_core.get_world():manual_container(), {{name, count}})
         if not output then
             datamodel.material_shortages = true
