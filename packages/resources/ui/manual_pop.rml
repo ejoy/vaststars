@@ -120,6 +120,7 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local default_select_item = {name = " ", time = 0, ingredients = {}}
+            local default_select_count <const> = 1
             local start = window.createModel "start" {
                 recipe_category = {},
                 manual_recipe = {},
@@ -127,7 +128,7 @@
                 catalog_index = 1,
                 page_items = {},
                 select_item = default_select_item,
-                select_item_count = 0,
+                select_item_count = default_select_count,
                 material_shortages = false,
             }
 
@@ -149,7 +150,7 @@
                 table.sort(start.page_items, function(a, b) return a.order < b.order end)
 
                 start.select_item = default_select_item
-                start.select_item_count = 0
+                start.select_item_count = default_select_count
 
                 -- <!-- tag page begin -->
                 select_item = nil
@@ -183,7 +184,7 @@
             end
 
             function start.clickResetItemCount(event)
-                start.select_item_count = 0
+                start.select_item_count = default_select_count
                 ui_sys:pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
@@ -198,7 +199,7 @@
                     return
                 end
                 start.select_item = item
-                start.select_item_count = 0
+                start.select_item_count = default_select_count
                 ui_sys:pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
