@@ -289,8 +289,6 @@
             }
         </style>
         <script type="text/x-lua" >
-            local start = window.createModel "start" {
-            }
         </script>
     </head>
     <body>

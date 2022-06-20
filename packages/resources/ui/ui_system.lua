@@ -1,6 +1,7 @@
 local json = require "json"
 local json_encode = json.encode
 local json_decode = json.decode
+local tracedoc = require "lua.tracedoc"
 
 local m = {}
 function m:world_pub(msg)
@@ -50,34 +51,11 @@ function m:addEventListener(event_funcs)
     end)
 end
 
-local function patch(datamodel, diff, func)
-    local t = {}
-	local n = #diff
-	for i = 2, n, 2 do
-        assert(diff[i] ~= json.null)
+function m:createDataMode(name, init)
+    local doc = tracedoc.new(init)
+    local datamodel = window.createModel(name)(init)
+    datamodel.mapping = nil
 
-        local k, v = diff[i], diff[i+1]
-		datamodel[k] = v
-        if type(v) == "table" then
-            datamodel(k)
-        end
-
-        t[k] = v
-	end
-	if n % 2 == 0 then
-        assert(false) -- 目前不存在删除 key 的情况
-		-- remove keys
-		for _, v in ipairs(diff[n]) do
-			datamodel[v] = nil
-		end
-	end
-    if func then
-        func(t)
-    end
-	return datamodel
-end
-
-function m:setDataModel(datamodel, func)
     window.addEventListener("message", function(event)
         if not event.data then
             console.log("event data is nil")
@@ -93,8 +71,25 @@ function m:setDataModel(datamodel, func)
             return
         end
 
-        patch(datamodel, res.ud, func)
+        local diff = res.ud
+        tracedoc.patch(doc, diff)
+        tracedoc.patch(datamodel, diff)
+
+        for k in pairs(diff.doc) do
+            datamodel(k)
+        end
+
+        if datamodel.mapping then
+            tracedoc.mapupdate(doc, datamodel.mapping)
+        end
+        tracedoc.commit(doc)
     end)
+
+    return datamodel
+end
+
+function m:mapping(datamodel, changeset)
+    datamodel.mapping = tracedoc.changeset(changeset or {})
 end
 
 return m

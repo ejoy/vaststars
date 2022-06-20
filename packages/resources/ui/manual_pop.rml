@@ -121,7 +121,7 @@
             local ui_sys = require "ui_system"
             local default_select_item = {name = " ", time = 0, ingredients = {}}
             local default_select_count <const> = 1
-            local start = window.createModel "start" {
+            local start = ui_sys:createDataMode("start", {
                 recipe_category = {},
                 manual_recipe = {},
 
@@ -131,7 +131,7 @@
                 select_item_count = default_select_count,
                 last_select_item_count = default_select_count,
                 material_shortages = false,
-            }
+            })
 
             function start.clickClose(event)
                 ui_sys:close()
@@ -239,27 +239,33 @@
             end)
             -- <!-- tag page end -->
 
-            ui_sys:setDataModel(start, function(patch)
-                if patch.manual_recipe and start.recipe_category[1] then
-                    local category = start.recipe_category[1].group
-                    for _, item in pairs(start.manual_recipe) do
-                        if item.category == category then
-                            start.page_items[#start.page_items + 1] = item
+            ui_sys:mapping(start, {
+                {
+                    "manual_recipe",
+                    function()
+                        start.page_items = {}
+                        if start.recipe_category[1] then
+                            local category = start.recipe_category[1].group
+                            for _, item in pairs(start.manual_recipe) do
+                                if item.category == category then
+                                    start.page_items[#start.page_items + 1] = item
+                                end
+                            end
+                            table.sort(start.page_items, function(a, b) return a.order < b.order end)
+
+                            start.page:on_dirty_all(#start.page_items)
                         end
                     end
-                    table.sort(start.page_items, function(a, b) return a.order < b.order end)
-                    
-                    start.page:on_dirty_all(#start.page_items)
-                end             
-                if patch.recipe_index then
-                    clickItem(start.recipe_index)
-                end
-                if patch.material_shortages then
-                    if start.material_shortages then
-                        start.select_item_count = 0
+                },
+                {
+                    "material_shortages",
+                    function()
+                        if start.material_shortages then
+                            start.select_item_count = 0
+                        end
                     end
-                end
-            end)
+                }
+            })
         </script>
     </head>
     <body>

@@ -1,5 +1,5 @@
 local ui_sys = require "ui_system"
-local start = window.createModel "start" {
+local start = ui_sys:createDataMode("start", {
     object_id = 0,
     background = "",
     is_chest = false,
@@ -14,7 +14,7 @@ local start = window.createModel "start" {
     slot_count = 0,
     show_item_info = false,
     show = false,
-}
+})
 
 function start.ClickBuilding(event)
     start.show = not start.show
@@ -98,15 +98,6 @@ function start.clickManual(event)
     ui_sys:open("manual_pop.rml")
 end
 
-ui_sys:setDataModel(start, function(patch)
-    if patch.inventory then
-        if start.cur_item_category == "" then
-            start.cur_item_category = start.item_category[1].category or ""
-        end
-        update_category(start.cur_item_category)
-    end
-end)
-
 -- <!-- tag page begin -->
 local function page_item_renderer(index)
     if index > #start.sub_inventory then
@@ -174,3 +165,15 @@ window.customElements.define("page", function(e)
     start.page = pageclass.create(document, e, page_item_renderer, page_item_detail_renderer)
 end)
 -- <!-- tag page end -->
+
+ui_sys:mapping(start, {
+    {
+        "inventory",
+        function()
+            if start.cur_item_category == "" and start.item_category[1] then
+                start.cur_item_category = start.item_category[1].category or ""
+            end
+            update_category(start.cur_item_category)
+        end
+    }
+})

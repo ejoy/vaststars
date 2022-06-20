@@ -167,14 +167,14 @@
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua">
             local ui_sys = require "ui_system"
-            local start = window.createModel "start" {
+            local start = ui_sys:createDataMode("start" {
                 chest_object_id = 0,
                 item_category = {},
                 inventory = {},
 
                 sub_inventory = {},
                 cur_item_category = "",
-            }
+            })
 
             -- <!-- tag page begin -->
             local select_item_index
@@ -204,8 +204,6 @@
             function start.clickClose(evnet)
                 ui_sys:close()
             end
-
-            ui_sys:setDataModel(start)
 
             -- <!-- tag page begin -->
             local function page_item_renderer(index)

@@ -244,7 +244,8 @@
             }
         </style>
         <script type="text/x-lua" >
-            local start = window.createModel "start" {
+            local ui_sys = require "ui_system"
+            local start = ui_sys:createDataMode("start", {
             }
         </script>
     </head>

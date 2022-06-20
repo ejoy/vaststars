@@ -5,8 +5,7 @@ local irmlui = ecs.import.interface "ant.rmlui|irmlui"
 local json = import_package "ant.json"
 local json_encode = json.encode
 local json_decode = json.decode
-local syncobj = require "utility.syncobj"
-local syncobj_source = syncobj.source()
+local tracedoc = require "utility.tracedoc"
 local ltask = require "ltask"
 local ltask_now = ltask.now
 local table_unpack = table.unpack
@@ -36,14 +35,13 @@ local function open(url, ...)
     local binding = window_bindings[url]
     if binding then
         binding.param = {...}
-        binding.datamodel = syncobj_source:new(binding.template:create(...))
+        binding.datamodel = tracedoc.new(binding.template:create(...))
         binding.template:flush()
         datamodel_changed[url] = true
         return binding.window
     end
 
     binding = {}
-    binding.last_timestamp = 0
     binding.window = irmlui.open(url)
     binding.window.addEventListener("message", function(event)
         if not event.data then
@@ -83,22 +81,24 @@ local function open(url, ...)
     function binding.template:flush()
         datamodel_changed[url] = nil
 
-        if not syncobj_source:changed(binding.datamodel) then
+        if not tracedoc.changed(binding.datamodel) then
             return
         end
 
         local ud = {}
         ud.event = "__DATAMODEL"
-        ud.ud = syncobj_source:diff(binding.datamodel)
+        ud.ud = tracedoc.diff(binding.datamodel)
         binding.window.postMessage(json_encode(ud))
 
         for _, func in ipairs(datamodel_listener) do
             func(url, ud.ud)
         end
+
+        tracedoc.commit(binding.datamodel)
     end
 
     binding.param = {...}
-    binding.datamodel = syncobj_source:new(binding.template:create(...))
+    binding.datamodel = tracedoc.new(binding.template:create(...))
     if binding.template.onload then
         binding.template.onload(...)
     end
@@ -166,19 +166,14 @@ function ui_system.ui_update()
     for url in pairs(stage_ui_update) do
         local binding = window_bindings[url]
         binding.template:stage_ui_update(binding.datamodel, table_unpack(binding.param))
-        if syncobj_source:changed(binding.datamodel) then
+        if tracedoc.changed(binding.datamodel) then
             datamodel_changed[url] = true
         end
     end
 
-    local current = gettime()
     for url in pairs(datamodel_changed) do
         local binding = window_bindings[url]
         if binding then
-            if current - binding.last_timestamp < 1000 then
-                goto continue
-            end
-            binding.last_timestamp = current
             binding.template:flush()
         end
         ::continue::
@@ -189,7 +184,7 @@ function ui_system.camera_usage()
     for url in pairs(stage_camera_usage) do
         local binding = window_bindings[url]
         binding.template:stage_camera_usage(binding.datamodel, table_unpack(binding.param))
-        if syncobj_source:changed(binding.datamodel) then
+        if tracedoc.changed(binding.datamodel) then
             datamodel_changed[url] = true
         end
     end
@@ -223,7 +218,7 @@ function iui.update(url, event, ...)
     end
 
     func(binding.template, binding.datamodel, ...)
-    if syncobj_source:changed(binding.datamodel) then
+    if tracedoc.changed(binding.datamodel) then
         datamodel_changed[url] = true
     end
 end

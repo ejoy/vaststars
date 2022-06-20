@@ -44,7 +44,7 @@
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = window.createModel "start" {
+            local start = ui_sys:createDataMode("start", {
                 show_rotate = false,
                 show_pickup_material = false,
                 show_set_recipe = false,
@@ -52,7 +52,7 @@
                 object_id = 0,
                 left = "0vmin",
                 top = "0vmin",
-            }
+            })
 
             function start.clickConstructRotate(event)
                 ui_sys:pub {"rotate", start.object_id}
@@ -85,7 +85,6 @@
                 end,
             })
 
-            ui_sys:setDataModel(start)
             window.onload = function()
                 ui_sys:pub {"open_build_function_pop", start.object_id}
             end

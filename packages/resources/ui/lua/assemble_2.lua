@@ -1,5 +1,5 @@
 local ui_sys = require "ui_system"
-local start = window.createModel "start" {
+local start = ui_sys:createDataMode("start", {
     mode = "init", -- "init"/"fuel"/"material"/"plugin"
     machine_item = false,
 
@@ -14,7 +14,7 @@ local start = window.createModel "start" {
     recipe_results_count = {},     -- 组装机产出材料个数 = {{icon = xx, count = xx}, ...}
     progress = 0, -- 进度
     inventory = {}, -- {{icon = xx, count = xx, name = xx}, ...}
-}
+})
 
 function start.ClickMachineItem(event)
     start.machine_item = not start.machine_item
@@ -49,17 +49,20 @@ end
 local select_item_index
 -- <!-- tag page end -->
 
-ui_sys:setDataModel(start, function(patch)
-    if patch.inventory then
-        -- <!-- tag page begin -->
-        start.page:on_dirty_all(#start.inventory)
-        if select_item_index then
-            local v = start.page:get_item_info(select_item_index)
-            start.page:show_detail(v, true)
+ui_sys:mapping(start, {
+    {
+        "inventory",
+        function()
+            -- <!-- tag page begin -->
+            start.page:on_dirty_all(#start.inventory)
+            if select_item_index then
+                local v = start.page:get_item_info(select_item_index)
+                start.page:show_detail(v, true)
+            end
+            -- <!-- tag page end -->
         end
-        -- <!-- tag page end -->
-    end
-end)
+    },
+})
 
 -- <!-- tag page begin -->
 local function page_item_renderer(index)

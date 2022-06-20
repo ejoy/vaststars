@@ -81,7 +81,8 @@
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
-            local start = window.createModel "start" {
+            local ui_sys = require "ui_system"
+            local start = ui_sys:createDataMode("start", {
                 building_info_flag = true,
                 show = false,
                 truck_interaction_1 = false,
