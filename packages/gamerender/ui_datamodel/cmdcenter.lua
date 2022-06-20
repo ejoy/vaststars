@@ -64,12 +64,12 @@ local function get_headquater_object()
     end
 end
 
-local function update(datamodel, object_id)
+local function get_inventory(object_id)
+    local inventory = {}
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if e then
         -- 更新背包界面对应的道具
-        local inventory = {}
         local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
         for id, count in pairs(item_counts) do
             local typeobject_item = assert(iprototype.queryById(id))
@@ -92,9 +92,12 @@ local function update(datamodel, object_id)
                 stack = stack - typeobject_item.stack
             end
         end
-
-        datamodel.inventory = inventory
     end
+    return inventory
+end
+
+local function update(datamodel, object_id)
+    datamodel.inventory = get_inventory(object_id)
 end
 
 ---------------
@@ -109,15 +112,13 @@ function M:create(object_id)
         prototype_name = iprototype.show_prototype_name(typeobject),
         background = typeobject.background,
         item_category = item_category,
-        inventory = {},
+        inventory = get_inventory(object_id),
         is_chest = not typeobject.headquater,
         item_prototype_name = "",
     }
 end
 
 function M:stage_ui_update(datamodel, object_id)
-    update(datamodel, datamodel.object_id)
-
     for _, _, _, prototype in click_item_mb:unpack() do
         local typeobject = iprototype.queryById(prototype)
         datamodel.show_item_info = true
@@ -214,6 +215,9 @@ function M:stage_ui_update(datamodel, object_id)
         self:flush()
         ::continue::
     end
+
+    update(datamodel, datamodel.object_id) -- TODO
+    self:flush()
 end
 
 function M:update(datamodel)

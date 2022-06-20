@@ -202,11 +202,11 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = window.createModel "start" {
+            local start = ui_sys:createDataMode("start", {
                 queue = {},
                 ingredients = {},
                 ingredients_count= 0,
-            }
+            })
 
             function start.clickClose(event)
                 ui_sys:close()
@@ -216,17 +216,25 @@
                 ui_sys:pub {"cancel", index}
             end
 
-            ui_sys:setDataModel(start, function(patch)
-                if patch then
-                    -- <!-- tag list begin -->
-                    start.list:on_dirty_all(#start.queue)
-                    -- <!-- tag list end -->
-                    -- <!-- tag page begin -->
-                    start.ingredients_count = #start.ingredients
-                    start.page:on_dirty_all(start.ingredients_count)
-                    -- <!-- tag page end -->
-                end
-            end)
+            ui_sys:mapping(start, {
+                {
+                    "queue",
+                    function()
+                        -- <!-- tag list begin -->
+                        start.list:on_dirty_all(#start.queue)
+                        -- <!-- tag list end -->
+                    end
+                },
+                {
+                    "ingredients",
+                    function()
+                        start.ingredients_count = #start.ingredients
+                        -- <!-- tag page begin -->
+                        start.page:on_dirty_all(start.ingredients_count)
+                        -- <!-- tag page end -->
+                    end
+                }
+            })
 
             -- <!-- tag list begin -->
             local listclass = require "list"

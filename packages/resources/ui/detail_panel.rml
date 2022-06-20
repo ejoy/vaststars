@@ -71,7 +71,7 @@
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = window.createModel "start" {
+            local start = ui_sys:createDataMode("start", {
                 object_id = 0,
                 property_list = {},
                 icon = "",
@@ -79,16 +79,13 @@
 
                 detail_panel_status_icon = "textures/work_status_icon/normal.texture",
                 detail_panel_status_desc = "正常工作",
-            }
+            })
 
             ui_sys:addEventListener({
                 ["leave"] = function()
                     ui_sys:close()
                 end,
             })
-
-            ui_sys:setDataModel(start)
-
         </script>
     </head>
     <body style = "pointer-events: none;">

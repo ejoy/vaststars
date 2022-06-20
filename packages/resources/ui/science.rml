@@ -302,7 +302,7 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = window.createModel "start" {
+            local start = ui_sys:createDataMode("start", {
                 show_finish = false,
                 current_icon = "none",
                 current_desc = "none",
@@ -311,11 +311,7 @@
                 return_title = " ",
                 selected_tech = nil,
                 selected_recipe = nil
-            }
-            window.addEventListener('mousemove', function(event)
-                if event.button then
-                end
-            end)
+            })
             local function clickTech(index)
                 ui_sys:pub{"click_tech", index}
             end
@@ -429,24 +425,30 @@
             window.customElements.define("detaillist", function(e)
                 start.detaillist = listclass.create(document, e, 0, detail_item_renderer, pop_item_renderer)
             end)
-            ui_sys:setDataModel(start, function(patch)
-                if patch.techitems then
-                    console.log("techllist dirty all")
-                    start.selected_tech = nil
-                    start.list:on_dirty_all(#start.techitems)
-                end
-                if patch.current_tech then
-                    console.log("detaillist dirty")
-                    start.selected_recipe = nil
-                    start.detaillist:on_dirty_all(#start.current_tech.detail)
-                end
+            ui_sys:mapping(start, {
+                {
+                    "techitems",
+                    function()
+                        start.selected_tech = nil
+                        start.list:on_dirty_all(#start.techitems)
+                    end
+                },
+                {
+                    "current_tech",
+                    function()
+                        start.selected_tech = nil
+                        start.detaillist:on_dirty_all(#start.current_tech.detail)
+                    end
+                },
+                {
+                    "current_progress",
+                    function()
+                        start.selected_tech = nil
+                        start.list:on_dirty(start.current_tech.index)
+                    end
+                },            
+            })
 
-                if patch.current_progress then
-                    console.log("techllist dirty", start.current_tech.index)
-                    start.selected_tech = nil
-                    start.list:on_dirty(start.current_tech.index)
-                end
-            end)
             function start.showFinish(event)
                 start.show_finish = true
                 start.return_title = "已完成科技"

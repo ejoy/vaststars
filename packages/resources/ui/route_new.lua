@@ -1,5 +1,5 @@
 local ui_sys = require "ui_system"
-local start = window.createModel "start" {
+local start = ui_sys:createDataMode("start", {
     show_select_route = false,
     error_tip = " ",
     endpoint_names = {

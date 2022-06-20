@@ -46,10 +46,10 @@
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = window.createModel "start" {
+            local start = ui_sys:createDataMode("start", {
                 archival_files = {},
                 show_archival_files = false,
-            }
+            })
 
             function start.clickSave(event)
                 ui_sys:pub {"save"}
@@ -70,7 +70,6 @@
                 ui_sys:close()
             end
 
-            ui_sys:setDataModel(start)
         </script>
     </head>
     <body style = "background-color: black;">

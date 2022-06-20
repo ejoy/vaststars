@@ -116,14 +116,14 @@
         </style>
         <script type="text/x-lua">
             local ui_sys = require "ui_system"
-            local start = window.createModel "start" {
+            local start = ui_sys:createDataMode("start", {
                 chest_object_id = 0,
                 item_category = {},
                 inventory = {},
 
                 sub_inventory = {},
                 cur_item_category = "",
-            }
+            })
 
             -- <!-- tag page begin -->
             local select_item_index
@@ -154,14 +154,17 @@
                 ui_sys:close()
             end
 
-            ui_sys:setDataModel(start, function(patch)
-                if patch.inventory then
-                    if start.cur_item_category == "" then
-                        start.cur_item_category = start.item_category[1].category or ""
+            ui_sys:mapping(start, {
+                {
+                    "inventory",
+                    function()
+                        if start.cur_item_category == "" then
+                            start.cur_item_category = start.item_category[1].category or ""
+                        end
+                        update_category(start.cur_item_category)
                     end
-                    update_category(start.cur_item_category)
-                end
-            end)
+                }
+            })
 
             -- <!-- tag page begin -->
             local function page_item_renderer(index)

@@ -214,7 +214,7 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local unconfirmed_double_confirm_continuation = function() end
-            local start = window.createModel "start" {
+            local start = ui_sys:createDataMode("start", {
                 fps_text = " ",           -- fps 信息
                 drawcall_text = " ",      -- drawcall 信息
                 construct_menu = {},
@@ -237,7 +237,7 @@
                 current_tech_name = "none",     --当前科技名字
                 current_tech_progress = "0%",   --当前科技进度
                 finish_animation = "0s linear 0s enlarge"
-            }
+            })
             function start.clickConstructBegin(event)
                 ui_sys:pub {"construct_begin", false}
 
@@ -365,11 +365,16 @@
                     start.progress_bar_right = string.format("rotate(%ddeg)", math.floor(deg))
                 end
             end
-            ui_sys:setDataModel(start, function(patch)
-                if patch.manual_queue and start.manual_queue[1] then
-                    manual_progress(start.manual_queue[1].progress)
-                end
-            end)
+            ui_sys:mapping(start, {
+                {
+                    "manual_queue",
+                    function()
+                        if start.manual_queue[1] then
+                            manual_progress(start.manual_queue[1].progress)
+                        end
+                    end
+                }
+            })
 
             start.progress_bar_left = "rotate(0deg)"
             start.progress_bar_right = "rotate(0deg)"
@@ -458,7 +463,7 @@
 
             <!-- 右下角手搓队列 -->
             <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "cur_edit_mode == ''">
-                <collapsed-bar id = "manual-queue" init-expanded = "false" min-width = "12.50vmin" max-width = "auto" style = "height: 35vmin; flex-direction: row; overflow: hidden;">
+                <collapsed-bar id = "manual-queue" init-expanded = "false" min-width = "13.50vmin" max-width = "auto" style = "height: 35vmin; flex-direction: row; overflow: hidden;">
                     <div data-for = "manual_queue" sprite="abc" style = "flex-direction: row; pointer-events: none;">
                         <div style = "width: 0.5vmin;" />
                         <workbutton data-event-click="clickCollapsedBar(it_index)" style="background-color:rgb(250,205,9);width: 13vmin; height: 13vmin;">
