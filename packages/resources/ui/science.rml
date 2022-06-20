@@ -403,7 +403,7 @@
                     </div>
                     ]]):format(idata.icon, idata.count, idata.name)
                 end
-                inoutstr = inoutstr .. [[<div class="small-arrow"><div class="recipe-time">10s</div></div>]]
+                inoutstr = inoutstr .. ([[<div class="small-arrow"><div class="recipe-time">%s</div></div>]]):format(detail.time)
                 for _, outdata in ipairs(detail.output) do
                     inoutstr = inoutstr .. ([[
                     <div class="small-item-new" style='background-image: "%s";'>

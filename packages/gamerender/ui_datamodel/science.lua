@@ -5,6 +5,7 @@ local gameplay_core = require "gameplay.core"
 local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
+local itypes = require "gameplay.interface.types"
 local click_tech_event = mailbox:sub {"click_tech"}
 local close_techui_event = mailbox:sub {"close_techui"}
 local show_list_event = mailbox:sub {"show_list"}
@@ -46,7 +47,8 @@ local function get_techlist(tech_list)
                         icon = recipe_detail.icon,
                         desc = recipe_detail.description,
                         input = input,
-                        output = output
+                        output = output,
+                        time = itypes.time(recipe_detail.time)
                     }
                 end
             end
