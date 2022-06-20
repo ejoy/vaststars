@@ -5,8 +5,10 @@ local w = world.w
 local iprototype = require "gameplay.interface.prototype"
 local itypes = require "gameplay.interface.types"
 local gameplay_core = require "gameplay.core"
-local manual = require "gameplay.interface.manual"
+local imanual = require "gameplay.interface.manual"
 local manual_add_mb = mailbox:sub {"manual_add"}
+local check_material_mb = mailbox:sub {"check_material"}
+local imanualcommon = require "ui_datamodel.common.manual"
 
 local recipe_category = import_package "vaststars.prototype"("recipe_category")
 local recipe_category_to_group = {}
@@ -65,7 +67,7 @@ for _, typeobject in pairs(iprototype.all_prototype_name("recipe")) do
     end
 end
 
-local solver = manual.create()
+local solver = imanual.create()
 
 local M = {}
 function M:create()
@@ -78,12 +80,23 @@ end
 function M:stage_ui_update(datamodel)
     for _, _, _, name, count in manual_add_mb:unpack() do
         local t = gameplay_core.get_world():manual()
-        local output = manual.evaluate(solver, gameplay_core.manual_chest(), gameplay_core.get_world():manual_container(), {{name, count}})
+        local output = imanual.evaluate(solver, gameplay_core.manual_chest(), gameplay_core.get_world():manual_container(), {{name, count}})
         if not output then
-            log.error("raw material shortages")
+            log.error("material shortages")
         else
             table.move(output, 1, #output, #t + 1, t)
             gameplay_core.get_world():manual(t)
+        end
+    end
+
+    for _, _, _, name, count in check_material_mb:unpack() do
+        print("check_material", name, count)
+
+        local output = imanual.evaluate(solver, gameplay_core.manual_chest(), gameplay_core.get_world():manual_container(), {{name, count}})
+        if not output then
+            datamodel.material_shortages = true
+        else
+            datamodel.material_shortages = false
         end
     end
 end

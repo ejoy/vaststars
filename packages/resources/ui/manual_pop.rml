@@ -128,6 +128,7 @@
                 page_items = {},
                 select_item = default_select_item,
                 select_item_count = 0,
+                material_shortages = false,
             }
 
             function start.clickClose(event)
@@ -161,6 +162,10 @@
                     console.log("found no select item")
                     return
                 end
+                if start.material_shortages then
+                    console.log("material shortages")
+                    return
+                end
                 if start.select_item_count <= 0 then
                     console.log("item count <= 0")
                     return
@@ -170,11 +175,16 @@
             end
 
             function start.clickItemCountPreTime(event, count)
+                if start.material_shortages then
+                    return
+                end
                 start.select_item_count = math.floor(start.select_item_count + count)
+                ui_sys:pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
             function start.clickResetItemCount(event)
                 start.select_item_count = 0
+                ui_sys:pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
             function start.clickManualQueue(event)
@@ -189,6 +199,7 @@
                 end
                 start.select_item = item
                 start.select_item_count = 0
+                ui_sys:pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
             local function page_item_renderer(index)
@@ -259,7 +270,6 @@
 
                 <div class = "draw-line"/>
 
-
                 <div class = "tab-container" style="flex-grow: 1;">
                     <div data-for = "recipe_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
                         <workbutton data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index + 1 == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'" style = "width: 100%;">
@@ -291,7 +301,7 @@
                                 <div class = "materials-icon" data-style-background-image = "it.icon" />
                                 <div class = "materials-name">{{it.name}}</div>
                             </div>
-                            <div class = "materials-num">X{{it.count}}</div>
+                            <div class = "materials-num" data-style-color = "material_shortages ? 'rgb(255, 0, 0)' : 'rgb(255, 255, 255)'">X{{it.count}}</div>
                         </div>
                     </div>
                 </div>
@@ -309,20 +319,20 @@
                                 <div class = "materials-icon" data-style-background-image = "select_item.icon" />
                                 <div class = "materials-name">{{select_item.name}}</div>
                             </div>
-                            <div class = "materials-num">X{{select_item_count}}</div>
+                            <div class = "materials-num" data-style-color = "material_shortages ? 'rgb(255, 0, 0)' : 'rgb(255, 255, 255)'">X{{select_item_count}}</div>
                         </div>
                     </div>
                     <div class="row" style="height: 30%; width:100%; justify-content: space-evenly;">
                         <button class = "button-increase-item" style='background-image:"textures/factory/return.texture";background-color: rgb(255, 230, 0);' data-event-click = "clickResetItemCount()"/>
-                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-five.texture";' data-event-click = "clickItemCountPreTime(5)" />
-                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-one.texture";'  data-event-click = "clickItemCountPreTime(1)" />
+                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-five.texture";' data-style-background-color="material_shortages ? 'rgb(108, 108, 108)' : 'rgb(19, 175, 240)'" data-event-click = "clickItemCountPreTime(5)" />
+                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-one.texture";'  data-style-background-color="material_shortages ? 'rgb(108, 108, 108)' : 'rgb(19, 175, 240)'" data-event-click = "clickItemCountPreTime(1)" />
                     </div>
                 </div>
                 <!-- 物品生产数量 end -->
 
                 <!-- 开始生产按钮 start -->
                 <div class = "recipe-button-block">
-                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115); height: 12vmin;" data-event-click = "clickStartManual()" data-if = "select_item.name != ' '">
+                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115); height: 12vmin;" data-event-click = "clickStartManual()" data-if = "select_item.name != ' '" data-style-background-color="material_shortages ? 'rgb(108, 108, 108)' : 'rgb(52, 207, 115)'">
                         <div class = "recipe-name-text" style="font-size: 5vmin; margin:0; padding-bottom: 1vmin;">开始生产</div>
                     </button>
                 </div>
