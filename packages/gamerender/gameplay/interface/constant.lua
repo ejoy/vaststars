@@ -11,5 +11,6 @@ M.ROTATORS = {
     S = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
     W = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
 }
+M.UPS = 50
 
 return M

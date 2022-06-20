@@ -3,7 +3,7 @@ local irecipe = require "gameplay.interface.recipe"
 local objects = require "objects"
 local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
-local math_max = math.max
+local itypes = require "gameplay.interface.types"
 
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
@@ -53,12 +53,6 @@ local function get(object_id)
         recipe_ingredients_count = recipe_ingredients_count,
         recipe_results_count = recipe_results_count,
     }
-end
-
-local function get_percent(progress, total)
-    assert(progress <= total)
-    progress = math_max(progress, 0)
-    return (total - progress) / total
 end
 
 ---------------
@@ -116,7 +110,7 @@ function M:stage_ui_update(datamodel, object_id)
     if assembling.status == STATUS_IDLE then
         datamodel.progress = "0%"
     else
-        datamodel.progress = ("%0.0f%%"):format(get_percent(progress, total_progress) * 100)
+        datamodel.progress = itypes.progress_str(progress, total_progress)
     end
 
     -- 更新背包界面对应的道具

@@ -166,15 +166,7 @@
             end)
             -- <!-- tag page end -->
 
-            ui_sys:setDataModel(start, function(patch)
-                if patch.items then
-                    start.page:on_dirty_all(#start.items)
-                end
-                
-                if patch.recipe_index then
-                    clickItem(patch.recipe_index)
-                end
-            end)
+            ui_sys:setDataModel(start)
         </script>
     </head>
     <body>

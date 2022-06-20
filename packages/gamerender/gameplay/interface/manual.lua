@@ -24,7 +24,7 @@ local function solverCreate()
     local intermediate = {}
 
     local function insertManual(mainoutput, info)
-        manual[mainoutput] = info
+        manual[info.name] = info
     end
 
     for name, info in pairs(prototype.each "recipe") do
@@ -67,10 +67,10 @@ local function solverEvaluate(solver, memory, register, input)
     local manual = solver.manual
     local intermediate = solver.intermediate
     local function push_crafting(item)
-        output[#output+1] = {"crafting", item}
+        table.insert(output, 1,  {"crafting", item})
     end
     local function push_finish(item)
-        output[#output+1] = {"finish", item}
+        table.insert(output, 1,  {"finish", item})
     end
     local function do_crafting(recipe)
         for _, s in ipairs(recipe.input) do

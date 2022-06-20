@@ -222,7 +222,7 @@
                 end
                 
                 if patch.recipe_index then
-                    clickItem(patch.recipe_index)
+                    clickItem(start.recipe_index)
                 end
             end)
         </script>
