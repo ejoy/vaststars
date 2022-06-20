@@ -129,6 +129,7 @@
                 page_items = {},
                 select_item = default_select_item,
                 select_item_count = default_select_count,
+                last_select_item_count = default_select_count,
                 material_shortages = false,
             }
 
@@ -173,18 +174,20 @@
                 end
                 ui_sys:pub {"manual_add", start.select_item.name, start.select_item_count}
                 ui_sys:close()
+                ui_sys:close("cmdcenter.rml")
             end
 
             function start.clickItemCountPreTime(event, count)
                 if start.material_shortages then
                     return
                 end
+                start.last_select_item_count = start.select_item_count
                 start.select_item_count = math.floor(start.select_item_count + count)
                 ui_sys:pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
-            function start.clickResetItemCount(event)
-                start.select_item_count = default_select_count
+            function start.clickRevertItemCount(event)
+                start.select_item_count = start.last_select_item_count
                 ui_sys:pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
@@ -250,6 +253,11 @@
                 end             
                 if patch.recipe_index then
                     clickItem(start.recipe_index)
+                end
+                if patch.material_shortages then
+                    if start.material_shortages then
+                        start.select_item_count = 0
+                    end
                 end
             end)
         </script>
@@ -320,11 +328,11 @@
                                 <div class = "materials-icon" data-style-background-image = "select_item.icon" />
                                 <div class = "materials-name">{{select_item.name}}</div>
                             </div>
-                            <div class = "materials-num" data-style-color = "material_shortages ? 'rgb(255, 0, 0)' : 'rgb(255, 255, 255)'">X{{select_item_count}}</div>
+                            <div class = "materials-num">X{{select_item_count}}</div>
                         </div>
                     </div>
                     <div class="row" style="height: 30%; width:100%; justify-content: space-evenly;">
-                        <button class = "button-increase-item" style='background-image:"textures/factory/return.texture";background-color: rgb(255, 230, 0);' data-event-click = "clickResetItemCount()"/>
+                        <button class = "button-increase-item" style='background-image:"textures/factory/return.texture";background-color: rgb(255, 230, 0);' data-event-click = "clickRevertItemCount()"/>
                         <button class = "button-increase-item" style='background-image:"textures/factory/plus-five.texture";' data-style-background-color="material_shortages ? 'rgb(108, 108, 108)' : 'rgb(19, 175, 240)'" data-event-click = "clickItemCountPreTime(5)" />
                         <button class = "button-increase-item" style='background-image:"textures/factory/plus-one.texture";'  data-style-background-color="material_shortages ? 'rgb(108, 108, 108)' : 'rgb(19, 175, 240)'" data-event-click = "clickItemCountPreTime(1)" />
                     </div>

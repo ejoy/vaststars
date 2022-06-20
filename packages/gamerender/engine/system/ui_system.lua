@@ -58,7 +58,8 @@ local function open(url, ...)
         end
 
         if res.event == "__CLOSE" then
-            world:pub {"rmlui_message_close", url}
+            local close_url = res.ud[1] or url
+            world:pub {"rmlui_message_close", close_url}
         elseif res.event == "__OPEN" then
             world:pub {"rmlui_message", res.event, table_unpack(res.ud)}
         elseif res.event == "__PUB" then
