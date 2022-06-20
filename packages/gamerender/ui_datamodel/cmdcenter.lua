@@ -112,7 +112,6 @@ function M:create(object_id)
         inventory = {},
         is_chest = not typeobject.headquater,
         item_prototype_name = "",
-        item_id_to_info = {},
     }
 end
 

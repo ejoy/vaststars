@@ -74,34 +74,34 @@ function M.create(width, height)
        world:remove_entity(e.id)
     end
 
-    -- ecs.create_entity {
-    --     policy = {
-    --         "ant.scene|scene_object",
-    --         "ant.terrain|shape_terrain",
-    --         "ant.general|name",
-    --     },
-    --     data = {
-    --         name = "shape_terrain",
-    --         scene = {
-    --             srt = srt,
-    --         },
-    --         shape_terrain = {
-    --             terrain_fields = generate_terrain_fields(width, height),
-    --             width = width,
-    --             height = height,
-    --             section_size = math.max(1, width > 4 and width//4 or width//2),
-    --             unit = unit,
-    --             edge = {
-    --                 color = 0xffe5e5e5,
-    --                 thickness = 0.08,
-    --             },
-    --         },
-    --         materials = {
-    --             shape = "/pkg/vaststars.resources/shape_terrain.material",
-    --             edge = "/pkg/vaststars.resources/shape_terrain_edge.material",
-    --         },
-    --     }
-    -- }
+    ecs.create_entity {
+        policy = {
+            "ant.scene|scene_object",
+            "vaststars.gamerender|cube_shape_terrain",
+            "ant.general|name",
+        },
+        data = {
+            name = "cube_shape_terrain",
+            scene = {
+                srt = srt,
+            },
+            shape_terrain = {
+                terrain_fields = generate_terrain_fields(width, height),
+                width = width,
+                height = height,
+                section_size = math.max(1, width > 4 and width//4 or width//2),
+                unit = unit,
+                edge = {
+                    color = 0xffe5e5e5,
+                    thickness = 0.08,
+                },
+                materials = {
+                    shape = "/pkg/vaststars.resources/shape_terrain.material",
+                    edge = "/pkg/vaststars.resources/shape_terrain_edge.material",
+                },
+            },
+        }
+    }
 end
 
 function M.verify_coord(x, y)

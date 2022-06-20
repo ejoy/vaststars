@@ -8,8 +8,7 @@
                 background = "textures/build_background/pic_lab.texture",
                 items = {}
             }
-            ui_sys:setDataModel(start, function(patch)
-            end)
+            ui_sys:setDataModel(start)
             function start.clickReturn(event)
                 ui_sys:close()
             end

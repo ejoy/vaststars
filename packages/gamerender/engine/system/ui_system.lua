@@ -229,13 +229,15 @@ end
 
 function iui.preload_datamodel_dir(dir)
     for file in fs.pairs(fs.path(dir)) do
-        local f = file:string()
-        local s = file:stem():string()
-        local func, err = loadfile(f)
-        if not func then
-            error(("error loading file '%s':\n\t%s"):format(f, err))
+        if not fs.is_directory(file) then
+            local f = file:string()
+            local s = file:stem():string()
+            local func, err = loadfile(f)
+            if not func then
+                error(("error loading file '%s':\n\t%s"):format(f, err))
+            end
+            datamodel_funcs[s .. ".rml"] = func
         end
-        datamodel_funcs[s .. ".rml"] = func
     end
 end
 
