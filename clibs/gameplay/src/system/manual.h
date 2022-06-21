@@ -16,6 +16,7 @@ struct manual_crafting {
     enum class type : uint16_t {
         crafting,
         finish,
+        separator,
     };
     struct todo {
         type type;

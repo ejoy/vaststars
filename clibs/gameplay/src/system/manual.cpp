@@ -75,7 +75,11 @@ void manual_crafting::next() {
     if (todos.empty()) {
         return;
     }
+    bool sep = todos.back().type == type::separator;
     todos.pop_back();
+    if (sep) {
+        next();
+    }
 }
 
 void manual_crafting::sync(ecs::manual& m) {
@@ -88,6 +92,7 @@ void manual_crafting::sync(ecs::manual& m) {
             ;
         return;
     }
+    assert(todos.back().type != type::separator);
     todo& td = todos.back();
     m.recipe = td.id;
     m.status = (td.type == type::crafting)
