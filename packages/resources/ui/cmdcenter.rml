@@ -101,6 +101,7 @@
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
+                height: 50%;
             }
             .small-building {
                 width:128px;
@@ -299,10 +300,10 @@
                                 <div class = "drone-title">生产建筑</div>
                             </div>
                         </div>
-                        <div style="flex-direction:row; justify-content: center; width:100%; align-items: center; height:60%;">
-                            <div data-for = "item_info">
+                        <div style="flex-direction:row; justify-content: center; width:100%; align-items: center; height:70%;" data-for = "item_info">
+                            <div data-for = "entity : it.entities">
                                 <div class="small-building-block">
-                                    <div class="small-building" data-for = "entity : it.entities" data-style-background-image = "entity.icon" />
+                                    <div class="small-building" data-style-background-image = "entity.icon" />
                                     <div class="small-building-name">组装机</div>
                                 </div>
                             </div>
