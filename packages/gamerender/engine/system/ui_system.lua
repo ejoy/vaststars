@@ -2,12 +2,8 @@ local ecs = ...
 local world = ecs.world
 
 local irmlui = ecs.import.interface "ant.rmlui|irmlui"
-local json = import_package "ant.json"
-local json_encode = json.encode
-local json_decode = json.decode
+local json = require "engine.system.json"
 local tracedoc = require "utility.tracedoc"
-local ltask = require "ltask"
-local ltask_now = ltask.now
 local table_unpack = table.unpack
 local fs = require "filesystem"
 
@@ -49,7 +45,7 @@ local function open(url, ...)
             return
         end
 
-        local res, err = json_decode(event.data)
+        local res, err = json:decode(event.data)
         if not res then
             error(("%s"):format(err))
             return
@@ -88,7 +84,7 @@ local function open(url, ...)
         local ud = {}
         ud.event = "__DATAMODEL"
         ud.ud = tracedoc.diff(binding.datamodel)
-        binding.window.postMessage(json_encode(ud))
+        binding.window.postMessage(json:encode(ud))
 
         for _, func in ipairs(datamodel_listener) do
             func(url, ud.ud)
@@ -137,11 +133,6 @@ local ui_events = {
     __WORLD_PUB = world_pub,
 }
 
-local function gettime()
-    local _, t = ltask_now() --10ms
-    return t * 10
-end
-
 local ui_system = ecs.system "ui_system"
 function ui_system.ui_update()
     local event, func
@@ -159,7 +150,7 @@ function ui_system.ui_update()
             local ud = {}
             ud.event = msg[2]
             ud.ud = {table_unpack(msg, 3, #msg)}
-            binding.window.postMessage(json_encode(ud))
+            binding.window.postMessage(json:encode(ud))
         end
     end
 
@@ -176,7 +167,6 @@ function ui_system.ui_update()
         if binding then
             binding.template:flush()
         end
-        ::continue::
     end
 end
 

@@ -58,6 +58,9 @@ end
 
 function list_meta:on_dirty(index)
     local iteminfo = self.index_map[index]
+    if not iteminfo then
+        return
+    end
     self:show_detail(iteminfo.item, false)
     if self.selected == iteminfo.item then
         self.selected = nil

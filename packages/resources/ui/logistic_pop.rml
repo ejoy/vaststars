@@ -221,7 +221,7 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys:createDataMode("start", {
+            local start = ui_sys.createDataMode("start", {
                 catalog_index = 1,
                 items = {},
                 recipe_menu = {},
@@ -236,11 +236,11 @@
             end
 
             function start.clickClose(event)
-                ui_sys:close()
+                ui_sys.close()
             end
 
             function start.clickConfirm(event)
-                ui_sys:close()
+                ui_sys.close()
             end
 
             -- <!-- tag page begin -->
@@ -298,7 +298,7 @@
                 return 1, 1
             end
 
-            ui_sys:addEventListener({
+            ui_sys.addEventListener({
                 ["INIT"] = function(recipe_menu, object_id, recipe_name)
                     local recipe_index = 1
                     start.object_id = object_id

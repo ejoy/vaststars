@@ -100,10 +100,13 @@ local function doc_read(doc, k)
 end
 
 local function doc_change(doc, k, v)
-	if not doc._dirty then
+	local function make_dirty(doc)
 		doc._dirty = true
 		local parent = doc._parent
 		while parent do
+			if getmetatable(parent) ~= tracedoc_type then
+				break
+			end
 			if parent._dirty then
 				break
 			end
@@ -111,18 +114,23 @@ local function doc_change(doc, k, v)
 			parent = parent._parent
 		end
 	end
+
 	if type(v) == "table" then
 		local vt = getmetatable(v)
 		if vt == nil then
+			make_dirty(doc)
+
 			local lv = doc._lastversion[k]
 			if getmetatable(lv) ~= tracedoc_type then
 				-- last version is not a table, new a empty one
 				lv = tracedoc.new()
+				lv._dirty = true
 				lv._parent = doc
 				doc._lastversion[k] = lv
 			elseif doc[k] == nil then
 				-- this version is clear first, deepcopy lastversion one
 				lv = tracedoc.new(lv)
+				lv._dirty = true
 				lv._parent = doc
 				doc._lastversion[k] = lv
 			end
@@ -145,8 +153,11 @@ local function doc_change(doc, k, v)
 			return
 		end
 	end
-	doc._changes[k] = v
-	doc._keys[k] = true
+	if doc[k] ~= v then
+		make_dirty(doc)
+		doc._changes[k] = v
+		doc._keys[k] = true
+	end
 end
 
 local doc_mt = {
@@ -413,39 +424,61 @@ function tracedoc.mapupdate(doc, set, filter_tag)
 end
 
 function tracedoc.diff(doc)
-	local changeset = {mod = {}, del = {}, doc = {}}
+	local changeset = {}
 	for k in pairs(doc._keys) do
 		local v = doc._changes[k]
 		if v == nil then
+			changeset.del = changeset.del or {}
 			changeset.del[#changeset.del + 1] = k
 		else
 			if getmetatable(v) == tracedoc_type then
 				assert(false)
 			else
+				changeset.mod = changeset.mod or {}
 				changeset.mod[k] = v
 			end
 		end
 	end
 	for k,v in pairs(doc._lastversion) do
 		if getmetatable(v) == tracedoc_type and v._dirty then
+			changeset.doc = changeset.doc or {}
 			changeset.doc[k] = tracedoc.diff(v)
+			if not changeset.doc[k] and tracedoc.changed(v) then
+				changeset.doc[k] = {}
+			end
 		end
+	end
+	if not next(changeset) then
+		return
 	end
 	return changeset
 end
 
 function tracedoc.patch(doc, diff)
-	for k, v in pairs(diff.doc) do
-		doc[k] = doc[k] or tracedoc.new({})
-		tracedoc.patch(doc[k], v)
+	if not diff then
+		return
 	end
 
-	for _, k in ipairs(diff.del) do
-    	doc[k] = nil
-    end
+	if diff.doc then
+		for k, v in pairs(diff.doc) do
+			if not doc[k] then
+				doc[k] = tracedoc.new({})
+				doc[k]._parent = doc
+			end
+			tracedoc.patch(doc[k], v)
+		end
+	end
 
-	for k, v in pairs(diff.mod) do
-		doc[k] = v
+	if diff.del then
+		for _, k in ipairs(diff.del) do
+			doc[k] = nil
+		end
+	end
+
+	if diff.mod then
+		for k, v in pairs(diff.mod) do
+			doc[k] = v
+		end
 	end
 end
 

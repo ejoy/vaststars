@@ -302,21 +302,24 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys:createDataMode("start", {
+            local start = ui_sys.createDataMode("start", {
                 show_finish = false,
                 current_icon = "none",
                 current_desc = "none",
                 current_running = false,
                 current_button_str = "开始",
                 return_title = " ",
-                selected_tech = nil,
-                selected_recipe = nil
+                current_tech = {},
+                techitems = {},
             })
+            start.selected_tech = nil
+            start.selected_recipe = nil
+
             local function clickTech(index)
-                ui_sys:pub{"click_tech", index}
+                ui_sys.pub{"click_tech", index}
             end
             local function clickRecipe(index)
-                ui_sys:pub{"click_recipe", index}
+                ui_sys.pub{"click_recipe", index}
             end
             local function tech_item_renderer(index)
                 local item_data = start.techitems[index]
@@ -425,7 +428,7 @@
             window.customElements.define("detaillist", function(e)
                 start.detaillist = listclass.create(document, e, 0, detail_item_renderer, pop_item_renderer)
             end)
-            ui_sys:mapping(start, {
+            ui_sys.mapping(start, {
                 {
                     "techitems",
                     function()
@@ -452,20 +455,20 @@
             function start.showFinish(event)
                 start.show_finish = true
                 start.return_title = "已完成科技"
-                ui_sys:pub {"show_list", "finish"}
+                ui_sys.pub {"show_list", "finish"}
             end
             function start.clickReturn(event)
                 if start.show_finish then
                     start.show_finish = false
                     start.return_title = "科研中心"
-                    ui_sys:pub {"show_list", "todo"}
+                    ui_sys.pub {"show_list", "todo"}
                 else
-                    ui_sys:pub {"close_techui"}
-                    ui_sys:close()
+                    ui_sys.pub {"close_techui"}
+                    ui_sys.close()
                 end
             end
             function start.startSwitch(event)
-                ui_sys:pub {"switch"}
+                ui_sys.pub {"switch"}
             end
         </script>
     </head>

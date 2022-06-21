@@ -167,7 +167,7 @@
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua">
             local ui_sys = require "ui_system"
-            local start = ui_sys:createDataMode("start" {
+            local start = ui_sys.createDataMode("start" {
                 chest_object_id = 0,
                 item_category = {},
                 inventory = {},
@@ -202,7 +202,7 @@
             end
 
             function start.clickClose(evnet)
-                ui_sys:close()
+                ui_sys.close()
             end
 
             -- <!-- tag page begin -->
@@ -237,8 +237,8 @@
                     end
                     select_item_index = index
                     start.page:show_detail(select_item_index, true)
-                    ui_sys:pub {"click_item", start.chest_object_id, start.sub_inventory[index].id, start.sub_inventory[index].count}
-                    ui_sys:close()
+                    ui_sys.pub {"click_item", start.chest_object_id, start.sub_inventory[index].id, start.sub_inventory[index].count}
+                    ui_sys.close()
                 end)
                 return item
             end

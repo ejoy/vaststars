@@ -202,21 +202,21 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys:createDataMode("start", {
+            local start = ui_sys.createDataMode("start", {
                 queue = {},
                 ingredients = {},
                 ingredients_count= 0,
             })
 
             function start.clickClose(event)
-                ui_sys:close()
+                ui_sys.close()
             end
 
             function start.clickCancel(event, index)
-                ui_sys:pub {"cancel", index}
+                ui_sys.pub {"cancel", index}
             end
 
-            ui_sys:mapping(start, {
+            ui_sys.mapping(start, {
                 {
                     "queue",
                     function()
@@ -301,7 +301,7 @@
                 <div class = "draw-line"/>
                 <!-- tag page begin -->
                 <div class="item-container" style = "width: 100%; height:80%; justify-content: flex-start;">
-                    <page width = "100%" footerheight = '4.00vmin' row='10' col='2' />
+                    <page width = "100%" height = "97%" footerheight = '4.00vmin' row='10' col='2' />
                 </div>
                 <!-- tag page end -->
                 <div style="flex-direction: row; width:100%; height:10%; justify-content: flex-end; align-items: center;">

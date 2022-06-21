@@ -90,7 +90,7 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys:createDataMode("start", {
+            local start = ui_sys.createDataMode("start", {
                 items = {},
                 task_name = " ",
                 task_desc = " ",
@@ -99,8 +99,8 @@
             })
 
             function start.clickConfirm(event)
-                ui_sys:pub {"close_taskui"}
-                ui_sys:close()
+                ui_sys.pub {"close_taskui"}
+                ui_sys.close()
             end
 
             local function page_item_renderer(index)
@@ -126,7 +126,7 @@
             end)
             -- <!-- tag page end -->
 
-            ui_sys:mapping(start, {
+            ui_sys.mapping(start, {
                 {
                     "items",
                     function()

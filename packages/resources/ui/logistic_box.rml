@@ -3,7 +3,7 @@
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys:createDataMode("start", {
+            local start = ui_sys.createDataMode("start", {
                 mode = "init", -- "init"/"fuel"/"material"/"plugin"
                 machine_item = false,
                 items = {},
@@ -40,10 +40,10 @@
             end
 
             function start.ClickClose()
-                ui_sys:close()
+                ui_sys.close()
             end
 
-            ui_sys:addEventListener({
+            ui_sys.addEventListener({
                 ["INIT"] = function(object_id, recipe_name, ingredients, results)
                     start.object_id = object_id
                     start.recipe_name = recipe_name
@@ -62,7 +62,7 @@
                     end
                     start("recipe_results_count")
 
-                    ui_sys:addDataListener("recipe_changed", function(recipe_name, ingredients, results)
+                    ui_sys.addDataListener("recipe_changed", function(recipe_name, ingredients, results)
                         start.recipe_name = recipe_name
                         start.recipe_ingredients = ingredients
                         start.recipe_results = results
@@ -81,7 +81,7 @@
 
                     end, object_id)
 
-                    ui_sys:addDataListener("assembling_changed", function(object_id, items, process)
+                    ui_sys.addDataListener("assembling_changed", function(object_id, items, process)
                         if object_id ~= start.object_id then
                             return
                         end
@@ -104,7 +104,7 @@
                         start.process = ("%0.0f%%"):format(process * 100)
                     end, object_id)
 
-                    ui_sys:addDataListener("chest_container_changed", function(object_id, items)
+                    ui_sys.addDataListener("chest_container_changed", function(object_id, items)
                         if object_id ~= start.object_id then
                             return
                         end

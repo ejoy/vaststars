@@ -1,5 +1,5 @@
 local ui_sys = require "ui_system"
-local start = ui_sys:createDataMode("start", {
+local start = ui_sys.createDataMode("start", {
     mode = "init", -- "init"/"fuel"/"material"/"plugin"
     machine_item = false,
 
@@ -38,18 +38,18 @@ function start.ClickBack(event)
 end
 
 function start.ClickClose(event)
-    ui_sys:close()
+    ui_sys.close()
 end
 
 function start.clickRecipe(event)
-    ui_sys:world_pub {"rmlui_message_pub", "build_function_pop.rml", "recipe", start.object_id}
+    ui_sys.world_pub {"rmlui_message_pub", "build_function_pop.rml", "recipe", start.object_id}
 end
 
 -- <!-- tag page begin -->
 local select_item_index
 -- <!-- tag page end -->
 
-ui_sys:mapping(start, {
+ui_sys.mapping(start, {
     {
         "inventory",
         function()

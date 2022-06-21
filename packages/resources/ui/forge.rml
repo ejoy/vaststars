@@ -3,7 +3,7 @@
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys:createDataMode("start", {
+            local start = ui_sys.createDataMode("start", {
                 show = false,
                 scale_flag = false,
                 info_flag = true,
@@ -25,7 +25,7 @@
                 start.info_flag = not start.info_flag
                 start.fuel_interaction = not start.fuel_interaction
                 console.log("---ClickFuel---")
-                ui_sys:open("pipe_build_pop.rml")
+                ui_sys.open("pipe_build_pop.rml")
             end
 
             function start.ClickMachineItem(event)
@@ -36,7 +36,7 @@
                 start.info_flag = not start.info_flag
                 start.material_interaction = not start.material_interaction
                 console.log("---ClickMaterial---")
-                ui_sys:open("exchange_pop.rml")
+                ui_sys.open("exchange_pop.rml")
             end
 
             function start.ClickPlugin(event)
