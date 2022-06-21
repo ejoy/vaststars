@@ -67,6 +67,5 @@ lm:default {
     lm.os == "windows" and "fmod_dll",
     lm.compiler == "msvc" and lm.mode == "debug" and "copy_asan",
     "copy_luaecs",
-    "copy_json",
     "vaststars"
 }
