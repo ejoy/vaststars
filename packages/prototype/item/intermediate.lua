@@ -104,7 +104,7 @@ prototype "碾碎铝矿石" {
 prototype "氢氧化铝" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/construct/aluminum-hydroxide.texture",
     model = "prefabs/rock.prefab",
     description = "含铝的化合物",
     group = "金属",
@@ -114,7 +114,7 @@ prototype "氢氧化铝" {
 prototype "氧化铝" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/construct/alumina.texture",
     model = "prefabs/rock.prefab",
     description = "含铝的氧化物",
     group = "金属",
@@ -124,7 +124,7 @@ prototype "氧化铝" {
 prototype "碳化铝" {
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/iron.texture",
+    icon = "textures/construct/aluminium-carbide.texture",
     model = "prefabs/rock.prefab",
     description = "氧化铝燃烧后的剩余物",
     group = "金属",

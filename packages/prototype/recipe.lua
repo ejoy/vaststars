@@ -103,7 +103,7 @@ prototype "铝矿石浮选" {
     category = "矿石浮选",
     --group = "金属",
     order = 14,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/aluminum-hydroxide.texture",
     ingredients = {
         {"碾碎铝矿石", 4},
         {"碱性溶液", 30}
@@ -122,7 +122,7 @@ prototype "氧化铝" {
     --group = "金属",
     order = 16,
     allow_manual = false,
-    icon = "textures/construct/iron-ingot.texture",
+    icon = "textures/construct/alumina.texture",
     ingredients = {
         {"氢氧化铝", 4},
     },
