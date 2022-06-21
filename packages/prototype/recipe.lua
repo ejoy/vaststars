@@ -887,7 +887,7 @@ prototype "地下管1" {
     category = "化工小型制造",
     --group = "化工",
     order = 12,
-    icon = "textures/construct/pipe.texture",
+    icon = "textures/construct/underground-pipe1.texture",
     ingredients = {
         {"管道1-I型", 5},
         {"沙子", 2},
@@ -904,7 +904,7 @@ prototype "地下管2" {
     category = "化工小型制造",
     --group = "化工",
     order = 14,
-    icon = "textures/construct/pipe.texture",
+    icon = "textures/construct/underground-pipe1.texture",
     ingredients = {
         {"地下管I", 1},
         {"钢板", 3},

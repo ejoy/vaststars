@@ -270,7 +270,7 @@ prototype "管道1-U型" {
 prototype "地下管1-JU型" {
     show_prototype_name = "地下管I",
     model = "prefabs/pipe/pipe_JU.prefab",
-    icon = "textures/construct/pipe.texture",
+    icon = "textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
     show_build_function = false,
     pipe_to_ground = true,
@@ -289,7 +289,7 @@ prototype "地下管1-JU型" {
 
 prototype "地下管1-JI型" {
     model = "prefabs/pipe/pipe_JI.prefab",
-    icon = "textures/construct/pipe.texture",
+    icon = "textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
     show_build_function = false,
     pipe_to_ground = true,
@@ -310,7 +310,7 @@ prototype "地下管1-JI型" {
 prototype "地下管2-JU型" {
     show_prototype_name = "地下管II",
     model = "prefabs/pipe/pipe_JU.prefab",
-    icon = "textures/construct/pipe.texture",
+    icon = "textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
     show_build_function = false,
     pipe_to_ground = true,
@@ -329,7 +329,7 @@ prototype "地下管2-JU型" {
 
 prototype "地下管2-JI型" {
     model = "prefabs/pipe/pipe_JI.prefab",
-    icon = "textures/construct/pipe.texture",
+    icon = "textures/construct/underground-pipe1.texture",
     construct_detector = {"exclusive"},
     show_build_function = false,
     pipe_to_ground = true,
