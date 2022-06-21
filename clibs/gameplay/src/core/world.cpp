@@ -259,6 +259,9 @@ namespace lua_world {
                 case manual_crafting::type::finish:
                     lua_pushstring(L, "finish");
                     break;
+                case manual_crafting::type::separator:
+                    lua_pushstring(L, "separator");
+                    break;
                 default:
                     return 0;
                 }
@@ -282,8 +285,8 @@ namespace lua_world {
             manual_crafting::todo todo;
             {
                 lua_rawgeti(L, -1, 1);
-                static const char *const opts[] = {"crafting", "finish", NULL};
-                static const manual_crafting::type optsnum[] = {manual_crafting::type::crafting, manual_crafting::type::finish};
+                static const char *const opts[] = {"crafting", "finish", "separator", NULL};
+                static const manual_crafting::type optsnum[] = {manual_crafting::type::crafting, manual_crafting::type::finish, manual_crafting::type::separator};
                 todo.type = optsnum[luaL_checkoption(L, -1, NULL, opts)];
                 lua_pop(L, 1);
             }
@@ -294,6 +297,10 @@ namespace lua_world {
             }
             todos.emplace_back(todo);
             lua_pop(L, 1);
+        }
+
+        while (todos.size() > 0 && todos[1].type == manual_crafting::type::separator) {
+            todos.pop_back();
         }
 
         bool reset = true;
