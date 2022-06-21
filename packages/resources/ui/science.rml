@@ -221,9 +221,9 @@
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
-                width:95%;
+                width:90%;
                 height:100px;
-                border: 0.5vmin rgb(89, 73, 39);
+                border: 0.13vmin rgb(89, 73, 39);
                 background-color: dimgrey;
             }
             .recipe-info-desc-block {
@@ -285,7 +285,7 @@
                 background-color: rgba(46, 46, 45, 150);
                 border-radius: 0.5vmin;
                 text-align: center;
-                font-size: 3vmin;
+                font-size: 2vmin;
                 -webkit-text-stroke: 0.05em rgb(0,0,0);
             }
             .recipe-time {
@@ -345,7 +345,7 @@
                 <div class="item-title-new">%s</div>]]):format(item_data.progress, item_data.icon, item_data.name) .. ingredient_items .. statestr .. sign
 
                 item.className = "item-research"
-                local select_style_border = "5px green"
+                local select_style_border = "3px green"
                 item.addEventListener('click', function(event)
                     if start.selected_tech then
                         start.selected_tech.style.border = '0px green'
@@ -375,7 +375,7 @@
                 item.outerHTML = htmlstr
                 item.className = "item-research"
                 item.style.width = '90%'
-                local select_style_border = "5px green"
+                local select_style_border = "2px green"
                 item.addEventListener('click', function(event)
                     if start.selected_recipe then
                         start.selected_recipe.style.border = '0px green'
