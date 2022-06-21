@@ -245,6 +245,7 @@
             }
             .recipe-info-desc
             {
+                padding-left:1vmin;
                 width: 85%;
                 font-size: 3.2vmin;
                 text-align: left;
