@@ -1,44 +1,42 @@
 local json = require "json"
-local json_encode = json.encode
-local json_decode = json.decode
 local tracedoc = require "lua.tracedoc"
 
-local m = {}
-function m:world_pub(msg)
+local M = {}
+function M.world_pub(msg)
     local ud = {}
     ud.event = "__WORLD_PUB"
     ud.ud = msg
-    window.extern.postMessage(json_encode(ud))
+    window.extern.postMessage(json:encode(ud))
 end
 
-function m:pub(msg)
+function M.pub(msg)
     local ud = {}
     ud.event = "__PUB"
     ud.ud = msg
-    window.extern.postMessage(json_encode(ud))
+    window.extern.postMessage(json:encode(ud))
 end
 
-function m:open(url, ...)
+function M.open(url, ...)
     local ud = {}
     ud.event = "__OPEN"
     ud.ud = {url, ...}
-    window.extern.postMessage(json_encode(ud))
+    window.extern.postMessage(json:encode(ud))
 end
 
-function m:close(url)
+function M.close(url)
     local ud = {}
     ud.event = "__CLOSE"
     ud.ud = {url}
-    window.extern.postMessage(json_encode(ud))
+    window.extern.postMessage(json:encode(ud))
 end
 
-function m:addEventListener(event_funcs)
+function M.addEventListener(event_funcs)
     window.addEventListener("message", function(event)
         if not event.data then
             console.log("event data is nil")
             return
         end
-        local res, err = json_decode(event.data)
+        local res, err = json:decode(event.data)
         if res then
             local func = event_funcs[res.event]
             if not func then
@@ -51,7 +49,7 @@ function m:addEventListener(event_funcs)
     end)
 end
 
-function m:createDataMode(name, init)
+function M.createDataMode(name, init)
     local doc = tracedoc.new(init)
     local datamodel = window.createModel(name)(init)
     datamodel.mapping = nil
@@ -61,7 +59,7 @@ function m:createDataMode(name, init)
             console.log("event data is nil")
             return
         end
-        local res, err = json_decode(event.data)
+        local res, err = json:decode(event.data)
         if not res then
             error(('%s'):format(err))
             return
@@ -72,15 +70,21 @@ function m:createDataMode(name, init)
         end
 
         local diff = res.ud
+        if not diff then
+            return
+        end
+
         tracedoc.patch(doc, diff)
         tracedoc.patch(datamodel, diff)
 
-        for k in pairs(diff.doc) do
-            datamodel(k)
+        if diff.doc then
+            for k in pairs(diff.doc) do
+                datamodel(k)
+            end
         end
 
         if datamodel.mapping then
-            tracedoc.mapupdate(doc, datamodel.mapping)
+            tracedoc.mapchange(doc, datamodel.mapping)
         end
         tracedoc.commit(doc)
     end)
@@ -88,8 +92,8 @@ function m:createDataMode(name, init)
     return datamodel
 end
 
-function m:mapping(datamodel, changeset)
+function M.mapping(datamodel, changeset)
     datamodel.mapping = tracedoc.changeset(changeset or {})
 end
 
-return m
+return M

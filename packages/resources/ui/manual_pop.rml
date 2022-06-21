@@ -121,7 +121,7 @@
             local ui_sys = require "ui_system"
             local default_select_item = {name = " ", time = 0, ingredients = {}}
             local default_select_count <const> = 1
-            local start = ui_sys:createDataMode("start", {
+            local start = ui_sys.createDataMode("start", {
                 recipe_category = {},
                 manual_recipe = {},
 
@@ -134,7 +134,7 @@
             })
 
             function start.clickClose(event)
-                ui_sys:close()
+                ui_sys.close()
             end
 
             local select_item
@@ -172,9 +172,9 @@
                     console.log("item count <= 0")
                     return
                 end
-                ui_sys:pub {"manual_add", start.select_item.name, start.select_item_count}
-                ui_sys:close()
-                ui_sys:close("cmdcenter.rml")
+                ui_sys.pub {"manual_add", start.select_item.name, start.select_item_count}
+                ui_sys.close()
+                ui_sys.close("cmdcenter.rml")
             end
 
             function start.clickItemCountPreTime(event, count)
@@ -183,16 +183,16 @@
                 end
                 start.last_select_item_count = start.select_item_count
                 start.select_item_count = math.floor(start.select_item_count + count)
-                ui_sys:pub {"check_material", start.select_item.name, start.select_item_count}
+                ui_sys.pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
             function start.clickRevertItemCount(event)
                 start.select_item_count = start.last_select_item_count
-                ui_sys:pub {"check_material", start.select_item.name, start.select_item_count}
+                ui_sys.pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
             function start.clickManualQueue(event)
-                ui_sys:open("manual_queue.rml")
+                ui_sys.open("manual_queue.rml")
             end
 
             -- <!-- tag page begin -->
@@ -203,7 +203,7 @@
                 end
                 start.select_item = item
                 start.select_item_count = default_select_count
-                ui_sys:pub {"check_material", start.select_item.name, start.select_item_count}
+                ui_sys.pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
             local function page_item_renderer(index)
@@ -239,7 +239,7 @@
             end)
             -- <!-- tag page end -->
 
-            ui_sys:mapping(start, {
+            ui_sys.mapping(start, {
                 {
                     "manual_recipe",
                     function()

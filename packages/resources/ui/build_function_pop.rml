@@ -44,7 +44,7 @@
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys:createDataMode("start", {
+            local start = ui_sys.createDataMode("start", {
                 show_rotate = false,
                 show_pickup_material = false,
                 show_set_recipe = false,
@@ -55,38 +55,38 @@
             })
 
             function start.clickConstructRotate(event)
-                ui_sys:pub {"rotate", start.object_id}
+                ui_sys.pub {"rotate", start.object_id}
             end
 
             function start.clickRecipe(event)
-                ui_sys:pub {"recipe", start.object_id}
+                ui_sys.pub {"recipe", start.object_id}
             end
 
             function start.clickDetail(event)
-                ui_sys:pub {"detail", start.object_id}
+                ui_sys.pub {"detail", start.object_id}
             end
 
             function start.clickPickupMaterial(event)
-                ui_sys:pub {"pickup_material", start.object_id}
-                ui_sys:pub {"close_build_function_pop", start.object_id}
-                ui_sys:close()
+                ui_sys.pub {"pickup_material", start.object_id}
+                ui_sys.pub {"close_build_function_pop", start.object_id}
+                ui_sys.close()
             end
 
             function start.clickPlaceMaterial(event)
-                ui_sys:pub {"place_material", start.object_id}
-                ui_sys:pub {"close_build_function_pop", start.object_id}
-                ui_sys:close()
+                ui_sys.pub {"place_material", start.object_id}
+                ui_sys.pub {"close_build_function_pop", start.object_id}
+                ui_sys.close()
             end
 
-            ui_sys:addEventListener({
+            ui_sys.addEventListener({
                 ["leave"] = function()
-                    ui_sys:pub {"close_build_function_pop", start.object_id}
-                    ui_sys:close()
+                    ui_sys.pub {"close_build_function_pop", start.object_id}
+                    ui_sys.close()
                 end,
             })
 
             window.onload = function()
-                ui_sys:pub {"open_build_function_pop", start.object_id}
+                ui_sys.pub {"open_build_function_pop", start.object_id}
             end
         </script>
     </head>

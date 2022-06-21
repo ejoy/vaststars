@@ -97,7 +97,7 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys:createDataMode("start", {
+            local start = ui_sys.createDataMode("start", {
                 object_id = 0,
                 recipe_index = 1,
                 recipe_name = "",
@@ -114,12 +114,12 @@
             end
 
             function start.clickClose(event)
-                ui_sys:close()
+                ui_sys.close()
             end
 
             function start.clickConfirm(event)
-                ui_sys:pub {"set_recipe", start.object_id, start.recipe_name}
-                ui_sys:close()
+                ui_sys.pub {"set_recipe", start.object_id, start.recipe_name}
+                ui_sys.close()
             end
 
             local select_item

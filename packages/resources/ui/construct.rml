@@ -214,7 +214,7 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local unconfirmed_double_confirm_continuation = function() end
-            local start = ui_sys:createDataMode("start", {
+            local start = ui_sys.createDataMode("start", {
                 fps_text = " ",           -- fps 信息
                 drawcall_text = " ",      -- drawcall 信息
                 construct_menu = {},
@@ -239,84 +239,84 @@
                 finish_animation = "0s linear 0s enlarge"
             })
             function start.clickConstructBegin(event)
-                ui_sys:pub {"construct_begin", false}
+                ui_sys.pub {"construct_begin", false}
 
                 unconfirmed_double_confirm_continuation = function()
                     start.cur_edit_mode = 'construct'
                     start.show_construct_complete = false -- 建造模式下, 默认不显示 "开始施工"
-                    ui_sys:pub {"construct_begin", true}
+                    ui_sys.pub {"construct_begin", true}
                 end
             end
             function start.clickDismantleBegin(event)
-                ui_sys:pub {"dismantle_begin", false}
+                ui_sys.pub {"dismantle_begin", false}
                 unconfirmed_double_confirm_continuation = function()
                     start.cur_edit_mode = 'dismantle'
-                    ui_sys:pub {"dismantle_begin", true}
+                    ui_sys.pub {"dismantle_begin", true}
                 end
             end
             function start.clickConstructRotate(event)
-                ui_sys:pub {"rotate"}
+                ui_sys.pub {"rotate"}
             end
             function start.clickConstructConfirm(event)
-                ui_sys:pub {"construct_confirm"}
+                ui_sys.pub {"construct_confirm"}
             end
             function start.clickConstructComplete(event)
                 start.cur_edit_mode = ''
-                ui_sys:pub {"construct_complete"}
+                ui_sys.pub {"construct_complete"}
             end
             function start.clickDismantleComplete(event)
                 start.cur_edit_mode = ''
-                ui_sys:pub {"dismantle_complete"}
+                ui_sys.pub {"dismantle_complete"}
             end
             function start.clickCancel(event)
-                ui_sys:pub {"cancel", false}
+                ui_sys.pub {"cancel", false}
                 unconfirmed_double_confirm_continuation = function()
                     start.cur_edit_mode = ''
-                    ui_sys:pub {"cancel", true}
+                    ui_sys.pub {"cancel", true}
                 end
             end
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
             end
             function start.clickConstructMenuItem(event, prototype_name)
-                ui_sys:pub {"construct_entity", prototype_name}
+                ui_sys.pub {"construct_entity", prototype_name}
             end
             function start.clickHeadquater(event)
-                ui_sys:pub {"headquater"}
+                ui_sys.pub {"headquater"}
             end
             function start.clickTechnology()
-                ui_sys:pub {"technology"}
+                ui_sys.pub {"technology"}
             end
             function start.clickSetting(event)
-                ui_sys:pub {"show_setting"}
+                ui_sys.pub {"show_setting"}
             end
             function start.clickLayingPipeBegin(event)
-                ui_sys:pub {"laying_pipe_begin"}
+                ui_sys.pub {"laying_pipe_begin"}
             end
             function start.clickLayingPipeCancel(event)
-                ui_sys:pub {"laying_pipe_cancel"}
+                ui_sys.pub {"laying_pipe_cancel"}
             end
             function start.clickLayingPipeConfirm(event)
-                ui_sys:pub {"laying_pipe_confirm"}
+                ui_sys.pub {"laying_pipe_confirm"}
             end
             function start.clickTask(event, is_task)
                 if is_task then
-                    ui_sys:pub {"open_taskui"}
+                    ui_sys.pub {"open_taskui"}
                 end
             end
             function start.clickCollapsedBar(event, index)
                 if index == 0 then
                     local e = document.getElementById("manual-queue")
                     if e and e.attributes.expanded == "true" then
-                        ui_sys:open("manual_queue.rml")
+                        ui_sys.open("manual_queue.rml")
                     end
                 end
             end
             window.addEventListener('mousedown', function(event)
-                ui_sys:world_pub {"ui_message", "leave"}
+                ui_sys.world_pub {"ui_message", "leave"}
             end)
 
-            ui_sys:addEventListener({
+            ui_sys.addEventListener({
                 ["show_rotate_confirm"] = function(button_state)
                     if button_state.rotate ~= nil then
                         start.show_rotate = button_state.rotate
@@ -329,7 +329,7 @@
                     start.show_construct_complete = visible
                 end,
                 ["show_unconfirmed_double_confirm"] = function()
-                    ui_sys:open("construct_cancel_pop.rml")
+                    ui_sys.open("construct_cancel_pop.rml")
                 end,
                 ["unconfirmed_double_confirm_continuation"] = function()
                     if unconfirmed_double_confirm_continuation then
@@ -365,7 +365,7 @@
                     start.progress_bar_right = string.format("rotate(%ddeg)", math.floor(deg))
                 end
             end
-            ui_sys:mapping(start, {
+            ui_sys.mapping(start, {
                 {
                     "manual_queue",
                     function()

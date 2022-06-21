@@ -46,28 +46,28 @@
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local start = ui_sys:createDataMode("start", {
+            local start = ui_sys.createDataMode("start", {
                 archival_files = {},
                 show_archival_files = false,
             })
 
             function start.clickSave(event)
-                ui_sys:pub {"save"}
-                ui_sys:close()
+                ui_sys.pub {"save"}
+                ui_sys.close()
             end
 
             function start.clickRestart(event)
-                ui_sys:pub {"restart"}
-                ui_sys:close()
+                ui_sys.pub {"restart"}
+                ui_sys.close()
             end
 
             function start.clickRestore(event, index)
-                ui_sys:pub {"restore", index}
-                ui_sys:close()
+                ui_sys.pub {"restore", index}
+                ui_sys.close()
             end
 
             function start.clickClose()
-                ui_sys:close()
+                ui_sys.close()
             end
 
         </script>

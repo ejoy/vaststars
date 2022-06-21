@@ -1,5 +1,5 @@
 local ui_sys = require "ui_system"
-local start = ui_sys:createDataMode("start", {
+local start = ui_sys.createDataMode("start", {
     object_id = 0,
     background = "",
     is_chest = false,
@@ -51,7 +51,7 @@ local function update_category(category)
 end
 
 function start.clickClose(event)
-    ui_sys:close()
+    ui_sys.close()
 end
 
 function start.clickCategory(event, category)
@@ -63,7 +63,7 @@ end
 
 function start.clickToChest(event, index)
     if start.sub_inventory[index] then
-        ui_sys:pub {"to_chest", start.object_id, start.sub_inventory[index].id}
+        ui_sys.pub {"to_chest", start.object_id, start.sub_inventory[index].id}
         -- <!-- tag page begin -->
         start.page:show_detail(select_item_index, false)
         select_item_index = nil
@@ -73,7 +73,7 @@ end
 
 function start.clickToHeadquater(event, index)
     if start.sub_inventory[index] then
-        ui_sys:pub {"to_headquater", start.object_id, start.sub_inventory[index].id}
+        ui_sys.pub {"to_headquater", start.object_id, start.sub_inventory[index].id}
         -- <!-- tag page begin -->
         start.page:show_detail(select_item_index, false)
         select_item_index = nil
@@ -85,7 +85,7 @@ function start.clickBlankSlot(event)
     start.page:show_detail(select_item_index, false)
     select_item_index = nil
     if start.is_chest then
-        ui_sys:open("headquater_inventory.rml", start.object_id)
+        ui_sys.open("headquater_inventory.rml", start.object_id)
     end
 end
 
@@ -95,7 +95,7 @@ function start.clickBlank(event)
 end
 
 function start.clickManual(event)
-    ui_sys:open("manual_pop.rml")
+    ui_sys.open("manual_pop.rml")
 end
 
 -- <!-- tag page begin -->
@@ -134,7 +134,7 @@ local function page_item_renderer(index)
         end
         select_item_index = index
         start.page:show_detail(select_item_index, true)
-        ui_sys:pub {"click_item", start.sub_inventory[index].id}
+        ui_sys.pub {"click_item", start.sub_inventory[index].id}
     end)
     return item
 end
@@ -166,7 +166,7 @@ window.customElements.define("page", function(e)
 end)
 -- <!-- tag page end -->
 
-ui_sys:mapping(start, {
+ui_sys.mapping(start, {
     {
         "inventory",
         function()

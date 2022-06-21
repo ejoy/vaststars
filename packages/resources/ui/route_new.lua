@@ -1,5 +1,5 @@
 local ui_sys = require "ui_system"
-local start = ui_sys:createDataMode("start", {
+local start = ui_sys.createDataMode("start", {
     show_select_route = false,
     error_tip = " ",
     endpoint_names = {
@@ -29,7 +29,7 @@ function start.addRoute(event)
         show_error_tip(("还未选择车站"))
         return
     end
-    ui_sys:close()
+    ui_sys.close()
 end
 
 function start.clickselectEndpoint(event, select_index)
