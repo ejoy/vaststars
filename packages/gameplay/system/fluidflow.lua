@@ -157,11 +157,11 @@ end
 local function builder_groud(c)
     local function move(d)
         if d == N then
-            return 0, 1
+            return 0, -1
         elseif d == E then
             return 1, 0
         elseif d == S then
-            return 0, -1
+            return 0, 1
         elseif d == W then
             return -1, 0
         end
