@@ -31,6 +31,16 @@ bool techtree_mgr::research_set(uint16_t techid, uint16_t max, uint16_t val) {
     return finish;
 }
 
+bool techtree_mgr::research_set(world& w, lua_State* L, uint16_t techid, uint16_t val) {
+    prototype_context pt = w.prototype(L, techid);
+    uint16_t count = (uint16_t)pt_count(&pt);
+    if (!research_set(techid, count, val)) {
+        return false;
+    }
+    queue_pop();
+    return true;
+}
+
 bool techtree_mgr::research_add(uint16_t techid, uint16_t max, uint16_t inc) {
     assert(inc != 0);
     bool finish = false;

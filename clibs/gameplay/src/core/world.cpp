@@ -87,13 +87,19 @@ namespace lua_world {
 
     static int
     research_progress(lua_State* L) {
-        struct world* w = (struct world*)lua_touserdata(L, 1);
+        struct world& w = *(struct world*)lua_touserdata(L, 1);
         uint16_t techid = (uint16_t)luaL_checkinteger(L, 2);
-        uint16_t progress = w->techtree.get_progress(techid);
-        if (progress == 0) {
-            return 0;
+        if (lua_gettop(L) == 1) {
+            uint16_t progress = w.techtree.get_progress(techid);
+            if (progress == 0) {
+                return 0;
+            }
+            lua_pushinteger(L, progress);
+            return 1;
         }
-        lua_pushinteger(L, progress);
+        uint16_t value = (uint16_t)luaL_checkinteger(L, 2);
+        bool ok = w.techtree.research_set(w, L, techid, value);
+        lua_pushboolean(L, ok);
         return 1;
     }
 
