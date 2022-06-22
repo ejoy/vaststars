@@ -35,6 +35,13 @@
                 background-size:cover;
                 flex-direction: row;
             }
+            .info-round-panel {
+                height: 68vmin;
+                width: 68vmin;
+                background-image: "textures/common/info-circle.texture";
+                background-size:cover;
+                flex-direction: row;
+            }
             .menu-button-pic {
                 background-size: cover;
                 width: 10.67vmin;
@@ -124,6 +131,24 @@
                 <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickDetail()">
                     <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>
                     <div class="title-text">详细</div>
+                </div>
+            </div>
+            <div class="info-round-panel" style="position: absolute; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top"  data-if="false">
+                <div class="button-fuction-block" style="top: 10.67vmin; left: 2vmin;" data-event-click="clickConstructRotate()">
+                    <button class="button-function" style ='background-image: "textures/common/pipe-connect.texture";'/>
+                    <div class="title-text">左</div>
+                </div>
+                <div class="button-fuction-block" style="right: -39vmin;top: 10.67vmin;" data-event-click="clickPickupMaterial()">
+                    <button class="button-function" style ='background-image: "textures/common/pipe-disconnect.texture";'/>
+                    <div class="title-text">右</div>
+                </div>
+                <div class="button-fuction-block" style="top: -18.33vmin; left: 0vmin;" data-event-click="clickPickupMaterial()">
+                    <button class="button-function" style ='background-image: "textures/common/pipe-disconnect.texture";'/>
+                    <div class="title-text">上</div>
+                </div>
+                <div class="button-fuction-block" style="left: -12.5vmin; bottom: -32vmin; " data-event-click="clickPickupMaterial()">
+                    <button class="button-function" style ='background-image: "textures/common/pipe-disconnect.texture";'/>
+                    <div class="title-text">下</div>
                 </div>
             </div>
     </body>
