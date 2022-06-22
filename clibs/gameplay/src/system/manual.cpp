@@ -75,10 +75,9 @@ void manual_crafting::next() {
     if (todos.empty()) {
         return;
     }
-    bool sep = todos.back().type == type::separator;
     todos.pop_back();
-    if (sep) {
-        next();
+    while (!todos.empty() && todos.back().type == type::separator) {
+        todos.pop_back();
     }
 }
 
@@ -139,7 +138,7 @@ bool manual_crafting::rebuild(lua_State* L, world& w, int id) {
                 current.place(s.item, s.amount);
             }
         }
-        else {
+        else if (todo.type == type::finish) {
             if (0 != current.pickup(todo.id, 1)) {
                 return false;
             }
