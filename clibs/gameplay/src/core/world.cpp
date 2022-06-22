@@ -305,7 +305,7 @@ namespace lua_world {
             lua_pop(L, 1);
         }
 
-        while (todos.size() > 0 && todos[1].type == manual_crafting::type::separator) {
+        while (todos.size() > 0 && todos.back().type == manual_crafting::type::separator) {
             todos.pop_back();
         }
 

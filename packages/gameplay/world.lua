@@ -183,6 +183,8 @@ return function ()
                 local pt = prototype.queryByName("item", id)
                 assert(pt, "unknown item: " .. id)
                 todos[i] = { type, pt.id }
+            elseif type == "separator" then
+                todos[i] = { type, id }
             else
                 error("unknown type: "..type)
             end
