@@ -52,10 +52,26 @@ uint16_t world::container_id<recipe_container>() {
 }
 
 namespace lua_world {
+    template <typename T, typename R>
+    T checklimit(lua_State* L, int idx, R const& r) {
+        if (r < std::numeric_limits<T>::lowest() || r >(std::numeric_limits<T>::max)()) {
+            luaL_argerror(L, idx, "limit exceeded");
+        }
+        return (T)r;
+    }
+    template <typename T>
+    T checkinteger(lua_State* L, int idx) {
+        return checklimit(L, idx, luaL_checkinteger(L, idx));
+    }
+    template <typename T>
+    T optinteger(lua_State* L, int idx,  lua_Integer def) {
+        return checklimit(L, idx, luaL_optinteger(L, idx, def));
+    }
+
     static int
     is_researched(lua_State* L) {
         struct world* w = (struct world*)lua_touserdata(L, 1);
-        uint16_t techid = (uint16_t)luaL_checkinteger(L, 2);
+        uint16_t techid = checkinteger<uint16_t>(L, 2);
         lua_pushboolean(L, w->techtree.is_researched(techid));
         return 1;
     }
@@ -79,7 +95,7 @@ namespace lua_world {
             if (lua_rawgeti(L, 2, i) == LUA_TNIL) {
                 break;
             }
-            q.push_back((uint16_t)luaL_checkinteger(L, -1));
+            q.push_back(checkinteger<uint16_t>(L, -1));
         }
         w->techtree.queue_set(q);
         return 0;
@@ -88,7 +104,7 @@ namespace lua_world {
     static int
     research_progress(lua_State* L) {
         struct world& w = *(struct world*)lua_touserdata(L, 1);
-        uint16_t techid = (uint16_t)luaL_checkinteger(L, 2);
+        uint16_t techid = checkinteger<uint16_t>(L, 2);
         if (lua_gettop(L) == 2) {
             uint16_t progress = w.techtree.get_progress(techid);
             if (progress == 0) {
@@ -97,7 +113,7 @@ namespace lua_world {
             lua_pushinteger(L, progress);
             return 1;
         }
-        uint16_t value = (uint16_t)luaL_checkinteger(L, 3);
+        uint16_t value = checkinteger<uint16_t>(L, 3);
         bool ok = w.techtree.research_set(w, L, techid, value);
         lua_pushboolean(L, ok);
         return 1;
@@ -122,11 +138,11 @@ namespace lua_world {
     static int
     fluidflow_build(lua_State *L) {
         world& w = *(world*)lua_touserdata(L, 1);
-        uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-        int capacity = (int)luaL_checkinteger(L, 3);
-        int height = (int)luaL_checkinteger(L, 4);
-        int base_level = (int)luaL_checkinteger(L, 5);
-        int pumping_speed = (int)luaL_optinteger(L, 6, 0);
+        uint16_t fluid = checkinteger<uint16_t>(L, 2);
+        int capacity = checkinteger<int>(L, 3);
+        int height =  checkinteger<int>(L, 4);
+        int base_level = checkinteger<int>(L, 5);
+        int pumping_speed = checkinteger<int>(L, 6, 0);
         fluid_box box {
             .capacity = capacity,
             .height = height,
@@ -144,8 +160,8 @@ namespace lua_world {
     static int
     fluidflow_rebuild(lua_State *L) {
         world& w = *(world*)lua_touserdata(L, 1);
-        uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-        uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
+        uint16_t fluid = checkinteger<uint16_t>(L, 2);
+        uint16_t id = checkinteger<uint16_t>(L, 3);
         w.fluidflows[fluid].rebuild(id);
         return 0;
     }
@@ -153,12 +169,12 @@ namespace lua_world {
     static int
     fluidflow_restore(lua_State *L) {
         world& w = *(world*)lua_touserdata(L, 1);
-        uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-        uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
-        int capacity = (int)luaL_checkinteger(L, 4);
-        int height = (int)luaL_checkinteger(L, 5);
-        int base_level = (int)luaL_checkinteger(L, 6);
-        int pumping_speed = (int)luaL_optinteger(L, 7, 0);
+        uint16_t fluid = checkinteger<uint16_t>(L, 2);
+        uint16_t id = checkinteger<uint16_t>(L, 3);
+        int capacity =  checkinteger<int>(L, 4);
+        int height =  checkinteger<int>(L, 5);
+        int base_level =  checkinteger<int>(L, 6);
+        int pumping_speed = optinteger<int>(L, 7, 0);
         fluid_box box {
             .capacity = capacity,
             .height = height,
@@ -175,8 +191,8 @@ namespace lua_world {
     static int
     fluidflow_teardown(lua_State *L) {
         world& w = *(world*)lua_touserdata(L, 1);
-        uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
-        uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
+        uint16_t fluid = checkinteger<uint16_t>(L, 2);
+        uint16_t id = checkinteger<uint16_t>(L, 3);
         bool ok = w.fluidflows[fluid].teardown(id);
         if (!ok) {
             return luaL_error(L, "fluidflow teardown failed.");
@@ -187,7 +203,7 @@ namespace lua_world {
     static int
     fluidflow_connect(lua_State *L) {
         world& w = *(world*)lua_touserdata(L, 1);
-        uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
+        uint16_t fluid = checkinteger<uint16_t>(L, 2);
         fluidflow& flow = w.fluidflows[fluid];
         luaL_checktype(L, 3, LUA_TTABLE);
         lua_Integer n = luaL_len(L, 3);
@@ -195,8 +211,8 @@ namespace lua_world {
             lua_rawgeti(L, 3, i);
             lua_rawgeti(L, 3, i+1);
             lua_rawgeti(L, 3, i+2);
-            uint16_t from = (uint16_t)luaL_checkinteger(L, -3);
-            uint16_t to = (uint16_t)luaL_checkinteger(L, -2);
+            uint16_t from = checkinteger<uint16_t>(L, -3);
+            uint16_t to = checkinteger<uint16_t>(L, -2);
             bool oneway = !!lua_toboolean(L, -1);
             bool ok =  flow.connect(from, to, oneway);
             if (!ok) {
@@ -210,10 +226,10 @@ namespace lua_world {
     static int
     fluidflow_query(lua_State *L) {
         world& w = *(world*)lua_touserdata(L, 1);
-        uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
+        uint16_t fluid = checkinteger<uint16_t>(L, 2);
 
         auto& f = w.fluidflows[fluid];
-        uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
+        uint16_t id = checkinteger<uint16_t>(L, 3);
         fluid_state state;
         if (!f.query(id, state)) {
             return luaL_error(L, "fluidflow query failed.");
@@ -239,12 +255,12 @@ namespace lua_world {
     static int
     fluidflow_set(lua_State *L) {
         world& w = *(world*)lua_touserdata(L, 1);
-        uint16_t fluid = (uint16_t)luaL_checkinteger(L, 2);
+        uint16_t fluid = checkinteger<uint16_t>(L, 2);
 
         auto& f = w.fluidflows[fluid];
-        uint16_t id = (uint16_t)luaL_checkinteger(L, 3);
-        int value = (int)luaL_checkinteger(L, 4);
-        int multiple = (int)luaL_optinteger(L, 5, f.multiple);
+        uint16_t id = checkinteger<uint16_t>(L, 3);
+        int value = checkinteger<int>(L, 4);
+        int multiple = optinteger<int>(L, 5, f.multiple);
         f.set(id, value, multiple);
         return 0;
     }
@@ -298,7 +314,7 @@ namespace lua_world {
             }
             {
                 lua_rawgeti(L, -1, 2);
-                todo.id = (uint16_t)luaL_checkinteger(L, -1);
+                todo.id = checkinteger<uint16_t>(L, -1);
                 lua_pop(L, 1);
             }
             todos.emplace_back(todo);
