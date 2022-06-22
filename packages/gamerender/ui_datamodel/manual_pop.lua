@@ -55,6 +55,7 @@ for _, typeobject in pairs(iprototype.all_prototype_name("recipe")) do
                 category = assert(recipe_category_to_group[typeobject.category]),
                 time = itypes.time(typeobject.time),
                 ingredients = get_ingredients(ingredients),
+                result = get_ingredients(results),
                 order = typeobject.order,
             }
             if typeobject.allow_as_intermediate ~= false then

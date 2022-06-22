@@ -131,6 +131,7 @@
                 select_item_count = default_select_count,
                 last_select_item_count = default_select_count,
                 material_shortages = false,
+                select_item_ingredients = {},
             })
 
             function start.clickClose(event)
@@ -177,24 +178,34 @@
                 ui_sys.close("cmdcenter.rml")
             end
 
+            local function update_select_item_ingredients(ingredients, require_count, result_count)
+                local manual_times = math.ceil(require_count / result_count)
+                local result = {}
+                for _, v in ipairs(ingredients) do
+                    result[#result+1] = {name = v.name, icon = v.icon, count = v.count * manual_times}
+                end
+                return result
+            end
+
             function start.clickItemCountPreTime(event, count)
                 if start.material_shortages then
                     return
                 end
                 start.last_select_item_count = start.select_item_count
                 start.select_item_count = math.floor(start.select_item_count + count)
+                start.select_item_ingredients = update_select_item_ingredients(start.select_item.ingredients, start.select_item_count, start.select_item.result[1].count)
                 ui_sys.pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
             function start.clickRevertItemCount(event)
                 start.select_item_count = start.last_select_item_count
+                start.select_item_ingredients = update_select_item_ingredients(start.select_item.ingredients, start.select_item_count, start.select_item.result[1].count)
                 ui_sys.pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
             function start.clickManualQueue(event)
                 ui_sys.open("manual_queue.rml")
             end
-
             -- <!-- tag page begin -->
             local function clickItem(index)
                 local item = start.page_items[index]
@@ -203,6 +214,7 @@
                 end
                 start.select_item = item
                 start.select_item_count = default_select_count
+                start.select_item_ingredients = update_select_item_ingredients(start.select_item.ingredients, start.select_item_count, start.select_item.result[1].count)
                 ui_sys.pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
@@ -310,7 +322,7 @@
                         <div class = "small-bg" style='background-image: "textures/road_net/big_bag.texture";'/>
                         <div class = "recipe-name-text">原料</div>
                     </div>
-                    <div class = "materials-block" data-for = "select_item.ingredients"> 
+                    <div class = "materials-block" data-for = "select_item_ingredients"> 
                         <div class = "materials">
                             <div class = "materials-item">
                                 <div class = "materials-icon" data-style-background-image = "it.icon" />

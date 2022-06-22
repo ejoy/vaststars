@@ -66,7 +66,7 @@ function M.show_failed(self, datamodel, from_x, from_y, dir, to_x, to_y)
 
     M.show_dotted_line(self, from_x, from_y, dir, to_x, to_y)
 
-    datamodel.show_laying_pipe_confirm = true
+    datamodel.show_laying_pipe_confirm = false
     datamodel.show_laying_pipe_cancel = true
     self.coord_indicator.state = "construct"
 end
