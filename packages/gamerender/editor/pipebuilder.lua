@@ -41,10 +41,13 @@ end
 
 local function shift_pipe_prototype_name(prototype_name)
     local typeobject = iprototype.queryByName("entity", prototype_name)
-    if not typeobject.pipe then
-        return prototype_name
+    if typeobject.pipe then
+        return prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format("X"))
     end
-    return prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format("X"))
+    if typeobject.pipe_to_ground then
+        return prototype_name:gsub("(.*%-)(%u%u)(.*)", ("%%1%s%%3"):format("JI"))
+    end
+    return prototype_name
 end
 
 local function get_starting_fluidbox_coord(starting_x, starting_y, x, y)
@@ -328,7 +331,8 @@ local function start(self, datamodel)
     end
 
     -- the start point and end point are not pipes and adjacent buildings
-    if not iprototype.is_pipe(starting_object.prototype_name) and not iprototype.is_pipe(ending_object.prototype_name) then
+    if not iprototype.is_pipe(starting_object.prototype_name) and not iprototype.is_pipe(ending_object.prototype_name) and 
+       not iprototype.is_pipe_to_ground(starting_object.prototype_name) and not iprototype.is_pipe_to_ground(ending_object.prototype_name) then
         for _, dir in ipairs(ALL_DIR) do
             local x, y = ieditor:get_dir_coord(starting_fluidbox_x, starting_fluidbox_y, dir)
             if x == ending_fluidbox_x and y == ending_fluidbox_y then
@@ -338,6 +342,17 @@ local function start(self, datamodel)
                 return
             end
         end
+    end
+
+    if iprototype.is_pipe_to_ground(starting_object.prototype_name) then
+        starting_object = iobject.clone(starting_object)
+        starting_object.prototype_name = shift_pipe_prototype_name(starting_object.prototype_name)
+        objects:set(starting_object, "TEMPORARY")
+    end
+    if iprototype.is_pipe_to_ground(ending_object.prototype_name) then
+        ending_object = iobject.clone(ending_object)
+        ending_object.prototype_name = shift_pipe_prototype_name(ending_object.prototype_name)
+        objects:set(ending_object, "TEMPORARY")
     end
 
     datamodel.show_laying_pipe_confirm = true
