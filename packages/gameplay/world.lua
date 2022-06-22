@@ -175,7 +175,7 @@ return function ()
         local todos = {}
         for i, v in ipairs(lst) do
             local type, id = v[1], v[2]
-            if type == "crafting" then
+            if type == "crafting" or type == "separator" then
                 local pt = prototype.queryByName("recipe", id)
                 assert(pt, "unknown recipe: " .. id)
                 todos[i] = { type, pt.id }
@@ -183,8 +183,6 @@ return function ()
                 local pt = prototype.queryByName("item", id)
                 assert(pt, "unknown item: " .. id)
                 todos[i] = { type, pt.id }
-            elseif type == "separator" then
-                todos[i] = { type, id }
             else
                 error("unknown type: "..type)
             end

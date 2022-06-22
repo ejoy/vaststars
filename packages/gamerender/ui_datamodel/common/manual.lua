@@ -4,11 +4,12 @@ local itypes = require "gameplay.interface.types"
 local imanual = require "gameplay.interface.manual"
 
 local STATUS_IDLE <const> = 0
+local STATUS_REBUILD <const> = 3
 
 local function get_progress(recipe_typeobject)
     for v in gameplay_core.select "manual:in" do
         local manual = v.manual
-        if manual.status == STATUS_IDLE then
+        if manual.status == STATUS_IDLE or manual.status == STATUS_REBUILD then
             return 0
         end
         local total = recipe_typeobject.time * 100
@@ -16,36 +17,31 @@ local function get_progress(recipe_typeobject)
     end
 end
 
-local function get_count(s)
-    for _, v in ipairs(itypes.items(s)) do
-        if iprototype.is_fluid_id(v.id) then -- 有流体的配方不允许手搓
-            assert(false)
-            return
-        end
-        return v.count
-    end
-    assert(false)
-end
-
 local function get_queue(top)
-    local queue = {}
-    for _, v in ipairs(gameplay_core.get_world():manual()) do
-        if v[1] == "crafting" then
-            local recipe_typeobject = iprototype.queryByName("recipe", v[2])
-            local progress = "0"
-            if #queue == 0 then
+    local queue = gameplay_core.get_world():manual()
+    local result = {}
+    local count
+    for i = #queue, 1, -1 do
+        if queue[i][1] == "finish" then
+            count = (count or 0) + 1
+        elseif queue[i][1] == "separator" then
+            local recipe = queue[i][2]
+            local recipe_typeobject = iprototype.queryByName("recipe", recipe)
+            local progress = 0
+            if #result == 0 then
                 progress = get_progress(recipe_typeobject)
             end
-            queue[#queue+1] = {name = v[2], count = get_count(recipe_typeobject.results), icon = recipe_typeobject.icon, progress = progress}
+            result[#result+1] = {name = recipe, count = count, icon = recipe_typeobject.icon, progress = progress}
+            count = nil
+        end
 
-            if top then
-                if #queue >= top then
-                    break
-                end
+        if top then
+            if #result >= top then
+                break
             end
         end
     end
-    return queue
+    return result
 end
 
 local solver = imanual.create()

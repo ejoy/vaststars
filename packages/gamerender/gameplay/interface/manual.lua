@@ -72,6 +72,9 @@ local function solverEvaluate(solver, memory, register, input)
     local function push_finish(item)
         table.insert(output, 1,  {"finish", item})
     end
+    local function push_separator(recipe)
+        table.insert(output, 1,  {"separator", recipe})
+    end
     local function do_crafting(recipe)
         for _, s in ipairs(recipe.input) do
             local id = s[1]
@@ -156,6 +159,7 @@ local function solverEvaluate(solver, memory, register, input)
         if not solve(m, count) then
             return
         end
+        push_separator(recipe)
     end
     return output
 end

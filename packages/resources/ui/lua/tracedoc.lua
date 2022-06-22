@@ -431,12 +431,8 @@ function tracedoc.diff(doc)
 			changeset.del = changeset.del or {}
 			changeset.del[#changeset.del + 1] = k
 		else
-			if getmetatable(v) == tracedoc_type then
-				assert(false)
-			else
-				changeset.mod = changeset.mod or {}
-				changeset.mod[k] = v
-			end
+			changeset.mod = changeset.mod or {}
+			changeset.mod[k] = v
 		end
 	end
 	for k,v in pairs(doc._lastversion) do

@@ -63,9 +63,15 @@ lm:copy "copy_luaecs" {
     output = "packages/ecs/ecs.lua",
 }
 
+lm:copy "copy_manual" {
+    input = "startup/test_manual.lua",
+    output = "packages/gamerender/gameplay/interface/manual.lua",
+}
+
 lm:default {
     lm.os == "windows" and "fmod_dll",
     lm.compiler == "msvc" and lm.mode == "debug" and "copy_asan",
     "copy_luaecs",
+    "copy_manual",
     "vaststars"
 }

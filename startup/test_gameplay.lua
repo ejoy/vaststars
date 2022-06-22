@@ -38,9 +38,7 @@ end
 
 manual_update {
     {"铁棒1", 5},
-    {"铁棒1", 5},
-    {"铁棒1", 5},
-    {"铁棒1", 5},
+    {"铝丝1", 5},
 }
 
 --world:backup  "../../startup/.log/sav"
@@ -64,22 +62,22 @@ end
 
 local function dump_fluid()
     local ecs = world.ecs
-    local function display(fluid, id)
+    local function display(prototype, fluid, id)
         if fluid ~= 0 and id ~= 0 then
             local r = world:fluidflow_query(fluid, id)
             if r then
-                print(gameplay.prototype.queryById(fluid).name, ("%0.2f/%d\t%0.2f"):format(r.volume / r.multiple, r.capacity / r.multiple, r.flow / r.multiple))
+                print(gameplay.prototype.queryById(prototype).name, gameplay.prototype.queryById(fluid).name, ("%0.2f/%d\t%0.2f"):format(r.volume / r.multiple, r.capacity / r.multiple, r.flow / r.multiple))
             end
         end
     end
-    for v in ecs:select "fluidbox:in" do
-        display(v.fluidbox.fluid, v.fluidbox.id)
+    for v in ecs:select "entity:in fluidbox:in" do
+        display(v.entity.prototype, v.fluidbox.fluid, v.fluidbox.id)
     end
-    for v in ecs:select "fluidboxes:in" do
+    for v in ecs:select "entity:in fluidboxes:in" do
         for _, classify in ipairs {"in1","in2","in3","in4","out1","out2","out3"} do
             local fluid = v.fluidboxes[classify.."_fluid"]
             local id = v.fluidboxes[classify.."_id"]
-            display(fluid, id)
+            display(v.entity.prototype, fluid, id)
         end
     end
     print "===================="
