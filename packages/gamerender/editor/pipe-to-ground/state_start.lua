@@ -83,7 +83,9 @@ function condition_pipe_to_ground(self, datamodel)
     }
     for _, v in ipairs(ifluid:get_fluidbox(starting_object.prototype_name, starting_object.x, starting_object.y, starting_object.dir)) do
         if not t[v.dir] then
-            show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
+            local succ
+            succ, to_x, to_y = iprototype.move_coord(starting_object.x, starting_object.y, dir, math.min(math.abs(starting_object.x - to_x), ground), math.min(math.abs(starting_object.y - to_y), ground))
+            show_failed(self, datamodel, starting_object.x, starting_object.y, dir, to_x, to_y)
             return
         end
     end
@@ -91,10 +93,12 @@ function condition_pipe_to_ground(self, datamodel)
     local succ
     succ, to_x, to_y = iprototype.move_coord(from_x, from_y, dir,
         math.min(math.abs(from_x - to_x), ground),
-        math.min(math.abs(from_x - to_y), ground)
+        math.min(math.abs(from_y - to_y), ground)
     )
     if not succ then
-        show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
+        local succ
+        succ, to_x, to_y = iprototype.move_coord(starting_object.x, starting_object.y, dir, math.min(math.abs(starting_object.x - to_x), ground), math.min(math.abs(starting_object.y - to_y), ground))
+        show_failed(self, datamodel, starting_object.x, starting_object.y, dir, to_x, to_y)
         return
     end
 

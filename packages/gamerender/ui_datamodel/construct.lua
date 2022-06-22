@@ -246,7 +246,6 @@ function M:stage_ui_update(datamodel)
     end
 end
 
-local percent = 101
 function M:stage_camera_usage(datamodel)
     for _, delta in dragdrop_camera_mb:unpack() do
         if builder then
