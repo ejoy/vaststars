@@ -16,6 +16,7 @@ struct task {
         select_entity,
         select_chect,
         power_generator,
+        unknown,
     };
     type     type;
     uint16_t e;
@@ -28,7 +29,7 @@ struct task {
     uint64_t select_chect(lua_State* L, world& w);
     uint64_t power_generator(lua_State* L, world& w);
     uint64_t eval(lua_State* L, world& w);
-    uint16_t progress(lua_State* L, world& w, uint16_t max);
+    uint16_t progress(lua_State* L, world& w);
 };
 
 uint64_t task::stat_production(lua_State* L, world& w) {
@@ -91,11 +92,12 @@ uint64_t task::eval(lua_State* L, world& w) {
     return 0;
 }
 
-uint16_t task::progress(lua_State* L, world& w, uint16_t max) {
+uint16_t task::progress(lua_State* L, world& w) {
     uint64_t v = eval(L, w);
     for (uint16_t i = 0; i < e; ++i) {
         v /= 10;
     }
+    uint16_t max = std::numeric_limits<uint16_t>::max();
     if (v >= max) {
         return max;
     }
@@ -115,12 +117,13 @@ lupdate(lua_State *L) {
             break;
         }
         struct task& task = *(struct task*)pt_task(&task_prototype);
-        uint16_t count = (uint16_t)pt_count(&task_prototype);
-        uint16_t value = task.progress(L, w, count);
-        if (!w.techtree.research_set(taskid, count, value)) {
+        if (task.type == task::type::unknown) {
             break;
         }
-        w.techtree.queue_pop();
+        uint16_t value = task.progress(L, w);
+        if (!w.techtree.research_set(w, L, taskid, value)) {
+            break;
+        }
     }
     return 0;
 }
