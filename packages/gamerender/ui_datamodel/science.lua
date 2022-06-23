@@ -65,7 +65,7 @@ local function get_techlist(tech_list)
             ingredients = simple_ingredients,
             count = value.count,
             time = value.time,
-            task = value.task,
+            task = value.task and true or false,
             progress = (progress > 0) and ((progress * 100) // value.count) or progress,
             running = #queue > 0 and queue[1] == name or false
         }
