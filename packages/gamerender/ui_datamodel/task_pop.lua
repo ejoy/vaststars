@@ -24,8 +24,8 @@ function M:create(object_id)
         items = tips,
         task_name = current_tech.name,
         task_desc = current_tech.detail.sign_desc[1].desc,
-        current_count = current_tech.progress * 10^multiple,
-        total_count = current_tech.detail.count * 10^multiple,
+        current_count = math.floor(current_tech.progress * 10^multiple),
+        total_count = math.floor(current_tech.detail.count * 10^multiple),
     }
 end
 
