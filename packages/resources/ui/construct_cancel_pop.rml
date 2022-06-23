@@ -45,7 +45,7 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
-            }
+            })
 
             function start.clickConfirm(event)
                 ui_sys.world_pub {"ui_message", "unconfirmed_double_confirm_continuation"}
