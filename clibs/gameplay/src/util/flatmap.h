@@ -175,6 +175,16 @@ public:
         m_size--;
     }
 
+    void clear() {
+        if (m_mask != 0) {
+            std::free(m_buckets);
+        }
+        m_mask = 0;
+        m_maxsize = 0;
+        m_size = 0;
+        m_buckets = reinterpret_cast<bucket*>(&m_mask);
+    }
+
     void rehash(size_t c) {
         rehash(c, true);
     }

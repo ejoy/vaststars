@@ -54,3 +54,22 @@ do
         world.storage = json.decode(readall(f))
     end
 end
+
+do
+    local m = system "saveload-world"
+    function m.backup(world, rootdir)
+        local cworld = world._cworld
+        local metafile = rootdir.."/world.json"
+        local binfile = rootdir.."/world.bin"
+        writeall(metafile, json.encode(cworld:backup_world(binfile)))
+        cworld:backup_container(rootdir.."/container.bin")
+    end
+    function m.restore(world, rootdir)
+        local cworld = world._cworld
+        local metafile = rootdir.."/world.json"
+        local binfile = rootdir.."/world.bin"
+        local metajson = json.decode(readall(metafile))
+        cworld:restore_world(binfile, metajson)
+        cworld:restore_container(rootdir.."/container.bin")
+    end
+end

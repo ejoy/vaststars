@@ -353,6 +353,11 @@ namespace lua_world {
         return 1;
     }
 
+    int backup_world(lua_State* L);
+    int restore_world(lua_State* L);
+    int backup_container(lua_State* L);
+    int restore_container(lua_State* L);
+
     static int
     create(lua_State* L) {
         struct world* w = (struct world*)lua_newuserdatauv(L, sizeof(struct world), 0);
@@ -378,6 +383,11 @@ namespace lua_world {
                 // manual
                 { "manual", manual },
                 { "manual_container", manual_container },
+                // saveload
+                { "backup_world", backup_world },
+                { "restore_world", restore_world },
+                { "backup_container", backup_container },
+                { "restore_container", restore_container },
                 // misc
                 {"reset", reset},
                 {"__gc", destroy},
