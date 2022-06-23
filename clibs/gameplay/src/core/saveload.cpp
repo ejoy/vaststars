@@ -186,6 +186,11 @@ namespace lua_world {
             write_flatmap(f, w.techtree.progress);
         });
 
+        backup_scope(L, f, "manual", [&](){
+            write_vector(f, w.manual.todos);
+            write_flatmap(f, w.manual.container);
+        });
+
         fclose(f);
         return 1;
     }
@@ -218,6 +223,14 @@ namespace lua_world {
             w.techtree.queue.clear();
             w.techtree.researched.clear();
             w.techtree.progress.clear();
+        });
+
+        restore_scope(L, f, "manual", [&](){
+            read_vector(f, w.manual.todos);
+            read_flatmap(f, w.manual.container);
+        }, [&](){
+            w.manual.todos.clear();
+            w.manual.container.clear();
         });
 
         fclose(f);
