@@ -215,7 +215,7 @@ namespace lua_world {
             w.stat.consumption.clear();
         });
 
-        restore_scope(L, f, "stat", [&](){
+        restore_scope(L, f, "techtree", [&](){
             read_vector(f, w.techtree.queue);
             read_flatmap(f, w.techtree.researched);
             read_flatmap(f, w.techtree.progress);
