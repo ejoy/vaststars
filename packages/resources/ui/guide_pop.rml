@@ -11,7 +11,6 @@
                 word-break: break-all;
                 justify-content: center;
                 align-items: center;
-                border: 1px #fff;
             }
             .guide-avatar-block {
                 width: 29.4vmin;
@@ -19,7 +18,16 @@
                 position: absolute;
                 background-size: cover;
                 right:-17vmin;
-                bottom: -5vmin;
+                bottom: -7vmin;
+            }
+            .guide-info-block {
+                position: absolute;
+                right:12vmin;
+                bottom: -4vmin;
+                font-size: 4vmin;
+                text-align: right;
+                color: rgb(249, 253, 0);
+                -webkit-text-stroke: 0.5px #000;
             }
         </style>
         <style path = "common/building_style.rcss"/>
@@ -45,6 +53,7 @@
             <div class="panel" style="width:40%; height:24%;  align-items: center; justify-content: flex-start;">
                 <div class = "guide-speech-block">一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十</div>
                 <div class="guide-avatar-block" style='background-image:"textures/guide/guide-1.texture";'/>
+                <div class="guide-info-block">点击任意区域继续</div>
             </div>
         </div>
     </body>
