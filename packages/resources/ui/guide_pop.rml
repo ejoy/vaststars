@@ -1,0 +1,51 @@
+<rml>
+    <head>
+        <style>
+            .guide-speech-block {
+                margin-right: 10vmin;
+                flex-direction: row;
+                width: 85%;
+                height:100%;
+                font-size: 5vmin;
+                text-align: left;
+                word-break: break-all;
+                justify-content: center;
+                align-items: center;
+                border: 1px #fff;
+            }
+            .guide-avatar-block {
+                width: 29.4vmin;
+                height: 43.1vmin;
+                position: absolute;
+                background-size: cover;
+                right:-17vmin;
+                bottom: -5vmin;
+            }
+        </style>
+        <style path = "common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+                FluidName = ' ',
+                FluidCount = 0,
+                NewFluidName = ' ',
+            }
+
+            function start.clickConfirm(event)
+                ui_sys.close()
+            end
+
+            function start.clickCancel(event)
+                ui_sys.close()
+            end
+        </script>
+    </head>
+    <body style = "pointer-events: none;">
+        <div style = "pointer-events: none; align-items: center;" class="item-container-region"  data-model="start">
+            <div class="panel" style="width:40%; height:24%;  align-items: center; justify-content: flex-start;">
+                <div class = "guide-speech-block">一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十</div>
+                <div class="guide-avatar-block" style='background-image:"textures/guide/guide-1.texture";'/>
+            </div>
+        </div>
+    </body>
+</rml>
