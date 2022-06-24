@@ -19,6 +19,8 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ic = ecs.import.interface "ant.camera|icamera"
 local math3d = require "math3d"
 local iobject = ecs.require "object"
+local terrain = ecs.require "terrain"
+local camera = ecs.require "engine.camera"
 
 local MAX_ARCHIVING_COUNT <const> = 9
 
@@ -190,11 +192,21 @@ function M:restore(index)
     if camera_setting then
         restore_camera_setting(camera_setting)
     end
+
+    local coord = terrain:adjust_position(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+    if coord then
+        terrain:enable_terrain(coord[1], coord[2])
+    end
     print("restore success", archival_dir)
 end
 
 function M:restart()
     gameplay_core.restart()
+
+    local coord = terrain:adjust_position(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+    if coord then
+        terrain:enable_terrain(coord[1], coord[2])
+    end
 
     for _, e in ipairs(startup_entities) do
         gameplay_core.create_entity(e)

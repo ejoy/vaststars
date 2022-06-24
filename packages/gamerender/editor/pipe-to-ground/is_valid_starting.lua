@@ -2,7 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local iterrain = ecs.require "terrain"
+local terrain = ecs.require "terrain"
 local objects = require "objects"
 local ifluid = require "gameplay.interface.fluid"
 local iprototype = require "gameplay.interface.prototype"
@@ -12,7 +12,7 @@ local EDITOR_CACHE_CONSTRUCTED = {"CONFIRM", "CONSTRUCTED"}
 local function is_valid_starting(x, y)
     local object = objects:coord(x, y, EDITOR_CACHE_CONSTRUCTED)
     if not object then
-        return iterrain.can_place(x, y)
+        return terrain:can_place(x, y)
     end
 
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
@@ -42,7 +42,7 @@ local function is_valid_starting(x, y)
         succ, dx, dy = iprototype.move_coord(v.x, v.y, v.dir, 1)
         if succ then
             obj = objects:coord(dx, dy, EDITOR_CACHE_CONSTRUCTED)
-            if not obj and iterrain.can_place(dx, dy) then
+            if not obj and terrain:can_place(dx, dy) then
                 return true
             end
             if obj.pipe and can_replace_pipe(obj.prototype_name) then

@@ -27,7 +27,7 @@ function M:stage_camera_usage()
     end
 
     for _ in restart_mb:unpack() do
-        camera.set("camera_default.prefab", true)
+        camera.init("camera_default.prefab")
         saveload:restart()
     end
 end

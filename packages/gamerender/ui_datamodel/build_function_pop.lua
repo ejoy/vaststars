@@ -9,17 +9,14 @@ local iassembling = require "gameplay.interface.assembling"
 local ilaboratory = require "gameplay.interface.laboratory"
 local ientity = require "gameplay.interface.entity"
 local vsobject_manager = ecs.require "vsobject_manager"
-local terrain = ecs.require "terrain"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local irecipe = require "gameplay.interface.recipe"
-local iobject = ecs.require "object"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local recipe_mb = mailbox:sub {"recipe"}
 local detail_mb = mailbox:sub {"detail"}
 local pickup_material_mb = mailbox:sub {"pickup_material"}
 local place_material_mb = mailbox:sub {"place_material"}
-local open_mb = mailbox:sub {"open_build_function_pop"}
 local close_mb = mailbox:sub {"close_build_function_pop"}
 local place_material_func = {}
 place_material_func["assembling"] = function(gameplay_world, e)
@@ -36,11 +33,11 @@ local current_object_id
 function M:create(object_id, left, top)
     if current_object_id and current_object_id ~= object_id then
         local vsobject = vsobject_manager:get(current_object_id)
-        vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, {name = "over", forwards = true})
+        vsobject:send("modifier", "start", vsobject.srt_modifier, {name = "over", forwards = true})
     end
     if current_object_id ~= object_id then
         local vsobject = vsobject_manager:get(object_id)
-        vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, {name = "talk", forwards = true})
+        vsobject:send("modifier", "start", vsobject.srt_modifier, {name = "talk", forwards = true})
     end
     current_object_id = object_id
     local object = assert(objects:get(object_id))
@@ -75,7 +72,7 @@ function M:create(object_id, left, top)
     if iprototype.has_type(typeobject.type, "laboratory") then
         show_place_material = true
     end
-    
+
     return {
         show_rotate = show_rotate,
         show_pickup_material = show_pickup_material,
@@ -100,15 +97,7 @@ function M:stage_ui_update(datamodel)
     --
     for _, _, _, object_id in rotate_mb:unpack() do
         local object = assert(objects:get(object_id))
-        local vsobject = assert(vsobject_manager:get(object.id))
         local dir = iprototype.rotate_dir_times(object.dir, -1)
-
-        local typeobject = iprototype.queryByName("entity", object.prototype_name)
-        local _, position = terrain.adjust_position_by_coord(object.x, object.y, vsobject:get_position(), iprototype.rotate_area(typeobject.area, dir))
-        if not position then
-            return
-        end
-
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if e then
             object.dir = dir
@@ -158,7 +147,7 @@ function M:stage_ui_update(datamodel)
 
     for _, _, _, object_id in close_mb:unpack() do
         local vsobject = vsobject_manager:get(object_id)
-        vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, {name = "over", forwards = true})
+        vsobject:send("modifier", "start", vsobject.srt_modifier, {name = "over", forwards = true})
     end
 end
 

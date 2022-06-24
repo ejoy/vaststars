@@ -13,6 +13,9 @@ local pt2D_to_NDC = math_util.pt2D_to_NDC
 local ndc_to_world = math_util.ndc_to_world
 local irq = ecs.import.interface "ant.render|irenderqueue"
 local create_queue = require "utility.queue"
+local hierarchy = require "hierarchy"
+local animation = hierarchy.animation
+local skeleton = hierarchy.skeleton
 
 local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 
@@ -53,11 +56,7 @@ function camera.init(prefab_file_name)
     camera_prefab_file_name = prefab_file_name
 end
 
-local hierarchy = require "hierarchy"
-local animation = hierarchy.animation
-local skeleton = hierarchy.skeleton
-
-function camera.set(prefab_file_name, reset)
+function camera.set(prefab_file_name)
     local sdata, ddata = get_camera_prefab_data(camera_prefab_file_name), get_camera_prefab_data(prefab_file_name)
     if not sdata or not ddata then
         return
@@ -70,13 +69,9 @@ function camera.set(prefab_file_name, reset)
     local scale = iom.get_scale(e)
     local rotation = iom.get_rotation(e)
     local oposition = iom.get_position(e)
-    local nposition
-    if reset then
-        nposition = ddata.scene.srt.t
-    else
-        local delta = math3d.sub(oposition, sdata.scene.srt.t)
-        nposition = math3d.add(delta, ddata.scene.srt.t)
-    end
+
+    local delta = math3d.sub(oposition, sdata.scene.srt.t)
+    local nposition = math3d.add(delta, ddata.scene.srt.t)
 
     local raw_animation = animation.new_raw_animation()
     local skl = skeleton.build({{name = "root", s = mc.T_ONE, r = mc.T_IDENTITY_QUAT, t = mc.T_ZERO}})

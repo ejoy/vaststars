@@ -4,7 +4,7 @@ local w = world.w
 
 local math_abs = math.abs
 local iprototype = require "gameplay.interface.prototype"
-local iterrain = ecs.require "terrain"
+local terrain = ecs.require "terrain"
 local objects = require "objects"
 local EDITOR_CACHE_CONSTRUCTED = {"CONFIRM", "CONSTRUCTED"}
 local EDITOR_CACHE_TEMPORARY   = {"TEMPORARY", "INDICATOR"}
@@ -33,7 +33,7 @@ function M.show_dotted_line(self, from_x, from_y, dir, to_x, to_y)
         return
     end
 
-    local position = iterrain.get_position_by_coord(from_x, from_y, 1, 1)
+    local position = terrain:get_position_by_coord(from_x, from_y, 1, 1)
     self.dotted_line:update(position, quad_num, dir)
     self.dotted_line:show(true)
 end

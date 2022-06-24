@@ -14,6 +14,7 @@ local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
 local global = require "global"
 local iobject = ecs.require "object"
+local terrain = ecs.require "terrain"
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local construct_begin_mb = mailbox:sub {"construct_begin"} -- 建造 -> 建造模式
@@ -157,7 +158,7 @@ function M:stage_ui_update(datamodel)
 
     for _ in rotate_mb:unpack() do
         assert(gameplay_core.world_update == false)
-        builder:rotate_pickup_object()
+        builder:rotate_pickup_object(datamodel)
     end
 
     for _ in construct_confirm_mb:unpack() do
@@ -248,6 +249,11 @@ end
 
 function M:stage_camera_usage(datamodel)
     for _, delta in dragdrop_camera_mb:unpack() do
+        local coord = terrain:adjust_position(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+        if coord then
+            terrain:enable_terrain(coord[1], coord[2])
+        end
+
         if builder then
             builder:touch_move(datamodel, delta)
             self:flush()

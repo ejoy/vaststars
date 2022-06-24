@@ -28,9 +28,14 @@ function m:init_world()
 
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
-    terrain.create()
+    terrain:create()
     saveload:restore()
     iscience.update_tech_list(gameplay_core.get_world())
+
+    local coord = terrain:adjust_position(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+    if coord then
+        terrain:enable_terrain(coord[1], coord[2])
+    end
 
     iui.open("construct.rml")
 end

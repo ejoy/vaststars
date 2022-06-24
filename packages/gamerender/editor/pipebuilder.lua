@@ -414,7 +414,7 @@ end
 
 local function touch_end(self, datamodel)
     local coord_indicator = assert(self.coord_indicator)
-    local coord = terrain.adjust_position(camera.get_central_position(), 1, 1) -- 1, 1 水管 / 路块的 width & height
+    local coord = terrain:adjust_position(camera.get_central_position(), 1, 1) -- 1, 1 水管 / 路块的 width & height
     if not coord then
         return
     end

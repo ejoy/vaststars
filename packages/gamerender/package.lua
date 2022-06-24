@@ -8,7 +8,6 @@ return {
         "ant.sky",
         "ant.math",
         "ant.animation",
-        "ant.terrain",
         "ant.compile_resource",
         "ant.serialize",
         "ant.render",

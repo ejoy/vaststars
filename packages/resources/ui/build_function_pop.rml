@@ -91,10 +91,6 @@
                     ui_sys.close()
                 end,
             })
-
-            window.onload = function()
-                ui_sys.pub {"open_build_function_pop", start.object_id}
-            end
         </script>
     </head>
     <body style = "pointer-events: none;">

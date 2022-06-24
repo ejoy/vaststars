@@ -6,7 +6,7 @@ local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local iobject = ecs.require "object"
 local global = require "global"
-local iterrain = ecs.require "terrain"
+local terrain = ecs.require "terrain"
 
 local format_prototype_name = ecs.require "editor.pipe-to-ground.util".format_prototype_name
 local show_dotted_line = ecs.require "editor.pipe-to-ground.util".show_dotted_line
@@ -316,7 +316,7 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, shape)
     local succ
     succ, to_x, to_y = iprototype.move_coord(starting_object.x, starting_object.y, starting_object.dir, math.abs(starting_object.x - to_x), math.abs(starting_object.y - to_y))
 
-    if not iterrain.can_place(to_x, to_y) then
+    if not terrain:can_place(to_x, to_y) then
         show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
         return
     end
