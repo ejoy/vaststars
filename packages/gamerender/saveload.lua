@@ -13,6 +13,8 @@ local startup_entities = import_package("vaststars.prototype")("item.startup").e
 local objects = require "objects"
 local ifluid = require "gameplay.interface.fluid"
 local iscience = require "gameplay.interface.science"
+local iui = ecs.import.interface "vaststars.gamerender|iui"
+local GAMEPLAY_VERSION <const> = require "version"
 
 local irq = ecs.import.interface "ant.render|irenderqueue"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
@@ -24,7 +26,7 @@ local camera = ecs.require "engine.camera"
 
 local MAX_ARCHIVING_COUNT <const> = 9
 
-local archival_relative_dir_list = {}
+local archival_list = {}
 
 local function restore_world()
     -- clean
@@ -122,10 +124,15 @@ local function restore_camera_setting(camera_setting)
     ic.set_frustum(ce, camera_setting.frustum)
 end
 
-local M = {}
+local M = {running = false}
 function M:backup()
-    while #archival_relative_dir_list + 1 > MAX_ARCHIVING_COUNT do
-        local archival_relative_dir = table.remove(archival_relative_dir_list, 1)
+    if not self.running then
+        log.error("not running")
+        return
+    end
+
+    while #archival_list + 1 > MAX_ARCHIVING_COUNT do
+        local archival_relative_dir = table.remove(archival_list, 1)
         local archival_dir = archival_base_dir .. ("/%s"):format(archival_relative_dir)
         print("remove", archival_dir)
         fs.remove_all(archival_dir)
@@ -135,10 +142,10 @@ function M:backup()
     local dn = ("%04d-%02d-%02d-%02d-%02d-%02d"):format(t.year, t.month, t.day, t.hour, t.min, t.sec)
     local archival_dir = archival_base_dir .. ("/%s"):format(dn)
 
-    archival_relative_dir_list[#archival_relative_dir_list + 1] = dn
+    archival_list[#archival_list + 1] = {dir = dn, version = require("version")}
     gameplay_core.backup(archival_dir)
 
-    writeall(archiving_list_path, json.encode(archival_relative_dir_list))
+    writeall(archiving_list_path, json.encode(archival_list))
     writeall(camera_setting_path, json.encode(get_camera_setting()))
     print("save success", archival_dir)
 end
@@ -152,42 +159,58 @@ function M:restore(index)
     --
     if not fs.exists(fs.path(archiving_list_path)) then
         self:restart()
-        return
+        self.running = true
+        return true
     end
-    archival_relative_dir_list = json.decode(readall(archiving_list_path))
-    if #archival_relative_dir_list <= 0 then
+    archival_list = json.decode(readall(archiving_list_path))
+    if #archival_list <= 0 then
         self:restart()
-        return
+        self.running = true
+        return true
     end
 
-    index = index or #archival_relative_dir_list
-    if index > #archival_relative_dir_list then
+    index = index or #archival_list
+    if index > #archival_list then
         log.error(("Failed to restore `%s`"):format(index))
-        return
+        iui.open("option_pop.rml")
+        return false
     end
 
     local archival_dir
     while index > 0 do
-        local archival_relative_dir = archival_relative_dir_list[index]
+        local archival_relative_dir = archival_list[index].dir
         archival_dir = archival_base_dir .. ("/%s"):format(archival_relative_dir)
 
         if not fs.exists(fs.path(archival_dir)) then
             log.warn(("`%s` not exists"):format(archival_relative_dir))
-            archival_relative_dir_list[index] = nil
+            archival_list[index] = nil
             index = index - 1
+            goto continue
+        end
+
+        if archival_list[index].version ~= GAMEPLAY_VERSION then
+            log.error(("Failed `%s` version `%s` current `%s`"):format(archival_relative_dir, archival_list[index].version, GAMEPLAY_VERSION))
+            -- archival_list[index] = nil
+            -- index = index - 1
+            iui.open("option_pop.rml")
+            return false
         else
             break
         end
+
+        ::continue::
     end
 
     if index == 0 then
         log.error("Failed to restore")
-        return
+        iui.open("option_pop.rml")
+        return false
     end
 
     gameplay_core.restore(archival_dir)
-    gameplay_core.build()
-    restore_world()
+    self.running = true
+    iscience.update_tech_list(gameplay_core.get_world())
+    iui.open("construct.rml")
 
     if camera_setting then
         restore_camera_setting(camera_setting)
@@ -197,11 +220,20 @@ function M:restore(index)
     if coord then
         terrain:enable_terrain(coord[1], coord[2])
     end
+
+    gameplay_core.build()
+    restore_world()
+
     print("restore success", archival_dir)
+    return true
 end
 
 function M:restart()
     gameplay_core.restart()
+
+    self.running = true
+    iscience.update_tech_list(gameplay_core.get_world())
+    iui.open("construct.rml")
 
     local coord = terrain:adjust_position(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
     if coord then
@@ -215,8 +247,8 @@ function M:restart()
     restore_world()
 end
 
-function M:get_archival_relative_dir_list()
-    return archival_relative_dir_list
+function M:get_archival_list()
+    return archival_list
 end
 
 return M
