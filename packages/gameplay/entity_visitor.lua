@@ -30,7 +30,7 @@ return function (ecs, c)
 			return
 		end
 		local proxy = setmetatable({id=id}, proxy_mt)
-		entity[id] = proxy
+		rawset(entity, id, proxy)
 		return proxy
 	end
 

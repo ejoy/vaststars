@@ -470,11 +470,9 @@ attempt_flow(struct fluidflow_network *net, int idx) {
 	int n = i;
 	if (total > fluid) {
 		int radio = FIXSHIFT * fluid / total;
-		for (i=0;i<n-1;i++) {
+		for (i=0;i<n;i++) {
 			f[i] = f[i] * radio / FIXSHIFT;
-			fluid -= f[i];
 		}
-		f[i] = fluid;
 	}
 	for (i=0;i<n;i++) {
 //		printf("Attempt flow %d -> %d : %d\n", p->id, net->p[p->downlink[i]].id, f[i]);
