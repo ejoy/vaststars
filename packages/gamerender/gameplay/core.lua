@@ -5,6 +5,7 @@ local iprototype = require "gameplay.interface.prototype"
 
 local m = {}
 m.world_update = true
+m.multiple = 1
 
 function m.select(...)
     return world.ecs:select(...)
@@ -20,8 +21,14 @@ end
 
 function m.update()
     if m.world_update then
-        world:update()
+        for i = 1, m.multiple do
+            world:update()
+        end
     end
+end
+
+function m.set_multiple(n)
+    m.multiple = n
 end
 
 function m.container_get(...)
