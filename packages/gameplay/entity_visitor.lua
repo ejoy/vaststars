@@ -22,34 +22,32 @@ return function (ecs, c)
 		index(self.id, name, value)
 	end
 
-	local cached = {}
-	local cached_mt = {}
-	function cached_mt:__index(id)
+	local entity = {}
+	local entity_mt = {}
+	function entity_mt:__index(id)
 		local v = index[id]
 		if not v then
 			return
 		end
 		local proxy = setmetatable({id=id}, proxy_mt)
-		cached[id] = proxy
+		entity[id] = proxy
 		return proxy
 	end
 
-	local visitor_mt = {}
-	visitor_mt.__index = setmetatable(cached, cached_mt)
-	function visitor_mt:__newindex(id, e)
-		assert(e == nil, "Cannot modify entity")
+	function entity_mt:__newindex(id, value)
+		assert(value == nil, "Cannot modify entity")
 		local v = index[id]
 		if v then
 			ecs:remove(v)
 		end
-		cached[id] = nil
 	end
-	local api = {}
-	function api.readall(id)
+
+	function entity.readall(id)
 		local v = index[id]
 		if v then
 			return ecs:readall(v)
 		end
 	end
-	return setmetatable(api, visitor_mt)
+
+	return setmetatable(entity, entity_mt)
 end

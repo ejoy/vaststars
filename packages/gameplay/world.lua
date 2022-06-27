@@ -106,6 +106,9 @@ return function ()
         assert(not needBuild)
         pipeline_update()
         timer.update(1)
+        for e in ecs:select "REMOVED id:in" do
+            world.entity[e.id] = nil
+        end
         ecs:update()
     end
     function world:build()
