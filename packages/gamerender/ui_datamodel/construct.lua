@@ -127,7 +127,7 @@ function M:stage_ui_update(datamodel)
         world:pub {"ui_message", "show_rotate_confirm", {rotate = false, confirm = false}}
         gameplay_core.world_update = false
         global.mode = "construct"
-        camera.set("camera_construct.prefab")
+        camera.transition("camera_construct.prefab")
         last_prototype_name = nil
 
         ::continue::
@@ -152,7 +152,7 @@ function M:stage_ui_update(datamodel)
         ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
         global.mode = "teardown"
         gameplay_core.world_update = false
-        camera.set("camera_construct.prefab")
+        camera.transition("camera_construct.prefab")
         ::continue::
     end
 
@@ -173,14 +173,14 @@ function M:stage_ui_update(datamodel)
         builder = nil
         gameplay_core.world_update = true
         global.mode = "normal"
-        camera.set("camera_default.prefab")
+        camera.transition("camera_default.prefab")
     end
 
     for _ in dismantle_complete_mb:unpack() do
         ieditor:teardown_complete()
         global.mode = "normal"
         gameplay_core.world_update = true
-        camera.set("camera_default.prefab")
+        camera.transition("camera_default.prefab")
     end
 
     for _, _, _, double_confirm in cancel_mb:unpack() do
@@ -202,7 +202,7 @@ function M:stage_ui_update(datamodel)
         ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
         gameplay_core.world_update = true
         global.mode = "normal"
-        camera.set("camera_default.prefab")
+        camera.transition("camera_default.prefab")
         ::continue::
     end
 
