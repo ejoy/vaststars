@@ -93,6 +93,7 @@ end
 function terrain:create(width, height)
     self.ground_width, self.ground_height = GROUND_WIDTH, GROUND_HEIGHT
     self.surface_height = SURFACE_HEIGHT
+    self.tile_size = TILE_SIZE
 
     self._width, self._height = width or WIDTH, height or HEIGHT
     local offset_3d = {-(self._width * TILE_SIZE)/2, 0.0, -(self._height * TILE_SIZE)/2}
@@ -202,6 +203,7 @@ function terrain:enable_terrain(x, y)
         print(("enable group id: %s"):format(group_id))
         ecs.group(group_id):enable "view_visible"
         ecs.group(group_id):enable "scene_update"
+        ecs.group(group_id):enable "scene_changed"
     end
     for _, group_id in ipairs(del) do
         print(("disable group id: %s"):format(group_id))

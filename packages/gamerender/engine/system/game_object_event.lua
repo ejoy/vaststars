@@ -44,6 +44,10 @@ events["modifier"] = function(prefab, binding, oper, ...)
     imodifier[oper](...)
 end
 
+events["remove"] = function(prefab, binding, ...)
+    world:pub {"game_object_system", "remove", ...}
+end
+
 local function get_slot_eid(prefab, slot_name)
     for _, eid in ipairs(prefab.tag["*"]) do
         local e = assert(world:entity(eid))

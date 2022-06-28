@@ -4,9 +4,6 @@ local w = world.w
 
 local cr = import_package "ant.compile_resource"
 local serialize = import_package "ant.serialize"
-local mathpkg	= import_package "ant.math"
-local mu	    = mathpkg.util
-local iani = ecs.import.interface "ant.animation|ianimation"
 local ipickup_mapping = ecs.import.interface "vaststars.gamerender|ipickup_mapping"
 
 local igame_object = ecs.interface "igame_object"
@@ -20,7 +17,6 @@ local remove_mb = world:sub {"game_object_system", "remove"}
 
 function game_object_sys:component_init()
     for _, _, game_object in detach_slot_mb:unpack() do
-        game_object:send("set_filter_state", "main_view", false)
         game_object:remove()
     end
 
@@ -59,7 +55,7 @@ end
 --
 local function remove(self)
     self.game_object:send("detach_slot")
-    world:pub {"game_object_system", "remove", self.game_object}
+    self.game_object:send("remove", self.game_object)
 end
 
 local function attach(self, slot_name, prefab_file_name)

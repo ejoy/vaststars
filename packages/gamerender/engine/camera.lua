@@ -42,18 +42,24 @@ end
 ---
 local camera = {}
 function camera.init(prefab_file_name)
-    local data = get_camera_prefab_data(prefab_file_name)
-    if not data then
-        return
+    -- local data = get_camera_prefab_data(prefab_file_name)
+    -- if not data then
+    --     return
+    -- end
+
+    local p = ecs.create_instance((camera_prefab_path / prefab_file_name):string())
+    p.on_ready = function (e)
+        irq.set_camera("main_queue", e.tag.camera[1])
     end
+    world:create_object(p)
 
-    local mq = w:singleton("main_queue", "camera_ref:in")
-    local camera_ref = mq.camera_ref
-    local e = world:entity(camera_ref)
+    -- local mq = w:singleton("main_queue", "camera_ref:in")
+    -- local camera_ref = mq.camera_ref
+    -- local e = world:entity(camera_ref)
 
-    iom.set_srt(e, data.scene.srt.s or mc.ONE, data.scene.srt.r, data.scene.srt.t)
-    iom.set_view(e, iom.get_position(e), iom.get_direction(e), data.scene.updir)
-    camera_prefab_file_name = prefab_file_name
+    -- iom.set_srt(e, data.scene.srt.s or mc.ONE, data.scene.srt.r, data.scene.srt.t)
+    -- iom.set_view(e, iom.get_position(e), iom.get_direction(e), data.scene.updir)
+    -- camera_prefab_file_name = prefab_file_name
 end
 
 function camera.set(prefab_file_name)

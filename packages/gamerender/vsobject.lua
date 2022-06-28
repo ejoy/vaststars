@@ -17,9 +17,6 @@ local iprototype = require "gameplay.interface.prototype"
 local imodifier = ecs.import.interface "ant.modifier|imodifier"
 local terrain = ecs.require "terrain"
 
-local TILE_SIZE <const> = 10.0
-local SURFACE_HEIGHT <const> = 1.0
-
 local plane_vb <const> = {
 	-0.5, 0, 0.5, 0, 1, 0,	--left top
 	0.5,  0, 0.5, 0, 1, 0,	--right top
@@ -91,7 +88,7 @@ local function create_block(color, block_edge_size, area, position, rotation)
 			"ant.general|name",
 		},
 		data = {
-			scene 		= { srt = {r = rotation, s = {TILE_SIZE * width + block_edge_size, SURFACE_HEIGHT, TILE_SIZE * height + block_edge_size}, t = position}},
+			scene 		= { srt = {r = rotation, s = {terrain.tile_size * width + block_edge_size, terrain.surface_height, terrain.tile_size * height + block_edge_size}, t = position}},
 			material 	= "/pkg/vaststars.resources/materials/singlecolor.material",
 			filter_state= "main_view",
 			name 		= ("plane_%d"):format(gen_id()),
