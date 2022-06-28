@@ -89,12 +89,17 @@ return function ()
         end
     end
 
-    function world:remove_entity(v)
-        ecs:remove(v)
+    local entity, visitor = entity_visitor(ecs, "id")
+
+    function world:remove_entity(id)
+        local v = visitor[id]
+        if v then
+            ecs:remove(v)
+        end
         needBuild = true
     end
 
-    world.entity = entity_visitor(ecs, "id")
+    world.entity = entity
 
     local pipeline_update = pipeline(world, cworld, "update")
     local pipeline_clean = pipeline(world, cworld, "clean")
