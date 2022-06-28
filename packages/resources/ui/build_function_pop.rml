@@ -129,7 +129,7 @@
                     <div class="title-text">详细</div>
                 </div>
             </div>
-            <div class="info-round-panel" style="position: absolute; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top"  data-if="false">
+            <div class="info-round-panel" style="position: absolute; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top" data-if="false">
                 <div class="button-fuction-block" style="top: 10.67vmin; left: 2vmin;" data-event-click="clickConstructRotate()">
                     <button class="button-function" style ='background-image: "textures/common/pipe-connect.texture";'/>
                     <div class="title-text">左</div>
@@ -142,7 +142,7 @@
                     <button class="button-function" style ='background-image: "textures/common/pipe-disconnect.texture";'/>
                     <div class="title-text">上</div>
                 </div>
-                <div class="button-fuction-block" style="left: -12.5vmin; bottom: -32vmin; " data-event-click="clickPickupMaterial()">
+                <div class="button-fuction-block" style="left: -12.5vmin; bottom: -32vmin;" data-event-click="clickPickupMaterial()">
                     <button class="button-function" style ='background-image: "textures/common/pipe-disconnect.texture";'/>
                     <div class="title-text">下</div>
                 </div>
