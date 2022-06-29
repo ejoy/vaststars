@@ -15,7 +15,7 @@ local M = {}
 
 function M.show_dotted_line(self, from_x, from_y, dir, to_x, to_y)
     local succ
-    succ, from_x, from_y = iprototype.move_coord(from_x, from_y, dir, 1)
+    succ, from_x, from_y = terrain:move_coord(from_x, from_y, dir, 1)
     if not succ then
         return
     end
@@ -103,7 +103,7 @@ end
 function M.show_indicator(prototype_name, object)
     local succ, dx, dy, obj
     for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
-        succ, dx, dy = iprototype.move_coord(v.x, v.y, v.dir, 1)
+        succ, dx, dy = terrain:move_coord(v.x, v.y, v.dir, 1)
         if succ then
             obj = objects:coord(dx, dy, EDITOR_CACHE_CONSTRUCTED)
             if not obj then

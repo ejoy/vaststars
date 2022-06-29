@@ -39,7 +39,7 @@ local function is_valid_starting(x, y)
 
     local succ, dx, dy, obj
     for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
-        succ, dx, dy = iprototype.move_coord(v.x, v.y, v.dir, 1)
+        succ, dx, dy = terrain:move_coord(v.x, v.y, v.dir, 1)
         if succ then
             obj = objects:coord(dx, dy, EDITOR_CACHE_CONSTRUCTED)
             if not obj and terrain:can_place(dx, dy) then

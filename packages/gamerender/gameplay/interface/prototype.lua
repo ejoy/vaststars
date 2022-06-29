@@ -80,20 +80,27 @@ function M.dir_tostring(dir)
     return assert(DIRECTION_REV[dir])
 end
 
+local dir_move_delta = {
+    ['N'] = {x = 0,  y = -1},
+    ['E'] = {x = 1,  y = 0},
+    ['S'] = {x = 0,  y = 1},
+    ['W'] = {x = -1, y = 0},
+}
+
 function M.calc_dir(x1, y1, x2, y2)
     local dx = math_abs(x1 - x2)
     local dy = math_abs(y1 - y2)
     if dx > dy then
         if x1 < x2 then
-            return 'E'
+            return 'E', dir_move_delta['E']
         else
-            return 'W'
+            return 'W', dir_move_delta['W']
         end
     else
         if y1 < y2 then
-            return 'S'
+            return 'S', dir_move_delta['S']
         else
-            return 'N'
+            return 'N', dir_move_delta['N']
         end
     end
 end
@@ -111,24 +118,8 @@ function M.move_coord(x, y, dir, dx, dy)
     dx = dx or 1
     dy = dy or dx
 
-    local dir_coord = {
-        ['N'] = {x = 0,  y = -1},
-        ['E'] = {x = 1,  y = 0},
-        ['S'] = {x = 0,  y = 1},
-        ['W'] = {x = -1, y = 0},
-    }
-
-    local function valid_value(v)
-        return not (v < 0 or v > 255)
-    end
-
-    local c = assert(dir_coord[dir])
-    local rx, ry = x + c.x * dx, y + c.y * dy
-    if valid_value(rx) and valid_value(ry) then
-        return true, rx, ry
-    else
-        return false, rx, ry
-    end
+    local c = assert(dir_move_delta[dir])
+    return x + c.x * dx, y + c.y * dy
 end
 
 function M.rotate_fluidbox(position, direction, area)

@@ -56,36 +56,45 @@ for shape_type, v in pairs(accel) do
     end
 end
 
-function M:to_state(shape_type, dir)
+function M.to_state(shape_type, dir)
     assert(accel[shape_type] and accel[shape_type][dir], ("invalid shape_type `%s` dir `%s`"):format(shape_type, dir))
     return accel[shape_type][dir]
 end
 
-function M:to_type_dir(passable_state)
+function M.to_type_dir(passable_state)
     assert(accel_reversed[passable_state])
     local t = accel_reversed[passable_state][1]
     return t.shape_type, t.dir
 end
 
-function M:set_state(passable_state, passable_dir, state)
-    if state == 0 then
-        return passable_state & ~(1 << passable_dir)
-    else
+function M.to_prototype_name(prototype_name, shape_type)
+    return prototype_name:gsub("(.*%-)(%u*)(.*)", ("%%1%s%%3"):format(shape_type))
+end
+
+function M.set_shape_edge(passable_state, passable_dir, state)
+    if state == true then
         return passable_state |  (1 << passable_dir)
+    else
+        return passable_state & ~(1 << passable_dir)
     end
 end
 
-function M:get_init_prototype_name(prototype_name)
+function M.get_init_prototype_name(prototype_name)
     return prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format("O"))
 end
 
-function M:get_state(prototype_name, dir, check_dir)
+function M.get_state(prototype_name, dir, check_dir)
     local shape_type = assert(prototype_name:match(".*%-(%u).*"))
-    return M:to_state(shape_type, dir) & (1 << DIRECTION[check_dir]) == (1 << DIRECTION[check_dir])
+    return M.to_state(shape_type, dir) & (1 << DIRECTION[check_dir]) == (1 << DIRECTION[check_dir])
 end
 
-function M:get_shape(prototype_name)
+function M.get_shape(prototype_name)
     return assert(prototype_name:match(".*%-(%u*).*"))
+end
+
+function M.prototype_name_to_state(prototype_name, dir)
+    local shape_type = assert(prototype_name:match(".*%-(%u).*"))
+    return M.to_state(shape_type, dir)
 end
 
 return M

@@ -2,6 +2,8 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
+local iprototype = require "gameplay.interface.prototype"
+
 -- three-dimensional axial
 -- z
 -- ▲
@@ -24,8 +26,8 @@ local WIDTH <const> = 256
 local HEIGHT <const> = 256
 local GROUND_WIDTH <const> = 4
 local GROUND_HEIGHT <const> = 4
-local GRID_WIDTH <const> = 10 * GROUND_WIDTH
-local GRID_HEIGHT <const> = ((5 + 1) * GROUND_HEIGHT)
+local GRID_WIDTH <const> = (10 + 5) * GROUND_WIDTH
+local GRID_HEIGHT <const> = ((5 + 3) * GROUND_HEIGHT)
 assert(GRID_WIDTH % 2 == 0 and GRID_HEIGHT % 2 == 0)
 
 local function _pack(x, y)
@@ -221,6 +223,22 @@ function terrain:verify_coord(x, y)
         return false
     end
     return true
+end
+
+function terrain:bound_coord(x, y)
+    x = math.max(x, self._coord_bounds[1][1])
+    x = math.min(x, self._coord_bounds[2][1])
+    y = math.max(x, self._coord_bounds[1][2])
+    y = math.min(x, self._coord_bounds[2][2])
+    return x, y
+end
+
+function terrain:move_coord(x, y, dir, dx, dy)
+    local _x, _y = iprototype.move_coord(x, y, dir, dx, dy)
+    if not self:verify_coord(_x, _y) then
+        return false, self:bound_coord(_x, _y)
+    end
+    return true, _x, _y
 end
 
 function terrain:get_begin_position_by_coord(x, y)

@@ -44,8 +44,6 @@ local CONSTRUCT_BLOCK_COLOR_RED <const> = math3d.constant("v4", {1, 0.0, 0.0, 1.
 local CONSTRUCT_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
 local CONSTRUCT_BLOCK_COLOR_WHITE <const> = math3d.constant("v4", {1, 1, 1, 1.0})
 
-local FLUID_ICON_COLOR <const> = math3d.constant("v4", {1, 1, 1, 1.0})
-
 local typeinfos = {
     ["indicator"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已确认
     ["construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 4}, -- 未确认, 合法
@@ -88,7 +86,7 @@ local function create_block(color, block_edge_size, area, position, rotation)
 			"ant.general|name",
 		},
 		data = {
-			scene 		= { srt = {r = rotation, s = {terrain.tile_size * width + block_edge_size, terrain.surface_height, terrain.tile_size * height + block_edge_size}, t = position}},
+			scene 		= { srt = {r = rotation, s = {terrain.tile_size * width + block_edge_size, 1, terrain.tile_size * height + block_edge_size}, t = position}},
 			material 	= "/pkg/vaststars.resources/materials/singlecolor.material",
 			filter_state= "main_view",
 			name 		= ("plane_%d"):format(gen_id()),
@@ -121,7 +119,7 @@ end
 local function set_position(self, position)
     iom.set_position(world:entity(self.game_object.root), position)
     if self.block_object then
-        local block_pos = math3d.ref(math3d.add(math3d.vector(position), {0, terrain.surface_height, 0}))
+        local block_pos = math3d.ref(math3d.add(position, {0, terrain.surface_height, 0}))
         self.block_object:send("set_position", block_pos)
     end
 end
@@ -177,21 +175,16 @@ local function update(self, t)
         end
     end
 
-    if new_typeinfo.block_color == CONSTRUCT_BLOCK_COLOR_INVALID and self.block_object then
+    if self.block_object then
         self.block_object:remove()
         self.block_object = nil
     end
 
-    if new_typeinfo.block_color and self.block_object then
-        if new_typeinfo.block_edge_size then
-            self.block_object:remove()
-            local typeobject = iprototype.queryByName("entity", self.prototype_name)
-            local block_pos = math3d.ref(math3d.add(math3d.vector(self:get_position()), {0, terrain.surface_height, 0}))
-            local rotation = get_rotation(self)
-            self.block_object = create_block(new_typeinfo.block_color, new_typeinfo.block_edge_size, typeobject.area, block_pos, rotation)
-        else
-            self.block_object:send("set_material_property", "u_color", new_typeinfo.block_color)
-        end
+    if new_typeinfo.block_color then
+        local typeobject = iprototype.queryByName("entity", self.prototype_name)
+        local block_pos = math3d.ref(math3d.add(self:get_position(), {0, terrain.surface_height, 0}))
+        local rotation = get_rotation(self)
+        self.block_object = create_block(new_typeinfo.block_color, new_typeinfo.block_edge_size, typeobject.area, block_pos, rotation)
     end
 
     self.type = t.type or self.type
@@ -227,7 +220,7 @@ return function (init)
     iom.set_position(world:entity(game_object.root), init.position)
     iom.set_rotation(world:entity(game_object.root), rotators[init.dir])
 
-    local block_pos = math3d.ref(math3d.add(math3d.vector(init.position), {0, terrain.surface_height, 0}))
+    local block_pos = math3d.ref(math3d.add(init.position, {0, terrain.surface_height, 0}))
     local block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir])
 
     local vsobject = {

@@ -35,7 +35,7 @@ function M:need_set_fluid(prototype_name)
 end
 
 function M:update_fluidbox(e, fluid_name)
-    assert(e.fluidbox)
+    assert(e.fluidbox or e.fluidboxes)
     assert(type(fluid_name) == "string")
     local typeobject = iprototype.queryByName("fluid", fluid_name)
     if not typeobject then

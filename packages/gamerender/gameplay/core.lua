@@ -45,7 +45,7 @@ end
 
 function m.remove_entity(eid)
     print("remove_entity", eid)
-    world.entity[eid] = nil
+    world:remove_entity(eid)
 end
 
 local create_entity_cache = {}
@@ -82,6 +82,7 @@ function m.create_entity(init)
         dir = init.dir,
         fluid = init.fluid_name,
         items = init.items,
+        recipe = init.recipe, -- for debugging
     }
 
     local pt = iprototype.queryByName("entity", init.prototype_name)
@@ -93,7 +94,7 @@ function m.create_entity(init)
     end
 
     local eid = create(world, init.prototype_name, template)
-    print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y, eid)
+    print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y, template.fluid, eid)
     return eid
 end
 

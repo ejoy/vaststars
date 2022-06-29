@@ -35,16 +35,7 @@ local function restore_world()
     end
     objects:clear()
 
-    local duplicate = {}
-    local network_id = 0
-    local function get_network_id(id)
-        if not duplicate[id] then
-            network_id = network_id + 1
-            duplicate[id] = network_id
-        end
-        return duplicate[id]
-    end
-
+    -- restore world
     local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_network_id)
         local typeobject = iprototype.queryByName("entity", prototype_name)
 
@@ -63,17 +54,19 @@ local function restore_world()
     end
 
     -- restore
+    local all_object = {}
+    local empty_fluidbox = {}
     for v in gameplay_core.select("id:in entity:in fluidbox?in fluidboxes?in") do
         local e = v.entity
         local typeobject = iprototype.queryById(e.prototype)
         local fluid_name = ""
-        local fluidflow_network_id = 0
         if v.fluidbox then
+            fluid_name = ""
             if v.fluidbox.fluid ~= 0 then
                 local typeobject_fluid = assert(iprototype.queryById(v.fluidbox.fluid))
                 fluid_name = typeobject_fluid.name
             else
-                fluidflow_network_id = get_network_id(v.fluidbox.id)
+                empty_fluidbox[iprototype.packcoord(e.x, e.y)] = v.id
             end
         end
         if v.fluidboxes then
@@ -91,8 +84,49 @@ local function restore_world()
                 end
             end
         end
-        restore_object(v.id, typeobject.name, iprototype.dir_tostring(e.direction), e.x, e.y, fluid_name, fluidflow_network_id)
+        all_object[v.id] = {
+            name = typeobject.name, 
+            dir = iprototype.dir_tostring(e.direction),
+            x = e.x,
+            y = e.y,
+            fluid_name = fluid_name,
+            fluidflow_network_id = 0,
+        }
     end
+
+    local function dfs(all_object, empty_fluidbox, object, input_dir)
+        local typeobject = iprototype.queryByName("entity", object.name)
+        for _, v in ipairs(ifluid:get_fluidbox(typeobject.name, object.x, object.y, object.dir)) do
+            if v.dir ~= input_dir then
+                local succ, x, y = terrain:move_coord(v.x, v.y, v.dir, 1)
+                assert(succ)
+                local neighbor_id = empty_fluidbox[iprototype.packcoord(x, y)]
+                if neighbor_id then
+                    local neighbor = assert(all_object[neighbor_id])
+                    if neighbor then
+                        assert(neighbor.fluidflow_network_id == 0)
+                        neighbor.fluidflow_network_id = object.fluidflow_network_id
+                        dfs(all_object, empty_fluidbox, neighbor, iprototype.opposite_dir(v.dir))
+                    end
+                end
+            end
+        end
+    end
+
+    local network_id = 0
+    for _, id in pairs(empty_fluidbox) do
+        local object = all_object[id]
+        if object.fluidflow_network_id == 0 then
+            network_id = network_id + 1
+            object.fluidflow_network_id = network_id
+            dfs(all_object, empty_fluidbox, object)
+        end
+    end
+
+    for id, v in pairs(all_object) do
+        restore_object(id, v.name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_network_id)
+    end
+
     iobject.flush()
     iscience.update_tech_list(gameplay_core.get_world())
 end
