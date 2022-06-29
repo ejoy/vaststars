@@ -165,7 +165,7 @@ local function update(self, t)
         local typeobject = iprototype.queryByName("entity", prototype_name)
         local game_object = igame_object.create(typeobject.model, self.group_id, state, color, self.id)
         set_srt(world:entity(game_object.root), srt)
-        self.srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone") -- TODO
+        -- self.srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone") -- TODO
 
         self.game_object, self.prototype_name = game_object, prototype_name
     else
@@ -231,7 +231,7 @@ return function (init)
 
         game_object = game_object,
         block_object = block_object,
-        srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone"), -- TODO
+        -- srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone"), -- TODO
 
         --
         update = update,

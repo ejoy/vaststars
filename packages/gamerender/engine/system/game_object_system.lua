@@ -14,6 +14,7 @@ local game_object_event = ecs.require "engine.system.game_object_event"
 
 local detach_slot_mb = world:sub {"game_object_system", "detach_slot"}
 local remove_mb = world:sub {"game_object_system", "remove"}
+local DEBUG = false
 
 function game_object_sys:component_init()
     for _, _, game_object in detach_slot_mb:unpack() do
@@ -98,10 +99,25 @@ function igame_object.create(prefab_file_name, group_id, state, color, pickup_bi
     local f = prefab_path:format(prefab_file_name)
     local template
 
-    if state == "translucent" then
-        template = replace_material(serialize.parse(f, cr.read_file(f)))
+    if DEBUG then
+        template = serialize.parse(f, cr.read_file(f))
+        for _, node in ipairs(template) do
+            if not node.data.slot then
+                node.data.name = prefab_file_name .. "." .. node.data.name
+            end
+            node.policy[#node.policy+1] = 'ant.general|name'
+        end
+        if state == "translucent" then
+            template = replace_material(template)
+        else
+            template = template
+        end
     else
-        template = f
+        if state == "translucent" then
+            template = replace_material(serialize.parse(f, cr.read_file(f)))
+        else
+            template = f
+        end
     end
 
     local binding = {
@@ -111,7 +127,8 @@ function igame_object.create(prefab_file_name, group_id, state, color, pickup_bi
         group_id = group_id,
     }
 
-    local prefab = ecs.create_instance(template)
+    local g = ecs.group(group_id)
+    local prefab = g:create_instance(template)
     prefab.on_ready = function(prefab)
         on_prefab_ready(prefab, binding)
     end
