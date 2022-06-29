@@ -580,9 +580,9 @@
                     <div class = "menu-title">设计工坊</div>
                 </div>
 
-                <!-- 科技条目 start -->
+                <!-- 物品条目 start -->
                 <!--list direction='1' width='100%' height='75%'/ -->
-                <!-- 科技条目 end -->
+                <!-- 物品条目 end -->
 
                 <!-- 配方列表 start -->
                 <div style="width:100%; height:75%; flex-direction:row; justify-content:flex-start; align-items:center; border: 0.10vmin rgb(89, 73, 39);" data-if="false">
@@ -630,6 +630,7 @@
                         </div>
                     </div>
                     <!-- 配方1 end -->
+
                     <!-- 配方2 start -->
                     <div style="flex-direction:column; width:30%; height:100%; margin-right:0.3vmin;">
                         <div class = "recipe-name-block">
@@ -674,6 +675,7 @@
                         </div>
                     </div>    
                     <!-- 配方2 end -->  
+
                     <!-- 配方3 start -->
                     <div style="flex-direction:column; width:30%; height:100%; margin-right:0.3vmin;">
                         <div class = "recipe-name-block">
@@ -724,32 +726,30 @@
 
                 <!-- 建筑列表 start -->
                 <div style="width:100%; height:75%; flex-direction:row; justify-content:flex-start; align-items:center; border: 0.10vmin rgb(89, 73, 39);" data-if="true">
-                    <!-- 建筑1 start -->
+                    <!-- 建筑1 -->
                     <div class="build-icon-block" style="width:30%; height:100%;margin-right:0.3vmin;">
                         <div class="item-recipe-image" style='background-image:"textures/building_pic/small_pic_assemble.texture";'/>
                         <div>组装机</div>
                     </div>
-                    <!-- 建筑1 end -->
-                    <!-- 建筑2 start -->
-                    <div class="build-icon-block" style="width:30%; height:100%; margin-right:0.3vmin;">
-                        <div class="item-recipe-image" style='background-image:"textures/building_pic/small_pic_assemble.texture";'/>
-                        <div>组装机</div>
-                    </div>    
-                    <!-- 建筑2 end -->  
-                    <!-- 建筑3 start -->
-                    <div class="build-icon-block" style="width:30%; height:100%; margin-right:0.3vmin;">
-                        <div class="item-recipe-image" style='background-image:"textures/building_pic/small_pic_assemble.texture";'/>
-                        <div>组装机</div>
-                    </div>    
-                    <!-- 建筑3 end -->
 
+                    <!-- 建筑2 -->
+                    <div class="build-icon-block" style="width:30%; height:100%; margin-right:0.3vmin;">
+                        <div class="item-recipe-image" style='background-image:"textures/building_pic/small_pic_assemble.texture";'/>
+                        <div>组装机</div>
+                    </div>    
+
+                    <!-- 建筑3 -->
+                    <div class="build-icon-block" style="width:30%; height:100%; margin-right:0.3vmin;">
+                        <div class="item-recipe-image" style='background-image:"textures/building_pic/small_pic_assemble.texture";'/>
+                        <div>组装机</div>
+                    </div>    
                     
                 </div>
                 <!-- 建筑列表 end -->
 
                 <div style="border-bottom: 0.27vmin rgb(89, 73, 39); width: 100%;"/>
                 <div class="recipe-queue" style="width:100%; height:17%; border: 0.07vmin rgb(89, 73, 39);">
-                    <!-- 研究队列 start --> 
+                    <!-- 蓝图队列 start --> 
                     <div class = "recipe-queue-item-block" style="width:100%; height: 100%; align-items: center;">
                         <div style="justify-content:center; align-items: center; width:10%; height: 100%; background-color: rgb(203, 118, 24);">
                             <div style="font-size: 5.33vmin; text-align: center; -webkit-text-stroke: 0.3vmin #000;">蓝图</div>
@@ -781,9 +781,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 研究队列 end --> 
+                    <!-- 蓝图队列 end --> 
                 </div>
             </div>
+            <!-- 操作按钮 start --> 
             <div class="panel" style="width: 20%; height: 100%;">
                 <div class="column" style="width:95%; height: 100%;">
                     <div class="column" style="width:100%; height: 60%; justify-content: center;">
@@ -817,6 +818,7 @@
                     </div>
                 </div>
             </div>
+            <!-- 操作按钮 end --> 
         </div>
     </body>
 </rml>
