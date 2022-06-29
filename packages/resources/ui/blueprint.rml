@@ -174,7 +174,7 @@
                 font-size: 6vmin;
                 text-align: right;
                 -webkit-text-stroke: 0.25vmin #000;
-                color: rgb(0,255,0);
+                color: rgb(227, 252, 0);
             }
             .icon-researching {
                 position:absolute;
