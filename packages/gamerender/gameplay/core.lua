@@ -5,6 +5,7 @@ local iprototype = require "gameplay.interface.prototype"
 
 local m = {}
 m.world_update = true
+m.multiple = 1
 
 function m.select(...)
     return world.ecs:select(...)
@@ -20,8 +21,14 @@ end
 
 function m.update()
     if m.world_update then
-        world:update()
+        for i = 1, m.multiple do
+            world:update()
+        end
     end
+end
+
+function m.set_multiple(n)
+    m.multiple = n
 end
 
 function m.container_get(...)
@@ -38,7 +45,7 @@ end
 
 function m.remove_entity(eid)
     print("remove_entity", eid)
-    world.entity[eid] = nil
+    world:remove_entity(eid)
 end
 
 local create_entity_cache = {}
@@ -75,6 +82,7 @@ function m.create_entity(init)
         dir = init.dir,
         fluid = init.fluid_name,
         items = init.items,
+        recipe = init.recipe, -- for debugging
     }
 
     local pt = iprototype.queryByName("entity", init.prototype_name)
@@ -86,7 +94,7 @@ function m.create_entity(init)
     end
 
     local eid = create(world, init.prototype_name, template)
-    print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y, eid)
+    print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y, template.fluid, eid)
     return eid
 end
 

@@ -14,7 +14,6 @@ local fps = ecs.require "fps"
 local world_update = ecs.require "world_update.init"
 local saveload = ecs.require "saveload"
 local objects = require "objects"
-local iscience = require "gameplay.interface.science"
 local vsobject_manager = ecs.require "vsobject_manager"
 
 local m = ecs.system 'init_system'
@@ -25,19 +24,19 @@ function m:init_world()
     iui.preload_datamodel_dir "/pkg/vaststars.gamerender/ui_datamodel"
 
     camera.init("camera_default.prefab")
-
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
-    terrain.create()
-    saveload:restore()
-    iscience.update_tech_list(gameplay_core.get_world())
-
-    iui.open("construct.rml")
+    terrain:create()
+    if not saveload:restore() then
+        return
+    end
 end
 
-local function get_object(x, y)
+local function get_object(x, y) -- TODO: optimize
     local object = objects:coord(x, y)
-    return assert(vsobject_manager:get(object.id))
+    if object then
+        return vsobject_manager:get(object.id)
+    end
 end
 
 function m:update_world()

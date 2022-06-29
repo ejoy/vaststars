@@ -50,6 +50,19 @@ function M:coord(x, y, cache_names)
     end
 end
 
+function M:modify(x, y, cache_names, clone)
+    local object = self:coord(x, y, cache_names)
+    if not object then
+        return
+    end
+    local _object = self:coord(x, y, {cache_names[1]})
+    if not _object then
+        _object = clone(object)
+        self:set(_object, cache_names[1])
+    end
+    return _object
+end
+
 function M:remove(id, cache_name)
     cache_name = cache_name or DEFAULT_CACHE_NAME
     objects:remove(cache_name, id)

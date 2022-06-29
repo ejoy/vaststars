@@ -161,9 +161,19 @@ local function rotate_pickup_object(self, datamodel)
     local dir = iprototype.rotate_dir_times(pickup_object.dir, -1)
 
     local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
-    local coord = terrain.adjust_position(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
+    local coord = terrain:adjust_position(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return
+    end
+
+    if not self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, dir) then
+        pickup_object.state = "invalid_construct"
+        datamodel.show_confirm = false
+        datamodel.show_rotate = true
+    else
+        pickup_object.state = "construct"
+        datamodel.show_confirm = true
+        datamodel.show_rotate = true
     end
 
     pickup_object.dir = dir

@@ -25,19 +25,34 @@ prototype "地质研究" {
     sign_icon = "textures/science/tech-important.texture",
 }
 
+prototype "放置采矿机" {
+  desc = "放置一台采矿机",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"select_entity", 0, "采矿机I"},
+  -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
+  prerequisites = {"地质研究"},
+  count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_click_build.texture",
+    "textures/task_tips_pic/task_produce_ore1.texture",
+    "textures/task_tips_pic/task_produce_ore2.texture",
+    "textures/task_tips_pic/start_construct.texture",
+  },
+  sign_desc = {
+    { desc = "使用“建造”在铁矿区域放置一台采矿机", icon = "textures/construct/industry.texture"},
+  },
+}
+
 prototype "挖掘铁矿石" {
   desc = "挖掘足够的铁矿石可以开始进行锻造",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "铁矿石"},
   -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
-  prerequisites = {"地质研究"},
+  prerequisites = {"放置采矿机"},
   count = 10,
   tips_pic = {
-    "textures/task_tips_pic/task_click_build.texture",
-    "textures/task_tips_pic/task_produce_ore1.texture",
-    "textures/task_tips_pic/task_produce_ore2.texture",
-    "textures/task_tips_pic/start_construct.texture",
     "textures/task_tips_pic/task_produce_ore3.texture",
   },
   sign_desc = {

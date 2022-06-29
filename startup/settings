@@ -16,6 +16,7 @@ animation:
       enable: true
     type: CPU
 graphic:
+  disable_cull: true
   framebuffer:
     ratio: 1
     scene_ratio: 0.75
@@ -34,7 +35,7 @@ graphic:
     cluster_shading: 1
   postprocess:
     bloom:
-      enable: false
+      enable: true
       inv_highlight: 1e-06
       threshold: 120000
   render:

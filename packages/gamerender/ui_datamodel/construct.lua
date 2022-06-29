@@ -14,6 +14,7 @@ local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
 local global = require "global"
 local iobject = ecs.require "object"
+local terrain = ecs.require "terrain"
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local construct_begin_mb = mailbox:sub {"construct_begin"} -- 建造 -> 建造模式
@@ -126,7 +127,7 @@ function M:stage_ui_update(datamodel)
         world:pub {"ui_message", "show_rotate_confirm", {rotate = false, confirm = false}}
         gameplay_core.world_update = false
         global.mode = "construct"
-        camera.set("camera_construct.prefab")
+        camera.transition("camera_construct.prefab")
         last_prototype_name = nil
 
         ::continue::
@@ -151,13 +152,13 @@ function M:stage_ui_update(datamodel)
         ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
         global.mode = "teardown"
         gameplay_core.world_update = false
-        camera.set("camera_construct.prefab")
+        camera.transition("camera_construct.prefab")
         ::continue::
     end
 
     for _ in rotate_mb:unpack() do
         assert(gameplay_core.world_update == false)
-        builder:rotate_pickup_object()
+        builder:rotate_pickup_object(datamodel)
     end
 
     for _ in construct_confirm_mb:unpack() do
@@ -172,14 +173,14 @@ function M:stage_ui_update(datamodel)
         builder = nil
         gameplay_core.world_update = true
         global.mode = "normal"
-        camera.set("camera_default.prefab")
+        camera.transition("camera_default.prefab")
     end
 
     for _ in dismantle_complete_mb:unpack() do
         ieditor:teardown_complete()
         global.mode = "normal"
         gameplay_core.world_update = true
-        camera.set("camera_default.prefab")
+        camera.transition("camera_default.prefab")
     end
 
     for _, _, _, double_confirm in cancel_mb:unpack() do
@@ -201,7 +202,7 @@ function M:stage_ui_update(datamodel)
         ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
         gameplay_core.world_update = true
         global.mode = "normal"
-        camera.set("camera_default.prefab")
+        camera.transition("camera_default.prefab")
         ::continue::
     end
 
@@ -248,6 +249,11 @@ end
 
 function M:stage_camera_usage(datamodel)
     for _, delta in dragdrop_camera_mb:unpack() do
+        local coord = terrain:adjust_position(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+        if coord then
+            terrain:enable_terrain(coord[1], coord[2])
+        end
+
         if builder then
             builder:touch_move(datamodel, delta)
             self:flush()

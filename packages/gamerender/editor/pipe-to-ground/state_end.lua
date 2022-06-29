@@ -6,7 +6,7 @@ local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local iobject = ecs.require "object"
 local global = require "global"
-local iterrain = ecs.require "terrain"
+local terrain = ecs.require "terrain"
 
 local format_prototype_name = ecs.require "editor.pipe-to-ground.util".format_prototype_name
 local show_dotted_line = ecs.require "editor.pipe-to-ground.util".show_dotted_line
@@ -23,7 +23,7 @@ local function check_channel(self, datamodel, starting_object, to_x, to_y)
     local succ
     local x, y = starting_object.x, starting_object.y
     while true do
-        succ, x, y = iprototype.move_coord(x, y, starting_object.dir, 1)
+        succ, x, y = terrain:move_coord(x, y, starting_object.dir, 1)
         if not succ then
             show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
             return false
@@ -76,7 +76,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir)
     local x, y = starting_object.x, starting_object.y
     local pipe = {}
     while true do
-        succ, x, y = iprototype.move_coord(x, y, dir, 1)
+        succ, x, y = terrain:move_coord(x, y, dir, 1)
         if not succ then
             show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
             return false
@@ -128,7 +128,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir)
 
         --
         local shape
-        if flow_shape:get_state(ending_object.prototype_name, ending_object.dir, iprototype.opposite_dir(starting_object.dir)) then
+        if flow_shape.get_state(ending_object.prototype_name, ending_object.dir, iprototype.opposite_dir(starting_object.dir)) then
             shape = "JI"
         else
             shape = "JU"
@@ -168,7 +168,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir)
 
         --
         local shape
-        if flow_shape:get_state(ending_object.prototype_name, ending_object.dir, iprototype.opposite_dir(starting_object.dir)) then
+        if flow_shape.get_state(ending_object.prototype_name, ending_object.dir, iprototype.opposite_dir(starting_object.dir)) then
             shape = "JI"
         else
             shape = "JU"
@@ -228,7 +228,7 @@ function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y)
     objects:set(object, EDITOR_CACHE_TEMPORARY[1])
 
     --
-    prototype_name = format_prototype_name(self.coord_indicator.prototype_name, flow_shape:get_shape(ending_object.prototype_name))
+    prototype_name = format_prototype_name(self.coord_indicator.prototype_name, flow_shape.get_shape(ending_object.prototype_name))
     typeobject = iprototype.queryByName("entity", prototype_name)
     object = iobject.new {
         prototype_name = typeobject.name,
@@ -253,7 +253,7 @@ function condition_normal(self, datamodel, starting_object, to_x, to_y)
 
     local function get_fluidbox(x, y, dir, object)
         for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
-            local succ, dx, dy = iprototype.move_coord(x, y, dir,
+            local succ, dx, dy = terrain:move_coord(x, y, dir,
                 math.abs(x - v.x),
                 math.abs(y - v.y)
             )
@@ -291,7 +291,7 @@ function condition_normal(self, datamodel, starting_object, to_x, to_y)
     end
 
     local succ
-    succ, to_x, to_y = iprototype.move_coord(fluidbox.x, fluidbox.y, fluidbox.dir, 1)
+    succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, fluidbox.dir, 1)
     if not succ then
         show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
         return
@@ -314,9 +314,9 @@ end
 
 function condition_none(self, datamodel, starting_object, to_x, to_y, shape)
     local succ
-    succ, to_x, to_y = iprototype.move_coord(starting_object.x, starting_object.y, starting_object.dir, math.abs(starting_object.x - to_x), math.abs(starting_object.y - to_y))
+    succ, to_x, to_y = terrain:move_coord(starting_object.x, starting_object.y, starting_object.dir, math.abs(starting_object.x - to_x), math.abs(starting_object.y - to_y))
 
-    if not iterrain.can_place(to_x, to_y) then
+    if not terrain:can_place(to_x, to_y) then
         show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
         return
     end

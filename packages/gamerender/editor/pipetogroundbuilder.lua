@@ -7,7 +7,7 @@ local STATE_START <const> = 1
 local EDITOR_CACHE_CONSTRUCTED = {"CONFIRM", "CONSTRUCTED"}
 local EDITOR_CACHE_TEMPORARY   = {"TEMPORARY", "INDICATOR"}
 local dotted_line_material <const> = "/pkg/vaststars.resources/materials/dotted_line.material"
-local DEFAULT_DIR <const> = 'N' -- TODO
+local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 
 local create_builder = ecs.require "editor.builder"
 local iobject = ecs.require "object"
@@ -77,8 +77,6 @@ end
 
 local function laying_pipe_begin(self, datamodel)
     assert(is_valid_starting(self.coord_indicator.x, self.coord_indicator.y))
-
-    ieditor:revert_changes(EDITOR_CACHE_TEMPORARY)
     datamodel.show_laying_pipe_begin = false
 
     self.state = STATE_START

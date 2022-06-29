@@ -4,7 +4,7 @@ local world = ecs.world
 local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
 local math3d = require "math3d"
-local iterrain = ecs.require "terrain"
+local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
 local get_object_id = require "global".get_object_id
 local changeset = {}
@@ -73,6 +73,12 @@ local function flush()
             outer.__object.dir = value
             local vsobject = assert(vsobject_manager:get(outer.id))
             vsobject:set_dir(value)
+
+            local typeobject = iprototype.queryByName("entity", outer.__object.prototype_name)
+            local position = terrain:get_position_by_coord(outer.__object.x, outer.__object.y, iprototype.rotate_area(typeobject.area, outer.__object.dir))
+            if position then
+                vsobject:set_position(position)
+            end
         end,
         state = function(outer, value)
             outer.__object.state = value
@@ -116,7 +122,7 @@ local function flush()
             vsobject = vsobject_manager:get(object_id)
             if not vsobject then
                 local typeobject = iprototype.queryByName("entity", outer.prototype_name)
-                local position = iterrain.get_position_by_coord(outer.x, outer.y, iprototype.rotate_area(typeobject.area, outer.dir))
+                local position = terrain:get_position_by_coord(outer.x, outer.y, iprototype.rotate_area(typeobject.area, outer.dir))
                 assert(position)
 
                 vsobject = vsobject_manager:create {
@@ -125,6 +131,7 @@ local function flush()
                     dir = outer.dir,
                     position = position,
                     type = outer.state,
+                    group_id = terrain:get_group_id(outer.x, outer.y),
                 }
             else
                 for k, v in pairs(outer.__change) do
@@ -135,7 +142,7 @@ local function flush()
                     outer.__object.x = outer.__object._x or outer.__object.x
                     outer.__object.y = outer.__object._y or outer.__object.y
                     local typeobject = iprototype.queryByName("entity", outer.prototype_name)
-                    local position = iterrain.get_position_by_coord(outer.x, outer.y, iprototype.rotate_area(typeobject.area, outer.dir))
+                    local position = terrain:get_position_by_coord(outer.x, outer.y, iprototype.rotate_area(typeobject.area, outer.dir))
                     local vsobject = assert(vsobject_manager:get(outer.id))
                     vsobject:set_position(position)
                     outer.__object._x, outer.__object._y = nil, nil
@@ -159,14 +166,14 @@ local function flush()
     for _, outer in ipairs(prepare) do
         local vsobject = vsobject_manager:get(outer.id)
         if vsobject then
-            vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, {name = "confirm"})
+            vsobject:send("modifier", "start", vsobject.srt_modifier, {name = "confirm"})
         end
     end
 
     for _, outer in ipairs(appear) do
         local vsobject = vsobject_manager:get(outer.id)
         if vsobject then
-            vsobject:send("modifier", "start", vsobject.game_object.game_object.srt_modifier, {name = "appear", forwards = true})
+            vsobject:send("modifier", "start", vsobject.srt_modifier, {name = "appear", forwards = true})
         end
     end
 end
@@ -175,7 +182,7 @@ local function move_delta(object, delta_vec)
     local vsobject = assert(vsobject_manager:get(object.id))
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
     local position = math3d.ref(math3d.add(vsobject:get_position(), delta_vec))
-    local coord = iterrain.adjust_position(math3d.tovalue(position), iprototype.rotate_area(typeobject.area, object.dir))
+    local coord = terrain:adjust_position(math3d.tovalue(position), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         log.error(("can not get coord"))
         return
@@ -188,7 +195,7 @@ end
 
 local function central_coord(prototype_name, dir)
     local typeobject = iprototype.queryByName("entity", prototype_name)
-    local coord = iterrain.adjust_position(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
+    local coord = terrain:adjust_position(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return
     end
@@ -198,7 +205,7 @@ end
 local function align(object)
     assert(object)
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    local coord = iterrain.adjust_position(camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
+    local coord = terrain:adjust_position(camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
     end
@@ -211,7 +218,7 @@ local function coord(object, x, y)
     assert(object.prototype_name ~= "")
     local vsobject = assert(vsobject_manager:get(object.id))
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    local position = iterrain.get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, object.dir))
+    local position = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, object.dir))
     if not position then
         log.error(("can not get position"))
         return

@@ -71,9 +71,9 @@ local function refresh_pipe(prototype_name, dir, entry_dir, value)
         return
     end
 
-    local state = flow_shape:to_state(prototype_name:gsub(".*%-(%u).*", "%1"), dir)
-    state = flow_shape:set_state(state, iprototype.dir_tonumber(entry_dir), value or 1)
-    local ntype, dir = flow_shape:to_type_dir(state)
+    local state = flow_shape.to_state(prototype_name:gsub(".*%-(%u).*", "%1"), dir)
+    state = flow_shape.set_shape_edge(state, iprototype.dir_tonumber(entry_dir), value or true)
+    local ntype, dir = flow_shape.to_type_dir(state)
     return prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format(ntype)), dir
 end
 

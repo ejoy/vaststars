@@ -30,10 +30,12 @@ local function open(url, ...)
 
     local binding = window_bindings[url]
     if binding then
-        binding.param = {...}
-        binding.datamodel = tracedoc.new(binding.template:create(...))
-        binding.template:flush()
-        datamodel_changed[url] = true
+        if binding.template then
+            binding.param = {...}
+            binding.datamodel = tracedoc.new(binding.template:create(...))
+            binding.template:flush()
+            datamodel_changed[url] = true
+        end
         return binding.window
     end
 

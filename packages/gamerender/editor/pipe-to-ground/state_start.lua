@@ -14,6 +14,7 @@ local show_failed = ecs.require "editor.pipe-to-ground.util".show_failed
 local iobject = ecs.require "object"
 local is_overlap = ecs.require "editor.pipe-to-ground.util".is_overlap
 local show_indicator = ecs.require "editor.pipe-to-ground.util".show_indicator
+local terrain = ecs.require "terrain"
 
 local EDITOR_CACHE_CONSTRUCTED = {"CONFIRM", "CONSTRUCTED"}
 local EDITOR_CACHE_TEMPORARY   = {"TEMPORARY"}
@@ -27,7 +28,7 @@ function condition_pipe(self, datamodel)
     local ground = get_ground(self.coord_indicator.prototype_name) - 1
 
     local succ
-    succ, to_x, to_y = iprototype.move_coord(from_x, from_y, dir,
+    succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
         math.min(math.abs(from_x - to_x), ground),
         math.min(math.abs(from_y - to_y), ground)
     )
@@ -52,7 +53,7 @@ function condition_pipe(self, datamodel)
     end
 
     local shape
-    if flow_shape:get_state(starting_object.prototype_name, starting_object.dir, iprototype.opposite_dir(dir)) then
+    if flow_shape.get_state(starting_object.prototype_name, starting_object.dir, iprototype.opposite_dir(dir)) then
         shape = "JI"
     else
         shape = "JU"
@@ -84,20 +85,20 @@ function condition_pipe_to_ground(self, datamodel)
     for _, v in ipairs(ifluid:get_fluidbox(starting_object.prototype_name, starting_object.x, starting_object.y, starting_object.dir)) do
         if not t[v.dir] then
             local succ
-            succ, to_x, to_y = iprototype.move_coord(starting_object.x, starting_object.y, dir, math.min(math.abs(starting_object.x - to_x), ground), math.min(math.abs(starting_object.y - to_y), ground))
+            succ, to_x, to_y = terrain:move_coord(starting_object.x, starting_object.y, dir, math.min(math.abs(starting_object.x - to_x), ground), math.min(math.abs(starting_object.y - to_y), ground))
             show_failed(self, datamodel, starting_object.x, starting_object.y, dir, to_x, to_y)
             return
         end
     end
 
     local succ
-    succ, to_x, to_y = iprototype.move_coord(from_x, from_y, dir,
+    succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
         math.min(math.abs(from_x - to_x), ground),
         math.min(math.abs(from_y - to_y), ground)
     )
     if not succ then
         local succ
-        succ, to_x, to_y = iprototype.move_coord(starting_object.x, starting_object.y, dir, math.min(math.abs(starting_object.x - to_x), ground), math.min(math.abs(starting_object.y - to_y), ground))
+        succ, to_x, to_y = terrain:move_coord(starting_object.x, starting_object.y, dir, math.min(math.abs(starting_object.x - to_x), ground), math.min(math.abs(starting_object.y - to_y), ground))
         show_failed(self, datamodel, starting_object.x, starting_object.y, dir, to_x, to_y)
         return
     end
@@ -143,7 +144,7 @@ function condition_normal(self, datamodel)
     end
 
     local succ
-    succ, from_x, from_y = iprototype.move_coord(fluidbox.x, fluidbox.y, fluidbox.dir, 1)
+    succ, from_x, from_y = terrain:move_coord(fluidbox.x, fluidbox.y, fluidbox.dir, 1)
     if not succ then
         show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
         return
@@ -172,7 +173,7 @@ function condition_none(self, datamodel, shape, from_x, from_y, dir, fluid_name,
     local ground = get_ground(prototype_name)
 
     local succ
-    succ, to_x, to_y = iprototype.move_coord(from_x, from_y, dir,
+    succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
         math.min(math.abs(from_x - to_x), ground),
         math.min(math.abs(from_y - to_y), ground)
     )
