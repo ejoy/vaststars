@@ -131,6 +131,7 @@ local function flush()
                     dir = outer.dir,
                     position = position,
                     type = outer.state,
+                    group_id = terrain:get_group_id(outer.x, outer.y),
                 }
             else
                 for k, v in pairs(outer.__change) do

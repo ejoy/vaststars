@@ -12,6 +12,7 @@ local math_util = import_package "ant.math".util
 local pt2D_to_NDC = math_util.pt2D_to_NDC
 local ndc_to_world = math_util.ndc_to_world
 local irq = ecs.import.interface "ant.render|irenderqueue"
+local ic = ecs.import.interface "ant.camera|icamera"
 local create_queue = require "utility.queue"
 local hierarchy = require "hierarchy"
 local animation = hierarchy.animation
@@ -42,12 +43,18 @@ end
 ---
 local camera = {}
 function camera.init(prefab_file_name)
-    local p = ecs.create_instance((camera_prefab_path / prefab_file_name):string())
-    p.on_ready = function (e)
-        irq.set_camera("main_queue", e.tag.camera[1])
+    local data = get_camera_prefab_data(prefab_file_name)
+    if not data then
+        return
     end
-    world:create_object(p)
 
+    local mq = w:singleton("main_queue", "camera_ref:in")
+    local camera_ref = mq.camera_ref
+    local e = world:entity(camera_ref)
+
+    iom.set_srt(e, data.scene.srt.s or mc.ONE, data.scene.srt.r, data.scene.srt.t)
+    iom.set_view(e, iom.get_position(e), iom.get_direction(e), data.scene.updir)
+    ic.set_frustum(e, data.camera.frustum)
     camera_prefab_file_name = prefab_file_name
 end
 

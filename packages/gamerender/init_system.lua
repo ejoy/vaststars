@@ -15,7 +15,6 @@ local world_update = ecs.require "world_update.init"
 local saveload = ecs.require "saveload"
 local objects = require "objects"
 local vsobject_manager = ecs.require "vsobject_manager"
-local camera_mb = world:sub {"init_system_camera"}
 
 local m = ecs.system 'init_system'
 function m:init_world()
@@ -24,7 +23,7 @@ function m:init_world()
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
     iui.preload_datamodel_dir "/pkg/vaststars.gamerender/ui_datamodel"
 
-    world:pub {"init_system_camera"}
+    camera.init("camera_default.prefab")
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
     terrain:create()
@@ -48,10 +47,3 @@ function m:update_world()
     end
     fps()
 end
-
-function m:camera_usage()
-    for _ in camera_mb:unpack() do
-        camera.init("camera_default.prefab")
-    end
-end
-

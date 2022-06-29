@@ -94,7 +94,7 @@ local function send(self, ...)
 end
 
 -- state: translucent
-function igame_object.create(prefab_file_name, state, color, pickup_binding)
+function igame_object.create(prefab_file_name, group_id, state, color, pickup_binding)
     local f = prefab_path:format(prefab_file_name)
     local template
 
@@ -108,6 +108,7 @@ function igame_object.create(prefab_file_name, state, color, pickup_binding)
         pause_animation = true,
         slot_attach = {}, -- = {[name] = game_object, ...}
         pickup_binding = pickup_binding,
+        group_id = group_id,
     }
 
     local prefab = ecs.create_instance(template)

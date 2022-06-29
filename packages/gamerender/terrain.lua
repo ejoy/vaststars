@@ -35,12 +35,6 @@ local function _pack(x, y)
     return x | (y<<8)
 end
 
-local function _get_group_id(self, x, y)
-	local grid_x = x//GRID_WIDTH
-	local grid_y = y//GRID_HEIGHT
-	return self._group_id[_pack(grid_x, grid_y)]
-end
-
 local function _get_screen_group_id(self, x, y)
 	local grid_x = x//GRID_WIDTH
 	local grid_y = y//GRID_HEIGHT
@@ -90,6 +84,12 @@ local function _get_coord_by_begin_position(self, position)
     end
 
     return {math.ceil((position[1] - origin[1]) / TILE_SIZE), math.ceil((origin[2] - position[3]) / TILE_SIZE)}
+end
+
+function terrain:get_group_id(x, y)
+	local grid_x = x//GRID_WIDTH
+	local grid_y = y//GRID_HEIGHT
+	return self._group_id[_pack(grid_x, grid_y)]
 end
 
 function terrain:create(width, height)
@@ -154,7 +154,7 @@ function terrain:create(width, height)
                 local _x, _y = x * GROUND_WIDTH, y * GROUND_HEIGHT
                 ms[#ms+1] = {
                     mash_idx = math.random(1, 4),
-                    group_id = _get_group_id(self, _x, _y),
+                    group_id = self:get_group_id(_x, _y),
                     pos = self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT),
                 }
             end

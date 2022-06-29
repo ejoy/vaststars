@@ -163,7 +163,7 @@ local function update(self, t)
         local color = new_typeinfo.color
 
         local typeobject = iprototype.queryByName("entity", prototype_name)
-        local game_object = igame_object.create(typeobject.model, state, color, self.id)
+        local game_object = igame_object.create(typeobject.model, self.group_id, state, color, self.id)
         set_srt(world:entity(game_object.root), srt)
         self.srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone") -- TODO
 
@@ -216,7 +216,7 @@ return function (init)
     local typeobject = iprototype.queryByName("entity", init.prototype_name)
     local typeinfo = assert(typeinfos[init.type], ("invalid type `%s`"):format(init.type))
 
-    local game_object = assert(igame_object.create(typeobject.model, typeinfo.state, typeinfo.color, init.id))
+    local game_object = assert(igame_object.create(typeobject.model, init.group_id, typeinfo.state, typeinfo.color, init.id))
     iom.set_position(world:entity(game_object.root), init.position)
     iom.set_rotation(world:entity(game_object.root), rotators[init.dir])
 
@@ -227,6 +227,7 @@ return function (init)
         id = init.id,
         prototype_name = init.prototype_name,
         type = init.type,
+        group_id = init.group_id,
 
         game_object = game_object,
         block_object = block_object,
