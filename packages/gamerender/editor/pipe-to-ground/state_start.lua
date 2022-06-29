@@ -27,11 +27,12 @@ function condition_pipe(self, datamodel)
     local dir = iprototype.calc_dir(from_x, from_y, to_x, to_y)
     local ground = get_ground(self.coord_indicator.prototype_name) - 1
 
-    local succ
+    local succ, max_to_x, max_to_y
     succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
         math.min(math.abs(from_x - to_x), ground),
         math.min(math.abs(from_y - to_y), ground)
     )
+    succ, max_to_x, max_to_y = terrain:move_coord(from_x, from_y, dir, ground)
 
     local starting_object = assert(objects:coord(from_x, from_y, EDITOR_CACHE_CONSTRUCTED))
     assert(iprototype.is_pipe(starting_object.prototype_name))
@@ -67,7 +68,7 @@ function condition_pipe(self, datamodel)
     starting_object.state = "construct"
     objects:set(starting_object, EDITOR_CACHE_TEMPORARY[1])
 
-    state_end(self, datamodel, starting_object, to_x, to_y, dir)
+    state_end(self, datamodel, starting_object, to_x, to_y, dir, max_to_x, max_to_y)
 end
 
 function condition_pipe_to_ground(self, datamodel)
@@ -91,23 +92,18 @@ function condition_pipe_to_ground(self, datamodel)
         end
     end
 
-    local succ
+    local succ, max_to_x, max_to_y
     succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
         math.min(math.abs(from_x - to_x), ground),
         math.min(math.abs(from_y - to_y), ground)
     )
-    if not succ then
-        local succ
-        succ, to_x, to_y = terrain:move_coord(starting_object.x, starting_object.y, dir, math.min(math.abs(starting_object.x - to_x), ground), math.min(math.abs(starting_object.y - to_y), ground))
-        show_failed(self, datamodel, starting_object.x, starting_object.y, dir, to_x, to_y)
-        return
-    end
+    succ, max_to_x, max_to_y = terrain:move_coord(from_x, from_y, dir, ground)
 
     starting_object = iobject.clone(starting_object)
     starting_object.state = "construct"
     objects:set(starting_object, EDITOR_CACHE_TEMPORARY[1])
 
-    state_end(self, datamodel, starting_object, to_x, to_y)
+    state_end(self, datamodel, starting_object, to_x, to_y, nil, max_to_x, max_to_y)
 end
 
 function condition_normal(self, datamodel)
@@ -119,7 +115,6 @@ function condition_normal(self, datamodel)
         show_indicator(self.coord_indicator.prototype_name, starting_object)
         return
     end
-
 
     local function get_fluidbox(x, y, dir, object)
         local r = {}
@@ -172,15 +167,12 @@ function condition_none(self, datamodel, shape, from_x, from_y, dir, fluid_name,
     local prototype_name = format_prototype_name(self.coord_indicator.prototype_name, shape or "JU")
     local ground = get_ground(prototype_name)
 
-    local succ
+    local succ, max_to_x, max_to_y
     succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
         math.min(math.abs(from_x - to_x), ground),
         math.min(math.abs(from_y - to_y), ground)
     )
-    if not succ then
-        show_failed(self, datamodel, from_x, from_y, dir, to_x, to_y)
-        return
-    end
+    succ, max_to_x, max_to_y = terrain:move_coord(from_x, from_y, dir, ground)
 
     local starting_object = {
         prototype_name = format_prototype_name(self.coord_indicator.prototype_name, shape or "JU"),
@@ -192,7 +184,7 @@ function condition_none(self, datamodel, shape, from_x, from_y, dir, fluid_name,
         state = "construct",
     }
 
-    state_end(self, datamodel, starting_object, to_x, to_y)
+    state_end(self, datamodel, starting_object, to_x, to_y, nil, max_to_x, max_to_y)
 end
 
 return function(self, datamodel)

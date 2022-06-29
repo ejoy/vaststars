@@ -44,7 +44,7 @@ local function check_channel(self, datamodel, starting_object, to_x, to_y)
     return true
 end
 
-function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir)
+function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_to_x, max_to_y)
     dir = dir or starting_object.dir -- TODO
     local ending_object = assert(objects:coord(to_x, to_y, EDITOR_CACHE_CONSTRUCTED))
 
@@ -189,7 +189,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir)
     end
 end
 
-function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y)
+function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, max_to_x, max_to_y)
     local ending_object = assert(objects:coord(to_x, to_y, EDITOR_CACHE_CONSTRUCTED))
     if not check_channel(self, datamodel, starting_object, to_x, to_y) then
         return
@@ -248,7 +248,7 @@ function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y)
     self.coord_indicator.state = "construct"
 end
 
-function condition_normal(self, datamodel, starting_object, to_x, to_y)
+function condition_normal(self, datamodel, starting_object, to_x, to_y, max_to_x, max_to_y)
     local ending_object = assert(objects:coord(to_x, to_y, EDITOR_CACHE_CONSTRUCTED))
 
     local function get_fluidbox(x, y, dir, object)
@@ -308,11 +308,11 @@ function condition_normal(self, datamodel, starting_object, to_x, to_y)
             return
         end
     else
-        condition_none(self, datamodel, starting_object, to_x, to_y, "JI")
+        condition_none(self, datamodel, starting_object, to_x, to_y, "JI", max_to_x, max_to_y)
     end
 end
 
-function condition_none(self, datamodel, starting_object, to_x, to_y, shape)
+function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, max_to_y, shape)
     local succ
     succ, to_x, to_y = terrain:move_coord(starting_object.x, starting_object.y, starting_object.dir, math.abs(starting_object.x - to_x), math.abs(starting_object.y - to_y))
 
@@ -374,9 +374,20 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, shape)
     datamodel.show_laying_pipe_confirm = true
     datamodel.show_laying_pipe_cancel = true
     self.coord_indicator.state = "construct"
+
+    if to_x == max_to_x and to_y == max_to_y then
+        for _, object in objects:all("TEMPORARY") do
+            object.state = "confirm"
+            object.PREPARE = true
+        end
+        objects:commit("TEMPORARY", "CONFIRM")
+
+        local succ
+        succ, self.from_x, self.from_y = terrain:move_coord(to_x, to_y, starting_object.dir, 1) -- TODO: check if this is correct, not starting_object.dir
+    end
 end
 
-return function(self, datamodel, starting_object, to_x, to_y, dir)
+return function(self, datamodel, starting_object, to_x, to_y, dir, max_to_x, max_to_y)
     if is_overlap(starting_object.x, starting_object.y, to_x, to_y) then
         datamodel.show_laying_pipe_begin = false
         self.coord_indicator.state = "invalid_construct"
@@ -386,14 +397,14 @@ return function(self, datamodel, starting_object, to_x, to_y, dir)
     local object = objects:coord(to_x, to_y, EDITOR_CACHE_CONSTRUCTED)
     if object then
         if iprototype.is_pipe(object.prototype_name) then
-            condition_pipe(self, datamodel, starting_object, to_x, to_y, dir)
+            condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_to_x, max_to_y)
         elseif iprototype.is_pipe_to_ground(object.prototype_name) then
-            condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y)
+            condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, max_to_x, max_to_y)
         else
-            condition_normal(self, datamodel, starting_object, to_x, to_y)
+            condition_normal(self, datamodel, starting_object, to_x, to_y, max_to_x, max_to_y)
         end
     else
-        condition_none(self, datamodel, starting_object, to_x, to_y)
+        condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, max_to_y)
     end
 
 end
