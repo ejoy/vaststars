@@ -135,13 +135,22 @@ local function _set_endpoint_connect(State, x, y)
                 pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(dir), true)
 
                 if State.fluid_name ~= "" then
-                    if State.fluid_name ~= v.fluid_name then
-                        State.failed = true
+                    if v.fluid_name ~= "" then
+                        if State.fluid_name ~= v.fluid_name then
+                            State.failed = true
+                        end
+                    else
+                        if object.fluidflow_network_id ~= 0 then
+                            State.fluidflow_network_ids[object.fluidflow_network_id] = true
+                        end
                     end
                 else
-                    State.fluid_name = v.fluid_name
-                    if object.fluidflow_network_id ~= 0 then
-                        State.fluidflow_network_ids[object.fluidflow_network_id] = true
+                    if v.fluid_name ~= "" then
+                        State.fluid_name = v.fluid_name
+                    else
+                        if object.fluidflow_network_id ~= 0 then
+                            State.fluidflow_network_ids[object.fluidflow_network_id] = true
+                        end
                     end
                 end
                 break
@@ -180,6 +189,26 @@ local function _set_pipe(State, x, y)
         end
     end
     return pipe_edge
+end
+
+local function _get_distance(x1, y1, x2, y2)
+    return (x1 - x2) ^ 2 + (y1 - y2) ^ 2
+end
+
+-- fluidboxes return by ifluid:get_fluidbox()
+local function _match_fluidbox(fluidboxes, x, y, dir)
+    local min = math.maxinteger
+    local f
+    for _, v in ipairs(fluidboxes) do
+        if v.dir == dir then
+            local dist = _get_distance(v.x, v.y, x, y)
+            if dist < min then
+                min = dist
+                f = v
+            end
+        end
+    end
+    return f
 end
 
 local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
@@ -230,10 +259,13 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
                                 end
                             else
                                 State.fluid_name = v.fluid_name
+                                if _object.fluidflow_network_id ~= 0 then
+                                    State.fluidflow_network_ids[_object.fluidflow_network_id] = true
+                                end
                             end
 
                             map[coord] = 0
-                            -- can't break here, because it's possible to have multiple fluidbox in the same direction
+                            break -- pipe to ground only has one fluidbox in one direction
                         end
                     end
                     if failed == true then
@@ -242,26 +274,24 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
                     end
 
                 else
-                    local failed = true
-                    for _, v in ipairs(ifluid:get_fluidbox(_object.prototype_name, _object.x, _object.y, _object.dir, _object.fluid_name)) do -- TODO: have multiple fluidbox with diffence fluids in the same direction?
-                        if v.dir == dir then
-                            failed = false
-                            if State.fluid_name ~= "" then
-                                if State.fluid_name ~= v.fluid_name then
-                                    failed = true
-                                end
-                            else
-                                State.fluid_name = v.fluid_name
+                    -- entity is not a pipe or a pipe to ground, (from_x, from_y) is the fluidbox coord of the entity
+                    -- find the fluidbox of the entity equal to (from_x, from_y) -- TODO: optimize
+                    local f = _match_fluidbox(ifluid:get_fluidbox(_object.prototype_name, _object.x, _object.y, _object.dir, _object.fluid_name), from_x, from_y, dir)
+                    if not f then -- no fluidbox in the direction of the entity
+                        State.failed = true
+                    else
+                        if State.fluid_name ~= "" then
+                            if State.fluid_name ~= f.fluid_name then
+                                State.failed = true
                             end
-
-                            map[coord] = 0
-                            -- can't break here, because it's possible to have multiple fluidbox in the same direction
+                        else
+                            State.fluid_name = f.fluid_name
+                            if _object.fluidflow_network_id ~= 0 then
+                                State.fluidflow_network_ids[_object.fluidflow_network_id] = true
+                            end
                         end
                     end
-                    if failed == true then
-                        State.failed = true
-                        map[coord] = 0
-                    end
+                    map[coord] = 0
                 end
             else
                 local pipe_edge = _set_endpoint_connect(State, x, y)
@@ -281,7 +311,6 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
 
                 elseif iprototype.is_pipe_to_ground(_object.prototype_name) then
                     local failed = true
-                    local pipe_edge = 0
                     for _, v in ipairs(ifluid:get_fluidbox(_object.prototype_name, _object.x, _object.y, _object.dir, _object.fluid_name)) do
                         if v.ground and v.dir == dir then
                             failed = false
@@ -291,11 +320,13 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
                                 end
                             else
                                 State.fluid_name = v.fluid_name
+                                if _object.fluidflow_network_id ~= 0 then
+                                    State.fluidflow_network_ids[_object.fluidflow_network_id] = true
+                                end
                             end
 
-                            pipe_edge = set_shape_edge(pipe_edge, dir_num, true)
-                            map[coord] = pipe_edge
-                            failed = false
+                            map[coord] = 0
+                            break -- pipe to ground only has one fluidbox in one direction
                         end
                     end
                     if failed == true then
@@ -313,8 +344,11 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
                                 end
                             else
                                 State.fluid_name = v.fluid_name
+                                if _object.fluidflow_network_id ~= 0 then
+                                    State.fluidflow_network_ids[_object.fluidflow_network_id] = true
+                                end
                             end
-                            break -- only one fluidbox can be connected to the pipe
+                            break -- only one fluidbox aligned with the start point
                         end
                     end
                     if failed == true then
@@ -370,7 +404,7 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
             else
                 local _object = objects:modify(object.x, object.y, EDITOR_CACHE_TEMPORARY, iobject.clone)
                 local typeobject = iprototype.queryByName("entity", _object.prototype_name)
-                if iprototype.has_type(typeobject.type, "fluidbox") then
+                if iprototype.has_type(typeobject.type, "fluidbox") and _object.fluid_name ~= State.fluid_name then
                     _object.fluid_name = State.fluid_name
                 end
                 _object.state = object_state
@@ -463,10 +497,6 @@ local function state_init(self, datamodel)
 end
 
 local function state_start(self, datamodel)
-    local function get_distance(x1, y1, x2, y2)
-        return (x1 - x2) ^ 2 + (y1 - y2) ^ 2
-    end
-
     local starting_object = objects:coord(self.from_x, self.from_y, EDITOR_CACHE_TEMPORARY)
     local ending_object = objects:coord(self.coord_indicator.x, self.coord_indicator.y, EDITOR_CACHE_TEMPORARY)
     if starting_object then
@@ -478,9 +508,9 @@ local function state_start(self, datamodel)
         end
 
         local dir = iprototype.calc_dir(self.from_x, self.from_y, self.coord_indicator.x, self.coord_indicator.y)
-        table.sort(fluidboxes, function(a, b)
-            local dist1 = get_distance(a.x, a.y, self.coord_indicator.x, self.coord_indicator.y)
-            local dist2 = get_distance(b.x, b.y, self.coord_indicator.x, self.coord_indicator.y)
+        table.sort(fluidboxes, function(a, b) -- TODO: sort by distance and direction
+            local dist1 = _get_distance(a.x, a.y, self.coord_indicator.x, self.coord_indicator.y)
+            local dist2 = _get_distance(b.x, b.y, self.coord_indicator.x, self.coord_indicator.y)
             if dist1 < dist2 then
                 return true
             elseif dist1 > dist2 then

@@ -1,8 +1,9 @@
 @echo off
 chcp 65001
 set current_dir=%~dp0
-set exe=bin\msvc\debug\vaststars.exe
-set titlemsg=debug
+set mode=debug
+set titlemsg=%mode%
+set exe=bin\msvc\%mode%\vaststars.exe
 set cachedir=.\3rd\ant\tools\prefab_editor\.build
 set param=.\3rd\ant\tools\prefab_editor\main.lua
 

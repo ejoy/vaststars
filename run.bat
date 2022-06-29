@@ -1,8 +1,8 @@
 @echo off
 chcp 65001
 set current_dir=%~dp0
-set exe=bin\msvc\debug\vaststars.exe
 set titlemsg=debug
+set exe=bin\msvc\%titlemsg%\vaststars.exe
 set cachedir=.build
 set param=startup/main.lua
 

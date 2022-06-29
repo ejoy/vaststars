@@ -39,24 +39,6 @@ policy:
   ant.render|render
 ---
 data:
-  name: empty9
-  scene:
-    srt:
-      r: {0.017452405765652657, 0, 0, 0.9998477101325989}
-      s: {1, 1, 1}
-      t: {1.573610006744275e-07, -4.349999904632568, 0.10000000149011612}
-  slot:
-    follow_flag: 2
-    joint_name: Bone.004
-  tag:
-    empty9
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
-  ant.scene|scene_object
----
-data:
   anim_ctrl: {}
   animation:
     DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
@@ -72,4 +54,23 @@ policy:
   ant.animation|animation
   ant.animation|meshskin
   ant.general|name
+  ant.scene|scene_object
+---
+data:
+  name: empty9
+  scene:
+    srt:
+      r: {2.8902250051032752e-05, 0.7638540863990784, -0.6453890204429626, 0.0001015801535686478}
+      s: {1, 1, 0.9999999403953552}
+      t: {-0.07560229301452637, 10.577598571777344, 11.45242977142334}
+  slot:
+    follow_flag: 2
+    joint_name: Bone.004
+  tag:
+    empty9
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
   ant.scene|scene_object

@@ -197,20 +197,20 @@ function M:stage_ui_update(datamodel, object_id)
                 else
                     log.error("no headquater")
                 end
+
+                gameplay_core.build()
+
+                -- TODO viewport
+                local recipe_typeobject = iprototype.queryByName("recipe", recipe_name)
+                assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
+                object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or {} -- 配方中没有流体的情况
+
+                shift_pipe(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)
+                gameplay_core.build()
+
+                iui.update("assemble_2.rml", "update", object_id)
+                iui.update("build_function_pop.rml", "update", object_id)
             end
-
-            gameplay_core.build()
-
-            -- TODO viewport
-            local recipe_typeobject = iprototype.queryByName("recipe", recipe_name)
-            assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
-            object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or {} -- 配方中没有流体的情况
-
-            shift_pipe(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)
-            gameplay_core.build()
-
-            iui.update("assemble_2.rml", "update", object_id)
-            iui.update("build_function_pop.rml", "update", object_id)
         else
             log.error(("can not found assembling `%s`(%s, %s)"):format(object.name, object.x, object.y))
         end
