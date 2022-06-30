@@ -40,7 +40,7 @@ local function __new_entity(self, datamodel, typeobject)
     if typeobject.recipe then
         local recipe_typeobject = iprototype.queryByName("recipe", typeobject.recipe)
         if recipe_typeobject then
-            fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- 有配方 and 配方中没有流体
+            fluid_name = irecipe.get_init_fluids(recipe_typeobject) or "" -- maybe no fluid in recipe
         else
             fluid_name = ""
         end
@@ -103,18 +103,23 @@ local function confirm(self, datamodel)
         return
     end
 
-    local prototype_name = pickup_object.prototype_name
-    local typeobject = iprototype.queryByName("entity", prototype_name)
+    -- TODO: change fluid of object
+    local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
     if iprototype.has_type(typeobject.type, "fluidbox") then
-        if pickup_object.fluid_name == "" then
-            global.fluidflow_network_id = global.fluidflow_network_id + 1
-            pickup_object.fluidflow_network_id = global.fluidflow_network_id
+        for _, v in ipairs(ifluid:get_fluidbox(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.fluid_name)) do
+
         end
     end
 
-    if iprototype.has_type(typeobject.type, "fluidbox") or iprototype.has_type(typeobject.type, "fluidboxes") then
-        self:update_fluidbox(EDITOR_CACHE_NAMES, "CONFIRM", pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.fluid_name)
+    if iprototype.has_type(typeobject.type, "fluidboxes") then
+        for _, v in ipairs(ifluid:get_fluidbox(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.fluid_name)) do
+
+        end
     end
+
+    -- if iprototype.has_type(typeobject.type, "fluidbox") or iprototype.has_type(typeobject.type, "fluidboxes") then
+    --     self:update_fluidbox(EDITOR_CACHE_NAMES, "CONFIRM", pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.fluid_name)
+    -- end
 
     pickup_object.state = "confirm"
     objects:set(pickup_object, "CONFIRM")

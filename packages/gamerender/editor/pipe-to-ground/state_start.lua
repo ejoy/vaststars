@@ -199,6 +199,6 @@ return function(self, datamodel)
             condition_normal(self, datamodel)
         end
     else
-        condition_none(self, datamodel)
+        condition_none(self, datamodel, self.shape, nil, nil, self.shape_dir) -- TODO: shape
     end
 end

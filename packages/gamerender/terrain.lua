@@ -3,6 +3,10 @@ local world = ecs.world
 local w     = world.w
 
 local iprototype = require "gameplay.interface.prototype"
+local math3d = require "math3d"
+local mathpkg = import_package"ant.math"
+local mc = mathpkg.constant
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 
 -- three-dimensional axial
 -- z
@@ -132,52 +136,52 @@ function terrain:create(width, height)
     self._group_id = gen_group_id()
     self._enabled_group_id = {}
 
-    local e = w:singleton("shape_terrain", "shape_terrain:in scene:in id:in")
-    if e then
-       world:remove_entity(e.id)
+    --
+    if self._root_eid then
+       world:remove_entity(self._root_eid)
     end
 
-    local function generate_mesh_shape(self, width, height)
-        local ms = {
-            meshes = {
-                "/pkg/vaststars.resources/prefabs/terrain/ground_01.prefab",
-                "/pkg/vaststars.resources/prefabs/terrain/ground_02.prefab",
-                "/pkg/vaststars.resources/prefabs/terrain/ground_03.prefab",
-                "/pkg/vaststars.resources/prefabs/terrain/ground_04.prefab",
-            },
-        }
+    --
+    local meshes = {
+        "/pkg/vaststars.resources/prefabs/terrain/ground_01.prefab",
+        "/pkg/vaststars.resources/prefabs/terrain/ground_02.prefab",
+        "/pkg/vaststars.resources/prefabs/terrain/ground_03.prefab",
+        "/pkg/vaststars.resources/prefabs/terrain/ground_04.prefab",
+    }
+    local rotators <const> = {
+        math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(0)}),
+        math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
+        math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
+        math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
+    }
 
-        assert(width % GROUND_WIDTH == 0 and height % GROUND_HEIGHT == 0)
-        local w, h = width // GROUND_WIDTH, height // GROUND_HEIGHT
-        for y = 0, h - 1 do
-            for x = 0, w - 1 do
-                local _x, _y = x * GROUND_WIDTH, y * GROUND_HEIGHT
-                ms[#ms+1] = {
-                    mash_idx = math.random(1, 4),
-                    group_id = self:get_group_id(_x, _y),
-                    pos = self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT),
-                }
-            end
-        end
-
-        return ms
-    end
-    ecs.create_entity {
+    self._root_eid = ecs.create_entity {
         policy = {
             "ant.scene|scene_object",
             "ant.general|name",
         },
         data = {
-            name = "shape_terrain",
+            name = "terrain_root",
             scene = {
                 srt = { t = offset_3d },
             },
-            shape_terrain = {
-                width = self._width,
-                height = self._height,
-                unit = TILE_SIZE,
-                mesh_shape = generate_mesh_shape(self, self._width, self._height)
-            },
+            on_ready = function (e)
+                assert(self._width % GROUND_WIDTH == 0 and self._height % GROUND_HEIGHT == 0)
+                local w, h = self._width // GROUND_WIDTH, self._height // GROUND_HEIGHT
+                for y = 0, h - 1 do
+                    for x = 0, w - 1 do
+                        local _x, _y = x * GROUND_WIDTH, y * GROUND_HEIGHT
+                        local g = ecs.group(self:get_group_id(_x, _y))
+                        local p = g:create_instance(meshes[math.random(1, 4)])
+                        p.on_ready = function(_e)
+                            iom.set_position(world:entity(_e.root), self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT))
+                            iom.set_rotation(world:entity(_e.root), rotators[math.random(1, 4)])
+                            ecs.method.set_parent(_e.root, e.id)
+                        end
+                        world:create_object(p)
+                    end
+                end
+            end
         }
     }
 end
@@ -202,13 +206,13 @@ function terrain:enable_terrain(x, y)
     local add, del = diff(self._enabled_group_id, new)
     self._enabled_group_id = new
     for _, group_id in ipairs(add) do
-        print(("enable group id: %s"):format(group_id))
+        -- print(("enable group id: %s"):format(group_id))
         ecs.group(group_id):enable "view_visible"
         ecs.group(group_id):enable "scene_update"
         ecs.group(group_id):enable "scene_changed"
     end
     for _, group_id in ipairs(del) do
-        print(("disable group id: %s"):format(group_id))
+        -- print(("disable group id: %s"):format(group_id))
         ecs.group(group_id):disable "view_visible"
         ecs.group(group_id):disable "scene_update"
     end
