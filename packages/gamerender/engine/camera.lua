@@ -53,7 +53,7 @@ function camera.init(prefab_file_name)
     local e = world:entity(camera_ref)
 
     iom.set_srt(e, data.scene.s or mc.ONE, data.scene.r, data.scene.t)
-    iom.set_view(e, iom.get_position(e), iom.get_direction(e), data.scene.updir)
+    iom.set_view(e, iom.get_position(e), iom.get_direction(e), math3d.vector(data.scene.updir))
     ic.set_frustum(e, data.camera.frustum)
     camera_prefab_file_name = prefab_file_name
 end
