@@ -86,7 +86,7 @@ local function create_block(color, block_edge_size, area, position, rotation)
 			"ant.general|name",
 		},
 		data = {
-			scene 		= { srt = {r = rotation, s = {terrain.tile_size * width + block_edge_size, 1, terrain.tile_size * height + block_edge_size}, t = position}},
+			scene 		= { r = rotation, s = {terrain.tile_size * width + block_edge_size, 1, terrain.tile_size * height + block_edge_size}, t = position},
 			material 	= "/pkg/vaststars.resources/materials/singlecolor.material",
 			filter_state= "main_view",
 			name 		= ("plane_%d"):format(gen_id()),
@@ -165,7 +165,7 @@ local function update(self, t)
         local typeobject = iprototype.queryByName("entity", prototype_name)
         local game_object = igame_object.create(typeobject.model, self.group_id, state, color, self.id)
         set_srt(world:entity(game_object.root), srt)
-        -- self.srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone") -- TODO
+        self.srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, self.group_id, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone") -- TODO
 
         self.game_object, self.prototype_name = game_object, prototype_name
     else
@@ -231,7 +231,7 @@ return function (init)
 
         game_object = game_object,
         block_object = block_object,
-        -- srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone"), -- TODO
+        srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, init.group_id, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone"), -- TODO
 
         --
         update = update,

@@ -151,6 +151,8 @@ local function clean(self, datamodel)
     end
     self.from_x = nil
     self.from_y = nil
+    self.shape = nil -- TODO: remove this
+    self.shape_dir = nil -- TODO: remove this
 
     datamodel.show_laying_pipe_confirm = false
     datamodel.show_laying_pipe_cancel = false

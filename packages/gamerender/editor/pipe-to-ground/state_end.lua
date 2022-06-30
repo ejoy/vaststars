@@ -376,14 +376,31 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, 
     self.coord_indicator.state = "construct"
 
     if to_x == max_to_x and to_y == max_to_y then
+        object.prototype_name = format_prototype_name(self.coord_indicator.prototype_name, "JI") -- auto connect to the end of the pipe
+        local succ
+        succ, self.from_x, self.from_y = terrain:move_coord(to_x, to_y, starting_object.dir, 1) -- TODO: check if this is correct, not starting_object.dir
+
+        prototype_name = format_prototype_name(self.coord_indicator.prototype_name, "JI")
+        object = iobject.new {
+            prototype_name = prototype_name,
+            dir = starting_object.dir,
+            x = self.from_x,
+            y = self.from_y,
+            fluid_name = fluid_name,
+            fluidflow_network_id = fluidflow_network_id,
+            state = "construct",
+        }
+        objects:set(object, EDITOR_CACHE_TEMPORARY[1])
+
         for _, object in objects:all("TEMPORARY") do
             object.state = "confirm"
             object.PREPARE = true
         end
         objects:commit("TEMPORARY", "CONFIRM")
 
-        local succ
-        succ, self.from_x, self.from_y = terrain:move_coord(to_x, to_y, starting_object.dir, 1) -- TODO: check if this is correct, not starting_object.dir
+        self.shape = "JI" -- TODO: remove this line
+        self.shape_dir = starting_object.dir -- TODO: remove this line
+        self:touch_end(datamodel)
     end
 end
 

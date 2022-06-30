@@ -1,0 +1,92 @@
+<rml>
+    <head>
+        <style>
+            div {
+                font: 100% "微软雅黑";
+            }
+            .title-text {
+                text-align: center;
+                font-size: 3.80vmin;
+                color: gold;
+                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
+                position: relative;
+                bottom:0.5em;
+            }
+
+            .button-fuction-block {
+                flex-direction: column;
+                width: 18vmin;
+                height:18vmin;
+                align-items: center;
+                justify-content: center;
+                background-color: aquamarine;
+            }
+            .button-function {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width: 13.33vmin;
+                height: 13.33vmin;
+                background-size: cover;
+            }
+            .info-panel {
+                height: 30.00vmin;
+                width: 83.47vmin;
+                background-image: "textures/common/info-arc.texture";
+                background-size:cover;
+                flex-direction: row;
+            }
+            .info-round-panel {
+                height: 68vmin;
+                width: 68vmin;
+                background-image: "textures/common/info-circle.texture";
+                background-size:cover;
+                flex-direction: row;
+            }
+            .menu-button-pic {
+                background-size: cover;
+                width: 10.67vmin;
+                height: 10.67vmin;
+            }
+        </style>
+        <style path = "common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+                object_id = 0,
+                left = "0vmin",
+                top = "0vmin",
+            })
+
+            function start.clickPipeEdge(event, dir)
+                console.log("clickPipeEdge", dir)
+            end
+
+            ui_sys.addEventListener({
+                ["leave"] = function()
+                    ui_sys.close()
+                end,
+            })
+        </script>
+    </head>
+    <body style = "pointer-events: none;">
+            <div class="info-round-panel" style="position: absolute; pointer-events: none; background-color: blueviolet;" data-model="start" data-style-left = "left" data-style-top = "top">
+                <div class="button-fuction-block" style="top: 10.67vmin; left: 2vmin;" data-event-click="clickPipeEdge('W')">
+                    <button class="button-function" style ='background-image: "textures/common/pipe-connect.texture";'/>
+                    <div class="title-text">左</div>
+                </div>
+                <div class="button-fuction-block" style="right: -39vmin;top: 10.67vmin;" data-event-click="clickPipeEdge('E')">
+                    <button class="button-function" style ='background-image: "textures/common/pipe-disconnect.texture";'/>
+                    <div class="title-text">右</div>
+                </div>
+                <div class="button-fuction-block" style="top: -18.33vmin; left: 0vmin;" data-event-click="clickPipeEdge('N')">
+                    <button class="button-function" style ='background-image: "textures/common/pipe-disconnect.texture";'/>
+                    <div class="title-text">上</div>
+                </div>
+                <div class="button-fuction-block" style="left: -12.5vmin; bottom: -32vmin;" data-event-click="clickPipeEdge('S')">
+                    <button class="button-function" style ='background-image: "textures/common/pipe-disconnect.texture";'/>
+                    <div class="title-text">下</div>
+                </div>
+            </div>
+    </body>
+</rml>

@@ -23,15 +23,18 @@ function idetail.show(object_id)
     local vsobject = assert(vsobject_manager:get(object_id))
     local object = objects:get(object_id)
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    if typeobject.show_build_function ~= false then
-        local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
-        local ce = world:entity(mq.camera_ref)
-        local vp = ce.camera.viewprojmat
-        local vr = mq.render_target.view_rect
-        local p = math3d.tovalue(mu.world_to_screen(vp, vr, vsobject:get_position()))
 
-        local vmin = get_vmin(vr.w, vr.h, vr.ratio)
+    local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
+    local ce = world:entity(mq.camera_ref)
+    local vp = ce.camera.viewprojmat
+    local vr = mq.render_target.view_rect
+    local p = math3d.tovalue(mu.world_to_screen(vp, vr, vsobject:get_position()))
+    local vmin = get_vmin(vr.w, vr.h, vr.ratio)
+
+    if typeobject.show_build_function ~= false then
         iui.open("build_function_pop.rml", object_id, p[1] / vmin * 100, p[2] / vmin * 100)
+    elseif iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
+        -- iui.open("pipe_function_pop.rml", object_id, p[1] / vmin * 100, p[2] / vmin * 100)
     end
 
     do

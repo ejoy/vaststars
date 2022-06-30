@@ -110,6 +110,26 @@ local function _shift_pipe_prototype_name(prototype_name)
     return prototype_name
 end
 
+local function _update_fluid_name(State, fluid_name, fluidflow_network_id)
+    if State.fluid_name ~= "" then
+        if fluid_name ~= "" then
+            if State.fluid_name ~= fluid_name then
+                State.failed = true
+            end
+        else
+            assert(fluidflow_network_id ~= 0)
+            State.fluidflow_network_ids[fluidflow_network_id] = true
+        end
+    else
+        if fluid_name ~= "" then
+            State.fluid_name = fluid_name
+        else
+            assert(fluidflow_network_id ~= 0)
+            State.fluidflow_network_ids[fluidflow_network_id] = true
+        end
+    end
+end
+
 -- auto connect with a neighbor who has fluidbox
 local function _set_endpoint_connect(State, x, y)
     local pipe_edge = 0
@@ -133,26 +153,7 @@ local function _set_endpoint_connect(State, x, y)
             succ, _x, _y = terrain:move_coord(v.x, v.y, v.dir, 1)
             if succ and _x == x and _y == y then
                 pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(dir), true)
-
-                if State.fluid_name ~= "" then
-                    if v.fluid_name ~= "" then
-                        if State.fluid_name ~= v.fluid_name then
-                            State.failed = true
-                        end
-                    else
-                        if object.fluidflow_network_id ~= 0 then
-                            State.fluidflow_network_ids[object.fluidflow_network_id] = true
-                        end
-                    end
-                else
-                    if v.fluid_name ~= "" then
-                        State.fluid_name = v.fluid_name
-                    else
-                        if object.fluidflow_network_id ~= 0 then
-                            State.fluidflow_network_ids[object.fluidflow_network_id] = true
-                        end
-                    end
-                end
+                _update_fluid_name(State, v.fluid_name, object.fluidflow_network_id)
                 break
             end
         end
@@ -169,23 +170,7 @@ local function _set_pipe(State, x, y)
             State.failed = true
         else
             pipe_edge = iflow_shape.prototype_name_to_state(object.prototype_name, object.dir)
-
-            if State.fluid_name ~= "" then
-                if object.fluid_name ~= "" then
-                    if State.fluid_name ~= object.fluid_name then
-                        State.failed = true
-                    end
-                else
-                    assert(object.fluidflow_network_id ~= 0)
-                    State.fluidflow_network_ids[object.fluidflow_network_id] = true
-                end
-            else
-                State.fluid_name = object.fluid_name
-                if object.fluid_name == "" then
-                    assert(object.fluidflow_network_id ~= 0)
-                    State.fluidflow_network_ids[object.fluidflow_network_id] = true
-                end
-            end
+            _update_fluid_name(State, object.fluid_name, object.fluidflow_network_id)
         end
     end
     return pipe_edge
@@ -249,29 +234,13 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
                     map[coord] = pipe_edge
 
                 elseif iprototype.is_pipe_to_ground(_object.prototype_name) then
-                    local failed = true
                     for _, v in ipairs(ifluid:get_fluidbox(_object.prototype_name, _object.x, _object.y, _object.dir, _object.fluid_name)) do
                         if v.ground and v.dir == iprototype.opposite_dir(dir) then
-                            failed = false
-                            if State.fluid_name ~= "" then
-                                if State.fluid_name ~= v.fluid_name then
-                                    failed = true
-                                end
-                            else
-                                State.fluid_name = v.fluid_name
-                                if _object.fluidflow_network_id ~= 0 then
-                                    State.fluidflow_network_ids[_object.fluidflow_network_id] = true
-                                end
-                            end
-
-                            map[coord] = 0
+                            _update_fluid_name(State, _object.fluid_name, _object.fluidflow_network_id)
                             break -- pipe to ground only has one fluidbox in one direction
                         end
                     end
-                    if failed == true then
-                        State.failed = true
-                        map[coord] = 0
-                    end
+                    map[coord] = 0
 
                 else
                     -- entity is not a pipe or a pipe to ground, (from_x, from_y) is the fluidbox coord of the entity
@@ -280,16 +249,7 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
                     if not f then -- no fluidbox in the direction of the entity
                         State.failed = true
                     else
-                        if State.fluid_name ~= "" then
-                            if State.fluid_name ~= f.fluid_name then
-                                State.failed = true
-                            end
-                        else
-                            State.fluid_name = f.fluid_name
-                            if _object.fluidflow_network_id ~= 0 then
-                                State.fluidflow_network_ids[_object.fluidflow_network_id] = true
-                            end
-                        end
+                        _update_fluid_name(State, f.fluid_name, _object.fluidflow_network_id)
                     end
                     map[coord] = 0
                 end
@@ -310,49 +270,20 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
                     map[coord] = pipe_edge
 
                 elseif iprototype.is_pipe_to_ground(_object.prototype_name) then
-                    local failed = true
                     for _, v in ipairs(ifluid:get_fluidbox(_object.prototype_name, _object.x, _object.y, _object.dir, _object.fluid_name)) do
                         if v.ground and v.dir == dir then
-                            failed = false
-                            if State.fluid_name ~= "" then
-                                if State.fluid_name ~= v.fluid_name then
-                                    failed = true
-                                end
-                            else
-                                State.fluid_name = v.fluid_name
-                                if _object.fluidflow_network_id ~= 0 then
-                                    State.fluidflow_network_ids[_object.fluidflow_network_id] = true
-                                end
-                            end
-
-                            map[coord] = 0
+                            _update_fluid_name(State, v.fluid_name, _object.fluidflow_network_id)
                             break -- pipe to ground only has one fluidbox in one direction
                         end
                     end
-                    if failed == true then
-                        State.failed = true
-                    end
+                    map[coord] = 0
 
                 else
-                    local failed = true
                     for _, v in ipairs(ifluid:get_fluidbox(_object.prototype_name, _object.x, _object.y, _object.dir, _object.fluid_name)) do
                         if v.dir == iprototype.opposite_dir(dir) and (from_x == v.x or from_y == v.y) then
-                            failed = false
-                            if State.fluid_name ~= "" then
-                                if State.fluid_name ~= v.fluid_name then
-                                    failed = true
-                                end
-                            else
-                                State.fluid_name = v.fluid_name
-                                if _object.fluidflow_network_id ~= 0 then
-                                    State.fluidflow_network_ids[_object.fluidflow_network_id] = true
-                                end
-                            end
+                            _update_fluid_name(State, v.fluid_name, _object.fluidflow_network_id)
                             break -- only one fluidbox aligned with the start point
                         end
-                    end
-                    if failed == true then
-                        State.failed = true
                     end
                     map[coord] = 0
                 end

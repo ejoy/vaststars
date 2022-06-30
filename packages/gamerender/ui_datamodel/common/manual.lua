@@ -51,7 +51,7 @@ local function cancel(index)
     for _, v in ipairs(gameplay_core.get_world():manual()) do
         if v[1] == "crafting" then
             local recipe_typeobject = iprototype.queryByName("recipe", v[2])
-            queue[#queue+1] = {v[2], get_count(recipe_typeobject.results)}
+            queue[#queue+1] = {v[2], itypes.items(recipe_typeobject.results)[1].count}
         end
     end
     table.remove(queue, index)

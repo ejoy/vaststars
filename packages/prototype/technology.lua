@@ -26,13 +26,13 @@ prototype "地质研究" {
 }
 
 prototype "放置采矿机" {
-  desc = "放置一台采矿机",
+  desc = "矿区里放置采矿机",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "采矿机I"},
   -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"地质研究"},
-  count = 1,
+  count = 2,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
     "textures/task_tips_pic/task_produce_ore1.texture",
@@ -40,7 +40,7 @@ prototype "放置采矿机" {
     "textures/task_tips_pic/start_construct.texture",
   },
   sign_desc = {
-    { desc = "使用“建造”在铁矿区域放置一台采矿机", icon = "textures/construct/industry.texture"},
+    { desc = "使用“建造”在铁矿区域放置2台采矿机", icon = "textures/construct/industry.texture"},
   },
 }
 
