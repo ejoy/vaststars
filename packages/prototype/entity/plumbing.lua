@@ -10,7 +10,7 @@ prototype "液罐I" {
     group = {"管道"},
     fluidbox = {
         capacity = 15000,
-        height = 200,
+        height = 100,
         base_level = 0,
         connections = {
             {type="input-output", position={1,0,"N"}},
