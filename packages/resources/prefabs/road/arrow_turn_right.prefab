@@ -1,8 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -10,8 +9,7 @@ policy:
 data:
   name: zhuanwan
   scene:
-    srt:
-      r: {0, 0, 0, 1}
+    r: {0, 0, 0, 1}
 mount: 1
 policy:
   ant.general|name
@@ -24,9 +22,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/arrow_turn_right.glb|meshes/平面.020_P1.meshbin"
   name: "平面.042"
   scene:
-    srt:
-      r: {0, 0.3826834559440613, 0, -0.9238795042037964}
-      t: {1.4578540325164795, 2.2019999027252197, -1.3006486892700195}
+    r: {0, 0.3826834559440613, 0, -0.9238795042037964}
+    t: {1.4578540325164795, 2.2019999027252197, -1.3006486892700195}
 mount: 2
 policy:
   ant.general|name

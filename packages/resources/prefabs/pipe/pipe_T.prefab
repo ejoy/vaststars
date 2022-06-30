@@ -1,8 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -13,8 +12,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/pipe/pipe_T.glb|meshes/zhuti.008_P1.meshbin
   name: zhuti.T
   scene:
-    srt:
-      r: {0, -0.70710688829422, 0, 0.7071066498756409}
+    r: {0, -0.70710688829422, 0, 0.7071066498756409}
 mount: 1
 policy:
   ant.general|name

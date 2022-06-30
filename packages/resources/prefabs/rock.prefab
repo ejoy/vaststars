@@ -2,10 +2,9 @@
 data:
   name: Scene
   scene:
-    srt:
-      r: {0, 0, 0, 1}
-      s: {2, 2, 2}
-      t: {0, 0, 0}
+    r: {0, 0, 0, 1}
+    s: {2, 2, 2}
+    t: {0, 0, 0}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -16,8 +15,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/rock.glb|meshes/Cube_P1.meshbin
   name: Cube
   scene:
-    srt:
-      s: {0.75, 0.75, 0.75}
+    s: {0.75, 0.75, 0.75}
 mount: 1
 policy:
   ant.general|name
@@ -29,8 +27,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/rock.glb|meshes/Cube_P2.meshbin
   name: Cube
   scene:
-    srt:
-      s: {0.75, 0.75, 0.75}
+    s: {0.75, 0.75, 0.75}
 mount: 1
 policy:
   ant.general|name

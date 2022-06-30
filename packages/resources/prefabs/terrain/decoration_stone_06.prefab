@@ -1,8 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -12,8 +11,7 @@ data:
   material: /pkg/vaststars.resources/glb/terrain/decoration_stone_06.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/terrain/decoration_stone_06.glb|meshes/Plane.023_P1.meshbin
   name: Plane.072
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name

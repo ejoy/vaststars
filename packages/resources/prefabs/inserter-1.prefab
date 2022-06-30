@@ -2,10 +2,9 @@
 data:
   name: Scene
   scene:
-    srt:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      s: {1, 1, 1}
-      t: {0, 0, 0}
+    r: {0, 1, 0, -4.371138828673793e-08}
+    s: {1, 1, 1}
+    t: {0, 0, 0}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -15,8 +14,7 @@ data:
   material: /pkg/vaststars.resources/glb/inserter.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/inserter.glb|meshes/zhuti.003_P1.meshbin
   name: zhuti
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name
@@ -29,8 +27,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/inserter.glb|meshes/lifangti.001_P1.meshbin
   name: lifangti.008
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -46,8 +43,7 @@ data:
   animation_birth: DownToUp
   meshskin: /pkg/vaststars.resources/glb/inserter.glb|meshes/buge.005.skinbin
   name: skeleton_animation
-  scene:
-    srt: {}
+  scene: {}
   skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
 mount: 1
 policy:
@@ -59,10 +55,9 @@ policy:
 data:
   name: empty9
   scene:
-    srt:
-      r: {2.8902250051032752e-05, 0.7638540863990784, -0.6453890204429626, 0.0001015801535686478}
-      s: {1, 1, 0.9999999403953552}
-      t: {-0.07560229301452637, 10.577598571777344, 11.45242977142334}
+    r: {2.8902250051032752e-05, 0.7638540863990784, -0.6453890204429626, 0.0001015801535686478}
+    s: {1, 1, 0.9999999403953552}
+    t: {-0.07560229301452637, 10.577598571777344, 11.45242977142334}
   slot:
     follow_flag: 2
     joint_name: Bone.004

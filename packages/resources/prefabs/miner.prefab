@@ -1,8 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -13,9 +12,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.416_P1.meshbin"
   name: Detail_300.002
   scene:
-    srt:
-      r: {-0.25033038854599, 0, 0, -0.9681605100631714}
-      t: {6.836451530456543, 8.142379760742188, -10.53567886352539}
+    r: {-0.25033038854599, 0, 0, -0.9681605100631714}
+    t: {6.836451530456543, 8.142379760742188, -10.53567886352539}
 mount: 1
 policy:
   ant.general|name

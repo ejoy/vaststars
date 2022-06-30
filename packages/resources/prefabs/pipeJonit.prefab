@@ -1,8 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -13,8 +12,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/PipeJoint.glb|meshes/Cylinder.006_P1.meshbin
   name: Cylinder.005
   scene:
-    srt:
-      t: {0, 3.97017240524292, -4.379530906677246}
+    t: {0, 3.97017240524292, -4.379530906677246}
 mount: 1
 policy:
   ant.general|name

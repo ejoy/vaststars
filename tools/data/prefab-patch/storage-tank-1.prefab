@@ -1,8 +1,7 @@
 ---
 data:
   name: empty1
-  scene:
-    srt: {}
+  scene: {}
   slot:
     follow_flag: 1
     joint_name: None
@@ -18,10 +17,9 @@ policy:
 data:
   name: empty2
   scene:
-    srt:
-      r: {0, 0, 0, 1}
-      s: {1, 1, 1}
-      t: {0, -14, 0}
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, -14, 0}
   slot:
     follow_flag: 1
     joint_name: None

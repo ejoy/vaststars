@@ -1,8 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -12,8 +11,7 @@ data:
   material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.008_P1.meshbin
   name: Cylinder.008
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name
@@ -24,8 +22,7 @@ data:
   material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.009_P1.meshbin
   name: Cylinder.009
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name
@@ -37,8 +34,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.010_P1.meshbin
   name: Cylinder.010
   scene:
-    srt:
-      t: {0, 0.9483034610748291, 0}
+    t: {0, 0.9483034610748291, 0}
 mount: 1
 policy:
   ant.general|name
@@ -49,8 +45,7 @@ data:
   material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.012_P1.meshbin
   name: Cylinder.011
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name
@@ -62,9 +57,8 @@ data:
   mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.013_P1.meshbin
   name: Cylinder.012
   scene:
-    srt:
-      s: {1.0656399726867676, 1.0656399726867676, 1.0656399726867676}
-      t: {0, 12.743448257446289, 0}
+    s: {1.0656399726867676, 1.0656399726867676, 1.0656399726867676}
+    t: {0, 12.743448257446289, 0}
 mount: 1
 policy:
   ant.general|name
@@ -75,8 +69,7 @@ data:
   material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.015_P1.meshbin
   name: Cylinder.013
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name
@@ -88,8 +81,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.015_P1.meshbin
   name: Cylinder.014
   scene:
-    srt:
-      r: {0, 0.866025447845459, 0, -0.4999999701976776}
+    r: {0, 0.866025447845459, 0, -0.4999999701976776}
 mount: 1
 policy:
   ant.general|name
@@ -101,8 +93,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.015_P1.meshbin
   name: Cylinder.015
   scene:
-    srt:
-      r: {0, -0.866025447845459, 0, -0.4999999701976776}
+    r: {0, -0.866025447845459, 0, -0.4999999701976776}
 mount: 1
 policy:
   ant.general|name
@@ -113,8 +104,7 @@ data:
   material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
   mesh: "/pkg/vaststars.resources/glb/chimney.glb|meshes/柱体.001_P1.meshbin"
   name: zhuti.001
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name
@@ -123,8 +113,7 @@ policy:
 data:
   name: Armature
   scene:
-    srt:
-      t: {0, 5.349473476409912, 0}
+    t: {0, 5.349473476409912, 0}
 mount: 1
 policy:
   ant.general|name
@@ -135,8 +124,7 @@ data:
   material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Plane_P1.meshbin
   name: Plane
-  scene:
-    srt: {}
+  scene: {}
 mount: 11
 policy:
   ant.general|name
@@ -148,8 +136,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cube_P1.meshbin
   name: Cube
   scene:
-    srt:
-      s: {0.8999999761581421, 1, 0.8999999761581421}
+    s: {0.8999999761581421, 1, 0.8999999761581421}
 mount: 1
 policy:
   ant.general|name

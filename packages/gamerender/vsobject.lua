@@ -154,7 +154,7 @@ local function update(self, t)
         local srt
         local old_game_object = self.game_object
         if old_game_object then
-            srt = world:entity(old_game_object.root).scene.srt
+            srt = world:entity(old_game_object.root).scene
             old_game_object:remove()
         end
 

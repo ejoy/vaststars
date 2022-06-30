@@ -52,7 +52,7 @@ function camera.init(prefab_file_name)
     local camera_ref = mq.camera_ref
     local e = world:entity(camera_ref)
 
-    iom.set_srt(e, data.scene.srt.s or mc.ONE, data.scene.srt.r, data.scene.srt.t)
+    iom.set_srt(e, data.scene.s or mc.ONE, data.scene.r, data.scene.t)
     iom.set_view(e, iom.get_position(e), iom.get_direction(e), data.scene.updir)
     ic.set_frustum(e, data.camera.frustum)
     camera_prefab_file_name = prefab_file_name
@@ -72,8 +72,8 @@ function camera.transition(prefab_file_name)
     local rotation = iom.get_rotation(e)
     local oposition = iom.get_position(e)
 
-    local delta = math3d.sub(oposition, sdata.scene.srt.t)
-    local nposition = math3d.add(delta, ddata.scene.srt.t)
+    local delta = math3d.sub(oposition, sdata.scene.t)
+    local nposition = math3d.add(delta, ddata.scene.t)
 
     local raw_animation = animation.new_raw_animation()
     local skl = skeleton.build({{name = "root", s = mc.T_ONE, r = mc.T_IDENTITY_QUAT, t = mc.T_ZERO}})
@@ -91,7 +91,7 @@ function camera.transition(prefab_file_name)
         "root",
         1,
         scale,
-        ddata.scene.srt.r,
+        ddata.scene.r,
         nposition
     )
 

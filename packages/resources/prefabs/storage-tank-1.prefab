@@ -1,8 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -12,8 +11,7 @@ data:
   material: /pkg/vaststars.resources/glb/storageTank.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/storageTank.glb|meshes/lifangti.003_P1.meshbin
   name: lifangti.005
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name
@@ -21,8 +19,7 @@ policy:
 ---
 data:
   name: empty1
-  scene:
-    srt: {}
+  scene: {}
   slot:
     follow_flag: 1
     joint_name: None
@@ -38,10 +35,9 @@ policy:
 data:
   name: empty2
   scene:
-    srt:
-      r: {0, 0, 0, 1}
-      s: {1, 1, 1}
-      t: {0, -14, 0}
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, -14, 0}
   slot:
     follow_flag: 1
     joint_name: None
