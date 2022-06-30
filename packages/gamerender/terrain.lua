@@ -162,9 +162,7 @@ function terrain:create(width, height)
         },
         data = {
             name = "terrain_root",
-            scene = {
-                srt = { t = offset_3d },
-            },
+            scene = {t = offset_3d },
             on_ready = function (e)
                 assert(self._width % GROUND_WIDTH == 0 and self._height % GROUND_HEIGHT == 0)
                 local w, h = self._width // GROUND_WIDTH, self._height // GROUND_HEIGHT

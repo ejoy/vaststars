@@ -117,9 +117,14 @@ local function confirm(self, datamodel)
         end
     end
 
-    -- if iprototype.has_type(typeobject.type, "fluidbox") or iprototype.has_type(typeobject.type, "fluidboxes") then
-    --     self:update_fluidbox(EDITOR_CACHE_NAMES, "CONFIRM", pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.fluid_name)
-    -- end
+    -- TODO: remove this
+    if pickup_object.fluid_name == "" then
+        global.fluidflow_network_id = global.fluidflow_network_id + 1
+        pickup_object.fluidflow_network_id = global.fluidflow_network_id
+    end
+    if iprototype.has_type(typeobject.type, "fluidbox") or iprototype.has_type(typeobject.type, "fluidboxes") then
+        self:update_fluidbox(EDITOR_CACHE_NAMES, "CONFIRM", pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.fluid_name)
+    end
 
     pickup_object.state = "confirm"
     objects:set(pickup_object, "CONFIRM")

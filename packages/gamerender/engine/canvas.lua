@@ -27,9 +27,7 @@ function M.create(position)
         data = {
             name = "canvas",
             scene = {
-                srt = {
-                    t = position,
-                }
+                t = position,
             },
             canvas = {
                 textures = {},
