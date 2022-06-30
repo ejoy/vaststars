@@ -32,7 +32,9 @@ local function open(url, ...)
     if binding then
         if binding.template then
             binding.param = {...}
-            binding.datamodel = tracedoc.new(binding.template:create(...))
+            for k, v in pairs(tracedoc.new(binding.template:create(...))) do -- trigger tracedoc.doc_changed
+                binding.datamodel[k] = v
+            end
             binding.template:flush()
             datamodel_changed[url] = true
         end

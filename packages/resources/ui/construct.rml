@@ -387,6 +387,7 @@
                 {
                     "manual_queue",
                     function()
+                        start("manual_queue")
                         if start.manual_queue[1] then
                             manual_progress(start.manual_queue[1].progress)
                         end
@@ -488,7 +489,7 @@
             <!-- 右下角手搓队列 -->
             <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "cur_edit_mode == ''">
                 <collapsed-bar id = "manual-queue" init-expanded = "false" min-width = "13.50vmin" max-width = "auto" style = "height: 35vmin; flex-direction: row; overflow: hidden;">
-                    <div data-for = "manual_queue" sprite="abc" style = "flex-direction: row; pointer-events: none;">
+                    <div data-for = "manual_queue" style = "flex-direction: row; pointer-events: none;">
                         <div style = "width: 0.5vmin;" />
                         <workbutton data-event-click="clickCollapsedBar(it_index)" style="background-color:rgb(250,205,9);width: 13vmin; height: 13vmin;">
                             <div class="workbutton-bg" data-style-background-image = "it.icon" style = "pointer-events: none;" />
