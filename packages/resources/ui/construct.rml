@@ -180,6 +180,24 @@
                     opacity: 0;
                 }
             }
+            @keyframes enlarge2 {
+                0% {
+                    transform: scale(0.1);
+                    opacity: 1;
+                }
+                30% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                75% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 0;
+                }
+            }
             .progressbar-half-cycle-container {
                 position: absolute;
                 top: 0vmin;
@@ -389,6 +407,12 @@
             <!-- drawcall 显示 -->
             <div style = "pointer-events: none; position: absolute; left: 7.25vmin; top: 12.50vmin; z-index: 999;">
                 <div style = "pointer-events: none; position: absolute; top: 0vmin; width: 90.00vmax; height: auto; font-size: 6.25vmin; color: rgb(0,255,0);">{{drawcall_text}}</div>
+            </div>
+
+            <!-- 显示 -->
+            <div style= "pointer-events: none; position: absolute; width:100%; text-align: center; top: 26.50vmin; flex-direction: column; justify-content: center; align-items: center; animation:3.5s linear 0s enlarge2;" data-if="false">
+                <div style="font-size: 10.25vmin;color: rgb(255, 251, 0); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">序幕</div>
+                <div style="font-size: 16.25vmin; color:  rgb(255, 255, 255); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">迫降P4031</div>
             </div>
 
             <!-- 主菜单按钮 -->
