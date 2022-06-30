@@ -100,7 +100,7 @@ void chest_container::sort(size_t index, uint16_t newvalue) {
 bool chest_container::resize(lua_State* L, world& w) {
     for (auto it = slots.begin(); it != slots.end();) {
         if (it->amount == 0) {
-            slots.erase(it);
+            it = slots.erase(it);
         }
         else {
             ++it;
