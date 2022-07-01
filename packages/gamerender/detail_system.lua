@@ -34,7 +34,7 @@ function idetail.show(object_id)
     if typeobject.show_build_function ~= false then
         iui.open("build_function_pop.rml", object_id, p[1] / vmin * 100, p[2] / vmin * 100)
     elseif iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
-        -- iui.open("pipe_function_pop.rml", object_id, p[1] / vmin * 100, p[2] / vmin * 100)
+        iui.open("pipe_function_pop.rml", object_id, p[1] / vmin * 100, p[2] / vmin * 100)
     end
 
     do

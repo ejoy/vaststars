@@ -12,14 +12,15 @@
                 position: relative;
                 bottom:0.5em;
             }
-
-            .button-fuction-block {
+            .button-fuction-block, .button-fuction-block-separator {
                 flex-direction: column;
                 width: 18vmin;
                 height:18vmin;
                 align-items: center;
                 justify-content: center;
-                background-color: aquamarine;
+            }
+            .button-fuction-block-separator {
+                pointer-events: none;
             }
             .button-function {
                 flex-direction: row;
@@ -42,6 +43,9 @@
                 background-image: "textures/common/info-circle.texture";
                 background-size:cover;
                 flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-content: space-between;
             }
             .menu-button-pic {
                 background-size: cover;
@@ -51,15 +55,40 @@
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
+            local CONNECT <const> = 1
+            local DISCONNECT <const> = 2
+            local DISABLE <const> = 3
+
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
                 object_id = 0,
                 left = "0vmin",
                 top = "0vmin",
+                connections = {
+                    ["N"] = DISABLE,
+                    ["E"] = DISABLE,
+                    ["S"] = DISABLE,
+                    ["W"] = DISABLE,
+                },
             })
 
+            local function update()
+                local texture <const> = {
+                    [CONNECT] = "textures/common/pipe-connect.texture",
+                    [DISCONNECT] = "textures/common/pipe-disconnect.texture",
+                    [DISABLE] = "textures/common/pipe-disable.texture",
+                }
+                for dir, state in pairs(start.connections) do
+                    start["connection_background_image_" .. dir] = texture[state] -- TODO
+                end
+            end
+            update()
+
             function start.clickPipeEdge(event, dir)
-                console.log("clickPipeEdge", dir)
+                if start.connections[dir] == DISABLE then
+                    return
+                end
+                ui_sys.pub {"pipe_edge", dir, start.connections[dir]}
             end
 
             ui_sys.addEventListener({
@@ -67,26 +96,43 @@
                     ui_sys.close()
                 end,
             })
+
+            ui_sys.mapping(start, {
+                {
+                    "connections",
+                    function()
+                        start("connections")
+                        update()
+                    end
+                },
+            })
         </script>
     </head>
     <body style = "pointer-events: none;">
-            <div class="info-round-panel" style="position: absolute; pointer-events: none; background-color: blueviolet;" data-model="start" data-style-left = "left" data-style-top = "top">
-                <div class="button-fuction-block" style="top: 10.67vmin; left: 2vmin;" data-event-click="clickPipeEdge('W')">
-                    <button class="button-function" style ='background-image: "textures/common/pipe-connect.texture";'/>
-                    <div class="title-text">左</div>
-                </div>
-                <div class="button-fuction-block" style="right: -39vmin;top: 10.67vmin;" data-event-click="clickPipeEdge('E')">
-                    <button class="button-function" style ='background-image: "textures/common/pipe-disconnect.texture";'/>
-                    <div class="title-text">右</div>
-                </div>
-                <div class="button-fuction-block" style="top: -18.33vmin; left: 0vmin;" data-event-click="clickPipeEdge('N')">
-                    <button class="button-function" style ='background-image: "textures/common/pipe-disconnect.texture";'/>
+            <div class="info-round-panel" style="position: absolute; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top">
+                <div class="button-fuction-block-separator" />
+                <div class="button-fuction-block" data-event-click="clickPipeEdge('N')">
+                    <button class="button-function" data-style-background-image = "connection_background_image_N" />
                     <div class="title-text">上</div>
                 </div>
-                <div class="button-fuction-block" style="left: -12.5vmin; bottom: -32vmin;" data-event-click="clickPipeEdge('S')">
-                    <button class="button-function" style ='background-image: "textures/common/pipe-disconnect.texture";'/>
+                <div class="button-fuction-block-separator" />
+
+                <div class="button-fuction-block" data-event-click="clickPipeEdge('W')">
+                    <button class="button-function" data-style-background-image = "connection_background_image_W" />
+                    <div class="title-text">左</div>
+                </div>
+                <div class="button-fuction-block-separator" />
+                <div class="button-fuction-block" data-event-click="clickPipeEdge('E')">
+                    <button class="button-function" data-style-background-image = "connection_background_image_E" />
+                    <div class="title-text">右</div>
+                </div>
+                
+                <div class="button-fuction-block-separator" />
+                <div class="button-fuction-block" data-event-click="clickPipeEdge('S')">
+                    <button class="button-function" data-style-background-image = "connection_background_image_S" />
                     <div class="title-text">下</div>
                 </div>
+                <div class="button-fuction-block-separator" />
             </div>
     </body>
 </rml>
