@@ -437,7 +437,7 @@
             </div>
 
             <!-- 章节介绍显示 -->
-            <div class = "nopointer" data-if="true">
+            <div class = "nopointer" data-if="false">
                 <div class="banner">
                     <div class="chapter">
                         <div style="font-size: 10.25vmin; color: rgb(255, 251, 0); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">序幕</div>
