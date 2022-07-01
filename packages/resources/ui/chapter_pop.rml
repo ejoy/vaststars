@@ -1,0 +1,60 @@
+<rml>
+    <head>
+        <style>
+            @keyframes enlarge2 {
+                0% {
+                    transform: scale(0.1);
+                    opacity: 1;
+                }
+                30% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                75% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 0;
+                }
+            }
+        </style>
+        <style path = "common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+                archival_files = {},
+                show_archival_files = false,
+            })
+
+            function start.clickSave(event)
+                ui_sys.pub {"save"}
+                ui_sys.close()
+            end
+
+            function start.clickRestart(event)
+                ui_sys.pub {"restart"}
+                ui_sys.close()
+            end
+
+            function start.clickRestore(event, index)
+                ui_sys.pub {"restore", index}
+            end
+
+            function start.clickClose()
+                ui_sys.pub {"close"}
+            end
+
+        </script>
+    </head>
+    <body style = "background-color: black;">
+        <div style="pointer-events: none;"  data-model="start">
+            <!-- 显示 -->
+            <div style= "pointer-events: none; position: absolute; width:100%; text-align: center; top: 26.50vmin; flex-direction: column; justify-content: center; align-items: center; animation:3.5s linear 0s enlarge2;" data-if="true">
+                <div style="font-size: 10.25vmin;color: rgb(255, 251, 0); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">序幕</div>
+                <div style="font-size: 16.25vmin; color:  rgb(255, 255, 255); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">迫降P4031</div>
+            </div>
+        </div>
+    </body>
+</rml>
