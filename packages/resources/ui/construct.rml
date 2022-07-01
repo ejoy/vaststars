@@ -216,7 +216,7 @@
                 width:100%; 
                 text-align: center; 
                 top: 26.50vmin; 
-                background-color: rgba(0, 200, 0, 60);
+                background-color: rgba(0, 200, 0, 170);
             }
             .chapter {
                 animation:3.5s linear 0s slidein;
