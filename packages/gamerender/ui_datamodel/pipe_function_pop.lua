@@ -2,7 +2,6 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
-local gameplay_core = require "gameplay.core"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local ifluid = require "gameplay.interface.fluid"
@@ -11,9 +10,11 @@ local ALL_DIR = iconstant.ALL_DIR
 local terrain = ecs.require "terrain"
 local iflow_shape = require "gameplay.utility.flow_shape"
 local set_shape_edge = iflow_shape.set_shape_edge
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iobject = ecs.require "object"
+local ieditor = ecs.require "editor.editor"
 
 local pipe_edge_mb = mailbox:sub {"pipe_edge"}
+local leave_mb = mailbox:sub {"leave"}
 
 -- see also: pipe_function_pop.rml
 local CONNECT <const> = 1
@@ -43,10 +44,6 @@ end
 
 local function get_connections(object_id)
     local pipe_object = assert(objects:get(object_id))
-    local e = gameplay_core.get_entity(assert(pipe_object.gameplay_eid))
-    if not e then
-        return
-    end
     local typeobject = iprototype.queryByName("entity", pipe_object.prototype_name)
     assert(typeobject.pipe or typeobject.pipe_to_ground)
 
@@ -197,9 +194,89 @@ local function get_connections(object_id)
     return connections
 end
 
+local EDITOR_CACHE_TEMPORARY = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+
 ---------------
 local M = {}
 function M:create(object_id, left, top)
+    local pipe_object = assert(objects:get(object_id))
+    local color = {
+        [1] = "fluidflow_blue",
+        [2] = "fluidflow_chartreuse",
+        [3] = "fluidflow_chocolate",
+        [4] = "fluidflow_darkviolet",
+    }
+
+    local o = {}
+    for _, dir in ipairs(ALL_DIR) do
+        local succ, x, y = terrain:move_coord(pipe_object.x, pipe_object.y, dir, 1)
+        if not succ then
+            goto continue
+        end
+
+        local object = objects:modify(x, y, EDITOR_CACHE_TEMPORARY, iobject.clone)
+        if not object then
+            goto continue
+        end
+
+        local function dfs(object, input_dir, o)
+            if not iprototype.has_type(iprototype.queryByName("entity", object.prototype_name).type, "fluidbox") then
+                return
+            end
+
+            local typeobject = iprototype.queryByName("entity", object.prototype_name)
+            for _, v in ipairs(ifluid:get_fluidbox(typeobject.name, object.x, object.y, object.dir)) do
+                if v.dir ~= input_dir then
+                    local succ, x, y
+                    if not v.ground then
+                        succ, x, y = terrain:move_coord(v.x, v.y, v.dir, 1)
+                        assert(succ)
+                    else
+                        local function match_ground(dir) -- TODO：optimize
+                            for i = 1, v.ground do
+                                succ, x, y = terrain:move_coord(v.x, v.y, v.dir, i)
+                                if succ then
+                                    local object = objects:coord(x, y)
+                                    if object then
+                                        local typeobject = iprototype.queryByName("entity", object.prototype_name)
+                                        for _, v in ipairs(ifluid:get_fluidbox(typeobject.name, object.x, object.y, object.dir)) do
+                                            if v.ground and v.dir == iprototype.opposite_dir(dir) then
+                                                return x, y
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                        x, y = match_ground(v.dir)
+                    end
+
+                    if x and y then
+                        local neighbor = objects:modify(x, y, EDITOR_CACHE_TEMPORARY, iobject.clone)
+                        if neighbor then
+                            o[#o+1] = neighbor
+                            dfs(neighbor, iprototype.opposite_dir(v.dir), o)
+                        end
+                    end
+                end
+            end
+        end
+        -- object.state = color[dir]
+        o[object.fluid_name] = o[object.fluid_name] or {}
+        table.insert(o[object.fluid_name], object)
+        dfs(object, iprototype.opposite_dir(dir), o[object.fluid_name])
+
+        ::continue::
+    end
+    local idx = 0
+    for _, v in pairs(o) do
+        idx = idx + 1
+        for _, object in ipairs(v) do
+            object.state = assert(color[idx])
+        end
+    end
+    iobject.flush()
+
     return {
         object_id = object_id,
         left = ("%0.2fvmin"):format(math.max(left - 34, 0)),
@@ -301,6 +378,10 @@ function M:stage_ui_update(datamodel)
         end
 
         datamodel.connections = get_connections(datamodel.object_id)
+    end
+
+    for _ in leave_mb:unpack() do
+        ieditor:revert_changes({"TEMPORARY"})
     end
 end
 

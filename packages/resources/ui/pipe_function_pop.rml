@@ -94,6 +94,7 @@
             ui_sys.addEventListener({
                 ["leave"] = function()
                     ui_sys.close()
+                    ui_sys.pub {"leave"}
                 end,
             })
 

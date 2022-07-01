@@ -16,6 +16,10 @@
                 transform: scale(1.0);
             }
             button:hover {
+                background-color: blue;
+background-color: chartreuse;
+background-color: chocolate;
+background-color: darkviolet;
                 transform: scale(1.1);
             }
             .button-bg {
