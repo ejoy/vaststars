@@ -2,8 +2,7 @@
 data:
   efk: /pkg/vaststars.resources/effect/efk/huoxing.efk
   name: root
-  scene:
-    srt: {}
+  scene: {}
   tag:
     effect
 policy:

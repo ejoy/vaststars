@@ -1,16 +1,14 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
 ---
 data:
   name: dian
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name
@@ -23,9 +21,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_O.glb|meshes/柱体.001_P1.meshbin"
   name: "柱体.005"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 4.078086853027344, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 4.078086853027344, 0}
 mount: 2
 policy:
   ant.general|name
@@ -38,9 +35,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_O.glb|meshes/平面.004_P1.meshbin"
   name: "平面.016"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2.2019999027252197, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 2.2019999027252197, 0}
 mount: 2
 policy:
   ant.general|name
@@ -53,9 +49,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_O.glb|meshes/立方体.011_P1.meshbin"
   name: "立方体.019"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 2, 0}
 mount: 2
 policy:
   ant.general|name
@@ -68,9 +63,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_O.glb|meshes/立方体.009_P1.meshbin"
   name: "立方体.007"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2.0999999046325684, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 2.0999999046325684, 0}
 mount: 2
 policy:
   ant.general|name
@@ -83,8 +77,7 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_O.glb|meshes/立方体.010_P1.meshbin"
   name: "立方体.018"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
 mount: 2
 policy:
   ant.general|name
@@ -96,8 +89,7 @@ data:
   material: /pkg/vaststars.resources/glb/road/road_O.glb|materials/Road.material
   mesh: "/pkg/vaststars.resources/glb/road/road_O.glb|meshes/立方体.008_P1.meshbin"
   name: dian
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name

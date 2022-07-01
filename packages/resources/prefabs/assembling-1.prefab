@@ -1,8 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -12,8 +11,7 @@ data:
   material: /pkg/vaststars.resources/glb/assembling.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti.002_P1.meshbin
   name: lifangti
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name
@@ -26,8 +24,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti.014_P1.meshbin
   name: lifangti.011
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -42,8 +39,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2_P1.meshbin
   name: lifangti.003
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -58,8 +54,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2.001_P1.meshbin
   name: lifangti.004
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -74,8 +69,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2.004_P1.meshbin
   name: lifangti.005
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -90,8 +84,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2.005_P1.meshbin
   name: lifangti.006
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -106,8 +99,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti.003_P1.meshbin
   name: lifangti.002
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -122,8 +114,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2.002_P1.meshbin
   name: lifangti.007
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -134,10 +125,9 @@ policy:
 data:
   name: empty1
   scene:
-    srt:
-      r: {0, 0, -0.22351139783859253, 0.9747013449668884}
-      s: {2, 2, 2}
-      t: {10, 20, 3.4000000953674316}
+    r: {0, 0, -0.22351139783859253, 0.9747013449668884}
+    s: 2
+    t: {10, 20, 3.4000000953674316}
   slot:
     follow_flag: 1
     joint_name: None
@@ -153,10 +143,9 @@ policy:
 data:
   name: empty2
   scene:
-    srt:
-      r: {0, 0, -0.2164396196603775, 0.9762960076332092}
-      s: {2, 2, 2}
-      t: {10, 20, -3.8952038288116455}
+    r: {0, 0, -0.2164396196603775, 0.9762960076332092}
+    s: 2
+    t: {10, 20, -3.8952038288116455}
   slot:
     follow_flag: 1
     joint_name: None
@@ -172,10 +161,9 @@ policy:
 data:
   name: empty3
   scene:
-    srt:
-      r: {0, 0, 0.22351381182670593, 0.9747007489204407}
-      s: {2, 2, 2}
-      t: {-10, 20, 3.4000000953674316}
+    r: {0, 0, 0.22351381182670593, 0.9747007489204407}
+    s: {2, 2, 2}
+    t: {-10, 20, 3.4000000953674316}
   slot:
     follow_flag: 1
     joint_name: None
@@ -191,10 +179,9 @@ policy:
 data:
   name: empty4
   scene:
-    srt:
-      r: {0, 0, 0.22351381182670593, 0.9747007489204407}
-      s: {2, 2, 2}
-      t: {-10, 20, -3.4000000953674316}
+    r: {0, 0, 0.22351381182670593, 0.9747007489204407}
+    s: {2, 2, 2}
+    t: {-10, 20, -3.4000000953674316}
   slot:
     follow_flag: 1
     joint_name: None
@@ -210,10 +197,8 @@ policy:
 data:
   name: pipe-joint-output-1
   scene:
-    srt:
-      r: {-4.371138828673793e-08, 0, 0, 1}
-      s: {1, 1, 1}
-      t: {0, 0, -10}
+    r: {-4.371138828673793e-08, 0, 0, 1}
+    t: {0, 0, -10}
   slot:
     follow_flag: 1
     joint_name: None
@@ -228,10 +213,8 @@ policy:
 data:
   name: pipe-joint-input-1
   scene:
-    srt:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      s: {1, 1, 1}
-      t: {0, 0, 10}
+    r: {0, 1, 0, -4.371138828673793e-08}
+    t: {0, 0, 10}
   slot:
     follow_flag: 1
     joint_name: None
@@ -246,10 +229,7 @@ policy:
 data:
   name: arrow1
   scene:
-    srt:
-      r: {0, 0, 0, 1}
-      s: {1, 1, 1}
-      t: {0, 0, 20}
+    t: {0, 0, 20}
   slot:
     follow_flag: 1
     joint_name: None
@@ -264,10 +244,7 @@ policy:
 data:
   name: arrow2
   scene:
-    srt:
-      r: {0, 0, 0, 1}
-      s: {1, 1, 1}
-      t: {0, 0, -20}
+    t: {0, 0, -20}
   slot:
     follow_flag: 1
     joint_name: None
@@ -287,8 +264,7 @@ data:
   animation_birth: ArmatureAction.001
   meshskin: /pkg/vaststars.resources/glb/assembling.glb|meshes/Armature.skinbin
   name: skeleton_animation
-  scene:
-    srt: {}
+  scene: {}
   skeleton: /pkg/vaststars.resources/glb/assembling.glb|animations/skeleton.ozz
 mount: 1
 policy:

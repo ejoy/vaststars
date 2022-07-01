@@ -1,8 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -14,8 +13,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.003_P1.meshbin
   name: lifangti.003
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -30,8 +28,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.001_P1.meshbin
   name: lifangti.002
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -46,8 +43,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.004_P1.meshbin
   name: lifangti.004
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -62,8 +58,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuti.009_P1.meshbin
   name: zhuti.002
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -78,8 +73,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuiti_P1.meshbin
   name: zhuiti
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -93,8 +87,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/plane_P1.meshbin
   name: 0.001
   scene:
-    srt:
-      t: {0.06279541552066803, 2, -0.004578660242259502}
+    t: {0.06279541552066803, 2, -0.004578660242259502}
 mount: 1
 policy:
   ant.general|name
@@ -107,8 +100,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/plane.001_P1.meshbin
   name: plane.002
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -123,8 +115,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuti_P1.meshbin
   name: zhuti
-  scene:
-    srt: {}
+  scene: {}
   skinning: true
 mount: 1
 policy:
@@ -137,8 +128,7 @@ data:
   material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/Cube_P1.meshbin
   name: Cube
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name
@@ -150,8 +140,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/Cube_P1.meshbin
   name: Cube.001
   scene:
-    srt:
-      t: {3.725925922393799, 0, 0}
+    t: {3.725925922393799, 0, 0}
 mount: 1
 policy:
   ant.general|name
@@ -163,8 +152,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/Cube_P1.meshbin
   name: Cube.002
   scene:
-    srt:
-      r: {0, 1, 0, 1.6292068494294654e-07}
+    r: {0, 1, 0, 1.6292068494294654e-07}
 mount: 1
 policy:
   ant.general|name
@@ -176,9 +164,8 @@ data:
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/Cube_P1.meshbin
   name: Cube.003
   scene:
-    srt:
-      r: {0, 1, 0, 1.6292068494294654e-07}
-      t: {-3.725925922393799, 0, 0}
+    r: {0, 1, 0, 1.6292068494294654e-07}
+    t: {-3.725925922393799, 0, 0}
 mount: 1
 policy:
   ant.general|name
@@ -192,8 +179,7 @@ data:
   animation_birth: DownToUp
   meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/animat.skinbin
   name: skeleton_animation
-  scene:
-    srt: {}
+  scene: {}
   skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
 mount: 1
 policy:

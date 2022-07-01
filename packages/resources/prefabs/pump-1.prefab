@@ -1,8 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -12,8 +11,7 @@ data:
   material: /pkg/vaststars.resources/glb/pump.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.018_P1.meshbin
   name: zhuti.018
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name
@@ -24,8 +22,7 @@ data:
   material: /pkg/vaststars.resources/glb/pump.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/pingmian.001_P1.meshbin
   name: pingmian
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name
@@ -36,8 +33,7 @@ data:
   material: /pkg/vaststars.resources/glb/pump.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/pump.glb|meshes/zhuti.019_P1.meshbin
   name: zhuti.019
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name

@@ -1,8 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -13,9 +12,8 @@ data:
   mesh: /pkg/vaststars.resources/glb/headquater.glb|meshes/Cube.003_P1.meshbin
   name: Cube.020
   scene:
-    srt:
-      r: {0, 0, 0.7071068286895752, -0.7071068286895752}
-      t: {11.708619117736816, 3.692847967147827, -12.946598052978516}
+    r: {0, 0, 0.7071068286895752, -0.7071068286895752}
+    t: {11.708619117736816, 3.692847967147827, -12.946598052978516}
 mount: 1
 policy:
   ant.general|name

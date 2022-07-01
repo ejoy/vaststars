@@ -1,8 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -13,8 +12,7 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_I.glb|meshes/立方体.019_P1.meshbin"
   name: YIZHI
   scene:
-    srt:
-      r: {0, 1, 0, 1.6292068494294654e-07}
+    r: {0, 1, 0, 1.6292068494294654e-07}
 mount: 1
 policy:
   ant.general|name
@@ -26,9 +24,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_I.glb|meshes/平面.009_P1.meshbin"
   name: "平面.005"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2.2019999027252197, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 2.2019999027252197, 0}
 mount: 2
 policy:
   ant.general|name
@@ -40,9 +37,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_I.glb|meshes/平面.010_P1.meshbin"
   name: "平面.006"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2.2019999027252197, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 2.2019999027252197, 0}
 mount: 2
 policy:
   ant.general|name
@@ -54,9 +50,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_I.glb|meshes/柱体.004_P1.meshbin"
   name: "柱体.002"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 4.078086853027344, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 4.078086853027344, 0}
 mount: 2
 policy:
   ant.general|name
@@ -68,9 +63,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_I.glb|meshes/立方体.020_P1.meshbin"
   name: "立方体.011"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 2, 0}
 mount: 2
 policy:
   ant.general|name
@@ -82,9 +76,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_I.glb|meshes/立方体.021_P1.meshbin"
   name: "立方体.012"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2.0999999046325684, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 2.0999999046325684, 0}
 mount: 2
 policy:
   ant.general|name
@@ -96,8 +89,7 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_I.glb|meshes/立方体.022_P1.meshbin"
   name: "立方体.013"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
 mount: 2
 policy:
   ant.general|name
@@ -109,8 +101,7 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_I.glb|meshes/立方体.019_P1.meshbin"
   name: YIZHI
   scene:
-    srt:
-      r: {0, 1, 0, 1.6292068494294654e-07}
+    r: {0, 1, 0, 1.6292068494294654e-07}
 mount: 1
 policy:
   ant.general|name
@@ -119,10 +110,9 @@ policy:
 data:
   name: "左至右"
   scene:
-    srt:
-      r: {0, 0, 0, 1}
-      s: {1, 1, 1}
-      t: {0, 0.009999999776482582, 0}
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 0.009999999776482582, 0}
   slot:
     follow_flag: 1
   tag:
@@ -137,10 +127,9 @@ policy:
 data:
   name: "右至左"
   scene:
-    srt:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      s: {1, 1, 1}
-      t: {0, 0.009999999776482582, 0}
+    r: {0, 1, 0, -4.371138828673793e-08}
+    s: {1, 1, 1}
+    t: {0, 0.009999999776482582, 0}
   slot:
     follow_flag: 1
   tag:
@@ -155,10 +144,9 @@ policy:
 data:
   name: path_r_1
   scene:
-    srt:
-      r: {0, 0, 0, 1}
-      s: {1, 1, 1}
-      t: {1.5, 2.200000047683716, -5}
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {1.5, 2.200000047683716, -5}
   slot:
     follow_flag: 1
   tag:
@@ -173,10 +161,9 @@ policy:
 data:
   name: path_r_2
   scene:
-    srt:
-      r: {0, 0, 0, 1}
-      s: {1, 1, 1}
-      t: {1.5, 2.200000047683716, 5}
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {1.5, 2.200000047683716, 5}
   slot:
     follow_flag: 1
   tag:
@@ -191,10 +178,9 @@ policy:
 data:
   name: path_l_1
   scene:
-    srt:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      s: {1, 1, 1}
-      t: {-1.5, 2.200000047683716, 5}
+    r: {0, 1, 0, -4.371138828673793e-08}
+    s: {1, 1, 1}
+    t: {-1.5, 2.200000047683716, 5}
   slot:
     follow_flag: 1
   tag:
@@ -209,10 +195,9 @@ policy:
 data:
   name: path_l_2
   scene:
-    srt:
-      r: {0, 1, 0, -4.371138828673793e-08}
-      s: {1, 1, 1}
-      t: {-1.5, 2.200000047683716, -5}
+    r: {0, 1, 0, -4.371138828673793e-08}
+    s: {1, 1, 1}
+    t: {-1.5, 2.200000047683716, -5}
   slot:
     follow_flag: 1
   tag:

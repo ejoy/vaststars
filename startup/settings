@@ -16,7 +16,7 @@ animation:
       enable: true
     type: CPU
 graphic:
-  disable_cull: true
+  disable_cull: false
   framebuffer:
     ratio: 1
     scene_ratio: 0.75

@@ -32,7 +32,9 @@ local function open(url, ...)
     if binding then
         if binding.template then
             binding.param = {...}
-            binding.datamodel = tracedoc.new(binding.template:create(...))
+            for k, v in pairs(tracedoc.new(binding.template:create(...))) do -- trigger tracedoc.doc_changed
+                binding.datamodel[k] = v
+            end
             binding.template:flush()
             datamodel_changed[url] = true
         end
@@ -88,11 +90,10 @@ local function open(url, ...)
         ud.ud = tracedoc.diff(binding.datamodel)
         binding.window.postMessage(json:encode(ud))
 
-        for _, func in ipairs(datamodel_listener) do
-            func(url, ud.ud)
-        end
-
         tracedoc.commit(binding.datamodel)
+        if datamodel_listener[url] then
+            datamodel_listener[url](binding.datamodel)
+        end
     end
 
     binding.param = {...}
@@ -230,6 +231,6 @@ function iui.preload_datamodel_dir(dir)
 end
 
 -- for debuger
-function iui.add_datamodel_listener(func)
-    datamodel_listener[#datamodel_listener+1] = func
+function iui.add_datamodel_listener(url, func)
+    datamodel_listener[url] = func
 end

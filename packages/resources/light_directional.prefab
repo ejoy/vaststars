@@ -4,9 +4,8 @@ policy:
   ant.general|name
 data:
   scene:
-    srt:
-      r: {1.8, 0, 0}
-      t: {0, 10, 0, 1}
+    r: {1.8, 0, 0}
+    t: {0, 10, 0, 1}
   name: directional_light
   visible: true
   light:

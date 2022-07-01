@@ -62,10 +62,7 @@ local function save(prefab_dir, prefab_patch_dir)
 
         local backup_data = {}
         for _, v in ipairs(data) do
-            if v.data and v.data.name == "Scene" and next(v.data.scene.srt) then
-                backup_data[#backup_data+1] = v
-            end
-            if v.data and v.data.slot then
+            if v.data and (v.data.name == "Scene" and next(v.data.scene) or v.data.slot) then
                 backup_data[#backup_data+1] = v
             end
         end

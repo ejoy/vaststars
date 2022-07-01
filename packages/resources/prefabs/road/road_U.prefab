@@ -1,16 +1,14 @@
 ---
 data:
   name: Scene
-  scene:
-    srt: {}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
 ---
 data:
   name: DIAOTOU
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name
@@ -23,9 +21,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/平面.014_P1.meshbin"
   name: "平面.004"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2.2019999027252197, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 2.2019999027252197, 0}
 mount: 2
 policy:
   ant.general|name
@@ -38,9 +35,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/柱体.006_P1.meshbin"
   name: "柱体.001"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 4.078086853027344, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 4.078086853027344, 0}
 mount: 2
 policy:
   ant.general|name
@@ -53,9 +49,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/立方体.029_P1.meshbin"
   name: "立方体.008"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2.0999999046325684, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 2.0999999046325684, 0}
 mount: 2
 policy:
   ant.general|name
@@ -68,8 +63,7 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/立方体.030_P1.meshbin"
   name: "立方体.009"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
 mount: 2
 policy:
   ant.general|name
@@ -82,9 +76,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/立方体.006_P1.meshbin"
   name: "立方体.010"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 2, 0}
 mount: 2
 policy:
   ant.general|name
@@ -97,9 +90,8 @@ data:
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/平面.013_P1.meshbin"
   name: "平面.003"
   scene:
-    srt:
-      r: {0, 0.7071068286895752, 0, -0.7071067094802856}
-      t: {0, 2.2019999027252197, 0}
+    r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+    t: {0, 2.2019999027252197, 0}
 mount: 2
 policy:
   ant.general|name
@@ -111,8 +103,7 @@ data:
   material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/Road.material
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/立方体.027_P1.meshbin"
   name: DIAOTOU
-  scene:
-    srt: {}
+  scene: {}
 mount: 1
 policy:
   ant.general|name

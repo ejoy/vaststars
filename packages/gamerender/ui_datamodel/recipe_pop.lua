@@ -70,6 +70,7 @@ local function is_connection(x1, y1, dir1, x2, y2, dir2)
     return (dx1 == x2 and dy1 == y2) and (dx2 == x1 and dy2 == y1)
 end
 
+-- TODO：duplicate code with builder.lua
 local function shift_pipe(prototype_name, x, y, dir, fluid_name)
     for _, v in ipairs(ifluid:get_fluidbox(prototype_name, x, y, dir, fluid_name)) do
         local dx, dy = ieditor:get_dir_coord(v.x, v.y, v.dir)
