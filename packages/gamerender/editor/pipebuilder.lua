@@ -117,14 +117,14 @@ local function _update_fluid_name(State, fluid_name, fluidflow_network_id)
                 State.failed = true
             end
         else
-            assert(fluidflow_network_id ~= 0)
+            -- assert(fluidflow_network_id ~= 0) -- TODO: check if fluidflow_network_id is valid
             State.fluidflow_network_ids[fluidflow_network_id] = true
         end
     else
         if fluid_name ~= "" then
             State.fluid_name = fluid_name
         else
-            assert(fluidflow_network_id ~= 0)
+            -- assert(fluidflow_network_id ~= 0) -- TODO: check if fluidflow_network_id is valid
             State.fluidflow_network_ids[fluidflow_network_id] = true
         end
     end

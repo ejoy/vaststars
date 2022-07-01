@@ -11,14 +11,15 @@ local pickup_mb = world:sub {"pickup"}
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 local objects = require "objects"
 local icamera = ecs.require "engine.camera"
-local math3d = require "math3d"
 local terrain = ecs.require "terrain"
 
 function construct_sys:camera_usage()
     local leave = true
     for _, _, x, y, object_id in pickup_mapping_mb:unpack() do
         local coord = terrain:align(icamera.screen_to_world(x, y), 1, 1)
-        print(coord[1], coord[2])
+        if coord then
+            print(coord[1], coord[2])
+        end
 
         if global.mode == "teardown" then
             ieditor:teardown(object_id)

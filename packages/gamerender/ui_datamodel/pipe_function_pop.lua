@@ -295,6 +295,11 @@ function M:stage_ui_update(datamodel)
         local object = assert(objects:coord(x, y))
 
         if oper == CONNECT then
+            local fluid_name = pipe_object.fluid_name
+            if pipe_object.fluid_name == "" then
+                pipe_object.fluid_name = object.fluid_name
+            end
+
             if iprototype.is_pipe(pipe_object.prototype_name) then
                 --
                 local pipe_edge = iflow_shape.prototype_name_to_state(pipe_object.prototype_name, pipe_object.dir)
@@ -311,9 +316,11 @@ function M:stage_ui_update(datamodel)
                     assert(shape)
                     object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, shape)
                     object.dir = _dir
+                    object.fluid_name = fluid_name
 
                 elseif iprototype.is_pipe_to_ground(object.prototype_name) then
                     object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, "JI")
+                    object.fluid_name = fluid_name
                 end
 
             elseif iprototype.is_pipe_to_ground(pipe_object.prototype_name) then
@@ -326,9 +333,11 @@ function M:stage_ui_update(datamodel)
                     assert(shape)
                     object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, shape)
                     object.dir = _dir
+                    object.fluid_name = fluid_name
 
                 elseif iprototype.is_pipe_to_ground(object.prototype_name) then
                     object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, "JI")
+                    object.fluid_name = fluid_name
                 end
             else
                 assert(false)
