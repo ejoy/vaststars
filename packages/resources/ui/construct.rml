@@ -209,50 +209,6 @@
                 transform-origin: 0% 50%;
                 opacity: 0.5;
             }
-            .banner {
-                animation:3.5s linear 0s invisible;
-                pointer-events: none;
-                position: absolute; 
-                width:100%; 
-                text-align: center; 
-                top: 26.50vmin; 
-                background-color: rgba(0, 200, 0, 170);
-            }
-            .chapter {
-                animation:3.5s linear 0s slidein;
-                flex-direction: column; 
-                justify-content: center; 
-                align-items: center;
-            }
-            @keyframes slidein {
-                0% {
-                    margin-left:100%;
-                    opacity: 1;
-                }
-                30% {
-                    margin-left:0%;
-                    opacity: 1;
-                }
-                75% {
-                    margin-left:0%;
-                    opacity: 1;
-                }
-                100% {
-                    margin-left:0%;
-                    opacity: 0;
-                }
-            }
-            @keyframes invisible {
-                0% {
-                    opacity: 1;
-                }
-                75% {
-                    opacity: 1;
-                }
-                100% {
-                    opacity: 0;
-                }
-            }
         </style>
         <script type="text/x-lua" path = "lua/custom.lua" />
         <script type="text/x-lua" >
@@ -435,17 +391,6 @@
             <div style = "pointer-events: none; position: absolute; left: 7.25vmin; top: 12.50vmin; z-index: 999;">
                 <div style = "pointer-events: none; position: absolute; top: 0vmin; width: 90.00vmax; height: auto; font-size: 6.25vmin; color: rgb(0,255,0);">{{drawcall_text}}</div>
             </div>
-
-            <!-- 章节介绍显示 -->
-            <div class = "nopointer" data-if="false">
-                <div class="banner">
-                    <div class="chapter">
-                        <div style="font-size: 10.25vmin; color: rgb(255, 251, 0); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">序幕</div>
-                        <div style="font-size: 16.25vmin; color:  rgb(255, 255, 255); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">迫降P4031</div> 
-                    </div>
-                </div>
-            </div>
-
 
             <!-- 主菜单按钮 -->
             <div class = "main-menu-block" data-if = "cur_edit_mode == ''">
