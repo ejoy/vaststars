@@ -9,6 +9,9 @@ local ifluid = require "gameplay.interface.fluid"
 local iconstant = require "gameplay.interface.constant"
 local ALL_DIR = iconstant.ALL_DIR
 local terrain = ecs.require "terrain"
+local iflow_shape = require "gameplay.utility.flow_shape"
+local set_shape_edge = iflow_shape.set_shape_edge
+local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 local pipe_edge_mb = mailbox:sub {"pipe_edge"}
 
@@ -38,9 +41,7 @@ local function _update_fluid_name(State, fluid_name, fluidflow_network_id)
     end
 end
 
----------------
-local M = {}
-function M:create(object_id, left, top)
+local function get_connections(object_id)
     local pipe_object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(pipe_object.gameplay_eid))
     if not e then
@@ -193,18 +194,113 @@ function M:create(object_id, left, top)
         end
     end
 
+    return connections
+end
+
+---------------
+local M = {}
+function M:create(object_id, left, top)
     return {
         object_id = object_id,
         left = ("%0.2fvmin"):format(math.max(left - 34, 0)),
         top = ("%0.2fvmin"):format(math.max(top - 34, 0)),
-        connections = connections,
+        connections = get_connections(object_id),
     }
 end
 
 function M:stage_ui_update(datamodel)
     --
-    for _, _, _, dir, oper in pipe_edge_mb:unpack() do
+    for _, _, _, dir, oper in pipe_edge_mb:unpack() do -- TODO: optimize, update fluidflow_network_id only when necessary
         print(datamodel.object_id, dir, oper)
+        local pipe_object = objects:get(datamodel.object_id)
+        local succ, x, y = terrain:move_coord(pipe_object.x, pipe_object.y, dir, 1)
+        assert(succ)
+        local object = assert(objects:coord(x, y))
+
+        if oper == CONNECT then
+            if iprototype.is_pipe(pipe_object.prototype_name) then
+                --
+                local pipe_edge = iflow_shape.prototype_name_to_state(pipe_object.prototype_name, pipe_object.dir)
+                pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(dir), true)
+                local shape, _dir = iflow_shape.to_type_dir(pipe_edge)
+                assert(shape)
+                pipe_object.prototype_name = iflow_shape.to_prototype_name(pipe_object.prototype_name, shape)
+                pipe_object.dir = _dir
+
+                if iprototype.is_pipe(object.prototype_name) then
+                    local pipe_edge = iflow_shape.prototype_name_to_state(object.prototype_name, object.dir)
+                    pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(iprototype.opposite_dir(dir)), true)
+                    local shape, _dir = iflow_shape.to_type_dir(pipe_edge)
+                    assert(shape)
+                    object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, shape)
+                    object.dir = _dir
+
+                elseif iprototype.is_pipe_to_ground(object.prototype_name) then
+                    object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, "JI")
+                end
+
+            elseif iprototype.is_pipe_to_ground(pipe_object.prototype_name) then
+                pipe_object.prototype_name = iflow_shape.to_prototype_name(pipe_object.prototype_name, "JI")
+
+                if iprototype.is_pipe(object.prototype_name) then
+                    local pipe_edge = iflow_shape.prototype_name_to_state(object.prototype_name, object.dir)
+                    pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(iprototype.opposite_dir(dir)), true)
+                    local shape, _dir = iflow_shape.to_type_dir(pipe_edge)
+                    assert(shape)
+                    object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, shape)
+                    object.dir = _dir
+
+                elseif iprototype.is_pipe_to_ground(object.prototype_name) then
+                    object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, "JI")
+                end
+            else
+                assert(false)
+            end
+
+        elseif oper == DISCONNECT then
+            if iprototype.is_pipe(pipe_object.prototype_name) then
+                --
+                local pipe_edge = iflow_shape.prototype_name_to_state(pipe_object.prototype_name, pipe_object.dir)
+                pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(dir), false)
+                local shape, _dir = iflow_shape.to_type_dir(pipe_edge)
+                assert(shape)
+                pipe_object.prototype_name = iflow_shape.to_prototype_name(pipe_object.prototype_name, shape)
+                pipe_object.dir = _dir
+
+                if iprototype.is_pipe(object.prototype_name) then
+                    local pipe_edge = iflow_shape.prototype_name_to_state(object.prototype_name, object.dir)
+                    pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(iprototype.opposite_dir(dir)), false)
+                    local shape, _dir = iflow_shape.to_type_dir(pipe_edge)
+                    assert(shape)
+                    object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, shape)
+                    object.dir = _dir
+
+                elseif iprototype.is_pipe_to_ground(object.prototype_name) then
+                    object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, "JU")
+                end
+            elseif iprototype.is_pipe_to_ground(pipe_object.prototype_name) then
+                pipe_object.prototype_name = iflow_shape.to_prototype_name(pipe_object.prototype_name, "JU")
+
+                if iprototype.is_pipe(object.prototype_name) then
+                    local pipe_edge = iflow_shape.prototype_name_to_state(object.prototype_name, object.dir)
+                    pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(iprototype.opposite_dir(dir)), false)
+                    local shape, _dir = iflow_shape.to_type_dir(pipe_edge)
+                    assert(shape)
+                    object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, shape)
+                    object.dir = _dir
+
+                elseif iprototype.is_pipe_to_ground(object.prototype_name) then
+                    object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, "JU")
+                end
+            else
+                assert(false)
+            end
+
+        else
+            assert(false)
+        end
+
+        datamodel.connections = get_connections(datamodel.object_id)
     end
 end
 
