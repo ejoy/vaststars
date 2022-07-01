@@ -1,6 +1,13 @@
 local guide = {
 	["guide-1"] = {
-		portrait = "textures/guide/guide-1.texture",
+		portrait = {
+            "textures/guide/guide-1.texture",
+            "textures/guide/guide-1.texture",
+            "textures/guide/guide-1.texture",
+            "textures/guide/guide-1.texture",
+            "textures/guide/guide-1.texture",
+            "textures/guide/guide-2.texture",
+        },
 		narrative = {
             "哔哩..哔哗..已迫降在代号P4031的星球。星球未发现生命迹象..(失望)",
             "哔哩..哔哗..启动大气分析协议中..缺少氧气..(失望)",
@@ -21,7 +28,9 @@ local guide = {
 
 
     ["guide-2"] = {
-		portrait = "textures/guide/guide-2.texture",
+		portrait = {
+            "textures/guide/guide-2.texture",
+        },
 		narrative = {
             "看来我们捡到了不少有价值的破烂..哔哩..物资。科技就是第一生产力，让我们建造一所科研中心..(期待)",
         },
