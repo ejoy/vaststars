@@ -1,0 +1,88 @@
+<rml>
+    <head>
+        <style>
+            .banner {
+                animation:3.5s linear 0s invisible;
+                pointer-events: none;
+                position: absolute; 
+                width:100%; 
+                text-align: center; 
+                top: 26.50vmin; 
+                background-color: rgba(0, 200, 0, 160);
+            }
+            .chapter {
+                animation:3.5s linear 0s slidein;
+                flex-direction: column; 
+                justify-content: center; 
+                align-items: center;
+            }
+            @keyframes slidein {
+                0% {
+                    margin-left:100%;
+                    opacity: 1;
+                }
+                30% {
+                    margin-left:0%;
+                    opacity: 1;
+                }
+                75% {
+                    margin-left:0%;
+                    opacity: 1;
+                }
+                100% {
+                    margin-left:0%;
+                    opacity: 0;
+                }
+            }
+            @keyframes invisible {
+                0% {
+                    opacity: 1;
+                }
+                75% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
+        </style>
+        <style path = "common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+                archival_files = {},
+                show_archival_files = false,
+            })
+
+            function start.clickSave(event)
+                ui_sys.pub {"save"}
+                ui_sys.close()
+            end
+
+            function start.clickRestart(event)
+                ui_sys.pub {"restart"}
+                ui_sys.close()
+            end
+
+            function start.clickRestore(event, index)
+                ui_sys.pub {"restore", index}
+            end
+
+            function start.clickClose()
+                ui_sys.pub {"close"}
+            end
+
+        </script>
+    </head>
+    <body>
+        <div style="pointer-events: none;"  data-model="start">
+            <!-- 显示 -->
+            <div class="banner" data-if="true">
+                <div class="chapter">
+                    <div style="font-size: 10.25vmin;color: rgb(255, 251, 0); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">序幕</div>
+                    <div style="font-size: 16.25vmin; color:  rgb(255, 255, 255); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">迫降P4031</div> 
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>
