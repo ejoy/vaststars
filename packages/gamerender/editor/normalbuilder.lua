@@ -171,7 +171,7 @@ local function rotate_pickup_object(self, datamodel)
     local dir = iprototype.rotate_dir_times(pickup_object.dir, -1)
 
     local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
-    local coord = terrain:adjust_position(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
+    local coord = terrain:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return
     end

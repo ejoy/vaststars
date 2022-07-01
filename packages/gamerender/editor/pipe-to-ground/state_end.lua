@@ -308,7 +308,7 @@ function condition_normal(self, datamodel, starting_object, to_x, to_y, max_to_x
             return
         end
     else
-        condition_none(self, datamodel, starting_object, to_x, to_y, "JI", max_to_x, max_to_y)
+        condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, max_to_y, "JI")
     end
 end
 

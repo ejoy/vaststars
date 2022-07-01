@@ -28,13 +28,13 @@ function idetail.show(object_id)
     local ce = world:entity(mq.camera_ref)
     local vp = ce.camera.viewprojmat
     local vr = mq.render_target.view_rect
-    local p = math3d.tovalue(mu.world_to_screen(vp, vr, vsobject:get_position()))
+    local p = mu.world_to_screen(vp, vr, vsobject:get_position())
     local vmin = get_vmin(vr.w, vr.h, vr.ratio)
 
     if typeobject.show_build_function ~= false then
-        iui.open("build_function_pop.rml", object_id, p[1] / vmin * 100, p[2] / vmin * 100)
+        iui.open("build_function_pop.rml", object_id, math3d.index(p, 1) / vmin * 100, math3d.index(p, 2) / vmin * 100)
     elseif iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
-        iui.open("pipe_function_pop.rml", object_id, p[1] / vmin * 100, p[2] / vmin * 100)
+        iui.open("pipe_function_pop.rml", object_id, math3d.index(p, 1) / vmin * 100, math3d.index(p, 2) / vmin * 100)
     end
 
     do

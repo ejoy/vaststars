@@ -275,7 +275,7 @@ function M:restore(index)
         restore_camera_setting(camera_setting)
     end
 
-    local coord = terrain:adjust_position(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+    local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
     if coord then
         terrain:enable_terrain(coord[1], coord[2])
     end
@@ -294,7 +294,7 @@ function M:restart()
     iscience.update_tech_list(gameplay_core.get_world())
     iui.open("construct.rml")
 
-    local coord = terrain:adjust_position(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+    local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
     if coord then
         terrain:enable_terrain(coord[1], coord[2])
     end

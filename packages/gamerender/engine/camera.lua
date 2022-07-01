@@ -143,7 +143,7 @@ end
 function camera.get_central_position()
     local ce = world:entity(irq.main_camera())
     local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
-    return math3d.tovalue(math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, YAXIS_PLANE), ray.o))
+    return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, YAXIS_PLANE), ray.o)
 end
 
 return camera

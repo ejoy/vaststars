@@ -182,7 +182,7 @@ local function move_delta(object, delta_vec)
     local vsobject = assert(vsobject_manager:get(object.id))
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
     local position = math3d.ref(math3d.add(vsobject:get_position(), delta_vec))
-    local coord = terrain:adjust_position(math3d.tovalue(position), iprototype.rotate_area(typeobject.area, object.dir))
+    local coord = terrain:align(position, iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         log.error(("can not get coord"))
         return
@@ -195,7 +195,7 @@ end
 
 local function central_coord(prototype_name, dir)
     local typeobject = iprototype.queryByName("entity", prototype_name)
-    local coord = terrain:adjust_position(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
+    local coord = terrain:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return
     end
@@ -205,7 +205,7 @@ end
 local function align(object)
     assert(object)
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    local coord = terrain:adjust_position(camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
+    local coord = terrain:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
     end

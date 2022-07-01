@@ -7,6 +7,7 @@ local math3d = require "math3d"
 local mathpkg = import_package"ant.math"
 local mc = mathpkg.constant
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local ipickup_mapping = ecs.import.interface "vaststars.gamerender|ipickup_mapping"
 
 -- three-dimensional axial
 -- z
@@ -137,10 +138,10 @@ function terrain:create(width, height)
     self._enabled_group_id = {}
 
     --
-    if self._root_eid then
-       world:remove_entity(self._root_eid)
+    self.prefab_objects = self.prefab_objects or {}
+    for _, object in ipairs(self.prefab_objects) do
+       object:remove()
     end
-
     --
     local meshes = {
         "/pkg/vaststars.resources/prefabs/terrain/ground_01.prefab",
@@ -155,33 +156,24 @@ function terrain:create(width, height)
         math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
     }
 
-    self._root_eid = ecs.create_entity {
-        policy = {
-            "ant.scene|scene_object",
-            "ant.general|name",
-        },
-        data = {
-            name = "terrain_root",
-            scene = {t = offset_3d },
-            on_ready = function (e)
-                assert(self._width % GROUND_WIDTH == 0 and self._height % GROUND_HEIGHT == 0)
-                local w, h = self._width // GROUND_WIDTH, self._height // GROUND_HEIGHT
-                for y = 0, h - 1 do
-                    for x = 0, w - 1 do
-                        local _x, _y = x * GROUND_WIDTH, y * GROUND_HEIGHT
-                        local g = ecs.group(self:get_group_id(_x, _y))
-                        local p = g:create_instance(meshes[math.random(1, 4)])
-                        p.on_ready = function(_e)
-                            iom.set_position(world:entity(_e.root), self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT))
-                            iom.set_rotation(world:entity(_e.root), rotators[math.random(1, 4)])
-                            ecs.method.set_parent(_e.root, e.id)
-                        end
-                        world:create_object(p)
-                    end
+    assert(self._width % GROUND_WIDTH == 0 and self._height % GROUND_HEIGHT == 0)
+    local w, h = self._width // GROUND_WIDTH, self._height // GROUND_HEIGHT
+    for y = 0, h - 1 do
+        for x = 0, w - 1 do
+            local _x, _y = x * GROUND_WIDTH, y * GROUND_HEIGHT
+            local g = ecs.group(self:get_group_id(_x, _y))
+            local p = g:create_instance(meshes[math.random(1, 4)])
+            p.on_ready = function(prefab)
+                iom.set_position(world:entity(prefab.root), self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT))
+                iom.set_rotation(world:entity(prefab.root), rotators[math.random(1, 4)])
+                for _, eid in ipairs(prefab.tag["*"]) do
+                    ipickup_mapping.mapping(eid, 0)
                 end
             end
-        }
-    }
+            p.on_message = function() end
+            self.prefab_objects[#self.prefab_objects+1] = world:create_object(p)
+        end
+    end
 end
 
 function terrain:enable_terrain(x, y)
@@ -265,8 +257,8 @@ function terrain:get_position_by_coord(x, y, w, h)
 end
 
 -- position 为建筑的中心位置
-function terrain:adjust_position(position, w, h)
-    local begin_position = {position[1] - (w / 2 * TILE_SIZE), position[2], position[3] + (h / 2 * TILE_SIZE)}
+function terrain:align(position, w, h)
+    local begin_position = {math3d.index(position, 1) - (w / 2 * TILE_SIZE), math3d.index(position, 2), math3d.index(position, 3) + (h / 2 * TILE_SIZE)}
     local coord = _get_coord_by_begin_position(self, begin_position)
     if not coord then
         return
@@ -277,7 +269,7 @@ function terrain:adjust_position(position, w, h)
         return
     end
 
-    return coord, {begining[1] + (w / 2 * TILE_SIZE), position[2], begining[3] - (h / 2 * TILE_SIZE)}
+    return coord, {begining[1] + (w / 2 * TILE_SIZE), math3d.index(position, 2), begining[3] - (h / 2 * TILE_SIZE)}
 end
 
 function terrain:can_place(x, y)
