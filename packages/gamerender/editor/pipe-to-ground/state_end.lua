@@ -62,7 +62,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
 
     local t = {
         [starting_object.dir] = true,
-        [iprototype.opposite_dir(starting_object.dir)] = true,
+        [iprototype.reverse_dir(starting_object.dir)] = true,
     }
     for _, v in ipairs(ifluid:get_fluidbox(ending_object.prototype_name, ending_object.x, ending_object.y, ending_object.dir)) do
         if not t[v.dir] then
@@ -128,7 +128,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
 
         --
         local shape
-        if flow_shape.get_state(ending_object.prototype_name, ending_object.dir, iprototype.opposite_dir(starting_object.dir)) then
+        if flow_shape.get_state(ending_object.prototype_name, ending_object.dir, iprototype.reverse_dir(starting_object.dir)) then
             shape = "JI"
         else
             shape = "JU"
@@ -137,7 +137,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
         typeobject = iprototype.queryByName("entity", prototype_name)
         object = iobject.new {
             prototype_name = typeobject.name,
-            dir = iprototype.opposite_dir(starting_object.dir),
+            dir = iprototype.reverse_dir(starting_object.dir),
             x = to_x,
             y = to_y,
             fluid_name = starting_object.fluid_name,
@@ -168,7 +168,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
 
         --
         local shape
-        if flow_shape.get_state(ending_object.prototype_name, ending_object.dir, iprototype.opposite_dir(starting_object.dir)) then
+        if flow_shape.get_state(ending_object.prototype_name, ending_object.dir, iprototype.reverse_dir(starting_object.dir)) then
             shape = "JI"
         else
             shape = "JU"
@@ -176,7 +176,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
         prototype_name = format_prototype_name(self.coord_indicator.prototype_name, shape)
         object = iobject.clone(ending_object)
         object.prototype_name = prototype_name
-        object.dir = iprototype.opposite_dir(starting_object.dir)
+        object.dir = iprototype.reverse_dir(starting_object.dir)
         object.fluid_name = starting_object.fluid_name
         object.fluidflow_network_id = starting_object.fluidflow_network_id
         objects:set(object, EDITOR_CACHE_TEMPORARY[1])
@@ -195,7 +195,7 @@ function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, 
         return
     end
 
-    if ending_object.dir ~= iprototype.opposite_dir(starting_object.dir) then
+    if ending_object.dir ~= iprototype.reverse_dir(starting_object.dir) then
         show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
         return
     end
@@ -232,7 +232,7 @@ function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, 
     typeobject = iprototype.queryByName("entity", prototype_name)
     object = iobject.new {
         prototype_name = typeobject.name,
-        dir = iprototype.opposite_dir(starting_object.dir),
+        dir = iprototype.reverse_dir(starting_object.dir),
         x = to_x,
         y = to_y,
         fluid_name = starting_object.fluid_name,
@@ -257,7 +257,7 @@ function condition_normal(self, datamodel, starting_object, to_x, to_y, max_to_x
                 math.abs(x - v.x),
                 math.abs(y - v.y)
             )
-            if succ and dx == v.x and dy == v.y and v.dir == iprototype.opposite_dir(dir) then
+            if succ and dx == v.x and dy == v.y and v.dir == iprototype.reverse_dir(dir) then
                 return v
             end
         end
@@ -359,7 +359,7 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, 
     prototype_name = format_prototype_name(self.coord_indicator.prototype_name, shape or "JU")
     object = iobject.new {
         prototype_name = prototype_name,
-        dir = iprototype.opposite_dir(starting_object.dir),
+        dir = iprototype.reverse_dir(starting_object.dir),
         x = to_x,
         y = to_y,
         fluid_name = fluid_name,

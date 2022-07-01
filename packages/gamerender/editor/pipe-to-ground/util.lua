@@ -55,7 +55,7 @@ function M.show_failed(self, datamodel, from_x, from_y, dir, to_x, to_y)
 
     object = iobject.new {
         prototype_name = prototype_name,
-        dir = iprototype.opposite_dir(dir),
+        dir = iprototype.reverse_dir(dir),
         x = to_x,
         y = to_y,
         fluid_name = "",

@@ -114,7 +114,7 @@ local function restore_world()
                                 local object = assert(all_object[object_id])
                                 local typeobject = iprototype.queryByName("entity", object.name)
                                 for _, v in ipairs(ifluid:get_fluidbox(typeobject.name, object.x, object.y, object.dir)) do
-                                    if v.ground and v.dir == iprototype.opposite_dir(dir) then
+                                    if v.ground and v.dir == iprototype.reverse_dir(dir) then
                                         return x, y
                                     end
                                 end
@@ -131,7 +131,7 @@ local function restore_world()
                         if neighbor then
                             assert(neighbor.fluidflow_network_id == 0)
                             neighbor.fluidflow_network_id = object.fluidflow_network_id
-                            dfs(all_object, empty_fluidbox, neighbor, iprototype.opposite_dir(v.dir))
+                            dfs(all_object, empty_fluidbox, neighbor, iprototype.reverse_dir(v.dir))
                         end
                     end
                 end

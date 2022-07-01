@@ -62,14 +62,14 @@ function M.rotate_dir_times(dir, times)
     return DIRECTION_REV[(DIRECTION[dir] + times) % 4]
 end
 
-local OPPOSITE <const> = {
+local REVERSE <const> = {
     N = 'S',
     E = 'W',
     S = 'N',
     W = 'E',
 }
-function M.opposite_dir(dir)
-    return OPPOSITE[dir]
+function M.reverse_dir(dir)
+    return REVERSE[dir]
 end
 
 function M.dir_tonumber(dir)

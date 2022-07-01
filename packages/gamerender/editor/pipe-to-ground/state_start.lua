@@ -39,7 +39,7 @@ function condition_pipe(self, datamodel)
 
     local t = {
         [dir] = true,
-        [iprototype.opposite_dir(dir)] = true,
+        [iprototype.reverse_dir(dir)] = true,
     }
     for _, v in ipairs(ifluid:get_fluidbox(starting_object.prototype_name, starting_object.x, starting_object.y, starting_object.dir)) do
         if not t[v.dir] then
@@ -54,7 +54,7 @@ function condition_pipe(self, datamodel)
     end
 
     local shape
-    if flow_shape.get_state(starting_object.prototype_name, starting_object.dir, iprototype.opposite_dir(dir)) then
+    if flow_shape.get_state(starting_object.prototype_name, starting_object.dir, iprototype.reverse_dir(dir)) then
         shape = "JI"
     else
         shape = "JU"
@@ -81,7 +81,7 @@ function condition_pipe_to_ground(self, datamodel)
     local dir = iprototype.calc_dir(from_x, from_y, to_x, to_y)
     local t = {
         [dir] = true,
-        [iprototype.opposite_dir(dir)] = true,
+        [iprototype.reverse_dir(dir)] = true,
     }
     for _, v in ipairs(ifluid:get_fluidbox(starting_object.prototype_name, starting_object.x, starting_object.y, starting_object.dir)) do
         if not t[v.dir] then

@@ -101,7 +101,7 @@ local function get_connections(object_id)
                             end
                         else
                             for _, v in ipairs(ifluid:get_fluidbox(_typeobject.name, _object.x, _object.y, _object.dir)) do
-                                if v.x == _x and v.y == _y and v.dir == iprototype.opposite_dir(dir) then
+                                if v.x == _x and v.y == _y and v.dir == iprototype.reverse_dir(dir) then
                                     _update_fluid_name(State, _object.fluid_name, _object.fluidflow_network_id)
                                     if State.failed then
                                         connections[dir] = DISABLE
@@ -129,7 +129,7 @@ local function get_connections(object_id)
                     connections[dir] = DISABLE
                 end
             else
-                local rdir = iprototype.opposite_dir(dir)
+                local rdir = iprototype.reverse_dir(dir)
                 if not _connections[rdir] then
                     connections[dir] = DISABLE
                 else
@@ -157,7 +157,7 @@ local function get_connections(object_id)
                                     connections[dir] = CONNECT
                                 end
                             elseif _typeobject.pipe_to_ground then
-                                local conn = get_connections(_typeobject, _object.dir, _object.x, _object.y)[iprototype.opposite_dir(dir)]
+                                local conn = get_connections(_typeobject, _object.dir, _object.x, _object.y)[iprototype.reverse_dir(dir)]
                                 if conn and not conn.ground then
                                     _update_fluid_name(State, _object.fluid_name, _object.fluidflow_network_id)
                                     if State.failed then
@@ -170,7 +170,7 @@ local function get_connections(object_id)
                                 end
                             else
                                 for _, v in ipairs(ifluid:get_fluidbox(_typeobject.name, _object.x, _object.y, _object.dir)) do
-                                    if v.x == _x and v.y == _y and v.dir == iprototype.opposite_dir(dir) then
+                                    if v.x == _x and v.y == _y and v.dir == iprototype.reverse_dir(dir) then
                                         _update_fluid_name(State, _object.fluid_name, _object.fluidflow_network_id)
                                         if State.failed then
                                             connections[dir] = DISABLE
@@ -240,7 +240,7 @@ function M:create(object_id, left, top)
                                     if object then
                                         local typeobject = iprototype.queryByName("entity", object.prototype_name)
                                         for _, v in ipairs(ifluid:get_fluidbox(typeobject.name, object.x, object.y, object.dir)) do
-                                            if v.ground and v.dir == iprototype.opposite_dir(dir) then
+                                            if v.ground and v.dir == iprototype.reverse_dir(dir) then
                                                 return x, y
                                             end
                                         end
@@ -255,7 +255,7 @@ function M:create(object_id, left, top)
                         local neighbor = objects:modify(x, y, EDITOR_CACHE_TEMPORARY, iobject.clone)
                         if neighbor then
                             o[#o+1] = neighbor
-                            dfs(neighbor, iprototype.opposite_dir(v.dir), o)
+                            dfs(neighbor, iprototype.reverse_dir(v.dir), o)
                         end
                     end
                 end
@@ -264,7 +264,7 @@ function M:create(object_id, left, top)
         -- object.state = color[dir]
         o[object.fluid_name] = o[object.fluid_name] or {}
         table.insert(o[object.fluid_name], object)
-        dfs(object, iprototype.opposite_dir(dir), o[object.fluid_name])
+        dfs(object, iprototype.reverse_dir(dir), o[object.fluid_name])
 
         ::continue::
     end
@@ -306,7 +306,7 @@ function M:stage_ui_update(datamodel)
 
                 if iprototype.is_pipe(object.prototype_name) then
                     local pipe_edge = iflow_shape.prototype_name_to_state(object.prototype_name, object.dir)
-                    pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(iprototype.opposite_dir(dir)), true)
+                    pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(iprototype.reverse_dir(dir)), true)
                     local shape, _dir = iflow_shape.to_type_dir(pipe_edge)
                     assert(shape)
                     object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, shape)
@@ -321,7 +321,7 @@ function M:stage_ui_update(datamodel)
 
                 if iprototype.is_pipe(object.prototype_name) then
                     local pipe_edge = iflow_shape.prototype_name_to_state(object.prototype_name, object.dir)
-                    pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(iprototype.opposite_dir(dir)), true)
+                    pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(iprototype.reverse_dir(dir)), true)
                     local shape, _dir = iflow_shape.to_type_dir(pipe_edge)
                     assert(shape)
                     object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, shape)
@@ -346,7 +346,7 @@ function M:stage_ui_update(datamodel)
 
                 if iprototype.is_pipe(object.prototype_name) then
                     local pipe_edge = iflow_shape.prototype_name_to_state(object.prototype_name, object.dir)
-                    pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(iprototype.opposite_dir(dir)), false)
+                    pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(iprototype.reverse_dir(dir)), false)
                     local shape, _dir = iflow_shape.to_type_dir(pipe_edge)
                     assert(shape)
                     object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, shape)
@@ -360,7 +360,7 @@ function M:stage_ui_update(datamodel)
 
                 if iprototype.is_pipe(object.prototype_name) then
                     local pipe_edge = iflow_shape.prototype_name_to_state(object.prototype_name, object.dir)
-                    pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(iprototype.opposite_dir(dir)), false)
+                    pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(iprototype.reverse_dir(dir)), false)
                     local shape, _dir = iflow_shape.to_type_dir(pipe_edge)
                     assert(shape)
                     object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, shape)

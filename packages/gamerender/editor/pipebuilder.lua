@@ -48,23 +48,23 @@ local function _show_failed(self, prototype_name, from_x, from_y, to_x, to_y)
     local connections = {}
     for x = from_x, to_x do
         for y = from_y, to_y do
-            local opposite_dir = iprototype.opposite_dir(dir)
+            local reverse_dir = iprototype.reverse_dir(dir)
             local key
 
             key = uniquekey(x, y, dir)
             if map[key] then
                 connections[#connections+1] = {x = x, y = y, dir = dir}
 
-                local succ, _x, _y = terrain:move_coord(x, y, opposite_dir, 1)
+                local succ, _x, _y = terrain:move_coord(x, y, reverse_dir, 1)
                 assert(succ)
-                connections[#connections+1] = {x = _x, y = _y, dir = opposite_dir}
+                connections[#connections+1] = {x = _x, y = _y, dir = reverse_dir}
             else
                 map[key] = true
             end
 
-            key = uniquekey(x, y, opposite_dir)
+            key = uniquekey(x, y, reverse_dir)
             if map[key] then
-                connections[#connections+1] = {x = x, y = y, dir = opposite_dir}
+                connections[#connections+1] = {x = x, y = y, dir = reverse_dir}
 
                 local succ, _x, _y = terrain:move_coord(x, y, dir, 1)
                 assert(succ)
@@ -94,7 +94,7 @@ local function _show_failed(self, prototype_name, from_x, from_y, to_x, to_y)
                 o.state = "invalid_construct"
                 objects:set(o, EDITOR_CACHE_TEMPORARY[1])
             end
-            ieditor:refresh_flow_shape(EDITOR_CACHE_TEMPORARY, EDITOR_CACHE_TEMPORARY[1], object, iprototype.opposite_dir(dir), x, y)
+            ieditor:refresh_flow_shape(EDITOR_CACHE_TEMPORARY, EDITOR_CACHE_TEMPORARY[1], object, iprototype.reverse_dir(dir), x, y)
         end
     end
 end
@@ -211,7 +211,7 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
 
     local prototype_name = self.coord_indicator.prototype_name
     local dir_num = iprototype.dir_tonumber(iprototype.calc_dir(from_x, from_y, to_x, to_y))
-    local opposite_dir_num = iprototype.dir_tonumber(iprototype.opposite_dir(dir))
+    local reverse_dir_num = iprototype.dir_tonumber(iprototype.reverse_dir(dir))
 
     local map = {}
     local coord
@@ -235,7 +235,7 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
 
                 elseif iprototype.is_pipe_to_ground(_object.prototype_name) then
                     for _, v in ipairs(ifluid:get_fluidbox(_object.prototype_name, _object.x, _object.y, _object.dir, _object.fluid_name)) do
-                        if v.ground and v.dir == iprototype.opposite_dir(dir) then
+                        if v.ground and v.dir == iprototype.reverse_dir(dir) then
                             _update_fluid_name(State, _object.fluid_name, _object.fluidflow_network_id)
                             break -- pipe to ground only has one fluidbox in one direction
                         end
@@ -266,7 +266,7 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
             if _object then
                 if iprototype.is_pipe(_object.prototype_name) then
                     local pipe_edge = _set_pipe(State, x, y)
-                    pipe_edge = set_shape_edge(pipe_edge, opposite_dir_num, true)
+                    pipe_edge = set_shape_edge(pipe_edge, reverse_dir_num, true)
                     map[coord] = pipe_edge
 
                 elseif iprototype.is_pipe_to_ground(_object.prototype_name) then
@@ -280,7 +280,7 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
 
                 else
                     for _, v in ipairs(ifluid:get_fluidbox(_object.prototype_name, _object.x, _object.y, _object.dir, _object.fluid_name)) do
-                        if v.dir == iprototype.opposite_dir(dir) and (from_x == v.x or from_y == v.y) then
+                        if v.dir == iprototype.reverse_dir(dir) and (from_x == v.x or from_y == v.y) then
                             _update_fluid_name(State, v.fluid_name, _object.fluidflow_network_id)
                             break -- only one fluidbox aligned with the start point
                         end
@@ -289,13 +289,13 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
                 end
             else
                 local pipe_edge = _set_endpoint_connect(State, x, y)
-                pipe_edge = set_shape_edge(pipe_edge, opposite_dir_num, true)
+                pipe_edge = set_shape_edge(pipe_edge, reverse_dir_num, true)
                 map[coord] = pipe_edge
             end
         else
             local pipe_edge = _set_pipe(State, x, y)
             pipe_edge = set_shape_edge(pipe_edge, dir_num, true)
-            pipe_edge = set_shape_edge(pipe_edge, opposite_dir_num, true)
+            pipe_edge = set_shape_edge(pipe_edge, reverse_dir_num, true)
             map[coord] = pipe_edge
         end
 
@@ -387,7 +387,7 @@ local function state_init(self, datamodel)
                 if not obj then
                     obj = iobject.new {
                         prototype_name = prototype_name,
-                        dir = iprototype.opposite_dir(v.dir),
+                        dir = iprototype.reverse_dir(v.dir),
                         x = dx,
                         y = dy,
                         fluid_name = "",
@@ -461,7 +461,7 @@ local function state_start(self, datamodel)
             end
 
             for _, v in ipairs(ifluid:get_fluidbox(ending_object.prototype_name, ending_object.x, ending_object.y, ending_object.dir)) do
-                if v.dir == iprototype.opposite_dir(dir) and (from_x == v.x or from_y == v.y) then
+                if v.dir == iprototype.reverse_dir(dir) and (from_x == v.x or from_y == v.y) then
                     state_end(self, datamodel, from_x, from_y, v.x, v.y)
                     return
                 end
@@ -486,7 +486,7 @@ local function state_start(self, datamodel)
                 return
             else
                 for _, v in ipairs(ifluid:get_fluidbox(ending_object.prototype_name, ending_object.x, ending_object.y, ending_object.dir)) do
-                    if v.dir == iprototype.opposite_dir(dir) and (from_x == v.x or from_y == v.y) then
+                    if v.dir == iprototype.reverse_dir(dir) and (from_x == v.x or from_y == v.y) then
                         state_end(self, datamodel, from_x, from_y, v.x, v.y)
                         return
                     end
