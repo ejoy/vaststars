@@ -134,14 +134,16 @@ function condition_normal(self, datamodel)
     local dir = iprototype.calc_dir(from_x, from_y, to_x, to_y)
     local fluidbox = get_fluidbox(to_x, to_y, dir, starting_object)
     if not fluidbox then
-        show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
+        local succ, max_to_x, max_to_y = terrain:move_coord(starting_object.x, starting_object.y, dir, math.abs(to_x - from_x), math.abs(to_y - from_y))
+        show_failed(self, datamodel, starting_object.x, starting_object.y, dir, max_to_x, max_to_y)
         return
     end
 
     local succ
     succ, from_x, from_y = terrain:move_coord(fluidbox.x, fluidbox.y, fluidbox.dir, 1)
     if not succ then
-        show_failed(self, datamodel, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
+        local succ, max_to_x, max_to_y = terrain:move_coord(starting_object.x, starting_object.y, dir, math.abs(to_x - from_x), math.abs(to_y - from_y))
+        show_failed(self, datamodel, starting_object.x, starting_object.y, dir, max_to_x, max_to_y)
         return
     end
 

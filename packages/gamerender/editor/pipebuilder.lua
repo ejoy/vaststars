@@ -357,9 +357,10 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
     for fluidflow_network_id in pairs(State.fluidflow_network_ids) do
         for _, object in objects:selectall("fluidflow_network_id", fluidflow_network_id, EDITOR_CACHE_TEMPORARY) do
             local _object = objects:modify(object.x, object.y, EDITOR_CACHE_TEMPORARY, iobject.clone)
-            assert(iprototype.has_type(iprototype.queryByName("entity", _object.prototype_name).type, "fluidbox"))
-            _object.fluid_name = State.fluid_name
-            _object.fluidflow_network_id = fluidflow_network_id
+            if iprototype.has_type(iprototype.queryByName("entity", _object.prototype_name).type, "fluidbox") then -- TODO: check why this is needed
+                _object.fluid_name = State.fluid_name
+                _object.fluidflow_network_id = fluidflow_network_id
+            end
         end
     end
 

@@ -279,7 +279,6 @@ function condition_normal(self, datamodel, starting_object, to_x, to_y, max_to_x
             starting_object.fluidflow_network_id = 0
         end
     else
-        assert(ending_object.fluidflow_network_id ~= 0)
         if starting_object.fluid_name ~= "" then
             for _, object in objects:selectall("fluidflow_network_id", ending_object.fluidflow_network_id, EDITOR_CACHE_CONSTRUCTED) do
                 local o = iobject.clone(object)
