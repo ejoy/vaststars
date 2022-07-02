@@ -2,7 +2,7 @@
     <head>
         <style>
             .guide-speech-block {
-                margin-right: 10vmin;
+                margin-left: 10vmin;
                 flex-direction: row;
                 width: 85%;
                 height:100%;
@@ -17,17 +17,27 @@
                 height: 43.1vmin;
                 position: absolute;
                 background-size: cover;
-                right:-17vmin;
+                left:-18vmin;
                 bottom: -7vmin;
             }
             .guide-info-block {
+                width: 8vmin;
+                height:3.5vmin;
                 position: absolute;
-                right:12vmin;
-                bottom: -4vmin;
-                font-size: 4vmin;
-                text-align: right;
-                color: rgb(249, 253, 0);
-                -webkit-text-stroke: 0.5px #000;
+                right:0.5vmin;
+                /* bottom: 0.5vmin; */
+                background-image: "textures/common/pipe_arrow.texture";
+                transform: rotate(-180deg);
+                background-size: cover;
+                animation:0.3s linear 0s infinite alternate updown;
+            }
+            @keyframes updown {
+                0% {
+                    bottom: 0.5vmin;
+                }
+                100% {
+                    bottom: 1.2vmin;
+                }
             }
         </style>
         <style path = "common/building_style.rcss"/>
@@ -53,7 +63,7 @@
             <div class="panel" style="width:40%; height:24%;  align-items: center; justify-content: flex-start;">
                 <div class = "guide-speech-block">一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十</div>
                 <div class="guide-avatar-block" style='background-image:"textures/guide/guide-1.texture";'/>
-                <div class="guide-info-block">点击任意区域继续</div>
+                <div class="guide-info-block"/>
             </div>
         </div>
     </body>
