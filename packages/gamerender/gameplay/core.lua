@@ -2,6 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
 local irecipe = require "gameplay.interface.recipe"
 local iprototype = require "gameplay.interface.prototype"
+local imining = require "gameplay.interface.mining" -- TODO: remove this
 
 local m = {}
 m.world_update = true
@@ -74,6 +75,17 @@ init_func["assembling"] = function(pt, template)
     return template
 end
 
+init_func["chimney"] = function (pt, template)
+    if not template.recipe then
+        return template
+    end
+
+    local typeobject = iprototype.queryByName("recipe", template.recipe)
+    template.fluids = irecipe.get_init_fluids(typeobject)
+
+    return template
+end
+
 function m.create_entity(init)
     local func
     local template = {
@@ -85,16 +97,16 @@ function m.create_entity(init)
         recipe = init.recipe, -- for debugging
     }
 
-    local pt = iprototype.queryByName("entity", init.prototype_name)
-    for _, entity_type in ipairs(pt.type) do
+    local typeobject = iprototype.queryByName("entity", init.prototype_name)
+    for _, entity_type in ipairs(typeobject.type) do
         func = init_func[entity_type]
         if func then
-            template = assert(func(pt, template))
+            template = assert(func(typeobject, template))
         end
     end
 
     local eid = create(world, init.prototype_name, template)
-    print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y, template.fluid, eid)
+    print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y, template.fluid or "[fluid]", template.recipe or "[recipe]", eid)
     return eid
 end
 

@@ -13,6 +13,7 @@ local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local irecipe = require "gameplay.interface.recipe"
 local global = require "global"
 local iobject = ecs.require "object"
+local imining = require "gameplay.interface.mining"
 
 --
 local function __new_entity(self, datamodel, typeobject)
@@ -66,6 +67,31 @@ local function touch_move(self, datamodel, delta_vec)
     iobject.move_delta(self.pickup_object, delta_vec)
 end
 
+-- TODO: duplicate from builder.lua
+local function _get_mineral_recipe(prototype_name, x, y, dir)
+    local typeobject = iprototype.queryByName("entity", prototype_name)
+    local w, h = iprototype.rotate_area(typeobject.area, dir)
+
+    if not iprototype.has_type(typeobject.type, "mining") then
+        return
+    end
+    local found
+    for i = 0, w - 1 do
+        for j = 0, h - 1 do
+            local mineral = terrain:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
+            if mineral then
+                found = mineral
+            end
+        end
+    end
+
+    if not found then
+        return
+    end
+
+    return imining.get_mineral_recipe(prototype_name, found)
+end
+
 local function touch_end(self, datamodel)
     local pickup_object = assert(self.pickup_object)
     iobject.align(self.pickup_object)
@@ -74,6 +100,8 @@ local function touch_end(self, datamodel)
         pickup_object.state = "invalid_construct"
         return
     end
+
+    pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
 
     if not ifluid:need_set_fluid(pickup_object.prototype_name) then
         pickup_object.state = "construct"

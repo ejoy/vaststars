@@ -26,6 +26,7 @@ local function new(init)
         fluidflow_id = init.fluidflow_id,
         state = assert(init.state),
         headquater = init.headquater,
+        recipe = init.recipe,
     }
 
     local outer = setmetatable({__object = object, __change = {}}, {__index = object, __newindex = object_newindex})
@@ -45,6 +46,7 @@ local function clone(outer)
         state = assert(outer.state),
         gameplay_eid = outer.gameplay_eid, --TODO
         teardown = outer.teardown,
+        recipe = outer.recipe,
     }
 
     local clone = setmetatable({__object = object, __change = {}}, {__index = object, __newindex = object_newindex})
@@ -105,6 +107,9 @@ local function flush()
         end,
         PREPARE = function (outer, value) -- 放置建筑后
             outer.__object.PREPARE = value
+        end,
+        recipe = function (outer, value)
+            outer.__object.recipe = value
         end,
     }
 

@@ -8,7 +8,9 @@ local ieditor = ecs.require "editor.editor"
 local ifluid = require "gameplay.interface.fluid"
 local gameplay_core = require "gameplay.core"
 local ientity = require "gameplay.interface.entity"
+local imining = require "gameplay.interface.mining"
 local iobject = ecs.require "object"
+local terrain = ecs.require "terrain"
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
     local typeobject = iprototype.queryByName("entity", prototype_name)
@@ -18,6 +20,30 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
             if objects:coord(x + i, y + j, EDITOR_CACHE_NAMES) then
                 return false
             end
+        end
+    end
+
+    local found_mineral
+    for i = 0, w - 1 do
+        for j = 0, h - 1 do
+            local mineral = terrain:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
+            if mineral then
+                found_mineral = mineral
+            end
+        end
+    end
+
+    if iprototype.has_type(typeobject.type, "mining") then
+        if not found_mineral then
+            return false
+        end
+
+        if not imining.get_mineral_recipe(prototype_name, found_mineral) then
+            return false
+        end
+    else
+        if found_mineral then -- can not construct in the area with mineral
+            return false
         end
     end
 

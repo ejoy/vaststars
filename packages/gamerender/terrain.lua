@@ -8,7 +8,7 @@ local mathpkg = import_package"ant.math"
 local mc = mathpkg.constant
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ipickup_mapping = ecs.import.interface "vaststars.gamerender|ipickup_mapping"
-
+local map = import_package "vaststars.prototype"("map")
 -- three-dimensional axial
 -- z
 -- ▲
@@ -91,10 +91,14 @@ local function _get_coord_by_begin_position(self, position)
     return {math.ceil((position[1] - origin[1]) / TILE_SIZE), math.ceil((origin[2] - position[3]) / TILE_SIZE)}
 end
 
+local function _get_grid_id(self, x, y)
+    local grid_x = x//GROUND_WIDTH
+    local grid_y = y//GROUND_HEIGHT
+    return _pack(grid_x, grid_y)
+end
+
 function terrain:get_group_id(x, y)
-	local grid_x = x//GRID_WIDTH
-	local grid_y = y//GRID_HEIGHT
-	return self._group_id[_pack(grid_x, grid_y)]
+	return self._group_id[_get_grid_id(self, x, y)]
 end
 
 function terrain:create(width, height)
@@ -149,6 +153,12 @@ function terrain:create(width, height)
         "/pkg/vaststars.resources/prefabs/terrain/ground_03.prefab",
         "/pkg/vaststars.resources/prefabs/terrain/ground_04.prefab",
     }
+
+    local mineral_meshes = {
+        ["铁矿石"] = "/pkg/vaststars.resources/prefabs/terrain/ground_iron_ore.prefab", -- TODO: remove hard code
+        ["碎石"] = "/pkg/vaststars.resources/prefabs/terrain/ground_gravel.prefab",
+    }
+
     local rotators <const> = {
         math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(0)}),
         math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
@@ -156,13 +166,25 @@ function terrain:create(width, height)
         math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
     }
 
+    self.mineral_map = {}
+    for c, mineral in pairs(map) do
+        local x, y = c:match("^(%d*),(%d*)$")
+        x, y = tonumber(x), tonumber(y)
+        self.mineral_map[_get_grid_id(self, x, y)] = mineral
+    end
+
     assert(self._width % GROUND_WIDTH == 0 and self._height % GROUND_HEIGHT == 0)
     local w, h = self._width // GROUND_WIDTH, self._height // GROUND_HEIGHT
     for y = 0, h - 1 do
         for x = 0, w - 1 do
             local _x, _y = x * GROUND_WIDTH, y * GROUND_HEIGHT
             local g = ecs.group(self:get_group_id(_x, _y))
-            local p = g:create_instance(meshes[math.random(1, 4)])
+            local p
+            if self.mineral_map[_pack(x, y)] then
+                p = g:create_instance(mineral_meshes[self.mineral_map[_pack(x, y)]])
+            else
+                p = g:create_instance(meshes[math.random(1, #meshes)])
+            end
             p.on_ready = function(prefab)
                 iom.set_position(world:entity(prefab.root), self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT))
                 iom.set_rotation(world:entity(prefab.root), rotators[math.random(1, 4)])
@@ -174,6 +196,10 @@ function terrain:create(width, height)
             self.prefab_objects[#self.prefab_objects+1] = world:create_object(p)
         end
     end
+end
+
+function terrain:get_mineral(x, y)
+    return self.mineral_map[_get_grid_id(self, x, y)]
 end
 
 function terrain:enable_terrain(x, y)
@@ -246,7 +272,7 @@ function terrain:get_begin_position_by_coord(x, y)
     return {origin[1] + (x * TILE_SIZE), 0, origin[2] - (y * TILE_SIZE)}
 end
 
--- 返回建筑的中心位置
+-- return the position of the center of the entity
 function terrain:get_position_by_coord(x, y, w, h)
     local begining = self:get_begin_position_by_coord(x, y)
     if not begining then
@@ -256,7 +282,7 @@ function terrain:get_position_by_coord(x, y, w, h)
     return {begining[1] + (w / 2 * TILE_SIZE), begining[2], begining[3] - (h / 2 * TILE_SIZE)}
 end
 
--- position 为建筑的中心位置
+-- position is the center of the entity
 function terrain:align(position, w, h)
     local begin_position = {math3d.index(position, 1) - (w / 2 * TILE_SIZE), math3d.index(position, 2), math3d.index(position, 3) + (h / 2 * TILE_SIZE)}
     local coord = _get_coord_by_begin_position(self, begin_position)
