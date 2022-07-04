@@ -49,6 +49,10 @@ function m.remove_entity(eid)
     world:remove_entity(eid)
 end
 
+function m.is_researched(...)
+    return world:is_researched(...)
+end
+
 local create_entity_cache = {}
 local function create(world, prototype, entity)
     if not create_entity_cache[prototype] then
@@ -63,13 +67,13 @@ end
 
 local init_func = {}
 init_func["assembling"] = function(pt, template)
-    if not template.recipe then
+    local recipe = pt.recipe or template.recipe
+    assert(not(pt.recipe and template.recipe)) -- not both required at the same time
+    if not recipe then
         return template
     end
 
-    local typeobject = iprototype.queryByName("recipe", template.recipe)
-    template.fluids = irecipe.get_init_fluids(typeobject)
-
+    template.fluids = template.fluid -- TODO: remove this
     return template
 end
 

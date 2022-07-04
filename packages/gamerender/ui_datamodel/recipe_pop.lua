@@ -51,6 +51,27 @@ local recipe_menu = {} ; do
     end
 end
 
+local recipe_locked; do
+    local recipe_tech = {}
+    for _, typeobject in pairs(iprototype.each_maintype "tech") do
+        if typeobject.effects and typeobject.effects.unlock_recipe then
+            for _, recipe in ipairs(typeobject.effects.unlock_recipe) do
+                assert(not recipe_tech[recipe])
+                recipe_tech[recipe] = typeobject.name
+            end
+        end
+    end
+
+    function recipe_locked(recipe)
+        local tech = recipe_tech[recipe]
+        if not tech then
+            log.info(("recipe `%s` is unlocked defaultly"):format(recipe))
+            return true
+        end
+        return gameplay_core.is_researched(tech)
+    end
+end
+
 local function get_recipe_index(recipe_menu, recipe_name)
     for index, v1 in ipairs(recipe_menu) do
         for recipe_index, v2 in ipairs(v1.item) do
@@ -126,23 +147,42 @@ function M:create(object_id)
 
     local catalog_index = 1
     local recipe_index = 0
-    local items
 
     if e.assembling.recipe ~= 0 then
         catalog_index, recipe_index = get_recipe_index(recipe_menu, recipe_name)
     end
 
+    local items = {}
     if recipe_menu[catalog_index] then
-        items = recipe_menu[catalog_index].item
+        for _, recipe_item in ipairs(recipe_menu[catalog_index].item) do
+            if recipe_locked(recipe_item.name) then
+                items[#items+1] = recipe_item
+            end
+        end
+    end
+
+    local all_items = {}
+    for _, category in ipairs(recipe_menu) do
+        local c = {
+            group = category.group,
+            icon = category.icon,
+            item = {},
+        }
+        for _, recipe_item in ipairs(category.item) do
+            if recipe_locked(recipe_item.name) then
+                c.item[#c.item+1] = recipe_item
+            end
+        end
+        all_items[#all_items+1] = c
     end
 
     return {
         object_id = object_id,
         recipe_index = recipe_index,
         recipe_name = recipe_name,
-        recipe_menu = recipe_menu,
+        recipe_menu = all_items, -- TODO: remove this
         catalog_index = catalog_index,
-        items = items or {}
+        items = items -- TODO: all recipe of current category, why not use recipe_menu[catalog_index].item?
     }
 end
 

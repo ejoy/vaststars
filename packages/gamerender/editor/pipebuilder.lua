@@ -23,6 +23,7 @@ local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
 local STATE_START <const> = 1
 
+-- fluidflow_id may be nil, such as fluidboxes
 local function _update_fluid_name(State, fluid_name, fluidflow_id)
     if State.fluid_name ~= "" then
         if fluid_name ~= "" then
@@ -30,13 +31,17 @@ local function _update_fluid_name(State, fluid_name, fluidflow_id)
                 State.failed = true
             end
         else
-            State.fluidflow_ids[fluidflow_id] = true
+            if fluidflow_id then
+                State.fluidflow_ids[fluidflow_id] = true
+            end
         end
     else
         if fluid_name ~= "" then
             State.fluid_name = fluid_name
         else
-            State.fluidflow_ids[fluidflow_id] = true
+            if fluidflow_id then
+                State.fluidflow_ids[fluidflow_id] = true
+            end
         end
     end
 end

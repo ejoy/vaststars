@@ -53,7 +53,6 @@ local function __new_entity(self, datamodel, typeobject)
         x = x,
         y = y,
         fluid_name = fluid_name,
-        fluidflow_id = 0,
         state = state,
     }
 end
@@ -139,18 +138,13 @@ local function confirm(self, datamodel)
         end
     end
 
-    if iprototype.has_type(typeobject.type, "fluidboxes") then
-        for _, v in ipairs(ifluid:get_fluidbox(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.fluid_name)) do
-
-        end
-    end
-
-    -- TODO: remove this
-    if pickup_object.fluid_name == "" then
+    if iprototype.has_type(typeobject.type, "fluidbox") then
+        assert(pickup_object.fluid_name == "")
         global.fluidflow_id = global.fluidflow_id + 1
         pickup_object.fluidflow_id = global.fluidflow_id
     end
-    if iprototype.has_type(typeobject.type, "fluidbox") or iprototype.has_type(typeobject.type, "fluidboxes") then
+
+    if iprototype.has_type(typeobject.type, "fluidboxes") then
         self:update_fluidbox(EDITOR_CACHE_NAMES, "CONFIRM", pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.fluid_name)
     end
 
