@@ -1285,7 +1285,7 @@ prototype "电子科技包1" {
     description = "电子元件制造电子科技包",
 }
 
-prototype "铁矿石挖掘" {
+prototype "石铁矿挖掘" {
     type = { "recipe" },
     category = "金属冶炼",
     --group = "金属",
@@ -1300,6 +1300,38 @@ prototype "铁矿石挖掘" {
     },
     time = "3s",
     description = "采集铁矿石",
+}
+
+prototype "铁矿石挖掘" {
+    type = { "recipe" },
+    category = "矿石开采",
+    --group = "金属",
+    allow_manual = false,
+    order = 21,
+    icon = "textures/construct/air-filter1.texture",
+    ingredients = {
+    },
+    results = {
+        {"铁矿石", 1},
+    },
+    time = "3s",
+    description = "采集铁矿石",
+}
+
+prototype "碎石挖掘" {
+    type = { "recipe" },
+    category = "矿石开采",
+    --group = "金属",
+    allow_manual = false,
+    order = 22,
+    icon = "textures/construct/air-filter1.texture",
+    ingredients = {
+    },
+    results = {
+        {"碎石", 1},
+    },
+    time = "3s",
+    description = "采集碎石",
 }
 
 prototype "绝缘线1" {
