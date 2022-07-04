@@ -41,7 +41,7 @@ events["set_filter_state"] = function(prefab, binding, ...)
 end
 
 events["modifier"] = function(prefab, binding, oper, ...)
-    imodifier[oper](...)
+    -- imodifier[oper](...)
 end
 
 events["remove"] = function(prefab, binding, ...)
