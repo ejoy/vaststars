@@ -6,7 +6,7 @@ local prototype = gameplay.register.prototype
   --task = {"select_entity", 0, "组装机"},              拥有XX台机器
   --task = {"select_chest", 0, "指挥中心", "铁丝"},     向指挥中心转移X个物品
   --task = {"power_generator", 0},                     电力发电到达X瓦
-    --task = {"unknown", 0},                           自定义任务
+  --task = {"unknown", 0},                             自定义任务
   --time是指1个count所需的时间
 
   prototype "清除废墟" {
