@@ -12,7 +12,8 @@ prototype "采矿机I" {
     mining_area = "5x5",
     speed = "50%",
     group = {"加工"},
-    recipe = "铁矿石挖掘",
+    craft_category = {"矿石开采"},
+    recipe = "石铁矿挖掘",
     fluidboxes = {
         input = {},
         output = {},
@@ -30,7 +31,8 @@ prototype "采矿机II" {
     mining_area = "5x5",
     speed = "100%",
     group = {"加工"},
-    recipe = "铁矿石挖掘",
+    craft_category = {"矿石开采"},
+    recipe = "石铁矿挖掘",
     fluidboxes = {
         input = {},
         output = {},

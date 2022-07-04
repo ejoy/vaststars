@@ -51,32 +51,23 @@
             }
             .button-route-examine {
                 flex-direction: row;
-                width: 30%;
-                height: 45%;
                 align-items: center;
                 justify-content: center;
-                background-color: rgb(92, 184, 92);
                 background-size:cover;
-                border: 0.27vmin rgb(39, 89, 64);
                 border-radius: 0.67vmin;
                 color: rgb(213,236,213);
                 font-size: 4.00vmin; 
-            }
-            .button-time-adjust {
-                flex-direction: row;
-                width: 30%;
-                height: 45%;
-                align-items: center;
-                justify-content: center;
+                margin-bottom: 0.5em;
+                width: 30.00vmin;
+                height: 14.00vmin;
                 background-color: rgb(19,175,240);
-                background-size:cover;
-                border-radius: 0.67vmin;
-                color: rgb(213,236,213);
+                border: 0.27vmin rgb(89, 73, 39);
+
             }
             .button-info-pic {
                 width: 5.33vmin;
                 height: 5.33vmin;
-                background-size: cover;   
+                background-size: cover; 
             }
         </style>
         <style path = "common/building_style.rcss"/>
@@ -87,7 +78,7 @@
                 show = false,
                 truck_interaction_1 = false,
                 truck_interaction_2 = false,
-            }
+            })
 
             function start.ClickItemInfo(event)
                 start.building_info_flag = false
@@ -126,7 +117,7 @@
                     <div class = "menu-title" style="width: 70%;">物流中心</div>
                 </div>
                 <div class="column" data-if="building_info_flag" style="width: 100%;height: 95%;">
-                    <div class="build-info-reigon" style='background-image: "textures/build_background/logistics_center.texture"; background-size: cover;'>
+                    <div class="build-info-reigon" style='background-image: "textures/build_background/pic_logisticscenter.texture"; background-size: cover;'>
                         <div class ="info-block">
                             <div data-if="show">
                                 <div class="row">
@@ -280,12 +271,13 @@
             </div>
             <div class="panel"> 
                 <div class="header" style="justify-content: flex-end;" data-if="building_info_flag"> 
-                    <div class = "menu-title" style="text-align: right; padding-right: 0.2em; width: 70%;">运输站</div>
+                    <div class = "menu-title" style="flex-direction: row; align-items: center; width:auto; text-align: center; padding-right: 1vmin;">运输站</div>
                 </div>
-                <div class="header"style="justify-content: flex-end;" data-if="!building_info_flag">
-                    <div class = "menu-title-2" style="width: 70%;">调整运输车</div>
+                <div class="header" style="justify-content: flex-end;" data-if="!building_info_flag">
+                    <div class = "menu-title-2" style="flex-direction: row; align-items: center; width:auto;">调整运输车</div>
                     <button class = "back-button" style='background-image: "textures/cmdcenter/yellow_arrow.texture";' data-event-click="ClickBack()"/>
                 </div>
+                <div style="border-bottom:0.27vmin rgb(89, 73, 39);"/>
                 <div class="turck-info-region" style = "height:60%;" data-if="!building_info_flag">
                     <div class="row" data-event-click="ClickTruck1()" style="height:20%">
                         <button class="truck-block">
@@ -501,13 +493,13 @@
                     <button class="button-route-examine">                       
                         <div class="button-info-pic" style='background-image: "textures/science/timer.texture";'/>
                         <div class="column">
-                            <div style="font-size: 4.00vmin;">发车间隔</div>
-                            <div style="font-size: 3.00vmin;">(60秒)</div>
+                            <div style="font-size: 5.00vmin; -webkit-text-stroke: 0.2vmin #000;">发车间隔</div>
+                            <div style="font-size: 3.00vmin; -webkit-text-stroke: 0.2vmin #000;">(60秒)</div>
                         </div>
                     </button>
-                    <button class="button-time-adjust">                      
+                    <button class="button-route-examine" style="background-color:rgb(203, 118, 24);">                      
                         <div class="button-info-pic" style='background-image: "textures/road/header.texture";'/>
-                        <div>路线查看</div>
+                        <div style="font-size: 5.00vmin; -webkit-text-stroke: 0.2vmin #000;">路线查看</div>
                     </button>
                 </div>
             </div>       

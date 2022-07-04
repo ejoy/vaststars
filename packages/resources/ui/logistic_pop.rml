@@ -147,7 +147,7 @@
                 justify-content: center;
                 align-items: center;
                 width:100%;
-                height:40%;
+                height:60%;
             }
             .item-recipe-block {
                 flex-direction: column;
@@ -159,7 +159,7 @@
                 flex-direction: column;
                 align-items: center;
                 width:100%;
-                height:18%;
+                height:28%;
             }
             .item-button-block {
                 flex-direction: row;
@@ -345,6 +345,9 @@
             <div class="recipe-panel" style="flex-direction: column; height:100%;">
                 <!-- 物品基本信息 start -->
                 <div class="item-info-block">
+                    <div class = "name-block" style="height: 13%; width:100%; border: 1px #fff;">
+                        <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192); font-size: 5vmin;">{{recipe_name}}</div>
+                    </div>
                     <div style="flex-direction:column; justify-content: flex-start; align-items: flex-start; width:100%;height:30%;">
                         <div class ="drone-title-block" style="height:5vmin;">
                             <div class = "drone-pic" style='background-image:"textures/science/book.texture";'/>
@@ -352,7 +355,7 @@
                         </div>
                         <div class="property-text" style="-webkit-text-stroke: 0.20vmin rgb(39, 32, 17);color: rgb(221, 235, 26); word-break:break-all; font-size: 3.5vmin;">一种用于抓取物品的机器爪一种用于抓取物品的机器爪</div>
                     </div>
-                    <div class="row" style="width:100%; height:70%; justify-content: flex-start; align-items: center;">
+                    <div class="row" style="width:100%; height:57%; justify-content: flex-start; align-items: center;">
                         <div class="info-block" style="margin-top:0; margin-left:1em; justify-content: center; align-items: flex-start">
                             <div class="row">
                                 <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
@@ -379,56 +382,15 @@
                 </div>
                 <!-- 物品基本信息 end -->
 
-                <!-- 物品配方信息 start -->
-                <div class="item-recipe-block" style="border:0.1vmin rgb(89, 73, 39);">
-                    <div style="flex-direction:row; justify-content: flex-start; width:100%;">
-                        <div class ="drone-title-block" style="height:5vmin;">
-                            <div class = "drone-pic" style='background-image:"textures/property/research-packs.texture";'/>
-                            <div class = "drone-title">生产配方</div>
-                        </div>
-                    </div>
-                    <div style="padding-top:1em; flex-direction:row; justify-content: flex-start; width:100%; flex-wrap: wrap;">
-                        <div class="small-item-1" style="margin-left:0.3em;">
-                            <div class="small-item-count">99</div>                          
-                        </div>
-                        <div class="small-arrow"/>
-                        <div class="small-item-1">
-                            <div class="small-item-count">99</div>                          
-                        </div>
-                        <div class="small-item-1">
-                            <div class="small-item-count">99</div>                          
-                        </div>
-                        <div class="small-item-1">
-                            <div class="small-item-count">99</div>                          
-                        </div>
-                        <div class="small-item-1">
-                            <div class="small-item-count">99</div>                          
-                        </div>
-                        <div class="small-item-1">
-                            <div class="small-item-count">99</div>                          
-                        </div>
-                        <div class="small-item-1">
-                            <div class="small-item-count">99</div>                          
-                        </div>
-                        <div class="small-item-1">
-                            <div class="small-item-count">99</div>                          
-                        </div>
-                        <div class="small-item-1">
-                            <div class="small-item-count">99</div>                          
-                        </div>
-                    </div>
-                </div>
-                <!-- 物品配方信息 end -->
-
                 <!-- 物品生产建筑 start -->
                 <div class="item-building-block" style="border:0.1vmin rgb(89, 73, 39);">
-                    <div style="flex-direction:row; justify-content: flex-start; width:100%;">
+                    <div style="flex-direction:row; justify-content: flex-start; width:100%;height:20%;">
                         <div class ="drone-title-block" style="height:5vmin;">
                             <div class = "drone-pic" style='background-image:"textures/construct/assembler.texture";'/>
                             <div class = "drone-title">生产建筑</div>
                         </div>
                     </div>
-                    <div style="flex-direction:row; justify-content: center; width:100%; padding-top:0.3em;">
+                    <div style="flex-direction:row; justify-content: center; width:100%; padding-top:0.3em;height:80%; align-items: center;">
                         <div class="small-building"/>
                         <div class="small-building"/>
                         <div class="small-building"/>
@@ -442,11 +404,11 @@
                 
                 <!-- 物品确认按钮 start -->
                 <div class="item-button-block" style="border:0.1vmin rgb(89, 73, 39);">
-                    <button class = "confirm-button" style="background-color:rgb(203, 118, 24); margin-bottom:0;" data-event-click = "clickClose()">
+                    <button class = "confirm-button" style="background-color:rgb(203, 118, 24); margin-bottom:0; width: 25vmin; height:10vmin;" data-event-click = "clickClose()">
                         <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
                         <div class = "recipe-name-text" style="font-size: 3.73vmin;">取消</div>
                     </button>
-                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115); margin-bottom:0;" data-event-click = "clickConfirm()">
+                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115); margin-bottom:0; width: 25vmin; height:10vmin;" data-event-click = "clickConfirm()">
                         <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
                         <div class = "recipe-name-text" style="font-size: 3.73vmin;">确定</div>
                     </button> 
