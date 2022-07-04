@@ -63,13 +63,11 @@ end
 
 local init_func = {}
 init_func["assembling"] = function(pt, template)
-    if not pt.recipe then
+    if not template.recipe then
         return template
     end
 
-    -- 摆放建筑时设置配方
-    -- 目前游戏过程中, 通常是先放置建筑后, 再设置配方
-    local typeobject = iprototype.queryByName("recipe", pt.recipe)
+    local typeobject = iprototype.queryByName("recipe", template.recipe)
     template.fluids = irecipe.get_init_fluids(typeobject)
 
     return template

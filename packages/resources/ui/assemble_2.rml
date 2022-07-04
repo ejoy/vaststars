@@ -151,7 +151,7 @@
 
             <!-- 右边面板 begin -->
             <div class="panel" style="width: 50%;">
-                <div class="header" style="justify-content: flex-end;" data-if="mode == 'init'">
+                <div class="header" style="justify-content: flex-end;" data-if="mode == 'init' && show_set_recipe">
                     <div class = "menu-title" style="text-align: right; font-size: 6vmin; -webkit-text-stroke: 0.05vmin rgb(0, 0, 0); width: 70%;">配方 : {{recipe_name}}</div>
                     <button class = "recipe-change-button" data-event-click="clickRecipe()"/>
                 </div>

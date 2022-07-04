@@ -9,6 +9,7 @@ local start = ui_sys.createDataMode("start", {
     object_id = 0,
     recipe_ingredients = {}, -- 配方成份
     recipe_results = {},     -- 配方产出
+    show_set_recipe = false, -- 是否显示设置配方按钮
 
     recipe_ingredients_count = {}, -- 组装机成份材料个数 = {{icon = xx, count = xx}, ...}
     recipe_results_count = {},     -- 组装机产出材料个数 = {{icon = xx, count = xx}, ...}

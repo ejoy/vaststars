@@ -16,6 +16,8 @@ local function get(object_id)
     end
 
     local typeobject = iprototype.queryById(e.entity.prototype)
+    local show_set_recipe = not typeobject.minerals -- TODO: special case for miner
+
     local recipe_typeobject = iprototype.queryById(e.assembling.recipe)
     if not recipe_typeobject then
         return {
@@ -27,6 +29,7 @@ local function get(object_id)
             recipe_results = {},
             recipe_ingredients_count = {},
             recipe_results_count = {},
+            show_set_recipe = show_set_recipe,
         }
     end
 
@@ -52,6 +55,7 @@ local function get(object_id)
         recipe_results = recipe_results,
         recipe_ingredients_count = recipe_ingredients_count,
         recipe_results_count = recipe_results_count,
+        show_set_recipe = show_set_recipe,
     }
 end
 

@@ -55,7 +55,7 @@ function M:create(object_id, left, top)
     local recipe_name = ""
 
     if iprototype.has_type(typeobject.type, "assembling") then
-        show_set_recipe = (typeobject.recipe == nil)
+        show_set_recipe = (typeobject.recipe == nil) and (typeobject.minerals == nil) -- TODO: special case for miner
         if e.assembling.recipe ~= 0 then
             local recipe_typeobject = iprototype.queryById(e.assembling.recipe)
             recipe_name = recipe_typeobject.name
