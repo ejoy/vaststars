@@ -6,7 +6,24 @@ local prototype = gameplay.register.prototype
   --task = {"select_entity", 0, "组装机"},              拥有XX台机器
   --task = {"select_chest", 0, "指挥中心", "铁丝"},     向指挥中心转移X个物品
   --task = {"power_generator", 0},                     电力发电到达X瓦
+    --task = {"unknown", 0},                           自定义任务
   --time是指1个count所需的时间
+
+  prototype "清除废墟" {
+    desc = "清除指挥中心附近的3处废墟",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0},
+    -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
+    prerequisites = {},
+    count = 3,
+    tips_pic = {
+      "textures/task_tips_pic/task_click_build.texture",
+    },
+    sign_desc = {
+      { desc = "清除指挥中心附近的3处废墟", icon = "textures/construct/industry.texture"},
+    },
+  }
 
 prototype "地质研究" {
     desc = "对火星地质结构进行标本采集和研究",
