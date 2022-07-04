@@ -49,12 +49,14 @@ local function select(self, cache_name, index_field, cache_value)
     return cache:select(index_field, cache_value)
 end
 
+-- TODO: optimize
 local function selectall(self, cache_names, index_field, cache_value)
     local r = {}
 
     for i = #cache_names, 1, -1 do
-        for k, v in select(self, cache_names[i], index_field, cache_value) do
-            if not r[k] then
+        for k in select(self, cache_names[i], index_field, cache_value) do
+            local v = get(self, cache_names, k) -- get newest value
+            if v[index_field] == cache_value then
                 r[k] = v
             end
         end

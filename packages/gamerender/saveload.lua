@@ -36,8 +36,8 @@ local function restore_world()
     end
     objects:clear()
 
-    -- restore world
-    local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_network_id)
+    --
+    local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id)
         local typeobject = iprototype.queryByName("entity", prototype_name)
 
         local object = iobject.new {
@@ -46,7 +46,7 @@ local function restore_world()
             x = x,
             y = y,
             fluid_name = fluid_name,
-            fluidflow_network_id = fluidflow_network_id,
+            fluidflow_id = fluidflow_id,
             headquater = typeobject.headquater or false,
             state = "constructed",
         }
@@ -56,7 +56,7 @@ local function restore_world()
 
     -- restore
     local all_object = {}
-    local empty_fluidbox = {}
+    local fluidbox_map = {} -- coord -> id
     for v in gameplay_core.select("id:in entity:in fluidbox?in fluidboxes?in") do
         local e = v.entity
         local typeobject = iprototype.queryById(e.prototype)
@@ -66,8 +66,14 @@ local function restore_world()
             if v.fluidbox.fluid ~= 0 then
                 local typeobject_fluid = assert(iprototype.queryById(v.fluidbox.fluid))
                 fluid_name = typeobject_fluid.name
-            else
-                empty_fluidbox[iprototype.packcoord(e.x, e.y)] = v.id
+            end
+            local w, h = iprototype.rotate_area(typeobject.area, iprototype.dir_tostring(e.direction))
+            for i = 0, w - 1 do
+                for j = 0, h - 1 do
+                    local coord = iprototype.packcoord(e.x + i, e.y + j)
+                    assert(fluidbox_map[coord] == nil)
+                    fluidbox_map[coord] = v.id
+                end
             end
         end
         if v.fluidboxes then
@@ -86,70 +92,107 @@ local function restore_world()
             end
         end
         all_object[v.id] = {
-            name = typeobject.name, 
+            prototype_name = typeobject.name,
             dir = iprototype.dir_tostring(e.direction),
             x = e.x,
             y = e.y,
             fluid_name = fluid_name,
-            fluidflow_network_id = 0,
+            -- fluidflow_id, -- fluidflow_id is not null only when the object is a fluidbox
         }
     end
 
-    local function dfs(all_object, empty_fluidbox, object, input_dir)
-        local typeobject = iprototype.queryByName("entity", object.name)
-        for _, v in ipairs(ifluid:get_fluidbox(typeobject.name, object.x, object.y, object.dir)) do
-            if v.dir ~= input_dir then
-                local succ, x, y
-                if not v.ground then
-                    succ, x, y = terrain:move_coord(v.x, v.y, v.dir, 1)
-                    assert(succ)
-                else
-                    local function match_ground(dir) -- TODO：optimize
-                        for i = 1, v.ground do
-                            succ, x, y = terrain:move_coord(v.x, v.y, v.dir, i)
-                            assert(succ)
+    local function find_pipe_to_ground(c, map)
+        local succ, x, y
+        for i = 1, c.ground do
+            succ, x, y = terrain:move_coord(c.x, c.y, c.dir, i)
+            if not succ then
+                goto continue
+            end
 
-                            local object_id = empty_fluidbox[iprototype.packcoord(x, y)]
-                            if object_id then
-                                local object = assert(all_object[object_id])
-                                local typeobject = iprototype.queryByName("entity", object.name)
-                                for _, v in ipairs(ifluid:get_fluidbox(typeobject.name, object.x, object.y, object.dir)) do
-                                    if v.ground and v.dir == iprototype.reverse_dir(dir) then
-                                        return x, y
-                                    end
-                                end
-                            end
-                        end
-                    end
-                    x, y = match_ground(v.dir)
+            local object_id = map[iprototype.packcoord(x, y)]
+            if not object_id then
+                goto continue
+            end
+
+            local object = assert(all_object[object_id])
+            for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
+                if v.ground and v.dir == iprototype.reverse_dir(v.dir) then
+                    return x, y
                 end
+            end
 
-                if x and y then
-                    local neighbor_id = empty_fluidbox[iprototype.packcoord(x, y)]
-                    if neighbor_id then
-                        local neighbor = assert(all_object[neighbor_id])
-                        if neighbor then
-                            assert(neighbor.fluidflow_network_id == 0)
-                            neighbor.fluidflow_network_id = object.fluidflow_network_id
-                            dfs(all_object, empty_fluidbox, neighbor, iprototype.reverse_dir(v.dir))
-                        end
-                    end
+            ::continue::
+        end
+    end
+
+    local function match_fluidbox(object, dx, dy)
+        local succ, x, y
+        for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
+            if not v.ground then
+                succ, x, y = terrain:move_coord(v.x, v.y, v.dir, 1)
+                if succ and x == dx and y == dy then
+                    return true
                 end
             end
         end
     end
 
-    for _, id in pairs(empty_fluidbox) do
+    local function dfs(all_object, map, object, input_dir)
+        for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
+            if v.dir == input_dir then
+                goto continue
+            end
+
+            local succ, x, y
+            if not v.ground then
+                succ, x, y = terrain:move_coord(v.x, v.y, v.dir, 1)
+                if not succ then
+                    goto continue -- out of bound
+                end
+            else
+                x, y = find_pipe_to_ground(v, map)
+            end
+
+            if not x or not y then
+                goto continue
+            end
+
+            local neighbor_id = map[iprototype.packcoord(x, y)]
+            if not neighbor_id then
+                goto continue
+            end
+
+            local neighbor = assert(all_object[neighbor_id])
+            if not iprototype.has_type(iprototype.queryByName("entity", neighbor.prototype_name).type, "fluidbox") then
+                goto continue
+            end
+
+            if not match_fluidbox(neighbor, v.x, v.y) then
+                goto continue
+            end
+
+            assert(neighbor.fluid_name == object.fluid_name)
+            if neighbor.fluidflow_id then
+                goto continue
+            end
+
+            neighbor.fluidflow_id = object.fluidflow_id
+            dfs(all_object, map, neighbor, iprototype.reverse_dir(v.dir))
+            ::continue::
+        end
+    end
+
+    for _, id in pairs(fluidbox_map) do
         local object = all_object[id]
-        if object.fluidflow_network_id == 0 then
-            global.fluidflow_network_id = global.fluidflow_network_id + 1
-            object.fluidflow_network_id = global.fluidflow_network_id + 1
-            dfs(all_object, empty_fluidbox, object)
+        if not object.fluidflow_id then
+            global.fluidflow_id = global.fluidflow_id + 1
+            object.fluidflow_id = global.fluidflow_id
+            dfs(all_object, fluidbox_map, object)
         end
     end
 
     for id, v in pairs(all_object) do
-        restore_object(id, v.name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_network_id)
+        restore_object(id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_id)
     end
 
     iobject.flush()

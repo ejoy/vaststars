@@ -11,8 +11,8 @@ local DIRECTION <const> = {
     W = 3,
 }
 
--- 'true' means that the direction is passable
-local passable = {
+-- 'true' means that the direction is connectable
+local connectable = {
     ['U'] = {[North] = true,  [East] = false, [South] = false, [West] = false, },
     ['L'] = {[North] = true,  [East] = true,  [South] = false, [West] = false, },
     ['I'] = {[North] = true,  [East] = false, [South] = true , [West] = false, },
@@ -31,28 +31,28 @@ local directions = {
 }
 
 local accel = {}
-for shape_type, v in pairs(passable) do
+for shape_type, v in pairs(connectable) do
     for _, dir in ipairs(directions[shape_type]) do
-        local passable_state = 0
+        local connectable_state = 0
         for b = West, North, -1 do
             if v[(b - DIRECTION[dir]) % 4] then
-                passable_state = passable_state << 1 | 1
+                connectable_state = connectable_state << 1 | 1
             else
-                passable_state = passable_state << 1 | 0
+                connectable_state = connectable_state << 1 | 0
             end
         end
         accel[shape_type] = accel[shape_type] or {}
         assert(not accel[shape_type][dir])
-        accel[shape_type][dir] = passable_state
+        accel[shape_type][dir] = connectable_state
     end
 end
 
 local accel_reversed = {}
 for shape_type, v in pairs(accel) do
-    for dir, passable_state in pairs(v) do
-        accel_reversed[passable_state] = accel_reversed[passable_state] or {}
-        table.insert(accel_reversed[passable_state], {shape_type = shape_type, dir = dir})
-        table.sort(accel_reversed[passable_state], function(a, b) return DIRECTION[a.dir] < DIRECTION[b.dir] end) -- 目前只有 O 型的管道会出现重复, 默认为竖向
+    for dir, connectable_state in pairs(v) do
+        accel_reversed[connectable_state] = accel_reversed[connectable_state] or {}
+        table.insert(accel_reversed[connectable_state], {shape_type = shape_type, dir = dir})
+        table.sort(accel_reversed[connectable_state], function(a, b) return DIRECTION[a.dir] < DIRECTION[b.dir] end) -- 目前只有 O 型的管道会出现重复, 默认为竖向
     end
 end
 
@@ -61,9 +61,9 @@ function M.to_state(shape_type, dir)
     return accel[shape_type][dir]
 end
 
-function M.to_type_dir(passable_state)
-    assert(accel_reversed[passable_state])
-    local t = accel_reversed[passable_state][1]
+function M.to_type_dir(connectable_state)
+    assert(accel_reversed[connectable_state])
+    local t = accel_reversed[connectable_state][1]
     return t.shape_type, t.dir
 end
 
@@ -71,11 +71,11 @@ function M.to_prototype_name(prototype_name, shape_type)
     return prototype_name:gsub("(.*%-)(%u*)(.*)", ("%%1%s%%3"):format(shape_type))
 end
 
-function M.set_shape_edge(passable_state, passable_dir, state)
+function M.set_shape_edge(connectable_state, connectable_dir, state)
     if state == true then
-        return passable_state |  (1 << passable_dir)
+        return connectable_state |  (1 << connectable_dir)
     else
-        return passable_state & ~(1 << passable_dir)
+        return connectable_state & ~(1 << connectable_dir)
     end
 end
 

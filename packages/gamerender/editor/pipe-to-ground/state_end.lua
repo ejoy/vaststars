@@ -56,7 +56,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
             end
         else
             starting_object.fluid_name = ending_object.fluid_name
-            starting_object.fluidflow_network_id = 0
+            starting_object.fluidflow_id = 0
         end
     end
 
@@ -141,7 +141,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
             x = to_x,
             y = to_y,
             fluid_name = starting_object.fluid_name,
-            fluidflow_network_id = starting_object.fluidflow_network_id,
+            fluidflow_id = starting_object.fluidflow_id,
             state = "construct",
         }
         objects:set(object, EDITOR_CACHE_TEMPORARY[1])
@@ -161,7 +161,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
             x = starting_object.x,
             y = starting_object.y,
             fluid_name = starting_object.fluid_name,
-            fluidflow_network_id = starting_object.fluidflow_network_id,
+            fluidflow_id = starting_object.fluidflow_id,
             state = "construct",
         }
         objects:set(object, EDITOR_CACHE_TEMPORARY[1])
@@ -178,7 +178,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
         object.prototype_name = prototype_name
         object.dir = iprototype.reverse_dir(starting_object.dir)
         object.fluid_name = starting_object.fluid_name
-        object.fluidflow_network_id = starting_object.fluidflow_network_id
+        object.fluidflow_id = starting_object.fluidflow_id
         objects:set(object, EDITOR_CACHE_TEMPORARY[1])
 
         show_dotted_line(self, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
@@ -208,7 +208,7 @@ function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, 
             end
         else
             starting_object.fluid_name = ending_object.fluid_name
-            starting_object.fluidflow_network_id = 0
+            starting_object.fluidflow_id = 0
         end
     end
 
@@ -222,7 +222,7 @@ function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, 
         x = starting_object.x,
         y = starting_object.y,
         fluid_name = starting_object.fluid_name,
-        fluidflow_network_id = starting_object.fluidflow_network_id,
+        fluidflow_id = starting_object.fluidflow_id,
         state = "construct",
     }
     objects:set(object, EDITOR_CACHE_TEMPORARY[1])
@@ -236,7 +236,7 @@ function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, 
         x = to_x,
         y = to_y,
         fluid_name = starting_object.fluid_name,
-        fluidflow_network_id = starting_object.fluidflow_network_id,
+        fluidflow_id = starting_object.fluidflow_id,
         state = "construct",
     }
     objects:set(object, EDITOR_CACHE_TEMPORARY[1])
@@ -276,13 +276,13 @@ function condition_normal(self, datamodel, starting_object, to_x, to_y, max_to_x
             end
         else
             starting_object.fluid_name = fluidbox.fluid_name
-            starting_object.fluidflow_network_id = 0
+            starting_object.fluidflow_id = 0
         end
     else
         if starting_object.fluid_name ~= "" then
-            for _, object in objects:selectall("fluidflow_network_id", ending_object.fluidflow_network_id, EDITOR_CACHE_CONSTRUCTED) do
+            for _, object in objects:selectall("fluidflow_id", ending_object.fluidflow_id, EDITOR_CACHE_CONSTRUCTED) do
                 local o = iobject.clone(object)
-                o.fluidflow_network_id = starting_object.fluidflow_network_id
+                o.fluidflow_id = starting_object.fluidflow_id
                 o.fluid_name = starting_object.fluid_name
                 objects:set(o, EDITOR_CACHE_TEMPORARY[1])
             end
@@ -324,20 +324,20 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, 
         return
     end
 
-    local fluidflow_network_id, fluid_name
+    local fluidflow_id, fluid_name
     if starting_object.fluid_name == "" then
-        if starting_object.fluidflow_network_id == 0 then
-            global.fluidflow_network_id = global.fluidflow_network_id + 1
-            fluidflow_network_id = global.fluidflow_network_id
+        if starting_object.fluidflow_id == 0 then
+            global.fluidflow_id = global.fluidflow_id + 1
+            fluidflow_id = global.fluidflow_id
 
-            starting_object.fluidflow_network_id = fluidflow_network_id
+            starting_object.fluidflow_id = fluidflow_id
             fluid_name = ""
         else
-            fluidflow_network_id = starting_object.fluidflow_network_id
+            fluidflow_id = starting_object.fluidflow_id
             fluid_name = starting_object.fluid_name
         end
     else
-        fluidflow_network_id = starting_object.fluidflow_network_id
+        fluidflow_id = starting_object.fluidflow_id
         fluid_name = starting_object.fluid_name
     end
 
@@ -350,7 +350,7 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, 
         x = starting_object.x,
         y = starting_object.y,
         fluid_name = starting_object.fluid_name,
-        fluidflow_network_id = starting_object.fluidflow_network_id,
+        fluidflow_id = starting_object.fluidflow_id,
         state = "construct",
     }
     objects:set(object, EDITOR_CACHE_TEMPORARY[1])
@@ -363,7 +363,7 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, 
         x = to_x,
         y = to_y,
         fluid_name = fluid_name,
-        fluidflow_network_id = fluidflow_network_id,
+        fluidflow_id = fluidflow_id,
         state = "construct",
     }
     objects:set(object, EDITOR_CACHE_TEMPORARY[1])
@@ -386,7 +386,7 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, 
             x = self.from_x,
             y = self.from_y,
             fluid_name = fluid_name,
-            fluidflow_network_id = fluidflow_network_id,
+            fluidflow_id = fluidflow_id,
             state = "construct",
         }
         objects:set(object, EDITOR_CACHE_TEMPORARY[1])

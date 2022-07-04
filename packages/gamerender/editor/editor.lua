@@ -31,12 +31,13 @@ function M:revert_changes(revert_cache_names)
             object.dir = old_object.dir
             object.state = old_object.state
             object.fluid_name = old_object.fluid_name
-            object.fluidflow_network_id = old_object.fluidflow_network_id
+            object.fluidflow_id = old_object.fluidflow_id
             object.__object.OBJECT_REMOVED = nil
         else
             iobject.remove(object)
         end
     end
+    iobject.flush() -- object is removed from cache, so we need to flush it
 end
 
 function M:teardown_begin()

@@ -23,7 +23,7 @@ local function new(init)
         x = assert(init.x),
         y = assert(init.y),
         fluid_name = assert(init.fluid_name),
-        fluidflow_network_id = assert(init.fluidflow_network_id),
+        fluidflow_id = init.fluidflow_id,
         state = assert(init.state),
         headquater = init.headquater,
     }
@@ -41,7 +41,7 @@ local function clone(outer)
         x = assert(outer.x),
         y = assert(outer.y),
         fluid_name = assert(outer.fluid_name),
-        fluidflow_network_id = assert(outer.fluidflow_network_id),
+        fluidflow_id = outer.fluidflow_id,
         state = assert(outer.state),
         gameplay_eid = outer.gameplay_eid, --TODO
         teardown = outer.teardown,
@@ -94,8 +94,8 @@ local function flush()
         fluid_name = function(outer, value)
             outer.__object.fluid_name = value
         end,
-        fluidflow_network_id = function (outer, value)
-            outer.__object.fluidflow_network_id = value
+        fluidflow_id = function (outer, value)
+            outer.__object.fluidflow_id = value
         end,
         gameplay_eid = function (outer, value)
             outer.__object.gameplay_eid = value

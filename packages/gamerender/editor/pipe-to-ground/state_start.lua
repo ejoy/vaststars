@@ -64,7 +64,7 @@ function condition_pipe(self, datamodel)
     starting_object.dir = dir
     starting_object.prototype_name = format_prototype_name(self.coord_indicator.prototype_name, shape)
     starting_object.fluid_name = starting_object.fluid_name
-    starting_object.fluidflow_network_id = starting_object.fluidflow_network_id
+    starting_object.fluidflow_id = starting_object.fluidflow_id
     starting_object.state = "construct"
     objects:set(starting_object, EDITOR_CACHE_TEMPORARY[1])
 
@@ -158,11 +158,11 @@ function condition_normal(self, datamodel)
             condition_normal(self, datamodel)
         end
     else
-        condition_none(self, datamodel, "JI", from_x, from_y, dir, fluidbox.fluid_name, starting_object.fluidflow_network_id)
+        condition_none(self, datamodel, "JI", from_x, from_y, dir, fluidbox.fluid_name, starting_object.fluidflow_id)
     end
 end
 
-function condition_none(self, datamodel, shape, from_x, from_y, dir, fluid_name, fluidflow_network_id)
+function condition_none(self, datamodel, shape, from_x, from_y, dir, fluid_name, fluidflow_id)
     from_x, from_y = from_x or self.from_x, from_y or self.from_y
     local to_x, to_y = self.coord_indicator.x, self.coord_indicator.y
     local dir = dir or iprototype.calc_dir(from_x, from_y, to_x, to_y)
@@ -182,7 +182,7 @@ function condition_none(self, datamodel, shape, from_x, from_y, dir, fluid_name,
         x = from_x,
         y = from_y,
         fluid_name = fluid_name or "",
-        fluidflow_network_id = fluidflow_network_id or 0,
+        fluidflow_id = fluidflow_id or 0,
         state = "construct",
     }
 

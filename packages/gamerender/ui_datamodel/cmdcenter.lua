@@ -16,7 +16,7 @@ local to_headquater_mb = mailbox:sub {"to_headquater"}
 local item_id_to_info = {}
 local recipe_to_category = {}
 local category_to_entity = {}
-for _, typeobject in pairs(iprototype.all_prototype_name("recipe")) do
+for _, typeobject in pairs(iprototype.each_maintype("recipe")) do
     for _, element in ipairs(irecipe.get_elements(typeobject.results)) do
         local typeobject_element = assert(iprototype.queryById(element.id))
         if iprototype.has_type(typeobject_element.type, "item") then
@@ -28,7 +28,7 @@ for _, typeobject in pairs(iprototype.all_prototype_name("recipe")) do
     recipe_to_category[typeobject.id] = typeobject.category
 end
 
-for _, typeobject in pairs(iprototype.all_prototype_name("entity")) do
+for _, typeobject in pairs(iprototype.each_maintype("entity")) do
     if iprototype.has_type(typeobject.type, "assembling") then
         if typeobject.recipe then -- 固定配方的组装机
             local typeobject_recipe = assert(iprototype.queryByName("recipe", typeobject.recipe))

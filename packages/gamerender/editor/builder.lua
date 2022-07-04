@@ -121,10 +121,10 @@ local function update_fluidbox(self, cache_names_r, cache_name_w, prototype_name
         if object then
             for _, v1 in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
                 if is_connection(v.x, v.y, v.dir, v1.x, v1.y, v1.dir) then
-                    if object.fluidflow_network_id ~= 0 then
-                        for _, object in objects:selectall("fluidflow_network_id", object.fluidflow_network_id, cache_names_r) do
+                    if object.fluidflow_id ~= 0 then
+                        for _, object in objects:selectall("fluidflow_id", object.fluidflow_id, cache_names_r) do
                             local o = iobject.clone(object)
-                            o.fluidflow_network_id = 0
+                            o.fluidflow_id = 0
                             o.fluid_name = v.fluid_name
                             objects:set(o, cache_name_w)
                         end

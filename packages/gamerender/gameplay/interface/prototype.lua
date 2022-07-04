@@ -11,7 +11,7 @@ function M.queryByName(...)
     return gameplay.prototype.queryByName(...)
 end
 
-function M.all_prototype_name(maintype)
+function M.each_maintype(maintype)
     return gameplay.prototype.each(maintype)
 end
 

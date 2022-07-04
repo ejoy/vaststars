@@ -18,7 +18,7 @@ local iobject = ecs.require "object"
 
 local recipe_menu = {} ; do
     local recipes = {}
-    for _, v in pairs(iprototype.all_prototype_name("recipe")) do
+    for _, v in pairs(iprototype.each_maintype("recipe")) do
         recipes[v.category] = recipes[v.category] or {}
         recipes[v.category][#recipes[v.category] + 1] = {
             name = v.name,
@@ -80,10 +80,10 @@ local function shift_pipe(prototype_name, x, y, dir, fluid_name)
             if typeobject.pipe then
                 for _, v1 in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
                     if is_connection(v.x, v.y, v.dir, v1.x, v1.y, v1.dir) then
-                        if object.fluidflow_network_id ~= 0 then
-                            for _, object in objects:selectall("fluidflow_network_id", object.fluidflow_network_id, {"CONSTRUCTED"}) do
+                        if object.fluidflow_id ~= 0 then
+                            for _, object in objects:selectall("fluidflow_id", object.fluidflow_id, {"CONSTRUCTED"}) do
                                 local o = iobject.clone(object)
-                                o.fluidflow_network_id = 0
+                                o.fluidflow_id = 0
                                 o.fluid_name = v.fluid_name
                                 objects:set(o, "CONSTRUCTED")
 

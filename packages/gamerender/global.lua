@@ -7,6 +7,6 @@ end
 return {
     get_object_id = get_object_id,
     mode = "normal",
-    fluidflow_network_id = 0,
+    fluidflow_id = 0,
     science = {}
 }

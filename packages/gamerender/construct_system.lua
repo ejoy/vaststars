@@ -16,15 +16,15 @@ local terrain = ecs.require "terrain"
 function construct_sys:camera_usage()
     local leave = true
     for _, _, x, y, object_id in pickup_mapping_mb:unpack() do
-        local coord = terrain:align(icamera.screen_to_world(x, y), 1, 1)
+        local coord = terrain:align(icamera.screen_to_world(x, y), 1, 1) -- assume entity is 1x1
         if coord then
             print(coord[1], coord[2])
         end
 
-        if global.mode == "teardown" then
-            ieditor:teardown(object_id)
-        elseif global.mode == "normal" then
-            if objects:get(object_id) then -- TODO: object_id may be 0
+        if objects:get(object_id) then -- object_id may be 0, such as when user click on empty space
+            if global.mode == "teardown" then
+                ieditor:teardown(object_id)
+            elseif global.mode == "normal" then
                 if idetail.show(object_id) then
                     leave = false
                 end

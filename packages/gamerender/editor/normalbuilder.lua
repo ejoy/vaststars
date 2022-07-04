@@ -52,7 +52,7 @@ local function __new_entity(self, datamodel, typeobject)
         x = x,
         y = y,
         fluid_name = fluid_name,
-        fluidflow_network_id = 0,
+        fluidflow_id = 0,
         state = state,
     }
 end
@@ -119,8 +119,8 @@ local function confirm(self, datamodel)
 
     -- TODO: remove this
     if pickup_object.fluid_name == "" then
-        global.fluidflow_network_id = global.fluidflow_network_id + 1
-        pickup_object.fluidflow_network_id = global.fluidflow_network_id
+        global.fluidflow_id = global.fluidflow_id + 1
+        pickup_object.fluidflow_id = global.fluidflow_id
     end
     if iprototype.has_type(typeobject.type, "fluidbox") or iprototype.has_type(typeobject.type, "fluidboxes") then
         self:update_fluidbox(EDITOR_CACHE_NAMES, "CONFIRM", pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.fluid_name)

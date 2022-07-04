@@ -132,12 +132,13 @@ prototype "空气过滤器I" {
     }
 }
 
-
 prototype "管道1-I型" {
     model = "prefabs/pipe/pipe_I.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    pipe_type = 1,
+    pipe_direction = {"N", "E"},
     show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
@@ -149,25 +150,7 @@ prototype "管道1-I型" {
         connections = {
             {type="input-output", position={0,0,"N"}},
             {type="input-output", position={0,0,"S"}},
-        }
-    }
-}
-
-prototype "管道1-J型" {
-    model = "prefabs/pipe/pipe_J.prefab",
-    icon = "textures/construct/pipe.texture",
-    construct_detector = {"exclusive"},
-    pipe = true,
-    show_build_function = false,
-    type = {"entity","fluidbox"},
-    area = "1x1",
-    fluidbox = {
-        capacity = 100,
-        height = 100,
-        base_level = 0,
-        connections = {
-            {type="input-output", position={0,0,"S"}},
-        }
+        },
     }
 }
 
@@ -176,6 +159,8 @@ prototype "管道1-L型" {
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    pipe_type = 1,
+    pipe_direction = {"N", "E", "S", "W"},
     show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
@@ -186,7 +171,7 @@ prototype "管道1-L型" {
         connections = {
             {type="input-output", position={0,0,"N"}},
             {type="input-output", position={0,0,"E"}},
-        }
+        },
     }
 }
 
@@ -195,6 +180,8 @@ prototype "管道1-T型" {
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    pipe_type = 1,
+    pipe_direction = {"N", "E", "S", "W"},
     show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
@@ -206,7 +193,7 @@ prototype "管道1-T型" {
             {type="input-output", position={0,0,"E"}},
             {type="input-output", position={0,0,"S"}},
             {type="input-output", position={0,0,"W"}},
-        }
+        },
     }
 }
 
@@ -216,6 +203,8 @@ prototype "管道1-X型" {
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    pipe_type = 1,
+    pipe_direction = {"N"},
     show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
@@ -228,7 +217,7 @@ prototype "管道1-X型" {
             {type="input-output", position={0,0,"E"}},
             {type="input-output", position={0,0,"S"}},
             {type="input-output", position={0,0,"W"}},
-        }
+        },
     }
 }
 
@@ -237,6 +226,8 @@ prototype "管道1-O型" {
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    pipe_type = 1,
+    pipe_direction = {"N"},
     show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
@@ -245,7 +236,7 @@ prototype "管道1-O型" {
         height = 100,
         base_level = 0,
         connections = {
-        }
+        },
     }
 }
 
@@ -254,6 +245,8 @@ prototype "管道1-U型" {
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
     pipe = true,
+    pipe_type = 1,
+    pipe_direction = {"N", "E", "S", "W"},
     show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
@@ -263,7 +256,7 @@ prototype "管道1-U型" {
         base_level = 0,
         connections = {
             {type="input-output", position={0,0,"N"}},
-        }
+        },
     }
 }
 
@@ -274,6 +267,8 @@ prototype "地下管1-JU型" {
     construct_detector = {"exclusive"},
     show_build_function = false,
     pipe_to_ground = true,
+    -- pipe_type = 2,
+    pipe_direction = {"N", "E", "S", "W"},
     type ={"entity","fluidbox"},
     area = "1x1",
     group = {"管道"},
@@ -283,7 +278,7 @@ prototype "地下管1-JU型" {
         base_level = 0,
         connections = {
             {type="input-output", position={0,0,"N"}, ground = 10},
-        }
+        },
     }
 }
 
@@ -293,6 +288,8 @@ prototype "地下管1-JI型" {
     construct_detector = {"exclusive"},
     show_build_function = false,
     pipe_to_ground = true,
+    -- pipe_type = 2,
+    pipe_direction = {"N", "E", "S", "W"},
     type ={"entity","fluidbox"},
     area = "1x1",
     group = {"管道"},
@@ -303,7 +300,7 @@ prototype "地下管1-JI型" {
         connections = {
             {type="input-output", position={0,0,"S"}},
             {type="input-output", position={0,0,"N"}, ground = 10},
-        }
+        },
     }
 }
 
@@ -314,6 +311,8 @@ prototype "地下管2-JU型" {
     construct_detector = {"exclusive"},
     show_build_function = false,
     pipe_to_ground = true,
+    -- pipe_type = 3,
+    pipe_direction = {"N", "E", "S", "W"},
     type ={"entity","fluidbox"},
     area = "1x1",
     group = {"管道"},
@@ -323,7 +322,7 @@ prototype "地下管2-JU型" {
         base_level = 0,
         connections = {
             {type="input-output", position={0,0,"N"}, ground = 14},
-        }
+        },
     }
 }
 
@@ -333,6 +332,8 @@ prototype "地下管2-JI型" {
     construct_detector = {"exclusive"},
     show_build_function = false,
     pipe_to_ground = true,
+    -- pipe_type = 3,
+    pipe_direction = {"N", "E", "S", "W"},
     type ={"entity","fluidbox"},
     area = "1x1",
     group = {"管道"},
@@ -343,6 +344,6 @@ prototype "地下管2-JI型" {
         connections = {
             {type="input-output", position={0,0,"S"}},
             {type="input-output", position={0,0,"N"}, ground = 14},
-        }
+        },
     }
 }

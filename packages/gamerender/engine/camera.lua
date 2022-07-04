@@ -118,7 +118,10 @@ function camera.update()
         local mq = w:singleton("main_queue", "camera_ref:in")
         local camera_ref = mq.camera_ref
         local e = world:entity(camera_ref)
-        iom.set_srt_matrix(e, mat)
+        local s, r, t = math3d.srt(mat)
+        iom.set_scale(e, s)
+        iom.set_rotation(e, r)
+        iom.set_position(e, t)
     end
 end
 

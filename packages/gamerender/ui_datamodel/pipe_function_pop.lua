@@ -22,22 +22,22 @@ local DISCONNECT <const> = 2
 local DISABLE <const> = 3
 
 -- TODO: duplicated in pipebuilder.lua
-local function _update_fluid_name(State, fluid_name, fluidflow_network_id)
+local function _update_fluid_name(State, fluid_name, fluidflow_id)
     if State.fluid_name ~= "" then
         if fluid_name ~= "" then
             if State.fluid_name ~= fluid_name then
                 State.failed = true
             end
         else
-            assert(fluidflow_network_id ~= 0)
-            State.fluidflow_network_ids[fluidflow_network_id] = true
+            assert(fluidflow_id ~= 0)
+            State.fluidflow_ids[fluidflow_id] = true
         end
     else
         if fluid_name ~= "" then
             State.fluid_name = fluid_name
         else
-            assert(fluidflow_network_id ~= 0)
-            State.fluidflow_network_ids[fluidflow_network_id] = true
+            assert(fluidflow_id ~= 0)
+            State.fluidflow_ids[fluidflow_id] = true
         end
     end
 end
@@ -76,12 +76,12 @@ local function get_connections(object_id)
                         local State = {
                             failed = false,
                             fluid_name = pipe_object.fluid_name,
-                            fluidflow_network_ids = {},
+                            fluidflow_ids = {},
                         }
 
                         local _typeobject = iprototype.queryByName("entity", _object.prototype_name)
                         if _typeobject.pipe then
-                            _update_fluid_name(State, _object.fluid_name, _object.fluidflow_network_id)
+                            _update_fluid_name(State, _object.fluid_name, _object.fluidflow_id)
                             if State.failed then
                                 connections[dir] = DISABLE
                             else
@@ -90,7 +90,7 @@ local function get_connections(object_id)
                         elseif _typeobject.pipe_to_ground then
                             local conn = get_connections(_typeobject, _object.dir, _object.x, _object.y)[dir]
                             if conn and conn.ground then
-                                _update_fluid_name(State, _object.fluid_name, _object.fluidflow_network_id)
+                                _update_fluid_name(State, _object.fluid_name, _object.fluidflow_id)
                                 if State.failed then
                                     connections[dir] = DISABLE
                                 else
@@ -102,7 +102,7 @@ local function get_connections(object_id)
                         else
                             for _, v in ipairs(ifluid:get_fluidbox(_typeobject.name, _object.x, _object.y, _object.dir)) do
                                 if v.x == _x and v.y == _y and v.dir == iprototype.reverse_dir(dir) then
-                                    _update_fluid_name(State, _object.fluid_name, _object.fluidflow_network_id)
+                                    _update_fluid_name(State, _object.fluid_name, _object.fluidflow_id)
                                     if State.failed then
                                         connections[dir] = DISABLE
                                     else
@@ -145,12 +145,12 @@ local function get_connections(object_id)
                             local State = {
                                 failed = false,
                                 fluid_name = pipe_object.fluid_name,
-                                fluidflow_network_ids = {},
+                                fluidflow_ids = {},
                             }
 
                             local _typeobject = iprototype.queryByName("entity", _object.prototype_name)
                             if _typeobject.pipe then
-                                _update_fluid_name(State, _object.fluid_name, _object.fluidflow_network_id)
+                                _update_fluid_name(State, _object.fluid_name, _object.fluidflow_id)
                                 if State.failed then
                                     connections[dir] = DISABLE
                                 else
@@ -159,7 +159,7 @@ local function get_connections(object_id)
                             elseif _typeobject.pipe_to_ground then
                                 local conn = get_connections(_typeobject, _object.dir, _object.x, _object.y)[iprototype.reverse_dir(dir)]
                                 if conn and not conn.ground then
-                                    _update_fluid_name(State, _object.fluid_name, _object.fluidflow_network_id)
+                                    _update_fluid_name(State, _object.fluid_name, _object.fluidflow_id)
                                     if State.failed then
                                         connections[dir] = DISABLE
                                     else
@@ -171,7 +171,7 @@ local function get_connections(object_id)
                             else
                                 for _, v in ipairs(ifluid:get_fluidbox(_typeobject.name, _object.x, _object.y, _object.dir)) do
                                     if v.x == _x and v.y == _y and v.dir == iprototype.reverse_dir(dir) then
-                                        _update_fluid_name(State, _object.fluid_name, _object.fluidflow_network_id)
+                                        _update_fluid_name(State, _object.fluid_name, _object.fluidflow_id)
                                         if State.failed then
                                             connections[dir] = DISABLE
                                         else
@@ -207,6 +207,7 @@ function M:create(object_id, left, top)
         [4] = "fluidflow_darkviolet",
     }
 
+    ieditor:revert_changes({"TEMPORARY"})
     local o = {}
     for _, dir in ipairs(ALL_DIR) do
         local succ, x, y = terrain:move_coord(pipe_object.x, pipe_object.y, dir, 1)
@@ -214,58 +215,22 @@ function M:create(object_id, left, top)
             goto continue
         end
 
-        local object = objects:modify(x, y, EDITOR_CACHE_TEMPORARY, iobject.clone)
+        local object = objects:coord(x, y)
         if not object then
             goto continue
         end
 
-        local function dfs(object, input_dir, o)
-            if not iprototype.has_type(iprototype.queryByName("entity", object.prototype_name).type, "fluidbox") then
-                return
-            end
+        if not object.fluidflow_id then
+            goto continue
+        end
 
-            local typeobject = iprototype.queryByName("entity", object.prototype_name)
-            for _, v in ipairs(ifluid:get_fluidbox(typeobject.name, object.x, object.y, object.dir)) do
-                if v.dir ~= input_dir then
-                    local succ, x, y
-                    if not v.ground then
-                        succ, x, y = terrain:move_coord(v.x, v.y, v.dir, 1)
-                        assert(succ)
-                    else
-                        local function match_ground(dir) -- TODO：optimize
-                            for i = 1, v.ground do
-                                succ, x, y = terrain:move_coord(v.x, v.y, v.dir, i)
-                                if succ then
-                                    local object = objects:coord(x, y)
-                                    if object then
-                                        local typeobject = iprototype.queryByName("entity", object.prototype_name)
-                                        for _, v in ipairs(ifluid:get_fluidbox(typeobject.name, object.x, object.y, object.dir)) do
-                                            if v.ground and v.dir == iprototype.reverse_dir(dir) then
-                                                return x, y
-                                            end
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                        x, y = match_ground(v.dir)
-                    end
-
-                    if x and y then
-                        local neighbor = objects:modify(x, y, EDITOR_CACHE_TEMPORARY, iobject.clone)
-                        if neighbor then
-                            o[#o+1] = neighbor
-                            dfs(neighbor, iprototype.reverse_dir(v.dir), o)
-                        end
-                    end
-                end
+        o[object.fluid_name] = o[object.fluid_name] or {}
+        for _, _object in objects:selectall("fluidflow_id", object.fluidflow_id, EDITOR_CACHE_TEMPORARY) do
+            if _object.id ~= pipe_object.id then
+                assert(object.fluid_name == _object.fluid_name)
+                table.insert(o[object.fluid_name], objects:modify(_object.x, _object.y, EDITOR_CACHE_TEMPORARY, iobject.clone))
             end
         end
-        -- object.state = color[dir]
-        o[object.fluid_name] = o[object.fluid_name] or {}
-        table.insert(o[object.fluid_name], object)
-        dfs(object, iprototype.reverse_dir(dir), o[object.fluid_name])
-
         ::continue::
     end
     local idx = 0
@@ -287,7 +252,7 @@ end
 
 function M:stage_ui_update(datamodel)
     --
-    for _, _, _, dir, oper in pipe_edge_mb:unpack() do -- TODO: optimize, update fluidflow_network_id only when necessary
+    for _, _, _, dir, oper in pipe_edge_mb:unpack() do -- TODO: optimize, update fluidflow_id only when necessary
         print(datamodel.object_id, dir, oper)
         local pipe_object = objects:get(datamodel.object_id)
         local succ, x, y = terrain:move_coord(pipe_object.x, pipe_object.y, dir, 1)
