@@ -8,7 +8,7 @@
                 width:100%; 
                 text-align: center; 
                 top: 26.50vmin; 
-                background-color: rgba(0, 200, 0, 160);
+                background-color: rgba(50, 50, 50, 160);
             }
             .chapter {
                 animation:3.5s linear 0s slidein;
@@ -79,7 +79,7 @@
             <!-- 显示 -->
             <div class="banner" data-if="true">
                 <div class="chapter">
-                    <div style="font-size: 10.25vmin;color: rgb(255, 251, 0); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">序幕</div>
+                    <div style="font-size: 10.25vmin;color: rgb(180, 180, 180); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">序幕</div>
                     <div style="font-size: 16.25vmin; color:  rgb(255, 255, 255); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">迫降P4031</div> 
                 </div>
             </div>
