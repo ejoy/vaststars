@@ -443,7 +443,7 @@
             </div>
 
             <!-- 建造模式 -->
-            <div data-if = "false" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;' visible-value = "10">
+            <div data-if = "cur_edit_mode != ''" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;' visible-value = "10">
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/construct.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
                 <div style ="font-size: 4vmin; top: 2.67vmin;">建造模式</div>
             </div>
