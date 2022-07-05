@@ -53,7 +53,7 @@ prototype "地质研究" {
     ingredients = {
     },
     count = 5,
-    time = "3s",
+    time = "1.6s",
     prerequisites = {"放置科研中心"},
     sign_desc = {
       { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
@@ -87,12 +87,12 @@ prototype "挖掘铁矿石" {
   task = {"stat_production", 0, "铁矿石"},
   -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"放置采矿机"},
-  count = 10,
+  count = 8,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ore3.texture",
   },
   sign_desc = {
-    { desc = "在铁矿上放置采矿机挖掘10个铁矿石", icon = "textures/construct/industry.texture"},
+    { desc = "在铁矿上放置采矿机挖掘8个铁矿石", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -102,12 +102,12 @@ prototype "挖掘碎石矿" {
   type = { "tech", "task" },
   task = {"stat_production", 0, "碎石"},
   prerequisites = {"放置采矿机"},
-  count = 10,
+  count = 8,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ore3.texture",
   },
   sign_desc = {
-    { desc = "在碎石矿上放置采矿机挖掘10个碎石", icon = "textures/construct/industry.texture"},
+    { desc = "在碎石矿上放置采矿机挖掘8个碎石", icon = "textures/construct/industry.texture"},
   },
 }
 
