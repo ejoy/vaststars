@@ -433,6 +433,7 @@ workbutton {
 .route-name-text {
 	font-size: 3.73vmin;
 	text-align: center;
+	margin-bottom:1vmin;
 }
 .button-name-change {
 	width: 4.00vmin;
@@ -485,8 +486,8 @@ workbutton {
 }
 .button-area {
 	position: absolute; 
-	top: -25px; 
-	right: -45px;
+	top: -10px; 
+	right: -20px;
 }
 .button-close {
 	width: 9.33vmin;

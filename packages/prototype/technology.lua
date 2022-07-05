@@ -19,6 +19,8 @@ local prototype = gameplay.register.prototype
     count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
+      "textures/task_tips_pic/task_demolish2.texture",
+      "textures/task_tips_pic/task_demolish3.texture",
     },
     sign_desc = {
       { desc = "清除指挥中心附近的3处废墟", icon = "textures/construct/industry.texture"},
