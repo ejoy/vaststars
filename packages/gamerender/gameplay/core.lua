@@ -68,7 +68,10 @@ end
 local init_func = {}
 init_func["assembling"] = function(pt, template)
     local recipe = pt.recipe or template.recipe
-    assert(not(pt.recipe and template.recipe)) -- not both required at the same time
+    if pt.recipe and template.recipe then
+        assert(pt.recipe == template.recipe) -- when both are set, they must be the same
+    end
+
     if not recipe then
         return template
     end
