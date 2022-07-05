@@ -31,7 +31,8 @@ function m:init_world()
     if not saveload:restore() then
         return
     end
-    iui.set_guide_progress(iguide.get_progress(world))
+    iguide.world = gameplay_core.get_world()
+    iui.set_guide_progress(iguide.get_progress())
 end
 
 local function get_object(x, y) -- TODO: optimize

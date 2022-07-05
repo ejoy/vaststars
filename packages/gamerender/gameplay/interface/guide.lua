@@ -3,7 +3,8 @@ local guide = import_package "vaststars.prototype"("guide")
 local M = {}
 local running = false
 local task = "none"
-function M.get_guide_id(world)
+function M.get_guide_id()
+    local world = M.world
     if not world.storage then
         world.storage = {guide_id = 1}
     end
@@ -13,21 +14,22 @@ function M.get_guide_id(world)
     return world.storage.guide_id
 end
 
-function M.get_guide(world)
-    return guide[M.get_guide_id(world)]
+function M.get_guide()
+    return guide[M.get_guide_id()]
 end
 
-function M.get_progress(world)
-    local guide_id = M.get_guide_id(world)
+function M.get_progress()
+    local guide_id = M.get_guide_id()
     if guide_id < 2 then
         return 0
     end
     return guide[guide_id - 1].narrative_end.guide_progress
 end
 
-function M.step_progress(world)
+function M.step_progress()
     running = false
-    world.storage.guide_id = world.storage.guide_id + 1
+    local storage = M.world.storage
+    storage.guide_id = storage.guide_id + 1
 end
 
 function M.set_running()

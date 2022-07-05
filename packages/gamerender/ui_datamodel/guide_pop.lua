@@ -41,8 +41,8 @@ function M:stage_ui_update(datamodel)
                 global.science.current_tech = global.science.tech_tree[task_name]
                 iguide.set_task(task_name)
             end
-            iguide.step_progress(game_world)
-            iui.set_guide_progress(iguide.get_progress(game_world))
+            iguide.step_progress()
+            iui.set_guide_progress(iguide.get_progress())
         end
     end
 end

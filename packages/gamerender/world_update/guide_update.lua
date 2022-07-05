@@ -21,7 +21,7 @@ local function update_world(world)
     if iguide.is_running() then
         return
     end
-    local guide = iguide.get_guide(world)
+    local guide = iguide.get_guide()
     if not guide then
         return
     end
