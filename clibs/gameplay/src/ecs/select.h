@@ -5,7 +5,7 @@ struct lua_State;
 #include "ecs/component.h"
 #include "luaecs.h"
 
-namespace ecs::select {
+namespace ecs_api {
     template <typename ...Components>
     struct entity_;
 
@@ -32,9 +32,9 @@ namespace ecs::select {
         int index;
     };
 
-    template <typename Component, typename MainKey>
-    Component* sibling(ecs_context* ctx, int i) {
-        return (Component*)entity_sibling(ctx, component<MainKey>::id, i, component<Component>::id);
+    template <typename Component, typename MainKey, typename ...SubKey>
+    Component* sibling(ecs_context* ctx, ecs_api::entity<MainKey, SubKey...>& e) {
+        return (Component*)entity_sibling(ctx, component<MainKey>::id, e.index, component<Component>::id);
     }
 
     template <typename ...Components>
@@ -42,47 +42,47 @@ namespace ecs::select {
 
     template <>
     struct visit_entity_sibling <> {
-        void operator()(lua_State* L, ecs_context* ctx, int mainkey, int i, entity_<>& e) {}
+        void operator()(ecs_context* ctx, lua_State* L, int mainkey, int i, entity_<>& e) {}
     };
 
     template <typename Component, typename ...Components>
     struct visit_entity_sibling<Component, Components...> {
-        void operator()(lua_State* L, ecs_context* ctx, int mainkey, int i, entity_<Component, Components...>& e) {
+        void operator()(ecs_context* ctx, lua_State* L, int mainkey, int i, entity_<Component, Components...>& e) {
             e.c = (Component*)entity_sibling(ctx, mainkey, i, component<Component>::id);
             if (e.c == NULL) {
                 luaL_error(L, "No %s", component<Component>::name);
             }
-            visit_entity_sibling<Components...>()(L, ctx, mainkey, i, e);
+            visit_entity_sibling<Components...>()(ctx, L, mainkey, i, e);
         }
     };
 
     template <typename MainKey, typename ...SubKey>
-    bool visit_entity(lua_State* L, ecs_context* ctx, int i, entity_<MainKey, SubKey...>& e) {
+    bool visit_entity(ecs_context* ctx, lua_State* L, int i, entity_<MainKey, SubKey...>& e) {
         int mainkey = component<MainKey>::id;
         e.c = (MainKey*)entity_iter(ctx, mainkey, i);
         if (!e.c) {
             return false;
         }
-        visit_entity_sibling<MainKey, SubKey...>()(L, ctx, mainkey, i, e);
+        visit_entity_sibling<MainKey, SubKey...>()(ctx, L, mainkey, i, e);
         return true;
     }
 
     template <typename ...Args>
     struct each_range {
         struct iterator {
-            lua_State* L;
             ecs_context* ctx;
+            lua_State* L;
             int index;
             entity<Args...>& e;
             iterator(entity<Args...>& e)
-                : L(NULL)
-                , ctx(NULL)
+                : ctx(NULL)
+                , L(NULL)
                 , index(0)
                 , e(e)
             { }
-            iterator(lua_State* L, ecs_context* ctx, entity<Args...>& e)
-                : L(L)
-                , ctx(ctx)
+            iterator(ecs_context* ctx, lua_State* L, entity<Args...>& e)
+                : ctx(ctx)
+                , L(L)
                 , index(0)
                 , e(e)
             { }
@@ -98,12 +98,12 @@ namespace ecs::select {
             }
             iterator& operator++() {
                 index++;
-                if (visit_entity(L, ctx, index, e)) {
+                if (visit_entity(ctx, L, index, e)) {
                     e.index = index;
                 }
                 else {
-                    L = NULL;
                     ctx = NULL;
+                    L = NULL;
                 }
                 return *this;
             }
@@ -111,19 +111,19 @@ namespace ecs::select {
                 return e;
             }
         };
-        lua_State* L;
         ecs_context* ctx;
+        lua_State* L;
         entity<Args...> e;
 
-        each_range(lua_State* L, ecs_context* ctx)
-            : L(L)
-            , ctx(ctx)
+        each_range(ecs_context* ctx, lua_State* L)
+            : ctx(ctx)
+            , L(L)
             , e()
         {}
 
         iterator begin() {
-            if (visit_entity(L, ctx, 0, e)) {
-                return {L, ctx, e};
+            if (visit_entity(ctx, L, 0, e)) {
+                return {ctx, L, e};
             }
             return {e};
         }
@@ -133,7 +133,7 @@ namespace ecs::select {
     };
 
     template <typename ...Args>
-    each_range<Args...> each(lua_State* L, ecs_context* ctx) {
-        return each_range<Args...>(L, ctx);
+    each_range<Args...> select(ecs_context* ctx, lua_State* L) {
+        return each_range<Args...>(ctx, L);
     }
 }

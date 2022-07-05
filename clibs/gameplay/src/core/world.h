@@ -31,18 +31,18 @@ struct world {
     uint16_t container_id();
 
     template <typename ...Args>
-    bool visit_entity(lua_State* L, ecs::select::entity<Args...>& e, int i) {
-        return ecs::select::visit_entity(L, ecs, i, e);
+    bool visit_entity(lua_State* L, ecs_api::entity<Args...>& e, int i) {
+        return ecs_api::visit_entity(ecs, L, i, e);
     }
 
     template <typename Component, typename MainKey, typename ...SubKey>
-    Component* sibling(ecs::select::entity<MainKey, SubKey...>& e) {
-        return ecs::select::sibling<Component, MainKey>(ecs, e.index);
+    Component* sibling(ecs_api::entity<MainKey, SubKey...>& e) {
+        return ecs_api::sibling<Component, MainKey, SubKey...>(ecs, e);
     }
 
     template <typename ...Args>
-    ecs::select::each_range<Args...> select(lua_State* L) {
-        return ecs::select::each<Args...>(L, ecs);
+    ecs_api::each_range<Args...> select(lua_State* L) {
+        return ecs_api::select<Args...>(ecs, L);
     }
 
     prototype_context prototype(lua_State* L, int id) {

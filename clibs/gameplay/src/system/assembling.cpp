@@ -39,7 +39,7 @@ sync_output_fluidbox(world& w, ecs::assembling& a, ecs::fluidboxes& fb, recipe_c
 }
 
 static void
-assembling_update(lua_State* L, world& w, ecs::select::entity<ecs::assembling, ecs::entity, ecs::consumer, ecs::capacitance>& v) {
+assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::entity, ecs::consumer, ecs::capacitance>& v) {
     ecs::assembling& a = v.get<ecs::assembling>();
     ecs::entity& e = v.get<ecs::entity>();
     ecs::capacitance& c = v.get<ecs::capacitance>();
