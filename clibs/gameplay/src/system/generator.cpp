@@ -4,8 +4,6 @@
 
 #include "luaecs.h"
 #include "core/world.h"
-#include "core/select.h"
-#include "core/entity.h"
 extern "C" {
 #include "util/prototype.h"
 }

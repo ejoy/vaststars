@@ -2,7 +2,7 @@
 
 struct lua_State;
 
-#include "entity.h"
+#include "ecs/component.h"
 #include "luaecs.h"
 
 namespace ecs::select {

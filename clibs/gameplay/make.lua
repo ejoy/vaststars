@@ -1,12 +1,9 @@
 local lm = require "luamake"
 
-lm:build "compile_entity" {
-    "$luamake", "lua", "clibs/gameplay/compile_entity.lua",
-    input = {
-        "../../clibs/gameplay/compile_entity.lua",
-        "../../packages/gameplay/init/component.lua",
-    },
-    output = "../../clibs/gameplay/src/core/entity.h",
+lm:runlua "compile_gameplay_ecs" {
+    script = "../../clibs/gameplay/compile_ecs.lua",
+    input = "../../packages/gameplay/init/component.lua",
+    output = "../../clibs/gameplay/src/ecs/component.h",
 }
 
 local rootdir = "../../"
@@ -15,7 +12,7 @@ local lua_include = rootdir .. lm.antdir .. "clibs/lua/"
 
 lm:lib "gameplay" {
     cxx = "c++20",
-    deps = "compile_entity",
+    deps = "compile_gameplay_ecs",
     includes = {
         ant3rd .. "luaecs",
         lua_include,

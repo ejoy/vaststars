@@ -2,8 +2,6 @@
 
 #include "luaecs.h"
 #include "core/world.h"
-#include "core/entity.h"
-#include "core/select.h"
 extern "C" {
 #include "core/fluidflow.h"
 #include "util/prototype.h"
