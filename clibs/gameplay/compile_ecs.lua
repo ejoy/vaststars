@@ -67,11 +67,15 @@ local function writeEntityH(components)
             write ""
         end
     end
+    write "}"
+    write ""
 
+    write "namespace ecs_api {"
+    write ""
     write "template <typename T> struct component {};"
     write ""
     for i, c in ipairs(components) do
-        write("template <> struct component<"..c.name.."> {")
+        write("template <> struct component<ecs::"..c.name.."> {")
         write("\tstatic inline const int id = "..i..";")
         write("\tstatic inline const char name[] = \""..c.name.."\";")
         write "};"

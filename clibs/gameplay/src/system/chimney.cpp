@@ -30,7 +30,7 @@ static bool fluidbox_pickup(world& w, ecs::fluidbox& f, recipe_items& r) {
 }
 
 static void
-chimney_update(lua_State* L, world& w, ecs::select::entity<ecs::chimney, ecs::fluidbox>& v) {
+chimney_update(lua_State* L, world& w, ecs_api::entity<ecs::chimney, ecs::fluidbox>& v) {
     ecs::chimney& c = v.get<ecs::chimney>();
     if (c.recipe == 0) {
         return;

@@ -109,109 +109,113 @@ struct manual {
 	int32_t progress;
 };
 
+}
+
+namespace ecs_api {
+
 template <typename T> struct component {};
 
-template <> struct component<entity> {
+template <> struct component<ecs::entity> {
 	static inline const int id = 1;
 	static inline const char name[] = "entity";
 };
 
-template <> struct component<chest> {
+template <> struct component<ecs::chest> {
 	static inline const int id = 2;
 	static inline const char name[] = "chest";
 };
 
-template <> struct component<assembling> {
+template <> struct component<ecs::assembling> {
 	static inline const int id = 3;
 	static inline const char name[] = "assembling";
 };
 
-template <> struct component<laboratory> {
+template <> struct component<ecs::laboratory> {
 	static inline const int id = 4;
 	static inline const char name[] = "laboratory";
 };
 
-template <> struct component<inserter> {
+template <> struct component<ecs::inserter> {
 	static inline const int id = 5;
 	static inline const char name[] = "inserter";
 };
 
-template <> struct component<capacitance> {
+template <> struct component<ecs::capacitance> {
 	static inline const int id = 6;
 	static inline const char name[] = "capacitance";
 };
 
-template <> struct component<burner> {
+template <> struct component<ecs::burner> {
 	static inline const int id = 7;
 	static inline const char name[] = "burner";
 };
 
-template <> struct component<chimney> {
+template <> struct component<ecs::chimney> {
 	static inline const int id = 8;
 	static inline const char name[] = "chimney";
 };
 
-template <> struct component<consumer> {
+template <> struct component<ecs::consumer> {
 	static inline const int id = 9;
 	static inline const char name[] = "consumer";
 };
 
-template <> struct component<generator> {
+template <> struct component<ecs::generator> {
 	static inline const int id = 10;
 	static inline const char name[] = "generator";
 };
 
-template <> struct component<accumulator> {
+template <> struct component<ecs::accumulator> {
 	static inline const int id = 11;
 	static inline const char name[] = "accumulator";
 };
 
-template <> struct component<fluidbox> {
+template <> struct component<ecs::fluidbox> {
 	static inline const int id = 12;
 	static inline const char name[] = "fluidbox";
 };
 
-template <> struct component<fluidboxes> {
+template <> struct component<ecs::fluidboxes> {
 	static inline const int id = 13;
 	static inline const char name[] = "fluidboxes";
 };
 
-template <> struct component<pump> {
+template <> struct component<ecs::pump> {
 	static inline const int id = 14;
 	static inline const char name[] = "pump";
 };
 
-template <> struct component<mining> {
+template <> struct component<ecs::mining> {
 	static inline const int id = 15;
 	static inline const char name[] = "mining";
 };
 
-template <> struct component<road> {
+template <> struct component<ecs::road> {
 	static inline const int id = 16;
 	static inline const char name[] = "road";
 };
 
-template <> struct component<station> {
+template <> struct component<ecs::station> {
 	static inline const int id = 17;
 	static inline const char name[] = "station";
 };
 
-template <> struct component<save_fluidflow> {
+template <> struct component<ecs::save_fluidflow> {
 	static inline const int id = 18;
 	static inline const char name[] = "save_fluidflow";
 };
 
-template <> struct component<solar_panel> {
+template <> struct component<ecs::solar_panel> {
 	static inline const int id = 19;
 	static inline const char name[] = "solar_panel";
 };
 
-template <> struct component<base> {
+template <> struct component<ecs::base> {
 	static inline const int id = 20;
 	static inline const char name[] = "base";
 };
 
-template <> struct component<manual> {
+template <> struct component<ecs::manual> {
 	static inline const int id = 21;
 	static inline const char name[] = "manual";
 };
