@@ -120,6 +120,9 @@ prototype "放置组装机" {
   count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
+    "textures/task_tips_pic/task_produce_geopack1.texture",
+    "textures/task_tips_pic/task_produce_geopack2.texture",
+    "textures/task_tips_pic/start_construct.texture",
   },
   sign_desc = {
     { desc = "使用“建造”放置1台组装机", icon = "textures/construct/industry.texture"},
@@ -135,10 +138,6 @@ prototype "生产地质科技包" {
   prerequisites = {"放置组装机"},
   count = 3,
   tips_pic = {
-    "textures/task_tips_pic/task_click_build.texture",
-    "textures/task_tips_pic/task_produce_geopack1.texture",
-    "textures/task_tips_pic/task_produce_geopack2.texture",
-    "textures/task_tips_pic/start_construct.texture",
     "textures/task_tips_pic/task_produce_geopack3.texture",
     "textures/task_tips_pic/task_produce_geopack4.texture",
     "textures/task_tips_pic/task_produce_geopack5.texture",
