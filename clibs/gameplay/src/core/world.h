@@ -31,8 +31,8 @@ struct world {
     uint16_t container_id();
 
     template <typename ...Args>
-    bool visit_entity(lua_State* L, ecs_api::entity<Args...>& e, int i) {
-        return ecs_api::visit_entity(ecs, L, i, e);
+    bool visit_entity(ecs_api::entity<Args...>& e, int i, lua_State* L) {
+        return ecs_api::visit_entity(ecs, i, e, L);
     }
 
     template <typename Component, typename MainKey, typename ...SubKey>
@@ -41,7 +41,12 @@ struct world {
     }
 
     template <typename ...Args>
-    ecs_api::each_range<Args...> select(lua_State* L) {
+    auto select() {
+        return ecs_api::select<Args...>(ecs);
+    }
+
+    template <typename ...Args>
+    auto select(lua_State* L) {
         return ecs_api::select<Args...>(ecs, L);
     }
 

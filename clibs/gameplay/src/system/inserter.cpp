@@ -142,7 +142,7 @@ static void
 updateWaiting(lua_State* L, world& w) {
     ecs_api::entity<ecs::inserter, ecs::entity, ecs::capacitance> e;
     for (auto iter = waiting.begin(); iter != waiting.end();) {
-        if (!w.visit_entity(L, e, *iter) || tryActive(L, w, e.get<ecs::inserter>(), e.get<ecs::entity>(), e.get<ecs::capacitance>())) {
+        if (!w.visit_entity(e, *iter, L) || tryActive(L, w, e.get<ecs::inserter>(), e.get<ecs::entity>(), e.get<ecs::capacitance>())) {
             iter = waiting.erase(iter);
         }
         else {
