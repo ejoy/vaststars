@@ -101,7 +101,6 @@ prototype "挖掘碎石矿" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "碎石"},
-  -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"放置采矿机"},
   count = 10,
   tips_pic = {
@@ -112,12 +111,28 @@ prototype "挖掘碎石矿" {
   },
 }
 
+prototype "放置组装机" {
+  desc = "放置组装机",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"select_entity", 0, "组装机I"},
+  prerequisites = {"挖掘铁矿石","挖掘碎石矿"},
+  count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_click_build.texture",
+  },
+  sign_desc = {
+    { desc = "使用“建造”放置1台组装机", icon = "textures/construct/industry.texture"},
+  },
+}
+
+
 prototype "生产地质科技包" {
   desc = "生产科技包用于科技研究",
   icon = "textures/construct/assembler.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "地质科技包"},
-  prerequisites = {"挖掘铁矿石","挖掘碎石矿"},
+  prerequisites = {"放置组装机"},
   count = 3,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",

@@ -51,6 +51,56 @@ local guide = {
         },
 	},
 
+    {
+        name = "guide-4",
+		narrative = {
+            {"采集P4031地质样本制造科技包..哔哩..我们就能更好地研究星球地质结构。", "textures/guide/guide-2.texture"},
+            {"P4031蕴含丰富的矿藏..哔哩..先用采矿机挖掘铁矿和石矿资源..(期待)", "textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            visible_value = 20,
+            task = {
+                "放置采矿机",
+            }
+        },
+        prerequisites = {
+            "地质研究",
+        },
+	},
+
+    {
+        name = "guide-5",
+		narrative = {
+            {"组装机可使用3D打印技术制造地质科技包..哔哩..哔哗..请求建造组装机..(期待)", "textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            visible_value = 20,
+            task = {
+                "放置组装机",
+            }
+        },
+        prerequisites = {
+            "挖掘铁矿石",
+            "挖掘碎石矿",
+        },
+	},
+
+    {
+        name = "guide-6",
+		narrative = {
+            {"科研中心针对“科技包”可开展对应的研究..哔哩..将地质科技包运送科研中心进行下一个科技研究(期待)", "textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            visible_value = 20,
+            task = {
+                "铁矿熔炼",
+            }
+        },
+        prerequisites = {
+            "生产地质科技包",
+        },
+	},
+
 }
 
 return guide
