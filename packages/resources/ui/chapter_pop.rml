@@ -50,37 +50,19 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
-                archival_files = {},
-                show_archival_files = false,
+                main_text = "none",
+                sub_text = "none",
             })
-
-            function start.clickSave(event)
-                ui_sys.pub {"save"}
-                ui_sys.close()
-            end
-
-            function start.clickRestart(event)
-                ui_sys.pub {"restart"}
-                ui_sys.close()
-            end
-
-            function start.clickRestore(event, index)
-                ui_sys.pub {"restore", index}
-            end
-
-            function start.clickClose()
-                ui_sys.pub {"close"}
-            end
-
+            window.setTimeout(function() ui_sys.close() end, 3500)
         </script>
     </head>
     <body>
         <div style="pointer-events: none;"  data-model="start">
             <!-- 显示 -->
-            <div class="banner" data-if="true">
+            <div class="banner">
                 <div class="chapter">
-                    <div style="font-size: 10.25vmin;color: rgb(180, 180, 180); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">序幕</div>
-                    <div style="font-size: 16.25vmin; color:  rgb(255, 255, 255); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">迫降P4031</div> 
+                    <div style="font-size: 10.25vmin;color: rgb(180, 180, 180); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">{{main_text}}</div>
+                    <div style="font-size: 16.25vmin; color:  rgb(255, 255, 255); -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);">{{sub_text}}</div> 
                 </div>
             </div>
         </div>

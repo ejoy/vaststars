@@ -23,6 +23,7 @@ function construct_sys:camera_usage()
 
         if objects:get(object_id) then -- object_id may be 0, such as when user click on empty space
             if global.mode == "teardown" then
+                world:pub {"teardown", objects:get(object_id).prototype_name}
                 ieditor:teardown(object_id)
             elseif global.mode == "normal" then
                 if idetail.show(object_id) then

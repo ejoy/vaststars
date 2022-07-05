@@ -15,6 +15,7 @@ local world_update = ecs.require "world_update.init"
 local saveload = ecs.require "saveload"
 local objects = require "objects"
 local vsobject_manager = ecs.require "vsobject_manager"
+local iguide = require "gameplay.interface.guide"
 
 local m = ecs.system 'init_system'
 function m:init_world()
@@ -30,6 +31,7 @@ function m:init_world()
     if not saveload:restore() then
         return
     end
+    iui.set_guide_progress(iguide.get_progress(world))
 end
 
 local function get_object(x, y) -- TODO: optimize

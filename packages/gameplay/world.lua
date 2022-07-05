@@ -163,10 +163,14 @@ return function ()
         end
     end
 
-    function world:research_progress(tech)
+    function world:research_progress(tech, progress)
         local pt = prototype.queryByName("tech", tech)
         assert(pt, "unknown tech: " .. tech)
-        return cworld:research_progress(pt.id)
+        if progress then
+            return cworld:research_progress(pt.id, progress)
+        else
+            return cworld:research_progress(pt.id)
+        end
     end
 
     function world:manual(lst)
