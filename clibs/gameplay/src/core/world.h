@@ -15,8 +15,7 @@ struct lua_State;
 struct ecs_context;
 struct prototype_cache;
 
-struct world {
-    struct ecs_context*     ecs;
+struct world: public ecs_api::context {
     struct prototype_cache* P;
     struct container_mgr containers;
     std::map<uint16_t, fluidflow> fluidflows;
@@ -29,26 +28,6 @@ struct world {
     C& query_container(uint16_t id);
     template <typename C>
     uint16_t container_id();
-
-    template <typename ...Args>
-    bool visit_entity(ecs_api::entity<Args...>& e, int i, lua_State* L) {
-        return ecs_api::visit_entity(ecs, i, e, L);
-    }
-
-    template <typename Component, typename MainKey, typename ...SubKey>
-    Component* sibling(ecs_api::entity<MainKey, SubKey...>& e) {
-        return ecs_api::sibling<Component, MainKey, SubKey...>(ecs, e);
-    }
-
-    template <typename ...Args>
-    auto select() {
-        return ecs_api::select<Args...>(ecs);
-    }
-
-    template <typename ...Args>
-    auto select(lua_State* L) {
-        return ecs_api::select<Args...>(ecs, L);
-    }
 
     prototype_context prototype(lua_State* L, int id) {
         return {L, P, id};

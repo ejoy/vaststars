@@ -87,15 +87,12 @@ local function writeEntityH(components)
     write "\tstatic inline const char name[] = #NAME; \\"
     write "};"
     write ""
-
     for _, c in ipairs(components) do
         write("ECS_COMPONENT("..c.name..")")
     end
     write ""
-
     write "#undef ECS_COMPONENT"
     write ""
-
     write "}"
     write ""
 
