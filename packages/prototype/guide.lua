@@ -14,7 +14,7 @@ local guide = {
             task = {
                 "清除废墟",
             },
-            visible_value = 5,
+            guide_progress = 5,
         },
         prerequisites = {},
 	},
@@ -25,7 +25,7 @@ local guide = {
             {"看来我们捡到了不少有价值的破烂..哔哩..物资。科技就是第一生产力，让我们建造一所科研中心..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
-            visible_value = 10,
+            guide_progress = 10,
             task = {
                 "放置科研中心",
             }
@@ -42,7 +42,7 @@ local guide = {
             {"哔哩..让我们点击“研究中心”按钮，开始研究第一个科技..(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
-            visible_value = 15,
+            guide_progress = 15,
             task = {
             }
         },
@@ -58,7 +58,7 @@ local guide = {
             {"P4031蕴含丰富的矿藏..哔哩..先用采矿机挖掘铁矿和石矿资源..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
-            visible_value = 20,
+            guide_progress = 20,
             task = {
                 "放置采矿机",
             }
@@ -74,7 +74,7 @@ local guide = {
             {"组装机可使用3D打印技术制造地质科技包..哔哩..哔哗..请求建造组装机..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
-            visible_value = 20,
+            guide_progress = 20,
             task = {
                 "放置组装机",
             }
@@ -91,7 +91,7 @@ local guide = {
             {"科研中心针对“科技包”可开展对应的研究..哔哩..将地质科技包运送科研中心进行下一个科技研究(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
-            visible_value = 20,
+            guide_progress = 20,
             task = {
                 "铁矿熔炼",
             }

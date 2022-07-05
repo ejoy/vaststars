@@ -22,7 +22,7 @@ function M.get_progress(world)
     if guide_id < 2 then
         return 0
     end
-    return guide[guide_id - 1].narrative_end.visible_value
+    return guide[guide_id - 1].narrative_end.guide_progress
 end
 
 function M.step_progress(world)
