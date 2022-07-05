@@ -122,6 +122,10 @@ local function _match_fluidbox(fluidboxes, x, y, dir)
     return f
 end
 
+local function _debug_fluid_name(object)
+    print(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)
+end
+
 local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
     local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
     local succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
@@ -276,6 +280,7 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
                 state = object_state,
             }
             objects:set(object, EDITOR_CACHE_TEMPORARY[1])
+            _debug_fluid_name(object) -- TODO: remove this line
         end
     end
 
@@ -285,6 +290,7 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
             assert(iprototype.has_type(iprototype.queryByName("entity", _object.prototype_name).type, "fluidbox"))
             _object.fluid_name = State.fluid_name
             _object.fluidflow_id = fluidflow_id
+            _debug_fluid_name(_object) -- TODO: remove this line
         end
     end
 
