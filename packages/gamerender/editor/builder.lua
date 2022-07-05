@@ -142,29 +142,41 @@ end
 
 local function update_fluidbox(self, cache_names_r, cache_name_w, prototype_name, x, y, dir, fluid_name)
     for _, v in ipairs(ifluid:get_fluidbox(prototype_name, x, y, dir, fluid_name)) do
-        local dx, dy = ieditor:get_dir_coord(v.x, v.y, v.dir)
+        local succ, dx, dy = terrain:move_coord(v.x, v.y, v.dir, 1)
+        if not succ then
+            goto continue
+        end
+
         local object = objects:coord(dx, dy, cache_names_r)
-        if object then
-            for _, v1 in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
-                if is_connection(v.x, v.y, v.dir, v1.x, v1.y, v1.dir) then
-                    if object.fluidflow_id ~= 0 then
-                        for _, object in objects:selectall("fluidflow_id", object.fluidflow_id, cache_names_r) do
-                            local o = iobject.clone(object)
-                            o.fluidflow_id = 0
-                            o.fluid_name = v.fluid_name
-                            objects:set(o, cache_name_w)
-                        end
-                    else
-                        if object.fluid_name ~= v.fluid_name then
-                            local prototype_name, dir = ieditor:refresh_pipe(object.prototype_name, object.dir, v1.dir, 0)
-                            if prototype_name then
-                                object.prototype_name, object.dir = prototype_name, dir
-                            end
+        if not object then
+            goto continue
+        end
+
+        local typeobject = iprototype.queryByName("entity", object.prototype_name)
+        if not iprototype.has_type(typeobject.type, "fluidbox") then
+            goto continue
+        end
+
+        for _, v1 in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+            if is_connection(v.x, v.y, v.dir, v1.x, v1.y, v1.dir) then
+                if object.fluidflow_id ~= 0 then
+                    for _, object in objects:selectall("fluidflow_id", object.fluidflow_id, cache_names_r) do
+                        local o = iobject.clone(object)
+                        o.fluidflow_id = 0
+                        o.fluid_name = v.fluid_name
+                        objects:set(o, cache_name_w)
+                    end
+                else
+                    if object.fluid_name ~= v.fluid_name then
+                        local prototype_name, dir = ieditor:refresh_pipe(object.prototype_name, object.dir, v1.dir, 0)
+                        if prototype_name then
+                            object.prototype_name, object.dir = prototype_name, dir
                         end
                     end
                 end
             end
         end
+        ::continue::
     end
 end
 
