@@ -72,15 +72,29 @@ local function writeEntityH(components)
 
     write "namespace ecs_api {"
     write ""
+    write "struct component_id {"
+    write "\tinline static int id = 0;"
+    write "\tinline static int gen() {"
+    write "\t\treturn ++id;"
+    write "\t}"
+    write "};"
+    write ""
     write "template <typename T> struct component {};"
     write ""
-    for i, c in ipairs(components) do
-        write("template <> struct component<ecs::"..c.name.."> {")
-        write("\tstatic inline const int id = "..i..";")
-        write("\tstatic inline const char name[] = \""..c.name.."\";")
-        write "};"
-        write ""
+    write "#define ECS_COMPONENT(NAME) \\"
+    write "template <> struct component<ecs::##NAME> { \\"
+    write "\tstatic inline const int id = component_id::gen(); \\"
+    write "\tstatic inline const char name[] = #NAME; \\"
+    write "};"
+    write ""
+
+    for _, c in ipairs(components) do
+        write("ECS_COMPONENT("..c.name..")")
     end
+    write ""
+
+    write "#undef ECS_COMPONENT"
+    write ""
 
     write "}"
     write ""
