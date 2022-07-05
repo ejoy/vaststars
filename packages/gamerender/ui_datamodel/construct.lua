@@ -89,6 +89,12 @@ function M:drawcall_text(datamodel, text)
     datamodel.drawcall_text = text
 end
 
+function M:show_chapter(datamodel, main_text, sub_text)
+    datamodel.show_chapter = true
+    datamodel.chapter_main_text = main_text
+    datamodel.chapter_sub_text = sub_text
+end
+
 local tech_finish_switch = false
 function M:update_tech(datamodel, tech)
     if tech then

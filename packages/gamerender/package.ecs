@@ -78,6 +78,7 @@ interface "iui"
     .method "update"
     .method "preload_datamodel_dir"
     .method "add_datamodel_listener"
+    .method "set_guide_progress"
 
 system "dragdrop_camera_system"
     .implement "engine/system/dragdrop_camera_system.lua"

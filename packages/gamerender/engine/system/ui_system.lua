@@ -16,6 +16,7 @@ local datamodel_changed = {}
 local stage_ui_update = {}
 local stage_camera_usage = {}
 local datamodel_listener = {}
+local guide_progress = 0
 
 local function create_ui_mailbox(url)
     local ui_mailbox = {}
@@ -35,6 +36,7 @@ local function open(url, ...)
             for k, v in pairs(tracedoc.new(binding.template:create(...))) do -- trigger tracedoc.doc_changed
                 binding.datamodel[k] = v
             end
+            binding.datamodel.guide_progress = 0
             binding.template:flush()
             datamodel_changed[url] = true
         end
@@ -98,6 +100,8 @@ local function open(url, ...)
 
     binding.param = {...}
     binding.datamodel = tracedoc.new(binding.template:create(...))
+    binding.datamodel.guide_progress = guide_progress
+
     if binding.template.onload then
         binding.template.onload(...)
     end
@@ -233,4 +237,12 @@ end
 -- for debuger
 function iui.add_datamodel_listener(url, func)
     datamodel_listener[url] = func
+end
+
+function iui.set_guide_progress(progress)
+    guide_progress = progress
+    for url, binding in pairs(window_bindings) do
+        binding.datamodel.guide_progress = progress
+        datamodel_changed[url] = true
+    end
 end

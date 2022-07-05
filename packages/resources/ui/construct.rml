@@ -236,7 +236,8 @@
                 current_tech_icon = "none",     --当前科技图标
                 current_tech_name = "none",     --当前科技名字
                 current_tech_progress = "0%",   --当前科技进度
-                finish_animation = "0s linear 0s enlarge"
+                finish_animation = "0s linear 0s enlarge",
+                guide_progress = 0
             })
             function start.clickConstructBegin(event)
                 ui_sys.pub {"construct_begin", false}
@@ -393,12 +394,12 @@
             </div>
 
             <!-- 主菜单按钮 -->
-            <div class = "main-menu-block" data-if = "cur_edit_mode == ''">
-                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()" visible-value = "10">
+            <div class = "main-menu-block" data-if = "cur_edit_mode == '' && guide_progress >= 10">
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()" data-if = "guide_progress >= 10">
                     <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
                     <div class = "menu-button-text">指挥中心</div>
                 </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()" visible-value = "20">
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()" data-if = "guide_progress >= 15">
                     <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
                     <div class = "menu-button-text">科研中心</div>
                     <!-- 科研中心可研究科技标识 start-->
@@ -415,7 +416,7 @@
                     <div class = "menu-button-pic" style='background-image:"textures/construct/road.texture"'/>
                     <div class = "menu-button-text">地图信息</div>
                 </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" visible-value = "20">
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 20">
                     <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
                     <div class = "menu-button-text">游戏设置</div>
                 </button>
@@ -437,13 +438,13 @@
             </button>
             
             <!-- 拆除模式 -->
-            <div data-if = "cur_edit_mode != ''" data-event-click="clickDismantleBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;' visible-value = "5">
+            <div data-if = "cur_edit_mode != '' && guide_progress >= 5" data-event-click="clickDismantleBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/demolish.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除模式</div>
             </div>
 
             <!-- 建造模式 -->
-            <div data-if = "cur_edit_mode != ''" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;' visible-value = "10">
+            <div data-if = "cur_edit_mode != '' && guide_progress >= 10" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/construct.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
                 <div style ="font-size: 4vmin; top: 2.67vmin;">建造模式</div>
             </div>
@@ -484,7 +485,7 @@
             </div>
 
             <!-- 右下角按钮 -->
-            <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" visible-value = "5">
+            <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "guide_progress >= 5">
                 <!-- 建造 -->
                 <button data-if = "cur_edit_mode == ''" data-event-click="clickConstructBegin()" style='width: 20.00vmin; height: 20.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 13.67vmin; height: 13.67vmin; background-size:cover;'/>

@@ -44,25 +44,25 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
-                FluidName = ' ',
-                FluidCount = 0,
-                NewFluidName = ' ',
-            }
+                speech = "none",
+                avatar = "none",
+                count = 0,
+                total_count = 0,
+            })
 
-            function start.clickConfirm(event)
-                ui_sys.close()
-            end
-
-            function start.clickCancel(event)
-                ui_sys.close()
+            function start.click(event)
+                ui_sys.pub {"story_click"}
+                if start.count == start.total_count then
+                    ui_sys.close()
+                end
             end
         </script>
     </head>
-    <body style = "pointer-events: none;">
-        <div style = "pointer-events: none; align-items: center;" class="item-container-region"  data-model="start">
+    <body style="width: 100%; height:100%;">
+        <div style = "pointer-events: none; align-items: center;" class="item-container-region"  data-model="start" data-event-click="click()">
             <div class="panel" style="width:40%; height:24%;  align-items: center; justify-content: flex-start;">
-                <div class = "guide-speech-block">一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十</div>
-                <div class="guide-avatar-block" style='background-image:"textures/guide/guide-1.texture";'/>
+                <div class = "guide-speech-block">{{speech}}</div>
+                <div class="guide-avatar-block" data-style-background-image="avatar"/>
                 <div class="guide-info-block"/>
             </div>
         </div>

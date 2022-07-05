@@ -27,6 +27,22 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "放置科研中心" {
+    desc = "放置1座科研中心",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "科研中心I"},
+    prerequisites = {"清除废墟"},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_click_build.texture",
+    },
+    sign_desc = {
+      { desc = "使用“建造”放置1座科研中心", icon = "textures/construct/industry.texture"},
+    },
+  }
+  
+
 prototype "地质研究" {
     desc = "对火星地质结构进行标本采集和研究",
     type = { "tech" },
@@ -38,6 +54,7 @@ prototype "地质研究" {
     },
     count = 5,
     time = "3s",
+    prerequisites = {"放置科研中心"},
     sign_desc = {
       { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
     },
@@ -84,7 +101,6 @@ prototype "挖掘碎石矿" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "碎石"},
-  -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"放置采矿机"},
   count = 10,
   tips_pic = {
@@ -95,18 +111,33 @@ prototype "挖掘碎石矿" {
   },
 }
 
-prototype "生产地质科技包" {
-  desc = "生产科技包用于科技研究",
-  icon = "textures/construct/assembler.texture",
+prototype "放置组装机" {
+  desc = "放置组装机",
+  icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
-  task = {"stat_production", 0, "地质科技包"},
+  task = {"select_entity", 0, "组装机I"},
   prerequisites = {"挖掘铁矿石","挖掘碎石矿"},
-  count = 3,
+  count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
     "textures/task_tips_pic/task_produce_geopack1.texture",
     "textures/task_tips_pic/task_produce_geopack2.texture",
     "textures/task_tips_pic/start_construct.texture",
+  },
+  sign_desc = {
+    { desc = "使用“建造”放置1台组装机", icon = "textures/construct/industry.texture"},
+  },
+}
+
+
+prototype "生产地质科技包" {
+  desc = "生产科技包用于科技研究",
+  icon = "textures/construct/assembler.texture",
+  type = { "tech", "task" },
+  task = {"stat_production", 0, "地质科技包"},
+  prerequisites = {"放置组装机"},
+  count = 3,
+  tips_pic = {
     "textures/task_tips_pic/task_produce_geopack3.texture",
     "textures/task_tips_pic/task_produce_geopack4.texture",
     "textures/task_tips_pic/task_produce_geopack5.texture",

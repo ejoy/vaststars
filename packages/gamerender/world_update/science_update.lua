@@ -1,4 +1,5 @@
 local ecs = ...
+local w = ecs.world
 local global = require "global"
 local iscience = require "gameplay.interface.science"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
@@ -8,6 +9,7 @@ local function update_world(world, get_object_func)
         if world:is_researched(science.current_tech.name) then
             iscience.update_tech_list(world)
             iui.update("construct.rml", "update_tech")
+            w:pub {"research_finished", science.current_tech.name}
             science.current_tech = nil
         end
     end
