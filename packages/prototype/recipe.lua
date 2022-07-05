@@ -1307,7 +1307,6 @@ prototype "铁矿石挖掘" {
     category = "矿石开采",
     --group = "金属",
     allow_manual = false,
-    allow_mining = true,
     order = 21,
     icon = "textures/construct/air-filter1.texture",
     ingredients = {
@@ -1324,7 +1323,6 @@ prototype "碎石挖掘" {
     category = "矿石开采",
     --group = "金属",
     allow_manual = false,
-    allow_mining = true,
     order = 22,
     icon = "textures/construct/air-filter1.texture",
     ingredients = {

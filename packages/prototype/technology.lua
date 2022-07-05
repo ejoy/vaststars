@@ -19,6 +19,8 @@ local prototype = gameplay.register.prototype
     count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
+      "textures/task_tips_pic/task_demolish2.texture",
+      "textures/task_tips_pic/task_demolish3.texture",
     },
     sign_desc = {
       { desc = "清除指挥中心附近的3处废墟", icon = "textures/construct/industry.texture"},
@@ -184,7 +186,7 @@ prototype "气候研究" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"破损空气过滤器","破损地下水挖掘机","气候科技包"},
+    unlock_recipe = {"破损空气过滤器","破损地下水挖掘机","气候科技包1"},
   },
   prerequisites = {"生产石砖"},
   ingredients = {
@@ -437,6 +439,7 @@ prototype "基地生产1" {
   icon = "textures/science/tech-logistics.texture",
   effects = {
     modifier = {["headquarter-mining-speed"] = 0.1},
+    unlock_recipe = {"破损铁制电线杆"},
   },
   prerequisites = {"维修破损组装机"},
   ingredients = {
@@ -533,7 +536,7 @@ prototype "碳处理2" {
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"甲烷转乙烯"},
+    unlock_recipe = {"甲烷转乙烯","二氧化碳转一氧化碳"},
     -- unlock_recipe = {"二氧化碳转一氧化碳","一氧化碳转石墨"},
   },
   prerequisites = {"生产氢气","生产二氧化碳"},
@@ -969,7 +972,7 @@ prototype "化学工程" {
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"化工厂1"},
+    unlock_recipe = {"化工厂1","纯水电解"},
   },
   prerequisites = {"有机化学2"},
   ingredients = {
@@ -1200,7 +1203,7 @@ prototype "电子研究" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"电子科技包"},
+    unlock_recipe = {"电子科技包1"},
   },
   prerequisites = {"批量生产1","电子器件"},
   ingredients = {

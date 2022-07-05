@@ -5,37 +5,56 @@ local function _get_name(prototype)
     return iprototype.queryById(prototype).name
 end
 
-local mining_recipe = {}
+local recipe_category = {}
 for _, typeobject in pairs(iprototype.each_maintype "recipe") do
-    if typeobject.allow_mining then
-        local ingredients = itypes.items(typeobject.ingredients)
-        local result = itypes.items(typeobject.results)
-        assert(#ingredients == 0, "recipe of mining should not have ingredients")
-        assert(#result == 1, "recipe of mining should only have one result")
-
-        mining_recipe[_get_name(result[1].id)] = typeobject.name
-    end
+    recipe_category[typeobject.category] = recipe_category[typeobject.category] or {}
+    local t = recipe_category[typeobject.category]
+    t[#t+1] = typeobject
 end
 
-local mining_mineral = {}
+local function _get_recipes(category)
+    local t = recipe_category[category]
+    if not t then
+        return
+    end
+    return t
+end
+
+local mining_recipe = {}
 for _, typeobject in pairs(iprototype.each_maintype "entity") do
-    if iprototype.has_type(typeobject.type, "mining") then
-        for _, mineral in ipairs(typeobject.minerals) do
-            mining_mineral[typeobject.name] = mining_mineral[typeobject.name] or {}
-            mining_mineral[typeobject.name][mineral] = true
+    -- find all miner entities
+    if not iprototype.has_type(typeobject.type, "mining") then
+        goto continue
+    end
+
+    mining_recipe[typeobject.name] = {}
+    for _, category in ipairs(typeobject.craft_category or {}) do -- craft_category may be nil
+        local recipes = _get_recipes(category)
+        if not recipes then
+           error(("can not find recipe category `%s`"):format(category))
+        end
+
+        for _, recipe_typeobject in ipairs(recipes) do
+            local ingredients = itypes.items(recipe_typeobject.ingredients)
+            local result = itypes.items(recipe_typeobject.results)
+            assert(#ingredients == 0, "recipe of mining should not have ingredients")
+            assert(#result == 1, "recipe of mining should only have one result")
+
+            local mineral = _get_name(result[1].id)
+            assert(mining_recipe[mineral] == nil, ("find duplicate recipe for mineral `%s`"):format(mineral))
+            mining_recipe[typeobject.name][mineral] = recipe_typeobject.name
         end
     end
+
+    ::continue::
 end
 
 local M = {}
 function M.get_mineral_recipe(prototype_name, mineral)
-    if not mining_mineral[prototype_name] then
+    if not mining_recipe[prototype_name] then
         return
     end
-    if not mining_mineral[prototype_name][mineral] then
-        return
-    end
-    return mining_recipe[mineral]
+    return mining_recipe[prototype_name][mineral]
 end
 
 return M

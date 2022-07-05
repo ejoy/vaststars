@@ -87,5 +87,5 @@ end
 local components = loadComponents "packages/gameplay/init/component.lua"
 local data = writeEntityH(components)
 
-local f <close> = assert(io.open("clibs/gameplay/src/core/entity.h", "w"))
+local f <close> = assert(io.open("clibs/gameplay/src/ecs/component.h", "w"))
 f:write(data)
