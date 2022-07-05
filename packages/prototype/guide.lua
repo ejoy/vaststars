@@ -27,12 +27,30 @@ local guide = {
         narrative_end = {
             visible_value = 10,
             task = {
+                "放置科研中心",
             }
         },
         prerequisites = {
             "清除废墟",
         },
 	},
+
+    {
+        name = "guide-3",
+		narrative = {
+            {"哔哩..我们终于恢复了研究能力..哔哩..目前存活概率提升为0.07672%..(轻松)", "textures/guide/guide-1.texture"},
+            {"哔哩..让我们点击“研究中心”按钮，开始研究第一个科技..(兴奋)", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            visible_value = 15,
+            task = {
+            }
+        },
+        prerequisites = {
+            "放置科研中心",
+        },
+	},
+
 }
 
 return guide
