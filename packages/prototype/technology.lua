@@ -533,7 +533,7 @@ prototype "管道系统2" {
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"破损化工厂","地下管1"},
+    unlock_recipe = {"地下管1"},
   },
   prerequisites = {"收集空气","放置太阳能板"},
   ingredients = {
