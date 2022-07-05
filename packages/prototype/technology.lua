@@ -57,7 +57,7 @@ prototype "放置采矿机" {
     "textures/task_tips_pic/start_construct.texture",
   },
   sign_desc = {
-    { desc = "使用“建造”在铁矿区域放置2台采矿机", icon = "textures/construct/industry.texture"},
+    { desc = "使用“建造”在铁矿和石矿区域放置2台采矿机", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -73,7 +73,23 @@ prototype "挖掘铁矿石" {
     "textures/task_tips_pic/task_produce_ore3.texture",
   },
   sign_desc = {
-    { desc = "放置采矿机挖掘10个铁矿石", icon = "textures/construct/industry.texture"},
+    { desc = "在铁矿上放置采矿机挖掘10个铁矿石", icon = "textures/construct/industry.texture"},
+  },
+}
+
+prototype "挖掘碎石矿" {
+  desc = "挖掘足够的碎石可以开始进行锻造",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"stat_production", 0, "碎石"},
+  -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
+  prerequisites = {"放置采矿机"},
+  count = 10,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_ore3.texture",
+  },
+  sign_desc = {
+    { desc = "在碎石矿上放置采矿机挖掘10个碎石", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -82,7 +98,7 @@ prototype "生产地质科技包" {
   icon = "textures/construct/assembler.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "地质科技包"},
-  prerequisites = {"挖掘铁矿石"},
+  prerequisites = {"挖掘铁矿石","挖掘碎石矿"},
   count = 3,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
