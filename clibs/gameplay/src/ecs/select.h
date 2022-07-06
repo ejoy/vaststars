@@ -2,7 +2,6 @@
 
 struct lua_State;
 
-#include "ecs/component.h"
 #include "luaecs.h"
 #include <type_traits>
 
@@ -39,7 +38,7 @@ namespace ecs_api {
 
         template <>
         struct visit_entity_sibling <> {
-            bool operator()(ecs_context* ctx, int mainkey, int i, entity_<>& e) {}
+            bool operator()(ecs_context* ctx, int mainkey, int i, entity_<>& e) { return true; }
             void operator()(ecs_context* ctx, int mainkey, int i, entity_<>& e, lua_State* L) {}
         };
 
@@ -230,19 +229,34 @@ namespace ecs_api {
     struct context {
         ecs_context* ecs;
 
+        template <typename Component>
+        Component* iter(int index) {
+            return (Component*)entity_iter(ecs, component<Component>::id, index);
+        }
+
         template <typename Component, typename MainKey, typename ...SubKey>
-        Component* sibling(ecs_api::entity<MainKey, SubKey...>& e) {
+        Component* sibling(entity<MainKey, SubKey...>& e) {
             return (Component*)entity_sibling(ecs, component<MainKey>::id, e.index, component<Component>::id);
         }
 
         template <typename Component, typename MainKey, typename ...SubKey>
-        void enable_tag(ecs_api::entity<MainKey, SubKey...>& e) {
+        void enable_tag(entity<MainKey, SubKey...>& e) {
             entity_enable_tag(ecs, component<MainKey>::id, e.index, component<Component>::id);
         }
 
         template <typename Component, typename MainKey, typename ...SubKey>
-        void disable_tag(ecs_api::entity<MainKey, SubKey...>& e) {
+        void disable_tag(entity<MainKey, SubKey...>& e) {
             entity_disable_tag(ecs, component<MainKey>::id, e.index, component<Component>::id);
+        }
+
+        template <typename Component>
+        void clear_type() {
+            entity_clear_type(ecs, component<Component>::id);
+        }
+
+        template <typename MainKey, typename ...SubKey>
+        void remove(entity<MainKey, SubKey...>& e) {
+            entity_remove(ecs, component<MainKey>::id, e.index);
         }
 
         template <typename ...Args>
@@ -256,7 +270,7 @@ namespace ecs_api {
         }
 
         template <typename ...Args>
-        bool visit_entity(ecs_api::entity<Args...>& e, int i, lua_State* L) {
+        bool visit_entity(entity<Args...>& e, int i, lua_State* L) {
             return impl::visit_entity(ecs, i, e, L);
         }
     };

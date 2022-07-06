@@ -106,7 +106,8 @@ public:
         std::free(m_buckets);
     }
 
-    void insert_or_assign(const key_type& key, mapped_type&& obj) {
+    template <typename MappedType>
+    void insert_or_assign(const key_type& key, MappedType obj) {
         if (m_size >= m_maxsize) {
             increase_size();
         }
