@@ -143,6 +143,10 @@ public:
         return m_size;
     }
 
+    bool empty() const {
+        return size() == 0;
+    }
+
     mapped_type* find(const key_type& key) noexcept {
         auto slot = find_key(key);
         if (slot == kInvalidSlot) {
