@@ -19,25 +19,16 @@ local function pipeline(world, cworld, name)
     for _, stage in ipairs(p) do
         for _, s in pairs(systems) do
             if s[stage] then
-                funcs[#funcs+1] = function()
-                    return s[stage](world)
-                end
+                funcs[#funcs+1] = s[stage]
             end
         end
         for _, s in pairs(csystems) do
             if s[stage] then
-                funcs[#funcs+1] = function()
-                    return s[stage](cworld)
-                end
+                funcs[#funcs+1] = s[stage]
             end
         end
     end
-    local n = #funcs
-    return function (...)
-        for i = 1, n do
-            funcs[i](...)
-        end
-    end
+    return cworld.system(cworld, world, funcs)
 end
 
 return function ()

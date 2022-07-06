@@ -358,6 +358,51 @@ namespace lua_world {
     int backup_container(lua_State* L);
     int restore_container(lua_State* L);
 
+
+    constexpr static intptr_t LuaFunction = 0x7000000000000000;
+
+    static int system_call(lua_State* L) {
+        intptr_t* list = (intptr_t*)lua_touserdata(L, lua_upvalueindex(4));
+        size_t n = lua_rawlen(L, lua_upvalueindex(4)) / sizeof(intptr_t);
+        lua_settop(L, 0);
+        lua_pushvalue(L, lua_upvalueindex(1));
+        for (size_t i = 0; i < n; ++i) {
+            intptr_t f = list[i];
+            if (f != LuaFunction) {
+                ((lua_CFunction)f)(L);
+            }
+            else {
+                lua_rawgeti(L, lua_upvalueindex(3), i+1);
+                lua_pushvalue(L, lua_upvalueindex(2));
+                lua_call(L, 1, 0);
+            }
+        }
+        return 0;
+    }
+
+    static int system(lua_State* L) {
+        luaL_checktype(L, 3, LUA_TTABLE);
+        lua_settop(L, 3);
+
+        lua_Integer n = luaL_len(L, 3);
+        intptr_t* list = (intptr_t*)lua_newuserdatauv(L, sizeof(intptr_t) * n, 3);
+        for (lua_Integer i = 1; i <= n; ++i) {
+            lua_rawgeti(L, 3, i);
+            luaL_checktype(L, -1, LUA_TFUNCTION);
+            if (lua_iscfunction(L, -1)) {
+                intptr_t f = (intptr_t)lua_tocfunction(L, -1);
+                assert(f != LuaFunction);
+                list[i-1] = f;
+            }
+            else {
+                list[i-1] = LuaFunction;
+            }
+            lua_pop(L, 1);
+        }
+        lua_pushcclosure(L, system_call, 4);
+        return 1;
+    }
+
     static int
     create(lua_State* L) {
         struct world* w = (struct world*)lua_newuserdatauv(L, sizeof(struct world), 0);
@@ -390,6 +435,7 @@ namespace lua_world {
                 { "restore_container", restore_container },
                 // misc
                 {"reset", reset},
+                {"system", system},
                 {"__gc", destroy},
                 {nullptr, nullptr},
             };
