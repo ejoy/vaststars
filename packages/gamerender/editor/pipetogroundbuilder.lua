@@ -68,7 +68,6 @@ local function new_entity(self, datamodel, typeobject)
         x = x,
         y = y,
         fluid_name = "",
-        fluidflow_id = 0,
         state = "construct",
     }
 

@@ -11,6 +11,7 @@ local ientity = require "gameplay.interface.entity"
 local imining = require "gameplay.interface.mining"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
+local global = require "global"
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
     local typeobject = iprototype.queryByName("entity", prototype_name)
@@ -162,7 +163,8 @@ local function update_fluidbox(self, cache_names_r, cache_name_w, prototype_name
                 if object.fluidflow_id ~= 0 then
                     for _, object in objects:selectall("fluidflow_id", object.fluidflow_id, cache_names_r) do
                         local o = iobject.clone(object)
-                        o.fluidflow_id = 0
+                        global.fluidflow_id = global.fluidflow_id + 1
+                        o.fluidflow_id = global.fluidflow_id
                         o.fluid_name = v.fluid_name
                         objects:set(o, cache_name_w)
                     end

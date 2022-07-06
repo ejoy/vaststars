@@ -72,7 +72,7 @@ local function restore_world()
             for i = 0, w - 1 do
                 for j = 0, h - 1 do
                     local coord = iprototype.packcoord(e.x + i, e.y + j)
-                    assert(fluidbox_map[coord] == nil)
+                    assert(fluidbox_map[coord] == nil, ("duplicate fluidbox coord: %d, %d"):format(e.x + i, e.y + j))
                     fluidbox_map[coord] = v.id
                 end
             end

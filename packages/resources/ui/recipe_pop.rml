@@ -134,12 +134,12 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
+                recipe_category = {},
+                recipe_items = {},
                 object_id = 0,
                 recipe_index = 1,
                 recipe_name = "",
-                recipe_menu = {},
                 catalog_index = 1,
-                items = {},
 
                 recipe_time = " ",
                 recipe_ingredients = {},
@@ -147,7 +147,7 @@
             })
 
             local function clickItem(index)
-                local recipe = start.items[index]
+                local recipe = start.recipe_items[index]
                 if not recipe then
                     return
                 end
@@ -155,6 +155,7 @@
                 start.recipe_time = ("%ss"):format(recipe.time // 50) -- 50 ticks per second
                 start.recipe_ingredients = recipe.ingredients
                 start.recipe_results = recipe.results
+                ui_sys.pub {"click_recipe", start.recipe_name}
             end
 
             function start.clickClose(event)
@@ -172,36 +173,31 @@
             end
 
             local select_item
-            function start.clickCatalog(event, it_index)
+            function start.clickCategory(event, it_index)
                 start.catalog_index = it_index + 1
-                start.items = start.recipe_menu[it_index + 1].item
-                -- <!-- tag page begin -->
-                select_item = nil
-                start.page:on_dirty_all(#start.items)
-                -- <!-- tag page end -->
+                ui_sys.pub {"click_category", start.catalog_index}
             end
 
             -- <!-- tag page begin -->
             local function page_item_renderer(index)
-                if index > #start.items then
+                if index > #start.recipe_items then
                     local e = document.createElement "div"
                     e.outerHTML = [[<div style = "width: 12.00vmin; height: 12.00vmin;" />]]
                     return e
                 end
 
                 local item = document.createElement "div"
-                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s"><p class = "new-coming">新</p></div>]]):format(start.items[index].icon)
+                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s"><p class = "new-coming" data-if="%s">新</p></div>]]):format(start.recipe_items[index].icon, start.recipe_items[index].new)
                 local select_style_border = "5px green"
 
-
-                if start.recipe_name == start.items[index].name then
+                if start.recipe_name == start.recipe_items[index].name then
                     select_item = item
                     item.style.border = select_style_border
                 end
 
                 item.addEventListener('click', function(event)
                     if select_item then
-                        select_item.style.border = '0px green'
+                        select_item.style.border = '0px green' -- TODO: define style
                     end
                     item.style.border = select_style_border
                     clickItem(index)
@@ -218,9 +214,13 @@
 
             ui_sys.mapping(start, {
                 {
-                    "items",
+                    "recipe_items",
                     function()
-                        start.page:on_dirty_all(#start.items)
+                        if select_item then
+                            select_item.style.border = '0px green'
+                        end
+                        select_item = nil
+                        start.page:on_dirty_all(#start.recipe_items)
                     end
                 },
                 {
@@ -247,15 +247,12 @@
                 <!-- tag page end -->
 
                 <div class = "draw-line"/>
-
-
                 <div class = "tab-container" style="flex-grow: 1;">
-                    <div data-for = "recipe_menu" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
-                        <workbutton data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index + 1 == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'" style = "width: 100%;">
+                    <div data-for = "recipe_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
+                        <workbutton data-event-click="clickCategory(it_index)" data-style-background-color = "it_index + 1 == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'" style = "width: 100%;">
                             <div class="workbutton-bg" data-style-background-image="it.icon"/>
                             <div class="catalog-desc">{{it.group}}</div>
-                            <!--新配方的标识和动画-->
-                            <p class="new-coming">新</p>
+                            <p class="new-coming" data-if="it.new">新</p> <!--新配方的标识和动画-->
                         </workbutton>
                     </div>
                 </div>

@@ -242,7 +242,7 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
     end
 
     local fluidflow_id = 0
-    if not State.failed and State.fluid_name == "" then
+    if not State.failed then -- TODO: when there are multiple fluidflow id, we should merge them
         global.fluidflow_id = global.fluidflow_id + 1
         fluidflow_id = global.fluidflow_id
     end
@@ -446,7 +446,6 @@ local function new_entity(self, datamodel, typeobject)
         x = x,
         y = y,
         fluid_name = "",
-        fluidflow_id = 0,
         state = "construct"
     }
 

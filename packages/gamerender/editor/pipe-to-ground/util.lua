@@ -48,7 +48,6 @@ function M.show_failed(self, datamodel, from_x, from_y, dir, to_x, to_y)
         x = from_x,
         y = from_y,
         fluid_name = "",
-        fluidflow_id = 0,
         state = "invalid_construct",
     }
     objects:set(object, EDITOR_CACHE_TEMPORARY[1])
@@ -59,7 +58,6 @@ function M.show_failed(self, datamodel, from_x, from_y, dir, to_x, to_y)
         x = to_x,
         y = to_y,
         fluid_name = "",
-        fluidflow_id = 0,
         state = "construct",
     }
     objects:set(object, EDITOR_CACHE_TEMPORARY[1])

@@ -2,7 +2,6 @@ local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
 local irecipe = require "gameplay.interface.recipe"
 local iprototype = require "gameplay.interface.prototype"
-local imining = require "gameplay.interface.mining" -- TODO: remove this
 
 local m = {}
 m.world_update = true
@@ -110,8 +109,13 @@ function m.create_entity(init)
         end
     end
 
+    -- TODO: for debug, remove this
+    if template.fluidflow_id then
+        assert(template.fluidflow_id ~= 0)
+    end
+
     local eid = create(world, init.prototype_name, template)
-    print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y, template.fluid or "[fluid]", template.recipe or "[recipe]", eid)
+    print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y, template.fluid or "[fluid]", template.recipe or "[recipe]", template.fluidflow_id or "[fluidflow_id]", eid)
     return eid
 end
 
@@ -142,6 +146,11 @@ end
 function m.restart()
     create_entity_cache = {}
     world = gameplay.createWorld()
+end
+
+function m.get_storage()
+    world.storage = world.storage or {}
+    return world.storage
 end
 
 function m.manual_chest()

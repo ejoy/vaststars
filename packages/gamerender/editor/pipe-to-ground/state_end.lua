@@ -56,7 +56,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
             end
         else
             starting_object.fluid_name = ending_object.fluid_name
-            starting_object.fluidflow_id = 0
+            starting_object.fluidflow_id = ending_object.fluidflow_id
         end
     end
 
@@ -208,7 +208,7 @@ function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, 
             end
         else
             starting_object.fluid_name = ending_object.fluid_name
-            starting_object.fluidflow_id = 0
+            starting_object.fluidflow_id = ending_object.fluidflow_id
         end
     end
 
@@ -276,7 +276,7 @@ function condition_normal(self, datamodel, starting_object, to_x, to_y, max_to_x
             end
         else
             starting_object.fluid_name = fluidbox.fluid_name
-            starting_object.fluidflow_id = 0
+            starting_object.fluidflow_id = starting_object.fluidflow_id
         end
     else
         if starting_object.fluid_name ~= "" then

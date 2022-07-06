@@ -242,7 +242,9 @@ end
 function iui.set_guide_progress(progress)
     guide_progress = progress
     for url, binding in pairs(window_bindings) do
-        binding.datamodel.guide_progress = progress
-        datamodel_changed[url] = true
+        if binding.datamodel then -- not all ui has datamodel
+            binding.datamodel.guide_progress = progress
+            datamodel_changed[url] = true
+        end
     end
 end
