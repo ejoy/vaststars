@@ -2,7 +2,11 @@
 
 #include <stdint.h>
 
+namespace vaststars {
+
 namespace ecs {
+
+struct REMOVED {};
 
 struct entity {
 	uint8_t x;
@@ -109,25 +113,31 @@ struct manual {
 	int32_t progress;
 };
 
+
 }
 
-namespace ecs_api {
-
-struct component_id {
+struct ecs_component_id {
 	inline static int id = 0;
 	inline static int gen() {
-		return ++id;
+		return id++;
 	}
 };
+
+}
+
+using namespace vaststars;
+
+namespace ecs_api {
 
 template <typename T> struct component {};
 
 #define ECS_COMPONENT(NAME) \
 template <> struct component<ecs::##NAME> { \
-	static inline const int id = component_id::gen(); \
+	static inline const int id = ecs_component_id::gen(); \
 	static inline const char name[] = #NAME; \
 };
 
+ECS_COMPONENT(REMOVED)
 ECS_COMPONENT(entity)
 ECS_COMPONENT(chest)
 ECS_COMPONENT(assembling)

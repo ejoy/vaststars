@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ecs/component.h"
 #include "util/flatmap.h"
 #include <vector>
 

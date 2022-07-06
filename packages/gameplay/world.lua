@@ -10,7 +10,8 @@ local entity_visitor = require "entity_visitor"
 local function pipeline(world, cworld, name)
     local p = status.pipelines[name]
     if not p then
-        return
+        return function ()
+        end
     end
     local systems = status.systems
     local csystems = status.csystems
@@ -18,15 +19,15 @@ local function pipeline(world, cworld, name)
     for _, stage in ipairs(p) do
         for _, s in pairs(systems) do
             if s[stage] then
-                funcs[#funcs+1] = function(...)
-                    return s[stage](world, ...)
+                funcs[#funcs+1] = function()
+                    return s[stage](world)
                 end
             end
         end
         for _, s in pairs(csystems) do
             if s[stage] then
-                funcs[#funcs+1] = function(...)
-                    return s[stage](cworld, ...)
+                funcs[#funcs+1] = function()
+                    return s[stage](cworld)
                 end
             end
         end
@@ -126,11 +127,13 @@ return function ()
     function world:backup(rootdir)
         local fs = require "bee.filesystem"
         fs.create_directories(rootdir)
-        pipeline_backup(rootdir)
+        world.storage_path = rootdir
+        pipeline_backup()
     end
     function world:restore(rootdir)
+        world.storage_path = rootdir
         cworld:reset()
-        pipeline_restore(rootdir)
+        pipeline_restore()
         for v in ecs:select "entity:in id:new" do
             v.id = (v.entity.y << 8) | v.entity.x
         end

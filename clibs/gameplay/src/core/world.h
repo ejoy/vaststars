@@ -1,8 +1,8 @@
 #pragma once
 
 #include "core/container.h"
-#include "ecs/select.h"
 #include "ecs/component.h"
+#include "ecs/select.h"
 #include "core/techtree.h"
 #include "core/statistics.h"
 #include "system/fluid.h"

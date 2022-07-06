@@ -43,7 +43,11 @@ local function writeEntityH(components)
     write ""
     write "#include <stdint.h>"
     write ""
+    write "namespace vaststars {"
+    write ""
     write "namespace ecs {"
+    write ""
+    write "struct REMOVED {};"
     write ""
 
     for _, c in ipairs(components) do
@@ -67,26 +71,32 @@ local function writeEntityH(components)
             write ""
         end
     end
+    write ""
     write "}"
+    write ""
+    write "struct ecs_component_id {"
+    write "\tinline static int id = 0;"
+    write "\tinline static int gen() {"
+    write "\t\treturn id++;"
+    write "\t}"
+    write "};"
+    write ""
+    write "}"
+    write ""
+    write "using namespace vaststars;"
     write ""
 
     write "namespace ecs_api {"
-    write ""
-    write "struct component_id {"
-    write "\tinline static int id = 0;"
-    write "\tinline static int gen() {"
-    write "\t\treturn ++id;"
-    write "\t}"
-    write "};"
     write ""
     write "template <typename T> struct component {};"
     write ""
     write "#define ECS_COMPONENT(NAME) \\"
     write "template <> struct component<ecs::##NAME> { \\"
-    write "\tstatic inline const int id = component_id::gen(); \\"
+    write "\tstatic inline const int id = ecs_component_id::gen(); \\"
     write "\tstatic inline const char name[] = #NAME; \\"
     write "};"
     write ""
+    write("ECS_COMPONENT(REMOVED)")
     for _, c in ipairs(components) do
         write("ECS_COMPONENT("..c.name..")")
     end

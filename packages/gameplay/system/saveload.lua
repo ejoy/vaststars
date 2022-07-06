@@ -16,10 +16,10 @@ end
 
 do
     local m = system "saveload-ecs"
-    function m.backup(world, rootdir)
+    function m.backup(world)
         local ecs = world.ecs
-        local metafile = rootdir.."/ecs.json"
-        local binfile = rootdir.."/ecs.bin"
+        local metafile = world.storage_path.."/ecs.json"
+        local binfile = world.storage_path.."/ecs.bin"
         local writer = luaecs.writer(binfile)
         for _, c in ipairs(status.components) do
             writer:write(ecs, ecs:component_id(c.name))
@@ -30,10 +30,10 @@ do
         end
         writeall(metafile, json.encode(meta))
     end
-    function m.restore(world, rootdir)
+    function m.restore(world)
         local ecs = world.ecs
-        local metafile = rootdir.."/ecs.json"
-        local binfile = rootdir.."/ecs.bin"
+        local metafile = world.storage_path.."/ecs.json"
+        local binfile = world.storage_path.."/ecs.bin"
         ecs:clearall()
         local reader = luaecs.reader(binfile)
         for _, meta in ipairs(json.decode(readall(metafile))) do
@@ -45,31 +45,31 @@ end
 
 do
     local m = system "saveload-storage"
-    function m.backup(world, rootdir)
-        local f = rootdir.."/storage.json"
+    function m.backup(world)
+        local f = world.storage_path.."/storage.json"
         writeall(f, json.encode(world.storage))
     end
-    function m.restore(world, rootdir)
-        local f = rootdir.."/storage.json"
+    function m.restore(world)
+        local f = world.storage_path.."/storage.json"
         world.storage = json.decode(readall(f))
     end
 end
 
 do
     local m = system "saveload-world"
-    function m.backup(world, rootdir)
+    function m.backup(world)
         local cworld = world._cworld
-        local metafile = rootdir.."/world.json"
-        local binfile = rootdir.."/world.bin"
+        local metafile = world.storage_path.."/world.json"
+        local binfile = world.storage_path.."/world.bin"
         writeall(metafile, json.encode(cworld:backup_world(binfile)))
-        cworld:backup_container(rootdir.."/container.bin")
+        cworld:backup_container(world.storage_path.."/container.bin")
     end
-    function m.restore(world, rootdir)
+    function m.restore(world)
         local cworld = world._cworld
-        local metafile = rootdir.."/world.json"
-        local binfile = rootdir.."/world.bin"
+        local metafile = world.storage_path.."/world.json"
+        local binfile = world.storage_path.."/world.bin"
         local metajson = json.decode(readall(metafile))
         cworld:restore_world(binfile, metajson)
-        cworld:restore_container(rootdir.."/container.bin")
+        cworld:restore_container(world.storage_path.."/container.bin")
     end
 end
