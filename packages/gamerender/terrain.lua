@@ -225,7 +225,7 @@ function terrain:enable_terrain(x, y)
         -- print(("enable group id: %s"):format(group_id))
         ecs.group(group_id):enable "view_visible"
         ecs.group(group_id):enable "scene_update"
-        ecs.group(group_id):enable "scene_changed"
+        ecs.group(group_id):enable "scene_needchange"
     end
     for _, group_id in ipairs(del) do
         -- print(("disable group id: %s"):format(group_id))
