@@ -129,7 +129,11 @@ function M:stage_ui_update(datamodel)
     for _, _, _, object_id in pickup_material_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(object.gameplay_eid)
-        iassembling:pickup_material(gameplay_core.get_world(), e)
+        local items = iassembling:pickup_material(gameplay_core.get_world(), e)
+        for _, item in ipairs(items) do
+            item.id = 1
+            iui.open("message_pop.rml", item)
+        end
     end
 
     for _, _, _, object_id in place_material_mb:unpack() do

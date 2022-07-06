@@ -29,6 +29,7 @@ function M:pickup_material(world, e)
     local recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
     local recipe_results = irecipe.get_elements(typeobject.results)
 
+    local items = {}
     for i = 1, #recipe_results do
         local c, n = world:container_get(e.assembling.container, #recipe_ingredients + i)
         if c then
@@ -39,12 +40,15 @@ function M:pickup_material(world, e)
                 else
                     if not world:container_place(headquater_e.chest.container, c, n) then
                         log.error(("failed to place `%s` `%s`"):format(n, c))
+                    else
+                        items[#items + 1] = {name = item_typeobject.name, count = n, icon = item_typeobject.icon}
                     end
                 end
             end
         end
     end
     world:build()
+    return items
 end
 
 -- 原料添加
