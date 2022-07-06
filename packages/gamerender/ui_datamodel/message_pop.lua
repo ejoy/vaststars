@@ -8,9 +8,9 @@ function M:create(content)
     return {
         show_id = content.id or 0,
         message = content.message or "none",
-        item_icon = content.icon or "none",
-        item_name = content.name or "none",
-        item_count = content.count or 0
+        items = content.items,
+        left = content.left,
+        top = content.top,
     }
 end
 

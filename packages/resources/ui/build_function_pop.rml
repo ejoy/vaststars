@@ -91,6 +91,16 @@
                     ui_sys.close()
                 end,
             })
+            ui_sys.mapping(start, {
+                {
+                    function(_, left, top)
+                        start.left = ("%0.2fvmin"):format(math.max(left - 41.5, 0))
+                        start.top = ("%0.2fvmin"):format(math.max(top - 30, 0))
+                    end,
+                    "left",
+                    "top",
+                }           
+            })
         </script>
     </head>
     <body style = "pointer-events: none;">
@@ -105,9 +115,7 @@
                 <button class="button-function" style ='background-image: "textures/cmdcenter/fetch_material.texture";'/>
                 <div class="title-text">成品取出</div>
                 <!-- 可获取成品数量 start-->
-                <div class = "menu-button-pic" data-if = "true" style='width:3.6vmin; height:3.6vmin; position:absolute; right:10%; bottom:63%; background-image:"textures/work_status_icon/shutdown.texture"'>
-                    <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">1</div>
-                </div>
+                <div class = "menu-button-pic" data-if = "true" style='width:3.6vmin; height:3.6vmin; position:absolute; right:10%; bottom:63%; background-image:"textures/work_status_icon/shutdown.texture"'/>
                 <!-- 可获取成品数量 end-->
             </div>
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!(show_pickup_material)" /> <!-- TODO -->
