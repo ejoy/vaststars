@@ -1,4 +1,3 @@
-local global = require "global"
 local guide = import_package "vaststars.prototype"("guide")
 local M = {}
 local running = false

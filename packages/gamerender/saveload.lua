@@ -13,6 +13,7 @@ local startup_entities = import_package("vaststars.prototype")("item.startup").e
 local objects = require "objects"
 local ifluid = require "gameplay.interface.fluid"
 local iscience = require "gameplay.interface.science"
+local iguide = require "gameplay.interface.guide"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local GAMEPLAY_VERSION <const> = require "version"
 local global = require "global"
@@ -334,7 +335,9 @@ function M:restart()
     gameplay_core.restart()
 
     self.running = true
-    iscience.update_tech_list(gameplay_core.get_world())
+    local cw = gameplay_core.get_world()
+    iscience.update_tech_list(cw)
+    iguide.world = cw
     iui.open("construct.rml")
 
     local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
