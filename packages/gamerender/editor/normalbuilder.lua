@@ -156,7 +156,6 @@ local function confirm(self, datamodel)
     end
 
     if iprototype.has_type(typeobject.type, "fluidbox") then
-        assert(pickup_object.fluid_name == "")
         global.fluidflow_id = global.fluidflow_id + 1
         pickup_object.fluidflow_id = global.fluidflow_id
     end
