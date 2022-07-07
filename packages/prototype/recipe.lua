@@ -1241,12 +1241,12 @@ prototype "气候科技包1" {
     icon = "textures/recipe/climatology-pack.texture",
     ingredients = {
         {"地下卤水", 2000},
-        {"空气", 3000},
+        {"空气", 2500},
     },
     results = {
         {"气候科技包", 1},
     },
-    time = "25s",
+    time = "20s",
     description = "气候材料制造气候科技包",
 }
 
