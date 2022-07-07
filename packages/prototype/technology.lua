@@ -859,7 +859,7 @@ prototype "地下水净化" {
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"地下卤水净化"},
+    unlock_recipe = {"地下卤水净化","地下水挖掘机","水电站1"},
   },
   prerequisites = {"蒸馏1"},
   ingredients = {
