@@ -3,7 +3,7 @@ local world = ecs.world
 local global = require "global"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iguide = require "gameplay.interface.guide"
-local irecipe = require "gameplay.interface.recipe"
+local iprototype = require "gameplay.interface.prototype"
 local teardown_mb = world:sub {"teardown"}
 local manual_add_mb = world:sub {"manual_add"}
 local teardown_progress = 0
@@ -24,8 +24,9 @@ local function update_world(world)
             end
         elseif taskname == "手工生产3个铁齿轮" then
             for _, name, count in manual_add_mb:unpack() do
-                if name == "铁齿轮" then
-                    --local ingredients = irecipe.get_elements(science.current_tech.detail.ingredients)
+                local id = string.unpack("<I2", science.current_tech.detail.task, 5)
+                local itemName = iprototype.queryById(id).name
+                if name == itemName then
                     manual_progress = manual_progress + count
                     world:research_progress(taskname, manual_progress)
                     if manual_progress >= science.current_tech.detail.count then
