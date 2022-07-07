@@ -9,6 +9,11 @@ extern "C" {
     #include "core/fluidflow.h"
 }
 
+#if defined(_WIN32)
+    #include <windows.h>
+#else
+#endif
+
 #define CONTAINER_TYPE(id)  ((id) & 0x8000)
 #define CONTAINER_INDEX(id) ((id) & 0x3FFF)
 #define CONTAINER_TYPE_CHEST  0x0000
@@ -403,6 +408,70 @@ namespace lua_world {
         return 1;
     }
 
+    static uint64_t time_monotonic() {
+        uint64_t t;
+#if defined(_WIN32)
+        t = GetTickCount64();
+#else
+        struct timespec ti;
+        clock_gettime(CLOCK_MONOTONIC, &ti);
+        t = (uint64_t)ti.tv_sec * 1000 + ti.tv_nsec / 1000000;
+#endif
+        return t;
+    }
+
+    static int system_perf_call(lua_State* L) {
+        intptr_t* list = (intptr_t*)lua_touserdata(L, lua_upvalueindex(4));
+        size_t n = lua_rawlen(L, lua_upvalueindex(4)) / sizeof(intptr_t);
+        lua_settop(L, 0);
+        lua_pushvalue(L, lua_upvalueindex(1));
+        for (size_t i = 0; i < n; ++i) {
+            uint64_t time = time_monotonic();
+            intptr_t f = list[i];
+            if (f != LuaFunction) {
+                ((lua_CFunction)f)(L);
+            }
+            else {
+                lua_rawgeti(L, lua_upvalueindex(3), i+1);
+                lua_pushvalue(L, lua_upvalueindex(2));
+                lua_call(L, 1, 0);
+            }
+            time = time_monotonic() - time;
+            lua_rawgeti(L, lua_upvalueindex(5), i+1);
+            lua_pushinteger(L, time + lua_tointeger(L, -1));
+            lua_rawseti(L, lua_upvalueindex(5), i+1);
+            lua_pop(L, 1);
+        }
+        return 0;
+    }
+
+    static int system_perf(lua_State* L) {
+        luaL_checktype(L, 3, LUA_TTABLE);
+        lua_settop(L, 3);
+
+        lua_Integer n = luaL_len(L, 3);
+        intptr_t* list = (intptr_t*)lua_newuserdatauv(L, sizeof(intptr_t) * n, 3);
+        lua_createtable(L, (int)n, 0);
+        for (lua_Integer i = 1; i <= n; ++i) {
+            lua_rawgeti(L, 3, i);
+            luaL_checktype(L, -1, LUA_TFUNCTION);
+            if (lua_iscfunction(L, -1)) {
+                intptr_t f = (intptr_t)lua_tocfunction(L, -1);
+                assert(f != LuaFunction);
+                list[i-1] = f;
+            }
+            else {
+                list[i-1] = LuaFunction;
+            }
+            lua_pop(L, 1);
+            lua_pushinteger(L, 0);
+            lua_rawseti(L, -2, i);
+        }
+        lua_pushcclosure(L, system_perf_call, 5);
+        lua_getupvalue(L, -1, 5);
+        return 2;
+    }
+
     static int
     create(lua_State* L) {
         struct world* w = (struct world*)lua_newuserdatauv(L, sizeof(struct world), 0);
@@ -436,6 +505,7 @@ namespace lua_world {
                 // misc
                 {"reset", reset},
                 {"system", system},
+                {"system_perf", system_perf},
                 {"__gc", destroy},
                 {nullptr, nullptr},
             };
