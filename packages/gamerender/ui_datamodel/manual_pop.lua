@@ -88,6 +88,7 @@ function M:stage_ui_update(datamodel)
             table.move(output, 1, #output, #t + 1, t)
             gameplay_core.get_world():manual(t)
         end
+        world:pub {"manual_add", name, count}
     end
 
     for _, _, _, name, count in check_material_mb:unpack() do
