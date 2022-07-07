@@ -89,7 +89,7 @@
                      opacity: 1;
                 }
                 50% {
-                     bottom: 45%; 
+                     bottom: 60%; 
                      opacity: 1;
                 }
                 100% { 
