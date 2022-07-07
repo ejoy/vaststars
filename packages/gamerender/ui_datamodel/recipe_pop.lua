@@ -238,7 +238,7 @@ function M:stage_ui_update(datamodel, object_id)
             local item_counts = {}
             local e = gameplay_core.get_entity(object.gameplay_eid)
             if e.assembling then
-                for prototype_name, count in pairs(iassembling:item_counts(gameplay_core.get_world(), e)) do
+                for prototype_name, count in pairs(iassembling.item_counts(gameplay_core.get_world(), e)) do
                     local typeobject_item = iprototype.queryByName("item", prototype_name)
                     if not typeobject_item then
                         log.error(("can not found item `%s`"):format(prototype_name))

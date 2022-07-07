@@ -15,6 +15,8 @@ local ieditor = ecs.require "editor.editor"
 local global = require "global"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
+local icamera = ecs.require "engine.camera"
+local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
@@ -38,6 +40,9 @@ local imanual = require "ui_datamodel.common.manual"
 local construct_inventory = global.construct_inventory
 local iworld = require "gameplay.interface.world"
 local ichest = require "gameplay.interface.chest"
+local pickup_mapping_mb = world:sub {"pickup_mapping"}
+local pickup_mb = world:sub {"pickup"}
+local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 
 local builder
 local last_prototype_name
@@ -67,6 +72,13 @@ local function _update_construct_inventory()
             })
         end
     end
+end
+
+local function _has_teardown_entity()
+    for _ in objects:select("TEMPORARY", "teardown", true) do
+        return true
+    end
+    return false
 end
 
 local _get_construct_menu; do
@@ -189,7 +201,9 @@ function M:stage_ui_update(datamodel)
             goto continue
         end
 
-        world:pub {"ui_message", "show_rotate_confirm", {rotate = false, confirm = false}}
+        ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
+        datamodel.show_rotate = false
+        datamodel.show_confirm = false
         gameplay_core.world_update = false
         global.mode = "construct"
         camera.transition("camera_construct.prefab")
@@ -217,6 +231,8 @@ function M:stage_ui_update(datamodel)
         end
 
         ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
+        datamodel.show_teardown = _has_teardown_entity()
+
         global.mode = "teardown"
         gameplay_core.world_update = false
         camera.transition("camera_construct.prefab")
@@ -355,6 +371,44 @@ function M:stage_camera_usage(datamodel)
                 builder:touch_end(datamodel)
                 self:flush()
             end
+        end
+    end
+
+    local leave = true
+    for _, _, x, y, object_id in pickup_mapping_mb:unpack() do
+        local coord = terrain:align(icamera.screen_to_world(x, y), 1, 1) -- assume entity is 1x1
+        if coord then
+            print(coord[1], coord[2])
+        end
+
+        if objects:get(object_id) then -- object_id may be 0, such as when user click on empty space
+            if global.mode == "teardown" then
+                world:pub {"teardown", objects:get(object_id).prototype_name}
+                ieditor:teardown(object_id)
+                datamodel.show_teardown = _has_teardown_entity()
+
+            elseif global.mode == "normal" then
+                if idetail.show(object_id) then
+                    leave = false
+                end
+            end
+        end
+    end
+
+    -- 点击其它建筑 或 拖动时, 将弹出窗口隐藏
+    for _ in pickup_mb:unpack() do
+        if leave then
+            world:pub {"ui_message", "leave"}
+            leave = false
+            break
+        end
+    end
+
+    for _ in single_touch_move_mb:unpack() do
+        if leave then
+            world:pub {"ui_message", "leave"}
+            leave = false
+            break
         end
     end
 

@@ -20,7 +20,7 @@ local place_material_mb = mailbox:sub {"place_material"}
 local close_mb = mailbox:sub {"close_build_function_pop"}
 local place_material_func = {}
 place_material_func["assembling"] = function(gameplay_world, e)
-    iassembling:place_material(gameplay_world, e)
+    iassembling.place_material(gameplay_world, e)
 end
 
 place_material_func["laboratory"] = function(gameplay_world, e)
@@ -93,7 +93,18 @@ function M:update(datamodel, object_id, recipe_name)
     return true
 end
 
-function M:stage_ui_update(datamodel)
+function M:stage_ui_update(datamodel, object_id)
+    -- show pickup material button when object has result
+    local object = objects:get(object_id)
+    if not object then
+        assert(false)
+    else
+        local e = gameplay_core.get_entity(object.gameplay_eid)
+        if e.assembling then
+            datamodel.show_pickup_material = iassembling.has_result(gameplay_core.get_world(), e)
+        end
+    end
+
     --
     for _, _, _, object_id in rotate_mb:unpack() do
         local object = assert(objects:get(object_id))
@@ -129,7 +140,7 @@ function M:stage_ui_update(datamodel)
     for _, _, _, object_id in pickup_material_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(object.gameplay_eid)
-        local items = iassembling:pickup_material(gameplay_core.get_world(), e)
+        local items = iassembling.pickup_material(gameplay_core.get_world(), e)
         iui.open("message_pop.rml", {id = 1, items = items, left = datamodel.left, top = datamodel.top})
     end
 

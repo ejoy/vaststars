@@ -178,7 +178,7 @@ local function confirm(self, datamodel)
 
     -- decrease item count
     local item_typeobject = iprototype.queryByName("item", typeobject.name)
-    local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item)
+    local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
     assert(item.count >= 0)
     item.count = item.count - 1
     iui.update("construct.rml", "update_construct_inventory")
