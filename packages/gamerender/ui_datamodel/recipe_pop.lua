@@ -77,8 +77,8 @@ local recipe_locked; do
     function recipe_locked(recipe)
         local tech = recipe_tech[recipe]
         if not tech then
-            log.info(("recipe `%s` is unlocked defaultly"):format(recipe))
-            return true
+            log.info(("recipe `%s` is locked defaultly"):format(recipe))
+            return false
         end
         return gameplay_core.is_researched(tech)
     end

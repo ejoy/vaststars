@@ -8,15 +8,7 @@ local gameplay_core = require "gameplay.core"
 local imanual = require "gameplay.interface.manual"
 local manual_add_mb = mailbox:sub {"manual_add"}
 local check_material_mb = mailbox:sub {"check_material"}
-local imanualcommon = require "ui_datamodel.common.manual"
-
 local recipe_category = import_package "vaststars.prototype"("recipe_category")
-local recipe_category_to_group = {}
-for _, v in ipairs(recipe_category) do
-    for _, category in ipairs(v.category) do
-        recipe_category_to_group[category] = v.group
-    end
-end
 
 local function decode(s)
     local t = {}
@@ -52,7 +44,7 @@ for _, typeobject in pairs(iprototype.each_maintype("recipe")) do
                 id = typeobject.id,
                 name = typeobject.name,
                 icon = typeobject.icon,
-                category = assert(recipe_category_to_group[typeobject.category]),
+                category = typeobject.group,
                 time = itypes.time(typeobject.time),
                 ingredients = get_ingredients(ingredients),
                 result = get_ingredients(results),
