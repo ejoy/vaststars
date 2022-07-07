@@ -183,10 +183,12 @@ local function confirm(self, datamodel)
     item.count = item.count - 1
     iui.update("construct.rml", "update_construct_inventory")
 
+    datamodel.show_confirm = false
+    datamodel.show_rotate = false
+    datamodel.show_construct_complete = true
+
     self.pickup_object = nil
     __new_entity(self, datamodel, typeobject)
-
-    datamodel.show_construct_complete = true
 end
 
 local function complete(self, datamodel)
