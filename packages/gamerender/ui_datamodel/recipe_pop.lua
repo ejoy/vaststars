@@ -17,33 +17,22 @@ local ieditor = ecs.require "editor.editor"
 local ifluid = require "gameplay.interface.fluid"
 local iassembling = require "gameplay.interface.assembling"
 local terrain = ecs.require "terrain"
+local itypes = require "gameplay.interface.types"
 
--- TODO: optimize
+-- prototype.recipe_category.group -> the category of ui
 local recipes = {} ; local get_recipe_index; do
-    local t = {}
     for _, v in pairs(iprototype.each_maintype "recipe") do
-        t[v.category] = t[v.category] or {}
-        t[v.category][#t[v.category] + 1] = {
-            name = v.name,
-            order = v.order,
-            icon = v.icon,
-            time = v.time,
-            ingredients = irecipe.get_elements(v.ingredients),
-            results = irecipe.get_elements(v.results),
-            group = v.group,
-            category = v.category,
-        }
-    end
-
-    for _, group in ipairs(recipe_category_cfg) do
-        for _, category in ipairs(group.category) do
-            assert(t[category], ("recipe category `%s` not found in recipe_category_cfg"):format(category))
-            for _, recipe_item in ipairs(t[category]) do
-                if recipe_item.group == group.group then
-                    recipes[group.group] = recipes[group.group] or {}
-                    recipes[group.group][#recipes[group.group] + 1] = recipe_item
-                end
-            end
+        if v.group then -- if group is not nil, need to add to the category of ui
+            recipes[v.group] = recipes[v.group] or {}
+            recipes[v.group][#recipes[v.group] + 1] = {
+                name = v.name,
+                order = v.order,
+                icon = v.icon,
+                time = v.time,
+                ingredients = irecipe.get_elements(v.ingredients),
+                results = irecipe.get_elements(v.results),
+                group = v.group,
+            }
         end
     end
 
@@ -53,22 +42,20 @@ local recipes = {} ; local get_recipe_index; do
         end)
     end
 
-    -- TODO: optimize
-    local function _get_category_index(category)
-        for index, group in ipairs(recipe_category_cfg) do
-            for _, c in ipairs(group.category) do
-                if c == category then
-                    return index
-                end
+    local function _get_group_index(group)
+        for index, category_set in ipairs(recipe_category_cfg) do
+            if category_set.group == group then
+                return index
             end
         end
+        assert(false, ("group `%s` not found"):format(group))
     end
 
     --
     local cache = {}
     for _, c in pairs(recipes) do
         for index, recipe in ipairs(c) do
-            cache[recipe.name] = {_get_category_index(recipe.category), index}
+            cache[recipe.name] = {_get_group_index(recipe.group), index}
         end
     end
     function get_recipe_index(name)
@@ -168,29 +155,47 @@ local function _show_object_recipe(datamodel, object_id)
     end
 end
 
-local function _update_recipe_items(datamodel)
+local function _update_recipe_items(datamodel, recipe_name)
     local storage = gameplay_core.get_storage()
     storage.recipe_new_flag = storage.recipe_new_flag or {}
 
+    local cur_recipe_category_cfg = assert(recipe_category_cfg[datamodel.catalog_index])
+    assert(recipes[cur_recipe_category_cfg.group][1])
+    if not recipe_name then
+        for _, recipe in ipairs(recipes[cur_recipe_category_cfg.group]) do
+            if recipe_locked(recipe.name) then
+                recipe_name = recipe.name
+                break
+            end
+        end
+    end
+    -- if recipe_name is nil, it means all recipes are locked
+
     datamodel.recipe_items = {}
     local recipe_category_new_flag = {}
-    for name, group in pairs(recipes) do
-        for _, recipe_item in ipairs(group) do
+    for group, recipe_set in pairs(recipes) do
+        for _, recipe_item in ipairs(recipe_set) do
             if recipe_locked(recipe_item.name) then
-                if name == recipe_category_cfg[datamodel.catalog_index].group then
+                if group == cur_recipe_category_cfg.group then
                     datamodel.recipe_items[#datamodel.recipe_items+1] = {
                         name = recipe_item.name,
-                        order = recipe_item.order,
                         icon = recipe_item.icon,
                         time = recipe_item.time,
                         ingredients = recipe_item.ingredients,
                         results = recipe_item.results,
-                        group = recipe_item.group,
                         new = (not storage.recipe_new_flag[recipe_item.name]) and true or false,
                     }
                 end
-                if not storage.recipe_new_flag[recipe_item.name] then
-                    recipe_category_new_flag[recipe_item.group] = true
+
+                if recipe_name and recipe_name == recipe_item.name then
+                    datamodel.recipe_name = recipe_item.name
+                    datamodel.recipe_ingredients = recipe_item.ingredients
+                    datamodel.recipe_results = recipe_item.results
+                    datamodel.recipe_time = itypes.time(recipe_item.time)
+                end
+
+                if not storage.recipe_new_flag[group] then
+                    recipe_category_new_flag[group] = true
                 end
             end
         end
@@ -227,7 +232,7 @@ function M:stage_ui_update(datamodel, object_id)
         local storage = gameplay_core.get_storage()
         storage.recipe_new_flag = storage.recipe_new_flag or {}
         storage.recipe_new_flag[recipe_name] = true
-        _update_recipe_items(datamodel)
+        _update_recipe_items(datamodel, recipe_name)
     end
 
     for _, _, _, object_id, recipe_name in set_recipe_mb:unpack() do

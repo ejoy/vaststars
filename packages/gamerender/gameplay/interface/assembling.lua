@@ -144,12 +144,11 @@ function M.has_result(world, e)
 
     local recipe = e.assembling.recipe
     if recipe == 0 then
-        log.error("the recipe hasn't been set")
-        return
+        return false
     end
 
     local typeobject = iprototype.queryById(recipe)
-    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
+    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients) -- TODO: optimize, no need to get ingredients & results every time?
     local recipe_results = irecipe.get_elements(typeobject.results)
 
     for i = 1, #recipe_results do
