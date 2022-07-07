@@ -1000,6 +1000,22 @@ prototype "铁矿熔炼2" {
   time = "1.5s"
 }
 
+prototype "能量存储" {
+  desc = "更多的有机化学制取工业气体工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"电解厂1"},
+  },
+  prerequisites = {"空气过滤"},
+  ingredients = {
+      {"气候科技包", 1},
+      {"机械科技包", 1},
+  },
+  count = 3,
+  time = "4s"
+}
+
 prototype "有机化学2" {
   desc = "更多的有机化学制取工业气体工艺",
   type = { "tech" },
@@ -1007,7 +1023,7 @@ prototype "有机化学2" {
   effects = {
     unlock_recipe = {"乙烯转丁二烯","纯水转蒸汽"},
   },
-  prerequisites = {"硅处理","空气过滤"},
+  prerequisites = {"硅处理","能量存储"},
   ingredients = {
       {"气候科技包", 1},
       {"机械科技包", 1},
