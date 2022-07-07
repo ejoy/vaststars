@@ -330,7 +330,7 @@ prototype "生产管道" {
   desc = "管道可以承载液体和气体，将需要相同气液的机器彼此联通起来",
   icon = "textures/construct/pipe.texture",
   type = { "tech", "task" },
-  task = {"stat_production", 0, "管道1-I型"},
+  task = {"stat_production", 0, "管道1-X型"},
   prerequisites = {"管道系统1"},
   count = 10,
   tips_pic = {

@@ -14,10 +14,19 @@ local irecipe = require "gameplay.interface.recipe"
 local global = require "global"
 local iobject = ecs.require "object"
 local imining = require "gameplay.interface.mining"
+local construct_inventory = global.construct_inventory
+local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 --
 local function __new_entity(self, datamodel, typeobject)
     iobject.remove(self.pickup_object)
+
+    -- check if item is in the inventory
+    local item_typeobject = iprototype.queryByName("item", typeobject.name)
+    local item = construct_inventory:get({"CONFIRM"}, item_typeobject.id)
+    if not item or item.count <= 0 then
+        return
+    end
 
     local dir = DEFAULT_DIR
     local x, y = iobject.central_coord(typeobject.name, dir)
@@ -36,7 +45,7 @@ local function __new_entity(self, datamodel, typeobject)
         datamodel.show_rotate = true
     end
 
-    -- 主要处理某些组装机有默认配方的情况
+    -- some assembling machine have default recipe
     local fluid_name = ""
     if typeobject.recipe then
         local recipe_typeobject = iprototype.queryByName("recipe", typeobject.recipe)
@@ -63,7 +72,9 @@ local function new_entity(self, datamodel, typeobject)
 end
 
 local function touch_move(self, datamodel, delta_vec)
-    iobject.move_delta(self.pickup_object, delta_vec)
+    if self.pickup_object then
+        iobject.move_delta(self.pickup_object, delta_vec)
+    end
 end
 
 -- TODO: duplicate from builder.lua
@@ -92,7 +103,11 @@ local function _get_mineral_recipe(prototype_name, x, y, dir)
 end
 
 local function touch_end(self, datamodel)
-    local pickup_object = assert(self.pickup_object)
+    local pickup_object = self.pickup_object
+    if not pickup_object then
+        return
+    end
+
     iobject.align(self.pickup_object)
 
     if not self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) then
@@ -151,6 +166,13 @@ local function confirm(self, datamodel)
     pickup_object.state = "confirm"
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
+
+    -- decrease item count
+    local item_typeobject = iprototype.queryByName("item", typeobject.name)
+    local item = construct_inventory:get({"CONFIRM"}, item_typeobject.id)
+    assert(item.count >= 0)
+    item.count = item.count - 1
+    iui.update("construct.rml", "update_construct_inventory")
 
     self.pickup_object = nil
     __new_entity(self, datamodel, typeobject)
