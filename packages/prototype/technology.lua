@@ -9,6 +9,24 @@ local prototype = gameplay.register.prototype
   --task = {"unknown", 0},                             自定义任务
   --time是指1个count所需的时间
 
+  prototype "手工生产3个铁齿轮" {
+    desc = "手工生产3个铁齿轮",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, "铁齿轮"},
+    -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
+    prerequisites = {},
+    count = 3,
+    tips_pic = {
+      "textures/task_tips_pic/task_click_build.texture",
+      "textures/task_tips_pic/task_demolish2.texture",
+      "textures/task_tips_pic/task_demolish3.texture",
+    },
+    sign_desc = {
+      { desc = "手工生产3个铁齿轮", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "清除废墟" {
     desc = "清除指挥中心附近的3处废墟",
     icon = "textures/construct/industry.texture",
