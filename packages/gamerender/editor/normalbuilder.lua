@@ -16,6 +16,8 @@ local iobject = ecs.require "object"
 local imining = require "gameplay.interface.mining"
 local construct_inventory = global.construct_inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iworld = require "gameplay.interface.world"
+local gameplay_core = require "gameplay.core"
 
 --
 local function __new_entity(self, datamodel, typeobject)
@@ -23,7 +25,7 @@ local function __new_entity(self, datamodel, typeobject)
 
     -- check if item is in the inventory
     local item_typeobject = iprototype.queryByName("item", typeobject.name)
-    local item = construct_inventory:get({"CONFIRM"}, item_typeobject.id)
+    local item = construct_inventory:get({"TEMPORARY", "CONFIRM"}, item_typeobject.id)
     if not item or item.count <= 0 then
         return
     end
@@ -167,9 +169,16 @@ local function confirm(self, datamodel)
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
 
+    local function _clone_item(item)
+        local new = {}
+        new.prototype = item.prototype
+        new.count = item.count
+        return new
+    end
+
     -- decrease item count
     local item_typeobject = iprototype.queryByName("item", typeobject.name)
-    local item = construct_inventory:get({"CONFIRM"}, item_typeobject.id)
+    local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item)
     assert(item.count >= 0)
     item.count = item.count - 1
     iui.update("construct.rml", "update_construct_inventory")
@@ -181,6 +190,28 @@ local function confirm(self, datamodel)
 end
 
 local function complete(self, datamodel)
+    local gameplay_world = gameplay_core.get_world()
+    local e = iworld:get_headquater_entity(gameplay_world)
+    if not e then
+        log.error("can not find headquater entity")
+        return
+    end
+
+    local failed = false
+    for _, item in construct_inventory:all("TEMPORARY") do
+        local old_item = assert(construct_inventory:get({"CONFIRM"}, item.prototype))
+        assert(old_item.count >= item.count)
+        local decrease = old_item.count - item.count
+        print(iprototype.queryById(item.prototype).name, decrease)
+        if not gameplay_world:container_pickup(e.chest.container, item.prototype, decrease) then
+            log.error("can not pickup item", iprototype.queryById(item.prototype).name, decrease)
+            failed = true
+        end
+    end
+    if failed then
+        return
+    end
+
     iobject.remove(self.pickup_object)
     self.pickup_object = nil
 

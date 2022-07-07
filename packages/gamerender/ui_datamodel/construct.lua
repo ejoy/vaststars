@@ -104,7 +104,7 @@ else
 
             for _, prototype_name in ipairs(menu.detail) do
                 local typeobject = assert(iprototype.queryByName("item", prototype_name))
-                local c = construct_inventory:get({"CONFIRM"}, typeobject.id)
+                local c = construct_inventory:get({"TEMPORARY", "CONFIRM"}, typeobject.id)
                 if c then
                     m.detail[#m.detail + 1] = {
                         show_prototype_name = iprototype.show_prototype_name(typeobject),
