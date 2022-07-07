@@ -640,7 +640,7 @@ prototype "蒸汽发电机1" {
     order = 120,
     icon = "textures/construct/turbine1.texture",
     ingredients = {
-        {"管道1-I型", 2},
+        {"管道1-X型", 2},
         {"铁齿轮", 1},
         {"铁板", 8},
         {"电动机I", 1},
@@ -676,7 +676,7 @@ prototype "液罐1" {
     order = 22,
     icon = "textures/construct/tank1.texture",
     ingredients = {
-        {"管道1-I型", 4},
+        {"管道1-X型", 4},
         -- {"铁棒", 1},
         {"铁板", 6},
     },
@@ -769,7 +769,7 @@ prototype "烟囱1" {
     ingredients = {
         -- {"铁棒", 2},
         {"铁板", 2},
-        {"管道1-I型", 3},
+        {"管道1-X型", 3},
         {"石砖", 3},
     },
     results = {
@@ -787,7 +787,7 @@ prototype "压力泵1" {
     icon = "textures/construct/pump1.texture",
     ingredients = {
         {"电动机I", 1},
-        {"管道1-I型", 4},
+        {"管道1-X型", 4},
     },
     results = {
         {"压力泵I", 1},
@@ -838,8 +838,8 @@ prototype "排水口1" {
     order = 56,
     icon = "textures/construct/outfall.texture",
     ingredients = {
-        {"管道1-I型", 5},
-        {"地下管I", 1},
+        {"管道1-X型", 5},
+        {"地下管1-JU型", 1},
     },
     results = {
         {"排水口I", 1},
@@ -858,7 +858,7 @@ prototype "管道1" {
         {"铁板", 2},
     },
     results = {
-        {"管道1-I型", 2},
+        {"管道1-X型", 2},
     },
     time = "6s",
     description = "石砖制造管道",
@@ -875,7 +875,7 @@ prototype "管道2" {
         {"石砖", 8},
     },
     results = {
-        {"管道1-I型", 5},
+        {"管道1-X型", 5},
         {"碎石", 1},
     },
     time = "6s",
@@ -889,11 +889,11 @@ prototype "地下管1" {
     order = 12,
     icon = "textures/construct/underground-pipe1.texture",
     ingredients = {
-        {"管道1-I型", 5},
+        {"管道1-X型", 5},
         {"沙子", 2},
     },
     results = {
-        {"地下管I", 2},
+        {"地下管1-JU型", 2},
     },
     time = "5s",
     description = "管道和沙子制造地下管道",
@@ -906,12 +906,12 @@ prototype "地下管2" {
     order = 14,
     icon = "textures/construct/underground-pipe1.texture",
     ingredients = {
-        {"地下管I", 1},
+        {"地下管1-JU型", 1},
         {"钢板", 3},
         {"碎石", 2},
     },
     results = {
-        {"地下管II", 2},
+        {"地下管2-JU型", 2},
     },
     time = "5s",
     description = "管道和钢板制造地下管道",
@@ -999,7 +999,7 @@ prototype "破损水电站" {
     allow_as_intermediate = false,
     icon = "textures/construct/broken-hydroplant.texture",
     ingredients = {
-        {"管道1-I型", 6},
+        {"管道1-X型", 6},
         {"破损水电站", 1},
     },
     results = {

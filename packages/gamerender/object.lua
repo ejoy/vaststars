@@ -6,8 +6,15 @@ local iprototype = require "gameplay.interface.prototype"
 local math3d = require "math3d"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
-local get_object_id = require "global".get_object_id
 local changeset = {}
+
+local _new_object_id; do
+    local id = 0
+    function _new_object_id()
+        id = id + 1
+        return id
+    end
+end
 
 local function object_newindex(self, key, value)
     self.__object[key] = value
@@ -17,7 +24,7 @@ end
 
 local function new(init)
     local object = {
-        id = get_object_id(),
+        id = _new_object_id(),
         prototype_name = assert(init.prototype_name),
         dir = assert(init.dir),
         x = assert(init.x),
@@ -36,7 +43,7 @@ end
 
 local function clone(outer)
     local object = {
-        id = outer.id or get_object_id(),
+        id = outer.id or _new_object_id(),
         prototype_name = assert(outer.prototype_name),
         dir = assert(outer.dir),
         x = assert(outer.x),

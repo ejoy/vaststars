@@ -544,7 +544,7 @@
                         <button class="tools-button" data-event-click="clickConstructMenuItem(menu.prototype_name)">
                             <div class="workbutton-bg" data-style-background-image = "menu.icon" />
                             <div class="tools-button-title">{{menu.show_prototype_name}}</div>
-                            <div class="item-num">99</div>
+                            <div class="item-num">{{menu.count}}</div>
                         </button>
                     </div>
                 </div>

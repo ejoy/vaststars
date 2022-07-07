@@ -61,7 +61,7 @@ prototype "空气过滤器I" {
     order = 60,
 }
 
-prototype "管道1-I型" {
+prototype "管道1-X型" {
     show_prototype_name = "管道I",
     type = {"item"},
     stack = 100,
@@ -72,7 +72,7 @@ prototype "管道1-I型" {
     order = 10,
 }
 
-prototype "地下管I" {
+prototype "地下管1-JU型" {
     type = {"item"},
     stack = 100,
     icon = "textures/construct/underground-pipe1.texture",
@@ -82,7 +82,7 @@ prototype "地下管I" {
     order = 12,
 }
 
-prototype "地下管II" {
+prototype "地下管2-JU型" {
     type = {"item"},
     stack = 100,
     icon = "textures/construct/underground-pipe1.texture",

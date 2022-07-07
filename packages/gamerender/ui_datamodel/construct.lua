@@ -2,10 +2,10 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
+local _VASTSTARS_DEBUG_INFINITE_ITEM = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM
 local camera = ecs.require "engine.camera"
 local gameplay_core = require "gameplay.core"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local iprototype = require "gameplay.interface.prototype"
 local create_normalbuilder = ecs.require "editor.normalbuilder"
 local create_pipebuilder = ecs.require "editor.pipebuilder"
@@ -15,6 +15,7 @@ local ieditor = ecs.require "editor.editor"
 local global = require "global"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
+local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local construct_begin_mb = mailbox:sub {"construct_begin"} -- 建造 -> 建造模式
@@ -34,29 +35,12 @@ local laying_pipe_confirm_mb = mailbox:sub {"laying_pipe_confirm"} -- 铺管结�
 local open_taskui_event = mailbox:sub {"open_taskui"}
 local single_touch_mb = world:sub {"single_touch"}
 local imanual = require "ui_datamodel.common.manual"
+local construct_inventory = global.construct_inventory
+local iworld = require "gameplay.interface.world"
+local ichest = require "gameplay.interface.chest"
 
 local builder
 local last_prototype_name
-
-local construct_menu = {} ; do
-    for _, menu in ipairs(construct_menu_cfg) do
-        local m = {}
-        m.name = menu.name
-        m.icon = menu.icon
-        m.detail = {}
-
-        for _, prototype_name in ipairs(menu.detail) do
-            local typeobject = assert(iprototype.queryByName("entity", prototype_name))
-            m.detail[#m.detail + 1] = {
-                show_prototype_name = iprototype.show_prototype_name(typeobject),
-                prototype_name = prototype_name,
-                icon = typeobject.icon,
-            }
-        end
-
-        construct_menu[#construct_menu+1] = m
-    end
-end
 
 -- TODO
 local function get_headquater_object_id()
@@ -65,12 +49,83 @@ local function get_headquater_object_id()
     end
 end
 
+local function _update_construct_inventory()
+    construct_inventory:clear({"TEMPORARY", "CONFIRM"})
+    local e = iworld:get_headquater_entity(gameplay_core.get_world())
+    if not e then
+        return
+    end
+
+    for prototype, count in pairs(ichest:item_counts(gameplay_core.get_world(), e)) do
+        local t = construct_inventory:get({"CONFIRM"}, prototype)
+        if t then
+            t.count = t.count + count
+        else
+            construct_inventory:set("CONFIRM", {
+                prototype = prototype,
+                count = count,
+            })
+        end
+    end
+end
+
+local _get_construct_menu; do
+if _VASTSTARS_DEBUG_INFINITE_ITEM then
+    function _get_construct_menu()
+        local construct_menu = {}
+        for _, menu in ipairs(construct_menu_cfg) do
+            local m = {}
+            m.name = menu.name
+            m.icon = menu.icon
+            m.detail = {}
+
+            for _, prototype_name in ipairs(menu.detail) do
+                local typeobject = assert(iprototype.queryByName("item", prototype_name))
+                m.detail[#m.detail + 1] = {
+                    show_prototype_name = iprototype.show_prototype_name(typeobject),
+                    prototype_name = prototype_name,
+                    icon = typeobject.icon,
+                    count = 999,
+                }
+            end
+
+            construct_menu[#construct_menu+1] = m
+        end
+        return construct_menu
+    end
+else
+    function _get_construct_menu()
+        local construct_menu = {}
+        for _, menu in ipairs(construct_menu_cfg) do
+            local m = {}
+            m.name = menu.name
+            m.icon = menu.icon
+            m.detail = {}
+
+            for _, prototype_name in ipairs(menu.detail) do
+                local typeobject = assert(iprototype.queryByName("item", prototype_name))
+                local c = construct_inventory:get({"CONFIRM"}, typeobject.id)
+                if c then
+                    m.detail[#m.detail + 1] = {
+                        show_prototype_name = iprototype.show_prototype_name(typeobject),
+                        prototype_name = prototype_name,
+                        icon = typeobject.icon,
+                        count = c.count,
+                    }
+                end
+            end
+
+            construct_menu[#construct_menu+1] = m
+        end
+        return construct_menu
+    end
+end ; end
 ---------------
 local M = {}
 
 function M:create()
     return {
-        construct_menu = construct_menu,
+        construct_menu = {},
         tech_count = global.science.tech_list and #global.science.tech_list or 0,
         show_tech_progress = false,
         current_tech_icon = "none",    --当前科技图标
@@ -78,6 +133,10 @@ function M:create()
         current_tech_progress = "0%",  --当前科技进度
         manual_queue = {},
     }
+end
+
+function M:update_construct_inventory(datamodel)
+    datamodel.construct_menu = _get_construct_menu()
 end
 
 -- TODO
@@ -136,6 +195,8 @@ function M:stage_ui_update(datamodel)
         camera.transition("camera_construct.prefab")
         last_prototype_name = nil
 
+        _update_construct_inventory()
+        datamodel.construct_menu = _get_construct_menu()
         ::continue::
     end
 

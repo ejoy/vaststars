@@ -55,7 +55,7 @@ local menu = {
         icon = "textures/construct/modify.texture",
         detail = {
             "液罐I",
-            "管道1-I型",
+            "管道1-X型",
             "机器爪I",
             "小铁制箱子I",
             "地下水挖掘机",
