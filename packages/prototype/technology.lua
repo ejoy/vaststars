@@ -9,23 +9,6 @@ local prototype = gameplay.register.prototype
   --task = {"unknown", 0},                             自定义任务
   --time是指1个count所需的时间
 
-  prototype "手工生产3个铁齿轮" {
-    desc = "手工生产3个铁齿轮",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, "铁齿轮"},
-    -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
-    prerequisites = {},
-    count = 3,
-    tips_pic = {
-      "textures/task_tips_pic/task_click_build.texture",
-      "textures/task_tips_pic/task_demolish2.texture",
-      "textures/task_tips_pic/task_demolish3.texture",
-    },
-    sign_desc = {
-      { desc = "手工生产3个铁齿轮", icon = "textures/construct/industry.texture"},
-    },
-  }
 
   prototype "清除废墟" {
     desc = "清除指挥中心附近的3处废墟",
@@ -129,12 +112,30 @@ prototype "挖掘碎石矿" {
   },
 }
 
+prototype "制造台生产" {
+  desc = "制造台生产4个地质科技包",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"unknown", 0, "地质科技包"},
+  -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
+  prerequisites = {"挖掘铁矿石","挖掘碎石矿"},
+  count = 4,
+  tips_pic = {
+    "textures/task_tips_pic/task_click_build.texture",
+    "textures/task_tips_pic/task_demolish2.texture",
+    "textures/task_tips_pic/task_demolish3.texture",
+  },
+  sign_desc = {
+    { desc = "使用指挥中心里制造台生产4个地质科技包", icon = "textures/construct/industry.texture"},
+  },
+}
+
 prototype "放置组装机" {
   desc = "放置组装机",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "组装机I"},
-  prerequisites = {"挖掘铁矿石","挖掘碎石矿"},
+  prerequisites = {"制造台生产"},
   count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
@@ -147,9 +148,8 @@ prototype "放置组装机" {
   },
 }
 
-
-prototype "生产地质科技包" {
-  desc = "生产科技包用于科技研究",
+prototype "自动化生产" {
+  desc = "自动化生产科技包用于科技研究",
   icon = "textures/construct/assembler.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "地质科技包"},
@@ -173,7 +173,7 @@ prototype "铁矿熔炼" {
   effects = {
     unlock_recipe = {"铁板1"},
   },
-  prerequisites = {"生产地质科技包"},
+  prerequisites = {"自动化生产"},
   ingredients = {
       {"地质科技包", 1},
   },
