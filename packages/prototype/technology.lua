@@ -585,7 +585,7 @@ prototype "碳处理2" {
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"甲烷转乙烯","二氧化碳转一氧化碳"},
+    unlock_recipe = {"甲烷转乙烯","二氧化碳转一氧化碳","一氧化碳转石墨"},
     -- unlock_recipe = {"二氧化碳转一氧化碳","一氧化碳转石墨"},
   },
   prerequisites = {"生产氢气","生产二氧化碳"},
