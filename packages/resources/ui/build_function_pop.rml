@@ -115,7 +115,7 @@
                 <button class="button-function" style ='background-image: "textures/cmdcenter/fetch_material.texture";'/>
                 <div class="title-text">成品取出</div>
                 <!-- 可获取成品数量 start-->
-                <div class = "menu-button-pic" data-if = "true" style='width:3.6vmin; height:3.6vmin; position:absolute; right:10%; bottom:63%; background-image:"textures/work_status_icon/shutdown.texture"'/>
+                <div class = "menu-button-pic" data-if = "true" style='width:3.1vmin; height:3.1vmin; position:absolute; right:10%; bottom:63%; background-image:"textures/work_status_icon/shutdown.texture"'/>
                 <!-- 可获取成品数量 end-->
             </div>
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!(show_pickup_material)" /> <!-- TODO -->
