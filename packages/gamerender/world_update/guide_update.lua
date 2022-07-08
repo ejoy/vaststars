@@ -3,19 +3,37 @@ local world = ecs.world
 local global = require "global"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iguide = require "gameplay.interface.guide"
+local iprototype = require "gameplay.interface.prototype"
 local teardown_mb = world:sub {"teardown"}
+local manual_add_mb = world:sub {"manual_add"}
 local teardown_progress = 0
+local manual_progress = 0
 local function update_world(world)
-    if iguide.has_task() then
-        local science = global.science
-        for _, item_name in teardown_mb:unpack() do
-            if item_name == "组装机残骸" or item_name == "排水口残骸" or item_name == "抽水泵残骸" then
-                teardown_progress = teardown_progress + 1
-                world:research_progress(science.current_tech.name, teardown_progress)
+    local science = global.science
+    if iguide.has_task() and science.current_tech then
+        local taskname = science.current_tech.name
+        if taskname == "清除废墟" then
+            for _, item_name in teardown_mb:unpack() do
+                if item_name == "组装机残骸" or item_name == "排水口残骸" or item_name == "抽水泵残骸" then
+                    teardown_progress = teardown_progress + 1
+                    world:research_progress(taskname, teardown_progress)
+                    if teardown_progress >= science.current_tech.detail.count then
+                        iguide.set_task("none")
+                    end
+                end
             end
-        end
-        if teardown_progress == 3 then
-            iguide.set_task("none")
+        elseif taskname == "手工生产3个铁齿轮" then
+            for _, name, count in manual_add_mb:unpack() do
+                local id = string.unpack("<I2", science.current_tech.detail.task, 5)
+                local itemName = iprototype.queryById(id).name
+                if name == itemName then
+                    manual_progress = manual_progress + count
+                    world:research_progress(taskname, manual_progress)
+                    if manual_progress >= science.current_tech.detail.count then
+                        iguide.set_task("none")
+                    end
+                end
+            end
         end
     end
     if iguide.is_running() then

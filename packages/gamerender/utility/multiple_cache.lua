@@ -49,6 +49,19 @@ local function select(self, cache_name, index_field, cache_value)
     return cache:select(index_field, cache_value)
 end
 
+local function modify(self, cache_names, key, clone)
+    local obj = self:get(cache_names, key)
+    if not obj then
+        return
+    end
+    local _obj = self:get({cache_names[1]}, key) -- TODO: optimize
+    if not _obj then
+        _obj = clone(obj) -- TODO: optimize
+        self:set(cache_names[1], _obj)
+    end
+    return _obj
+end
+
 -- TODO: optimize
 local function selectall(self, cache_names, index_field, cache_value)
     local r = {}
@@ -94,6 +107,7 @@ local function create(cache_names, ...)
     M.remove = remove
     M.clear = clear
     M.empty = empty
+    M.modify = modify
 
     return setmetatable(M, {__index = M})
 end

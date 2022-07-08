@@ -224,11 +224,12 @@
                 cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
 
                 show_construct_complete = false,
-                show_rotate = false,  -- 是否显示[旋转建筑]
-                show_confirm = false, -- 是否显示[确认放置]
-                show_laying_pipe_begin   = false, -- 显示水管开始
-                show_laying_pipe_cancel  = false, -- 显示铺管取消
-                show_laying_pipe_confirm = false, -- 显示铺管结束
+                show_rotate = false,
+                show_confirm = false,
+                show_laying_pipe_begin   = false,
+                show_laying_pipe_cancel  = false,
+                show_laying_pipe_confirm = false,
+                show_teardown = false,
 
                 tech_count = 0,                 --当前可研究的科技数量
                 show_tech_progress = false,     --是否显示科技进度
@@ -248,7 +249,7 @@
                     ui_sys.pub {"construct_begin", true}
                 end
             end
-            function start.clickDismantleBegin(event)
+            function start.clickTeardownBegin(event)
                 ui_sys.pub {"dismantle_begin", false}
                 unconfirmed_double_confirm_continuation = function()
                     start.cur_edit_mode = 'dismantle'
@@ -265,7 +266,7 @@
                 start.cur_edit_mode = ''
                 ui_sys.pub {"construct_complete"}
             end
-            function start.clickDismantleComplete(event)
+            function start.clickTeardownComplete(event)
                 start.cur_edit_mode = ''
                 ui_sys.pub {"dismantle_complete"}
             end
@@ -318,17 +319,6 @@
             end)
 
             ui_sys.addEventListener({
-                ["show_rotate_confirm"] = function(button_state)
-                    if button_state.rotate ~= nil then
-                        start.show_rotate = button_state.rotate
-                    end
-                    if button_state.confirm ~= nil then
-                        start.show_confirm = button_state.confirm
-                    end
-                end,
-                ["show_construct_complete"] = function(visible)
-                    start.show_construct_complete = visible
-                end,
                 ["show_unconfirmed_double_confirm"] = function()
                     ui_sys.open("construct_cancel_pop.rml")
                 end,
@@ -337,9 +327,6 @@
                         unconfirmed_double_confirm_continuation()
                         unconfirmed_double_confirm_continuation = nil
                     end
-                end,
-                ["leave"] = function()
-                    -- console.log("leave")
                 end,
             })
 
@@ -432,13 +419,13 @@
             </button>
 
             <!-- 开始拆除 -->
-            <button data-if = "cur_edit_mode == 'dismantle'" data-event-click="clickDismantleComplete()" style='position: absolute; left: 2.67vmin; top: 78.67vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: center;'>
+            <button data-if = "cur_edit_mode == 'dismantle' && show_teardown" data-event-click="clickTeardownComplete()" style='position: absolute; left: 2.67vmin; top: 78.67vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: center;'>
                 <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始拆除</div>
             </button>
             
             <!-- 拆除模式 -->
-            <div data-if = "cur_edit_mode != '' && guide_progress >= 5" data-event-click="clickDismantleBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+            <div data-if = "cur_edit_mode != '' && guide_progress >= 5" data-event-click="clickTeardownBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/demolish.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除模式</div>
             </div>

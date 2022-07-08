@@ -14,6 +14,7 @@ local start = ui_sys.createDataMode("start", {
     slot_count = 0,
     show_item_info = false,
     show = false,
+    guide_progress = 0,
 })
 
 function start.ClickBuilding(event)

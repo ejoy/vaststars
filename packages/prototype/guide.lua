@@ -71,12 +71,13 @@ local guide = {
     {
         name = "guide-5",
 		narrative = {
-            {"组装机可使用3D打印技术制造地质科技包..哔哩..哔哗..请求建造组装机...(兴奋)", "textures/guide/guide-3.texture"},
+            {"哔哩..哔哩..矿物采集进展非常顺利，存活概率大幅提升至0.3244%！(兴奋)", "textures/guide/guide-3.texture"},
+            {"哔哩..指挥中心有制造台，允许生产简单物件。博士请使用制造台生产几个地质科技包..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
-            guide_progress = 20,
+            guide_progress = 25,
             task = {
-                "放置组装机",
+                "制造台生产",
             }
         },
         prerequisites = {
@@ -88,11 +89,27 @@ local guide = {
     {
         name = "guide-6",
 		narrative = {
+            {"组装机可使用3D打印技术制造地质科技包..哔哩..哔哗..请求建造组装机...(兴奋)", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "放置组装机",
+            }
+        },
+        prerequisites = {
+            "制造台生产",
+        },
+	},
+
+    {
+        name = "guide-7",
+		narrative = {
             {"科研中心针对“科技包”可开展对应的研究..哔哩..将地质科技包运送科研中心进行下一个科技研究(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             pop_chapter = {"第一阶段","科学研究"},
-            guide_progress = 20,
+            guide_progress = 30,
             task = {
                 "铁矿熔炼",
             }

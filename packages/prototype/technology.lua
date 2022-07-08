@@ -9,11 +9,12 @@ local prototype = gameplay.register.prototype
   --task = {"unknown", 0},                             自定义任务
   --time是指1个count所需的时间
 
+
   prototype "清除废墟" {
     desc = "清除指挥中心附近的3处废墟",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"unknown", 0},
+    task = {"unknown", 0, "铁齿轮"},
     -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
     prerequisites = {},
     count = 3,
@@ -111,12 +112,30 @@ prototype "挖掘碎石矿" {
   },
 }
 
+prototype "制造台生产" {
+  desc = "制造台生产4个地质科技包",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"unknown", 0, "地质科技包"},
+  -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
+  prerequisites = {"挖掘铁矿石","挖掘碎石矿"},
+  count = 4,
+  tips_pic = {
+    "textures/task_tips_pic/task_click_build.texture",
+    "textures/task_tips_pic/task_demolish2.texture",
+    "textures/task_tips_pic/task_demolish3.texture",
+  },
+  sign_desc = {
+    { desc = "使用指挥中心里制造台生产4个地质科技包", icon = "textures/construct/industry.texture"},
+  },
+}
+
 prototype "放置组装机" {
   desc = "放置组装机",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "组装机I"},
-  prerequisites = {"挖掘铁矿石","挖掘碎石矿"},
+  prerequisites = {"制造台生产"},
   count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
@@ -129,9 +148,8 @@ prototype "放置组装机" {
   },
 }
 
-
-prototype "生产地质科技包" {
-  desc = "生产科技包用于科技研究",
+prototype "自动化生产" {
+  desc = "自动化生产科技包用于科技研究",
   icon = "textures/construct/assembler.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "地质科技包"},
@@ -155,7 +173,7 @@ prototype "铁矿熔炼" {
   effects = {
     unlock_recipe = {"铁板1"},
   },
-  prerequisites = {"生产地质科技包"},
+  prerequisites = {"自动化生产"},
   ingredients = {
       {"地质科技包", 1},
   },
@@ -322,7 +340,7 @@ prototype "管道系统1" {
       {"地质科技包", 1},
       {"气候科技包", 1},
   },
-  count = 4,
+  count = 3,
   time = "1s"
 }
 
@@ -567,7 +585,7 @@ prototype "碳处理2" {
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"甲烷转乙烯","二氧化碳转一氧化碳"},
+    unlock_recipe = {"甲烷转乙烯","二氧化碳转一氧化碳","一氧化碳转石墨"},
     -- unlock_recipe = {"二氧化碳转一氧化碳","一氧化碳转石墨"},
   },
   prerequisites = {"生产氢气","生产二氧化碳"},
@@ -841,7 +859,7 @@ prototype "地下水净化" {
   type = { "tech" },
   icon = "textures/science/tech-chemical.texture",
   effects = {
-    unlock_recipe = {"地下卤水净化"},
+    unlock_recipe = {"地下卤水净化","地下水挖掘机","水电站1"},
   },
   prerequisites = {"蒸馏1"},
   ingredients = {
@@ -982,6 +1000,22 @@ prototype "铁矿熔炼2" {
   time = "1.5s"
 }
 
+prototype "能量存储" {
+  desc = "更多的有机化学制取工业气体工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-chemical.texture",
+  effects = {
+    unlock_recipe = {"电解厂1"},
+  },
+  prerequisites = {"空气过滤"},
+  ingredients = {
+      {"气候科技包", 1},
+      {"机械科技包", 1},
+  },
+  count = 3,
+  time = "4s"
+}
+
 prototype "有机化学2" {
   desc = "更多的有机化学制取工业气体工艺",
   type = { "tech" },
@@ -989,7 +1023,7 @@ prototype "有机化学2" {
   effects = {
     unlock_recipe = {"乙烯转丁二烯","纯水转蒸汽"},
   },
-  prerequisites = {"硅处理","空气过滤"},
+  prerequisites = {"硅处理","能量存储"},
   ingredients = {
       {"气候科技包", 1},
       {"机械科技包", 1},

@@ -70,48 +70,58 @@ local property_list = {
 	},
 	["idle_power"] = {
 		icon = "textures/property/idle-power.texture",
-		desc = "工作功率: ",
+		desc = "待机功率: ",
 		pos = 14,
+	},
+	["charge_power"] = {
+		icon = "textures/property/idle-power.texture",
+		desc = "充电功率: ",
+		pos = 15,
+	},
+	["charge_energy"] = {
+		icon = "textures/property/idle-power.texture",
+		desc = "蓄电电量: ",
+		pos = 16,
 	},
 	["production_speed"] = {
 		icon = "textures/property/production-speed.texture",
 		desc = "生产速度: ",
-		pos = 15,
+		pos = 17,
 	},
 	["productivity_bonus"] = {
 		icon = "textures/property/productivity-bonus.texture",
 		desc = "产能加成: ",
-		pos = 16,
+		pos = 18,
 	},
 	["productivity_efficiency"] = {
 		icon = "textures/property/productivity-efficiency.texture",
 		desc = "生产效率: ",
-		pos = 17,
+		pos = 19,
 	},
 	["research_packs"] = {
 		icon = "textures/property/research-packs.texture",
 		desc = "研究瓶数量: ",
-		pos = 18,
+		pos = 20,
 	},
 	["research_speed"] = {
 		icon = "textures/property/research-speed.texture",
 		desc = "研究速度: ",
-		pos = 19,
+		pos = 21,
 	},
 	["research_time"] = {
 		icon = "textures/property/research-time.texture",
 		desc = "研究时间: ",
-		pos = 20,
+		pos = 22,
 	},
 	["temperature"] = {
 		icon = "textures/property/temperature.texture",
 		desc = "当前温度: ",
-		pos = 21,
+		pos = 23,
 	},
 	["temperature_max"] = {
 		icon = "textures/property/temperature-max.texture",
 		desc = "最高温度: ",
-		pos = 22,
+		pos = 24,
 	},
 }
 

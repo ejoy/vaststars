@@ -45,7 +45,7 @@ prototype "铁板1" {
 prototype "铁板2" {
     type = { "recipe" },
     category = "金属冶炼",
-    --group = "金属",
+    group = "金属",
     order = 12,
     allow_manual = false,
     icon = "textures/construct/plate-Fe.texture",
@@ -64,7 +64,7 @@ prototype "铁板2" {
 prototype "碾碎铁矿石" {
     type = { "recipe" },
     category = "矿石粉碎",
-    --group = "金属",
+    group = "金属",
     order = 14,
     allow_manual = false,
     icon = "textures/construct/crush-ore-Fe.texture",
@@ -82,7 +82,7 @@ prototype "碾碎铁矿石" {
 prototype "碾碎铝矿石" {
     type = { "recipe" },
     category = "矿石粉碎",
-    --group = "金属",
+    group = "金属",
     order = 14,
     allow_manual = false,
     icon = "textures/construct/crush-ore-Al.texture",
@@ -101,7 +101,7 @@ prototype "碾碎铝矿石" {
 prototype "铝矿石浮选" {
     type = { "recipe" },
     category = "矿石浮选",
-    --group = "金属",
+    group = "金属",
     order = 14,
     icon = "textures/construct/aluminum-hydroxide.texture",
     ingredients = {
@@ -119,7 +119,7 @@ prototype "铝矿石浮选" {
 prototype "氧化铝" {
     type = { "recipe" },
     category = "金属冶炼",
-    --group = "金属",
+    group = "金属",
     order = 16,
     allow_manual = false,
     icon = "textures/construct/alumina.texture",
@@ -136,7 +136,7 @@ prototype "氧化铝" {
 prototype "铝板1" {
     type = { "recipe" },
     category = "金属冶炼",
-    --group = "金属",
+    group = "金属",
     order = 18,
     allow_manual = false,
     icon = "textures/construct/plate-Ai.texture",
@@ -155,7 +155,7 @@ prototype "铝板1" {
 prototype "铝棒1" {
     type = { "recipe" },
     category = "金属锻造",
-    --group = "金属",
+    group = "金属",
     order = 20,
     icon = "textures/construct/iron_stick.texture",
     ingredients = {
@@ -171,7 +171,7 @@ prototype "铝棒1" {
 prototype "铝丝1" {
     type = { "recipe" },
     category = "金属锻造",
-    --group = "金属",
+    group = "金属",
     order = 22,
     icon = "textures/construct/iron-wire.texture",
     ingredients = {
@@ -187,7 +187,7 @@ prototype "铝丝1" {
 prototype "铁棒1" {
     type = { "recipe" },
     category = "金属锻造",
-    --group = "金属",
+    group = "金属",
     order = 13,
     icon = "textures/construct/iron_stick.texture",
     ingredients = {
@@ -203,7 +203,7 @@ prototype "铁棒1" {
 prototype "铁丝1" {
     type = { "recipe" },
     category = "金属锻造",
-    --group = "金属",
+    group = "金属",
     order = 14,
     icon = "textures/construct/iron-wire.texture",
     ingredients = {
@@ -219,7 +219,7 @@ prototype "铁丝1" {
 prototype "沙子1" {
     type = { "recipe" },
     category = "矿石粉碎",
-    --group = "金属",
+    group = "金属",
     order = 40,
     allow_manual = false,
     icon = "textures/construct/sand.texture",
@@ -252,7 +252,7 @@ prototype "石砖" {
 prototype "硅1" {
     type = { "recipe" },
     category = "矿石浮选",
-    --group = "金属",
+    group = "金属",
     order = 68,
     allow_manual = false,
     icon = "textures/construct/ore-Si.texture",
@@ -269,7 +269,7 @@ prototype "硅1" {
 prototype "玻璃" {
     type = { "recipe" },
     category = "器件中型制造",
-    --group = "器件",
+    group = "器件",
     order = 70,
     icon = "textures/construct/glass.texture",
     ingredients = {
@@ -285,7 +285,7 @@ prototype "玻璃" {
 prototype "坩埚" {
     type = { "recipe" },
     category = "金属冶炼",
-    --group = "器件",
+    group = "器件",
     order = 72,
     icon = "textures/construct/crucible.texture",
     ingredients = {
@@ -301,7 +301,7 @@ prototype "坩埚" {
 prototype "硅板1" {
     type = { "recipe" },
     category = "金属冶炼",
-    --group = "金属",
+    group = "金属",
     order = 68,
     allow_manual = false,
     icon = "textures/construct/plate-Si.texture",
@@ -319,7 +319,7 @@ prototype "硅板1" {
 prototype "橡胶" {
     type = { "recipe" },
     category = "矿石浮选",
-    --group = "器件",
+    group = "器件",
     order = 76,
     icon = "textures/construct/rubber.texture",
     ingredients = {
@@ -370,7 +370,7 @@ prototype "铁齿轮" {
 prototype "机器爪1" {
     type = { "recipe" },
     category = "物流小型制造",
-    --group = "物流",
+    group = "物流",
     order = 40,
     icon = "textures/construct/insert1.texture",
     ingredients = {
@@ -389,7 +389,7 @@ prototype "机器爪1" {
 prototype "砖石公路" {
     type = { "recipe" },
     category = "物流中型制造",
-    --group = "物流",
+    group = "物流",
     order = 104,
     icon = "textures/construct/road1.texture",
     ingredients = {
@@ -405,7 +405,7 @@ prototype "砖石公路" {
 prototype "车站1" {
     type = { "recipe" },
     category = "物流中型制造",
-    --group = "物流",
+    group = "物流",
     order = 51,
     icon = "textures/construct/manufacture.texture",
     ingredients = {
@@ -422,7 +422,7 @@ prototype "车站1" {
 prototype "物流中心1" {
     type = { "recipe" },
     category = "物流大型制造",
-    --group = "物流",
+    group = "物流",
     order = 52,
     icon = "textures/construct/logisitic1.texture",
     ingredients = {
@@ -440,7 +440,7 @@ prototype "物流中心1" {
 prototype "运输车辆1" {
     type = { "recipe" },
     category = "物流中型制造",
-    --group = "物流",
+    group = "物流",
     order = 53,
     icon = "textures/construct/truck.texture",
     ingredients = {
@@ -511,7 +511,7 @@ prototype "大铁制箱子1" {
 prototype "铁制电线杆" {
     type = { "recipe" },
     category = "物流中型制造",
-    --group = "物流",
+    group = "物流",
     order = 30,
     icon = "textures/construct/electric-pole1.texture",
     ingredients = {
@@ -530,7 +530,7 @@ prototype "铁制电线杆" {
 prototype "采矿机1" {
     type = { "recipe" },
     category = "生产中型制造",
-    --group = "生产",
+    group = "生产",
     order = 40,
     icon = "textures/construct/miner.texture",
     ingredients = {
@@ -548,7 +548,7 @@ prototype "采矿机1" {
 prototype "采矿机2" {
     type = { "recipe" },
     category = "生产中型制造",
-    --group = "生产",
+    group = "生产",
     order = 40,
     icon = "textures/construct/miner.texture",
     ingredients = {
@@ -601,7 +601,7 @@ prototype "熔炼炉2" {
 prototype "组装机1" {
     type = { "recipe" },
     category = "生产中型制造",
-    --group = "生产",
+    group = "生产",
     order = 70,
     icon = "textures/construct/assembler1.texture",
     ingredients = {
@@ -619,7 +619,7 @@ prototype "组装机1" {
 prototype "组装机2" {
     type = { "recipe" },
     category = "生产中型制造",
-    --group = "生产",
+    group = "生产",
     order = 70,
     icon = "textures/construct/assembler2.texture",
     ingredients = {
@@ -636,7 +636,7 @@ prototype "组装机2" {
 prototype "蒸汽发电机1" {
     type = { "recipe" },
     category = "化工大型制造",
-    --group = "化工",
+    group = "化工",
     order = 120,
     icon = "textures/construct/turbine1.texture",
     ingredients = {
@@ -690,7 +690,7 @@ prototype "液罐1" {
 prototype "化工厂1" {
     type = { "recipe" },
     category = "化工大型制造",
-    --group = "化工",
+    group = "化工",
     order = 80,
     icon = "textures/construct/chemistry2.texture",
     ingredients = {
@@ -727,7 +727,7 @@ prototype "铸造厂1" {
 prototype "水电站1" {
     type = { "recipe" },
     category = "化工大型制造",
-    --group = "化工",
+    group = "化工",
     order = 70,
     icon = "textures/construct/hydroplant.texture",
     ingredients = {
@@ -744,7 +744,7 @@ prototype "水电站1" {
 prototype "蒸馏厂1" {
     type = { "recipe" },
     category = "化工大型制造",
-    --group = "化工",
+    group = "化工",
     order = 62,
     icon = "textures/construct/distillery.texture",
     ingredients = {
@@ -782,7 +782,7 @@ prototype "烟囱1" {
 prototype "压力泵1" {
     type = { "recipe" },
     category = "化工中型制造",
-    --group = "化工",
+    group = "化工",
     order = 40,
     icon = "textures/construct/pump1.texture",
     ingredients = {
@@ -799,7 +799,7 @@ prototype "压力泵1" {
 prototype "地下水挖掘机" {
     type = { "recipe" },
     category = "化工中型制造",
-    --group = "化工",
+    group = "化工",
     order = 50,
     icon = "textures/construct/pumpjack1.texture",
     ingredients = {
@@ -816,7 +816,7 @@ prototype "地下水挖掘机" {
 prototype "空气过滤器1" {
     type = { "recipe" },
     category = "化工大型制造",
-    --group = "化工",
+    group = "化工",
     order = 60,
     icon = "textures/construct/air-filter1.texture",
     ingredients = {
@@ -834,7 +834,7 @@ prototype "空气过滤器1" {
 prototype "排水口1" {
     type = { "recipe" },
     category = "化工大型制造",
-    --group = "化工",
+    group = "化工",
     order = 56,
     icon = "textures/construct/outfall.texture",
     ingredients = {
@@ -885,7 +885,7 @@ prototype "管道2" {
 prototype "地下管1" {
     type = { "recipe" },
     category = "化工小型制造",
-    --group = "化工",
+    group = "化工",
     order = 12,
     icon = "textures/construct/underground-pipe1.texture",
     ingredients = {
@@ -902,7 +902,7 @@ prototype "地下管1" {
 prototype "地下管2" {
     type = { "recipe" },
     category = "化工小型制造",
-    --group = "化工",
+    group = "化工",
     order = 14,
     icon = "textures/construct/underground-pipe1.texture",
     ingredients = {
@@ -920,7 +920,7 @@ prototype "地下管2" {
 prototype "粉碎机1" {
     type = { "recipe" },
     category = "生产大型制造",
-    --group = "生产",
+    group = "生产",
     order = 60,
     icon = "textures/construct/crusher1.texture",
     ingredients = {
@@ -939,7 +939,7 @@ prototype "粉碎机1" {
 prototype "电解厂1" {
     type = { "recipe" },
     category = "化工大型制造",
-    --group = "化工",
+    group = "化工",
     order = 90,
     icon = "textures/construct/electrolysis1.texture",
     ingredients = {
@@ -956,7 +956,7 @@ prototype "电解厂1" {
 prototype "浮选器1" {
     type = { "recipe" },
     category = "生产大型制造",
-    --group = "生产",
+    group = "生产",
     order = 64,
     icon = "textures/construct/flotation-cell.texture",
     ingredients = {
@@ -974,7 +974,7 @@ prototype "浮选器1" {
 prototype "科研中心1" {
     type = { "recipe" },
     category = "生产大型制造",
-    --group = "生产",
+    group = "生产",
     order = 80,
     icon = "textures/property/research-packs.texture",
     ingredients = {
@@ -1163,7 +1163,7 @@ prototype "破损蓄电池" {
 prototype "破损物流中心" {
     type = { "recipe" },
     category = "生产手工制造",
-    --group = "生产",
+    group = "生产",
     order = 126,
     allow_as_intermediate = false,
     icon = "textures/construct/logisitic1.texture",
@@ -1181,7 +1181,7 @@ prototype "破损物流中心" {
 prototype "破损运输汽车" {
     type = { "recipe" },
     category = "生产手工制造",
-    --group = "生产",
+    group = "生产",
     order = 128,
     allow_as_intermediate = false,
     icon = "textures/construct/truck.texture",
@@ -1200,7 +1200,7 @@ prototype "破损运输汽车" {
 prototype "破损车站" {
     type = { "recipe" },
     category = "生产手工制造",
-    --group = "生产",
+    group = "生产",
     order = 130,
     allow_as_intermediate = false,
     icon = "textures/construct/manufacture.texture",
@@ -1241,12 +1241,12 @@ prototype "气候科技包1" {
     icon = "textures/recipe/climatology-pack.texture",
     ingredients = {
         {"地下卤水", 2000},
-        {"空气", 3000},
+        {"空气", 2500},
     },
     results = {
         {"气候科技包", 1},
     },
-    time = "25s",
+    time = "20s",
     description = "气候材料制造气候科技包",
 }
 
@@ -1354,7 +1354,7 @@ prototype "绝缘线1" {
 prototype "电容1" {
     type = { "recipe" },
     category = "金属锻造",
-    --group = "金属",
+    group = "金属",
     order = 72,
     icon = "textures/construct/capacitor.texture",
     ingredients = {
@@ -1476,7 +1476,7 @@ prototype "二氧化碳转甲烷" {
 prototype "一氧化碳转石墨" {
     type = { "recipe" },
     category = "器件基础化工",
-    --group = "器件",
+    group = "器件",
     order = 10,
     icon = "textures/fluid/gas.texture",
     ingredients = {
@@ -1494,7 +1494,7 @@ prototype "一氧化碳转石墨" {
 prototype "盐酸" {
     type = { "recipe" },
     category = "流体基础化工",
-    --group = "流体",
+    group = "流体",
     order = 60,
     icon = "textures/fluid/liquid-hydrochloric.texture",
     ingredients = {
@@ -1511,7 +1511,7 @@ prototype "盐酸" {
 prototype "润滑油" {
     type = { "recipe" },
     category = "流体基础化工",
-    --group = "流体",
+    group = "流体",
     order = 60,
     icon = "textures/fluid/lubricant.texture",
     ingredients = {
@@ -1634,7 +1634,7 @@ prototype "乙烯转丁二烯" {
 prototype "纯水转蒸汽" {
     type = { "recipe" },
     category = "流体基础化工",
-    --group = "流体",
+    group = "流体",
     order = 112,
     icon = "textures/fluid/gas.texture",
     ingredients = {
@@ -1668,7 +1668,7 @@ prototype "塑料1" {
 prototype "塑料2" {
     type = { "recipe" },
     category = "器件基础化工",
-    --group = "器件",
+    group = "器件",
     order = 21,
     icon = "textures/construct/processor.texture",
     ingredients = {
@@ -1687,7 +1687,7 @@ prototype "塑料2" {
 prototype "酸碱中和" {
     type = { "recipe" },
     category = "流体液体处理",
-    --group = "流体",
+    group = "流体",
     order = 65,
     icon = "textures/fluid/liquid.texture",
     ingredients = {
@@ -1704,7 +1704,7 @@ prototype "酸碱中和" {
 prototype "碱性溶液" {
     type = { "recipe" },
     category = "流体基础化工",
-    --group = "流体",
+    group = "流体",
     order = 64,
     icon = "textures/fluid/liquid.texture",
     ingredients = {
@@ -1758,7 +1758,7 @@ prototype "铁矿石回收" {
     type = { "recipe" },
     category = "矿石粉碎",
     allow_manual = false,
-    --group = "金属",
+    group = "金属",
     order = 104,
     icon = "textures/fluid/liquid.texture",
     ingredients = {
@@ -1775,7 +1775,7 @@ prototype "碎石回收" {
     type = { "recipe" },
     category = "矿石浮选",
     allow_manual = false,
-    --group = "金属",
+    group = "金属",
     order = 106,
     icon = "textures/fluid/liquid.texture",
     ingredients = {
@@ -1791,7 +1791,7 @@ prototype "碎石回收" {
 prototype "沙子回收" {
     type = { "recipe" },
     category = "流体液体处理",
-    --group = "金属",
+    group = "金属",
     order = 102,
     icon = "textures/fluid/liquid.texture",
     ingredients = {
@@ -1808,7 +1808,7 @@ prototype "沙子回收" {
 prototype "废料中和" {
     type = { "recipe" },
     category = "流体液体排泄",
-    --group = "金属",
+    group = "金属",
     order = 102,
     icon = "textures/fluid/liquid.texture",
     ingredients = {
