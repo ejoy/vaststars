@@ -121,9 +121,11 @@ prototype "制造台生产" {
   prerequisites = {"挖掘铁矿石","挖掘碎石矿"},
   count = 4,
   tips_pic = {
-    "textures/task_tips_pic/task_click_build.texture",
-    "textures/task_tips_pic/task_demolish2.texture",
-    "textures/task_tips_pic/task_demolish3.texture",
+    "textures/task_tips_pic/task_manual1.texture",
+    "textures/task_tips_pic/task_manual2.texture",
+    "textures/task_tips_pic/task_manual3.texture",
+    "textures/task_tips_pic/task_manual4.texture",
+    "textures/task_tips_pic/task_manual5.texture",
   },
   sign_desc = {
     { desc = "使用指挥中心里制造台生产4个地质科技包", icon = "textures/construct/industry.texture"},
