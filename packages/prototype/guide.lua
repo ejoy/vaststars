@@ -81,7 +81,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "挖掘铁矿石",
+            "转运铁矿石",
             "挖掘碎石矿",
         },
 	},
