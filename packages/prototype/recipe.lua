@@ -426,7 +426,7 @@ prototype "物流中心1" {
     order = 52,
     icon = "textures/construct/logisitic1.texture",
     ingredients = {
-        {"运输车辆1", 2},
+        {"运输车辆I", 2},
         {"车站I", 2},
         {"砖石公路-O型", 10},
     },
