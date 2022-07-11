@@ -665,7 +665,6 @@ prototype "基地生产2" {
   type = { "tech" },
   icon = "textures/science/tech-manufacture.texture",
   effects = {
-    modifier = {["headquarter-craft-speed"] = 0.2},
     unlock_recipe = {"破损运输汽车","破损物流中心","砖石公路"},
   },
   prerequisites = {"冶金学1"},

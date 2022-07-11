@@ -1168,7 +1168,7 @@ prototype "破损物流中心" {
     allow_as_intermediate = false,
     icon = "textures/construct/broken-logisitic.texture",
     ingredients = {
-        {"铁板", 5},
+        {"小铁制箱子I", 2},
         {"破损物流中心", 1},
     },
     results = {
