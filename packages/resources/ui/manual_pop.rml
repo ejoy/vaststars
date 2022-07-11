@@ -132,6 +132,7 @@
                 last_select_item_count = default_select_count,
                 material_shortages = false,
                 select_item_ingredients = {},
+                select_item_main_result = " ",
             })
 
             function start.clickClose(event)
@@ -215,6 +216,7 @@
                 start.select_item = item
                 start.select_item_count = default_select_count
                 start.select_item_ingredients = update_select_item_ingredients(start.select_item.ingredients, start.select_item_count, start.select_item.result[1].count)
+                start.select_item_main_result = start.select_item.result[1].name
                 ui_sys.pub {"check_material", start.select_item.name, start.select_item_count}
             end
 
@@ -341,10 +343,10 @@
                         <div class = "recipe-name-text">物品</div>
                     </div> 
                     <div class = "materials-block" style="height:58%;">
-                        <div class = "materials" data-if = "select_item.name != ' '">
+                        <div class = "materials" data-if = "select_item_main_result != ' '">
                             <div class = "materials-item">
                                 <div class = "materials-icon" data-style-background-image = "select_item.icon" />
-                                <div class = "materials-name">{{select_item.name}}</div>
+                                <div class = "materials-name">{{select_item_main_result}}</div>
                             </div>
                             <div class = "materials-num">X{{select_item_count}}</div>
                         </div>
