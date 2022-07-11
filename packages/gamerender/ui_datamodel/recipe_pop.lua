@@ -58,6 +58,7 @@ local recipes = {} ; local get_recipe_index; do
             cache[recipe.name] = {_get_group_index(recipe.group), index}
         end
     end
+    -- recipe_name -> {category_index, recipe_index}
     function get_recipe_index(name)
         return table.unpack(cache[name])
     end

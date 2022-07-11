@@ -32,7 +32,7 @@ end
 
 local manual_recipe = {}
 local check = {}
-for _, typeobject in pairs(iprototype.each_maintype("recipe")) do
+for _, typeobject in pairs(iprototype.each_maintype "recipe") do
     if typeobject.allow_manual ~= false then
         local ingredients = decode(typeobject.ingredients)
         local results = decode(typeobject.results)
