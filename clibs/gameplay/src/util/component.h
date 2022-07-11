@@ -117,7 +117,7 @@ struct manual {
 }
 
 struct ecs_component_id {
-	inline static int id = 0;
+	inline static int id = 0x80000000;
 	inline static int gen() {
 		return id++;
 	}
