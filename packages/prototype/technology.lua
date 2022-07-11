@@ -588,7 +588,6 @@ prototype "碳处理2" {
   icon = "textures/science/tech-chemical.texture",
   effects = {
     unlock_recipe = {"甲烷转乙烯","二氧化碳转一氧化碳","一氧化碳转石墨"},
-    -- unlock_recipe = {"二氧化碳转一氧化碳","一氧化碳转石墨"},
   },
   prerequisites = {"生产氢气","生产二氧化碳"},
   ingredients = {
@@ -661,7 +660,7 @@ prototype "冶金学1" {
 }
 
 prototype "基地生产2" {
-  desc = "提高指挥中心的生产效率",
+  desc = "维修物流中心引入公路运输",
   type = { "tech" },
   icon = "textures/science/tech-manufacture.texture",
   effects = {
@@ -673,9 +672,6 @@ prototype "基地生产2" {
   },
   count = 10,
   time = "2s",
-  sign_desc = {
-    { desc = "该科技可以持续地提高某项能力", icon = "textures/science/recycle.texture"},
-  },
   sign_icon = "textures/science/tech-cycle.texture",
 }
 
