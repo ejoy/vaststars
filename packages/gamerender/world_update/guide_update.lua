@@ -6,19 +6,22 @@ local iguide = require "gameplay.interface.guide"
 local iprototype = require "gameplay.interface.prototype"
 local teardown_mb = world:sub {"teardown"}
 local manual_add_mb = world:sub {"manual_add"}
-local teardown_progress = 0
-local manual_progress = 0
+local task_progress
 local function update_world(world)
     local science = global.science
     if iguide.has_task() and science.current_tech then
+        if not task_progress then
+            task_progress = iguide.get_task_progress()
+        end
         local taskname = science.current_tech.name
         if taskname == "清除废墟" then
             for _, item_name in teardown_mb:unpack() do
                 if item_name == "组装机残骸" or item_name == "排水口残骸" or item_name == "抽水泵残骸" then
-                    teardown_progress = teardown_progress + 1
-                    world:research_progress(taskname, teardown_progress)
-                    if teardown_progress >= science.current_tech.detail.count then
+                    task_progress = task_progress + 1
+                    world:research_progress(taskname, task_progress)
+                    if task_progress >= science.current_tech.detail.count then
                         iguide.set_task("none")
+                        task_progress = 0
                     end
                 end
             end
@@ -27,10 +30,11 @@ local function update_world(world)
                 local id = string.unpack("<I2", science.current_tech.detail.task, 5)
                 local itemName = iprototype.queryById(id).name
                 if name == itemName then
-                    manual_progress = manual_progress + count
-                    world:research_progress(taskname, manual_progress)
-                    if manual_progress >= science.current_tech.detail.count then
+                    task_progress = task_progress + count
+                    world:research_progress(taskname, task_progress)
+                    if task_progress >= science.current_tech.detail.count then
                         iguide.set_task("none")
+                        task_progress = 0
                     end
                 end
             end
