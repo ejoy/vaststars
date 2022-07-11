@@ -115,7 +115,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "生产地质科技包",
+            "自动化生产",
         },
 	},
 
