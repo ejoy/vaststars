@@ -75,7 +75,7 @@ local function writeEntityH(components)
     write "}"
     write ""
     write "struct ecs_component_id {"
-    write "\tinline static int id = 0;"
+    write "\tinline static int id = 0x80000000;"
     write "\tinline static int gen() {"
     write "\t\treturn id++;"
     write "\t}"
