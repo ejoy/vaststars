@@ -119,7 +119,7 @@ prototype "制造台生产" {
   task = {"unknown", 0, "地质科技包"},
   -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"转运铁矿石","挖掘碎石矿"},
-  count = 4,
+  count = 2,
   tips_pic = {
     "textures/task_tips_pic/task_manual1.texture",
     "textures/task_tips_pic/task_manual2.texture",
