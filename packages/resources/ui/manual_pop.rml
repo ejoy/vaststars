@@ -86,6 +86,7 @@
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: center;
+                width: 100%;
             }
             .materials-icon {
                 margin-left: 0.5em;
@@ -324,13 +325,15 @@
                         <div class = "small-bg" style='background-image: "textures/road_net/big_bag.texture";'/>
                         <div class = "recipe-name-text">原料</div>
                     </div>
-                    <div class = "materials-block" data-for = "select_item_ingredients"> 
-                        <div class = "materials">
+                    <div class = "materials-block"> 
+                        <div class = "materials" data-for = "select_item_ingredients">
                             <div class = "materials-item">
                                 <div class = "materials-icon" data-style-background-image = "it.icon" />
                                 <div class = "materials-name">{{it.name}}</div>
+                                <div style = "flex-grow: 1; flex-direction:row-reverse;">
+                                    <div class = "materials-num" data-style-color = "material_shortages ? 'rgb(255, 0, 0)' : 'rgb(255, 255, 255)'">X{{it.count}}</div>
+                                </div>
                             </div>
-                            <div class = "materials-num" data-style-color = "material_shortages ? 'rgb(255, 0, 0)' : 'rgb(255, 255, 255)'">X{{it.count}}</div>
                         </div>
                     </div>
                 </div>
@@ -347,8 +350,10 @@
                             <div class = "materials-item">
                                 <div class = "materials-icon" data-style-background-image = "select_item.icon" />
                                 <div class = "materials-name">{{select_item_main_result}}</div>
+                                <div style = "flex-grow: 1; flex-direction:row-reverse;">
+                                    <div class = "materials-num">X{{select_item_count}}</div>
+                                </div>
                             </div>
-                            <div class = "materials-num">X{{select_item_count}}</div>
                         </div>
                     </div>
                     <div class="row" style="height: 30%; width:100%; justify-content: space-evenly;">
