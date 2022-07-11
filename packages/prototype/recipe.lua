@@ -393,10 +393,10 @@ prototype "砖石公路" {
     order = 104,
     icon = "textures/construct/road1.texture",
     ingredients = {
-        {"石砖", 8},
+        {"石砖", 2},
     },
     results = {
-        {"砖石公路-O型", 4},
+        {"砖石公路-O型", 8},
     },
     time = "6s",
     description = "使用石砖制造公路",
@@ -426,7 +426,7 @@ prototype "物流中心1" {
     order = 52,
     icon = "textures/construct/logisitic1.texture",
     ingredients = {
-        {"运输车辆I", 2},
+        {"蒸汽发电机I", 1},
         {"车站I", 2},
         {"砖石公路-O型", 10},
     },

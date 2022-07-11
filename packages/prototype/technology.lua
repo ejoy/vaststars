@@ -666,7 +666,7 @@ prototype "基地生产2" {
   icon = "textures/science/tech-manufacture.texture",
   effects = {
     modifier = {["headquarter-craft-speed"] = 0.2},
-    unlock_recipe = {"破损运输汽车","破损物流中心"},
+    unlock_recipe = {"破损运输汽车","破损物流中心","砖石公路"},
   },
   prerequisites = {"冶金学1"},
   ingredients = {
@@ -811,21 +811,6 @@ prototype "电力传输1" {
   time = "6s"
 }
 
-prototype "物流1" {
-  desc = "使用交通工具进行远程运输",
-  type = { "tech" },
-  icon = "textures/science/tech-logistics.texture",
-  effects = {
-    unlock_recipe ={"车站1","物流中心1","运输车辆1"},
-  },
-  prerequisites = {"机械研究"},
-  ingredients = {
-    {"机械科技包", 1},
-  },
-  count = 5,
-  time = "2s"
-}
-
 prototype "泵系统1" {
   desc = "使用机械方式加快液体流动",
   type = { "tech" },
@@ -904,6 +889,21 @@ prototype "发电机1" {
     {"机械科技包", 1},
   },
   count = 4,
+  time = "2s"
+}
+
+prototype "物流1" {
+  desc = "使用交通工具进行远程运输",
+  type = { "tech" },
+  icon = "textures/science/tech-logistics.texture",
+  effects = {
+    unlock_recipe ={"车站1","物流中心1","运输车辆1"},
+  },
+  prerequisites = {"发电机1"},
+  ingredients = {
+    {"机械科技包", 1},
+  },
+  count = 5,
   time = "2s"
 }
 
