@@ -1166,7 +1166,7 @@ prototype "破损物流中心" {
     group = "生产",
     order = 126,
     allow_as_intermediate = false,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-logisitic.texture",
     ingredients = {
         {"铁板", 5},
         {"破损物流中心", 1},
@@ -1184,7 +1184,7 @@ prototype "破损运输汽车" {
     group = "生产",
     order = 128,
     allow_as_intermediate = false,
-    icon = "textures/construct/truck.texture",
+    icon = "textures/construct/broken-truck.texture",
     ingredients = {
         -- {"铁丝", 10},
         {"铁板", 10},

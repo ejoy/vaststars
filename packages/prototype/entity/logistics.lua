@@ -34,7 +34,7 @@ prototype "物流中心" {
     construct_detector = {"exclusive"},
     type ={"entity", "consumer"},
     area = "3x3",
-    power = "600kW",
+    power = "300kW",
     priority = "secondary",
     group = {"物流"},
 }
