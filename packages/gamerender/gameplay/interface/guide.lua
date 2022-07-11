@@ -49,7 +49,7 @@ function M.get_task_progress()
 end
 
 function M.has_task()
-    return M.world.storage.guide_task and M.world.storage.guide_task ~= "none"
+    return M.world.storage and M.world.storage.guide_task and M.world.storage.guide_task ~= "none"
 end
 
 return M
