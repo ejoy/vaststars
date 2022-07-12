@@ -466,6 +466,8 @@
                                 <div class = "progressbar-half-cycle-right" data-style-transform = "progress_bar_right" style = "pointer-events: none;" data-if = "it_index == 0" />
                                 <div class = "progressbar-half-cycle-right" style = "pointer-events: none;" data-if = "it_index > 0"/>
                             </div>
+                            <!-- 右下角手搓物品数量显示 -->
+                            <div style="position:absolute; 	font-size: 4vmin; top: -0.5vmin; left: 0vmin;-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);">20</div>
                         </workbutton>
                     </div>
                 </collapsed-bar>
