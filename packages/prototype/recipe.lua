@@ -635,7 +635,7 @@ prototype "组装机2" {
 
 prototype "蒸汽发电机1" {
     type = { "recipe" },
-    category = "化工大型制造",
+    category = "生产中型制造",
     group = "化工",
     order = 120,
     icon = "textures/construct/turbine1.texture",
@@ -671,7 +671,7 @@ prototype "风力发电机1" {
 
 prototype "液罐1" {
     type = { "recipe" },
-    category = "化工大型制造",
+    category = "器件中型制造",
     group = "化工",
     order = 22,
     icon = "textures/construct/tank1.texture",
@@ -689,7 +689,7 @@ prototype "液罐1" {
 
 prototype "化工厂1" {
     type = { "recipe" },
-    category = "化工大型制造",
+    category = "生产大型制造",
     group = "化工",
     order = 80,
     icon = "textures/construct/chemistry2.texture",
@@ -726,7 +726,7 @@ prototype "铸造厂1" {
 
 prototype "水电站1" {
     type = { "recipe" },
-    category = "化工大型制造",
+    category = "生产大型制造",
     group = "化工",
     order = 70,
     icon = "textures/construct/hydroplant.texture",
@@ -743,7 +743,7 @@ prototype "水电站1" {
 
 prototype "蒸馏厂1" {
     type = { "recipe" },
-    category = "化工大型制造",
+    category = "生产大型制造",
     group = "化工",
     order = 62,
     icon = "textures/construct/distillery.texture",
@@ -762,7 +762,7 @@ prototype "蒸馏厂1" {
 
 prototype "烟囱1" {
     type = { "recipe" },
-    category = "化工大型制造",
+    category = "生产中型制造",
     group = "化工",
     order = 65,
     icon = "textures/construct/chimney2.texture",
@@ -781,7 +781,7 @@ prototype "烟囱1" {
 
 prototype "压力泵1" {
     type = { "recipe" },
-    category = "化工中型制造",
+    category = "器件中型制造",
     group = "化工",
     order = 40,
     icon = "textures/construct/pump1.texture",
@@ -798,7 +798,7 @@ prototype "压力泵1" {
 
 prototype "地下水挖掘机" {
     type = { "recipe" },
-    category = "化工中型制造",
+    category = "器件中型制造",
     group = "化工",
     order = 50,
     icon = "textures/construct/pumpjack1.texture",
@@ -815,7 +815,7 @@ prototype "地下水挖掘机" {
 
 prototype "空气过滤器1" {
     type = { "recipe" },
-    category = "化工大型制造",
+    category = "生产大型制造",
     group = "化工",
     order = 60,
     icon = "textures/construct/air-filter1.texture",
@@ -833,7 +833,7 @@ prototype "空气过滤器1" {
 
 prototype "排水口1" {
     type = { "recipe" },
-    category = "化工大型制造",
+    category = "生产大型制造",
     group = "化工",
     order = 56,
     icon = "textures/construct/outfall.texture",
@@ -850,7 +850,7 @@ prototype "排水口1" {
 
 prototype "管道1" {
     type = { "recipe" },
-    category = "化工小型制造",
+    category = "器件小型制造",
     group = "化工",
     order = 10,
     icon = "textures/construct/pipe.texture",
@@ -866,7 +866,7 @@ prototype "管道1" {
 
 prototype "管道2" {
     type = { "recipe" },
-    category = "化工小型制造",
+    category = "器件小型制造",
     group = "化工",
     order = 10,
     allow_as_intermediate = false,
@@ -884,7 +884,7 @@ prototype "管道2" {
 
 prototype "地下管1" {
     type = { "recipe" },
-    category = "化工小型制造",
+    category = "器件小型制造",
     group = "化工",
     order = 12,
     icon = "textures/construct/underground-pipe1.texture",
@@ -901,7 +901,7 @@ prototype "地下管1" {
 
 prototype "地下管2" {
     type = { "recipe" },
-    category = "化工小型制造",
+    category = "器件小型制造",
     group = "化工",
     order = 14,
     icon = "textures/construct/underground-pipe1.texture",
@@ -938,7 +938,7 @@ prototype "粉碎机1" {
 
 prototype "电解厂1" {
     type = { "recipe" },
-    category = "化工大型制造",
+    category = "生产大型制造",
     group = "化工",
     order = 90,
     icon = "textures/construct/electrolysis1.texture",
@@ -1235,7 +1235,7 @@ prototype "地质科技包1" {
 
 prototype "气候科技包1" {
     type = { "recipe" },
-    category = "器件液体处理",
+    category = "流体液体处理",
     group = "器件",
     order = 82,
     icon = "textures/recipe/climatology-pack.texture",
