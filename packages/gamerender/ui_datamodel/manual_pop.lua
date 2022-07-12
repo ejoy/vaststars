@@ -12,7 +12,7 @@ local click_category_mb = mailbox:sub {"click_category"}
 local recipe_category_cfg = import_package "vaststars.prototype"("recipe_category")
 local irecipe = require "gameplay.interface.recipe"
 local click_recipe_mb = mailbox:sub {"click_recipe"}
-local recipe_unlocked = require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
+local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
 
 local function _has_fluid_output(s)
     for _, v in ipairs(itypes.items(s)) do
