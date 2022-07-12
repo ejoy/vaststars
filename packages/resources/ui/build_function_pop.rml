@@ -55,7 +55,10 @@
                 show_rotate = false,
                 show_pickup_material = false,
                 show_set_recipe = false,
+                show_manual_manufacture = false,
                 show_place_material = false,
+                has_result = false,
+                need_ingredients = false,
                 object_id = 0,
                 left = "0vmin",
                 top = "0vmin",
@@ -67,6 +70,10 @@
 
             function start.clickRecipe(event)
                 ui_sys.pub {"recipe", start.object_id}
+            end
+
+            function start.clickManual(event)
+                ui_sys.open("manual_pop.rml")
             end
 
             function start.clickDetail(event)
@@ -114,9 +121,7 @@
             <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickPickupMaterial()" data-if = "show_pickup_material">
                 <button class="button-function" style ='background-image: "textures/cmdcenter/fetch_material.texture";'/>
                 <div class="title-text">成品取出</div>
-                <!-- 可获取成品数量 start-->
-                <div class = "menu-button-pic" data-if = "true" style='width:3.1vmin; height:3.1vmin; position:absolute; right:10%; bottom:63%; background-image:"textures/work_status_icon/shutdown.texture"'/>
-                <!-- 可获取成品数量 end-->
+                <div class = "menu-button-pic" data-if = "has_result" style='width:3.1vmin; height:3.1vmin; position:absolute; right:10%; bottom:63%; background-image:"textures/work_status_icon/shutdown.texture"'/>
             </div>
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!(show_pickup_material)" /> <!-- TODO -->
 
@@ -124,11 +129,16 @@
                 <button class="button-function" style ='background-image: "textures/assemble/wheel.texture";'/>
                 <div class="title-text">修改配方</div>
             </div>
-            <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe" /> <!-- TODO -->
+            <div class="button-fuction-block" style="top: -5.33vmin;" data-event-click="clickManual()" data-if = "show_manual_manufacture">
+                <button class="button-function" style ='background-image: "textures/cmdcenter/manual_manufacture.texture";'/>
+                <div class="title-text">制造</div>
+            </div>
+            <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe && !show_manual_manufacture" /> <!-- TODO -->
 
             <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickPlaceMaterial()" data-if = "show_place_material">
                 <button class="button-function" style ='background-image: "textures/cmdcenter/send_material.texture";'/>
                 <div class="title-text">原料添加</div>
+                <div class = "menu-button-pic" data-if = "need_ingredients" style='width:3.1vmin; height:3.1vmin; position:absolute; right:10%; bottom:63%; background-image:"textures/work_status_icon/shutdown.texture"'/>
             </div>
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!(show_place_material)" /> <!-- TODO -->
 
