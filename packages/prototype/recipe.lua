@@ -890,7 +890,7 @@ prototype "地下管1" {
     icon = "textures/construct/underground-pipe1.texture",
     ingredients = {
         {"管道1-X型", 5},
-        {"沙子", 2},
+        {"碎石", 2},
     },
     results = {
         {"地下管1-JU型", 2},
