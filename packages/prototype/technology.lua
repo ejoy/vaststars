@@ -478,7 +478,7 @@ prototype "维修太阳能板" {
   prerequisites = {"石头处理2"},
   count = 2,
   tips_pic = {
-    "textures/task_tips_pic/task_place_solarpanel.texture",
+    "textures/task_tips_pic/task_repair_solarpanel.texture",
   },
   sign_desc = {
     { desc = "使用组装机维修2个破损太阳能板", icon = "textures/construct/assembler.texture"},
