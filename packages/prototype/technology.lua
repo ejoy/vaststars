@@ -139,7 +139,7 @@ prototype "放置组装机" {
   type = { "tech", "task" },
   task = {"select_entity", 0, "组装机I"},
   prerequisites = {"制造台生产"},
-  count = 1,
+  count = 2,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
     "textures/task_tips_pic/task_produce_geopack1.texture",
@@ -147,7 +147,7 @@ prototype "放置组装机" {
     "textures/task_tips_pic/start_construct.texture",
   },
   sign_desc = {
-    { desc = "使用“建造”放置1台组装机", icon = "textures/construct/industry.texture"},
+    { desc = "使用“建造”放置2台组装机", icon = "textures/construct/industry.texture"},
   },
 }
 
