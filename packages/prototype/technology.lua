@@ -699,7 +699,7 @@ prototype "维修化工厂" {
   prerequisites = {"碳处理2"},
   count = 1,
   tips_pic = {
-    "textures/task_tips_pic/task_place_solarpanel.texture",
+    "textures/task_tips_pic/task_repair_chemicalplant1.texture",
   },
   sign_desc = {
     { desc = "使用组装机维修1个破损化工厂", icon = "textures/construct/assembler.texture"},
