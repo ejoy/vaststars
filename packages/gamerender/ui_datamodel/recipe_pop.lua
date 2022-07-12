@@ -18,13 +18,13 @@ local ifluid = require "gameplay.interface.fluid"
 local iassembling = require "gameplay.interface.assembling"
 local terrain = ecs.require "terrain"
 local itypes = require "gameplay.interface.types"
+local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
 
--- prototype.recipe_category.group -> the category of ui
-local recipes = {} ; local get_recipe_index; do
+local assembling_recipe = {}; local get_recipe_index; do
+    local cache = {}
     for _, v in pairs(iprototype.each_maintype "recipe") do
-        if v.group then -- if group is not nil, need to add to the category of ui
-            recipes[v.group] = recipes[v.group] or {}
-            recipes[v.group][#recipes[v.group] + 1] = {
+        if v.group then
+            local recipe_item = {
                 name = v.name,
                 order = v.order,
                 icon = v.icon,
@@ -33,13 +33,9 @@ local recipes = {} ; local get_recipe_index; do
                 results = irecipe.get_elements(v.results),
                 group = v.group,
             }
+            cache[v.category] = cache[v.category] or {}
+            cache[v.category][#cache[v.category] + 1] = recipe_item
         end
-    end
-
-    for _, v in pairs(recipes) do
-        table.sort(v, function(a, b)
-            return a.order < b.order
-        end)
     end
 
     local function _get_group_index(group)
@@ -51,37 +47,47 @@ local recipes = {} ; local get_recipe_index; do
         assert(false, ("group `%s` not found"):format(group))
     end
 
-    --
-    local cache = {}
-    for _, c in pairs(recipes) do
-        for index, recipe in ipairs(c) do
-            cache[recipe.name] = {_get_group_index(recipe.group), index}
-        end
-    end
-    -- recipe_name -> {category_index, recipe_index}
-    function get_recipe_index(name)
-        return table.unpack(cache[name])
-    end
-end
+    local index_cache = {}
 
-local recipe_locked; do
-    local recipe_tech = {}
-    for _, typeobject in pairs(iprototype.each_maintype "tech") do
-        if typeobject.effects and typeobject.effects.unlock_recipe then
-            for _, recipe in ipairs(typeobject.effects.unlock_recipe) do
-                assert(not recipe_tech[recipe])
-                recipe_tech[recipe] = typeobject.name
+    for _, v in pairs(iprototype.each_maintype "entity") do
+        if not (iprototype.has_type(v.type, "assembling") and v.craft_category )then
+            goto continue
+        end
+
+        if iprototype.has_type(v.type, "mining") then -- TODO: special case for mining
+            goto continue
+        end
+
+        assembling_recipe[v.name] = assembling_recipe[v.name] or {}
+
+        for _, c in ipairs(v.craft_category) do
+            assert(cache[c], ("can not find category `%s`"):format(c))
+            for _, recipe_item in ipairs(cache[c]) do
+                assembling_recipe[v.name][recipe_item.group] = assembling_recipe[v.name][recipe_item.group] or {}
+                assembling_recipe[v.name][recipe_item.group][#assembling_recipe[v.name][recipe_item.group] + 1] = recipe_item
             end
         end
-    end
-
-    function recipe_locked(recipe)
-        local tech = recipe_tech[recipe]
-        if not tech then
-            log.info(("recipe `%s` is locked defaultly"):format(recipe))
-            return false
+        for _, v in pairs(assembling_recipe[v.name]) do
+            table.sort(v, function(a, b)
+                return a.order < b.order
+            end)
         end
-        return gameplay_core.is_researched(tech)
+
+        --
+        for _, g in pairs(assembling_recipe[v.name]) do
+            for index, recipe in ipairs(g) do
+                index_cache[v.name] = index_cache[v.name] or {}
+                index_cache[v.name][recipe.name] = {_get_group_index(recipe.group), index}
+            end
+        end
+        -- recipe_name -> {category_index, recipe_index}
+        function get_recipe_index(assembling_name, recipe_name)
+            assert(index_cache[assembling_name], ("can not find assembling `%s`"):format(assembling_name))
+            assert(index_cache[assembling_name][recipe_name], ("can not find recipe `%s`"):format(recipe_name))
+            return table.unpack(index_cache[assembling_name][recipe_name])
+        end
+
+        ::continue::
     end
 end
 
@@ -152,7 +158,7 @@ local function _show_object_recipe(datamodel, object_id)
 
     if e.assembling.recipe ~= 0 then
         datamodel.recipe_name = iprototype.queryById(e.assembling.recipe).name
-        datamodel.catalog_index, datamodel.recipe_index = get_recipe_index(datamodel.recipe_name)
+        datamodel.catalog_index, datamodel.recipe_index = get_recipe_index(object.prototype_name, datamodel.recipe_name)
     end
 end
 
@@ -160,23 +166,31 @@ local function _update_recipe_items(datamodel, recipe_name)
     local storage = gameplay_core.get_storage()
     storage.recipe_new_flag = storage.recipe_new_flag or {}
 
+    local object = assert(objects:get(datamodel.object_id))
+    local recipes = assembling_recipe[object.prototype_name]
     local cur_recipe_category_cfg = assert(recipe_category_cfg[datamodel.catalog_index])
-    assert(recipes[cur_recipe_category_cfg.group][1])
+    -- if recipe_name is nil, get the first unlocked recipe
     if not recipe_name then
-        for _, recipe in ipairs(recipes[cur_recipe_category_cfg.group]) do
-            if recipe_locked(recipe.name) then
+        for _, recipe in ipairs(recipes[cur_recipe_category_cfg.group] or {}) do
+            if recipe_unlocked(recipe.name) then
                 recipe_name = recipe.name
                 break
             end
         end
     end
-    -- if recipe_name is nil, it means all recipes are locked
+    -- if recipe_name is nil, it means all recipes are locked or the category is empty
+    if recipe_name then
+        storage.recipe_new_flag = storage.recipe_new_flag or {}
+        storage.recipe_new_flag[recipe_name] = true
+    end
 
     datamodel.recipe_items = {}
     local recipe_category_new_flag = {}
     for group, recipe_set in pairs(recipes) do
         for _, recipe_item in ipairs(recipe_set) do
-            if recipe_locked(recipe_item.name) then
+            if recipe_unlocked(recipe_item.name) then
+                local new_recipe_flag = (not storage.recipe_new_flag[recipe_item.name]) and true or false
+
                 if group == cur_recipe_category_cfg.group then
                     datamodel.recipe_items[#datamodel.recipe_items+1] = {
                         name = recipe_item.name,
@@ -184,7 +198,7 @@ local function _update_recipe_items(datamodel, recipe_name)
                         time = recipe_item.time,
                         ingredients = recipe_item.ingredients,
                         results = recipe_item.results,
-                        new = (not storage.recipe_new_flag[recipe_item.name]) and true or false,
+                        new = new_recipe_flag,
                     }
                 end
 
@@ -195,7 +209,7 @@ local function _update_recipe_items(datamodel, recipe_name)
                     datamodel.recipe_time = itypes.time(recipe_item.time)
                 end
 
-                if not storage.recipe_new_flag[group] then
+                if new_recipe_flag then
                     recipe_category_new_flag[group] = true
                 end
             end
@@ -207,7 +221,7 @@ local function _update_recipe_items(datamodel, recipe_name)
         datamodel.recipe_category[#datamodel.recipe_category+1] = {
             group = category.group,
             icon = category.icon,
-            new = recipe_category_new_flag[category.group] and true or false,
+            new = recipe_category_new_flag[category.group] ~= nil and true or false,
         }
     end
 end
