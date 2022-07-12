@@ -691,12 +691,27 @@ prototype "基地生产2" {
   sign_icon = "textures/science/tech-cycle.texture",
 }
 
+prototype "维修化工厂" {
+  desc = "维修化工厂生成化工原料",
+  icon = "textures/construct/construct.texture",
+  type = { "tech", "task" },
+  task = {"stat_consumption", 0, "破损化工厂"},
+  prerequisites = {"碳处理2"},
+  count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_place_solarpanel.texture",
+  },
+  sign_desc = {
+    { desc = "使用组装机维修1个破损化工厂", icon = "textures/construct/assembler.texture"},
+  },
+}
+
 prototype "生产甲烷" {
   desc = "生产工业气体甲烷",
   icon = "textures/science/tech-liquid.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "甲烷"},
-  prerequisites = {"碳处理2"},
+  prerequisites = {"维修化工厂"},
   count = 1000,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ch4.texture",

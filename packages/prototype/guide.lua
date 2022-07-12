@@ -119,6 +119,70 @@ local guide = {
         },
 	},
 
+    {
+        name = "guide-8",
+		narrative = {
+            {"哔哩..哔哗..基地开始采集气液资源，管道正是运输此类资源的关键..(兴奋)", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "生产管道",
+            }
+        },
+        prerequisites = {
+            "管道系统1",
+        },
+	},
+
+    {
+        name = "guide-9",
+		narrative = {
+            {"合理的铺设管道让基地建设更加高效...哔哩..注意管道和机器连接，那需要精细的对准(期待)", "textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+            }
+        },
+        prerequisites = {
+            "生产管道",
+        },
+	},
+
+    {
+        name = "guide-10",
+		narrative = {
+            {"化工厂准备就绪，让我们正式进入化工生产..哔哩..哔哩..(兴奋）", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            pop_chapter = {"第二阶段","化工生产"},
+            guide_progress = 30,
+            task = {
+                "生产甲烷",
+            }
+        },
+        prerequisites = {
+            "维修化工厂",
+        },
+	},
+
+    {
+        name = "guide-11",
+		narrative = {
+            {"塑料可制造更多精密元件，掌握这种新材料，存活概率提升为1.2923%..哔哩(兴奋）", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "生产塑料",
+            }
+        },
+        prerequisites = {
+            "有机化学",
+        },
+	},
+
 }
 
 return guide
