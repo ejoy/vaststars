@@ -470,12 +470,27 @@ prototype "石头处理2" {
   time = "2s"
 }
 
+prototype "维修太阳能板" {
+  desc = "维修太阳能板并利用太阳能板技术发电",
+  icon = "textures/construct/construct.texture",
+  type = { "tech", "task" },
+  task = {"stat_consumption", 0, "破损太阳能板"},
+  prerequisites = {"石头处理2"},
+  count = 2,
+  tips_pic = {
+    "textures/task_tips_pic/task_place_solarpanel.texture",
+  },
+  sign_desc = {
+    { desc = "使用组装机维修2个破损太阳能板", icon = "textures/construct/assembler.texture"},
+  },
+}
+
 prototype "放置太阳能板" {
   desc = "放置太阳能板将光热转换成电能",
   icon = "textures/construct/construct.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "太阳能板I"},
-  prerequisites = {"石头处理2"},
+  prerequisites = {"维修太阳能板"},
   count = 8,
   tips_pic = {
     "textures/task_tips_pic/task_place_solarpanel.texture",
