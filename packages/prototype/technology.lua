@@ -421,7 +421,7 @@ prototype "收集空气" {
     "textures/task_tips_pic/task_produce_air2.texture",
   },
   sign_desc = {
-    { desc = "用空气过滤器生产80000单位空气", icon = "textures/science/tech-liquid.texture",},
+    { desc = "用空气过滤器生产40000单位空气", icon = "textures/science/tech-liquid.texture",},
   },
 }
 
