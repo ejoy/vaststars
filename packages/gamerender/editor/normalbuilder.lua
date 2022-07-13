@@ -18,16 +18,20 @@ local construct_inventory = global.construct_inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iworld = require "gameplay.interface.world"
 local gameplay_core = require "gameplay.core"
+local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM
 
 --
 local function __new_entity(self, datamodel, typeobject)
     iobject.remove(self.pickup_object)
 
-    -- check if item is in the inventory
-    local item_typeobject = iprototype.queryByName("item", typeobject.name)
-    local item = construct_inventory:get({"TEMPORARY", "CONFIRM"}, item_typeobject.id)
-    if not item or item.count <= 0 then
-        return
+    if not _VASTSTARS_DEBUG_INFINITE_ITEM then
+        -- check if item is in the inventory
+        local item_typeobject = iprototype.queryByName("item", typeobject.name)
+        local item = construct_inventory:get({"TEMPORARY", "CONFIRM"}, item_typeobject.id)
+        if not item or item.count <= 0 then
+            log.error("Lack of item: " .. typeobject.name)
+            return
+        end
     end
 
     local dir = DEFAULT_DIR
@@ -175,12 +179,14 @@ local function confirm(self, datamodel)
         return new
     end
 
-    -- decrease item count
-    local item_typeobject = iprototype.queryByName("item", typeobject.name)
-    local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
-    assert(item.count >= 0)
-    item.count = item.count - 1
-    iui.update("construct.rml", "update_construct_inventory")
+    if not _VASTSTARS_DEBUG_INFINITE_ITEM then
+        -- decrease item count
+        local item_typeobject = iprototype.queryByName("item", typeobject.name)
+        local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
+        assert(item.count >= 0) -- promised by new_entity
+        item.count = item.count - 1
+        iui.update("construct.rml", "update_construct_inventory")
+    end
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false

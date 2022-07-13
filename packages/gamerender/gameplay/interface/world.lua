@@ -49,4 +49,9 @@ function M:set_recipe(world, e, recipe_name)
     return true
 end
 
+function M:get_storage(world)
+    world.storage = world.storage or {}
+    return world.storage
+end
+
 return M

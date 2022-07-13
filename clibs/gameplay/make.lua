@@ -10,7 +10,7 @@ local antdir = "../../" .. lm.antdir
 
 lm:lib "gameplay" {
     cxx = "c++20",
-    deps = "compile_gameplay_ecs",
+    objdeps = "compile_gameplay_ecs",
     includes = {
         "src/",
         antdir .. "3rd/luaecs",

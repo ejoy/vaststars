@@ -139,7 +139,7 @@ prototype "放置组装机" {
   type = { "tech", "task" },
   task = {"select_entity", 0, "组装机I"},
   prerequisites = {"制造台生产"},
-  count = 1,
+  count = 2,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
     "textures/task_tips_pic/task_produce_geopack1.texture",
@@ -147,7 +147,7 @@ prototype "放置组装机" {
     "textures/task_tips_pic/start_construct.texture",
   },
   sign_desc = {
-    { desc = "使用“建造”放置1台组装机", icon = "textures/construct/industry.texture"},
+    { desc = "使用“建造”放置2台组装机", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -415,13 +415,13 @@ prototype "收集空气" {
   icon = "textures/science/tech-liquid.texture",
   task = {"stat_production", 1, "空气"},
   prerequisites = {"空气分离"},
-  count = 8000,
+  count = 4000,
   tips_pic = {
     "textures/task_tips_pic/task_produce_air1.texture",
     "textures/task_tips_pic/task_produce_air2.texture",
   },
   sign_desc = {
-    { desc = "用空气过滤器生产80000单位空气", icon = "textures/science/tech-liquid.texture",},
+    { desc = "用空气过滤器生产40000单位空气", icon = "textures/science/tech-liquid.texture",},
   },
 }
 
@@ -470,12 +470,27 @@ prototype "石头处理2" {
   time = "2s"
 }
 
+prototype "维修太阳能板" {
+  desc = "维修太阳能板并利用太阳能板技术发电",
+  icon = "textures/construct/construct.texture",
+  type = { "tech", "task" },
+  task = {"stat_consumption", 0, "破损太阳能板"},
+  prerequisites = {"石头处理2"},
+  count = 2,
+  tips_pic = {
+    "textures/task_tips_pic/task_repair_solarpanel.texture",
+  },
+  sign_desc = {
+    { desc = "使用组装机维修2个破损太阳能板", icon = "textures/construct/assembler.texture"},
+  },
+}
+
 prototype "放置太阳能板" {
   desc = "放置太阳能板将光热转换成电能",
   icon = "textures/construct/construct.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "太阳能板I"},
-  prerequisites = {"石头处理2"},
+  prerequisites = {"维修太阳能板"},
   count = 8,
   tips_pic = {
     "textures/task_tips_pic/task_place_solarpanel.texture",
@@ -676,12 +691,27 @@ prototype "基地生产2" {
   sign_icon = "textures/science/tech-cycle.texture",
 }
 
+prototype "维修化工厂" {
+  desc = "维修化工厂生成化工原料",
+  icon = "textures/construct/construct.texture",
+  type = { "tech", "task" },
+  task = {"stat_consumption", 0, "破损化工厂"},
+  prerequisites = {"碳处理2"},
+  count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_repair_chemicalplant1.texture",
+  },
+  sign_desc = {
+    { desc = "使用组装机维修1个破损化工厂", icon = "textures/construct/assembler.texture"},
+  },
+}
+
 prototype "生产甲烷" {
   desc = "生产工业气体甲烷",
   icon = "textures/science/tech-liquid.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "甲烷"},
-  prerequisites = {"碳处理2"},
+  prerequisites = {"维修化工厂"},
   count = 1000,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ch4.texture",

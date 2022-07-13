@@ -111,6 +111,13 @@
                 font-size: 3.73vmin;
                 text-align: center;
             }
+            .new-coming {
+                position: absolute; 
+                right:0.5vmin; bottom:0; 
+                font-size:4vmin; 
+                color:rgb(0, 255, 21); 
+                -webkit-text-stroke: 1px #000;
+            }
             .button-increase-item {
                 background-color: rgb(19,175,240);
                 background-size:cover;
@@ -120,20 +127,23 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local default_select_item = {name = " ", time = 0, ingredients = {}}
-            local default_select_count <const> = 1
-            local start = ui_sys.createDataMode("start", {
-                recipe_category = {},
-                manual_recipe = {},
+            local DEFAULT_ITEM_COUNT <const> = 1
 
-                catalog_index = 1,
-                page_items = {},
-                select_item = default_select_item,
-                select_item_count = default_select_count,
-                last_select_item_count = default_select_count,
+            local start = ui_sys.createDataMode("start", {
+                category_index = 1,
+                recipe_index = 1,
+                recipe_category = {},
+                recipe_items = {},
+                recipe_name = " ",
+                recipe_ingredients = {},
+                recipe_results = {},
+
                 material_shortages = false,
-                select_item_ingredients = {},
-                select_item_main_result = " ",
+                manual_item_count = DEFAULT_ITEM_COUNT,
+                last_manual_item_count = DEFAULT_ITEM_COUNT,
+                manual_recipe_ingredients = {},
+                manual_recipe_main_output_name = " ",
+                manual_recipe_main_output_icon = "none",
             })
 
             function start.clickClose(event)
@@ -142,28 +152,11 @@
 
             local select_item
             function start.clickCatalog(event, it_index)
-                start.catalog_index = it_index + 1
-                start.page_items = {}
-
-                local select_category = start.recipe_category[start.catalog_index].group
-                for _, item in pairs(start.manual_recipe) do
-                    if item.category == select_category then
-                        start.page_items[#start.page_items + 1] = item
-                    end
-                end
-                table.sort(start.page_items, function(a, b) return a.order < b.order end)
-
-                start.select_item = default_select_item
-                start.select_item_count = default_select_count
-
-                -- <!-- tag page begin -->
-                select_item = nil
-                start.page:on_dirty_all(#start.page_items)
-                -- <!-- tag page end -->
+                ui_sys.pub {"click_category", it_index + 1}
             end
 
             function start.clickStartManual(event)
-                if start.select_item.name == " " then
+                if start.recipe_name == " " then
                     console.log("found no select item")
                     return
                 end
@@ -171,38 +164,43 @@
                     console.log("material shortages")
                     return
                 end
-                if start.select_item_count <= 0 then
+                if start.manual_item_count <= 0 then
                     console.log("item count <= 0")
                     return
                 end
-                ui_sys.pub {"manual_add", start.select_item.name, start.select_item_count}
+                ui_sys.pub {"manual_add", start.recipe_name, start.manual_item_count}
                 ui_sys.close()
                 ui_sys.close("cmdcenter.rml")
             end
 
-            local function update_select_item_ingredients(ingredients, require_count, result_count)
-                local manual_times = math.ceil(require_count / result_count)
-                local result = {}
-                for _, v in ipairs(ingredients) do
-                    result[#result+1] = {name = v.name, icon = v.icon, count = v.count * manual_times}
+            local function update_manual_recipe_ingredients(ingredients, require_count, results)
+                local r = {}
+                if not results[1] then
+                    return r
                 end
-                return result
+
+                local manual_times = math.ceil(require_count / results[1].count)
+                for _, v in ipairs(ingredients) do
+                    r[#r+1] = {name = v.name, icon = v.icon, count = v.count * manual_times}
+                end
+                return r
             end
 
             function start.clickItemCountPreTime(event, count)
                 if start.material_shortages then
                     return
                 end
-                start.last_select_item_count = start.select_item_count
-                start.select_item_count = math.floor(start.select_item_count + count)
-                start.select_item_ingredients = update_select_item_ingredients(start.select_item.ingredients, start.select_item_count, start.select_item.result[1].count)
-                ui_sys.pub {"check_material", start.select_item.name, start.select_item_count}
+
+                start.last_manual_item_count = start.manual_item_count
+                start.manual_item_count = math.floor(start.manual_item_count + count)
+                start.manual_recipe_ingredients = update_manual_recipe_ingredients(start.recipe_ingredients, start.manual_item_count, start.recipe_results)
+                ui_sys.pub {"check_material", start.recipe_name, start.manual_item_count}
             end
 
             function start.clickRevertItemCount(event)
-                start.select_item_count = start.last_select_item_count
-                start.select_item_ingredients = update_select_item_ingredients(start.select_item.ingredients, start.select_item_count, start.select_item.result[1].count)
-                ui_sys.pub {"check_material", start.select_item.name, start.select_item_count}
+                start.manual_item_count = start.last_manual_item_count
+                start.manual_recipe_ingredients = update_manual_recipe_ingredients(start.recipe_ingredients, start.manual_item_count, start.recipe_results)
+                ui_sys.pub {"check_material", start.recipe_name, start.manual_item_count}
             end
 
             function start.clickManualQueue(event)
@@ -210,29 +208,25 @@
             end
             -- <!-- tag page begin -->
             local function clickItem(index)
-                local item = start.page_items[index]
+                local item = start.recipe_items[index]
                 if not item then
                     return
                 end
-                start.select_item = item
-                start.select_item_count = default_select_count
-                start.select_item_ingredients = update_select_item_ingredients(start.select_item.ingredients, start.select_item_count, start.select_item.result[1].count)
-                start.select_item_main_result = start.select_item.result[1].name
-                ui_sys.pub {"check_material", start.select_item.name, start.select_item_count}
+                ui_sys.pub {"click_recipe", item.name}
             end
 
             local function page_item_renderer(index)
-                if index > #start.page_items then
+                if index > #start.recipe_items then
                     local e = document.createElement "div"
                     e.outerHTML = [[<div style = "width: 12.00vmin; height: 12.00vmin;" />]]
                     return e
                 end
 
                 local item = document.createElement "div"
-                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" />]]):format(start.page_items[index].icon)
+                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" ><p class = "new-coming" data-if="%s">新</p></div>]]):format(start.recipe_items[index].icon, start.recipe_items[index].new)
                 local select_style_border = "5px green"
 
-                if start.select_item.name == start.page_items[index].name then
+                if start.recipe_index == index then
                     select_item = item
                     item.style.border = select_style_border
                 end
@@ -256,29 +250,30 @@
 
             ui_sys.mapping(start, {
                 {
-                    "manual_recipe",
+                    "material_shortages",
                     function()
-                        start.page_items = {}
-                        if start.recipe_category[1] then
-                            local category = start.recipe_category[1].group
-                            for _, item in pairs(start.manual_recipe) do
-                                if item.category == category then
-                                    start.page_items[#start.page_items + 1] = item
-                                end
-                            end
-                            table.sort(start.page_items, function(a, b) return a.order < b.order end)
-
-                            start.page:on_dirty_all(#start.page_items)
+                        if start.material_shortages then
+                            start.manual_item_count = 0
                         end
                     end
                 },
                 {
-                    "material_shortages",
+                    "recipe_items",
                     function()
-                        if start.material_shortages then
-                            start.select_item_count = 0
-                        end
+                        select_item = nil
+                        start.page:on_dirty_all(#start.recipe_items)
                     end
+                },
+                {
+                    function(_, recipe_ingredients, recipe_results)
+                        start.manual_item_count = DEFAULT_ITEM_COUNT
+                        start.manual_recipe_ingredients = update_manual_recipe_ingredients(start.recipe_ingredients, start.manual_item_count, start.recipe_results)
+                        start.manual_recipe_main_output_name = start.recipe_results[1] and start.recipe_results[1].name or " "
+                        start.manual_recipe_main_output_icon = start.recipe_results[1] and start.recipe_results[1].icon or "none"
+                        ui_sys.pub {"check_material", start.recipe_name, start.manual_item_count}
+                    end,
+                    "recipe_ingredients",
+                    "recipe_results",
                 }
             })
         </script>
@@ -302,9 +297,10 @@
 
                 <div class = "tab-container" style="flex-grow: 1;">
                     <div data-for = "recipe_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
-                        <workbutton data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index + 1 == catalog_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'" style = "width: 100%;">
+                        <workbutton data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index + 1 == category_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'" style = "width: 100%;">
                             <div class="workbutton-bg" data-style-background-image="it.icon" />
                             <div class="catalog-desc">{{it.group}}</div>
+                            <p class="new-coming" data-if="it.new">新</p>
                         </workbutton>
                     </div>
                 </div>
@@ -315,7 +311,7 @@
                 <div class = "recipe-name-block">
                     <div class = "name-block">
                         <div class = "small-bg" style='background-image: "textures/science/book.texture";'/>
-                        <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">{{select_item.name}}</div>
+                        <div class = "recipe-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">{{recipe_name}}</div>
                     </div>
                 </div>
 
@@ -326,7 +322,7 @@
                         <div class = "recipe-name-text">原料</div>
                     </div>
                     <div class = "materials-block"> 
-                        <div class = "materials" data-for = "select_item_ingredients">
+                        <div class = "materials" data-for = "manual_recipe_ingredients">
                             <div class = "materials-item">
                                 <div class = "materials-icon" data-style-background-image = "it.icon" />
                                 <div class = "materials-name">{{it.name}}</div>
@@ -346,12 +342,12 @@
                         <div class = "recipe-name-text">物品</div>
                     </div> 
                     <div class = "materials-block" style="height:58%;">
-                        <div class = "materials" data-if = "select_item_main_result != ' '">
+                        <div class = "materials" data-if = "manual_recipe_main_output_name != ' '">
                             <div class = "materials-item">
-                                <div class = "materials-icon" data-style-background-image = "select_item.icon" />
-                                <div class = "materials-name">{{select_item_main_result}}</div>
+                                <div class = "materials-icon" data-style-background-image="manual_recipe_main_output_icon"/>
+                                <div class = "materials-name">{{manual_recipe_main_output_name}}</div>
                                 <div style = "flex-grow: 1; flex-direction:row-reverse;">
-                                    <div class = "materials-num">X{{select_item_count}}</div>
+                                    <div class = "materials-num">X{{manual_item_count}}</div>
                                 </div>
                             </div>
                         </div>
@@ -366,7 +362,7 @@
 
                 <!-- 开始生产按钮 start -->
                 <div class = "recipe-button-block">
-                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115); height: 12vmin;" data-event-click = "clickStartManual()" data-if = "select_item.name != ' '" data-style-background-color="material_shortages ? 'rgb(108, 108, 108)' : 'rgb(52, 207, 115)'">
+                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115); height: 12vmin;" data-event-click = "clickStartManual()" data-if = "recipe_name != ' '" data-style-background-color="material_shortages ? 'rgb(108, 108, 108)' : 'rgb(52, 207, 115)'">
                         <div class = "recipe-name-text" style="font-size: 5vmin; margin:0; padding-bottom: 1vmin;">开始生产</div>
                     </button>
                 </div>

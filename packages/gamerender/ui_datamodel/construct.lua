@@ -2,7 +2,11 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
-local _VASTSTARS_DEBUG_INFINITE_ITEM = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM
+local math3d = require "math3d"
+local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM
+local YAXIS_PLANE_N <const> = math3d.constant("v4", {0, 1, 0, 0})
+local YAXIS_PLANE_F <const> = math3d.constant("v4", {0, 1, 0, 20})
+local PLANES <const> = {YAXIS_PLANE_N}
 local camera = ecs.require "engine.camera"
 local gameplay_core = require "gameplay.core"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
@@ -365,6 +369,19 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
+    local function _get_object(pickup_x, pickup_y)
+        for _, pos in ipairs(icamera.screen_to_world(pickup_x, pickup_y, PLANES)) do
+            local coord = terrain:align(pos, 1, 1) -- assume entity is 1x1
+            if coord then
+                local object = objects:coord(coord[1], coord[2])
+                if object then
+                    log.info(("pickup object coord(%s, %s)"):format(coord[1], coord[2]))
+                    return object
+                end
+            end
+        end
+    end
+
     for _, state in single_touch_mb:unpack() do
         if state == "END" or state == "CANCEL" then
             if builder then
@@ -376,11 +393,6 @@ function M:stage_camera_usage(datamodel)
 
     local leave = true
     for _, _, x, y, object_id in pickup_mapping_mb:unpack() do
-        local coord = terrain:align(icamera.screen_to_world(x, y), 1, 1) -- assume entity is 1x1
-        if coord then
-            print(coord[1], coord[2])
-        end
-
         if objects:get(object_id) then -- object_id may be 0, such as when user click on empty space
             if global.mode == "teardown" then
                 world:pub {"teardown", objects:get(object_id).prototype_name}
@@ -396,7 +408,11 @@ function M:stage_camera_usage(datamodel)
     end
 
     -- 点击其它建筑 或 拖动时, 将弹出窗口隐藏
-    for _ in pickup_mb:unpack() do
+    for _, _, x, y in pickup_mb:unpack() do
+        local object = _get_object(x, y)
+        if object then
+            print(("pickup (%s)"):format(object.prototype_name))
+        end
         if leave then
             world:pub {"ui_message", "leave"}
             leave = false
