@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ecs/select.h"
 #include <stdint.h>
 
 namespace vaststars {
@@ -129,10 +130,8 @@ using namespace vaststars;
 
 namespace ecs_api {
 
-template <typename T> struct component {};
-
 #define ECS_COMPONENT(NAME) \
-template <> struct component<ecs::##NAME> { \
+template <> struct component<ecs::NAME> { \
 	static inline const int id = ecs_component_id::gen(); \
 	static inline const char name[] = #NAME; \
 };

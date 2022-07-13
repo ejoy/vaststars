@@ -96,7 +96,6 @@ techtree_mgr::ingredients_opt& techtree_mgr::get_ingredients(lua_State* L, world
     r[0].item = inputs.n;
     r[0].amount = 0;
     for (uint16_t i = 0; i < inputs.n; ++i) {
-        uint16_t item = inputs.items[i];
         r[i+1].item = inputs.items[i];
         r[i+1].amount = 0;
     }

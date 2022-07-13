@@ -41,6 +41,7 @@ local function writeEntityH(components)
 
     write "#pragma once"
     write ""
+    write "#include \"ecs/select.h\""
     write "#include <stdint.h>"
     write ""
     write "namespace vaststars {"
@@ -88,10 +89,8 @@ local function writeEntityH(components)
 
     write "namespace ecs_api {"
     write ""
-    write "template <typename T> struct component {};"
-    write ""
     write "#define ECS_COMPONENT(NAME) \\"
-    write "template <> struct component<ecs::##NAME> { \\"
+    write "template <> struct component<ecs::NAME> { \\"
     write "\tstatic inline const int id = ecs_component_id::gen(); \\"
     write "\tstatic inline const char name[] = #NAME; \\"
     write "};"

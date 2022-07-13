@@ -532,7 +532,6 @@ static FILE* tofile(lua_State* L, int idx) {
 
 static int
 lfileno(lua_State* L) {
-    struct world* w = (struct world*)lua_touserdata(L, 1);
     FILE* f = tofile(L, 2);
     MSVC_NONSTDC();
     lua_pushinteger(L, fileno(f));
