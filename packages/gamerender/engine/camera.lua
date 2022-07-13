@@ -126,20 +126,13 @@ function camera.update()
 end
 
 -- in `camera_usage` stage
-local function remap_vr_xy(x, y, ratio)
-    if ratio ~= nil and ratio ~= 1 then
-        x, y = mu.cvt_size(x, ratio), mu.cvt_size(y, ratio)
-    end
-    return x, y
-end
-
 function camera.screen_to_world(x, y, planes)
     local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
     local ce = world:entity(mq.camera_ref)
     local vpmat = ce.camera.viewprojmat
 
     local vr = irq.view_rect "main_queue"
-    local nx, ny = remap_vr_xy(x, y, vr.ratio)
+    local nx, ny = mu.remap_xy(x, y, vr.ratio)
     local ndcpt = pt2D_to_NDC({nx, ny}, vr)
     ndcpt[3] = 0
     local p0 = ndc_to_world(vpmat, ndcpt)
