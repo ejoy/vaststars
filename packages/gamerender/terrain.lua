@@ -76,19 +76,16 @@ end
 
 local function _get_coord_by_begin_position(self, position)
     local boundary_3d = self._boundary_3d
+    local posx, posz = math3d.index(position, 1, 3)
+
+    if (posx < boundary_3d[1][1] or posx > boundary_3d[2][1]) or
+        (posz < boundary_3d[1][3] or posz > boundary_3d[2][3]) then
+        log.error(("out of bounds (%f, %f) : (%s) - (%s)"):format(posx, posz, table.concat(boundary_3d[1], ","), table.concat(boundary_3d[2], ",")))
+        return
+    end
+
     local origin = self._origin
-
-    if position[1] < boundary_3d[1][1] or position[1] > boundary_3d[2][1] then
-        log.error(("out of bounds (%s) : (%s) - (%s)"):format(table.concat(position, ","), table.concat(boundary_3d[1], ","), table.concat(boundary_3d[2], ",")))
-        return
-    end
-
-    if position[3] < boundary_3d[1][3] or position[3] > boundary_3d[2][3] then
-        log.error(("out of bounds (%s) : (%s) - (%s)"):format(table.concat(position, ","), table.concat(boundary_3d[1], ","), table.concat(boundary_3d[2], ",")))
-        return
-    end
-
-    return {math.ceil((position[1] - origin[1]) / TILE_SIZE), math.ceil((origin[2] - position[3]) / TILE_SIZE)}
+    return {math.ceil((posx - origin[1]) / TILE_SIZE), math.ceil((origin[2] - posz) / TILE_SIZE)}
 end
 
 local function _get_grid_id(self, x, y)
@@ -283,7 +280,7 @@ end
 
 -- position is the center of the entity
 function terrain:align(position, w, h)
-    local begin_position = {math3d.index(position, 1) - (w / 2 * TILE_SIZE), math3d.index(position, 2), math3d.index(position, 3) + (h / 2 * TILE_SIZE)}
+    local begin_position = math3d.muladd(1/2*TILE_SIZE, math3d.vector(-w, 0.0, h), position)
     local coord = _get_coord_by_begin_position(self, begin_position)
     if not coord then
         return
