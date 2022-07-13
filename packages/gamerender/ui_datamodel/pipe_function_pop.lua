@@ -12,6 +12,7 @@ local iflow_shape = require "gameplay.utility.flow_shape"
 local set_shape_edge = iflow_shape.set_shape_edge
 local iobject = ecs.require "object"
 local ieditor = ecs.require "editor.editor"
+local gameplay_core = require "gameplay.core"
 
 local pipe_edge_mb = mailbox:sub {"pipe_edge"}
 local leave_mb = mailbox:sub {"leave"}
@@ -42,6 +43,7 @@ local function _update_fluid_name(State, fluid_name, fluidflow_id)
     end
 end
 
+-- TODO: optimize
 local function get_connections(object_id)
     local pipe_object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName("entity", pipe_object.prototype_name)
@@ -303,6 +305,13 @@ function M:stage_ui_update(datamodel)
                 elseif iprototype.is_pipe_to_ground(object.prototype_name) then
                     object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, "JI")
                     object.fluid_name = fluid_name
+                else
+                    local typeobject = iprototype.queryByName("entity", object.prototype_name)
+                    if iprototype.has_type(typeobject.type, "fluidbox") then
+                        object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, "JI")
+                        object.fluid_name = fluid_name
+                        object.fluidflow_id = pipe_object.fluidflow_id
+                    end
                 end
             else
                 assert(false)
@@ -351,6 +360,14 @@ function M:stage_ui_update(datamodel)
             assert(false)
         end
 
+        -- TODO: rebuild entity in builder.lua ?
+        if pipe_object then
+            if pipe_object.__change.prototype_name then
+                gameplay_core.remove_entity(pipe_object.gameplay_eid)
+                pipe_object.gameplay_eid = gameplay_core.create_entity(pipe_object)
+                gameplay_core.build()
+            end
+        end
         datamodel.connections = get_connections(datamodel.object_id)
     end
 

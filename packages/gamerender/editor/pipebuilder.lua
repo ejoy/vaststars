@@ -451,8 +451,6 @@ end
 
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject)
-    iobject.remove(self.coord_indicator)
-
     if not _VASTSTARS_DEBUG_INFINITE_ITEM then
         -- check if item is in the inventory
         local item_typeobject = iprototype.queryByName("item", typeobject.name)
@@ -463,6 +461,7 @@ local function new_entity(self, datamodel, typeobject)
         end
     end
 
+    iobject.remove(self.coord_indicator)
     local dir = DEFAULT_DIR
     local x, y = iobject.central_coord(typeobject.name, dir)
     self.prototype_name = ipipe_connector.cleanup(typeobject.name, dir)
@@ -547,6 +546,9 @@ local function laying_pipe_begin(self, datamodel)
 end
 
 local function laying_pipe_cancel(self, datamodel)
+    construct_inventory:clear({"TEMPORARY"})
+    iui.update("construct.rml", "update_construct_inventory")
+
     self:revert_changes({"INDICATOR", "TEMPORARY"})
     local typeobject = iprototype.queryByName("entity", self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)

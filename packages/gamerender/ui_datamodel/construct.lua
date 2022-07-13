@@ -369,19 +369,6 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    local function _get_object(pickup_x, pickup_y)
-        for _, pos in ipairs(icamera.screen_to_world(pickup_x, pickup_y, PLANES)) do
-            local coord = terrain:align(pos, 1, 1) -- assume entity is 1x1
-            if coord then
-                local object = objects:coord(coord[1], coord[2])
-                if object then
-                    log.info(("pickup object coord(%s, %s)"):format(coord[1], coord[2]))
-                    return object
-                end
-            end
-        end
-    end
-
     for _, state in single_touch_mb:unpack() do
         if state == "END" or state == "CANCEL" then
             if builder then
@@ -394,6 +381,12 @@ function M:stage_camera_usage(datamodel)
     local leave = true
     for _, _, x, y, object_id in pickup_mapping_mb:unpack() do
         if objects:get(object_id) then -- object_id may be 0, such as when user click on empty space
+            do -- TODO: remove this block
+                local vsobject_manager = ecs.require "vsobject_manager"
+                local vsobject = vsobject_manager:get(object_id)
+                local object = objects:get(object_id)
+                log.error(("object (%s) (%s)"):format(object.prototype_name, math3d.tostring(vsobject:get_position())))
+            end
             if global.mode == "teardown" then
                 world:pub {"teardown", objects:get(object_id).prototype_name}
                 ieditor:teardown(object_id)
@@ -402,6 +395,20 @@ function M:stage_camera_usage(datamodel)
             elseif global.mode == "normal" then
                 if idetail.show(object_id) then
                     leave = false
+                end
+            end
+        end
+    end
+
+    local function _get_object(pickup_x, pickup_y)
+        for _, pos in ipairs(icamera.screen_to_world(pickup_x, pickup_y, PLANES)) do
+            log.error(("screen_to_world pos (%s)"):format(math3d.tostring(pos))) -- TODO: remove this line
+            local coord = terrain:align(pos, 1, 1) -- assume entity is 1x1
+            if coord then
+                local object = objects:coord(coord[1], coord[2])
+                if object then
+                    log.info(("pickup object coord(%s, %s)"):format(coord[1], coord[2]))
+                    return object
                 end
             end
         end

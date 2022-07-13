@@ -100,7 +100,7 @@ end
 
 local function complete(self)
     local needbuild = false
-    for object_id, object in objects:all("CONFIRM") do
+    for object_id, object in objects:all("CONFIRM") do -- TODO: duplicate code, see also pipe_function_pop.lua
         if object.REMOVED then
             if object.gameplay_eid then
                 gameplay_core.remove_entity(object.gameplay_eid)

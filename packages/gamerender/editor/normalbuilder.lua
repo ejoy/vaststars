@@ -22,8 +22,6 @@ local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_IN
 
 --
 local function __new_entity(self, datamodel, typeobject)
-    iobject.remove(self.pickup_object)
-
     if not _VASTSTARS_DEBUG_INFINITE_ITEM then
         -- check if item is in the inventory
         local item_typeobject = iprototype.queryByName("item", typeobject.name)
@@ -34,6 +32,7 @@ local function __new_entity(self, datamodel, typeobject)
         end
     end
 
+    iobject.remove(self.pickup_object)
     local dir = DEFAULT_DIR
     local x, y = iobject.central_coord(typeobject.name, dir)
     if not x or not y then

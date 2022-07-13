@@ -57,10 +57,6 @@ end
 
 --
 local function new_entity(self, datamodel, typeobject)
-    if self.coord_indicator then
-        iobject.remove(self.coord_indicator)
-    end
-
     if not _VASTSTARS_DEBUG_INFINITE_ITEM then
         -- check if item is in the inventory
         local item_typeobject = iprototype.queryByName("item", typeobject.name)
@@ -69,6 +65,10 @@ local function new_entity(self, datamodel, typeobject)
             log.error("Lack of item: " .. typeobject.name)
             return
         end
+    end
+
+    if self.coord_indicator then
+        iobject.remove(self.coord_indicator)
     end
 
     local dir = DEFAULT_DIR
