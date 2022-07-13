@@ -126,7 +126,7 @@ function camera.update()
 end
 
 -- in `camera_usage` stage
-function camera.screen_to_world(x, y)
+function camera.screen_to_world(x, y, planes)
     local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
     local ce = world:entity(mq.camera_ref)
     local vpmat = ce.camera.viewprojmat
@@ -139,7 +139,12 @@ function camera.screen_to_world(x, y)
     local p1 = ndc_to_world(vpmat, ndcpt)
 
     local ray = {o = p0, d = math3d.sub(p0, p1)}
-    return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, YAXIS_PLANE), ray.o)
+
+    local t = {}
+    for _, plane in ipairs(planes) do
+        t[#t + 1] = math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o)
+    end
+    return t
 end
 
 -- in `camera_usage` stage

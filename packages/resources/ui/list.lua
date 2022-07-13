@@ -130,6 +130,9 @@ end
 
 function list_meta:on_mouseup(event)
     local item = self.panel.childNodes[1]
+    if not item then
+        return
+    end
     local min = (self.direction == 0) and (self.view.clientWidth - self.item_count * item.clientWidth) or (self.view.clientHeight - self.item_count * item.clientHeight)
     if min > 0 then
         min = 0

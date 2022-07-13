@@ -18,6 +18,12 @@ local ieditor = ecs.require "editor.editor"
 local is_valid_starting = ecs.require "editor.pipe-to-ground.is_valid_starting"
 local state_start_func = ecs.require "editor.pipe-to-ground.state_start"
 local show_indicator = ecs.require "editor.pipe-to-ground.util".show_indicator
+local global = require "global"
+local construct_inventory = global.construct_inventory
+local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM
+local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iworld = require "gameplay.interface.world"
+local gameplay_core = require "gameplay.core"
 
 local function state_init(self, datamodel)
     if not is_valid_starting(self.coord_indicator.x, self.coord_indicator.y) then
@@ -53,6 +59,16 @@ end
 local function new_entity(self, datamodel, typeobject)
     if self.coord_indicator then
         iobject.remove(self.coord_indicator)
+    end
+
+    if not _VASTSTARS_DEBUG_INFINITE_ITEM then
+        -- check if item is in the inventory
+        local item_typeobject = iprototype.queryByName("item", typeobject.name)
+        local item = construct_inventory:get({"TEMPORARY", "CONFIRM"}, item_typeobject.id)
+        if not item or item.count <= 0 then
+            log.error("Lack of item: " .. typeobject.name)
+            return
+        end
     end
 
     local dir = DEFAULT_DIR
@@ -118,6 +134,7 @@ end
 local function touch_end(self, datamodel)
     iobject.align(self.coord_indicator)
     ieditor:revert_changes(EDITOR_CACHE_TEMPORARY)
+    construct_inventory:clear({"TEMPORARY"})
 
     if self.state ~= STATE_START then
         state_init(self, datamodel)
@@ -127,6 +144,28 @@ local function touch_end(self, datamodel)
 end
 
 local function complete(self, datamodel)
+    local gameplay_world = gameplay_core.get_world()
+    local e = iworld:get_headquater_entity(gameplay_world)
+    if not e then
+        log.error("can not find headquater entity")
+        return
+    end
+
+    local failed = false
+    for _, item in construct_inventory:all("TEMPORARY") do
+        local old_item = assert(construct_inventory:get({"CONFIRM"}, item.prototype))
+        assert(old_item.count >= item.count)
+        local decrease = old_item.count - item.count
+        print(iprototype.queryById(item.prototype).name, decrease)
+        if not gameplay_world:container_pickup(e.chest.container, item.prototype, decrease) then
+            log.error("can not pickup item", iprototype.queryById(item.prototype).name, decrease)
+            failed = true
+        end
+    end
+    if failed then
+        return
+    end
+
     ieditor:revert_changes(EDITOR_CACHE_TEMPORARY)
 
     self.super.complete(self)

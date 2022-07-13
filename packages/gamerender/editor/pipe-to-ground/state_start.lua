@@ -34,7 +34,7 @@ function condition_pipe(self, datamodel)
     )
     succ, max_to_x, max_to_y = terrain:move_coord(from_x, from_y, dir, ground)
 
-    local starting_object = assert(objects:coord(from_x, from_y, EDITOR_CACHE_CONSTRUCTED))
+    local starting_object = assert(objects:modify(from_x, from_y, EDITOR_CACHE_CONSTRUCTED, iobject.clone))
     assert(iprototype.is_pipe(starting_object.prototype_name))
 
     local t = {
@@ -60,13 +60,11 @@ function condition_pipe(self, datamodel)
         shape = "JU"
     end
 
-    starting_object = iobject.clone(starting_object)
     starting_object.dir = dir
     starting_object.prototype_name = format_prototype_name(self.coord_indicator.prototype_name, shape)
     starting_object.fluid_name = starting_object.fluid_name
     starting_object.fluidflow_id = starting_object.fluidflow_id
     starting_object.state = "construct"
-    objects:set(starting_object, EDITOR_CACHE_TEMPORARY[1])
 
     state_end(self, datamodel, starting_object, to_x, to_y, dir, max_to_x, max_to_y)
 end

@@ -66,7 +66,7 @@ local function remove(outer)
         return
     end
 
-    assert(outer.__object.OBJECT_REMOVED == nil)
+    -- assert(outer.__object.OBJECT_REMOVED == nil) -- TODO
     outer.__object.OBJECT_REMOVED = true
     changeset[outer.__object.id] = outer
 end

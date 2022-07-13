@@ -16,6 +16,11 @@ local iprototype = require "gameplay.interface.prototype"
 local ipipe_connector = require "gameplay.interface.pipe_connector"
 local objects = require "objects"
 local terrain = ecs.require "terrain"
+local construct_inventory = global.construct_inventory
+local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM
+local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iworld = require "gameplay.interface.world"
+local gameplay_core = require "gameplay.core"
 
 local EDITOR_CACHE_TEMPORARY = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 
@@ -30,18 +35,16 @@ local function _update_fluid_name(State, fluid_name, fluidflow_id)
             if State.fluid_name ~= fluid_name then
                 State.failed = true
             end
-        else
-            if fluidflow_id then
-                State.fluidflow_ids[fluidflow_id] = true
-            end
+        end
+        if fluidflow_id then
+            State.fluidflow_ids[fluidflow_id] = true
         end
     else
         if fluid_name ~= "" then
             State.fluid_name = fluid_name
-        else
-            if fluidflow_id then
-                State.fluidflow_ids[fluidflow_id] = true
-            end
+        end
+        if fluidflow_id then
+            State.fluidflow_ids[fluidflow_id] = true
         end
     end
 end
@@ -127,11 +130,21 @@ local function _debug_fluid_name(object)
 end
 
 local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
+    local function _clone_item(item)
+        local new = {}
+        new.prototype = item.prototype
+        new.count = item.count
+        return new
+    end
+    local item_typeobject = iprototype.queryByName("item", ipipe_connector.covers(self.prototype_name, DEFAULT_DIR))
+    local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
+
     local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
     local succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
-        math.abs(from_x - to_x),
-        math.abs(from_y - to_y)
+        math.min(math.abs(from_x - to_x), item.count - 1),
+        math.min(math.abs(from_y - to_y), item.count - 1)
     )
+    dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y) -- recalc delta
     assert(succ)
 
     local prototype_name = self.prototype_name
@@ -149,6 +162,7 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
     local x, y = from_x, from_y
     while true do
         coord = packcoord(x, y)
+        item.count = item.count - 1
 
         if x == from_x and y == from_y then
             local _object = objects:coord(x, y, EDITOR_CACHE_TEMPORARY)
@@ -240,6 +254,8 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
         end
         x, y = x + delta.x, y + delta.y
     end
+
+    iui.update("construct.rml", "update_construct_inventory")
 
     local fluidflow_id = 0
     if not State.failed then -- TODO: when there are multiple fluidflow id, we should merge them
@@ -437,6 +453,16 @@ end
 local function new_entity(self, datamodel, typeobject)
     iobject.remove(self.coord_indicator)
 
+    if not _VASTSTARS_DEBUG_INFINITE_ITEM then
+        -- check if item is in the inventory
+        local item_typeobject = iprototype.queryByName("item", typeobject.name)
+        local item = construct_inventory:get({"TEMPORARY", "CONFIRM"}, item_typeobject.id)
+        if not item or item.count <= 0 then
+            log.error("Lack of item: " .. typeobject.name)
+            return
+        end
+    end
+
     local dir = DEFAULT_DIR
     local x, y = iobject.central_coord(typeobject.name, dir)
     self.prototype_name = ipipe_connector.cleanup(typeobject.name, dir)
@@ -460,6 +486,7 @@ end
 local function touch_end(self, datamodel)
     iobject.align(self.coord_indicator)
     self:revert_changes({"INDICATOR", "TEMPORARY"})
+    construct_inventory:clear({"TEMPORARY"})
 
     if self.state ~= STATE_START then
         state_init(self, datamodel)
@@ -469,6 +496,28 @@ local function touch_end(self, datamodel)
 end
 
 local function complete(self, datamodel)
+    local gameplay_world = gameplay_core.get_world()
+    local e = iworld:get_headquater_entity(gameplay_world)
+    if not e then
+        log.error("can not find headquater entity")
+        return
+    end
+
+    local failed = false
+    for _, item in construct_inventory:all("TEMPORARY") do
+        local old_item = assert(construct_inventory:get({"CONFIRM"}, item.prototype))
+        assert(old_item.count >= item.count)
+        local decrease = old_item.count - item.count
+        print(iprototype.queryById(item.prototype).name, decrease)
+        if not gameplay_world:container_pickup(e.chest.container, item.prototype, decrease) then
+            log.error("can not pickup item", iprototype.queryById(item.prototype).name, decrease)
+            failed = true
+        end
+    end
+    if failed then
+        return
+    end
+
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
