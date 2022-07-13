@@ -39,11 +39,11 @@ chimney_update(lua_State* L, world& w, ecs_api::entity<ecs::chimney, ecs::fluidb
     while (c.progress <= 0) {
         prototype_context recipe = w.prototype(L, c.recipe);
         if (c.status == STATUS_DONE) {
-            recipe_items* r = (recipe_items*)pt_results(&recipe);
-            if (false) {
-                //TODO
-                return;
-            }
+            //recipe_items* r = (recipe_items*)pt_results(&recipe);
+            //if (false) {
+            //    //TODO
+            //    return;
+            //}
             w.stat.finish_recipe(L, w, c.recipe);
             c.status = STATUS_IDLE;
         }

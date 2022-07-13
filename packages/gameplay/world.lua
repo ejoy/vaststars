@@ -34,14 +34,14 @@ local function pipeline(world, cworld, name)
         end
     end
     if perf then
-        local f, time = cworld.system_perf(cworld, world, funcs)
+        local f, time = cworld.system_perf_solve(cworld, world, funcs)
         perf[name] = {
             symbol = symbols,
             time = time,
         }
         return f
     end
-    return cworld.system(cworld, world, funcs)
+    return cworld.system_solve(cworld, world, funcs)
 end
 
 return function ()

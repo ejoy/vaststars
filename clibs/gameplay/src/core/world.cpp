@@ -385,7 +385,7 @@ namespace lua_world {
         return 0;
     }
 
-    static int system(lua_State* L) {
+    static int system_solve(lua_State* L) {
         luaL_checktype(L, 3, LUA_TTABLE);
         lua_settop(L, 3);
 
@@ -445,7 +445,7 @@ namespace lua_world {
         return 0;
     }
 
-    static int system_perf(lua_State* L) {
+    static int system_perf_solve(lua_State* L) {
         luaL_checktype(L, 3, LUA_TTABLE);
         lua_settop(L, 3);
 
@@ -504,8 +504,8 @@ namespace lua_world {
                 { "restore_container", restore_container },
                 // misc
                 {"reset", reset},
-                {"system", system},
-                {"system_perf", system_perf},
+                {"system_solve", system_solve},
+                {"system_perf_solve", system_perf_solve},
                 {"__gc", destroy},
                 {nullptr, nullptr},
             };
