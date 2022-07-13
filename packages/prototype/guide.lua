@@ -138,7 +138,7 @@ local guide = {
     {
         name = "guide-9",
 		narrative = {
-            {"合理的铺设管道让基地建设更加高效...哔哩..注意管道和机器连接，那需要精细的对准(期待)", "textures/guide/guide-2.texture"},
+            {"合理的铺设管道让液体运输更加高效...哔哩..注意管道和机器液口的连接，耐心..和眼神..是关键(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             guide_progress = 30,
