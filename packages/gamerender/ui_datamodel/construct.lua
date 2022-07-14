@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local math3d = require "math3d"
-local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM
+local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM or require("debugger").infinite_item()
 local YAXIS_PLANE_B <const> = math3d.constant("v4", {0, 1, 0, 0})
 local YAXIS_PLANE_T <const> = math3d.constant("v4", {0, 1, 0, 20})
 local PLANES <const> = {YAXIS_PLANE_T, YAXIS_PLANE_B}
