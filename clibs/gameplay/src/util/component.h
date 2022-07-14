@@ -136,6 +136,13 @@ template <> struct component<ecs::NAME> { \
 	static inline const char name[] = #NAME; \
 };
 
+#define ECS_TAG(NAME) \
+template <> struct component<ecs::NAME> { \
+	static inline const int id = ecs_component_id::gen(); \
+	static inline const char name[] = #NAME; \
+	static inline const bool tag = true; \
+};
+
 ECS_COMPONENT(REMOVED)
 ECS_COMPONENT(entity)
 ECS_COMPONENT(chest)
@@ -146,17 +153,17 @@ ECS_COMPONENT(capacitance)
 ECS_COMPONENT(burner)
 ECS_COMPONENT(chimney)
 ECS_COMPONENT(consumer)
-ECS_COMPONENT(generator)
-ECS_COMPONENT(accumulator)
+ECS_TAG(generator)
+ECS_TAG(accumulator)
 ECS_COMPONENT(fluidbox)
 ECS_COMPONENT(fluidboxes)
-ECS_COMPONENT(pump)
-ECS_COMPONENT(mining)
+ECS_TAG(pump)
+ECS_TAG(mining)
 ECS_COMPONENT(road)
 ECS_COMPONENT(station)
 ECS_COMPONENT(save_fluidflow)
-ECS_COMPONENT(solar_panel)
-ECS_COMPONENT(base)
+ECS_TAG(solar_panel)
+ECS_TAG(base)
 ECS_COMPONENT(manual)
 
 #undef ECS_COMPONENT

@@ -95,10 +95,21 @@ local function writeEntityH(components)
     write "\tstatic inline const char name[] = #NAME; \\"
     write "};"
     write ""
+    write "#define ECS_TAG(NAME) \\"
+    write "template <> struct component<ecs::NAME> { \\"
+    write "\tstatic inline const int id = ecs_component_id::gen(); \\"
+    write "\tstatic inline const char name[] = #NAME; \\"
+    write "\tstatic inline const bool tag = true; \\"
+    write "};"
+    write ""
     write("ECS_COMPONENT(REMOVED)")
-    for _, c in ipairs(components) do
-        write("ECS_COMPONENT("..c.name..")")
-    end
+        for _, c in ipairs(components) do
+            if isTag(c) then
+                write("ECS_TAG("..c.name..")")
+            else
+                write("ECS_COMPONENT("..c.name..")")
+            end
+        end
     write ""
     write "#undef ECS_COMPONENT"
     write ""
