@@ -48,6 +48,7 @@ local ichest = require "gameplay.interface.chest"
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local pickup_mb = world:sub {"pickup"}
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
+local _TILE_PICKUP <const> = true
 
 local builder
 local last_prototype_name
@@ -390,15 +391,17 @@ function M:stage_camera_usage(datamodel)
             end
         end
 
-        if objects:get(object_id) then -- object_id may be 0, such as when user click on empty space
-            if global.mode == "teardown" then
-                world:pub {"teardown", objects:get(object_id).prototype_name}
-                ieditor:teardown(object_id)
-                datamodel.show_teardown = _has_teardown_entity()
+        if not _TILE_PICKUP then
+            if objects:get(object_id) then -- object_id may be 0, such as when user click on empty space
+                if global.mode == "teardown" then
+                    world:pub {"teardown", objects:get(object_id).prototype_name}
+                    ieditor:teardown(object_id)
+                    datamodel.show_teardown = _has_teardown_entity()
 
-            elseif global.mode == "normal" then
-                if idetail.show(object_id) then
-                    leave = false
+                elseif global.mode == "normal" then
+                    if idetail.show(object_id) then
+                        leave = false
+                    end
                 end
             end
         end
@@ -434,6 +437,29 @@ function M:stage_camera_usage(datamodel)
             end
 
             log.info("------------------------------------")
+        end
+
+        if _TILE_PICKUP then
+            local pos = icamera.screen_to_world(x, y, PLANE_B)
+            log.info(("pickup plane_b (%s)"):format(math3d.tostring(pos[1])))
+            local coord = terrain:align(pos[1], 1, 1)
+            if coord then
+                log.info(("pickup coord: (%d, %d)"):format(coord[1], coord[2]))
+            end
+
+            local object = _get_object(x, y)
+            if object then -- object may be nil, such as when user click on empty space
+                if global.mode == "teardown" then
+                    world:pub {"teardown", object.prototype_name}
+                    ieditor:teardown(object.id)
+                    datamodel.show_teardown = _has_teardown_entity()
+
+                elseif global.mode == "normal" then
+                    if idetail.show(object.id) then
+                        leave = false
+                    end
+                end
+            end
         end
 
         if leave then
