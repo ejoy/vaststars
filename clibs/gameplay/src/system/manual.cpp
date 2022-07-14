@@ -80,9 +80,9 @@ void manual_crafting::next() {
 }
 
 void manual_crafting::sync(ecs::manual& m) {
-    m.progress = 0;
     if (todos.empty()) {
         m.recipe = 0;
+        m.progress = 0;
         m.status = (container.size() == 0)
             ? STATUS_IDLE
             : STATUS_REBUILD
@@ -92,6 +92,7 @@ void manual_crafting::sync(ecs::manual& m) {
     assert(todos.back().type != type::separator);
     todo& td = todos.back();
     m.recipe = td.id;
+    m.progress = 0;
     m.status = (td.type == type::crafting)
         ? STATUS_IDLE
         : STATUS_FINISH
@@ -171,6 +172,7 @@ bool manual_crafting::rebuild(lua_State* L, world& w, int id) {
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
+
     for (auto& v : w.select<ecs::manual, ecs::chest>(L)) {
         ecs::manual& m = v.get<ecs::manual>();
         ecs::chest& c = v.get<ecs::chest>();
