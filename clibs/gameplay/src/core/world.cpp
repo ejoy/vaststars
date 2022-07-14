@@ -309,7 +309,7 @@ namespace lua_world {
         lua_Integer n = luaL_len(L, 2);
         for (lua_Integer i = 1; i <= n; ++i) {
             if (LUA_TTABLE != lua_rawgeti(L, 2, i)) {
-                lua_pushstring(L, "failed");
+                lua_pushboolean(L, 0);
                 return 1;
             }
             manual_crafting::todo todo;
@@ -342,7 +342,16 @@ namespace lua_world {
             }
         }
         std::swap(w.manual.todos, todos);
-        lua_pushstring(L, reset? "reset": "ok");
+        for (auto& v : w.select<ecs::manual, ecs::chest>(L)) {
+            ecs::manual& m = v.get<ecs::manual>();
+            ecs::chest& c = v.get<ecs::chest>();
+            if (w.manual.rebuild(L, w, c.container)) {
+                if (reset) {
+                    w.manual.sync(m);
+                }
+            }
+        }
+        lua_pushboolean(L, 1);
         return 1;
     }
 

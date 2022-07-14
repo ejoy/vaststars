@@ -18,7 +18,7 @@ local construct_inventory = global.construct_inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iworld = require "gameplay.interface.world"
 local gameplay_core = require "gameplay.core"
-local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM
+local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM or require("debugger").infinite_item()
 
 --
 local function __new_entity(self, datamodel, typeobject)

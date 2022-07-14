@@ -4,7 +4,7 @@ local w = world.w
 
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
-local _VASTSTARS_DEBUG_RECIPE_UNLOCKED = world.args.ecs.VASTSTARS_DEBUG_RECIPE_UNLOCKED
+local _VASTSTARS_DEBUG_RECIPE_UNLOCKED = world.args.ecs.VASTSTARS_DEBUG_RECIPE_UNLOCKED or require("debugger").recipe_unlocked()
 
 local recipe_unlocked; do
     local recipe_tech = {}

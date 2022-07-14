@@ -25,12 +25,40 @@ local math3d = require "math3d"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
+local fs = require "filesystem"
 
 local MAX_ARCHIVING_COUNT <const> = 9
 
 local archival_list = {}
 
 local function restore_world()
+    local function _finish_task(task)
+        local typeobject = iprototype.queryByName("tech", task)
+        gameplay_core.get_world():research_progress(task, typeobject.count)
+    end
+
+    local function _debug()
+        if fs.exists(fs.path("/pkg/vaststars.prototype/debugger.lua")) then
+            print("debug")
+            local debugcfg = import_package "vaststars.prototype"("debugger")
+            local guide = import_package "vaststars.prototype"("guide")
+            if debugcfg.skip_guide == true then
+                print("skip guide")
+                gameplay_core.get_storage().guide_id = #guide
+                iui.set_guide_progress(guide[#guide].narrative_end.guide_progress)
+
+                for _, guide in ipairs(guide) do
+                    if next(guide.narrative_end.task) then
+                        for _, task in ipairs(guide.narrative_end.task) do
+                            _finish_task(task)
+                        end
+                    end
+                end
+            end
+        end
+    end
+    _debug()
+
     -- clean
     for _, object in objects:all() do
         iobject.remove(object)

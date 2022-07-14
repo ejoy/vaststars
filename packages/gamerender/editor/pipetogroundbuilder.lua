@@ -20,10 +20,10 @@ local state_start_func = ecs.require "editor.pipe-to-ground.state_start"
 local show_indicator = ecs.require "editor.pipe-to-ground.util".show_indicator
 local global = require "global"
 local construct_inventory = global.construct_inventory
-local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM
-local iui = ecs.import.interface "vaststars.gamerender|iui"
+local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM or require("debugger").infinite_item()
 local iworld = require "gameplay.interface.world"
 local gameplay_core = require "gameplay.core"
+local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 local function state_init(self, datamodel)
     if not is_valid_starting(self.coord_indicator.x, self.coord_indicator.y) then
@@ -103,6 +103,9 @@ local function laying_pipe_begin(self, datamodel)
 end
 
 local function laying_pipe_cancel(self, datamodel)
+    construct_inventory:clear({"TEMPORARY"})
+    iui.update("construct.rml", "update_construct_inventory")
+
     ieditor:revert_changes(EDITOR_CACHE_TEMPORARY)
     self:clean(datamodel)
     self:new_entity(datamodel, self.typeobject)

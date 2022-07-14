@@ -49,7 +49,7 @@ local function get_connections(object_id)
     local typeobject = iprototype.queryByName("entity", pipe_object.prototype_name)
     assert(typeobject.pipe or typeobject.pipe_to_ground)
 
-    local function get_connections(typeobject, dir, x, y)
+    local function __get_connections(typeobject, dir, x, y)
         local connections = {}
         for _, conn in ipairs(typeobject.fluidbox.connections) do
             local dx, dy, dir = iprototype.rotate_fluidbox(conn.position, dir, typeobject.area)
@@ -59,7 +59,7 @@ local function get_connections(object_id)
         end
         return connections
     end
-    local _connections = get_connections(typeobject, pipe_object.dir, pipe_object.x, pipe_object.y)
+    local _connections = __get_connections(typeobject, pipe_object.dir, pipe_object.x, pipe_object.y)
 
     local connections = {}
     if typeobject.pipe then
@@ -90,7 +90,7 @@ local function get_connections(object_id)
                                 connections[dir] = CONNECT
                             end
                         elseif _typeobject.pipe_to_ground then
-                            local conn = get_connections(_typeobject, _object.dir, _object.x, _object.y)[dir]
+                            local conn = __get_connections(_typeobject, _object.dir, _object.x, _object.y)[dir]
                             if conn and conn.ground then
                                 _update_fluid_name(State, _object.fluid_name, _object.fluidflow_id)
                                 if State.failed then
@@ -159,7 +159,7 @@ local function get_connections(object_id)
                                     connections[dir] = CONNECT
                                 end
                             elseif _typeobject.pipe_to_ground then
-                                local conn = get_connections(_typeobject, _object.dir, _object.x, _object.y)[iprototype.reverse_dir(dir)]
+                                local conn = __get_connections(_typeobject, _object.dir, _object.x, _object.y)[iprototype.reverse_dir(dir)]
                                 if conn and not conn.ground then
                                     _update_fluid_name(State, _object.fluid_name, _object.fluidflow_id)
                                     if State.failed then
@@ -253,8 +253,20 @@ function M:create(object_id, left, top)
 end
 
 function M:stage_ui_update(datamodel)
+    local function _update_fluidflow(fluidflow_id, new_fluidflow_id, new_fluid_name)
+        for _, object in objects:selectall("fluidflow_id", fluidflow_id, EDITOR_CACHE_TEMPORARY) do
+            local _object = objects:coord(object.x, object.y, {"CONSTRUCTED"})
+            assert(iprototype.has_type(iprototype.queryByName("entity", _object.prototype_name).type, "fluidbox"))
+            _object.fluid_name = new_fluid_name
+            _object.fluidflow_id = new_fluidflow_id
+            ifluid:update_fluidbox(gameplay_core.get_entity(_object.gameplay_eid), _object.fluid_name) -- TODO: do it in a better way?
+            objects:sync("CONSTRUCTED", _object, "fluid_name", "fluidflow_id")
+            print(("_update_fluidflow %s (%s,%s): %s %s"):format(_object.prototype_name, _object.x, _object.y, _object.fluid_name, _object.fluidflow_id))
+        end
+    end
+
     --
-    for _, _, _, dir, oper in pipe_edge_mb:unpack() do -- TODO: optimize, update fluidflow_id only when necessary
+    for _, _, _, dir, oper in pipe_edge_mb:unpack() do
         print(datamodel.object_id, dir, oper)
         local pipe_object = objects:get(datamodel.object_id)
         local succ, x, y = terrain:move_coord(pipe_object.x, pipe_object.y, dir, 1)
@@ -264,7 +276,7 @@ function M:stage_ui_update(datamodel)
         if oper == CONNECT then
             local fluid_name = pipe_object.fluid_name
             if pipe_object.fluid_name == "" then
-                pipe_object.fluid_name = object.fluid_name
+                _update_fluidflow(pipe_object.fluidflow_id, object.fluidflow_id, object.fluid_name)
             end
 
             if iprototype.is_pipe(pipe_object.prototype_name) then
@@ -283,11 +295,13 @@ function M:stage_ui_update(datamodel)
                     assert(shape)
                     object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, shape)
                     object.dir = _dir
-                    object.fluid_name = fluid_name
+                    _update_fluidflow(object.fluidflow_id, pipe_object.fluidflow_id, pipe_object.fluid_name)
 
                 elseif iprototype.is_pipe_to_ground(object.prototype_name) then
                     object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, "JI")
                     object.fluid_name = fluid_name
+                    object.fluidflow_id = pipe_object.fluidflow_id
+                    _update_fluidflow(object.fluidflow_id, pipe_object.fluidflow_id, pipe_object.fluid_name)
                 end
 
             elseif iprototype.is_pipe_to_ground(pipe_object.prototype_name) then
@@ -300,24 +314,24 @@ function M:stage_ui_update(datamodel)
                     assert(shape)
                     object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, shape)
                     object.dir = _dir
-                    object.fluid_name = fluid_name
+                    _update_fluidflow(object.fluidflow_id, pipe_object.fluidflow_id, pipe_object.fluid_name)
 
                 elseif iprototype.is_pipe_to_ground(object.prototype_name) then
                     object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, "JI")
-                    object.fluid_name = fluid_name
+                    _update_fluidflow(object.fluidflow_id, pipe_object.fluidflow_id, pipe_object.fluid_name)
+
                 else
                     local typeobject = iprototype.queryByName("entity", object.prototype_name)
                     if iprototype.has_type(typeobject.type, "fluidbox") then
                         object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, "JI")
-                        object.fluid_name = fluid_name
-                        object.fluidflow_id = pipe_object.fluidflow_id
+                        _update_fluidflow(object.fluidflow_id, pipe_object.fluidflow_id, pipe_object.fluid_name)
                     end
                 end
             else
                 assert(false)
             end
 
-        elseif oper == DISCONNECT then
+        elseif oper == DISCONNECT then -- TODO: update fluidflow_id when disconnecting? 
             if iprototype.is_pipe(pipe_object.prototype_name) then
                 --
                 local pipe_edge = iflow_shape.prototype_name_to_state(pipe_object.prototype_name, pipe_object.dir)
@@ -365,9 +379,15 @@ function M:stage_ui_update(datamodel)
             if pipe_object.__change.prototype_name then
                 gameplay_core.remove_entity(pipe_object.gameplay_eid)
                 pipe_object.gameplay_eid = gameplay_core.create_entity(pipe_object)
-                gameplay_core.build()
             end
         end
+        if object then
+            if object.__change.prototype_name then
+                gameplay_core.remove_entity(object.gameplay_eid)
+                object.gameplay_eid = gameplay_core.create_entity(object)
+            end
+        end
+        gameplay_core.build()
         datamodel.connections = get_connections(datamodel.object_id)
     end
 

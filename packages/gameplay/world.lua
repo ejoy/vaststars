@@ -257,21 +257,7 @@ return function ()
                 error("unknown type: "..type)
             end
         end
-        local errcode = cworld:manual(todos)
-        if errcode == "failed" then
-            return false
-        end
-
-        local STATUS_REBUILD <const> = 3
-        for v in ecs:select "manual:update" do
-            local manual = v.manual
-            manual.status = STATUS_REBUILD
-            if errcode == "reset" then
-                manual.recipe = 0
-                manual.progress = 0
-            end
-        end
-        return true
+        return cworld:manual(todos)
     end
 
     function world:manual_container()
