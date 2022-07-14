@@ -442,6 +442,7 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, 
             object.PREPARE = true
         end
         objects:commit("TEMPORARY", "CONFIRM")
+        construct_inventory:commit("TEMPORARY", "CONFIRM")
 
         self.shape = "JI" -- TODO: remove this line
         self.shape_dir = starting_object.dir -- TODO: remove this line

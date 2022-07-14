@@ -3,7 +3,7 @@ data:
   name: empty1
   scene:
     r: {0, 0, -0.22351139783859253, 0.9747013449668884}
-    s: {2, 2, 2}
+    s: 2
     t: {10, 20, 3.4000000953674316}
   slot:
     follow_flag: 1
@@ -21,7 +21,7 @@ data:
   name: empty2
   scene:
     r: {0, 0, -0.2164396196603775, 0.9762960076332092}
-    s: {2, 2, 2}
+    s: 2
     t: {10, 20, -3.8952038288116455}
   slot:
     follow_flag: 1
@@ -75,7 +75,6 @@ data:
   name: pipe-joint-output-1
   scene:
     r: {-4.371138828673793e-08, 0, 0, 1}
-    s: {1, 1, 1}
     t: {0, 0, -10}
   slot:
     follow_flag: 1
@@ -92,7 +91,6 @@ data:
   name: pipe-joint-input-1
   scene:
     r: {0, 1, 0, -4.371138828673793e-08}
-    s: {1, 1, 1}
     t: {0, 0, 10}
   slot:
     follow_flag: 1
@@ -108,8 +106,6 @@ policy:
 data:
   name: arrow1
   scene:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
     t: {0, 0, 20}
   slot:
     follow_flag: 1
@@ -125,8 +121,6 @@ policy:
 data:
   name: arrow2
   scene:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
     t: {0, 0, -20}
   slot:
     follow_flag: 1
