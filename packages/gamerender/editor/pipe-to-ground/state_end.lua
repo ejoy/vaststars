@@ -15,6 +15,7 @@ local show_failed = ecs.require "editor.pipe-to-ground.util".show_failed
 local ifluid = require "gameplay.interface.fluid"
 local flow_shape = require "gameplay.utility.flow_shape"
 local construct_inventory = global.construct_inventory
+local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM or require("debugger").infinite_item()
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 local EDITOR_CACHE_CONSTRUCTED = {"CONFIRM", "CONSTRUCTED"}
@@ -55,6 +56,15 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
     end
     local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JU"))
     local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
+    if not item then -- TODO: clean up the builder?
+        if _VASTSTARS_DEBUG_INFINITE_ITEM then
+            item = {prototype = item_typeobject.id, count = 999}
+        else
+            self:clean(datamodel)
+            return
+        end
+    end
+
     dir = dir or starting_object.dir -- TODO
     local ending_object = assert(objects:coord(to_x, to_y, EDITOR_CACHE_CONSTRUCTED))
 
@@ -210,6 +220,14 @@ function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, 
     end
     local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JU"))
     local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
+    if not item then -- TODO: clean up the builder?
+        if _VASTSTARS_DEBUG_INFINITE_ITEM then
+            item = {prototype = item_typeobject.id, count = 999}
+        else
+            self:clean(datamodel)
+            return
+        end
+    end
 
     local ending_object = assert(objects:coord(to_x, to_y, EDITOR_CACHE_CONSTRUCTED))
     if not check_channel(self, datamodel, starting_object, to_x, to_y) then
@@ -343,6 +361,14 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, 
     end
     local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JU"))
     local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
+    if not item then -- TODO: clean up the builder?
+        if _VASTSTARS_DEBUG_INFINITE_ITEM then
+            item = {prototype = item_typeobject.id, count = 999}
+        else
+            self:clean(datamodel)
+            return
+        end
+    end
 
     local succ
     succ, to_x, to_y = terrain:move_coord(starting_object.x, starting_object.y, starting_object.dir, math.abs(starting_object.x - to_x), math.abs(starting_object.y - to_y))

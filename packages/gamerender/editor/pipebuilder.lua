@@ -138,6 +138,14 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
     end
     local item_typeobject = iprototype.queryByName("item", ipipe_connector.covers(self.prototype_name, DEFAULT_DIR))
     local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
+    if not item then -- TODO: clean up the builder?
+        if _VASTSTARS_DEBUG_INFINITE_ITEM then
+            item = {prototype = item_typeobject.id, count = 999}
+        else
+            self:clean(datamodel)
+            return
+        end
+    end
 
     local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
     local succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
@@ -479,10 +487,15 @@ local function new_entity(self, datamodel, typeobject)
 end
 
 local function touch_move(self, datamodel, delta_vec)
-    iobject.move_delta(self.coord_indicator, delta_vec)
+    if self.coord_indicator then
+        iobject.move_delta(self.coord_indicator, delta_vec)
+    end
 end
 
 local function touch_end(self, datamodel)
+    if not self.coord_indicator then
+        return
+    end
     iobject.align(self.coord_indicator)
     self:revert_changes({"INDICATOR", "TEMPORARY"})
     construct_inventory:clear({"TEMPORARY"})

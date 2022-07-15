@@ -44,6 +44,16 @@
                 height: 12.00vmin;
                 width: 12.00vmin;
             }
+            manual_workbutton {
+                font-size: 3.20vmin;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                border: 0.26vmin rgb(89, 73, 39);
+                background-color: rgb(246, 142, 14);
+                height: 12.00vmin;
+                width: 12.00vmin;
+            }
             .workbutton-bg {
                 margin: auto auto;
                 width: 6.67vmin;
@@ -455,7 +465,7 @@
                 <collapsed-bar id = "manual-queue" init-expanded = "false" min-width = "13.50vmin" max-width = "auto" style = "height: 35vmin; flex-direction: row; overflow: hidden;">
                     <div data-for = "manual_queue" style = "flex-direction: row; pointer-events: none;">
                         <div style = "width: 0.5vmin;" />
-                        <workbutton data-event-click="clickCollapsedBar(it_index)" style="background-color:rgb(250,205,9);width: 13vmin; height: 13vmin;">
+                        <manual_workbutton data-event-click="clickCollapsedBar(it_index)" style="background-color:rgb(250,205,9);width: 13vmin; height: 13vmin;">
                             <div class="workbutton-bg" data-style-background-image = "it.icon" style = "pointer-events: none;" />
                             <div class="workbutton-text" style = "pointer-events: none; -webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 2.5vmin; color: #fff; word-break: break-all; text-align: center;">{{it.name}}</div>
                             <div class = "progressbar-half-cycle-container" style = "left: 0%; pointer-events: none;">
@@ -468,7 +478,7 @@
                             </div>
                             <!-- 右下角手搓物品数量显示 -->
                             <div style="position:absolute; 	font-size: 4vmin; top: -0.5vmin; left: 0vmin;-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);">{{it.count}}</div>
-                        </workbutton>
+                        </manual_workbutton>
                     </div>
                 </collapsed-bar>
             </div>

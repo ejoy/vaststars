@@ -131,10 +131,16 @@ local function laying_pipe_confirm(self, datamodel)
 end
 
 local function touch_move(self, datamodel, delta_vec)
-    iobject.move_delta(self.coord_indicator, delta_vec)
+    if self.coord_indicator then
+        iobject.move_delta(self.coord_indicator, delta_vec)
+    end
 end
 
 local function touch_end(self, datamodel)
+    if not self.coord_indicator then
+        return
+    end
+
     iobject.align(self.coord_indicator)
     ieditor:revert_changes(EDITOR_CACHE_TEMPORARY)
     construct_inventory:clear({"TEMPORARY"})
