@@ -382,14 +382,14 @@ function M:stage_camera_usage(datamodel)
 
     local leave = true
     for _, _, x, y, object_id in pickup_mapping_mb:unpack() do
-        do -- TODO: remove this block
-            local vsobject_manager = ecs.require "vsobject_manager"
-            local vsobject = vsobject_manager:get(object_id)
-            local object = objects:get(object_id)
-            if object then
-                log.info(("pickup_mapping object (%s) (%s)"):format(object.prototype_name, math3d.tostring(vsobject:get_position())))
-            end
-        end
+        -- do -- TODO: remove this block
+        --     local vsobject_manager = ecs.require "vsobject_manager"
+        --     local vsobject = vsobject_manager:get(object_id)
+        --     local object = objects:get(object_id)
+        --     if object then
+        --         log.info(("pickup_mapping object (%s) (%s)"):format(object.prototype_name, math3d.tostring(vsobject:get_position())))
+        --     end
+        -- end
 
         if not _TILE_PICKUP then
             if objects:get(object_id) then -- object_id may be 0, such as when user click on empty space
@@ -421,32 +421,25 @@ function M:stage_camera_usage(datamodel)
 
     -- 点击其它建筑 或 拖动时, 将弹出窗口隐藏
     for _, _, x, y in pickup_mb:unpack() do
-        do -- TODO: remove this block
-            local pos = icamera.screen_to_world(x, y, PLANE_B)
-            log.info(("pickup plane_b (%s)"):format(math3d.tostring(pos[1])))
-            local coord = terrain:align(pos[1], 1, 1)
-            if coord then
-                log.info(("pickup coord: (%d, %d)"):format(coord[1], coord[2]))
-            end
+        -- do -- TODO: remove this block
+        --     local pos = icamera.screen_to_world(x, y, PLANE_B)
+        --     log.info(("pickup plane_b (%s)"):format(math3d.tostring(pos[1])))
+        --     local coord = terrain:align(pos[1], 1, 1)
+        --     if coord then
+        --         log.info(("pickup coord: (%d, %d)"):format(coord[1], coord[2]))
+        --     end
 
-            local object = _get_object(x, y)
-            if object then
-                log.info(("pickup object (%s) in (%s, %s) fluidflow_id(%s)"):format(object.prototype_name, object.x, object.y, object.fluidflow_id))
-            else
-                log.info(("pickup object (%s) in (%s, %s)"):format("none", x, y))
-            end
+        --     local object = _get_object(x, y)
+        --     if object then
+        --         log.info(("pickup object (%s) in (%s, %s) fluidflow_id(%s)"):format(object.prototype_name, object.x, object.y, object.fluidflow_id))
+        --     else
+        --         log.info(("pickup object (%s) in (%s, %s)"):format("none", x, y))
+        --     end
 
-            log.info("------------------------------------")
-        end
+        --     log.info("------------------------------------")
+        -- end
 
         if _TILE_PICKUP then
-            local pos = icamera.screen_to_world(x, y, PLANE_B)
-            log.info(("pickup plane_b (%s)"):format(math3d.tostring(pos[1])))
-            local coord = terrain:align(pos[1], 1, 1)
-            if coord then
-                log.info(("pickup coord: (%d, %d)"):format(coord[1], coord[2]))
-            end
-
             local object = _get_object(x, y)
             if object then -- object may be nil, such as when user click on empty space
                 if global.mode == "teardown" then

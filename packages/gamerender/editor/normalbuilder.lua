@@ -108,6 +108,9 @@ local function _get_mineral_recipe(prototype_name, x, y, dir)
 end
 
 local function touch_end(self, datamodel)
+    local ecs = ecs -- for debug, remove it later
+    local world = world -- for debug, remove it later
+
     local pickup_object = self.pickup_object
     if not pickup_object then
         return

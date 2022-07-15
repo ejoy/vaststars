@@ -25,7 +25,6 @@ local math3d = require "math3d"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
-local fs = require "filesystem"
 
 local MAX_ARCHIVING_COUNT <const> = 9
 
@@ -263,8 +262,8 @@ function M:backup()
     end
 
     while #archival_list + 1 > MAX_ARCHIVING_COUNT do
-        local archival_relative_dir = table.remove(archival_list, 1)
-        local archival_dir = archival_base_dir .. ("/%s"):format(archival_relative_dir)
+        local archival = table.remove(archival_list, 1)
+        local archival_dir = archival_base_dir .. ("/%s"):format(archival.dir)
         print("remove", archival_dir)
         fs.remove_all(archival_dir)
     end
@@ -321,8 +320,6 @@ function M:restore(index)
 
         if archival_list[index].version ~= GAMEPLAY_VERSION then
             log.error(("Failed `%s` version `%s` current `%s`"):format(archival_relative_dir, archival_list[index].version, GAMEPLAY_VERSION))
-            -- archival_list[index] = nil
-            -- index = index - 1
             iui.open("option_pop.rml")
             return false
         else

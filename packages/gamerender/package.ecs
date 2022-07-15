@@ -105,14 +105,6 @@ interface "ipickup_mapping"
     .method "mapping"
     .method "unmapping"
 
-system "game_object_system"
-    .implement "engine/system/game_object_system.lua"
-    .method "component_init"
-
-interface "igame_object"
-    .implement "engine/system/game_object_system.lua"
-    .method "create"
-
 system "entity_object_system"
     .implement "engine/system/entity_object_system.lua"
     .method "entity_ready"
