@@ -105,7 +105,8 @@ local guide = {
     {
         name = "guide-7",
 		narrative = {
-            {"科研中心针对“科技包”可开展对应的研究..哔哩..将地质科技包运送科研中心进行下一个科技研究(期待)", "textures/guide/guide-2.texture"},
+            {"“科技包”是研究的必需材料..哔哩..请将地质科技包运送科研中心进行下一个科技研究(期待)", "textures/guide/guide-2.texture"},
+            {"研究不可一蹴而就，也许需要长时的等待。足够的耐心是必需的科研品质..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             pop_chapter = {"第一阶段","科学研究"},
