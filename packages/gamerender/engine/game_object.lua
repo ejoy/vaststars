@@ -7,6 +7,8 @@ local serialize = import_package "ant.serialize"
 local prefab_path <const> = "/pkg/vaststars.resources/%s"
 local game_object_event = ecs.require "engine.game_object_event"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
+local iani = ecs.import.interface "ant.animation|ianimation"
+local fs = require "filesystem"
 
 local function _replace_material(template)
     for _, v in ipairs(template) do
@@ -83,6 +85,30 @@ end
 local _get_hitch_children ; do
     local cache = {} -- prefab_file_name + state + color -> object
     local hitch_group_id = 10000 -- see also: terrain.lua -> TERRAIN_MAX_GROUP_ID
+    local pose_cache = {} -- prefab_file_name -> pose
+
+    local function _get_pose(prefab_file_name)
+        if not pose_cache[prefab_file_name] then
+            pose_cache[prefab_file_name] = iani.create_pose()
+        end
+        return pose_cache[prefab_file_name]
+    end
+
+    local function _create_animation(group_id, prefab_file_name, pose, animation_name, process)
+        local g = ecs.group(group_id)
+        local animation_inst = g:create_instance(prefab_file_name:string())
+        animation_inst.on_ready = function(prefab)
+            iani.set_pose_to_prefab(prefab, pose)
+
+            if animation_name and process then
+                iani.play(prefab, {name = animation_name, process = process, loop = false, manual = true})
+                iani.set_time(prefab, iani.get_duration(prefab, animation_name) * process)
+            end
+        end
+        animation_inst.on_message = function (_prefab, cmd, ...)
+        end
+        world:create_object(animation_inst)
+    end
 
     function _get_hitch_children(prefab_file_name, state, color, animation_name, process)
         local param = _instance_hash(prefab_file_name, state, tostring(color), animation_name, process)
@@ -118,6 +144,14 @@ local _get_hitch_children ; do
                 world:entity(eid).standalone_scene_object = true
             end
             on_prefab_ready(prefab, binding)
+
+            local animation_prefab_file_name = prefab_file_name:gsub("^(.*)(%.prefab)$", "%1-animation.prefab")
+            local _f = fs.path(prefab_path:format(animation_prefab_file_name))
+            if fs.exists(_f) then
+                local pose = _get_pose(prefab_file_name)
+                iani.set_pose_to_prefab(prefab, pose)
+                _create_animation(hitch_group_id, _f, pose, animation_name, process)
+            end
         end
         prefab.on_message = function(prefab, ...)
             on_prefab_message(prefab, binding, ...)
@@ -126,10 +160,6 @@ local _get_hitch_children ; do
         local instance = world:create_object(prefab)
         if state == "translucent" then
             instance:send("set_material_property", "u_basecolor_factor", color)
-        end
-        if animation_name and process then
-            instance:send("animation_play", {name = animation_name, process = process, loop = false, manual = true})
-            instance:send("animation_set_time", animation_name, process)
         end
 
         cache[param] = {instance = instance, hitch_group_id = hitch_group_id }

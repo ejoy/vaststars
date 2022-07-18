@@ -3,9 +3,10 @@ local world = ecs.world
 local w = world.w
 
 local gameplay_core = require "gameplay.core"
-local fs = require "bee.filesystem"
+local bee_fs = require "bee.filesystem"
+local fs = require "filesystem"
 local json = import_package "ant.json"
-local archival_base_dir = (fs.appdata_path() / "vaststars/archiving"):string()
+local archival_base_dir = (bee_fs.appdata_path() / "vaststars/archiving"):string()
 local archiving_list_path = archival_base_dir .. "/archiving.json"
 local camera_setting_path = archival_base_dir .. "/camera.json"
 local iprototype = require "gameplay.interface.prototype"
@@ -265,7 +266,7 @@ function M:backup()
         local archival = table.remove(archival_list, 1)
         local archival_dir = archival_base_dir .. ("/%s"):format(archival.dir)
         print("remove", archival_dir)
-        fs.remove_all(archival_dir)
+        bee_fs.remove_all(archival_dir)
     end
 
     local t = os.date("*t")
@@ -282,12 +283,12 @@ end
 
 function M:restore(index)
     local camera_setting
-    if fs.exists(fs.path(camera_setting_path)) then
+    if bee_fs.exists(bee_fs.path(camera_setting_path)) then
         camera_setting = json.decode(readall(camera_setting_path))
     end
 
     --
-    if not fs.exists(fs.path(archiving_list_path)) then
+    if not bee_fs.exists(bee_fs.path(archiving_list_path)) then
         self:restart()
         self.running = true
         return true
@@ -311,7 +312,7 @@ function M:restore(index)
         local archival_relative_dir = archival_list[index].dir
         archival_dir = archival_base_dir .. ("/%s"):format(archival_relative_dir)
 
-        if not fs.exists(fs.path(archival_dir)) then
+        if not bee_fs.exists(bee_fs.path(archival_dir)) then
             log.warn(("`%s` not exists"):format(archival_relative_dir))
             archival_list[index] = nil
             index = index - 1
