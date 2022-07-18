@@ -1,0 +1,22 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  anim_ctrl: {}
+  animation:
+    DownToUp: $path ./animations/DownToUp.ozz
+    UpToDown: $path ./animations/UpToDown.ozz
+  animation_birth: DownToUp
+  name: skeleton_animation
+  scene: {}
+  skeleton: $path ./animations/skeleton.ozz
+mount: 1
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.animation|animation
