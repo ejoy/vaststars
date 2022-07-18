@@ -9,6 +9,8 @@ local game_object_event = ecs.require "engine.game_object_event"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local iani = ecs.import.interface "ant.animation|ianimation"
 local fs = require "filesystem"
+local math3d = require "math3d"
+local COLOR_INVALID <const> = math3d.constant "null"
 
 local function _replace_material(template)
     for _, v in ipairs(template) do
@@ -22,20 +24,7 @@ local function _replace_material(template)
     return template
 end
 
-local function _is_animation_entity(e)
-    return e.anim_ctrl and e.meshskin
-end
-
 local function on_prefab_ready(prefab, binding)
-    for _, eid in ipairs(prefab.tag["*"]) do
-        local e = world:entity(eid)
-        if _is_animation_entity(e) then
-            binding.animation_eid = eid
-        end
-        if e.slot then
-            binding.slot[e.name] = e.slot
-        end
-    end
 end
 
 local function on_prefab_message(prefab, binding, cmd, ...)
@@ -87,11 +76,11 @@ local _get_hitch_children ; do
     local hitch_group_id = 10000 -- see also: terrain.lua -> TERRAIN_MAX_GROUP_ID
     local pose_cache = {} -- prefab_file_name -> pose
 
-    local function _get_pose(prefab_file_name)
-        if not pose_cache[prefab_file_name] then
-            pose_cache[prefab_file_name] = iani.create_pose()
+    local function _get_pose(param)
+        if not pose_cache[param] then
+            pose_cache[param] = iani.create_pose()
         end
-        return pose_cache[prefab_file_name]
+        return pose_cache[param]
     end
 
     local function _create_animation(group_id, prefab_file_name, pose, animation_name, process)
@@ -101,7 +90,7 @@ local _get_hitch_children ; do
             iani.set_pose_to_prefab(prefab, pose)
 
             if animation_name and process then
-                iani.play(prefab, {name = animation_name, process = process, loop = false, manual = true})
+                iani.play(prefab, {name = animation_name, loop = false, manual = true})
                 iani.set_time(prefab, iani.get_duration(prefab, animation_name) * process)
             end
         end
@@ -113,7 +102,7 @@ local _get_hitch_children ; do
     function _get_hitch_children(prefab_file_name, state, color, animation_name, process)
         local param = _instance_hash(prefab_file_name, state, tostring(color), animation_name, process)
         if cache[param] then
-            return cache[param].hitch_group_id
+            return cache[param].hitch_group_id, cache[param].binding
         end
 
         log.info(("game_object.new_instance: %s"):format(table.concat({prefab_file_name, state, require("math3d").tostring(color), animation_name, process}, " "))) -- TODO: remove this line
@@ -124,13 +113,22 @@ local _get_hitch_children ; do
         if state == "translucent" then -- translucent or opaque
             template = _replace_material(serialize.parse(f, cr.read_file(f)))
         else
-            template = f
+            template = serialize.parse(f, cr.read_file(f))
         end
 
+        -- cache all slots of the prefab
+        local slots = {}
+        for _, v in ipairs(template) do
+            if v.data.slot then
+                slots[v.data.name] = v.data
+            end
+        end
+
+        local pose = _get_pose(param)
         local binding = {
             prefab_file_name = prefab_file_name, -- for debug
-            animation_eid = 0, -- equal to 0 means no animation, will be set later in on_prefab_ready()
-            slot = {}, -- slot[name] = slot
+            slots = slots,
+            pose = pose,
         }
 
         hitch_group_id = hitch_group_id + 1
@@ -148,7 +146,6 @@ local _get_hitch_children ; do
             local animation_prefab_file_name = prefab_file_name:gsub("^(.*)(%.prefab)$", "%1-animation.prefab")
             local _f = fs.path(prefab_path:format(animation_prefab_file_name))
             if fs.exists(_f) then
-                local pose = _get_pose(prefab_file_name)
                 iani.set_pose_to_prefab(prefab, pose)
                 _create_animation(hitch_group_id, _f, pose, animation_name, process)
             end
@@ -162,24 +159,42 @@ local _get_hitch_children ; do
             instance:send("set_material_property", "u_basecolor_factor", color)
         end
 
-        cache[param] = {instance = instance, hitch_group_id = hitch_group_id }
-        return hitch_group_id
+        cache[param] = {instance = instance, hitch_group_id = hitch_group_id, binding = binding}
+        return hitch_group_id, binding
     end
 end
 
 local M = {}
-function M.create(prefab_file_name, cull_group_id, state, color, srt)
-    local children = _get_hitch_children(prefab_file_name, state, color, nil, nil)
+function M.create(prefab_file_name, cull_group_id, state, color, srt, slot, pose)
+    local children, prefab_binding = _get_hitch_children(prefab_file_name, state, color, nil, nil)
     local events = {}
     events["update"] = function(_, e, group)
         e.hitch.group = group
     end
 
-    local hitch_entity_object = ientity_object.create(ecs.group(cull_group_id):create_entity{
+    local _slot
+    local policy
+    if slot then
+        _slot = {}
+        for k, v in pairs(slot) do
+            _slot[k] = v
+        end
+        _slot.pose = pose
+
         policy = {
             "ant.scene|hitch_object",
             "ant.general|name",
-        },
+            "ant.animation|slot"
+        }
+    else
+        policy = {
+            "ant.scene|hitch_object",
+            "ant.general|name",
+        }
+    end
+
+    local hitch_entity_object = ientity_object.create(ecs.group(cull_group_id):create_entity{
+        policy = policy,
         data = {
             name = prefab_file_name,
             scene = {
@@ -190,6 +205,7 @@ function M.create(prefab_file_name, cull_group_id, state, color, srt)
             hitch = {
                 group = children,
             },
+            slot = _slot,
         }
     }, events)
 
@@ -200,10 +216,18 @@ function M.create(prefab_file_name, cull_group_id, state, color, srt)
         self.hitch_entity_object:send("update", _get_hitch_children(prefab_file_name, state, color, animation_name, process))
     end
     local function attach(self, slot_name, model)
-        -- get the annimation entity by slot_name?
-        -- world:entity(hitch_eid).slot.anim_eid = anim_eid
+        local s = prefab_binding.slots[slot_name]
+        if not s then
+            log.error(("game_object.attach: slot %s not found"):format(slot_name))
+            return
+        end
+        self.slot_attach[slot_name] = M.create(model, cull_group_id, "opaque", COLOR_INVALID, s.scene, s.slot, prefab_binding.pose)
     end
     local function detach(self)
+        for _, v in pairs(self.slot_attach) do
+            v:remove()
+        end
+        self.slot_attach = {}
     end
 
     local outer = {hitch_entity_object = hitch_entity_object, slot_attach = {}}

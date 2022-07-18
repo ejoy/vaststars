@@ -181,9 +181,11 @@ local function update(self, t)
 end
 
 local function attach(self, ...)
+    self.game_object:attach(...)
 end
 
 local function detach(self, ...)
+    self.game_object:detach(...)
 end
 
 local function animation_update(self, animation_name, process)
