@@ -98,7 +98,7 @@ prototype "转运铁矿石" {
   },
 }
 
-prototype "挖掘碎石矿" {
+prototype "转运碎石矿" {
   desc = "挖掘足够的碎石可以开始进行锻造",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
@@ -120,7 +120,7 @@ prototype "制造台生产" {
   -- task = {"unknown", 0, "地质科技包"},
   task = {"stat_manual_production", 0, "地质科技包"},
   -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
-  prerequisites = {"转运铁矿石","挖掘碎石矿"},
+  prerequisites = {"转运铁矿石","转运碎石矿"},
   count = 2,
   tips_pic = {
     "textures/task_tips_pic/task_manual1.texture",
