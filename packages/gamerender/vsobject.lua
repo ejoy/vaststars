@@ -114,12 +114,17 @@ local function create_block(color, block_edge_size, area, position, rotation)
 end
 
 local function get_rotation(self)
-    return math3d.ref(iom.get_rotation(world:entity(self.game_object.hitch_eid)))
+    return math3d.ref(iom.get_rotation(world:entity(self.game_object.hitch_entity_object.id)))
 end
 
 local function set_position(self, position)
-    assert(world:entity(self.game_object.hitch_eid))
-    iom.set_position(world:entity(self.game_object.hitch_eid), position)
+    local e = world:entity(self.game_object.hitch_entity_object.id) -- TODO: hitch object may not created yet
+    if not e then
+        return
+    end
+
+    assert(world:entity(self.game_object.hitch_entity_object.id))
+    iom.set_position(world:entity(self.game_object.hitch_entity_object.id), position)
     if self.block_object then
         local block_pos = math3d.ref(math3d.add(position, {0, terrain.surface_height, 0}))
         self.block_object:send("set_position", block_pos)
@@ -127,11 +132,15 @@ local function set_position(self, position)
 end
 
 local function get_position(self)
-    return iom.get_position(world:entity(self.game_object.hitch_eid))
+    return iom.get_position(world:entity(self.game_object.hitch_entity_object.id))
 end
 
 local function set_dir(self, dir)
-    iom.set_rotation(world:entity(self.game_object.hitch_eid), rotators[dir])
+    local e = world:entity(self.game_object.hitch_entity_object.id) -- TODO: hitch object may not created yet
+    if not e then
+        return
+    end
+    iom.set_rotation(world:entity(self.game_object.hitch_entity_object.id), rotators[dir])
     if self.block_object then
         self.block_object:send("set_rotation", rotators[dir])
     end
@@ -158,10 +167,13 @@ local function update(self, t)
     end
 
     if typeinfo.block_color ~= CONSTRUCT_BLOCK_COLOR_INVALID then
-        local typeobject = iprototype.queryByName("entity", self.prototype_name)
-        local block_pos = math3d.ref(math3d.add(self:get_position(), math3d.vector(0, terrain.surface_height, 0)))
-        local rotation = get_rotation(self)
-        self.block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotation)
+        local e = world:entity(self.game_object.hitch_entity_object.id) -- TODO: hitch object may not created yet
+        if e then
+            local typeobject = iprototype.queryByName("entity", self.prototype_name)
+            local block_pos = math3d.ref(math3d.add(self:get_position(), math3d.vector(0, terrain.surface_height, 0)))
+            local rotation = get_rotation(self)
+            self.block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotation)
+        end
     end
 
     self.type = t.type or self.type
@@ -206,7 +218,7 @@ return function (init)
 
         game_object = game_object,
         block_object = block_object,
-        srt_modifier = imodifier.create_bone_modifier(game_object.hitch_eid, init.group_id, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone"), -- TODO
+        srt_modifier = imodifier.create_bone_modifier(game_object.hitch_entity_object.id, init.group_id, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone"), -- TODO
 
         --
         update = update,

@@ -6,6 +6,7 @@ local cr = import_package "ant.compile_resource"
 local serialize = import_package "ant.serialize"
 local prefab_path <const> = "/pkg/vaststars.resources/%s"
 local game_object_event = ecs.require "engine.game_object_event"
+local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 
 local function _replace_material(template)
     for _, v in ipairs(template) do
@@ -139,7 +140,12 @@ end
 local M = {}
 function M.create(prefab_file_name, cull_group_id, state, color, srt)
     local children = _get_hitch_children(prefab_file_name, state, color, nil, nil)
-    local hitch_eid = ecs.group(cull_group_id):create_entity{
+    local events = {}
+    events["update"] = function(_, e, group)
+        e.hitch.group = group
+    end
+
+    local hitch_entity_object = ientity_object.create(ecs.group(cull_group_id):create_entity{
         policy = {
             "ant.scene|hitch_object",
             "ant.general|name",
@@ -155,14 +161,13 @@ function M.create(prefab_file_name, cull_group_id, state, color, srt)
                 group = children,
             },
         }
-    }
+    }, events)
 
     local function remove(self)
-        world:remove_entity(self.hitch_eid)
+        self.hitch_entity_object:remove()
     end
     local function update(self, prefab_file_name, state, color, animation_name, process)
-        local hitch = world:entity(self.hitch_eid)
-        hitch.hitch.group = _get_hitch_children(prefab_file_name, state, color, animation_name, process)
+        self.hitch_entity_object:send("update", _get_hitch_children(prefab_file_name, state, color, animation_name, process))
     end
     local function attach(self, slot_name, model)
         -- get the annimation entity by slot_name?
@@ -171,7 +176,7 @@ function M.create(prefab_file_name, cull_group_id, state, color, srt)
     local function detach(self)
     end
 
-    local outer = {hitch_eid = hitch_eid, slot_attach = {}}
+    local outer = {hitch_entity_object = hitch_entity_object, slot_attach = {}}
     outer.remove = remove
     outer.update = update
     outer.attach = attach
