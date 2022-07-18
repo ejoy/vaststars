@@ -69,7 +69,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
             if (!container.recipe_place(w, r)) {
                 return;
             }
-            w.stat.finish_recipe(L, w, a.recipe);
+            w.stat.finish_recipe(L, w, a.recipe, false);
             a.status = STATUS_IDLE;
             if (a.fluidbox_out != 0) {
                 ecs::fluidboxes* fb = w.sibling<ecs::fluidboxes>(v);

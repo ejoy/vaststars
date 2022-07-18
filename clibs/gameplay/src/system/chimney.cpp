@@ -44,7 +44,7 @@ chimney_update(lua_State* L, world& w, ecs_api::entity<ecs::chimney, ecs::fluidb
             //    //TODO
             //    return;
             //}
-            w.stat.finish_recipe(L, w, c.recipe);
+            w.stat.finish_recipe(L, w, c.recipe, false);
             c.status = STATUS_IDLE;
         }
         if (c.status == STATUS_IDLE) {

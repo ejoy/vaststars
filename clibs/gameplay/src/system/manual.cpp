@@ -203,7 +203,7 @@ lupdate(lua_State *L) {
                 continue;
             }
             w.manual.container.place(out);
-            w.stat.finish_recipe(L, w, m.recipe);
+            w.stat.finish_recipe(L, w, m.recipe, true);
             w.manual.next();
             w.manual.sync(m);
         }

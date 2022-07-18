@@ -15,6 +15,7 @@ struct task {
         select_chect,
         power_generator,
         unknown,
+        stat_manual_production,
     };
     type     type;
     uint16_t e;
@@ -22,6 +23,7 @@ struct task {
     uint16_t p2;
 
     uint64_t stat_production(lua_State* L, world& w);
+    uint64_t stat_manual_production(lua_State* L, world& w);
     uint64_t stat_consumption(lua_State* L, world& w);
     uint64_t select_entity(lua_State* L, world& w);
     uint64_t select_chect(lua_State* L, world& w);
@@ -30,8 +32,17 @@ struct task {
     uint16_t progress(lua_State* L, world& w);
 };
 
+
 uint64_t task::stat_production(lua_State* L, world& w) {
     auto iter = w.stat.production.find(p1);
+    if (iter) {
+        return *iter;
+    }
+    return 0;
+}
+
+uint64_t task::stat_manual_production(lua_State* L, world& w) {
+    auto iter = w.stat.manual_production.find(p1);
     if (iter) {
         return *iter;
     }
@@ -81,11 +92,12 @@ uint64_t task::power_generator(lua_State* L, world& w) {
 
 uint64_t task::eval(lua_State* L, world& w) {
     switch (type) {
-    case task::type::stat_production:  return stat_production(L, w);
-    case task::type::stat_consumption: return stat_consumption(L, w);
-    case task::type::select_entity:    return select_entity(L, w);
-    case task::type::select_chect:     return select_chect(L, w);
-    case task::type::power_generator:  return power_generator(L, w);
+    case task::type::stat_production:         return stat_production(L, w);
+    case task::type::stat_manual_production:  return stat_manual_production(L, w);
+    case task::type::stat_consumption:        return stat_consumption(L, w);
+    case task::type::select_entity:           return select_entity(L, w);
+    case task::type::select_chect:            return select_chect(L, w);
+    case task::type::power_generator:         return power_generator(L, w);
     }
     return 0;
 }
