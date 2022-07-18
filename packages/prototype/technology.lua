@@ -102,14 +102,14 @@ prototype "挖掘碎石矿" {
   desc = "挖掘足够的碎石可以开始进行锻造",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
-  task = {"stat_production", 0, "碎石"},
+  task = {"select_chest", 0, "指挥中心", "碎石"},
   prerequisites = {"放置采矿机"},
   count = 4,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ore3.texture",
   },
   sign_desc = {
-    { desc = "在碎石矿上放置采矿机挖掘4个碎石", icon = "textures/construct/industry.texture"},
+    { desc = "从挖掘碎石的挖矿机转运4个碎石至指挥中心", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -118,7 +118,7 @@ prototype "制造台生产" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   -- task = {"unknown", 0, "地质科技包"},
-  task = {"stat_production", 0, "地质科技包"},
+  task = {"stat_manual_production", 0, "地质科技包"},
   -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"转运铁矿石","挖掘碎石矿"},
   count = 2,
