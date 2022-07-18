@@ -9,12 +9,12 @@ policy:
 data:
   anim_ctrl: {}
   animation:
-    DownToUp: $path ./animations/DownToUp.ozz
-    UpToDown: $path ./animations/UpToDown.ozz
+    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
   animation_birth: DownToUp
   name: skeleton_animation
   scene: {}
-  skeleton: $path ./animations/skeleton.ozz
+  skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
 mount: 1
 policy:
   ant.general|name
