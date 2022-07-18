@@ -172,18 +172,24 @@ policy:
   ant.render|render
 ---
 data:
+  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/animat.skinbin
+  name: meshskin
+  scene: {}
+  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
+mount: 1
+policy:
+  ant.animation|meshskin
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
   anim_ctrl: {}
   animation:
     DownToUp: /pkg/vaststars.resources/glb/goods_station.glb|animations/DownToUp.ozz
     UpToDown: /pkg/vaststars.resources/glb/goods_station.glb|animations/UpToDown.ozz
   animation_birth: DownToUp
-  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/animat.skinbin
-  name: skeleton_animation
-  scene: {}
+  name: animation
   skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
-mount: 1
 policy:
   ant.animation|animation
-  ant.animation|meshskin
   ant.general|name
-  ant.scene|scene_object

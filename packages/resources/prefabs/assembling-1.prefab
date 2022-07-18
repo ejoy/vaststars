@@ -257,18 +257,24 @@ policy:
   ant.scene|scene_object
 ---
 data:
+  meshskin: /pkg/vaststars.resources/glb/assembling.glb|meshes/Armature.skinbin
+  name: meshskin
+  scene: {}
+  skeleton: /pkg/vaststars.resources/glb/assembling.glb|animations/skeleton.ozz
+mount: 1
+policy:
+  ant.animation|meshskin
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
   anim_ctrl: {}
   animation:
     ArmatureAction.001: /pkg/vaststars.resources/glb/assembling.glb|animations/ArmatureAction.ozz
     chongchen: /pkg/vaststars.resources/prefabs/assembling-1.anim
   animation_birth: ArmatureAction.001
-  meshskin: /pkg/vaststars.resources/glb/assembling.glb|meshes/Armature.skinbin
-  name: skeleton_animation
-  scene: {}
+  name: animation
   skeleton: /pkg/vaststars.resources/glb/assembling.glb|animations/skeleton.ozz
-mount: 1
 policy:
   ant.animation|animation
-  ant.animation|meshskin
   ant.general|name
-  ant.scene|scene_object

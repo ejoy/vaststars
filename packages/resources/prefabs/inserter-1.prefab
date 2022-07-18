@@ -47,6 +47,18 @@ policy:
   ant.scene|scene_object
 ---
 data:
+  anim_ctrl: {}
+  animation:
+    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
+  animation_birth: DownToUp
+  name: skeleton_animation
+  skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
+policy:
+  ant.general|name
+  ant.animation|animation
+---
+data:
   name: empty9
   scene:
     r: {2.8902250051032752e-05, 0.7638540863990784, -0.6453890204429626, 0.0001015801535686478}
