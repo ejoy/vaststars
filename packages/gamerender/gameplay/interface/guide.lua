@@ -4,6 +4,9 @@ local running = false
 
 function M.get_guide_id()
     local world = M.world
+    if not world then
+        return
+    end
     if not world.storage then
         world.storage = {guide_id = 1}
     end
@@ -49,7 +52,7 @@ function M.get_task_progress()
 end
 
 function M.has_task()
-    return M.world.storage and M.world.storage.guide_task and M.world.storage.guide_task ~= "none"
+    return M.world and M.world.storage and M.world.storage.guide_task and M.world.storage.guide_task ~= "none"
 end
 
 return M
