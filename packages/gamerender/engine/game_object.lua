@@ -105,8 +105,6 @@ local _get_hitch_children ; do
             return cache[param].hitch_group_id, cache[param].binding
         end
 
-        log.info(("game_object.new_instance: %s"):format(table.concat({prefab_file_name, state, require("math3d").tostring(color), animation_name, process}, " "))) -- TODO: remove this line
-
         local f = prefab_path:format(prefab_file_name)
         local template
 
@@ -133,6 +131,7 @@ local _get_hitch_children ; do
 
         hitch_group_id = hitch_group_id + 1
         ecs.group(hitch_group_id):enable "scene_update"
+        log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab_file_name, state, require("math3d").tostring(color), animation_name, process}, " "))) -- TODO: remove this line
 
         local g = ecs.group(hitch_group_id)
         local prefab = g:create_instance(template)

@@ -180,8 +180,13 @@ local function update(self, t)
     self.prototype_name = t.prototype_name or self.prototype_name
 end
 
-local function attach(self, ...)
-    self.game_object:attach(...)
+local function attach(self, slot_name, model)
+    if self.slots[slot_name] == model then
+        return
+    end
+    self.game_object:detach()
+    self.game_object:attach(slot_name, model)
+	self.slots[slot_name] = model
 end
 
 local function detach(self, ...)
@@ -217,6 +222,7 @@ return function (init)
         prototype_name = init.prototype_name,
         type = init.type,
         group_id = init.group_id,
+        slots = {}, -- slot_name -> model
 
         game_object = game_object,
         block_object = block_object,
