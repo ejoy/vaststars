@@ -1530,7 +1530,7 @@ prototype "地下卤水电解" {
     category = "电解",
     group = "流体",
     order = 15,
-    icon = "textures/fluid/brine-electrolysis.texture",
+    icon = "textures/fluid/brine-electrolysis-gas.texture",
     ingredients = {
         {"地下卤水", 45},
     },
@@ -1538,10 +1538,27 @@ prototype "地下卤水电解" {
         {"氧气", 45},
         {"氢气", 110},
         {"氯气", 14},
-        {"氢氧化钠", 1},
+        -- {"氢氧化钠", 1},
     },
     time = "1s",
     description = "卤水电解成氧气、氢气和氯气",
+}
+
+prototype "隔膜电解" {
+    type = { "recipe" },
+    category = "电解",
+    group = "流体",
+    order = 15,
+    icon = "textures/fluid/brine-electrolysis-na.texture",
+    ingredients = {
+        {"地下卤水", 45},
+    },
+    results = {
+        {"氯气", 20},
+        {"氢氧化钠", 1},
+    },
+    time = "1s",
+    description = "卤水电解成氯气和氢氧化钠",
 }
 
 prototype "地下卤水净化" {

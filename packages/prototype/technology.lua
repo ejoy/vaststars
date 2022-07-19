@@ -386,7 +386,7 @@ prototype "电解" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"地下卤水电解","破损电解厂"},
+    unlock_recipe = {"地下卤水电解","隔膜电解","破损电解厂"},
   },
   prerequisites = {"水利研究"},
   ingredients = {
