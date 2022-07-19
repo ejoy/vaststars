@@ -98,7 +98,7 @@ function M:refresh_flow_shape(cache_names_r, cache_name_w, object, entry_dir, ra
     local object = objects:coord(dx, dy, cache_names_r)
     if object then
         local typeobject = iprototype.queryByName("entity", object.prototype_name)
-        if typeobject.pipe or typeobject.road then
+        if typeobject.pipe then
             local prototype_name, dir = refresh_pipe(object.prototype_name, object.dir, iprototype.reverse_dir(entry_dir))
             if prototype_name then
                 object = iobject.clone(object)

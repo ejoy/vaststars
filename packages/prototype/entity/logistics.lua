@@ -37,6 +37,11 @@ prototype "物流中心I" {
     power = "300kW",
     priority = "secondary",
     group = {"物流"},
+    crossing = {
+        connections = {
+            {type="output", position={1,2,"S"}},
+        },
+    }
 }
 
 prototype "机器爪I" {
@@ -68,24 +73,21 @@ prototype "科研中心I" {
     group = {"物流"},
 }
 
-prototype "砖石公路-O型" {
-    show_prototype_name = "砖石公路",
-    model = "prefabs/road/road_O.prefab",
-    icon = "textures/construct/processor.texture",
-    construct_detector = {"exclusive"},
-    road = true,
-    type ={"entity"},
-    area = "1x1",
-    group = {"物流","自定义"},
-}
-
 prototype "砖石公路-I型" {
     model = "prefabs/road/road_I.prefab",
     icon = "textures/construct/processor.texture",
     construct_detector = {"exclusive"},
     road = true,
+    flow_type = 11,
+    flow_direction = {"N", "E"},
     type ={"entity"},
     area = "1x1",
+    crossing = {
+        connections = {
+            {type="input-output", position={0,0,"N"}},
+            {type="input-output", position={0,0,"S"}},
+        },
+    }
 }
 
 prototype "砖石公路-L型" {
@@ -93,8 +95,16 @@ prototype "砖石公路-L型" {
     icon = "textures/construct/processor.texture",
     construct_detector = {"exclusive"},
     road = true,
+    flow_type = 11,
+    flow_direction = {"N", "E", "S", "W"},
     type ={"entity"},
     area = "1x1",
+    crossing = {
+        connections = {
+            {type="input-output", position={0,0,"N"}},
+            {type="input-output", position={0,0,"E"}},
+        },
+    }
 }
 
 prototype "砖石公路-T型" {
@@ -102,8 +112,53 @@ prototype "砖石公路-T型" {
     icon = "textures/construct/processor.texture",
     construct_detector = {"exclusive"},
     road = true,
+    flow_type = 11,
+    flow_direction = {"N", "E", "S", "W"},
     type ={"entity"},
     area = "1x1",
+    crossing = {
+        connections = {
+            {type="input-output", position={0,0,"E"}},
+            {type="input-output", position={0,0,"S"}},
+            {type="input-output", position={0,0,"W"}},
+        },
+    }
+}
+
+prototype "砖石公路-X型" {
+    show_prototype_name = "砖石公路",
+    model = "prefabs/road/road_X.prefab",
+    icon = "textures/construct/processor.texture",
+    construct_detector = {"exclusive"},
+    road = true,
+    flow_type = 11,
+    flow_direction = {"N"},
+    type ={"entity"},
+    area = "1x1",
+    crossing = {
+        connections = {
+            {type="input-output", position={0,0,"N"}},
+            {type="input-output", position={0,0,"E"}},
+            {type="input-output", position={0,0,"S"}},
+            {type="input-output", position={0,0,"W"}},
+        },
+    }
+}
+
+prototype "砖石公路-O型" {
+    model = "prefabs/road/road_O.prefab",
+    icon = "textures/construct/processor.texture",
+    construct_detector = {"exclusive"},
+    road = true,
+    flow_type = 11,
+    flow_direction = {"N"},
+    type ={"entity"},
+    area = "1x1",
+    group = {"物流","自定义"},
+    crossing = {
+        connections = {
+        }
+    }
 }
 
 prototype "砖石公路-U型" {
@@ -111,15 +166,13 @@ prototype "砖石公路-U型" {
     icon = "textures/construct/processor.texture",
     construct_detector = {"exclusive"},
     road = true,
+    flow_type = 11,
+    flow_direction = {"N", "E", "S", "W"},
     type ={"entity"},
     area = "1x1",
-}
-
-prototype "砖石公路-X型" {
-    model = "prefabs/road/road_X.prefab",
-    icon = "textures/construct/processor.texture",
-    construct_detector = {"exclusive"},
-    road = true,
-    type ={"entity"},
-    area = "1x1",
+    crossing = {
+        connections = {
+            {type="input-output", position={0,0,"N"}},
+        },
+    }
 }
