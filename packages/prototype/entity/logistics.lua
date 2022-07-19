@@ -27,7 +27,7 @@ prototype "车站I" {
     group = {"物流","自定义"},
 }
 
-prototype "物流中心" {
+prototype "物流中心I" {
     model = "prefabs/logistics-center-1.prefab",
     icon = "textures/construct/logisitic2.texture",
     background = "textures/build_background/pic_logisticscenter.texture",
