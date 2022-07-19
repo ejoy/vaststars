@@ -239,6 +239,9 @@
                 show_laying_pipe_begin   = false,
                 show_laying_pipe_cancel  = false,
                 show_laying_pipe_confirm = false,
+                show_laying_road_begin  = false,
+                show_laying_road_cancel = false,
+                show_laying_road_confirm = false,
                 show_teardown = false,
 
                 tech_count = 0,                 --当前可研究的科技数量
@@ -524,6 +527,26 @@
                 <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_cancel" data-event-click="clickLayingPipeCancel()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/cancel.texture"; background-size:cover;'/>
                     <div style="font-size: 85%; pointer-events: none;">取消铺管</div>
+                </button>
+
+                <!-- 放置路块 -->
+                <!-- separator -->
+                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_road_confirm" />
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_confirm" data-event-click="clickLayingPipeConfirm()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/road-construct.texture"; background-size:cover;'/>
+                    <div style="font-size: 85%; pointer-events: none;">铺路结束</div>
+                </button>
+          
+                <!-- 建造水管开始 -->
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_begin" data-event-click="clickLayingPipeBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/road-construct.texture"; background-size:cover; pointer-events: none;'/>
+                    <div style="font-size: 85%; pointer-events: none;">铺路开始</div>
+                </button>
+
+                <!-- 取消铺管 -->
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_cancel" data-event-click="clickLayingPipeCancel()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/cancel.texture"; background-size:cover;'/>
+                    <div style="font-size: 85%; pointer-events: none;">取消铺路</div>
                 </button>
             </div>
 
