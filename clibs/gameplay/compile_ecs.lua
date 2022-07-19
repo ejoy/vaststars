@@ -41,6 +41,7 @@ local function writeEntityH(components)
 
     write "#pragma once"
     write ""
+    write "#include \"ecs/select.h\""
     write "#include <stdint.h>"
     write ""
     write "namespace vaststars {"
@@ -75,7 +76,7 @@ local function writeEntityH(components)
     write "}"
     write ""
     write "struct ecs_component_id {"
-    write "\tinline static int id = 0;"
+    write "\tinline static int id = 0x80000000;"
     write "\tinline static int gen() {"
     write "\t\treturn id++;"
     write "\t}"
@@ -88,18 +89,27 @@ local function writeEntityH(components)
 
     write "namespace ecs_api {"
     write ""
-    write "template <typename T> struct component {};"
-    write ""
     write "#define ECS_COMPONENT(NAME) \\"
-    write "template <> struct component<ecs::##NAME> { \\"
+    write "template <> struct component<ecs::NAME> { \\"
     write "\tstatic inline const int id = ecs_component_id::gen(); \\"
     write "\tstatic inline const char name[] = #NAME; \\"
     write "};"
     write ""
+    write "#define ECS_TAG(NAME) \\"
+    write "template <> struct component<ecs::NAME> { \\"
+    write "\tstatic inline const int id = ecs_component_id::gen(); \\"
+    write "\tstatic inline const char name[] = #NAME; \\"
+    write "\tstatic inline const bool tag = true; \\"
+    write "};"
+    write ""
     write("ECS_COMPONENT(REMOVED)")
-    for _, c in ipairs(components) do
-        write("ECS_COMPONENT("..c.name..")")
-    end
+        for _, c in ipairs(components) do
+            if isTag(c) then
+                write("ECS_TAG("..c.name..")")
+            else
+                write("ECS_COMPONENT("..c.name..")")
+            end
+        end
     write ""
     write "#undef ECS_COMPONENT"
     write ""
@@ -112,5 +122,5 @@ end
 local components = loadComponents "packages/gameplay/init/component.lua"
 local data = writeEntityH(components)
 
-local f <close> = assert(io.open("clibs/gameplay/src/ecs/component.h", "w"))
+local f <close> = assert(io.open("clibs/gameplay/src/util/component.h", "w"))
 f:write(data)

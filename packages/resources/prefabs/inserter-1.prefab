@@ -36,28 +36,32 @@ policy:
   ant.render|render
 ---
 data:
-  anim_ctrl: {}
-  animation:
-    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
-    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
-  animation_birth: DownToUp
   meshskin: /pkg/vaststars.resources/glb/inserter.glb|meshes/buge.005.skinbin
   name: skeleton_animation
-  scene: {}
   skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
+  scene: {}
 mount: 1
 policy:
-  ant.animation|animation
   ant.animation|meshskin
   ant.general|name
   ant.scene|scene_object
 ---
 data:
+  anim_ctrl: {}
+  animation:
+    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
+  animation_birth: DownToUp
+  name: skeleton_animation
+  skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
+policy:
+  ant.general|name
+  ant.animation|animation
+---
+data:
   name: empty9
   scene:
-    r: {2.8902250051032752e-05, 0.7638540863990784, -0.6453890204429626, 0.0001015801535686478}
-    s: {1, 1, 0.9999999403953552}
-    t: {-0.07560229301452637, 10.577598571777344, 11.45242977142334}
+    t: {0, -3, 0}
   slot:
     follow_flag: 2
     joint_name: Bone.004

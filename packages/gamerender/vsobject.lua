@@ -5,7 +5,7 @@ local w = world.w
 local math3d = require "math3d"
 local mathpkg = import_package"ant.math"
 local mc = mathpkg.constant
-local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
+local game_object = ecs.require "engine.game_object"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ientity = ecs.import.interface "ant.render|ientity"
 local imaterial	= ecs.import.interface "ant.asset|imaterial"
@@ -33,13 +33,13 @@ local rotators <const> = {
     W = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
 }
 
-local CONSTRUCT_COLOR_INVALID <const> = {}
+local CONSTRUCT_COLOR_INVALID <const> = math3d.constant "null"
 local CONSTRUCT_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 0.55})
 local CONSTRUCT_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 2.5, 0.0, 0.55})
 local CONSTRUCT_COLOR_WHITE <const> = math3d.constant("v4", {1.5, 2.5, 1.5, 0.55})
 local CONSTRUCT_COLOR_YELLOW <const> = math3d.constant("v4", {2.5, 2.5, 0.0, 0.55})
 
-local CONSTRUCT_BLOCK_COLOR_INVALID <const> = {}
+local CONSTRUCT_BLOCK_COLOR_INVALID <const> = math3d.constant "null"
 local CONSTRUCT_BLOCK_COLOR_RED <const> = math3d.constant("v4", {1, 0.0, 0.0, 1.0})
 local CONSTRUCT_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
 local CONSTRUCT_BLOCK_COLOR_WHITE <const> = math3d.constant("v4", {1, 1, 1, 1.0})
@@ -113,21 +113,18 @@ local function create_block(color, block_edge_size, area, position, rotation)
     return ientity_object.create(eid, entity_events)
 end
 
-local function set_srt(e, srt)
-    if not srt then
-        return
-    end
-    iom.set_scale(e, srt.s)
-    iom.set_rotation(e, srt.r)
-    iom.set_position(e, srt.t)
-end
-
 local function get_rotation(self)
-    return math3d.ref(iom.get_rotation(world:entity(self.game_object.root)))
+    return math3d.ref(iom.get_rotation(world:entity(self.game_object.hitch_entity_object.id)))
 end
 
 local function set_position(self, position)
-    iom.set_position(world:entity(self.game_object.root), position)
+    local e = world:entity(self.game_object.hitch_entity_object.id) -- TODO: hitch object may not created yet
+    if not e then
+        return
+    end
+
+    assert(world:entity(self.game_object.hitch_entity_object.id))
+    iom.set_position(world:entity(self.game_object.hitch_entity_object.id), position)
     if self.block_object then
         local block_pos = math3d.ref(math3d.add(position, {0, terrain.surface_height, 0}))
         self.block_object:send("set_position", block_pos)
@@ -135,11 +132,15 @@ local function set_position(self, position)
 end
 
 local function get_position(self)
-    return iom.get_position(world:entity(self.game_object.root))
+    return iom.get_position(world:entity(self.game_object.hitch_entity_object.id))
 end
 
 local function set_dir(self, dir)
-    iom.set_rotation(world:entity(self.game_object.root), rotators[dir])
+    local e = world:entity(self.game_object.hitch_entity_object.id) -- TODO: hitch object may not created yet
+    if not e then
+        return
+    end
+    iom.set_rotation(world:entity(self.game_object.hitch_entity_object.id), rotators[dir])
     if self.block_object then
         self.block_object:send("set_rotation", rotators[dir])
     end
@@ -155,65 +156,52 @@ local function remove(self)
     end
 end
 
---TODO bad taste
 local function update(self, t)
-    local old_typeinfo = typeinfos[self.type]
-    local new_typeinfo = typeinfos[t.type or self.type]
-
-    if t.prototype_name or new_typeinfo.state ~= old_typeinfo.state then
-        local srt
-        local old_game_object = self.game_object
-        if old_game_object then
-            srt = world:entity(old_game_object.root).scene
-            old_game_object:remove()
-        end
-
-        local prototype_name = t.prototype_name or self.prototype_name
-        local state = new_typeinfo.state
-        local color = new_typeinfo.color
-
-        local typeobject = iprototype.queryByName("entity", prototype_name)
-        local game_object = igame_object.create(typeobject.model, self.group_id, state, color, self.id)
-        set_srt(world:entity(game_object.root), srt)
-        self.srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, self.group_id, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone") -- TODO
-
-        self.game_object, self.prototype_name = game_object, prototype_name
-    else
-        local game_object = self.game_object
-        if new_typeinfo.state == "translucent" and new_typeinfo.color and not math3d.isequal(old_typeinfo.color, new_typeinfo.color) then
-            game_object:send("set_material_property", "u_basecolor_factor", new_typeinfo.color)
-        end
-    end
+    local typeinfo = typeinfos[t.type or self.type]
+    local typeobject = iprototype.queryByName("entity", t.prototype_name or self.prototype_name)
+    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color)
 
     if self.block_object then
         self.block_object:remove()
         self.block_object = nil
     end
 
-    if new_typeinfo.block_color then
-        local typeobject = iprototype.queryByName("entity", self.prototype_name)
-        local block_pos = math3d.ref(math3d.add(self:get_position(), {0, terrain.surface_height, 0}))
-        local rotation = get_rotation(self)
-        self.block_object = create_block(new_typeinfo.block_color, new_typeinfo.block_edge_size, typeobject.area, block_pos, rotation)
+    if typeinfo.block_color ~= CONSTRUCT_BLOCK_COLOR_INVALID then
+        local e = world:entity(self.game_object.hitch_entity_object.id) -- TODO: hitch object may not created yet
+        if e then
+            local typeobject = iprototype.queryByName("entity", self.prototype_name)
+            local block_pos = math3d.ref(math3d.add(self:get_position(), math3d.vector(0, terrain.surface_height, 0)))
+            local rotation = get_rotation(self)
+            self.block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotation)
+        end
     end
 
     self.type = t.type or self.type
+    self.prototype_name = t.prototype_name or self.prototype_name
 end
 
-local function send(self, ...)
-    self.game_object:send(...)
-end
-
-local function attach(self, ...)
-    self.game_object:attach(...)
+local function attach(self, slot_name, model)
+    if self.slots[slot_name] == model then
+        return
+    end
+    self.game_object:detach()
+    self.game_object:attach(slot_name, model)
+	self.slots[slot_name] = model
 end
 
 local function detach(self, ...)
     self.game_object:detach(...)
+    self.slots = {}
 end
 
-local function animation_update(self, ...)
-    self.game_object:animation_update(...)
+local function animation_update(self, animation_name, process)
+    local typeinfo = typeinfos[self.type]
+    local typeobject = iprototype.queryByName("entity", self.prototype_name)
+    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, animation_name, process)
+end
+
+local function modifier(self, opt, ...)
+    -- self.game_object:send("modifier", opt, self.srt_modifier, ...) -- TODO
 end
 
 -- init = {
@@ -226,10 +214,7 @@ return function (init)
     local typeobject = iprototype.queryByName("entity", init.prototype_name)
     local typeinfo = assert(typeinfos[init.type], ("invalid type `%s`"):format(init.type))
 
-    local game_object = assert(igame_object.create(typeobject.model, init.group_id, typeinfo.state, typeinfo.color, init.id))
-    iom.set_position(world:entity(game_object.root), init.position)
-    iom.set_rotation(world:entity(game_object.root), rotators[init.dir])
-
+    local game_object = assert(game_object.create(typeobject.model, init.group_id, typeinfo.state, typeinfo.color, {r = rotators[init.dir], t = init.position}))
     local block_pos = math3d.ref(math3d.add(init.position, {0, terrain.surface_height, 0}))
     local block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir])
 
@@ -238,10 +223,11 @@ return function (init)
         prototype_name = init.prototype_name,
         type = init.type,
         group_id = init.group_id,
+        slots = {}, -- slot_name -> model
 
         game_object = game_object,
         block_object = block_object,
-        srt_modifier = imodifier.create_bone_modifier(game_object.game_object.root, init.group_id, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone"), -- TODO
+        srt_modifier = imodifier.create_bone_modifier(game_object.hitch_entity_object.id, init.group_id, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone"), -- TODO
 
         --
         update = update,
@@ -251,8 +237,8 @@ return function (init)
         remove = remove,
         attach = attach,
         detach = detach,
-        send   = send,
         animation_update = animation_update,
+        modifier = modifier,
     }
     return vsobject
 end

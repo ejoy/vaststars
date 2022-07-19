@@ -9,6 +9,9 @@ local mc = mathpkg.constant
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ipickup_mapping = ecs.import.interface "vaststars.gamerender|ipickup_mapping"
 local map = import_package "vaststars.prototype"("map")
+local game_object = ecs.require "engine.game_object"
+local COLOR_INVALID <const> = math3d.constant "null"
+
 -- three-dimensional axial
 -- z
 -- ▲
@@ -34,6 +37,7 @@ local GROUND_HEIGHT <const> = 4
 local GRID_WIDTH <const> = (10 + 5) * GROUND_WIDTH
 local GRID_HEIGHT <const> = ((5 + 3) * GROUND_HEIGHT)
 assert(GRID_WIDTH % 2 == 0 and GRID_HEIGHT % 2 == 0)
+local TERRAIN_MAX_GROUP_ID = 10000
 
 local function _pack(x, y)
     assert(x & 0xFF == x and y & 0xFF == y)
@@ -76,19 +80,16 @@ end
 
 local function _get_coord_by_begin_position(self, position)
     local boundary_3d = self._boundary_3d
+    local posx, posz = math3d.index(position, 1, 3)
+
+    if (posx < boundary_3d[1][1] or posx > boundary_3d[2][1]) or
+        (posz < boundary_3d[1][3] or posz > boundary_3d[2][3]) then
+        log.error(("out of bounds (%f, %f) : (%s) - (%s)"):format(posx, posz, table.concat(boundary_3d[1], ","), table.concat(boundary_3d[2], ",")))
+        return
+    end
+
     local origin = self._origin
-
-    if position[1] < boundary_3d[1][1] or position[1] > boundary_3d[2][1] then
-        log.error(("out of bounds (%s) : (%s) - (%s)"):format(table.concat(position, ","), table.concat(boundary_3d[1], ","), table.concat(boundary_3d[2], ",")))
-        return
-    end
-
-    if position[3] < boundary_3d[1][3] or position[3] > boundary_3d[2][3] then
-        log.error(("out of bounds (%s) : (%s) - (%s)"):format(table.concat(position, ","), table.concat(boundary_3d[1], ","), table.concat(boundary_3d[2], ",")))
-        return
-    end
-
-    return {math.ceil((position[1] - origin[1]) / TILE_SIZE), math.ceil((origin[2] - position[3]) / TILE_SIZE)}
+    return {math.ceil((posx - origin[1]) / TILE_SIZE), math.ceil((origin[2] - posz) / TILE_SIZE)}
 end
 
 local function _get_grid_id(self, x, y)
@@ -136,27 +137,28 @@ function terrain:create(width, height)
                 result[_pack(x, y)] = group_id
             end
         end
+        assert(group_id < TERRAIN_MAX_GROUP_ID)
         return result
     end
     self._group_id = gen_group_id()
     self._enabled_group_id = {}
 
     --
-    self.prefab_objects = self.prefab_objects or {}
-    for _, object in ipairs(self.prefab_objects) do
-       object:remove()
+    self.eids = self.eids or {}
+    for _, eid in ipairs(self.eids) do
+       world:remove_entity(eid)
     end
     --
     local meshes = {
-        "/pkg/vaststars.resources/prefabs/terrain/ground_01.prefab",
-        "/pkg/vaststars.resources/prefabs/terrain/ground_02.prefab",
-        "/pkg/vaststars.resources/prefabs/terrain/ground_03.prefab",
-        "/pkg/vaststars.resources/prefabs/terrain/ground_04.prefab",
+        "prefabs/terrain/ground_01.prefab",
+        "prefabs/terrain/ground_02.prefab",
+        "prefabs/terrain/ground_03.prefab",
+        "prefabs/terrain/ground_04.prefab",
     }
 
     local mineral_meshes = {
-        ["铁矿石"] = "/pkg/vaststars.resources/prefabs/terrain/ground_iron_ore.prefab", -- TODO: remove hard code
-        ["碎石"] = "/pkg/vaststars.resources/prefabs/terrain/ground_gravel.prefab",
+        ["铁矿石"] = "prefabs/terrain/ground_iron_ore.prefab", -- TODO: remove hard code
+        ["碎石"] = "prefabs/terrain/ground_gravel.prefab",
     }
 
     local rotators <const> = {
@@ -178,22 +180,14 @@ function terrain:create(width, height)
     for y = 0, h - 1 do
         for x = 0, w - 1 do
             local _x, _y = x * GROUND_WIDTH, y * GROUND_HEIGHT
-            local g = ecs.group(self:get_group_id(_x, _y))
-            local p
+            local eid
+            local srt = {r = rotators[math.random(1, 4)], t = self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT)}
             if self.mineral_map[_pack(x, y)] then
-                p = g:create_instance(mineral_meshes[self.mineral_map[_pack(x, y)]])
+                eid = game_object.create(mineral_meshes[self.mineral_map[_pack(x, y)]], self:get_group_id(_x, _y), "opaque", COLOR_INVALID, srt)
             else
-                p = g:create_instance(meshes[math.random(1, #meshes)])
+                eid = game_object.create(meshes[math.random(1, #meshes)], self:get_group_id(_x, _y), "opaque", COLOR_INVALID, srt)
             end
-            p.on_ready = function(prefab)
-                iom.set_position(world:entity(prefab.root), self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT))
-                iom.set_rotation(world:entity(prefab.root), rotators[math.random(1, 4)])
-                for _, eid in ipairs(prefab.tag["*"]) do
-                    ipickup_mapping.mapping(eid, 0)
-                end
-            end
-            p.on_message = function() end
-            self.prefab_objects[#self.prefab_objects+1] = world:create_object(p)
+            self.eids[#self.eids+1] = eid
         end
     end
 end
@@ -283,7 +277,7 @@ end
 
 -- position is the center of the entity
 function terrain:align(position, w, h)
-    local begin_position = {math3d.index(position, 1) - (w / 2 * TILE_SIZE), math3d.index(position, 2), math3d.index(position, 3) + (h / 2 * TILE_SIZE)}
+    local begin_position = math3d.muladd(1/2*TILE_SIZE, math3d.vector(-w, 0.0, h), position)
     local coord = _get_coord_by_begin_position(self, begin_position)
     if not coord then
         return

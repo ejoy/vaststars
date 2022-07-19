@@ -7,6 +7,8 @@ local container = require "vaststars.container.core"
 local luaecs = import_package "vaststars.ecs"
 local entity_visitor = require "entity_visitor"
 
+local perf -- = {}
+
 local function pipeline(world, cworld, name)
     local p = status.pipelines[name]
     if not p then
@@ -16,19 +18,30 @@ local function pipeline(world, cworld, name)
     local systems = status.systems
     local csystems = status.csystems
     local funcs = {}
+    local symbols = {}
     for _, stage in ipairs(p) do
-        for _, s in pairs(systems) do
+        for sysname, s in pairs(systems) do
             if s[stage] then
                 funcs[#funcs+1] = s[stage]
+                symbols[#symbols+1] = "lua."..sysname.."."..stage
             end
         end
-        for _, s in pairs(csystems) do
+        for sysname, s in pairs(csystems) do
             if s[stage] then
                 funcs[#funcs+1] = s[stage]
+                symbols[#symbols+1] = "c."..sysname.."."..stage
             end
         end
     end
-    return cworld.system(cworld, world, funcs)
+    if perf then
+        local f, time = cworld.system_perf_solve(cworld, world, funcs)
+        perf[name] = {
+            symbol = symbols,
+            time = time,
+        }
+        return f
+    end
+    return cworld.system_solve(cworld, world, funcs)
 end
 
 return function ()
@@ -99,7 +112,58 @@ return function ()
     local pipeline_backup = pipeline(world, cworld, "backup")
     local pipeline_restore = pipeline(world, cworld, "restore")
 
+    local perf_frame = 0
+    local function perf_print(per)
+        local t = {}
+        for _, v in pairs(perf) do
+            local time = v.time
+            for i, name in ipairs(v.symbol) do
+                t[#t+1] = {name, time[i]}
+            end
+        end
+        table.sort(t, function (a, b)
+            return a[2] > b[2]
+        end)
+        local s = {
+            "",
+            "cpu stat"
+        }
+        for _, v in ipairs(t) do
+            local m = v[2] / per
+            if m >= 0.01 then
+                s[#s+1] = ("\t%s - %.02fms"):format(v[1], m)
+            end
+        end
+        print(table.concat(s, "\n"))
+    end
+
+    local function perf_reset()
+        for _, v in pairs(perf) do
+            local time = v.time
+            for i = 1, #time do
+                time[i] = 0
+            end
+        end
+    end
+
+    function world:perf_print()
+        if not perf then
+            return
+        end
+        local skip <const> = 0
+        local delta <const> = 100
+        perf_frame = perf_frame + 1
+        if perf_frame <= skip then
+            perf_reset()
+            return
+        elseif perf_frame % delta ~= 0 then
+            return
+        end
+        perf_print(perf_frame)
+    end
+
     function world:update()
+        self:perf_print()
         assert(not needBuild)
         pipeline_update()
         timer.update(1)
@@ -193,21 +257,7 @@ return function ()
                 error("unknown type: "..type)
             end
         end
-        local errcode = cworld:manual(todos)
-        if errcode == "failed" then
-            return false
-        end
-
-        local STATUS_REBUILD <const> = 3
-        for v in ecs:select "manual:update" do
-            local manual = v.manual
-            manual.status = STATUS_REBUILD
-            if errcode == "reset" then
-                manual.recipe = 0
-                manual.progress = 0
-            end
-        end
-        return true
+        return cworld:manual(todos)
     end
 
     function world:manual_container()

@@ -44,6 +44,16 @@
                 height: 12.00vmin;
                 width: 12.00vmin;
             }
+            manual_workbutton {
+                font-size: 3.20vmin;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                border: 0.26vmin rgb(89, 73, 39);
+                background-color: rgb(246, 142, 14);
+                height: 12.00vmin;
+                width: 12.00vmin;
+            }
             .workbutton-bg {
                 margin: auto auto;
                 width: 6.67vmin;
@@ -224,11 +234,12 @@
                 cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
 
                 show_construct_complete = false,
-                show_rotate = false,  -- 是否显示[旋转建筑]
-                show_confirm = false, -- 是否显示[确认放置]
-                show_laying_pipe_begin   = false, -- 显示水管开始
-                show_laying_pipe_cancel  = false, -- 显示铺管取消
-                show_laying_pipe_confirm = false, -- 显示铺管结束
+                show_rotate = false,
+                show_confirm = false,
+                show_laying_pipe_begin   = false,
+                show_laying_pipe_cancel  = false,
+                show_laying_pipe_confirm = false,
+                show_teardown = false,
 
                 tech_count = 0,                 --当前可研究的科技数量
                 show_tech_progress = false,     --是否显示科技进度
@@ -248,7 +259,7 @@
                     ui_sys.pub {"construct_begin", true}
                 end
             end
-            function start.clickDismantleBegin(event)
+            function start.clickTeardownBegin(event)
                 ui_sys.pub {"dismantle_begin", false}
                 unconfirmed_double_confirm_continuation = function()
                     start.cur_edit_mode = 'dismantle'
@@ -265,7 +276,7 @@
                 start.cur_edit_mode = ''
                 ui_sys.pub {"construct_complete"}
             end
-            function start.clickDismantleComplete(event)
+            function start.clickTeardownComplete(event)
                 start.cur_edit_mode = ''
                 ui_sys.pub {"dismantle_complete"}
             end
@@ -318,17 +329,6 @@
             end)
 
             ui_sys.addEventListener({
-                ["show_rotate_confirm"] = function(button_state)
-                    if button_state.rotate ~= nil then
-                        start.show_rotate = button_state.rotate
-                    end
-                    if button_state.confirm ~= nil then
-                        start.show_confirm = button_state.confirm
-                    end
-                end,
-                ["show_construct_complete"] = function(visible)
-                    start.show_construct_complete = visible
-                end,
                 ["show_unconfirmed_double_confirm"] = function()
                     ui_sys.open("construct_cancel_pop.rml")
                 end,
@@ -337,9 +337,6 @@
                         unconfirmed_double_confirm_continuation()
                         unconfirmed_double_confirm_continuation = nil
                     end
-                end,
-                ["leave"] = function()
-                    -- console.log("leave")
                 end,
             })
 
@@ -432,13 +429,13 @@
             </button>
 
             <!-- 开始拆除 -->
-            <button data-if = "cur_edit_mode == 'dismantle'" data-event-click="clickDismantleComplete()" style='position: absolute; left: 2.67vmin; top: 78.67vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: center;'>
+            <button data-if = "cur_edit_mode == 'dismantle' && show_teardown" data-event-click="clickTeardownComplete()" style='position: absolute; left: 2.67vmin; top: 78.67vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: center;'>
                 <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始拆除</div>
             </button>
             
             <!-- 拆除模式 -->
-            <div data-if = "cur_edit_mode != '' && guide_progress >= 5" data-event-click="clickDismantleBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+            <div data-if = "cur_edit_mode != '' && guide_progress >= 5" data-event-click="clickTeardownBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/demolish.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除模式</div>
             </div>
@@ -451,9 +448,10 @@
 
             <!-- 右上角：当前科技进度 data-if = "cur_edit_mode == '' && show_tech_progress"-->
             <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
-                <button style='background-color:rgb(250,205,9); background-size:cover; width: 16.00vmin; height: 16.00vmin;' data-style-background-image="current_tech_icon" data-event-click="clickTask(is_task)">
+                <button style='background-color:rgb(250,205,9);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickTask(is_task)">
+                    <div style="position:absolute; left:2.5vmin; bottom:0; width: 70%; height: 70%; background-size:cover;" data-style-background-image="current_tech_icon"/>
                     <div style="-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 3.5vmin; word-break: break-all;">{{current_tech_name}}</div>
-                    <div class="progress-bar-block" style = "position:absolute; bottom: -0.2vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
+                    <div class="progress-bar-block" style = "position:absolute; bottom: -4.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
                         <div class="progress-background" data-style-width="current_tech_progress"/>
                     </div> 
                     <p data-if="is_task" style="position: absolute; left:-1vmin; top:-0.75vmin;">
@@ -468,7 +466,7 @@
                 <collapsed-bar id = "manual-queue" init-expanded = "false" min-width = "13.50vmin" max-width = "auto" style = "height: 35vmin; flex-direction: row; overflow: hidden;">
                     <div data-for = "manual_queue" style = "flex-direction: row; pointer-events: none;">
                         <div style = "width: 0.5vmin;" />
-                        <workbutton data-event-click="clickCollapsedBar(it_index)" style="background-color:rgb(250,205,9);width: 13vmin; height: 13vmin;">
+                        <manual_workbutton data-event-click="clickCollapsedBar(it_index)" style="background-color:rgb(250,205,9);width: 13vmin; height: 13vmin;">
                             <div class="workbutton-bg" data-style-background-image = "it.icon" style = "pointer-events: none;" />
                             <div class="workbutton-text" style = "pointer-events: none; -webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 2.5vmin; color: #fff; word-break: break-all; text-align: center;">{{it.name}}</div>
                             <div class = "progressbar-half-cycle-container" style = "left: 0%; pointer-events: none;">
@@ -479,7 +477,9 @@
                                 <div class = "progressbar-half-cycle-right" data-style-transform = "progress_bar_right" style = "pointer-events: none;" data-if = "it_index == 0" />
                                 <div class = "progressbar-half-cycle-right" style = "pointer-events: none;" data-if = "it_index > 0"/>
                             </div>
-                        </workbutton>
+                            <!-- 右下角手搓物品数量显示 -->
+                            <div style="position:absolute; 	font-size: 4vmin; top: -0.5vmin; left: 0vmin;-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);">{{it.count}}</div>
+                        </manual_workbutton>
                     </div>
                 </collapsed-bar>
             </div>
@@ -528,8 +528,8 @@
             </div>
 
             <!-- 右边菜单 -->
-            <div style = "pointer-events: none; position: absolute; width: 98vmax; height: 97vmin; flex-direction: row-reverse;">
-                <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;" data-if="cur_edit_mode == 'construct' && guide_progress >= 10" >
+            <div style = "pointer-events: none; position: absolute; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="guide_progress >= 10">
+                <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;" data-if="cur_edit_mode == 'construct'" >
                     <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name ? 'rgb(0, 176, 80)' : 'rgb(246, 142, 14)'">
                         <div class="workbutton-bg" data-style-background-image = "it.icon" />
                         <div class="workbutton-text" >{{it.name}}</div>

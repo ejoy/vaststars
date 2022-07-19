@@ -393,11 +393,12 @@
             </div>
             <div class="panel" style= "flex-direction: column; width: 50%;">
                 <!-- 制造舱按钮 start -->
-                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-event-click="clickManual()">
+                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-event-click="clickManual()" data-if = "guide_progress >= 25" >
                     <div class = "menu-title" style="text-align: right; width: 70%;">制造舱</div>
                     <button class = "recipe-change-button"/>  
                 </div>
                 <!-- 制造舱按钮 end -->
+                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if = "guide_progress < 25"/>
 
                 <!-- 指挥中心物品栏 start -->
                 <!-- tag page begin -->

@@ -9,12 +9,9 @@ local mathpkg = import_package "ant.math"
 local mu      = mathpkg.util
 
 local function remap_xy(x, y)
-    local ratio = world.args.framebuffer.ratio
-    if ratio ~= nil and ratio ~= 1 then
-        x, y = mu.cvt_size(x, ratio), mu.cvt_size(y, ratio)
-    end
+    local nx, ny = mu.remap_xy(x, y, world.args.framebuffer.ratio)
 	local vp = world.args.viewport
-	return x-vp.x, y-vp.y
+	return nx-vp.x, ny-vp.y
 end
 
 function pickup_detect_sys:data_changed()

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/container.h"
-#include "ecs/component.h"
+#include "util/component.h"
 #include "ecs/select.h"
 #include "core/techtree.h"
 #include "core/statistics.h"

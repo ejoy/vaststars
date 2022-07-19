@@ -251,7 +251,7 @@
                             </div> 
                             <div style="flex-direction:row; align-items:center; justify-content:center; width:85%%;height:100%%; background-color: rgb(92, 184, 92);border: 0.27vmin rgb(89, 73, 39);">
                                 <div class="progress-background-new" style="position:absolute; left:0; width: %s%%;"/>
-                                <div class="item-title-new">%s%%</div>
+                                <div class="item-title-new">%0.2f%%</div>
                             </div>
                             <button class="cancel" data-event-click = "clickCancel(%d)"/>
                         </div>

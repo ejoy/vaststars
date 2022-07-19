@@ -3,9 +3,10 @@ local world = ecs.world
 local w = world.w
 
 local gameplay_core = require "gameplay.core"
-local fs = require "bee.filesystem"
+local bee_fs = require "bee.filesystem"
+local fs = require "filesystem"
 local json = import_package "ant.json"
-local archival_base_dir = (fs.appdata_path() / "vaststars/archiving"):string()
+local archival_base_dir = (bee_fs.appdata_path() / "vaststars/archiving"):string()
 local archiving_list_path = archival_base_dir .. "/archiving.json"
 local camera_setting_path = archival_base_dir .. "/camera.json"
 local iprototype = require "gameplay.interface.prototype"
@@ -31,6 +32,33 @@ local MAX_ARCHIVING_COUNT <const> = 9
 local archival_list = {}
 
 local function restore_world()
+    local function _finish_task(task)
+        local typeobject = iprototype.queryByName("tech", task)
+        gameplay_core.get_world():research_progress(task, typeobject.count)
+    end
+
+    local function _debug()
+        if fs.exists(fs.path("/pkg/vaststars.prototype/debugger.lua")) then
+            print("debug")
+            local debugcfg = import_package "vaststars.prototype"("debugger")
+            local guide = import_package "vaststars.prototype"("guide")
+            if debugcfg.skip_guide == true then
+                print("skip guide")
+                gameplay_core.get_storage().guide_id = #guide
+                iui.set_guide_progress(guide[#guide].narrative_end.guide_progress)
+
+                for _, guide in ipairs(guide) do
+                    if next(guide.narrative_end.task) then
+                        for _, task in ipairs(guide.narrative_end.task) do
+                            _finish_task(task)
+                        end
+                    end
+                end
+            end
+        end
+    end
+    _debug()
+
     -- clean
     for _, object in objects:all() do
         iobject.remove(object)
@@ -235,10 +263,10 @@ function M:backup()
     end
 
     while #archival_list + 1 > MAX_ARCHIVING_COUNT do
-        local archival_relative_dir = table.remove(archival_list, 1)
-        local archival_dir = archival_base_dir .. ("/%s"):format(archival_relative_dir)
+        local archival = table.remove(archival_list, 1)
+        local archival_dir = archival_base_dir .. ("/%s"):format(archival.dir)
         print("remove", archival_dir)
-        fs.remove_all(archival_dir)
+        bee_fs.remove_all(archival_dir)
     end
 
     local t = os.date("*t")
@@ -255,12 +283,12 @@ end
 
 function M:restore(index)
     local camera_setting
-    if fs.exists(fs.path(camera_setting_path)) then
+    if bee_fs.exists(bee_fs.path(camera_setting_path)) then
         camera_setting = json.decode(readall(camera_setting_path))
     end
 
     --
-    if not fs.exists(fs.path(archiving_list_path)) then
+    if not bee_fs.exists(bee_fs.path(archiving_list_path)) then
         self:restart()
         self.running = true
         return true
@@ -284,7 +312,7 @@ function M:restore(index)
         local archival_relative_dir = archival_list[index].dir
         archival_dir = archival_base_dir .. ("/%s"):format(archival_relative_dir)
 
-        if not fs.exists(fs.path(archival_dir)) then
+        if not bee_fs.exists(bee_fs.path(archival_dir)) then
             log.warn(("`%s` not exists"):format(archival_relative_dir))
             archival_list[index] = nil
             index = index - 1
@@ -293,8 +321,6 @@ function M:restore(index)
 
         if archival_list[index].version ~= GAMEPLAY_VERSION then
             log.error(("Failed `%s` version `%s` current `%s`"):format(archival_relative_dir, archival_list[index].version, GAMEPLAY_VERSION))
-            -- archival_list[index] = nil
-            -- index = index - 1
             iui.open("option_pop.rml")
             return false
         else

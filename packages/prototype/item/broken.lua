@@ -94,7 +94,7 @@ prototype "破损蓄电池" {
 prototype "破损物流中心" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-logisitic.texture",
     model = "prefabs/rock.prefab",
     description = "损坏的物流中心",
     group = "加工",
@@ -104,7 +104,7 @@ prototype "破损物流中心" {
 prototype "破损运输车辆" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/truck.texture",
+    icon = "textures/construct/broken-truck.texture",
     model = "prefabs/rock.prefab",
     description = "损坏的运输车辆",
     group = "加工",

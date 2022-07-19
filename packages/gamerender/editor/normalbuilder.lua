@@ -16,18 +16,23 @@ local iobject = ecs.require "object"
 local imining = require "gameplay.interface.mining"
 local construct_inventory = global.construct_inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iworld = require "gameplay.interface.world"
+local gameplay_core = require "gameplay.core"
+local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM or require("debugger").infinite_item()
 
 --
 local function __new_entity(self, datamodel, typeobject)
-    iobject.remove(self.pickup_object)
-
-    -- check if item is in the inventory
-    local item_typeobject = iprototype.queryByName("item", typeobject.name)
-    local item = construct_inventory:get({"CONFIRM"}, item_typeobject.id)
-    if not item or item.count <= 0 then
-        return
+    if not _VASTSTARS_DEBUG_INFINITE_ITEM then
+        -- check if item is in the inventory
+        local item_typeobject = iprototype.queryByName("item", typeobject.name)
+        local item = construct_inventory:get({"TEMPORARY", "CONFIRM"}, item_typeobject.id)
+        if not item or item.count <= 0 then
+            log.error("Lack of item: " .. typeobject.name)
+            return
+        end
     end
 
+    iobject.remove(self.pickup_object)
     local dir = DEFAULT_DIR
     local x, y = iobject.central_coord(typeobject.name, dir)
     if not x or not y then
@@ -103,6 +108,9 @@ local function _get_mineral_recipe(prototype_name, x, y, dir)
 end
 
 local function touch_end(self, datamodel)
+    local ecs = ecs -- for debug, remove it later
+    local world = world -- for debug, remove it later
+
     local pickup_object = self.pickup_object
     if not pickup_object then
         return
@@ -154,7 +162,6 @@ local function confirm(self, datamodel)
     end
 
     if iprototype.has_type(typeobject.type, "fluidbox") then
-        assert(pickup_object.fluid_name == "")
         global.fluidflow_id = global.fluidflow_id + 1
         pickup_object.fluidflow_id = global.fluidflow_id
     end
@@ -167,20 +174,53 @@ local function confirm(self, datamodel)
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
 
-    -- decrease item count
-    local item_typeobject = iprototype.queryByName("item", typeobject.name)
-    local item = construct_inventory:get({"CONFIRM"}, item_typeobject.id)
-    assert(item.count >= 0)
-    item.count = item.count - 1
-    iui.update("construct.rml", "update_construct_inventory")
+    local function _clone_item(item)
+        local new = {}
+        new.prototype = item.prototype
+        new.count = item.count
+        return new
+    end
+
+    if not _VASTSTARS_DEBUG_INFINITE_ITEM then
+        -- decrease item count
+        local item_typeobject = iprototype.queryByName("item", typeobject.name)
+        local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
+        assert(item.count >= 0) -- promised by new_entity
+        item.count = item.count - 1
+        iui.update("construct.rml", "update_construct_inventory")
+    end
+
+    datamodel.show_confirm = false
+    datamodel.show_rotate = false
+    datamodel.show_construct_complete = true
 
     self.pickup_object = nil
     __new_entity(self, datamodel, typeobject)
-
-    datamodel.show_construct_complete = true
 end
 
 local function complete(self, datamodel)
+    local gameplay_world = gameplay_core.get_world()
+    local e = iworld:get_headquater_entity(gameplay_world)
+    if not e then
+        log.error("can not find headquater entity")
+        return
+    end
+
+    local failed = false
+    for _, item in construct_inventory:all("TEMPORARY") do
+        local old_item = assert(construct_inventory:get({"CONFIRM"}, item.prototype))
+        assert(old_item.count >= item.count)
+        local decrease = old_item.count - item.count
+        print(iprototype.queryById(item.prototype).name, decrease)
+        if not gameplay_world:container_pickup(e.chest.container, item.prototype, decrease) then
+            log.error("can not pickup item", iprototype.queryById(item.prototype).name, decrease)
+            failed = true
+        end
+    end
+    if failed then
+        return
+    end
+
     iobject.remove(self.pickup_object)
     self.pickup_object = nil
 

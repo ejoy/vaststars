@@ -178,6 +178,7 @@ namespace lua_world {
         backup_scope(L, f, "stat", [&](){
             write_flatmap(f, w.stat.production);
             write_flatmap(f, w.stat.consumption);
+            write_flatmap(f, w.stat.manual_production);
         });
 
         backup_scope(L, f, "techtree", [&](){
@@ -210,9 +211,11 @@ namespace lua_world {
         restore_scope(L, f, "stat", [&](){
             read_flatmap(f, w.stat.production);
             read_flatmap(f, w.stat.consumption);
+            read_flatmap(f, w.stat.manual_production);
         }, [&](){
             w.stat.production.clear();
             w.stat.consumption.clear();
+            w.stat.manual_production.clear();
         });
 
         restore_scope(L, f, "techtree", [&](){

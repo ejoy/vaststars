@@ -655,17 +655,23 @@ policy:
   ant.render|render
 ---
 data:
-  anim_ctrl: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
-  animation_birth: ArmatureAction
   meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
-  name: skeleton_animation
+  name: meshskin
   scene: {}
   skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
 mount: 1
 policy:
-  ant.animation|animation
   ant.animation|meshskin
   ant.general|name
   ant.scene|scene_object
+---
+data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/logistics_center.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name

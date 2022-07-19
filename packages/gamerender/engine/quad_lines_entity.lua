@@ -9,7 +9,6 @@ local constant = require "gameplay.interface.constant"
 local ROTATORS = constant.ROTATORS
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local math3d = require "math3d"
-local math_max = math.max
 local ifs = ecs.import.interface "ant.scene|ifilter_state"
 
 local delta_vec = {
@@ -21,21 +20,17 @@ local delta_vec = {
 
 local events = {}
 events["init"] = function(_, e)
-    local ib = e.render_object.ib
-    ib.num = 0 * 6
-
-    local vb = e.render_object.vb
-    vb.num = 0 * 4
+    local m = e.render_object.mesh
+    m:set_ib_range(0, 0 * 6)
+    m:set_vb_range(0, 0 * 4)
 end
 
 events["update"] = function(_, e, position, quad_num, dir)
     iom.set_position(e, math3d.add(position, delta_vec[dir]))
 
-    local ib = e.render_object.ib
-    ib.num = quad_num * 6
-
-    local vb = e.render_object.vb
-    vb.num = quad_num * 4
+    local m = e.render_object.mesh
+    m:set_ib_range(0, quad_num * 6)
+    m:set_vb_range(0, quad_num * 4)
 
     iom.set_rotation(e, ROTATORS[dir])
 end

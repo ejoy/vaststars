@@ -14,6 +14,9 @@ local is_overlap = ecs.require "editor.pipe-to-ground.util".is_overlap
 local show_failed = ecs.require "editor.pipe-to-ground.util".show_failed
 local ifluid = require "gameplay.interface.fluid"
 local flow_shape = require "gameplay.utility.flow_shape"
+local construct_inventory = global.construct_inventory
+local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM or require("debugger").infinite_item()
+local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 local EDITOR_CACHE_CONSTRUCTED = {"CONFIRM", "CONSTRUCTED"}
 local EDITOR_CACHE_TEMPORARY   = {"TEMPORARY"}
@@ -45,6 +48,23 @@ local function check_channel(self, datamodel, starting_object, to_x, to_y)
 end
 
 function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_to_x, max_to_y)
+    local function _clone_item(item)
+        local new = {}
+        new.prototype = item.prototype
+        new.count = item.count
+        return new
+    end
+    local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JU"))
+    local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
+    if not item then -- TODO: clean up the builder?
+        if _VASTSTARS_DEBUG_INFINITE_ITEM then
+            item = {prototype = item_typeobject.id, count = 999}
+        else
+            self:clean(datamodel)
+            return
+        end
+    end
+
     dir = dir or starting_object.dir -- TODO
     local ending_object = assert(objects:coord(to_x, to_y, EDITOR_CACHE_CONSTRUCTED))
 
@@ -145,6 +165,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
             state = "construct",
         }
         objects:set(object, EDITOR_CACHE_TEMPORARY[1])
+        item.count = math.max(item.count - 1, 0)
 
         show_dotted_line(self, starting_object.x, starting_object.y, dir, to_x, to_y)
 
@@ -165,6 +186,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
             state = "construct",
         }
         objects:set(object, EDITOR_CACHE_TEMPORARY[1])
+        item.count = math.max(item.count - 1, 0)
 
         --
         local shape
@@ -190,6 +212,23 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
 end
 
 function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, max_to_x, max_to_y)
+    local function _clone_item(item)
+        local new = {}
+        new.prototype = item.prototype
+        new.count = item.count
+        return new
+    end
+    local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JU"))
+    local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
+    if not item then -- TODO: clean up the builder?
+        if _VASTSTARS_DEBUG_INFINITE_ITEM then
+            item = {prototype = item_typeobject.id, count = 999}
+        else
+            self:clean(datamodel)
+            return
+        end
+    end
+
     local ending_object = assert(objects:coord(to_x, to_y, EDITOR_CACHE_CONSTRUCTED))
     if not check_channel(self, datamodel, starting_object, to_x, to_y) then
         return
@@ -226,6 +265,7 @@ function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, 
         state = "construct",
     }
     objects:set(object, EDITOR_CACHE_TEMPORARY[1])
+    item.count = math.max(item.count - 1, 0)
 
     --
     prototype_name = format_prototype_name(self.coord_indicator.prototype_name, flow_shape.get_shape(ending_object.prototype_name))
@@ -240,6 +280,7 @@ function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, 
         state = "construct",
     }
     objects:set(object, EDITOR_CACHE_TEMPORARY[1])
+    item.count = math.max(item.count - 1, 0)
 
     show_dotted_line(self, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
 
@@ -279,7 +320,7 @@ function condition_normal(self, datamodel, starting_object, to_x, to_y, max_to_x
             starting_object.fluidflow_id = starting_object.fluidflow_id
         end
     else
-        if starting_object.fluid_name ~= "" then
+        if starting_object.fluid_name ~= "" and ending_object.fluidflow_id then
             for _, object in objects:selectall("fluidflow_id", ending_object.fluidflow_id, EDITOR_CACHE_CONSTRUCTED) do
                 local o = iobject.clone(object)
                 o.fluidflow_id = starting_object.fluidflow_id
@@ -312,6 +353,23 @@ function condition_normal(self, datamodel, starting_object, to_x, to_y, max_to_x
 end
 
 function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, max_to_y, shape)
+    local function _clone_item(item)
+        local new = {}
+        new.prototype = item.prototype
+        new.count = item.count
+        return new
+    end
+    local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JU"))
+    local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
+    if not item then -- TODO: clean up the builder?
+        if _VASTSTARS_DEBUG_INFINITE_ITEM then
+            item = {prototype = item_typeobject.id, count = 999}
+        else
+            self:clean(datamodel)
+            return
+        end
+    end
+
     local succ
     succ, to_x, to_y = terrain:move_coord(starting_object.x, starting_object.y, starting_object.dir, math.abs(starting_object.x - to_x), math.abs(starting_object.y - to_y))
 
@@ -344,16 +402,28 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, 
     local prototype_name, object
 
     --
-    object = iobject.new {
-        prototype_name = starting_object.prototype_name,
-        dir = starting_object.dir,
-        x = starting_object.x,
-        y = starting_object.y,
-        fluid_name = starting_object.fluid_name,
-        fluidflow_id = starting_object.fluidflow_id,
-        state = "construct",
-    }
-    objects:set(object, EDITOR_CACHE_TEMPORARY[1])
+    object = objects:modify(starting_object.x, starting_object.y, EDITOR_CACHE_CONSTRUCTED, iobject.clone)
+    if not object then
+        object = iobject.new {
+            prototype_name = starting_object.prototype_name,
+            dir = starting_object.dir,
+            x = starting_object.x,
+            y = starting_object.y,
+            fluid_name = starting_object.fluid_name,
+            fluidflow_id = starting_object.fluidflow_id,
+            state = "construct",
+        }
+        objects:set(object, EDITOR_CACHE_TEMPORARY[1])
+        item.count = math.max(item.count - 1, 0)
+    else
+        object.prototype_name = starting_object.prototype_name
+        object.dir = starting_object.dir
+        object.x = starting_object.x
+        object.y = starting_object.y
+        object.fluid_name = starting_object.fluid_name
+        object.fluidflow_id = starting_object.fluidflow_id
+        object.state = "construct"
+    end
 
     --
     prototype_name = format_prototype_name(self.coord_indicator.prototype_name, shape or "JU")
@@ -367,6 +437,7 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, 
         state = "construct",
     }
     objects:set(object, EDITOR_CACHE_TEMPORARY[1])
+    item.count = math.max(item.count - 1, 0)
 
     show_dotted_line(self, starting_object.x, starting_object.y, starting_object.dir, to_x, to_y)
 
@@ -390,12 +461,14 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, 
             state = "construct",
         }
         objects:set(object, EDITOR_CACHE_TEMPORARY[1])
+        item.count = math.max(item.count - 1, 0)
 
         for _, object in objects:all("TEMPORARY") do
             object.state = "confirm"
             object.PREPARE = true
         end
         objects:commit("TEMPORARY", "CONFIRM")
+        construct_inventory:commit("TEMPORARY", "CONFIRM")
 
         self.shape = "JI" -- TODO: remove this line
         self.shape_dir = starting_object.dir -- TODO: remove this line
@@ -422,5 +495,6 @@ return function(self, datamodel, starting_object, to_x, to_y, dir, max_to_x, max
     else
         condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, max_to_y)
     end
+    iui.update("construct.rml", "update_construct_inventory")
 
 end

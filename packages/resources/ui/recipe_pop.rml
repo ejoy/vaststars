@@ -151,11 +151,7 @@
                 if not recipe then
                     return
                 end
-                start.recipe_name = recipe.name
-                start.recipe_time = ("%ss"):format(recipe.time // 50) -- 50 ticks per second
-                start.recipe_ingredients = recipe.ingredients
-                start.recipe_results = recipe.results
-                ui_sys.pub {"click_recipe", start.recipe_name}
+                ui_sys.pub {"click_recipe", recipe.name}
             end
 
             function start.clickClose(event)

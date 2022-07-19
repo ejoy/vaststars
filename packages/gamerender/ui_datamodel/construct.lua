@@ -2,7 +2,12 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
-local _VASTSTARS_DEBUG_INFINITE_ITEM = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM
+local math3d = require "math3d"
+local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM or require("debugger").infinite_item()
+local YAXIS_PLANE_B <const> = math3d.constant("v4", {0, 1, 0, 0})
+local YAXIS_PLANE_T <const> = math3d.constant("v4", {0, 1, 0, 20})
+local PLANES <const> = {YAXIS_PLANE_T, YAXIS_PLANE_B}
+local PLANE_B <const> = {YAXIS_PLANE_B}
 local camera = ecs.require "engine.camera"
 local gameplay_core = require "gameplay.core"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
@@ -15,6 +20,8 @@ local ieditor = ecs.require "editor.editor"
 local global = require "global"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
+local icamera = ecs.require "engine.camera"
+local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
@@ -38,6 +45,10 @@ local imanual = require "ui_datamodel.common.manual"
 local construct_inventory = global.construct_inventory
 local iworld = require "gameplay.interface.world"
 local ichest = require "gameplay.interface.chest"
+local pickup_mapping_mb = world:sub {"pickup_mapping"}
+local pickup_mb = world:sub {"pickup"}
+local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
+local _TILE_PICKUP <const> = true
 
 local builder
 local last_prototype_name
@@ -67,6 +78,13 @@ local function _update_construct_inventory()
             })
         end
     end
+end
+
+local function _has_teardown_entity()
+    for _ in objects:select("TEMPORARY", "teardown", true) do
+        return true
+    end
+    return false
 end
 
 local _get_construct_menu; do
@@ -104,7 +122,7 @@ else
 
             for _, prototype_name in ipairs(menu.detail) do
                 local typeobject = assert(iprototype.queryByName("item", prototype_name))
-                local c = construct_inventory:get({"CONFIRM"}, typeobject.id)
+                local c = construct_inventory:get({"TEMPORARY", "CONFIRM"}, typeobject.id)
                 if c then
                     m.detail[#m.detail + 1] = {
                         show_prototype_name = iprototype.show_prototype_name(typeobject),
@@ -189,7 +207,9 @@ function M:stage_ui_update(datamodel)
             goto continue
         end
 
-        world:pub {"ui_message", "show_rotate_confirm", {rotate = false, confirm = false}}
+        ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
+        datamodel.show_rotate = false
+        datamodel.show_confirm = false
         gameplay_core.world_update = false
         global.mode = "construct"
         camera.transition("camera_construct.prefab")
@@ -217,6 +237,8 @@ function M:stage_ui_update(datamodel)
         end
 
         ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
+        datamodel.show_teardown = _has_teardown_entity()
+
         global.mode = "teardown"
         gameplay_core.world_update = false
         camera.transition("camera_construct.prefab")
@@ -355,6 +377,96 @@ function M:stage_camera_usage(datamodel)
                 builder:touch_end(datamodel)
                 self:flush()
             end
+        end
+    end
+
+    local leave = true
+    for _, _, x, y, object_id in pickup_mapping_mb:unpack() do
+        -- do -- TODO: remove this block
+        --     local vsobject_manager = ecs.require "vsobject_manager"
+        --     local vsobject = vsobject_manager:get(object_id)
+        --     local object = objects:get(object_id)
+        --     if object then
+        --         log.info(("pickup_mapping object (%s) (%s)"):format(object.prototype_name, math3d.tostring(vsobject:get_position())))
+        --     end
+        -- end
+
+        if not _TILE_PICKUP then
+            if objects:get(object_id) then -- object_id may be 0, such as when user click on empty space
+                if global.mode == "teardown" then
+                    world:pub {"teardown", objects:get(object_id).prototype_name}
+                    ieditor:teardown(object_id)
+                    datamodel.show_teardown = _has_teardown_entity()
+
+                elseif global.mode == "normal" then
+                    if idetail.show(object_id) then
+                        leave = false
+                    end
+                end
+            end
+        end
+    end
+
+    local function _get_object(pickup_x, pickup_y)
+        for _, pos in ipairs(icamera.screen_to_world(pickup_x, pickup_y, PLANES)) do
+            local coord = terrain:align(pos, 1, 1) -- assume entity is 1x1
+            if coord then
+                local object = objects:coord(coord[1], coord[2])
+                if object then
+                    return object
+                end
+            end
+        end
+    end
+
+    -- 点击其它建筑 或 拖动时, 将弹出窗口隐藏
+    for _, _, x, y in pickup_mb:unpack() do
+        -- do -- TODO: remove this block
+        --     local pos = icamera.screen_to_world(x, y, PLANE_B)
+        --     log.info(("pickup plane_b (%s)"):format(math3d.tostring(pos[1])))
+        --     local coord = terrain:align(pos[1], 1, 1)
+        --     if coord then
+        --         log.info(("pickup coord: (%d, %d)"):format(coord[1], coord[2]))
+        --     end
+
+        --     local object = _get_object(x, y)
+        --     if object then
+        --         log.info(("pickup object (%s) in (%s, %s) fluidflow_id(%s)"):format(object.prototype_name, object.x, object.y, object.fluidflow_id))
+        --     else
+        --         log.info(("pickup object (%s) in (%s, %s)"):format("none", x, y))
+        --     end
+
+        --     log.info("------------------------------------")
+        -- end
+
+        if _TILE_PICKUP then
+            local object = _get_object(x, y)
+            if object then -- object may be nil, such as when user click on empty space
+                if global.mode == "teardown" then
+                    world:pub {"teardown", object.prototype_name}
+                    ieditor:teardown(object.id)
+                    datamodel.show_teardown = _has_teardown_entity()
+
+                elseif global.mode == "normal" then
+                    if idetail.show(object.id) then
+                        leave = false
+                    end
+                end
+            end
+        end
+
+        if leave then
+            world:pub {"ui_message", "leave"}
+            leave = false
+            break
+        end
+    end
+
+    for _ in single_touch_move_mb:unpack() do
+        if leave then
+            world:pub {"ui_message", "leave"}
+            leave = false
+            break
         end
     end
 

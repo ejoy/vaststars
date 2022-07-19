@@ -66,7 +66,7 @@ local function remove(outer)
         return
     end
 
-    assert(outer.__object.OBJECT_REMOVED == nil)
+    -- assert(outer.__object.OBJECT_REMOVED == nil) -- TODO
     outer.__object.OBJECT_REMOVED = true
     changeset[outer.__object.id] = outer
 end
@@ -178,14 +178,14 @@ local function flush()
     for _, outer in ipairs(prepare) do
         local vsobject = vsobject_manager:get(outer.id)
         if vsobject then
-            vsobject:send("modifier", "start", vsobject.srt_modifier, {name = "confirm"})
+            vsobject:modifier("start", {name = "confirm"})
         end
     end
 
     for _, outer in ipairs(appear) do
         local vsobject = vsobject_manager:get(outer.id)
         if vsobject then
-            vsobject:send("modifier", "start", vsobject.srt_modifier, {name = "appear", forwards = true})
+            vsobject:modifier("start", {name = "appear", forwards = true})
         end
     end
 end

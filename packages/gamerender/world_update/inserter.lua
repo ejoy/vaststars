@@ -9,7 +9,7 @@ local function get_percent(progress, total)
     if progress < 0 then
         progress = 0
     end
-    return (total - progress) / total -- 爪子进度是递减
+    return (total - progress) / total -- the progress of inserter is decreasing from total to 0
 end
 
 local function update_world(world, get_object_func)

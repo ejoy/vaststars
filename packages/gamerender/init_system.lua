@@ -22,6 +22,7 @@ function m:init_world()
     check_prototype()
     bgfx.maxfps(FRAMES_PER_SECOND)
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
+    iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
     iui.preload_datamodel_dir "/pkg/vaststars.gamerender/ui_datamodel"
 
     camera.init("camera_default.prefab")

@@ -166,7 +166,7 @@ function M:teardown_complete()
         -- TODO
         local e = gameplay_core.get_entity(object.gameplay_eid)
         if e.assembling then
-            for prototype_name, count in pairs(iassembling:item_counts(gameplay_core.get_world(), e)) do
+            for prototype_name, count in pairs(iassembling.item_counts(gameplay_core.get_world(), e)) do
                 local typeobject_item = iprototype.queryByName("item", prototype_name)
                 if typeobject_item then
                     item_counts[typeobject_item.id] = item_counts[typeobject_item.id] or 0

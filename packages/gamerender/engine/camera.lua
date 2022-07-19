@@ -6,7 +6,7 @@ local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local fs = require "filesystem"
 local datalist  = require "datalist"
 local mathpkg = import_package "ant.math"
-local mc = mathpkg.constant
+local mc, mu = mathpkg.constant, mathpkg.util
 local math3d = require "math3d"
 local math_util = import_package "ant.math".util
 local pt2D_to_NDC = math_util.pt2D_to_NDC
@@ -126,20 +126,26 @@ function camera.update()
 end
 
 -- in `camera_usage` stage
-function camera.screen_to_world(x, y)
+function camera.screen_to_world(x, y, planes)
     local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
     local ce = world:entity(mq.camera_ref)
     local vpmat = ce.camera.viewprojmat
 
     local vr = irq.view_rect "main_queue"
-    local ndcpt = pt2D_to_NDC({x, y}, vr)
+    local nx, ny = mu.remap_xy(x, y, vr.ratio)
+    local ndcpt = pt2D_to_NDC({nx, ny}, vr)
     ndcpt[3] = 0
     local p0 = ndc_to_world(vpmat, ndcpt)
     ndcpt[3] = 1
     local p1 = ndc_to_world(vpmat, ndcpt)
 
     local ray = {o = p0, d = math3d.sub(p0, p1)}
-    return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, YAXIS_PLANE), ray.o)
+
+    local t = {}
+    for _, plane in ipairs(planes) do
+        t[#t + 1] = math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, plane), ray.o)
+    end
+    return t
 end
 
 -- in `camera_usage` stage

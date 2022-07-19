@@ -59,14 +59,15 @@ laboratory_next_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l,
         return;
     }
     laboratory_set_tech(L, w, e, l, techid);
-    l.status = STATUS_IDLE;
     if (container.recipe_pickup(w, to_recipe(newr))) {
         prototype_context tech = w.prototype(L, techid);
         int time = pt_time(&tech);
         l.progress = time * 100;
+        l.status = STATUS_DONE;
     }
     else {
         l.progress = 0;
+        l.status = STATUS_IDLE;
     }
 }
 

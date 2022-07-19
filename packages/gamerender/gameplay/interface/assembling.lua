@@ -6,7 +6,7 @@ local ichest = require "gameplay.interface.chest"
 local M = {}
 
 -- 成品取出
-function M:pickup_material(world, e)
+function M.pickup_material(world, e)
     if not e.assembling then
         log.error("not assembling")
         return
@@ -52,7 +52,7 @@ function M:pickup_material(world, e)
 end
 
 -- 原料添加
-function M:place_material(world, e)
+function M.place_material(world, e)
     if not e.assembling then
         log.error("not assembling")
         return
@@ -109,7 +109,7 @@ function M:place_material(world, e)
     world:build()
 end
 
-function M:item_counts(world, e)
+function M.item_counts(world, e)
     local r = {}
 
     if not e.assembling then
@@ -134,6 +134,66 @@ function M:item_counts(world, e)
         end
     end
     return r
+end
+
+function M.has_result(world, e)
+    if not e.assembling then
+        log.error("not assembling")
+        return
+    end
+
+    local recipe = e.assembling.recipe
+    if recipe == 0 then
+        return false
+    end
+
+    local typeobject = iprototype.queryById(recipe)
+    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients) -- TODO: optimize, no need to get ingredients & results every time?
+    local recipe_results = irecipe.get_elements(typeobject.results)
+
+    for i = 1, #recipe_results do
+        if world:container_get(e.assembling.container, #recipe_ingredients + i) then
+            return true
+        end
+    end
+    return false
+end
+
+function M.need_ingredients(world, e)
+    if not e.assembling then
+        log.error("not assembling")
+        return
+    end
+
+    local headquater_e = iworld:get_headquater_entity(world)
+    if not headquater_e then
+        log.error("no headquater")
+        return
+    end
+
+    local recipe = e.assembling.recipe
+    if recipe == 0 then
+        return false
+    end
+
+    local typeobject = iprototype.queryById(recipe)
+    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients) -- TODO: optimize, no need to get ingredients & results every time?
+
+    local headquater_item_counts = ichest:item_counts(world, headquater_e)
+    for i = 1, #recipe_ingredients do
+        local id, c = world:container_get(e.assembling.container, i)
+        if not id then
+            if headquater_item_counts[recipe_ingredients[i].id] then
+                return true
+            end
+        else
+            assert(id == recipe_ingredients[i].id) -- TODO: remove this assert
+            if c < recipe_ingredients[i].count and headquater_item_counts[id] then
+                return true
+            end
+        end
+    end
+    return false
 end
 
 return M

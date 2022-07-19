@@ -110,6 +110,10 @@ function M:cleanup(cache_name)
     end
 end
 
+function M:sync(...)
+    objects:sync(...)
+end
+
 function M:empty(...)
     return objects:empty(...)
 end

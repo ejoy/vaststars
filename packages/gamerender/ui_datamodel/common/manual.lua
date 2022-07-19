@@ -17,6 +17,11 @@ local function get_progress(recipe_typeobject)
     end
 end
 
+local function _get_name(prototype)
+    local typeobject = iprototype.queryById(prototype)
+    return typeobject.name
+end
+
 local function get_queue(top)
     local queue = gameplay_core.get_world():manual()
     local result = {}
@@ -27,11 +32,12 @@ local function get_queue(top)
         elseif queue[i][1] == "separator" then
             local recipe = queue[i][2]
             local recipe_typeobject = iprototype.queryByName("recipe", recipe)
+            local main_result = assert(itypes.items(recipe_typeobject.results))[1]
             local progress = 0
             if #result == 0 then
                 progress = get_progress(recipe_typeobject)
             end
-            result[#result+1] = {name = recipe, count = count, icon = recipe_typeobject.icon, progress = progress}
+            result[#result+1] = {name = _get_name(main_result.id), count = count, icon = recipe_typeobject.icon, progress = progress}
             count = nil
         end
 
