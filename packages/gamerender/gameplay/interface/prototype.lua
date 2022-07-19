@@ -122,7 +122,7 @@ function M.move_coord(x, y, dir, dx, dy)
     return x + c.x * dx, y + c.y * dy
 end
 
-function M.rotate_fluidbox(position, direction, area)
+function M.rotate_fluidbox(position, direction, area) -- TODO: -> rotate_connection ?
     local w, h = M.unpackarea(area)
     local x, y = position[1], position[2]
     local dir = M.rotate_dir(position[3], direction)
@@ -155,6 +155,11 @@ end
 function M.is_pipe_to_ground(prototype_name)
     local typeobject = assert(M.queryByName("entity", prototype_name))
     return typeobject.pipe_to_ground
+end
+
+function M.is_road(prototype_name)
+    local typeobject = assert(M.queryByName("entity", prototype_name))
+    return typeobject.road
 end
 
 return M
