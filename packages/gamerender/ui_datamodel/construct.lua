@@ -14,6 +14,7 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iprototype = require "gameplay.interface.prototype"
 local create_normalbuilder = ecs.require "editor.normalbuilder"
 local create_pipebuilder = ecs.require "editor.pipebuilder"
+local create_roadbuilder = ecs.require "editor.roadbuilder"
 local create_pipetogroundbuilder = ecs.require "editor.pipetogroundbuilder"
 local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
@@ -359,6 +360,8 @@ function M:stage_camera_usage(datamodel)
                 builder = create_pipetogroundbuilder()
             elseif iprototype.is_pipe(prototype_name) then
                 builder = create_pipebuilder()
+            elseif iprototype.is_road(prototype_name) then
+                builder = create_roadbuilder()
             else
                 builder = create_normalbuilder()
             end

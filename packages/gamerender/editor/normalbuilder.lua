@@ -153,15 +153,9 @@ local function confirm(self, datamodel)
         return
     end
 
-    -- TODO: change fluid of object
     local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
     if iprototype.has_type(typeobject.type, "fluidbox") then
-        for _, v in ipairs(ifluid:get_fluidbox(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.fluid_name)) do
-
-        end
-    end
-
-    if iprototype.has_type(typeobject.type, "fluidbox") then
+        -- fluid of object has been set in touch_end(), so we don't need to set it again
         global.fluidflow_id = global.fluidflow_id + 1
         pickup_object.fluidflow_id = global.fluidflow_id
     end
