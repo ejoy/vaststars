@@ -54,7 +54,7 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
         new.count = item.count
         return new
     end
-    local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JU"))
+    local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JI"))
     local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
     if not item then -- TODO: clean up the builder?
         if _VASTSTARS_DEBUG_INFINITE_ITEM then
@@ -218,7 +218,7 @@ function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, 
         new.count = item.count
         return new
     end
-    local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JU"))
+    local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JI"))
     local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
     if not item then -- TODO: clean up the builder?
         if _VASTSTARS_DEBUG_INFINITE_ITEM then
@@ -359,7 +359,7 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, 
         new.count = item.count
         return new
     end
-    local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JU"))
+    local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JI"))
     local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
     if not item then -- TODO: clean up the builder?
         if _VASTSTARS_DEBUG_INFINITE_ITEM then

@@ -129,7 +129,7 @@ local function _update_recipe_items_fluidbox(object)
                     end
                 else
                     if neighbor.fluid_name ~= fb.fluid_name then
-                        local prototype_name, dir = ieditor:refresh_pipe(neighbor.prototype_name, neighbor.dir, neighbor_fb.dir, 0)
+                        local prototype_name, dir = ieditor:refresh_pipe(neighbor.prototype_name, neighbor.dir, neighbor_fb.dir, false)
                         if prototype_name and dir and (prototype_name ~= neighbor.prototype_name or dir ~= neighbor.dir) then
                             neighbor.prototype_name = prototype_name
                             neighbor.dir = dir

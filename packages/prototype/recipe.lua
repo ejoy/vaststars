@@ -839,7 +839,7 @@ prototype "排水口1" {
     icon = "textures/construct/outfall.texture",
     ingredients = {
         {"管道1-X型", 5},
-        {"地下管1-JU型", 1},
+        {"地下管1-JI型", 1},
     },
     results = {
         {"排水口I", 1},
@@ -893,7 +893,7 @@ prototype "地下管1" {
         {"碎石", 2},
     },
     results = {
-        {"地下管1-JU型", 2},
+        {"地下管1-JI型", 2},
     },
     time = "5s",
     description = "管道和沙子制造地下管道",
@@ -906,12 +906,12 @@ prototype "地下管2" {
     order = 14,
     icon = "textures/construct/underground-pipe1.texture",
     ingredients = {
-        {"地下管1-JU型", 1},
+        {"地下管1-JI型", 1},
         {"钢板", 3},
         {"碎石", 2},
     },
     results = {
-        {"地下管2-JU型", 2},
+        {"地下管2-JI型", 2},
     },
     time = "5s",
     description = "管道和钢板制造地下管道",

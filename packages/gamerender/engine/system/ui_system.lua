@@ -36,7 +36,7 @@ local function open(url, ...)
             for k, v in pairs(tracedoc.new(binding.template:create(...))) do -- trigger tracedoc.doc_changed
                 binding.datamodel[k] = v
             end
-            binding.datamodel.guide_progress = 0
+            binding.datamodel.guide_progress = guide_progress
             binding.template:flush()
             datamodel_changed[url] = true
         end
