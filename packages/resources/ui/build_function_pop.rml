@@ -134,7 +134,7 @@
                 <button class="button-function" style ='background-image: "textures/cmdcenter/manual_manufacture.texture";'/>
                 <div class="title-text">制造</div>
             </div>
-            <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe && !show_manual_manufacture" /> <!-- TODO -->
+            <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe && !show_manual_manufacture && guide_progress < 25" /> <!-- TODO -->
 
             <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickPlaceMaterial()" data-if = "show_place_material">
                 <button class="button-function" style ='background-image: "textures/cmdcenter/send_material.texture";'/>
