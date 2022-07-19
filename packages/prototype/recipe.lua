@@ -1548,10 +1548,10 @@ prototype "隔膜电解" {
     type = { "recipe" },
     category = "电解",
     group = "流体",
-    order = 15,
+    order = 16,
     icon = "textures/fluid/brine-electrolysis-na.texture",
     ingredients = {
-        {"地下卤水", 45},
+        {"地下卤水", 40},
     },
     results = {
         {"氯气", 20},
