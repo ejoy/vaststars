@@ -295,7 +295,7 @@ prototype "维修破损空气过滤器" {
     "textures/task_tips_pic/task_repair_airfilter.texture",
   },
   sign_desc = {
-    { desc = "使用组装机维修1个破损空气过滤器", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机或制造舱维修1个破损空气过滤器", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -310,7 +310,23 @@ prototype "维修破损地下水挖掘机" {
     "textures/task_tips_pic/task_repair_digger.texture",
   },
   sign_desc = {
-    { desc = "使用组装机维修1个破损地下水挖掘机", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机或制造舱维修1个破损地下水挖掘机", icon = "textures/construct/industry.texture"},
+  },
+}
+
+prototype "修建水电站" {
+  desc = "修建水电站收集气体和液体",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"select_entity", 0, "水电站I"},
+  prerequisites = {"维修破损空气过滤器","维修破损地下水挖掘机"},
+  count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_click_build.texture",
+    "textures/task_tips_pic/task_place_hydro.texture",
+  },
+  sign_desc = {
+    { desc = "修建1座水电站", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -319,10 +335,9 @@ prototype "生产气候科技包" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "气候科技包"},
-  prerequisites = {"维修破损空气过滤器","维修破损地下水挖掘机"},
+  prerequisites = {"修建水电站"},
   count = 2,
   tips_pic = {
-    "textures/task_tips_pic/task_produce_climatepack1.texture",
     "textures/task_tips_pic/task_produce_climatepack2.texture",
     "textures/task_tips_pic/task_produce_climatepack3.texture",
     "textures/task_tips_pic/task_produce_climatepack4.texture",
@@ -453,7 +468,7 @@ prototype "维修破损组装机" {
     "textures/task_tips_pic/task_repair_assembler.texture",
   },
   sign_desc = {
-    { desc = "使用组装机维修3个破损组装机", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机或制造舱维修3个破损组装机", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -483,7 +498,7 @@ prototype "维修太阳能板" {
     "textures/task_tips_pic/task_repair_solarpanel.texture",
   },
   sign_desc = {
-    { desc = "使用组装机维修2个破损太阳能板", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机或制造舱维修2个破损太阳能板", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -704,7 +719,7 @@ prototype "维修化工厂" {
     "textures/task_tips_pic/task_repair_chemicalplant1.texture",
   },
   sign_desc = {
-    { desc = "使用组装机维修1个破损化工厂", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机或制造舱维修1个破损化工厂", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -734,7 +749,7 @@ prototype "生产塑料" {
     "textures/task_tips_pic/task_produce_plastic.texture",
   },
   sign_desc = {
-    { desc = "生产30个塑料", icon = "textures/construct/industry.texture"},
+    { desc = "用化工厂生产30个塑料", icon = "textures/construct/industry.texture"},
   },
 }
 
