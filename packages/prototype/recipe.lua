@@ -1241,7 +1241,7 @@ prototype "气候科技包1" {
     icon = "textures/recipe/climatology-pack.texture",
     ingredients = {
         {"地下卤水", 2000},
-        {"空气", 2500},
+        {"空气", 2300},
     },
     results = {
         {"气候科技包", 1},
