@@ -191,6 +191,7 @@ end
 
 local function detach(self, ...)
     self.game_object:detach(...)
+    self.slots = {}
 end
 
 local function animation_update(self, animation_name, process)
