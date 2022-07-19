@@ -142,7 +142,7 @@ static void
 updateWaiting(lua_State* L, world& w) {
     ecs_api::entity<ecs::inserter, ecs::entity, ecs::capacitance> e;
     for (auto iter = waiting.begin(); iter != waiting.end();) {
-        if (!w.visit_entity(e, *iter, L) || tryActive(L, w, e.get<ecs::inserter>(), e.get<ecs::entity>(), e.get<ecs::capacitance>())) {
+        if (!w.init_entity(e, *iter, L) || tryActive(L, w, e.get<ecs::inserter>(), e.get<ecs::entity>(), e.get<ecs::capacitance>())) {
             iter = waiting.erase(iter);
         }
         else {
@@ -159,7 +159,7 @@ lbuild(lua_State *L) {
     for (auto& e : w.select<ecs::inserter>(L)) {
         ecs::inserter& i = e.get<ecs::inserter>();
         if (i.progress == STATUS_DONE) {
-            wait(i, e.index);
+            wait(i, e.getid());
         }
     }
     return 0;
@@ -184,7 +184,7 @@ lupdate(lua_State *L) {
                 i.progress--;
                 if (i.progress == STATUS_DONE) {
                     co.low_power = 0;
-                    wait(i, e.index);
+                    wait(i, e.getid());
                 }
                 else {
                     if (co.low_power > 0) co.low_power--;
