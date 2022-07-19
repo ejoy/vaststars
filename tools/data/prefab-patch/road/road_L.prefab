@@ -1,5 +1,15 @@
 ---
 data:
+  name: Scene
+  scene:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 4, 0}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
   name: "下转右"
   scene:
     r: {0, 0, 0, 1}
