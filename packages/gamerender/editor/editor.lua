@@ -5,12 +5,13 @@ local objects = require "objects"
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
-local flow_shape = require "gameplay.utility.flow_shape"
 local ifluid = require "gameplay.interface.fluid"
 local iassembling = require "gameplay.interface.assembling"
 local ichest = require "gameplay.interface.chest"
 local iworld = require "gameplay.interface.world"
 local iobject = ecs.require "object"
+local iflow_connector = require "gameplay.interface.flow_connector"
+local terrain = ecs.require "terrain"
 
 --
 local M = {}
@@ -72,10 +73,7 @@ local function refresh_pipe(prototype_name, dir, entry_dir, value)
         return
     end
 
-    local state = flow_shape.to_state(prototype_name:gsub(".*%-(%u).*", "%1"), dir)
-    state = flow_shape.set_shape_edge(state, iprototype.dir_tonumber(entry_dir), value or true)
-    local ntype, dir = flow_shape.to_type_dir(state)
-    return prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format(ntype)), dir
+    return iflow_connector.set_connection(typeobject.pipe, dir, entry_dir, value)
 end
 
 function M:refresh_pipe(...)
@@ -110,7 +108,7 @@ function M:refresh_flow_shape(cache_names_r, cache_name_w, object, entry_dir, ra
     end
 end
 
-local function shift_pipe(self, object, prototype_name, dir)
+local function shift_pipe(object, prototype_name, dir)
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
     if not typeobject.pipe then
         return
@@ -128,25 +126,77 @@ local function is_connection(self, x1, y1, dir1, x2, y2, dir2)
     return (dx1 == x2 and dy1 == y2) and (dx2 == x1 and dy2 == y1)
 end
 
+-- TODO: duplicate code with roadbuilding.lua
+local function _get_road_connections(prototype_name, x, y, dir)
+    local typeobject = assert(iprototype.queryByName("entity", prototype_name))
+    local result = {}
+    if not typeobject.crossing then
+        return result
+    end
+
+    for _, conn in ipairs(typeobject.crossing.connections) do
+        local dx, dy, dir = iprototype.rotate_fluidbox(conn.position, dir, typeobject.area)
+        result[#result+1] = {x = x + dx, y = y + dy, dir = dir, ground = conn.ground}
+    end
+    return result
+end
+
 local function teardown(self, object, changed_set)
-    for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, "")) do
-        local dx, dy = self:get_dir_coord(v.x, v.y, v.dir)
-        local nobject = objects:coord(dx, dy)
-        if nobject then
-            local typeobject = iprototype.queryByName("entity", nobject.prototype_name)
-            if typeobject.pipe then
-                for _, v1 in ipairs(ifluid:get_fluidbox(nobject.prototype_name, nobject.x, nobject.y, nobject.dir, nobject.fluid_name)) do
-                    if is_connection(self, v.x, v.y, v.dir, v1.x, v1.y, v1.dir) then
-                        local prototype_name, dir = self:refresh_pipe(nobject.prototype_name, nobject.dir, v1.dir, 0)
-                        if prototype_name ~= nobject.prototype_name or dir ~= nobject.dir then
-                            nobject.prototype_name = prototype_name
-                            nobject.dir = dir
-                            changed_set[nobject.id] = nobject
-                        end
-                    end
+    for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
+        local succ, dx, dy = terrain:move_coord(v.x, v.y, v.dir, 1)
+        if not succ then
+            goto continue
+        end
+
+        local neighbor = objects:coord(dx, dy)
+        if not neighbor then
+            goto continue
+        end
+
+        if not iprototype.is_pipe(neighbor.prototype_name) and not iprototype.is_pipe_to_ground(neighbor.prototype_name) then
+            goto continue
+        end
+
+        for _, v1 in ipairs(ifluid:get_fluidbox(neighbor.prototype_name, neighbor.x, neighbor.y, neighbor.dir)) do
+            if is_connection(self, v.x, v.y, v.dir, v1.x, v1.y, v1.dir) then
+                local prototype_name, dir = iflow_connector.set_connection(neighbor.prototype_name, neighbor.dir, v1.dir, false)
+                if prototype_name ~= neighbor.prototype_name or dir ~= neighbor.dir then
+                    neighbor.prototype_name = prototype_name
+                    neighbor.dir = dir
+                    changed_set[neighbor.id] = neighbor
                 end
             end
         end
+        ::continue::
+    end
+
+    for _, conn in ipairs(_get_road_connections(object.prototype_name, object.x, object.y, object.dir)) do
+        local succ, dx, dy = terrain:move_coord(conn.x, conn.y, conn.dir, 1)
+        if not succ then
+            goto continue
+        end
+
+        local neighbor = objects:coord(dx, dy)
+        if not neighbor then
+            goto continue
+        end
+
+        if not iprototype.is_road(neighbor.prototype_name) then
+            goto continue
+        end
+
+        for _, _conn in ipairs(_get_road_connections(neighbor.prototype_name, neighbor.x, neighbor.y, neighbor.dir)) do
+            if is_connection(self, conn.x, conn.y, conn.dir, _conn.x, _conn.y, _conn.dir) then
+                local prototype_name, dir = iflow_connector.set_connection(neighbor.prototype_name, neighbor.dir, _conn.dir, false)
+                if prototype_name ~= neighbor.prototype_name or dir ~= neighbor.dir then
+                    neighbor.prototype_name = prototype_name
+                    neighbor.dir = dir
+                    changed_set[neighbor.id] = neighbor
+                end
+            end
+        end
+
+        ::continue::
     end
 end
 
@@ -163,7 +213,6 @@ function M:teardown_complete()
         iobject.remove(object)
         objects:remove(object.id)
 
-        -- TODO
         local e = gameplay_core.get_entity(object.gameplay_eid)
         if e.assembling then
             for prototype_name, count in pairs(iassembling.item_counts(gameplay_core.get_world(), e)) do
@@ -180,16 +229,24 @@ function M:teardown_complete()
                 item_counts[prototype] = item_counts[prototype] + count
             end
         end
-        local typeobject_item = iprototype.queryByName("item", object.prototype_name)
+
+        local prototype_name = object.prototype_name
+        -- object.prototype_name may be not a item, such as "pipe"/"road"
+        if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) or iprototype.is_road(object.prototype_name) then
+            prototype_name = iflow_connector.covers(object.prototype_name, object.dir)
+        end
+        local typeobject_item = iprototype.queryByName("item", prototype_name)
         if typeobject_item then
-            item_counts[typeobject_item.id] = item_counts[typeobject_item.id] or 0
-            item_counts[typeobject_item.id] = item_counts[typeobject_item.id] + 1
+            item_counts[typeobject_item.id] = (item_counts[typeobject_item.id] or 0) + 1
+        else
+            log.error(("teardown_complete %s is not an item"):format(prototype_name)) -- TODO: remove this
         end
 
         gameplay_core.remove_entity(object.gameplay_eid)
         changed_set[id] = nil
     end
 
+    -- TODO: inventory full check -> revert teardown
     local headquater_e = iworld:get_headquater_entity(gameplay_core.get_world())
     if headquater_e then
         for prototype, count in pairs(item_counts) do
@@ -202,7 +259,7 @@ function M:teardown_complete()
     end
 
     for _, object in pairs(changed_set) do
-        shift_pipe(self, object, object.prototype_name, object.dir)
+        shift_pipe(object, object.prototype_name, object.dir)
     end
 
     gameplay_core.build()

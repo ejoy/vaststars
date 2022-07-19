@@ -170,7 +170,7 @@ local function update_fluidbox(self, cache_names_r, cache_name_w, prototype_name
                     end
                 else
                     if object.fluid_name ~= v.fluid_name then
-                        local prototype_name, dir = ieditor:refresh_pipe(object.prototype_name, object.dir, v1.dir, 0)
+                        local prototype_name, dir = ieditor:refresh_pipe(object.prototype_name, object.dir, v1.dir, false)
                         if prototype_name then
                             object.prototype_name, object.dir = prototype_name, dir
                         end

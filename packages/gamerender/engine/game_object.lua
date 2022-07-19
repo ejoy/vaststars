@@ -89,10 +89,18 @@ local _get_hitch_children ; do
         animation_inst.on_ready = function(prefab)
             iani.set_pose_to_prefab(prefab, pose)
 
-            if animation_name and process then
-                iani.play(prefab, {name = animation_name, loop = false, manual = true})
-                iani.set_time(prefab, iani.get_duration(prefab, animation_name) * process)
+            if not animation_name and not process then
+                for _, eid in ipairs(prefab.tag["*"]) do
+                    local e = assert(world:entity(eid))
+                    if e.animation_birth then
+                        animation_name, process = e.animation_birth, 0
+                    end
+                end
             end
+
+            assert(animation_name and process) -- animation_name and process are required, otherwise the initial pose of entity will be wrong
+            iani.play(prefab, {name = animation_name, loop = false, manual = true})
+            iani.set_time(prefab, iani.get_duration(prefab, animation_name) * process)
         end
         animation_inst.on_message = function (_prefab, cmd, ...)
         end
