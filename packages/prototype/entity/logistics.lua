@@ -80,6 +80,7 @@ prototype "砖石公路-I型" {
     road = true,
     flow_type = 11,
     flow_direction = {"N", "E"},
+    show_build_function = false,
     type ={"entity"},
     area = "1x1",
     crossing = {
@@ -97,6 +98,7 @@ prototype "砖石公路-L型" {
     road = true,
     flow_type = 11,
     flow_direction = {"N", "E", "S", "W"},
+    show_build_function = false,
     type ={"entity"},
     area = "1x1",
     crossing = {
@@ -114,6 +116,7 @@ prototype "砖石公路-T型" {
     road = true,
     flow_type = 11,
     flow_direction = {"N", "E", "S", "W"},
+    show_build_function = false,
     type ={"entity"},
     area = "1x1",
     crossing = {
@@ -133,6 +136,7 @@ prototype "砖石公路-X型" {
     road = true,
     flow_type = 11,
     flow_direction = {"N"},
+    show_build_function = false,
     type ={"entity"},
     area = "1x1",
     crossing = {
@@ -152,6 +156,7 @@ prototype "砖石公路-O型" {
     road = true,
     flow_type = 11,
     flow_direction = {"N"},
+    show_build_function = false,
     type ={"entity"},
     area = "1x1",
     group = {"物流","自定义"},
@@ -168,6 +173,7 @@ prototype "砖石公路-U型" {
     road = true,
     flow_type = 11,
     flow_direction = {"N", "E", "S", "W"},
+    show_build_function = false,
     type ={"entity"},
     area = "1x1",
     crossing = {

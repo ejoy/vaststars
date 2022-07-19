@@ -31,10 +31,14 @@ function idetail.show(object_id)
     local p = mu.world_to_screen(vp, vr, vsobject:get_position())
     local vmin = get_vmin(vr.w, vr.h, vr.ratio)
 
+    p = math3d.mul(p, math3d.vector {1 / vmin * 100, 1 / vmin * 100, 0})
+
     if typeobject.show_build_function ~= false then
-        iui.open("build_function_pop.rml", object_id, math3d.index(p, 1) / vmin * 100, math3d.index(p, 2) / vmin * 100)
+        iui.open("build_function_pop.rml", object_id, math3d.index(p, 1), math3d.index(p, 2))
     elseif iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
-        iui.open("pipe_function_pop.rml", object_id, math3d.index(p, 1) / vmin * 100, math3d.index(p, 2) / vmin * 100)
+        iui.open("pipe_function_pop.rml", object_id, math3d.index(p, 1), math3d.index(p, 2))
+    elseif iprototype.is_road(object.prototype_name) then
+        iui.open("road_function_pop.rml", object_id, math3d.index(p, 1), math3d.index(p, 2))
     end
 
     do

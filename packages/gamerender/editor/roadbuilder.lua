@@ -258,7 +258,7 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
         end
     end
 
-    datamodel.show_laying_pipe_confirm = not State.failed
+    datamodel.show_laying_road_confirm = not State.failed
 end
 
 local function state_init(self, datamodel)
@@ -294,7 +294,7 @@ local function state_init(self, datamodel)
     end
 
     if is_valid_starting(coord_indicator.x, coord_indicator.y) then
-        datamodel.show_laying_pipe_begin = true
+        datamodel.show_laying_road_begin = true
         coord_indicator.state = "construct"
 
         local object = objects:coord(coord_indicator.x, coord_indicator.y, EDITOR_CACHE_TEMPORARY)
@@ -302,7 +302,7 @@ local function state_init(self, datamodel)
             show_indicator(self.prototype_name, object)
         end
     else
-        datamodel.show_laying_pipe_begin = false
+        datamodel.show_laying_road_begin = false
         coord_indicator.state = "invalid_construct"
     end
 end
@@ -314,7 +314,7 @@ local function state_start(self, datamodel)
         local connections = _get_covers_connections(starting_object)
         if #connections <= 0 then
             self.coord_indicator.state = "invalid_construct"
-            datamodel.show_laying_pipe_confirm = false
+            datamodel.show_laying_road_confirm = false
             return
         end
 
@@ -335,7 +335,7 @@ local function state_start(self, datamodel)
         if ending_object then
             if starting_object.id == ending_object.id then
                 self.coord_indicator.state = "invalid_construct"
-                datamodel.show_laying_pipe_confirm = false
+                datamodel.show_laying_road_confirm = false
                 return
             end
 
@@ -350,7 +350,7 @@ local function state_start(self, datamodel)
         local succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir, math.abs(self.coord_indicator.x - from_x), math.abs(self.coord_indicator.y - from_y))
         if not succ then -- TODO: check map boundary
             self.coord_indicator.state = "invalid_construct"
-            datamodel.show_laying_pipe_confirm = false
+            datamodel.show_laying_road_confirm = false
             return
         end
         state_end(self, datamodel, from_x, from_y, to_x, to_y)
@@ -374,7 +374,7 @@ local function state_start(self, datamodel)
                 local succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir, math.abs(self.coord_indicator.x - from_x), math.abs(self.coord_indicator.y - from_y))
                 if not succ then -- TODO: check map boundary
                     self.coord_indicator.state = "invalid_construct"
-                    datamodel.show_laying_pipe_confirm = false
+                    datamodel.show_laying_road_confirm = false
                     return
                 end
                 state_end(self, datamodel, from_x, from_y, to_x, to_y)
@@ -386,7 +386,7 @@ local function state_start(self, datamodel)
             local succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir, math.abs(self.coord_indicator.x - from_x), math.abs(self.coord_indicator.y - from_y))
             if not succ then -- TODO: check map boundary
                 self.coord_indicator.state = "invalid_construct"
-                datamodel.show_laying_pipe_confirm = false
+                datamodel.show_laying_road_confirm = false
                 return
             end
             state_end(self, datamodel, from_x, from_y, to_x, to_y)
@@ -473,20 +473,20 @@ local function complete(self, datamodel)
     self:revert_changes({"INDICATOR", "TEMPORARY"})
 
     datamodel.show_rotate = false
-    datamodel.show_laying_pipe_confirm = false
-    datamodel.show_laying_pipe_cancel = false
+    datamodel.show_laying_road_confirm = false
+    datamodel.show_laying_road_cancel = false
 
     self.super.complete(self)
 
-    datamodel.show_laying_pipe_begin = false
+    datamodel.show_laying_road_begin = false
     datamodel.show_construct_complete = false
 end
 
 local function laying_pipe_begin(self, datamodel)
     iobject.align(self.coord_indicator)
     self:revert_changes({"INDICATOR", "TEMPORARY"})
-    datamodel.show_laying_pipe_begin = false
-    datamodel.show_laying_pipe_cancel = true
+    datamodel.show_laying_road_begin = false
+    datamodel.show_laying_road_cancel = true
 
     self.state = STATE_START
     self.from_x = self.coord_indicator.x
@@ -504,8 +504,8 @@ local function laying_pipe_cancel(self, datamodel)
     self:new_entity(datamodel, typeobject)
 
     self.state = STATE_NONE
-    datamodel.show_laying_pipe_confirm = false
-    datamodel.show_laying_pipe_cancel = false
+    datamodel.show_laying_road_confirm = false
+    datamodel.show_laying_road_cancel = false
     datamodel.show_construct_complete = true
 end
 
@@ -520,8 +520,8 @@ local function laying_pipe_confirm(self, datamodel)
     self:new_entity(datamodel, typeobject)
 
     self.state = STATE_NONE
-    datamodel.show_laying_pipe_confirm = false
-    datamodel.show_laying_pipe_cancel = false
+    datamodel.show_laying_road_confirm = false
+    datamodel.show_laying_road_cancel = false
     datamodel.show_construct_complete = true
 end
 
@@ -533,9 +533,9 @@ local function clean(self, datamodel)
     datamodel.show_construct_complete = false
     datamodel.show_rotate = false
     self.state = STATE_NONE
-    datamodel.show_laying_pipe_confirm = false
-    datamodel.show_laying_pipe_cancel = false
-    datamodel.show_laying_pipe_begin = false
+    datamodel.show_laying_road_confirm = false
+    datamodel.show_laying_road_cancel = false
+    datamodel.show_laying_road_begin = false
     self.super.clean(self, datamodel)
 end
 
