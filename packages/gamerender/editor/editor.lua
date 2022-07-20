@@ -204,6 +204,7 @@ function M:teardown_complete()
     local changed_set = {}
     local removed_set = {}
     for _, object in objects:select("TEMPORARY", "teardown", true) do
+        world:pub {"teardown", object.prototype_name}
         teardown(self, object, changed_set)
         removed_set[object.id] = object
     end

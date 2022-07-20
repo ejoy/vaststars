@@ -387,7 +387,6 @@ function M:stage_camera_usage(datamodel)
             local object = _get_object(x, y)
             if object then -- object may be nil, such as when user click on empty space
                 if global.mode == "teardown" then
-                    world:pub {"teardown", object.prototype_name}
                     ieditor:teardown(object.id)
                     datamodel.show_teardown = _has_teardown_entity()
 
