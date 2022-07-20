@@ -3,7 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local imaterial = ecs.import.interface "ant.asset|imaterial"
-local imodifier = ecs.import.interface "ant.modifier|imodifier"
 
 local events = {}
 events["set_material_property"] = function(prefab, binding, ...)
@@ -13,10 +12,6 @@ events["set_material_property"] = function(prefab, binding, ...)
             imaterial.set_property(e, ...)
         end
     end
-end
-
-events["modifier"] = function(prefab, binding, oper, ...)
-    -- imodifier[oper](...)
 end
 
 return events
