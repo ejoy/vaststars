@@ -116,8 +116,7 @@ local function _update_neighbor_fluidbox(object)
         if not neighbor then
             goto continue
         end
-        local typeobject = iprototype.queryByName("entity", neighbor.prototype_name)
-        if not iprototype.has_type(typeobject.type, "fluidbox") then
+        if not iprototype.is_pipe(neighbor.prototype_name) and not iprototype.is_pipe_to_ground(neighbor.prototype_name) then
             goto continue
         end
         assert(type(neighbor.fluid_name) == "string") -- TODO：fluid_name should be string -- remove this assert
