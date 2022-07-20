@@ -119,7 +119,7 @@ struct manual {
 
 struct ecs_component_id {
 	inline static int id = 0x80000000;
-	inline static int gen() {
+	inline static constexpr int gen() {
 		return id++;
 	}
 };
@@ -133,14 +133,15 @@ namespace ecs_api {
 #define ECS_COMPONENT(NAME) \
 template <> struct component<ecs::NAME> { \
 	static inline const int id = ecs_component_id::gen(); \
-	static inline const char name[] = #NAME; \
+	static inline constexpr char name[] = #NAME; \
+	static inline constexpr bool tag = false; \
 };
 
 #define ECS_TAG(NAME) \
 template <> struct component<ecs::NAME> { \
 	static inline const int id = ecs_component_id::gen(); \
-	static inline const char name[] = #NAME; \
-	static inline const bool tag = true; \
+	static inline constexpr char name[] = #NAME; \
+	static inline constexpr bool tag = true; \
 };
 
 ECS_COMPONENT(REMOVED)
