@@ -375,23 +375,13 @@ function M:stage_camera_usage(datamodel)
 
     -- 点击其它建筑 或 拖动时, 将弹出窗口隐藏
     for _, _, x, y in pickup_mb:unpack() do
-        -- do -- TODO: remove this block
-        --     local pos = icamera.screen_to_world(x, y, PLANE_B)
-        --     log.info(("pickup plane_b (%s)"):format(math3d.tostring(pos[1])))
-        --     local coord = terrain:align(pos[1], 1, 1)
-        --     if coord then
-        --         log.info(("pickup coord: (%d, %d)"):format(coord[1], coord[2]))
-        --     end
-
-        --     local object = _get_object(x, y)
-        --     if object then
-        --         log.info(("pickup object (%s) in (%s, %s) fluidflow_id(%s)"):format(object.prototype_name, object.x, object.y, object.fluidflow_id))
-        --     else
-        --         log.info(("pickup object (%s) in (%s, %s)"):format("none", x, y))
-        --     end
-
-        --     log.info("------------------------------------")
-        -- end
+        do -- for debug
+            local pos = icamera.screen_to_world(x, y, {PLANES[1]})
+            local coord = terrain:align(pos[1], 1, 1)
+            if coord then
+                print(("pickup coord: (%d, %d)"):format(coord[1], coord[2]))
+            end
+        end
 
         if _TILE_PICKUP then
             local object = _get_object(x, y)
