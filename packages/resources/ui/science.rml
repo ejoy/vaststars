@@ -498,26 +498,7 @@
             </div>
             <div class="panel" style="width: 50%;">
                 <div class="column" id ="item-recipe-region">
-                    <div class="column" style="width:100%; height:15%;">
-                        <!-- 科技描述 start --> 
-                        <div class="header" id = "item-recipe-title" style="width:100%;height:75%;">
-                            <div class = "item-recipe-image" style="background-color: rgb(250, 205, 9); margin-top: 2vmin;" data-style-background-image="current_icon"/>
-                            <div class = "item-recipe-desc">{{current_desc}}</div>
-                            <button class="item" style="width: 10.67vmin; height: 10.67vmin;background-color: transparent;border: 0em;" data-if="false">
-                                <div class = "item-recipe-info"/>
-                            </button>
-                        </div>
-                        <!-- 科技描述 end --> 
-
-                        <!-- 科技额外信息描述 start -->
-                        <div class="row" style="width: 100%; height:25%; justify-content: flex-end;" data-if="false">
-                            <div class="item-recipe-extra-icon"/>
-                            <div class="item-recipe-desc-extra">该科技可以研究更多科技</div>
-                        </div>
-                        <!-- 科技额外信息描述 end -->
-                    </div>
-
-                    <div class="column" style="width: 100%; height: 73%;">
+                    <div class="column" style="width: 100%; height: 88%;">
                         <div class="recipe-name-text">其他信息</div>
                         <div style="flex-direction: column; width:100%; height:100%;">
                             <detaillist direction='1' width='100%' height='100%'/>
