@@ -384,11 +384,11 @@
     <body class = "nopointer">
         <div class = "nopointer" data-model="start">
             <!-- fps 显示 -->
-            <div style = "pointer-events: none; position: absolute; left: 7.25vmin; top: 6.25vmin; z-index: 999;" data-if="false">
+            <div style = "pointer-events: none; position: absolute; left: 7.25vmin; top: 6.25vmin; z-index: 999;">
                 <div style = "pointer-events: none; position: absolute; top: 0vmin; width: 50.00vmin; height: auto; font-size: 6.25vmin; color: rgb(0,255,0);">{{fps_text}}</div>
             </div>
             <!-- drawcall 显示 -->
-            <div style = "pointer-events: none; position: absolute; left: 7.25vmin; top: 12.50vmin; z-index: 999;" data-if="false">
+            <div style = "pointer-events: none; position: absolute; left: 7.25vmin; top: 12.50vmin; z-index: 999;">
                 <div style = "pointer-events: none; position: absolute; top: 0vmin; width: 90.00vmax; height: auto; font-size: 6.25vmin; color: rgb(0,255,0);">{{drawcall_text}}</div>
             </div>
 
