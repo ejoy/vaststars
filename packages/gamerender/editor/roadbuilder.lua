@@ -15,8 +15,7 @@ local iprototype = require "gameplay.interface.prototype"
 local iflow_connector = require "gameplay.interface.flow_connector"
 local objects = require "objects"
 local terrain = ecs.require "terrain"
-local construct_inventory = global.construct_inventory
-local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM or require("debugger").infinite_item()
+local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iworld = require "gameplay.interface.world"
 local gameplay_core = require "gameplay.core"
@@ -119,25 +118,15 @@ local function _match_connections(connections, x, y, dir)
 end
 
 local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
-    local function _clone_item(item)
-        local new = {}
-        new.prototype = item.prototype
-        new.count = item.count
-        return new
-    end
     local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(self.prototype_name, DEFAULT_DIR))
-    local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
-    if not item then -- TODO: clean up the builder?
-        if _VASTSTARS_DEBUG_INFINITE_ITEM then
-            item = {prototype = item_typeobject.id, count = 999}
-        else
-            self:clean(datamodel)
-            return
-        end
+    local item = inventory:get(item_typeobject.id)
+    if item.count <= 0 then
+        self:clean(datamodel)
+        return
     end
 
     local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
-    local succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
+    local succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir, -- calculate the max distance according to the item count
         math.min(math.abs(from_x - to_x), item.count - 1),
         math.min(math.abs(from_y - to_y), item.count - 1)
     )
@@ -397,14 +386,12 @@ end
 
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject)
-    if not _VASTSTARS_DEBUG_INFINITE_ITEM then
-        -- check if item is in the inventory
-        local item_typeobject = iprototype.queryByName("item", typeobject.name)
-        local item = construct_inventory:get({"TEMPORARY", "CONFIRM"}, item_typeobject.id)
-        if not item or item.count <= 0 then
-            log.error("Lack of item: " .. typeobject.name)
-            return
-        end
+    -- check if item is in the inventory
+    local item_typeobject = iprototype.queryByName("item", typeobject.name)
+    local item = inventory:get(item_typeobject.id)
+    if item.count <= 0 then
+        log.error("Lack of item: " .. typeobject.name) -- TODO: show error message?
+        return
     end
 
     iobject.remove(self.coord_indicator)
@@ -435,7 +422,6 @@ local function touch_end(self, datamodel)
     end
     iobject.align(self.coord_indicator)
     self:revert_changes({"INDICATOR", "TEMPORARY"})
-    construct_inventory:clear({"TEMPORARY"})
 
     if self.state ~= STATE_START then
         state_init(self, datamodel)
@@ -452,18 +438,7 @@ local function complete(self, datamodel)
         return
     end
 
-    local failed = false
-    for _, item in construct_inventory:all("TEMPORARY") do
-        local old_item = assert(construct_inventory:get({"CONFIRM"}, item.prototype))
-        assert(old_item.count >= item.count)
-        local decrease = old_item.count - item.count
-        print(iprototype.queryById(item.prototype).name, decrease)
-        if not gameplay_world:container_pickup(e.chest.container, item.prototype, decrease) then
-            log.error("can not pickup item", iprototype.queryById(item.prototype).name, decrease)
-            failed = true
-        end
-    end
-    if failed then
+    if not inventory:complete() then
         return
     end
 
@@ -496,7 +471,7 @@ local function laying_pipe_begin(self, datamodel)
 end
 
 local function laying_pipe_cancel(self, datamodel)
-    construct_inventory:clear({"TEMPORARY"})
+    inventory:revert()
     iui.update("construct.rml", "update_construct_inventory")
 
     self:revert_changes({"INDICATOR", "TEMPORARY"})
@@ -530,7 +505,6 @@ local function clean(self, datamodel)
     self.coord_indicator = nil
 
     self:revert_changes({"INDICATOR", "TEMPORARY"})
-    datamodel.show_construct_complete = false
     datamodel.show_rotate = false
     self.state = STATE_NONE
     datamodel.show_laying_road_confirm = false

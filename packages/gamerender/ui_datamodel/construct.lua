@@ -3,11 +3,9 @@ local world = ecs.world
 local w = world.w
 
 local math3d = require "math3d"
-local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM or require("debugger").infinite_item()
 local YAXIS_PLANE_B <const> = math3d.constant("v4", {0, 1, 0, 0})
 local YAXIS_PLANE_T <const> = math3d.constant("v4", {0, 1, 0, 20})
 local PLANES <const> = {YAXIS_PLANE_T, YAXIS_PLANE_B}
-local PLANE_B <const> = {YAXIS_PLANE_B}
 local camera = ecs.require "engine.camera"
 local gameplay_core = require "gameplay.core"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
@@ -43,9 +41,7 @@ local laying_pipe_confirm_mb = mailbox:sub {"laying_pipe_confirm"} -- 铺管结�
 local open_taskui_event = mailbox:sub {"open_taskui"}
 local single_touch_mb = world:sub {"single_touch"}
 local imanual = require "ui_datamodel.common.manual"
-local construct_inventory = global.construct_inventory
-local iworld = require "gameplay.interface.world"
-local ichest = require "gameplay.interface.chest"
+local inventory = global.inventory
 local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local pickup_mb = world:sub {"pickup"}
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
@@ -61,26 +57,6 @@ local function get_headquater_object_id()
     end
 end
 
-local function _update_construct_inventory()
-    construct_inventory:clear({"TEMPORARY", "CONFIRM"})
-    local e = iworld:get_headquater_entity(gameplay_core.get_world())
-    if not e then
-        return
-    end
-
-    for prototype, count in pairs(ichest:item_counts(gameplay_core.get_world(), e)) do
-        local t = construct_inventory:get({"CONFIRM"}, prototype)
-        if t then
-            t.count = t.count + count
-        else
-            construct_inventory:set("CONFIRM", {
-                prototype = prototype,
-                count = count,
-            })
-        end
-    end
-end
-
 local function _has_teardown_entity()
     for _ in objects:select("TEMPORARY", "teardown", true) do
         return true
@@ -88,57 +64,31 @@ local function _has_teardown_entity()
     return false
 end
 
-local _get_construct_menu; do
-if _VASTSTARS_DEBUG_INFINITE_ITEM then
-    function _get_construct_menu()
-        local construct_menu = {}
-        for _, menu in ipairs(construct_menu_cfg) do
-            local m = {}
-            m.name = menu.name
-            m.icon = menu.icon
-            m.detail = {}
+local function _get_construct_menu()
+    local construct_menu = {}
+    for _, menu in ipairs(construct_menu_cfg) do
+        local m = {}
+        m.name = menu.name
+        m.icon = menu.icon
+        m.detail = {}
 
-            for _, prototype_name in ipairs(menu.detail) do
-                local typeobject = assert(iprototype.queryByName("item", prototype_name))
+        for _, prototype_name in ipairs(menu.detail) do
+            local typeobject = assert(iprototype.queryByName("item", prototype_name))
+            local c = inventory:get(typeobject.id)
+            if c.count > 0 then
                 m.detail[#m.detail + 1] = {
                     show_prototype_name = iprototype.show_prototype_name(typeobject),
                     prototype_name = prototype_name,
                     icon = typeobject.icon,
-                    count = 999,
+                    count = c.count,
                 }
             end
-
-            construct_menu[#construct_menu+1] = m
         end
-        return construct_menu
-    end
-else
-    function _get_construct_menu()
-        local construct_menu = {}
-        for _, menu in ipairs(construct_menu_cfg) do
-            local m = {}
-            m.name = menu.name
-            m.icon = menu.icon
-            m.detail = {}
 
-            for _, prototype_name in ipairs(menu.detail) do
-                local typeobject = assert(iprototype.queryByName("item", prototype_name))
-                local c = construct_inventory:get({"TEMPORARY", "CONFIRM"}, typeobject.id)
-                if c then
-                    m.detail[#m.detail + 1] = {
-                        show_prototype_name = iprototype.show_prototype_name(typeobject),
-                        prototype_name = prototype_name,
-                        icon = typeobject.icon,
-                        count = c.count,
-                    }
-                end
-            end
-
-            construct_menu[#construct_menu+1] = m
-        end
-        return construct_menu
+        construct_menu[#construct_menu+1] = m
     end
-end ; end
+    return construct_menu
+end
 ---------------
 local M = {}
 
@@ -211,12 +161,13 @@ function M:stage_ui_update(datamodel)
         ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
         datamodel.show_rotate = false
         datamodel.show_confirm = false
+        datamodel.show_construct_complete = false
         gameplay_core.world_update = false
         global.mode = "construct"
         camera.transition("camera_construct.prefab")
         last_prototype_name = nil
 
-        _update_construct_inventory()
+        inventory:flush()
         datamodel.construct_menu = _get_construct_menu()
         ::continue::
     end

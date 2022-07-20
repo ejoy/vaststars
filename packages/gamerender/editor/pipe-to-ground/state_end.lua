@@ -14,9 +14,10 @@ local is_overlap = ecs.require "editor.pipe-to-ground.util".is_overlap
 local show_failed = ecs.require "editor.pipe-to-ground.util".show_failed
 local ifluid = require "gameplay.interface.fluid"
 local flow_shape = require "gameplay.utility.flow_shape"
-local construct_inventory = global.construct_inventory
-local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM or require("debugger").infinite_item()
+local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iflow_connector = require "gameplay.interface.flow_connector"
+local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 
 local EDITOR_CACHE_CONSTRUCTED = {"CONFIRM", "CONSTRUCTED"}
 local EDITOR_CACHE_TEMPORARY   = {"TEMPORARY"}
@@ -48,22 +49,8 @@ local function check_channel(self, datamodel, starting_object, to_x, to_y)
 end
 
 function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_to_x, max_to_y)
-    local function _clone_item(item)
-        local new = {}
-        new.prototype = item.prototype
-        new.count = item.count
-        return new
-    end
-    local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JI"))
-    local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
-    if not item then -- TODO: clean up the builder?
-        if _VASTSTARS_DEBUG_INFINITE_ITEM then
-            item = {prototype = item_typeobject.id, count = 999}
-        else
-            self:clean(datamodel)
-            return
-        end
-    end
+    local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(self.coord_indicator.prototype_name, DEFAULT_DIR))
+    local item = assert(inventory:modity(item_typeobject.id)) -- promise by new_entity()
 
     dir = dir or starting_object.dir -- TODO
     local ending_object = assert(objects:coord(to_x, to_y, EDITOR_CACHE_CONSTRUCTED))
@@ -212,22 +199,8 @@ function condition_pipe(self, datamodel, starting_object, to_x, to_y, dir, max_t
 end
 
 function condition_pipe_to_ground(self, datamodel, starting_object, to_x, to_y, max_to_x, max_to_y)
-    local function _clone_item(item)
-        local new = {}
-        new.prototype = item.prototype
-        new.count = item.count
-        return new
-    end
-    local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JI"))
-    local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
-    if not item then -- TODO: clean up the builder?
-        if _VASTSTARS_DEBUG_INFINITE_ITEM then
-            item = {prototype = item_typeobject.id, count = 999}
-        else
-            self:clean(datamodel)
-            return
-        end
-    end
+    local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(self.coord_indicator.prototype_name, DEFAULT_DIR))
+    local item = assert(inventory:modity(item_typeobject.id)) -- promise by new_entity()
 
     local ending_object = assert(objects:coord(to_x, to_y, EDITOR_CACHE_CONSTRUCTED))
     if not check_channel(self, datamodel, starting_object, to_x, to_y) then
@@ -353,21 +326,10 @@ function condition_normal(self, datamodel, starting_object, to_x, to_y, max_to_x
 end
 
 function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, max_to_y, shape)
-    local function _clone_item(item)
-        local new = {}
-        new.prototype = item.prototype
-        new.count = item.count
-        return new
-    end
-    local item_typeobject = iprototype.queryByName("item", format_prototype_name(self.coord_indicator.prototype_name, "JI"))
-    local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
-    if not item then -- TODO: clean up the builder?
-        if _VASTSTARS_DEBUG_INFINITE_ITEM then
-            item = {prototype = item_typeobject.id, count = 999}
-        else
-            self:clean(datamodel)
-            return
-        end
+    local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(self.coord_indicator.prototype_name, DEFAULT_DIR))
+    local item = assert(inventory:modity(item_typeobject.id)) -- promise by new_entity()
+    if item.count <= 0 then
+        return
     end
 
     local succ
@@ -468,7 +430,7 @@ function condition_none(self, datamodel, starting_object, to_x, to_y, max_to_x, 
             object.PREPARE = true
         end
         objects:commit("TEMPORARY", "CONFIRM")
-        construct_inventory:commit("TEMPORARY", "CONFIRM")
+        inventory:confirm()
 
         self.shape = "JI" -- TODO: remove this line
         self.shape_dir = starting_object.dir -- TODO: remove this line
