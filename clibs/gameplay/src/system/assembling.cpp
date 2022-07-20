@@ -72,7 +72,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
             w.stat.finish_recipe(L, w, a.recipe, false);
             a.status = STATUS_IDLE;
             if (a.fluidbox_out != 0) {
-                ecs::fluidboxes* fb = w.sibling<ecs::fluidboxes>(v);
+                ecs::fluidboxes* fb = v.sibling<ecs::fluidboxes>(w);
                 if (fb) {
                     sync_output_fluidbox(w, a, *fb, container);
                 }
@@ -87,7 +87,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
             a.progress += time * 100;
             a.status = STATUS_DONE;
             if (a.fluidbox_in != 0) {
-                ecs::fluidboxes* fb = w.sibling<ecs::fluidboxes>(v);
+                ecs::fluidboxes* fb = v.sibling<ecs::fluidboxes>(w);
                 if (fb) {
                     sync_input_fluidbox(w, a, *fb, container);
                 }

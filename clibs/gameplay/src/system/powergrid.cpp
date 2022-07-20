@@ -182,7 +182,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 		}
 		ecs::entity& e = v.get<ecs::entity>();
 		p.id = e.prototype;
-		if (w.sibling<ecs::consumer>(v)) {
+		if (v.sibling<ecs::consumer>(w)) {
 			// It's a consumer, charge capacitance
 			if (c.shortage > 0) {
 				float eff = pg[c.network].consumer_efficiency[pt_priority(&p)];
@@ -203,7 +203,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 				}
 			}
 		}
-		else if (w.sibling<ecs::generator>(v)) {
+		else if (v.sibling<ecs::generator>(w)) {
 			// It's a generator, and must be not a consumer
 			float eff = pg[c.network].generator_efficiency[pt_priority(&p)];
 			if (eff > 0) {
@@ -212,7 +212,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 				generate_power += power;
 			}
 		}
-		else if (pg[c.network].accumulator_efficiency != 0 && w.sibling<ecs::accumulator>(v)) {
+		else if (pg[c.network].accumulator_efficiency != 0 && v.sibling<ecs::accumulator>(w)) {
 			float eff = pg[c.network].accumulator_efficiency;
 			if (eff > 0) {
 				// discharge
