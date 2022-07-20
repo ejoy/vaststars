@@ -70,7 +70,7 @@ end
 
 local function new_entity(self, datamodel, typeobject)
     __new_entity(self, datamodel, typeobject)
-    -- self.pickup_object.__object.APPEAR = true
+    self.pickup_object.__object.APPEAR = true
 end
 
 local function touch_move(self, datamodel, delta_vec)
