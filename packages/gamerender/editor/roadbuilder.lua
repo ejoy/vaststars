@@ -119,11 +119,7 @@ end
 
 local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
     local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(self.prototype_name, DEFAULT_DIR))
-    local item = inventory:get(item_typeobject.id)
-    if item.count <= 0 then
-        self:clean(datamodel)
-        return
-    end
+    local item = assert(inventory:modity(item_typeobject.id)) -- promise by new_entity()
 
     local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
     local succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir, -- calculate the max distance according to the item count
@@ -391,6 +387,7 @@ local function new_entity(self, datamodel, typeobject)
     local item = inventory:get(item_typeobject.id)
     if item.count <= 0 then
         log.error("Lack of item: " .. typeobject.name) -- TODO: show error message?
+        self:clean(datamodel)
         return
     end
 
@@ -422,6 +419,7 @@ local function touch_end(self, datamodel)
     end
     iobject.align(self.coord_indicator)
     self:revert_changes({"INDICATOR", "TEMPORARY"})
+    inventory:revert()
 
     if self.state ~= STATE_START then
         state_init(self, datamodel)
@@ -490,6 +488,7 @@ local function laying_pipe_confirm(self, datamodel)
         object.PREPARE = true
     end
     objects:commit("TEMPORARY", "CONFIRM")
+    inventory:confirm()
 
     local typeobject = iprototype.queryByName("entity", self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)
