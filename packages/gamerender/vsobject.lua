@@ -201,7 +201,7 @@ local function animation_update(self, animation_name, process)
 end
 
 local function modifier(self, opt, ...)
-    imodifier[opt](self.srt_modifier, ...)
+    -- imodifier[opt](self.srt_modifier, ...)
 end
 
 -- init = {
