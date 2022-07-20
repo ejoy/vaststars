@@ -379,7 +379,7 @@ function M:stage_camera_usage(datamodel)
             local pos = icamera.screen_to_world(x, y, {PLANES[1]})
             local coord = terrain:align(pos[1], 1, 1)
             if coord then
-                print(("pickup coord: (%d, %d)"):format(coord[1], coord[2]))
+                print(("pickup coord: (%d, %d) ground(%d, %d)"):format(coord[1], coord[2], coord[1] - (coord[1] % terrain.ground_width), coord[2] - (coord[2] % terrain.ground_height)))
             end
         end
 
