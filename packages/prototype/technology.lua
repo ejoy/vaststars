@@ -723,12 +723,28 @@ prototype "维修化工厂" {
   },
 }
 
+prototype "放置化工厂" {
+  desc = "放置化工厂生产化工产品",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"select_entity", 0, "化工厂I"},
+  prerequisites = {"维修化工厂"},
+  count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_click_build.texture",
+    "textures/task_tips_pic/task_place_chemicalplant.texture",
+  },
+  sign_desc = {
+    { desc = "放置1座化工厂", icon = "textures/construct/industry.texture"},
+  },
+}
+
 prototype "生产甲烷" {
   desc = "生产工业气体甲烷",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "甲烷"},
-  prerequisites = {"维修化工厂"},
+  prerequisites = {"放置化工厂"},
   count = 1000,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ch4.texture",
