@@ -29,8 +29,10 @@ events["update"] = function(_, e, position, quad_num, dir)
     iom.set_position(e, math3d.add(position, delta_vec[dir]))
 
     local m = e.render_object.mesh
-    m:set_ib_range(0, quad_num * 6)
-    m:set_vb_range(0, quad_num * 4)
+    local vs = m:get_vb()
+    local is = m:get_ib()
+    m:set_ib_range(is, quad_num * 6)
+    m:set_vb_range(vs, quad_num * 4)
 
     iom.set_rotation(e, ROTATORS[dir])
 end
