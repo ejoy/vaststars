@@ -14,22 +14,19 @@ local irecipe = require "gameplay.interface.recipe"
 local global = require "global"
 local iobject = ecs.require "object"
 local imining = require "gameplay.interface.mining"
-local construct_inventory = global.construct_inventory
+local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iworld = require "gameplay.interface.world"
 local gameplay_core = require "gameplay.core"
-local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = world.args.ecs.VASTSTARS_DEBUG_INFINITE_ITEM or require("debugger").infinite_item()
 
 --
 local function __new_entity(self, datamodel, typeobject)
-    if not _VASTSTARS_DEBUG_INFINITE_ITEM then
-        -- check if item is in the inventory
-        local item_typeobject = iprototype.queryByName("item", typeobject.name)
-        local item = construct_inventory:get({"TEMPORARY", "CONFIRM"}, item_typeobject.id)
-        if not item or item.count <= 0 then
-            log.error("Lack of item: " .. typeobject.name)
-            return
-        end
+    -- check if item is in the inventory
+    local item_typeobject = iprototype.queryByName("item", typeobject.name)
+    local item = inventory:get(item_typeobject.id)
+    if item.count <= 0 then
+        log.error("Lack of item: " .. typeobject.name) -- TODO: show error message?
+        return
     end
 
     iobject.remove(self.pickup_object)
@@ -108,9 +105,6 @@ local function _get_mineral_recipe(prototype_name, x, y, dir)
 end
 
 local function touch_end(self, datamodel)
-    local ecs = ecs -- for debug, remove it later
-    local world = world -- for debug, remove it later
-
     local pickup_object = self.pickup_object
     if not pickup_object then
         return
@@ -155,7 +149,7 @@ local function confirm(self, datamodel)
 
     local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
     if iprototype.has_type(typeobject.type, "fluidbox") then
-        -- fluid of object has been set in touch_end(), so we don't need to set it again
+        -- fluid_name of object has been set in touch_end(), so we don't need to set it again
         global.fluidflow_id = global.fluidflow_id + 1
         pickup_object.fluidflow_id = global.fluidflow_id
     end
@@ -168,21 +162,10 @@ local function confirm(self, datamodel)
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
 
-    local function _clone_item(item)
-        local new = {}
-        new.prototype = item.prototype
-        new.count = item.count
-        return new
-    end
-
-    if not _VASTSTARS_DEBUG_INFINITE_ITEM then
-        -- decrease item count
-        local item_typeobject = iprototype.queryByName("item", typeobject.name)
-        local item = construct_inventory:modify({"TEMPORARY", "CONFIRM"}, item_typeobject.id, _clone_item) -- TODO: define cache name as constant
-        assert(item.count >= 0) -- promised by new_entity
-        item.count = item.count - 1
-        iui.update("construct.rml", "update_construct_inventory")
-    end
+    local item_typeobject = iprototype.queryByName("item", typeobject.name)
+    assert(inventory:decrease(item_typeobject.id, 1)) -- promised by new_entity
+    inventory:confirm()
+    iui.update("construct.rml", "update_construct_inventory")
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false
@@ -200,18 +183,7 @@ local function complete(self, datamodel)
         return
     end
 
-    local failed = false
-    for _, item in construct_inventory:all("TEMPORARY") do
-        local old_item = assert(construct_inventory:get({"CONFIRM"}, item.prototype))
-        assert(old_item.count >= item.count)
-        local decrease = old_item.count - item.count
-        print(iprototype.queryById(item.prototype).name, decrease)
-        if not gameplay_world:container_pickup(e.chest.container, item.prototype, decrease) then
-            log.error("can not pickup item", iprototype.queryById(item.prototype).name, decrease)
-            failed = true
-        end
-    end
-    if failed then
+    if not inventory:complete() then
         return
     end
 
@@ -270,9 +242,9 @@ end
 
 local function clean(self, datamodel)
     ieditor:revert_changes({"TEMPORARY"})
+    inventory:revert()
     datamodel.show_confirm = false
     datamodel.show_rotate = false
-    datamodel.show_construct_complete = false
     self.super.clean(self, datamodel)
 end
 

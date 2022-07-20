@@ -19,6 +19,7 @@ local iassembling = require "gameplay.interface.assembling"
 local terrain = ecs.require "terrain"
 local itypes = require "gameplay.interface.types"
 local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
+local iflow_connector = require "gameplay.interface.flow_connector"
 
 local assembling_recipe = {}; local get_recipe_index; do
     local cache = {}
@@ -92,7 +93,7 @@ local assembling_recipe = {}; local get_recipe_index; do
 end
 
 -- TODO：duplicate code with builder.lua
-local function _update_recipe_items_fluidbox(object)
+local function _update_neighbor_fluidbox(object)
     local function is_connection(x1, y1, dir1, x2, y2, dir2)
         local succ, dx1, dy1, dx2, dy2
         succ, dx1, dy1 = terrain:move_coord(x1, y1, dir1, 1)
@@ -120,7 +121,8 @@ local function _update_recipe_items_fluidbox(object)
             goto continue
         end
         assert(type(neighbor.fluid_name) == "string") -- TODO：fluid_name should be string -- remove this assert
-        for _, neighbor_fb in ipairs(ifluid:get_fluidbox(neighbor.prototype_name, neighbor_x, neighbor_y, neighbor.dir, neighbor.fluid_name)) do
+        local prototype_name = iflow_connector.covers(neighbor.prototype_name, neighbor.dir)
+        for _, neighbor_fb in ipairs(ifluid:get_fluidbox(prototype_name, neighbor_x, neighbor_y, neighbor.dir, neighbor.fluid_name)) do
             if is_connection(fb.x, fb.y, fb.dir, neighbor_fb.x, neighbor_fb.y, neighbor_fb.dir) then
                 if neighbor_fb.fluid_name == "" then
                     for _, sibling in objects:selectall("fluidflow_id", neighbor.fluidflow_id, {"CONSTRUCTED"}) do
@@ -128,12 +130,15 @@ local function _update_recipe_items_fluidbox(object)
                         ifluid:update_fluidbox(gameplay_core.get_entity(sibling.gameplay_eid), sibling.fluid_name)
                     end
                 else
+                    local prototype_name, dir
                     if neighbor.fluid_name ~= fb.fluid_name then
-                        local prototype_name, dir = ieditor:refresh_pipe(neighbor.prototype_name, neighbor.dir, neighbor_fb.dir, false)
-                        if prototype_name and dir and (prototype_name ~= neighbor.prototype_name or dir ~= neighbor.dir) then
-                            neighbor.prototype_name = prototype_name
-                            neighbor.dir = dir
-                        end
+                        prototype_name, dir = ieditor:refresh_pipe(neighbor.prototype_name, neighbor.dir, neighbor_fb.dir, false)
+                    else
+                        prototype_name, dir = ieditor:refresh_pipe(neighbor.prototype_name, neighbor.dir, neighbor_fb.dir, true)
+                    end
+                    if prototype_name and dir and (prototype_name ~= neighbor.prototype_name or dir ~= neighbor.dir) then
+                        neighbor.prototype_name = prototype_name
+                        neighbor.dir = dir
                     end
                 end
                 break -- should only have one fluidbox connected
@@ -288,7 +293,7 @@ function M:stage_ui_update(datamodel, object_id)
                 assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
                 object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or {} -- recipe may not have fluid
 
-                _update_recipe_items_fluidbox(object)
+                _update_neighbor_fluidbox(object)
                 gameplay_core.build()
 
                 iui.update("assemble_2.rml", "update", object_id)
@@ -305,7 +310,7 @@ function M:stage_ui_update(datamodel, object_id)
         iworld:set_recipe(gameplay_core.get_world(), e, nil)
         object.fluid_name = {}
 
-        _update_recipe_items_fluidbox(object)
+        _update_neighbor_fluidbox(object)
         gameplay_core.build()
     end
 end

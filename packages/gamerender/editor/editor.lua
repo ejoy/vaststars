@@ -73,7 +73,7 @@ local function refresh_pipe(prototype_name, dir, entry_dir, value)
         return
     end
 
-    return iflow_connector.set_connection(typeobject.pipe, dir, entry_dir, value)
+    return iflow_connector.set_connection(prototype_name, dir, entry_dir, value)
 end
 
 function M:refresh_pipe(...)

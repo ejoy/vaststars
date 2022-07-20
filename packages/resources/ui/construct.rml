@@ -258,7 +258,6 @@
 
                 unconfirmed_double_confirm_continuation = function()
                     start.cur_edit_mode = 'construct'
-                    start.show_construct_complete = false -- 建造模式下, 默认不显示 "开始施工"
                     ui_sys.pub {"construct_begin", true}
                 end
             end
