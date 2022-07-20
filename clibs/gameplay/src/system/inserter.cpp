@@ -142,7 +142,7 @@ static void
 updateWaiting(lua_State* L, world& w) {
     ecs_api::entity<ecs::inserter, ecs::entity, ecs::capacitance> e;
     for (auto iter = waiting.begin(); iter != waiting.end();) {
-        if (!w.init_entity(e, *iter, L) || tryActive(L, w, e.get<ecs::inserter>(), e.get<ecs::entity>(), e.get<ecs::capacitance>())) {
+        if (!e.init(w, *iter, L) || tryActive(L, w, e.get<ecs::inserter>(), e.get<ecs::entity>(), e.get<ecs::capacitance>())) {
             iter = waiting.erase(iter);
         }
         else {
@@ -170,12 +170,12 @@ lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     updateWaiting(L, w);
 
-    for (auto& e : w.select<ecs::inserter, ecs::entity, ecs::consumer, ecs::capacitance>(L)) {
+    for (auto& e : w.select<ecs::inserter>(L)) {
         ecs::inserter& i = e.get<ecs::inserter>();
         if (i.progress != STATUS_DONE) {
-            ecs::capacitance& c = e.get<ecs::capacitance>();
-            ecs::consumer& co = e.get<ecs::consumer>();
-            prototype_context p = w.prototype(L, e.get<ecs::entity>().prototype);
+            ecs::capacitance& c = e.sibling<ecs::capacitance>(w, L);
+            ecs::consumer& co = e.sibling<ecs::consumer>(w, L);
+            prototype_context p = w.prototype(L, e.sibling<ecs::entity>(w, L).prototype);
             
             unsigned int power = pt_power(&p);
             unsigned int capacitance = power * 2;
