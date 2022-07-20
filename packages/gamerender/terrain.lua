@@ -172,7 +172,11 @@ function terrain:create(width, height)
     for c, mineral in pairs(map) do
         local x, y = c:match("^(%d*),(%d*)$")
         x, y = tonumber(x), tonumber(y)
-        self.mineral_map[_get_grid_id(x, y)] = mineral
+        for i = 0, GROUND_WIDTH do
+            for j = 0, GROUND_HEIGHT do
+                self.mineral_map[_pack(x + i, y + j)] = mineral
+            end
+        end
     end
 
     assert(self._width % GROUND_WIDTH == 0 and self._height % GROUND_HEIGHT == 0)
@@ -182,8 +186,8 @@ function terrain:create(width, height)
             local _x, _y = x * GROUND_WIDTH, y * GROUND_HEIGHT
             local eid
             local srt = {r = rotators[math.random(1, 4)], t = self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT)}
-            if self.mineral_map[_pack(x, y)] then
-                eid = game_object.create(mineral_meshes[self.mineral_map[_pack(x, y)]], self:get_group_id(_x, _y), "opaque", COLOR_INVALID, srt)
+            if self.mineral_map[_pack(_x, _y)] then
+                eid = game_object.create(mineral_meshes[self.mineral_map[_pack(_x, _y)]], self:get_group_id(_x, _y), "opaque", COLOR_INVALID, srt)
             else
                 eid = game_object.create(meshes[math.random(1, #meshes)], self:get_group_id(_x, _y), "opaque", COLOR_INVALID, srt)
             end
@@ -193,7 +197,7 @@ function terrain:create(width, height)
 end
 
 function terrain:get_mineral(x, y)
-    return self.mineral_map[_get_grid_id(x, y)]
+    return self.mineral_map[_pack(x, y)]
 end
 
 function terrain:enable_terrain(x, y)
