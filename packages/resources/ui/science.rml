@@ -195,11 +195,12 @@
             .icon-researching {
                 position:absolute;
                 bottom:0.05vmin;
-                left:0.05vmin;
-                font-size: 3vmin;
+                left:0.5vmin;
+                font-size: 3.5vmin;
                 text-align: center;
                 color: rgb(0, 255, 34);
                 -webkit-text-stroke: 1px rgb(0, 0, 0);
+                animation:0.65s linear 0s infinite alternate scalesize;
             }
             .progress-background-new {
                 justify-content: flex-start;
@@ -296,6 +297,14 @@
                 text-align: center; 
                 font-size: 2.5vmin; 
                 transform: rotate(180deg);
+            }
+            @keyframes scalesize {
+                from {
+                    transform: scale(0.85);
+                }
+                to {
+                    transform: scale(1.1);
+                }
             }
             
         </style>
