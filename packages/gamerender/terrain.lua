@@ -92,14 +92,14 @@ local function _get_coord_by_begin_position(self, position)
     return {math.ceil((posx - origin[1]) / TILE_SIZE), math.ceil((origin[2] - posz) / TILE_SIZE)}
 end
 
-local function _get_grid_id(self, x, y)
-    local grid_x = x//GROUND_WIDTH
-    local grid_y = y//GROUND_HEIGHT
+local function _get_grid_id(x, y)
+    local grid_x = x//GRID_WIDTH
+    local grid_y = y//GRID_HEIGHT
     return _pack(grid_x, grid_y)
 end
 
 function terrain:get_group_id(x, y)
-	return self._group_id[_get_grid_id(self, x, y)]
+	return self._group_id[_get_grid_id(x, y)]
 end
 
 function terrain:create(width, height)
@@ -172,7 +172,7 @@ function terrain:create(width, height)
     for c, mineral in pairs(map) do
         local x, y = c:match("^(%d*),(%d*)$")
         x, y = tonumber(x), tonumber(y)
-        self.mineral_map[_get_grid_id(self, x, y)] = mineral
+        self.mineral_map[_get_grid_id(x, y)] = mineral
     end
 
     assert(self._width % GROUND_WIDTH == 0 and self._height % GROUND_HEIGHT == 0)
@@ -193,7 +193,7 @@ function terrain:create(width, height)
 end
 
 function terrain:get_mineral(x, y)
-    return self.mineral_map[_get_grid_id(self, x, y)]
+    return self.mineral_map[_get_grid_id(x, y)]
 end
 
 function terrain:enable_terrain(x, y)
