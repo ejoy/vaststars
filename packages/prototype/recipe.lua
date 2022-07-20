@@ -1094,7 +1094,7 @@ prototype "破损组装机" {
     ingredients = {
         -- {"铁丝", 6},
         {"石砖", 8},
-        {"铁板", 12},
+        {"铁齿轮", 3},
         {"破损组装机", 1},
     },
     results = {
@@ -1131,7 +1131,7 @@ prototype "破损太阳能板" {
     allow_as_intermediate = false,
     icon = "textures/construct/broken-solar-panel.texture",
     ingredients = {
-        {"铁板", 10},
+        {"铁齿轮", 3},
         {"石砖", 10},
         {"破损太阳能板", 1},
     },
@@ -1187,7 +1187,7 @@ prototype "破损运输汽车" {
     icon = "textures/construct/broken-truck.texture",
     ingredients = {
         -- {"铁丝", 10},
-        {"铁板", 10},
+        {"铁齿轮", 3},
         {"破损运输车辆", 1},
     },
     results = {
@@ -1206,7 +1206,7 @@ prototype "破损车站" {
     icon = "textures/construct/manufacture.texture",
     ingredients = {
         -- {"铁棒", 6},
-        {"铁板", 6},
+        {"铁齿轮", 1},
         {"破损车站", 1},
     },
     results = {
