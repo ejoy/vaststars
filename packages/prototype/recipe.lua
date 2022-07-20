@@ -684,7 +684,7 @@ prototype "液罐1" {
         {"液罐I", 1},
     },
     time = "6s",
-    description = "管道和铁制品制造液罐",
+    description = "制造可装载气液资源的容器",
 }
 
 prototype "化工厂1" {
