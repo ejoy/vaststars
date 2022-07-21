@@ -8,13 +8,21 @@
         "log",
         "interface",
         "import",
-        "policy"
+        "policy",
+        "lfs"
     ],
     "files.associations": {
         "*.sc": "glsl",
-        "*.make": "makefile",
-        "*.rml": "html",
+        "*.sh": "glsl",
         "*.ecs": "lua",
+        "*.make": "makefile",
+        "*.shader": "hlsl",
+        "*.rml": "html",
+        "*.rcss": "css",
+        "*.material": "yaml",
+        "*.mat": "glsl",
+        "*.fsl": "hlsl",
+        "*.texture": "yaml",
         "queue": "c",
         "stack": "c",
         "xutility": "cpp",
@@ -113,11 +121,16 @@
         "stdlib.h": "c",
         "string.h": "c",
         "sort_r.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "stdbool.h": "c"
     },
     "Lua.diagnostics.disable": [
         "empty-block",
         "discard-returns"
     ],
     "lua.debug.variables.showIntegerAsHex": false,
+    "Lua.workspace.library": [
+        "${3rd}/lfs/library"
+    ],
+    "Lua.workspace.checkThirdParty": false,
 }
