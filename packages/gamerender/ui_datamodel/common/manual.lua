@@ -13,7 +13,7 @@ local function get_progress(recipe_typeobject)
             return 0
         end
         local total = recipe_typeobject.time * 100
-        return itypes.progress(manual.progress, total)
+        return itypes.progress(manual.progress, total) * 100
     end
 end
 
