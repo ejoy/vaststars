@@ -168,7 +168,7 @@ end
 
 local function _update_recipe_items(datamodel, recipe_name)
     local storage = gameplay_core.get_storage()
-    storage.recipe_new_flag = storage.recipe_new_flag or {}
+    storage.recipe_picked_flag = storage.recipe_picked_flag or {}
 
     local object = assert(objects:get(datamodel.object_id))
     local recipes = assembling_recipe[object.prototype_name]
@@ -184,8 +184,7 @@ local function _update_recipe_items(datamodel, recipe_name)
     end
     -- if recipe_name is nil, it means all recipes are locked or the category is empty
     if recipe_name then
-        storage.recipe_new_flag = storage.recipe_new_flag or {}
-        storage.recipe_new_flag[recipe_name] = true
+        storage.recipe_picked_flag[recipe_name] = true
     end
 
     datamodel.recipe_items = {}
@@ -193,7 +192,7 @@ local function _update_recipe_items(datamodel, recipe_name)
     for group, recipe_set in pairs(recipes) do
         for _, recipe_item in ipairs(recipe_set) do
             if recipe_unlocked(recipe_item.name) then
-                local new_recipe_flag = (not storage.recipe_new_flag[recipe_item.name]) and true or false
+                local new_recipe_flag = (not storage.recipe_picked_flag[recipe_item.name]) and true or false
 
                 if group == cur_recipe_category_cfg.group then
                     datamodel.recipe_items[#datamodel.recipe_items+1] = {
@@ -249,8 +248,8 @@ function M:stage_ui_update(datamodel, object_id)
 
     for _, _, _, recipe_name in click_recipe_mb:unpack() do
         local storage = gameplay_core.get_storage()
-        storage.recipe_new_flag = storage.recipe_new_flag or {}
-        storage.recipe_new_flag[recipe_name] = true
+        storage.recipe_picked_flag = storage.recipe_picked_flag or {}
+        storage.recipe_picked_flag[recipe_name] = true
         _update_recipe_items(datamodel, recipe_name)
     end
 

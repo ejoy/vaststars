@@ -19,10 +19,6 @@
                 align-items: center;
                 border: 0.10vmin rgb(89, 73, 39);
             }
-            .recipe-time-block {
-                flex-direction: row;
-                align-items: center;
-            }
             .name-block {
                 background-color: rgb(203, 118, 24);
                 height:100%;
@@ -127,7 +123,6 @@
         <style path = "common/listpage_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local DEFAULT_ITEM_COUNT <const> = 1
 
             local start = ui_sys.createDataMode("start", {
                 category_index = 1,
@@ -136,14 +131,12 @@
                 recipe_items = {},
                 recipe_name = " ",
                 recipe_ingredients = {},
-                recipe_results = {},
-
-                material_shortages = false,
-                manual_item_count = DEFAULT_ITEM_COUNT,
-                last_manual_item_count = DEFAULT_ITEM_COUNT,
-                manual_recipe_ingredients = {},
+                manual_item_count = 0,
                 manual_recipe_main_output_name = " ",
                 manual_recipe_main_output_icon = "none",
+                enabled_item_count_5 = false,
+                enabled_item_count_1 = false,
+                enabled_start_manual = false,
             })
 
             function start.clickClose(event)
@@ -160,10 +153,6 @@
                     console.log("found no select item")
                     return
                 end
-                if start.material_shortages then
-                    console.log("material shortages")
-                    return
-                end
                 if start.manual_item_count <= 0 then
                     console.log("item count <= 0")
                     return
@@ -173,34 +162,19 @@
                 ui_sys.close("cmdcenter.rml")
             end
 
-            local function update_manual_recipe_ingredients(ingredients, require_count, results)
-                local r = {}
-                if not results[1] then
-                    return r
-                end
-
-                local manual_times = math.ceil(require_count / results[1].count)
-                for _, v in ipairs(ingredients) do
-                    r[#r+1] = {name = v.name, icon = v.icon, count = v.count * manual_times}
-                end
-                return r
-            end
-
+            local enabled_item_count <const> = {
+                [1] = "enabled_item_count_1",
+                [5] = "enabled_item_count_5",
+            }
             function start.clickItemCountPreTime(event, count)
-                if start.material_shortages then
+                if start[enabled_item_count[count]] == false then
                     return
                 end
-
-                start.last_manual_item_count = start.manual_item_count
-                start.manual_item_count = math.floor(start.manual_item_count + count)
-                start.manual_recipe_ingredients = update_manual_recipe_ingredients(start.recipe_ingredients, start.manual_item_count, start.recipe_results)
-                ui_sys.pub {"check_material", start.recipe_name, start.manual_item_count}
+                ui_sys.pub {"manual_item_count", math.floor(start.manual_item_count + count)}
             end
 
             function start.clickRevertItemCount(event)
-                start.manual_item_count = start.last_manual_item_count
-                start.manual_recipe_ingredients = update_manual_recipe_ingredients(start.recipe_ingredients, start.manual_item_count, start.recipe_results)
-                ui_sys.pub {"check_material", start.recipe_name, start.manual_item_count}
+                ui_sys.pub {"revert_item_count"}
             end
 
             function start.clickManualQueue(event)
@@ -210,9 +184,10 @@
             local function clickItem(index)
                 local item = start.recipe_items[index]
                 if not item then
+                    console.log(("no item found at index %d"):format(index))
                     return
                 end
-                ui_sys.pub {"click_recipe", item.name}
+                ui_sys.pub {"click_recipe", item.name, index}
             end
 
             local function page_item_renderer(index)
@@ -250,31 +225,12 @@
 
             ui_sys.mapping(start, {
                 {
-                    "material_shortages",
-                    function()
-                        if start.material_shortages then
-                            start.manual_item_count = 0
-                        end
-                    end
-                },
-                {
                     "recipe_items",
                     function()
                         select_item = nil
                         start.page:on_dirty_all(#start.recipe_items)
                     end
                 },
-                {
-                    function(_, recipe_ingredients, recipe_results)
-                        start.manual_item_count = DEFAULT_ITEM_COUNT
-                        start.manual_recipe_ingredients = update_manual_recipe_ingredients(start.recipe_ingredients, start.manual_item_count, start.recipe_results)
-                        start.manual_recipe_main_output_name = start.recipe_results[1] and start.recipe_results[1].name or " "
-                        start.manual_recipe_main_output_icon = start.recipe_results[1] and start.recipe_results[1].icon or "none"
-                        ui_sys.pub {"check_material", start.recipe_name, start.manual_item_count}
-                    end,
-                    "recipe_ingredients",
-                    "recipe_results",
-                }
             })
         </script>
     </head>
@@ -322,12 +278,12 @@
                         <div class = "recipe-name-text">原料</div>
                     </div>
                     <div class = "materials-block"> 
-                        <div class = "materials" data-for = "manual_recipe_ingredients">
+                        <div class = "materials" data-for = "recipe_ingredients">
                             <div class = "materials-item">
                                 <div class = "materials-icon" data-style-background-image = "it.icon" />
                                 <div class = "materials-name">{{it.name}}</div>
                                 <div style = "flex-grow: 1; flex-direction:row-reverse;">
-                                    <div class = "materials-num" data-style-color = "material_shortages ? 'rgb(255, 0, 0)' : 'rgb(255, 255, 255)'">X{{it.count}}</div>
+                                    <div class = "materials-num" data-style-color = "it.shortages ? 'rgb(255, 0, 0)' : 'rgb(255, 255, 255)'">X{{it.count}}</div>
                                 </div>
                             </div>
                         </div>
@@ -354,15 +310,15 @@
                     </div>
                     <div class="row" style="height: 30%; width:100%; justify-content: space-evenly;">
                         <button class = "button-increase-item" style='background-image:"textures/factory/return.texture";background-color: rgb(255, 230, 0);' data-event-click = "clickRevertItemCount()"/>
-                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-five.texture";' data-style-background-color="material_shortages ? 'rgb(108, 108, 108)' : 'rgb(19, 175, 240)'" data-event-click = "clickItemCountPreTime(5)" />
-                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-one.texture";'  data-style-background-color="material_shortages ? 'rgb(108, 108, 108)' : 'rgb(19, 175, 240)'" data-event-click = "clickItemCountPreTime(1)" />
+                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-five.texture";' data-style-background-color="enabled_item_count_5 ? 'rgb(19, 175, 240)' : 'rgb(108, 108, 108)'" data-event-click = "clickItemCountPreTime(5)" />
+                        <button class = "button-increase-item" style='background-image:"textures/factory/plus-one.texture";'  data-style-background-color="enabled_item_count_1 ? 'rgb(19, 175, 240)' : 'rgb(108, 108, 108)'" data-event-click = "clickItemCountPreTime(1)" />
                     </div>
                 </div>
                 <!-- 物品生产数量 end -->
 
                 <!-- 开始生产按钮 start -->
                 <div class = "recipe-button-block">
-                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115); height: 12vmin;" data-event-click = "clickStartManual()" data-if = "recipe_name != ' '" data-style-background-color="material_shortages ? 'rgb(108, 108, 108)' : 'rgb(52, 207, 115)'">
+                    <button class = "confirm-button" style="background-color:rgb(52, 207, 115); height: 12vmin;" data-event-click = "clickStartManual()" data-if = "recipe_name != ' '" data-style-background-color="enabled_start_manual ? 'rgb(52, 207, 115)' : 'rgb(108, 108, 108)'">
                         <div class = "recipe-name-text" style="font-size: 5vmin; margin:0; padding-bottom: 1vmin;">开始生产</div>
                     </button>
                 </div>

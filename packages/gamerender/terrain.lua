@@ -185,7 +185,6 @@ function terrain:create(width, height)
             local eid
             local srt = {r = rotators[math.random(1, 4)], t = self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT)}
             if self.mineral_map[_pack(_x, _y)] then
-                print(("mineral: (%s, %s) %s"):format(_x, _y, self.mineral_map[_pack(_x, _y)]))
                 eid = game_object.create(mineral_meshes[self.mineral_map[_pack(_x, _y)]], self:get_group_id(_x, _y), "opaque", COLOR_INVALID, srt)
             else
                 eid = game_object.create(meshes[math.random(1, #meshes)], self:get_group_id(_x, _y), "opaque", COLOR_INVALID, srt)

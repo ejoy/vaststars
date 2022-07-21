@@ -15,14 +15,15 @@ function M.items(s)
     return r
 end
 
+-- return values between 0 and 1
 function M.progress(progress, total)
-    assert(progress <= total)
+    assert(progress <= total, ("progress must be less than total, %s - %s"):format(progress, total))
     progress = math.max(progress, 0)
-    return (total - progress) / total * 100
+    return (total - progress) / total -- the progress of inserter is decreasing from total to 0
 end
 
 function M.progress_str(progress, total)
-    return ("%0.0f%%"):format(M.progress(progress, total))
+    return ("%0.0f%%"):format(M.progress(progress, total) * 100)
 end
 
 return M
