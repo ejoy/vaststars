@@ -183,6 +183,10 @@ function page_meta:show_detail(item_index, show)
         return
     end
 
+    if not self.index_map then
+        return
+    end
+
     local map = self.index_map[item_index]
     if not map then
         return

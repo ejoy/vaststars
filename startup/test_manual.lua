@@ -131,22 +131,27 @@ local function solverEvaluate(solver, memory, register, input)
         local mainoutput = recipe.output[1]
         local item, mul = mainoutput[1], mainoutput[2]
         mark[item] = true
+
+        local todo = recipe.input
+        local last = count - register[item]
+        local n = 1 + (last-1) // mul
+
         if count > register[item] then
-            local todo = recipe.input
-            local last = count - register[item]
-            local n = 1 + (last-1) // mul
             for i = 1, #todo do
                 if not solve_intermediate(mark, todo[i][1], todo[i][2] * n) then
                     return
                 end
             end
         end
-        for _ = 1, count do
+        for _ = 1, n * mul do
             if register[item] == 0 then
                 do_crafting(recipe)
             end
             register[item] = register[item] - 1
             push_finish(item)
+        end
+        for _ = 1, n do
+            push_separator(recipe.name)
         end
         return true
     end
@@ -154,12 +159,12 @@ local function solverEvaluate(solver, memory, register, input)
         local recipe, count = input[i][1], input[i][2]
         local m = manual[recipe]
         if not m then
+            assert(false, "unknown manual recipe: "..recipe)
             return
         end
         if not solve(m, count) then
             return
         end
-        push_separator(recipe)
     end
     return output
 end

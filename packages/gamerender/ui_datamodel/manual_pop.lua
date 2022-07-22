@@ -15,6 +15,7 @@ local manual_item_count_mb = mailbox:sub {"manual_item_count"}
 local revert_item_count_mb = mailbox:sub {"revert_item_count"}
 local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
 local inventory = require "global".inventory
+local solver = imanual.create()
 
 local function _has_fluid(s)
     for _, v in ipairs(itypes.items(s)) do
@@ -67,6 +68,32 @@ local recipes = {} do
     end
 end
 
+local function _can_craft(prototype_name, count)
+    local typeobject = assert(iprototype.queryByName("item", prototype_name))
+    if count <= inventory:get(typeobject.id).count then
+        return true
+    end
+
+    local intermediate = solver.intermediate
+    local recipe = intermediate[typeobject.name]
+    if not recipe then
+        return false
+    end
+    local mainoutput = recipe.output[1]
+    local mul = mainoutput[2]
+
+    local todo = recipe.input
+    local last = count - inventory:get(typeobject.id).count
+    local n = 1 + (last-1) // mul
+    for i = 1, #todo do
+        if not _can_craft(todo[i][1], todo[i][2] * n) then
+            return false
+        end
+    end
+
+    return true
+end
+
 local function _update_recipe_items(datamodel, recipe_name)
     local storage = gameplay_core.get_storage()
     storage.recipe_picked_flag = storage.recipe_picked_flag or {}
@@ -115,7 +142,16 @@ local function _update_recipe_items(datamodel, recipe_name)
 
                     local enable_button = true
                     for _, v in ipairs(recipe_item.ingredients) do
-                        local shortages = inventory:get(v.id).count < v.count * multiple
+                        local shortages = ""
+                        if inventory:get(v.id).count < v.count * multiple then
+                            if _can_craft(v.name, v.count * multiple) then
+                                shortages = "can_craft"
+                            else
+                                shortages = "lack"
+                            end
+                        else
+                            shortages = "enough"
+                        end
                         datamodel.recipe_ingredients[#datamodel.recipe_ingredients+1] = {
                             id = v.id,
                             name = iprototype.show_prototype_name(iprototype.queryById(v.id)),
@@ -124,7 +160,7 @@ local function _update_recipe_items(datamodel, recipe_name)
                             shortages = shortages,
                         }
 
-                        if shortages then
+                        if shortages == "lack" then
                             enable_button = false
                         end
                     end
@@ -132,6 +168,7 @@ local function _update_recipe_items(datamodel, recipe_name)
                     datamodel.enabled_item_count_1 = enable_button
                     datamodel.enabled_item_count_5 = enable_button
                     datamodel.enabled_start_manual = enable_button
+                    datamodel.main_output_enough = enable_button
 
                     datamodel.manual_recipe_main_output_name = iprototype.show_prototype_name(iprototype.queryById(main_output.id))
                     datamodel.manual_recipe_main_output_icon = main_output.icon
@@ -153,8 +190,6 @@ local function _update_recipe_items(datamodel, recipe_name)
         }
     end
 end
-
-local solver = imanual.create()
 
 local M = {}
 function M:create()

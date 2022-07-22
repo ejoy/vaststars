@@ -137,6 +137,7 @@
                 enabled_item_count_5 = false,
                 enabled_item_count_1 = false,
                 enabled_start_manual = false,
+                main_output_enough = false,
             })
 
             function start.clickClose(event)
@@ -231,6 +232,20 @@
                         start.page:on_dirty_all(#start.recipe_items)
                     end
                 },
+                {
+                    "recipe_ingredients",
+                    function()
+                        local t = {
+                            can_craft = 'rgb(176,124,52)',
+                            lack = 'rgb(255,0,0)',
+                            enough = 'rgb(255, 255, 255)',
+                        }
+                        for i = 1, #start.recipe_ingredients do
+                            local shortages = start.recipe_ingredients[i].shortages
+                            start.recipe_ingredients[i].shortages = assert(t[shortages])
+                        end
+                    end
+                }
             })
         </script>
     </head>
@@ -283,7 +298,7 @@
                                 <div class = "materials-icon" data-style-background-image = "it.icon" />
                                 <div class = "materials-name">{{it.name}}</div>
                                 <div style = "flex-grow: 1; flex-direction:row-reverse;">
-                                    <div class = "materials-num" data-style-color = "it.shortages ? 'rgb(255, 0, 0)' : 'rgb(255, 255, 255)'">X{{it.count}}</div>
+                                    <div class = "materials-num" data-style-color = "it.shortages">X{{it.count}}</div>
                                 </div>
                             </div>
                         </div>
@@ -303,7 +318,7 @@
                                 <div class = "materials-icon" data-style-background-image="manual_recipe_main_output_icon"/>
                                 <div class = "materials-name">{{manual_recipe_main_output_name}}</div>
                                 <div style = "flex-grow: 1; flex-direction:row-reverse;">
-                                    <div class = "materials-num">X{{manual_item_count}}</div>
+                                    <div class = "materials-num" data-style-color="main_output_enough ? 'rgb(255, 255, 255)' : 'rgb(255, 0, 0)'">X{{manual_item_count}}</div>
                                 </div>
                             </div>
                         </div>
