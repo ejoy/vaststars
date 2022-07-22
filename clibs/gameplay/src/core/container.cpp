@@ -26,7 +26,7 @@ chest_container::chest_container(uint16_t size)
 
 container::slot chest_container::get(uint16_t index) {
     if (index >= slots.size()) {
-        return {0,0,0};
+        return {{0,0},0};
     }
     return {slots[index], 0};
 }
@@ -166,7 +166,7 @@ container::slot recipe_container::get(uint16_t index) {
     if (index < inslots.size() + outslots.size()) {
         return outslots[index-inslots.size()];
     }
-    return {0,0,0};
+    return {{0,0},0};
 }
 
 uint16_t recipe_container::pickup(lua_State* L, world& w, uint16_t item, uint16_t max) {
