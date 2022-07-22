@@ -49,7 +49,6 @@ local recipes = {} do
                 results = irecipe.get_elements(v.results),
                 group = v.group,
             }
-            recipe_item.main_output_count = recipe_item.results[1].count
 
             if v.allow_as_intermediate ~= false then
                 local mainoutput = recipe_item.results[1].name
@@ -188,7 +187,7 @@ local function _update_recipe_items(datamodel, recipe_name, crafting_times)
                 name = recipe_item.name,
                 icon = recipe_item.icon,
                 new = new_recipe_flag,
-                main_output_count = max_craft_count,
+                max_craft_count = max_craft_count,
                 state = recipe_item_state and "enough" or "lack",
             }
 
