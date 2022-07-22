@@ -199,7 +199,7 @@
                 end
 
                 local item = document.createElement "div"
-                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" ><p class = "new-coming" data-if="%s">新</p></div>]]):format(start.recipe_items[index].icon, start.recipe_items[index].new)
+                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" ><div class ="item-count">99</div><p class = "new-coming" data-if="%s">新</p></div>]]):format(start.recipe_items[index].icon, start.recipe_items[index].new)
                 local select_style_border = "5px green"
 
                 if start.recipe_index == index then
