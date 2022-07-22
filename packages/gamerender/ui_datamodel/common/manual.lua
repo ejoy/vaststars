@@ -48,44 +48,29 @@ local function _get_manual_progress()
 end
 
 local function _get_manual_state(top)
-    local function calc(State)
-        if State.last == "separator" then
-            local typeobject = iprototype.queryByName("recipe", State.recipe_name)
-            local main_output = assert(irecipe.get_elements(typeobject.results))[1]
-
-            State.queue[#State.queue+1] = {
-                name = main_output.name,
-                icon = main_output.icon,
-                count = State.count,
-                progress = itypes.progress(State.progress, State.total_progress) * 100
-            }
-            State.manual_queue[#State.manual_queue+1] = {State.recipe_name, State.count}
-
-            State.total_progress = 0
-            State.count = 0
-            State.recipe_name = ""
-
-            State.progress = 0
-        end
-    end
     local funcs = {
         finish = function (State)
         end,
-        separator = function (State, recipe_name)
-            local typeobject = iprototype.queryByName("recipe", recipe_name)
-            local main_output = assert(irecipe.get_elements(typeobject.results))[1]
-            --
-            State.count = State.count + main_output.count
+        separator = function (State, id)
+            State.separator[#State.separator+1] = id
 
-            if State.recipe_name == "" then
-                State.recipe_name = recipe_name
-            else
-                assert(State.recipe_name == recipe_name)
+            if #State.separator == 3 then
+                local recipe_prototype = assert(iprototype.queryById(State.separator[1]))
+                local manual_crafting_times = State.separator[2]
+                local total_progress = State.separator[3] * 100
+                State.queue[#State.queue+1] = {
+                    name = recipe_prototype.name,
+                    icon = recipe_prototype.icon,
+                    count = manual_crafting_times,
+                    progress = itypes.progress(State.progress, total_progress) * 100
+                }
+
+                State.separator = {}
+                State.progress = 0
             end
         end,
         crafting = function (State, recipe_name)
             local typeobject = iprototype.queryByName("recipe", recipe_name)
-            calc(State)
 
             --
             if State.last == "" then
@@ -93,7 +78,6 @@ local function _get_manual_state(top)
             else
                 State.progress = State.progress + typeobject.time * 100
             end
-            State.total_progress = State.total_progress + typeobject.time * 100
         end
     }
 
@@ -101,11 +85,10 @@ local function _get_manual_state(top)
     local State = {
         queue = {}, -- {name = xx, icon = xx, count = xx, progress = xx} -- for display on main UI
         manual_queue = {}, -- {name = xx, count = xx} -- for world:manual()
-        progress = 0, -- progress of current manual craft, reset after change to "crafting"
-        total_progress = 0, -- total progress of current manual craft, reset after change to "crafting"
-        count = 0, -- count of current manual craft, reset after change to "crafting"
-        recipe_name = "", -- recipe_name of current manual craft, reset after change to "crafting"
+
         last = "",
+        progress = 0, -- progress of current manual craft, reset after change to "crafting"
+        separator = {}, -- {recipe_prototype, manual_crafting_times, manual_crafting_total_progress}
     }
 
     for i = #queue, 1, -1 do
@@ -117,7 +100,7 @@ local function _get_manual_state(top)
         end
         State.last = queue[i][1]
     end
-    calc(State)
+    assert(#State.separator == 0)
 
     return State
 end

@@ -131,9 +131,9 @@
                 recipe_items = {},
                 recipe_name = " ",
                 recipe_ingredients = {},
-                manual_item_count = 0,
-                manual_recipe_main_output_name = " ",
-                manual_recipe_main_output_icon = "none",
+                manual_crafting_times = 0,
+                main_output_name = " ",
+                main_output_icon = "none",
                 enabled_item_count_5 = false,
                 enabled_item_count_1 = false,
                 enabled_start_manual = false,
@@ -150,15 +150,18 @@
             end
 
             function start.clickStartManual(event)
+                if start.enabled_start_manual == false then
+                    return
+                end
                 if start.recipe_name == " " then
                     console.log("found no select item")
                     return
                 end
-                if start.manual_item_count <= 0 then
+                if start.manual_crafting_times <= 0 then
                     console.log("item count <= 0")
                     return
                 end
-                ui_sys.pub {"manual_add", start.recipe_name, start.manual_item_count}
+                ui_sys.pub {"manual_add", start.recipe_name, start.manual_crafting_times}
                 ui_sys.close()
                 ui_sys.close("cmdcenter.rml")
             end
@@ -171,7 +174,7 @@
                 if start[enabled_item_count[count]] == false then
                     return
                 end
-                ui_sys.pub {"manual_item_count", math.floor(start.manual_item_count + count)}
+                ui_sys.pub {"manual_crafting_times", math.floor(start.manual_crafting_times + count)}
             end
 
             function start.clickRevertItemCount(event)
@@ -199,7 +202,13 @@
                 end
 
                 local item = document.createElement "div"
-                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" ><div class ="item-count">99</div><p class = "new-coming" data-if="%s">新</p></div>]]):format(start.recipe_items[index].icon, start.recipe_items[index].new)
+                local recipe_item = assert(start.recipe_items[index])
+                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s; background-color: %s;" ><div class ="item-count">%d</div><p class = "new-coming" data-if="%s">新</p></div>]]):format(
+                    recipe_item.icon,
+                    recipe_item.color,
+                    recipe_item.main_output_count,
+                    recipe_item.new
+                )
                 local select_style_border = "5px green"
 
                 if start.recipe_index == index then
@@ -228,6 +237,15 @@
                 {
                     "recipe_items",
                     function()
+                        local t = {
+                            lack = 'rgb(255,0,0)',
+                            enough = 'rgb(250, 205, 9)',
+                        }
+                        for i = 1, #start.recipe_items do
+                            local state = start.recipe_items[i].state
+                            start.recipe_items[i].color = assert(t[state])
+                        end
+
                         select_item = nil
                         start.page:on_dirty_all(#start.recipe_items)
                     end
@@ -241,8 +259,8 @@
                             enough = 'rgb(255, 255, 255)',
                         }
                         for i = 1, #start.recipe_ingredients do
-                            local shortages = start.recipe_ingredients[i].shortages
-                            start.recipe_ingredients[i].shortages = assert(t[shortages])
+                            local state = start.recipe_ingredients[i].state
+                            start.recipe_ingredients[i].color = assert(t[state])
                         end
                     end
                 }
@@ -298,7 +316,8 @@
                                 <div class = "materials-icon" data-style-background-image = "it.icon" />
                                 <div class = "materials-name">{{it.name}}</div>
                                 <div style = "flex-grow: 1; flex-direction:row-reverse;">
-                                    <div class = "materials-num" data-style-color = "it.shortages">X{{it.count}}</div>
+                                    <div class = "materials-num" data-style-color = "it.color" data-if = "it.state == 'can_craft' || it.state == 'enough'">X{{it.count}}</div>
+                                    <div class = "materials-num" data-style-color = "it.color" data-if = "it.state == 'lack'">X({{it.inventory_count}}/{{it.count}})</div>
                                 </div>
                             </div>
                         </div>
@@ -313,12 +332,12 @@
                         <div class = "recipe-name-text">物品</div>
                     </div> 
                     <div class = "materials-block" style="height:58%;">
-                        <div class = "materials" data-if = "manual_recipe_main_output_name != ' '">
+                        <div class = "materials" data-if = "main_output_name != ' '">
                             <div class = "materials-item">
-                                <div class = "materials-icon" data-style-background-image="manual_recipe_main_output_icon"/>
-                                <div class = "materials-name">{{manual_recipe_main_output_name}}</div>
+                                <div class = "materials-icon" data-style-background-image="main_output_icon"/>
+                                <div class = "materials-name">{{main_output_name}}</div>
                                 <div style = "flex-grow: 1; flex-direction:row-reverse;">
-                                    <div class = "materials-num" data-style-color="main_output_enough ? 'rgb(255, 255, 255)' : 'rgb(255, 0, 0)'">X{{manual_item_count}}</div>
+                                    <div class = "materials-num" data-style-color="main_output_enough ? 'rgb(255, 255, 255)' : 'rgb(255, 0, 0)'">X{{manual_crafting_times}}</div>
                                 </div>
                             </div>
                         </div>
