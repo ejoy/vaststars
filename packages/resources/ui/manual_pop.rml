@@ -238,7 +238,7 @@
                     "recipe_items",
                     function()
                         local t = {
-                            lack = 'rgb(255,0,0)',
+                            lack = 'rgb(255,80,80)',
                             enough = 'rgb(250, 205, 9)',
                         }
                         for i = 1, #start.recipe_items do
