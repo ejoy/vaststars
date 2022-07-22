@@ -6,6 +6,7 @@ local iprototype = require "gameplay.interface.prototype"
 local itypes = require "gameplay.interface.types"
 local gameplay_core = require "gameplay.core"
 local imanual = require "gameplay.interface.manual"
+local imanual_common = require "ui_datamodel.common.manual"
 local manual_add_mb = mailbox:sub {"manual_add"}
 local click_category_mb = mailbox:sub {"click_category"}
 local recipe_category_cfg = import_package "vaststars.prototype"("recipe_category")
@@ -235,15 +236,15 @@ end
 
 function M:stage_ui_update(datamodel)
     for _, _, _, name, count in manual_add_mb:unpack() do
-        local t = gameplay_core.get_world():manual()
-        local output = imanual.evaluate(solver, gameplay_core.manual_chest(), gameplay_core.get_world():manual_container(), {{name, count}})
+        local manual_queue = imanual_common.get_manual_queue()
+        manual_queue[#manual_queue+1] = {name, count}
+        local output = imanual.evaluate(solver, gameplay_core.manual_chest(), gameplay_core.get_world():manual_container(), manual_queue)
         if not output then
             log.error("material shortages")
         else
-            table.move(output, 1, #output, #t + 1, t)
-            gameplay_core.get_world():manual(t)
+            gameplay_core.get_world():manual(output)
+            world:pub {"manual_add", name, count}
         end
-        world:pub {"manual_add", name, count}
     end
 
     for _, _, _, category_index in click_category_mb:unpack() do

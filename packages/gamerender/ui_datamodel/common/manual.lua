@@ -65,6 +65,8 @@ local function _get_manual_state(top)
                     progress = itypes.progress(State.progress, total_progress) * 100
                 }
 
+                State.manual_queue[#State.manual_queue+1] = {recipe_prototype.name, manual_crafting_times}
+
                 State.separator = {}
                 State.progress = 0
             end
@@ -111,6 +113,10 @@ local function get_queue(top)
     return _get_manual_state(top).queue
 end
 
+local function get_manual_queue()
+    return _get_manual_state().manual_queue
+end
+
 local function cancel(index)
     local queue = _get_manual_state().manual_queue
     if #queue < index then
@@ -128,6 +134,7 @@ local function cancel(index)
 end
 
 return {
+    get_manual_queue = get_manual_queue,
     get_queue = get_queue,
     cancel = cancel,
 }
