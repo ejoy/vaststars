@@ -53,7 +53,7 @@ bool chest_container::place(lua_State* L, world& w, uint16_t item, uint16_t amou
         if (!resize(L, w, item, 0, amount)) {
             return false;
         }
-        slots.push_back(chest_container::slot {item, 0});
+        slots.push_back(chest_container::item {item, 0});
         sort(slots.size()-1, amount);
         return true;
     }
@@ -74,7 +74,7 @@ void chest_container::sort(size_t index, uint16_t newvalue) {
         slots.pop_back();
     }
     else if (value > newvalue) {
-        chest_container::slot insert = {slots[index].item, newvalue};
+        chest_container::item insert = {slots[index].item, newvalue};
         for (size_t i = index; i < slots.size()-1; ++i) {
             if (slots[i+1].amount <= newvalue) {
                 slots[i] = insert;
@@ -85,7 +85,7 @@ void chest_container::sort(size_t index, uint16_t newvalue) {
         slots[slots.size()-1] = insert;
     }
     else {
-        chest_container::slot insert = {slots[index].item, newvalue};
+        chest_container::item insert = {slots[index].item, newvalue};
         for (size_t i = index; i > 0; --i) {
             if (slots[i-1].amount >= newvalue) {
                 slots[i] = insert;
