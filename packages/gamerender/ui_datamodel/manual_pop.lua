@@ -11,7 +11,7 @@ local click_category_mb = mailbox:sub {"click_category"}
 local recipe_category_cfg = import_package "vaststars.prototype"("recipe_category")
 local irecipe = require "gameplay.interface.recipe"
 local click_recipe_mb = mailbox:sub {"click_recipe"}
-local manual_item_count_mb = mailbox:sub {"manual_item_count"}
+local manual_crafting_times_mb = mailbox:sub {"manual_crafting_times"}
 local revert_item_count_mb = mailbox:sub {"revert_item_count"}
 local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
 local inventory = require "global".inventory
@@ -48,6 +48,7 @@ local recipes = {} do
                 results = irecipe.get_elements(v.results),
                 group = v.group,
             }
+            recipe_item.main_output_count = recipe_item.results[1].count
 
             if v.allow_as_intermediate ~= false then
                 local mainoutput = recipe_item.results[1].name
@@ -94,7 +95,8 @@ local function _can_craft(prototype_name, count)
     return true
 end
 
-local function _update_recipe_items(datamodel, recipe_name)
+-- when click a category or a recipe, update the info of the manual crafting on the right side
+local function _update_recipe_items(datamodel, recipe_name, crafting_times)
     local storage = gameplay_core.get_storage()
     storage.recipe_picked_flag = storage.recipe_picked_flag or {}
     inventory:flush()
@@ -122,62 +124,88 @@ local function _update_recipe_items(datamodel, recipe_name)
     local recipe_category_new_flag = {}
     for group, recipe_set in pairs(recipes) do
         for _, recipe_item in ipairs(recipe_set) do
-            if recipe_unlocked(recipe_item.name) then
-                local new_recipe_flag = (not storage.recipe_picked_flag[recipe_item.name]) and true or false
+            if not recipe_unlocked(recipe_item.name) then
+                goto continue
+            end
 
-                if group == cur_recipe_category_cfg.group then
-                    datamodel.recipe_items[#datamodel.recipe_items+1] = {
-                        name = recipe_item.name,
-                        icon = recipe_item.icon,
-                        new = new_recipe_flag,
-                    }
-                end
+            -- for the new flag
+            local new_recipe_flag = (not storage.recipe_picked_flag[recipe_item.name]) and true or false
+            if new_recipe_flag then
+                recipe_category_new_flag[group] = true
+            end
 
-                if recipe_name and recipe_name == recipe_item.name then
-                    datamodel.recipe_name = recipe_item.name
-                    datamodel.recipe_ingredients = {}
+            -- current category
+            if group ~= cur_recipe_category_cfg.group then
+                goto continue
+            end
 
-                    local main_output = assert(recipe_item.results[1], ("recipe %s has no main output"):format(recipe_item.name))
-                    local multiple = math.ceil(datamodel.manual_item_count / main_output.count)
+            local main_output = assert(recipe_item.results[1], ("recipe %s has no main output"):format(recipe_item.name))
 
-                    local enable_button = true
-                    for _, v in ipairs(recipe_item.ingredients) do
-                        local shortages = ""
-                        if inventory:get(v.id).count < v.count * multiple then
-                            if _can_craft(v.name, v.count * multiple) then
-                                shortages = "can_craft"
-                            else
-                                shortages = "lack"
-                            end
-                        else
-                            shortages = "enough"
-                        end
-                        datamodel.recipe_ingredients[#datamodel.recipe_ingredients+1] = {
-                            id = v.id,
-                            name = iprototype.show_prototype_name(iprototype.queryById(v.id)),
-                            count = math.floor(v.count * multiple),
-                            icon = v.icon,
-                            shortages = shortages,
-                        }
-
-                        if shortages == "lack" then
-                            enable_button = false
-                        end
+            --
+            local multiple = 1
+            local recipe_item_state = true
+            for _, v in ipairs(recipe_item.ingredients) do
+                if inventory:get(v.id).count < v.count * multiple then
+                    if not _can_craft(v.name, v.count * multiple) then
+                        recipe_item_state = false
                     end
-
-                    datamodel.enabled_item_count_1 = enable_button
-                    datamodel.enabled_item_count_5 = enable_button
-                    datamodel.enabled_start_manual = enable_button
-                    datamodel.main_output_enough = enable_button
-
-                    datamodel.manual_recipe_main_output_name = iprototype.show_prototype_name(iprototype.queryById(main_output.id))
-                    datamodel.manual_recipe_main_output_icon = main_output.icon
-                end
-
-                if new_recipe_flag then
-                    recipe_category_new_flag[group] = true
                 end
             end
+
+            datamodel.recipe_items[#datamodel.recipe_items+1] = {
+                name = recipe_item.name,
+                icon = recipe_item.icon,
+                new = new_recipe_flag,
+                main_output_count = recipe_item.main_output_count,
+                state = recipe_item_state and "enough" or "lack",
+            }
+
+            -- current recipe
+            if not (recipe_name and recipe_name == recipe_item.name) then
+                goto continue
+            end
+
+            multiple = crafting_times or 1
+            local enable_button = true
+            local recipe_ingredients = {}
+            for _, v in ipairs(recipe_item.ingredients) do
+                local state
+                if inventory:get(v.id).count < v.count * multiple then
+                    if _can_craft(v.name, v.count * multiple) then
+                        state = "can_craft"
+                    else
+                        state = "lack"
+                    end
+                else
+                    state = "enough"
+                end
+                recipe_ingredients[#recipe_ingredients+1] = {
+                    id = v.id,
+                    name = iprototype.show_prototype_name(iprototype.queryById(v.id)),
+                    count = math.floor(v.count * multiple),
+                    inventory_count = inventory:get(v.id).count,
+                    icon = v.icon,
+                    state = state,
+                }
+
+                if state == "lack" then
+                    enable_button = false
+                end
+            end
+
+            datamodel.recipe_name = recipe_item.name
+            datamodel.enabled_item_count_1 = enable_button
+            datamodel.enabled_item_count_5 = enable_button
+            datamodel.enabled_start_manual = enable_button
+
+            datamodel.recipe_ingredients = recipe_ingredients
+            datamodel.main_output_name = iprototype.show_prototype_name(iprototype.queryById(main_output.id))
+            datamodel.main_output_icon = main_output.icon
+            datamodel.manual_crafting_times = main_output.count * multiple
+            datamodel.last_manual_crafting_times = datamodel.manual_crafting_times
+            datamodel.main_output_enough = enable_button
+
+            ::continue::
         end
     end
 
@@ -196,10 +224,10 @@ function M:create()
     local datamodel = {}
     datamodel.category_index = 1
     datamodel.recipe_index = 1 -- recipe_index is the index of recipe_items[caterory], default is 1
-    datamodel.manual_item_count = 1
-    datamodel.manual_recipe_main_output_name = " "
-    datamodel.manual_recipe_main_output_icon = "none"
-    datamodel.last_manual_item_count = datamodel.manual_item_count
+    datamodel.manual_crafting_times = 1
+    datamodel.main_output_name = " "
+    datamodel.main_output_icon = "none"
+    datamodel.last_manual_crafting_times = datamodel.manual_crafting_times
     _update_recipe_items(datamodel)
 
     return datamodel
@@ -221,10 +249,8 @@ function M:stage_ui_update(datamodel)
     for _, _, _, category_index in click_category_mb:unpack() do
         datamodel.category_index = category_index
         datamodel.recipe_index = 1 -- recipe_index is the index of recipe_items[caterory], default is 1
-        datamodel.manual_item_count = 1
-        datamodel.manual_recipe_main_output_name = " "
-        datamodel.manual_recipe_main_output_icon = "none"
-        datamodel.last_manual_item_count = datamodel.manual_item_count
+        datamodel.main_output_name = " "
+        datamodel.main_output_icon = "none"
         _update_recipe_items(datamodel)
     end
 
@@ -232,20 +258,17 @@ function M:stage_ui_update(datamodel)
         local storage = gameplay_core.get_storage()
         storage.recipe_picked_flag = storage.recipe_picked_flag or {}
         storage.recipe_picked_flag[recipe_name] = true
-        datamodel.manual_item_count = 1
         datamodel.recipe_name = recipe_name
         datamodel.recipe_index = recipe_index
         _update_recipe_items(datamodel, recipe_name)
     end
 
-    for _, _, _, manual_item_count in manual_item_count_mb:unpack() do
-        datamodel.last_manual_item_count = datamodel.manual_item_count
-        datamodel.manual_item_count = manual_item_count
-        _update_recipe_items(datamodel, datamodel.recipe_name)
+    for _, _, _, manual_crafting_times in manual_crafting_times_mb:unpack() do
+        _update_recipe_items(datamodel, datamodel.recipe_name, manual_crafting_times)
     end
 
     for _ in revert_item_count_mb:unpack() do
-        datamodel.manual_item_count = datamodel.last_manual_item_count
+        datamodel.manual_crafting_times = datamodel.last_manual_crafting_times
         _update_recipe_items(datamodel, datamodel.recipe_name)
     end
 end

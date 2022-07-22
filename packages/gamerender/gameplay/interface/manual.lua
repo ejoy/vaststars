@@ -33,9 +33,11 @@ local function solverCreate()
             local results = decode(info.results)
             if ingredients and results and #results > 0 then
                 local r = {
+                    id = info.id,
                     name = name,
                     input = ingredients,
                     output = results,
+                    time = info.time,
                 }
                 local mainoutput = results[1][1]
                 insertManual(mainoutput, r)
@@ -64,6 +66,7 @@ local function solverEvaluate(solver, memory, register, input)
     setmetatable(register, mt)
 
     local output = {}
+    local total_progress = 0 -- total progress of current manual crafting
     local manual = solver.manual
     local intermediate = solver.intermediate
     local function push_crafting(item)
@@ -92,6 +95,7 @@ local function solverEvaluate(solver, memory, register, input)
             local n = s[2]
             register[id] = register[id] + n
         end
+        total_progress = total_progress + recipe.time
         push_crafting(recipe.name)
     end
     local function solve_intermediate(mark, item, count)
@@ -150,9 +154,11 @@ local function solverEvaluate(solver, memory, register, input)
             register[item] = register[item] - 1
             push_finish(item)
         end
-        for _ = 1, n do
-            push_separator(recipe.name)
-        end
+
+        push_separator(recipe.id)
+        push_separator(n)
+        push_separator(total_progress)
+        total_progress = 0
         return true
     end
     for i = 1, #input do
