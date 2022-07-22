@@ -8,7 +8,7 @@
                 text-align: center;
                 font-size: 3.80vmin;
                 color: gold;
-                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
+                -webkit-text-stroke: 0.15vmin rgb(0, 0, 0);
                 position: relative;
                 bottom:0.5em;
             }
