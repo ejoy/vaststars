@@ -203,10 +203,11 @@
 
                 local item = document.createElement "div"
                 local recipe_item = assert(start.recipe_items[index])
-                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s; background-color: %s;" ><div class ="item-count">%d</div><p class = "new-coming" data-if="%s">新</p></div>]]):format(
+                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s; background-color: %s;" ><div class ="item-count" data-if = "%d > 0">%d</div><p class = "new-coming" data-if="%s">新</p></div>]]):format(
                     recipe_item.icon,
                     recipe_item.color,
-                    recipe_item.main_output_count,
+                    recipe_item.max_craft_count,
+                    recipe_item.max_craft_count,
                     recipe_item.new
                 )
                 local select_style_border = "5px green"
