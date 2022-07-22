@@ -89,8 +89,8 @@ local function _get_manual_state(top)
         manual_queue = {}, -- {name = xx, count = xx} -- for world:manual()
 
         last = "",
-        progress = 0, -- progress of current manual craft, reset after change to "crafting"
-        separator = {}, -- {recipe_prototype, manual_crafting_times, manual_crafting_total_progress}
+        progress = 0, -- progress of current manual craft, reset after count "separator" 3 times
+        separator = {}, -- {recipe_prototype, manual_crafting_times, manual_crafting_total_progress}, reset after count "separator" 3 times
     }
 
     for i = #queue, 1, -1 do

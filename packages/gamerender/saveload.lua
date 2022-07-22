@@ -249,13 +249,25 @@ local function get_camera_setting()
     return t
 end
 
-local function restore_camera_setting(camera_setting)
+local M = {running = false}
+function M:restore_camera_setting()
+    local camera_setting
+    if bee_fs.exists(bee_fs.path(camera_setting_path)) then
+        camera_setting = json.decode(readall(camera_setting_path))
+    end
+    if not camera_setting then
+        return
+    end
     local ce = world:entity(irq.main_camera())
     iom.set_srt(ce, camera_setting.s, camera_setting.r, camera_setting.t)
     ic.set_frustum(ce, camera_setting.frustum)
+
+    local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+    if coord then
+        terrain:enable_terrain(coord[1], coord[2])
+    end
 end
 
-local M = {running = false}
 function M:backup()
     if not self.running then
         log.error("not running")
@@ -282,10 +294,7 @@ function M:backup()
 end
 
 function M:restore(index)
-    local camera_setting
-    if bee_fs.exists(bee_fs.path(camera_setting_path)) then
-        camera_setting = json.decode(readall(camera_setting_path))
-    end
+    self:restore_camera_setting()
 
     --
     if not bee_fs.exists(bee_fs.path(archiving_list_path)) then
@@ -340,15 +349,6 @@ function M:restore(index)
     self.running = true
     iscience.update_tech_list(gameplay_core.get_world())
     iui.open("construct.rml")
-
-    if camera_setting then
-        restore_camera_setting(camera_setting)
-    end
-
-    local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
-    if coord then
-        terrain:enable_terrain(coord[1], coord[2])
-    end
 
     gameplay_core.build()
     restore_world()

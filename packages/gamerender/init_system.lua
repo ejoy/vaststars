@@ -16,19 +16,27 @@ local saveload = ecs.require "saveload"
 local objects = require "objects"
 local vsobject_manager = ecs.require "vsobject_manager"
 local iguide = require "gameplay.interface.guide"
+local TERRAIN_ONLY = require("debugger").terrain_only
+local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 
 local m = ecs.system 'init_system'
 function m:init_world()
     check_prototype()
     bgfx.maxfps(FRAMES_PER_SECOND)
-    iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
-    iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
-    iui.preload_datamodel_dir "/pkg/vaststars.gamerender/ui_datamodel"
 
     camera.init("camera_default.prefab")
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
     terrain:create()
+    if TERRAIN_ONLY then
+        saveload:restore_camera_setting()
+        return
+    end
+
+    iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
+    iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
+    iui.preload_datamodel_dir "/pkg/vaststars.gamerender/ui_datamodel"
+
     if not saveload:restore() then
         return
     end
@@ -50,4 +58,13 @@ function m:update_world()
         world_update(gameplay_core.get_world(), get_object)
     end
     fps()
+end
+
+function m:camera_usage()
+    for _ in dragdrop_camera_mb:unpack() do
+        local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+        if coord then
+            terrain:enable_terrain(coord[1], coord[2])
+        end
+    end
 end
