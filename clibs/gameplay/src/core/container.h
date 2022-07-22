@@ -34,6 +34,7 @@ struct container {
 struct chest_container: public container {
     chest_container();
     chest_container(uint16_t size);
+    virtual ~chest_container() = default;
     std::vector<item> slots;
     uint16_t          used;
     uint16_t          size;
@@ -57,6 +58,7 @@ struct recipe_container: public container {
     std::vector<slot> outslots;
     recipe_container();
     recipe_container(item_array in, item_array out);
+    virtual ~recipe_container() = default;
     bool     recipe_pickup(world& w, const recipe_items* r);
     bool     recipe_recover(world& w, const recipe_items* r);
     void     recipe_limit(world& w, const uint16_t* r);

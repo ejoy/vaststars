@@ -73,6 +73,7 @@ prototype "管道1-X型" {
 }
 
 prototype "地下管1-JI型" {
+    show_prototype_name = "地下管I",
     type = {"item"},
     stack = 100,
     icon = "textures/construct/underground-pipe1.texture",
@@ -83,6 +84,7 @@ prototype "地下管1-JI型" {
 }
 
 prototype "地下管2-JI型" {
+    show_prototype_name = "地下管II",
     type = {"item"},
     stack = 100,
     icon = "textures/construct/underground-pipe1.texture",

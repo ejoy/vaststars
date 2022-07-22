@@ -98,8 +98,8 @@ uint64_t task::eval(lua_State* L, world& w) {
     case task::type::select_entity:           return select_entity(L, w);
     case task::type::select_chect:            return select_chect(L, w);
     case task::type::power_generator:         return power_generator(L, w);
+    default: return 0;
     }
-    return 0;
 }
 
 uint16_t task::progress(lua_State* L, world& w) {

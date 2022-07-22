@@ -117,55 +117,48 @@ struct manual {
 
 }
 
-struct ecs_component_id {
-	inline static int id = 0x80000000;
-	inline static constexpr int gen() {
-		return id++;
-	}
-};
-
 }
 
 using namespace vaststars;
 
 namespace ecs_api {
 
-#define ECS_COMPONENT(NAME) \
+#define ECS_COMPONENT(NAME, ID) \
 template <> struct component<ecs::NAME> { \
-	static inline const int id = ecs_component_id::gen(); \
+	static inline constexpr int id = 0x80000000 + ID; \
 	static inline constexpr char name[] = #NAME; \
 	static inline constexpr bool tag = false; \
 };
 
-#define ECS_TAG(NAME) \
+#define ECS_TAG(NAME, ID) \
 template <> struct component<ecs::NAME> { \
-	static inline const int id = ecs_component_id::gen(); \
+	static inline constexpr int id = 0x80000000 + ID; \
 	static inline constexpr char name[] = #NAME; \
 	static inline constexpr bool tag = true; \
 };
 
-ECS_COMPONENT(REMOVED)
-ECS_COMPONENT(entity)
-ECS_COMPONENT(chest)
-ECS_COMPONENT(assembling)
-ECS_COMPONENT(laboratory)
-ECS_COMPONENT(inserter)
-ECS_COMPONENT(capacitance)
-ECS_COMPONENT(burner)
-ECS_COMPONENT(chimney)
-ECS_COMPONENT(consumer)
-ECS_TAG(generator)
-ECS_TAG(accumulator)
-ECS_COMPONENT(fluidbox)
-ECS_COMPONENT(fluidboxes)
-ECS_TAG(pump)
-ECS_TAG(mining)
-ECS_COMPONENT(road)
-ECS_COMPONENT(station)
-ECS_COMPONENT(save_fluidflow)
-ECS_TAG(solar_panel)
-ECS_TAG(base)
-ECS_COMPONENT(manual)
+ECS_COMPONENT(REMOVED, 0)
+ECS_COMPONENT(entity,1)
+ECS_COMPONENT(chest,2)
+ECS_COMPONENT(assembling,3)
+ECS_COMPONENT(laboratory,4)
+ECS_COMPONENT(inserter,5)
+ECS_COMPONENT(capacitance,6)
+ECS_COMPONENT(burner,7)
+ECS_COMPONENT(chimney,8)
+ECS_COMPONENT(consumer,9)
+ECS_TAG(generator,10)
+ECS_TAG(accumulator,11)
+ECS_COMPONENT(fluidbox,12)
+ECS_COMPONENT(fluidboxes,13)
+ECS_TAG(pump,14)
+ECS_TAG(mining,15)
+ECS_COMPONENT(road,16)
+ECS_COMPONENT(station,17)
+ECS_COMPONENT(save_fluidflow,18)
+ECS_TAG(solar_panel,19)
+ECS_TAG(base,20)
+ECS_COMPONENT(manual,21)
 
 #undef ECS_COMPONENT
 

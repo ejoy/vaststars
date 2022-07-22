@@ -75,13 +75,6 @@ local function writeEntityH(components)
     write ""
     write "}"
     write ""
-    write "struct ecs_component_id {"
-    write "\tinline static int id = 0x80000000;"
-    write "\tinline static constexpr int gen() {"
-    write "\t\treturn id++;"
-    write "\t}"
-    write "};"
-    write ""
     write "}"
     write ""
     write "using namespace vaststars;"
@@ -89,28 +82,28 @@ local function writeEntityH(components)
 
     write "namespace ecs_api {"
     write ""
-    write "#define ECS_COMPONENT(NAME) \\"
+    write "#define ECS_COMPONENT(NAME, ID) \\"
     write "template <> struct component<ecs::NAME> { \\"
-    write "\tstatic inline const int id = ecs_component_id::gen(); \\"
+    write "\tstatic inline constexpr int id = 0x80000000 + ID; \\"
     write "\tstatic inline constexpr char name[] = #NAME; \\"
     write "\tstatic inline constexpr bool tag = false; \\"
     write "};"
     write ""
-    write "#define ECS_TAG(NAME) \\"
+    write "#define ECS_TAG(NAME, ID) \\"
     write "template <> struct component<ecs::NAME> { \\"
-    write "\tstatic inline const int id = ecs_component_id::gen(); \\"
+    write "\tstatic inline constexpr int id = 0x80000000 + ID; \\"
     write "\tstatic inline constexpr char name[] = #NAME; \\"
     write "\tstatic inline constexpr bool tag = true; \\"
     write "};"
     write ""
-    write("ECS_COMPONENT(REMOVED)")
-        for _, c in ipairs(components) do
-            if isTag(c) then
-                write("ECS_TAG("..c.name..")")
-            else
-                write("ECS_COMPONENT("..c.name..")")
-            end
+    write("ECS_COMPONENT(REMOVED, 0)")
+    for i, c in ipairs(components) do
+        if isTag(c) then
+            write(("ECS_TAG(%s,%d)"):format(c.name, i))
+        else
+            write(("ECS_COMPONENT(%s,%d)"):format(c.name, i))
         end
+    end
     write ""
     write "#undef ECS_COMPONENT"
     write ""

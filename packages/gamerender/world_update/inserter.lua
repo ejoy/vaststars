@@ -1,16 +1,9 @@
 local iprototype = require "gameplay.interface.prototype"
+local itypes = require "gameplay.interface.types"
 
 -- define in packages\gameplay\type\assembling.lua
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
-
-local function get_percent(progress, total)
-    assert(progress <= total)
-    if progress < 0 then
-        progress = 0
-    end
-    return (total - progress) / total -- the progress of inserter is decreasing from total to 0
-end
 
 local function update_world(world, get_object_func)
     local t = {}
@@ -35,7 +28,7 @@ local function update_world(world, get_object_func)
                 animation_name = "UpToDown"
             end
             local typeobject = assert(iprototype.queryById(e.entity.prototype))
-            vsobject:animation_update(animation_name, get_percent(inserter.progress, assert(typeobject.speed)))
+            vsobject:animation_update(animation_name, itypes.progress(inserter.progress, assert(typeobject.speed)))
         end
 
     end

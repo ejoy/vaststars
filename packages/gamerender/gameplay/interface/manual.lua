@@ -33,9 +33,11 @@ local function solverCreate()
             local results = decode(info.results)
             if ingredients and results and #results > 0 then
                 local r = {
+                    id = info.id,
                     name = name,
                     input = ingredients,
                     output = results,
+                    time = info.time,
                 }
                 local mainoutput = results[1][1]
                 insertManual(mainoutput, r)
@@ -64,6 +66,7 @@ local function solverEvaluate(solver, memory, register, input)
     setmetatable(register, mt)
 
     local output = {}
+    local total_progress = 0 -- total progress of current manual crafting
     local manual = solver.manual
     local intermediate = solver.intermediate
     local function push_crafting(item)
@@ -92,6 +95,7 @@ local function solverEvaluate(solver, memory, register, input)
             local n = s[2]
             register[id] = register[id] + n
         end
+        total_progress = total_progress + recipe.time
         push_crafting(recipe.name)
     end
     local function solve_intermediate(mark, item, count)
@@ -131,35 +135,42 @@ local function solverEvaluate(solver, memory, register, input)
         local mainoutput = recipe.output[1]
         local item, mul = mainoutput[1], mainoutput[2]
         mark[item] = true
+
+        local todo = recipe.input
+        local last = count - register[item]
+        local n = 1 + (last-1) // mul
+
         if count > register[item] then
-            local todo = recipe.input
-            local last = count - register[item]
-            local n = 1 + (last-1) // mul
             for i = 1, #todo do
                 if not solve_intermediate(mark, todo[i][1], todo[i][2] * n) then
                     return
                 end
             end
         end
-        for _ = 1, count do
+        for _ = 1, n * mul do
             if register[item] == 0 then
                 do_crafting(recipe)
             end
             register[item] = register[item] - 1
             push_finish(item)
         end
+
+        push_separator(recipe.id)
+        push_separator(n)
+        push_separator(total_progress)
+        total_progress = 0
         return true
     end
     for i = 1, #input do
         local recipe, count = input[i][1], input[i][2]
         local m = manual[recipe]
         if not m then
+            assert(false, "unknown manual recipe: "..recipe)
             return
         end
         if not solve(m, count) then
             return
         end
-        push_separator(recipe)
     end
     return output
 end
