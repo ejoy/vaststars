@@ -7,7 +7,7 @@ local gameplay_core = require "gameplay.core"
 local CACHE_NAMES <const> = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local TEMPORARY_CACHE_NAMES <const> = {"TEMPORARY"}
 local CONSTRUCTED_CACHE_NAMES <const> = {"CONSTRUCTED"}
-local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = require("debugger").infinite_item()
+local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = require("debugger").infinite_item
 
 local function flush(self)
     self._inventory:clear(CACHE_NAMES)

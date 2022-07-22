@@ -290,11 +290,6 @@ end
 
 function M:stage_camera_usage(datamodel)
     for _, delta in dragdrop_camera_mb:unpack() do
-        local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
-        if coord then
-            terrain:enable_terrain(coord[1], coord[2])
-        end
-
         if builder then
             builder:touch_move(datamodel, delta)
             self:flush()
