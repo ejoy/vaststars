@@ -96,6 +96,31 @@ local function _can_craft(prototype_name, count)
     return true
 end
 
+local function _max_craft_count(prototype_name)
+    local typeobject = assert(iprototype.queryByName("item", prototype_name))
+    local exist = inventory:get(typeobject.id).count
+
+    local intermediate = solver.intermediate
+    local recipe = intermediate[typeobject.name]
+    if not recipe then
+        return exist
+    end
+
+    local mainoutput = recipe.output[1]
+    local mul = mainoutput[2]
+
+    local todo = recipe.input
+    local min
+    for i = 1, #todo do
+        local craft_count = _max_craft_count(todo[i][1]) // todo[i][2]
+        if not min or craft_count < min then
+            min = craft_count
+        end
+    end
+
+    return exist + min * mul
+end
+
 -- when click a category or a recipe, update the info of the manual crafting on the right side
 local function _update_recipe_items(datamodel, recipe_name, crafting_times)
     local storage = gameplay_core.get_storage()
@@ -145,11 +170,17 @@ local function _update_recipe_items(datamodel, recipe_name, crafting_times)
             --
             local multiple = 1
             local recipe_item_state = true
+            local max_craft_count
             for _, v in ipairs(recipe_item.ingredients) do
                 if inventory:get(v.id).count < v.count * multiple then
                     if not _can_craft(v.name, v.count * multiple) then
                         recipe_item_state = false
                     end
+                end
+
+                local count = _max_craft_count(v.name) // v.count
+                if not max_craft_count or count < max_craft_count then
+                    max_craft_count = count
                 end
             end
 
@@ -157,7 +188,7 @@ local function _update_recipe_items(datamodel, recipe_name, crafting_times)
                 name = recipe_item.name,
                 icon = recipe_item.icon,
                 new = new_recipe_flag,
-                main_output_count = recipe_item.main_output_count,
+                main_output_count = max_craft_count,
                 state = recipe_item_state and "enough" or "lack",
             }
 
@@ -202,8 +233,8 @@ local function _update_recipe_items(datamodel, recipe_name, crafting_times)
             datamodel.recipe_ingredients = recipe_ingredients
             datamodel.main_output_name = iprototype.show_prototype_name(iprototype.queryById(main_output.id))
             datamodel.main_output_icon = main_output.icon
-            datamodel.manual_crafting_times = main_output.count * multiple
             datamodel.last_manual_crafting_times = datamodel.manual_crafting_times
+            datamodel.manual_crafting_times = multiple
             datamodel.main_output_enough = enable_button
 
             ::continue::
@@ -226,9 +257,9 @@ function M:create()
     datamodel.category_index = 1
     datamodel.recipe_index = 1 -- recipe_index is the index of recipe_items[caterory], default is 1
     datamodel.manual_crafting_times = 1
+    datamodel.last_manual_crafting_times = datamodel.manual_crafting_times
     datamodel.main_output_name = " "
     datamodel.main_output_icon = "none"
-    datamodel.last_manual_crafting_times = datamodel.manual_crafting_times
     _update_recipe_items(datamodel)
 
     return datamodel
@@ -270,7 +301,7 @@ function M:stage_ui_update(datamodel)
 
     for _ in revert_item_count_mb:unpack() do
         datamodel.manual_crafting_times = datamodel.last_manual_crafting_times
-        _update_recipe_items(datamodel, datamodel.recipe_name)
+        _update_recipe_items(datamodel, datamodel.recipe_name, datamodel.manual_crafting_times)
     end
 end
 
