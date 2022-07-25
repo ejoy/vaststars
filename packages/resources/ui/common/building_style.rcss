@@ -40,7 +40,7 @@ button:hover {
 }
 /*标题栏和返回按键*/
 .header {
-	height: 8.00vmin;
+	height: 12.00vmin;
 	flex-direction: row;
 }
 #item-name-block {
@@ -50,8 +50,8 @@ button:hover {
 }
 .back-button {
 	background-image:"textures/common/return.texture"; 
-	width: 10.33vmin; 
-	height: 10.33vmin; 
+	width: 14.67vmin; 
+	height: 14.67vmin; 
 	background-size:cover;
 }
 .find-button {
