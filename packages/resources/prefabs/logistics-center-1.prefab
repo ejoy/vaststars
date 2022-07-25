@@ -7,6 +7,17 @@ policy:
   ant.scene|scene_object
 ---
 data:
+  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
+  name: meshskin
+  scene: {}
+  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
+mount: 1
+policy:
+  ant.animation|meshskin
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics_center.glb|materials/Material.004.material
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube_P1.meshbin
@@ -52,9 +63,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -67,9 +77,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -95,9 +104,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -110,9 +118,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -125,9 +132,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -151,9 +157,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -166,9 +171,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -243,9 +247,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -258,9 +261,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -363,9 +365,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -378,9 +379,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -393,9 +393,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -408,9 +407,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -423,9 +421,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -438,9 +435,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -453,9 +449,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -468,9 +463,8 @@ data:
   skinning: true
 mount: 1
 policy:
-  ant.animation|skinning
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
@@ -653,17 +647,6 @@ mount: 1
 policy:
   ant.general|name
   ant.render|render
----
-data:
-  meshskin: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Armature.skinbin
-  name: meshskin
-  scene: {}
-  skeleton: /pkg/vaststars.resources/glb/logistics_center.glb|animations/skeleton.ozz
-mount: 1
-policy:
-  ant.animation|meshskin
-  ant.general|name
-  ant.scene|scene_object
 ---
 data:
   anim_ctrl: {}
