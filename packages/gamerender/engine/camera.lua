@@ -155,4 +155,15 @@ function camera.get_central_position()
     return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, YAXIS_PLANE), ray.o)
 end
 
+function camera.print_viewprojmat(prefix)
+    local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
+    local ce = world:entity(mq.camera_ref)
+    local vpmat = ce.camera.viewprojmat
+    if vpmat then
+        log.info(("%s viewprojmat: %s"):format(prefix, math3d.tostring(vpmat)))
+    else
+        log.info(("%s viewprojmat: %s"):format(prefix, "nil"))
+    end
+end
+
 return camera
