@@ -59,9 +59,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/zhuti.004_P1.meshbin
   name: zhuti.001
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -73,9 +71,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti_P1.meshbin
   name: lifangti
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -100,9 +96,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/zhuti.007_P1.meshbin
   name: zhuti.003
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -114,9 +108,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.034_P1.meshbin
   name: lifangti.002
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -128,9 +120,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/zhuti.008_P1.meshbin
   name: zhuti.005
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -153,9 +143,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.035_P1.meshbin
   name: lifangti.003
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -167,9 +155,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.037_P1.meshbin
   name: lifangti.004
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -243,9 +229,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.006_P1.meshbin
   name: lifangti.006
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -257,9 +241,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/lifangti.006_P2.meshbin
   name: lifangti.006
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -361,9 +343,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.004_P1.meshbin
   name: car1
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -375,9 +355,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.004_P2.meshbin
   name: car1
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -389,9 +367,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.006_P1.meshbin
   name: car2
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -403,9 +379,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.006_P2.meshbin
   name: car2
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -417,9 +391,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.007_P1.meshbin
   name: car3
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -431,9 +403,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.007_P2.meshbin
   name: car3
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -445,9 +415,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.008_P1.meshbin
   name: car4
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -459,9 +427,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/logistics_center.glb|meshes/Cube.008_P2.meshbin
   name: car4
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender

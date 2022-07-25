@@ -36,9 +36,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti.014_P1.meshbin
   name: lifangti.011
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.render|skinrender
   ant.general|name
@@ -50,9 +48,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2_P1.meshbin
   name: lifangti.003
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.render|skinrender
   ant.general|name
@@ -64,9 +60,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2.001_P1.meshbin
   name: lifangti.004
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.render|skinrender
   ant.general|name
@@ -78,9 +72,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2.004_P1.meshbin
   name: lifangti.005
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -92,9 +84,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2.005_P1.meshbin
   name: lifangti.006
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -106,9 +96,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti.003_P1.meshbin
   name: lifangti.002
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -120,9 +108,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/assembling.glb|meshes/lifangti2.002_P1.meshbin
   name: lifangti.007
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender

@@ -34,6 +34,9 @@ function list_meta.create(document, e, item_count, item_renderer, detail_rendere
     panel.addEventListener('mousedown', function(event) list:on_mousedown(event) end)
     panel.addEventListener('mousemove', function(event) list:on_drag(event) end)
     panel.addEventListener('mouseup', function(event) list:on_mouseup(event) end)
+    panel.addEventListener('touchstart', function(event) list:on_mousedown(event) end)
+    panel.addEventListener('touchmove', function(event) list:on_drag(event) end)
+    panel.addEventListener('touchend', function(event) list:on_mouseup(event) end)
     list.view = e
     list.panel = panel
     list:on_dirty_all(item_count)

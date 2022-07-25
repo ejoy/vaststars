@@ -25,9 +25,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.003_P1.meshbin
   name: lifangti.003
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -39,9 +37,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.001_P1.meshbin
   name: lifangti.002
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -53,9 +49,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.004_P1.meshbin
   name: lifangti.004
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -67,9 +61,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuti.009_P1.meshbin
   name: zhuti.002
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -81,9 +73,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuiti_P1.meshbin
   name: zhuiti
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -107,9 +97,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/plane.001_P1.meshbin
   name: plane.002
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
@@ -121,9 +109,7 @@ data:
     skinning: GPU
   mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuti_P1.meshbin
   name: zhuti
-  scene: {}
   skinning: true
-mount: 1
 policy:
   ant.general|name
   ant.render|skinrender
