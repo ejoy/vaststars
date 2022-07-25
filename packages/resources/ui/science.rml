@@ -61,15 +61,15 @@
             }
             .item-recipe-image {
                 margin: auto;
-                width: 10.67vmin; 
-                height: 10.67vmin; 
+                width: 13.07vmin;  
+                height: 13.07vmin;  
                 background-size:cover;
             }
             .item-recipe-info {
                 margin: auto;
                 background-image:"textures/science/book.texture"; 
-                width: 10.67vmin;  
-                height: 10.67vmin; 
+                width: 13.07vmin;  
+                height: 13.07vmin;  
                 background-size:cover;
             }
             .item-recipe-desc {
@@ -489,7 +489,7 @@
                     <button class = "back-button" data-event-click="clickReturn()"/>
                     <div class = "menu-title">{{return_title}}</div>
                     <!-- 已研究科技浏览界面按钮-->
-                    <button data-if="!show_finish" class="item-recipe-info" style="position: absolute;top:0.3vmin; right: 0.3vmin; width: 10vmin; height: 10vmin;background-color: transparent;"  data-event-click="showFinish()"/>
+                    <button data-if="!show_finish" class="item-recipe-info" style="position: absolute;top:0.3vmin; right: 0.3vmin; background-color: transparent;"  data-event-click="showFinish()"/>
                 </div>
 
                 <!-- 科技条目 start -->

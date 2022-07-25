@@ -59,14 +59,14 @@ button:hover {
 	background-color: rgba(255, 255, 255, 0); 
 	border: 0.00vmin; 
 	background-image:"textures/factory/seacher.texture"; 
-	width: 9.07vmin; 
-	height: 9.07vmin; 
+	width: 13.07vmin; 
+	height: 13.07vmin; 
 	background-size:cover;
 }
 .recipe-change-button {
 	background-image:"textures/assemble/wheel.texture"; 
-	width: 8.33vmin; 
-	height: 8.33vmin; 
+	width: 13.07vmin; 
+	height: 13.07vmin; 
 	background-size:cover;
 }
 .menu-title {
