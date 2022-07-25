@@ -52,6 +52,10 @@ local function revert(self)
 end
 
 local function confirm(self)
+    if _VASTSTARS_DEBUG_INFINITE_ITEM then
+        return true
+    end
+
     self._inventory:commit("TEMPORARY", "CONFIRM")
 end
 
@@ -105,6 +109,13 @@ local function decrease(self, prototype, count)
 end
 
 local function modity(self, prototype)
+    if _VASTSTARS_DEBUG_INFINITE_ITEM then
+        return {
+            prototype = prototype,
+            count = 999,
+        }
+    end
+
     local function clone(item) -- TODO: maybe have a better way to clone?
         local new = {}
         new.prototype = item.prototype
