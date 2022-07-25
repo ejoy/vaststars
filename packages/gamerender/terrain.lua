@@ -192,6 +192,8 @@ function terrain:create(width, height)
             self.eids[#self.eids+1] = eid
         end
     end
+
+    self.init = true
 end
 
 function terrain:get_mineral(x, y)

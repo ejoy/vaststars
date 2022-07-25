@@ -254,11 +254,18 @@
                 guide_progress = 0
             })
             function start.clickConstructBegin(event)
-                ui_sys.pub {"construct_begin", false}
-
-                unconfirmed_double_confirm_continuation = function()
-                    start.cur_edit_mode = 'construct'
-                    ui_sys.pub {"construct_begin", true}
+                if not (start.guide_progress >= 10) then
+                    ui_sys.pub {"dismantle_begin", false}
+                    unconfirmed_double_confirm_continuation = function()
+                        start.cur_edit_mode = 'dismantle'
+                        ui_sys.pub {"dismantle_begin", true}
+                    end
+                else
+                    ui_sys.pub {"construct_begin", false}
+                    unconfirmed_double_confirm_continuation = function()
+                        start.cur_edit_mode = 'construct'
+                        ui_sys.pub {"construct_begin", true}
+                    end
                 end
             end
             function start.clickTeardownBegin(event)
@@ -443,6 +450,7 @@
             </div>
 
             <!-- 建造模式 -->
+            <!-- see also start.clickConstructBegin() -->
             <div data-if = "cur_edit_mode != '' && guide_progress >= 10" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/construct.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
                 <div style ="font-size: 4vmin; top: 2.67vmin;">建造模式</div>
