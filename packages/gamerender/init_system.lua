@@ -17,6 +17,7 @@ local objects = require "objects"
 local vsobject_manager = ecs.require "vsobject_manager"
 local iguide = require "gameplay.interface.guide"
 local TERRAIN_ONLY = require("debugger").terrain_only
+local NOTHING = require("debugger").nothing
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 
 local m = ecs.system 'init_system'
@@ -27,6 +28,10 @@ function m:init_world()
     camera.init("camera_default.prefab")
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
     ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
+    if NOTHING then
+        saveload:restore_camera_setting()
+        return
+    end
     terrain:create()
     if TERRAIN_ONLY then
         saveload:restore_camera_setting()

@@ -262,9 +262,11 @@ function M:restore_camera_setting()
     iom.set_srt(ce, camera_setting.s, camera_setting.r, camera_setting.t)
     ic.set_frustum(ce, camera_setting.frustum)
 
-    local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
-    if coord then
-        terrain:enable_terrain(coord[1], coord[2])
+    if terrain.init then
+        local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+        if coord then
+            terrain:enable_terrain(coord[1], coord[2])
+        end
     end
 end
 
@@ -364,6 +366,7 @@ function M:restart()
     local cw = gameplay_core.get_world()
     iscience.update_tech_list(cw)
     iguide.world = cw
+    iui.set_guide_progress(iguide.get_progress())
     iui.open("construct.rml")
 
     local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
