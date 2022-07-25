@@ -336,7 +336,7 @@ prototype "生产气候科技包" {
   type = { "tech", "task" },
   task = {"stat_production", 0, "气候科技包"},
   prerequisites = {"修建水电站"},
-  count = 2,
+  count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_produce_climatepack2.texture",
     "textures/task_tips_pic/task_produce_climatepack3.texture",
@@ -344,7 +344,7 @@ prototype "生产气候科技包" {
     "textures/task_tips_pic/task_produce_climatepack5.texture",
   },
   sign_desc = {
-    { desc = "使用水电站生产2个气候科技包", icon = "textures/construct/industry.texture"},
+    { desc = "使用水电站生产1个气候科技包", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -360,7 +360,7 @@ prototype "管道系统1" {
       {"地质科技包", 1},
       {"气候科技包", 1},
   },
-  count = 3,
+  count = 2,
   time = "1s"
 }
 
