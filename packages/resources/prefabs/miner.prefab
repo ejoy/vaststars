@@ -27,7 +27,6 @@ data:
   name: Cylinder.001
   skinning: true
 policy:
-  ant.animation|skinning
   ant.general|name
   ant.render|skinrender
 ---
@@ -40,7 +39,6 @@ data:
   name: BezierCurve.001
   skinning: true
 policy:
-  ant.animation|skinning
   ant.general|name
   ant.render|skinrender
 ---
@@ -53,7 +51,6 @@ data:
   name: Cylinder.004
   skinning: true
 policy:
-  ant.animation|skinning
   ant.general|name
   ant.render|skinrender
 ---
@@ -66,7 +63,6 @@ data:
   name: Plane.004
   skinning: true
 policy:
-  ant.animation|skinning
   ant.general|name
   ant.render|skinrender
 ---

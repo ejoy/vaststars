@@ -216,6 +216,11 @@ function terrain:enable_terrain(x, y)
         return add, del
     end
 
+    if math.type(x) ~= "integer" or math.type(y) ~= "integer" then
+        log.error(("invalid argument: %s, %s"):format(x, y))
+        return
+    end
+
     local new = _get_screen_group_id(self, x, y)
     local add, del = diff(self._enabled_group_id, new)
     self._enabled_group_id = new

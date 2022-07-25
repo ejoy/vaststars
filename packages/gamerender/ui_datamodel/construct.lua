@@ -359,11 +359,13 @@ function M:stage_camera_usage(datamodel)
     local function _get_object(pickup_x, pickup_y)
         for _, pos in ipairs(icamera.screen_to_world(pickup_x, pickup_y, PLANES)) do
             local coord = terrain:align(pos, 1, 1) -- assume entity is 1x1
-            if coord then
+            if coord and math.type(coord[1]) == "integer" and math.type(coord[2]) == "integer" then
                 local object = objects:coord(coord[1], coord[2])
                 if object then
                     return object
                 end
+            else
+                log.error(("invalid coord (%s, %s)"):format(coord[1], coord[2]))
             end
         end
     end
@@ -374,7 +376,7 @@ function M:stage_camera_usage(datamodel)
             local pos = icamera.screen_to_world(x, y, {PLANES[1]})
             local coord = terrain:align(pos[1], 1, 1)
             if coord then
-                print(("pickup coord: (%d, %d) ground(%d, %d)"):format(coord[1], coord[2], coord[1] - (coord[1] % terrain.ground_width), coord[2] - (coord[2] % terrain.ground_height)))
+                print(("pickup coord: (%s, %s) ground(%s, %s)"):format(coord[1], coord[2], coord[1] - (coord[1] % terrain.ground_width), coord[2] - (coord[2] % terrain.ground_height)))
             end
         end
 

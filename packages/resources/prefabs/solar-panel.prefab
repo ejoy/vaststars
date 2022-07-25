@@ -28,7 +28,6 @@ data:
   name: Cylinder.023
   skinning: true
 policy:
-  ant.animation|skinning
   ant.general|name
   ant.render|skinrender
 ---
@@ -41,7 +40,6 @@ data:
   name: Cylinder.001
   skinning: true
 policy:
-  ant.animation|skinning
   ant.general|name
   ant.render|skinrender
 ---
