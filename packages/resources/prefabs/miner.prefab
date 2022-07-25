@@ -8,13 +8,75 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.material
-  mesh: "/pkg/vaststars.resources/glb/miner.glb|meshes/网格.416_P1.meshbin"
-  name: Detail_300.002
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.002.material
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Cylinder_P1.meshbin
+  name: Cylinder
   scene:
-    r: {-0.25033038854599, 0, 0, -0.9681605100631714}
-    t: {6.836451530456543, 8.142379760742188, -10.53567886352539}
+    t: {-1.3385653495788574, 2, 0}
 mount: 1
 policy:
   ant.general|name
   ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.002.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Cylinder.001_P1.meshbin
+  name: Cylinder.001
+  skinning: true
+policy:
+  ant.animation|skinning
+  ant.general|name
+  ant.render|skinrender
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.002.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/BezierCurve.001_P1.meshbin
+  name: BezierCurve.001
+  skinning: true
+policy:
+  ant.animation|skinning
+  ant.general|name
+  ant.render|skinrender
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.002.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Cylinder.005_P1.meshbin
+  name: Cylinder.004
+  skinning: true
+policy:
+  ant.animation|skinning
+  ant.general|name
+  ant.render|skinrender
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.002.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Plane_P1.meshbin
+  name: Plane.004
+  skinning: true
+policy:
+  ant.animation|skinning
+  ant.general|name
+  ant.render|skinrender
+---
+data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/miner.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/miner.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name

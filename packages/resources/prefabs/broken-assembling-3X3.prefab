@@ -13,86 +13,18 @@ data:
   name: lifangti
   scene:
     r: {0.16299788653850555, 0.255216509103775, 0.271624356508255, -0.9135187268257141}
-    t: {-5.225125312805176, -3.605615139007568, 0.8520434498786926}
+    t: {-5.225125312805176, -7.605615139007568, 0.8520434498786926}
 mount: 1
 policy:
   ant.general|name
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/damage_assembling_3x3.glb|materials/Material.001.material
-  mesh: /pkg/vaststars.resources/glb/damage_assembling_3x3.glb|meshes/lifangti.014_P1.meshbin
-  name: lifangti.011
-  scene:
-    r: {-0.00603175163269043, 0.21791797876358032, 0.45317763090133667, -0.8643527030944824}
-    t: {-16.968395233154297, 6.582855224609375, -2.8723061084747314}
-mount: 1
+  anim_ctrl: {}
+  animation: {}
+  animation_birth: ""
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/damage_assembling_3x3.glb|animations/skeleton.ozz
 policy:
+  ant.animation|animation
   ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/damage_assembling_3x3.glb|materials/Material.001.material
-  mesh: /pkg/vaststars.resources/glb/damage_assembling_3x3.glb|meshes/lifangti.001_P1.meshbin
-  name: lifangti.002
-  scene:
-    r: {0.47812503576278687, -0.40044155716896057, -0.43804633617401123, -0.647424578666687}
-    t: {7.182164192199707, 4.3240387439727783, -18.656314849853516}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/damage_assembling_3x3.glb|materials/Material.001.material
-  mesh: /pkg/vaststars.resources/glb/damage_assembling_3x3.glb|meshes/lifangti2_P1.meshbin
-  name: lifangti.003
-  scene:
-    r: {-0.1430698037147522, -0.26330211758613586, 0.5738226175308228, -0.7621880769729614}
-    t: {-10.491201400756836, 4.8665140867233276, -11.685407638549805}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/damage_assembling_3x3.glb|materials/Material.001.material
-  mesh: /pkg/vaststars.resources/glb/damage_assembling_3x3.glb|meshes/lifangti2.001_P1.meshbin
-  name: lifangti.004
-  scene:
-    r: {0.16299788653850555, 0.255216509103775, 0.271624356508255, -0.9135187268257141}
-    t: {0, -3.677196502685547, 0}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/damage_assembling_3x3.glb|materials/Material.001.material
-  mesh: /pkg/vaststars.resources/glb/damage_assembling_3x3.glb|meshes/lifangti2.004_P1.meshbin
-  name: lifangti.005
-  scene:
-    r: {0.2852853238582611, -0.0795748382806778, -0.060043368488550186, -0.9532444477081299}
-    t: {-5.510096073150635, -16.651248931884766, 16.813552856445312}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/damage_assembling_3x3.glb|materials/Material.001.material
-  mesh: /pkg/vaststars.resources/glb/damage_assembling_3x3.glb|meshes/lifangti2.005_P1.meshbin
-  name: lifangti.006
-  scene:
-    r: {-0.019707441329956055, 0.051539789885282516, 0.14022564888000488, -0.9885808229446411}
-    t: {-14.543087005615234, -12.457138061523438, 10.120938301086426}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render

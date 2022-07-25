@@ -1,0 +1,31 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/mars-outfall.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/mars-outfall.glb|meshes/Cylinder.006_P1.meshbin
+  name: Cylinder.004
+  scene:
+    r: {-0.333669513463974, 0, 0, -0.9426901340484619}
+    s: {2.047755241394043, 2.047755002975464, 17.28980255126953}
+    t: {0, 21.343170166015625, 11.924901008605957}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  anim_ctrl: {}
+  animation: {}
+  animation_birth: ""
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/mars-outfall.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name

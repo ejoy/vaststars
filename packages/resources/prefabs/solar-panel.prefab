@@ -1,0 +1,57 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/solar-panel.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/solar-panel.glb|meshes/Cylinder.001_P1.meshbin
+  name: Cylinder.032
+  scene:
+    r: {0, 0.25881892442703247, 0, 0.9659258723258972}
+    t: {0, 2.280485153198242, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/solar-panel.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/solar-panel.glb|meshes/Cylinder.003_P1.meshbin
+  name: Cylinder.023
+  skinning: true
+policy:
+  ant.animation|skinning
+  ant.general|name
+  ant.render|skinrender
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/solar-panel.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
+  mesh: /pkg/vaststars.resources/glb/solar-panel.glb|meshes/Cylinder.004_P1.meshbin
+  name: Cylinder.001
+  skinning: true
+policy:
+  ant.animation|skinning
+  ant.general|name
+  ant.render|skinrender
+---
+data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction.001: /pkg/vaststars.resources/glb/solar-panel.glb|animations/ArmatureAction.001.ozz
+  animation_birth: ArmatureAction.001
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/solar-panel.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name

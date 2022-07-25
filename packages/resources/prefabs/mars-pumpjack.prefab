@@ -1,0 +1,41 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/mars_Pumpjack.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/mars_Pumpjack.glb|meshes/Cylinder_P1.meshbin
+  name: Cylinder
+  scene:
+    s: {0.7257625460624695, 0.7781884670257568, 0.7257625460624695}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/mars_Pumpjack.glb|materials/Material.014.material
+  mesh: /pkg/vaststars.resources/glb/mars_Pumpjack.glb|meshes/Cylinder.002_P1.meshbin
+  name: Cylinder.001
+  scene:
+    s: {0.7257625460624695, 0.7781884670257568, 0.7257625460624695}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  anim_ctrl: {}
+  animation: {}
+  animation_birth: ""
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/mars_Pumpjack.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name
