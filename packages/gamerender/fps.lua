@@ -31,7 +31,7 @@ local update_fps do
             iui.update("construct.rml", "fps_text", printtext)
 
             local bgfxstat = bgfx.get_stats "sdcpnmtv"
-            iui.update("construct.rml", "drawcall_text", ("DrawCall: %d\nTriangle: %d\nTexture: %d\ncpu(ms): %f\ngpu(ms): %f\nfps: %d"):format(
+            iui.update("construct.rml", "drawcall_text", ("DC: %d\nTri: %d\nTex: %d\ncpu(ms): %.2f\ngpu(ms): %.2f\nfps: %d"):format(
                 bgfxstat.numDraw, bgfxstat.numTriList, bgfxstat.numTextures, bgfxstat.cpu, bgfxstat.gpu, bgfxstat.fps))
             last_print_time = current
         end

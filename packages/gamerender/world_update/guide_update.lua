@@ -4,9 +4,12 @@ local global = require "global"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iguide = require "gameplay.interface.guide"
 local iprototype = require "gameplay.interface.prototype"
+local objects = require "objects"
+local iobject = ecs.require "object"
 local teardown_mb = world:sub {"teardown"}
 local manual_add_mb = world:sub {"manual_add"}
 local task_progress
+local fist_time = true
 local function update_world(world)
     local science = global.science
     if iguide.has_task() and science.current_tech then
@@ -15,6 +18,16 @@ local function update_world(world)
         end
         local taskname = science.current_tech.name
         if taskname == "清除废墟" then
+            if fist_time then
+                for _, object in objects:all() do
+                    local typename = object.prototype_name
+                    if typename == "组装机残骸" or typename == "排水口残骸" or typename == "抽水泵残骸" then
+                        object.state = "task"
+                    end
+                end
+                iobject.flush()
+                fist_time = false
+            end
             for _, item_name in teardown_mb:unpack() do
                 if item_name == "组装机残骸" or item_name == "排水口残骸" or item_name == "抽水泵残骸" then
                     task_progress = task_progress + 1
