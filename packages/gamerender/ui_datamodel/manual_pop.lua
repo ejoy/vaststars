@@ -232,6 +232,7 @@ local function _update_recipe_items(datamodel, recipe_name, crafting_times)
             datamodel.recipe_ingredients = recipe_ingredients
             datamodel.main_output_name = iprototype.show_prototype_name(iprototype.queryById(main_output.id))
             datamodel.main_output_icon = main_output.icon
+            datamodel.main_output_count = main_output.count * multiple
             datamodel.last_manual_crafting_times = datamodel.manual_crafting_times
             datamodel.manual_crafting_times = multiple
             datamodel.main_output_enough = enable_button
