@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "组装机I" {
-    model = "prefabs/assembling-1.prefab",
+    model = "prefabs/mars-assembling-machine.prefab",
     assembling_slot = {
         input = {"pipe-joint-input-1"},
         output = {"pipe-joint-output-1"},
@@ -42,7 +42,7 @@ prototype "组装机I" {
 }
 
 prototype "组装机II" {
-    model = "prefabs/assembling-1.prefab",
+    model = "prefabs/mars-assembling-machine.prefab",
     assembling_slot = {
         input = {"pipe-joint-input-1"},
         output = {"pipe-joint-output-1"},

@@ -88,7 +88,7 @@ prototype "烟囱I" {
 }
 
 prototype "排水口I" {
-    model = "prefabs/outfall-1.prefab",
+    model = "prefabs/mars-outfall.prefab",
     icon = "textures/building_pic/small_pic_outfall.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "fluidbox", "chimney"},

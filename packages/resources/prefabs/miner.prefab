@@ -7,6 +7,18 @@ policy:
   ant.scene|scene_object
 ---
 data:
+  meshskin: /pkg/vaststars.resources/glb/miner.glb|meshes/Armature.skinbin
+  name: meshskin
+  scene: {}
+  skeleton: /pkg/vaststars.resources/glb/miner.glb|animations/skeleton.ozz
+  skinning: true
+mount: 1
+policy:
+  ant.animation|meshskin
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/miner.glb|materials/Material.002.material
   mesh: /pkg/vaststars.resources/glb/miner.glb|meshes/Cylinder_P1.meshbin

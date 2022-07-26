@@ -33,7 +33,7 @@ prototype "风力发电机I" {
 }
 
 prototype "太阳能板I" {
-    model = "prefabs/assembling-1.prefab",
+    model = "prefabs/solar-panel.prefab",
     icon = "textures/construct/solar-panel.texture",
     construct_detector = {"exclusive"},
     type ={"entity","generator","solar_panel"},
