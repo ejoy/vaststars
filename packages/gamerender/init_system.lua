@@ -67,9 +67,13 @@ end
 
 function m:camera_usage()
     for _ in dragdrop_camera_mb:unpack() do
+        if not terrain.init then
+            goto continue
+        end
         local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
         if coord then
             terrain:enable_terrain(coord[1], coord[2])
         end
+        ::continue::
     end
 end

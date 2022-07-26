@@ -51,9 +51,11 @@ function camera.init(prefab_file_name)
     local mq = w:singleton("main_queue", "camera_ref:in")
     local camera_ref = mq.camera_ref
     local e = world:entity(camera_ref)
+    e.scene.updir = mc.NULL -- TODO: use math3d.lookto() to reset updir
 
     iom.set_srt(e, data.scene.s or mc.ONE, data.scene.r, data.scene.t)
-    iom.set_view(e, iom.get_position(e), iom.get_direction(e), math3d.vector(data.scene.updir))
+    -- Note: It will be inversed when the animation exceeds 90 degrees
+    -- iom.set_view(e, iom.get_position(e), iom.get_direction(e), math3d.vector(data.scene.updir)) -- don't need to set updir, it will cause nan error
     ic.set_frustum(e, data.camera.frustum)
     camera_prefab_file_name = prefab_file_name
 end
