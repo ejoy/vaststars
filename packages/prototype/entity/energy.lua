@@ -44,7 +44,7 @@ prototype "太阳能板I" {
 }
 
 prototype "蓄电池I" {
-    model = "prefabs/small-chest.prefab",
+    model = "prefabs/accumulator.prefab",
     icon = "textures/construct/grid-battery.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "accumulator"},
