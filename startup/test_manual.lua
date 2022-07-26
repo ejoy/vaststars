@@ -98,12 +98,7 @@ local function solverEvaluate(solver, memory, register, input)
         total_progress = total_progress + recipe.time
         push_crafting(recipe.name)
     end
-    local function solve_intermediate(mark, item, count)
-        if mark[item] then
-            return
-        end
-        mark[item] = true
-
+    local function solve_intermediate(item, count)
         if count <= memory[item] + register[item] then
             return true
         end
@@ -120,7 +115,7 @@ local function solverEvaluate(solver, memory, register, input)
         local last = count - (memory[item] + register[item])
         local n = 1 + (last-1) // mul
         for i = 1, #todo do
-            if not solve_intermediate(mark, todo[i][1], todo[i][2] * n) then
+            if not solve_intermediate(todo[i][1], todo[i][2] * n) then
                 return
             end
         end
@@ -131,10 +126,8 @@ local function solverEvaluate(solver, memory, register, input)
         return true
     end
     local function solve(recipe, count)
-        local mark = {}
         local mainoutput = recipe.output[1]
         local item, mul = mainoutput[1], mainoutput[2]
-        mark[item] = true
 
         local todo = recipe.input
         local last = count - register[item]
@@ -142,7 +135,7 @@ local function solverEvaluate(solver, memory, register, input)
 
         if count > register[item] then
             for i = 1, #todo do
-                if not solve_intermediate(mark, todo[i][1], todo[i][2] * n) then
+                if not solve_intermediate(todo[i][1], todo[i][2] * n) then
                     return
                 end
             end
@@ -156,8 +149,8 @@ local function solverEvaluate(solver, memory, register, input)
         end
 
         push_separator(recipe.id)
-        push_separator(n)
-        push_separator(total_progress)
+        push_separator(n) -- n is the number of times to repeat the recipe
+        push_separator(total_progress) -- total progress of current manual crafting
         total_progress = 0
         return true
     end
