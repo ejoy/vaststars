@@ -502,6 +502,8 @@
                     <div style="font-size: 5vmin;">建造</div>
                 </button>
 
+                <!-- separator -->
+                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_confirm" />
                 <!-- 确认放置 -->
                 <button data-if = "cur_edit_mode == 'construct' && show_confirm" data-event-click="clickConstructConfirm()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"textures/construct/confirm.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
@@ -525,11 +527,14 @@
                 </button>
           
                 <!-- 建造水管开始 -->
+                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_pipe_begin" />
                 <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_begin" data-event-click="clickLayingPipeBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/pipe-begin.texture"; background-size:cover; pointer-events: none;'/>
                     <div style="font-size: 85%; pointer-events: none;">铺管开始</div>
-                </button>
+                </button>s
 
+                <!-- separator -->
+                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_pipe_cancel" />
                 <!-- 取消铺管 -->
                 <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_cancel" data-event-click="clickLayingPipeCancel()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/cancel.texture"; background-size:cover;'/>
