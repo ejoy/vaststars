@@ -127,3 +127,7 @@ system "debug_system"
 interface "idetail"
     .implement "detail_system.lua"
     .method "show"
+
+interface "igame_object"
+    .implement "engine/game_object.lua"
+    .method "create"

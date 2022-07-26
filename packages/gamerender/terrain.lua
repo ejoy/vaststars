@@ -7,7 +7,7 @@ local math3d = require "math3d"
 local mathpkg = import_package"ant.math"
 local mc = mathpkg.constant
 local map = import_package "vaststars.prototype"("map")
-local game_object = ecs.require "engine.game_object"
+local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local COLOR_INVALID <const> = math3d.constant "null"
 
 -- three-dimensional axial
@@ -185,9 +185,9 @@ function terrain:create(width, height)
             local eid
             local srt = {r = rotators[math.random(1, 4)], t = self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT)}
             if self.mineral_map[_pack(_x, _y)] then
-                eid = game_object.create(mineral_meshes[self.mineral_map[_pack(_x, _y)]], self:get_group_id(_x, _y), "opaque", COLOR_INVALID, srt)
+                eid = igame_object.create(mineral_meshes[self.mineral_map[_pack(_x, _y)]], self:get_group_id(_x, _y), "opaque", COLOR_INVALID, srt)
             else
-                eid = game_object.create(meshes[math.random(1, #meshes)], self:get_group_id(_x, _y), "opaque", COLOR_INVALID, srt)
+                eid = igame_object.create(meshes[math.random(1, #meshes)], self:get_group_id(_x, _y), "opaque", COLOR_INVALID, srt)
             end
             self.eids[#self.eids+1] = eid
         end

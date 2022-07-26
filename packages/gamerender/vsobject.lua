@@ -5,7 +5,7 @@ local w = world.w
 local math3d = require "math3d"
 local mathpkg = import_package"ant.math"
 local mc = mathpkg.constant
-local game_object = ecs.require "engine.game_object"
+local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ientity = ecs.import.interface "ant.render|ientity"
 local imaterial	= ecs.import.interface "ant.asset|imaterial"
@@ -215,7 +215,7 @@ return function (init)
     local typeobject = iprototype.queryByName("entity", init.prototype_name)
     local typeinfo = assert(typeinfos[init.type], ("invalid type `%s`"):format(init.type))
 
-    local game_object = assert(game_object.create(typeobject.model, init.group_id, typeinfo.state, typeinfo.color, {r = rotators[init.dir], t = init.position}))
+    local game_object = assert(igame_object.create(typeobject.model, init.group_id, typeinfo.state, typeinfo.color, {r = rotators[init.dir], t = init.position}))
     local block_pos = math3d.ref(math3d.add(init.position, {0, terrain.surface_height, 0}))
     local block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir])
 
