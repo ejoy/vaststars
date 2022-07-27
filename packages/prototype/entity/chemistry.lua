@@ -126,7 +126,7 @@ prototype "电解厂I" {
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer", "fluidboxes"},
-    area = "5x5",
+    area = "4x4",
     power = "1MW",
     drain = "30kW",
     priority = "secondary",
@@ -138,7 +138,7 @@ prototype "电解厂I" {
                 height = 100,
                 base_level = -100,
                 connections = {
-                    {type="input", position={2,0,"N"}},
+                    {type="input", position={0,0,"N"}},
                 }
             },
         },
@@ -148,7 +148,7 @@ prototype "电解厂I" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={0,2,"W"}},
+                    {type="output", position={3,0,"N"}},
                 }
             },
             {
@@ -156,7 +156,7 @@ prototype "电解厂I" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={4,2,"E"}},
+                    {type="output", position={0,3,"S"}},
                 }
             },
             {
@@ -164,7 +164,7 @@ prototype "电解厂I" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={2,4,"S"}},
+                    {type="output", position={3,3,"S"}},
                 }
             },
         },
