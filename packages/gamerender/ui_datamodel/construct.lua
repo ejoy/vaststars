@@ -146,6 +146,7 @@ end
 
 function M:stage_ui_update(datamodel)
     for _, _, _, double_confirm in construct_begin_mb:unpack() do
+        idetail.unselected()
         if builder then
             if builder:check_unconfirmed(double_confirm) then
                 world:pub {"ui_message", "show_unconfirmed_double_confirm"}
@@ -392,6 +393,8 @@ function M:stage_camera_usage(datamodel)
                         leave = false
                     end
                 end
+            else
+                idetail.unselected()
             end
         end
 

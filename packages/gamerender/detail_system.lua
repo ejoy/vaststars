@@ -11,6 +11,10 @@ local iprototype = require "gameplay.interface.prototype"
 local idetail = ecs.interface "idetail"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local camera = ecs.require "engine.camera"
+local EDITOR_CACHE_NAMES = {"SELECTED", "CONSTRUCTED"}
+local CLEAR_CACHE_NAME = "SELECTED"
+
+local iobject = ecs.require "object"
 
 local function get_vmin(w, h, ratio)
     local w = w / ratio
@@ -34,9 +38,10 @@ function idetail.show(object_id)
 
     -- 显示环型菜单
     local vsobject = assert(vsobject_manager:get(object_id))
-    local object = objects:get(object_id)
+    local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
 
+    idetail.selected(object)
     _move_camera(vsobject:get_position())
 
     local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
@@ -60,4 +65,18 @@ function idetail.show(object_id)
         log.info(object.prototype_name, object.x, object.y, object.fluid_name, object.fluidflow_id)
     end
     return true
+end
+
+function idetail.unselected()
+    for _, object in objects:all("SELECTED") do
+        object.state = "constructed"
+    end
+    objects:clear(CLEAR_CACHE_NAME)
+end
+
+function idetail.selected(object)
+    idetail.unselected()
+
+    object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
+    object.state = "selected"
 end
