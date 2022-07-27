@@ -131,7 +131,7 @@ local function solverEvaluate(solver, memory, register, input)
 
         local todo = recipe.input
         local last = count - register[item]
-        local n = 1 + (last-1) // mul
+        local n = 1 + (last-1)
 
         if count > register[item] then
             for i = 1, #todo do

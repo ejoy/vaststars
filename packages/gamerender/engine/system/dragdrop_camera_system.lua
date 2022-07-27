@@ -33,6 +33,6 @@ function dragdrop_camera_sys:camera_usage()
         local delta = math3d.inverse(math3d.sub(pos, begin_pos))
         iom.move_delta(ce, delta)
 
-        world:pub {"dragdrop_camera", math3d.ref(delta)}
+        world:pub {"dragdrop_camera"}
     end
 end

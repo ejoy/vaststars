@@ -60,22 +60,24 @@ function camera.init(prefab_file_name)
     camera_prefab_file_name = prefab_file_name
 end
 
-function camera.transition(prefab_file_name)
-    local sdata, ddata = get_camera_prefab_data(camera_prefab_file_name), get_camera_prefab_data(prefab_file_name)
-    if not sdata or not ddata then
-        return
-    end
-
+function camera.move(srt)
     local mq = w:singleton("main_queue", "camera_ref:in")
-    local camera_ref = mq.camera_ref
-    local e = world:entity(camera_ref)
+    local e = world:entity(mq.camera_ref)
 
-    local scale = iom.get_scale(e)
-    local rotation = iom.get_rotation(e)
-    local oposition = iom.get_position(e)
+    local s = iom.get_scale(e)
+    local r = iom.get_rotation(e)
+    local t = iom.get_position(e)
 
-    local delta = math3d.sub(oposition, sdata.scene.t)
-    local nposition = math3d.add(delta, ddata.scene.t)
+    local new_s, new_r, new_t = s, r, t
+    if srt.s then
+        new_s = srt.s
+    end
+    if srt.r then
+        new_r = srt.r
+    end
+    if srt.t then
+        new_t = srt.t
+    end
 
     local raw_animation = animation.new_raw_animation()
     local skl = skeleton.build({{name = "root", s = mc.T_ONE, r = mc.T_IDENTITY_QUAT, t = mc.T_ZERO}})
@@ -84,17 +86,17 @@ function camera.transition(prefab_file_name)
     raw_animation:push_prekey(
         "root",
         0,
-        scale,
-        rotation,
-        oposition
+        s,
+        r,
+        t
     )
 
     raw_animation:push_prekey(
         "root",
         1,
-        scale,
-        ddata.scene.r,
-        nposition
+        new_s,
+        new_r,
+        new_t
     )
 
     local ani = raw_animation:build()
@@ -110,7 +112,22 @@ function camera.transition(prefab_file_name)
         camera_matrix:push( math3d.ref(poseresult:joint(1)) )
         ratio = ratio + step
     end
+end
 
+function camera.transition(prefab_file_name)
+    local sdata, ddata = get_camera_prefab_data(camera_prefab_file_name), get_camera_prefab_data(prefab_file_name)
+    if not sdata or not ddata then
+        return
+    end
+
+    local mq = w:singleton("main_queue", "camera_ref:in")
+    local e = world:entity(mq.camera_ref)
+
+    local old = iom.get_position(e)
+    local delta = math3d.sub(old, sdata.scene.t)
+    local new = math3d.add(delta, ddata.scene.t)
+
+    camera.move({r = ddata.scene.r, t = new})
     camera_prefab_file_name = prefab_file_name
 end
 
@@ -124,6 +141,8 @@ function camera.update()
         iom.set_scale(e, s)
         iom.set_rotation(e, r)
         iom.set_position(e, t)
+
+        world:pub {"dragdrop_camera"}
     end
 end
 

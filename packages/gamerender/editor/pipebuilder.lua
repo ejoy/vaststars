@@ -5,8 +5,6 @@ local create_builder = ecs.require "editor.builder"
 local iprototype = require "gameplay.interface.prototype"
 local packcoord = iprototype.packcoord
 local unpackcoord = iprototype.unpackcoord
-local iflow_shape = require "gameplay.utility.flow_shape"
-local set_shape_edge = iflow_shape.set_shape_edge
 local iconstant = require "gameplay.interface.constant"
 local ALL_DIR = iconstant.ALL_DIR
 local ifluid = require "gameplay.interface.fluid"
@@ -20,19 +18,20 @@ local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iworld = require "gameplay.interface.world"
 local gameplay_core = require "gameplay.core"
-
-local EDITOR_CACHE_TEMPORARY = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+local math_abs = math.abs
+local math_min = math.min
+local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
 local STATE_START <const> = 1
 
--- fluidflow_id may be nil, such as fluidboxes
+-- fluidflow_id may be nil, only used for fluidbox
 local function _update_fluid_name(State, fluid_name, fluidflow_id)
     if State.fluid_name ~= "" then
         if fluid_name ~= "" then
             if State.fluid_name ~= fluid_name then
-                State.failed = true
+                State.succ = false
             end
         end
         if fluidflow_id then
@@ -48,17 +47,16 @@ local function _update_fluid_name(State, fluid_name, fluidflow_id)
     end
 end
 
--- auto connect with a neighbor who has fluidbox
-local function _set_endpoint_connect(State, x, y)
-    local pipe_edge = 0
-    local succ, _x, _y
-    for _, dir in ipairs(ALL_DIR) do
-        succ, _x, _y = terrain:move_coord(x, y, dir, 1)
+-- automatically connects to its neighbors which has fluidbox, except for pipe or pipe to ground
+local function _connect_to_neighbor(x, y, State, prototype_name, dir)
+    local succ, neighbor_x, neighbor_y, dx, dy
+    for _, neighbor_dir in ipairs(ALL_DIR) do
+        succ, neighbor_x, neighbor_y = terrain:move_coord(x, y, neighbor_dir, 1)
         if not succ then
             goto continue
         end
 
-        local object = objects:coord(_x, _y, EDITOR_CACHE_TEMPORARY)
+        local object = objects:coord(neighbor_x, neighbor_y, EDITOR_CACHE_NAMES)
         if not object then
             goto continue
         end
@@ -67,267 +65,205 @@ local function _set_endpoint_connect(State, x, y)
             goto continue
         end
 
-        for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
-            succ, _x, _y = terrain:move_coord(v.x, v.y, v.dir, 1)
-            if succ and _x == x and _y == y then
-                pipe_edge = set_shape_edge(pipe_edge, iprototype.dir_tonumber(dir), true)
-                _update_fluid_name(State, v.fluid_name, object.fluidflow_id)
-                break
+        for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+            succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
+            if succ and dx == x and dy == y then
+                prototype_name, dir = iflow_connector.set_connection(prototype_name, dir, neighbor_dir, true)
+                _update_fluid_name(State, fb.fluid_name, object.fluidflow_id)
+                goto continue -- only one fluidbox can be connected to the endpoint
             end
         end
         ::continue::
     end
-    return pipe_edge
-end
-
-local function _set_pipe(State, x, y)
-    local pipe_edge = 0
-    local object = objects:coord(x, y, EDITOR_CACHE_TEMPORARY)
-    if object then
-        if not iprototype.is_pipe(object.prototype_name) then
-            State.failed = true
-        else
-            pipe_edge = iflow_shape.prototype_name_to_state(object.prototype_name, object.dir)
-            _update_fluid_name(State, object.fluid_name, object.fluidflow_id)
-        end
-    end
-    return pipe_edge
-end
-
-local function _get_distance(x1, y1, x2, y2)
-    return (x1 - x2) ^ 2 + (y1 - y2) ^ 2
+    return prototype_name, dir
 end
 
 local function _get_covers_fluidbox(object)
     local prototype_name
-    if iprototype.is_pipe(object.prototype_name) then
+    if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
         prototype_name = iflow_connector.covers(object.prototype_name, object.dir)
     else
         prototype_name = object.prototype_name
     end
-    return ifluid:get_fluidbox(prototype_name, object.x, object.y, object.dir, object.fluid_name)
-end
 
--- fluidboxes return by ifluid:get_fluidbox()
-local function _match_fluidbox(fluidboxes, x, y, dir)
-    local min = math.maxinteger
-    local f
-    for _, v in ipairs(fluidboxes) do
-        if v.dir == dir then
-            local dist = _get_distance(v.x, v.y, x, y)
-            if dist < min then
-                min = dist
-                f = v
-            end
+    local t = {}
+    for _, fb in ipairs(ifluid:get_fluidbox(prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+        if fb.ground then
+            goto continue
         end
+
+        t[#t+1] = fb
+        ::continue::
     end
-    return f
+    return t
 end
 
-local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
+local function _set_endpoint_connection(State, object, fluidbox, forward_dir)
+    if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
+        _update_fluid_name(State, object.fluid_name, object.fluidflow_id)
+        return iflow_connector.set_connection(object.prototype_name, object.dir, forward_dir, true)
+    else
+        if not fluidbox then
+            State.succ = false
+        else
+            _update_fluid_name(State, fluidbox.fluid_name, object.fluidflow_id)
+        end
+        return object.prototype_name, object.dir
+    end
+end
+
+local function _builder_end(self, datamodel, State, dir, dir_delta)
+    local reverse_dir = iprototype.reverse_dir(dir)
+    local prototype_name = self.prototype_name
     local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(self.prototype_name, DEFAULT_DIR))
     local item = assert(inventory:modity(item_typeobject.id)) -- promise by new_entity()
-
-    local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
-    local succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir, -- calculate the max distance according to the item count
-        math.min(math.abs(from_x - to_x), item.count - 1),
-        math.min(math.abs(from_y - to_y), item.count - 1)
-    )
-    dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y) -- recalc delta
-    assert(succ)
-
-    local prototype_name = self.prototype_name
-    local dir_num = iprototype.dir_tonumber(iprototype.calc_dir(from_x, from_y, to_x, to_y))
-    local reverse_dir_num = iprototype.dir_tonumber(iprototype.reverse_dir(dir))
-
     local map = {}
-    local coord
-    local State = {
-        failed = false,
-        fluid_name = "",
-        fluidflow_ids = {},
-    }
 
-    local x, y = from_x, from_y
+    local from_x, from_y
+    if State.starting_fluidbox then
+        from_x, from_y = State.starting_fluidbox.x, State.starting_fluidbox.y
+    else
+        from_x, from_y = State.from_x, State.from_y
+    end
+    local to_x, to_y
+    if State.ending_fluidbox then
+        to_x, to_y = State.ending_fluidbox.x, State.ending_fluidbox.y
+    else
+        to_x, to_y = State.to_x, State.to_y
+    end
+    local x, y = assert(from_x), assert(from_y)
+
     while true do
-        coord = packcoord(x, y)
+        local coord = packcoord(x, y)
+        local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         item.count = item.count - 1
 
         if x == from_x and y == from_y then
-            local _object = objects:coord(x, y, EDITOR_CACHE_TEMPORARY)
-            if _object then
-                if iprototype.is_pipe(_object.prototype_name) then
-                    local pipe_edge = _set_pipe(State, x, y)
-                    pipe_edge = set_shape_edge(pipe_edge, dir_num, true)
-                    map[coord] = pipe_edge
-
-                elseif iprototype.is_pipe_to_ground(_object.prototype_name) then
-                    for _, v in ipairs(ifluid:get_fluidbox(_object.prototype_name, _object.x, _object.y, _object.dir, _object.fluid_name)) do
-                        if v.ground and v.dir == iprototype.reverse_dir(dir) then
-                            _update_fluid_name(State, _object.fluid_name, _object.fluidflow_id)
-                            break -- pipe to ground only has one fluidbox in one direction
-                        end
-                    end
-                    map[coord] = 0
-
-                else
-                    -- entity is not a pipe or a pipe to ground, (from_x, from_y) is the fluidbox coord of the entity
-                    -- find the fluidbox of the entity equal to (from_x, from_y) -- TODO: optimize
-                    local fb = _match_fluidbox(ifluid:get_fluidbox(_object.prototype_name, _object.x, _object.y, _object.dir, _object.fluid_name), from_x, from_y, dir)
-                    if not fb then -- no fluidbox in the direction of the entity
-                        State.failed = true
-                    else
-                        _update_fluid_name(State, fb.fluid_name, _object.fluidflow_id)
-                    end
-                    map[coord] = 0
-                end
+            if object then
+                map[coord] = {_set_endpoint_connection(State, object, State.starting_fluidbox, dir)}
             else
-                local pipe_edge = _set_endpoint_connect(State, x, y)
+                local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
+                endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(x, y, State, endpoint_prototype_name, endpoint_dir)
                 if not (x == to_x and y == to_y) then
-                    pipe_edge = set_shape_edge(pipe_edge, dir_num, true)
+                    endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, dir, true)
                 end
-                map[coord] = pipe_edge
+                map[coord] = {endpoint_prototype_name, endpoint_dir}
             end
 
         elseif x == to_x and y == to_y then
-            local _object = objects:coord(x, y, EDITOR_CACHE_TEMPORARY)
-            if _object then
-                if iprototype.is_pipe(_object.prototype_name) then
-                    local pipe_edge = _set_pipe(State, x, y)
-                    pipe_edge = set_shape_edge(pipe_edge, reverse_dir_num, true)
-                    map[coord] = pipe_edge
-
-                elseif iprototype.is_pipe_to_ground(_object.prototype_name) then
-                    local found = false
-                    for _, v in ipairs(ifluid:get_fluidbox(_object.prototype_name, _object.x, _object.y, _object.dir, _object.fluid_name)) do
-                        if v.ground and v.dir == dir then
-                            _update_fluid_name(State, v.fluid_name, _object.fluidflow_id)
-                            found = true
-                            break -- pipe to ground only has one fluidbox in one direction
-                        end
-                    end
-                    if not found then
-                        State.failed = true
-                    end
-                    map[coord] = 0
-
-                else
-                    local found = false
-                    for _, v in ipairs(ifluid:get_fluidbox(_object.prototype_name, _object.x, _object.y, _object.dir, _object.fluid_name)) do
-                        if v.dir == iprototype.reverse_dir(dir) and (from_x == v.x or from_y == v.y) then
-                            _update_fluid_name(State, v.fluid_name, _object.fluidflow_id)
-                            found = true
-                            break -- only one fluidbox aligned with the start point
-                        end
-                    end
-                    if not found then
-                        State.failed = true
-                    end
-                    map[coord] = 0
-
-                end
+            if object then
+                map[coord] = {_set_endpoint_connection(State, object, State.ending_fluidbox, reverse_dir)}
             else
-                local pipe_edge = _set_endpoint_connect(State, x, y)
-                pipe_edge = set_shape_edge(pipe_edge, reverse_dir_num, true)
-                map[coord] = pipe_edge
+                local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
+                endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(x, y, State, endpoint_prototype_name, endpoint_dir)
+                endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
+                map[coord] = {endpoint_prototype_name, endpoint_dir}
             end
         else
-            local pipe_edge = _set_pipe(State, x, y)
-            pipe_edge = set_shape_edge(pipe_edge, dir_num, true)
-            pipe_edge = set_shape_edge(pipe_edge, reverse_dir_num, true)
-            map[coord] = pipe_edge
+            if object then
+                if not iprototype.is_pipe(object.prototype_name) then
+                    State.succ = false
+                    map[coord] = {object.prototype_name, object.dir}
+                else
+                    _update_fluid_name(State, object.fluid_name, object.fluidflow_id)
+                    local endpoint_prototype_name, endpoint_dir = object.prototype_name, object.dir
+                    endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, dir, true)
+                    endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
+                    map[coord] = {endpoint_prototype_name, endpoint_dir}
+                end
+            else
+                local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
+                endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, dir, true)
+                endpoint_prototype_name, endpoint_dir = iflow_connector.set_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
+                map[coord] = {endpoint_prototype_name, endpoint_dir}
+            end
         end
 
         if x == to_x and y == to_y then
             break
         end
-        x, y = x + delta.x, y + delta.y
+        x, y = x + dir_delta.x, y + dir_delta.y
     end
 
     iui.update("construct.rml", "update_construct_inventory")
 
-    local fluidflow_id = 0
-    if not State.failed then -- TODO: when there are multiple fluidflow id, we should merge them
+    local new_fluidflow_id = 0
+    if State.succ then
         global.fluidflow_id = global.fluidflow_id + 1
-        fluidflow_id = global.fluidflow_id
+        new_fluidflow_id = global.fluidflow_id
     end
-    local object_state = State.failed and "invalid_construct" or "construct"
+    local object_state = State.succ and "construct" or "invalid_construct"
     self.coord_indicator.state = object_state
 
-    for coord, state in pairs(map) do
+    for coord, v in pairs(map) do
         local x, y = unpackcoord(coord)
-        local shape, dir = iflow_shape.to_type_dir(state)
-        local object = objects:coord(x, y, EDITOR_CACHE_TEMPORARY)
+        local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         if object then
-            if iprototype.is_pipe(object.prototype_name) then
-                local _object = objects:modify(object.x, object.y, EDITOR_CACHE_TEMPORARY, iobject.clone)
-                _object.prototype_name = iflow_shape.to_prototype_name(prototype_name, shape)
-                _object.dir = dir
-                _object.state = object_state
-                objects:set(_object, EDITOR_CACHE_TEMPORARY[1])
-            elseif iprototype.is_pipe_to_ground(object.prototype_name) then
-                local _object = objects:modify(object.x, object.y, EDITOR_CACHE_TEMPORARY, iobject.clone)
-                _object.prototype_name = iflow_shape.to_prototype_name(object.prototype_name, "JI")
-                _object.state = object_state
-                objects:set(_object, EDITOR_CACHE_TEMPORARY[1])
-            else
-                local _object = objects:modify(object.x, object.y, EDITOR_CACHE_TEMPORARY, iobject.clone)
-                _object.state = object_state
-            end
+            object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
+            object.prototype_name = v[1]
+            object.dir = v[2]
+            object.state = object_state
         else
             object = iobject.new {
-                prototype_name = iflow_shape.to_prototype_name(prototype_name, shape),
-                dir = dir,
+                prototype_name = v[1],
+                dir = v[2],
                 x = x,
                 y = y,
                 fluid_name = State.fluid_name,
-                fluidflow_id = fluidflow_id,
+                fluidflow_id = new_fluidflow_id,
                 state = object_state,
             }
-            objects:set(object, EDITOR_CACHE_TEMPORARY[1])
+            objects:set(object, EDITOR_CACHE_NAMES[1])
         end
     end
 
     for fluidflow_id in pairs(State.fluidflow_ids) do
-        for _, object in objects:selectall("fluidflow_id", fluidflow_id, EDITOR_CACHE_TEMPORARY) do
-            local _object = objects:modify(object.x, object.y, EDITOR_CACHE_TEMPORARY, iobject.clone)
+        for _, object in objects:selectall("fluidflow_id", fluidflow_id, EDITOR_CACHE_NAMES) do
+            local _object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
             assert(iprototype.has_type(iprototype.queryByName("entity", _object.prototype_name).type, "fluidbox"))
             _object.fluid_name = State.fluid_name
-            _object.fluidflow_id = fluidflow_id
+            _object.fluidflow_id = new_fluidflow_id
         end
     end
 
-    datamodel.show_laying_pipe_confirm = not State.failed
+    datamodel.show_laying_pipe_confirm = State.succ
 end
 
-local function state_init(self, datamodel)
+local function _builder_init(self, datamodel)
     local coord_indicator = self.coord_indicator
 
     local function show_indicator(prototype_name, object)
         local succ, dx, dy, obj, _prototype_name, _dir
         for _, fb in ipairs(_get_covers_fluidbox(object)) do
             succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
-            if succ then
-                obj = objects:coord(dx, dy, EDITOR_CACHE_TEMPORARY)
-                if not obj then
-                    _prototype_name, _dir = iflow_connector.set_connection(prototype_name, DEFAULT_DIR, iprototype.reverse_dir(fb.dir), true) -- TODO: why DEFAULT_DIR?
+            if not succ then
+                goto continue
+            end
+            if not self:check_construct_detector(prototype_name, dx, dy, DEFAULT_DIR) then
+                goto continue
+            end
+
+            obj = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
+            if not obj then
+                _prototype_name, _dir = iflow_connector.set_connection(prototype_name, DEFAULT_DIR, iprototype.reverse_dir(fb.dir), true) -- TODO: fb.dir may be invalid, assert by iflow_connector.set_connection()
+                if _prototype_name then
                     obj = iobject.new {
                         prototype_name = _prototype_name,
                         dir = _dir,
                         x = dx,
                         y = dy,
                         fluid_name = "",
-                        fluidflow_id = "",
                         state = "indicator",
                     }
                     objects:set(obj, "INDICATOR")
                 end
             end
+            ::continue::
         end
     end
 
     local function is_valid_starting(x, y)
-        local object = objects:coord(x, y, EDITOR_CACHE_TEMPORARY)
+        local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         if not object then
             return true
         end
@@ -338,7 +274,7 @@ local function state_init(self, datamodel)
         datamodel.show_laying_pipe_begin = true
         coord_indicator.state = "construct"
 
-        local object = objects:coord(coord_indicator.x, coord_indicator.y, EDITOR_CACHE_TEMPORARY)
+        local object = objects:coord(coord_indicator.x, coord_indicator.y, EDITOR_CACHE_NAMES)
         if object then
             show_indicator(self.prototype_name, object)
         end
@@ -348,91 +284,129 @@ local function state_init(self, datamodel)
     end
 end
 
-local function state_start(self, datamodel)
-    local starting_object = objects:coord(self.from_x, self.from_y, EDITOR_CACHE_TEMPORARY)
-    local ending_object = objects:coord(self.coord_indicator.x, self.coord_indicator.y, EDITOR_CACHE_TEMPORARY)
-    if starting_object then
-        local fluidboxes = _get_covers_fluidbox(starting_object)
-        if #fluidboxes <= 0 then
-            self.coord_indicator.state = "invalid_construct"
-            datamodel.show_laying_pipe_confirm = false
-            return
-        end
+-- sort by distance and direction
+local function _find_starting_fluidbox(object, dx, dy, dir)
+    local fluidboxes = _get_covers_fluidbox(object)
+    assert(#fluidboxes > 0) -- promised by _builder_init()
 
-        local dir = iprototype.calc_dir(self.from_x, self.from_y, self.coord_indicator.x, self.coord_indicator.y)
-        table.sort(fluidboxes, function(a, b) -- TODO: sort by distance and direction
-            local dist1 = _get_distance(a.x, a.y, self.coord_indicator.x, self.coord_indicator.y)
-            local dist2 = _get_distance(b.x, b.y, self.coord_indicator.x, self.coord_indicator.y)
-            if dist1 < dist2 then
-                return true
-            elseif dist1 > dist2 then
-                return false
-            end
+    local function _get_distance(x1, y1, x2, y2)
+        return (x1 - x2) ^ 2 + (y1 - y2) ^ 2
+    end
 
+    table.sort(fluidboxes, function(a, b)
+        local dist1 = _get_distance(a.x, a.y, dx, dy)
+        local dist2 = _get_distance(b.x, b.y, dx, dy)
+        if dist1 < dist2 then
+            return true
+        elseif dist1 > dist2 then
+            return false
+        else
             return ((a.dir == dir) and 0 or 1) < ((b.dir == dir) and 0 or 1)
-        end)
+        end
+    end)
+    return fluidboxes[1]
+end
 
-        local from_x, from_y = fluidboxes[1].x, fluidboxes[1].y
-        if ending_object then
-            if starting_object.id == ending_object.id then
-                self.coord_indicator.state = "invalid_construct"
-                datamodel.show_laying_pipe_confirm = false
-                return
-            end
+local function _builder_start(self, datamodel)
+    local from_x, from_y = self.from_x, self.from_y
+    local to_x, to_y = self.coord_indicator.x, self.coord_indicator.y
+    local prototype_name = self.coord_indicator.prototype_name
+    local starting = objects:coord(from_x, from_y, EDITOR_CACHE_NAMES)
+    local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
+    local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(self.prototype_name, DEFAULT_DIR))
+    local item = assert(inventory:modity(item_typeobject.id)) -- promise by new_entity()
 
-            for _, v in ipairs(ifluid:get_fluidbox(ending_object.prototype_name, ending_object.x, ending_object.y, ending_object.dir)) do
-                if v.dir == iprototype.reverse_dir(dir) and (from_x == v.x or from_y == v.y) then
-                    state_end(self, datamodel, from_x, from_y, v.x, v.y)
-                    return
-                end
-            end
+    local State = {
+        succ = true,
+        fluid_name = "",
+        fluidflow_ids = {},
+        starting_fluidbox = nil,
+        starting_fluidflow_id = nil,
+        ending_fluidbox = nil,
+        ending_fluidflow_id = nil,
+        from_x = from_x,
+        from_y = from_y,
+        to_x = to_x,
+        to_y = to_y,
+    }
+
+    if starting then
+        -- starting object should at least have one fluidbox, promised by _builder_init()
+        local fluidbox = _find_starting_fluidbox(starting, to_x, to_y, dir)
+        State.starting_fluidbox, State.starting_fluidflow_id = fluidbox, starting.fluidflow_id
+        if fluidbox.dir ~= dir then
+            State.succ = false
         end
 
-        local succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir, math.abs(self.coord_indicator.x - from_x), math.abs(self.coord_indicator.y - from_y))
-        if not succ then -- TODO: check map boundary
-            self.coord_indicator.state = "invalid_construct"
-            datamodel.show_laying_pipe_confirm = false
-            return
+        local succ
+        succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+            math_min(math_abs(to_x - fluidbox.x), item.count - 1),
+            math_min(math_abs(to_y - fluidbox.y), item.count - 1)
+        )
+        if not succ then
+            State.succ = false
         end
-        state_end(self, datamodel, from_x, from_y, to_x, to_y)
-        return
-    else
-        if ending_object then
-            local from_x, from_y = self.from_x, self.from_y
-            local dir = iprototype.calc_dir(self.from_x, self.from_y, self.coord_indicator.x, self.coord_indicator.y)
 
-            if iprototype.is_pipe(ending_object.prototype_name) or iprototype.is_pipe_to_ground(ending_object.prototype_name) then
-                state_end(self, datamodel, from_x, from_y, self.coord_indicator.x, self.coord_indicator.y)
-                return
+        local ending = objects:coord(to_x, to_y, EDITOR_CACHE_NAMES)
+        if ending then
+            if starting.id == ending.id then
+                State.succ = false
+                State.ending_fluidbox, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
             else
-                for _, v in ipairs(ifluid:get_fluidbox(ending_object.prototype_name, ending_object.x, ending_object.y, ending_object.dir)) do
-                    if v.dir == iprototype.reverse_dir(dir) and (from_x == v.x or from_y == v.y) then
-                        state_end(self, datamodel, from_x, from_y, v.x, v.y)
+                for _, another in ipairs(_get_covers_fluidbox(ending)) do
+                    if another.dir == iprototype.reverse_dir(dir) and (fluidbox.x == another.x or fluidbox.y == another.y) then
+                        dir, delta = iprototype.calc_dir(fluidbox.x, fluidbox.y, another.x, another.y)
+                        State.ending_fluidbox, State.ending_fluidflow_id = another, ending.fluidflow_id
+                        _builder_end(self, datamodel, State, dir, delta)
                         return
                     end
                 end
+                State.succ = false
+            end
+        end
 
-                local succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir, math.abs(self.coord_indicator.x - from_x), math.abs(self.coord_indicator.y - from_y))
-                if not succ then -- TODO: check map boundary
-                    self.coord_indicator.state = "invalid_construct"
-                    datamodel.show_laying_pipe_confirm = false
+        if not self:check_construct_detector(prototype_name, to_x, to_y, DEFAULT_DIR) then
+            State.succ = false
+        end
+        State.to_x, State.to_y = to_x, to_y
+        dir, delta = iprototype.calc_dir(fluidbox.x, fluidbox.y, to_x, to_y)
+        _builder_end(self, datamodel, State, dir, delta)
+        return
+    else
+        if not self:check_construct_detector(prototype_name, from_x, from_y, DEFAULT_DIR) then
+            State.succ = false
+        end
+        State.from_x, State.from_y = from_x, from_y
+
+        local ending = objects:coord(to_x, to_y, EDITOR_CACHE_NAMES)
+        if ending then
+            for _, fluidbox in ipairs(_get_covers_fluidbox(ending)) do
+                if fluidbox.dir == iprototype.reverse_dir(dir) and (from_x == fluidbox.x or from_y == fluidbox.y) then
+                    State.ending_fluidbox, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
+                    dir, delta = iprototype.calc_dir(from_x, from_y, fluidbox.x, fluidbox.y)
+                    _builder_end(self, datamodel, State, dir, delta)
                     return
                 end
-                state_end(self, datamodel, from_x, from_y, to_x, to_y)
-                return
             end
-        else
-            local from_x, from_y = self.from_x, self.from_y
-            local dir = iprototype.calc_dir(self.from_x, self.from_y, self.coord_indicator.x, self.coord_indicator.y)
-            local succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir, math.abs(self.coord_indicator.x - from_x), math.abs(self.coord_indicator.y - from_y))
-            if not succ then
-                self.coord_indicator.state = "invalid_construct"
-                datamodel.show_laying_pipe_confirm = false
-                return
-            end
-            state_end(self, datamodel, from_x, from_y, to_x, to_y)
-            return
+            State.succ = false
         end
+
+        --
+        local succ
+        succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
+            math_min(math_abs(to_x - from_x), item.count - 1),
+            math_min(math_abs(to_y - from_y), item.count - 1)
+        )
+        if not succ then
+            State.succ = false
+        end
+        if not self:check_construct_detector(prototype_name, to_x, to_y, DEFAULT_DIR) then
+            State.succ = false
+        end
+        State.to_x, State.to_y = to_x, to_y
+        dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
+        _builder_end(self, datamodel, State, dir, delta)
+        return
     end
 end
 
@@ -442,7 +416,6 @@ local function new_entity(self, datamodel, typeobject)
     local item_typeobject = iprototype.queryByName("item", typeobject.name)
     local item = inventory:get(item_typeobject.id)
     if item.count <= 0 then
-        log.error("Lack of item: " .. typeobject.name) -- TODO: show error message?
         self:clean(datamodel)
         return
     end
@@ -461,7 +434,7 @@ local function new_entity(self, datamodel, typeobject)
     }
 
     --
-    state_init(self, datamodel)
+    _builder_init(self, datamodel)
 end
 
 local function touch_move(self, datamodel, delta_vec)
@@ -479,9 +452,9 @@ local function touch_end(self, datamodel)
     inventory:revert()
 
     if self.state ~= STATE_START then
-        state_init(self, datamodel)
+        _builder_init(self, datamodel)
     else
-        state_start(self, datamodel)
+        _builder_start(self, datamodel)
     end
 end
 
@@ -522,7 +495,7 @@ local function laying_pipe_begin(self, datamodel)
     self.from_x = self.coord_indicator.x
     self.from_y = self.coord_indicator.y
 
-    state_start(self, datamodel)
+    _builder_start(self, datamodel)
 end
 
 local function laying_pipe_cancel(self, datamodel)
@@ -582,8 +555,6 @@ local function create()
 
     M.prototype_name = ""
     M.state = STATE_NONE
-    -- M.from_x
-    -- M.from_y
     M.laying_pipe_begin = laying_pipe_begin
     M.laying_pipe_cancel = laying_pipe_cancel
     M.laying_pipe_confirm = laying_pipe_confirm
