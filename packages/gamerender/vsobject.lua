@@ -16,6 +16,7 @@ local irq = ecs.import.interface "ant.render|irenderqueue"
 local iprototype = require "gameplay.interface.prototype"
 local imodifier = ecs.import.interface "ant.modifier|imodifier"
 local terrain = ecs.require "terrain"
+local icanvas = ecs.require "engine.canvas"
 
 local plane_vb <const> = {
 	-0.5, 0, 0.5, 0, 1, 0,	--left top
@@ -156,6 +157,8 @@ local function remove(self)
     if self.block_object then
         self.block_object:remove()
     end
+
+    self:del_canvas()
 end
 
 local function update(self, t)
@@ -206,6 +209,19 @@ local function modifier(self, opt, ...)
     imodifier[opt](self.srt_modifier, ...)
 end
 
+local function add_canvas(self, name, x, y, w, h)
+    self:del_canvas()
+    self.canvas_id = icanvas:add_item(self.id, name, x, y, w, h)
+end
+
+local function del_canvas(self)
+    if not self.canvas_id then
+        return
+    end
+    icanvas:remove_item(self.canvas_id)
+    self.canvas_id = nil
+end
+
 -- init = {
 --     prototype_name = prototype_name,
 --     type = xxx,
@@ -241,6 +257,8 @@ return function (init)
         detach = detach,
         animation_update = animation_update,
         modifier = modifier,
+        add_canvas = add_canvas,
+        del_canvas = del_canvas,
     }
     return vsobject
 end

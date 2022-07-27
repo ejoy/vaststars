@@ -20,6 +20,7 @@ local terrain = ecs.require "terrain"
 local itypes = require "gameplay.interface.types"
 local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
 local iflow_connector = require "gameplay.interface.flow_connector"
+local vsobject_manager = ecs.require "vsobject_manager"
 
 local assembling_recipe = {}; local get_recipe_index; do
     local cache = {}
@@ -296,6 +297,11 @@ function M:stage_ui_update(datamodel, object_id)
 
                 iui.update("assemble_2.rml", "update", object_id)
                 iui.update("build_function_pop.rml", "update", object_id)
+
+                local vsobject = assert(vsobject_manager:get(object_id))
+                local typeobject = assert(iprototype.queryByName("entity", object.prototype_name))
+                local w, h = iprototype.unpackarea(typeobject.area)
+                vsobject:add_canvas(recipe_typeobject.icon, object.x, object.y, w, h)
             end
         else
             log.error(("can not found assembling `%s`(%s, %s)"):format(object.name, object.x, object.y))
@@ -306,6 +312,8 @@ function M:stage_ui_update(datamodel, object_id)
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         iworld:set_recipe(gameplay_core.get_world(), e, nil)
+        local vsobject = assert(vsobject_manager:get(object_id))
+        vsobject:del_canvas()
         object.fluid_name = {}
 
         _update_neighbor_fluidbox(object)

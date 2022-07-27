@@ -6,6 +6,7 @@ import "@ant.animation"
 import "@ant.camera"
 import "@ant.efk"
 import "@ant.modifier"
+import "@ant.terrain"
 
 pipeline "init"
     .stage "init"
