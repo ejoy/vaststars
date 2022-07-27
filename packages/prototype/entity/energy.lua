@@ -6,7 +6,7 @@ prototype "蒸汽发电机I" {
     icon = "textures/construct/turbine1.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "generator", "fluidbox"},
-    area = "2x3",
+    area = "3x5",
     power = "1MW",
     priority = "secondary",
     group = {"物流"},

@@ -67,7 +67,7 @@ prototype "浮选器I" {
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer"},
-    area = "5x5",
+    area = "4x4",
     power = "200kW",
     drain = "6kW",
     priority = "secondary",
@@ -88,7 +88,7 @@ prototype "浮选器I" {
                 height = 100,
                 base_level = -100,
                 connections = {
-                    {type="input", position={3,0,"N"}},
+                    {type="input", position={2,3,"S"}},
                 }
             },
         },
@@ -98,7 +98,7 @@ prototype "浮选器I" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={1,4,"S"}},
+                    {type="output", position={0,2,"W"}},
                 }
             },
             {
@@ -106,7 +106,7 @@ prototype "浮选器I" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={3,4,"S"}},
+                    {type="output", position={3,1,"E"}},
                 }
             },
         },
