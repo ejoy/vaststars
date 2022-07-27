@@ -9,6 +9,12 @@ local math3d = require "math3d"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local idetail = ecs.interface "idetail"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local camera = ecs.require "engine.camera"
+local EDITOR_CACHE_NAMES = {"SELECTED", "CONSTRUCTED"}
+local CLEAR_CACHE_NAME = "SELECTED"
+
+local iobject = ecs.require "object"
 
 local function get_vmin(w, h, ratio)
     local w = w / ratio
@@ -16,19 +22,33 @@ local function get_vmin(w, h, ratio)
     return math.min(w, h)
 end
 
+local function _move_camera(pos)
+    local mq = w:singleton("main_queue", "camera_ref:in")
+    local e = world:entity(mq.camera_ref)
+
+    local old = iom.get_position(e)
+    local delta = math3d.inverse(math3d.sub(camera.get_central_position(), pos))
+    local new = math3d.add(delta, old)
+
+    camera.move({t = new})
+end
+
 function idetail.show(object_id)
     iui.open("detail_panel.rml", object_id)
 
     -- 显示环型菜单
     local vsobject = assert(vsobject_manager:get(object_id))
-    local object = objects:get(object_id)
+    local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
+
+    idetail.selected(object)
+    _move_camera(vsobject:get_position())
 
     local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
     local ce = world:entity(mq.camera_ref)
     local vp = ce.camera.viewprojmat
     local vr = mq.render_target.view_rect
-    local p = mu.world_to_screen(vp, vr, vsobject:get_position())
+    local p = mu.world_to_screen(vp, vr, camera.get_central_position()) -- the position always in the center of the screen after move camera
     local vmin = get_vmin(vr.w, vr.h, vr.ratio)
 
     p = math3d.mul(p, math3d.vector {1 / vmin * 100, 1 / vmin * 100, 0})
@@ -42,7 +62,21 @@ function idetail.show(object_id)
     end
 
     do
-        log.info(object.prototype_name, object.x, object.y)
+        log.info(object.prototype_name, object.x, object.y, object.fluid_name, object.fluidflow_id)
     end
     return true
+end
+
+function idetail.unselected()
+    for _, object in objects:all("SELECTED") do
+        object.state = "constructed"
+    end
+    objects:clear(CLEAR_CACHE_NAME)
+end
+
+function idetail.selected(object)
+    idetail.unselected()
+
+    object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
+    object.state = "selected"
 end

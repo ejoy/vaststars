@@ -19,6 +19,7 @@ local iguide = require "gameplay.interface.guide"
 local TERRAIN_ONLY = require("debugger").terrain_only
 local NOTHING = require("debugger").nothing
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
+local icanvas = ecs.require "engine.canvas"
 
 local m = ecs.system 'init_system'
 function m:init_world()
@@ -38,6 +39,7 @@ function m:init_world()
         return
     end
 
+    icanvas:create()
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
     iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
     iui.preload_datamodel_dir "/pkg/vaststars.gamerender/ui_datamodel"

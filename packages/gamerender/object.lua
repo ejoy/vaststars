@@ -145,6 +145,13 @@ local function flush()
                     type = outer.state,
                     group_id = terrain:get_group_id(outer.x, outer.y),
                 }
+
+                -- display recipe icon of assembling machine
+                if outer.recipe then -- TODO: better way to do this?
+                    local recipe_typeobject = iprototype.queryByName("recipe", outer.recipe)
+                    local w, h = iprototype.unpackarea(typeobject.area)
+                    vsobject:add_canvas(recipe_typeobject.icon, outer.x, outer.y, w, h)
+                end
             else
                 for k, v in pairs(outer.__change) do
                     local func = assert(funcs[k])

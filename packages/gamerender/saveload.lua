@@ -66,7 +66,7 @@ local function restore_world()
     objects:clear()
 
     --
-    local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id)
+    local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id, recipe)
         local typeobject = iprototype.queryByName("entity", prototype_name)
 
         local object = iobject.new {
@@ -78,6 +78,7 @@ local function restore_world()
             fluidflow_id = fluidflow_id,
             headquater = typeobject.headquater or false,
             state = "constructed",
+            recipe = recipe,
         }
         object.gameplay_eid = gameplay_eid
         objects:set(object)
@@ -86,7 +87,7 @@ local function restore_world()
     -- restore
     local all_object = {}
     local fluidbox_map = {} -- coord -> id
-    for v in gameplay_core.select("id:in entity:in fluidbox?in fluidboxes?in") do
+    for v in gameplay_core.select("id:in entity:in fluidbox?in fluidboxes?in assembling?in") do
         local e = v.entity
         local typeobject = iprototype.queryById(e.prototype)
         local fluid_name = ""
@@ -120,6 +121,14 @@ local function restore_world()
                 end
             end
         end
+        local recipe
+        if v.assembling then
+            local show_recipe_icon = typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining") -- TODO: special case for mining -- duplicate with build_function_pop.lua
+            if show_recipe_icon then
+                local typeobject = iprototype.queryById(v.assembling.recipe)
+                recipe = typeobject.name
+            end
+        end
         all_object[v.id] = {
             prototype_name = typeobject.name,
             dir = iprototype.dir_tostring(e.direction),
@@ -127,6 +136,7 @@ local function restore_world()
             y = e.y,
             fluid_name = fluid_name,
             -- fluidflow_id, -- fluidflow_id is not null only when the object is a fluidbox
+            recipe = recipe, -- for assembling machine only, display the recipe icon, see also: restore_object() -> iobject.new
         }
     end
 
@@ -221,7 +231,7 @@ local function restore_world()
     end
 
     for id, v in pairs(all_object) do
-        restore_object(id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_id)
+        restore_object(id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_id, v.recipe)
     end
 
     iobject.flush()
