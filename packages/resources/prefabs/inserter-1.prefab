@@ -57,7 +57,7 @@ policy:
 data:
   name: empty9
   scene:
-    t: {0, -3, 0}
+    t: {0, 3, 0}
   slot:
     follow_flag: 2
     joint_name: Bone.004
