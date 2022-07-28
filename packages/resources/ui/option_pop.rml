@@ -49,6 +49,7 @@
             local start = ui_sys.createDataMode("start", {
                 archival_files = {},
                 show_archival_files = false,
+                info = false,
             })
 
             function start.clickSave(event)
@@ -63,6 +64,11 @@
 
             function start.clickRestore(event, index)
                 ui_sys.pub {"restore", index}
+            end
+
+            function start.clickInfo(event)
+                ui_sys.pub {"info"}
+                ui_sys.close()
             end
 
             function start.clickClose()
@@ -92,9 +98,9 @@
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
                             <div class = "recipe-name-text" style="font-size: 5.73vmin;">RESTART</div>
                         </button> 
-                        <button class = "button-style" style="background-color:rgb(0, 160, 235);">
+                        <button class = "button-style" style="background-color:rgb(0, 160, 235);" data-event-click = "clickInfo()">
                             <div class="middle-bg" style='background-image: "textures/science/book.texture";'/>
-                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">INFO</div>
+                            <div class = "recipe-name-text" style="font-size: 5.73vmin;">{{info == false ? 'INFO ON' : 'INFO OFF'}}</div>
                         </button>
                         <button class = "button-style" style="background-color:rgb(253, 0, 0);" data-event-click = "clickClose()">
                             <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>

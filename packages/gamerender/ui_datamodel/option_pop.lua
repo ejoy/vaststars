@@ -6,10 +6,13 @@ local save_mb = mailbox:sub {"save"}
 local restore_mb = mailbox:sub {"restore"}
 local restart_mb = mailbox:sub {"restart"}
 local close_mb = mailbox:sub {"close"}
+local info_mb = mailbox:sub {"info"}
 
 local camera = ecs.require "engine.camera"
 local saveload = ecs.require "saveload"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
+local gameplay_core = require "gameplay.core"
+local icanvas = ecs.require "engine.canvas"
 
 ---------------
 local M = {}
@@ -19,8 +22,15 @@ function M:create()
     for _, v in ipairs(saveload:get_archival_list()) do
         archival_files[#archival_files+1] = v.dir
     end
+
+    local info = true
+    local storage = gameplay_core.get_storage()
+    if storage.info ~= nil then
+        info = storage.info
+    end
     return {
         archival_files = archival_files,
+        info = info,
     }
 end
 
@@ -44,6 +54,15 @@ function M:stage_camera_usage()
         if saveload.running then
             iui.close("option_pop.rml")
         end
+    end
+
+    for _ in info_mb:unpack() do
+        local storage = gameplay_core.get_storage()
+        if storage.info == nil then
+            storage.info = true
+        end
+        storage.info = not storage.info
+        icanvas:show(storage.info)
     end
 end
 
