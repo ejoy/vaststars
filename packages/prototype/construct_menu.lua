@@ -51,7 +51,7 @@ local menu = {
         },
     },
     {
-        name = "自定义",
+        name = "默认",
         icon = "textures/construct/modify.texture",
         detail = {
             "液罐I",
