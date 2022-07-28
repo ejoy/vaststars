@@ -69,7 +69,7 @@ end
 
 local M = {}
 local canvas_entity_object
-function M:create()
+function M:create(show)
     canvas_entity_object = ientity_object.create(ecs.create_entity {
         policy = {
             "ant.scene|scene_object",
@@ -84,6 +84,7 @@ function M:create()
             canvas = {
                 textures = {},
                 texts = {},
+                show = show,
             },
         }
     }, entity_events)
@@ -110,5 +111,9 @@ function M:remove_item(item_id)
         icas.remove_item(canvas_entity, id)
     end
     cache_id[item_id] = nil
+end
+
+function M:show(b)
+    icas.show(b)
 end
 return M

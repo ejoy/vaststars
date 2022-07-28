@@ -39,7 +39,12 @@ function m:init_world()
         return
     end
 
-    icanvas:create()
+    local info = true
+    local storage = gameplay_core.get_storage()
+    if storage.info ~= nil then
+        info = storage.info
+    end
+    icanvas:create(info)
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
     iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
     iui.preload_datamodel_dir "/pkg/vaststars.gamerender/ui_datamodel"
