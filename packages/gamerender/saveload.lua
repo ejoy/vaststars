@@ -126,7 +126,11 @@ local function restore_world()
             local show_recipe_icon = typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining") -- TODO: special case for mining -- duplicate with build_function_pop.lua
             if show_recipe_icon then
                 local typeobject = iprototype.queryById(v.assembling.recipe)
-                recipe = typeobject.name
+                if v.assembling.recipe == 0 then
+                    recipe = ""
+                else
+                    recipe = typeobject.name
+                end
             end
         end
         all_object[v.id] = {

@@ -313,7 +313,9 @@ function M:stage_ui_update(datamodel, object_id)
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         iworld:set_recipe(gameplay_core.get_world(), e, nil)
         local vsobject = assert(vsobject_manager:get(object_id))
-        vsobject:del_canvas()
+        local typeobject = assert(iprototype.queryByName("entity", object.prototype_name))
+        local w, h = iprototype.unpackarea(typeobject.area)
+        vsobject:add_canvas("", object.x, object.y, w, h)
         object.fluid_name = {}
 
         _update_neighbor_fluidbox(object)

@@ -31,6 +31,26 @@ entity_events.add_item = function(_, e, id, name, x, y, w, h)
         return
     end
 
+    if name == "" then -- TODO: special case for assembly
+        local item_x, item_y = position[1] + ((w / 2 - 0.5) * iterrain.tile_size), position[3] - ((h / 2 - 0.5) * iterrain.tile_size) - iterrain.tile_size
+        cache_id[id] = icas.add_items(canvas_entity,
+            {
+                texture = {
+                    path = "/pkg/vaststars.resources/ui/textures/assemble/setup2.texture",
+                    rect = { -- -- TODO: remove this hard code
+                        x = 0,
+                        y = 0,
+                        w = 64,
+                        h = 64,
+                    },
+                },
+                x = item_x, y = item_y, w = iterrain.tile_size, h = iterrain.tile_size,
+                srt = {},
+            }
+        )
+        return
+    end
+
     local cfg = canvas_cfg[name]
     if not cfg then
         log.error(("can not found `%s`"):format(name))
