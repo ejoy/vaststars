@@ -148,9 +148,15 @@ local function flush()
 
                 -- display recipe icon of assembling machine
                 if outer.recipe then -- TODO: better way to do this?
-                    local recipe_typeobject = iprototype.queryByName("recipe", outer.recipe)
                     local w, h = iprototype.unpackarea(typeobject.area)
-                    vsobject:add_canvas(recipe_typeobject.icon, outer.x, outer.y, w, h)
+                    local icon
+                    if outer.recipe == "" then
+                        icon = ""
+                    else
+                        local recipe_typeobject = iprototype.queryByName("recipe", outer.recipe)
+                        icon = recipe_typeobject.icon
+                    end                    
+                    vsobject:add_canvas(icon, outer.x, outer.y, w, h)
                 end
             else
                 for k, v in pairs(outer.__change) do
