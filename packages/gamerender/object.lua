@@ -132,8 +132,9 @@ local function flush()
             end
         else
             vsobject = vsobject_manager:get(object_id)
+            local typeobject = iprototype.queryByName("entity", outer.prototype_name)
+
             if not vsobject then
-                local typeobject = iprototype.queryByName("entity", outer.prototype_name)
                 local position = terrain:get_position_by_coord(outer.x, outer.y, iprototype.rotate_area(typeobject.area, outer.dir))
                 assert(position)
 
@@ -166,11 +167,23 @@ local function flush()
                 if outer.__object._x or outer.__object._y then
                     outer.__object.x = outer.__object._x or outer.__object.x
                     outer.__object.y = outer.__object._y or outer.__object.y
-                    local typeobject = iprototype.queryByName("entity", outer.prototype_name)
                     local position = terrain:get_position_by_coord(outer.x, outer.y, iprototype.rotate_area(typeobject.area, outer.dir))
                     local vsobject = assert(vsobject_manager:get(outer.id))
                     vsobject:set_position(position)
                     outer.__object._x, outer.__object._y = nil, nil
+                end
+
+                -- display recipe icon of assembling machine
+                if outer.__change.recipe then -- TODO: better way to do this?
+                    local w, h = iprototype.unpackarea(typeobject.area)
+                    local icon
+                    if outer.recipe == "" then
+                        icon = ""
+                    else
+                        local recipe_typeobject = iprototype.queryByName("recipe", outer.recipe)
+                        icon = recipe_typeobject.icon
+                    end                    
+                    vsobject:add_canvas(icon, outer.x, outer.y, w, h)
                 end
                 outer.__change = {}
             end
