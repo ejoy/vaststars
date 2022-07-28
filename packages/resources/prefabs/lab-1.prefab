@@ -23,7 +23,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Cylinder_P1.meshbin
   name: Cylinder
   scene:
-    t: {0, 1.9942656755447388, 0}
+    t: {0, 10.9942656755447388, 0}
 mount: 1
 policy:
   ant.general|name
@@ -69,7 +69,7 @@ data:
   name: Icosphere.005
   scene:
     s: {0.5789309740066528, 0.5789309740066528, 0.5789309740066528}
-    t: {0, 13.678999900817871, 0}
+    t: {0, 22.678999900817871, 0}
 mount: 1
 policy:
   ant.general|name
