@@ -107,9 +107,18 @@ local function complete(self)
             end
         else
             object.state = "constructed"
+
+            -- TODO: special case for assembling machine
+            local recipe
+            local typeobject = iprototype.queryByName("entity", object.prototype_name)
+            if iprototype.has_type(typeobject.type, "assembling") then
+                recipe = ""
+            end
+
             local old = objects:get(object_id, {"CONSTRUCTED"})
             if not old then
                 object.gameplay_eid = gameplay_core.create_entity(object)
+                object.recipe = recipe
             else
                 if old.prototype_name ~= object.prototype_name then
                     gameplay_core.remove_entity(object.gameplay_eid)
