@@ -8,7 +8,7 @@ prototype "组装机残骸" {
     type = {"entity", "chest"},
     group = {"物流" , "自定义"},
     area = "3x3",
-    slots = 10,
+    slots = 9,
 }
 
 prototype "排水口残骸" {
@@ -18,7 +18,7 @@ prototype "排水口残骸" {
     type = {"entity", "chest"},
     group = {"物流" , "自定义"},
     area = "2x2",
-    slots = 10,
+    slots = 8,
 }
 
 prototype "抽水泵残骸" {
@@ -28,5 +28,5 @@ prototype "抽水泵残骸" {
     type = {"entity", "chest"},
     group = {"物流" , "自定义"},
     area = "2x2",
-    slots = 10,
+    slots = 11,
 }

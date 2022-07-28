@@ -10,6 +10,7 @@ local start = ui_sys.createDataMode("start", {
     cur_item_category = "",
     item_info = {},
     item_prototype_name = "",
+    
 
     slot_count = 0,
     show_item_info = false,
@@ -147,7 +148,7 @@ local function page_item_detail_renderer(index)
 
     local detail = document.createElement "div"
     detail.outerHTML = ([[
-            <div class="button-exchange-block" style = "background-color: rgb(203, 118, 24); width: 88vmin; height: 12vmin; border: 1px rgb(89, 73, 39);">
+            <div class="button-exchange-block" style = "background-color: rgb(203, 118, 24); width: 88vmin; height: 12vmin; border: 1px rgb(89, 73, 39);" data-if="guide_progress >= 10">
                 <button class="button-exchange" style = "background-color: rgb(0,176,80); width: 30.00vmin;" data-event-click = "clickToChest(%s)">
                     <div class = "button-exchange-box" style='width:8vmin; height:8vmin; background-image: "textures/cmdcenter/send_material.texture";'/>
                     <div class = "button-exchange-text">指挥中心转箱子</div>
