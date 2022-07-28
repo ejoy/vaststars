@@ -355,7 +355,7 @@
                 <!-- 开始生产按钮 start -->
                 <div class = "recipe-button-block">
                     <button class = "confirm-button" style="background-color:rgb(52, 207, 115); height: 12vmin;" data-event-click = "clickStartManual()" data-if = "recipe_name != ' '" data-style-background-color="enabled_start_manual ? 'rgb(52, 207, 115)' : 'rgb(108, 108, 108)'">
-                        <div class = "recipe-name-text" style="font-size: 5vmin; margin:0; padding-bottom: 1vmin;">开始生产{{enabled_start_manual ? '(' + manual_crafting_times + ')' : ''}}</div>
+                        <div class = "recipe-name-text" style="font-size: 5vmin; margin:0; padding-bottom: 1vmin;">开始生产{{enabled_start_manual ? '(' + manual_crafting_times + ')' : ' '}}</div>
                     </button>
                 </div>
                 <!-- 开始生产按钮 end -->
