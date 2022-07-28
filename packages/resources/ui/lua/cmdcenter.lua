@@ -10,8 +10,8 @@ local start = ui_sys.createDataMode("start", {
     cur_item_category = "",
     item_info = {},
     item_prototype_name = "",
-    
 
+    max_slot_count = 0,
     slot_count = 0,
     show_item_info = false,
     show = false,
@@ -42,7 +42,7 @@ local function update_category(category)
 
     start.slot_count = #start.sub_inventory
     if category == "全部" then
-        start.slot_count = math.ceil((#start.inventory + 1) / 35) * 35
+        start.slot_count = math.max(start.max_slot_count, start.slot_count)
     end
     start("sub_inventory")
 

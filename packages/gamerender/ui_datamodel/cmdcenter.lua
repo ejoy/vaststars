@@ -115,6 +115,7 @@ function M:create(object_id)
         inventory = get_inventory(object_id),
         is_chest = not typeobject.headquater,
         item_prototype_name = "",
+        max_slot_count = typeobject.slots,
     }
 end
 
