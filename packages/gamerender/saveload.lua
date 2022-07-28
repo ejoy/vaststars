@@ -159,7 +159,7 @@ local function restore_world()
 
             local object = assert(all_object[object_id])
             for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
-                if v.ground and v.dir == iprototype.reverse_dir(v.dir) then
+                if v.ground and v.dir == iprototype.reverse_dir(c.dir) then
                     return x, y
                 end
             end
@@ -210,7 +210,8 @@ local function restore_world()
                 goto continue
             end
 
-            if not match_fluidbox(neighbor, v.x, v.y) then
+            -- check if the neighbor is close to the fluidbox(v)
+            if not v.ground and not match_fluidbox(neighbor, v.x, v.y) then
                 goto continue
             end
 
