@@ -2,7 +2,6 @@ local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
 local itypes = require "gameplay.interface.types"
 local imanual = require "gameplay.interface.manual"
-local irecipe = require "gameplay.interface.recipe"
 
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1

@@ -273,10 +273,19 @@ function M:stage_ui_update(datamodel)
         assert(succ)
         local object = assert(objects:coord(x, y))
 
+        local function _get_fluid_name(object, x, y)
+            for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+                local succ, dx, dy = terrain:move_coord(v.x, v.y, v.dir, 1)
+                if succ and dx == x and dy == y then
+                    return v.fluid_name
+                end
+            end
+        end
+
         if oper == CONNECT then
             local fluid_name = pipe_object.fluid_name
             if pipe_object.fluid_name == "" then
-                _update_fluidflow(pipe_object.fluidflow_id, object.fluidflow_id, object.fluid_name)
+                _update_fluidflow(pipe_object.fluidflow_id, object.fluidflow_id, _get_fluid_name(object, pipe_object.x, pipe_object.y))
             end
 
             if iprototype.is_pipe(pipe_object.prototype_name) then

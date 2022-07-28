@@ -175,7 +175,7 @@ local function flush()
 
                 -- display recipe icon of assembling machine
                 -- TODO: special case for mining 
-                if outer.__change.recipe and not iprototype.has_type(typeobject.type, "mining") then -- TODO: better way to do this?
+                if outer.__change.recipe and not iprototype.has_type(typeobject.type, "mining") and not typeobject.recipe then -- TODO: better way to do this?
                     local w, h = iprototype.unpackarea(typeobject.area)
                     local icon
                     if outer.recipe == "" then
