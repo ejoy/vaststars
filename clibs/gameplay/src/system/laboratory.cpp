@@ -72,7 +72,7 @@ laboratory_next_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l,
 }
 
 static void
-laboratory_update(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, ecs::consumer& consumer, ecs::capacitance& c, bool& updated) {
+laboratory_update(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, ecs::consumer& co, ecs::capacitance& c, bool& updated) {
     prototype_context p = w.prototype(L, e.prototype);
 
     // step.1
@@ -83,13 +83,14 @@ laboratory_update(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, ec
         return;
     }
     c.shortage += drain;
+    co.working = 1;
     if (l.tech == 0 || l.status == STATUS_INVALID) {
         return;
     }
 
     // step.2
     while (l.progress <= 0) {
-        consumer.low_power = 0;
+        co.low_power = 0;
         prototype_context tech = w.prototype(L, l.tech);
         recipe_container& container = w.query_container<recipe_container>(l.container);
         if (l.status == STATUS_DONE) {
@@ -117,14 +118,15 @@ laboratory_update(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, ec
 
     // step.3
     if (c.shortage + power > capacitance) {
-        consumer.low_power = 50;
+        co.low_power = 50;
         return;
     }
     c.shortage += power;
+    co.working = 2;
 
     // step.4
     l.progress -= l.speed;
-    if (consumer.low_power > 0) consumer.low_power--;
+    if (co.low_power > 0) co.low_power--;
 }
 
 static int
@@ -142,7 +144,7 @@ static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     bool updated = false;
-    for (auto& v : w.select<ecs::laboratory, ecs::entity, ecs::consumer, ecs::capacitance>(L)) {
+    for (auto& v : w.select<ecs::laboratory, ecs::consumer, ecs::capacitance, ecs::entity>(L)) {
         ecs::entity& e = v.get<ecs::entity>();
         ecs::laboratory& l = v.get<ecs::laboratory>();
         ecs::capacitance& c = v.get<ecs::capacitance>();

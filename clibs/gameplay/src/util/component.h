@@ -66,6 +66,7 @@ struct chimney {
 };
 
 struct consumer {
+	uint8_t working;
 	uint8_t low_power;
 };
 

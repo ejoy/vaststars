@@ -39,7 +39,7 @@ sync_output_fluidbox(world& w, ecs::assembling& a, ecs::fluidboxes& fb, recipe_c
 }
 
 static void
-assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::entity, ecs::consumer, ecs::capacitance>& v) {
+assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::consumer, ecs::capacitance, ecs::entity>& v) {
     ecs::assembling& a = v.get<ecs::assembling>();
     ecs::entity& e = v.get<ecs::entity>();
     ecs::capacitance& c = v.get<ecs::capacitance>();
@@ -54,6 +54,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
         return;
     }
     c.shortage += drain;
+    co.working = 1;
 
     if (a.recipe == 0) {
         return;
@@ -101,6 +102,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
         return;
     }
     c.shortage += power;
+    co.working = 2;
 
     // step.4
     a.progress -= a.speed;
@@ -110,7 +112,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (auto& v : w.select<ecs::assembling, ecs::entity, ecs::consumer, ecs::capacitance>(L)) {
+    for (auto& v : w.select<ecs::assembling, ecs::consumer, ecs::capacitance, ecs::entity>(L)) {
         assembling_update(L, w, v);
     }
     return 0;

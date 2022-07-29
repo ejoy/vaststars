@@ -57,6 +57,7 @@ component "chimney" {
 }
 
 component "consumer" {
+    "working:byte",
     "low_power:byte",
 }
 

@@ -182,7 +182,8 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 		}
 		ecs::entity& e = v.get<ecs::entity>();
 		p.id = e.prototype;
-		if (v.sibling<ecs::consumer>(w)) {
+		if (auto co = v.sibling<ecs::consumer>(w)) {
+			co->working = 0;
 			// It's a consumer, charge capacitance
 			if (c.shortage > 0) {
 				float eff = pg[c.network].consumer_efficiency[pt_priority(&p)];

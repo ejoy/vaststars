@@ -99,7 +99,11 @@ wait(ecs::inserter& inserter, int index) {
 }
 
 static bool
-tryActive(lua_State* L, world& w, ecs::inserter& i, ecs::entity& e, ecs::capacitance& c) {
+inserter_active(lua_State* L, world& w, ecs_api::entity<ecs::inserter, ecs::consumer, ecs::capacitance, ecs::entity>& v) {
+    ecs::inserter& i = v.get<ecs::inserter>();
+    ecs::capacitance& c = v.get<ecs::capacitance>();
+    ecs::consumer& co = v.get<ecs::consumer>();
+    ecs::entity& e = v.get<ecs::entity>();
     prototype_context p = w.prototype(L, e.prototype);
 
     unsigned int power = pt_power(&p);
@@ -109,6 +113,7 @@ tryActive(lua_State* L, world& w, ecs::inserter& i, ecs::entity& e, ecs::capacit
         return false;
     }
     c.shortage += drain;
+    co.working = 1;
 
     if (i.status == STATUS_IN) {
         if (i.hold_amount == 0) {
@@ -139,15 +144,58 @@ tryActive(lua_State* L, world& w, ecs::inserter& i, ecs::entity& e, ecs::capacit
 }
 
 static void
-updateWaiting(lua_State* L, world& w) {
-    ecs_api::entity<ecs::inserter, ecs::entity, ecs::capacitance> e;
+inserter_waiting(lua_State* L, world& w) {
+    ecs_api::entity<ecs::inserter, ecs::consumer, ecs::capacitance, ecs::entity> v;
     for (auto iter = waiting.begin(); iter != waiting.end();) {
-        if (!e.init(w, *iter, L) || tryActive(L, w, e.get<ecs::inserter>(), e.get<ecs::entity>(), e.get<ecs::capacitance>())) {
+        if (!v.init(w, *iter, L) || inserter_active(L, w, v)) {
             iter = waiting.erase(iter);
         }
         else {
             ++iter;
         }
+    }
+}
+
+static void
+inserter_update(lua_State* L, world& w, ecs_api::entity<ecs::inserter, ecs::consumer, ecs::capacitance, ecs::entity>& v) {
+    ecs::inserter& i = v.get<ecs::inserter>();
+    ecs::capacitance& c = v.get<ecs::capacitance>();
+    ecs::consumer& co = v.get<ecs::consumer>();
+    ecs::entity& e = v.get<ecs::entity>();
+    prototype_context p = w.prototype(L, e.prototype);
+
+    // step.1
+    unsigned int power = pt_power(&p);
+    unsigned int capacitance = power * 2;
+    if (co.working == 0) {
+        unsigned int drain = pt_drain(&p);
+        if (c.shortage + drain > capacitance) {
+            return;
+        }
+        c.shortage += drain;
+        co.working = 1;
+    }
+
+    // step.2
+    if (i.progress == STATUS_DONE) {
+        return;
+    }
+
+    if (c.shortage + power > capacitance) {
+        co.low_power = 50;
+        return;
+    }
+    c.shortage += power;
+    co.working = 2;
+
+    // step.3
+    i.progress--;
+    if (i.progress == STATUS_DONE) {
+        co.low_power = 0;
+        wait(i, v.getid());
+    }
+    else {
+        if (co.low_power > 0) co.low_power--;
     }
 }
 
@@ -168,32 +216,9 @@ lbuild(lua_State *L) {
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    updateWaiting(L, w);
-
-    for (auto& e : w.select<ecs::inserter>(L)) {
-        ecs::inserter& i = e.get<ecs::inserter>();
-        if (i.progress != STATUS_DONE) {
-            ecs::capacitance& c = e.sibling<ecs::capacitance>(w, L);
-            ecs::consumer& co = e.sibling<ecs::consumer>(w, L);
-            prototype_context p = w.prototype(L, e.sibling<ecs::entity>(w, L).prototype);
-            
-            unsigned int power = pt_power(&p);
-            unsigned int capacitance = power * 2;
-            if (c.shortage + power <= capacitance) {
-                c.shortage += power;
-                i.progress--;
-                if (i.progress == STATUS_DONE) {
-                    co.low_power = 0;
-                    wait(i, e.getid());
-                }
-                else {
-                    if (co.low_power > 0) co.low_power--;
-                }
-            }
-            else {
-                co.low_power = 50;
-            }
-        }
+    inserter_waiting(L, w);
+    for (auto& v : w.select<ecs::inserter, ecs::consumer, ecs::capacitance, ecs::entity>(L)) {
+        inserter_update(L, w, v);
     }
     return 0;
 }
