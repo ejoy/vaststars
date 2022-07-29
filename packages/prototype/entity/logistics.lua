@@ -11,7 +11,7 @@ prototype "指挥中心" {
     power = "1MW",
     priority = "primary",
     group = {"物流"},
-    slots = 50,
+    slots = 70,
     headquater = true,
     teardown = false,
 }
