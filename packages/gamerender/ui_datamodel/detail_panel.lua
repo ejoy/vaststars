@@ -32,10 +32,7 @@ local function get_property_list(entity)
     return r
 end
 
-local function get_display_info(e, typeobject)
-    local t = {
-        values = {}
-    }
+local function get_display_info(e, typeobject, t)
     local tname = typeobject.name
     local post = string.match(typeobject.name, "%u+")
     if post then
@@ -81,16 +78,14 @@ local function get_display_info(e, typeobject)
         end
         t[propertyName] = cfg
     end
-    return t
 end
 local function get_property(e, typeobject)
-    -- 显示建筑详细信息
-    if not e.fluidbox and not e.fluidboxes then
-        return get_display_info(e, typeobject)
-    end
     local t = {
         values = {}
     }
+    -- 显示建筑详细信息
+    get_display_info(e, typeobject, t)
+    
     if e.fluidbox and e.fluidbox.fluid ~= 0 then
         local pt = iprototype.queryById(e.fluidbox.fluid)
         t.values.fluid_name = pt.name
