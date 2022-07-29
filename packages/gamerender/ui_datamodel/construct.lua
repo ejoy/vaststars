@@ -42,10 +42,8 @@ local open_taskui_event = mailbox:sub {"open_taskui"}
 local single_touch_mb = world:sub {"single_touch"}
 local imanual = require "ui_datamodel.common.manual"
 local inventory = global.inventory
-local pickup_mapping_mb = world:sub {"pickup_mapping"}
 local pickup_mb = world:sub {"pickup"}
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
-local _TILE_PICKUP <const> = true
 
 local builder
 local last_prototype_name
@@ -174,6 +172,7 @@ function M:stage_ui_update(datamodel)
     end
 
     for _, _, _, double_confirm in dismantle_begin_mb:unpack() do
+        idetail.unselected()
         if builder then
             if builder:check_unconfirmed(double_confirm) then
                 world:pub {"ui_message", "show_unconfirmed_double_confirm"}
@@ -331,31 +330,6 @@ function M:stage_camera_usage(datamodel)
     end
 
     local leave = true
-    for _, _, x, y, object_id in pickup_mapping_mb:unpack() do
-        -- do -- TODO: remove this block
-        --     local vsobject_manager = ecs.require "vsobject_manager"
-        --     local vsobject = vsobject_manager:get(object_id)
-        --     local object = objects:get(object_id)
-        --     if object then
-        --         log.info(("pickup_mapping object (%s) (%s)"):format(object.prototype_name, math3d.tostring(vsobject:get_position())))
-        --     end
-        -- end
-
-        if not _TILE_PICKUP then
-            if objects:get(object_id) then -- object_id may be 0, such as when user click on empty space
-                if global.mode == "teardown" then
-                    world:pub {"teardown", objects:get(object_id).prototype_name}
-                    ieditor:teardown(object_id)
-                    datamodel.show_teardown = _has_teardown_entity()
-
-                elseif global.mode == "normal" then
-                    if idetail.show(object_id) then
-                        leave = false
-                    end
-                end
-            end
-        end
-    end
 
     local function _get_object(pickup_x, pickup_y)
         for _, pos in ipairs(icamera.screen_to_world(pickup_x, pickup_y, PLANES)) do
@@ -381,21 +355,19 @@ function M:stage_camera_usage(datamodel)
             end
         end
 
-        if _TILE_PICKUP then
-            local object = _get_object(x, y)
-            if object then -- object may be nil, such as when user click on empty space
-                if global.mode == "teardown" then
-                    ieditor:teardown(object.id)
-                    datamodel.show_teardown = _has_teardown_entity()
+        local object = _get_object(x, y)
+        if object then -- object may be nil, such as when user click on empty space
+            if global.mode == "teardown" then
+                ieditor:teardown(object.id)
+                datamodel.show_teardown = _has_teardown_entity()
 
-                elseif global.mode == "normal" then
-                    if idetail.show(object.id) then
-                        leave = false
-                    end
+            elseif global.mode == "normal" then
+                if idetail.show(object.id) then
+                    leave = false
                 end
-            else
-                idetail.unselected()
             end
+        else
+            idetail.unselected()
         end
 
         if leave then

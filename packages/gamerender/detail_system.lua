@@ -11,8 +11,8 @@ local iprototype = require "gameplay.interface.prototype"
 local idetail = ecs.interface "idetail"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local camera = ecs.require "engine.camera"
-local EDITOR_CACHE_NAMES = {"SELECTED", "CONSTRUCTED"}
-local CLEAR_CACHE_NAME = "SELECTED"
+local EDITOR_CACHE_NAMES <const> = {"SELECTED", "CONSTRUCTED"}
+local CLEAR_CACHE_NAMES <const> = {"SELECTED"}
 
 local iobject = ecs.require "object"
 
@@ -71,7 +71,7 @@ function idetail.unselected()
     for _, object in objects:all("SELECTED") do
         object.state = "constructed"
     end
-    objects:clear(CLEAR_CACHE_NAME)
+    objects:clear({"SELECTED"})
 end
 
 function idetail.selected(object)
