@@ -57,6 +57,7 @@
                 show_set_recipe = false,
                 show_manual_manufacture = false,
                 show_place_material = false,
+                show_detail = false,
                 has_result = false,
                 need_ingredients = false,
                 object_id = 0,
@@ -143,7 +144,7 @@
             </div>
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!(show_place_material)" /> <!-- TODO -->
 
-            <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickDetail()">
+            <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickDetail()" data-if = "show_detail">
                 <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>
                 <div class="title-text">详细</div>
             </div>

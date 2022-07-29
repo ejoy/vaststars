@@ -28,6 +28,27 @@ place_material_func["laboratory"] = function(gameplay_world, e)
     ilaboratory:place_material(gameplay_world, e)
 end
 
+local detail_event = { -- entity_type -> function
+    ["assembling"] = function(object_id)
+        iui.open("assemble_2.rml", object_id)
+    end,
+    ["chest"] = function(object_id)
+        iui.open("cmdcenter.rml", object_id)
+    end,
+    ["laboratory"] = function(object_id)
+        iui.open("lab.rml", object_id)
+    end,
+}
+
+local function _show_detail(typeobject)
+    for t in pairs(detail_event) do
+        if iprototype.has_type(typeobject.type, t) then
+            return true
+        end
+    end
+    return false
+end
+
 ---------------
 local M = {}
 local current_object_id
@@ -54,6 +75,7 @@ function M:create(object_id, left, top)
     local show_set_recipe = false
     local show_manual_manufacture = false
     local show_place_material = false
+    local show_detail = _show_detail(typeobject)
     local recipe_name = ""
 
     if iprototype.has_type(typeobject.type, "assembling") then
@@ -85,6 +107,7 @@ function M:create(object_id, left, top)
         show_set_recipe = show_set_recipe,
         show_manual_manufacture = show_manual_manufacture,
         show_place_material = show_place_material,
+        show_detail = show_detail,
         recipe_name = recipe_name,
         object_id = object_id,
         left = left,
@@ -138,14 +161,10 @@ function M:stage_ui_update(datamodel, object_id)
     for _, _, _, object_id in detail_mb:unpack() do
         local object = assert(objects:get(object_id))
         local typeobject = iprototype.queryByName("entity", object.prototype_name)
-        if iprototype.has_type(typeobject.type, "assembling") then
-            iui.open("assemble_2.rml", object_id)
-        elseif iprototype.has_type(typeobject.type, "chest") then
-            iui.open("cmdcenter.rml", object_id)
-        elseif iprototype.has_type(typeobject.type, "laboratory") then
-            iui.open("lab.rml", object_id)
-        else
-            log.error("no detail")
+        for _, t in ipairs(typeobject.type) do
+            if detail_event[t] then
+                detail_event[t](object_id)
+            end
         end
     end
 
