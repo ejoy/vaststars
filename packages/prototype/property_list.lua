@@ -26,6 +26,7 @@ local property_list = {
 	["chest_capacity"] = {
 		icon = "textures/property/chest-capacity.texture",
 		desc = "储物箱容量: ",
+		value = "$slots$",
 		pos = 5,
 	},
 	["chest_req"] = {
@@ -61,16 +62,19 @@ local property_list = {
 	["generate_power"] = {
 		icon = "textures/property/generate-power.texture",
 		desc = "发电功率: ",
+		value = "$power$",
 		pos = 12,
 	},
 	["work_power"] = {
 		icon = "textures/property/work-power.texture",
 		desc = "工作功率: ",
+		value = "$power$",
 		pos = 13,
 	},
 	["idle_power"] = {
 		icon = "textures/property/idle-power.texture",
 		desc = "待机功率: ",
+		value = "$drain$",
 		pos = 14,
 	},
 	["charge_power"] = {
@@ -86,6 +90,7 @@ local property_list = {
 	["production_speed"] = {
 		icon = "textures/property/production-speed.texture",
 		desc = "生产速度: ",
+		value = "$speed$",
 		pos = 17,
 	},
 	["productivity_bonus"] = {
@@ -106,6 +111,7 @@ local property_list = {
 	["research_speed"] = {
 		icon = "textures/property/research-speed.texture",
 		desc = "研究速度: ",
+		value = "$laboratory.speed$",
 		pos = 21,
 	},
 	["research_time"] = {

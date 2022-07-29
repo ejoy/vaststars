@@ -1,10 +1,14 @@
 local property_list = import_package "vaststars.prototype"("property_list")
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
+-- local gameplay = import_package "vaststars.gameplay"
+-- local prototype_cfg = gameplay.prototype
 local gameplay_core = require "gameplay.core"
 
+local building_detail = import_package "vaststars.prototype"("building_detail_config")
+
 local function format_vars(fmt, vars)
-    return string.gsub(fmt, "%$([%w_]+)%$", vars)
+    return string.gsub(fmt, "%$([%w%._]+)%$", vars)
 end
 
 local function get_property_list(entity)
@@ -18,7 +22,7 @@ local function get_property_list(entity)
         local t = {}
         t.icon = cfg.icon
         t.desc = cfg.desc
-        t.value = format_vars(cfg.value, entity)
+        t.value = cfg.value and format_vars(cfg.value, entity.values) or ""
         t.pos = cfg.pos
 
         r[#r + 1] = t
@@ -28,18 +32,74 @@ local function get_property_list(entity)
     return r
 end
 
+local function get_display_info(e, typeobject)
+    local t = {
+        values = {}
+    }
+    local tname = typeobject.name
+    local post = string.match(typeobject.name, "%u+")
+    if post then
+        local len = #post + 1
+        tname = string.sub(typeobject.name, 1, -len)
+    end
+    local detail = building_detail[tname]
+    if not detail then
+        return
+    end
+    local values = t.values;
+    for _, propertyName in ipairs(detail) do
+        local cfg = property_list[propertyName]
+        if cfg.value then
+            local cn, vn = string.match(cfg.value, "%$([%w_]*)%.?([%w_]*)%$")
+            local raw_value
+            if #vn > 0 then
+                raw_value = e[cn][vn]
+                values[cn.. "." .. vn] = raw_value
+            else
+                raw_value = typeobject[cn]
+                if cn == "power" or cn == "drain" then
+                    raw_value = raw_value * 50
+                    local u = "kW"
+                    local divisor = 1000
+                    if raw_value >= 1000000000 then
+                        divisor = 1000000000
+                        u = "GW"
+                    elseif raw_value >= 1000000 then
+                        divisor = 1000000
+                        u = "MW"
+                    end
+                    raw_value = raw_value / divisor
+                    local v0, v1 = math.modf(raw_value)
+                    if v1 > 0 then
+                        raw_value = string.format("%.2f", raw_value) .. u
+                    else
+                        raw_value = string.format("%d", v0) .. u
+                    end
+                end
+                values[cn] = raw_value
+            end
+        end
+        t[propertyName] = cfg
+    end
+    return t
+end
 local function get_property(e, typeobject)
     -- 显示建筑详细信息
-    local t = {}
+    if not e.fluidbox and not e.fluidboxes then
+        return get_display_info(e, typeobject)
+    end
+    local t = {
+        values = {}
+    }
     if e.fluidbox and e.fluidbox.fluid ~= 0 then
         local pt = iprototype.queryById(e.fluidbox.fluid)
-        t.fluid_name = pt.name
+        t.values.fluid_name = pt.name
 
         local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
         if r then
-            t.fluid_volume = r.volume / r.multiple
-            t.fluid_capacity = r.capacity / r.multiple
-            t.fluid_flow = r.flow / r.multiple
+            t.values.fluid_volume = r.volume / r.multiple
+            t.values.fluid_capacity = r.capacity / r.multiple
+            t.values.fluid_flow = r.flow / r.multiple
         end
     end
 
@@ -53,7 +113,7 @@ local function get_property(e, typeobject)
             if value == 0 then
                 return t
             end
-            t[key] = value
+            t.values[key] = value
             return t
         end
 
