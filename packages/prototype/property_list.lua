@@ -2,7 +2,7 @@ local property_list = {
 	["health"] = {
 		icon = "textures/property/building-health.texture",
 		desc = "建筑生命: ",
-		value = "$health$/$total_health$",
+		-- value = "$health$/$total_health$",
 		pos = 1,
 	},
 	["fluid_name"] = {
@@ -80,11 +80,13 @@ local property_list = {
 	["charge_power"] = {
 		icon = "textures/property/idle-power.texture",
 		desc = "充电功率: ",
+		value = "$charge_power$",
 		pos = 15,
 	},
 	["charge_energy"] = {
 		icon = "textures/property/idle-power.texture",
 		desc = "蓄电电量: ",
+		value = "$capacitance$",
 		pos = 16,
 	},
 	["production_speed"] = {
