@@ -41,6 +41,7 @@ function consumer:ctor(init, pt)
 			network = 1,
 		},
 		consumer = {
+			working = 0,
 			low_power = 0,
 		},
 	}
