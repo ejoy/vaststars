@@ -56,7 +56,7 @@ prototype "地质研究" {
     ingredients = {
     },
     count = 5,
-    time = "1.6s",
+    time = "1.2s",
     prerequisites = {"放置科研中心"},
     sign_desc = {
       { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
@@ -118,9 +118,7 @@ prototype "制造台生产" {
   desc = "制造台生产2个地质科技包",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
-  -- task = {"unknown", 0, "地质科技包"},
   task = {"stat_manual_production", 0, "地质科技包"},
-  -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"转运铁矿石","转运碎石矿"},
   count = 2,
   tips_pic = {
@@ -253,36 +251,6 @@ prototype "气候研究" {
   count = 6,
   time = "1.5s"
 }
-
--- ---新增地下卤水配方的对应科技---
--- prototype "地下卤水提取铁矿" {
---   type = { "tech" },
---   icon = "textures/science/tech-research.texture",
---   effects = {
---     unlock_recipe = {"地下卤水分离铁"},
---   },
---   prerequisites = {"地质研究"},
---   ingredients = {
---       {"地质科技包", 3},
---   },
---   count = 4,
---   time = "1s"
--- }
-
--- ---新增地下卤水配方的对应科技---
--- prototype "地下卤水提取石矿" {
---   type = { "tech" },
---   icon = "textures/science/tech-research.texture",
---   effects = {
---     unlock_recipe = {"地下卤水分离石头"},
---   },
---   prerequisites = {"铁矿收集"},
---   ingredients = {
---       {"地质科技包", 3},
---   },
---   count = 4,
---   time = "1s"
--- }
 
 prototype "维修破损空气过滤器" {
   desc = "将破损的机器修复会大大节省建设时间和资源",
