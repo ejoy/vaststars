@@ -246,8 +246,8 @@ function M:create(object_id, left, top)
 
     return {
         object_id = object_id,
-        left = ("%0.2fvmin"):format(math.max(left - 34, 0)),
-        top = ("%0.2fvmin"):format(math.max(top - 34, 0)),
+        left = left,
+        top = top,
         connections = get_connections(object_id),
     }
 end

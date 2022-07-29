@@ -100,15 +100,23 @@
                     ui_sys.close()
                 end,
             })
+
+            local PANDEL_WIDTH <const> = 83.47 -- the unit is vmin
+            local PANDEL_HEIGHT <const> = 30
+            local OFFSET_LEFT <const> = PANDEL_WIDTH / 2
+            local OFFSET_TOP <const> = PANDEL_HEIGHT
+            local popup_bound = require "lua.popup_bound"
             ui_sys.mapping(start, {
                 {
                     function(_, left, top)
-                        start.left = ("%0.2fvmin"):format(math.max(left - 41.5, 0))
-                        start.top = ("%0.2fvmin"):format(math.max(top - 30, 0))
+                        local move_camera, _left, _top = popup_bound(left, top, OFFSET_LEFT, OFFSET_TOP, PANDEL_WIDTH, PANDEL_HEIGHT)
+                        start.left, start.top = ("%0.2fvmin"):format(_left), ("%0.2fvmin"):format(_top)
+                        if move_camera then
+                            ui_sys.world_pub {"ui_message", "move_camera", _left + OFFSET_LEFT, _top + OFFSET_TOP, start.object_id}
+                        end
                     end,
-                    "left",
-                    "top",
-                }           
+                    "left", "top",
+                }
             })
         </script>
     </head>

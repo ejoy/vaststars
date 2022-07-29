@@ -16,21 +16,14 @@ local CLEAR_CACHE_NAMES <const> = {"SELECTED"}
 
 local iobject = ecs.require "object"
 
-local function get_vmin(w, h, ratio)
+local function _get_vmin(w, h, ratio)
     local w = w / ratio
     local h = h / ratio
     return math.min(w, h)
 end
 
-local function _move_camera(pos)
-    local mq = w:singleton("main_queue", "camera_ref:in")
-    local e = world:entity(mq.camera_ref)
-
-    local old = iom.get_position(e)
-    local delta = math3d.inverse(math3d.sub(camera.get_central_position(), pos))
-    local new = math3d.add(delta, old)
-
-    camera.move({t = new})
+local function _to_vmin(vmin, v)
+    return v / vmin * 100
 end
 
 function idetail.show(object_id)
@@ -42,23 +35,20 @@ function idetail.show(object_id)
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
 
     idetail.selected(object)
-    _move_camera(vsobject:get_position())
 
     local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
     local ce = world:entity(mq.camera_ref)
     local vp = ce.camera.viewprojmat
     local vr = mq.render_target.view_rect
-    local p = mu.world_to_screen(vp, vr, camera.get_central_position()) -- the position always in the center of the screen after move camera
-    local vmin = get_vmin(vr.w, vr.h, vr.ratio)
-
-    p = math3d.mul(p, math3d.vector {1 / vmin * 100, 1 / vmin * 100, 0})
+    local p = mu.world_to_screen(vp, vr, vsobject:get_position()) -- the position always in the center of the screen after move camera
+    local vmin = _get_vmin(vr.w, vr.h, vr.ratio)
 
     if typeobject.show_build_function ~= false then
-        iui.open("build_function_pop.rml", object_id, math3d.index(p, 1), math3d.index(p, 2))
+        iui.open("build_function_pop.rml", object_id, _to_vmin(vmin, math3d.index(p, 1)), _to_vmin(vmin, math3d.index(p, 2)))
     elseif iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
-        iui.open("pipe_function_pop.rml", object_id, math3d.index(p, 1), math3d.index(p, 2))
+        iui.open("pipe_function_pop.rml", object_id, _to_vmin(vmin, math3d.index(p, 1)), _to_vmin(vmin, math3d.index(p, 2)))
     elseif iprototype.is_road(object.prototype_name) then
-        iui.open("road_function_pop.rml", object_id, math3d.index(p, 1), math3d.index(p, 2))
+        iui.open("road_function_pop.rml", object_id, _to_vmin(vmin, math3d.index(p, 1)), _to_vmin(vmin, math3d.index(p, 2)))
     end
 
     do

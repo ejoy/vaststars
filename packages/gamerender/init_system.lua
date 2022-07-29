@@ -19,7 +19,13 @@ local iguide = require "gameplay.interface.guide"
 local TERRAIN_ONLY = require("debugger").terrain_only
 local NOTHING = require("debugger").nothing
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
+local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
 local icanvas = ecs.require "engine.canvas"
+local math3d = require "math3d"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local camera = ecs.require "engine.camera"
+local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
+local PLANES <const> = {YAXIS_PLANE}
 
 local m = ecs.system 'init_system'
 function m:init_world()
@@ -82,5 +88,28 @@ function m:camera_usage()
             terrain:enable_terrain(coord[1], coord[2])
         end
         ::continue::
+    end
+
+    local function _move_camera(delta)
+        local mq = w:singleton("main_queue", "camera_ref:in")
+        local e = world:entity(mq.camera_ref)
+
+        local old = iom.get_position(e)
+        local new = math3d.add(delta, old)
+
+        camera.move({t = new})
+    end
+    local function _get_vmin(w, h, ratio)
+        local w = w / ratio
+        local h = h / ratio
+        return math.min(w, h)
+    end
+    for _, _, left, top, object_id in ui_message_move_camera_mb:unpack() do
+        local vsobject = assert(vsobject_manager:get(object_id))
+        local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
+        local vr = mq.render_target.view_rect
+        local vmin = _get_vmin(vr.w, vr.h, vr.ratio)
+        local pos = camera.screen_to_world(left / 100 * vmin, top / 100 * vmin, PLANES)[1]
+        _move_camera(math3d.sub(vsobject:get_position(), pos))
     end
 end
