@@ -118,6 +118,9 @@ local function shift_pipe(object, prototype_name, dir)
     object.prototype_name = prototype_name
     object.dir = dir
     objects:set(object)
+
+    gameplay_core.remove_entity(object.gameplay_eid)
+    object.gameplay_eid = gameplay_core.create_entity(object)
 end
 
 local function is_connection(self, x1, y1, dir1, x2, y2, dir2)

@@ -311,6 +311,8 @@ function M:stage_ui_update(datamodel)
                     object.fluid_name = fluid_name
                     object.fluidflow_id = pipe_object.fluidflow_id
                     _update_fluidflow(object.fluidflow_id, pipe_object.fluidflow_id, pipe_object.fluid_name)
+                else
+                    _update_fluidflow(object.fluidflow_id, pipe_object.fluidflow_id, pipe_object.fluid_name)
                 end
 
             elseif iprototype.is_pipe_to_ground(pipe_object.prototype_name) then
