@@ -15,7 +15,6 @@
                 width: 5.70vmin;
                 height: 5.70vmin;
                 font-size: 3.00vmin;
-                background-image: "textures/construct/insert1.texture";
             }
             .task-block {
                 flex-direction: column;
