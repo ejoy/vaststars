@@ -145,6 +145,13 @@ local function get_property(e, typeobject)
             if fluid ~= 0 and id ~= 0 then
                 local f = gameplay_core.fluidflow_query(fluid, id)
                 if f then
+                    local pt = iprototype.queryById(fluid)
+                    if classify == "out1" then
+                        -- only show out1 detail
+                        add_property(t, "fluid_name", pt.name)
+                        add_property(t, "fluid_volume", f.volume / f.multiple)
+                        add_property(t, "fluid_capacity", f.capacity / f.multiple)
+                    end
                     add_property(t, "fluidboxes_" .. classify .. "_volume", f.volume / f.multiple)
                     add_property(t, "fluidboxes_" .. classify .. "_capacity", f.capacity / f.multiple)
                     add_property(t, "fluidboxes_" .. classify .. "_flow", f.flow / f.multiple)
