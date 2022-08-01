@@ -1,8 +1,7 @@
 local property_list = import_package "vaststars.prototype"("property_list")
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
--- local gameplay = import_package "vaststars.gameplay"
--- local prototype_cfg = gameplay.prototype
+local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
 
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
@@ -29,6 +28,8 @@ local function get_property_list(entity)
         ::continue::
     end
     table.sort(r, function(a, b) return a.pos < b.pos end)
+    r.chest_list0 = entity.chest_list0
+    r.chest_list1 = entity.chest_list1
     return r
 end
 
@@ -85,17 +86,47 @@ local function get_property(e, typeobject)
     }
     -- 显示建筑详细信息
     get_display_info(e, typeobject, t)
-    
-    if e.fluidbox and e.fluidbox.fluid ~= 0 then
-        local pt = iprototype.queryById(e.fluidbox.fluid)
-        t.values.fluid_name = pt.name
-
-        local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
-        if r then
-            t.values.fluid_volume = r.volume / r.multiple
-            t.values.fluid_capacity = r.capacity / r.multiple
-            t.values.fluid_flow = r.flow / r.multiple
+    if e.chest then
+        local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
+        local slotnum = 0--t.values.slots
+        local chest_list0 = {}
+        local chest_list1 = {}
+        for id, count in pairs(item_counts) do
+            local typeobject_item = assert(iprototype.queryById(id))
+            slotnum = slotnum + math.floor(count / typeobject_item.stack)
+            if count % typeobject_item.stack > 0 then
+                slotnum = slotnum + 1
+            end
+            if #chest_list0 < 5 then
+                chest_list0[#chest_list0 + 1] = {icon = typeobject_item.icon, count = count}
+            elseif #chest_list1 < 5 then
+                chest_list1[#chest_list1 + 1] = {icon = typeobject_item.icon, count = count}
+            end
         end
+        t.chest_list0 = #chest_list0 > 0 and chest_list0 or nil
+        t.chest_list1 = #chest_list1 > 0 and chest_list1 or nil
+        t.values.slots = string.format("%d/%d", slotnum, t.values.slots)
+    end
+    if e.fluidbox then
+        local name = "无"
+        local volume = 0
+        local capacity = 0
+        local flow = 0
+        if e.fluidbox.fluid ~= 0 then
+            local pt = iprototype.queryById(e.fluidbox.fluid)
+            name = pt.name
+
+            local r = gameplay_core.fluidflow_query(e.fluidbox.fluid, e.fluidbox.id)
+            if r then
+                volume = r.volume / r.multiple
+                capacity = r.capacity / r.multiple
+                flow = r.flow / r.multiple
+            end
+        end
+        t.values.fluid_name = name
+        t.values.fluid_volume = volume
+        t.values.fluid_capacity = capacity
+        t.values.fluid_flow = flow
     end
 
     if e.fluidboxes then
@@ -158,17 +189,30 @@ function M:create(object_id)
     end
 
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-
+    local property_list = get_entity_property_list(object_id)
+    local chest_list0 = property_list.chest_list0 or {}
+    local chest_list1 = property_list.chest_list1 or {}
+    property_list.chest_list0 = nil
+    property_list.chest_list1 = nil
     return {
         object_id = object_id,
         icon = typeobject.icon,
         prototype_name = object.prototype_name,
-        property_list = get_entity_property_list(object_id),
+        property_list = property_list,
+        chest_list0 = chest_list0,
+        chest_list1 = chest_list1
     }
 end
 
 function M:stage_ui_update(datamodel, object_id)
-    datamodel.property_list = get_entity_property_list(object_id)
+    local property_list = get_entity_property_list(object_id)
+    local chest_list0 = property_list.chest_list0 or {}
+    local chest_list1 = property_list.chest_list1 or {}
+    property_list.chest_list0 = nil
+    property_list.chest_list1 = nil
+    datamodel.property_list = property_list
+    datamodel.chest_list0 = chest_list0
+    datamodel.chest_list1 = chest_list1
 end
 
 return M
