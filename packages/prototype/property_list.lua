@@ -25,13 +25,13 @@ local property_list = {
 	},
 	["chest_capacity"] = {
 		icon = "textures/property/chest-capacity.texture",
-		desc = "储物箱容量",
+		desc = "储存容量",
 		value = "$slots$",
 		pos = 5,
 	},
 	["chest_req"] = {
 		icon = "textures/property/chest-req.texture",
-		desc = "储物箱需求",
+		desc = "货物需求",
 		pos = 6,
 	},
 	["truck"] = {
