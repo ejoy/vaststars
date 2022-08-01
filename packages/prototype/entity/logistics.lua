@@ -64,6 +64,7 @@ prototype "科研中心I" {
     construct_detector = {"exclusive"},
     area = "3x3",
     power = "150kW",
+    speed = "100%",
     priority = "secondary",
     inputs = {
         "地质科技包",
