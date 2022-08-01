@@ -79,6 +79,7 @@
 
                 detail_panel_status_icon = "textures/work_status_icon/normal.texture",
                 detail_panel_status_desc = "正常工作",
+                showchest = false,
                 chest_list0 = {},
                 chest_list1 = {},
             })
@@ -133,7 +134,7 @@
                     </div>
                     <div style = "height: 2.67vmin;" />
                 </div>
-                <div style="padding-top:8.8em; flex-direction: column; justify-content: flex-end; align-items: center;">
+                <div style="padding-top:8.8em; flex-direction: column; justify-content: flex-end; align-items: center;" data-if = "showchest">
                     <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin" />
                     <div style="padding-top:0.3vmin; width:100%; flex-direction: row; justify-content: flex-start; align-items: center;">
                         <div data-for = "chest : chest_list0" class="small-item" data-style-background-image="chest.icon">

@@ -203,7 +203,8 @@ function M:create(object_id)
         prototype_name = object.prototype_name,
         property_list = property_list,
         chest_list0 = chest_list0,
-        chest_list1 = chest_list1
+        chest_list1 = chest_list1,
+        showchest = #chest_list0 > 0
     }
 end
 
@@ -216,6 +217,7 @@ function M:stage_ui_update(datamodel, object_id)
     datamodel.property_list = property_list
     datamodel.chest_list0 = chest_list0
     datamodel.chest_list1 = chest_list1
+    datamodel.showchest = #chest_list0 > 0
 end
 
 return M
