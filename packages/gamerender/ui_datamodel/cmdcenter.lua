@@ -113,7 +113,7 @@ function M:create(object_id)
         background = typeobject.background,
         item_category = item_category,
         inventory = get_inventory(object_id),
-        is_chest = not typeobject.headquater,
+        is_headquater = (typeobject.headquater == true),
         item_prototype_name = "",
         max_slot_count = typeobject.slots,
     }

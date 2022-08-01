@@ -2,7 +2,7 @@ local ui_sys = require "ui_system"
 local start = ui_sys.createDataMode("start", {
     object_id = 0,
     background = "",
-    is_chest = false,
+    is_headquater = false,
     item_category = {},
     inventory = {},
     prototype_name = "",
@@ -86,7 +86,7 @@ end
 function start.clickBlankSlot(event)
     start.page:show_detail(select_item_index, false)
     select_item_index = nil
-    if start.is_chest then
+    if not start.is_headquater then
         ui_sys.open("headquater_inventory.rml", start.object_id)
     end
 end
@@ -142,7 +142,7 @@ local function page_item_renderer(index)
 end
 
 local function page_item_detail_renderer(index)
-    if not start.is_chest then
+    if start.is_headquater then -- only normal box would show item's detail
         return
     end
 
@@ -170,12 +170,15 @@ end)
 
 ui_sys.mapping(start, {
     {
-        "inventory",
         function()
             if start.cur_item_category == "" and start.item_category[1] then
                 start.cur_item_category = start.item_category[1].category or ""
             end
+            if start.cur_item_category == "" then
+                start.cur_item_category = start.item_category[1]
+            end
             update_category(start.cur_item_category)
-        end
+        end,
+        "inventory", "item_category"
     }
 })
