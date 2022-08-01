@@ -46,22 +46,24 @@ local function get_display_info(e, typeobject, t)
         if cfg.value then
             local cn, vn = string.match(cfg.value, "%$([%w_]*)%.?([%w_]*)%$")
             local raw_value
+            local key = cn
             if #vn > 0 then
                 raw_value = e[cn][vn]
-                values[cn.. "." .. vn] = raw_value
+                key = cn.. "." .. vn
             else
                 raw_value = typeobject[cn]
-                if cn == "power" or cn == "drain" then
+                if cn == "power" or cn == "drain" or cn == "capacitance" then
                     raw_value = raw_value * 50
-                    local u = "kW"
+                    local u = "k"
                     local divisor = 1000
                     if raw_value >= 1000000000 then
                         divisor = 1000000000
-                        u = "GW"
+                        u = "G"
                     elseif raw_value >= 1000000 then
                         divisor = 1000000
-                        u = "MW"
+                        u = "M"
                     end
+                    u = u..((cn == "capacitance") and "J" or "W")
                     raw_value = raw_value / divisor
                     local v0, v1 = math.modf(raw_value)
                     if v1 > 0 then
@@ -69,9 +71,14 @@ local function get_display_info(e, typeobject, t)
                     else
                         raw_value = string.format("%d", v0) .. u
                     end
+                elseif cn == "speed" then
+                    raw_value = raw_value * 100
                 end
-                values[cn] = raw_value
             end
+            if cn == "speed" or vn == "speed" then
+                raw_value = string.format("%d%%", raw_value)
+            end
+            values[key] = raw_value
         end
         t[propertyName] = cfg
     end
