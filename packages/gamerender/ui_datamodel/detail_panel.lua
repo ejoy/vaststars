@@ -34,12 +34,8 @@ local function get_property_list(entity)
 end
 
 local function get_display_info(e, typeobject, t)
-    local tname = typeobject.name
-    local post = string.match(typeobject.name, "%u+")
-    if post then
-        local len = #post + 1
-        tname = string.sub(typeobject.name, 1, -len)
-    end
+    local key = string.match(typeobject.name, "([^%u%d]+)")
+    local tname = key and key or typeobject.name
     local detail = building_detail[tname]
     if not detail then
         return
