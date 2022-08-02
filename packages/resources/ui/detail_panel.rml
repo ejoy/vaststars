@@ -116,7 +116,7 @@
 
                 <!-- property list -->
                 <div style = "width:100%; border-bottom: 0.1vmin #fff; padding-top: 1vmin;" />
-                <div style="height:65%; padding-top: 2vmin;">
+                <div style="height:66.5%; padding-top: 2vmin;">
                     <div data-for = "property : property_list">
                         <div style = "width: 100%; height: 6.67vmin; flex-direction: row; align-items: center; justify-content: center;">
                             <!-- proprety & value -->
@@ -133,8 +133,8 @@
                 
                 </div>
                 
-                <div style="height:20%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "showchest">
-                    <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin" />
+                <div style="height:18.5%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "showchest">
+                    <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin"  data-if = "false"/>
                     <div style="padding-top:0.3vmin; width:100%; flex-direction: row; justify-content: flex-start; align-items: center;">
                         <div data-for = "chest : chest_list0" class="small-item" data-style-background-image="chest.icon">
                             <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
