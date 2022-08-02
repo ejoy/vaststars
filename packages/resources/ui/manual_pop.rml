@@ -284,8 +284,6 @@
                 </div>
                 <!-- tag page end -->
 
-                <div class = "draw-line"/>
-
                 <div class = "tab-container" style="flex-grow: 1;">
                     <div data-for = "recipe_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 49%;">
                         <workbutton data-event-click="clickCatalog(it_index)" data-style-background-color = "it_index + 1 == category_index ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'" style = "width: 100%;">
