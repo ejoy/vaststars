@@ -19,6 +19,7 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local GAMEPLAY_VERSION <const> = require "version"
 local global = require "global"
 
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local irq = ecs.import.interface "ant.render|irenderqueue"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ic = ecs.import.interface "ant.camera|icamera"
@@ -392,7 +393,7 @@ function M:restart()
     end
 
     for _, e in ipairs(startup_entities) do
-        gameplay_core.create_entity(e)
+        igameplay.create_entity(e)
     end
     gameplay_core.build()
     restore_world()

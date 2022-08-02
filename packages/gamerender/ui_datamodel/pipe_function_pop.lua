@@ -14,6 +14,7 @@ local iobject = ecs.require "object"
 local ieditor = ecs.require "editor.editor"
 local gameplay_core = require "gameplay.core"
 local iflow_connector = require "gameplay.interface.flow_connector"
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
 local pipe_edge_mb = mailbox:sub {"pipe_edge"}
 local leave_mb = mailbox:sub {"leave"}
@@ -400,14 +401,14 @@ function M:stage_ui_update(datamodel)
         -- TODO: rebuild entity in builder.lua ?
         if pipe_object then
             if pipe_object.__change.prototype_name then
-                gameplay_core.remove_entity(pipe_object.gameplay_eid)
-                pipe_object.gameplay_eid = gameplay_core.create_entity(pipe_object)
+                igameplay.remove_entity(pipe_object.gameplay_eid)
+                pipe_object.gameplay_eid = igameplay.create_entity(pipe_object)
             end
         end
         if object then
             if object.__change.prototype_name then
-                gameplay_core.remove_entity(object.gameplay_eid)
-                object.gameplay_eid = gameplay_core.create_entity(object)
+                igameplay.remove_entity(object.gameplay_eid)
+                object.gameplay_eid = igameplay.create_entity(object)
             end
         end
         gameplay_core.build()

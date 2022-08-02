@@ -13,6 +13,7 @@ local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local global = require "global"
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
     dir = dir or DEFAULT_DIR
@@ -105,7 +106,7 @@ local function complete(self)
     for object_id, object in objects:all("CONFIRM") do -- TODO: duplicate code, see also pipe_function_pop.lua
         if object.REMOVED then
             if object.gameplay_eid then
-                gameplay_core.remove_entity(object.gameplay_eid)
+                igameplay.remove_entity(object.gameplay_eid)
             end
         else
             object.state = "constructed"
@@ -119,12 +120,12 @@ local function complete(self)
 
             local old = objects:get(object_id, {"CONSTRUCTED"})
             if not old then
-                object.gameplay_eid = gameplay_core.create_entity(object)
+                object.gameplay_eid = igameplay.create_entity(object)
                 object.recipe = recipe
             else
                 if old.prototype_name ~= object.prototype_name then
-                    gameplay_core.remove_entity(object.gameplay_eid)
-                    object.gameplay_eid = gameplay_core.create_entity(object)
+                    igameplay.remove_entity(object.gameplay_eid)
+                    object.gameplay_eid = igameplay.create_entity(object)
                 elseif old.dir ~= object.dir then
                     ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
                 elseif old.fluid_name ~= object.fluid_name then

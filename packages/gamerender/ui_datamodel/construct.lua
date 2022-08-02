@@ -99,7 +99,7 @@ function M:create()
         current_tech_name = "none",    --当前科技名字
         current_tech_progress = "0%",  --当前科技进度
         manual_queue = {},
-        manual_queue_length = 0, -- cache the length of manual queue, for animation purpose
+        manual_queue_length = 0, -- cache the length of manual queue, for animation when manual queue has been finished
     }
 end
 

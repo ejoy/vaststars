@@ -12,6 +12,7 @@ local iworld = require "gameplay.interface.world"
 local iobject = ecs.require "object"
 local iflow_connector = require "gameplay.interface.flow_connector"
 local terrain = ecs.require "terrain"
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
 --
 local M = {}
@@ -119,8 +120,8 @@ local function shift_pipe(object, prototype_name, dir)
     object.dir = dir
     objects:set(object)
 
-    gameplay_core.remove_entity(object.gameplay_eid)
-    object.gameplay_eid = gameplay_core.create_entity(object)
+    igameplay.remove_entity(object.gameplay_eid)
+    object.gameplay_eid = igameplay.create_entity(object)
 end
 
 local function is_connection(self, x1, y1, dir1, x2, y2, dir2)
@@ -246,7 +247,7 @@ function M:teardown_complete()
             log.error(("teardown_complete %s is not an item"):format(prototype_name)) -- TODO: remove this
         end
 
-        gameplay_core.remove_entity(object.gameplay_eid)
+        igameplay.remove_entity(object.gameplay_eid)
         changed_set[id] = nil
     end
 

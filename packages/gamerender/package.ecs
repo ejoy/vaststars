@@ -134,3 +134,8 @@ interface "idetail"
 interface "igame_object"
     .implement "engine/game_object.lua"
     .method "create"
+
+interface "igameplay"
+    .implement "gameplay_system.lua"
+    .method "create_entity"
+    .method "remove_entity"
