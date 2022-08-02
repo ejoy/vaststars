@@ -722,12 +722,27 @@ prototype "生产甲烷" {
   },
 }
 
+prototype "生产乙烯" {
+  desc = "生产工业气体乙烯",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"stat_production", 0, "乙烯"},
+  prerequisites = {"有机化学"},
+  count = 1000,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_ch4.texture",
+  },
+  sign_desc = {
+    { desc = "用化工厂生产1000个单位乙烯", icon = "textures/construct/industry.texture"},
+  },
+}
+
 prototype "生产塑料" {
   desc = "使用有机化学的科学成果生产质量轻、耐腐蚀的工业材料塑料",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "塑料"},
-  prerequisites = {"有机化学"},
+  prerequisites = {"生产乙烯"},
   count = 30,
   tips_pic = {
     "textures/task_tips_pic/task_produce_plastic.texture",
