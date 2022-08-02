@@ -519,7 +519,7 @@
                         </manual_workbutton>
                     </div>
                 </collapsed-bar>
-                <div class="accomplished2" data-style-animation="manual_finish_animation">制造完成</div>
+                <div class="accomplished2" style = "pointer-events: none;" data-style-animation="manual_finish_animation">制造完成</div>
             </div>
 
             <!-- 右下角按钮 -->
