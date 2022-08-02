@@ -134,7 +134,7 @@
                 </div>
                 
                 <div style="height:18.5%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "showchest">
-                    <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin"  data-if = "false"/>
+                    <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin"/>
                     <div style="padding-top:0.3vmin; width:100%; flex-direction: row; justify-content: flex-start; align-items: center;">
                         <div data-for = "chest : chest_list0" class="small-item" data-style-background-image="chest.icon">
                             <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
