@@ -5,9 +5,9 @@ local gameplay_core = require "gameplay.core"
 
 local igameplay = ecs.interface "igameplay"
 
-function igameplay.create_entity(...)
-    local eid = gameplay_core.create_entity(...)
-    world:pub {"gameplay", "create_entity", eid}
+function igameplay.create_entity(init)
+    local eid = gameplay_core.create_entity(init)
+    world:pub {"gameplay", "create_entity", eid, init.prototype_name}
     return eid
 end
 
