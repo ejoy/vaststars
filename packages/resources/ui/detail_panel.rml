@@ -97,16 +97,16 @@
             <!-- detail panel begin -->
             <div style = "overflow: hidden; position: absolute; left: 0.13vmin; top: 7vmin; width: 30.00vmin; height: 72.33vmin; background-color: rgb(250, 205, 9); border: 0.27vmin rgb(89, 73, 39);flex-direction: column; justify-content: flex-start;">
                 <!-- title -->
-                <div style = "width: 100%; height: 20%; flex-direction: row; justify-content: flex-start;">
+                <div style = "width: 100%; height: 15%; flex-direction: row; justify-content: center; align-items: center;">
                     <!-- icon -->
-                    <div style = "justify-content: flex-start; align-items: center; width: 10vmin;">
-                        <div data-style-background-image="icon" style = "width: 9.00vmin; height: 9.00vmin; background-size: contain; background-size: cover;" />
+                    <div style = "flex-direction:row; justify-content:center; align-items: center; width: 10vmin;">
+                        <div data-style-background-image="icon" style = "width: 9.50vmin; height: 9.50vmin; background-size: contain; background-size: cover;" />
                     </div>
                     <!-- prototype & status -->
                     <div style = "justify-content: center;">
-                        <div style = "flex-direction: column; justify-content: flex-start;">
-                            <div style = "width: 20.00vmin; height: 6.67vmin; font-size: 4.10vmin; -webkit-text-stroke: 0.13vmin black; word-break: break-all;">{{prototype_name}}</div>
-                            <div style = "flex-direction: row; justify-content: flex-start; padding-bottom: 0.5em;">
+                        <div style = "flex-direction: column; justify-content: center;">
+                            <div style = "width: 20.00vmin; height: 65%; font-size: 4.10vmin; -webkit-text-stroke: 0.13vmin black; word-break: break-all;">{{prototype_name}}</div>
+                            <div style = "flex-direction: row; justify-content: flex-start; height:35%;">
                                 <div style = 'width: 3.2vmin; height: 3.2vmin; background-size: cover;' data-style-background-image = "detail_panel_status_icon" />
                                 <div style = "left: 0.5vmin; bottom:0.5vmin; font-size: 3.25vmin; color: rgb(73, 60, 32);-webkit-text-stroke: 0.07vmin rgb(39, 32, 17);">{{detail_panel_status_desc}}</div>
                             </div>
@@ -115,7 +115,8 @@
                 </div>
 
                 <!-- property list -->
-                <div style="height:62%;">
+                <div style = "width:100%; border-bottom: 0.1vmin #fff; padding-top: 1vmin;" />
+                <div style="height:65%; padding-top: 2vmin;">
                     <div data-for = "property : property_list">
                         <div style = "width: 100%; height: 6.67vmin; flex-direction: row; align-items: center; justify-content: center;">
                             <!-- proprety & value -->
@@ -132,7 +133,7 @@
                 
                 </div>
                 
-                <div style="height:18%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "showchest">
+                <div style="height:20%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "showchest">
                     <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin" />
                     <div style="padding-top:0.3vmin; width:100%; flex-direction: row; justify-content: flex-start; align-items: center;">
                         <div data-for = "chest : chest_list0" class="small-item" data-style-background-image="chest.icon">
