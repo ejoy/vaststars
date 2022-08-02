@@ -16,7 +16,13 @@ local function get(object_id)
     end
 
     local typeobject = iprototype.queryById(e.entity.prototype)
-    local show_set_recipe = not typeobject.minerals -- TODO: special case for miner
+    local show_set_recipe = true 
+    if iprototype.has_type(typeobject.type, "mining") then
+        show_set_recipe = false -- TODO: special case for miner
+    end
+    if typeobject.recipe then
+        show_set_recipe = false -- TODO: special case for assembling with recipe, such as air-filter, pump ...
+    end
 
     local recipe_typeobject = iprototype.queryById(e.assembling.recipe)
     if not recipe_typeobject then

@@ -13,6 +13,7 @@ local set_shape_edge = iflow_shape.set_shape_edge
 local iobject = ecs.require "object"
 local ieditor = ecs.require "editor.editor"
 local gameplay_core = require "gameplay.core"
+local iflow_connector = require "gameplay.interface.flow_connector"
 
 local pipe_edge_mb = mailbox:sub {"pipe_edge"}
 local leave_mb = mailbox:sub {"leave"}
@@ -273,8 +274,19 @@ function M:stage_ui_update(datamodel)
         assert(succ)
         local object = assert(objects:coord(x, y))
 
-        local function _get_fluid_name(object, x, y)
-            for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
+        local function _get_covers_fluidbox(object) -- TODO: optimize
+            local _prototype_name
+            if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
+                _prototype_name = iflow_connector.covers(object.prototype_name, object.dir)
+            else
+                _prototype_name = object.prototype_name
+            end
+
+            return ifluid:get_fluidbox(_prototype_name, object.x, object.y, object.dir, object.fluid_name)
+        end
+
+        local function _get_fluid_name(object, x, y) -- TODO: optimize
+            for _, v in ipairs(_get_covers_fluidbox(object)) do
                 local succ, dx, dy = terrain:move_coord(v.x, v.y, v.dir, 1)
                 if succ and dx == x and dy == y then
                     return v.fluid_name

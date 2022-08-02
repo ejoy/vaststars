@@ -93,7 +93,9 @@ local function restore_world()
         local fluid_name = ""
         if v.fluidbox then
             fluid_name = ""
-            if v.fluidbox.fluid ~= 0 then
+            if v.fluidbox.fluid == 0 then
+                fluid_name = ""
+            else
                 local typeobject_fluid = assert(iprototype.queryById(v.fluidbox.fluid))
                 fluid_name = typeobject_fluid.name
             end
