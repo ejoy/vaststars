@@ -164,7 +164,6 @@
                 bottom: 25vmin;
                 color:chartreuse;
                 -webkit-text-stroke: 0.3vmin rgb(0,0,0);
-                animation: 3s linear 0s wordmovement;
                 font-size: 7vmin;
             }
             p {
@@ -271,7 +270,8 @@
                 current_tech_icon = "none",     --当前科技图标
                 current_tech_name = "none",     --当前科技名字
                 current_tech_progress = "0%",   --当前科技进度
-                finish_animation = "0s linear 0s enlarge",
+                tech_finish_animation = "0s linear 0s enlarge",
+                manual_finish_animation = "0s linear 0s wordmovement",
                 guide_progress = 0
             })
             function start.clickConstructBegin(event)
@@ -367,6 +367,12 @@
                         unconfirmed_double_confirm_continuation()
                         unconfirmed_double_confirm_continuation = nil
                     end
+                end,
+                ["manual_finish"] = function()
+                    start.manual_finish_animation = "3s linear 0s wordmovement"
+                end,
+                ["tech_finish_animation"] = function()
+                    start.tech_finish_animation = "3s sine-in-out 0s enlarge"
                 end,
             })
 
@@ -490,7 +496,7 @@
                     </p>
                 </button>
             </div>
-            <div class="accomplished" data-style-animation="finish_animation" data-if = "!show_tech_progress">研究完成</div>
+            <div class="accomplished" data-style-animation="tech_finish_animation" data-if = "!show_tech_progress">研究完成</div>
 
             <!-- 右下角手搓队列 -->
             <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "cur_edit_mode == ''">
@@ -513,7 +519,7 @@
                         </manual_workbutton>
                     </div>
                 </collapsed-bar>
-                <div class="accomplished2" data-if = "it_index == 0">制造完成</div>
+                <div class="accomplished2" data-style-animation="manual_finish_animation">制造完成</div>
             </div>
 
             <!-- 右下角按钮 -->

@@ -99,6 +99,7 @@ function M:create()
         current_tech_name = "none",    --当前科技名字
         current_tech_progress = "0%",  --当前科技进度
         manual_queue = {},
+        manual_queue_length = 0, -- cache the length of manual queue, for animation purpose
     }
 end
 
@@ -121,7 +122,6 @@ function M:show_chapter(datamodel, main_text, sub_text)
     datamodel.chapter_sub_text = sub_text
 end
 
-local tech_finish_switch = false
 function M:update_tech(datamodel, tech)
     if tech then
         datamodel.show_tech_progress = true
@@ -132,13 +132,7 @@ function M:update_tech(datamodel, tech)
     else
         datamodel.show_tech_progress = false
         datamodel.tech_count = global.science.tech_list and #global.science.tech_list or 0
-        tech_finish_switch = not tech_finish_switch
-        --TODO: trigger animation
-        if tech_finish_switch then
-            datamodel.finish_animation = "3s sine-in-out 0s enlarge"
-        else
-            datamodel.finish_animation = "2.99s sine-in-out 0s enlarge"
-        end
+        world:pub {"ui_message", "tech_finish_animation"}
     end
 end
 
@@ -386,6 +380,11 @@ function M:stage_camera_usage(datamodel)
     end
 
     datamodel.manual_queue = imanual.get_queue(4)
+    if datamodel.manual_queue_length > 0 and #datamodel.manual_queue == 0 then
+        world:pub {"ui_message", "manual_finish"}
+    end
+    datamodel.manual_queue_length = #datamodel.manual_queue
+
     iobject.flush()
 end
 return M
