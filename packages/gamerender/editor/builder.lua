@@ -12,8 +12,10 @@ local imining = require "gameplay.interface.mining"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local global = require "global"
+local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
+    dir = dir or DEFAULT_DIR
     local typeobject = iprototype.queryByName("entity", prototype_name)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
     for i = 0, w - 1 do

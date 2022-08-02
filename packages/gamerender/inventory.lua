@@ -75,10 +75,15 @@ local function complete(self)
         local original = assert(self._inventory:get(CONSTRUCTED_CACHE_NAMES, item.prototype))
         assert(original.count >= item.count)
         local decrease = original.count - item.count
+        if decrease == 0 then
+            goto continue
+        end
+
         if not gameplay_world:container_pickup(e.chest.container, item.prototype, decrease) then
             log.error("can not pickup item", iprototype.queryById(item.prototype).name, decrease)
             return false
         end
+        ::continue::
     end
     return true
 end

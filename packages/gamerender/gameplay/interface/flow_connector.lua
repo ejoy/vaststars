@@ -33,6 +33,8 @@ end
 
 local accel = {} -- flow_type + bits -> prototype_name + dir
 local prototype_bits = {} -- prototype_name + dir -> bits
+local max_ground = {} -- flow_type -> max_ground
+
 for _, typeobject in pairs(iprototype.each_maintype "entity") do
     if not typeobject.flow_type then
         goto continue
@@ -44,6 +46,15 @@ for _, typeobject in pairs(iprototype.each_maintype "entity") do
         for _, connection in ipairs(_get_connections(typeobject)) do
             local dir = iprototype.rotate_dir(connection.position[3], entity_dir)
             bits = bits | (1 << get_dir_bit(typeobject.flow_type, dir, connection.ground ~= nil))
+
+            -- 
+            if connection.ground then
+                if not max_ground[typeobject.flow_type] then
+                    max_ground[typeobject.flow_type] = connection.ground
+                else
+                    assert(max_ground[typeobject.flow_type] == connection.ground)
+                end
+            end
         end
 
         accel[typeobject.flow_type] = accel[typeobject.flow_type] or {}
@@ -54,6 +65,7 @@ for _, typeobject in pairs(iprototype.each_maintype "entity") do
         assert(not prototype_bits[typeobject.name][entity_dir])
         prototype_bits[typeobject.name][entity_dir] = bits
     end
+
     ::continue::
 end
 
@@ -100,6 +112,25 @@ function M.covers(prototype_name, entity_dir)
     return c.prototype_name, c.entity_dir
 end
 
+function M.covers_flow_type(prototype_name, entity_dir, flow_type)
+    local bits = assert(prototype_bits[prototype_name][entity_dir])
+    local c = assert(accel[flow_type][bits])
+    return c.prototype_name, c.entity_dir
+end
+
+-- the entity corresponding to the given flow_type must be pipe to ground.
+function M.covers_pipe_to_ground(flow_type, dir, ground_dir)
+    local bits = 0
+    if dir then
+        bits = bits | (1 << get_dir_bit(flow_type, dir, false))
+    end
+    if ground_dir then
+        bits = bits | (1 << get_dir_bit(flow_type, ground_dir, true))
+    end
+    local c = assert(accel[flow_type][bits])
+    return c.prototype_name, c.entity_dir
+end
+
 function M.set_connection(prototype_name, entity_dir, connection_dir, s)
     local covers_prototype_name, covers_dir = M.covers(prototype_name, entity_dir)
 
@@ -128,6 +159,10 @@ function M.cleanup(prototype_name, entity_dir)
     assert(prototype_cleanup[prototype_name][entity_dir], ("invalid entity_dir `%s`"):format(entity_dir))
     local c = prototype_cleanup[prototype_name][entity_dir]
     return c.prototype_name, c.entity_dir
+end
+
+function M.ground(flow_type)
+    return assert(max_ground[flow_type])
 end
 
 return M
