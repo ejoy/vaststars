@@ -160,6 +160,13 @@
                 -webkit-text-stroke: 0.3vmin rgb(0,0,0);
                 opacity: 0;
             }
+            .accomplished2 {
+                bottom: 25vmin;
+                color:chartreuse;
+                -webkit-text-stroke: 0.3vmin rgb(0,0,0);
+                animation: 3s linear 0s wordmovement;
+                font-size: 7vmin;
+            }
             p {
                 animation:0.5s linear 0s infinite alternate rotation;
             }
@@ -188,6 +195,20 @@
                 100% {
                     font-size: 2vmin;
                     opacity: 0;
+                }
+            }
+            @keyframes wordmovement {
+                0% {
+                    left: -40vmin;
+                    opacity: 1;
+                }
+                25% {
+                    left: -15vmin;
+                    opacity: 1;
+                }
+                100% {
+                   left: -15vmin;
+                   opacity: 0;
                 }
             }
             .progressbar-half-cycle-container {
@@ -492,6 +513,7 @@
                         </manual_workbutton>
                     </div>
                 </collapsed-bar>
+                <div class="accomplished2" data-if = "it_index == 0">制造完成</div>
             </div>
 
             <!-- 右下角按钮 -->
