@@ -161,7 +161,7 @@
                 opacity: 0;
             }
             .accomplished2 {
-                bottom: 25vmin;
+                bottom: 22vmin;
                 color:chartreuse;
                 -webkit-text-stroke: 0.3vmin rgb(0,0,0);
                 font-size: 7vmin;
@@ -369,7 +369,7 @@
                     end
                 end,
                 ["manual_finish"] = function()
-                    start.manual_finish_animation = "3s linear 0s wordmovement"
+                    start.manual_finish_animation = "2.8s linear 0s wordmovement"
                 end,
                 ["tech_finish_animation"] = function()
                     start.tech_finish_animation = "3s sine-in-out 0s enlarge"
