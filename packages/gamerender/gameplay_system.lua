@@ -7,7 +7,7 @@ local iprototype = require "gameplay.interface.prototype"
 
 function igameplay.create_entity(init)
     local eid = gameplay_core.create_entity(init)
-    world:pub {"gameplay", "create_entity", eid, iprototype.queryByName(init.prototype_name)}
+    world:pub {"gameplay", "create_entity", eid, iprototype.queryByName("entity", init.prototype_name)}
     return eid
 end
 
