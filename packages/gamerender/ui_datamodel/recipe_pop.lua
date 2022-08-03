@@ -325,6 +325,9 @@ function M:stage_ui_update(datamodel, object_id)
         vsobject:add_canvas("", object.x, object.y, w, h)
         object.fluid_name = {}
 
+        iui.update("assemble_2.rml", "update", object_id)
+        iui.update("build_function_pop.rml", "update", object_id)
+
         _update_neighbor_fluidbox(object)
         gameplay_core.build()
     end
