@@ -35,6 +35,7 @@ prototype "氢气" {
     type = {"fluid"},
     catagory = {"普通气体"},
     icon = "textures/fluid/gas-hydrogen.texture",
+    color = {0.0, 2.5, 0.0, 0.55},
     heat_capacity = "0.08kJ",
     default_temperature = 25,
     max_temperature = 100,

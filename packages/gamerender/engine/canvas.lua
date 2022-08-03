@@ -2,10 +2,7 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 
-local fs = require "filesystem"
 local icas   = ecs.import.interface "ant.terrain|icanvas"
-local datalist = require "datalist"
-local canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/canvas.cfg")):read "a")
 local iterrain = ecs.require "terrain"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 
@@ -20,71 +17,13 @@ end
 
 local cache_id = {}
 local entity_events = {}
-entity_events.add_item = function(_, e, id, name, x, y, w, h)
-    local position = iterrain:get_begin_position_by_coord(x, y)
-    if not position then
-        return
-    end
-
+entity_events.add_item = function(_, e, id, items)
     local canvas_entity = _get_canvas_entity()
     if not canvas_entity then
         return
     end
 
-    if name == "" then -- TODO: special case for assembly
-        local item_x, item_y = position[1] + ((w / 2 - 0.5) * iterrain.tile_size), position[3] - ((h / 2 - 0.5) * iterrain.tile_size) - iterrain.tile_size
-        cache_id[id] = icas.add_items(canvas_entity,
-            {
-                texture = {
-                    path = "/pkg/vaststars.resources/ui/textures/assemble/setup2.texture",
-                    rect = { -- -- TODO: remove this hard code
-                        x = 0,
-                        y = 0,
-                        w = 64,
-                        h = 64,
-                    },
-                },
-                x = item_x, y = item_y, w = iterrain.tile_size, h = iterrain.tile_size,
-                srt = {},
-            }
-        )
-        return
-    end
-
-    local cfg = canvas_cfg[name]
-    if not cfg then
-        log.error(("can not found `%s`"):format(name))
-        return
-    end
-
-    local item_x, item_y = position[1] + ((w / 2 - 0.5) * iterrain.tile_size), position[3] - ((h / 2 - 0.5) * iterrain.tile_size) - iterrain.tile_size
-    cache_id[id] = icas.add_items(canvas_entity,
-        {
-            texture = {
-                path = "/pkg/vaststars.resources/textures/recipe_icon.texture",
-                rect = { -- -- TODO: remove this hard code
-                    x = 0,
-                    y = 0,
-                    w = 90,
-                    h = 90,
-                },
-            },
-            x = item_x, y = item_y, w = iterrain.tile_size, h = iterrain.tile_size,
-            srt = {},
-        },
-        {
-            texture = {
-                path = "/pkg/vaststars.resources/textures/canvas.texture",
-                rect = {
-                    x = cfg.x,
-                    y = cfg.y,
-                    w = cfg.width,
-                    h = cfg.height,
-                },
-            },
-            x = item_x, y = item_y, w = iterrain.tile_size, h = iterrain.tile_size,
-            srt = {},
-    })
+    cache_id[id] = icas.add_items(canvas_entity, items)
 end
 
 local M = {}
@@ -110,9 +49,9 @@ function M:create(show)
     }, entity_events)
 end
 
-function M:add_item(id, name, x, y, w, h) -- TODO: only support recipe icon now
+function M:add_item(id, items)
     assert(canvas_entity_object)
-    canvas_entity_object:send("add_item", id, name, x, y, w, h)
+    canvas_entity_object:send("add_item", id, items)
     return id
 end
 

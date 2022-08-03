@@ -5,6 +5,14 @@ local itypes = require "gameplay.interface.types"
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
 
+local function _round(max_tick)
+    local v <const> = 100 / max_tick / 100
+    return function(progress) -- progress: 0.0 ~ 1.0
+        return math.ceil(progress / v) * v
+    end
+end
+local _get_progress = _round(20)
+
 local function update_world(world, get_object_func)
     local t = {}
     for e in world.ecs:select "inserter:in entity:in" do
@@ -28,7 +36,10 @@ local function update_world(world, get_object_func)
                 animation_name = "UpToDown"
             end
             local typeobject = assert(iprototype.queryById(e.entity.prototype))
-            vsobject:animation_update(animation_name, itypes.progress(inserter.progress, assert(typeobject.speed)))
+
+            local p = itypes.progress(inserter.progress, assert(typeobject.speed))
+            assert(p >= 0 and p <= 1, ("progress error: %f"):format(p))
+            vsobject:animation_update(animation_name, _get_progress(itypes.progress(inserter.progress, assert(typeobject.speed))))
         end
 
     end
