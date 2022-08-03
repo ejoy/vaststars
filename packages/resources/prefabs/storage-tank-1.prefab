@@ -9,43 +9,52 @@ policy:
 data:
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/storageTank.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/storageTank.glb|meshes/lifangti.003_P1.meshbin
-  name: lifangti.005
-  scene: {}
+  mesh: /pkg/vaststars.resources/glb/storageTank.glb|meshes/zhuti.001_P1.meshbin
+  name: zhuti.004
+  scene:
+    r: {0, 0.7071065902709961, 0, 0.7071069478988647}
 mount: 1
 policy:
   ant.general|name
   ant.render|render
 ---
 data:
-  name: empty1
-  scene: {}
-  slot:
-    follow_flag: 1
-    joint_name: None
-  tag:
-    empty1
+  filter_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/storageTank.glb|materials/Material.001.material
+  mesh: /pkg/vaststars.resources/glb/storageTank.glb|meshes/zhuti.001_P2.meshbin
+  name: zhuti.004
+  scene:
+    r: {0, 0.7071065902709961, 0, 0.7071069478988647}
 mount: 1
 policy:
   ant.general|name
-  ant.general|tag
-  ant.animation|slot
-  ant.scene|scene_object
+  ant.render|render
 ---
 data:
-  name: empty2
+  hitch:
+    group: 0
+  name: water_hitch
   scene:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, -14, 0}
+    parent: 111
   slot:
     follow_flag: 1
-    joint_name: None
+    joint_name: Bone
   tag:
-    empty2
+    water
 mount: 1
 policy:
   ant.general|name
+  ant.scene|hitch_object
   ant.general|tag
   ant.animation|slot
-  ant.scene|scene_object
+---
+data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/storageTank.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/storageTank.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name

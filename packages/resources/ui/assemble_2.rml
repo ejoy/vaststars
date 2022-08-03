@@ -153,8 +153,8 @@
             <div class="panel" style="width: 50%;">
                 <div class="header" style="justify-content: flex-end; align-items: center;" data-if="mode == 'init' && show_set_recipe">
                     <div class = "menu-title" style="flex-direction: row;align-items: center;height:100%;">
-                        <div class = "small-bg" style='background-image: "textures/science/book.texture"; width:6.8vmin; height:6.8vmin;'/>
-                        <div style="text-align: right; padding-bottom:1vmin; font-size: 6vmin; -webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">{{recipe_name}}</div>
+                        <div class = "small-bg" style='background-image: "textures/science/book.texture"; width:6.8vmin; height:6.8vmin;' data-if="recipe_name != ''"/>
+                        <div style="text-align: right; padding-bottom:1vmin; font-size: 6vmin; -webkit-text-stroke: 0.2vmin rgb(0, 112, 192);">{{recipe_name == '' ? '无配方' : recipe_name}}</div>
                     </div>
                     <button class = "recipe-change-button" data-event-click="clickRecipe()"/>
                 </div>

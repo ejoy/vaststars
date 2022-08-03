@@ -76,7 +76,7 @@ local function _get_screen_group_id(self, x, y)
     return result
 end
 
-local function _get_coord_by_begin_position(self, position)
+local function _get_coord_by_position(self, position)
     local boundary_3d = self._boundary_3d
     local posx, posz = math3d.index(position, 1, 3)
 
@@ -87,7 +87,7 @@ local function _get_coord_by_begin_position(self, position)
     end
 
     local origin = self._origin
-    return {math.ceil((posx - origin[1]) / TILE_SIZE), math.ceil((origin[2] - posz) / TILE_SIZE)}
+    return {math.floor((posx - origin[1]) / TILE_SIZE), math.floor((origin[2] - posz) / TILE_SIZE)}
 end
 
 local function _get_grid_id(x, y)
@@ -286,8 +286,9 @@ end
 
 -- position is the center of the entity
 function terrain:align(position, w, h)
+    -- equivalent to: math3d.vector {math3d.index(position, 1) - (w / 2 * TILE_SIZE), math3d.index(position, 2), math3d.index(position, 3) + (h / 2 * TILE_SIZE)}
     local begin_position = math3d.muladd(1/2*TILE_SIZE, math3d.vector(-w, 0.0, h), position)
-    local coord = _get_coord_by_begin_position(self, begin_position)
+    local coord = _get_coord_by_position(self, begin_position)
     if not coord then
         return
     end
@@ -298,6 +299,10 @@ function terrain:align(position, w, h)
     end
 
     return coord, {begining[1] + (w / 2 * TILE_SIZE), math3d.index(position, 2), begining[3] - (h / 2 * TILE_SIZE)}
+end
+
+function terrain:get_coord_by_position(position)
+    return _get_coord_by_position(self, position)
 end
 
 function terrain:can_place(x, y)
