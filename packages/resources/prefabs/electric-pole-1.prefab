@@ -9,17 +9,6 @@ policy:
 data:
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/electric-pole.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/electric-pole.glb|meshes/Cylinder.004_P1.meshbin
-  name: Cylinder.004
-  scene: {}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/electric-pole.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/electric-pole.glb|meshes/Cylinder.006_P1.meshbin
   name: Cylinder.006
   scene:
@@ -30,25 +19,11 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/electric-pole.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/electric-pole.glb|meshes/Cylinder.006_P1.meshbin
-  name: Cylinder.001
-  scene:
-    r: {0, 0.8660253882408142, 0, 0.5000000596046448}
-mount: 1
+  anim_ctrl: {}
+  animation: {}
+  animation_birth: ""
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/electric-pole.glb|animations/skeleton.ozz
 policy:
+  ant.animation|animation
   ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/electric-pole.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/electric-pole.glb|meshes/Cylinder.006_P1.meshbin
-  name: Cylinder.002
-  scene:
-    r: {0, 0, 0, 1}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render

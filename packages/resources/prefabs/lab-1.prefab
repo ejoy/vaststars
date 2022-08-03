@@ -7,81 +7,36 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/lab.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Icosphere_P1.meshbin
-  name: Icosphere
+  meshskin: /pkg/vaststars.resources/glb/lab.glb|meshes/Armature.skinbin
+  name: meshskin
   scene: {}
+  skeleton: /pkg/vaststars.resources/glb/lab.glb|animations/skeleton.ozz
+  skinning: true
 mount: 1
 policy:
+  ant.animation|meshskin
   ant.general|name
-  ant.render|render
+  ant.scene|scene_object
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/lab.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Cylinder_P1.meshbin
-  name: Cylinder
-  scene:
-    t: {0, 10.9942656755447388, 0}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/lab.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
   mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Plane.002_P1.meshbin
   name: Plane.002
-  scene: {}
-mount: 1
+  skinning: true
 policy:
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/lab.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Plane.001_P1.meshbin
-  name: Plane.001
-  scene: {}
-mount: 1
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/lab.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/lab.glb|animations/skeleton.ozz
 policy:
+  ant.animation|animation
   ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/lab.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Icosphere.002_P1.meshbin
-  name: Icosphere.002
-  scene: {}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/lab.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Icosphere.005_P1.meshbin
-  name: Icosphere.005
-  scene:
-    s: {0.5789309740066528, 0.5789309740066528, 0.5789309740066528}
-    t: {0, 22.678999900817871, 0}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/lab.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Cube_P1.meshbin
-  name: Cube
-  scene: {}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
