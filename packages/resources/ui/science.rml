@@ -355,7 +355,7 @@
                 <div class="item-title-new">%s</div>]]):format(item_data.progress, item_data.icon, item_data.name) .. ingredient_items .. statestr .. sign
 
                 item.className = "item-research"
-                local select_style_border = "3px green"
+                local select_style_border = "3px rgb(0,255,0)"
                 item.addEventListener('click', function(event)
                     if start.selected_tech then
                         start.selected_tech.style.border = '0px green'
@@ -385,7 +385,7 @@
                 item.outerHTML = htmlstr
                 item.className = "item-research"
                 item.style.width = '90%'
-                local select_style_border = "2px green"
+                local select_style_border = "3px rgb(0,255,0)"
                 item.addEventListener('click', function(event)
                     if start.selected_recipe then
                         start.selected_recipe.style.border = '0px green'
