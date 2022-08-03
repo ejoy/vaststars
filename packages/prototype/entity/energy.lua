@@ -34,7 +34,7 @@ prototype "风力发电机I" {
 
 prototype "太阳能板I" {
     model = "prefabs/solar-panel.prefab",
-    icon = "textures/construct/solar-panel.texture",
+    icon = "textures/building_pic/small_pic_solar_panel.texture",
     construct_detector = {"exclusive"},
     type ={"entity","generator","solar_panel"},
     area = "3x3",
@@ -45,7 +45,7 @@ prototype "太阳能板I" {
 
 prototype "蓄电池I" {
     model = "prefabs/accumulator.prefab",
-    icon = "textures/construct/grid-battery.texture",
+    icon = "textures/building_pic/small_pic_accumulator.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "accumulator"},
 	power = "400kW",
