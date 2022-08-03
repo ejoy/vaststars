@@ -2,12 +2,12 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 local gameplay_core = require "gameplay.core"
-
 local igameplay = ecs.interface "igameplay"
+local iprototype = require "gameplay.interface.prototype"
 
 function igameplay.create_entity(init)
     local eid = gameplay_core.create_entity(init)
-    world:pub {"gameplay", "create_entity", eid, init.prototype_name}
+    world:pub {"gameplay", "create_entity", eid, iprototype.queryByName(init.prototype_name)}
     return eid
 end
 

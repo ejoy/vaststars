@@ -145,6 +145,7 @@ local function restore_world()
             -- fluidflow_id, -- fluidflow_id is not null only when the object is a fluidbox
             recipe = recipe, -- for assembling machine only, display the recipe icon, see also: restore_object() -> iobject.new
         }
+        world:pub {"gameplay", "create_entity", v.id, typeobject}
     end
 
     local function find_pipe_to_ground(c, map)

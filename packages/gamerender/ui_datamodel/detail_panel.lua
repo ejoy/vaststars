@@ -1,5 +1,6 @@
 local property_list = import_package "vaststars.prototype"("property_list")
 local objects = require "objects"
+local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
@@ -45,40 +46,52 @@ local function get_display_info(e, typeobject, t)
         local cfg = property_list[propertyName]
         if cfg.value then
             local cn, vn = string.match(cfg.value, "%$([%w_]*)%.?([%w_]*)%$")
-            local raw_value
+            local total
             local key = cn
             if #vn > 0 then
-                raw_value = e[cn][vn]
+                total = e[cn][vn]
                 key = cn.. "." .. vn
             else
-                raw_value = typeobject[cn]
+                total = typeobject[cn]
                 if cn == "power" or cn == "drain" or cn == "capacitance" then
-                    raw_value = raw_value * 50
-                    local u = "k"
+                    local current = 0
+                    if cn == "power" or cn == "drain" then
+                        local st = global.statistic["power"][e.id]
+                        if st then
+                            current = st[cn]
+                        end
+                    end
+                    total = total * 50
+                    local unit = "k"
                     local divisor = 1000
-                    if raw_value >= 1000000000 then
+                    if total >= 1000000000 then
                         divisor = 1000000000
-                        u = "G"
-                    elseif raw_value >= 1000000 then
+                        unit = "G"
+                    elseif total >= 1000000 then
                         divisor = 1000000
-                        u = "M"
+                        unit = "M"
                     end
-                    u = u..((cn == "capacitance") and "J" or "W")
-                    raw_value = raw_value / divisor
-                    local v0, v1 = math.modf(raw_value)
-                    if v1 > 0 then
-                        raw_value = string.format("%.2f", raw_value) .. u
-                    else
-                        raw_value = string.format("%d", v0) .. u
+                    unit = unit..((cn == "capacitance") and "J" or "W")
+                    total = total / divisor
+                    current = current / divisor
+
+                    local function format(value, u)
+                        local v0, v1 = math.modf(value)
+                        if v1 > 0 then
+                            return string.format("%.2f", value) .. u
+                        else
+                            return string.format("%d", v0) .. u
+                        end
                     end
+                    total = format(current, unit) .. "/" .. format(total, unit)
                 elseif cn == "speed" then
-                    raw_value = raw_value * 100
+                    total = total * 100
                 end
             end
             if cn == "speed" or vn == "speed" then
-                raw_value = string.format("%d%%", raw_value)
+                total = string.format("%d%%", total)
             end
-            values[key] = raw_value
+            values[key] = total
         end
         t[propertyName] = cfg
     end
@@ -152,8 +165,8 @@ local function get_property(e, typeobject)
             if fluid ~= 0 and id ~= 0 then
                 local f = gameplay_core.fluidflow_query(fluid, id)
                 if f then
-                    local pt = iprototype.queryById(fluid)
                     if classify == "out1" then
+                        local pt = iprototype.queryById(fluid)
                         -- only show out1 detail
                         add_property(t, "fluid_name", pt.name)
                         add_property(t, "fluid_volume", f.volume / f.multiple)
