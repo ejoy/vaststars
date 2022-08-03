@@ -20,19 +20,17 @@ local delta_vec = {
 
 local events = {}
 events["init"] = function(_, e)
-    local m = e.render_object.mesh
-    m:set_ib_range(0, 0 * 6)
-    m:set_vb_range(0, 0 * 4)
+    local ro = e.render_object
+    ro.ib_start, ro.ib_num = 0, 0 -- *6
+    ro.vb_start, ro.vb_num = 0, 0 -- *4
 end
 
 events["update"] = function(_, e, position, quad_num, dir)
     iom.set_position(e, math3d.add(position, delta_vec[dir]))
 
-    local m = e.render_object.mesh
-    local vs = m:get_vb()
-    local is = m:get_ib()
-    m:set_ib_range(is, quad_num * 6)
-    m:set_vb_range(vs, quad_num * 4)
+    local ro = e.render_object
+    ro.ib_num = quad_num * 6
+    ro.vb_num = quad_num * 4
 
     iom.set_rotation(e, ROTATORS[dir])
 end
