@@ -81,6 +81,7 @@ function list_meta:on_dirty_all(item_count)
     self.item_count = item_count or self.item_count
     self.item_map = {}
     self.index_map = {}
+    self.selected = nil
     for index = 1, self.item_count do
         local item = self.item_renderer(index)
         self.panel.appendChild(item)
