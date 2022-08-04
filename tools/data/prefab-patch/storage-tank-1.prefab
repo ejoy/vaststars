@@ -1,33 +1,21 @@
 ---
 data:
-  name: empty1
-  scene: {}
-  slot:
-    follow_flag: 1
-    joint_name: None
-  tag:
-    empty1
-mount: 1
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
-  ant.scene|scene_object
----
-data:
-  name: empty2
+  hitch:
+    group: 0
+  name: water_slot
   scene:
+    parent: 111
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
-    t: {0, -14, 0}
+    t: {0, -13.95, 0}
   slot:
     follow_flag: 1
-    joint_name: None
+    joint_name: Bone
   tag:
-    empty2
+    water
 mount: 1
 policy:
   ant.general|name
+  ant.scene|hitch_object
   ant.general|tag
   ant.animation|slot
-  ant.scene|scene_object
