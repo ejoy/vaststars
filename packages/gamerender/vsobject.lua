@@ -101,7 +101,7 @@ local function create_block(color, block_edge_size, area, position, rotation)
 		data = {
 			scene 		= { r = rotation, s = {terrain.tile_size * width + block_edge_size, 1, terrain.tile_size * height + block_edge_size}, t = position},
 			material 	= "/pkg/vaststars.resources/materials/singlecolor.material",
-			filter_state= "main_view",
+			visible_state= "main_view",
 			name 		= ("plane_%d"):format(gen_id()),
 			simplemesh 	= imesh.init_mesh(ientity.create_mesh({"p3|n3", plane_vb}, nil, math3d.ref(math3d.aabb({-0.5, 0, -0.5}, {0.5, 0, 0.5}))), true),
 			on_ready = function (e)

@@ -10,7 +10,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.material
   mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.023_P1.meshbin"
   name: zhuanwan
@@ -22,7 +22,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.line.material
   mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/平面.011_P1.meshbin"
   name: "平面.007"
@@ -35,7 +35,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.line.material
   mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/平面.012_P1.meshbin"
   name: "平面.008"
@@ -48,7 +48,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.line.material
   mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/柱体.005_P1.meshbin"
   name: "柱体.003"
@@ -61,7 +61,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/road.shiti.material
   mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.024_P1.meshbin"
   name: "立方体.001"
@@ -74,7 +74,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.bian.material
   mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.025_P1.meshbin"
   name: "立方体.002"
@@ -87,7 +87,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/road.jia.material
   mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.026_P1.meshbin"
   name: "立方体.006"
@@ -101,7 +101,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_L.glb|materials/Road.material
   mesh: "/pkg/vaststars.resources/glb/road/road_L.glb|meshes/立方体.023_P1.meshbin"
   name: zhuanwan

@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/terrain/mine_iron.glb|materials/Material.008.material
   mesh: /pkg/vaststars.resources/glb/terrain/mine_iron.glb|meshes/Plane.011_P1.meshbin
   name: Plane.005
@@ -20,7 +20,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: "/pkg/vaststars.resources/glb/terrain/mine_iron.glb|materials/材质.002.material"
   mesh: "/pkg/vaststars.resources/glb/terrain/mine_iron.glb|meshes/立方体.020_P1.meshbin"
   name: "立方体.014"
@@ -33,7 +33,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: "/pkg/vaststars.resources/glb/terrain/mine_iron.glb|materials/材质.003.material"
   mesh: "/pkg/vaststars.resources/glb/terrain/mine_iron.glb|meshes/立方体.020_P2.meshbin"
   name: "立方体.014"
