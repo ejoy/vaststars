@@ -13,10 +13,10 @@ local function update_world(world, get_object_func)
                 local recipe_fluids = irecipe.get_init_fluids(typeobject_recipe)
                 if recipe_fluids then
                     for i = 1, #recipe_fluids.input do
-                        vsobject:attach(typeobject.assembling_slot.input[i], "prefabs/pipeJonit.prefab")
+                        vsobject:attach(typeobject.assembling_slot.input[i], "prefabs/pipe-joint.prefab")
                     end
                     for i = 1, #recipe_fluids.output do
-                        vsobject:attach(typeobject.assembling_slot.output[i], "prefabs/pipeJonit.prefab")
+                        vsobject:attach(typeobject.assembling_slot.output[i], "prefabs/pipe-joint.prefab")
                     end
                 else
                     vsobject:detach()

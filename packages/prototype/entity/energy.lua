@@ -33,7 +33,7 @@ prototype "风力发电机I" {
 }
 
 prototype "太阳能板I" {
-    model = "prefabs/solar-panel.prefab",
+    model = "prefabs/solar-panel-1.prefab",
     icon = "textures/building_pic/small_pic_solar_panel.texture",
     construct_detector = {"exclusive"},
     type ={"entity","generator","solar_panel"},
@@ -44,7 +44,7 @@ prototype "太阳能板I" {
 }
 
 prototype "蓄电池I" {
-    model = "prefabs/accumulator.prefab",
+    model = "prefabs/accumulator-1.prefab",
     icon = "textures/building_pic/small_pic_accumulator.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "accumulator"},
