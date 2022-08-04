@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "采矿机I" {
-    model = "prefabs/miner.prefab",
+    model = "prefabs/miner-1.prefab",
     icon = "textures/building_pic/small_pic_miner.texture",
     background = "textures/build_background/pic_miner.texture",
     construct_detector = {"exclusive"},
@@ -21,7 +21,7 @@ prototype "采矿机I" {
 }
 
 prototype "采矿机II" {
-    model = "prefabs/miner.prefab",
+    model = "prefabs/miner-1.prefab",
     icon = "textures/building_pic/small_pic_miner.texture",
     background = "textures/build_background/pic_miner.texture",
     construct_detector = {"exclusive"},
