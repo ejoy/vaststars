@@ -10,7 +10,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: "/pkg/vaststars.resources/glb/rock.glb|materials/材质.002.material"
   mesh: /pkg/vaststars.resources/glb/rock.glb|meshes/Cube_P1.meshbin
   name: Cube
@@ -22,7 +22,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: "/pkg/vaststars.resources/glb/rock.glb|materials/材质.003.material"
   mesh: /pkg/vaststars.resources/glb/rock.glb|meshes/Cube_P2.meshbin
   name: Cube

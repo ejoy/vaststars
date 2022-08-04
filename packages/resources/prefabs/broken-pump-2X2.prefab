@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|materials/Material.003.material
   mesh: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|meshes/zhuti.007_P1.meshbin
   name: zhuti.021
@@ -21,7 +21,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|materials/Material.002.material
   mesh: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|meshes/zhuti.007_P2.meshbin
   name: zhuti.021

@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/furnace-1.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/furnace-1.glb|meshes/Cylinder.008_P1.meshbin
   name: Cylinder.006

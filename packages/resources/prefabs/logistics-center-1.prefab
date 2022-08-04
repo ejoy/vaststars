@@ -19,7 +19,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.004.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube_P1.meshbin
   name: Cube
@@ -30,7 +30,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.001_P1.meshbin
   name: Cube.001
@@ -41,7 +41,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.003.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/zhuti_P1.meshbin
   name: zhuti
@@ -54,7 +54,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.003.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/zhuti.006_P1.meshbin
   name: zhuti.002
@@ -67,7 +67,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.003_P1.meshbin
   name: Cube.003
@@ -78,7 +78,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.003.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/lifangti.001_P1.meshbin
   name: lifangti.005
@@ -89,7 +89,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.005.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/pingmian_P1.meshbin
   name: pingmian
@@ -101,7 +101,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.002.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/zhuti.001_P1.meshbin
   name: zhuti.006
@@ -114,7 +114,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.004.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/zhuti.002_P1.meshbin
   name: zhuti.007
@@ -128,7 +128,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/lifangti.003_P1.meshbin
   name: lifangti.007
@@ -140,7 +140,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.006.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/pingmian.001_P1.meshbin
   name: pingmian.001
@@ -152,7 +152,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.006.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/lifangti.002_P1.meshbin
   name: lifangti.008
@@ -165,7 +165,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.007.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/lifangti.004_P1.meshbin
   name: lifangti.009
@@ -178,7 +178,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.007.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/lifangti.005_P1.meshbin
   name: lifangti.010
@@ -191,7 +191,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.006.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/lifangti.007_P1.meshbin
   name: lifangti.011
@@ -204,7 +204,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.006.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/lifangti.008_P1.meshbin
   name: lifangti.012
@@ -217,7 +217,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.006.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/lifangti.009_P1.meshbin
   name: lifangti.013
@@ -230,7 +230,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.008.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P1.meshbin
   name: car_S
@@ -243,7 +243,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.009.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P2.meshbin
   name: car_S
@@ -256,7 +256,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.008.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P1.meshbin
   name: car_S.001
@@ -269,7 +269,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.009.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P2.meshbin
   name: car_S.001
@@ -282,7 +282,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.008.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P1.meshbin
   name: car_S.002
@@ -295,7 +295,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.009.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P2.meshbin
   name: car_S.002
@@ -308,7 +308,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.008.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P1.meshbin
   name: car_S.003
@@ -321,7 +321,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.009.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P2.meshbin
   name: car_S.003
@@ -334,7 +334,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.008.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P1.meshbin
   name: car_S.004
@@ -347,7 +347,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.009.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P2.meshbin
   name: car_S.004
@@ -360,7 +360,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.008.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P1.meshbin
   name: car_S.006
@@ -373,7 +373,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.009.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P2.meshbin
   name: car_S.006
@@ -386,7 +386,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.008.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P1.meshbin
   name: car_S.005
@@ -399,7 +399,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.009.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Cube.010_P2.meshbin
   name: car_S.005
@@ -412,7 +412,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
@@ -424,7 +424,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
@@ -436,7 +436,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
@@ -448,7 +448,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
@@ -460,7 +460,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
@@ -472,7 +472,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
@@ -484,7 +484,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
@@ -496,7 +496,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.005.material
   material_setting:
     skinning: GPU
@@ -508,7 +508,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.004.material
   material_setting:
     skinning: GPU
@@ -520,7 +520,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.008.material
   material_setting:
     skinning: GPU
@@ -532,7 +532,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.009.material
   material_setting:
     skinning: GPU
@@ -544,7 +544,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.008.material
   material_setting:
     skinning: GPU
@@ -556,7 +556,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.009.material
   material_setting:
     skinning: GPU
@@ -568,7 +568,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.008.material
   material_setting:
     skinning: GPU
@@ -580,7 +580,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.009.material
   material_setting:
     skinning: GPU
@@ -592,7 +592,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.008.material
   material_setting:
     skinning: GPU
@@ -604,7 +604,7 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.009.material
   material_setting:
     skinning: GPU
