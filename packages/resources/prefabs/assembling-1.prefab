@@ -250,9 +250,8 @@ policy:
 data:
   anim_ctrl: {}
   animation:
-    ArmatureAction.001: /pkg/vaststars.resources/glb/assembling.glb|animations/ArmatureAction.ozz
-    chongchen: /pkg/vaststars.resources/prefabs/assembling-1.anim
-  animation_birth: ArmatureAction.001
+    ArmatureAction: /pkg/vaststars.resources/glb/assembling.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
   name: animation
   skeleton: /pkg/vaststars.resources/glb/assembling.glb|animations/skeleton.ozz
 policy:
