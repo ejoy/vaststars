@@ -3,6 +3,7 @@ local world = ecs.world
 
 local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
+local get_recipe_canvas = ecs.require "ui_datamodel.common.recipe_icon_canvas".get_recipe_canvas
 local math3d = require "math3d"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
@@ -148,16 +149,14 @@ local function flush()
                 }
 
                 -- display recipe icon of assembling machine
-                if outer.recipe then -- TODO: better way to do this?
-                    local w, h = iprototype.unpackarea(typeobject.area)
-                    local icon
+                if outer.recipe then
+                    local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
                     if outer.recipe == "" then
-                        icon = ""
+                        vsobject:add_canvas(get_recipe_canvas("", outer.x, outer.y, w, h))
                     else
                         local recipe_typeobject = iprototype.queryByName("recipe", outer.recipe)
-                        icon = recipe_typeobject.icon
-                    end                    
-                    vsobject:add_canvas(icon, outer.x, outer.y, w, h)
+                        vsobject:add_canvas(get_recipe_canvas(recipe_typeobject.icon, outer.x, outer.y, w, h))
+                    end
                 end
             else
                 for k, v in pairs(outer.__change) do
@@ -175,16 +174,14 @@ local function flush()
 
                 -- display recipe icon of assembling machine
                 -- TODO: special case for mining 
-                if outer.__change.recipe and not iprototype.has_type(typeobject.type, "mining") and not typeobject.recipe then -- TODO: better way to do this?
-                    local w, h = iprototype.unpackarea(typeobject.area)
-                    local icon
+                if outer.__change.recipe and not iprototype.has_type(typeobject.type, "mining") and not typeobject.recipe then
+                    local w, h = iprototype.unpackarea(typeobject.area)  -- TODO: duplicate code
                     if outer.recipe == "" then
-                        icon = ""
+                        vsobject:add_canvas(get_recipe_canvas("", outer.x, outer.y, w, h))
                     else
                         local recipe_typeobject = iprototype.queryByName("recipe", outer.recipe)
-                        icon = recipe_typeobject.icon
-                    end                    
-                    vsobject:add_canvas(icon, outer.x, outer.y, w, h)
+                        vsobject:add_canvas(get_recipe_canvas(recipe_typeobject.icon, outer.x, outer.y, w, h))
+                    end
                 end
                 outer.__change = {}
             end

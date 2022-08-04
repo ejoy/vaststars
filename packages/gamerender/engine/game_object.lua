@@ -12,11 +12,11 @@ local fs = require "filesystem"
 local math3d = require "math3d"
 local COLOR_INVALID <const> = math3d.constant "null"
 
-local function _replace_material(template)
+local function _replace_material(template, material_file_path)
     for _, v in ipairs(template) do
         for _, policy in ipairs(v.policy) do
             if policy == "ant.render|render" or policy == "ant.render|simplerender" then
-                v.data.material = "/pkg/vaststars.resources/materials/translucent.material"
+                v.data.material = material_file_path
             end
         end
     end
@@ -65,7 +65,7 @@ local _instance_hash ; do
         local h2 = state_hash(state or 0)
         local h3 = color_hash(color or 0)
         local h4 = animation_hash(animation_name or 0)
-        local h5 = process_hash(process or 0)
+        local h5 = process_hash(math.floor((process or 0) * 100)) -- process: float, 0.0 ~ 1.0 -> 0 ~ 100
 
         return h1 | (h2 << 8) | (h3 << 16) | (h4 << 24) | (h5 << 32) -- assuming 255 types of every parameter at most
     end
@@ -120,8 +120,10 @@ local _get_hitch_children ; do
 
         local template
 
-        if state == "translucent" then -- translucent or opaque
-            template = _replace_material(serialize.parse(prefab_file_path, cr.read_file(prefab_file_path)))
+        if state == "translucent" then
+            template = _replace_material(serialize.parse(prefab_file_path, cr.read_file(prefab_file_path)), "/pkg/vaststars.resources/materials/translucent.material")
+        elseif state == "opacity" then
+            template = _replace_material(serialize.parse(prefab_file_path, cr.read_file(prefab_file_path)), "/pkg/vaststars.resources/materials/opacity.material")
         else
             template = serialize.parse(prefab_file_path, cr.read_file(prefab_file_path))
         end
@@ -156,7 +158,7 @@ local _get_hitch_children ; do
             on_prefab_message(prefab, ...)
         end
         local instance = world:create_object(prefab)
-        if state == "translucent" then
+        if state == "translucent" or state == "opacity" then
             instance:send("set_material_property", "u_basecolor_factor", color)
         end
 
@@ -166,6 +168,7 @@ local _get_hitch_children ; do
 end
 
 local igame_object = ecs.interface "igame_object"
+-- state: "translucent", "opaque", "opacity"
 function igame_object.create(prefab_file_name, cull_group_id, state, color, srt, parent, slot)
     local children = _get_hitch_children(prefab_path:format(prefab_file_name), state, color, nil, nil)
     local events = {}
@@ -212,7 +215,7 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
             slot_game_object.hitch_entity_object:send("slot_pose", children.pose)
         end
     end
-    local function attach(self, slot_name, model)
+    local function attach(self, slot_name, model, state, color)
         local s = children.slots[slot_name]
         if not s then
             log.error(("game_object.attach: slot %s not found"):format(slot_name))
@@ -223,8 +226,9 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
             _slot[k] = v
         end
         _slot.pose = children.pose
-        -- TODO: children.scene <-- offset of the parent, missing offset of the slot
-        self.slot_attach[slot_name] = igame_object.create(model, cull_group_id, "opaque", COLOR_INVALID, children.scene, self.hitch_entity_object.id, _slot)
+        _slot.offset_srt = {s = s.scene.s, r = s.scene.r, t = s.scene.t} -- offset of the slot
+        -- children.scene: offset of the parent
+        self.slot_attach[slot_name] = igame_object.create(model, cull_group_id, state or "opaque", color or COLOR_INVALID, children.scene, self.hitch_entity_object.id, _slot)
     end
     local function detach(self)
         for _, v in pairs(self.slot_attach) do

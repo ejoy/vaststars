@@ -184,12 +184,12 @@ local function update(self, t)
     self.prototype_name = t.prototype_name or self.prototype_name
 end
 
-local function attach(self, slot_name, model)
+local function attach(self, slot_name, model, ...)
     if self.slots[slot_name] == model then
         return
     end
     self.game_object:detach()
-    self.game_object:attach(slot_name, model)
+    self.game_object:attach(slot_name, model, ...)
 	self.slots[slot_name] = model
 end
 
@@ -208,9 +208,9 @@ local function modifier(self, opt, ...)
     imodifier[opt](self.srt_modifier, ...)
 end
 
-local function add_canvas(self, name, x, y, w, h)
+local function add_canvas(self, items)
     self:del_canvas()
-    self.canvas_id = icanvas:add_item(self.id, name, x, y, w, h)
+    self.canvas_id = icanvas:add_item(self.id, items)
 end
 
 local function del_canvas(self)

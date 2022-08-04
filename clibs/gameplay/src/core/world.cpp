@@ -335,8 +335,8 @@ namespace lua_world {
 
         bool reset = true;
         if (w.manual.todos.size() > 0 && todos.size() > 0) {
-            if (w.manual.todos[1].id == todos[1].id) {
-                if (w.manual.todos[1].type == todos[1].type && todos[1].type == manual_crafting::type::crafting) {
+            if (w.manual.todos.back().id == todos.back().id) {
+                if (w.manual.todos.back().type == todos.back().type && todos.back().type == manual_crafting::type::crafting) {
                     reset = false;
                 }
             }

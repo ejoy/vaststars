@@ -5,6 +5,7 @@ prototype "液罐I" {
     model = "prefabs/storage-tank-1.prefab",
     icon = "textures/building_pic/small_pic_tank.texture",
     construct_detector = {"exclusive"},
+    storage_tank = true,
     type ={"entity", "fluidbox"},
     area = "3x3",
     group = {"管道"},

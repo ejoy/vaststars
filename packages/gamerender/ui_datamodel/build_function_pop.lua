@@ -49,6 +49,18 @@ local function _show_detail(typeobject)
     return false
 end
 
+local function _get_elements(s)
+    local r = {}
+    for idx = 2, #s // 4 do
+        local id, n = string.unpack("<I2I2", s, 4 * idx - 3)
+        if not iprototype.is_fluid_id(id) then -- skip fluid, fluid can not pick up
+            local typeobject = assert(iprototype.queryById(id), ("can not found id `%s`"):format(id))
+            r[#r+1] = {id = id, name = typeobject.name, count = n, icon = typeobject.icon, tech_icon = typeobject.tech_icon}
+        end
+    end
+    return r
+end
+
 ---------------
 local M = {}
 local current_object_id
@@ -84,10 +96,10 @@ function M:create(object_id, left, top)
             local recipe_typeobject = iprototype.queryById(e.assembling.recipe)
             recipe_name = recipe_typeobject.name
 
-            if #irecipe.get_elements(recipe_typeobject.ingredients) > 0 then
+            if #_get_elements(recipe_typeobject.ingredients) > 0 then
                 show_place_material = true
             end
-            if #irecipe.get_elements(recipe_typeobject.results) > 0 then
+            if #_get_elements(recipe_typeobject.results) > 0 then
                 show_pickup_material = true
             end
         end

@@ -17,7 +17,7 @@
                 flex-direction: row;
                 align-items:center;
                 justify-content:flex-start;
-                background-color: rgb(19,175,240);
+                background-color: rgb(234,246,76);
                 border: 0.27vmin rgb(89, 73, 39);
                 background-size:cover;
                 border-radius: 0.67vmin;
@@ -43,7 +43,7 @@
                 text-align: left;
                 border-radius: 0.67vmin;
                 color:rgb(255, 255, 255);
-                -webkit-text-stroke: 0.07vmin rgb(0, 0, 0);
+                -webkit-text-stroke: 0.3vmin rgb(0, 0, 0);
                 width: 85%;
                 word-break: break-all;
                 font-size: 4.5vmin;
