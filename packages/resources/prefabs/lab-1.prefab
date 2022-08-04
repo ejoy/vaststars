@@ -7,10 +7,10 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  meshskin: /pkg/vaststars.resources/glb/lab.glb|meshes/Armature.skinbin
+  meshskin: /pkg/vaststars.resources/glb/lab-1.glb|meshes/Armature.skinbin
   name: meshskin
   scene: {}
-  skeleton: /pkg/vaststars.resources/glb/lab.glb|animations/skeleton.ozz
+  skeleton: /pkg/vaststars.resources/glb/lab-1.glb|animations/skeleton.ozz
   skinning: true
 mount: 1
 policy:
@@ -20,10 +20,10 @@ policy:
 ---
 data:
   visible_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/lab.glb|materials/Material.material
+  material: /pkg/vaststars.resources/glb/lab-1.glb|materials/Material.material
   material_setting:
     skinning: GPU
-  mesh: /pkg/vaststars.resources/glb/lab.glb|meshes/Plane.002_P1.meshbin
+  mesh: /pkg/vaststars.resources/glb/lab-1.glb|meshes/Plane.002_P1.meshbin
   name: Plane.002
   skinning: true
 policy:
@@ -33,10 +33,10 @@ policy:
 data:
   anim_ctrl: {}
   animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/lab.glb|animations/ArmatureAction.ozz
+    ArmatureAction: /pkg/vaststars.resources/glb/lab-1.glb|animations/ArmatureAction.ozz
   animation_birth: ArmatureAction
   name: animation
-  skeleton: /pkg/vaststars.resources/glb/lab.glb|animations/skeleton.ozz
+  skeleton: /pkg/vaststars.resources/glb/lab-1.glb|animations/skeleton.ozz
 policy:
   ant.animation|animation
   ant.general|name

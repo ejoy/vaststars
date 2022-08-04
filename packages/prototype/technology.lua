@@ -1203,9 +1203,10 @@ prototype "冶金学2" {
   prerequisites = {"石头处理3","铁矿熔炼2"},
   ingredients = {
     {"地质科技包", 1},
+    {"机械科技包", 1},
   },
-  count = 5,
-  time = "4s"
+  count = 20,
+  time = "6s"
 }
 
 prototype "铝生产" {

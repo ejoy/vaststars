@@ -8,8 +8,8 @@ policy:
 ---
 data:
   visible_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/damage_pump_2x2.glb|materials/Material.003.material
-  mesh: /pkg/vaststars.resources/glb/damage_pump_2x2.glb|meshes/zhuti.007_P1.meshbin
+  material: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|materials/Material.003.material
+  mesh: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|meshes/zhuti.007_P1.meshbin
   name: zhuti.021
   scene:
     r: {0.602105438709259, -0.7513673305511475, 0.2693134844303131, -0.01965722069144249}
@@ -22,8 +22,8 @@ policy:
 ---
 data:
   visible_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/damage_pump_2x2.glb|materials/Material.002.material
-  mesh: /pkg/vaststars.resources/glb/damage_pump_2x2.glb|meshes/zhuti.007_P2.meshbin
+  material: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|materials/Material.002.material
+  mesh: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|meshes/zhuti.007_P2.meshbin
   name: zhuti.021
   scene:
     r: {0.602105438709259, -0.7513673305511475, 0.2693134844303131, -0.01965722069144249}
@@ -39,7 +39,7 @@ data:
   animation: {}
   animation_birth: ""
   name: animation
-  skeleton: /pkg/vaststars.resources/glb/damage_pump_2x2.glb|animations/skeleton.ozz
+  skeleton: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|animations/skeleton.ozz
 policy:
   ant.animation|animation
   ant.general|name

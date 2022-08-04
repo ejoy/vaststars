@@ -1,0 +1,103 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.002.material
+  mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cube.001_P1.meshbin
+  name: Cube.001
+  scene:
+    t: {0, 0.16866442561149597, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.006.material
+  mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cube.001_P2.meshbin
+  name: Cube.001
+  scene:
+    t: {0, 0.16866442561149597, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.002.material
+  mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cube.002_P1.meshbin
+  name: Cube.002
+  scene: {}
+mount: 3
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.002.material
+  mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cube.003_P1.meshbin
+  name: Cube.003
+  scene:
+    r: {-0.07788936048746109, 0, 0, -0.9969620108604431}
+    t: {0, 0.34819522500038147, -0.040103353559970856}
+mount: 3
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.002.material
+  mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cylinder_P1.meshbin
+  name: Cylinder
+  scene:
+    t: {0, 0.34614720940589905, 1.452495813369751}
+mount: 3
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.002.material
+  mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cylinder.003_P1.meshbin
+  name: Cylinder.001
+  scene:
+    t: {0, 0.21385648846626282, -1.6114510297775269}
+mount: 3
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.002.material
+  mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cube.001_P1.meshbin
+  name: Cube.001
+  scene:
+    t: {0, 0.16866442561149597, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.006.material
+  mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cube.001_P2.meshbin
+  name: Cube.001
+  scene:
+    t: {0, 0.16866442561149597, 0}
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
