@@ -105,9 +105,8 @@ local function create_block(color, block_edge_size, area, position, rotation)
 			name 		= ("plane_%d"):format(gen_id()),
 			simplemesh 	= imesh.init_mesh(ientity.create_mesh({"p3|n3", plane_vb}, nil, math3d.ref(math3d.aabb({-0.5, 0, -0.5}, {0.5, 0, 0.5}))), true),
 			on_ready = function (e)
-				w:sync("render_object:update", e)
-				ifs.set_state(e, "main_view", true)
-				imaterial.set_property(e, "u_color", color)
+				ifs.iset_state(e, "main_view", true)
+				imaterial.iset_property(e, "u_color", color)
 				w:sync("render_object_update:out", e)
 			end
 		},
