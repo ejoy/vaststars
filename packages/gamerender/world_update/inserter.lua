@@ -36,9 +36,6 @@ local function update_world(world, get_object_func)
                 animation_name = "UpToDown"
             end
             local typeobject = assert(iprototype.queryById(e.entity.prototype))
-
-            local p = itypes.progress(inserter.progress, assert(typeobject.speed))
-            assert(p >= 0 and p <= 1, ("progress error: %f"):format(p))
             vsobject:animation_update(animation_name, _get_progress(itypes.progress(inserter.progress, assert(typeobject.speed))))
         end
 
