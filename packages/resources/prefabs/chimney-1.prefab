@@ -7,137 +7,36 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.008_P1.meshbin
-  name: Cylinder.008
+  meshskin: /pkg/vaststars.resources/glb/chimney.glb|meshes/Armature.skinbin
+  name: meshskin
   scene: {}
+  skeleton: /pkg/vaststars.resources/glb/chimney.glb|animations/skeleton.ozz
+  skinning: true
 mount: 1
 policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.009_P1.meshbin
-  name: Cylinder.009
-  scene: {}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.010_P1.meshbin
-  name: Cylinder.010
-  scene:
-    t: {0, 0.9483034610748291, 0}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.012_P1.meshbin
-  name: Cylinder.011
-  scene: {}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.013_P1.meshbin
-  name: Cylinder.012
-  scene:
-    s: {1.0656399726867676, 1.0656399726867676, 1.0656399726867676}
-    t: {0, 12.743448257446289, 0}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.015_P1.meshbin
-  name: Cylinder.013
-  scene: {}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.015_P1.meshbin
-  name: Cylinder.014
-  scene:
-    r: {0, 0.866025447845459, 0, -0.4999999701976776}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cylinder.015_P1.meshbin
-  name: Cylinder.015
-  scene:
-    r: {0, -0.866025447845459, 0, -0.4999999701976776}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
-  mesh: "/pkg/vaststars.resources/glb/chimney.glb|meshes/柱体.001_P1.meshbin"
-  name: zhuti.001
-  scene: {}
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  name: Armature
-  scene:
-    t: {0, 5.349473476409912, 0}
-mount: 1
-policy:
+  ant.animation|meshskin
   ant.general|name
   ant.scene|scene_object
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
+  material_setting:
+    skinning: GPU
   mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Plane_P1.meshbin
   name: Plane
-  scene: {}
-mount: 11
+  skinning: true
 policy:
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/chimney.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/chimney.glb|meshes/Cube_P1.meshbin
-  name: Cube
-  scene:
-    s: {0.8999999761581421, 1, 0.8999999761581421}
-mount: 1
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/chimney.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/chimney.glb|animations/skeleton.ozz
 policy:
+  ant.animation|animation
   ant.general|name
-  ant.render|render
