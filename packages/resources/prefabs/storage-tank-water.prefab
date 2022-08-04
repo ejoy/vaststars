@@ -8,8 +8,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: "/pkg/vaststars.resources/glb/storage_tank_water.glb|materials/材质.001.material"
-  mesh: /pkg/vaststars.resources/glb/storage_tank_water.glb|meshes/lifangti.006_P1.meshbin
+  material: "/pkg/vaststars.resources/glb/storage-tank-water.glb|materials/材质.001.material"
+  mesh: /pkg/vaststars.resources/glb/storage-tank-water.glb|meshes/lifangti.006_P1.meshbin
   name: lifangti.007
   scene: {}
 mount: 1
