@@ -2,10 +2,10 @@
 data:
   anim_ctrl: {}
   animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/storage-tank.glb|animations/ArmatureAction.ozz
+    ArmatureAction: /pkg/vaststars.resources/glb/storage-tank-1.glb|animations/ArmatureAction.ozz
   animation_birth: ArmatureAction
   name: animation
-  skeleton: /pkg/vaststars.resources/glb/storage-tank.glb|animations/skeleton.ozz
+  skeleton: /pkg/vaststars.resources/glb/storage-tank-1.glb|animations/skeleton.ozz
 policy:
   ant.general|name
   ant.animation|animation

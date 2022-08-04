@@ -8,8 +8,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/wind-turbine.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/wind-turbine.glb|meshes/Cube.001_P1.meshbin
+  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Cube.001_P1.meshbin
   name: Cube
   scene: {}
 mount: 1
@@ -19,8 +19,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/wind-turbine.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/wind-turbine.glb|meshes/Cylinder.002_P1.meshbin
+  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Cylinder.002_P1.meshbin
   name: Cylinder.001
   scene: {}
 mount: 1
@@ -30,8 +30,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/wind-turbine.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/wind-turbine.glb|meshes/Plane.003_P1.meshbin
+  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Plane.003_P1.meshbin
   name: Plane.003
   scene: {}
 mount: 1
@@ -41,8 +41,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/wind-turbine.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/wind-turbine.glb|meshes/Plane.004_P1.meshbin
+  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Plane.004_P1.meshbin
   name: Plane.006
   scene: {}
 mount: 1
@@ -52,8 +52,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/wind-turbine.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/wind-turbine.glb|meshes/Cylinder.001_P1.meshbin
+  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Cylinder.001_P1.meshbin
   name: Cylinder.002
   scene:
     s: {2.2423763275146484, 2.2423763275146484, 2.2423763275146484}
@@ -64,8 +64,8 @@ policy:
 ---
 data:
   filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/wind-turbine.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/wind-turbine.glb|meshes/Cylinder.003_P1.meshbin
+  material: /pkg/vaststars.resources/glb/wind-turbine-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/wind-turbine-1.glb|meshes/Cylinder.003_P1.meshbin
   name: Cylinder.003
   scene:
     t: {0, 24.63296127319336, 0}
