@@ -357,7 +357,7 @@
                 item.className = "item-research"
                 local select_style_border = "3px rgb(0,255,0)"
                 item.addEventListener('click', function(event)
-                    if start.selected_tech then
+                    if start.selected_tech and start.selected_tech ~= item then
                         start.selected_tech.style.border = '0px green'
                     end
                     item.style.border = select_style_border
@@ -387,7 +387,7 @@
                 item.style.width = '90%'
                 local select_style_border = "3px rgb(0,255,0)"
                 item.addEventListener('click', function(event)
-                    if start.selected_recipe then
+                    if start.selected_recipe and start.selected_recipe ~= item then
                         start.selected_recipe.style.border = '0px green'
                         start.detaillist:show_detail(start.selected_recipe, false)
                     end
@@ -449,7 +449,6 @@
                 {
                     "current_tech",
                     function()
-                        start.selected_tech = nil
                         start.detaillist:on_dirty_all(#start.current_tech.detail)
                     end
                 },
