@@ -9,11 +9,12 @@ policy:
 ---
 data:
   name: empty9
-  scene:
-    t: {-0.07560229301452637, 10.577598571777344, 11.45242977142334}
+  scene: {}
   slot:
     follow_flag: 2
     joint_name: Bone.004
+    offset_srt:
+      t: {0, 3, 0}
   tag:
     empty9
 mount: 1
