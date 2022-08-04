@@ -19,16 +19,15 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/storage-tank.glb|materials/Material.001.material
-  mesh: /pkg/vaststars.resources/glb/storage-tank.glb|meshes/zhuti.001_P2.meshbin
-  name: zhuti.004
-  scene:
-    r: {0, 0.7071065902709961, 0, 0.7071069478988647}
-mount: 1
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/storage-tank.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/storage-tank.glb|animations/skeleton.ozz
 policy:
+  ant.animation|animation
   ant.general|name
-  ant.render|render
 ---
 data:
   hitch:
@@ -50,14 +49,3 @@ policy:
   ant.scene|hitch_object
   ant.general|tag
   ant.animation|slot
----
-data:
-  anim_ctrl: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/storage-tank.glb|animations/ArmatureAction.ozz
-  animation_birth: ArmatureAction
-  name: animation
-  skeleton: /pkg/vaststars.resources/glb/storage-tank.glb|animations/skeleton.ozz
-policy:
-  ant.animation|animation
-  ant.general|name
