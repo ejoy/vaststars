@@ -2,11 +2,11 @@
 data:
   anim_ctrl: {}
   animation:
-    DownToUp: /pkg/vaststars.resources/glb/inserter.glb|animations/DownToUp.ozz
-    UpToDown: /pkg/vaststars.resources/glb/inserter.glb|animations/UpToDown.ozz
+    DownToUp: /pkg/vaststars.resources/glb/inserter-1.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/inserter-1.glb|animations/UpToDown.ozz
   animation_birth: DownToUp
   name: skeleton_animation
-  skeleton: /pkg/vaststars.resources/glb/inserter.glb|animations/skeleton.ozz
+  skeleton: /pkg/vaststars.resources/glb/inserter-1.glb|animations/skeleton.ozz
 policy:
   ant.general|name
   ant.animation|animation
