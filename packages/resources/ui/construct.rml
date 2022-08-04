@@ -165,6 +165,7 @@
                 color:chartreuse;
                 -webkit-text-stroke: 0.3vmin rgb(0,0,0);
                 font-size: 7vmin;
+                opacity: 0;
             }
             p {
                 animation:0.5s linear 0s infinite alternate rotation;
