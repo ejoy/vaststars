@@ -59,6 +59,8 @@ local function get_display_info(e, typeobject, t)
                         local st = global.statistic["power"][e.id]
                         if st then
                             current = st[cn]
+                        elseif typeobject.name == "指挥中心" then
+                            current = global.statistic.power_consumed
                         end
                     end
                     total = total * 50

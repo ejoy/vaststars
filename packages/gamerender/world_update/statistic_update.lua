@@ -33,8 +33,12 @@ local function update_world(world, get_object_func)
     for eid, cfg in pairs(statistic.pending_eid) do
         local e = gameplay_core.get_entity(eid)
         if e then
-            if cfg.power and e.consumer then
-                statistic.power[eid] = create_statistic_node(cfg)
+            if cfg.power then
+                if e.consumer then
+                    statistic.power[eid] = create_statistic_node(cfg)
+                else
+                    assert(cfg.name == "指挥中心")
+                end
             end
             finish[#finish + 1] = eid
         end
@@ -53,10 +57,12 @@ local function update_world(world, get_object_func)
         if working > 0 then
             frame_drain = drain
             st.drain = st.drain + frame_drain
+            statistic.power_consumed = statistic.power_consumed + frame_drain
         end
         if working > 1 then
             frame_power = st.cfg.power
             st.power = st.power + frame_power
+            statistic.power_consumed = statistic.power_consumed + frame_power
         end
         if not st.frames[st.head] then
             st.frames[st.head] = {drain = frame_drain, power = frame_power}
@@ -70,6 +76,8 @@ local function update_world(world, get_object_func)
             local fp = st.frames[st.tail]
             st.drain = st.drain - fp.drain
             st.power = st.power - fp.power
+            statistic.power_consumed = statistic.power_consumed - fp.drain
+            statistic.power_consumed = statistic.power_consumed - fp.power
             st.tail = (st.tail >= st.period) and 1 or st.tail + 1
         end
     end
