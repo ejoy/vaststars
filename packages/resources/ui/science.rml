@@ -443,12 +443,14 @@
                     "techitems",
                     function()
                         start.selected_tech = nil
+                        start.selected_recipe = nil
                         start.list:on_dirty_all(#start.techitems)
                     end
                 },
                 {
                     "current_tech",
                     function()
+                        start.selected_recipe = nil
                         start.detaillist:on_dirty_all(#start.current_tech.detail)
                     end
                 },
@@ -456,6 +458,7 @@
                     "current_progress",
                     function()
                         start.selected_tech = nil
+                        start.selected_recipe = nil
                         start.list:on_dirty(start.current_tech.index)
                     end
                 },            
