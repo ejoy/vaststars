@@ -486,7 +486,7 @@
 
             <!-- 右上角：当前科技进度 data-if = "cur_edit_mode == '' && show_tech_progress"-->
             <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
-                <button style='background-color:rgb(234,246,76);;  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickTask(is_task)">
+                <button style='background-color:rgb(204,219,11);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickTask(is_task)">
                     <div style="position:absolute; left:2.5vmin; bottom:0; width: 70%; height: 70%; background-size:cover;" data-style-background-image="current_tech_icon"/>
                     <div style="-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 3.5vmin; word-break: break-all;">{{current_tech_name}}</div>
                     <div class="progress-bar-block" style = "position:absolute; bottom: -4.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
