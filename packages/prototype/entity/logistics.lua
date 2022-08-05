@@ -8,12 +8,13 @@ prototype "指挥中心" {
     construct_detector = {"exclusive"},
     type ={"entity", "generator", "chest", "base"},
     area = "5x5",
+    supply_area = "9x9",
     power = "1MW",
     priority = "primary",
     group = {"物流"},
     slots = 70,
     headquater = true,
-    teardown = false,
+    teardown = false,s
 }
 
 prototype "车站I" {
