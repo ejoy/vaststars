@@ -270,16 +270,12 @@ end
 
 local M = {running = false}
 function M:restore_camera_setting()
-    local camera_setting
     if bee_fs.exists(bee_fs.path(camera_setting_path)) then
-        camera_setting = json.decode(readall(camera_setting_path))
+        local camera_setting = json.decode(readall(camera_setting_path))
+        local ce = world:entity(irq.main_camera())
+        iom.set_srt(ce, camera_setting.s, camera_setting.r, camera_setting.t)
+        ic.set_frustum(ce, camera_setting.frustum)
     end
-    if not camera_setting then
-        return
-    end
-    local ce = world:entity(irq.main_camera())
-    iom.set_srt(ce, camera_setting.s, camera_setting.r, camera_setting.t)
-    ic.set_frustum(ce, camera_setting.frustum)
 
     if terrain.init then
         local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)

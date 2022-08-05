@@ -17,7 +17,7 @@
                 flex-direction: row;
                 align-items:center;
                 justify-content:flex-start;
-                background-color: rgb(234,246,76);
+                background-color: rgb(204,219,11);
                 border: 0.27vmin rgb(89, 73, 39);
                 background-size:cover;
                 border-radius: 0.67vmin;
@@ -469,7 +469,7 @@
                 start.return_title = "已完成科技"
                 ui_sys.pub {"show_list", "finish"}
             end
-            function start.clickReturn(event)
+            local function onclose()
                 if start.show_finish then
                     start.show_finish = false
                     start.return_title = "科研中心"
@@ -479,8 +479,14 @@
                     ui_sys.close()
                 end
             end
+            function start.clickReturn(event)
+                onclose()
+            end
             function start.startSwitch(event)
                 ui_sys.pub {"switch"}
+                if not start.current_running then
+                    onclose()
+                end
             end
         </script>
     </head>

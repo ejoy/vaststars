@@ -22,6 +22,7 @@ local terrain = ecs.require "terrain"
 local icamera = ecs.require "engine.camera"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
+local DISABLE_FPS = require("debugger").disable_fps
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local construct_begin_mb = mailbox:sub {"construct_begin"} -- 建造 -> 建造模式
@@ -109,10 +110,16 @@ end
 
 -- TODO
 function M:fps_text(datamodel, text)
+    if DISABLE_FPS then
+        return
+    end
     datamodel.fps_text = text
 end
 
 function M:drawcall_text(datamodel, text)
+    if DISABLE_FPS then
+        return
+    end
     datamodel.drawcall_text = text
 end
 
