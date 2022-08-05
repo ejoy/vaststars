@@ -481,6 +481,9 @@
             end
             function start.startSwitch(event)
                 ui_sys.pub {"switch"}
+                if not start.current_running then
+                    ui_sys.close()
+                end
             end
         </script>
     </head>
