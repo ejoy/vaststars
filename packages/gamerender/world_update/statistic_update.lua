@@ -57,12 +57,13 @@ local function update_world(world, get_object_func)
         if working > 0 then
             frame_drain = drain
             st.drain = st.drain + frame_drain
-            statistic.power_consumed = statistic.power_consumed + frame_drain
         end
         if working > 1 then
             frame_power = st.cfg.power
             st.power = st.power + frame_power
-            statistic.power_consumed = statistic.power_consumed + frame_power
+        end
+        if working ~= 0 then
+            statistic.power_consumed = statistic.power_consumed + frame_power + frame_drain
         end
         if not st.frames[st.head] then
             st.frames[st.head] = {drain = frame_drain, power = frame_power}
@@ -76,8 +77,7 @@ local function update_world(world, get_object_func)
             local fp = st.frames[st.tail]
             st.drain = st.drain - fp.drain
             st.power = st.power - fp.power
-            statistic.power_consumed = statistic.power_consumed - fp.drain
-            statistic.power_consumed = statistic.power_consumed - fp.power
+            statistic.power_consumed = statistic.power_consumed - fp.drain - fp.power
             st.tail = (st.tail >= st.period) and 1 or st.tail + 1
         end
     end
