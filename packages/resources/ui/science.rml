@@ -344,7 +344,7 @@
                         ingredient_items = ingredient_items .. ([[<div class="property-icon" style='background-image:"%s";'/>]]):format(ingredient.icon)
                     end
                     if ingredient_count > 0 then
-                        ingredient_items = [[<div class="research-req">]] .. ingredient_items .. ([[<div style="font-size: 3.5vmin; text-align: center; -webkit-text-stroke: 0.05vmin rgb(0, 0, 0);">X %d</div></div>]]):format(ingredient_count * item_data.count)
+                        ingredient_items = [[<div class="research-req">]] .. ingredient_items .. ([[<div style="padding-bottom:0.5vmin; font-size: 3.5vmin; text-align: center; -webkit-text-stroke: 0.15vmin rgb(0, 0, 0);">X %d</div></div>]]):format(ingredient_count * item_data.count)
                     end
                 end
                 local sign = item_data.sign_icon and ([[<div class="icon-sign" style='background-image:"%s";'/>]]):format(item_data.sign_icon) or ""
