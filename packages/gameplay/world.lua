@@ -20,13 +20,15 @@ local function pipeline(world, cworld, name)
     local funcs = {}
     local symbols = {}
     for _, stage in ipairs(p) do
-        for sysname, s in pairs(systems) do
+        for _, v in ipairs(systems) do
+            local sysname, s = v[1], v[2]
             if s[stage] then
                 funcs[#funcs+1] = s[stage]
                 symbols[#symbols+1] = "lua."..sysname.."."..stage
             end
         end
-        for sysname, s in pairs(csystems) do
+        for _, v in ipairs(csystems) do
+            local sysname, s = v[1], v[2]
             if s[stage] then
                 funcs[#funcs+1] = s[stage]
                 symbols[#symbols+1] = "c."..sysname.."."..stage
