@@ -469,7 +469,7 @@
                 start.return_title = "已完成科技"
                 ui_sys.pub {"show_list", "finish"}
             end
-            function start.clickReturn(event)
+            local function onclose()
                 if start.show_finish then
                     start.show_finish = false
                     start.return_title = "科研中心"
@@ -479,10 +479,13 @@
                     ui_sys.close()
                 end
             end
+            function start.clickReturn(event)
+                onclose()
+            end
             function start.startSwitch(event)
                 ui_sys.pub {"switch"}
                 if not start.current_running then
-                    ui_sys.close()
+                    onclose()
                 end
             end
         </script>

@@ -205,8 +205,10 @@ end
 
 ---------------
 local M = {}
-
+local update_interval = 25 --update per 25 frame
+local counter = 1
 function M:create(object_id)
+    counter = 25
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
@@ -231,6 +233,11 @@ function M:create(object_id)
 end
 
 function M:stage_ui_update(datamodel, object_id)
+    counter = counter + 1
+    if counter < update_interval then
+        return
+    end
+    counter = 1
     local property_list = get_entity_property_list(object_id)
     local chest_list0 = property_list.chest_list0 or {}
     local chest_list1 = property_list.chest_list1 or {}
