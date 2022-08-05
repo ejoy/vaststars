@@ -50,10 +50,16 @@ local FLUIDFLOW_CHARTREUSE <const> = math3d.constant("v4", {1.2, 2.5, 0.0, 0.55}
 local FLUIDFLOW_CHOCOLATE <const> = math3d.constant("v4", {2.1, 2.0, 0.3, 0.55})
 local FLUIDFLOW_DARKVIOLET <const> = math3d.constant("v4", {1.4, 0.0, 2.1, 0.55})
 
+local CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
+local CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 2.5, 0.0, 1.0})
+
 local typeinfos = {
     ["indicator"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已确认
     ["construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 4}, -- 未确认, 合法
     ["invalid_construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_RED, block_edge_size = 4}, -- 未确认, 非法
+    -- TODO: remove hardcode -> block_edge_size
+    ["power_pole_construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = 40}, -- 未确认, 合法
+    ["power_pole_invalid_construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED, block_edge_size = 40}, -- 未确认, 非法
     ["confirm"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已确认
     ["constructed"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已施工
     ["teardown"] = {state = "translucent", color = CONSTRUCT_COLOR_YELLOW, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 拆除
@@ -88,7 +94,7 @@ entity_events.update_render_object = function(_, e, ...)
     irq.update_render_object(e, true)
 end
 
-local function create_block(color, block_edge_size, area, position, rotation)
+local function create_block(color, block_edge_size, area, position, rotation, material)
     if color == CONSTRUCT_BLOCK_COLOR_INVALID then
         return
     end
@@ -100,13 +106,17 @@ local function create_block(color, block_edge_size, area, position, rotation)
 		},
 		data = {
 			scene 		= { r = rotation, s = {terrain.tile_size * width + block_edge_size, 1, terrain.tile_size * height + block_edge_size}, t = position},
-			material 	= "/pkg/vaststars.resources/materials/singlecolor.material",
+			material 	= material or "/pkg/vaststars.resources/materials/singlecolor.material",
 			visible_state= "main_view",
 			name 		= ("plane_%d"):format(gen_id()),
 			simplemesh 	= imesh.init_mesh(ientity.create_mesh({"p3|n3", plane_vb}, nil, math3d.ref(math3d.aabb({-0.5, 0, -0.5}, {0.5, 0, 0.5}))), true),
 			on_ready = function (e)
 				ivs.iset_state(e, "main_view", true)
-				imaterial.iset_property(e, "u_color", color)
+                if material then
+                    imaterial.iset_property(e, "u_basecolor_factor", color)
+                else
+                    imaterial.iset_property(e, "u_color", color)
+                end
 				w:sync("render_object_update:out", e)
 			end
 		},
@@ -176,7 +186,7 @@ local function update(self, t)
             local typeobject = iprototype.queryByName("entity", self.prototype_name)
             local block_pos = math3d.ref(math3d.add(self:get_position(), math3d.vector(0, terrain.surface_height, 0)))
             local rotation = get_rotation(self)
-            self.block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotation)
+            self.block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotation, typeinfo.material)
         end
     end
 
@@ -233,7 +243,7 @@ return function (init)
 
     local game_object = assert(igame_object.create(typeobject.model, init.group_id, typeinfo.state, typeinfo.color, {r = rotators[init.dir], t = init.position}))
     local block_pos = math3d.ref(math3d.add(init.position, {0, terrain.surface_height, 0}))
-    local block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir])
+    local block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir], typeinfo.material)
 
     local vsobject = {
         id = init.id,

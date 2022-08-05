@@ -19,6 +19,23 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iworld = require "gameplay.interface.world"
 local gameplay_core = require "gameplay.core"
 
+local function _get_state(prototype_name, ok)
+    local typeobject = iprototype.queryByName("entity", prototype_name)
+    if typeobject.power_pole then
+        if ok then
+            return "power_pole_construct"
+        else
+            return "power_pole_invalid_construct"
+        end
+    else
+        if ok then
+            return "construct"
+        else
+            return "invalid_construct"
+        end
+    end
+end
+
 --
 local function __new_entity(self, datamodel, typeobject)
     -- check if item is in the inventory
@@ -38,11 +55,11 @@ local function __new_entity(self, datamodel, typeobject)
 
     local state
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
-        state = "invalid_construct"
+        state = _get_state(typeobject.name, false)
         datamodel.show_confirm = false
         datamodel.show_rotate = true
     else
-        state = "construct"
+        state = _get_state(typeobject.name, true)
         datamodel.show_confirm = true
         datamodel.show_rotate = true
     end
@@ -113,14 +130,14 @@ local function touch_end(self, datamodel)
     iobject.align(self.pickup_object)
 
     if not self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) then
-        pickup_object.state = "invalid_construct"
+        pickup_object.state = _get_state(pickup_object.prototype_name, false)
         return
     end
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
 
     if not ifluid:need_set_fluid(pickup_object.prototype_name) then
-        pickup_object.state = "construct"
+        pickup_object.state = _get_state(pickup_object.prototype_name, true)
         datamodel.show_confirm = true
         datamodel.show_rotate = true
         return
@@ -129,13 +146,13 @@ local function touch_end(self, datamodel)
     local fluid_types = self:get_neighbor_fluid_types(EDITOR_CACHE_NAMES, pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
     if #fluid_types <= 1 then
         pickup_object.fluid_name = fluid_types[1] or ""
-        pickup_object.state = "construct"
+        pickup_object.state = _get_state(pickup_object.prototype_name, true)
         datamodel.show_confirm = true
         datamodel.show_rotate = true
         return
     else
         pickup_object.fluid_name = ""
-        pickup_object.state = "invalid_construct"
+        pickup_object.state = _get_state(pickup_object.prototype_name, false)
     end
 end
 
@@ -227,11 +244,11 @@ local function rotate_pickup_object(self, datamodel)
     end
 
     if not self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, dir) then
-        pickup_object.state = "invalid_construct"
+        pickup_object.state = _get_state(pickup_object.prototype_name, false)
         datamodel.show_confirm = false
         datamodel.show_rotate = true
     else
-        pickup_object.state = "construct"
+        pickup_object.state = _get_state(pickup_object.prototype_name, true)
         datamodel.show_confirm = true
         datamodel.show_rotate = true
     end
