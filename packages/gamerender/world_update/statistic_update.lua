@@ -36,8 +36,6 @@ local function update_world(world, get_object_func)
             if cfg.power then
                 if e.consumer then
                     statistic.power[eid] = create_statistic_node(cfg)
-                else
-                    assert(cfg.name == "指挥中心")
                 end
             end
             finish[#finish + 1] = eid
