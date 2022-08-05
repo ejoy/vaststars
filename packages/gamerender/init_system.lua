@@ -6,7 +6,6 @@ local FRAMES_PER_SECOND <const> = 60
 local bgfx = require 'bgfx'
 local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local camera = ecs.require "engine.camera"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local check_prototype = require "gameplay.check"
