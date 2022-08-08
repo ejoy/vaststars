@@ -51,6 +51,9 @@ local function update_world(world, get_object_func)
         local frame_power = 0
         local frame_drain = 0
         local e = gameplay_core.get_entity(eid)
+        if not e or not e.consumer then
+            goto continue
+        end
         local working = e.consumer.working
         if working > 0 then
             frame_drain = drain
@@ -78,6 +81,7 @@ local function update_world(world, get_object_func)
             statistic.power_consumed = statistic.power_consumed - fp.drain - fp.power
             st.tail = (st.tail >= st.period) and 1 or st.tail + 1
         end
+        ::continue::
     end
 end
 return update_world
