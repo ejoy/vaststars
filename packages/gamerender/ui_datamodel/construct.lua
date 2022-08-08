@@ -91,22 +91,17 @@ end
 
 local _show_grid_entity ; do
     local igrid_entity = ecs.require "engine.grid_entity"
-    local ivs = ecs.import.interface "ant.scene|ivisible_state"
-    local eid
+    local obj
     function _show_grid_entity(b)
         if b then
-            if not eid then
-                eid = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, 30, {t = {0, 0, 0}})
+            if not obj then
+                obj = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = {0, 0, 0}})
             else
-                local e = world:entity(eid)
-                ivs.set_state(e, "main_view", b)
-                ivs.set_state(e, "selectable", b)
+                obj:show(true)
             end
         else
-            if eid then
-                local e = world:entity(eid)
-                ivs.set_state(e, "main_view", b)
-                ivs.set_state(e, "selectable", b)
+            if obj then
+                obj:show(false)
             end
         end
     end
