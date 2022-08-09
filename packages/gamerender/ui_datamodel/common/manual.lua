@@ -39,7 +39,7 @@ crafting 铁齿轮
 local function _get_manual_progress()
     for v in gameplay_core.select "manual:in" do
         local manual = v.manual
-        if manual.status == STATUS_IDLE or manual.status == STATUS_REBUILD then
+        if manual.status == STATUS_IDLE then
             return 0
         end
         return manual.progress
@@ -53,32 +53,26 @@ local function _get_manual_state(top)
         separator = function (State, id)
             State.separator[#State.separator+1] = id
 
-            if #State.separator == 4 then
+            if #State.separator == 2 then
                 local recipe_prototype = assert(iprototype.queryById(State.separator[1]))
-                local manual_crafting_times = State.separator[2]
-                local total_progress = (State.separator[4] << 16 | State.separator[3]) * 100
+                local manual_crafting_times = math.min(State.separator[2], (State.crafting[State.separator[1]] or 0))
+                local total_progress = recipe_prototype.time * 100
                 State.queue[#State.queue+1] = {
                     name = recipe_prototype.name,
                     icon = recipe_prototype.icon,
                     count = manual_crafting_times,
-                    progress = itypes.progress(State.progress, total_progress) * 100
+                    progress = itypes.progress(_get_manual_progress(), total_progress) * 100
                 }
 
                 State.manual_queue[#State.manual_queue+1] = {recipe_prototype.name, manual_crafting_times}
 
+                State.crafting = {}
                 State.separator = {}
-                State.progress = 0
             end
         end,
         crafting = function (State, recipe_name)
             local typeobject = iprototype.queryByName("recipe", recipe_name)
-
-            --
-            if State.last == "" then
-                State.progress = State.progress + _get_manual_progress()
-            else
-                State.progress = State.progress + typeobject.time * 100
-            end
+            State.crafting[typeobject.id] = (State.crafting[typeobject.id] or 0) + 1
         end
     }
 
@@ -86,10 +80,8 @@ local function _get_manual_state(top)
     local State = {
         queue = {}, -- {name = xx, icon = xx, count = xx, progress = xx} -- for display on main UI
         manual_queue = {}, -- {name = xx, count = xx} -- for world:manual()
-
-        last = "",
-        progress = 0, -- progress of current manual craft, reset after count "separator" 3 times
-        separator = {}, -- {recipe_prototype, manual_crafting_times, manual_crafting_total_progress}, reset after count "separator" 3 times
+        separator = {}, -- {recipe_prototype, manual_crafting_times, manual_crafting_total_progress}, reset after count "separator" 2 times
+        crafting = {}, --  = [recipe_name] = times, reset after count "separator" 2 times
     }
 
     for i = #queue, 1, -1 do
@@ -99,7 +91,6 @@ local function _get_manual_state(top)
                 break
             end
         end
-        State.last = queue[i][1]
     end
     assert(#State.separator == 0)
 
