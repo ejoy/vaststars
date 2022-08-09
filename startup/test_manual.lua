@@ -66,7 +66,6 @@ local function solverEvaluate(solver, memory, register, input)
     setmetatable(register, mt)
 
     local output = {}
-    local total_progress = 0 -- total progress of current manual crafting
     local manual = solver.manual
     local intermediate = solver.intermediate
     local function push_crafting(item)
@@ -95,7 +94,6 @@ local function solverEvaluate(solver, memory, register, input)
             local n = s[2]
             register[id] = register[id] + n
         end
-        total_progress = total_progress + recipe.time
         push_crafting(recipe.name)
     end
     local function solve_intermediate(item, count)
@@ -150,9 +148,6 @@ local function solverEvaluate(solver, memory, register, input)
 
         push_separator(recipe.id)
         push_separator(n) -- n is the number of times to repeat the recipe
-        push_separator(total_progress & 0xFFFF) -- total progress of current manual crafting
-        push_separator(total_progress >> 16)
-        total_progress = 0
         return true
     end
     for i = 1, #input do
