@@ -5,6 +5,8 @@ local w = world.w
 
 local ipl = ecs.import.interface "ant.render|ipolyline"
 local ivs = ecs.import.interface "ant.scene|ivisible_state"
+local COLOR <const> = {0.0, 1.0, 0.0, 0.7}
+local LINE_WIDTH = 100
 
 local M = {}
 function M.create(name, width, height, unit, srt)
@@ -48,8 +50,8 @@ function M.create(name, width, height, unit, srt)
     local material = "/pkg/vaststars.resources/materials/polylinelist.material"
 
 	local pids = {}
-	pids[#pids+1] = ipl.add_linelist(p1, 30, {0.0, c, 0.0, 0.5}, material, srt)
-	pids[#pids+1] = ipl.add_linelist(p2, 100, {0.0, c, 0.0, 0.5}, material, srt)
+	pids[#pids+1] = ipl.add_linelist(p1, LINE_WIDTH, COLOR, material, srt)
+	pids[#pids+1] = ipl.add_linelist(p2, LINE_WIDTH * 2, COLOR, material, srt)
 
 	local outer_proxy = {
 		pids = pids,
