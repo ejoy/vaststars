@@ -89,14 +89,12 @@ return function ()
         end
     end
 
-    local entity = entity_visitor(ecs)
-
     function world:remove_entity(id)
         ecs:remove(id)
         needBuild = true
     end
 
-    world.entity = entity
+    world.entity = entity_visitor(ecs)
 
     local pipeline_update = pipeline(world, cworld, "update")
     local pipeline_clean = pipeline(world, cworld, "clean")
@@ -181,6 +179,7 @@ return function ()
         world.storage_path = rootdir
         cworld:reset()
         pipeline_restore()
+        world.entity = entity_visitor(ecs)
         needBuild = true
     end
 
