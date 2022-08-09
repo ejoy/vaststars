@@ -57,11 +57,18 @@ local function _get_manual_state(top)
                 local recipe_prototype = assert(iprototype.queryById(State.separator[1]))
                 local manual_crafting_times = math.min(State.separator[2], (State.crafting[State.separator[1]] or 0))
                 local total_progress = recipe_prototype.time * 100
+                local progress
+                if State.first then
+                    progress = itypes.progress(_get_manual_progress(), total_progress) * 100
+                    State.first = false
+                else
+                    progress = 0
+                end
                 State.queue[#State.queue+1] = {
                     name = recipe_prototype.name,
                     icon = recipe_prototype.icon,
                     count = manual_crafting_times,
-                    progress = itypes.progress(_get_manual_progress(), total_progress) * 100
+                    progress = progress,
                 }
 
                 State.manual_queue[#State.manual_queue+1] = {recipe_prototype.name, manual_crafting_times}
@@ -82,6 +89,7 @@ local function _get_manual_state(top)
         manual_queue = {}, -- {name = xx, count = xx} -- for world:manual()
         separator = {}, -- {recipe_prototype, manual_crafting_times, manual_crafting_total_progress}, reset after count "separator" 2 times
         crafting = {}, --  = [recipe_name] = times, reset after count "separator" 2 times
+        first = true,
     }
 
     for i = #queue, 1, -1 do
