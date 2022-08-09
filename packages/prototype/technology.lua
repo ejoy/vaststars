@@ -610,22 +610,6 @@ prototype "管道系统2" {
   time = "2s"
 }
 
-prototype "有机化学" {
-  desc = "研究碳化合物组成、结构和制备方法",
-  type = { "tech" },
-  icon = "textures/science/tech-research.texture",
-  effects = {
-    unlock_recipe = {"塑料1"},
-  },
-  prerequisites = {"生产甲烷"},
-  ingredients = {
-    {"地质科技包", 1},
-    {"气候科技包", 1},
-  },
-  count = 6,
-  time = "10s"
-}
-
 prototype "排放" {
   desc = "研究气体和液体的排放工艺",
   type = { "tech" },
@@ -716,6 +700,22 @@ prototype "生产甲烷" {
   sign_desc = {
     { desc = "用化工厂生产1000个单位甲烷", icon = "textures/construct/industry.texture"},
   },
+}
+
+prototype "有机化学" {
+  desc = "研究碳化合物组成、结构和制备方法",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"塑料1"},
+  },
+  prerequisites = {"生产甲烷"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+  },
+  count = 6,
+  time = "10s"
 }
 
 prototype "生产乙烯" {
