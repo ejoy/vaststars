@@ -15,7 +15,6 @@ local terrain = ecs.require "terrain"
 local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local math_abs = math.abs
-local math_min = math.min
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local iquad_lines_entity = ecs.require "engine.quad_lines_entity" -- NOTE: different from pipe_builder
 local dotted_line_material <const> = "/pkg/vaststars.resources/materials/dotted_line.material" -- NOTE: different from pipe_builder
@@ -365,12 +364,13 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
         return
     end
 
-    local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, true)
-    PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+    endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, dir, iprototype.reverse_dir(dir))
+    PipeToGroundState.map[coord] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
     _decrease_item(State, PipeToGroundState)
 
     coord = packcoord(x, y)
-    PipeToGroundState.map[coord] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
+    local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), true)
+    PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
     _decrease_item(State, PipeToGroundState)
 end
 
@@ -435,6 +435,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
             local last_x, last_y = x, y -- TODO: optimize
             x, y = _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
 
+            -- refresh the shape of the neighboring pipe
             -- TODO: optimize
             do
                 local dx, dy = last_x - dir_delta.x, last_y - dir_delta.y
@@ -442,7 +443,9 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 local object = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
                 if object and (iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name)) then
                     local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, false)
-                    PipeToGroundState.map[coord] = {_prototype_name, _dir}
+                    if object.prototype_name ~= _prototype_name or object.dir ~= _dir then
+                        PipeToGroundState.map[coord] = {_prototype_name, _dir}
+                    end
                 end
             end
 
@@ -452,7 +455,9 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 local object = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
                 if object and (iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name)) then
                     local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), false)
-                    PipeToGroundState.map[coord] = {_prototype_name, _dir}
+                    if object.prototype_name ~= _prototype_name or object.dir ~= _dir then
+                        PipeToGroundState.map[coord] = {_prototype_name, _dir}
+                    end
                 end
             end
 
@@ -652,8 +657,8 @@ local function _builder_start(self, datamodel)
 
         local succ
         succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
-            math_min(math_abs(to_x - fluidbox.x), item.count - 1),
-            math_min(math_abs(to_y - fluidbox.y), item.count - 1)
+            math_abs(to_x - fluidbox.x),
+            math_abs(to_y - fluidbox.y)
         )
 
         if not succ then

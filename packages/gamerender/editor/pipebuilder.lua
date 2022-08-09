@@ -95,7 +95,7 @@ local function _set_endpoint_connection(prototype_name, State, object, fluidbox,
     if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
         _update_fluid_name(State, object.fluid_name, object.fluidflow_id)
 
-        local typeobject = iprototype.queryByName("entity", prototype_name)
+        local typeobject = iprototype.queryByName("entity", object.prototype_name)
         local _prototype_name, _dir
         -- normal pipe can replace other pipe, including pipe to ground
         _prototype_name, _dir = iflow_connector.covers_flow_type(object.prototype_name, object.dir, typeobject.flow_type)
@@ -381,8 +381,8 @@ local function _builder_start(self, datamodel)
 
         local succ
         succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
-            math_min(math_abs(to_x - fluidbox.x), item.count - 1),
-            math_min(math_abs(to_y - fluidbox.y), item.count - 1)
+            math_min(math_abs(to_x - fluidbox.x), item.count),
+            math_min(math_abs(to_y - fluidbox.y), item.count)
         )
         if not succ then
             State.succ = false
