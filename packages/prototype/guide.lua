@@ -180,7 +180,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "有机化学",
+            "生产乙烯",
         },
 	},
 
