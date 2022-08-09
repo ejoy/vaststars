@@ -59,13 +59,8 @@ return function ()
     end
 
     ecs:register {
-        name = "id",
-        type = "int",
-    }
-    ecs:register {
         name = "fluidbox_changed"
     }
-    ecs:make_index "id"
 
     local context = ecs:context(components)
     local ptable = require "vaststars.prototype.core"
@@ -89,20 +84,15 @@ return function ()
                     end
                 end
             end
-            obj.id = (obj.entity.y << 8) | obj.entity.x
-            ecs:new(obj)
             needBuild = true
-            return obj.id
+            return ecs:new(obj)
         end
     end
 
-    local entity, visitor = entity_visitor(ecs, "id")
+    local entity = entity_visitor(ecs)
 
     function world:remove_entity(id)
-        local v = visitor[id]
-        if v then
-            ecs:remove(v)
-        end
+        ecs:remove(id)
         needBuild = true
     end
 
@@ -169,8 +159,8 @@ return function ()
         assert(not needBuild)
         pipeline_update()
         timer.update(1)
-        for e in ecs:select "REMOVED id:in" do
-            world.entity[e.id] = nil
+        for e in ecs:select "REMOVED eid:in" do
+            world.entity[e.eid] = nil
         end
         ecs:update()
     end
@@ -191,9 +181,6 @@ return function ()
         world.storage_path = rootdir
         cworld:reset()
         pipeline_restore()
-        for v in ecs:select "entity:in id:new" do
-            v.id = (v.entity.y << 8) | v.entity.x
-        end
         needBuild = true
     end
 

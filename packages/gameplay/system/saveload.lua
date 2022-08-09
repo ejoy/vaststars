@@ -21,12 +21,19 @@ do
         local metafile = world.storage_path.."/ecs.json"
         local binfile = world.storage_path.."/ecs.bin"
         local writer = luaecs.writer(binfile)
+        local components = {
+            --"eid",
+            "REMOVED",
+        }
         for _, c in ipairs(status.components) do
-            writer:write(ecs, ecs:component_id(c.name))
+            components[#components+1] = c.name
+        end
+        for _, name in ipairs(components) do
+            writer:write(ecs, ecs:component_id(name))
         end
         local meta = writer:close()
-        for i, c in ipairs(status.components) do
-            meta[i].name = c.name
+        for i, name in ipairs(components) do
+            meta[i].name = name
         end
         writeall(metafile, json.encode(meta))
     end
@@ -40,6 +47,7 @@ do
             ecs:read_component(reader, meta.name, meta.offset, meta.stride, meta.n)
         end
         reader:close()
+        ecs:generate_eid()
     end
 end
 
