@@ -2,10 +2,11 @@ local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
 local irecipe = require "gameplay.interface.recipe"
 local iprototype = require "gameplay.interface.prototype"
+local MULTIPLE = require("debugger").multiple
 
 local m = {}
 m.world_update = true
-m.multiple = 1
+m.multiple = MULTIPLE or 1
 
 function m.select(...)
     return world.ecs:select(...)
@@ -21,7 +22,7 @@ end
 
 function m.update()
     if m.world_update then
-        for i = 1, m.multiple do
+        for _ = 1, m.multiple do
             world:update()
         end
     end
