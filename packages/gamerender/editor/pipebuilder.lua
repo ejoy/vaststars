@@ -116,12 +116,18 @@ local function _set_endpoint_connection(prototype_name, State, object, fluidbox,
     end
 end
 
+local function _get_item_name(prototype_name)
+    local typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
+    return typeobject.name
+end
+
 local function _builder_end(self, datamodel, State, dir, dir_delta)
     local reverse_dir = iprototype.reverse_dir(dir)
     local prototype_name = self.coord_indicator.prototype_name
     local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-    local item = assert(inventory:modity(item_typeobject.id)) -- promise by new_entity()
+    local item = inventory:modity(item_typeobject.id)
     local map = {}
+    local remove = {}
 
     local from_x, from_y
     if State.starting_fluidbox then
@@ -140,7 +146,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     while true do
         local coord = packcoord(x, y)
         local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
-        item.count = item.count - 1
 
         if x == from_x and y == from_y then
             if object then
@@ -189,8 +194,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         x, y = x + dir_delta.x, y + dir_delta.y
     end
 
-    iui.update("construct.rml", "update_construct_inventory")
-
     local new_fluidflow_id = 0
     if State.succ then
         global.fluidflow_id = global.fluidflow_id + 1
@@ -199,13 +202,22 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     local object_state = State.succ and "construct" or "invalid_construct"
     self.coord_indicator.state = object_state
 
+    -- TODO: map may be include some non-pipe objects, such as some building which have fluidboxes, only for changing the state of the building
     for coord, v in pairs(map) do
         local x, y = unpackcoord(coord)
         local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
+        local decreasable = false
         if object then
-            object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
-            object.prototype_name = v[1]
-            object.dir = v[2]
+            if object.prototype_name ~= v[1] or object.dir ~= v[2] then
+                local item_name = _get_item_name(object.prototype_name) -- TODO: use prototype_name?
+                remove[item_name] = (remove[item_name] or 0) + 1
+
+                object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
+                object.prototype_name = v[1]
+                object.dir = v[2]
+
+                decreasable = true
+            end
             object.state = object_state
         else
             object = iobject.new {
@@ -218,6 +230,13 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 state = object_state,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
+
+            decreasable = true
+        end
+
+        if decreasable then
+            item.count = item.count - 1
+            assert(item.count >= 0)
         end
     end
 
@@ -230,9 +249,16 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 _object.fluidflow_id = new_fluidflow_id
             end
         end
+
+        for prototype_name, count in pairs(remove) do
+            local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
+            local item = inventory:modity(item_typeobject.id)
+            item.count = item.count + count
+        end
     end
 
     datamodel.show_laying_pipe_confirm = State.succ
+    iui.update("construct.rml", "update_construct_inventory")
 end
 
 local function _builder_init(self, datamodel)
@@ -391,12 +417,22 @@ local function _builder_start(self, datamodel)
         if not self:check_construct_detector(prototype_name, from_x, from_y, DEFAULT_DIR) then
             State.succ = false
         end
+
         State.from_x, State.from_y = from_x, from_y
+        local succ
+        succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
+            math_min(math_abs(to_x - from_x), item.count - 1),
+            math_min(math_abs(to_y - from_y), item.count - 1)
+        )
+        if not succ then
+            State.succ = false
+        end
+        State.to_x, State.to_y = to_x, to_y
 
         local ending = objects:coord(to_x, to_y, EDITOR_CACHE_NAMES)
         if ending then
             for _, fluidbox in ipairs(_get_covers_fluidbox(prototype_name, ending)) do
-                if fluidbox.dir == iprototype.reverse_dir(dir) and (from_x == fluidbox.x or from_y == fluidbox.y) then
+                if fluidbox.dir == iprototype.reverse_dir(dir) and (to_x == fluidbox.x or to_y == fluidbox.y) then
                     State.ending_fluidbox, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
                     dir, delta = iprototype.calc_dir(from_x, from_y, fluidbox.x, fluidbox.y)
                     _builder_end(self, datamodel, State, dir, delta)

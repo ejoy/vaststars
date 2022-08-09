@@ -30,7 +30,7 @@ function dragdrop_camera_sys:camera_usage()
         local pos = camera.screen_to_world(last_move_x, last_move_y, PLANES)[1]
         local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
         local ce = world:entity(mq.camera_ref)
-        local delta = math3d.inverse(math3d.sub(pos, begin_pos))
+        local delta = math3d.sub(begin_pos, pos)
         iom.move_delta(ce, delta)
 
         world:pub {"dragdrop_camera", math3d.ref(delta)}
