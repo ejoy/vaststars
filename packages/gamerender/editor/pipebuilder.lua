@@ -208,11 +208,11 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         local decreasable = false
         if object then
+            object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
             if object.prototype_name ~= v[1] or object.dir ~= v[2] then
                 local item_name = _get_item_name(object.prototype_name) -- TODO: use prototype_name?
                 remove[item_name] = (remove[item_name] or 0) + 1
 
-                object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
                 object.prototype_name = v[1]
                 object.dir = v[2]
 
