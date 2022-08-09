@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Cube.006_P1.meshbin
   name: Cube.003
@@ -20,7 +20,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Plane_P1.meshbin
   name: Plane.001
@@ -31,7 +31,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Cube.001_P1.meshbin
   name: Cube.007
@@ -44,7 +44,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Cube.008_P1.meshbin
   name: Cube.008
@@ -57,7 +57,7 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Plane.001_P1.meshbin
   name: Plane.002

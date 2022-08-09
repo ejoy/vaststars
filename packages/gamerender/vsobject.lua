@@ -11,7 +11,7 @@ local ientity = ecs.import.interface "ant.render|ientity"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local imesh = ecs.import.interface "ant.asset|imesh"
-local ifs = ecs.import.interface "ant.scene|ifilter_state"
+local ivs = ecs.import.interface "ant.scene|ivisible_state"
 local irq = ecs.import.interface "ant.render|irenderqueue"
 local iprototype = require "gameplay.interface.prototype"
 local imodifier = ecs.import.interface "ant.modifier|imodifier"
@@ -50,10 +50,15 @@ local FLUIDFLOW_CHARTREUSE <const> = math3d.constant("v4", {1.2, 2.5, 0.0, 0.55}
 local FLUIDFLOW_CHOCOLATE <const> = math3d.constant("v4", {2.1, 2.0, 0.3, 0.55})
 local FLUIDFLOW_DARKVIOLET <const> = math3d.constant("v4", {1.4, 0.0, 2.1, 0.55})
 
+local CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
+local CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 2.5, 0.0, 1.0})
+
 local typeinfos = {
     ["indicator"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已确认
     ["construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 4}, -- 未确认, 合法
     ["invalid_construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_RED, block_edge_size = 4}, -- 未确认, 非法
+    ["power_pole_construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = 0}, -- 未确认, 合法
+    ["power_pole_invalid_construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED, block_edge_size = 0}, -- 未确认, 非法
     ["confirm"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已确认
     ["constructed"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已施工
     ["teardown"] = {state = "translucent", color = CONSTRUCT_COLOR_YELLOW, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 拆除
@@ -65,6 +70,20 @@ local typeinfos = {
     ["fluidflow_chocolate"] = {state = "translucent", color = FLUIDFLOW_CHOCOLATE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0},
     ["fluidflow_darkviolet"] = {state = "translucent", color = FLUIDFLOW_DARKVIOLET, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0},
 }
+
+local function _get_power_pole_area()
+    for _, typeobject in pairs(iprototype.each_maintype "entity") do
+        if typeobject.power_pole then
+            local w, h = typeobject.supply_area:match("(%d+)x(%d+)")
+            w, h = tonumber(w), tonumber(h)
+            assert(w == h)
+            return w
+        end
+    end
+    return 0
+end
+typeinfos.power_pole_construct.block_edge_size = (_get_power_pole_area() - 1) * 10
+typeinfos.power_pole_invalid_construct.block_edge_size = (_get_power_pole_area() - 1) * 10
 
 local gen_id do
     local id = 0
@@ -88,7 +107,7 @@ entity_events.update_render_object = function(_, e, ...)
     irq.update_render_object(e, true)
 end
 
-local function create_block(color, block_edge_size, area, position, rotation)
+local function create_block(color, block_edge_size, area, position, rotation, material)
     if color == CONSTRUCT_BLOCK_COLOR_INVALID then
         return
     end
@@ -100,13 +119,17 @@ local function create_block(color, block_edge_size, area, position, rotation)
 		},
 		data = {
 			scene 		= { r = rotation, s = {terrain.tile_size * width + block_edge_size, 1, terrain.tile_size * height + block_edge_size}, t = position},
-			material 	= "/pkg/vaststars.resources/materials/singlecolor.material",
-			filter_state= "main_view",
+			material 	= material or "/pkg/vaststars.resources/materials/singlecolor.material",
+			visible_state= "main_view",
 			name 		= ("plane_%d"):format(gen_id()),
 			simplemesh 	= imesh.init_mesh(ientity.create_mesh({"p3|n3", plane_vb}, nil, math3d.ref(math3d.aabb({-0.5, 0, -0.5}, {0.5, 0, 0.5}))), true),
 			on_ready = function (e)
-				ifs.iset_state(e, "main_view", true)
-				imaterial.iset_property(e, "u_color", color)
+				ivs.iset_state(e, "main_view", true)
+                if material then
+                    imaterial.iset_property(e, "u_basecolor_factor", color)
+                else
+                    imaterial.iset_property(e, "u_color", color)
+                end
 				w:sync("render_object_update:out", e)
 			end
 		},
@@ -176,7 +199,7 @@ local function update(self, t)
             local typeobject = iprototype.queryByName("entity", self.prototype_name)
             local block_pos = math3d.ref(math3d.add(self:get_position(), math3d.vector(0, terrain.surface_height, 0)))
             local rotation = get_rotation(self)
-            self.block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotation)
+            self.block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotation, typeinfo.material)
         end
     end
 
@@ -233,7 +256,7 @@ return function (init)
 
     local game_object = assert(igame_object.create(typeobject.model, init.group_id, typeinfo.state, typeinfo.color, {r = rotators[init.dir], t = init.position}))
     local block_pos = math3d.ref(math3d.add(init.position, {0, terrain.surface_height, 0}))
-    local block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir])
+    local block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir], typeinfo.material)
 
     local vsobject = {
         id = init.id,

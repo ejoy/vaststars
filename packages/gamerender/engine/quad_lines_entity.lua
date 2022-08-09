@@ -9,7 +9,7 @@ local constant = require "gameplay.interface.constant"
 local ROTATORS = constant.ROTATORS
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local math3d = require "math3d"
-local ifs = ecs.import.interface "ant.scene|ifilter_state"
+local ivs = ecs.import.interface "ant.scene|ivisible_state"
 
 local delta_vec = {
     ['N'] = math3d.constant("v4", {0, 0, -5}),
@@ -36,7 +36,7 @@ events["update"] = function(_, e, position, quad_num, dir)
 end
 
 events["show"] = function(_, e, b)
-    ifs.set_state(e, "main_view", b)
+    ivs.set_state(e, "main_view", b)
 end
 
 local M = {}

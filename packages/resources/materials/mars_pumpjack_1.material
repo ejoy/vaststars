@@ -9,13 +9,13 @@ fx:
 properties:
   s_basecolor:
     stage: 0
-    texture: /pkg/ant.resources/glb/mars_Pumpjack.glb|images/Pumpjack_color.texture
+    texture: /pkg/ant.resources/glb/mars-pumpjack.glb|images/Pumpjack_color.texture
   s_metallic_roughness:
     stage: 1
-    texture: /pkg/ant.resources/glb/mars_Pumpjack.glb|images/Pumpjack_Metallic.png-Pumpjack_Roughness.texture
+    texture: /pkg/ant.resources/glb/mars-pumpjack.glb|images/Pumpjack_Metallic.png-Pumpjack_Roughness.texture
   s_normal:
     stage: 2
-    texture: /pkg/ant.resources/glb/mars_Pumpjack.glb|images/Pumpjack_normal.texture
+    texture: /pkg/ant.resources/glb/mars-pumpjack.glb|images/Pumpjack_normal.texture
   u_basecolor_factor: {1, 1, 1, 1}
   u_emissive_factor: {0, 0, 0, 0}
   u_pbr_factor: {1, 1, 0.5, 1}

@@ -7,10 +7,10 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  meshskin: /pkg/vaststars.resources/glb/goods_station.glb|meshes/animat.skinbin
+  meshskin: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/animat.skinbin
   name: meshskin
   scene: {}
-  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
+  skeleton: /pkg/vaststars.resources/glb/goods-station-1.glb|animations/skeleton.ozz
   skinning: true
 mount: 1
 policy:
@@ -19,11 +19,11 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
   material_setting:
     skinning: GPU
-  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.003_P1.meshbin
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/lifangti.003_P1.meshbin
   name: lifangti.003
   skinning: true
 policy:
@@ -31,11 +31,11 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
   material_setting:
     skinning: GPU
-  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.001_P1.meshbin
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/lifangti.001_P1.meshbin
   name: lifangti.002
   skinning: true
 policy:
@@ -43,11 +43,11 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
   material_setting:
     skinning: GPU
-  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/lifangti.004_P1.meshbin
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/lifangti.004_P1.meshbin
   name: lifangti.004
   skinning: true
 policy:
@@ -55,11 +55,11 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
   material_setting:
     skinning: GPU
-  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuti.009_P1.meshbin
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/zhuti.009_P1.meshbin
   name: zhuti.002
   skinning: true
 policy:
@@ -67,11 +67,11 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
   material_setting:
     skinning: GPU
-  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuiti_P1.meshbin
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/zhuiti_P1.meshbin
   name: zhuiti
   skinning: true
 policy:
@@ -79,9 +79,9 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/plane_P1.meshbin
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/plane_P1.meshbin
   name: 0.001
   scene:
     t: {0.06279541552066803, 2, -0.004578660242259502}
@@ -91,11 +91,11 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
   material_setting:
     skinning: GPU
-  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/plane.001_P1.meshbin
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/plane.001_P1.meshbin
   name: plane.002
   skinning: true
 policy:
@@ -103,11 +103,11 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
   material_setting:
     skinning: GPU
-  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/zhuti_P1.meshbin
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/zhuti_P1.meshbin
   name: zhuti
   skinning: true
 policy:
@@ -115,9 +115,9 @@ policy:
   ant.render|skinrender
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/Cube_P1.meshbin
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/Cube_P1.meshbin
   name: Cube
   scene: {}
 mount: 1
@@ -126,9 +126,9 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/Cube_P1.meshbin
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/Cube_P1.meshbin
   name: Cube.001
   scene:
     t: {3.725925922393799, 0, 0}
@@ -138,9 +138,9 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/Cube_P1.meshbin
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/Cube_P1.meshbin
   name: Cube.002
   scene:
     r: {0, 1, 0, 1.6292068494294654e-07}
@@ -150,9 +150,9 @@ policy:
   ant.render|render
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/goods_station.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/goods_station.glb|meshes/Cube_P1.meshbin
+  visible_state: main_view|selectable|cast_shadow
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/Cube_P1.meshbin
   name: Cube.003
   scene:
     r: {0, 1, 0, 1.6292068494294654e-07}
@@ -165,11 +165,11 @@ policy:
 data:
   anim_ctrl: {}
   animation:
-    DownToUp: /pkg/vaststars.resources/glb/goods_station.glb|animations/DownToUp.ozz
-    UpToDown: /pkg/vaststars.resources/glb/goods_station.glb|animations/UpToDown.ozz
+    DownToUp: /pkg/vaststars.resources/glb/goods-station-1.glb|animations/DownToUp.ozz
+    UpToDown: /pkg/vaststars.resources/glb/goods-station-1.glb|animations/UpToDown.ozz
   animation_birth: DownToUp
   name: animation
-  skeleton: /pkg/vaststars.resources/glb/goods_station.glb|animations/skeleton.ozz
+  skeleton: /pkg/vaststars.resources/glb/goods-station-1.glb|animations/skeleton.ozz
 policy:
   ant.animation|animation
   ant.general|name

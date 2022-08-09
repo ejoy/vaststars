@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  filter_state: main_view|selectable|cast_shadow
+  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/terrain/decoration_stone_14.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/terrain/decoration_stone_14.glb|meshes/Plane.019_P1.meshbin
   name: Plane.068

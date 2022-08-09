@@ -10,7 +10,6 @@ local ilaboratory = require "gameplay.interface.laboratory"
 local ientity = require "gameplay.interface.entity"
 local vsobject_manager = ecs.require "vsobject_manager"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local irecipe = require "gameplay.interface.recipe"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local recipe_mb = mailbox:sub {"recipe"}

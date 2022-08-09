@@ -17,7 +17,7 @@
                 flex-direction: row;
                 align-items:center;
                 justify-content:flex-start;
-                background-color: rgb(234,246,76);
+                background-color: rgb(204,219,11);
                 border: 0.27vmin rgb(89, 73, 39);
                 background-size:cover;
                 border-radius: 0.67vmin;
@@ -43,7 +43,7 @@
                 text-align: left;
                 border-radius: 0.67vmin;
                 color:rgb(255, 255, 255);
-                -webkit-text-stroke: 0.3vmin rgb(0, 0, 0);
+                -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);
                 width: 85%;
                 word-break: break-all;
                 font-size: 4.5vmin;
@@ -344,7 +344,7 @@
                         ingredient_items = ingredient_items .. ([[<div class="property-icon" style='background-image:"%s";'/>]]):format(ingredient.icon)
                     end
                     if ingredient_count > 0 then
-                        ingredient_items = [[<div class="research-req">]] .. ingredient_items .. ([[<div style="font-size: 3.5vmin; text-align: center;">X %d</div></div>]]):format(ingredient_count * item_data.count)
+                        ingredient_items = [[<div class="research-req">]] .. ingredient_items .. ([[<div style="padding-bottom:0.5vmin; font-size: 3.5vmin; text-align: center; -webkit-text-stroke: 0.15vmin rgb(0, 0, 0);">X %d</div></div>]]):format(ingredient_count * item_data.count)
                     end
                 end
                 local sign = item_data.sign_icon and ([[<div class="icon-sign" style='background-image:"%s";'/>]]):format(item_data.sign_icon) or ""
@@ -357,7 +357,7 @@
                 item.className = "item-research"
                 local select_style_border = "3px rgb(0,255,0)"
                 item.addEventListener('click', function(event)
-                    if start.selected_tech then
+                    if start.selected_tech and start.selected_tech ~= item then
                         start.selected_tech.style.border = '0px green'
                     end
                     item.style.border = select_style_border
@@ -387,7 +387,7 @@
                 item.style.width = '90%'
                 local select_style_border = "3px rgb(0,255,0)"
                 item.addEventListener('click', function(event)
-                    if start.selected_recipe then
+                    if start.selected_recipe and start.selected_recipe ~= item then
                         start.selected_recipe.style.border = '0px green'
                         start.detaillist:show_detail(start.selected_recipe, false)
                     end
@@ -443,13 +443,14 @@
                     "techitems",
                     function()
                         start.selected_tech = nil
+                        start.selected_recipe = nil
                         start.list:on_dirty_all(#start.techitems)
                     end
                 },
                 {
                     "current_tech",
                     function()
-                        start.selected_tech = nil
+                        start.selected_recipe = nil
                         start.detaillist:on_dirty_all(#start.current_tech.detail)
                     end
                 },
@@ -457,6 +458,7 @@
                     "current_progress",
                     function()
                         start.selected_tech = nil
+                        start.selected_recipe = nil
                         start.list:on_dirty(start.current_tech.index)
                     end
                 },            
@@ -467,7 +469,7 @@
                 start.return_title = "已完成科技"
                 ui_sys.pub {"show_list", "finish"}
             end
-            function start.clickReturn(event)
+            local function onclose()
                 if start.show_finish then
                     start.show_finish = false
                     start.return_title = "科研中心"
@@ -477,8 +479,14 @@
                     ui_sys.close()
                 end
             end
+            function start.clickReturn(event)
+                onclose()
+            end
             function start.startSwitch(event)
                 ui_sys.pub {"switch"}
+                if not start.current_running then
+                    onclose()
+                end
             end
         </script>
     </head>

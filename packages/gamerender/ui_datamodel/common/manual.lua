@@ -53,10 +53,10 @@ local function _get_manual_state(top)
         separator = function (State, id)
             State.separator[#State.separator+1] = id
 
-            if #State.separator == 3 then
+            if #State.separator == 4 then
                 local recipe_prototype = assert(iprototype.queryById(State.separator[1]))
                 local manual_crafting_times = State.separator[2]
-                local total_progress = State.separator[3] * 100
+                local total_progress = (State.separator[4] << 16 | State.separator[3]) * 100
                 State.queue[#State.queue+1] = {
                     name = recipe_prototype.name,
                     icon = recipe_prototype.icon,

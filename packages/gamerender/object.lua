@@ -3,7 +3,7 @@ local world = ecs.world
 
 local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
-local get_recipe_canvas = ecs.require "ui_datamodel.common.recipe_icon_canvas".get_recipe_canvas
+local get_assembling_canvas_items = ecs.require "ui_datamodel.common.assembling_canvas".get_assembling_canvas_items
 local math3d = require "math3d"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
@@ -151,12 +151,7 @@ local function flush()
                 -- display recipe icon of assembling machine
                 if outer.recipe then
                     local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
-                    if outer.recipe == "" then
-                        vsobject:add_canvas(get_recipe_canvas("", outer.x, outer.y, w, h))
-                    else
-                        local recipe_typeobject = iprototype.queryByName("recipe", outer.recipe)
-                        vsobject:add_canvas(get_recipe_canvas(recipe_typeobject.icon, outer.x, outer.y, w, h))
-                    end
+                    vsobject:add_canvas(get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
                 end
             else
                 for k, v in pairs(outer.__change) do
@@ -175,13 +170,8 @@ local function flush()
                 -- display recipe icon of assembling machine
                 -- TODO: special case for mining 
                 if outer.__change.recipe and not iprototype.has_type(typeobject.type, "mining") and not typeobject.recipe then
-                    local w, h = iprototype.unpackarea(typeobject.area)  -- TODO: duplicate code
-                    if outer.recipe == "" then
-                        vsobject:add_canvas(get_recipe_canvas("", outer.x, outer.y, w, h))
-                    else
-                        local recipe_typeobject = iprototype.queryByName("recipe", outer.recipe)
-                        vsobject:add_canvas(get_recipe_canvas(recipe_typeobject.icon, outer.x, outer.y, w, h))
-                    end
+                    local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
+                    vsobject:add_canvas(get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
                 end
                 outer.__change = {}
             end

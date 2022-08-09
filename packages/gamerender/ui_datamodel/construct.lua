@@ -22,6 +22,7 @@ local terrain = ecs.require "terrain"
 local icamera = ecs.require "engine.camera"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
+local DISABLE_FPS = require("debugger").disable_fps
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local construct_begin_mb = mailbox:sub {"construct_begin"} -- 建造 -> 建造模式
@@ -87,6 +88,25 @@ local function _get_construct_menu()
     end
     return construct_menu
 end
+
+local _show_grid_entity ; do
+    local igrid_entity = ecs.require "engine.grid_entity"
+    local obj
+    function _show_grid_entity(b)
+        if b then
+            if not obj then
+                obj = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = {0, 0, 0}})
+            else
+                obj:show(true)
+            end
+        else
+            if obj then
+                obj:show(false)
+            end
+        end
+    end
+end
+
 ---------------
 local M = {}
 
@@ -109,10 +129,16 @@ end
 
 -- TODO
 function M:fps_text(datamodel, text)
+    if DISABLE_FPS then
+        return
+    end
     datamodel.fps_text = text
 end
 
 function M:drawcall_text(datamodel, text)
+    if DISABLE_FPS then
+        return
+    end
     datamodel.drawcall_text = text
 end
 
@@ -151,6 +177,7 @@ function M:stage_ui_update(datamodel)
             goto continue
         end
 
+        _show_grid_entity(true)
         ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
         datamodel.show_rotate = false
         datamodel.show_confirm = false
@@ -182,6 +209,7 @@ function M:stage_ui_update(datamodel)
             goto continue
         end
 
+        _show_grid_entity(false)
         ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
         datamodel.show_teardown = _has_teardown_entity()
 
@@ -209,6 +237,7 @@ function M:stage_ui_update(datamodel)
         gameplay_core.world_update = true
         global.mode = "normal"
         camera.transition("camera_default.prefab")
+        _show_grid_entity(false)
     end
 
     for _ in dismantle_complete_mb:unpack() do
@@ -238,6 +267,7 @@ function M:stage_ui_update(datamodel)
         gameplay_core.world_update = true
         global.mode = "normal"
         camera.transition("camera_default.prefab")
+        _show_grid_entity(false)
         ::continue::
     end
 
@@ -328,13 +358,11 @@ function M:stage_camera_usage(datamodel)
     local function _get_object(pickup_x, pickup_y)
         for _, pos in ipairs(icamera.screen_to_world(pickup_x, pickup_y, PLANES)) do
             local coord = terrain:get_coord_by_position(pos)
-            if coord and math.type(coord[1]) == "integer" and math.type(coord[2]) == "integer" then
+            if coord then
                 local object = objects:coord(coord[1], coord[2])
                 if object then
                     return object
                 end
-            else
-                log.error(("invalid coord (%s, %s)"):format(coord[1], coord[2]))
             end
         end
     end

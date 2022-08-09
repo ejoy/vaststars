@@ -75,8 +75,8 @@ local function solverEvaluate(solver, memory, register, input)
     local function push_finish(item)
         table.insert(output, 1,  {"finish", item})
     end
-    local function push_separator(recipe)
-        table.insert(output, 1,  {"separator", recipe})
+    local function push_separator(n)
+        table.insert(output, 1,  {"separator", n})
     end
     local function do_crafting(recipe)
         for _, s in ipairs(recipe.input) do
@@ -150,7 +150,8 @@ local function solverEvaluate(solver, memory, register, input)
 
         push_separator(recipe.id)
         push_separator(n) -- n is the number of times to repeat the recipe
-        push_separator(total_progress) -- total progress of current manual crafting
+        push_separator(total_progress & 0xFFFF) -- total progress of current manual crafting
+        push_separator(total_progress >> 16)
         total_progress = 0
         return true
     end

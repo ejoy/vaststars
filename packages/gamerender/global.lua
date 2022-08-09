@@ -5,6 +5,7 @@ return {
     statistic = {
         pending_eid = {},
         power = {},
+        power_consumed = 0
     },
     inventory = require "inventory"(),
 }

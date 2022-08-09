@@ -16,7 +16,6 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"unknown", 0, "铁齿轮"},
-    -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
     prerequisites = {},
     count = 3,
     tips_pic = {
@@ -45,7 +44,6 @@ local prototype = gameplay.register.prototype
     },
   }
   
-
 prototype "地质研究" {
     desc = "对火星地质结构进行标本采集和研究",
     type = { "tech" },
@@ -69,7 +67,6 @@ prototype "放置采矿机" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "采矿机I"},
-  -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"地质研究"},
   count = 2,
   tips_pic = {
@@ -88,7 +85,6 @@ prototype "转运铁矿石" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"select_chest", 0, "指挥中心", "铁矿石"},
-  -- task = {"select_chest", 0, "指挥中心", "铁矿石"},
   prerequisites = {"放置采矿机"},
   count = 4,
   tips_pic = {
@@ -1203,9 +1199,10 @@ prototype "冶金学2" {
   prerequisites = {"石头处理3","铁矿熔炼2"},
   ingredients = {
     {"地质科技包", 1},
+    {"机械科技包", 1},
   },
-  count = 5,
-  time = "4s"
+  count = 20,
+  time = "6s"
 }
 
 prototype "铝生产" {
