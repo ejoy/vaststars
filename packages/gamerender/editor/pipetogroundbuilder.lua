@@ -834,8 +834,7 @@ local function laying_pipe_confirm(self, datamodel)
     inventory:confirm()
 
     if self.dotted_line then -- NOTE: different from pipe_builder
-        self.dotted_line:remove()
-        self.dotted_line = nil
+        self.dotted_line:show(false)
     end
 
     local typeobject = iprototype.queryByName("entity", self.coord_indicator.prototype_name)
