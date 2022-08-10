@@ -64,6 +64,7 @@ local typeinfos = {
     ["teardown"] = {state = "translucent", color = CONSTRUCT_COLOR_YELLOW, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 拆除
     ["task"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_RED, block_edge_size = 4}, -- 新手任务初始需要拆除建筑的底色
     ["selected"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 6},
+    ["power_pole_selected"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 0},
 
     ["fluidflow_blue"] = {state = "translucent", color = FLUIDFLOW_BLUE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0},
     ["fluidflow_chartreuse"] = {state = "translucent", color = FLUIDFLOW_CHARTREUSE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0},
@@ -84,6 +85,7 @@ local function _get_power_pole_area()
 end
 typeinfos.power_pole_construct.block_edge_size = (_get_power_pole_area() - 1) * 10
 typeinfos.power_pole_invalid_construct.block_edge_size = (_get_power_pole_area() - 1) * 10
+typeinfos.power_pole_selected.block_edge_size = (_get_power_pole_area() - 1) * 10
 
 local gen_id do
     local id = 0
