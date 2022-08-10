@@ -68,5 +68,10 @@ function idetail.selected(object)
     idetail.unselected()
 
     object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
-    object.state = "selected"
+    local typeobject = iprototype.queryByName("entity", object.prototype_name) -- TODO: special case for powerpole
+    if typeobject.power_pole then
+        object.state = "power_pole_selected"
+    else
+        object.state = "selected"
+    end
 end
