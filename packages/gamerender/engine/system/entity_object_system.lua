@@ -19,7 +19,7 @@ function entity_object_sys:entity_ready()
     end
 
     for _, eid in entity_object_remove_mb:unpack() do
-        world:remove_entity(eid)
+        w:remove(eid)
     end
 end
 

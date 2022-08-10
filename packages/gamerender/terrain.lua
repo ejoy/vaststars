@@ -144,7 +144,7 @@ function terrain:create(width, height)
     --
     self.eids = self.eids or {}
     for _, eid in ipairs(self.eids) do
-       world:remove_entity(eid)
+        w:remove(eid)
     end
     --
     local meshes = {
