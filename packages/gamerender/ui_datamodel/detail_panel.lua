@@ -56,7 +56,7 @@ local function get_display_info(e, typeobject, t)
                 if cn == "power" or cn == "drain" or cn == "capacitance" then
                     local current = 0
                     if cn == "power" or cn == "drain" then
-                        local st = global.statistic["power"][e.id]
+                        local st = global.statistic["power"][e.eid]
                         if st then
                             current = st[cn]
                         elseif typeobject.name == "指挥中心" then

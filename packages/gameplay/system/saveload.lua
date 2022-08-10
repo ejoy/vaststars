@@ -1,5 +1,5 @@
 local system = require "register.system"
-local luaecs = import_package "vaststars.ecs"
+local luaecs = import_package "ant.luaecs"
 local json = import_package "ant.json"
 local status = require "status"
 
@@ -41,6 +41,7 @@ do
         local ecs = world.ecs
         local metafile = world.storage_path.."/ecs.json"
         local binfile = world.storage_path.."/ecs.bin"
+        ecs:visitor_clear()
         ecs:clearall()
         local reader = luaecs.reader(binfile)
         for _, meta in ipairs(json.decode(readall(metafile))) do

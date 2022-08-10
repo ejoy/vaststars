@@ -4,8 +4,7 @@ local status = require "status"
 local prototype = require "prototype"
 local vaststars = require "vaststars.world.core"
 local container = require "vaststars.container.core"
-local luaecs = import_package "vaststars.ecs"
-local entity_visitor = require "entity_visitor"
+local luaecs = import_package "ant.luaecs"
 
 local perf -- = {}
 
@@ -94,7 +93,7 @@ return function ()
         needBuild = true
     end
 
-    world.entity = entity_visitor(ecs)
+    world.entity = ecs:visitor_create()
 
     local pipeline_update = pipeline(world, cworld, "update")
     local pipeline_clean = pipeline(world, cworld, "clean")
@@ -157,9 +156,7 @@ return function ()
         assert(not needBuild)
         pipeline_update()
         timer.update(1)
-        for e in ecs:select "REMOVED eid:in" do
-            world.entity[e.eid] = nil
-        end
+        ecs:visitor_update()
         ecs:update()
     end
     function world:build()
@@ -179,7 +176,6 @@ return function ()
         world.storage_path = rootdir
         cworld:reset()
         pipeline_restore()
-        world.entity = entity_visitor(ecs)
         needBuild = true
     end
 
