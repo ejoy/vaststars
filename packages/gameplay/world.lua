@@ -83,14 +83,8 @@ return function ()
                     end
                 end
             end
-            needBuild = true
             return ecs:new(obj)
         end
-    end
-
-    function world:remove_entity(id)
-        ecs:remove(id)
-        needBuild = true
     end
 
     world.entity = ecs:visitor_create()
@@ -153,14 +147,12 @@ return function ()
 
     function world:update()
         self:perf_print()
-        assert(not needBuild)
         pipeline_update()
         timer.update(1)
         ecs:visitor_update()
         ecs:update()
     end
     function world:build()
-        needBuild = false
         pipeline_clean()
         ecs:update()
         pipeline_build()
@@ -176,7 +168,6 @@ return function ()
         world.storage_path = rootdir
         cworld:reset()
         pipeline_restore()
-        needBuild = true
     end
 
     function world:is_researched(tech)
