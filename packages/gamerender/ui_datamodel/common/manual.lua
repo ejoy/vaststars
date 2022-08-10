@@ -46,6 +46,39 @@ local function _get_manual_progress()
     end
 end
 
+local function _calc(crafting, mainoutput)
+    local result = {}
+    local progress = 0
+    local current
+    local first = true
+    for _, v in ipairs(crafting) do
+        local name = v[1]
+        local time = v[2]
+
+        if first then
+            first = false
+            progress = progress + _get_manual_progress()
+        else
+            progress = progress + time * 100
+        end
+
+        if name == mainoutput then
+            if not current then
+                if first then
+                    current = _get_manual_progress()
+                    first = false
+                else
+                    current = progress
+                end
+            end
+            progress = 0
+        end
+        result[name] = (result[name] or 0) + 1
+    end
+    assert(progress == 0)
+    return current, result
+end
+
 local function _get_manual_state(top)
     local funcs = {
         finish = function (State)
@@ -53,25 +86,37 @@ local function _get_manual_state(top)
         separator = function (State, id)
             State.separator[#State.separator+1] = id
 
-            if #State.separator == 2 then
-                local recipe_prototype = assert(iprototype.queryById(State.separator[1]))
-                local manual_crafting_times = math.min(State.separator[2], (State.crafting[State.separator[1]] or 0))
-                local total_progress = recipe_prototype.time * 100
+            if #State.separator == 4 then
+                local recipe = State.separator[1]
+                local recipe_times = State.separator[2]
+                local first_total_time = State.separator[3] | State.separator[4] << 16
+
+                local recipe_typeobject = assert(iprototype.queryById(recipe))
+                local current, crafting = _calc(State.crafting, recipe_typeobject.name)
+                local crafting_times = crafting[recipe_typeobject.name] or 0
+
+                local total_progress = 0
                 local progress
                 if State.first then
-                    progress = itypes.progress(_get_manual_progress(), total_progress) * 100
+                    if recipe_times == crafting_times then
+                        total_progress = first_total_time * 100
+                    else
+                        total_progress = recipe_typeobject.time * 100
+                    end
+                    progress = itypes.progress(current or 0, total_progress) * 100
                     State.first = false
                 else
                     progress = 0
                 end
+
                 State.queue[#State.queue+1] = {
-                    name = recipe_prototype.name,
-                    icon = recipe_prototype.icon,
-                    count = manual_crafting_times,
+                    name = recipe_typeobject.name,
+                    icon = recipe_typeobject.icon,
+                    count = crafting_times,
                     progress = progress,
                 }
 
-                State.manual_queue[#State.manual_queue+1] = {recipe_prototype.name, manual_crafting_times}
+                State.manual_queue[#State.manual_queue+1] = {recipe_typeobject.name, crafting_times}
 
                 State.crafting = {}
                 State.separator = {}
@@ -79,7 +124,7 @@ local function _get_manual_state(top)
         end,
         crafting = function (State, recipe_name)
             local typeobject = iprototype.queryByName("recipe", recipe_name)
-            State.crafting[typeobject.id] = (State.crafting[typeobject.id] or 0) + 1
+            State.crafting[#State.crafting+1] = {recipe_name, typeobject.time}
         end
     }
 
@@ -87,8 +132,9 @@ local function _get_manual_state(top)
     local State = {
         queue = {}, -- {name = xx, icon = xx, count = xx, progress = xx} -- for display on main UI
         manual_queue = {}, -- {name = xx, count = xx} -- for world:manual()
-        separator = {}, -- {recipe_prototype, manual_crafting_times, manual_crafting_total_progress}, reset after count "separator" 2 times
-        crafting = {}, --  = [recipe_name] = times, reset after count "separator" 2 times
+
+        separator = {}, -- {recipe_typeobject, manual_crafting_times, manual_crafting_total_progress}, reset after count "separator" 4 times
+        crafting = {}, --  = [recipe_name] = times, reset after count "separator" 4 times
         first = true,
     }
 

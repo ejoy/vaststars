@@ -267,13 +267,15 @@ end
 
 function M:stage_ui_update(datamodel)
     for _, _, _, name, count in manual_add_mb:unpack() do
-        local manual_queue = imanual_common.get_manual_queue()
-        manual_queue[#manual_queue+1] = {name, count}
-        local output = imanual.evaluate(solver, gameplay_core.manual_chest(), gameplay_core.get_world():manual_container(), manual_queue)
+        local origin = gameplay_core.get_world():manual()
+        local output = imanual.evaluate(solver, gameplay_core.manual_chest(), gameplay_core.get_world():manual_container(), {{name, count}})
         if not output then
             log.error("material shortages")
         else
-            gameplay_core.get_world():manual(output)
+            for i = #output, 1, -1 do
+                table.insert(origin, 1, output[i])
+            end
+            gameplay_core.get_world():manual(origin)
             world:pub {"manual_add", name, count}
         end
     end
