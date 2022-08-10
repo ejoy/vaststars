@@ -66,9 +66,44 @@ local function restore_world()
     end
     objects:clear()
 
+    local function _has_connection(gameplay_eid, all_object, map)
+        local object = all_object[gameplay_eid]
+        for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
+            local succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
+            if not succ then
+                goto continue
+            end
+
+            local coord = iprototype.packcoord(dx, dy)
+            local id = map[coord]
+            if not id then
+                goto continue
+            end
+
+            local o = all_object[id]
+
+            local typeobject = iprototype.queryByName("entity", o.prototype_name)
+            if iprototype.has_type(typeobject.type, "assembling") then
+                return true
+            end
+            ::continue::
+        end
+    end
+
     --
-    local function restore_object(gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id, recipe)
+    local function restore_object(all_object, map, gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id, recipe)
         local typeobject = iprototype.queryByName("entity", prototype_name)
+
+        local fluid_icon -- TODO: duplicate code, see also builder.lua
+        if iprototype.has_type(typeobject.type, "fluidbox") and fluid_name ~= "" then
+            if iprototype.is_pipe(prototype_name) or iprototype.is_pipe_to_ground(prototype_name) then
+                if ((x % 2 == 1 and x % 2 == 1) or (x % 2 == 2 and x % 2 == 2)) and not _has_connection(gameplay_eid, all_object, map) then
+                    fluid_icon = true
+                end
+            else
+                fluid_icon = true
+            end
+        end
 
         local object = iobject.new {
             prototype_name = prototype_name,
@@ -80,6 +115,7 @@ local function restore_world()
             headquater = typeobject.headquater or false,
             state = "constructed",
             recipe = recipe,
+            fluid_icon = fluid_icon,
         }
         object.gameplay_eid = gameplay_eid
         objects:set(object)
@@ -87,7 +123,8 @@ local function restore_world()
 
     -- restore
     local all_object = {}
-    local fluidbox_map = {} -- coord -> id
+    local map = {} -- coord -> id
+    local fluidbox_map = {} -- coord -> id -- only for fluidbox
     for v in gameplay_core.select("eid:in entity:in fluidbox?in fluidboxes?in assembling?in") do
         local e = v.entity
         local typeobject = iprototype.queryById(e.prototype)
@@ -105,7 +142,7 @@ local function restore_world()
                 for j = 0, h - 1 do
                     local coord = iprototype.packcoord(e.x + i, e.y + j)
                     assert(fluidbox_map[coord] == nil, ("duplicate fluidbox coord: %d, %d"):format(e.x + i, e.y + j))
-                    fluidbox_map[coord] = v.id
+                    fluidbox_map[coord] = v.eid
                 end
             end
         end
@@ -145,6 +182,16 @@ local function restore_world()
             -- fluidflow_id, -- fluidflow_id is not null only when the object is a fluidbox
             recipe = recipe, -- for assembling machine only, display the recipe icon, see also: restore_object() -> iobject.new
         }
+
+        local w, h = iprototype.rotate_area(typeobject.area, iprototype.dir_tostring(e.direction))
+        for i = 0, w - 1 do
+            for j = 0, h - 1 do
+                local coord = iprototype.packcoord(e.x + i, e.y + j)
+                assert(map[coord] == nil, ("duplicate fluidbox coord: %d, %d"):format(e.x + i, e.y + j))
+                map[coord] = v.eid
+            end
+        end
+
         world:pub {"gameplay", "create_entity", v.eid, typeobject}
     end
 
@@ -240,7 +287,7 @@ local function restore_world()
     end
 
     for id, v in pairs(all_object) do
-        restore_object(id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_id, v.recipe)
+        restore_object(all_object, map, id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_id, v.recipe)
     end
 
     iobject.flush()

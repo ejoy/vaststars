@@ -4,6 +4,7 @@ local world = ecs.world
 local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
 local get_assembling_canvas_items = ecs.require "ui_datamodel.common.assembling_canvas".get_assembling_canvas_items
+local get_fluid_canvas_items = ecs.require "ui_datamodel.common.fluid_canvas".get_fluid_canvas_items
 local math3d = require "math3d"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
@@ -35,6 +36,7 @@ local function new(init)
         state = assert(init.state),
         headquater = init.headquater,
         recipe = init.recipe,
+        fluid_icon = init.fluid_icon,
     }
 
     local outer = setmetatable({__object = object, __change = {}}, {__index = object, __newindex = object_newindex})
@@ -55,6 +57,7 @@ local function clone(outer)
         gameplay_eid = outer.gameplay_eid, --TODO
         teardown = outer.teardown,
         recipe = outer.recipe,
+        fluid_icon = outer.fluid_icon,
     }
 
     local clone = setmetatable({__object = object, __change = {}}, {__index = object, __newindex = object_newindex})
@@ -119,6 +122,9 @@ local function flush()
         recipe = function (outer, value)
             outer.__object.recipe = value
         end,
+        fluid_icon = function (outer, value)
+            outer.__object.fluid_icon = value
+        end,
     }
 
     local prepare = {}
@@ -148,10 +154,13 @@ local function flush()
                     group_id = terrain:get_group_id(outer.x, outer.y),
                 }
 
+                local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
                 -- display recipe icon of assembling machine
                 if outer.recipe then
-                    local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
                     vsobject:add_canvas(get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
+                end
+                if outer.fluid_icon then
+                    vsobject:add_canvas(get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
                 end
             else
                 for k, v in pairs(outer.__change) do
@@ -169,9 +178,13 @@ local function flush()
 
                 -- display recipe icon of assembling machine
                 -- TODO: special case for mining 
+                local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
+
                 if outer.__change.recipe and not iprototype.has_type(typeobject.type, "mining") and not typeobject.recipe then
-                    local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
                     vsobject:add_canvas(get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
+                end
+                if outer.__change.fluid_icon then
+                    vsobject:add_canvas(get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
                 end
                 outer.__change = {}
             end
