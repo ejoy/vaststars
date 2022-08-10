@@ -72,16 +72,29 @@ local function complete(self)
     end
 
     for _, item in self._inventory:all("CONFIRM") do
-        local original = assert(self._inventory:get(CONSTRUCTED_CACHE_NAMES, item.prototype))
-        assert(original.count >= item.count)
-        local decrease = original.count - item.count
-        if decrease == 0 then
-            goto continue
+        local original = self._inventory:get(CONSTRUCTED_CACHE_NAMES, item.prototype)
+        if not original then
+            original = {
+                prototype = item.prototype,
+                count = 0,
+            }
         end
+        if original.count >= item.count then
+            local dec = original.count - item.count
+            if dec == 0 then
+                goto continue
+            end
 
-        if not gameplay_world:container_pickup(e.chest.container, item.prototype, decrease) then
-            log.error("can not pickup item", iprototype.queryById(item.prototype).name, decrease)
-            return false
+            if not gameplay_world:container_pickup(e.chest.container, item.prototype, dec) then
+                log.error("can not pickup item", iprototype.queryById(item.prototype).name, dec)
+                return false
+            end
+        else
+            local inc = item.count - original.count
+            if not gameplay_world:container_place(e.chest.container, item.prototype, inc) then
+                log.error("can not place item", iprototype.queryById(item.prototype).name, inc)
+                return false
+            end
         end
         ::continue::
     end
@@ -128,7 +141,15 @@ local function modity(self, prototype)
         return new
     end
 
-    return self._inventory:modify(CACHE_NAMES, prototype, clone)
+    local item = self._inventory:modify(CACHE_NAMES, prototype, clone)
+    if not item then
+        item = {
+            prototype = prototype,
+            count = 0,
+        }
+        self._inventory:set(TEMPORARY_CACHE_NAMES[1], item)
+    end
+    return item
 end
 
 return function ()

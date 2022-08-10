@@ -95,7 +95,7 @@ local _show_grid_entity ; do
     function _show_grid_entity(b)
         if b then
             if not obj then
-                obj = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = {0, 0, 0}})
+                obj = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = {0, 4, 0}})
             else
                 obj:show(true)
             end

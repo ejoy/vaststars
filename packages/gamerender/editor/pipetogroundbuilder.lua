@@ -274,6 +274,15 @@ local function _set_section(prototype_name, State, PipeToGroundState, x, y, dir)
     local reverse_dir = iprototype.reverse_dir(dir)
 
     if PipeToGroundState.distance + 1 < PipeToGroundState.max_distance then
+        local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
+        if object then
+            if _can_replace(object, dir) then
+                PipeToGroundState.replace_object[object.id] = true
+            else
+                PipeToGroundState.replace = false
+            end
+        end
+
         PipeToGroundState.distance = PipeToGroundState.distance + 1
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
     end
@@ -325,7 +334,6 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
     local typeobject = iprototype.queryByName("entity", prototype_name)
     local endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, nil, iprototype.reverse_dir(dir))
     assert(endpoint_prototype_name and endpoint_dir)
-    print(endpoint_prototype_name, endpoint_dir) -- TODO: remove this line
     endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, dir, endpoint_prototype_name, endpoint_dir)
     assert(endpoint_prototype_name and endpoint_dir)
 
@@ -356,13 +364,19 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
         return
     end
 
-    local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, true)
-    PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+    endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, dir, iprototype.reverse_dir(dir))
+    PipeToGroundState.map[coord] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
     _decrease_item(State, PipeToGroundState)
 
     coord = packcoord(x, y)
-    PipeToGroundState.map[coord] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
+    local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), true)
+    PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
     _decrease_item(State, PipeToGroundState)
+end
+
+local function _get_item_name(prototype_name)
+    local typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
+    return typeobject.name
 end
 
 -- NOTE: different from pipe_builder
@@ -370,6 +384,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     local prototype_name = self.coord_indicator.prototype_name
     local typeobject = iprototype.queryByName("entity", prototype_name)
     local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
+    local item = inventory:modity(item_typeobject.id)
 
     if State.starting_fluidbox then -- TODO: optimize
         State.dotted_line_coord = {State.starting_fluidbox.x, State.starting_fluidbox.y, State.to_x, State.to_y, dir, dir_delta}
@@ -399,15 +414,52 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     PipeToGroundState.distance = 0
     PipeToGroundState.max_distance = iflow_connector.ground(typeobject.flow_type) -- The maximum distance at which an underground pipe can connect is 10 tiles, resulting in a gap of 9 tiles in between.
     PipeToGroundState.remove = {}
+    PipeToGroundState.replace_object = {}
+    PipeToGroundState.replace = true
     PipeToGroundState.map = {}
-    PipeToGroundState.inventory_item = assert(inventory:modity(item_typeobject.id)) -- promise by new_entity()
+    PipeToGroundState.inventory_item = inventory:modity(item_typeobject.id)
 
     while true do
         if x == from_x and y == from_y then
             x, y = _set_starting(prototype_name, State, PipeToGroundState, x, y, dir)
+            if x and y then -- TODO: optimize
+                local coord = packcoord(x, y)
+                local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
+                if object and (iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name)) then
+                    local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), false)
+                    PipeToGroundState.map[coord] = {_prototype_name, _dir}
+                end
+            end
 
         elseif x == to_x and y == to_y then
+            local last_x, last_y = x, y -- TODO: optimize
             x, y = _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
+
+            -- refresh the shape of the neighboring pipe
+            -- TODO: optimize
+            do
+                local dx, dy = last_x - dir_delta.x, last_y - dir_delta.y
+                local coord = packcoord(dx, dy)
+                local object = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
+                if object and (iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name)) then
+                    local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, false)
+                    if object.prototype_name ~= _prototype_name or object.dir ~= _dir then
+                        PipeToGroundState.map[coord] = {_prototype_name, _dir}
+                    end
+                end
+            end
+
+            do
+                local dx, dy = last_x + dir_delta.x, last_y + dir_delta.y
+                local coord = packcoord(dx, dy)
+                local object = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
+                if object and (iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name)) then
+                    local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), false)
+                    if object.prototype_name ~= _prototype_name or object.dir ~= _dir then
+                        PipeToGroundState.map[coord] = {_prototype_name, _dir}
+                    end
+                end
+            end
 
         else
             x, y = _set_section(prototype_name, State, PipeToGroundState, x, y, dir)
@@ -418,8 +470,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         end
     end
 
-    iui.update("construct.rml", "update_construct_inventory")
-
     local new_fluidflow_id = 0
     if State.succ then
         global.fluidflow_id = global.fluidflow_id + 1
@@ -428,10 +478,25 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     local object_state = State.succ and "construct" or "invalid_construct"
     self.coord_indicator.state = object_state
 
+    -- TODO: pipe to ground can be replaced by pipe
+    -- if PipeToGroundState.replace then
+    --     for object_id in pairs(PipeToGroundState.replace_object) do
+    --         local object = assert(objects:get(object_id))
+
+    --         local item_name = _get_item_name(object.prototype_name)
+    --         PipeToGroundState.remove[item_name] = (PipeToGroundState.remove[item_name] or 0) + 1
+
+    --         objects:remove(object.id, "TEMPORARY")
+    --     end
+    -- end
+
     for coord, v in pairs(PipeToGroundState.map) do
         local x, y = unpackcoord(coord)
         local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         if object then
+            local item_name = _get_item_name(object.prototype_name)
+            PipeToGroundState.remove[item_name] = (PipeToGroundState.remove[item_name] or 0) + 1
+
             object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
             object.prototype_name = v[1]
             object.dir = v[2]
@@ -459,11 +524,18 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 _object.fluidflow_id = new_fluidflow_id
             end
         end
+
+        for prototype_name, count in pairs(PipeToGroundState.remove) do
+            local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
+            local item = inventory:modity(item_typeobject.id)
+            item.count = item.count + count
+        end
     end
 
     _show_dotted_line(self, table.unpack(State.dotted_line_coord))
 
     datamodel.show_laying_pipe_confirm = State.succ
+    iui.update("construct.rml", "update_construct_inventory")
 end
 
 local function _builder_init(self, datamodel)
@@ -584,11 +656,6 @@ local function _builder_start(self, datamodel)
         end
 
         local succ
-        -- succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir, -- TODO
-        --     math_min(math_abs(to_x - fluidbox.x), item.count - 1),
-        --     math_min(math_abs(to_y - fluidbox.y), item.count - 1)
-        -- )
-
         succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
             math_abs(to_x - fluidbox.x),
             math_abs(to_y - fluidbox.y)
@@ -646,10 +713,6 @@ local function _builder_start(self, datamodel)
 
         --
         local succ
-        -- succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir, -- TODO
-        --     math_min(math_abs(to_x - from_x), item.count - 1),
-        --     math_min(math_abs(to_y - from_y), item.count - 1)
-        -- )
         succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
             math_abs(to_x - from_x),
             math_abs(to_y - from_y)
