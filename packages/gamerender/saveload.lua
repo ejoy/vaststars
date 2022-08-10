@@ -88,7 +88,7 @@ local function restore_world()
     -- restore
     local all_object = {}
     local fluidbox_map = {} -- coord -> id
-    for v in gameplay_core.select("id:in entity:in fluidbox?in fluidboxes?in assembling?in") do
+    for v in gameplay_core.select("eid:in entity:in fluidbox?in fluidboxes?in assembling?in") do
         local e = v.entity
         local typeobject = iprototype.queryById(e.prototype)
         local fluid_name = ""
@@ -136,7 +136,7 @@ local function restore_world()
                 end
             end
         end
-        all_object[v.id] = {
+        all_object[v.eid] = {
             prototype_name = typeobject.name,
             dir = iprototype.dir_tostring(e.direction),
             x = e.x,
@@ -145,7 +145,7 @@ local function restore_world()
             -- fluidflow_id, -- fluidflow_id is not null only when the object is a fluidbox
             recipe = recipe, -- for assembling machine only, display the recipe icon, see also: restore_object() -> iobject.new
         }
-        world:pub {"gameplay", "create_entity", v.id, typeobject}
+        world:pub {"gameplay", "create_entity", v.eid, typeobject}
     end
 
     local function find_pipe_to_ground(c, map)

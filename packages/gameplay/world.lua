@@ -4,8 +4,7 @@ local status = require "status"
 local prototype = require "prototype"
 local vaststars = require "vaststars.world.core"
 local container = require "vaststars.container.core"
-local luaecs = import_package "vaststars.ecs"
-local entity_visitor = require "entity_visitor"
+local luaecs = import_package "ant.luaecs"
 
 local perf -- = {}
 
@@ -59,13 +58,8 @@ return function ()
     end
 
     ecs:register {
-        name = "id",
-        type = "int",
-    }
-    ecs:register {
         name = "fluidbox_changed"
     }
-    ecs:make_index "id"
 
     local context = ecs:context(components)
     local ptable = require "vaststars.prototype.core"
@@ -89,24 +83,17 @@ return function ()
                     end
                 end
             end
-            obj.id = (obj.entity.y << 8) | obj.entity.x
-            ecs:new(obj)
             needBuild = true
-            return obj.id
+            return ecs:new(obj)
         end
     end
 
-    local entity, visitor = entity_visitor(ecs, "id")
-
     function world:remove_entity(id)
-        local v = visitor[id]
-        if v then
-            ecs:remove(v)
-        end
+        ecs:remove(id)
         needBuild = true
     end
 
-    world.entity = entity
+    world.entity = ecs:visitor_create()
 
     local pipeline_update = pipeline(world, cworld, "update")
     local pipeline_clean = pipeline(world, cworld, "clean")
@@ -169,9 +156,7 @@ return function ()
         assert(not needBuild)
         pipeline_update()
         timer.update(1)
-        for e in ecs:select "REMOVED id:in" do
-            world.entity[e.id] = nil
-        end
+        ecs:visitor_update()
         ecs:update()
     end
     function world:build()
@@ -191,9 +176,6 @@ return function ()
         world.storage_path = rootdir
         cworld:reset()
         pipeline_restore()
-        for v in ecs:select "entity:in id:new" do
-            v.id = (v.entity.y << 8) | v.entity.x
-        end
         needBuild = true
     end
 
