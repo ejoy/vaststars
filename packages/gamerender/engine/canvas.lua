@@ -7,7 +7,7 @@ local iterrain = ecs.require "terrain"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 
 local function _get_canvas_entity()
-    local canvas_entity = w:singleton("canvas", "id:in canvas:in")
+    local canvas_entity = w:singleton("canvas", "eid:in canvas:in")
     if not canvas_entity then
         log.error("can not found canvas entity")
         return
