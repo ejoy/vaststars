@@ -16,8 +16,6 @@ local objects = require "objects"
 local terrain = ecs.require "terrain"
 local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local iworld = require "gameplay.interface.world"
-local gameplay_core = require "gameplay.core"
 local math_abs = math.abs
 local math_min = math.min
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
@@ -210,13 +208,15 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         if object then
             object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
             if object.prototype_name ~= v[1] or object.dir ~= v[2] then
-                local item_name = _get_item_name(object.prototype_name) -- TODO: use prototype_name?
-                remove[item_name] = (remove[item_name] or 0) + 1
+                if _get_item_name(object.prototype_name) ~= _get_item_name(v[1]) then
+                    local item_name = _get_item_name(object.prototype_name) -- TODO: use prototype_name?
+                    remove[item_name] = (remove[item_name] or 0) + 1
+
+                    decreasable = true
+                end
 
                 object.prototype_name = v[1]
                 object.dir = v[2]
-
-                decreasable = true
             end
             object.state = object_state
         else
@@ -509,7 +509,7 @@ local function touch_end(self, datamodel)
 end
 
 local function complete(self, datamodel)
-    if not inventory:complete() then
+    if not inventory:complete() then -- TODO: revert changes if not complete
         return
     end
 

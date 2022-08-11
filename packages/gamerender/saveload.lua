@@ -97,7 +97,7 @@ local function restore_world()
         local fluid_icon -- TODO: duplicate code, see also builder.lua
         if iprototype.has_type(typeobject.type, "fluidbox") and fluid_name ~= "" then
             if iprototype.is_pipe(prototype_name) or iprototype.is_pipe_to_ground(prototype_name) then
-                if ((x % 2 == 1 and x % 2 == 1) or (x % 2 == 2 and x % 2 == 2)) and not _has_connection(gameplay_eid, all_object, map) then
+                if ((x % 2 == 1 and y % 2 == 1) or (x % 2 == 0 and y % 2 == 0)) and not _has_connection(gameplay_eid, all_object, map) then
                     fluid_icon = true
                 end
             else
