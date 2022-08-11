@@ -509,13 +509,6 @@ local function touch_end(self, datamodel)
 end
 
 local function complete(self, datamodel)
-    local gameplay_world = gameplay_core.get_world()
-    local e = iworld:get_headquater_entity(gameplay_world)
-    if not e then
-        log.error("can not find headquater entity")
-        return
-    end
-
     if not inventory:complete() then
         return
     end

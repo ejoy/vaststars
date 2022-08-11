@@ -5,21 +5,64 @@ local irecipe = require "gameplay.interface.recipe"
 
 local M = {}
 
-function M:get_entity(world, eid)
+function M.get_entity(world, eid)
     return world.entity[eid]
 end
 
--- TODO
-function M:get_headquater_entity(world)
-    for e in world.ecs:select "eid:in chest:in entity:in" do
-        local typeobject = iprototype.queryById(e.entity.prototype)
-        if typeobject.headquater then
-            return world.entity[e.eid]
+-- itemid, count
+function M.base_container_place(world, ...)
+    for e in world.ecs:select "manual chest:in" do
+        return world:container_place(e.chest.container, ...)
+    end
+end
+
+-- itemid, count
+function M.base_container_pickup(world, ...)
+    for e in world.ecs:select "manual chest:in" do
+        return world:container_pickup(e.chest.container, ...)
+    end
+end
+
+function M.base_container_pickup_place(world, e, prototype, count, from)
+    if from then
+        if not M.base_container_pickup(world, prototype, count) then
+            log.error(("failed to pickup `%s` `%s` from base"):format(prototype, count))
+        else
+            if not world:container_place(e.chest.container, prototype, count) then
+                log.error(("failed to place `%s` `%s`"):format(prototype, count))
+            end
+        end
+    else
+        if not world:container_pickup(e.chest.container, prototype, count) then
+            log.error(("failed to pickup `%s` `%s` from base"):format(prototype, count))
+        else
+            if M.base_container_place(world, prototype, count) then
+                log.error(("failed to place `%s` `%s`"):format(prototype, count))
+            end
         end
     end
 end
 
-function M:set_recipe(world, e, recipe_name)
+function M.base_chest(world)
+    local chest = {}
+    local ecs = world.ecs
+    for v in ecs:select "manual chest:in" do
+        local i = 1
+        while true do
+            local c, n = world:container_get(v.chest.container, i)
+            if c then
+                chest[c] = n
+            else
+                break
+            end
+            i = i + 1
+        end
+        break
+    end
+    return chest
+end
+
+function M.set_recipe(world, e, recipe_name)
     local typeobject = iprototype.queryById(e.entity.prototype)
     if not recipe_name then
         assembling.set_recipe(world, e, typeobject, recipe_name)
@@ -43,13 +86,11 @@ function M:set_recipe(world, e, recipe_name)
     end
 
     assembling.set_recipe(world, e, typeobject, recipe_name, init_fluids)
-    -- m.sync("assembling:out fluidboxes:out fluidbox_changed?out", e)
-
     log.info(("set recipe success `%s`"):format(recipe_name))
     return true
 end
 
-function M:get_storage(world)
+function M.get_storage(world)
     world.storage = world.storage or {}
     return world.storage
 end

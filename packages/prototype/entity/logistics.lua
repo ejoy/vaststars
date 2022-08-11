@@ -14,7 +14,7 @@ prototype "指挥中心" {
     group = {"物流"},
     slots = 70,
     headquater = true,
-    teardown = false,s
+    teardown = false,
 }
 
 prototype "车站I" {

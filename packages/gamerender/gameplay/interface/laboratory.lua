@@ -1,6 +1,5 @@
 local iprototype = require "gameplay.interface.prototype"
 local iworld = require "gameplay.interface.world"
-local ichest = require "gameplay.interface.chest"
 local irecipe = require "gameplay.interface.recipe"
 
 local M = {}
@@ -32,12 +31,6 @@ function M:place_material(world, e)
         return
     end
 
-    local headquater_e = iworld:get_headquater_entity(world)
-    if not headquater_e then
-        log.error("no headquater")
-        return
-    end
-
     local tech_typeobject = iprototype.queryById(tech)
     if iprototype.has_type(tech_typeobject.type, "task") then
         log.info("task")
@@ -63,12 +56,12 @@ function M:place_material(world, e)
         return
     end
 
-    local headquater_item_counts = ichest:item_counts(world, headquater_e)
+    local headquater_item_counts = iworld.base_chest(world)
     for id, count in pairs(laboratory_item_counts) do
         if headquater_item_counts[id] then
             local c = math.min(headquater_item_counts[id], count)
             if c > 0 then
-                if not world:container_pickup(headquater_e.chest.container, id, c) then
+                if not iworld.base_container_pickup(world, id, c) then
                     log.error(("failed to pickup `%s` `%s`"):format(id, c))
                 else
                     if not world:container_place(e.laboratory.container, id, c) then

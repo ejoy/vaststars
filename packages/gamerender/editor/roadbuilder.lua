@@ -17,8 +17,6 @@ local objects = require "objects"
 local terrain = ecs.require "terrain"
 local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local iworld = require "gameplay.interface.world"
-local gameplay_core = require "gameplay.core"
 
 local EDITOR_CACHE_TEMPORARY = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 
@@ -429,13 +427,6 @@ local function touch_end(self, datamodel)
 end
 
 local function complete(self, datamodel)
-    local gameplay_world = gameplay_core.get_world()
-    local e = iworld:get_headquater_entity(gameplay_world)
-    if not e then
-        log.error("can not find headquater entity")
-        return
-    end
-
     if not inventory:complete() then
         return
     end

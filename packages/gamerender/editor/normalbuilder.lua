@@ -16,8 +16,6 @@ local iobject = ecs.require "object"
 local imining = require "gameplay.interface.mining"
 local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local iworld = require "gameplay.interface.world"
-local gameplay_core = require "gameplay.core"
 
 local function _get_state(prototype_name, ok)
     local typeobject = iprototype.queryByName("entity", prototype_name)
@@ -193,13 +191,6 @@ local function confirm(self, datamodel)
 end
 
 local function complete(self, datamodel)
-    local gameplay_world = gameplay_core.get_world()
-    local e = iworld:get_headquater_entity(gameplay_world)
-    if not e then
-        log.error("can not find headquater entity")
-        return
-    end
-
     if not inventory:complete() then
         return
     end

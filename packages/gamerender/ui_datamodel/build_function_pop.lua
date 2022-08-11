@@ -32,7 +32,7 @@ local detail_event = { -- entity_type -> function
         iui.open("assemble_2.rml", object_id)
     end,
     ["chest"] = function(object_id)
-        iui.open("cmdcenter.rml", object_id)
+        iui.open("inventory.rml", object_id)
     end,
     ["laboratory"] = function(object_id)
         iui.open("lab.rml", object_id)
