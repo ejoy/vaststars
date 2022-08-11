@@ -243,8 +243,6 @@ function M:teardown_complete()
         local typeobject_item = iprototype.queryByName("item", prototype_name)
         if typeobject_item then
             item_counts[typeobject_item.id] = (item_counts[typeobject_item.id] or 0) + 1
-        else
-            log.error(("teardown_complete %s is not an item"):format(prototype_name)) -- TODO: remove this
         end
 
         igameplay.remove_entity(object.gameplay_eid)
@@ -252,15 +250,10 @@ function M:teardown_complete()
     end
 
     -- TODO: inventory full check -> revert teardown
-    local headquater_e = iworld:get_headquater_entity(gameplay_core.get_world())
-    if headquater_e then
-        for prototype, count in pairs(item_counts) do
-            if not gameplay_core.get_world():container_place(headquater_e.chest.container, prototype, count) then
-                log.error(("failed to place `%s` `%s`"):format(prototype, count))
-            end
+    for prototype, count in pairs(item_counts) do
+        if not iworld.base_container_place(gameplay_core.get_world(), prototype, count) then
+            log.error(("failed to place `%s` `%s`"):format(prototype, count))
         end
-    else
-        log.error("no headquater")
     end
 
     for _, object in pairs(changed_set) do

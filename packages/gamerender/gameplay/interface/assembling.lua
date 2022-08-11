@@ -1,7 +1,6 @@
 local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
 local iworld = require "gameplay.interface.world"
-local ichest = require "gameplay.interface.chest"
 
 local M = {}
 
@@ -15,12 +14,6 @@ function M.pickup_material(world, e)
     local recipe = e.assembling.recipe
     if recipe == 0 then
         log.error("the recipe hasn't been set")
-        return
-    end
-
-    local headquater_e = iworld:get_headquater_entity(world)
-    if not headquater_e then
-        log.error("no headquater")
         return
     end
 
@@ -38,7 +31,7 @@ function M.pickup_material(world, e)
                 if not world:container_pickup(e.assembling.container, c, n) then
                     log.error(("failed to pickup `%s` `%s`"):format(c, n))
                 else
-                    if not world:container_place(headquater_e.chest.container, c, n) then
+                    if iworld.base_container_place(world, c, n) then
                         log.error(("failed to place `%s` `%s`"):format(n, c))
                     else
                         items[#items + 1] = {name = item_typeobject.name, count = n, icon = item_typeobject.icon}
@@ -64,12 +57,6 @@ function M.place_material(world, e)
         return
     end
 
-    local headquater_e = iworld:get_headquater_entity(world)
-    if not headquater_e then
-        log.error("no headquater")
-        return
-    end
-
     local typeobject = iprototype.queryById(recipe)
     local recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
 
@@ -91,12 +78,12 @@ function M.place_material(world, e)
         return
     end
 
-    local headquater_item_counts = ichest:item_counts(world, headquater_e)
+    local headquater_item_counts = iworld.base_chest(world)
     for id, count in pairs(assembling_item_counts) do
         if headquater_item_counts[id] then
             local c = math.min(headquater_item_counts[id], count)
             if c > 0 then
-                if not world:container_pickup(headquater_e.chest.container, id, c) then
+                if not iworld.base_container_pickup(world, id, c) then
                     log.error(("failed to pickup `%s` `%s`"):format(id, c))
                 else
                     if not world:container_place(e.assembling.container, id, c) then
@@ -165,12 +152,6 @@ function M.need_ingredients(world, e)
         return
     end
 
-    local headquater_e = iworld:get_headquater_entity(world)
-    if not headquater_e then
-        log.error("no headquater")
-        return
-    end
-
     local recipe = e.assembling.recipe
     if recipe == 0 then
         return false
@@ -179,7 +160,7 @@ function M.need_ingredients(world, e)
     local typeobject = iprototype.queryById(recipe)
     local recipe_ingredients = irecipe.get_elements(typeobject.ingredients) -- TODO: optimize, no need to get ingredients & results every time?
 
-    local headquater_item_counts = ichest:item_counts(world, headquater_e)
+    local headquater_item_counts = iworld.base_chest(world)
     for i = 1, #recipe_ingredients do
         local id, c = world:container_get(e.assembling.container, i)
         if not id then

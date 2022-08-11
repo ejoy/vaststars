@@ -49,7 +49,7 @@ local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 local builder
 local last_prototype_name
 
--- TODO
+-- TODO: we really need to get headquater object?
 local function get_headquater_object_id()
     for id in objects:select("CONSTRUCTED", "headquater", true) do
         return id
@@ -274,7 +274,7 @@ function M:stage_ui_update(datamodel)
     for _ in headquater_mb:unpack() do
         local object_id = get_headquater_object_id()
         if object_id then
-            iui.open("cmdcenter.rml", object_id)
+            iui.open("inventory.rml", object_id)
         else
             log.error("can not found headquater")
         end

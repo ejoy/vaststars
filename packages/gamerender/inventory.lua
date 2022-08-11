@@ -1,6 +1,5 @@
 local create_cache = require "utility.multiple_cache"
 local iworld = require "gameplay.interface.world"
-local ichest = require "gameplay.interface.chest"
 local iprototype = require "gameplay.interface.prototype"
 
 local gameplay_core = require "gameplay.core"
@@ -11,12 +10,7 @@ local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = require("debugger").infinite_item
 
 local function flush(self)
     self._inventory:clear(CACHE_NAMES)
-    local e = iworld:get_headquater_entity(gameplay_core.get_world())
-    if not e then
-        return
-    end
-
-    for prototype, count in pairs(ichest:item_counts(gameplay_core.get_world(), e)) do
+    for prototype, count in pairs(iworld.base_chest(gameplay_core.get_world())) do
         local t = self._inventory:get(CONSTRUCTED_CACHE_NAMES, prototype)
         if t then -- different slot may have same prototype
             t.count = t.count + count
@@ -64,13 +58,6 @@ local function complete(self)
         return true
     end
 
-    local gameplay_world = gameplay_core.get_world()
-    local e = iworld:get_headquater_entity(gameplay_world)
-    if not e then
-        log.error("can not find headquater entity")
-        return false
-    end
-
     for _, item in self._inventory:all("CONFIRM") do
         local original = self._inventory:get(CONSTRUCTED_CACHE_NAMES, item.prototype)
         if not original then
@@ -85,13 +72,13 @@ local function complete(self)
                 goto continue
             end
 
-            if not gameplay_world:container_pickup(e.chest.container, item.prototype, dec) then
+            if not iworld.base_container_pickup(gameplay_core.get_world(), item.prototype, dec) then
                 log.error("can not pickup item", iprototype.queryById(item.prototype).name, dec)
                 return false
             end
         else
             local inc = item.count - original.count
-            if not gameplay_world:container_place(e.chest.container, item.prototype, inc) then
+            if iworld.base_container_place(gameplay_core.get_world(), item.prototype, inc) then
                 log.error("can not place item", iprototype.queryById(item.prototype).name, inc)
                 return false
             end

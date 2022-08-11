@@ -277,16 +277,11 @@ function M:stage_ui_update(datamodel, object_id)
                 end
             end
 
-            if iworld:set_recipe(gameplay_core.get_world(), e, recipe_name) then
-                local headquater_e = iworld:get_headquater_entity(gameplay_core.get_world())
-                if headquater_e then
-                    for prototype, count in pairs(item_counts) do
-                        if not gameplay_core.get_world():container_place(headquater_e.chest.container, prototype, count) then
-                            log.error(("failed to place `%s` `%s`"):format(prototype, count))
-                        end
+            if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name) then
+                for prototype, count in pairs(item_counts) do
+                    if not iworld.base_container_place(gameplay_core.get_world(), prototype, count) then
+                        log.error(("failed to place `%s` `%s`"):format(prototype, count))
                     end
-                else
-                    log.error("no headquater")
                 end
 
                 gameplay_core.build()
@@ -318,7 +313,7 @@ function M:stage_ui_update(datamodel, object_id)
     for _ in clear_recipe_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        iworld:set_recipe(gameplay_core.get_world(), e, nil)
+        iworld.set_recipe(gameplay_core.get_world(), e, nil)
         local vsobject = assert(vsobject_manager:get(object_id))
         local typeobject = assert(iprototype.queryByName("entity", object.prototype_name))
         local w, h = iprototype.unpackarea(typeobject.area)
