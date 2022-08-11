@@ -48,6 +48,7 @@ local function writeEntityH(components)
     write ""
     write "namespace ecs {"
     write ""
+    write "using eid = uint64_t;"
     write "struct REMOVED {};"
     write ""
 
@@ -96,6 +97,11 @@ local function writeEntityH(components)
     write "\tstatic inline constexpr bool tag = true; \\"
     write "};"
     write ""
+    write "template <> struct component<ecs::eid> { \\"
+    write "\tstatic inline constexpr int id = 0xFFFFFFFF;"
+    write "\tstatic inline constexpr char name[] = \"eid\";"
+    write "\tstatic inline constexpr bool tag = false;"
+    write "};"
     write("ECS_COMPONENT(REMOVED, 0)")
     for i, c in ipairs(components) do
         if isTag(c) then
