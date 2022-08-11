@@ -194,7 +194,6 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         -- the neighbor pipe can not be replaced with a pipe to ground, so we need to change the shape of the pipe
         _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, true)
         PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
-        _decrease_item(State, PipeToGroundState)
 
         local x, y = object.x + PipeToGroundState.dir_delta.x, object.y + PipeToGroundState.dir_delta.y
         if x == PipeToGroundState.to_x and y == PipeToGroundState.to_y then
@@ -384,7 +383,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     local prototype_name = self.coord_indicator.prototype_name
     local typeobject = iprototype.queryByName("entity", prototype_name)
     local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-    local item = inventory:modity(item_typeobject.id)
 
     if State.starting_fluidbox then -- TODO: optimize
         State.dotted_line_coord = {State.starting_fluidbox.x, State.starting_fluidbox.y, State.to_x, State.to_y, dir, dir_delta}
@@ -629,8 +627,6 @@ local function _builder_start(self, datamodel)
     local prototype_name = self.coord_indicator.prototype_name
     local starting = objects:coord(from_x, from_y, EDITOR_CACHE_NAMES)
     local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
-    local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-    local item = assert(inventory:modity(item_typeobject.id)) -- promise by new_entity()
 
     local State = {
         succ = true,
