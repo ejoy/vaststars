@@ -11,10 +11,10 @@ end
 
 -- TODO
 function M:get_headquater_entity(world)
-    for e in world.ecs:select "id:in chest:in entity:in" do
+    for e in world.ecs:select "eid:in chest:in entity:in" do
         local typeobject = iprototype.queryById(e.entity.prototype)
         if typeobject.headquater then
-            return world.entity[e.id]
+            return world.entity[e.eid]
         end
     end
 end

@@ -56,7 +56,7 @@ local function get_display_info(e, typeobject, t)
                 if cn == "power" or cn == "drain" or cn == "capacitance" then
                     local current = 0
                     if cn == "power" or cn == "drain" then
-                        local st = global.statistic["power"][e.id]
+                        local st = global.statistic["power"][e.eid]
                         if st then
                             current = st[cn]
                         elseif typeobject.name == "指挥中心" then
@@ -123,7 +123,7 @@ local function get_property(e, typeobject)
         end
         t.chest_list0 = #chest_list0 > 0 and chest_list0 or nil
         t.chest_list1 = #chest_list1 > 0 and chest_list1 or nil
-        t.values.slots = string.format("%d/%d", slotnum, t.values.slots)
+        t.values.slots = string.format("%d/%d", slotnum, t.values.slots or 0)
     end
     if e.fluidbox then
         local name = "无"

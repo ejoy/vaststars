@@ -101,6 +101,26 @@ local function check_unconfirmed(self, double_confirm)
     return false
 end
 
+local function _has_connection(object)
+    for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
+        local succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
+        if not succ then
+            goto continue
+        end
+
+        local o = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
+        if not o then
+            goto continue
+        end
+
+        local typeobject = iprototype.queryByName("entity", object.prototype_name)
+        if iprototype.has_type(typeobject.type, "assembling") then
+            return true
+        end
+        ::continue::
+    end
+end
+
 local function complete(self)
     local needbuild = false
     for object_id, object in objects:all("CONFIRM") do -- TODO: duplicate code, see also pipe_function_pop.lua
@@ -118,10 +138,22 @@ local function complete(self)
                 recipe = ""
             end
 
+            local fluid_icon -- TODO: duplicate code, see also saveload.lua
+            if iprototype.has_type(typeobject.type, "fluidbox") and object.fluid_name ~= "" then
+                if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
+                    if ((object.x % 2 == 1 and object.x % 2 == 1) or (object.x % 2 == 2 and object.x % 2 == 2)) and not _has_connection(object) then
+                        fluid_icon = true
+                    end
+                else
+                    fluid_icon = true
+                end
+            end
+
             local old = objects:get(object_id, {"CONSTRUCTED"})
             if not old then
                 object.gameplay_eid = igameplay.create_entity(object)
                 object.recipe = recipe
+                object.fluid_icon = fluid_icon
             else
                 if old.prototype_name ~= object.prototype_name then
                     igameplay.remove_entity(object.gameplay_eid)
@@ -130,6 +162,7 @@ local function complete(self)
                     ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
                 elseif old.fluid_name ~= object.fluid_name then
                     if iprototype.has_type(iprototype.queryByName("entity", object.prototype_name).type, "fluidbox") then -- TODO: object may be fluidboxes
+                        object.fluid_icon = fluid_icon
                         ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
                     end
                 end

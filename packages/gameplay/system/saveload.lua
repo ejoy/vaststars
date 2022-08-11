@@ -1,5 +1,5 @@
 local system = require "register.system"
-local luaecs = import_package "vaststars.ecs"
+local luaecs = import_package "ant.luaecs"
 local json = import_package "ant.json"
 local status = require "status"
 
@@ -21,12 +21,19 @@ do
         local metafile = world.storage_path.."/ecs.json"
         local binfile = world.storage_path.."/ecs.bin"
         local writer = luaecs.writer(binfile)
+        local components = {
+            --"eid",
+            "REMOVED",
+        }
         for _, c in ipairs(status.components) do
-            writer:write(ecs, ecs:component_id(c.name))
+            components[#components+1] = c.name
+        end
+        for _, name in ipairs(components) do
+            writer:write(ecs, ecs:component_id(name))
         end
         local meta = writer:close()
-        for i, c in ipairs(status.components) do
-            meta[i].name = c.name
+        for i, name in ipairs(components) do
+            meta[i].name = name
         end
         writeall(metafile, json.encode(meta))
     end
@@ -34,12 +41,14 @@ do
         local ecs = world.ecs
         local metafile = world.storage_path.."/ecs.json"
         local binfile = world.storage_path.."/ecs.bin"
+        ecs:visitor_clear()
         ecs:clearall()
         local reader = luaecs.reader(binfile)
         for _, meta in ipairs(json.decode(readall(metafile))) do
             ecs:read_component(reader, meta.name, meta.offset, meta.stride, meta.n)
         end
         reader:close()
+        ecs:generate_eid()
     end
 end
 

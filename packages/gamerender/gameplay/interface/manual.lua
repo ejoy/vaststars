@@ -56,7 +56,7 @@ local function solverCreate()
     }
 end
 
-local function solverEvaluate(solver, memory, register, input)
+local function solverEvaluate(solver, memory, register, input, cb)
     local mt = {}
     function mt:__index(k)
         self[k] = 0
@@ -65,17 +65,13 @@ local function solverEvaluate(solver, memory, register, input)
     setmetatable(memory, mt)
     setmetatable(register, mt)
 
-    local output = {}
     local manual = solver.manual
     local intermediate = solver.intermediate
     local function push_crafting(item)
-        table.insert(output, 1,  {"crafting", item})
+        cb("crafting", item)
     end
     local function push_finish(item)
-        table.insert(output, 1,  {"finish", item})
-    end
-    local function push_separator(n)
-        table.insert(output, 1,  {"separator", n})
+        cb("finish", item)
     end
     local function do_crafting(recipe)
         for _, s in ipairs(recipe.input) do
@@ -145,9 +141,6 @@ local function solverEvaluate(solver, memory, register, input)
             register[item] = register[item] - 1
             push_finish(item)
         end
-
-        push_separator(recipe.id)
-        push_separator(n) -- n is the number of times to repeat the recipe
         return true
     end
     for i = 1, #input do
@@ -160,11 +153,56 @@ local function solverEvaluate(solver, memory, register, input)
         if not solve(m, count) then
             return
         end
+        cb("separator", m.name, m.id, count)
     end
-    return output
+    return true
+end
+
+local evaluate; do
+    local funcs = {}
+    funcs["crafting"] = function(output, solver, State, name)
+        table.insert(output, 1,  {"crafting", name})
+        State.crafting[name] = (State.crafting[name] or 0) + 1
+    end
+    funcs["finish"] = function(output, solver, State, name)
+        table.insert(output, 1,  {"finish", name})
+    end
+    funcs["separator"] = function(output, solver, State, name, recipe, count)
+        table.insert(output, 1,  {"separator", recipe})
+        table.insert(output, 1,  {"separator", count})
+
+        State.crafting[name] = nil
+
+        local total_progress = 0 -- total progress of first main output
+        for name, count in pairs(State.crafting) do
+            local typeobject = solver.manual[name]
+            total_progress = total_progress + typeobject.time * count
+        end
+
+        local typeobject = solver.manual[name]
+        total_progress = total_progress + typeobject.time
+
+        table.insert(output, 1,  {"separator", total_progress & 0xFFFF})
+        table.insert(output, 1,  {"separator", total_progress >> 16})
+        State.crafting = {}
+    end
+    function evaluate(solver, memory, register, input)
+        local output = {}
+        local State = {
+            crafting = {}
+        }
+        local succ = solverEvaluate(solver, memory, register, input, function(type, ...)
+            assert(funcs[type])
+            funcs[type](output, solver, State, ...)
+        end)
+        if not succ then
+            return
+        end
+        return output
+    end
 end
 
 return {
     create = solverCreate,
-    evaluate = solverEvaluate,
+    evaluate = evaluate,
 }
