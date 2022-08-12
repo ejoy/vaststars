@@ -264,6 +264,10 @@ function M:stage_ui_update(datamodel)
             ifluid:update_fluidbox(gameplay_core.get_entity(_object.gameplay_eid), _object.fluid_name) -- TODO: do it in a better way?
             objects:sync("CONSTRUCTED", _object, "fluid_name", "fluidflow_id")
             print(("_update_fluidflow %s (%s,%s): %s %s"):format(_object.prototype_name, _object.x, _object.y, _object.fluid_name, _object.fluidflow_id))
+
+            if not iprototype.is_pipe(_object.prototype_name) and not iprototype.is_pipe_to_ground(_object.prototype_name) then
+                _object.fluid_icon = true
+            end
         end
     end
 
