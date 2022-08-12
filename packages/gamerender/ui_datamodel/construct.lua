@@ -46,6 +46,7 @@ local imanual = require "ui_datamodel.common.manual"
 local inventory = global.inventory
 local pickup_mb = world:sub {"pickup"}
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
+local resources_loader = ecs.require "ui_datamodel.common.resources_loader"
 
 local builder
 local last_prototype_name
@@ -313,64 +314,7 @@ function M:stage_ui_update(datamodel)
     end
 
     for _ in load_resource_mb:unpack() do
-        local resource = require "resources"
-        local assetmgr = import_package "ant.asset"
-        local length
-
-        local imaterial = ecs.import.interface "ant.asset|imaterial"
-        length = #imaterial.load_res('/pkg/ant.resources/materials/pickup_opacity.material')
-        length = #imaterial.load_res('/pkg/ant.resources/materials/pickup_opacity.material', {skinning="GPU"})
-        length = #imaterial.load_res('/pkg/ant.resources/materials/pickup_transparent.material')
-        length = #imaterial.load_res('/pkg/ant.resources/materials/pickup_transparent.material', {skinning="GPU"})
-        length = #imaterial.load_res("/pkg/ant.resources/materials/predepth.material", {depth_type="inv_z"})
-        length = #imaterial.load_res("/pkg/ant.resources/materials/predepth.material", {depth_type="inv_z", skinning="GPU"})
-
-        assetmgr.load_fx {
-            fs = "/pkg/ant.resources/shaders/pbr/fs_pbr.sc",
-            vs = "/pkg/ant.resources/shaders/pbr/vs_pbr.sc",
-        }
-
-        local skip = {"glb", "cfg", "hdr", "dds", "anim", "event", "lua", "efk", "rml", "rcss", "ttc", "png", "material"}
-        local handler = {
-            ["prefab"] = function(f)
-                local fs = require "filesystem"
-                local datalist  = require "datalist"
-                local lf = assert(fs.open(fs.path(f)))
-                local data = lf:read "a"
-                lf:close()
-                local prefab_resource = {"material", "mesh", "skeleton", "meshskin"}
-                for _, d in ipairs(datalist.parse(data)) do
-                    for _, field in ipairs(prefab_resource) do
-                        if d.data[field] then
-                            if field == "material" then
-                                length = #imaterial.load_res(d.data.material, d.data.material_setting)
-                            else
-                                length = #assetmgr.resource(d.data[field])
-                            end
-                        end
-                    end
-                end
-            end,
-            ["texture"] = function (f)
-                length = #assetmgr.resource(f)
-            end,
-        }
-        for _, name in ipairs(resource) do
-            local f = ("/pkg/vaststars.resources%s"):format(name)
-            local ext = f:match(".*%.(.*)$")
-
-            for _, _ext in ipairs(skip) do
-                if ext == _ext then
-                    goto continue
-                end
-            end
-
-            log.info("load " .. f)
-            assert(handler[ext], "unknown resource type " .. ext)
-            handler[ext](f)
-            ::continue::
-        end
-        log.info("finished load resources")
+        iui.open("loading.rml", false)
     end
 end
 

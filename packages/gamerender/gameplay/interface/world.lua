@@ -36,7 +36,7 @@ function M.base_container_pickup_place(world, e, prototype, count, from)
         if not world:container_pickup(e.chest.container, prototype, count) then
             log.error(("failed to pickup `%s` `%s` from base"):format(prototype, count))
         else
-            if M.base_container_place(world, prototype, count) then
+            if not M.base_container_place(world, prototype, count) then
                 log.error(("failed to place `%s` `%s`"):format(prototype, count))
             end
         end

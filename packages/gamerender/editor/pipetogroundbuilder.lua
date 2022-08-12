@@ -369,7 +369,12 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
 
     coord = packcoord(x, y)
     local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), true)
-    PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
+    if not _prototype_name then
+        State.succ = false
+        return
+    end
+
+    PipeToGroundState.map[coord] = {_prototype_name, _dir}
     _decrease_item(State, PipeToGroundState)
 end
 
@@ -385,7 +390,11 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
 
     if State.starting_fluidbox then -- TODO: optimize
-        State.dotted_line_coord = {State.starting_fluidbox.x, State.starting_fluidbox.y, State.to_x, State.to_y, dir, dir_delta}
+        if State.ending_fluidbox then
+            State.dotted_line_coord = {State.starting_fluidbox.x, State.starting_fluidbox.y, State.ending_fluidbox.x, State.ending_fluidbox.y, dir, dir_delta}
+        else
+            State.dotted_line_coord = {State.starting_fluidbox.x, State.starting_fluidbox.y, State.to_x, State.to_y, dir, dir_delta}
+        end
     else
         State.dotted_line_coord = {State.from_x, State.from_y, State.to_x, State.to_y, dir, dir_delta}
     end
@@ -425,7 +434,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
                 if object and (iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name)) then
                     local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), false)
-                    PipeToGroundState.map[coord] = {_prototype_name, _dir}
+                    PipeToGroundState.map[coord] = {assert(_prototype_name), _dir}
                 end
             end
 
@@ -442,7 +451,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 if object and (iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name)) then
                     local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, false)
                     if object.prototype_name ~= _prototype_name or object.dir ~= _dir then
-                        PipeToGroundState.map[coord] = {_prototype_name, _dir}
+                        PipeToGroundState.map[coord] = {assert(_prototype_name), _dir}
                     end
                 end
             end
@@ -454,7 +463,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 if object and (iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name)) then
                     local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), false)
                     if object.prototype_name ~= _prototype_name or object.dir ~= _dir then
-                        PipeToGroundState.map[coord] = {_prototype_name, _dir}
+                        PipeToGroundState.map[coord] = {assert(_prototype_name), _dir}
                     end
                 end
             end
@@ -492,12 +501,16 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         local x, y = unpackcoord(coord)
         local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         if object then
-            local item_name = _get_item_name(object.prototype_name)
-            PipeToGroundState.remove[item_name] = (PipeToGroundState.remove[item_name] or 0) + 1
-
             object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
-            object.prototype_name = v[1]
-            object.dir = v[2]
+            if object.prototype_name ~= v[1] or object.dir ~= v[2] then
+                if _get_item_name(object.prototype_name) ~= _get_item_name(v[1]) then
+                    local item_name = _get_item_name(object.prototype_name)
+                    PipeToGroundState.remove[item_name] = (PipeToGroundState.remove[item_name] or 0) + 1
+                end
+                object.prototype_name = v[1]
+                object.dir = v[2]
+            end
+
             object.state = object_state
         else
             object = iobject.new {
@@ -667,7 +680,7 @@ local function _builder_start(self, datamodel)
                 State.succ = false
                 State.ending_fluidbox, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
             else
-                for _, another in ipairs(_get_covers_fluidbox(prototype_name, ending)) do
+                for _, another in ipairs(_get_covers_fluidbox(ending)) do
                     if another.dir ~= iprototype.reverse_dir(dir) then
                         goto continue
                     end
