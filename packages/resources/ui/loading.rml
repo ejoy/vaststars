@@ -1,0 +1,60 @@
+<rml>
+    <head>
+        <style>
+            .filename {
+                padding-bottom: 0.15em;
+                font-size: 3.73vmin;
+                text-align: center;
+                align-items: center;
+                position: absolute;
+                right:0;
+                bottom:-4vmin;
+            }
+
+        </style>
+        <style path = "common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+                archival_files = {},
+                show_archival_files = false,
+                info = false,
+            })
+
+            function start.clickSave(event)
+                ui_sys.pub {"save"}
+                ui_sys.close()
+            end
+
+            function start.clickRestart(event)
+                ui_sys.pub {"restart"}
+                ui_sys.close()
+            end
+
+            function start.clickRestore(event, index)
+                ui_sys.pub {"restore", index}
+            end
+
+            function start.clickInfo(event)
+                ui_sys.pub {"info"}
+                ui_sys.close()
+            end
+
+            function start.clickClose()
+                ui_sys.pub {"close"}
+            end
+
+        </script>
+    </head>
+    <body style = "background-color: black;">
+        <div class="item-container-region"  data-model="start" style = "align-items: center;">
+            <div class="column" style="justify-content: center; width: 80%; height:10vmin;">
+                <div class="progress-bar-block" style = "width: 100%; height:80%;">
+                    <div class="progress-background" style ="background-color: green; width: 50%;"/>
+                </div> 
+                <div class = "percent-num" style="padding-top:1vmin; font-size: 8vmin;">50%</div>
+                <div class = "filename">文件名12324358</div>
+            </div>
+        </div>
+    </body>
+</rml>
