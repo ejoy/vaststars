@@ -16,8 +16,6 @@ local objects = require "objects"
 local terrain = ecs.require "terrain"
 local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local iworld = require "gameplay.interface.world"
-local gameplay_core = require "gameplay.core"
 local math_abs = math.abs
 local math_min = math.min
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
@@ -210,13 +208,15 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         if object then
             object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
             if object.prototype_name ~= v[1] or object.dir ~= v[2] then
-                local item_name = _get_item_name(object.prototype_name) -- TODO: use prototype_name?
-                remove[item_name] = (remove[item_name] or 0) + 1
+                if _get_item_name(object.prototype_name) ~= _get_item_name(v[1]) then
+                    local item_name = _get_item_name(object.prototype_name) -- TODO: use prototype_name?
+                    remove[item_name] = (remove[item_name] or 0) + 1
+
+                    decreasable = true
+                end
 
                 object.prototype_name = v[1]
                 object.dir = v[2]
-
-                decreasable = true
             end
             object.state = object_state
         else
@@ -395,12 +395,22 @@ local function _builder_start(self, datamodel)
                 State.ending_fluidbox, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
             else
                 for _, another in ipairs(_get_covers_fluidbox(prototype_name, ending)) do
-                    if another.dir == iprototype.reverse_dir(dir) and (fluidbox.x == another.x or fluidbox.y == another.y) then
-                        dir, delta = iprototype.calc_dir(fluidbox.x, fluidbox.y, another.x, another.y)
+                    if another.dir ~= iprototype.reverse_dir(dir) then
+                        goto continue
+                    end
+                    succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+                        math_abs(another.x - fluidbox.x),
+                        math_abs(another.y - fluidbox.y)
+                    )
+                    if not succ then
+                        goto continue
+                    end
+                    if to_x == another.x and to_y == another.y then
                         State.ending_fluidbox, State.ending_fluidflow_id = another, ending.fluidflow_id
                         _builder_end(self, datamodel, State, dir, delta)
                         return
                     end
+                    ::continue::
                 end
                 State.succ = false
             end
@@ -432,12 +442,22 @@ local function _builder_start(self, datamodel)
         local ending = objects:coord(to_x, to_y, EDITOR_CACHE_NAMES)
         if ending then
             for _, fluidbox in ipairs(_get_covers_fluidbox(prototype_name, ending)) do
-                if fluidbox.dir == iprototype.reverse_dir(dir) and (to_x == fluidbox.x or to_y == fluidbox.y) then
+                if fluidbox.dir ~= iprototype.reverse_dir(dir) then
+                    goto continue
+                end
+                succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+                    math_abs(from_x - fluidbox.x),
+                    math_abs(from_y - fluidbox.y)
+                )
+                if not succ then
+                    goto continue
+                end
+                if to_x == fluidbox.x and to_y == fluidbox.y then
                     State.ending_fluidbox, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
-                    dir, delta = iprototype.calc_dir(from_x, from_y, fluidbox.x, fluidbox.y)
                     _builder_end(self, datamodel, State, dir, delta)
                     return
                 end
+                ::continue::
             end
             State.succ = false
         end
@@ -509,7 +529,7 @@ local function touch_end(self, datamodel)
 end
 
 local function complete(self, datamodel)
-    if not inventory:complete() then
+    if not inventory:complete() then -- TODO: revert changes if not complete
         return
     end
 

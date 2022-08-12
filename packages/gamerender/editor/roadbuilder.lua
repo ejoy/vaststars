@@ -140,7 +140,6 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
     local x, y = from_x, from_y
     while true do
         coord = packcoord(x, y)
-        item.count = item.count - 1
 
         if x == from_x and y == from_y then
             local _object = objects:coord(x, y, EDITOR_CACHE_TEMPORARY)
@@ -208,8 +207,6 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
         x, y = x + delta.x, y + delta.y
     end
 
-    iui.update("construct.rml", "update_construct_inventory")
-
     local object_state = State.failed and "invalid_construct" or "construct"
     self.coord_indicator.state = object_state
 
@@ -238,10 +235,13 @@ local function state_end(self, datamodel, from_x, from_y, to_x, to_y)
                 state = object_state,
             }
             objects:set(object, EDITOR_CACHE_TEMPORARY[1])
+            item.count = item.count - 1
+            assert(item.count >= 0)
         end
     end
 
     datamodel.show_laying_road_confirm = not State.failed
+    iui.update("construct.rml", "update_construct_inventory")
 end
 
 local function state_init(self, datamodel)

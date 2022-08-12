@@ -194,7 +194,6 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         -- the neighbor pipe can not be replaced with a pipe to ground, so we need to change the shape of the pipe
         _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, true)
         PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
-        _decrease_item(State, PipeToGroundState)
 
         local x, y = object.x + PipeToGroundState.dir_delta.x, object.y + PipeToGroundState.dir_delta.y
         if x == PipeToGroundState.to_x and y == PipeToGroundState.to_y then
@@ -384,7 +383,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     local prototype_name = self.coord_indicator.prototype_name
     local typeobject = iprototype.queryByName("entity", prototype_name)
     local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-    local item = inventory:modity(item_typeobject.id)
 
     if State.starting_fluidbox then -- TODO: optimize
         State.dotted_line_coord = {State.starting_fluidbox.x, State.starting_fluidbox.y, State.to_x, State.to_y, dir, dir_delta}
@@ -629,8 +627,6 @@ local function _builder_start(self, datamodel)
     local prototype_name = self.coord_indicator.prototype_name
     local starting = objects:coord(from_x, from_y, EDITOR_CACHE_NAMES)
     local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
-    local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-    local item = assert(inventory:modity(item_typeobject.id)) -- promise by new_entity()
 
     local State = {
         succ = true,
@@ -671,14 +667,23 @@ local function _builder_start(self, datamodel)
                 State.succ = false
                 State.ending_fluidbox, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
             else
-                for _, another in ipairs(_get_covers_fluidbox(ending)) do
-                    if another.dir == iprototype.reverse_dir(dir) and (fluidbox.x == another.x or fluidbox.y == another.y) then
-                        dir, delta = iprototype.calc_dir(fluidbox.x, fluidbox.y, another.x, another.y)
-                        State.to_x, State.to_y = fluidbox.x, fluidbox.y
+                for _, another in ipairs(_get_covers_fluidbox(prototype_name, ending)) do
+                    if another.dir ~= iprototype.reverse_dir(dir) then
+                        goto continue
+                    end
+                    succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+                        math_abs(another.x - fluidbox.x),
+                        math_abs(another.y - fluidbox.y)
+                    )
+                    if not succ then
+                        goto continue
+                    end
+                    if to_x == another.x and to_y == another.y then
                         State.ending_fluidbox, State.ending_fluidflow_id = another, ending.fluidflow_id
                         _builder_end(self, datamodel, State, dir, delta)
                         return
                     end
+                    ::continue::
                 end
                 State.succ = false
             end
@@ -701,12 +706,22 @@ local function _builder_start(self, datamodel)
         if ending then
             -- find one fluidbox that is matched with the direction specified, not the pipe to ground
             for _, fluidbox in ipairs(_get_covers_fluidbox(ending)) do
-                if fluidbox.dir == iprototype.reverse_dir(dir) and (from_x == fluidbox.x or from_y == fluidbox.y) then
-                    dir, delta = iprototype.calc_dir(from_x, from_y, fluidbox.x, fluidbox.y)
+                if fluidbox.dir ~= iprototype.reverse_dir(dir) then
+                    goto continue
+                end
+                succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+                    math_abs(from_x - fluidbox.x),
+                    math_abs(from_y - fluidbox.y)
+                )
+                if not succ then
+                    goto continue
+                end
+                if to_x == fluidbox.x and to_y == fluidbox.y then
                     State.ending_fluidbox, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
                     _builder_end(self, datamodel, State, dir, delta)
                     return
                 end
+                ::continue::
             end
             State.succ = false
         end

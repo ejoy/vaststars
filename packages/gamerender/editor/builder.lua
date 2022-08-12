@@ -141,7 +141,7 @@ local function complete(self)
             local fluid_icon -- TODO: duplicate code, see also saveload.lua
             if iprototype.has_type(typeobject.type, "fluidbox") and object.fluid_name ~= "" then
                 if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
-                    if ((object.x % 2 == 1 and object.x % 2 == 1) or (object.x % 2 == 2 and object.x % 2 == 2)) and not _has_connection(object) then
+                    if ((object.x % 2 == 1 and object.y % 2 == 1) or (object.x % 2 == 0 and object.y % 2 == 0)) and not _has_connection(object) then
                         fluid_icon = true
                     end
                 else

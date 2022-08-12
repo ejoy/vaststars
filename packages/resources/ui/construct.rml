@@ -95,7 +95,7 @@
             }
             .main-menu-block {
                 /* width: 86.67vmin; */
-                width: 58vmin;
+                width: 78vmin;
                 height: 20.00vmin;
                 flex-direction: row;
                 align-items: center;
@@ -355,6 +355,9 @@
                     end
                 end
             end
+            function start.clickLoadResource(event)
+                ui_sys.pub {"load_resource"}
+            end
             window.addEventListener('mousedown', function(event)
                 ui_sys.world_pub {"ui_message", "leave"}
             end)
@@ -453,6 +456,10 @@
                 <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 20">
                     <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
                     <div class = "menu-button-text">游戏设置</div>
+                </button>
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickLoadResource()">
+                    <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
+                    <div class = "menu-button-text">加载资源</div>
                 </button>
             </div>
 

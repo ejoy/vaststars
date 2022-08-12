@@ -5,7 +5,6 @@
 build/
 bin/
 packages/ecs/ecs.lua
-clibs/gameplay/src/core/entity.h
 .DS_Store
 *.xcuserstate
 *.xcbkptlist
@@ -13,3 +12,4 @@ clibs/gameplay/src/core/entity.h
 /.vscode
 /runtime/macos/FrameCapture/
 /packages/prototype/debugger.lua
+clibs/gameplay/src/util/component.h

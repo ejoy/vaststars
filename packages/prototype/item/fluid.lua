@@ -103,7 +103,7 @@ prototype "氯气" {
 prototype "地下卤水" {
     type = {"fluid"},
     catagory = {"普通液体"},
-    icon = "textures/fluid/liquid-seawater.texture",
+    icon = "textures/fluid/liquid-groundwater.texture",
     color = {0.3, 0.3, 0.3, 1},
     heat_capacity = "0.08kJ",
     default_temperature = 15,
