@@ -39,7 +39,8 @@ component "inserter" {
 }
 
 component "capacitance" {
-	"shortage:dword",
+    "shortage:dword",
+    "delta:int",
     "network:byte"
 }
 
@@ -57,8 +58,6 @@ component "chimney" {
 }
 
 component "consumer" {
-    "working:byte",
-    "low_power:byte",
 }
 
 component "generator" {
@@ -110,4 +109,7 @@ component "manual" {
     "speed:word",
     "status:byte",
     "progress:int",
+}
+
+component "_working" {
 }

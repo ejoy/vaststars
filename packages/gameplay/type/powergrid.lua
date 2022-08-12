@@ -28,6 +28,7 @@ function generator:ctor(init, pt)
 	return {
 		capacitance = {
 			shortage = pt.capacitance,
+			delta = 0,
 			network = 1,
 		},
 		generator = true,
@@ -38,11 +39,11 @@ function consumer:ctor(init, pt)
 	return {
 		capacitance = {
 			shortage = pt.capacitance,
+			delta = 0,
 			network = 1,
 		},
 		consumer = {
 			working = 0,
-			low_power = 0,
 		},
 	}
 end
@@ -51,6 +52,7 @@ function accumulator:ctor(init, pt)
 	return {
 		capacitance = {
 			shortage = pt.capacitance,
+			delta = 0,
 			network = 1,
 		},
 		accumulator = true,
@@ -71,7 +73,9 @@ function burner:ctor(init, pt)
     end
 	return {
 		capacitance = {
-			shortage = pt.capacitance
+			shortage = pt.capacitance,
+			delta = 0,
+			network = 0,
 		},
 		burner = {
             recipe = recipe.id,

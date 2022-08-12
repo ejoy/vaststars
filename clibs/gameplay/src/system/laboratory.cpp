@@ -4,6 +4,7 @@
 
 #include "luaecs.h"
 #include "core/world.h"
+#include "core/capacitance.h"
 extern "C" {
 #include "util/prototype.h"
 }
@@ -72,25 +73,21 @@ laboratory_next_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l,
 }
 
 static void
-laboratory_update(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, ecs::consumer& co, ecs::capacitance& c, bool& updated) {
-    prototype_context p = w.prototype(L, e.prototype);
+laboratory_update(lua_State* L, world& w, ecs_api::entity<ecs::laboratory, ecs::capacitance, ecs::entity>& v, bool& updated) {
+    ecs::entity& e = v.get<ecs::entity>();
+    ecs::laboratory& l = v.get<ecs::laboratory>();
+    auto consumer = get_consumer(L, w, v);
 
     // step.1
-    unsigned int power = pt_power(&p);
-    unsigned int drain = pt_drain(&p);
-    unsigned int capacitance = power * 2;
-    if (c.shortage + drain > capacitance) {
+    if (!consumer.cost_drain()) {
         return;
     }
-    c.shortage += drain;
-    co.working = 1;
     if (l.tech == 0 || l.status == STATUS_INVALID) {
         return;
     }
 
     // step.2
     while (l.progress <= 0) {
-        co.low_power = 0;
         prototype_context tech = w.prototype(L, l.tech);
         recipe_container& container = w.query_container<recipe_container>(l.container);
         if (l.status == STATUS_DONE) {
@@ -117,16 +114,12 @@ laboratory_update(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, ec
     }
 
     // step.3
-    if (c.shortage + power > capacitance) {
-        co.low_power = 50;
+    if (!consumer.cost_power()) {
         return;
     }
-    c.shortage += power;
-    co.working = 2;
 
     // step.4
     l.progress -= l.speed;
-    if (co.low_power > 0) co.low_power--;
 }
 
 static int
@@ -144,16 +137,14 @@ static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     bool updated = false;
-    for (auto& v : w.select<ecs::laboratory, ecs::consumer, ecs::capacitance, ecs::entity>(L)) {
-        ecs::entity& e = v.get<ecs::entity>();
+    for (auto& v : w.select<ecs::laboratory, ecs::capacitance, ecs::entity>(L)) {
         ecs::laboratory& l = v.get<ecs::laboratory>();
-        ecs::capacitance& c = v.get<ecs::capacitance>();
-        ecs::consumer& co = v.get<ecs::consumer>();
         uint16_t techid = w.techtree.queue_top();
         if (techid != l.tech) {
+            ecs::entity& e = v.get<ecs::entity>();
             laboratory_next_tech(L, w, e, l, techid);
         }
-        laboratory_update(L, w, e, l, co, c, updated);
+        laboratory_update(L, w, v, updated);
     }
     if (updated) {
         uint16_t techid = w.techtree.queue_top();

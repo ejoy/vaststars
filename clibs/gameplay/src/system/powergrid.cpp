@@ -182,8 +182,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 		}
 		ecs::entity& e = v.get<ecs::entity>();
 		p.id = e.prototype;
-		if (auto co = v.sibling<ecs::consumer>(w)) {
-			co->working = 0;
+		if (v.sibling<ecs::consumer>(w)) {
 			// It's a consumer, charge capacitance
 			if (c.shortage > 0) {
 				float eff = pg[c.network].consumer_efficiency[pt_priority(&p)];
@@ -199,7 +198,8 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 					} else {
 						power = (uint32_t)(power * eff);
 					}
-					c.shortage -= power;
+					c.delta = -(int32_t)power;
+					c.shortage -= c.delta;
 					consume_power += power;
 				}
 			}
@@ -209,6 +209,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 			float eff = pg[c.network].generator_efficiency[pt_priority(&p)];
 			if (eff > 0) {
 				uint32_t power = (uint32_t)((pt_capacitance(&p) - c.shortage) * eff);
+				c.delta = power;
 				c.shortage += power;
 				generate_power += power;
 			}
@@ -223,6 +224,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 				if (remain < power) {
 					power = remain;
 				}
+				c.delta = power;
 				c.shortage += power;
 				generate_power += power;
 			} else {
@@ -232,6 +234,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 				if (charge_power >= c.shortage) {
 					charge_power = c.shortage;
 				}
+				c.delta = -(int32_t)charge_power;
 				c.shortage -= charge_power;
 				consume_power += charge_power;
 			}

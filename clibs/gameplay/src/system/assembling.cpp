@@ -2,6 +2,7 @@
 
 #include "luaecs.h"
 #include "core/world.h"
+#include "core/capacitance.h"
 extern "C" {
 #include "util/prototype.h"
 }
@@ -39,22 +40,14 @@ sync_output_fluidbox(world& w, ecs::assembling& a, ecs::fluidboxes& fb, recipe_c
 }
 
 static void
-assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::consumer, ecs::capacitance, ecs::entity>& v) {
+assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::capacitance, ecs::entity>& v) {
     ecs::assembling& a = v.get<ecs::assembling>();
-    ecs::entity& e = v.get<ecs::entity>();
-    ecs::capacitance& c = v.get<ecs::capacitance>();
-    ecs::consumer& co = v.get<ecs::consumer>();
-    prototype_context p = w.prototype(L, e.prototype);
+    auto consumer = get_consumer(L, w, v);
 
     // step.1
-    unsigned int power = pt_power(&p);
-    unsigned int drain = pt_drain(&p);
-    unsigned int capacitance = power * 2;
-    if (c.shortage + drain > capacitance) {
+    if (!consumer.cost_drain()) {
         return;
     }
-    c.shortage += drain;
-    co.working = 1;
 
     if (a.recipe == 0) {
         return;
@@ -62,7 +55,6 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
 
     // step.2
     while (a.progress <= 0) {
-        co.low_power = 0;
         prototype_context recipe = w.prototype(L, a.recipe);
         recipe_container& container = w.query_container<recipe_container>(a.container);
         if (a.status == STATUS_DONE) {
@@ -97,22 +89,18 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
     }
 
     // step.3
-    if (c.shortage + power > capacitance) {
-        co.low_power = 50;
+    if (!consumer.cost_power()) {
         return;
     }
-    c.shortage += power;
-    co.working = 2;
 
     // step.4
     a.progress -= a.speed;
-    if (co.low_power > 0) co.low_power--;
 }
 
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (auto& v : w.select<ecs::assembling, ecs::consumer, ecs::capacitance, ecs::entity>(L)) {
+    for (auto& v : w.select<ecs::assembling, ecs::capacitance, ecs::entity>(L)) {
         assembling_update(L, w, v);
     }
     return 0;

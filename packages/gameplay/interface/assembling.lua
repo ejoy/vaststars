@@ -150,9 +150,6 @@ local function what_status(e)
             return "full_output"
         end
     end
-    if e.consumer.low_power ~= 0 then
-        return "low_power"
-    end
     return "working"
 end
 
