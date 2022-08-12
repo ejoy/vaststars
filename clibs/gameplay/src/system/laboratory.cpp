@@ -90,7 +90,6 @@ laboratory_update(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, ec
 
     // step.2
     while (l.progress <= 0) {
-        co.low_power = 0;
         prototype_context tech = w.prototype(L, l.tech);
         recipe_container& container = w.query_container<recipe_container>(l.container);
         if (l.status == STATUS_DONE) {
@@ -118,7 +117,6 @@ laboratory_update(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, ec
 
     // step.3
     if (c.shortage + power > capacitance) {
-        co.low_power = 50;
         return;
     }
     c.shortage += power;
@@ -126,7 +124,6 @@ laboratory_update(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, ec
 
     // step.4
     l.progress -= l.speed;
-    if (co.low_power > 0) co.low_power--;
 }
 
 static int

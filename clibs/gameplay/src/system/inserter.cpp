@@ -182,7 +182,6 @@ inserter_update(lua_State* L, world& w, ecs_api::entity<ecs::inserter, ecs::cons
     }
 
     if (c.shortage + power > capacitance) {
-        co.low_power = 50;
         return;
     }
     c.shortage += power;
@@ -191,11 +190,7 @@ inserter_update(lua_State* L, world& w, ecs_api::entity<ecs::inserter, ecs::cons
     // step.3
     i.progress--;
     if (i.progress == STATUS_DONE) {
-        co.low_power = 0;
         wait(i, v.getid());
-    }
-    else {
-        if (co.low_power > 0) co.low_power--;
     }
 }
 

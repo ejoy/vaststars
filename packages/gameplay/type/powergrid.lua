@@ -42,7 +42,6 @@ function consumer:ctor(init, pt)
 		},
 		consumer = {
 			working = 0,
-			low_power = 0,
 		},
 	}
 end

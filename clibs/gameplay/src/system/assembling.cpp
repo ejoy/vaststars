@@ -62,7 +62,6 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
 
     // step.2
     while (a.progress <= 0) {
-        co.low_power = 0;
         prototype_context recipe = w.prototype(L, a.recipe);
         recipe_container& container = w.query_container<recipe_container>(a.container);
         if (a.status == STATUS_DONE) {
@@ -98,7 +97,6 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
 
     // step.3
     if (c.shortage + power > capacitance) {
-        co.low_power = 50;
         return;
     }
     c.shortage += power;
@@ -106,7 +104,6 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
 
     // step.4
     a.progress -= a.speed;
-    if (co.low_power > 0) co.low_power--;
 }
 
 static int
