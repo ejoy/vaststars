@@ -3,6 +3,7 @@
 
 #include "luaecs.h"
 #include "core/world.h"
+#include "core/capacitance.h"
 extern "C" {
 #include "util/prototype.h"
 }
@@ -99,21 +100,16 @@ wait(ecs::inserter& inserter, int index) {
 }
 
 static bool
-inserter_active(lua_State* L, world& w, ecs_api::entity<ecs::inserter, ecs::consumer, ecs::capacitance, ecs::entity>& v) {
+inserter_active(lua_State* L, world& w, ecs_api::entity<ecs::inserter, ecs::capacitance, ecs::entity>& v) {
     ecs::inserter& i = v.get<ecs::inserter>();
-    ecs::capacitance& c = v.get<ecs::capacitance>();
-    ecs::consumer& co = v.get<ecs::consumer>();
     ecs::entity& e = v.get<ecs::entity>();
     prototype_context p = w.prototype(L, e.prototype);
 
-    unsigned int power = pt_power(&p);
-    unsigned int drain = pt_drain(&p);
-    unsigned int capacitance = power * 2;
-    if (c.shortage + drain > capacitance) {
+    auto consumer = get_consumer(L, w, v);
+    if (!consumer.cost_drain()) {
         return false;
     }
-    c.shortage += drain;
-    co.working = 1;
+    v.enable_tag<ecs::_working>(w);
 
     if (i.status == STATUS_IN) {
         if (i.hold_amount == 0) {
@@ -145,7 +141,7 @@ inserter_active(lua_State* L, world& w, ecs_api::entity<ecs::inserter, ecs::cons
 
 static void
 inserter_waiting(lua_State* L, world& w) {
-    ecs_api::entity<ecs::inserter, ecs::consumer, ecs::capacitance, ecs::entity> v;
+    ecs_api::entity<ecs::inserter, ecs::capacitance, ecs::entity> v;
     for (auto iter = waiting.begin(); iter != waiting.end();) {
         if (!v.init(w, *iter, L) || inserter_active(L, w, v)) {
             iter = waiting.erase(iter);
@@ -157,23 +153,15 @@ inserter_waiting(lua_State* L, world& w) {
 }
 
 static void
-inserter_update(lua_State* L, world& w, ecs_api::entity<ecs::inserter, ecs::consumer, ecs::capacitance, ecs::entity>& v) {
+inserter_update(lua_State* L, world& w, ecs_api::entity<ecs::inserter, ecs::capacitance, ecs::entity>& v) {
     ecs::inserter& i = v.get<ecs::inserter>();
-    ecs::capacitance& c = v.get<ecs::capacitance>();
-    ecs::consumer& co = v.get<ecs::consumer>();
-    ecs::entity& e = v.get<ecs::entity>();
-    prototype_context p = w.prototype(L, e.prototype);
+    auto consumer = get_consumer(L, w, v);
 
     // step.1
-    unsigned int power = pt_power(&p);
-    unsigned int capacitance = power * 2;
-    if (co.working == 0) {
-        unsigned int drain = pt_drain(&p);
-        if (c.shortage + drain > capacitance) {
+    if (!v.sibling<ecs::_working>(w)) {
+        if (!consumer.cost_drain()) {
             return;
         }
-        c.shortage += drain;
-        co.working = 1;
     }
 
     // step.2
@@ -181,11 +169,9 @@ inserter_update(lua_State* L, world& w, ecs_api::entity<ecs::inserter, ecs::cons
         return;
     }
 
-    if (c.shortage + power > capacitance) {
+    if (!consumer.cost_power()) {
         return;
     }
-    c.shortage += power;
-    co.working = 2;
 
     // step.3
     i.progress--;
@@ -212,9 +198,10 @@ static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     inserter_waiting(L, w);
-    for (auto& v : w.select<ecs::inserter, ecs::consumer, ecs::capacitance, ecs::entity>(L)) {
+    for (auto& v : w.select<ecs::inserter, ecs::capacitance, ecs::entity>(L)) {
         inserter_update(L, w, v);
     }
+    w.clear_type<ecs::_working>();
     return 0;
 }
 
