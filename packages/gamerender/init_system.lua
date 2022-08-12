@@ -17,6 +17,7 @@ local vsobject_manager = ecs.require "vsobject_manager"
 local iguide = require "gameplay.interface.guide"
 local TERRAIN_ONLY = require("debugger").terrain_only
 local NOTHING = require("debugger").nothing
+local DISABLE_LOADING = require("debugger").disable_loading
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
 local icanvas = ecs.require "engine.canvas"
@@ -30,6 +31,15 @@ local m = ecs.system 'init_system'
 function m:init_world()
     check_prototype()
     bgfx.maxfps(FRAMES_PER_SECOND)
+
+    iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
+    iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
+    iui.preload_datamodel_dir "/pkg/vaststars.gamerender/ui_datamodel"
+
+    if not DISABLE_LOADING then
+        iui.open("loading.rml")
+        return
+    end
 
     camera.init("camera_default.prefab")
     ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
@@ -50,9 +60,6 @@ function m:init_world()
         info = storage.info
     end
     icanvas:create(info)
-    iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
-    iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
-    iui.preload_datamodel_dir "/pkg/vaststars.gamerender/ui_datamodel"
 
     if not saveload:restore() then
         return
