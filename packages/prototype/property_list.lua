@@ -71,12 +71,6 @@ local property_list = {
 		value = "$power$",
 		pos = 13,
 	},
-	["idle_power"] = {
-		icon = "textures/property/idle-power.texture",
-		desc = "待机功率",
-		value = "$drain$",
-		pos = 14,
-	},
 	["charge_power"] = {
 		icon = "textures/property/idle-power.texture",
 		desc = "充电功率",
