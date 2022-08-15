@@ -42,9 +42,7 @@ function consumer:ctor(init, pt)
 			delta = 0,
 			network = 1,
 		},
-		consumer = {
-			working = 0,
-		},
+		consumer = true,
 	}
 end
 
