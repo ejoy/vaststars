@@ -199,7 +199,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 						power = (uint32_t)(power * eff);
 					}
 					c.delta = -(int32_t)power;
-					c.shortage -= c.delta;
+					c.shortage -= power;
 					consume_power += power;
 				}
 			}
