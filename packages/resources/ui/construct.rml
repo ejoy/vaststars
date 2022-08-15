@@ -457,7 +457,8 @@
                     <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
                     <div class = "menu-button-text">加载资源</div>
                 </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 20">
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 0">
+                <!--button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 20"-->
                     <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
                     <div class = "menu-button-text">游戏设置</div>
                 </button>
