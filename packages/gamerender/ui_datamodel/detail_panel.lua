@@ -53,9 +53,9 @@ local function get_display_info(e, typeobject, t)
                 key = cn.. "." .. vn
             else
                 total = typeobject[cn]
-                if cn == "power" or cn == "drain" or cn == "capacitance" then
+                if cn == "power" or cn == "capacitance" then
                     local current = 0
-                    if cn == "power" or cn == "drain" then
+                    if cn == "power" then
                         local st = global.statistic["power"][e.eid]
                         if st then
                             current = st[cn]

@@ -1,7 +1,7 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
-
+local iefk = ecs.import.interface "ant.efk|iefk"
 local cr = import_package "ant.compile_resource"
 local serialize = import_package "ant.serialize"
 local prefab_path <const> = "/pkg/vaststars.resources/%s"
@@ -169,7 +169,7 @@ end
 
 local igame_object = ecs.interface "igame_object"
 -- state: "translucent", "opaque", "opacity"
-function igame_object.create(prefab_file_name, cull_group_id, state, color, srt, parent, slot)
+function igame_object.create(prefab_file_name, cull_group_id, state, color, srt, parent, slot, effect_file)
     local children = _get_hitch_children(prefab_path:format(prefab_file_name), state, color, nil, nil)
     local events = {}
     events["group"] = function(_, e, group)
@@ -226,7 +226,7 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
             _slot[k] = v
         end
         _slot.pose = children.pose
-        _slot.offset_srt = {s = s.scene.s, r = s.scene.r, t = s.scene.t} -- offset of the slot
+        _slot.offset_srt = s.offset_srt -- offset of the slot
         -- children.scene: offset of the parent
         self.slot_attach[slot_name] = igame_object.create(model, cull_group_id, state or "opaque", color or COLOR_INVALID, children.scene, self.hitch_entity_object.id, _slot)
     end
@@ -236,11 +236,36 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
         end
         self.slot_attach = {}
     end
-
+    local effect
+    if effect_file then
+        local slot_scene = children.slots["effect"].scene
+        effect = iefk.create(prefab_path:format(effect_file), {
+            play_on_create = false,
+            loop = false,
+            speed = 1.0,
+            scene = {
+                s = slot_scene.s,
+                t = slot_scene.t,
+                parent = hitch_entity_object.id
+            }
+        })
+    end
+    
     local outer = {hitch_entity_object = hitch_entity_object, slot_attach = {}}
     outer.remove = remove
     outer.update = update
     outer.attach = attach
     outer.detach = detach
+    if effect then
+        outer.play_effect = function ()
+            iefk.play(world:entity(effect))
+        end
+        outer.stop_effect = function ()
+            iefk.stop(world:entity(effect), true)
+        end
+        outer.is_effect_playing = function ()
+            return iefk.is_playing(world:entity(effect))
+        end
+    end
     return outer
 end
