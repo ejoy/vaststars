@@ -17,7 +17,8 @@ prototype "采矿机I" {
     fluidboxes = {
         input = {},
         output = {},
-    }
+    },
+    effect_file = "effect/efk/miner_dust.efk"
 }
 
 prototype "采矿机II" {
@@ -36,5 +37,6 @@ prototype "采矿机II" {
     fluidboxes = {
         input = {},
         output = {},
-    }
+    },
+    effect_file = "effect/efk/miner_dust.efk"
 }
