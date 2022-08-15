@@ -9,8 +9,6 @@ local math3d = require "math3d"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local idetail = ecs.interface "idetail"
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
-local camera = ecs.require "engine.camera"
 local EDITOR_CACHE_NAMES <const> = {"SELECTED", "CONSTRUCTED"}
 local CLEAR_CACHE_NAMES <const> = {"SELECTED"}
 

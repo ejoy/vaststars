@@ -86,6 +86,10 @@ end
 function M:create(object_id)
     local items = get_techlist(global.science.tech_list)
     current_tech = items[1]
+    if not current_tech then
+        return {}
+    end
+
     return {
         techitems = items,
         show_finish = false,
@@ -127,6 +131,9 @@ function M:stage_ui_update(datamodel)
     end
     local game_world = gameplay_core.get_world()
     for _, _, _ in switch_mb:unpack() do
+        if not current_tech then
+            goto continue
+        end
         current_tech.running = not current_tech.running
         if current_tech.running then
             for _, tech in ipairs(global.science.tech_list) do
@@ -145,6 +152,7 @@ function M:stage_ui_update(datamodel)
         datamodel.current_running = current_tech.running
         datamodel.current_progress = current_tech.progress
         datamodel.current_button_str = get_button_str(current_tech)
+        ::continue::
     end
 end
 

@@ -262,6 +262,7 @@ function M:stage_ui_update(datamodel)
             _object.fluid_name = new_fluid_name
             _object.fluidflow_id = new_fluidflow_id
             ifluid:update_fluidbox(gameplay_core.get_entity(_object.gameplay_eid), _object.fluid_name) -- TODO: do it in a better way?
+            igameplay.update_chimney_recipe(_object)
             objects:sync("CONSTRUCTED", _object, "fluid_name", "fluidflow_id")
             print(("_update_fluidflow %s (%s,%s): %s %s"):format(_object.prototype_name, _object.x, _object.y, _object.fluid_name, _object.fluidflow_id))
 

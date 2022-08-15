@@ -31,7 +31,7 @@ function M.pickup_material(world, e)
                 if not world:container_pickup(e.assembling.container, c, n) then
                     log.error(("failed to pickup `%s` `%s`"):format(c, n))
                 else
-                    if iworld.base_container_place(world, c, n) then
+                    if not iworld.base_container_place(world, c, n) then
                         log.error(("failed to place `%s` `%s`"):format(n, c))
                     else
                         items[#items + 1] = {name = item_typeobject.name, count = n, icon = item_typeobject.icon}
