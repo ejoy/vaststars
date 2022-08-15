@@ -24,6 +24,7 @@ local vsobject_manager = ecs.require "vsobject_manager"
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONSTRUCTED"}
 local iobject = ecs.require "object"
 local get_assembling_canvas_items = ecs.require "ui_datamodel.common.assembling_canvas".get_assembling_canvas_items
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
 local assembling_recipe = {}; local get_recipe_index; do
     local cache = {}
@@ -131,6 +132,7 @@ local function _update_neighbor_fluidbox(object)
                     for _, sibling in objects:selectall("fluidflow_id", neighbor.fluidflow_id, {"CONSTRUCTED"}) do
                         sibling.fluid_name = fb.fluid_name
                         ifluid:update_fluidbox(gameplay_core.get_entity(sibling.gameplay_eid), sibling.fluid_name)
+                        igameplay.update_chimney_recipe(sibling)
                     end
                 else
                     local prototype_name, dir

@@ -118,7 +118,7 @@
                 -webkit-text-stroke: 1px #000;
             }
             p {
-                animation:0.5s linear 0s infinite alternate enlarge;
+                animation: 0.5s linear 0s infinite alternate enlarge;
             }
             @keyframes enlarge {
                 0% {

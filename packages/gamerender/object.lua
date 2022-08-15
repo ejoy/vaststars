@@ -180,7 +180,8 @@ local function flush()
                 -- TODO: special case for mining 
                 local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
 
-                if outer.__change.recipe and not iprototype.has_type(typeobject.type, "mining") and not typeobject.recipe then
+                -- TODO: special case for mining & chimney
+                if outer.__change.recipe and not iprototype.has_type(typeobject.type, "mining") and not iprototype.has_type(typeobject.type, "chimney") and not typeobject.recipe then
                     vsobject:add_canvas(get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
                 end
                 if outer.__change.fluid_icon then

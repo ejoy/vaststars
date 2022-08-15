@@ -69,7 +69,7 @@ local get_neighbor_fluid_types; do
             local object = objects:coord(dx, dy, cache_names_r)
             if object then
                 for _, v1 in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
-                    if is_neighbor(v.x, v.y, v.dir, v1.x, v1.y, v1.dir) then
+                    if is_neighbor(v.x, v.y, v.dir, v1.x, v1.y, v1.dir) and v1.fluid_name ~= "" then
                         fluid_names[v1.fluid_name] = true
                     end
                 end
@@ -164,6 +164,7 @@ local function complete(self)
                     if iprototype.has_type(iprototype.queryByName("entity", object.prototype_name).type, "fluidbox") then -- TODO: object may be fluidboxes
                         object.fluid_icon = fluid_icon
                         ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
+                        igameplay.update_chimney_recipe(object)
                     end
                 end
             end

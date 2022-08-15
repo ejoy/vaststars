@@ -373,10 +373,12 @@
                     end
                 end,
                 ["manual_finish"] = function()
-                    start.manual_finish_animation = "2.8s linear 0s wordmovement"
+                    start.manual_finish_animation = ("2.8s linear 0s wordmovement")
+                    window.setTimeout(function() start.manual_finish_animation = "none" end, 2800)
                 end,
                 ["tech_finish_animation"] = function()
-                    start.tech_finish_animation = "3s sine-in-out 0s enlarge"
+                    start.tech_finish_animation = ("3s sine-in-out 0s enlarge")
+                    window.setTimeout(function() start.tech_finish_animation = "none" end, 3000)
                 end,
             })
 

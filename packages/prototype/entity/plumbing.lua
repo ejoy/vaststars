@@ -83,7 +83,7 @@ prototype "烟囱I" {
         height = 100,
         base_level = 10,
         connections = {
-            {type="input", position={0,0,"N"}},
+            {type="input", position={1,1,"S"}},
         }
     }
 }
@@ -102,7 +102,7 @@ prototype "排水口I" {
         height = 100,
         base_level = 10,
         connections = {
-            {type="input", position={1,0,"N"}},
+            {type="input", position={1,2,"S"}},
         }
     }
 }

@@ -114,6 +114,17 @@
                 color:rgb(0, 255, 21); 
                 -webkit-text-stroke: 1px #000;
             }
+            p {
+                animation: 0.5s linear 0s infinite alternate enlarge;
+            }
+            @keyframes enlarge {
+                0% {
+                    font-size: 3.6vmin;
+                }
+                100% {
+                    font-size: 4vmin;
+                }
+            }
             .button-increase-item {
                 background-color: rgb(19,175,240);
                 background-size:cover;

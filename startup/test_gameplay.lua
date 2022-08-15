@@ -97,8 +97,8 @@ world:wait(1060*50, dump)
 world:wait(100*50, function ()
     local assembling = gameplay.interface "assembling"
     local ecs = world.ecs
-    for v in ecs:select "assembling id:in" do
-        local e = world.entity[v.id]
+    for v in ecs:select "assembling eid:in" do
+        local e = world.entity[v.eid]
         local pt = gameplay.prototype.queryById(e.entity.prototype)
         assembling.set_recipe(world, e, pt, "地质科技包1")
     end
