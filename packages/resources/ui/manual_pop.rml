@@ -109,17 +109,18 @@
             }
             .new-coming {
                 position: absolute; 
-                right:0.5vmin; bottom:0; 
+                right:0.5vmin; 
+                bottom:0; 
                 font-size:4vmin; 
                 color:rgb(0, 255, 21); 
-                -webkit-text-stroke: 1px #000;
+                -webkit-text-stroke: 0.2vmin #000;
             }
             p {
                 animation: 0.5s linear 0s infinite alternate enlarge;
             }
             @keyframes enlarge {
                 0% {
-                    font-size: 3.6vmin;
+                    font-size: 3.5vmin;
                 }
                 100% {
                     font-size: 4vmin;
