@@ -182,14 +182,23 @@ function terrain:create(width, height)
     for y = 0, h - 1 do
         for x = 0, w - 1 do
             local _x, _y = x * GROUND_WIDTH, y * GROUND_HEIGHT
-            local eid
             local srt = {r = rotators[math.random(1, 4)], t = self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT)}
+            local prefab
             if self.mineral_map[_pack(_x, _y)] then
-                eid = igame_object.create(mineral_meshes[self.mineral_map[_pack(_x, _y)]], self:get_group_id(_x, _y), "opaque", COLOR_INVALID, srt)
+                prefab = mineral_meshes[self.mineral_map[_pack(_x, _y)]]
             else
-                eid = igame_object.create(meshes[math.random(1, #meshes)], self:get_group_id(_x, _y), "opaque", COLOR_INVALID, srt)
+                prefab = meshes[math.random(1, #meshes)]
             end
-            self.eids[#self.eids+1] = eid
+            self.eids[#self.eids+1] = igame_object.create {
+                prefab = prefab,
+                effect = nil,
+                group_id = self:get_group_id(_x, _y),
+                state = "opaque",
+                color = COLOR_INVALID,
+                srt = srt,
+                parent = nil,
+                slot = nil
+            }
         end
     end
 

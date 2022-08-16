@@ -253,7 +253,16 @@ return function (init)
     local typeobject = iprototype.queryByName("entity", init.prototype_name)
     local typeinfo = assert(typeinfos[init.type], ("invalid type `%s`"):format(init.type))
 
-    local game_object = assert(igame_object.create(typeobject.model, init.group_id, typeinfo.state, typeinfo.color, {r = rotators[init.dir], t = init.position}, nil, nil, typeobject.effect_file))
+    local game_object = assert(igame_object.create({
+        prefab = typeobject.model,
+        effect = typeobject.effect_file,
+        group_id = init.group_id,
+        state = typeinfo.state,
+        color = typeinfo.color,
+        srt = {r = rotators[init.dir], t = init.position},
+        parent = nil,
+        slot = nil,
+    }))
     local block_pos = math3d.ref(math3d.add(init.position, {0, terrain.surface_height, 0}))
     local block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir], typeinfo.material)
 
