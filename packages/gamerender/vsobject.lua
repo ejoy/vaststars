@@ -163,11 +163,8 @@ local function get_position(self)
 end
 
 local function set_dir(self, dir)
-    local e = world:entity(self.game_object.hitch_entity_object.id) -- TODO: hitch object may not created yet
-    if not e then
-        return
-    end
-    iom.set_rotation(world:entity(self.game_object.hitch_entity_object.id), rotators[dir])
+    self.game_object:send("set_rotation", rotators[dir])
+
     if self.block_object then
         self.block_object:send("set_rotation", rotators[dir])
     end
@@ -197,7 +194,7 @@ local function update(self, t)
 
     if typeinfo.block_color ~= CONSTRUCT_BLOCK_COLOR_INVALID then
         local e = world:entity(self.game_object.hitch_entity_object.id) -- TODO: hitch object may not created yet
-        if e then
+        if e and self:get_position() then
             local typeobject = iprototype.queryByName("entity", self.prototype_name)
             local block_pos = math3d.ref(math3d.add(self:get_position(), math3d.vector(0, terrain.surface_height, 0)))
             local rotation = get_rotation(self)

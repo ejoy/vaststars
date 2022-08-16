@@ -26,6 +26,7 @@ function M:create(load)
     end
 
     return {
+        closed = false, -- TODO: remove this?
         load = load,
         filename = resources[current] or "",
         progress = "0%",
@@ -61,12 +62,15 @@ local function _load_game()
 end
 
 function M:stage_camera_usage(datamodel)
+    if datamodel.closed == true then -- prevent call _load_game() when window is closed
+        return
+    end
     if current + 1 > #resources then
-        world:pub {"rmlui_message_close", "loading.rml"}
-
         if datamodel.load then
             _load_game()
         end
+        world:pub {"rmlui_message_close", "loading.rml"}
+        datamodel.closed = true
         return
     end
 

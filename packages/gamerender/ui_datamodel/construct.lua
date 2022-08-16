@@ -46,7 +46,6 @@ local imanual = require "ui_datamodel.common.manual"
 local inventory = global.inventory
 local pickup_mb = world:sub {"pickup"}
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
-local resources_loader = ecs.require "ui_datamodel.common.resources_loader"
 
 local builder
 local last_prototype_name

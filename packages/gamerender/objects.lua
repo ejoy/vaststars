@@ -90,7 +90,7 @@ end
 function M:selectall(index_field, cache_value, cache_names)
     local t = {}
     for id, obj in objects:selectall(cache_names, index_field, cache_value) do
-        if not obj.OBJECT_REMOVED then
+        if not (obj.OBJECT_REMOVED == true) then
             t[id] = obj
         end
     end

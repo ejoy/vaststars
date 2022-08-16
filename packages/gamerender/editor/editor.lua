@@ -39,7 +39,7 @@ function M:revert_changes(revert_cache_names)
             iobject.remove(object)
         end
     end
-    iobject.flush() -- object is removed from cache, so we need to flush it
+    iobject.flush() -- object is removed from cache, so we need to flush it, else it will keep the old state
 end
 
 function M:teardown_begin()

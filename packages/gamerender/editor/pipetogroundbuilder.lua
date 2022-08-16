@@ -429,14 +429,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     while true do
         if x == from_x and y == from_y then
             x, y = _set_starting(prototype_name, State, PipeToGroundState, x, y, dir)
-            if x and y then -- TODO: optimize
-                local coord = packcoord(x, y)
-                local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
-                if object and (iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name)) then
-                    local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), false)
-                    PipeToGroundState.map[coord] = {assert(_prototype_name), _dir}
-                end
-            end
 
         elseif x == to_x and y == to_y then
             local last_x, last_y = x, y -- TODO: optimize
@@ -444,18 +436,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
 
             -- refresh the shape of the neighboring pipe
             -- TODO: optimize
-            do
-                local dx, dy = last_x - dir_delta.x, last_y - dir_delta.y
-                local coord = packcoord(dx, dy)
-                local object = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
-                if object and (iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name)) then
-                    local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, false)
-                    if object.prototype_name ~= _prototype_name or object.dir ~= _dir then
-                        PipeToGroundState.map[coord] = {assert(_prototype_name), _dir}
-                    end
-                end
-            end
-
             do
                 local dx, dy = last_x + dir_delta.x, last_y + dir_delta.y
                 local coord = packcoord(dx, dy)
@@ -486,22 +466,23 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     self.coord_indicator.state = object_state
 
     -- TODO: pipe to ground can be replaced by pipe
-    -- if PipeToGroundState.replace then
-    --     for object_id in pairs(PipeToGroundState.replace_object) do
-    --         local object = assert(objects:get(object_id))
+    if PipeToGroundState.replace then
+        for object_id in pairs(PipeToGroundState.replace_object) do
+            local object = assert(objects:get(object_id))
+            object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
 
-    --         local item_name = _get_item_name(object.prototype_name)
-    --         PipeToGroundState.remove[item_name] = (PipeToGroundState.remove[item_name] or 0) + 1
+            local item_name = _get_item_name(object.prototype_name)
+            PipeToGroundState.remove[item_name] = (PipeToGroundState.remove[item_name] or 0) + 1
 
-    --         objects:remove(object.id, "TEMPORARY")
-    --     end
-    -- end
+            iobject.remove(object)
+        end
+    end
 
     for coord, v in pairs(PipeToGroundState.map) do
         local x, y = unpackcoord(coord)
         local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         if object then
-            object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
+            object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
             if object.prototype_name ~= v[1] or object.dir ~= v[2] then
                 if _get_item_name(object.prototype_name) ~= _get_item_name(v[1]) then
                     local item_name = _get_item_name(object.prototype_name)
