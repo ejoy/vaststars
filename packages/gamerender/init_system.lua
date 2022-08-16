@@ -97,8 +97,8 @@ function m:camera_usage()
     end
 
     local function _move_camera(delta)
-        local mq = w:singleton("main_queue", "camera_ref:in")
-        local e = world:entity(mq.camera_ref)
+        local mq = w:first("main_queue camera_ref:in")
+        local e <close> = w:entity(mq.camera_ref, "camera:in")
 
         local old = iom.get_position(e)
         local new = math3d.add(delta, old)
@@ -112,7 +112,7 @@ function m:camera_usage()
     end
     for _, _, left, top, object_id in ui_message_move_camera_mb:unpack() do
         local vsobject = assert(vsobject_manager:get(object_id))
-        local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
+        local mq = w:first("main_queue render_target:in")
         local vr = mq.render_target.view_rect
         local vmin = _get_vmin(vr.w, vr.h, vr.ratio)
         local pos = camera.screen_to_world(left / 100 * vmin, top / 100 * vmin, PLANES)[1]

@@ -97,7 +97,7 @@ end
 
 local entity_events = {}
 entity_events.set_material_property = function(_, e, ...)
-    imaterial.set_property(world:entity(e.id), ...)
+    imaterial.set_property(e, ...)
 end
 entity_events.set_position = function(_, e, ...)
     iom.set_position(e, ...)
@@ -126,13 +126,12 @@ local function create_block(color, block_edge_size, area, position, rotation, ma
 			name 		= ("plane_%d"):format(gen_id()),
 			simplemesh 	= imesh.init_mesh(ientity.create_mesh({"p3|n3", plane_vb}, nil, math3d.ref(math3d.aabb({-0.5, 0, -0.5}, {0.5, 0, 0.5}))), true),
 			on_ready = function (e)
-				ivs.iset_state(e, "main_view", true)
+				ivs.set_state(e, "main_view", true)
                 if material then
-                    imaterial.iset_property(e, "u_basecolor_factor", color)
+                    imaterial.set_property(e, "u_basecolor_factor", color)
                 else
-                    imaterial.iset_property(e, "u_color", color)
+                    imaterial.set_property(e, "u_color", color)
                 end
-				w:sync("render_object_update:out", e)
 			end
 		},
 	}
@@ -141,17 +140,17 @@ local function create_block(color, block_edge_size, area, position, rotation, ma
 end
 
 local function get_rotation(self)
-    return math3d.ref(iom.get_rotation(world:entity(self.game_object.hitch_entity_object.id)))
+    local e <close> = w:entity(self.game_object.hitch_entity_object.id)
+    return math3d.ref(iom.get_rotation(e))
 end
 
 local function set_position(self, position)
-    local e = world:entity(self.game_object.hitch_entity_object.id) -- TODO: hitch object may not created yet
+    local e <close> = w:entity(self.game_object.hitch_entity_object.id) -- TODO: hitch object may not created yet
     if not e then
         return
     end
 
-    assert(world:entity(self.game_object.hitch_entity_object.id))
-    iom.set_position(world:entity(self.game_object.hitch_entity_object.id), position)
+    iom.set_position(e, position)
     if self.block_object then
         local block_pos = math3d.ref(math3d.add(position, {0, terrain.surface_height, 0}))
         self.block_object:send("set_position", block_pos)
@@ -159,7 +158,8 @@ local function set_position(self, position)
 end
 
 local function get_position(self)
-    return iom.get_position(world:entity(self.game_object.hitch_entity_object.id))
+    local e <close> = w:entity(self.game_object.hitch_entity_object.id)
+    return iom.get_position(e)
 end
 
 local function set_dir(self, dir)
@@ -193,7 +193,7 @@ local function update(self, t)
     end
 
     if typeinfo.block_color ~= CONSTRUCT_BLOCK_COLOR_INVALID then
-        local e = world:entity(self.game_object.hitch_entity_object.id) -- TODO: hitch object may not created yet
+        local e <close> = w:entity(self.game_object.hitch_entity_object.id) -- TODO: hitch object may not created yet
         if e and self:get_position() then
             local typeobject = iprototype.queryByName("entity", self.prototype_name)
             local block_pos = math3d.ref(math3d.add(self:get_position(), math3d.vector(0, terrain.surface_height, 0)))
