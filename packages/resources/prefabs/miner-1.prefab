@@ -93,8 +93,8 @@ data:
   name: effect
   scene:
     r: {0, 0, 0, 1}
-    s: {3, 3, 3}
-    t: {0, 36.11668395996094, 0}
+    s: {4, 4, 4}
+    t: {0, 0, 0}
   slot:
     follow_flag: 1
     joint_name: None
