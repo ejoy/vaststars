@@ -226,7 +226,6 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
             _slot[k] = v
         end
         _slot.pose = children.pose
-        _slot.offset_srt = s.offset_srt -- offset of the slot
         -- children.scene: offset of the parent
         self.slot_attach[slot_name] = igame_object.create(model, cull_group_id, state or "opaque", color or COLOR_INVALID, children.scene, self.hitch_entity_object.id, _slot)
     end
