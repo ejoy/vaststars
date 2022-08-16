@@ -45,9 +45,8 @@ function camera.init(prefab_file_name)
         return
     end
 
-    local mq = w:singleton("main_queue", "camera_ref:in")
-    local camera_ref = mq.camera_ref
-    local e = world:entity(camera_ref)
+    local mq = w:first("main_queue camera_ref:in")
+    local e <close> = w:entity(mq.camera_ref, "scene:update")
     e.scene.updir = mc.NULL -- TODO: use math3d.lookto() to reset updir
 
     iom.set_srt(e, data.scene.s or mc.ONE, data.scene.r, data.scene.t)
@@ -58,8 +57,8 @@ function camera.init(prefab_file_name)
 end
 
 function camera.move(srt)
-    local mq = w:singleton("main_queue", "camera_ref:in")
-    local e = world:entity(mq.camera_ref)
+    local mq = w:first("main_queue camera_ref:in")
+    local e <close> = w:entity(mq.camera_ref)
 
     local s = iom.get_scale(e)
     local r = iom.get_rotation(e)
@@ -117,8 +116,8 @@ function camera.transition(prefab_file_name)
         return
     end
 
-    local mq = w:singleton("main_queue", "camera_ref:in")
-    local e = world:entity(mq.camera_ref)
+    local mq = w:first("main_queue camera_ref:in")
+    local e <close> = w:entity(mq.camera_ref)
 
     local old = iom.get_position(e)
     local delta = math3d.sub(old, sdata.scene.t)
@@ -131,9 +130,8 @@ end
 function camera.update()
     local mat = camera_matrix:pop()
     if mat then
-        local mq = w:singleton("main_queue", "camera_ref:in")
-        local camera_ref = mq.camera_ref
-        local e = world:entity(camera_ref)
+        local mq = w:first("main_queue camera_ref:in")
+        local e <close> = w:entity(mq.camera_ref)
         local s, r, t = math3d.srt(mat)
         iom.set_scale(e, s)
         iom.set_rotation(e, r)
@@ -145,8 +143,8 @@ end
 
 -- in `camera_usage` stage
 function camera.screen_to_world(x, y, planes)
-    local mq = w:singleton("main_queue", "render_target:in camera_ref:in")
-    local ce = world:entity(mq.camera_ref)
+    local mq = w:first("main_queue render_target:in camera_ref:in")
+    local ce <close> = w:entity(mq.camera_ref, "camera:in")
     local vpmat = ce.camera.viewprojmat
 
     local vr = mq.render_target.view_rect
@@ -168,14 +166,14 @@ end
 
 -- in `camera_usage` stage
 function camera.get_central_position()
-    local ce = world:entity(irq.main_camera())
+    local ce <close> = w:entity(irq.main_camera())
     local ray = {o = iom.get_position(ce), d = math3d.mul(math.maxinteger, iom.get_direction(ce))}
     return math3d.muladd(ray.d, math3d.plane_ray(ray.o, ray.d, YAXIS_PLANE), ray.o)
 end
 
 function camera.print_viewprojmat(prefix)
-    local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
-    local ce = world:entity(mq.camera_ref)
+    local mq = w:first("main_queue camera_ref:in render_target:in")
+    local ce <close> = w:entity(mq.camera_ref, "camera:in")
     local vpmat = ce.camera.viewprojmat
     if vpmat then
         log.info(("%s viewprojmat: %s"):format(prefix, math3d.tostring(vpmat)))

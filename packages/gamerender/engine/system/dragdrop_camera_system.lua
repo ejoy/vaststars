@@ -28,8 +28,8 @@ function dragdrop_camera_sys:camera_usage()
 
     if begin_pos and last_move_x and last_move_y then
         local pos = camera.screen_to_world(last_move_x, last_move_y, PLANES)[1]
-        local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
-        local ce = world:entity(mq.camera_ref)
+        local mq = w:first("main_queue camera_ref:in")
+        local ce <close> = w:entity(mq.camera_ref)
         local delta = math3d.sub(begin_pos, pos)
         iom.move_delta(ce, delta)
 

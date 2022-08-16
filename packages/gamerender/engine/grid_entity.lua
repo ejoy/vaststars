@@ -57,7 +57,7 @@ function M.create(name, width, height, unit, srt)
 		pids = pids,
 		show = function(self, b)
 			for _, eid in ipairs(self.pids) do
-				local e = world:entity(eid)
+				local e <close> = w:entity(eid)
 				if not e then
 					return
 				end

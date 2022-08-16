@@ -34,8 +34,8 @@ function idetail.show(object_id)
 
     idetail.selected(object)
 
-    local mq = w:singleton("main_queue", "camera_ref:in render_target:in")
-    local ce = world:entity(mq.camera_ref)
+    local mq = w:first("main_queue camera_ref:in render_target:in")
+    local ce <close> = w:entity(mq.camera_ref, "camera:in")
     local vp = ce.camera.viewprojmat
     local vr = mq.render_target.view_rect
     local p = mu.world_to_screen(vp, vr, vsobject:get_position()) -- the position always in the center of the screen after move camera

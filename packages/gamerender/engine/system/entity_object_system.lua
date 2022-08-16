@@ -13,7 +13,7 @@ function entity_object_sys:entity_ready()
         local object = msg[2]
         local events = msg[3]
         local event_type = msg[4]
-        local e = world:entity(msg[5])
+        local e <close> = w:entity(msg[5])
         local f = assert(events[event_type])
         f(object, e, table.unpack(msg, 6))
     end
