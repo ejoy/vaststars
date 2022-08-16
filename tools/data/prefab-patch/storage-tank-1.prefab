@@ -1,21 +1,18 @@
 ---
 data:
-  hitch:
-    group: 0
   name: water_slot
-  scene:
-    parent: 111
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, -13.95, 0}
+  scene: {}
   slot:
     follow_flag: 1
     joint_name: Bone
+    offset_srt:
+      r: {0, 0, 0, 1}
+      s: {1, 1, 1}
+      t: {0, -13.434629440307617, 0}
   tag:
-    water
+    water_slot
 mount: 1
 policy:
   ant.general|name
-  ant.scene|hitch_object
   ant.general|tag
   ant.animation|slot

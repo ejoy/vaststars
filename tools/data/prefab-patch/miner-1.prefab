@@ -1,0 +1,16 @@
+---
+data:
+  name: effect
+  scene:
+    r: {0, 0, 0, 1}
+    s: {4, 4, 4}
+    t: {0, 0, 0}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    effect
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
