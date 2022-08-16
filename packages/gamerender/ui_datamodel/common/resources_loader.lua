@@ -16,9 +16,10 @@ function M.init()
     length = #imaterial.load_res("/pkg/ant.resources/materials/predepth.material", {depth_type="inv_z"})
     length = #imaterial.load_res("/pkg/ant.resources/materials/predepth.material", {depth_type="inv_z", skinning="GPU"})
 
-    assetmgr.load_fx {
+    length = #assetmgr.load_fx {
         fs = "/pkg/ant.resources/shaders/pbr/fs_pbr.sc",
         vs = "/pkg/ant.resources/shaders/pbr/vs_pbr.sc",
+        setting = {}
     }
 end
 

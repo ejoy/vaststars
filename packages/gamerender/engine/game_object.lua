@@ -178,6 +178,10 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
     events["slot_pose"] = function(_, e, pose)
         e.slot.pose = pose
     end
+    events["set_rotation"] = function(_, e, rotation)
+        local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+        iom.set_rotation(e, rotation)
+    end
 
     local policy = {
         "ant.general|name",
@@ -226,6 +230,8 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
             _slot[k] = v
         end
         _slot.pose = children.pose
+        -- slot.offset_srt is the offset of the slot when the slot is attached to the bone
+        -- slot.scene is the offset of the slot when the slot not attached to the bone
         -- children.scene: offset of the parent
         self.slot_attach[slot_name] = igame_object.create(model, cull_group_id, state or "opaque", color or COLOR_INVALID, children.scene, self.hitch_entity_object.id, _slot)
     end
@@ -235,6 +241,10 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
         end
         self.slot_attach = {}
     end
+    local function send(self, ...)
+        self.hitch_entity_object:send(...)
+    end
+
     local effect
     if effect_file then
         local slot_scene = children.slots["effect"].scene
@@ -249,12 +259,13 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
             }
         })
     end
-    
+
     local outer = {hitch_entity_object = hitch_entity_object, slot_attach = {}}
     outer.remove = remove
     outer.update = update
     outer.attach = attach
     outer.detach = detach
+    outer.send   = send
     if effect then
         outer.play_effect = function ()
             iefk.play(world:entity(effect))
