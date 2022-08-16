@@ -4,13 +4,14 @@ local w = world.w
 local iefk = ecs.import.interface "ant.efk|iefk"
 local cr = import_package "ant.compile_resource"
 local serialize = import_package "ant.serialize"
-local prefab_path <const> = "/pkg/vaststars.resources/%s"
 local game_object_event = ecs.require "engine.game_object_event"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local iani = ecs.import.interface "ant.animation|ianimation"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local fs = require "filesystem"
 local math3d = require "math3d"
 local COLOR_INVALID <const> = math3d.constant "null"
+local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 
 local function _replace_material(template, material_file_path)
     for _, v in ipairs(template) do
@@ -168,9 +169,20 @@ local _get_hitch_children ; do
 end
 
 local igame_object = ecs.interface "igame_object"
--- state: "translucent", "opaque", "opacity"
-function igame_object.create(prefab_file_name, cull_group_id, state, color, srt, parent, slot, effect_file)
-    local children = _get_hitch_children(prefab_path:format(prefab_file_name), state, color, nil, nil)
+--[[
+init = {
+    prefab, -- the relative path to the prefab file
+    effect, -- the relative path to the effect file
+    group_id, -- the group id of the hitch, used to cull the hitch
+    state, -- "translucent", "opaque", "opacity"
+    color,
+    srt,
+    parent, -- the parent of the hitch
+    slot, -- the slot of the hitch
+}
+--]]
+function igame_object.create(init)
+    local children = _get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, nil, nil)
     local events = {}
     events["group"] = function(_, e, group)
         e.hitch.group = group
@@ -179,7 +191,6 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
         e.slot.pose = pose
     end
     events["set_rotation"] = function(_, e, rotation)
-        local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
         iom.set_rotation(e, rotation)
     end
 
@@ -187,24 +198,24 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
         "ant.general|name",
         "ant.scene|hitch_object",
     }
-    if slot then
+    if init.slot then
         policy[#policy+1] = "ant.animation|slot"
     end
 
-    local hitch_entity_object = ientity_object.create(ecs.group(cull_group_id):create_entity{
+    local hitch_entity_object = ientity_object.create(ecs.group(init.group_id):create_entity{
         policy = policy,
         data = {
-            name = prefab_file_name,
+            name = init.prefab, -- for debug
             scene = {
-                s = srt.s,
-                t = srt.t,
-                r = srt.r,
-                parent = parent,
+                s = init.srt.s,
+                t = init.srt.t,
+                r = init.srt.r,
+                parent = init.parent,
             },
             hitch = {
                 group = children.hitch_group_id,
             },
-            slot = slot,
+            slot = init.slot,
             scene_needchange = true,
         }
     }, events)
@@ -213,7 +224,7 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
         self.hitch_entity_object:remove()
     end
     local function update(self, prefab_file_name, state, color, animation_name, process)
-        local children = _get_hitch_children(prefab_path:format(prefab_file_name), state, color, animation_name, process)
+        local children = _get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, process)
         self.hitch_entity_object:send("group", children.hitch_group_id)
         for _, slot_game_object in pairs(self.slot_attach) do
             slot_game_object.hitch_entity_object:send("slot_pose", children.pose)
@@ -233,7 +244,15 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
         -- slot.offset_srt is the offset of the slot when the slot is attached to the bone
         -- slot.scene is the offset of the slot when the slot not attached to the bone
         -- children.scene: offset of the parent
-        self.slot_attach[slot_name] = igame_object.create(model, cull_group_id, state or "opaque", color or COLOR_INVALID, children.scene, self.hitch_entity_object.id, _slot)
+        self.slot_attach[slot_name] = igame_object.create {
+            prefab = model,
+            group_id = init.group_id, 
+            state = init.state or "opaque",
+            color = color or COLOR_INVALID,
+            srt = children.scene,
+            parent = self.hitch_entity_object.id,
+            slot = _slot,
+        }
     end
     local function detach(self)
         for _, v in pairs(self.slot_attach) do
@@ -246,9 +265,9 @@ function igame_object.create(prefab_file_name, cull_group_id, state, color, srt,
     end
 
     local effect
-    if effect_file then
+    if init.effect then
         local slot_scene = children.slots["effect"].scene
-        effect = iefk.create(prefab_path:format(effect_file), {
+        effect = iefk.create(RESOURCES_BASE_PATH:format(init.effect), {
             play_on_create = false,
             loop = false,
             speed = 1.0,
