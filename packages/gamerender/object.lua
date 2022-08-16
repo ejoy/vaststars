@@ -183,7 +183,9 @@ local function flush()
                 -- TODO: special case for mining & chimney
                 -- refresh recipe icon of assembling machine when recipe changed or direction changed
                 if (outer.__change.recipe or outer.__change.dir) and not iprototype.has_type(typeobject.type, "mining") and not iprototype.has_type(typeobject.type, "chimney") and iprototype.has_type(typeobject.type, "assembling") and not typeobject.recipe then
-                    vsobject:add_canvas(get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
+                    if outer.recipe then
+                        vsobject:add_canvas(get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
+                    end
                 end
                 if outer.__change.fluid_icon then
                     vsobject:add_canvas(get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
