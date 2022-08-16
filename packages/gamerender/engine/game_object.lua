@@ -186,7 +186,7 @@ function igame_object.create(init)
     local children = _get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, nil, nil)
     local events = {}
     events["group"] = function(_, e, group)
-        w:extend(e, "hitch:in")
+        w:extend(e, "hitch:update")
         e.hitch.group = group
     end
     events["slot_pose"] = function(_, e, pose)
