@@ -533,6 +533,12 @@
                 <div class="accomplished2" style = "pointer-events: none;" data-style-animation="manual_finish_animation">制造完成</div>
             </div>
 
+            <!-- 指示器 -->
+            <div style = "pointer-events: none; position: absolute; right: 30vmin; top: 86.5vmin; flex-direction: row; align-items: center;" data-if = "guide_progress >= 5">
+                <button data-if = "cur_edit_mode == ''"  style='width: 12.00vmin; height: 12.00vmin; background-color: rgb(1, 238, 255); flex-direction: column; justify-content: flex-start;'>
+                    <div style='margin: 0 auto; background-image:"textures/common/indicator.texture"; width: 10vmin; height: 10vmin; background-size:cover;'/>
+                </button>
+            </div>
             <!-- 右下角按钮 -->
             <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "guide_progress >= 5">
                 <!-- 建造 -->
