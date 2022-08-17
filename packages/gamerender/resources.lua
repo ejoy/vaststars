@@ -214,6 +214,7 @@ local t = {
 	"/ui/textures/common/power-insufficient.texture",
 	"/ui/textures/common/delete.texture",
 	"/ui/textures/common/pipe-disable.texture",
+	"/ui/textures/common/indicator.texture",
 	"/ui/textures/common/pipe-disconnect.texture",
 	"/ui/textures/common/road-disable.texture",
 	"/ui/textures/recipe/water2iron.texture",
