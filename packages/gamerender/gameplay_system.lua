@@ -40,7 +40,12 @@ funcs["chimney"] = function(object, typeobject)
         return object
     end
 
-    object.recipe = ichimney.get_recipe(typeobject.craft_category, fluid_name)
+    local recipe = ichimney.get_recipe(typeobject.craft_category, fluid_name)
+    if not recipe then
+        return object
+    end
+
+    object.recipe = recipe
     return object
 end
 
@@ -89,10 +94,17 @@ funcs["fluidbox"] = function (object, typeobject)
     found.fluid_name = fluid_name
 
     if not found.gameplay_eid then -- not yet created in gameplay
-        found.recipe = ichimney.get_recipe(found_typeobject.craft_category, fluid_name)
+        local recipe = ichimney.get_recipe(found_typeobject.craft_category, fluid_name)
+        if not recipe then
+            return object
+        end
+        found.recipe = recipe
     else
         local e = gameplay_core.get_entity(found.gameplay_eid)
-        igpchimney.set_recipe(e, ichimney.get_recipe(found_typeobject.craft_category, fluid_name))
+        local recipe = ichimney.get_recipe(found_typeobject.craft_category, fluid_name)
+        if not recipe then
+            return object
+        end
         ifluid:update_fluidbox(e, fluid_name)
     end
     return object

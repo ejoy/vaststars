@@ -147,18 +147,16 @@ local function _can_replace(object, forward_dir)
     local reverse_dir = iprototype.reverse_dir(forward_dir)
     local _prototype_name, _dir
     _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, forward_dir, true)
-    if _prototype_name == object.prototype_name and _dir == object.dir then
-        return true
+    if not (_prototype_name == object.prototype_name and _dir == object.dir) then
+        return false
     end
 
     _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, reverse_dir, true)
-    if _prototype_name == object.prototype_name and _dir == object.dir then
-        return true
+    if not (_prototype_name == object.prototype_name and _dir == object.dir) then
+        return false
     end
 
-    _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, forward_dir, true)
-    _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, reverse_dir, true)
-    return _prototype_name == object.prototype_name and _dir == object.dir
+    return true
 end
 
 local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir)

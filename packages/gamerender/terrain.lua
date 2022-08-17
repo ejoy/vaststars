@@ -170,6 +170,7 @@ function terrain:create(width, height)
     for c, mineral in pairs(map) do
         local x, y = c:match("^(%d*),(%d*)$")
         x, y = tonumber(x), tonumber(y)
+        x, y = x - (x % terrain.ground_width), y - (y % terrain.ground_height)
         for i = 0, GROUND_WIDTH - 1 do
             for j = 0, GROUND_HEIGHT - 1 do
                 self.mineral_map[_pack(x + i, y + j)] = mineral
