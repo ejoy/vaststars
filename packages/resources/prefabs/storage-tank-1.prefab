@@ -20,12 +20,11 @@ policy:
 ---
 data:
   name: water_slot
-  scene: {}
+  scene:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, -13, 0}
   slot:
-    offset_srt:
-      r: {0, 0, 0, 1}
-      s: {1, 1, 1}
-      t: {0, -13.434629440307617, 0}
     follow_flag: 1
     joint_name: Bone
   tag:
