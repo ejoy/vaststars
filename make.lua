@@ -67,6 +67,6 @@ lm:default {
     lm.os == "windows" and "fmod_dll",
     lm.compiler == "msvc" and lm.mode == "debug" and "copy_asan",
     "copy_manual",
-    lm.os ~= "ios" and "vaststars",
-    "vaststars_rt",
+    "vaststars",
+    lm.os ~= "ios" and "vaststars_rt",
 }
