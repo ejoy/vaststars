@@ -96,8 +96,6 @@ data:
   name: empty9
   scene: {}
   slot:
-    offset_srt:
-      t: {0, 3, 0}
     follow_flag: 2
     joint_name: Bone.003
   tag:
