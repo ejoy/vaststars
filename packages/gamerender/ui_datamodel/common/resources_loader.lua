@@ -4,6 +4,8 @@ local w = world.w
 
 local assetmgr = import_package "ant.asset"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
+local fs = require "filesystem"
+local cr = import_package "ant.compile_resource"
 
 local M = {}
 
@@ -15,6 +17,8 @@ function M.init()
     length = #imaterial.load_res('/pkg/ant.resources/materials/pickup_transparent.material', {skinning="GPU"})
     length = #imaterial.load_res("/pkg/ant.resources/materials/predepth.material", {depth_type="inv_z"})
     length = #imaterial.load_res("/pkg/ant.resources/materials/predepth.material", {depth_type="inv_z", skinning="GPU"})
+    length = #imaterial.load_res("/pkg/ant.resources/materials/singlecolor.material")
+    length = #imaterial.load_res("/pkg/ant.resources/materials/canvas_texture.material")
 
     length = #assetmgr.load_fx {
         fs = "/pkg/ant.resources/shaders/pbr/fs_pbr.sc",
@@ -24,7 +28,6 @@ function M.init()
 end
 
 function M.load(filename)
-    local skip = {"glb", "cfg", "hdr", "dds", "anim", "event", "lua", "efk", "rml", "rcss", "ttc", "png", "material"}
     local handler = {
         ["prefab"] = function(f)
             local fs = require "filesystem"
@@ -48,18 +51,30 @@ function M.load(filename)
         ["texture"] = function (f)
             length = #assetmgr.resource(f)
         end,
+        ["png"] = function (f)
+            length = #assetmgr.resource(f)
+        end,
+        ["material"] = function (f)
+            length = #imaterial.load_res(f)
+        end
     }
 
-    local f = ("/pkg/vaststars.resources%s"):format(filename)
+    local package, fp = filename:match("^%/packages%/(.-)%/(.*)$")
+    local package_path = {
+        ["gameplay"] = "/pkg/vaststars.gameplay/%s",
+        ["gamerender"] = "/pkg/vaststars.gamerender/%s",
+        ["resources"] = "/pkg/vaststars.resources/%s",
+        ["prototype"] = "/pkg/vaststars.prototype/%s",
+    }
+    assert(package_path[package], ("package (%s) not found"):format(package))
+
+    local f = (package_path[package]):format(fp)
     local ext = f:match(".*%.(.*)$")
 
-    for _, _ext in ipairs(skip) do
-        if ext == _ext then
-            return
-        end
+    if not handler[ext] then
+        local f <close> = assert(fs.open(fs.path(f), "r"))
+        return
     end
-
-    assert(handler[ext], "unknown resource type " .. ext)
     handler[ext](f)
     return true
 end
