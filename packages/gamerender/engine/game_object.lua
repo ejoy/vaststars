@@ -249,8 +249,8 @@ function igame_object.create(init)
         -- children.scene: offset of the parent
         self.slot_attach[slot_name] = igame_object.create {
             prefab = model,
-            group_id = init.group_id, 
-            state = init.state or "opaque",
+            group_id = init.group_id,
+            state = state or "opaque",
             color = color or COLOR_INVALID,
             srt = children.scene,
             parent = self.hitch_entity_object.id,
@@ -269,17 +269,18 @@ function igame_object.create(init)
 
     local effect
     if init.effect then
-        local slot_scene = children.slots["effect"].scene
-        effect = iefk.create(RESOURCES_BASE_PATH:format(init.effect), {
-            play_on_create = false,
-            loop = false,
-            speed = 1.0,
-            scene = {
-                s = slot_scene.s,
-                t = slot_scene.t,
-                parent = hitch_entity_object.id
-            }
-        })
+        -- TDOD: enable the code block below
+        -- local slot_scene = children.slots["effect"].scene
+        -- effect = iefk.create(RESOURCES_BASE_PATH:format(init.effect), {
+        --     play_on_create = false,
+        --     loop = false,
+        --     speed = 1.0,
+        --     scene = {
+        --         s = slot_scene.s,
+        --         t = slot_scene.t,
+        --         parent = hitch_entity_object.id
+        --     }
+        -- })
     end
 
     local outer = {hitch_entity_object = hitch_entity_object, slot_attach = {}}

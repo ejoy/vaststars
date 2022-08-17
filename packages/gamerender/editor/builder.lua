@@ -113,7 +113,7 @@ local function _has_connection(object)
             goto continue
         end
 
-        local typeobject = iprototype.queryByName("entity", object.prototype_name)
+        local typeobject = iprototype.queryByName("entity", o.prototype_name)
         if iprototype.has_type(typeobject.type, "assembling") then
             return true
         end

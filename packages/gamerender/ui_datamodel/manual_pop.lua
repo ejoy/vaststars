@@ -72,6 +72,8 @@ end
 local function _can_craft(prototype_name, count)
     local typeobject = assert(iprototype.queryByName("item", prototype_name))
     if count <= inventory:get(typeobject.id).count then
+        local item = inventory:modity(typeobject.id)
+        item.count = item.count - count
         return true
     end
 
@@ -182,6 +184,7 @@ local function _update_recipe_items(datamodel, recipe_name, crafting_times)
                     max_craft_count = count
                 end
             end
+            inventory:revert() -- TODOD： _can_craft() may change the inventory
 
             datamodel.recipe_items[#datamodel.recipe_items+1] = {
                 name = recipe_item.name,
@@ -223,6 +226,7 @@ local function _update_recipe_items(datamodel, recipe_name, crafting_times)
                     enable_button = false
                 end
             end
+            inventory:revert() -- TODOD： _can_craft() may change the inventory
 
             datamodel.recipe_name = recipe_item.name
             datamodel.enabled_item_count_1 = enable_button

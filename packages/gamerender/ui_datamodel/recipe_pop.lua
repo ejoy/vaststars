@@ -112,6 +112,26 @@ local function _update_neighbor_fluidbox(object)
         return (dx1 == x2 and dy1 == y2) and (dx2 == x1 and dy2 == y1)
     end
 
+    local function _has_connection(object)
+        for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
+            local succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
+            if not succ then
+                goto continue
+            end
+
+            local o = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
+            if not o then
+                goto continue
+            end
+
+            local typeobject = iprototype.queryByName("entity", o.prototype_name)
+            if iprototype.has_type(typeobject.type, "assembling") then
+                return true
+            end
+            ::continue::
+        end
+    end
+
     for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
         local succ, neighbor_x, neighbor_y = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
         if not succ then
@@ -131,6 +151,20 @@ local function _update_neighbor_fluidbox(object)
                 if neighbor_fb.fluid_name == "" then
                     for _, sibling in objects:selectall("fluidflow_id", neighbor.fluidflow_id, {"CONSTRUCTED"}) do
                         sibling.fluid_name = fb.fluid_name
+                        sibling.fluidflow_id = neighbor.fluidflow_id
+
+                        local fluid_icon -- TODO: duplicate code, see also saveload.lua
+                        local typeobject = iprototype.queryByName("entity", sibling.prototype_name)
+                        if iprototype.has_type(typeobject.type, "fluidbox") and sibling.fluid_name ~= "" then
+                            if iprototype.is_pipe(sibling.prototype_name) or iprototype.is_pipe_to_ground(sibling.prototype_name) then
+                                if ((sibling.x % 2 == 1 and sibling.y % 2 == 1) or (sibling.x % 2 == 0 and sibling.y % 2 == 0)) and not _has_connection(sibling) then
+                                    fluid_icon = true
+                                end
+                            else
+                                fluid_icon = true
+                            end
+                        end
+                        sibling.fluid_icon = fluid_icon
                         ifluid:update_fluidbox(gameplay_core.get_entity(sibling.gameplay_eid), sibling.fluid_name)
                         igameplay.update_chimney_recipe(sibling)
                     end

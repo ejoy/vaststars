@@ -187,7 +187,7 @@ local function flush()
                         vsobject:add_canvas(get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
                     end
                 end
-                if outer.__change.fluid_icon then
+                if outer.__change.fluid_icon and outer.fluid_name ~= "" then
                     vsobject:add_canvas(get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
                 end
                 outer.__change = {}
