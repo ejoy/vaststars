@@ -516,7 +516,7 @@
             <div class="accomplished" data-style-animation="tech_finish_animation" data-if = "!show_tech_progress">研究完成</div>
 
             <!-- 右下角手搓队列 -->
-            <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "cur_edit_mode == ''">
+            <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; right:0vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "cur_edit_mode == ''">
                 <collapsed-bar id = "manual-queue" init-expanded = "false" min-width = "13.50vmin" max-width = "auto" style = "height: 35vmin; flex-direction: row; overflow: hidden;">
                     <div data-for = "manual_queue" style = "flex-direction: row; pointer-events: none;">
                         <div style = "width: 0.5vmin;" />
