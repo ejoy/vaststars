@@ -476,26 +476,26 @@
             </button>
 
             <!-- 开始施工 -->
-            <button data-if = "cur_edit_mode == 'construct' && show_construct_complete" data-event-click="clickConstructComplete()" style='position: absolute; left: 2.67vmin; top: 78.67vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: center;'>
+            <button data-if = "cur_edit_mode == 'construct' && show_construct_complete" data-event-click="clickConstructComplete()" style='position: absolute; left: 2.67vmin; bottom: 2vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: center;'>
                 <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始施工</div>
             </button>
 
             <!-- 开始拆除 -->
-            <button data-if = "cur_edit_mode == 'dismantle' && show_teardown" data-event-click="clickTeardownComplete()" style='position: absolute; left: 2.67vmin; top: 78.67vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: center;'>
+            <button data-if = "cur_edit_mode == 'dismantle' && show_teardown" data-event-click="clickTeardownComplete()" style='position: absolute; left: 2.67vmin; bottom: 2vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: center;'>
                 <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始拆除</div>
             </button>
             
             <!-- 拆除模式 -->
-            <div data-if = "cur_edit_mode != '' && guide_progress >= 5" data-event-click="clickTeardownBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+            <div data-if = "cur_edit_mode != '' && guide_progress >= 5" data-event-click="clickTeardownBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/demolish.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除模式</div>
             </div>
 
             <!-- 建造模式 -->
             <!-- see also start.clickConstructBegin() -->
-            <div data-if = "cur_edit_mode != '' && guide_progress >= 10" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 16.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+            <div data-if = "cur_edit_mode != '' && guide_progress >= 10" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/construct.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
                 <div style ="font-size: 4vmin; top: 2.67vmin;">建造模式</div>
             </div>
@@ -540,7 +540,7 @@
             </div>
 
             <!-- 指示器 -->
-            <div style = "pointer-events: none; position: absolute; right: 21.5vmin; bottom:0vmin; flex-direction: row; align-items: center;" data-if = "guide_progress >= 5">
+            <div style = "pointer-events: none; position: absolute; right: 21.5vmin; bottom:2vmin; flex-direction: row; align-items: center;" data-if = "guide_progress >= 5">
                 <button data-if = "cur_edit_mode == ''"  style='width: 12.00vmin; height: 12.00vmin; background-color: rgb(1, 238, 255); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"textures/common/indicator.texture"; width: 10vmin; height: 10vmin; background-size:cover;'/>
                 </button>
@@ -548,7 +548,7 @@
             <!-- 右下角按钮 -->
             <div style = "pointer-events: none; position: absolute; bottom:0vmin; right:0vmin; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "guide_progress >= 5">
                 <!-- 建造 -->
-                <button data-if = "cur_edit_mode == ''" data-event-click="clickConstructBegin()" style='width: 20.00vmin; height: 20.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == ''" data-event-click="clickConstructBegin()" style='width: 20.00vmin; height: 20.00vmin; bottom: 2vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 13.67vmin; height: 13.67vmin; background-size:cover;'/>
                     <div style="font-size: 5vmin;">建造</div>
                 </button>
@@ -556,7 +556,7 @@
                 <!-- separator -->
                 <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_confirm" />
                 <!-- 确认放置 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_confirm" data-event-click="clickConstructConfirm()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_confirm" data-event-click="clickConstructConfirm()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"textures/construct/confirm.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
                     <div style="font-size: 85%;">确认放置</div>
                 </button>
@@ -564,7 +564,7 @@
                 <!-- separator -->
                 <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_rotate" />
                 <!-- 旋转建筑 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_rotate" data-event-click="clickConstructRotate()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_rotate" data-event-click="clickConstructRotate()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto;background-image:"textures/construct/rotate.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
                     <div style="font-size: 85%;">旋转建筑</div>
                 </button>
@@ -572,14 +572,14 @@
                 <!-- 确认放置水管 -->
                 <!-- separator -->
                 <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_pipe_confirm" />
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_confirm" data-event-click="clickLayingPipeConfirm()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_confirm" data-event-click="clickLayingPipeConfirm()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/pipe-end.texture"; background-size:cover;'/>
                     <div style="font-size: 85%; pointer-events: none;">铺管结束</div>
                 </button>
           
                 <!-- 建造水管开始 -->
                 <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_pipe_begin" />
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_begin" data-event-click="clickLayingPipeBegin()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_begin" data-event-click="clickLayingPipeBegin()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/pipe-begin.texture"; background-size:cover; pointer-events: none;'/>
                     <div style="font-size: 85%; pointer-events: none;">铺管开始</div>
                 </button>
@@ -587,7 +587,7 @@
                 <!-- separator -->
                 <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_pipe_cancel" />
                 <!-- 取消铺管 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_cancel" data-event-click="clickLayingPipeCancel()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_cancel" data-event-click="clickLayingPipeCancel()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/cancel.texture"; background-size:cover;'/>
                     <div style="font-size: 85%; pointer-events: none;">取消铺管</div>
                 </button>
@@ -595,19 +595,19 @@
                 <!-- 放置路块 -->
                 <!-- separator -->
                 <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_road_confirm" />
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_confirm" data-event-click="clickLayingPipeConfirm()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_confirm" data-event-click="clickLayingPipeConfirm()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/road-construct.texture"; background-size:cover;'/>
                     <div style="font-size: 85%; pointer-events: none;">铺路结束</div>
                 </button>
           
                 <!-- 建造水管开始 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_begin" data-event-click="clickLayingPipeBegin()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_begin" data-event-click="clickLayingPipeBegin()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/road-construct.texture"; background-size:cover; pointer-events: none;'/>
                     <div style="font-size: 85%; pointer-events: none;">铺路开始</div>
                 </button>
 
                 <!-- 取消铺管 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_cancel" data-event-click="clickLayingPipeCancel()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_cancel" data-event-click="clickLayingPipeCancel()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/cancel.texture"; background-size:cover;'/>
                     <div style="font-size: 85%; pointer-events: none;">取消铺路</div>
                 </button>
