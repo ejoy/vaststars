@@ -119,10 +119,12 @@ local function _get_mineral_recipe(prototype_name, x, y, dir)
     return imining.get_mineral_recipe(prototype_name, found)
 end
 
-local function _update_fluid_name(self, datamodel, object)
+local function _update_fluid_name(self, datamodel, object, failed)
     if not ifluid:need_set_fluid(object.prototype_name) then
-        object.state = _get_state(object.prototype_name, true)
-        datamodel.show_confirm = true
+        if failed == false then
+            object.state = _get_state(object.prototype_name, true)
+            datamodel.show_confirm = true
+        end
         datamodel.show_rotate = true
         return
     end
@@ -130,8 +132,10 @@ local function _update_fluid_name(self, datamodel, object)
     local fluid_types = self:get_neighbor_fluid_types(EDITOR_CACHE_NAMES, object.prototype_name, object.x, object.y, object.dir)
     if #fluid_types <= 1 then
         object.fluid_name = fluid_types[1] or ""
-        object.state = _get_state(object.prototype_name, true)
-        datamodel.show_confirm = true
+        if failed == false then
+            object.state = _get_state(object.prototype_name, true)
+            datamodel.show_confirm = true
+        end
         datamodel.show_rotate = true
         return
     else
@@ -150,11 +154,12 @@ local function touch_end(self, datamodel)
 
     if not self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) then
         pickup_object.state = _get_state(pickup_object.prototype_name, false)
+        datamodel.show_confirm = false
         return
     end
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
-    _update_fluid_name(self, datamodel, pickup_object)
+    _update_fluid_name(self, datamodel, pickup_object, false)
 end
 
 local function confirm(self, datamodel)
@@ -237,10 +242,12 @@ local function rotate_pickup_object(self, datamodel)
         return
     end
 
+    local failed = false
     if not self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, dir) then
         pickup_object.state = _get_state(pickup_object.prototype_name, false)
         datamodel.show_confirm = false
         datamodel.show_rotate = true
+        failed = true
     else
         pickup_object.state = _get_state(pickup_object.prototype_name, true)
         datamodel.show_confirm = true
@@ -249,7 +256,7 @@ local function rotate_pickup_object(self, datamodel)
 
     pickup_object.dir = dir
     pickup_object.x, pickup_object.y = coord[1], coord[2]
-    _update_fluid_name(self, datamodel, pickup_object)
+    _update_fluid_name(self, datamodel, pickup_object, failed)
 end
 
 local function clean(self, datamodel)
