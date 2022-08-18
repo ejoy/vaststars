@@ -14,7 +14,6 @@
                 border-radius: 2.00vmin;
                 border: 0.53vmin white;
                 font-size: 4.00vmin;
-
                 transition: transform 2s elastic-out;
                 transform: scale(1.0);
             }
@@ -22,7 +21,8 @@
                 transform: scale(1.1);
             }
             button:active {
-                transform: scale(1.0);
+                transform: scale(1.3);
+                background-color: rgba(255, 0, 0, 0.7);
             }
             button#work {
                 position: absolute;
@@ -102,7 +102,8 @@
                 justify-content: flex-start;
                 position: absolute; 
                 left:0vmin; 
-                bottom: -100vmin;
+                bottom:0vmin;
+                /* bottom: -100vmin; */
                 border: 0.13vmin #fff;
                 z-index: 999;
                 background-color: rgba(200,200,200,80);
@@ -239,6 +240,11 @@
                 transform: rotate(0deg);
                 transform-origin: 0% 50%;
                 opacity: 0.5;
+            }
+            .panel {
+                width: 87%;
+                height: 100%;
+                pointer-events: none;
             }
         </style>
         <script type="text/x-lua" path = "lua/custom.lua" />
@@ -421,14 +427,14 @@
             start.progress_bar_right = "rotate(0deg)"
         </script>
     </head>
-    <body class = "nopointer">
-        <div class = "nopointer" data-model="start">
+    <body style = "pointer-events: none; justify-content: center; align-items: center;">
+        <div class = "panel" data-model="start">
             <!-- fps 显示 -->
-            <div style = "pointer-events: none; position: absolute; left: 7.25vmin; top: 6.25vmin; z-index: 999;">
+            <div style = "pointer-events: none; position: absolute; left: 7.25vmin; top: 6.25vmin; z-index: 999;" data-if="false">
                 <div style = "pointer-events: none; position: absolute; top: 0vmin; width: 50.00vmin; height: auto; font-size: 6.25vmin; color: rgb(0,255,0);">{{fps_text}}</div>
             </div>
             <!-- drawcall 显示 -->
-            <div style = "pointer-events: none; position: absolute; left: 7.25vmin; top: 12.50vmin; z-index: 999;">
+            <div style = "pointer-events: none; position: absolute; left: 7.25vmin; top: 12.50vmin; z-index: 999;" data-if="false">
                 <div style = "pointer-events: none; position: absolute; top: 0vmin; width: 90.00vmax; height: auto; font-size: 6.25vmin; color: rgb(0,255,0);">{{drawcall_text}}</div>
             </div>
 
@@ -495,7 +501,7 @@
             </div>
 
             <!-- 右上角：当前科技进度 data-if = "cur_edit_mode == '' && show_tech_progress"-->
-            <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
+            <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
                 <button style='background-color:rgb(204,219,11);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickTask(is_task)">
                     <div style="position:absolute; left:2.5vmin; bottom:0; width: 70%; height: 70%; background-size:cover;" data-style-background-image="current_tech_icon"/>
                     <div style="-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 3.5vmin; word-break: break-all;">{{current_tech_name}}</div>
@@ -534,13 +540,13 @@
             </div>
 
             <!-- 指示器 -->
-            <div style = "pointer-events: none; position: absolute; right: 30vmin; top: 86.5vmin; flex-direction: row; align-items: center;" data-if = "guide_progress >= 5">
+            <div style = "pointer-events: none; position: absolute; right: 21.5vmin; bottom:0vmin; flex-direction: row; align-items: center;" data-if = "guide_progress >= 5">
                 <button data-if = "cur_edit_mode == ''"  style='width: 12.00vmin; height: 12.00vmin; background-color: rgb(1, 238, 255); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"textures/common/indicator.texture"; width: 10vmin; height: 10vmin; background-size:cover;'/>
                 </button>
             </div>
             <!-- 右下角按钮 -->
-            <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "guide_progress >= 5">
+            <div style = "pointer-events: none; position: absolute; bottom:0vmin; right:0vmin; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "guide_progress >= 5">
                 <!-- 建造 -->
                 <button data-if = "cur_edit_mode == ''" data-event-click="clickConstructBegin()" style='width: 20.00vmin; height: 20.00vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 13.67vmin; height: 13.67vmin; background-size:cover;'/>
@@ -550,7 +556,7 @@
                 <!-- separator -->
                 <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_confirm" />
                 <!-- 确认放置 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_confirm" data-event-click="clickConstructConfirm()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_confirm" data-event-click="clickConstructConfirm()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"textures/construct/confirm.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
                     <div style="font-size: 85%;">确认放置</div>
                 </button>
@@ -558,7 +564,7 @@
                 <!-- separator -->
                 <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_rotate" />
                 <!-- 旋转建筑 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_rotate" data-event-click="clickConstructRotate()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_rotate" data-event-click="clickConstructRotate()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto;background-image:"textures/construct/rotate.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
                     <div style="font-size: 85%;">旋转建筑</div>
                 </button>
@@ -566,14 +572,14 @@
                 <!-- 确认放置水管 -->
                 <!-- separator -->
                 <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_pipe_confirm" />
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_confirm" data-event-click="clickLayingPipeConfirm()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_confirm" data-event-click="clickLayingPipeConfirm()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/pipe-end.texture"; background-size:cover;'/>
                     <div style="font-size: 85%; pointer-events: none;">铺管结束</div>
                 </button>
           
                 <!-- 建造水管开始 -->
                 <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_pipe_begin" />
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_begin" data-event-click="clickLayingPipeBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_begin" data-event-click="clickLayingPipeBegin()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/pipe-begin.texture"; background-size:cover; pointer-events: none;'/>
                     <div style="font-size: 85%; pointer-events: none;">铺管开始</div>
                 </button>
@@ -581,7 +587,7 @@
                 <!-- separator -->
                 <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_pipe_cancel" />
                 <!-- 取消铺管 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_cancel" data-event-click="clickLayingPipeCancel()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_cancel" data-event-click="clickLayingPipeCancel()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/cancel.texture"; background-size:cover;'/>
                     <div style="font-size: 85%; pointer-events: none;">取消铺管</div>
                 </button>
@@ -589,26 +595,26 @@
                 <!-- 放置路块 -->
                 <!-- separator -->
                 <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_road_confirm" />
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_confirm" data-event-click="clickLayingPipeConfirm()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_confirm" data-event-click="clickLayingPipeConfirm()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/road-construct.texture"; background-size:cover;'/>
                     <div style="font-size: 85%; pointer-events: none;">铺路结束</div>
                 </button>
           
                 <!-- 建造水管开始 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_begin" data-event-click="clickLayingPipeBegin()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_begin" data-event-click="clickLayingPipeBegin()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/road-construct.texture"; background-size:cover; pointer-events: none;'/>
                     <div style="font-size: 85%; pointer-events: none;">铺路开始</div>
                 </button>
 
                 <!-- 取消铺管 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_cancel" data-event-click="clickLayingPipeCancel()" style='width: 16.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_cancel" data-event-click="clickLayingPipeCancel()" style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/cancel.texture"; background-size:cover;'/>
                     <div style="font-size: 85%; pointer-events: none;">取消铺路</div>
                 </button>
             </div>
 
             <!-- 右边菜单 -->
-            <div style = "pointer-events: none; position: absolute; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="guide_progress >= 10">
+            <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="guide_progress >= 10">
                 <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;" data-if="cur_edit_mode == 'construct'" >
                     <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name ? 'rgb(0, 176, 80)' : 'rgb(246, 142, 14)'">
                         <div class="workbutton-bg" data-style-background-image = "it.icon" />
