@@ -314,6 +314,7 @@ function M:stage_ui_update(datamodel)
 
     for _ in load_resource_mb:unpack() do
         iui.open("loading.rml", false)
+        camera.init("camera_default.prefab")
     end
 end
 

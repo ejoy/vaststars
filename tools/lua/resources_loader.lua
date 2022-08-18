@@ -14,10 +14,6 @@ local function _package_files(root)
     local package_name = ("/pkg/%s/"):format(package_lua.name)
     print(package_lua.name)
 
-    local function _escape_magic(pattern)
-        return (pattern:gsub("%W", "%%%1"))
-    end
-
     local skip_ext = {
         "^.*%.gitignore$",
         "^.*%.git$",
@@ -60,6 +56,7 @@ local function _package_files(root)
         "^/pkg/ant.resources/textures/pochuan_d.texture$",
         "^/pkg/ant.resources/textures/pochuan_n.texture$",
         "^/pkg/ant.resources/materials/msaa_depth_resolve.material$", -- iphone
+        ".*mars_pumpjack.*",
     }
 
     local function _skip_ext(f)
@@ -98,6 +95,7 @@ for _, v in ipairs(packagedir) do
         end
     end
 end
+table.sort(t)
 
 local s = {}
 s[#s+1] = "local t = {"
