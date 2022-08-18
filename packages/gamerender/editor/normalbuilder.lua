@@ -88,12 +88,6 @@ local function new_entity(self, datamodel, typeobject)
     self.pickup_object.__object.APPEAR = true
 end
 
-local function touch_move(self, datamodel, delta_vec)
-    if self.pickup_object then
-        iobject.move_delta(self.pickup_object, delta_vec)
-    end
-end
-
 -- TODO: duplicate from builder.lua
 local function _get_mineral_recipe(prototype_name, x, y, dir)
     local typeobject = iprototype.queryByName("entity", prototype_name)
@@ -119,7 +113,7 @@ local function _get_mineral_recipe(prototype_name, x, y, dir)
     return imining.get_mineral_recipe(prototype_name, found)
 end
 
-local function _update_fluid_name(self, datamodel, object, failed)
+local function _update_fluid_name(self, datamodel, object, failed, x, y, dir) -- TODO: optimize x, y, dir
     if not ifluid:need_set_fluid(object.prototype_name) then
         if failed == false then
             object.state = _get_state(object.prototype_name, true)
@@ -129,7 +123,7 @@ local function _update_fluid_name(self, datamodel, object, failed)
         return
     end
 
-    local fluid_types = self:get_neighbor_fluid_types(EDITOR_CACHE_NAMES, object.prototype_name, object.x, object.y, object.dir)
+    local fluid_types = self:get_neighbor_fluid_types(EDITOR_CACHE_NAMES, object.prototype_name, x or object.x, y or object.y, dir or object.dir)
     if #fluid_types <= 1 then
         object.fluid_name = fluid_types[1] or ""
         if failed == false then
@@ -141,6 +135,30 @@ local function _update_fluid_name(self, datamodel, object, failed)
     else
         object.fluid_name = ""
         object.state = _get_state(object.prototype_name, false)
+    end
+end
+
+local function touch_move(self, datamodel, delta_vec)
+    if self.pickup_object then
+        local pickup_object = self.pickup_object
+        iobject.move_delta(pickup_object, delta_vec)
+
+        local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
+        local coord = terrain:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, pickup_object.dir))
+        if not coord then
+            pickup_object.state = _get_state(pickup_object.prototype_name, false)
+            datamodel.show_confirm = false
+            return
+        end
+
+        if not self:check_construct_detector(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) then
+            pickup_object.state = _get_state(pickup_object.prototype_name, false)
+            datamodel.show_confirm = false
+            return
+        end
+
+        pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) -- TODO: maybe set recipt according to entity type?
+        _update_fluid_name(self, datamodel, pickup_object, false, coord[1], coord[2], pickup_object.dir)
     end
 end
 
