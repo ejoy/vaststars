@@ -28,6 +28,7 @@ function M.init()
 end
 
 function M.load(filename)
+    local skip = {"glb"}
     local handler = {
         ["prefab"] = function(f)
             local fs = require "filesystem"
@@ -70,6 +71,11 @@ function M.load(filename)
 
     local f = (package_path[package]):format(fp)
     local ext = f:match(".*%.(.*)$")
+    for _, _ext in ipairs(skip) do
+        if ext == _ext then
+            return
+        end
+    end
 
     if not handler[ext] then
         local f <close> = assert(fs.open(fs.path(f), "r"))
