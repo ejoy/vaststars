@@ -60,15 +60,17 @@ local _instance_hash ; do
     local color_hash = get_hash_func()
     local animation_hash = get_hash_func()
     local process_hash = get_hash_func()
+    local emissive_color_hash = get_hash_func()
 
-    function _instance_hash(prefab_file_name, state, color, animation_name, process)
+    function _instance_hash(prefab_file_name, state, color, animation_name, process, emissive_color)
         local h1 = prefab_name_hash(prefab_file_name or 0)
         local h2 = state_hash(state or 0)
         local h3 = color_hash(color or 0)
         local h4 = animation_hash(animation_name or 0)
         local h5 = process_hash(math.floor((process or 0) * 100)) -- process: float, 0.0 ~ 1.0 -> 0 ~ 100
+        local h6 = emissive_color_hash(emissive_color or 0)
 
-        return h1 | (h2 << 8) | (h3 << 16) | (h4 << 24) | (h5 << 32) -- assuming 255 types of every parameter at most
+        return h1 | (h2 << 8) | (h3 << 16) | (h4 << 24) | (h5 << 32) | (h6 << 40) -- assuming 255 types of every parameter at most
     end
 end
 
@@ -113,8 +115,8 @@ local _get_hitch_children ; do
         return scene, slots
     end
 
-    function _get_hitch_children(prefab_file_path, state, color, animation_name, process)
-        local hash = _instance_hash(prefab_file_path, state, tostring(color), animation_name, process)
+    function _get_hitch_children(prefab_file_path, state, color, animation_name, process, emissive_color)
+        local hash = _instance_hash(prefab_file_path, state, tostring(color), animation_name, process, tostring(emissive_color))
         if cache[hash] then
             return cache[hash]
         end
@@ -163,6 +165,9 @@ local _get_hitch_children ; do
         if state == "translucent" or state == "opacity" then
             instance:send("set_material_property", "u_basecolor_factor", color)
         end
+        if emissive_color then
+            instance:send("set_material_property", "u_emissive_factor", emissive_color)
+        end
 
         cache[hash] = {prefab_file_name = prefab_file_path, instance = instance, hitch_group_id = hitch_group_id, scene = scene, slots = slots, pose = pose}
         return cache[hash]
@@ -180,10 +185,11 @@ init = {
     srt,
     parent, -- the parent of the hitch
     slot, -- the slot of the hitch
+    emissive_color,
 }
 --]]
 function igame_object.create(init)
-    local children = _get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, nil, nil)
+    local children = _get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, nil, nil, init.emissive_color)
     local events = {}
     events["group"] = function(_, e, group)
         w:extend(e, "hitch:update")
@@ -226,8 +232,8 @@ function igame_object.create(init)
     local function remove(self)
         self.hitch_entity_object:remove()
     end
-    local function update(self, prefab_file_name, state, color, animation_name, process)
-        local children = _get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, process)
+    local function update(self, prefab_file_name, state, color, animation_name, process, emissive_color)
+        local children = _get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, process, emissive_color)
         self.hitch_entity_object:send("group", children.hitch_group_id)
         for _, slot_game_object in pairs(self.slot_attach) do
             slot_game_object.hitch_entity_object:send("slot_pose", children.pose)

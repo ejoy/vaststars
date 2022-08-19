@@ -206,6 +206,20 @@ local function update(self, t)
     self.prototype_name = t.prototype_name or self.prototype_name
 end
 
+-- TODO: remove this function, simply use update
+local function animation_update(self, animation_name, process)
+    local typeinfo = typeinfos[self.type]
+    local typeobject = iprototype.queryByName("entity", self.prototype_name)
+    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, animation_name, process)
+end
+
+-- TODO: remove this function, simply use update
+local function emissive_color_update(self, color)
+    local typeinfo = typeinfos[self.type]
+    local typeobject = iprototype.queryByName("entity", self.prototype_name)
+    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, nil, nil, color)
+end
+
 local function attach(self, slot_name, model, ...)
     if self.slots[slot_name] == model then
         return
@@ -218,12 +232,6 @@ end
 local function detach(self, ...)
     self.game_object:detach(...)
     self.slots = {}
-end
-
-local function animation_update(self, animation_name, process)
-    local typeinfo = typeinfos[self.type]
-    local typeobject = iprototype.queryByName("entity", self.prototype_name)
-    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, animation_name, process)
 end
 
 local function modifier(self, opt, ...)
@@ -286,6 +294,7 @@ return function (init)
         attach = attach,
         detach = detach,
         animation_update = animation_update,
+        emissive_color_update = emissive_color_update,
         modifier = modifier,
         add_canvas = add_canvas,
         del_canvas = del_canvas,
