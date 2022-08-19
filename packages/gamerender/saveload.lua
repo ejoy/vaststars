@@ -41,9 +41,9 @@ local function restore_world()
     local function _debug()
         if fs.exists(fs.path("/pkg/vaststars.prototype/debugger.lua")) then
             print("debug")
-            local debugcfg = import_package "vaststars.prototype"("debugger")
+            local SKIP_GUIDE <const> = require "debugger".skip_guide
             local guide = import_package "vaststars.prototype"("guide")
-            if debugcfg.skip_guide == true then
+            if SKIP_GUIDE then
                 print("skip guide")
                 gameplay_core.get_storage().guide_id = #guide
                 iui.set_guide_progress(guide[#guide].narrative_end.guide_progress)
