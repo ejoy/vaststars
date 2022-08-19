@@ -4,7 +4,7 @@
             div {
                 font: 120% "微软雅黑";
             }
-            .small-item {
+            .small-item1 {
                 margin:0 0.1vmin;
                 flex-direction: column;
                 align-items:center;
@@ -68,12 +68,13 @@
                 font-size: 3.2vmin;
                 text-align: center;
             }
-            .panel {
+            .panel1 {
                 width: 87%;
                 height: 100%;
                 pointer-events: none;
             }
         </style>
+        <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
@@ -97,7 +98,7 @@
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
-        <div data-model="start" class="panel" style="flex-direction: column; justify-content:flex-start;">
+        <div data-model="start" class="panel1" style="flex-direction: column; justify-content:flex-start;">
 
             <!-- detail panel begin -->
             <div style = "overflow: hidden; position: absolute; left: 0.13vmin; top: 7vmin; width: 30.00vmin; height: 72.33vmin; background-color: rgb(250, 205, 9); border: 0.27vmin rgb(89, 73, 39);flex-direction: column; justify-content: flex-start;">
@@ -141,16 +142,36 @@
                 <div style="height:19%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "showchest">
                     <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin"/>
                     <div style="padding-top:0.3vmin; width:100%; flex-direction: row; justify-content: flex-start; align-items: center;">
-                        <div data-for = "chest : chest_list0" class="small-item" data-style-background-image="chest.icon">
+                        <div data-for = "chest : chest_list0" class="small-item1" data-style-background-image="chest.icon">
                             <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
                         </div>
                     </div>
                     <div style="padding-top:0.3vmin; width:100%;flex-direction: row; justify-content: flex-start; align-items: center;">
-                        <div data-for = "chest : chest_list1" class="small-item" data-style-background-image="chest.icon">
+                        <div data-for = "chest : chest_list1" class="small-item1" data-style-background-image="chest.icon">
                             <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
                         </div>
                     </div>
                 </div>
+
+
+                <!--采矿机底部显示进度-->
+                <div style="height:19%; flex-direction: column; justify-content: center; align-items: center;" data-if = "false">
+                    <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin"/>
+                    <div class="row" style="width:100%; height: 100%; justify-content: space-evenly; align-items: center;">
+                        <div class="column" style="justify-content: center; width: 70%; height:30%;">
+                            <div class="progress-bar-block" style = "width: 100%; height:100%; border: 0.25vmin rgb(131, 130, 130);">
+                                <div class="progress-background" style ="background-color: rgb(87, 238, 0); width: 50%;"/>
+                            </div> 
+                            <div class = "percent-num">50%</div>
+                        </div>
+                        <div class="row" style="width: 25%; justify-content: center;">
+                            <div class="small-item1" style="width:7vmin; height:7vmin;">
+                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">10</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <!-- detail panel end -->
         </div>
