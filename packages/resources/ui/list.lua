@@ -14,6 +14,7 @@ function list_meta.create(document, e, item_count, item_renderer, detail_rendere
         item_map       = {},
         index_map      = {},
         document    = document,
+        data_for_item   = false
     }
     setmetatable(list, list_meta)
     e.style.overflow = 'hidden'
@@ -60,10 +61,10 @@ function list_meta:get_item(index)
 end
 
 function list_meta:on_dirty(index)
-    local iteminfo = self.index_map[index]
-    if not iteminfo then
+    if self.data_for_item then
         return
     end
+    local iteminfo = self.index_map[index]
     self:show_detail(iteminfo.item, false)
     if self.selected == iteminfo.item then
         self.selected = nil
@@ -79,15 +80,20 @@ end
 function list_meta:on_dirty_all(item_count)
     self.panel.removeAllChild()
     self.item_count = item_count or self.item_count
+    self.item_width = nil
+    self.item_height = nil
     self.item_map = {}
     self.index_map = {}
-    self.selected = nil
-    for index = 1, self.item_count do
-        local item = self.item_renderer(index)
-        self.panel.appendChild(item)
-        local item_info = {index = index, detail = false, item = item}
-        self.item_map[item] = item_info
-        self.index_map[#self.index_map + 1] = item_info
+    if self.data_for_item then
+        self.item_renderer(self.panel)
+    else
+        for index = 1, self.item_count do
+            local item = self.item_renderer(index)
+            self.panel.appendChild(item)
+            local item_info = {index = index, detail = false, item = item}
+            self.item_map[item] = item_info
+            self.index_map[#self.index_map + 1] = item_info
+        end
     end
 end
 
@@ -128,16 +134,28 @@ function list_meta:show_detail(it, show)
     end
 end
 function list_meta:on_mousedown(event)
-    self.drag.mouse_pos = ((self.direction == 0) and event.x or event.y)
+    if #self.index_map < 1 or not self.item_width then
+        local childNodes = self.data_for_item and self.panel.childNodes[1].childNodes or self.panel.childNodes
+        for index, it in ipairs(childNodes) do
+            if not self.item_width then
+                self.item_width = it.clientWidth
+                self.item_height = it.clientHeight
+            end
+            local item_info = {index = index, detail = false, item = it}
+            self.item_map[it] = item_info
+            self.index_map[#self.index_map + 1] = item_info
+        end
+    end
+    local pos = ((self.direction == 0) and event.x or event.y)
+    if not pos and event.targetTouches and #event.targetTouches > 0 then
+        pos = (self.direction == 0) and event.targetTouches[1].x or event.targetTouches[1].y
+    end
+    self.drag.mouse_pos = pos
     self.drag.anchor = self.pos
 end
 
 function list_meta:on_mouseup(event)
-    local item = self.panel.childNodes[1]
-    if not item then
-        return
-    end
-    local min = (self.direction == 0) and (self.view.clientWidth - self.item_count * item.clientWidth) or (self.view.clientHeight - self.item_count * item.clientHeight)
+    local min = (self.direction == 0) and (self.view.clientWidth - self.item_count * self.item_width) or (self.view.clientHeight - self.item_count * self.item_height)
     if min > 0 then
         min = 0
     end
@@ -159,8 +177,12 @@ function list_meta:on_mouseup(event)
 end
 
 function list_meta:on_drag(event)
-    if event.button then
-        self.drag.delta = ((self.direction == 0) and event.x or event.y) - self.drag.mouse_pos
+    local pos = (self.direction == 0) and event.x or event.y
+    if not pos and event.targetTouches and #event.targetTouches > 0 then
+        pos = (self.direction == 0) and event.targetTouches[1].x or event.targetTouches[1].y
+    end
+    if event.button or event.targetTouches then
+        self.drag.delta = pos - self.drag.mouse_pos
         self.pos = self.drag.anchor + self.drag.delta
         local e = self.panel
         local oldClassName = e.className
