@@ -105,17 +105,17 @@ local function page_item_renderer(index)
     if index > #start.sub_inventory then
         if index <= start.slot_count then
             local item = document.createElement "div"
-            item.outerHTML = ([[<div class = "item" style = "width: %0.2fvmin; height: %0.2fvmin;" data-event-click = "clickBlankSlot()" />]]):format(13 + 0.27, 13 + 0.27)
+            item.outerHTML = ([[<div class = "item" style = "width: %0.2fvmin; height: %0.2fvmin;" data-event-click = "clickBlankSlot()" />]]):format(13.8 + 0.27, 13.8 + 0.27)
             return item
         else
             local item = document.createElement "div"
-            item.outerHTML = ([[<div style = "width: %0.2fvmin; height: %0.2fvmin;" data-event-click = "clickBlank()" />]]):format(13 + 0.27, 13 + 0.27)
+            item.outerHTML = ([[<div style = "width: %0.2fvmin; height: %0.2fvmin;" data-event-click = "clickBlank()" />]]):format(13.8 + 0.27, 13.8 + 0.27)
             return item
         end
     end
 
     local item = document.createElement "div"
-    item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s; width: %0.2fvmin; height: %0.2fvmin;"> <div class="item-count">%s</div> </div>]]):format(start.sub_inventory[index].icon, 13 + 0.27, 13 + 0.27, start.sub_inventory[index].count)
+    item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s; width: %0.2fvmin; height: %0.2fvmin;"> <div class="item-count">%s</div> </div>]]):format(start.sub_inventory[index].icon, 13.8 + 0.27, 13.8 + 0.27, start.sub_inventory[index].count)
 
     local select_style_border   = "0.27vmin green"
     local unselect_style_border = "0.27vmin rgb(89, 73, 39)"
