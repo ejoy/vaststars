@@ -6,7 +6,7 @@
     <body>
         <div class="item-container-region"  data-model="start">
             <!-- 左边面板 begin -->
-            <div class="panel" style="width: 50%;">
+            <div class="panel" style="width: 45%;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button" data-event-click="ClickClose()"/>
                     <div class = "menu-title" style="width: 70%;">{{prototype_name}}</div>
@@ -150,7 +150,7 @@
             <!-- 左边面板 end -->
 
             <!-- 右边面板 begin -->
-            <div class="panel" style="width: 50%;">
+            <div class="panel" style="width: 45%;">
                 <div class="header" style="justify-content: flex-end; align-items: center;" data-if="mode == 'init' && show_set_recipe">
                     <div class = "menu-title" style="flex-direction: row;align-items: center;height:100%;">
                         <div class = "small-bg" style='background-image: "textures/science/book.texture"; width:6.8vmin; height:6.8vmin;' data-if="recipe_name != ''"/>
