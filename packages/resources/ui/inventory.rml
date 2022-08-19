@@ -402,8 +402,8 @@
 
                 <!-- 指挥中心物品栏 start -->
                 <!-- tag page begin -->
-                <div class="item-container" style = "width: 100%;">
-                    <page width = '88vmin' height = '66.00vmin' footerheight= '4.00vmin' row='5' col='7' />
+                <div class="item-container" style = "width: 100%; height: 68%;">
+                    <page width = '70vmin' height = '60.00vmin' footerheight= '3.00vmin' row='4' col='5'/>
                 </div>
                 <!-- tag page end -->
                 <!-- 指挥中心物品栏 end -->
@@ -412,11 +412,11 @@
 
                 <!-- 物品栏分类页签 start -->
                 <div class = "tab-container" style="flex-grow: 1;">
-                    <div data-for = "item_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 49%;">
+                    <div data-for = "item_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
                         <workbutton data-event-click="clickCategory(it.category)" style = "width: 100%;" data-style-background-color="it.category == cur_item_category ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'">
                             <div class="workbutton-bg" data-style-background-image="it.icon" />
                             <div class="catalog-desc">{{it.category}}</div>
-                        </workbutton>
+                        </workbutton> 
                     </div>
                 </div>
                 <!-- 物品栏分类页签 end -->
