@@ -21,7 +21,7 @@
     <body>
         <div class="item-container-region" data-model="start">
             <!-- 左边面板 begin -->
-            <div class="panel" style="width: 50%;">
+            <div class="panel" style="width: 45%;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button" data-event-click="clickReturn()"/>
                     <div class = "menu-title" style="width: 70%;">{{prototype_name}}</div>
@@ -35,7 +35,7 @@
             <!-- 左边面板 end -->
 
             <!-- 右边面板 begin -->
-            <div class="panel" style="width: 50%;">
+            <div class="panel" style="width: 45%;">
                 <div class="header" style="justify-content: flex-end;">
                     <div class = "menu-title" style="flex-direction: row; align-items: center; justify-content: flex-end; text-align: right; width: 70%;">科技列表</div>
                     <button class = "recipe-change-button" data-event-click="openTech()"/>
