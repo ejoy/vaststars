@@ -119,7 +119,7 @@
     </head>
     <body>
         <div class="item-container-region"  data-model="start">
-            <div class="panel" style = "width: 50%;">
+            <div class="panel" style = "width: 45%;">
                 <div class="column" style="width:100%; height:100%;" data-if="!show_item_info">
                     <!-- 指挥中心标题 start -->
                     <div class="header" id = "item-name-block">
@@ -391,7 +391,7 @@
                     <!-- 物品所需资源展示 end -->
                 </div>
             </div>
-            <div class="panel" style= "flex-direction: column; width: 50%;">
+            <div class="panel" style= "flex-direction: column; width: 45%;">
                 <!-- 制造舱按钮 start -->
                 <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if = "is_headquater && guide_progress >= 25" >
                     <div class = "menu-title" style="text-align: right; width: 70%;" >制造舱</div>

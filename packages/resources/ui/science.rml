@@ -494,7 +494,7 @@
     </head>
     <body>
         <div class="item-container-region" data-model="start">
-            <div class="panel" style="width: 50%;">
+            <div class="panel" style="width: 45%;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button" data-event-click="clickReturn()"/>
                     <div class = "menu-title">{{return_title}}</div>
@@ -506,7 +506,7 @@
                 <list direction='1' width='100%' height='90%'/>
                 <!-- 科技条目 end -->
             </div>
-            <div class="panel" style="width: 50%;">
+            <div class="panel" style="width: 45%;">
                 <div class="column" id ="item-recipe-region">
                     <div class="column" style="width: 100%; height: 88%;">
                         <div class="recipe-name-text">其他信息</div>
