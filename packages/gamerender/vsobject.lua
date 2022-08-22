@@ -240,14 +240,14 @@ end
 
 local function add_canvas(self, items)
     self:del_canvas()
-    self.canvas_id = icanvas:add_item(self.id, items)
+    self.canvas_id = icanvas.add_item(icanvas.types().RECIPE, self.id, items)
 end
 
 local function del_canvas(self)
     if not self.canvas_id then
         return
     end
-    icanvas:remove_item(self.canvas_id)
+    icanvas.remove_item(icanvas.types().RECIPE, self.canvas_id)
     self.canvas_id = nil
 end
 
