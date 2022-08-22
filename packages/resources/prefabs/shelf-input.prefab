@@ -1,0 +1,29 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/shelf-input.glb|meshes/Plane.002_P1.meshbin
+  name: Plane.004
+  scene:
+    t: {0, 17.161256790161133, 0}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  anim_ctrl: {}
+  animation: {}
+  animation_birth: ""
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/shelf-input.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name
