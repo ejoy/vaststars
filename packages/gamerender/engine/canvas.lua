@@ -6,30 +6,30 @@ local icas   = ecs.import.interface "ant.terrain|icanvas"
 local iterrain = ecs.require "terrain"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 
-local function _get_canvas_entity()
-    local canvas_entity = w:first("canvas eid:in canvas:in")
-    if not canvas_entity then
-        log.error("can not found canvas entity")
-        return
-    end
-    return canvas_entity
-end
+local types <const> = {
+    RECIPE = 1,
+}
 
-local cache_id = {}
+local cache = {} -- type = entity object of canavs
+
 local entity_events = {}
-entity_events.add_item = function(_, e, id, items)
-    local canvas_entity = _get_canvas_entity()
-    if not canvas_entity then
-        return
+entity_events.add_item = function(self, e, id, items)
+    self.cache = self.cache or {}
+    self.cache[id] = icas.add_items(e, items)
+end
+entity_events.remove_item = function(self, e, id)
+    for _, id in ipairs(self.cache[id]) do
+        icas.remove_item(e, id)
     end
-
-    cache_id[id] = icas.add_items(canvas_entity, items)
+end
+entity_events.show = function(_, e, b)
+    icas.show(e, b)
 end
 
 local M = {}
-local canvas_entity_object
-function M:create(show)
-    canvas_entity_object = ientity_object.create(ecs.create_entity {
+function M.create(canvas_type, show)
+    assert(cache[canvas_type] == nil)
+    cache[canvas_type] = ientity_object.create(ecs.create_entity {
         policy = {
             "ant.scene|scene_object",
             "ant.terrain|canvas",
@@ -49,30 +49,23 @@ function M:create(show)
     }, entity_events)
 end
 
-function M:add_item(id, items)
-    assert(canvas_entity_object)
+function M.add_item(canvas_type, id, items)
+    local canvas_entity_object = assert(cache[canvas_type])
     canvas_entity_object:send("add_item", id, items)
     return id
 end
 
-function M:remove_item(item_id)
-    local canvas_entity = _get_canvas_entity()
-    if not canvas_entity then
-        return
-    end
-
-    if not cache_id[item_id] then
-        log.error(("can not found item id `%s`"):format(item_id))
-        return
-    end
-
-    for _, id in ipairs(cache_id[item_id]) do
-        icas.remove_item(canvas_entity, id)
-    end
-    cache_id[item_id] = nil
+function M.remove_item(canvas_type, id)
+    local canvas_entity_object = assert(cache[canvas_type])
+    canvas_entity_object:send("remove_item", id)
 end
 
-function M:show(b)
-    icas.show(b)
+function M.show(canvas_type, b)
+    local canvas_entity_object = assert(cache[canvas_type])
+    canvas_entity_object:send("show", b)
+end
+
+function M.types()
+    return types
 end
 return M

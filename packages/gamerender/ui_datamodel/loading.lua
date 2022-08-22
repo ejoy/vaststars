@@ -52,7 +52,7 @@ local function _load_game()
     if storage.info ~= nil then
         info = storage.info
     end
-    icanvas:create(info)
+    icanvas.create(icanvas.types().RECIPE, info)
 
     if not saveload:restore() then
         return
