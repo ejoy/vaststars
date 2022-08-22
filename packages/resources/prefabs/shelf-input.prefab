@@ -7,7 +7,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/materials/Material.material
+  material: $path ../glb/materials/Material.material
   mesh: /pkg/vaststars.resources/glb/shelf-input.glb|meshes/Plane.002_P1.meshbin
   name: Plane.004
   scene:
