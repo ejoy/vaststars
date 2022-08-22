@@ -33,13 +33,3 @@ mount: 1
 policy:
   ant.general|name
   ant.render|render
----
-data:
-  anim_ctrl: {}
-  animation: {}
-  animation_birth: ""
-  name: animation
-  skeleton: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|animations/skeleton.ozz
-policy:
-  ant.animation|animation
-  ant.general|name
