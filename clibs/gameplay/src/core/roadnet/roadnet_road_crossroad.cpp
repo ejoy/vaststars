@@ -157,7 +157,7 @@ namespace roadnet::road {
             }
         }
         for (uint8_t ii = 0; ii < 4; ++ii) {
-            uint8_t i = (ii + (ti>>4)) % 4;
+            uint8_t i = (ii + (ti>>4)) % 4; // swap the order of the lorries every 16 ticks
             lorryid id = wait_lorry[i];
             if (!id) {
                 continue;
