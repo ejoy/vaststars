@@ -104,3 +104,17 @@ policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
+---
+data:
+  name: shelf-output
+  scene:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 4.475433349609375, -20.93341064453125}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+editor: false
+mount: 10
+prefab: /pkg/vaststars.resources/prefabs/shelf-output.prefab
