@@ -34,6 +34,9 @@ lm.ios = {
 
 if lm.mode == "debug" then
     --lm.flags = "-fsanitize=address"
+    lm.msvc = {
+        defines = "_DISABLE_STRING_ANNOTATION"
+    }
     lm:msvc_copydll "copy_asan" {
         type = "asan",
         output = lm.bindir,
