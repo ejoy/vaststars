@@ -32,10 +32,10 @@ end
 local function on_prefab_ready(prefab)
 end
 
-local function on_prefab_message(prefab, cmd, ...)
+local function on_prefab_message(prefab, inner, cmd, ...)
     local event = game_object_event[cmd]
     if event then
-        event(prefab, ...)
+        event(prefab, inner, ...)
     else
         log.error(("game_object unknown event `%s`"):format(cmd))
     end
@@ -109,16 +109,14 @@ local _get_hitch_children ; do
         local slots = {}
         local scene = {}
         for _, v in ipairs(template) do
-            if not v.data then
-                goto continue
+            if v.data then
+                if v.data.slot then
+                    slots[v.data.name] = v.data
+                end
+                if v.data.name == "Scene" and v.data.scene then -- TODO: special for hitch which attach to slot
+                    scene = v.data.scene
+                end
             end
-            if v.data.slot then
-                slots[v.data.name] = v.data
-            end
-            if v.data.name == "Scene" and v.data.scene then -- TODO: special for hitch which attach to slot
-                scene = v.data.scene
-            end
-            ::continue::
         end
         return scene, slots
     end
@@ -148,6 +146,7 @@ local _get_hitch_children ; do
 
         log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab_file_path, state, require("math3d").tostring(color), animation_name, process}, " "))) -- TODO: remove this line
 
+        local inner = { tags = {} } -- tag -> eid
         local pose = iani.create_pose()
         local prefab = g:create_instance(template)
         prefab.on_init = function(prefab)
@@ -159,6 +158,18 @@ local _get_hitch_children ; do
         prefab.on_ready = function(prefab)
             on_prefab_ready(prefab)
 
+            for _, eid in ipairs(prefab.tag["*"]) do
+                local e <close> = w:entity(eid, "tag?in")
+                if not e.tag then
+                    goto continue
+                end
+                for _, tag in ipairs(e.tag) do
+                    inner.tags[tag] = inner.tags[tag] or {}
+                    table.insert(inner.tags[tag], eid)
+                end
+                ::continue::
+            end
+
             local animation_prefab_file_path = prefab_file_path:gsub("^(.*)(%.prefab)$", "%1-animation.prefab")
             local _f = fs.path(animation_prefab_file_path)
             if fs.exists(_f) then
@@ -168,14 +179,14 @@ local _get_hitch_children ; do
         end
         prefab.on_message = function(prefab, ...)
             local prefab_file_path = prefab_file_path -- for debug
-            on_prefab_message(prefab, ...)
+            on_prefab_message(prefab, inner, ...)
         end
         local instance = world:create_object(prefab)
         if state == "translucent" or state == "opacity" then
             instance:send("set_material_property", "u_basecolor_factor", color)
         end
         if emissive_color then
-            instance:send("set_material_property", "u_emissive_factor", emissive_color)
+            instance:send("set_tag_material_property", "u_emissive_factor", "u_emissive_factor", emissive_color)
         end
 
         cache[hash] = {prefab_file_name = prefab_file_path, instance = instance, hitch_group_id = hitch_group_id, scene = scene, slots = slots, pose = pose}
