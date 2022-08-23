@@ -5,7 +5,6 @@ local w = world.w
 local assetmgr = import_package "ant.asset"
 local imaterial = ecs.import.interface "ant.asset|imaterial"
 local fs = require "filesystem"
-local cr = import_package "ant.compile_resource"
 
 local M = {}
 
