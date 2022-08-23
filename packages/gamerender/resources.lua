@@ -45,7 +45,6 @@ local t = {
 	"/pkg/ant.bake/bake_mathadapter.lua",
 	"/pkg/ant.bake/baker.lua",
 	"/pkg/ant.bake/main.lua",
-	"/pkg/ant.bake/materials/bake_lighting.material",
 	"/pkg/ant.bake/materials/downsample.material",
 	"/pkg/ant.bake/materials/shaders/fs_downsample.sc",
 	"/pkg/ant.bake/materials/shaders/fs_pbr_baked.sc",

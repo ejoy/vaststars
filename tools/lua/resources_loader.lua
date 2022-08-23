@@ -58,6 +58,7 @@ local function _package_files(root)
         "^/pkg/ant.resources/textures/pochuan_d.texture$",
         "^/pkg/ant.resources/textures/pochuan_n.texture$",
         "^/pkg/ant.resources/materials/msaa_depth_resolve.material$", -- iphone
+        "^/pkg/ant.bake/materials/bake_lighting.material$",
         ".*mars_pumpjack.*",
     }
 
