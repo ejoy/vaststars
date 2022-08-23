@@ -23,6 +23,7 @@ local icamera = ecs.require "engine.camera"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local DISABLE_FPS = require("debugger").disable_fps
+local SHOW_LOAD_RESOURCE = not require("debugger").disable_load_resource
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local construct_begin_mb = mailbox:sub {"construct_begin"} -- 建造 -> 建造模式
@@ -113,6 +114,7 @@ local M = {}
 
 function M:create()
     return {
+        show_load_resource = SHOW_LOAD_RESOURCE,
         construct_menu = {},
         tech_count = global.science.tech_list and #global.science.tech_list or 0,
         show_tech_progress = false,

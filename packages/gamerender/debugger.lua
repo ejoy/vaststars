@@ -10,6 +10,7 @@ local options = {
     ["infinite_item"] = true,
     ["disable_fps"] = true,
     ["disable_loading"] = true,
+    ["disable_load_resource"] = true,
 }
 
 return setmetatable({}, { __index = function (_, k)

@@ -260,6 +260,7 @@
 
                 cur_construct_menu = "",  -- 当前选中的二级建造菜单名
                 cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
+                show_load_resource = false,
 
                 show_construct_complete = false,
                 show_rotate = false,
@@ -472,7 +473,7 @@
             <!-- 施工返回按钮 -->
             <div data-if = "cur_edit_mode != ''" data-event-click="clickCancel()" style='position: absolute; left: 0.67vmin; top: 0.67vmin; background-image:"textures/construct/return.texture"; width: 14.67vmin; height: 14.67vmin; background-size:cover;' />
             <!-- 加载资源按钮 -->
-            <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left: -5vmin; top: -4vmin;" data-event-click="clickLoadResource()" data-if = "cur_edit_mode == '' && guide_progress >= 10">
+            <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left: -5vmin; top: -4vmin;" data-event-click="clickLoadResource()" data-if = "cur_edit_mode == '' && guide_progress >= 10 && show_load_resource">
                 <div class = "menu-button-pic" style='width:8vmin; height:8vmin; background-image:"textures/cmdcenter/big_bag.texture"'/>
             </button>
 
