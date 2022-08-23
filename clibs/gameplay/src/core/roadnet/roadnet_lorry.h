@@ -9,7 +9,7 @@ namespace roadnet {
     using lorryid = objectid;
 
     struct lorry {
-        uint8_t marked: 1;
+        uint8_t marked: 1; // avoid tick twice in one tick when moving to next location
         uint8_t tick: 7;
         uint8_t lineIdx;
         lineid lineId;
