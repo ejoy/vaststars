@@ -15,11 +15,15 @@ local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 
 local function _replace_material(template, material_file_path)
     for _, v in ipairs(template) do
+        if v.prefab then -- TODO: special case for prefab
+            goto continue
+        end
         for _, policy in ipairs(v.policy) do
             if policy == "ant.render|render" or policy == "ant.render|simplerender" then
                 v.data.material = material_file_path
             end
         end
+        ::continue::
     end
 
     return template
@@ -105,12 +109,16 @@ local _get_hitch_children ; do
         local slots = {}
         local scene = {}
         for _, v in ipairs(template) do
+            if not v.data then
+                goto continue
+            end
             if v.data.slot then
                 slots[v.data.name] = v.data
             end
             if v.data.name == "Scene" and v.data.scene then -- TODO: special for hitch which attach to slot
                 scene = v.data.scene
             end
+            ::continue::
         end
         return scene, slots
     end
@@ -159,6 +167,7 @@ local _get_hitch_children ; do
             end
         end
         prefab.on_message = function(prefab, ...)
+            local prefab_file_path = prefab_file_path -- for debug
             on_prefab_message(prefab, ...)
         end
         local instance = world:create_object(prefab)

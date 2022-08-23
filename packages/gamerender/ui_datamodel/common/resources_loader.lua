@@ -51,8 +51,11 @@ function M.load(filename)
             lf:close()
             local prefab_resource = {"material", "mesh", "skeleton", "meshskin", "animation"}
             for _, d in ipairs(datalist.parse(data)) do
+                if d.prefab then -- TODO: special case for prefab
+                    goto continue
+                end
                 for _, field in ipairs(prefab_resource) do
-                    if d.data and d.data[field] then
+                    if d.data[field] then
                         if field == "material" then
                             length = #imaterial.load_res(d.data.material, d.data.material_setting)
                         elseif field == "animation" then
@@ -66,6 +69,7 @@ function M.load(filename)
                         end
                     end
                 end
+                ::continue::
             end
         end,
         ["texture"] = function (f)
