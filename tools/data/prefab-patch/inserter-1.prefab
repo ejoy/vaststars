@@ -12,9 +12,7 @@ data:
   scene: {}
   slot:
     follow_flag: 2
-    joint_name: Bone.004
-    offset_srt:
-      t: {0, 3, 0}
+    joint_name: Bone.003
   tag:
     empty9
 mount: 1
