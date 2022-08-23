@@ -27,19 +27,6 @@ function M.init()
 end
 
 function M.load(filename)
-    local skip_filename = {
-        "/pkg/ant.bake/materials/bake_lighting.material",
-        "/pkg/ant.bake/materials/downsample.material",
-    }
-    if filename:match(".*mars_pumpjack.*") then -- TODO: remove this hack
-        return
-    end
-    for _, v in ipairs(skip_filename) do
-        if filename == v then
-            return
-        end
-    end
-
     local skip = {"glb", "sc"}
     local handler = {
         ["prefab"] = function(f)
@@ -60,7 +47,6 @@ function M.load(filename)
                         elseif field == "animation" then
                             for _, v in pairs(d.data.animation) do
                                 length = #assetmgr.resource(v)
-
                                 local f <close> = fs.open(fs.path(v:match("^(.+%.).*$") .. "event"), "r")
                             end
                         else
