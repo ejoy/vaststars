@@ -2,13 +2,12 @@ local lm = require "luamake"
 
 local antdir = "../../" .. lm.antdir
 
-lm:lib "roadnet" {
+lm:source_set "roadnet" {
     cxx = "c++20",
     includes = {
         antdir .. "clibs/lua/",
     },
     sources = {
-        "/**/*.c",
-        "/**/*.cpp",
+        "*.cpp",
     }
 }
