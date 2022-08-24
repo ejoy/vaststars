@@ -97,6 +97,7 @@ data:
   anim_ctrl: {}
   animation:
     ArmatureAction: /pkg/vaststars.resources/glb/miner-1.glb|animations/ArmatureAction.ozz
+    miner_animat: /pkg/vaststars.resources/prefabs/animation/miner_Bone.anim
   animation_birth: ArmatureAction
   name: animation
   skeleton: /pkg/vaststars.resources/glb/miner-1.glb|animations/skeleton.ozz
