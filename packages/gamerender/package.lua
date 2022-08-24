@@ -15,6 +15,7 @@ return {
         "ant.asset",
         "ant.efk",
         "ant.modifier",
+        "ant.terrain",
         "vaststars.gameplay",
         "vaststars.prototype",
     }
