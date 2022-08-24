@@ -1,6 +1,7 @@
 local lm = require "luamake"
 
 lm:import "gameplay/make.lua"
+lm:import "roadnet/make.lua"
 
 lm:copy "bootstrap_lua" {
     input = "bootstrap.lua",
@@ -8,7 +9,8 @@ lm:copy "bootstrap_lua" {
 }
 
 local modules = {
-    "gameplay"
+    "gameplay",
+    "roadnet",
 }
 
 local Antdir = "../" .. lm.antdir
