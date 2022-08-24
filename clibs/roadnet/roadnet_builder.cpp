@@ -525,7 +525,7 @@ namespace roadnet {
         uint16_t n = road::straight::N * straight.len - rc.offset - 1;
         if (auto res = moveToNeighbor(map, straight.loc, straight.start_dir, n / road::straight::N); res) {
             bool z = reverse(res->dir) == straightDirection(map[res->l.y][res->l.x], 0);
-            return {res->l.x, res->l.y, (n % road::straight::N) + (z? 0x00u: 0x10u)};
+            return {res->l.x, res->l.y, (uint8_t)((n % road::straight::N) + (z? 0x00u: 0x10u))};
         }
         return map_coord::invalid();
     }

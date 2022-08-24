@@ -1,5 +1,4 @@
 #include <lua.hpp>
-#include <windows.h>
 #include <string>
 #include "roadnet_builder.h"
 #include "roadnet_bfs.h"

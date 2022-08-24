@@ -29,6 +29,14 @@ namespace roadnet {
             direction start_dir;
             direction finish_dir;
             roadid neighbor;
+            straightData(uint16_t id, uint16_t len, loction loc, direction start_dir, direction finish_dir, roadid neighbor)
+                : id(id)
+                , len(len)
+                , loc(loc)
+                , start_dir(start_dir)
+                , finish_dir(finish_dir)
+                , neighbor(neighbor)
+            {}
         };
 
         std::vector<straightData>    straightVec;
