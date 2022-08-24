@@ -7,14 +7,6 @@ _osx:
 _windows:
   graphic:
     api: d3d11
-animation:
-  skinning:
-    CPU:
-      enable: true
-      max_indices: 5
-    GPU:
-      enable: true
-    type: CPU
 graphic:
   disable_cull: false
   framebuffer:
