@@ -46,7 +46,7 @@ function M.load(filename)
                             length = #imaterial.load_res(d.data.material, d.data.material_setting)
                         elseif field == "animation" then
                             for _, v in pairs(d.data.animation) do
-                                length = #assetmgr.resource(v)
+                                length = #assetmgr.resource(v, world)
                                 local f <close> = fs.open(fs.path(v:match("^(.+%.).*$") .. "event"), "r")
                             end
                         else
