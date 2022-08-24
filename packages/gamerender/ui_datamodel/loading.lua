@@ -18,7 +18,6 @@ local current
 local M = {}
 
 function M:create(load)
-    resources_loader.init()
     current = 0
 
     if load == nil then

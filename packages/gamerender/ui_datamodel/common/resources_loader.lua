@@ -8,24 +8,6 @@ local fs = require "filesystem"
 
 local M = {}
 
-function M.init()
-    local length
-    length = #imaterial.load_res '/pkg/ant.resources/materials/pickup_opacity.material'
-    length = #imaterial.load_res '/pkg/ant.resources/materials/pickup_opacity_skin.material'
-    length = #imaterial.load_res '/pkg/ant.resources/materials/pickup_transparent.material'
-    length = #imaterial.load_res '/pkg/ant.resources/materials/pickup_transparent_skin.material'
-    length = #imaterial.load_res "/pkg/ant.resources/materials/predepth.material"
-    length = #imaterial.load_res "/pkg/ant.resources/materials/predepth_skin.material"
-    length = #imaterial.load_res "/pkg/ant.resources/materials/singlecolor.material"
-    length = #imaterial.load_res "/pkg/ant.resources/materials/canvas_texture.material"
-
-    length = #assetmgr.load_fx {
-        fs = "/pkg/ant.resources/shaders/pbr/fs_pbr.sc",
-        vs = "/pkg/ant.resources/shaders/pbr/vs_pbr.sc",
-        setting = {}
-    }
-end
-
 function M.load(filename)
     local skip = {"glb", "sc"}
     local handler = {
