@@ -32,8 +32,11 @@ lm.ios = {
     }
 }
 
-if lm.mode == "debug" then
-    --lm.flags = "-fsanitize=address"
+local EnableSanitize --= true
+if EnableSanitize then
+    lm.builddir = ("build/%s/sanitize"):format(plat)
+    lm.mode = "debug"
+    lm.flags = "-fsanitize=address"
     lm.msvc = {
         defines = "_DISABLE_STRING_ANNOTATION"
     }
@@ -68,7 +71,7 @@ lm:copy "copy_manual" {
 
 lm:default {
     lm.os == "windows" and "fmod_dll",
-    lm.compiler == "msvc" and lm.mode == "debug" and "copy_asan",
+    lm.compiler == "msvc" and EnableSanitize and "copy_asan",
     "copy_manual",
     "vaststars",
     lm.os ~= "ios" and "vaststars_rt",
