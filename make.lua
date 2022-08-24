@@ -32,7 +32,7 @@ lm.ios = {
     }
 }
 
-local EnableSanitize --= true
+local EnableSanitize = false -- true
 if EnableSanitize then
     lm.builddir = ("build/%s/sanitize"):format(plat)
     lm.mode = "debug"
