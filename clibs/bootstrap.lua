@@ -31,8 +31,11 @@ antdir = antdir and fs.path(antdir) or (ProjectDir / "3rd" / "ant")
 fs.current_path(antdir)
 if arg[0] == nil or arg[0] == "" then
     arg[0] = "startup/main.lua"
+elseif arg[0] == "-s" then
+    arg[0] = "3rd/ant/tools/fileserver/main.lua"
+    arg[1] = "../../startup"
+    arg[2] = nil
 end
--- arg[0] = "../../"..arg[0]
 
 local MainPath = fs.relative(ProjectDir / arg[0], antdir)
 arg[0] = MainPath:string()
