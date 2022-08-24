@@ -4,5 +4,6 @@ return {
     dependencies = {
         "ant.serialize",
         "ant.json",
+        "ant.luaecs",
     }
 }

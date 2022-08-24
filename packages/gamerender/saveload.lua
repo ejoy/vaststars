@@ -3,10 +3,16 @@ local world = ecs.world
 local w = world.w
 
 local gameplay_core = require "gameplay.core"
-local bee_fs = require "bee.filesystem"
-local fs = require "filesystem"
+local fs = require "bee.filesystem"
 local json = import_package "ant.json"
-local archival_base_dir = (bee_fs.appdata_path() / "vaststars/archiving"):string()
+local SKIP_GUIDE <const> = require "debugger".skip_guide
+local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
+local archival_base_dir
+if CUSTOM_ARCHIVING then
+    archival_base_dir = (fs.exe_path():parent_path() / CUSTOM_ARCHIVING):lexically_normal():string()
+else
+    archival_base_dir = (fs.appdata_path() / "vaststars/archiving"):string()
+end
 local archiving_list_path = archival_base_dir .. "/archiving.json"
 local camera_setting_path = archival_base_dir .. "/camera.json"
 local iprototype = require "gameplay.interface.prototype"
@@ -39,20 +45,16 @@ local function restore_world()
     end
 
     local function _debug()
-        if fs.exists(fs.path("/pkg/vaststars.prototype/debugger.lua")) then
-            print("debug")
-            local SKIP_GUIDE <const> = require "debugger".skip_guide
-            local guide = import_package "vaststars.prototype"("guide")
-            if SKIP_GUIDE then
-                print("skip guide")
-                gameplay_core.get_storage().guide_id = #guide
-                iui.set_guide_progress(guide[#guide].narrative_end.guide_progress)
+        local guide = import_package "vaststars.prototype"("guide")
+        if SKIP_GUIDE then
+            print("skip guide")
+            gameplay_core.get_storage().guide_id = #guide
+            iui.set_guide_progress(guide[#guide].narrative_end.guide_progress)
 
-                for _, guide in ipairs(guide) do
-                    if next(guide.narrative_end.task) then
-                        for _, task in ipairs(guide.narrative_end.task) do
-                            _finish_task(task)
-                        end
+            for _, guide in ipairs(guide) do
+                if next(guide.narrative_end.task) then
+                    for _, task in ipairs(guide.narrative_end.task) do
+                        _finish_task(task)
                     end
                 end
             end
@@ -317,7 +319,7 @@ end
 
 local M = {running = false}
 function M:restore_camera_setting()
-    if bee_fs.exists(bee_fs.path(camera_setting_path)) then
+    if fs.exists(fs.path(camera_setting_path)) then
         local camera_setting = json.decode(readall(camera_setting_path))
         local ce <close> = w:entity(irq.main_camera())
         iom.set_srt(ce, camera_setting.s, camera_setting.r, camera_setting.t)
@@ -342,7 +344,7 @@ function M:backup()
         local archival = table.remove(archival_list, 1)
         local archival_dir = archival_base_dir .. ("/%s"):format(archival.dir)
         print("remove", archival_dir)
-        bee_fs.remove_all(archival_dir)
+        fs.remove_all(archival_dir)
     end
 
     local t = os.date("*t")
@@ -361,7 +363,7 @@ function M:restore(index)
     self:restore_camera_setting()
 
     --
-    if not bee_fs.exists(bee_fs.path(archiving_list_path)) then
+    if not fs.exists(fs.path(archiving_list_path)) then
         self:restart()
         self.running = true
         return true
@@ -385,7 +387,7 @@ function M:restore(index)
         local archival_relative_dir = archival_list[index].dir
         archival_dir = archival_base_dir .. ("/%s"):format(archival_relative_dir)
 
-        if not bee_fs.exists(bee_fs.path(archival_dir)) then
+        if not fs.exists(fs.path(archival_dir)) then
             log.warn(("`%s` not exists"):format(archival_relative_dir))
             archival_list[index] = nil
             index = index - 1
