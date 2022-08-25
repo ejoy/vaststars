@@ -11,8 +11,48 @@ function M.queryByName(...)
     return gameplay.prototype.queryByName(...)
 end
 
-function M.each_maintype(maintype)
-    return gameplay.prototype.each(maintype)
+function M.has_type(types, type)
+    for i = 1, #types do
+        if types[i] == type then
+            return true
+        end
+    end
+    return false
+end
+
+do
+    local cache = {}
+    function M.each_maintype(maintype, ...)
+        local function _check_types(typeobject, types)
+            for _, type in ipairs(types) do
+                if not M.has_type(typeobject.type, type) then
+                    return false
+                end
+            end
+            return true
+        end
+
+        local types = {...}
+        if #types == 0 then
+            return gameplay.prototype.each(maintype)
+        end
+
+        table.sort(types)
+        local combine_keys = table.concat(types, ":")
+        if cache[combine_keys] then
+            return cache[combine_keys]
+        end
+
+        local r = {}
+        for _, typeobject in ipairs(gameplay.prototype.each(maintype)) do
+            if _check_types(typeobject, types) then
+                r[#r+1] = typeobject
+            end
+        end
+
+        cache[combine_keys] = r
+        return r
+    end
 end
 
 function M.packcoord(x, y)
@@ -27,15 +67,6 @@ end
 
 function M.unpackarea(area)
     return area >> 8, area & 0xFF
-end
-
-function M.has_type(types, type)
-    for i = 1, #types do
-        if types[i] == type then
-            return true
-        end
-    end
-    return false
 end
 
 function M.is_fluid_id(id)
@@ -159,7 +190,7 @@ end
 
 function M.is_road(prototype_name)
     local typeobject = assert(M.queryByName("entity", prototype_name))
-    return typeobject.road
+    return M.has_type(typeobject.type, "road")
 end
 
 return M
