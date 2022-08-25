@@ -137,7 +137,7 @@ function camera.update()
         iom.set_rotation(e, r)
         iom.set_position(e, t)
 
-        world:pub {"dragdrop_camera"}
+        world:pub {"gamerender_camera_update"}
     end
 end
 
