@@ -19,8 +19,10 @@ local TERRAIN_ONLY = require("debugger").terrain_only
 local NOTHING = require("debugger").nothing
 local DISABLE_LOADING = require("debugger").disable_loading
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
+local pickup_mb = world:sub {"pickup"}
 local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
 local icanvas = ecs.require "engine.canvas"
+local icamera = ecs.require "engine.camera"
 local math3d = require "math3d"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local camera = ecs.require "engine.camera"
@@ -117,5 +119,14 @@ function m:camera_usage()
         local vmin = _get_vmin(vr.w, vr.h, vr.ratio)
         local pos = camera.screen_to_world(left / 100 * vmin, top / 100 * vmin, PLANES)[1]
         _move_camera(math3d.sub(vsobject:get_position(), pos))
+    end
+
+    -- for debug
+    for _, _, x, y in pickup_mb:unpack() do
+        local pos = icamera.screen_to_world(x, y, {PLANES[1]})
+        local coord = terrain:get_coord_by_position(pos[1])
+        if coord then
+            log.info(("pickup coord: (%s, %s) ground(%s, %s)"):format(coord[1], coord[2], coord[1] - (coord[1] % terrain.ground_width), coord[2] - (coord[2] % terrain.ground_height)))
+        end
     end
 end

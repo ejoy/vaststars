@@ -377,14 +377,6 @@ function M:stage_camera_usage(datamodel)
 
     -- 点击其它建筑 或 拖动时, 将弹出窗口隐藏
     for _, _, x, y in pickup_mb:unpack() do
-        do -- for debug
-            local pos = icamera.screen_to_world(x, y, {PLANES[1]})
-            local coord = terrain:align(pos[1], 1, 1)
-            if coord then
-                log.info(("pickup coord: (%s, %s) ground(%s, %s)"):format(coord[1], coord[2], coord[1] - (coord[1] % terrain.ground_width), coord[2] - (coord[2] % terrain.ground_height)))
-            end
-        end
-
         local object = _get_object(x, y)
         if object then -- object may be nil, such as when user click on empty space
             if global.mode == "teardown" then
