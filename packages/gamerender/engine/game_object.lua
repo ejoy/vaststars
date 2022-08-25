@@ -13,6 +13,21 @@ local math3d = require "math3d"
 local COLOR_INVALID <const> = math3d.constant "null"
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 
+local function ipairs_remove(t)
+    local i = 0
+    local remove = function()
+       table.remove(t, i)
+       i = i - 1
+    end
+    return function()
+       i = i + 1
+       if t[i] ~= nil then
+          return i, t[i], remove
+       end
+       return nil
+    end
+ end
+
 local function _replace_material(template, material_file_path)
     for _, v in ipairs(template) do
         if v.prefab then -- TODO: special case for prefab
@@ -21,6 +36,11 @@ local function _replace_material(template, material_file_path)
         for _, policy in ipairs(v.policy) do
             if policy == "ant.render|render" or policy == "ant.render|simplerender" then
                 v.data.material = material_file_path
+                for _, tag, remove in ipairs_remove(v.data.tag or {}) do -- TODO: special case for tag, remove u_emissive_factor tag when the material have been replaced
+                    if tag == "u_emissive_factor" then
+                        remove()
+                    end
+                end
             end
         end
         ::continue::
