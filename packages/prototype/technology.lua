@@ -110,8 +110,8 @@ prototype "转运碎石矿" {
   },
 }
 
-prototype "制造台生产" {
-  desc = "制造台生产2个地质科技包",
+prototype "制造舱生产" {
+  desc = "制造舱生产2个地质科技包",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_manual_production", 0, "地质科技包"},
@@ -125,7 +125,7 @@ prototype "制造台生产" {
     "textures/task_tips_pic/task_manual5.texture",
   },
   sign_desc = {
-    { desc = "使用指挥中心里制造台生产2个地质科技包", icon = "textures/construct/industry.texture"},
+    { desc = "使用指挥中心里制造舱生产2个地质科技包", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -134,7 +134,7 @@ prototype "放置组装机" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "组装机I"},
-  prerequisites = {"制造台生产"},
+  prerequisites = {"制造舱生产"},
   count = 2,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
