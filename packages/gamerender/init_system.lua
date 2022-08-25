@@ -18,7 +18,7 @@ local iguide = require "gameplay.interface.guide"
 local TERRAIN_ONLY = require("debugger").terrain_only
 local NOTHING = require("debugger").nothing
 local DISABLE_LOADING = require("debugger").disable_loading
-local gamerender_camera_update_mb = world:sub {"gamerender_camera_update"}
+local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local pickup_mb = world:sub {"pickup"}
 local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
 local icanvas = ecs.require "engine.canvas"
@@ -87,7 +87,7 @@ function m:update_world()
 end
 
 function m:camera_usage()
-    for _ in gamerender_camera_update_mb:unpack() do
+    for _ in dragdrop_camera_mb:unpack() do
         if not terrain.init then
             goto continue
         end
@@ -118,7 +118,8 @@ function m:camera_usage()
         local vr = mq.render_target.view_rect
         local vmin = _get_vmin(vr.w, vr.h, vr.ratio)
         local pos = camera.screen_to_world(left / 100 * vmin, top / 100 * vmin, PLANES)[1]
-        _move_camera(math3d.sub(vsobject:get_position(), pos))
+        local delta = math3d.sub(vsobject:get_position(), pos)
+        _move_camera(math3d.set_index(delta, 2, 0)) -- the camera is always moving in the x/z axis and the y axis is always 0
     end
 
     -- for debug

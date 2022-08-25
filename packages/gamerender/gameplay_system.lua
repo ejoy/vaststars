@@ -5,12 +5,9 @@ local gameplay_core = require "gameplay.core"
 local igameplay = ecs.interface "igameplay"
 local iprototype = require "gameplay.interface.prototype"
 local ichimney = require "gameplay.interface.chimney"
-local ifluid = require "gameplay.interface.fluid"
 local terrain = ecs.require "terrain"
 local objects = require "objects"
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
-local gameplay = import_package "vaststars.gameplay"
-local igpchimney = gameplay.interface "chimney"
 local ifluid = require "gameplay.interface.fluid"
 
 local funcs = {}
