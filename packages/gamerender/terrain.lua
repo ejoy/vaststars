@@ -28,7 +28,7 @@ local terrain = {}
 
 local SURFACE_HEIGHT <const> = 4
 local TILE_SIZE <const> = 10
-local WIDTH <const> = 256
+local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256
 local GROUND_WIDTH <const> = 4
 local GROUND_HEIGHT <const> = 4

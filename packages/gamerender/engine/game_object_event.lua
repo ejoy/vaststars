@@ -18,7 +18,11 @@ events["set_tag_material_property"] = function(prefab, inner, tag, ...)
     for _, eid in ipairs(inner.tags[tag] or {}) do
         local e <close> = w:entity(eid, "material?in")
         if e.material then
-            imaterial.set_property(e, ...)
+            -- TODO: error handling? the material may not have the property after replacing it
+            local ok, err = xpcall(imaterial.set_property, debug.traceback, e, ...)
+            if not ok then
+                print(err)
+            end
         end
     end
 end
