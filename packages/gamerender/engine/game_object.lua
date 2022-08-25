@@ -36,7 +36,7 @@ local function _replace_material(template, material_file_path)
         for _, policy in ipairs(v.policy) do
             if policy == "ant.render|render" or policy == "ant.render|simplerender" then
                 v.data.material = material_file_path
-                for _, tag, remove in ipairs_remove(v.data.tag) do -- TODO: special case for tag, remove u_emissive_factor tag when the material have been replaced
+                for _, tag, remove in ipairs_remove(v.data.tag or {}) do -- TODO: special case for tag, remove u_emissive_factor tag when the material have been replaced
                     if tag == "u_emissive_factor" then
                         remove()
                     end
