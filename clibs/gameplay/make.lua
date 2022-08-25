@@ -8,7 +8,7 @@ lm:runlua "compile_gameplay_ecs" {
 
 local antdir = "../../" .. lm.antdir
 
-lm:lib "gameplay" {
+lm:source_set "gameplay" {
     cxx = "c++20",
     objdeps = "compile_gameplay_ecs",
     includes = {
