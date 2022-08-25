@@ -14,6 +14,7 @@ local create_queue = require "utility.queue"
 local hierarchy = require "hierarchy"
 local animation = hierarchy.animation
 local skeleton = hierarchy.skeleton
+local terrain = ecs.require "terrain"
 
 local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 
@@ -137,7 +138,12 @@ function camera.update()
         iom.set_rotation(e, r)
         iom.set_position(e, t)
 
-        world:pub {"gamerender_camera_update"}
+        if terrain.init then
+            local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+            if coord then
+                terrain:enable_terrain(coord[1], coord[2])
+            end
+        end
     end
 end
 
