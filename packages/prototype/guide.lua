@@ -72,7 +72,7 @@ local guide = {
         name = "guide-5",
 		narrative = {
             {"哔哩..哔哩..矿物采集进展非常顺利，存活概率大幅提升至0.3244%！(兴奋)", "textures/guide/guide-3.texture"},
-            {"哔哩..指挥中心有制造台，可以生产简单物件..请使用制造台生产几个地质科技包..哔哩(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..指挥中心有制造舱，可以生产简单物件..请使用制造台生产几个地质科技包..哔哩(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             guide_progress = 25,
