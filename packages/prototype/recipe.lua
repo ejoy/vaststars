@@ -2114,7 +2114,7 @@ prototype "换热器1" {
 prototype "纯水沸腾" {
     type = { "recipe" },
     category = "流体换热处理",
-    --group = "流体",
+    group = "流体",
     order = 108,
     icon = "textures/fluid/gas.texture",
     ingredients = {
@@ -2130,7 +2130,7 @@ prototype "纯水沸腾" {
 prototype "卤水沸腾" {
     type = { "recipe" },
     category = "流体换热处理",
-    --group = "流体",
+    group = "流体",
     order = 108,
     icon = "textures/fluid/gas.texture",
     ingredients = {
