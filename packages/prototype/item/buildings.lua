@@ -281,3 +281,22 @@ prototype "运输车辆I" {
     order = 53,
 }
 
+prototype "换热器I" {
+    type = {"item"},
+    stack = 25,
+    icon = "textures/construct/turbine1.texture",
+    model = "prefabs/rock.prefab",
+    description = "将水变成蒸汽的机器",
+    group = "加工",
+    order = 130,
+}
+
+prototype "热管1-X型" {
+    type = {"item"},
+    stack = 100,
+    icon = "textures/construct/turbine1.texture",
+    model = "prefabs/rock.prefab",
+    description = "传导热量的特殊管道",
+    group = "加工",
+    order = 140,
+}

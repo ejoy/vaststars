@@ -2074,3 +2074,72 @@ prototype "提炼纤维" {
     time = "2s",
     description = "海藻加工成纤维燃料",
 }
+
+prototype "热管1" {
+    type = { "recipe" },
+    category = "生产中型制造",
+    group = "生产",
+    order = 16,
+    icon = "textures/construct/industry.texture",
+    ingredients = {
+        {"纯水", 100},
+        {"铝板", 4},
+        {"管道1-X型", 6},
+    },
+    results = {
+        {"热管1-X型", 1},
+    },
+    time = "1s",
+    description = "制造可以传导热量的管道",
+}
+
+prototype "换热器1" {
+    type = { "recipe" },
+    category = "生产中型制造",
+    group = "生产",
+    order = 28,
+    icon = "textures/construct/industry.texture",
+    ingredients = {
+        {"热管1-X型", 4},
+        {"液罐I", 1},
+        {"熔炼炉I", 1},
+    },
+    results = {
+        {"换热器I", 1},
+    },
+    time = "3s",
+    description = "制造可以将水变成蒸汽的换热器",
+}
+
+prototype "纯水沸腾" {
+    type = { "recipe" },
+    category = "流体换热处理",
+    --group = "流体",
+    order = 108,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
+        {"纯水", 65},
+    },
+    results = {
+        {"蒸汽", 270},
+    },
+    time = "1s",
+    description = "纯水转蒸汽",
+}
+
+prototype "卤水沸腾" {
+    type = { "recipe" },
+    category = "流体换热处理",
+    --group = "流体",
+    order = 108,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
+        {"地下卤水", 70},
+    },
+    results = {
+        {"蒸汽", 225},
+        {"废水", 10},
+    },
+    time = "1s",
+    description = "卤水转蒸汽",
+}

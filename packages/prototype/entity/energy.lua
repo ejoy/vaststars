@@ -66,3 +66,53 @@ prototype "核反应堆" {
     priority = "primary",
     group = {"物流"},
 }
+
+prototype "换热器I" {
+    model = "prefabs/distillery-1.prefab",
+    icon = "textures/building_pic/small_pic_distillery.texture",
+    background = "textures/build_background/pic_distillery.texture",
+    construct_detector = {"exclusive"},
+    type ={"entity", "assembling", "fluidboxes"},
+    area = "3x2",
+    craft_category = {"流体换热处理"},
+    fluidboxes = {
+        input = {
+            {
+                capacity = 200,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input", position={0,0,"W"}},
+                }
+            },
+        },
+        output = {
+            {
+                capacity = 1000,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={1,1,"S"}},
+                }
+            },
+            {
+                capacity = 200,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={2,0,"E"}},
+                }
+            },
+        },
+    },
+}
+
+prototype "热管1-X型" {
+    model = "prefabs/pipe/pipe_I.prefab",
+    icon = "textures/construct/pipe.texture",
+    construct_detector = {"exclusive"},
+    show_build_function = false,
+    type = {"entity"},
+    area = "1x1",
+    group = {"物流"},
+}

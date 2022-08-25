@@ -798,7 +798,7 @@ prototype "蒸馏1" {
     {"机械科技包", 1},
   },
   count = 4,
-  time = "2s"
+  time = "7s"
 }
 
 prototype "挖掘1" {
@@ -814,7 +814,7 @@ prototype "挖掘1" {
     {"气候科技包", 1},
   },
   count = 4,
-  time = "2s"
+  time = "7s"
 }
 
 prototype "驱动1" {
@@ -829,7 +829,7 @@ prototype "驱动1" {
     {"机械科技包", 1},
   },
   count = 3,
-  time = "3s"
+  time = "8s"
 }
 
 prototype "电力传输1" {
@@ -846,7 +846,7 @@ prototype "电力传输1" {
     {"机械科技包", 1},
   },
   count = 2,
-  time = "6s"
+  time = "12s"
 }
 
 prototype "泵系统1" {
@@ -862,7 +862,7 @@ prototype "泵系统1" {
     {"机械科技包", 1},
   },
   count = 4,
-  time = "2s"
+  time = "6s"
 }
 
 prototype "自动化1" {
@@ -877,7 +877,7 @@ prototype "自动化1" {
     {"机械科技包", 1},
   },
   count = 4,
-  time = "3s"
+  time = "9s"
 }
 
 prototype "地下水净化" {
@@ -894,7 +894,7 @@ prototype "地下水净化" {
     {"机械科技包", 1},
   },
   count = 4,
-  time = "2.5s"
+  time = "10s"
 }
 
 prototype "炼钢" {
@@ -910,8 +910,8 @@ prototype "炼钢" {
     {"气候科技包", 1},
     {"机械科技包", 1},
   },
-  count = 4,
-  time = "2.5s"
+  count = 5,
+  time = "9s"
 }
 
 prototype "发电机1" {
@@ -927,7 +927,7 @@ prototype "发电机1" {
     {"机械科技包", 1},
   },
   count = 4,
-  time = "2s"
+  time = "15s"
 }
 
 prototype "物流1" {
@@ -942,7 +942,7 @@ prototype "物流1" {
     {"机械科技包", 1},
   },
   count = 5,
-  time = "2s"
+  time = "10s"
 }
 
 prototype "空气过滤" {
@@ -957,7 +957,7 @@ prototype "空气过滤" {
     {"气候科技包", 1},
   },
   count = 5,
-  time = "2s"
+  time = "10s"
 }
 
 prototype "矿物处理1" {
@@ -973,7 +973,7 @@ prototype "矿物处理1" {
     {"机械科技包", 1},
   },
   count = 5,
-  time = "2s"
+  time = "10s"
 }
 
 prototype "钢加工" {
@@ -989,7 +989,7 @@ prototype "钢加工" {
     {"机械科技包", 1},
   },
   count = 8,
-  time = "1s"
+  time = "8s"
 }
 
 prototype "浮选" {
@@ -1006,7 +1006,7 @@ prototype "浮选" {
     {"机械科技包", 1},
   },
   count = 8,
-  time = "1s"
+  time = "8s"
 }
 
 prototype "硅处理" {
@@ -1022,7 +1022,7 @@ prototype "硅处理" {
     {"机械科技包", 1},
   },
   count = 8,
-  time = "0.75s"
+  time = "8s"
 }
 
 prototype "铁矿熔炼2" {
@@ -1038,7 +1038,7 @@ prototype "铁矿熔炼2" {
       {"机械科技包", 1},
   },
   count = 6,
-  time = "1.5s"
+  time = "8s"
 }
 
 prototype "能量存储" {
@@ -1053,8 +1053,8 @@ prototype "能量存储" {
       {"气候科技包", 1},
       {"机械科技包", 1},
   },
-  count = 3,
-  time = "4s"
+  count = 4,
+  time = "12s"
 }
 
 prototype "有机化学2" {
@@ -1087,7 +1087,7 @@ prototype "化学工程" {
       {"机械科技包", 1},
   },
   count = 5,
-  time = "2s"
+  time = "10s"
 }
 
 prototype "管道系统3" {
@@ -1103,7 +1103,7 @@ prototype "管道系统3" {
       {"机械科技包", 1},
   },
   count = 6,
-  time = "1.5s"
+  time = "10s"
 }
 
 prototype "无机化学" {
@@ -1120,7 +1120,7 @@ prototype "无机化学" {
       {"机械科技包", 1},
   },
   count = 10,
-  time = "1s"
+  time = "5s"
 }
 
 prototype "废料回收1" {
@@ -1137,7 +1137,7 @@ prototype "废料回收1" {
       {"机械科技包", 1},
   },
   count = 12,
-  time = "0.75s"
+  time = "6s"
 }
 
 prototype "石头处理3" {
@@ -1154,7 +1154,7 @@ prototype "石头处理3" {
     {"机械科技包", 1},
   },
   count = 12,
-  time = "1s"
+  time = "8s"
 }
 
 prototype "有机化学3" {
@@ -1170,7 +1170,7 @@ prototype "有机化学3" {
       {"机械科技包", 1},
   },
   count = 12,
-  time = "0.75s"
+  time = "8s"
 }
 
 prototype "储存2" {
@@ -1186,7 +1186,7 @@ prototype "储存2" {
       {"机械科技包", 1},
   },
   count = 15,
-  time = "0.6s"
+  time = "8s"
 }
 
 prototype "冶金学2" {
@@ -1218,7 +1218,7 @@ prototype "铝生产" {
     {"机械科技包", 1},
   },
   count = 20,
-  time = "0.5s"
+  time = "6s"
 }
 
 prototype "硅生产" {
@@ -1234,7 +1234,7 @@ prototype "硅生产" {
     {"机械科技包", 1},
   },
   count = 30,
-  time = "0.5s"
+  time = "6s"
 }
 
 prototype "润滑" {
@@ -1251,7 +1251,7 @@ prototype "润滑" {
     {"机械科技包", 1},
   },
   count = 30,
-  time = "0.5s"
+  time = "5s"
 }
 
 prototype "铝加工" {
@@ -1268,7 +1268,24 @@ prototype "铝加工" {
     {"机械科技包", 1},
   },
   count = 25,
-  time = "0.4s"
+  time = "8s"
+}
+
+prototype "沸腾实验" {
+  desc = "生产精密的电子元器件",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"换热器1","热管1","纯水沸腾","卤水沸腾"},
+  },
+  prerequisites = {"铝生产"},
+  ingredients = {
+    {"地质科技包", 1},
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 15,
+  time = "5s"
 }
 
 prototype "电子器件" {
@@ -1285,7 +1302,7 @@ prototype "电子器件" {
     {"机械科技包", 1},
   },
   count = 40,
-  time = "0.5s"
+  time = "5s"
 }
 
 prototype "批量生产1" {
@@ -1302,7 +1319,7 @@ prototype "批量生产1" {
     {"机械科技包", 1},
   },
   count = 30,
-  time = "0.5s"
+  time = "6s"
 }
 
 prototype "电子研究" {
@@ -1323,5 +1340,5 @@ prototype "电子研究" {
   },
   sign_icon = "textures/science/tech-important.texture",
   count = 50,
-  time = "0.5s"
+  time = "5s"
 }
