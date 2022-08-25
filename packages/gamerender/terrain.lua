@@ -281,7 +281,7 @@ function terrain:get_begin_position_by_coord(x, y)
         log.error(("out of bounds (%s,%s) : (%s) - (%s)"):format(x, y, table.concat(coord_bounds[1], ","), table.concat(coord_bounds[2], ",")))
         return
     end
-    return {origin[1] + (x * TILE_SIZE), 0, origin[2] - (y * TILE_SIZE)}
+    return {origin[1] + (x * TILE_SIZE), SURFACE_HEIGHT, origin[2] - (y * TILE_SIZE)}
 end
 
 -- return the position of the center of the entity
