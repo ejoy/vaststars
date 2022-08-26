@@ -46,7 +46,8 @@ function M.load(filename)
             length = #assetmgr.resource(f)
         end,
         ["material"] = function (f)
-            length = #imaterial.load_res(f)
+            local res = imaterial.load_res(f)
+            local obj = res.object
         end
     }
 
