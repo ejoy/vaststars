@@ -85,8 +85,12 @@ for dir, v in pairs(DIRECTION) do
     DIRECTION_REV[v] = dir
 end
 
-function M.rotate_dir(dir, rotate_dir)
-    return DIRECTION_REV[(DIRECTION[dir] + DIRECTION[rotate_dir]) % 4]
+function M.rotate_dir(dir, rotate_dir, anticlockwise)
+    if anticlockwise == nil then
+        return DIRECTION_REV[(DIRECTION[dir] + DIRECTION[rotate_dir]) % 4]
+    else
+        return DIRECTION_REV[(DIRECTION[dir] - DIRECTION[rotate_dir]) % 4]
+    end
 end
 
 function M.rotate_dir_times(dir, times)

@@ -50,7 +50,7 @@ function idetail.show(object_id)
     end
 
     do
-        log.info(object.id, object.prototype_name, object.x, object.y, object.fluid_name, object.fluidflow_id)
+        log.info(object.id, object.prototype_name, object.x, object.y, object.dir, object.fluid_name, object.fluidflow_id)
     end
     return true
 end

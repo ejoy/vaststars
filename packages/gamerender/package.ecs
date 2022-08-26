@@ -109,7 +109,7 @@ interface "ipickup_mapping"
 
 system "entity_object_system"
     .implement "engine/system/entity_object_system.lua"
-    .method "entity_ready"
+    .method "scene_update"
 
 interface "ientity_object"
     .implement "engine/system/entity_object_system.lua"

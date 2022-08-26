@@ -241,6 +241,9 @@ function igame_object.create(init)
     events["obj_motion"] = function(_, e, method, ...)
         iom[method](e, ...)
     end
+    events["on_ready"] = function(_, e)
+        init.on_ready(e)
+    end
 
     local policy = {
         "ant.general|name",
