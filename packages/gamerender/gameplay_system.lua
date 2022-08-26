@@ -1,6 +1,7 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
+
 local gameplay_core = require "gameplay.core"
 local igameplay = ecs.interface "igameplay"
 local iprototype = require "gameplay.interface.prototype"

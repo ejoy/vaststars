@@ -504,7 +504,7 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  name: path_b21_3
+  name: path_b2l_3
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}

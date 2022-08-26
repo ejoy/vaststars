@@ -96,17 +96,8 @@ local gen_id do
 end
 
 local entity_events = {}
-entity_events.set_material_property = function(_, e, ...)
-    imaterial.set_property(e, ...)
-end
-entity_events.set_position = function(_, e, ...)
-    iom.set_position(e, ...)
-end
-entity_events.set_rotation = function(_, e, ...)
-    iom.set_rotation(e, ...)
-end
-entity_events.update_render_object = function(_, e, ...)
-    irq.update_render_object(e, true)
+entity_events["obj_motion"] = function(_, e, method, ...)
+    iom[method](e, ...)
 end
 
 local function create_block(color, block_edge_size, area, position, rotation, material)
@@ -145,15 +136,10 @@ local function get_rotation(self)
 end
 
 local function set_position(self, position)
-    local e <close> = w:entity(self.game_object.hitch_entity_object.id) -- TODO: hitch object may not created yet
-    if not e then
-        return
-    end
-
-    iom.set_position(e, position)
+    self.game_object:send("obj_motion", "set_position", position)
     if self.block_object then
         local block_pos = math3d.ref(math3d.add(position, {0, terrain.surface_height, 0}))
-        self.block_object:send("set_position", block_pos)
+        self.block_object:send("obj_motion", "set_position", block_pos)
     end
 end
 
@@ -163,10 +149,9 @@ local function get_position(self)
 end
 
 local function set_dir(self, dir)
-    self.game_object:send("set_rotation", rotators[dir])
-
+    self.game_object:send("obj_motion", "set_rotation", rotators[dir])
     if self.block_object then
-        self.block_object:send("set_rotation", rotators[dir])
+        self.block_object:send("obj_motion", "set_rotation", rotators[dir])
     end
 end
 
