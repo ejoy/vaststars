@@ -3,10 +3,11 @@ miner_animat:
   event_list:
     ---
     asset_path: /pkg/vaststars.resources/effect/efk/miner_dust.efk
+    breakable: false
     event_type: Effect
     life_time: 2
     link_info:
-      slot_eid: 100
+      slot_eid: 95
       slot_name: effect
-    name: Effect2
-  time: 0.68
+    name: Effect3
+  time: 0.4
