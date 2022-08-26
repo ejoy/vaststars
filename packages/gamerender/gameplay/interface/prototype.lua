@@ -44,9 +44,9 @@ do
         end
 
         local r = {}
-        for _, typeobject in ipairs(gameplay.prototype.each(maintype)) do
+        for _, typeobject in pairs(gameplay.prototype.each(maintype)) do
             if _check_types(typeobject, types) then
-                r[#r+1] = typeobject
+                r[typeobject.name] = typeobject
             end
         end
 

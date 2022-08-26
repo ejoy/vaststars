@@ -198,15 +198,14 @@ local _get_hitch_children ; do
             end
         end
         prefab.on_message = function(prefab, ...)
-            local prefab_file_path = prefab_file_path -- for debug
             on_prefab_message(prefab, inner, ...)
         end
         local instance = world:create_object(prefab)
         if state == "translucent" or state == "opacity" then
-            instance:send("set_material_property", "u_basecolor_factor", color)
+            instance:send("material", "set_property", "u_basecolor_factor", color)
         end
         if emissive_color then
-            instance:send("set_tag_material_property", "u_emissive_factor", "u_emissive_factor", emissive_color)
+            instance:send("material_tag", "set_property", "u_emissive_factor", "u_emissive_factor", emissive_color)
         end
 
         cache[hash] = {prefab_file_name = prefab_file_path, instance = instance, hitch_group_id = hitch_group_id, scene = scene, slots = slots, pose = pose}
@@ -239,8 +238,8 @@ function igame_object.create(init)
         w:extend(e, "slot:in")
         e.slot.pose = pose
     end
-    events["set_rotation"] = function(_, e, rotation)
-        iom.set_rotation(e, rotation)
+    events["obj_motion"] = function(_, e, method, ...)
+        iom[method](e, ...)
     end
 
     local policy = {
@@ -351,4 +350,8 @@ function igame_object.create(init)
         end
     end
     return outer
+end
+
+function igame_object.get_prefab(prefab)
+    return _get_hitch_children(RESOURCES_BASE_PATH:format(prefab), "opaque", COLOR_INVALID, nil, nil, nil)
 end

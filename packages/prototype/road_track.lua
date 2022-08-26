@@ -1,18 +1,18 @@
 local road_track = {
-    ['L'] = {
-        ['N'] = {
-            ['E'] = {'path_l_1', 'path_l_2', 'path_l_3'},
-        },
-        ['E'] = {
-            ['N'] = {'path_r_1', 'path_r_2', 'path_r_3'},
-        },
-    },
     ['I'] = {
         ['N'] = {
             ['S'] = {'path_l_1', 'path_l_2'},
         },
         ['S'] = {
             ['N'] = {'path_r_1', 'path_r_2'},
+        },
+    },
+    ['L'] = {
+        ['N'] = {
+            ['E'] = {'path_l_1', 'path_l_2', 'path_l_3'},
+        },
+        ['E'] = {
+            ['N'] = {'path_r_1', 'path_r_2', 'path_r_3'},
         },
     },
     ['T'] = {
@@ -49,6 +49,11 @@ local road_track = {
             ['N'] = {'path_l2t_1', 'path_l2t_2','path_l2t_3'},
             ['S'] = {'path_l2b_1', 'path_l2b_2','path_l2b_3','path_l2b_4'},
             ['E'] = {'path_l2r_1', 'path_l2r_2'},
+        },
+    },
+    ['U'] = {
+        ['N'] = {
+            ['N'] = {'path_t2t_1', 'path_t2t_2', 'path_t2t_3'},
         },
     },
 }

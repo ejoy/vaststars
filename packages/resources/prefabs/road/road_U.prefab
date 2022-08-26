@@ -19,13 +19,13 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/Road.line.material
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/平面.014_P1.meshbin"
   name: "平面.004"
   scene:
     r: {0, 0.7071068286895752, 0, -0.7071067094802856}
     t: {0, 2.2019999027252197, 0}
+  visible_state: main_view|selectable|cast_shadow
 mount: 2
 policy:
   ant.general|name
@@ -33,13 +33,13 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/Road.line.material
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/柱体.006_P1.meshbin"
   name: "柱体.001"
   scene:
     r: {0, 0.7071068286895752, 0, -0.7071067094802856}
     t: {0, 4.078086853027344, 0}
+  visible_state: main_view|selectable|cast_shadow
 mount: 2
 policy:
   ant.general|name
@@ -47,13 +47,13 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/Road.bian.material
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/立方体.029_P1.meshbin"
   name: "立方体.008"
   scene:
     r: {0, 0.7071068286895752, 0, -0.7071067094802856}
     t: {0, 2.0999999046325684, 0}
+  visible_state: main_view|selectable|cast_shadow
 mount: 2
 policy:
   ant.general|name
@@ -61,12 +61,12 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/road.jia.material
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/立方体.030_P1.meshbin"
   name: "立方体.009"
   scene:
     r: {0, 0.7071068286895752, 0, -0.7071067094802856}
+  visible_state: main_view|selectable|cast_shadow
 mount: 2
 policy:
   ant.general|name
@@ -74,13 +74,13 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/road.shiti.material
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/立方体.006_P1.meshbin"
   name: "立方体.010"
   scene:
     r: {0, 0.7071068286895752, 0, -0.7071067094802856}
     t: {0, 2, 0}
+  visible_state: main_view|selectable|cast_shadow
 mount: 2
 policy:
   ant.general|name
@@ -88,13 +88,13 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/Road.line.material
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/平面.013_P1.meshbin"
   name: "平面.003"
   scene:
     r: {0, 0.7071068286895752, 0, -0.7071067094802856}
     t: {0, 2.2019999027252197, 0}
+  visible_state: main_view|selectable|cast_shadow
 mount: 2
 policy:
   ant.general|name
@@ -102,13 +102,61 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/road/road_U.glb|materials/Road.material
   mesh: "/pkg/vaststars.resources/glb/road/road_U.glb|meshes/立方体.027_P1.meshbin"
   name: DIAOTOU
   scene: {}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name
   ant.render|render
   ant.scene|scene_object
+---
+data:
+  name: path_t2t_1
+  scene:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {-1.0028533935546875, 0, 5.554206848144531}
+  slot:
+    follow_flag: 1
+  tag:
+    ""
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: path_t2t_2
+  scene:
+    r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+    s: {1, 1, 1}
+    t: {-3.365692138671875, 6.263580322265625, -1.9933319091796875}
+  slot:
+    follow_flag: 1
+  tag:
+    hitch5
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: path_t2t_3
+  scene:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {-1.9812469482421875, 0, -10.897628784179688}
+  slot:
+    follow_flag: 1
+  tag:
+    ""
+mount: 1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
