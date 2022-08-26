@@ -542,7 +542,7 @@
             </div>
 
             <!-- 指示器 -->
-            <div style = "pointer-events: none; position: absolute; right: 21.5vmin; bottom:2vmin; flex-direction: row; align-items: center;" data-if = "guide_progress >= 5">
+            <div style = "pointer-events: none; position: absolute; right: 21.5vmin; bottom:2vmin; flex-direction: row; align-items: center;" data-if = "false">
                 <button data-if = "cur_edit_mode == ''"  style='width: 12.00vmin; height: 12.00vmin; background-color: rgb(1, 238, 255); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"textures/common/indicator.texture"; width: 10vmin; height: 10vmin; background-size:cover;'/>
                 </button>
