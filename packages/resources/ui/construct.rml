@@ -478,16 +478,21 @@
             </button>
 
             <!-- 开始施工 -->
-            <button data-if = "cur_edit_mode == 'construct' && show_construct_complete" data-event-click="clickConstructComplete()" style='position: absolute; left: 2.67vmin; bottom: 2vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: center;'>
+            <button data-if = "cur_edit_mode == 'construct' && show_construct_complete" data-event-click="clickConstructComplete()" style='position: absolute; right:70vmin;  bottom: 2vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: center;'>
                 <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始施工</div>
             </button>
 
             <!-- 开始拆除 -->
-            <button data-if = "cur_edit_mode == 'dismantle' && show_teardown" data-event-click="clickTeardownComplete()" style='position: absolute; left: 2.67vmin; bottom: 2vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: center;'>
+            <button data-if = "cur_edit_mode == 'dismantle' && show_teardown" data-event-click="clickTeardownComplete()" style='position: absolute; right:70vmin; bottom: 2vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: center;'>
                 <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
                 <div>开始拆除</div>
             </button>
+
+            <!-- 方向键区域 -->
+            <div data-if = "cur_edit_mode == 'construct' || cur_edit_mode == 'dismantle'" style='position: absolute; left:2.37vmin;  bottom: 2vmin; width: 35.00vmin; height: 35.00vmin; flex-direction: column; justify-content: center; pointer-events: none;'>
+                <div style='margin: 0 auto; background-image:"textures/construct/joystick.texture"; width: 35vmin; height: 35vmin; background-size:cover; pointer-events: none;'/>
+            </div>
             
             <!-- 拆除模式 -->
             <div data-if = "cur_edit_mode != '' && guide_progress >= 5" data-event-click="clickTeardownBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
