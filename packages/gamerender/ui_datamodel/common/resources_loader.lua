@@ -7,9 +7,7 @@ local imaterial = ecs.import.interface "ant.asset|imaterial"
 local fs = require "filesystem"
 
 local M = {}
-
 function M.load(filename)
-    local skip = {"glb", "sc"}
     local handler = {
         ["prefab"] = function(f)
             local fs = require "filesystem"
@@ -42,9 +40,6 @@ function M.load(filename)
         ["texture"] = function (f)
             length = #assetmgr.resource(f)
         end,
-        ["png"] = function (f)
-            length = #assetmgr.resource(f)
-        end,
         ["material"] = function (f)
             local res = imaterial.load_res(f)
             local obj = res.object
@@ -52,12 +47,6 @@ function M.load(filename)
     }
 
     local ext = filename:match(".*%.(.*)$")
-    for _, _ext in ipairs(skip) do
-        if ext == _ext then
-            return
-        end
-    end
-
     log.info(("resources_loader|load %s"):format(filename))
     if not handler[ext] then
         local f <close> = assert(fs.open(fs.path(filename), "r"))
