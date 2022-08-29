@@ -148,6 +148,10 @@ local function get_position(self)
     return iom.get_position(e)
 end
 
+local function get_matrix(self)
+    local e <close> = w:entity(self.game_object.hitch_entity_object.id)
+    return iom.worldmat(e)
+end
 local function set_dir(self, dir)
     self.game_object:send("obj_motion", "set_rotation", rotators[dir])
     if self.block_object then
@@ -274,6 +278,7 @@ return function (init)
         update = update,
         set_position = set_position,
         get_position = get_position,
+        get_matrix = get_matrix,
         set_dir = set_dir,
         remove = remove,
         attach = attach,

@@ -88,7 +88,6 @@ data:
     follow_flag: 1
   tag:
     empty9
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -105,7 +104,6 @@ data:
     follow_flag: 1
   tag:
     empty10
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -122,7 +120,6 @@ data:
     follow_flag: 1
   tag:
     empty11
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -139,7 +136,6 @@ data:
     follow_flag: 1
   tag:
     empty12
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -156,7 +152,6 @@ data:
     follow_flag: 1
   tag:
     empty13
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -173,7 +168,6 @@ data:
     follow_flag: 1
   tag:
     empty14
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -190,7 +184,6 @@ data:
     follow_flag: 1
   tag:
     empty15
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -207,7 +200,6 @@ data:
     follow_flag: 1
   tag:
     empty16
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -224,7 +216,6 @@ data:
     follow_flag: 1
   tag:
     empty17
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -241,7 +232,6 @@ data:
     follow_flag: 1
   tag:
     empty18
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -258,7 +248,6 @@ data:
     follow_flag: 1
   tag:
     empty19
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -275,7 +264,6 @@ data:
     follow_flag: 1
   tag:
     empty20
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -287,12 +275,11 @@ data:
   scene:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
-    t: {1.5, 2.200000047683716, -5}
+    t: {1.5, 6.200000047683716, -5}
   slot:
     follow_flag: 1
   tag:
     empty7
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -304,12 +291,11 @@ data:
   scene:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
-    t: {1.5, 2.200000047683716, 5}
+    t: {1.5, 6.200000047683716, 5}
   slot:
     follow_flag: 1
   tag:
     empty8
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -321,12 +307,11 @@ data:
   scene:
     r: {0, 1, 0, -4.371138828673793e-08}
     s: {1, 1, 1}
-    t: {-1.5, 2.200000047683716, 5}
+    t: {-1.5, 6.200000047683716, 5}
   slot:
     follow_flag: 1
   tag:
     empty9
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -338,12 +323,11 @@ data:
   scene:
     r: {0, 1, 0, -4.371138828673793e-08}
     s: {1, 1, 1}
-    t: {-1.5, 2.200000047683716, -5}
+    t: {-1.5, 6.200000047683716, -5}
   slot:
     follow_flag: 1
   tag:
     empty10
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -355,12 +339,11 @@ data:
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {5, 2.200000047683716, 1.5}
+    t: {5, 6.200000047683716, 1.5}
   slot:
     follow_flag: 1
   tag:
     empty11
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -372,12 +355,11 @@ data:
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {-5, 2.200000047683716, 1.5}
+    t: {-5, 6.200000047683716, 1.5}
   slot:
     follow_flag: 1
   tag:
     empty12
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -389,12 +371,11 @@ data:
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {-5, 2.200000047683716, -1.5}
+    t: {-5, 6.200000047683716, -1.5}
   slot:
     follow_flag: 1
   tag:
     empty13
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -406,12 +387,11 @@ data:
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {5, 2.200000047683716, -1.5}
+    t: {5, 6.200000047683716, -1.5}
   slot:
     follow_flag: 1
   tag:
     empty14
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -423,12 +403,11 @@ data:
   scene:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
-    t: {1.5, 2.200000047683716, -5}
+    t: {1.5, 6.200000047683716, -5}
   slot:
     follow_flag: 1
   tag:
     empty15
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -440,12 +419,11 @@ data:
   scene:
     r: {0, 0.3826834559440613, 0, 0.9238795042037964}
     s: {1, 1, 1}
-    t: {2, 2.200000047683716, -3}
+    t: {2, 6.200000047683716, -3}
   slot:
     follow_flag: 1
   tag:
     empty16
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -457,12 +435,11 @@ data:
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {4, 2.200000047683716, -1.5}
+    t: {4, 6.200000047683716, -1.5}
   slot:
     follow_flag: 1
   tag:
     empty17
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -474,12 +451,11 @@ data:
   scene:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
-    t: {1.5, 2.200000047683716, -5}
+    t: {1.5, 6.200000047683716, -5}
   slot:
     follow_flag: 1
   tag:
     empty18
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -491,12 +467,11 @@ data:
   scene:
     r: {0, -0.3826834559440613, 0, 0.9238795042037964}
     s: {1, 1, 1}
-    t: {0, 2.200000047683716, -1}
+    t: {0, 6.200000047683716, -1}
   slot:
     follow_flag: 1
   tag:
     empty19
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -508,12 +483,11 @@ data:
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {-5, 2.200000047683716, 1.5}
+    t: {-5, 6.200000047683716, 1.5}
   slot:
     follow_flag: 1
   tag:
     empty20
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -525,12 +499,11 @@ data:
   scene:
     r: {0, 1, 0, -4.371138828673793e-08}
     s: {1, 1, 1}
-    t: {-1.5, 2.200000047683716, 5}
+    t: {-1.5, 6.200000047683716, 5}
   slot:
     follow_flag: 1
   tag:
     empty21
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -542,12 +515,11 @@ data:
   scene:
     r: {0, 0.9537169337272644, 0, 0.30070582032203674}
     s: {1, 1, 1}
-    t: {0, 2.200000047683716, 1}
+    t: {0, 6.200000047683716, 1}
   slot:
     follow_flag: 1
   tag:
     empty22
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -559,12 +531,11 @@ data:
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {5, 2.200000047683716, -1.5}
+    t: {5, 6.200000047683716, -1.5}
   slot:
     follow_flag: 1
   tag:
     empty23
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -576,12 +547,11 @@ data:
   scene:
     r: {0, 1, 0, -4.371138828673793e-08}
     s: {1, 1, 1}
-    t: {-1.5, 2.200000047683716, 5}
+    t: {-1.5, 6.200000047683716, 5}
   slot:
     follow_flag: 1
   tag:
     empty24
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -593,12 +563,11 @@ data:
   scene:
     r: {0, -0.9537169337272644, 0, 0.30070582032203674}
     s: {1, 1, 1}
-    t: {-1.899999976158142, 2.200000047683716, 2.799999952316284}
+    t: {-1.899999976158142, 6.200000047683716, 2.799999952316284}
   slot:
     follow_flag: 1
   tag:
     empty25
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -610,12 +579,11 @@ data:
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {-4, 2.200000047683716, 1.5}
+    t: {-4, 6.200000047683716, 1.5}
   slot:
     follow_flag: 1
   tag:
     empty26
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -627,12 +595,11 @@ data:
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {5, 2.200000047683716, 1.5}
+    t: {5, 6.200000047683716, 1.5}
   slot:
     follow_flag: 1
   tag:
     empty27
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -644,12 +611,11 @@ data:
   scene:
     r: {0, -0.9537169337272644, 0, 0.30070582032203674}
     s: {1, 1, 1}
-    t: {0, 2.200000047683716, 0}
+    t: {0, 6.200000047683716, 0}
   slot:
     follow_flag: 1
   tag:
     empty28
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -661,12 +627,11 @@ data:
   scene:
     r: {0, 1, 0, -4.371138828673793e-08}
     s: {1, 1, 1}
-    t: {-1.5, 2.200000047683716, -5}
+    t: {-1.5, 6.200000047683716, -5}
   slot:
     follow_flag: 1
   tag:
     empty29
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -678,12 +643,11 @@ data:
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {5, 2.200000047683716, 1.5}
+    t: {5, 6.200000047683716, 1.5}
   slot:
     follow_flag: 1
   tag:
     empty30
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -695,12 +659,11 @@ data:
   scene:
     r: {0, -0.3826834559440613, 0, 0.9238795042037964}
     s: {1, 1, 1}
-    t: {3, 2.200000047683716, 2}
+    t: {3, 6.200000047683716, 2}
   slot:
     follow_flag: 1
   tag:
     empty31
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -712,12 +675,11 @@ data:
   scene:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
-    t: {1.5, 2.200000047683716, 4}
+    t: {1.5, 6.200000047683716, 4}
   slot:
     follow_flag: 1
   tag:
     empty32
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -729,12 +691,11 @@ data:
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {-5, 2.200000047683716, -1.5}
+    t: {-5, 6.200000047683716, -1.5}
   slot:
     follow_flag: 1
   tag:
     empty33
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -746,12 +707,11 @@ data:
   scene:
     r: {0, 0.9238795042037964, 0, 0.3826834261417389}
     s: {1, 1, 1}
-    t: {-3, 2.200000047683716, -2}
+    t: {-3, 6.200000047683716, -2}
   slot:
     follow_flag: 1
   tag:
     empty34
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -763,12 +723,11 @@ data:
   scene:
     r: {0, 1, 0, -4.371138828673793e-08}
     s: {1, 1, 1}
-    t: {-1.5, 2.200000047683716, -4}
+    t: {-1.5, 6.200000047683716, -4}
   slot:
     follow_flag: 1
   tag:
     empty35
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -780,12 +739,11 @@ data:
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {-5, 2.200000047683716, -1.5}
+    t: {-5, 6.200000047683716, -1.5}
   slot:
     follow_flag: 1
   tag:
     empty36
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -797,12 +755,11 @@ data:
   scene:
     r: {0, 0.3826834559440613, 0, 0.9238795042037964}
     s: {1, 1, 1}
-    t: {0, 2.200000047683716, 0}
+    t: {0, 6.200000047683716, 0}
   slot:
     follow_flag: 1
   tag:
     empty37
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -814,12 +771,11 @@ data:
   scene:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
-    t: {1.5, 2.200000047683716, 5}
+    t: {1.5, 6.200000047683716, 5}
   slot:
     follow_flag: 1
   tag:
     empty38
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -831,12 +787,11 @@ data:
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {5, 2.200000047683716, -1.5}
+    t: {5, 6.200000047683716, -1.5}
   slot:
     follow_flag: 1
   tag:
     empty1
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -848,12 +803,11 @@ data:
   scene:
     r: {0, -0.7071067690849304, 0, 0.7071067690849304}
     s: {1, 1, 1}
-    t: {-5, 2.200000047683716, 1.5}
+    t: {-5, 6.200000047683716, 1.5}
   slot:
     follow_flag: 1
   tag:
     empty4
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -865,12 +819,11 @@ data:
   scene:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
-    t: {1.5, 2.200000047683716, 5}
+    t: {1.5, 6.200000047683716, 5}
   slot:
     follow_flag: 1
   tag:
     empty6
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
@@ -882,12 +835,11 @@ data:
   scene:
     r: {0, -1, 0, -4.371138828673793e-08}
     s: {1, 1, 1}
-    t: {-1.5, 2.200000047683716, -5}
+    t: {-1.5, 6.200000047683716, -5}
   slot:
     follow_flag: 1
   tag:
     empty7
-mount: 1
 policy:
   ant.general|name
   ant.general|tag
