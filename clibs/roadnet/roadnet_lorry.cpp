@@ -13,7 +13,7 @@ namespace roadnet {
         w.Line(lineId).nextDirection(lineIdx);
     }
     void lorry::initTick(world& w, uint8_t v) {
-        tick = v;
+        tick = v - 1; // [0, v), total v ticks
         marked = w.marked;
     }
     uint8_t lorry::updateTick(world& w) {

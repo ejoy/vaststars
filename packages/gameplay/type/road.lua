@@ -5,7 +5,7 @@ local c = type "road"
 function c:ctor(init, pt)
     return {
         road = {
-            road_type = assert(init.road_type),
+            road_type = 0,
             coord = 0,
         }
     }

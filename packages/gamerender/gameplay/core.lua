@@ -91,6 +91,10 @@ init_func["chimney"] = function (pt, template)
     return template
 end
 
+init_func["road"] = function (pt, template)
+    return template
+end
+
 function m.create_entity(init)
     local func
     local template = {
