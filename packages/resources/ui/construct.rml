@@ -490,7 +490,7 @@
             </button>
 
             <!-- 方向键区域 -->
-            <div data-if = "cur_edit_mode == 'construct' || cur_edit_mode == 'dismantle'" style='position: absolute; left:2.37vmin;  bottom: 2vmin; width: 35.00vmin; height: 35.00vmin; flex-direction: column; justify-content: center; pointer-events: none;'>
+            <div data-if = "cur_edit_mode == 'construct' || cur_edit_mode == 'dismantle' && 'false'" style='position: absolute; left:2.37vmin;  bottom: 2vmin; width: 35.00vmin; height: 35.00vmin; flex-direction: column; justify-content: center; pointer-events: none;'>
                 <div style='margin: 0 auto; background-image:"textures/construct/joystick.texture"; width: 35vmin; height: 35vmin; background-size:cover; pointer-events: none;'/>
             </div>
             
