@@ -655,8 +655,6 @@ local t = {
 	"/pkg/ant.timer/package.lua",
 	"/pkg/ant.timer/timer_system.ecs",
 	"/pkg/ant.timer/timer_system.lua",
-	"/pkg/ant.url/main.lua",
-	"/pkg/ant.url/package.lua",
 	"/pkg/ant.window/main.lua",
 	"/pkg/ant.window/package.lua",
 	"/pkg/ant.window/service/boot.lua",
