@@ -66,42 +66,40 @@ ui_sys.mapping(start, {
 })
 
 -- <!-- tag page begin -->
-local function page_item_renderer(index)
+local function page_item_update(item, index)
     if index > #start.inventory then
-        local e = document.createElement "div"
-        e.outerHTML = ([[<div style = "width: %0.2fvmin; height: %0.2fvmin;" />]]):format(12 + 0.27, 12 + 0.27)
-        return e
-    end
-
-    local item = document.createElement "div"
-    item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s"> <div class="item-count">%s</div> </div>]]):format(start.inventory[index].icon, start.inventory[index].count)
-
-    local select_style_border   = "0.27vmin green"
-    local unselect_style_border = "0.27vmin rgb(89, 73, 39)"
-    if select_item_index ~= index then
-        item.style.border = unselect_style_border
+        item.outerHTML = ([[<div style = "width: %0.2fvmin; height: %0.2fvmin;" />]]):format(12 + 0.27, 12 + 0.27)
     else
-        item.style.border = select_style_border
-    end
+        item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s"> <div class="item-count">%s</div> </div>]]):format(start.inventory[index].icon, start.inventory[index].count)
 
-    item.addEventListener('click', function(event)
-        item.style.border = select_style_border
-        if select_item_index then
-            local v = start.page:get_item_info(select_item_index)
-            if v then
-                v.item.style.border = unselect_style_border
-            end
+        local select_style_border   = "0.27vmin green"
+        local unselect_style_border = "0.27vmin rgb(89, 73, 39)"
+        if select_item_index ~= index then
+            item.style.border = unselect_style_border
+        else
+            item.style.border = select_style_border
         end
-        select_item_index = index
 
-        start.page:show_detail(item, false)
-        start.page:show_detail(item, true)
-    end)
-    return item
+        item.addEventListener('click', function(event)
+            item.style.border = select_style_border
+            if select_item_index then
+                local v = start.page:get_item_info(select_item_index)
+                if v then
+                    v.item.style.border = unselect_style_border
+                end
+            end
+            select_item_index = index
+
+            start.page:show_detail(item, false)
+            start.page:show_detail(item, true)
+        end)
+    end
 end
-
+local function page_item_init(item, index)
+    page_item_update(item, index)
+end
 local pageclass = require "page"
 window.customElements.define("page", function(e)
-    start.page = pageclass.create(document, e, page_item_renderer)
+    start.page = pageclass.create(document, e, page_item_init, page_item_update)
 end)
 -- <!-- tag page end -->
