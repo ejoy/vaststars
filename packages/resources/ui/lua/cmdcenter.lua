@@ -31,8 +31,8 @@ end
 -- <!-- tag page begin -->
 local select_item_index
 -- <!-- tag page end -->
-local select_style_border   = "0.27vmin green"
-local unselect_style_border = "0.27vmin rgb(89, 73, 39)"
+local select_style_border   = "0.54vmin green"
+local unselect_style_border = "0.54vmin rgb(89, 73, 39)"
 local function update_category(category)
     start.sub_inventory = {}
     for _, v in ipairs(start.inventory) do
@@ -137,8 +137,8 @@ local function page_item_update(item, index)
 end
 
 local function page_item_init(item, index)
-    item.style.width = '14.07vmin'
-    item.style.height = '14.07vmin'
+    -- item.style.width = '14.07vmin'
+    -- item.style.height = '14.07vmin'
     page_item_update(item, index)
 end
 
