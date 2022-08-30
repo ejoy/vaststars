@@ -178,10 +178,10 @@
             local function page_item_update(item, index)
                 item.removeEventListener('click')
                 if index > #start.recipe_items then
-                    item.outerHTML = [[<div style = "width: 12.00vmin; height: 12.00vmin;" />]]
+                    item.outerHTML = [[<div style = "width: 100%; height: 100%;" />]]
                 else
-                    item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s"><p class = "new-coming" data-if="%s">新</p></div>]]):format(start.recipe_items[index].icon, start.recipe_items[index].new)
-                    local select_style_border = "5px green"
+                    item.outerHTML = ([[<div class = "item" style = "width: 100%%; height: 100%%; backgroundImage: %s"><p class = "new-coming" data-if="%s">新</p></div>]]):format(start.recipe_items[index].icon, start.recipe_items[index].new)
+                    local select_style_border = "3px green"
                     if start.recipe_name == start.recipe_items[index].name then
                         select_item = item
                         item.style.border = select_style_border
@@ -235,7 +235,7 @@
 
                 <!-- tag page begin -->
                 <div class="panel" style = "width: 100%; height: 69.00vmin;">
-                    <page width = '85.33vmin' height = '66.00vmin' footerheight= '4.00vmin' row='5' col='7' />
+                    <page width = '79.33vmin' height = '66.00vmin' footerheight= '4.00vmin' row='5' col='6' />
                 </div>
                 <!-- tag page end -->
 
