@@ -157,6 +157,11 @@ function page_meta:init(item_count)
             cid = cid + 1
         end
         local item = self.document.createElement "div"
+        local w, wu = string.match(self.width, "([0-9]+%.*[0-9]*)([%w%%]+)")
+        local width = (tonumber(w) / self.col) .. wu
+        item.style.width = width
+        -- local h, hu = string.match(self.width, "([0-9]+%.*[0-9]*)([%w%%]+)")
+        item.style.height = width
         self.item_init(item, index)
         page[rid].appendChild(item)
         local item_info = {index = index, page = pid, row = rid, col = cid, item = item}
