@@ -331,9 +331,23 @@
             local function clickRecipe(index)
                 ui_sys.pub{"click_recipe", index}
             end
-            local function tech_item_renderer(index)
+            
+            local select_style_border = "3px rgb(0,255,0)"
+            function start.click_tech_item(item, index)
+                if start.selected_tech and start.selected_tech ~= item then
+                    start.selected_tech.style.border = '0px green'
+                end
+                item.style.border = select_style_border
+                clickTech(index)
+                start.selected_tech = item
+            end
+
+            local function tech_item_init(item, index)
+                item.className = "item-research"
+                item.addEventListener('click', function(event) start.click_tech_item(item, index) end)
+            end
+            local function tech_item_update(item, index)
                 local item_data = start.techitems[index]
-                local item = document.createElement "div"
                 local ingredient_items = ""
                 if not item_data.task then
                     local ingredient_count = 0
@@ -354,31 +368,38 @@
                 item.outerHTML = ([[
                 <div class="progress-background-new" style="position:absolute; left:0; width: %d%%;"/>
                 <div class="item-bg" style='background-image:"%s";'/>
-                
                 <!--新科技条目添加新-->
                 <!--div class="icon-researching" style="top:0vmin;">新<div-->
-
                 <div class="item-title-new">%s</div>]]):format(item_data.progress, item_data.icon, item_data.name) .. ingredient_items .. statestr .. sign
-
-                item.className = "item-research"
-                local select_style_border = "3px rgb(0,255,0)"
-                item.addEventListener('click', function(event)
-                    if start.selected_tech and start.selected_tech ~= item then
-                        start.selected_tech.style.border = '0px green'
-                    end
-                    item.style.border = select_style_border
-                    clickTech(index)
-                    start.selected_tech = item
-                end)
-                return item
+                item.removeEventListener('click')
+                item.addEventListener('click', function(event) start.click_tech_item(item, index) end)
             end
             local listclass = require "list"
             window.customElements.define("list", function(e)
-                start.list = listclass.create(document, e, 0, tech_item_renderer)
+                start.list = listclass.create(document, e, tech_item_init, tech_item_update)
             end)
 
-            local function detail_item_renderer(index)
-                local item = document.createElement "div"
+            function start.click_detail_item(item, index)
+                if start.selected_recipe and start.selected_recipe ~= item then
+                    start.selected_recipe.style.border = '0px green'
+                    start.detaillist:show_detail(start.selected_recipe, false)
+                end
+                item.style.border = select_style_border
+                start.selected_recipe = item
+                local detail = start.current_tech.detail[index]
+                if detail.name then
+                    start.detaillist:show_detail(index, true)
+                end
+                clickRecipe(index)
+            end
+
+            local function detail_item_init(item, index)
+                item.className = "item-research"
+                item.style.width = '90%'
+                item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
+            end
+
+            local function detail_item_update(item, index)
                 local detail = start.current_tech.detail[index]
                 local htmlstr = ([[<div class="item-bg" style='background-image:"%s";'/>]]):format(detail.icon)
                 if detail.name then
@@ -389,24 +410,11 @@
                     item.style.backgroundColor = 'rgb(112,48,160)'
                 end
                 item.outerHTML = htmlstr
-                item.className = "item-research"
-                item.style.width = '90%'
-                local select_style_border = "3px rgb(0,255,0)"
-                item.addEventListener('click', function(event)
-                    if start.selected_recipe and start.selected_recipe ~= item then
-                        start.selected_recipe.style.border = '0px green'
-                        start.detaillist:show_detail(start.selected_recipe, false)
-                    end
-                    item.style.border = select_style_border
-                    start.selected_recipe = item
-                    if detail.name then
-                        start.detaillist:show_detail(index, true)
-                    end
-                    clickRecipe(index)
-                end)
-                return item
+                item.removeEventListener('click')
+                item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
             end
-            local function pop_item_renderer(index)
+
+            local function pop_item_renderer(item, index)
                 local item = document.createElement "div"
                 local detail = start.current_tech.detail[index]
                 local inoutstr = ""
@@ -427,7 +435,7 @@
                     </div>
                     ]]):format(outdata.icon, outdata.count, outdata.name)
                 end
-                local htmlstr = ([[
+                item.outerHTML = ([[
                 <div class="recipe-info-block">
                     <div class="recipe-info-desc-block">
                         <div class="recipe-info-desc-title">配方信息</div>
@@ -438,11 +446,10 @@
                     </div>
                 </div>
                 ]]):format(detail.desc, inoutstr)
-                item.outerHTML = htmlstr
                 return item
             end
             window.customElements.define("detaillist", function(e)
-                start.detaillist = listclass.create(document, e, 0, detail_item_renderer, pop_item_renderer)
+                start.detaillist = listclass.create(document, e, detail_item_init, detail_item_update, pop_item_renderer)
             end)
             ui_sys.mapping(start, {
                 {

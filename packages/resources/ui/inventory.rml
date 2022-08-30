@@ -1,6 +1,7 @@
 <rml>
     <head>
         <style path = "common/building_style.rcss"/>
+        <style path = "common/listpage_style.rcss"/>
         <style>
             .building-info {
                 margin-top:1em;
