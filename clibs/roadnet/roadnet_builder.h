@@ -10,7 +10,7 @@ namespace roadnet {
     class builder {
     public:
         builder();
-        void    loadMap(world& w, std::string_view strmap);
+        void    loadMap(world& w, const std::map<loction, uint8_t>& mapData);
         lineid  addLine(world& w, std::string_view strpath);
         lorryid addLorry(world& w, lineid lineId, uint8_t lineIdx, road_coord where);
         lorryid addLorry(world& w, lineid lineId, uint8_t lineIdx, loction l, uint8_t z);

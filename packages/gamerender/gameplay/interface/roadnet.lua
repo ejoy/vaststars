@@ -32,14 +32,13 @@ function mt:add_lorry(lineid, idx, x, y, z)
     return self.cworld:add_lorry(lineid, idx, l, z)
 end
 
--- TODO: optimize -> strmap
-local function create(strmap, callback)
+local function create(map, callback)
     local cworld = roadnet_core.create_world()
 
     local w = {}
     w.callback = callback
     w.cworld = cworld
-    w.cworld:load_map(strmap)
+    w.cworld:load_map(map)
 
     local road_coord = {}
     local map_coord  = {}
@@ -65,7 +64,7 @@ local function create(strmap, callback)
     return setmetatable(w, mt)
 end
 
-local get_road_mask; do
+local get_road_mask, is_cross, entry_count; do -- TODO: we really need the entry_count api?
     local mt = {}
     function mt:__index(k)
         local v = {}
@@ -84,23 +83,36 @@ local get_road_mask; do
     for _, typeobject in pairs(iprototype.each_maintype("entity", "road")) do
         for _, entity_dir in pairs(typeobject.flow_direction) do
             local bits = 0
+            local c = 0
+
             local connections = typeobject.crossing.connections
             for _, connection in ipairs(connections) do
                 local dir = iprototype.rotate_dir(connection.position[3], entity_dir)
                 bits = bits | (1 << mapping[dir])
+                c = c + 1
             end
 
             assert(prototype_bits[typeobject.name][entity_dir] == nil)
-            prototype_bits[typeobject.name][entity_dir] = bits
+            prototype_bits[typeobject.name][entity_dir] = {bits = bits, is_cross = (c >= 3), c = c}
         end
     end
 
     function get_road_mask(prototype_name, dir)
-        return assert(prototype_bits[prototype_name][dir])
+        return assert(prototype_bits[prototype_name][dir]).bits
+    end
+
+    function is_cross(prototype_name, dir)
+        return assert(prototype_bits[prototype_name][dir]).is_cross
+    end
+
+    function entry_count(prototype_name, dir)
+        return assert(prototype_bits[prototype_name][dir]).c
     end
 end
 
 return {
     create = create,
+    is_cross = is_cross,
+    entry_count = entry_count,
     road_mask = get_road_mask,
 }

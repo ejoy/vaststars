@@ -273,15 +273,9 @@ namespace roadnet {
         return false;
     }
 
-    void builder::loadMap(world& w, std::string_view strmap) {
-        size_t x = 0, y = 0;
-        for (auto v : strmap) {
-            if (v == '\xff') {
-                x = 0; y++;
-            }
-            else {
-                map[y][x++] = v;
-            }
+    void builder::loadMap(world& w, const std::map<loction, uint8_t>& mapData) {
+        for (auto& [l, v] : mapData) {
+             map[l.y][l.x] = v;
         }
 
         genCrossId = 0;

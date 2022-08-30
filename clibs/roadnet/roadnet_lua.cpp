@@ -64,6 +64,17 @@ namespace roadnet::lua {
         return {x,y};
     }
 
+    static std::map<loction, uint8_t> get_map_data(lua_State* L, int idx) {
+        std::map<loction, uint8_t> map;
+        luaL_checktype(L, idx, LUA_TTABLE);
+        for(lua_pushnil(L); lua_next(L, idx); lua_pop(L, 1)) {
+            auto l = get_loction(L, -2);
+            uint8_t m = (uint8_t)luaL_checkinteger(L, -1);
+            map.emplace(l, m);
+        }
+        return std::move(map);
+    }
+
     static void push_map_coord(lua_State* L, map_coord& c) {
         uint32_t v = 0;
         v |= (uint32_t)c.x <<  0;
@@ -87,7 +98,8 @@ namespace roadnet::lua {
 
         static int load_map(lua_State* L) {
             auto& o = class_get<object>(L, 1);
-            o.b.loadMap(o.w, get_strview(L, 2));
+            auto map = get_map_data(L, 2);
+            o.b.loadMap(o.w, map);
             return 0;
         }
         static int add_line(lua_State* L) {
