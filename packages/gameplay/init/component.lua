@@ -83,8 +83,6 @@ component "mining" {
 }
 
 component "road" {
-    "road_type:word",
-    "coord:word",
 }
 
 component "station" {
