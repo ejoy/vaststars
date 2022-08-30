@@ -44,9 +44,9 @@ function list_meta.create(document, e, item_init, item_update, detail_renderer, 
         panel.addEventListener('mousemove', function(event) list:on_drag(event) end)
         panel.addEventListener('mouseup', function(event) list:on_mouseup(event) end)
     -- else
-        -- panel.addEventListener('touchstart', function(event) list:on_mousedown(event) end)
-        -- panel.addEventListener('touchmove', function(event) list:on_drag(event) end)
-        -- panel.addEventListener('touchend', function(event) list:on_mouseup(event) end)
+        panel.addEventListener('touchstart', function(event) list:on_mousedown(event) end)
+        panel.addEventListener('touchmove', function(event) list:on_drag(event) end)
+        panel.addEventListener('touchend', function(event) list:on_mouseup(event) end)
     -- end
     e.appendChild(panel)
     list.panel = panel
@@ -109,7 +109,9 @@ function list_meta:on_dirty_all(item_count)
     end
     local total_item_count = #self.index_map
     for empty_idx = item_count + 1, total_item_count do
-        self.index_map[empty_idx].item.outerHTML = ""
+        local item = self.index_map[empty_idx].item
+        item.outerHTML = ""
+        item.removeEventListener('click')
     end
     self.item_count = item_count
 end

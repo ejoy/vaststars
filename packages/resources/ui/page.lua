@@ -36,9 +36,9 @@ function page_meta.create(document, e, item_init, item_update, detail_renderer, 
         panel.addEventListener('mousemove', function(event) page:on_drag(event) end)
         panel.addEventListener('mouseup', function(event) page:on_mouseup(event) end)
     -- else
-        -- panel.addEventListener('touchstart', function(event) page:on_mousedown(event) end)
-        -- panel.addEventListener('touchmove', function(event) page:on_drag(event) end)
-        -- panel.addEventListener('touchend', function(event) page:on_mouseup(event) end)
+        panel.addEventListener('touchstart', function(event) page:on_mousedown(event) end)
+        panel.addEventListener('touchmove', function(event) page:on_drag(event) end)
+        panel.addEventListener('touchend', function(event) page:on_mouseup(event) end)
     -- end
     panel.style.height = page.height
     panel.style.flexDirection = 'row'
@@ -133,7 +133,7 @@ function page_meta:init(item_count)
             row_e.style.width = '100%'--self.width
             row_e.style.flexDirection = 'row'
             row_e.style.alignItems = 'center'
-            row_e.style.justifyContent = 'space-evenly'--'flex-start'--
+            row_e.style.justifyContent = 'flex-start'--'space-evenly'--
             page_e.appendChild(row_e)
             row[#row + 1] = row_e
         end
@@ -177,7 +177,10 @@ function page_meta:on_dirty_all(item_count)
 
     local total_item_count = #self.index_map
     for empty_idx = item_count + 1, total_item_count do
-        self.index_map[empty_idx].item.outerHTML = ""
+        local item = self.index_map[empty_idx].item
+        item.outerHTML = ""
+        item.removeEventListener('click')
+        item.style.border = "0px white"
     end
 
     local page_count = math.ceil(item_count / (self.row * self.col))
