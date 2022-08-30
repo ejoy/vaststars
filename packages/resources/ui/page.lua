@@ -1,38 +1,45 @@
+-- local platform = require 'bee.platform'
 local page_meta = {}
 page_meta.__index = page_meta
 
-function page_meta.create(document, e, item_renderer, detail_renderer)
-    local row = tonumber(e.getAttribute("row"))
-    local col = tonumber(e.getAttribute("col"))
-    local page_count = 0--math.ceil(item_count / (row * col))
+function page_meta.create(document, e, item_init, item_update, detail_renderer, data_for)
+    local row = e.getAttribute("row")
+    local col = e.getAttribute("col")
     local page = {
         current_page    = 1,
         pos             = 0,
         draging         = false,
         drag            = {mouse_pos = 0, anchor = 0, delta = 0},
-        row             = row,
-        col             = col,
+        row             = row and tonumber(row) or 0,
+        col             = col and tonumber(col) or 0,
         width           = e.getAttribute("width"),
         height          = e.getAttribute("height"),
-        page_count      = page_count,
-        item_renderer   = item_renderer,
+        item_init       = item_init,
+        item_update     = item_update,
         detail_renderer = detail_renderer,
-        pages           = {},
-        container       = {},
         document        = document,
+        data_for        = data_for
     }
     setmetatable(page, page_meta)
     e.style.overflow = 'hidden'
     e.style.width = page.width
-    local panel = document.createElement "div"
+    local panel
+    if data_for then
+        panel = item_init()
+    else
+        panel = document.createElement "div"
+    end
     e.appendChild(panel)
     panel.className = "pagestyle"
-    panel.addEventListener('mousedown', function(event) page:on_mousedown(event) end)
-    panel.addEventListener('mousemove', function(event) page:on_drag(event) end)
-    panel.addEventListener('mouseup', function(event) page:on_mouseup(event) end)
-    panel.addEventListener('touchstart', function(event) page:on_mousedown(event) end)
-    panel.addEventListener('touchmove', function(event) page:on_drag(event) end)
-    panel.addEventListener('touchend', function(event) page:on_mouseup(event) end)
+    -- if platform.OS == 'Windows' then
+        panel.addEventListener('mousedown', function(event) page:on_mousedown(event) end)
+        panel.addEventListener('mousemove', function(event) page:on_drag(event) end)
+        panel.addEventListener('mouseup', function(event) page:on_mouseup(event) end)
+    -- else
+        -- panel.addEventListener('touchstart', function(event) page:on_mousedown(event) end)
+        -- panel.addEventListener('touchmove', function(event) page:on_drag(event) end)
+        -- panel.addEventListener('touchend', function(event) page:on_mouseup(event) end)
+    -- end
     panel.style.height = page.height
     panel.style.flexDirection = 'row'
     panel.style.alignItems = 'flex-start'
@@ -55,7 +62,7 @@ function page_meta:update_footer_status()
     end
 end
 
-function page_meta:update_footer()
+function page_meta:update_footer(page_count)
     local footcount = #self.footer.childNodes
     if footcount > self.page_count then
         local removenode = {}
@@ -77,10 +84,35 @@ function page_meta:update_footer()
     self:update_footer_status()
 end
 
-function page_meta:update_contianer()
-    for _, page in ipairs(self.pages) do
-        self.panel.removeChild(page)
+function page_meta:on_dirty(index)
+    if self.data_for then
+        return
     end
+    local map = self.index_map[index]
+    self:show_detail(map.item, false)
+    if self.selected == map.item then
+        self.selected = nil
+    end
+    self.item_update(map.item, index)
+    -- self.item_map[map.item] = nil
+    -- local parent = self.pages[map.page].childNodes[map.row]
+    -- parent.removeChild(map.item)
+    -- --
+    -- local new_item = self.item_renderer(map.index)
+    -- self.item_map[new_item] = map
+    -- map.item = new_item
+    -- parent.appendChild(new_item, map.col - 1)
+end
+
+function page_meta:init(item_count)
+    if self.data_for then
+        return
+    end
+    local page_count = math.ceil(item_count / (self.row * self.col))
+    if self.page_count and self.page_count == page_count then
+        return
+    end
+    self.page_count = page_count
     self.pages = {}
     self.container = {}
     self.item_map = {}
@@ -101,7 +133,7 @@ function page_meta:update_contianer()
             row_e.style.width = '100%'--self.width
             row_e.style.flexDirection = 'row'
             row_e.style.alignItems = 'center'
-            row_e.style.justifyContent = 'space-evenly'
+            row_e.style.justifyContent = 'space-evenly'--'flex-start'--
             page_e.appendChild(row_e)
             row[#row + 1] = row_e
         end
@@ -124,11 +156,38 @@ function page_meta:update_contianer()
         else
             cid = cid + 1
         end
-        local item = self.item_renderer(index)
+        local item = self.document.createElement "div"
+        self.item_init(item, index)
         page[rid].appendChild(item)
         local item_info = {index = index, page = pid, row = rid, col = cid, item = item}
         self.item_map[item] = item_info
         self.index_map[#self.index_map + 1] = item_info
+    end
+    self:update_footer(page_count)
+    self.inited = true
+end
+
+function page_meta:on_dirty_all(item_count)
+    if not self.inited then
+        self:init(item_count)
+    end
+    for index = 1, item_count do
+        self.item_update(self.index_map[index].item, index)
+    end
+
+    local total_item_count = #self.index_map
+    for empty_idx = item_count + 1, total_item_count do
+        self.index_map[empty_idx].item.outerHTML = ""
+    end
+
+    local page_count = math.ceil(item_count / (self.row * self.col))
+    if self.page_count ~= page_count then
+        self.page_count = page_count
+        self:update_footer(page_count)
+    end
+    if self.current_page > self.page_count then
+        self.current_page = 1
+        self.panel.style.left = '0px'
     end
 end
 
@@ -145,33 +204,10 @@ function page_meta:get_selected()
 end
 
 function page_meta:get_item_info(index)
+    if self.data_for then
+        return
+    end
     return self.index_map[index]
-end
-
-function page_meta:on_dirty(index)
-    local map = self.index_map[index]
-    self:show_detail(map.item, false)
-    if self.selected == map.item then
-        self.selected = nil
-    end
-    self.item_map[map.item] = nil
-    local parent = self.pages[map.page].childNodes[map.row]
-    parent.removeChild(map.item)
-    --
-    local new_item = self.item_renderer(map.index)
-    self.item_map[new_item] = map
-    map.item = new_item
-    parent.appendChild(new_item, map.col - 1)
-end
-
-function page_meta:on_dirty_all(item_count)
-    if item_count < 0 then
-        item_count = 0
-    end
-    self.item_count = item_count
-    self.page_count = math.ceil(item_count / (self.row * self.col))
-    self:update_contianer()
-    self:update_footer()
 end
 
 function page_meta:get_current_page()
@@ -179,19 +215,13 @@ function page_meta:get_current_page()
 end
 
 function page_meta:show_detail(item_index, show)
-    if not self.detail_renderer then
+    if not item_index or not self.detail_renderer or not self.index_map then
         return
     end
-
-    if not self.index_map then
-        return
-    end
-
-    local map = self.index_map[item_index]
+    local map = (type(item_index) == "number") and self.index_map[item_index] or self.item_map[item_index]
     if not map then
         return
     end
-
     if show then
         if not map.detail then
             self.detail = self.detail_renderer(map.index)

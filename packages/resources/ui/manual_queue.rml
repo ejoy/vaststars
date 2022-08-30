@@ -240,9 +240,8 @@
             local listclass = require "list"
 
             window.customElements.define("list", function(e)
-                local function list_item_renderer(index)
+                local function list_item_update(item, index)
                     local q = start.queue[index]
-                    local item = document.createElement "div"
                     item.outerHTML = ([[
                         <div class="item-research" style="width:90%%;">
                             <div class="small-item" style='background-image:"%s"; width: 10.00vmin; height: 10.00vmin;'>
@@ -255,38 +254,36 @@
                             </div>
                             <button class="cancel" data-event-click = "clickCancel(%d)"/>
                         </div>
-                        ]]):format(q.icon, q.count, q.name, q.progress, q.progress, index)
-
-                    return item
+                    ]]):format(q.icon, q.count, q.name, q.progress, q.progress, index)
                 end
-                start.list = listclass.create(document, e, 0, list_item_renderer)
+                local function list_item_init(item, index)
+                    list_item_update(item, index)
+                end
+                start.list = listclass.create(document, e, list_item_init, list_item_update)
             end)
             -- <!-- tag list end -->
 
             -- <!-- tag page begin -->
             local pageclass = require "page"
             window.customElements.define("page", function(e)
-                local function page_item_renderer(index)
-                    if index > #start.ingredients then
-                        local item = document.createElement "div"
-                        item.class = "item-research" 
-                        item.style.width = "45%"
-                        return item
-                    end
-                    local item = document.createElement "div"
-                    item.outerHTML = ([[
-                        <div class="item-research" style="width:45%%;">
+                local function page_item_update(item, index)
+                    if index <= #start.ingredients then
+                        item.outerHTML = ([[
                             <div class="small-item" style='background-image:"%s"; width: 10.00vmin;height: 10.00vmin;'>
                                 <div class="small-name">%s</div>
                             </div> 
                             <div style="flex-direction:row; align-items:center; justify-content:center; width: 27.00vmin; height: 100%%; background-color: rgb(0, 225, 255);border: 0.27vmin rgb(89, 73, 39);">
                                 <div class="item-title-new">X %d</div>
                             </div>
-                        </div>
                         ]]):format(start.ingredients[index].icon, start.ingredients[index].name, start.ingredients[index].count)
-                    return item
+                    end
                 end
-                start.page = pageclass.create(document, e, page_item_renderer)
+                local function page_item_init(item, index)
+                    item.class = "item-research"
+                    item.style.width = "45%"
+                    page_item_update(item, index)
+                end
+                start.page = pageclass.create(document, e, page_item_init, page_item_update)
             end)
             -- <!-- tag page end -->
         </script>

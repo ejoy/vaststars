@@ -103,26 +103,26 @@
                 ui_sys.close()
             end
 
-            local function page_item_renderer(index)
+            local function page_item_update(item, index)
                 if index > #start.items then
-                    local e = document.createElement "div"
-                    e.outerHTML = [[<div style = "width: 12.00vmin; height: 12.00vmin;" />]]
-                    return e
-                end
-
-                local item = document.createElement "div"
-                local icon = start.items[index].icon
-                if icon then
-                    item.outerHTML = ([[<div style = "width:61.7vmin; height:45.7vmin; background-size: cover; background-image: %s;" />]]):format(icon)
+                    item.outerHTML = [[<div style = "width: 12.00vmin; height: 12.00vmin;" />]]
                 else
-                    item.outerHTML = [[<div style = "width:61.7vmin; height:45.7vmin;" />]]
+                    local icon = start.items[index].icon
+                    if icon then
+                        item.outerHTML = ([[<div style = "width:61.7vmin; height:45.7vmin; background-size: cover; background-image: %s;" />]]):format(icon)
+                    else
+                        item.outerHTML = [[<div style = "width:61.7vmin; height:45.7vmin;" />]]
+                    end
                 end
-                return item
+            end
+
+            local function page_item_init(item, index)
+                page_item_update(item, index)
             end
 
             local pageclass = require "page"
             window.customElements.define("page", function(e)
-                start.page = pageclass.create(document, e, page_item_renderer)
+                start.page = pageclass.create(document, e, page_item_init, page_item_update)
             end)
             -- <!-- tag page end -->
 

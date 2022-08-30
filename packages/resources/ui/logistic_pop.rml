@@ -252,36 +252,34 @@
                 start.page:on_dirty(#start.items)
             end
 
-            local function page_item_renderer(index)
+            local function page_item_renderer(item, index)
+                item.removeEventListener('click')
                 if index > #start.items then
-                    local e = document.createElement "div"
-                    e.outerHTML = [[<div style = "width: 12.00vmin; height: 12.00vmin;" />]]
-                    return e
-                end
-
-                local item = document.createElement "div"
-                item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" />]]):format(start.items[index].icon)
-                local select_style_border = "5px green"
-
-                if start.recipe_name == start.items[index].name then
-                    select_item = item
-                    item.style.border = select_style_border
-                end
-
-                item.addEventListener('click', function(event)
-                    if select_item then
-                        select_item.style.border = '0px green'
+                    item.outerHTML = [[<div style = "width: 12.00vmin; height: 12.00vmin;" />]]
+                else
+                    item.outerHTML = ([[<div class = "item" style = "backgroundImage: %s" />]]):format(start.items[index].icon)
+                    local select_style_border = "5px green"
+                    if start.recipe_name == start.items[index].name then
+                        select_item = item
+                        item.style.border = select_style_border
                     end
-                    item.style.border = select_style_border
-                    clickItem(index)
-                    select_item = item
-                end)
-                return item
-            end
 
+                    item.addEventListener('click', function(event)
+                        if select_item then
+                            select_item.style.border = '0px green'
+                        end
+                        item.style.border = select_style_border
+                        clickItem(index)
+                        select_item = item
+                    end)
+                end
+            end
+            local function page_item_init(item, index)
+                page_item_update(item, index)
+            end
             local pageclass = require "page"
             window.customElements.define("page", function(e)
-                start.page = pageclass.create(document, e, page_item_renderer)
+                start.page = pageclass.create(document, e, page_item_init, page_item_update)
             end)
             -- <!-- tag page end -->
 
