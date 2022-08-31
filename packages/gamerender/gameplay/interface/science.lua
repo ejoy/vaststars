@@ -1,3 +1,4 @@
+local gameplay_core = require "gameplay.core"
 local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
 
@@ -27,7 +28,14 @@ function M.update_tech_tree()
     end
     global.science.tech_tree = tech_tree
 end
+
+local function comp_tech(a, b)
+    return a.detail.name < b.detail.name
+end
+
 function M.update_tech_list(gw)
+    local storage = gameplay_core.get_storage()
+    storage.tech_picked_flag = storage.tech_picked_flag or {}
     if not global.science.tech_tree then
         M.update_tech_tree()
     end
@@ -52,9 +60,14 @@ function M.update_tech_list(gw)
         else
             if can_research then
                 techlist[#techlist + 1] = tnode
+                if storage.tech_picked_flag[tnode.detail.name] == nil then
+                    storage.tech_picked_flag[tnode.detail.name] = true
+                end
             end
         end
     end
+    table.sort(techlist, comp_tech)
+    table.sort(finishlist, comp_tech)
     global.science.tech_list = techlist
     global.science.finish_list = finishlist
 end

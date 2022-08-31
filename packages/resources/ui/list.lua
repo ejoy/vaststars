@@ -101,18 +101,22 @@ function list_meta:on_dirty_all(item_count)
     if self.data_for then
         return
     end
-    for new_idx = self.item_count + 1, item_count do
+    local total_item_count = #self.index_map
+    for new_idx = total_item_count + 1, item_count do
         self:create_item(new_idx)
     end
+    local index_map = {}
     for index = 1, item_count do
-        self.item_update(self.index_map[index].item, index)
+        local item = self.index_map[index].item
+        self.item_update(item, index)
+        index_map[#index_map + 1] = self.index_map[index]
     end
-    local total_item_count = #self.index_map
     for empty_idx = item_count + 1, total_item_count do
         local item = self.index_map[empty_idx].item
-        item.outerHTML = ""
-        item.removeEventListener('click')
+        self.item_map[item] = nil
+        self.panel.removeChild(item)
     end
+    self.index_map = index_map
     self.item_count = item_count
 end
 

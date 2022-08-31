@@ -325,6 +325,21 @@
             start.selected_tech = nil
             start.selected_recipe = nil
 
+            local function unselect_tech()
+                if start.selected_tech then
+                    start.selected_tech.style.border = '0px green'
+                    start.selected_tech = nil
+                end
+            end
+
+            local function unselect_recipe()
+                if start.selected_recipe then
+                    start.detaillist:show_detail(start.selected_recipe, false)
+                    start.selected_recipe.style.border = '0px green'
+                    start.selected_recipe = nil
+                end
+            end
+
             local function clickTech(index)
                 ui_sys.pub{"click_tech", index}
             end
@@ -334,16 +349,22 @@
             
             local select_style_border = "3px rgb(0,255,0)"
             function start.click_tech_item(item, index)
-                if start.selected_tech and start.selected_tech ~= item then
-                    start.selected_tech.style.border = '0px green'
+                if start.selected_tech == item then
+                    return
                 end
+                unselect_tech()
                 item.style.border = select_style_border
                 clickTech(index)
                 start.selected_tech = item
+                if start.techitems[index].new then
+                    start.techitems[index].new = false
+                    start.list:on_dirty(index)
+                end
             end
 
             local function tech_item_init(item, index)
                 item.className = "item-research"
+                item.removeEventListener('click')
                 item.addEventListener('click', function(event) start.click_tech_item(item, index) end)
             end
             local function tech_item_update(item, index)
@@ -369,8 +390,8 @@
                 <div class="progress-background-new" style="position:absolute; left:0; width: %d%%;"/>
                 <div class="item-bg" style='background-image:"%s";'/>
                 <!--新科技条目添加新-->
-                <!--div class="icon-researching" style="top:0vmin;">新<div-->
-                <div class="item-title-new">%s</div>]]):format(item_data.progress, item_data.icon, item_data.name) .. ingredient_items .. statestr .. sign
+                <div class="icon-researching" style="top:0vmin;" data-if="%s">新</div>
+                <div class="item-title-new">%s</div>]]):format(item_data.progress, item_data.icon, tostring(item_data.new), item_data.name) .. ingredient_items .. statestr .. sign
                 item.removeEventListener('click')
                 item.addEventListener('click', function(event) start.click_tech_item(item, index) end)
             end
@@ -380,10 +401,10 @@
             end)
 
             function start.click_detail_item(item, index)
-                if start.selected_recipe and start.selected_recipe ~= item then
-                    start.selected_recipe.style.border = '0px green'
-                    start.detaillist:show_detail(start.selected_recipe, false)
+                if start.selected_recipe == item then
+                    return
                 end
+                unselect_recipe()
                 item.style.border = select_style_border
                 start.selected_recipe = item
                 local detail = start.current_tech.detail[index]
@@ -396,6 +417,7 @@
             local function detail_item_init(item, index)
                 item.className = "item-research"
                 item.style.width = '90%'
+                item.removeEventListener('click')
                 item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
             end
 
@@ -417,6 +439,9 @@
             local function pop_item_renderer(item, index)
                 local item = document.createElement "div"
                 local detail = start.current_tech.detail[index]
+                if not detail then
+                    return item
+                end
                 local inoutstr = ""
                 for _, idata in ipairs(detail.input) do
                     inoutstr = inoutstr .. ([[
@@ -455,23 +480,23 @@
                 {
                     "techitems",
                     function()
-                        start.selected_tech = nil
-                        start.selected_recipe = nil
+                        unselect_recipe()
+                        unselect_tech()
                         start.list:on_dirty_all(#start.techitems)
                     end
                 },
                 {
                     "current_tech",
                     function()
-                        start.selected_recipe = nil
+                        unselect_recipe()
                         start.detaillist:on_dirty_all(#start.current_tech.detail)
                     end
                 },
                 {
                     "current_progress",
                     function()
-                        start.selected_tech = nil
-                        start.selected_recipe = nil
+                        unselect_recipe()
+                        unselect_tech()
                         start.list:on_dirty(start.current_tech.index)
                     end
                 },            

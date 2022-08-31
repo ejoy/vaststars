@@ -3,6 +3,7 @@ local world = ecs.world
 local w = world.w
 local gameplay_core = require "gameplay.core"
 local global = require "global"
+local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
 local itypes = require "gameplay.interface.types"
@@ -12,6 +13,7 @@ local show_list_event = mailbox:sub {"show_list"}
 local switch_mb = mailbox:sub {"switch"}
 local M = {}
 local current_tech
+local tech_picked_flag
 local function get_techlist(tech_list)
     local function get_display_item(technode)
         local name = technode.name
@@ -56,6 +58,7 @@ local function get_techlist(tech_list)
         local game_world = gameplay_core.get_world()
         local progress = game_world:research_progress(name) or 0
         local queue = game_world:research_queue()
+
         return {
             name = name,
             icon = value.icon,
@@ -67,7 +70,8 @@ local function get_techlist(tech_list)
             time = value.time,
             task = value.task and true or false,
             progress = (progress > 0) and ((progress * 100) // value.count) or progress,
-            running = #queue > 0 and queue[1] == name or false
+            running = #queue > 0 and queue[1] == name or false,
+            new = tech_picked_flag[name] or false
         }
     end
     local items = {}
@@ -84,6 +88,9 @@ local function get_button_str(tech)
 end
 
 function M:create(object_id)
+    local storage = gameplay_core.get_storage()
+    storage.tech_picked_flag = storage.tech_picked_flag or {}
+    tech_picked_flag = storage.tech_picked_flag
     local items = get_techlist(global.science.tech_list)
     current_tech = items[1]
     if not current_tech then
@@ -116,7 +123,9 @@ function M:stage_ui_update(datamodel)
     end
 
     for _, _, _, index in click_tech_event:unpack() do
+        tech_picked_flag[datamodel.techitems[index].name] = false
         set_current_tech(datamodel.techitems[index])
+        iui.update("construct.rml", "update_tech")
     end
     
     for _, _, _ in close_techui_event:unpack() do
@@ -143,11 +152,9 @@ function M:stage_ui_update(datamodel)
             end
             game_world:research_queue {current_tech.name}
             global.science.current_tech = global.science.tech_tree[current_tech.name]
-            print("开始研究：", current_tech.name)
         else
             game_world:research_queue {}
             global.science.current_tech = nil
-            print("停止研究：", current_tech.name)
         end
         datamodel.current_running = current_tech.running
         datamodel.current_progress = current_tech.progress

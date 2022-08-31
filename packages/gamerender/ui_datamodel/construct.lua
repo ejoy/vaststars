@@ -111,12 +111,22 @@ end
 
 ---------------
 local M = {}
-
+local function get_new_tech_count(tech_list)
+    local storage = gameplay_core.get_storage()
+    storage.tech_picked_flag = storage.tech_picked_flag or {}
+    local count = 0
+    for _, tech in ipairs(tech_list) do
+        if storage.tech_picked_flag[tech.detail.name] then
+            count = count + 1
+        end
+    end
+    return count
+end
 function M:create()
     return {
         show_load_resource = SHOW_LOAD_RESOURCE,
         construct_menu = {},
-        tech_count = global.science.tech_list and #global.science.tech_list or 0,
+        tech_count = get_new_tech_count(global.science.tech_list),
         show_tech_progress = false,
         current_tech_icon = "none",    --当前科技图标
         current_tech_name = "none",    --当前科技名字
@@ -160,7 +170,7 @@ function M:update_tech(datamodel, tech)
         datamodel.current_tech_progress = (tech.progress * 100) // tech.detail.count .. '%'
     else
         datamodel.show_tech_progress = false
-        datamodel.tech_count = global.science.tech_list and #global.science.tech_list or 0
+        datamodel.tech_count = get_new_tech_count(global.science.tech_list)
         world:pub {"ui_message", "tech_finish_animation"}
     end
 end
