@@ -505,12 +505,14 @@
             function start.showFinish(event)
                 start.show_finish = true
                 start.return_title = "已完成科技"
+                start.list:reset_position()
                 ui_sys.pub {"show_list", "finish"}
             end
             local function onclose()
                 if start.show_finish then
                     start.show_finish = false
                     start.return_title = "科研中心"
+                    start.list:reset_position()
                     ui_sys.pub {"show_list", "todo"}
                 else
                     ui_sys.pub {"close_techui"}

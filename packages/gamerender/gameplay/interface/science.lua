@@ -27,6 +27,9 @@ function M.update_tech_tree()
         end
     end
     global.science.tech_tree = tech_tree
+    local storage = gameplay_core.get_storage()
+    storage.tech_picked_flag = storage.tech_picked_flag or {}
+    global.science.tech_picked_flag = storage.tech_picked_flag
 end
 
 local function comp_tech(a, b)
@@ -34,8 +37,6 @@ local function comp_tech(a, b)
 end
 
 function M.update_tech_list(gw)
-    local storage = gameplay_core.get_storage()
-    storage.tech_picked_flag = storage.tech_picked_flag or {}
     if not global.science.tech_tree then
         M.update_tech_tree()
     end
@@ -57,11 +58,14 @@ function M.update_tech_list(gw)
         end
         if gw:is_researched(tnode.name) then
             finishlist[#finishlist + 1] = tnode
+            if global.science.tech_picked_flag[tnode.detail.name] == nil then
+                global.science.tech_picked_flag[tnode.detail.name] = false
+            end
         else
             if can_research then
                 techlist[#techlist + 1] = tnode
-                if storage.tech_picked_flag[tnode.detail.name] == nil then
-                    storage.tech_picked_flag[tnode.detail.name] = true
+                if global.science.tech_picked_flag[tnode.detail.name] == nil then
+                    global.science.tech_picked_flag[tnode.detail.name] = true
                 end
             end
         end

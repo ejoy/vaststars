@@ -81,6 +81,17 @@ end
 --     self.item_count = count
 --     self:on_dirty()
 -- end
+function list_meta:reset_position()
+    self.pos = 0
+    local oldClassName = self.panel.className
+    self.panel.className = self.panel.className .. " notransition"
+    if self.direction == 0 then
+        self.panel.style.left = '0px'
+    else
+        self.panel.style.top = '0px'
+    end
+    self.panel.className = oldClassName
+end
 
 function list_meta:on_dirty(index)
     if index > 0 and index <= #self.index_map then
