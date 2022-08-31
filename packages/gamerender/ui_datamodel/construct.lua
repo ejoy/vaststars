@@ -112,11 +112,9 @@ end
 ---------------
 local M = {}
 local function get_new_tech_count(tech_list)
-    local storage = gameplay_core.get_storage()
-    storage.tech_picked_flag = storage.tech_picked_flag or {}
     local count = 0
     for _, tech in ipairs(tech_list) do
-        if storage.tech_picked_flag[tech.detail.name] then
+        if global.science.tech_picked_flag[tech.detail.name] then
             count = count + 1
         end
     end

@@ -13,7 +13,6 @@ local show_list_event = mailbox:sub {"show_list"}
 local switch_mb = mailbox:sub {"switch"}
 local M = {}
 local current_tech
-local tech_picked_flag
 local function get_techlist(tech_list)
     local function get_display_item(technode)
         local name = technode.name
@@ -71,7 +70,7 @@ local function get_techlist(tech_list)
             task = value.task and true or false,
             progress = (progress > 0) and ((progress * 100) // value.count) or progress,
             running = #queue > 0 and queue[1] == name or false,
-            new = tech_picked_flag[name] or false
+            new = global.science.tech_picked_flag[name] or false
         }
     end
     local items = {}
@@ -88,9 +87,6 @@ local function get_button_str(tech)
 end
 
 function M:create(object_id)
-    local storage = gameplay_core.get_storage()
-    storage.tech_picked_flag = storage.tech_picked_flag or {}
-    tech_picked_flag = storage.tech_picked_flag
     local items = get_techlist(global.science.tech_list)
     current_tech = items[1]
     if not current_tech then
@@ -123,7 +119,7 @@ function M:stage_ui_update(datamodel)
     end
 
     for _, _, _, index in click_tech_event:unpack() do
-        tech_picked_flag[datamodel.techitems[index].name] = false
+        global.science.tech_picked_flag[datamodel.techitems[index].name] = false
         set_current_tech(datamodel.techitems[index])
         iui.update("construct.rml", "update_tech")
     end
