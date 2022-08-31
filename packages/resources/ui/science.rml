@@ -436,7 +436,7 @@
                 item.addEventListener('click', function(event) start.click_detail_item(item, index) end)
             end
 
-            local function pop_item_renderer(item, index)
+            local function pop_item_renderer(index)
                 local item = document.createElement "div"
                 local detail = start.current_tech.detail[index]
                 if not detail then
