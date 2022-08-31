@@ -198,7 +198,7 @@
                 left:0.5vmin;
                 font-size: 3.5vmin;
                 text-align: center;
-                color: rgb(0, 255, 34);
+                color: rgb(237, 125, 49);
                 -webkit-text-stroke: 1px rgb(0, 0, 0);
                 animation:0.65s linear 0s infinite alternate scalesize;
             }
@@ -390,7 +390,7 @@
                 <div class="progress-background-new" style="position:absolute; left:0; width: %d%%;"/>
                 <div class="item-bg" style='background-image:"%s";'/>
                 <!--新科技条目添加新-->
-                <div class="icon-researching" style="top:0vmin;" data-if="%s">新</div>
+                <div class="icon-researching" style="top:0vmin; color: rgb(0, 255, 34);" data-if="%s">新</div>
                 <div class="item-title-new">%s</div>]]):format(item_data.progress, item_data.icon, tostring(item_data.new), item_data.name) .. ingredient_items .. statestr .. sign
                 item.removeEventListener('click')
                 item.addEventListener('click', function(event) start.click_tech_item(item, index) end)
