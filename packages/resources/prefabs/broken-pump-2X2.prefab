@@ -7,28 +7,28 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|materials/Material.003.material
   mesh: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|meshes/zhuti.007_P1.meshbin
   name: zhuti.021
   scene:
     r: {0.602105438709259, -0.7513673305511475, 0.2693134844303131, -0.01965722069144249}
     s: {4.219627857208252, 4.219627380371094, 4.219627380371094}
-    t: {4.960111618041992, 3.40048468112945557, -5.76761531829834}
+    t: {4.960111618041992, 0.40048468112945557, -5.76761531829834}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name
   ant.render|render
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|materials/Material.002.material
   mesh: /pkg/vaststars.resources/glb/broken-pump-2x2.glb|meshes/zhuti.007_P2.meshbin
   name: zhuti.021
   scene:
     r: {0.602105438709259, -0.7513673305511475, 0.2693134844303131, -0.01965722069144249}
     s: {4.219627857208252, 4.219627380371094, 4.219627380371094}
-    t: {4.960111618041992, 3.40048468112945557, -5.76761531829834}
+    t: {4.960111618041992, 0.40048468112945557, -5.76761531829834}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name

@@ -19,99 +19,96 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/assembling-1.glb|meshes/lifangti.002_P1.meshbin
   name: lifangti
   scene: {}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name
   ant.render|render
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material.material
-  material_setting:
-    skinning: GPU
+  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material_skin.material
   mesh: /pkg/vaststars.resources/glb/assembling-1.glb|meshes/lifangti.014_P1.meshbin
   name: lifangti.011
   skinning: true
+  visible_state: main_view|selectable|cast_shadow
 policy:
-  ant.render|skinrender
   ant.general|name
+  ant.render|skinrender
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material.material
-  material_setting:
-    skinning: GPU
+  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material_skin.material
   mesh: /pkg/vaststars.resources/glb/assembling-1.glb|meshes/lifangti2_P1.meshbin
   name: lifangti.003
   skinning: true
+  visible_state: main_view|selectable|cast_shadow
 policy:
-  ant.render|skinrender
   ant.general|name
+  ant.render|skinrender
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material.material
-  material_setting:
-    skinning: GPU
+  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material_skin.material
   mesh: /pkg/vaststars.resources/glb/assembling-1.glb|meshes/lifangti2.001_P1.meshbin
   name: lifangti.004
   skinning: true
+  visible_state: main_view|selectable|cast_shadow
 policy:
-  ant.render|skinrender
   ant.general|name
+  ant.render|skinrender
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material.material
-  material_setting:
-    skinning: GPU
+  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material_skin.material
   mesh: /pkg/vaststars.resources/glb/assembling-1.glb|meshes/lifangti2.004_P1.meshbin
   name: lifangti.005
   skinning: true
+  visible_state: main_view|selectable|cast_shadow
 policy:
   ant.general|name
   ant.render|skinrender
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material.material
-  material_setting:
-    skinning: GPU
+  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material_skin.material
   mesh: /pkg/vaststars.resources/glb/assembling-1.glb|meshes/lifangti2.005_P1.meshbin
   name: lifangti.006
   skinning: true
+  visible_state: main_view|selectable|cast_shadow
 policy:
   ant.general|name
   ant.render|skinrender
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material.material
-  material_setting:
-    skinning: GPU
+  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material_skin.material
   mesh: /pkg/vaststars.resources/glb/assembling-1.glb|meshes/lifangti.003_P1.meshbin
   name: lifangti.002
   skinning: true
+  visible_state: main_view|selectable|cast_shadow
 policy:
   ant.general|name
   ant.render|skinrender
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material.material
-  material_setting:
-    skinning: GPU
+  material: /pkg/vaststars.resources/glb/assembling-1.glb|materials/Material_skin.material
   mesh: /pkg/vaststars.resources/glb/assembling-1.glb|meshes/lifangti2.002_P1.meshbin
   name: lifangti.007
   skinning: true
+  visible_state: main_view|selectable|cast_shadow
 policy:
   ant.general|name
   ant.render|skinrender
+---
+data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/assembling-1.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/assembling-1.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name
 ---
 data:
   name: empty1
@@ -246,14 +243,3 @@ policy:
   ant.general|tag
   ant.animation|slot
   ant.scene|scene_object
----
-data:
-  anim_ctrl: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/assembling-1.glb|animations/ArmatureAction.ozz
-  animation_birth: ArmatureAction
-  name: animation
-  skeleton: /pkg/vaststars.resources/glb/assembling-1.glb|animations/skeleton.ozz
-policy:
-  ant.animation|animation
-  ant.general|name

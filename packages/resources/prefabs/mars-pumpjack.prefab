@@ -7,24 +7,24 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/mars-pumpjack.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/mars-pumpjack.glb|meshes/Cylinder_P1.meshbin
   name: Cylinder
   scene:
     s: {0.7257625460624695, 0.7781884670257568, 0.7257625460624695}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name
   ant.render|render
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/mars-pumpjack.glb|materials/Material.014.material
   mesh: /pkg/vaststars.resources/glb/mars-pumpjack.glb|meshes/Cylinder.002_P1.meshbin
   name: Cylinder.001
   scene:
     s: {0.7257625460624695, 0.7781884670257568, 0.7257625460624695}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name

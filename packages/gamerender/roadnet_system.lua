@@ -51,7 +51,7 @@ local function _make_track(slots, slot_names, tickcount)
 end
 
 local cache = {}
-function m:init_world()
+local function _make_cache()
     -- TODO: cache matrix move to prototype?
     for _, typeobject in pairs(iprototype.each_maintype("entity", "road")) do
         local slots = igame_object.get_prefab(typeobject.model).slots
@@ -90,6 +90,9 @@ function m:init_world()
 
         ::continue::
     end
+end
+
+function m:init_world()
 end
 
 -- TODO: remove temporary codes below
@@ -230,6 +233,9 @@ function m:update_world()
 end
 
 function iroadnet.offset_matrix(prototype_name, dir, toward, tick)
+    if not cache then
+        _make_cache()
+    end
     local combine_keys = ("%s:%s:%s"):format(prototype_name, dir, toward) -- TODO: optimize
     local mat = assert(cache[combine_keys])
     return assert(mat[tick])

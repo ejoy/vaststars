@@ -7,12 +7,12 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/mars-truck.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/mars-truck.glb|meshes/Cylinder_P1.meshbin
   name: Cylinder.001
   scene:
     t: {-0.5726166963577271, 0.33533763885498047, 0}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name
