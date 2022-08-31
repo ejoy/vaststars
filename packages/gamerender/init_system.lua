@@ -124,10 +124,12 @@ function m:camera_usage()
 
     -- for debug
     for _, _, x, y in pickup_mb:unpack() do
-        local pos = icamera.screen_to_world(x, y, {PLANES[1]})
-        local coord = terrain:get_coord_by_position(pos[1])
-        if coord then
-            log.info(("pickup coord: (%s, %s) ground(%s, %s)"):format(coord[1], coord[2], coord[1] - (coord[1] % terrain.ground_width), coord[2] - (coord[2] % terrain.ground_height)))
+        if terrain.init then
+            local pos = icamera.screen_to_world(x, y, {PLANES[1]})
+            local coord = terrain:get_coord_by_position(pos[1])
+            if coord then
+                log.info(("pickup coord: (%s, %s) ground(%s, %s)"):format(coord[1], coord[2], coord[1] - (coord[1] % terrain.ground_width), coord[2] - (coord[2] % terrain.ground_height)))
+            end
         end
     end
 end

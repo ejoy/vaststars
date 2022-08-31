@@ -1,7 +1,7 @@
 @echo off
 chcp 65001
 set current_dir=%~dp0
-set mode=debug
+set mode=release
 set titlemsg=%mode%
 set exe=bin\msvc\%mode%\vaststars.exe
 set cachedir=.\3rd\ant\tools\prefab_editor\.build
@@ -14,8 +14,8 @@ if exist "%cachedir%" (
 )
 
 if not exist "%exe%" (
-	set exe=bin\msvc\release\vaststars.exe
-	set titlemsg=release
+	set exe=bin\msvc\debug\vaststars.exe
+	set titlemsg=debug
 )
 
 title %titlemsg% - %current_dir%%exe%
