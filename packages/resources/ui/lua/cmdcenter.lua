@@ -143,7 +143,6 @@ local function page_item_init(item, index)
 end
 
 local function page_item_detail_renderer(index)
-    console.log("start.is_headquater: ", start.is_headquater)
     if start.is_headquater then -- only normal box would show item's detail
         return
     end
