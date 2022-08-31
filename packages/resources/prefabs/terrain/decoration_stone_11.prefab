@@ -7,11 +7,11 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/terrain/decoration_stone_11.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/terrain/decoration_stone_11.glb|meshes/Plane.024_P1.meshbin
   name: Plane.073
   scene: {}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name

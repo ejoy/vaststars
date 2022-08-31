@@ -19,41 +19,37 @@ policy:
   ant.scene|scene_object
 ---
 data:
+  material: /pkg/vaststars.resources/glb/solar-panel-1.glb|materials/Material_skin.material
+  mesh: /pkg/vaststars.resources/glb/solar-panel-1.glb|meshes/Cylinder.003_P1.meshbin
+  name: Cylinder.023
+  skinning: true
   visible_state: main_view|selectable|cast_shadow
+policy:
+  ant.general|name
+  ant.render|skinrender
+---
+data:
+  material: /pkg/vaststars.resources/glb/solar-panel-1.glb|materials/Material_skin.material
+  mesh: /pkg/vaststars.resources/glb/solar-panel-1.glb|meshes/Cylinder.004_P1.meshbin
+  name: Cylinder.001
+  skinning: true
+  visible_state: main_view|selectable|cast_shadow
+policy:
+  ant.general|name
+  ant.render|skinrender
+---
+data:
   material: /pkg/vaststars.resources/glb/solar-panel-1.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/solar-panel-1.glb|meshes/Cylinder.001_P1.meshbin
   name: Cylinder.032
   scene:
     r: {0, 0.25881892442703247, 0, 0.9659258723258972}
     t: {0, 2.280485153198242, 0}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name
   ant.render|render
----
-data:
-  visible_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/solar-panel-1.glb|materials/Material.material
-  material_setting:
-    skinning: GPU
-  mesh: /pkg/vaststars.resources/glb/solar-panel-1.glb|meshes/Cylinder.003_P1.meshbin
-  name: Cylinder.023
-  skinning: true
-policy:
-  ant.general|name
-  ant.render|skinrender
----
-data:
-  visible_state: main_view|selectable|cast_shadow
-  material: /pkg/vaststars.resources/glb/solar-panel-1.glb|materials/Material.material
-  material_setting:
-    skinning: GPU
-  mesh: /pkg/vaststars.resources/glb/solar-panel-1.glb|meshes/Cylinder.004_P1.meshbin
-  name: Cylinder.001
-  skinning: true
-policy:
-  ant.general|name
-  ant.render|skinrender
 ---
 data:
   anim_ctrl: {}

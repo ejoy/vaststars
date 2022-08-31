@@ -7,11 +7,11 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: "/pkg/vaststars.resources/glb/pipe/pipe_O.glb|materials/材质.004.material"
   mesh: /pkg/vaststars.resources/glb/pipe/pipe_O.glb|meshes/zhuti.006_P1.meshbin
   name: zhuti.O
   scene: {}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name

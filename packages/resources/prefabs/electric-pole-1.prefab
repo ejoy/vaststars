@@ -7,12 +7,12 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/electric-pole-1.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/electric-pole-1.glb|meshes/Cylinder.006_P1.meshbin
   name: Cylinder.006
   scene:
     r: {0, 0.866025447845459, 0, -0.4999999701976776}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name

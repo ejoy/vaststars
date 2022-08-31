@@ -19,6 +19,17 @@ policy:
   ant.render|render
 ---
 data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/storage-tank-1.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/storage-tank-1.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name
+---
+data:
   name: water_slot
   scene:
     r: {0, 0, 0, 1}
@@ -34,14 +45,3 @@ policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
----
-data:
-  anim_ctrl: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/storage-tank-1.glb|animations/ArmatureAction.ozz
-  animation_birth: ArmatureAction
-  name: animation
-  skeleton: /pkg/vaststars.resources/glb/storage-tank-1.glb|animations/skeleton.ozz
-policy:
-  ant.animation|animation
-  ant.general|name

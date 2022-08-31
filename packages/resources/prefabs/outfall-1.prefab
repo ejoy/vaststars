@@ -7,11 +7,11 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  visible_state: main_view|selectable|cast_shadow
   material: /pkg/vaststars.resources/glb/outfall-1.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/outfall-1.glb|meshes/Cylinder.004_P1.meshbin
   name: Cylinder.007
   scene: {}
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name
