@@ -27,9 +27,6 @@ function M.update_tech_tree()
         end
     end
     global.science.tech_tree = tech_tree
-    local storage = gameplay_core.get_storage()
-    storage.tech_picked_flag = storage.tech_picked_flag or {}
-    global.science.tech_picked_flag = storage.tech_picked_flag
 end
 
 local function comp_tech(a, b)
@@ -40,6 +37,11 @@ function M.update_tech_list(gw)
     if not global.science.tech_tree then
         M.update_tech_tree()
     end
+    
+    local storage = gameplay_core.get_storage()
+    storage.tech_picked_flag = storage.tech_picked_flag or {}
+    global.science.tech_picked_flag = storage.tech_picked_flag
+
     local tech_tree = global.science.tech_tree
     local techlist = {}
     local finishlist = {}
