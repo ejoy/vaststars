@@ -20,7 +20,6 @@ local prototype = gameplay.register.prototype
     count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
-      "textures/task_tips_pic/task_demolish1.texture",
       "textures/task_tips_pic/task_demolish2.texture",
       "textures/task_tips_pic/task_demolish3.texture",
     },
