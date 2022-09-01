@@ -5,6 +5,7 @@ local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
 local get_assembling_canvas_items = ecs.require "ui_datamodel.common.assembling_canvas".get_assembling_canvas_items
 local get_fluid_canvas_items = ecs.require "ui_datamodel.common.fluid_canvas".get_fluid_canvas_items
+local get_inserter_canvas_items = ecs.require "ui_datamodel.common.inserter_canvas".get_items
 local math3d = require "math3d"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
@@ -28,7 +29,7 @@ local function new(init)
     local object = {
         id = _new_object_id(),
         prototype_name = assert(init.prototype_name),
-        dir = assert(init.dir),
+        dir = assert(init.dir), 
         x = assert(init.x),
         y = assert(init.y),
         fluid_name = init.fluid_name,
@@ -37,6 +38,7 @@ local function new(init)
         headquater = init.headquater,
         recipe = init.recipe,
         fluid_icon = init.fluid_icon,
+        inserter_arrow = init.inserter_arrow, -- TODO: inserter_arrow optimize
     }
 
     local outer = setmetatable({__object = object, __change = {}}, {__index = object, __newindex = object_newindex})
@@ -58,6 +60,7 @@ local function clone(outer)
         teardown = outer.teardown,
         recipe = outer.recipe,
         fluid_icon = outer.fluid_icon,
+        inserter_arrow = outer.inserter_arrow, -- TODO: inserter_arrow optimize
     }
 
     local clone = setmetatable({__object = object, __change = {}}, {__index = object, __newindex = object_newindex})
@@ -125,6 +128,9 @@ local function flush()
         fluid_icon = function (outer, value)
             outer.__object.fluid_icon = value
         end,
+        inserter_arrow = function (outer, value) -- TODO: inserter_arrow optimize
+            outer.__object.inserter_arrow = value
+        end,
     }
 
     local prepare = {}
@@ -162,6 +168,9 @@ local function flush()
                 if outer.fluid_icon then
                     vsobject:add_canvas(get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
                 end
+                if outer.inserter_arrow then -- TODO: inserter_arrow optimize
+                    vsobject:add_canvas(get_inserter_canvas_items(outer, outer.x, outer.y, w, h))
+                end
             else
                 for k, v in pairs(outer.__change) do
                     local func = assert(funcs[k])
@@ -190,6 +199,17 @@ local function flush()
                 if outer.__change.fluid_icon and outer.fluid_name ~= "" then
                     vsobject:add_canvas(get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
                 end
+                -- TODO: special case for inserter -- TODO: inserter_arrow optimize
+                if iprototype.has_type(typeobject.type, "inserter") then
+                    if (outer.__change.inserter_arrow or outer.__change.dir or outer.__change.x or outer.__change.y ) then
+                        if outer.inserter_arrow then
+                            vsobject:add_canvas(get_inserter_canvas_items(outer, outer.x, outer.y, w, h))
+                        end
+                    else
+                        vsobject:del_canvas()
+                    end
+                end
+
                 outer.__change = {}
             end
         end

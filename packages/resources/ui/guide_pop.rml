@@ -26,7 +26,7 @@
                 position: absolute;
                 right:0.5vmin;
                 /* bottom: 0.5vmin; */
-                background-image: "textures/common/pipe_arrow.texture";
+                background-image: "textures/common/arrow.texture";
                 transform: rotate(-180deg);
                 background-size: cover;
                 animation:0.3s linear 0s infinite alternate updown;
