@@ -36,7 +36,6 @@ function m:init_world()
 
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
     iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
-    iui.preload_datamodel_dir "/pkg/vaststars.gamerender/ui_datamodel"
 
     if not DISABLE_LOADING then
         iui.open("loading.rml")
