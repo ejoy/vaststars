@@ -7,7 +7,6 @@ local tracedoc = require "utility.tracedoc"
 local table_unpack = table.unpack
 local fs = require "filesystem"
 
-local datamodel_funcs = {}
 local rmlui_message_mb = world:sub {"rmlui_message"}
 local rmlui_message_close_mb = world:sub {"rmlui_message_close"}
 local ui_message_mb = world:sub {"ui_message"}
@@ -18,12 +17,36 @@ local stage_camera_usage = {}
 local datamodel_listener = {}
 local guide_progress = 0
 
-local function create_ui_mailbox(url)
-    local ui_mailbox = {}
-    function ui_mailbox:sub(message)
-        return world:sub {"rmlui_message_pub", url, table_unpack(message)}
+local _load_datamodel ; do
+    local datamodel_funcs = {}
+    local DATAMODEL_PATH = fs.path("/pkg/vaststars.gamerender/ui_datamodel/")
+
+    local function _create_ui_mailbox(url)
+        local ui_mailbox = {}
+        function ui_mailbox:sub(message)
+            return world:sub {"rmlui_message_pub", url, table_unpack(message)}
+        end
+        return ui_mailbox
     end
-    return ui_mailbox
+
+    function _load_datamodel(url)
+        if datamodel_funcs[url] then
+            return datamodel_funcs[url]
+        end
+
+        local f = DATAMODEL_PATH / url:gsub("^(.*)%.rml$", "%1.lua")
+        if not fs.exists(f) then
+            return
+        end
+
+        local func, err = loadfile(f:string())
+        if not func then
+            error(([[Failed to load datamodel %s: %s]]):format(url, err))
+        end
+
+        datamodel_funcs[url] = func(ecs, _create_ui_mailbox(url))
+        return datamodel_funcs[url]
+    end
 end
 
 local function open(url, ...)
@@ -70,12 +93,7 @@ local function open(url, ...)
     end)
     window_bindings[url] = binding
 
-    local func = datamodel_funcs[url]
-    if not func then
-        return binding.window
-    end
-
-    binding.template = func(ecs, create_ui_mailbox(url))
+    binding.template = _load_datamodel(url)
     if not binding.template then
         return binding.window
     end
@@ -217,20 +235,6 @@ function iui.update(url, event, ...)
     func(binding.template, binding.datamodel, ...)
     if tracedoc.changed(binding.datamodel) then
         datamodel_changed[url] = true
-    end
-end
-
-function iui.preload_datamodel_dir(dir)
-    for file in fs.pairs(fs.path(dir)) do
-        if not fs.is_directory(file) then
-            local f = file:string()
-            local s = file:stem():string()
-            local func, err = loadfile(f)
-            if not func then
-                error(("error loading file '%s':\n\t%s"):format(f, err))
-            end
-            datamodel_funcs[s .. ".rml"] = func
-        end
     end
 end
 
