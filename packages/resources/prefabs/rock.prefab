@@ -32,3 +32,14 @@ mount: 1
 policy:
   ant.general|name
   ant.render|render
+---
+data:
+  anim_ctrl: {}
+  animation:
+    boneAction: /pkg/vaststars.resources/glb/rock.glb|animations/boneAction.ozz
+  animation_birth: boneAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/rock.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name
