@@ -478,7 +478,6 @@ local t = {
 	"/pkg/ant.resources/materials/texquad.material",
 	"/pkg/ant.resources/materials/texture_plane.material",
 	"/pkg/ant.resources/materials/vertexcolor_translucent_nocull.material",
-	"/pkg/ant.resources/materials/water.material",
 	"/pkg/ant.resources/materials/water2.material",
 	"/pkg/ant.resources/package.lua",
 	"/pkg/ant.resources/settings/default.setting",
