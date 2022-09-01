@@ -4,7 +4,8 @@ local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
 local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
-
+local itypes = require "gameplay.interface.types"
+local irecipe = require "gameplay.interface.recipe"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
 
 local function format_vars(fmt, vars)
@@ -190,6 +191,9 @@ local function get_property(e, typeobject)
     return t
 end
 
+local STATUS_IDLE <const> = 0
+local STATUS_DONE <const> = 1
+
 local function get_entity_property_list(object_id)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
@@ -198,15 +202,56 @@ local function get_entity_property_list(object_id)
     end
 
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
+    
     local entity = get_property(e, typeobject)
-
-    return get_property_list(entity)
+    local property_list = get_property_list(entity)
+    if e.mining then
+        local total_progress = 0
+        local progress = 0
+        if e.assembling.recipe ~= 0 then
+            local recipe_typeobject = assert(iprototype.queryById(e.assembling.recipe))
+            total_progress = recipe_typeobject.time * 100
+            progress = e.assembling.progress
+        end
+        if e.assembling.status == STATUS_IDLE then
+            property_list.minner_progress = "0%"
+        else
+            property_list.minner_progress = itypes.progress_str(progress, total_progress)
+        end
+        
+        local recipe_typeobject = iprototype.queryById(e.assembling.recipe)
+        local recipe_ingredients = irecipe.get_elements(recipe_typeobject.ingredients)
+        local recipe_results = irecipe.get_elements(recipe_typeobject.results)
+        for index, v in ipairs(recipe_results) do
+            local c, n = gameplay_core.get_world():container_get(e.assembling.container, #recipe_ingredients + index)
+            if c then
+                property_list.minner_info = {icon = v.icon, count = n, need_count = v.count}
+            else
+                property_list.minner_info = {icon = v.icon, count = 0, need_count = v.count}
+            end
+            break
+        end
+    end
+    return property_list
 end
 
 ---------------
 local M = {}
 local update_interval = 25 --update per 25 frame
 local counter = 1
+local function update_property_list(datamodel, property_list)
+    datamodel.chest_list0 = property_list.chest_list0 or {}
+    datamodel.chest_list1 = property_list.chest_list1 or {}
+    datamodel.showchest = #datamodel.chest_list0 > 0
+    datamodel.minner_progress = property_list.minner_progress or "0%"
+    datamodel.minner_info = property_list.minner_info or {}
+    datamodel.show_minner = (datamodel.minner_info.icon ~= nil)
+    property_list.chest_list0 = nil
+    property_list.chest_list1 = nil
+    property_list.minner_progress = nil
+    property_list.minner_info = nil
+    datamodel.property_list = property_list
+end
 function M:create(object_id)
     counter = 25
     local object = assert(objects:get(object_id))
@@ -216,20 +261,13 @@ function M:create(object_id)
     end
 
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    local property_list = get_entity_property_list(object_id)
-    local chest_list0 = property_list.chest_list0 or {}
-    local chest_list1 = property_list.chest_list1 or {}
-    property_list.chest_list0 = nil
-    property_list.chest_list1 = nil
-    return {
+    local datamodel = {
         object_id = object_id,
         icon = typeobject.icon,
-        prototype_name = object.prototype_name,
-        property_list = property_list,
-        chest_list0 = chest_list0,
-        chest_list1 = chest_list1,
-        showchest = #chest_list0 > 0
+        prototype_name = object.prototype_name
     }
+    update_property_list(datamodel, get_entity_property_list(object_id))
+    return datamodel
 end
 
 function M:stage_ui_update(datamodel, object_id)
@@ -238,15 +276,7 @@ function M:stage_ui_update(datamodel, object_id)
         return
     end
     counter = 1
-    local property_list = get_entity_property_list(object_id)
-    local chest_list0 = property_list.chest_list0 or {}
-    local chest_list1 = property_list.chest_list1 or {}
-    property_list.chest_list0 = nil
-    property_list.chest_list1 = nil
-    datamodel.property_list = property_list
-    datamodel.chest_list0 = chest_list0
-    datamodel.chest_list1 = chest_list1
-    datamodel.showchest = #chest_list0 > 0
+    update_property_list(datamodel, get_entity_property_list(object_id))
 end
 
 return M
