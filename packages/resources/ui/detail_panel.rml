@@ -88,6 +88,9 @@
                 showchest = false,
                 chest_list0 = {},
                 chest_list1 = {},
+                show_minner = false,
+                minner_progress = "0%",
+                minner_info = {},
             })
 
             ui_sys.addEventListener({
@@ -155,18 +158,18 @@
 
 
                 <!--采矿机底部显示进度-->
-                <div style="height:19%; flex-direction: column; justify-content: center; align-items: center;" data-if = "false">
+                <div style="height:19%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_minner">
                     <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin"/>
                     <div class="row" style="width:100%; height: 100%; justify-content: space-evenly; align-items: center;">
                         <div class="column" style="justify-content: center; width: 70%; height:30%;">
                             <div class="progress-bar-block" style = "width: 100%; height:100%; border: 0.25vmin rgb(131, 130, 130);">
-                                <div class="progress-background" style ="background-color: rgb(87, 238, 0); width: 50%;"/>
+                                <div class="progress-background" style ="background-color: rgb(87, 238, 0);" data-style-width="minner_progress"/>
                             </div> 
-                            <div class = "percent-num">50%</div>
+                            <div class = "percent-num">{{minner_progress}}</div>
                         </div>
                         <div class="row" style="width: 25%; justify-content: center;">
-                            <div class="small-item1" style="width:7vmin; height:7vmin;">
-                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">10</div>
+                            <div class="small-item1" style="width:7vmin; height:7vmin;" data-style-background-image="minner_info.icon">
+                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{minner_info.count}}</div>
                             </div>
                         </div>
                     </div>
