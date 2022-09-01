@@ -273,12 +273,11 @@
                 font-size: 2.00vmin;
             }
             .small-arrow {
-                width: 7.70vmin;
+                width: 9.90vmin;
                 height: 7.70vmin;
                 margin:0 0.5vmin;
-                background-image: "textures/exchange/left_arrow.texture";
+                background-image: "textures/exchange/right_arrow.texture";
                 background-size: cover;
-                transform: rotate(180deg);
             }
             .small-name {
                 position: absolute;
@@ -292,11 +291,10 @@
             }
             .recipe-time {
                 position:absolute; 
-                left: 3vmin; 
-                top: 2.5vmin; 
+                left: 3.5vmin; 
+                top: 1.7vmin; 
                 text-align: center; 
-                font-size: 2.5vmin; 
-                transform: rotate(180deg);
+                font-size: 3.3vmin; 
             }
             @keyframes scalesize {
                 from {
