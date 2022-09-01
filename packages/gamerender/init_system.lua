@@ -31,7 +31,7 @@ local PLANES <const> = {YAXIS_PLANE}
 
 local m = ecs.system 'init_system'
 function m:init_world()
-    check_prototype()
+    -- check_prototype()
     bgfx.maxfps(FRAMES_PER_SECOND)
 
     iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
