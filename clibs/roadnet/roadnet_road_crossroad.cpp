@@ -140,6 +140,17 @@ namespace roadnet::road {
         }
     }
 
+    static constexpr char directionName(direction dir) {
+        switch (dir) {
+        case direction::l: return 'L';
+        case direction::t: return 'T';
+        case direction::r: return 'R';
+        case direction::b: return 'B';
+        default:
+        case direction::n: return 'N';
+        }
+    }
+
     void crossroad::update(world& w, uint64_t ti) {
         for (size_t i = 0; i < 2; ++i) {
             lorryid id = cross_lorry[i];
@@ -152,7 +163,9 @@ namespace roadnet::road {
             }
             RoadType t = cross_status[i];
             auto& road = w.Road(neighbor[t & 0x03u]);
-            if (road.tryEntry(w, id, direction(t & 0x03u))) {
+            direction out = direction(t & 0x03u);
+            direction in = reverse(out);
+            if (road.tryEntry(w, id, in)) {
                 cross_lorry[i] = lorryid::invalid();
             }
         }
