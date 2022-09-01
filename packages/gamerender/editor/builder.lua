@@ -168,6 +168,7 @@ local function complete(self)
                     end
                 end
             end
+            object.inserter_arrow = nil -- TODO: inserter_arrow optimize
         end
         needbuild = true
     end
