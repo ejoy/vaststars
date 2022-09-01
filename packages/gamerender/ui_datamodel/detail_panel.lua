@@ -6,6 +6,7 @@ local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
 local itypes = require "gameplay.interface.types"
 local irecipe = require "gameplay.interface.recipe"
+local ilaboratory = require "gameplay.interface.laboratory"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
 
 local function format_vars(fmt, vars)
@@ -231,6 +232,14 @@ local function get_entity_property_list(object_id)
             end
             break
         end
+    elseif e.laboratory then
+        local current_inputs = ilaboratory:get_elements(typeobject.inputs)
+        local items = {}
+        for i, value in ipairs(current_inputs) do
+            local c, n = gameplay_core.get_world():container_get(e.laboratory.container, i)
+            items[#items+1] = {icon = value.icon, count = n or 0}
+        end
+        property_list.chest_list0 = items
     end
     return property_list
 end
