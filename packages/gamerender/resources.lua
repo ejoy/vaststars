@@ -290,6 +290,7 @@ local t = {
 	"/pkg/ant.render/curve_world/curve_world.lua",
 	"/pkg/ant.render/decal/decal.ecs",
 	"/pkg/ant.render/decal/decal.lua",
+	"/pkg/ant.render/font/dyn_vb.lua",
 	"/pkg/ant.render/font/fontrender.ecs",
 	"/pkg/ant.render/font/fontrender.lua",
 	"/pkg/ant.render/frame_system.lua",
