@@ -3,7 +3,7 @@ local world = ecs.world
 local w = world.w
 
 local iterrain = ecs.require "terrain"
-local cfg <const> = {x = 0, y = 0, width = 48, height = 48}
+local cfg <const> = {x = 0, y = 0, width = 32, height = 32}
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
 local function get_items(object, x, y, w, h)
