@@ -127,7 +127,6 @@ system "debug_system"
 
 system "roadnet_system"
     .implement "roadnet_system.lua"
-    .method "init_world"
     .method "update_world"
 
 interface "iroadnet"

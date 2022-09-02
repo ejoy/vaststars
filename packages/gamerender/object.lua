@@ -78,6 +78,47 @@ local function remove(outer)
     changeset[outer.__object.id] = outer
 end
 
+local function _get_inserter_selection_box(object)
+    local objects = require "objects" -- TODO: circular dependency
+    local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+    local iobject = ecs.require "object"
+    local get_selection_box = ecs.require "ui_datamodel.common.inserter_canvas".get_selection_box
+
+    local typeobject = iprototype.queryByName("entity", object.prototype_name)
+    local w, h = iprototype.unpackarea(typeobject.area)
+    local r = get_inserter_canvas_items(object, object.x, object.y, w, h)
+
+    do
+        local dir = iprototype.rotate_dir('N', object.dir) -- the source is always in the north
+        local succ, neighbor_x, neighbor_y = terrain:move_coord(object.x, object.y, dir, 1)
+        if succ then
+            local neighbor = objects:modify(neighbor_x, neighbor_y, EDITOR_CACHE_NAMES, iobject.clone)
+            if neighbor then
+                local typeobject = iprototype.queryByName("entity", neighbor.prototype_name)
+                local w, h = iprototype.unpackarea(typeobject.area)
+                local t = get_selection_box(neighbor, neighbor.x, neighbor.y, w, h)
+                table.move(t, 1, #t, #r + 1, r)
+            end
+        end
+    end
+
+    do
+        local dir = iprototype.rotate_dir('S', object.dir) -- the destination is always in the south
+        local succ, neighbor_x, neighbor_y = terrain:move_coord(object.x, object.y, dir, 1)
+        if succ then
+            local neighbor = objects:modify(neighbor_x, neighbor_y, EDITOR_CACHE_NAMES, iobject.clone)
+            if neighbor then
+                local typeobject = iprototype.queryByName("entity", neighbor.prototype_name)
+                local w, h = iprototype.unpackarea(typeobject.area)
+                local t = get_selection_box(neighbor, neighbor.x, neighbor.y, w, h)
+                table.move(t, 1, #t, #r + 1, r)
+            end
+        end
+    end
+
+    return r
+end
+
 local function flush()
     local funcs = {
         prototype_name = function(outer, value)
@@ -169,7 +210,11 @@ local function flush()
                     vsobject:add_canvas(get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
                 end
                 if outer.inserter_arrow then -- TODO: inserter_arrow optimize
-                    vsobject:add_canvas(get_inserter_canvas_items(outer, outer.x, outer.y, w, h))
+                    -- TODO: special case for inserter -- TODO: inserter_arrow optimize
+                    local canvas = _get_inserter_selection_box(outer)
+                    if canvas then
+                        vsobject:add_canvas(canvas)
+                    end
                 end
             else
                 for k, v in pairs(outer.__change) do
@@ -203,7 +248,10 @@ local function flush()
                 if iprototype.has_type(typeobject.type, "inserter") then
                     if (outer.__change.inserter_arrow or outer.__change.dir or outer.__change.x or outer.__change.y ) then
                         if outer.inserter_arrow then
-                            vsobject:add_canvas(get_inserter_canvas_items(outer, outer.x, outer.y, w, h))
+                            local canvas = _get_inserter_selection_box(outer)
+                            if canvas then
+                                vsobject:add_canvas(canvas)
+                            end
                         end
                     else
                         vsobject:del_canvas()

@@ -229,19 +229,19 @@ init = {
 --]]
 function igame_object.create(init)
     local children = _get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, nil, nil, init.emissive_color)
-    local events = {}
-    events["group"] = function(_, e, group)
+    local hitch_events = {}
+    hitch_events["group"] = function(_, e, group)
         w:extend(e, "hitch:update")
         e.hitch.group = group
     end
-    events["slot_pose"] = function(_, e, pose)
+    hitch_events["slot_pose"] = function(_, e, pose)
         w:extend(e, "slot:in")
         e.slot.pose = pose
     end
-    events["obj_motion"] = function(_, e, method, ...)
+    hitch_events["obj_motion"] = function(_, e, method, ...)
         iom[method](e, ...)
     end
-    events["on_ready"] = function(_, e)
+    hitch_events["on_ready"] = function(_, e)
         init.on_ready(e)
     end
 
@@ -269,7 +269,7 @@ function igame_object.create(init)
             slot = init.slot,
             scene_needchange = true,
         }
-    }, events)
+    }, hitch_events)
 
     local function remove(self)
         self.hitch_entity_object:remove()

@@ -4,11 +4,10 @@ local w     = world.w
 
 local iprototype = require "gameplay.interface.prototype"
 local math3d = require "math3d"
-local mathpkg = import_package"ant.math"
-local mc = mathpkg.constant
 local map = import_package "vaststars.prototype"("map")
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local COLOR_INVALID <const> = math3d.constant "null"
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
 -- three-dimensional axial
 -- z
@@ -159,13 +158,6 @@ function terrain:create(width, height)
         ["碎石"] = "prefabs/terrain/ground_gravel.prefab",
     }
 
-    local rotators <const> = {
-        math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(0)}),
-        math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
-        math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
-        math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
-    }
-
     self.mineral_map = {}
     for c, mineral in pairs(map) do
         local x, y = c:match("^(%d*),(%d*)$")
@@ -183,7 +175,7 @@ function terrain:create(width, height)
     for y = 0, h - 1 do
         for x = 0, w - 1 do
             local _x, _y = x * GROUND_WIDTH, y * GROUND_HEIGHT
-            local srt = {r = rotators[math.random(1, 4)], t = self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT)}
+            local srt = {r = ROTATORS[math.random(1, 4)], t = self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT)}
             local prefab
             if self.mineral_map[_pack(_x, _y)] then
                 prefab = mineral_meshes[self.mineral_map[_pack(_x, _y)]]

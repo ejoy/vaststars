@@ -76,7 +76,7 @@
             end
 
             function start.clickDebug()
-                ui_sys.world_pub {"roadnet"}
+                ui_sys.world_pub {"roadnet", "build"}
             end
 
         </script>
