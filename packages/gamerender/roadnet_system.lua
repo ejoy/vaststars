@@ -92,9 +92,6 @@ local function _make_cache()
     end
 end
 
-function m:init_world()
-end
-
 -- TODO: remove temporary codes below
 local gameplay_core = require "gameplay.core"
 local create_roadnet = require("gameplay.interface.roadnet").create
@@ -103,20 +100,14 @@ local iprototype = require "gameplay.interface.prototype"
 local vsobject_manager = ecs.require "vsobject_manager"
 local objects = require "objects"
 
+local running = true
 local roadnet_world
 local lorries = {}
 
-local function _get_offset_matrix_straight(x, y, toward, tick)
+local function _get_offset_matrix(x, y, toward, tick)
     local object = assert(objects:coord(x, y))
     local vsobject = assert(vsobject_manager:get(object.id))
     local offset_mat = iroadnet.offset_matrix(object.prototype_name, object.dir, toward, tick)
-    return math3d.ref(math3d.mul(vsobject:get_matrix(), offset_mat))
-end
-
-local function _get_offset_matrix_cross(x, y, z, tick)
-    local object = assert(objects:coord(x, y))
-    local vsobject = assert(vsobject_manager:get(object.id))
-    local offset_mat = iroadnet.offset_matrix(object.prototype_name, object.dir, z, tick)
     return math3d.ref(math3d.mul(vsobject:get_matrix(), offset_mat))
 end
 
@@ -159,24 +150,23 @@ local function __init_roadnet()
     local CROSS_TICKCOUNT <const> = 20
 
     roadnet_world = create_roadnet(m, function(lorry_id, is_cross, x, y, z, tick)
-        local lorry = assert(lorries[lorry_id])
-        local offset_mat, ti
+        local ti, toward
         if is_cross then
             if z <= 0xf then
                 ti = (CROSS_TICKCOUNT - tick)
             else
                 ti = (WAIT_TICKCOUNT - tick)
             end
-            offset_mat = _get_offset_matrix_cross(x, y, z, ti)
+            toward = z
         else
-            local pos, toward = z & 0x0F, (z >> 4) & 0x0F -- pos: 0-1, toward: 0-1, tick: 0-(STRAIGHT_TICKCOUNT - 1)
+            local pos
+            pos, toward = z & 0x0F, (z >> 4) & 0x0F -- pos: 0-1, toward: 0-1, tick: 0-(STRAIGHT_TICKCOUNT - 1)
             ti = pos * STRAIGHT_TICKCOUNT + (STRAIGHT_TICKCOUNT - tick)
-            offset_mat = _get_offset_matrix_straight(x, y, toward, ti)
         end
 
-        local s, r, t = math3d.srt(offset_mat)
-        offset_mat = math3d.ref(math3d.matrix {s = s, r = r, t = t})
-        lorry:send("obj_motion", "set_srt_matrix", offset_mat)
+        local mat = _get_offset_matrix(x, y, toward, ti)
+        local game_object = assert(lorries[lorry_id]).game_object
+        game_object:send("obj_motion", "set_srt_matrix", mat)
     end)
 
     --
@@ -194,19 +184,21 @@ local function __init_roadnet()
             if lorry_id then
                 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
                 local COLOR_INVALID <const> = math3d.constant "null"
-                local offset_mat = _get_offset_matrix_straight(c1.x, c1.y, c1.z & 0x0F, 1) -- first tick is 1
+                local offset_mat = _get_offset_matrix(c1.x, c1.y, c1.z & 0x0F, 1) -- first tick is 1
                 local s, r, t = math3d.srt(offset_mat)
 
                 assert(lorries[lorry_id] == nil)
-                lorries[lorry_id] = igame_object.create {
-                    prefab = "prefabs/lorry-1.prefab",
-                    effect = nil,
-                    group_id = 0,
-                    state = "opaque",
-                    color = COLOR_INVALID,
-                    srt = {s = s, r = r, t = t},
+                lorries[lorry_id] = { game_object = igame_object.create({
+                        prefab = "prefabs/lorry-1.prefab",
+                        effect = nil,
+                        group_id = 0, -- TODO: change group_id when lorry is moving to the new road block?
+                        state = "opaque",
+                        color = COLOR_INVALID,
+                        srt = {s = s, r = r, t = t},
+                    }),
+                    x = c1.x, y = c1.y,
                 }
-            end 
+            end
         end
 
         cross_coord[len] = nil
@@ -218,16 +210,28 @@ end
 
 -- TODO: remove temporary codes below
 function m:update_world()
-    for _ in roadnet_test_mb:unpack() do
-        for _, lorry in pairs(lorries) do
-            lorry:remove()
+    for _, cmd in roadnet_test_mb:unpack() do
+        if cmd == "build" then
+            for _, v in pairs(lorries) do
+                v.game_object:remove()
+            end
+            lorries = {}
+            roadnet_world = __init_roadnet()
+        elseif cmd == "pause" then
+            running = not running
+        elseif cmd == "debug" then
+            local debugger_get = require("debugger").realtime_get
+            local func = debugger_get("roadnet")
+            if func then
+                local ok, msg = xpcall(func, debug.traceback, lorries)
+                if not ok then
+                    log.error(msg)
+                end
+            end
         end
-        lorries = {}
-
-        roadnet_world = __init_roadnet()
     end
 
-    if gameplay_core.world_update and roadnet_world then
+    if gameplay_core.world_update and roadnet_world and running then
         roadnet_world:update()
     end
 end

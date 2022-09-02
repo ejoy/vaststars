@@ -3,8 +3,6 @@ local world = ecs.world
 local w = world.w
 
 local math3d = require "math3d"
-local mathpkg = import_package"ant.math"
-local mc = mathpkg.constant
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ientity = ecs.import.interface "ant.render|ientity"
@@ -16,6 +14,7 @@ local iprototype = require "gameplay.interface.prototype"
 local imodifier = ecs.import.interface "ant.modifier|imodifier"
 local terrain = ecs.require "terrain"
 local icanvas = ecs.require "engine.canvas"
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
 local plane_vb <const> = {
 	-0.5, 0, 0.5, 0, 1, 0,	--left top
@@ -24,13 +23,6 @@ local plane_vb <const> = {
 	-0.5, 0,-0.5, 0, 1, 0,
 	0.5,  0, 0.5, 0, 1, 0,
 	0.5,  0,-0.5, 0, 1, 0,	--right bottom
-}
-
-local rotators <const> = {
-    N = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(0)}),
-    E = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(90)}),
-    S = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(180)}),
-    W = math3d.ref(math3d.quaternion{axis=mc.YAXIS, r=math.rad(270)}),
 }
 
 local CONSTRUCT_COLOR_INVALID <const> = math3d.constant "null"
@@ -152,9 +144,9 @@ local function get_matrix(self)
     return iom.worldmat(e)
 end
 local function set_dir(self, dir)
-    self.game_object:send("obj_motion", "set_rotation", rotators[dir])
+    self.game_object:send("obj_motion", "set_rotation", ROTATORS[dir])
     if self.block_object then
-        self.block_object:send("obj_motion", "set_rotation", rotators[dir])
+        self.block_object:send("obj_motion", "set_rotation", ROTATORS[dir])
     end
 end
 
@@ -255,12 +247,12 @@ return function (init)
         group_id = init.group_id,
         state = typeinfo.state,
         color = typeinfo.color,
-        srt = {r = rotators[init.dir], t = init.position},
+        srt = {r = ROTATORS[init.dir], t = init.position},
         parent = nil,
         slot = nil,
     }))
     local block_pos = math3d.ref(math3d.add(init.position, {0, terrain.surface_height, 0}))
-    local block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, rotators[init.dir], typeinfo.material)
+    local block_object = create_block(typeinfo.block_color, typeinfo.block_edge_size, typeobject.area, block_pos, ROTATORS[init.dir], typeinfo.material)
 
     local vsobject = {
         id = init.id,

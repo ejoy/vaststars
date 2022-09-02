@@ -18,9 +18,10 @@ entity_events.add_item = function(self, e, id, items)
     self.cache[id] = icas.add_items(e, items)
 end
 entity_events.remove_item = function(self, e, id)
-    for _, id in ipairs(self.cache[id]) do
-        icas.remove_item(e, id)
+    for _, item_id in ipairs(self.cache[id]) do
+        icas.remove_item(e, item_id)
     end
+    self.cache[id] = nil
 end
 entity_events.show = function(_, e, b)
     icas.show(e, b)

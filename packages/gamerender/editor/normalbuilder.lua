@@ -34,7 +34,6 @@ local function _get_state(prototype_name, ok)
     end
 end
 
---
 local function __new_entity(self, datamodel, typeobject)
     -- check if item is in the inventory
     local item_typeobject = iprototype.queryByName("item", typeobject.name)
@@ -164,6 +163,8 @@ local function touch_move(self, datamodel, delta_vec)
 end
 
 local function touch_end(self, datamodel)
+    ieditor:revert_changes({"TEMPORARY"})
+
     local pickup_object = self.pickup_object
     if not pickup_object then
         return
