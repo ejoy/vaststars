@@ -230,7 +230,7 @@
                 recipe_time = " ",
                 recipe_ingredients = {},
                 recipe_results = {},
-            }
+            })
 
             local function clickItem(index)
             end
@@ -340,7 +340,7 @@
             <!-- 物流物品选择 end -->
 
 
-            <div class="recipe-panel" style="flex-direction: column; height:100%;">
+            <div class="recipe-panel" style="flex-direction: column; height:100%;" data-if="false">
                 <!-- 物品基本信息 start -->
                 <div class="item-info-block">
                     <div class = "name-block" style="height: 13%; width:100%; border: 1px #fff;">
