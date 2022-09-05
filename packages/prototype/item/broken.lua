@@ -120,3 +120,23 @@ prototype "破损车站" {
     group = "加工",
     order = 130,
 }
+
+prototype "破损物流派送站" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/manufacture.texture",
+    model = "prefabs/rock.prefab",
+    description = "损坏的物流运送站",
+    group = "加工",
+    order = 132,
+}
+
+prototype "破损物流需求站" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/manufacture.texture",
+    model = "prefabs/rock.prefab",
+    description = "损坏的物流需求站",
+    group = "加工",
+    order = 134,
+}

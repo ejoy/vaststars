@@ -80,6 +80,26 @@ prototype "大铁制箱子I" {
     order = 14,
 }
 
+prototype "物流派送站" {
+    type = {"item"},
+    stack = 25,
+    icon = "textures/construct/chest.texture",
+    model = "prefabs/rock.prefab",
+    description = "将货物从货站装运到运输车",
+    group = "物流",
+    order = 16,
+}
+
+prototype "物流需求站" {
+    type = {"item"},
+    stack = 25,
+    icon = "textures/construct/chest.texture",
+    model = "prefabs/rock.prefab",
+    description = "将货物从运输车卸载到货站",
+    group = "物流",
+    order = 18,
+}
+
 prototype "采矿机I" {
     type = {"item"},
     stack = 100,
