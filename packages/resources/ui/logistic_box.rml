@@ -125,7 +125,7 @@
                     <div class = "menu-title" style="width: 70%;">需求物流箱</div>
                 </div>
                 <div style="border-bottom: 1px rgb(89, 73, 39);"/>
-                <div class="column" data-if="mode == 'init'" style="width: 100%;height: 95%;">
+                <div class="column" data-if="mode == 'init'" style="width: 100%;height: 93%;">
                     <!-- 左上方建筑信息 begin -->
                     <div class="build-info-reigon" style='background-image: "textures/build_background/pic_chest.texture"; background-size: cover;'>
                         <!-- 左边显示信息 -->
@@ -197,7 +197,7 @@
                 </div>
                 <div class="column" style="width: 100%;height: 93%;">
                     <!-- 物品栏显示 start -->
-                    <div class="item-container" style="height: 80%; border: 1px #fff;">
+                    <div class="item-container" style="height: 80%;">
                         <div style="width:100%; overflow: hidden;">
                             <div class = "item-page-block" style="width:90%; height:100%;">
                                 <div class ="row">
@@ -221,7 +221,7 @@
                     <!-- 物品栏显示 end -->
 
                     <!-- 物流需求栏显示 start -->
-                    <div class="row" data-event-click="false" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 15%; justify-content: center; align-items: center; border: 1px #fff;">
+                    <div class="row" data-event-click="false" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 15%; justify-content: center; align-items: center;">
                         <button class="item"/>                       
                         <button class="item"/>                      
                         <button class="item"/>
