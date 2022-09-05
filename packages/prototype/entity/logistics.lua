@@ -20,7 +20,7 @@ prototype "指挥中心" {
 
 prototype "物流派送站" {
     model = "prefabs/goods-station-1.prefab",
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/goodsstation-output.texture",
     background = "textures/build_background/small_pic_goodsstation_output.texture",
     construct_detector = {"exclusive"},
     type = {"entity", "chest"},
@@ -31,7 +31,7 @@ prototype "物流派送站" {
 
 prototype "物流需求站" {
     model = "prefabs/goods-station-1.prefab",
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/goodsstation-input.texture",
     background = "textures/build_background/small_pic_goodsstation_input.texture",
     construct_detector = {"exclusive"},
     type = {"entity", "chest"},
@@ -39,18 +39,6 @@ prototype "物流需求站" {
     slots = 10,
     group = {"物流","自定义"},
 }
-
-prototype "车站I" {
-    model = "prefabs/goods-station-1.prefab",
-    icon = "textures/construct/logisitic1.texture",
-    background = "textures/build_background/pic_chest.texture",
-    construct_detector = {"exclusive"},
-    type = {"entity", "chest"},
-    area = "1x1",
-    slots = 30,
-    group = {"物流","自定义"},
-}
-
 
 prototype "物流中心I" {
     model = "prefabs/logistics-center-1.prefab",

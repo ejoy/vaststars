@@ -83,7 +83,7 @@ prototype "大铁制箱子I" {
 prototype "物流派送站" {
     type = {"item"},
     stack = 25,
-    icon = "textures/construct/chest.texture",
+    icon = "textures/construct/goodsstation-output.texture",
     model = "prefabs/rock.prefab",
     description = "将货物从货站装运到运输车",
     group = "物流",
@@ -93,7 +93,7 @@ prototype "物流派送站" {
 prototype "物流需求站" {
     type = {"item"},
     stack = 25,
-    icon = "textures/construct/chest.texture",
+    icon = "textures/construct/goodsstation-input.texture",
     model = "prefabs/rock.prefab",
     description = "将货物从运输车卸载到货站",
     group = "物流",
@@ -118,16 +118,6 @@ prototype "采矿机II" {
     description = "用来挖掘矿物资源的机器",
     group = "加工",
     order = 42,
-}
-
-prototype "车站I" {
-    type = {"item"},
-    stack = 50,
-    icon = "textures/construct/manufacture.texture",
-    model = "prefabs/rock.prefab",
-    description = "专为运输车辆装载货物的装置",
-    group = "物流",
-    order = 51,
 }
 
 prototype "机器爪I" {
