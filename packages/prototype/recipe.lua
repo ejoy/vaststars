@@ -419,6 +419,40 @@ prototype "车站1" {
     description = "使用机器爪和箱子制造车站",
 }
 
+prototype "物流派送站1" {
+    type = { "recipe" },
+    category = "物流中型制造",
+    group = "物流",
+    order = 52,
+    icon = "textures/construct/manufacture.texture",
+    ingredients = {
+        {"机器爪I", 1},
+        {"小铁制箱子I", 1},
+    },
+    results = {
+        {"物流派送站", 1},
+    },
+    time = "4s",
+    description = "使用机器爪和箱子制造物流派送站",
+}
+
+prototype "物流需求站1" {
+    type = { "recipe" },
+    category = "物流中型制造",
+    group = "物流",
+    order = 53,
+    icon = "textures/construct/manufacture.texture",
+    ingredients = {
+        {"机器爪I", 1},
+        {"小铁制箱子I", 1},
+    },
+    results = {
+        {"物流需求站", 1},
+    },
+    time = "4s",
+    description = "使用机器爪和箱子制造物流需求站",
+}
+
 prototype "物流中心1" {
     type = { "recipe" },
     category = "物流大型制造",
@@ -1197,7 +1231,7 @@ prototype "破损运输汽车" {
     description = "修复损坏的运输汽车",
 }
 
-prototype "破损车站" {
+prototype "破损物流派送站" {
     type = { "recipe" },
     category = "生产手工制造",
     group = "生产",
@@ -1205,15 +1239,32 @@ prototype "破损车站" {
     allow_as_intermediate = false,
     icon = "textures/construct/manufacture.texture",
     ingredients = {
-        -- {"铁棒", 6},
         {"铁齿轮", 1},
-        {"破损车站", 1},
+        {"破损物流派送站", 1},
     },
     results = {
-        {"车站I", 1},
+        {"物流派送站", 1},
     },
     time = "5s",
-    description = "修复损坏的车站",
+    description = "修复损坏的物流派送站",
+}
+
+prototype "破损物流需求站" {
+    type = { "recipe" },
+    category = "生产手工制造",
+    group = "生产",
+    order = 131,
+    allow_as_intermediate = false,
+    icon = "textures/construct/manufacture.texture",
+    ingredients = {
+        {"铁齿轮", 1},
+        {"破损物流需求站", 1},
+    },
+    results = {
+        {"物流需求站", 1},
+    },
+    time = "5s",
+    description = "修复损坏的物流需求站",
 }
 
 prototype "地质科技包1" {
