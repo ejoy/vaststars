@@ -119,7 +119,7 @@
     <body>
         <div class="item-container-region"  data-model="start">
             <!-- 左边面板 begin -->
-            <div class="panel" style="width: 50%;">
+            <div class="panel" style="width: 45%;">
                 <div class="header" id = "item-name-block">
                     <button class = "back-button" data-event-click="ClickClose()"/>
                     <div class = "menu-title" style="width: 70%;">需求物流箱</div>
@@ -191,14 +191,14 @@
             <!-- 左边面板 end -->
 
             <!-- 右边面板 begin -->
-            <div class="panel" style="width: 50%;">
+            <div class="panel" style="width: 45%;">
                 <div class="header" style="justify-content: flex-end; border: 0.13vmin rgb(89, 73, 39);">
                     <div class="menu-title" style="flex-direction: row; align-items: center; width:auto;">物品</div>
                 </div>
-                <div class="column" style="width: 100%;height: 95%;">
+                <div class="column" style="width: 100%;height: 93%;">
                     <!-- 物品栏显示 start -->
-                    <div class="item-container" style="height: 78%;">
-                        <div style="width:100%; overflow: hidden; padding-top: 3vmin;">
+                    <div class="item-container" style="height: 80%; border: 1px #fff;">
+                        <div style="width:100%; overflow: hidden;">
                             <div class = "item-page-block" style="width:90%; height:100%;">
                                 <div class ="row">
                                     <div style="width:95%; height:100%;" data-for="items">
@@ -221,7 +221,7 @@
                     <!-- 物品栏显示 end -->
 
                     <!-- 物流需求栏显示 start -->
-                    <div class="row" data-event-click="false" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%; justify-content: center; align-items: center;">
+                    <div class="row" data-event-click="false" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 15%; justify-content: center; align-items: center; border: 1px #fff;">
                         <button class="item"/>                       
                         <button class="item"/>                      
                         <button class="item"/>
