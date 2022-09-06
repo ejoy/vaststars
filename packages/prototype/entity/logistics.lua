@@ -57,6 +57,25 @@ prototype "物流中心I" {
     }
 }
 
+prototype "运输车辆I" {
+    model = "prefabs/mars-truck.prefab",
+    icon = "textures/construct/truck.texture",
+    background = "textures/build_background/pic_mars_truck.texture",
+    construct_detector = {"exclusive"},
+    type ={"entity", "consumer"},
+    area = "1x1",
+    power = "80kW",
+    stop_energy = "500kJ",
+    capacitance = "10MJ",
+    priority = "secondary",
+    group = {"物流"},
+    velocity = 3,
+    room = 1,
+    acceleration = 1.5,
+    brake = 7.5,
+    charge_power = "500kW",
+}
+
 prototype "机器爪I" {
     model = "prefabs/inserter-1.prefab",
     icon = "textures/building_pic/small_pic_inserter.texture",
