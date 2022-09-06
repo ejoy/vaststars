@@ -8,6 +8,7 @@ lm:source_set "roadnet" {
         antdir .. "clibs/lua/",
     },
     sources = {
+        "*.c",
         "*.cpp",
     }
 }

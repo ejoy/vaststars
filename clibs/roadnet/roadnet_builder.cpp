@@ -28,12 +28,6 @@ namespace roadnet {
         return loc;
     }
 
-    uint16_t builder::getCrossId() {
-        return genCrossId++;
-    }
-    uint16_t builder::getStraightId() {
-        return genStraightId++;
-    }
     builder::builder() {
         memset(map, 0, sizeof(map));
     }
@@ -278,14 +272,14 @@ namespace roadnet {
              map[l.y][l.x] = v;
         }
 
-        genCrossId = 0;
-        genStraightId = 0;
+        uint16_t genCrossId = 0;
+        uint16_t genStraightId = 0;
         uint32_t genLorryOffset = 0;
 
         for (size_t i = 0; i < 256; ++i) {
             for (size_t j = 0; j < 256; ++j) {
                 if (isCross(map[j][i])) {
-                    roadid  id  { true, getCrossId() };
+                    roadid  id  { true, genCrossId++ };
                     loction loc {(uint8_t)i, (uint8_t)j};
                     crossMap.emplace(loc, id);
                     crossMapR.emplace(id, loc);
@@ -310,7 +304,7 @@ namespace roadnet {
                     }
                     else if (loc == result.l) {
                         straightData& straight = straightVec.emplace_back(
-                            getStraightId(),
+                            genStraightId++,
                             result.n,
                             loc,
                             dir,
@@ -321,7 +315,7 @@ namespace roadnet {
                     }
                     else {
                         straightData& straight1 = straightVec.emplace_back(
-                            getStraightId(),
+                            genStraightId++,
                             result.n,
                             loc,
                             dir,
@@ -331,7 +325,7 @@ namespace roadnet {
                         crossroad.setNeighbor(dir, {false, straight1.id});
 
                         straightData& straight2 = straightVec.emplace_back(
-                            getStraightId(),
+                            genStraightId++,
                             result.n,
                             result.l,
                             reverse(result.dir),

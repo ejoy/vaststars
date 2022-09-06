@@ -25,27 +25,6 @@ namespace roadnet {
         std::map<bfsRoad, bfsRoad> results;
     };
 
-    static constexpr direction reverse(direction dir) {
-        switch (dir) {
-        case direction::l: return direction::r;
-        case direction::t: return direction::b;
-        case direction::r: return direction::l;
-        case direction::b: return direction::t;
-        case direction::n: default: return direction::n;
-        }
-    }
-
-    static constexpr loction move(loction loc, direction dir) {
-        switch (dir) {
-        case direction::l: loc.x -= 1; break;
-        case direction::t: loc.y -= 1; break;
-        case direction::r: loc.x += 1; break;
-        case direction::b: loc.y += 1; break;
-        case direction::n: default: break;
-        }
-        return loc;
-    }
-
     static constexpr char directionName(direction dir) {
         switch (dir) {
         case direction::l: return 'L';

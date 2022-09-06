@@ -237,7 +237,7 @@ function m:update_world()
 end
 
 function iroadnet.offset_matrix(prototype_name, dir, toward, tick)
-    if not cache then
+    if not next(cache) then
         _make_cache()
     end
     local combine_keys = ("%s:%s:%s"):format(prototype_name, dir, toward) -- TODO: optimize

@@ -164,8 +164,7 @@ namespace roadnet::road {
             RoadType t = cross_status[i];
             auto& road = w.Road(neighbor[t & 0x03u]);
             direction out = direction(t & 0x03u);
-            direction in = reverse(out);
-            if (road.tryEntry(w, id, in)) {
+            if (road.tryEntry(w, id, reverse(out))) {
                 cross_lorry[i] = lorryid::invalid();
             }
         }
