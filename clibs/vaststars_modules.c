@@ -24,6 +24,7 @@ static void loadmodules(lua_State* L) {
     CORE(prototype)
     CORE(container)
     CORE(roadnet)
+    CORE(roadmap)
     CORE(world)
 }
 

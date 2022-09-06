@@ -42,11 +42,7 @@ namespace roadnet {
         std::vector<straightData>    straightVec;
         std::map<loction, roadid>    crossMap;
         std::map<roadid, loction>    crossMapR;
-        uint16_t genCrossId = 0;
-        uint16_t genStraightId = 0;
 
-        uint16_t getCrossId();
-        uint16_t getStraightId();
         roadid   findCrossRoad(loction l);
         std::optional<loction> whereCrossRoad(roadid id);
     };
