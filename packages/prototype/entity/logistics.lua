@@ -26,7 +26,7 @@ prototype "物流派送站" {
     type = {"entity", "chest"},
     area = "1x1",
     slots = 10,
-    group = {"物流","自定义"},
+    group = {"物流"},
 }
 
 prototype "物流需求站" {
@@ -37,7 +37,7 @@ prototype "物流需求站" {
     type = {"entity", "chest"},
     area = "1x1",
     slots = 10,
-    group = {"物流","自定义"},
+    group = {"物流"},
 }
 
 prototype "物流中心I" {

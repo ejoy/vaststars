@@ -407,7 +407,7 @@ prototype "物流派送站1" {
     category = "物流中型制造",
     group = "物流",
     order = 52,
-    icon = "textures/construct/manufacture.texture",
+    icon = "textures/construct/goodsstation-output.texture",
     ingredients = {
         {"机器爪I", 1},
         {"小铁制箱子I", 1},
@@ -424,7 +424,7 @@ prototype "物流需求站1" {
     category = "物流中型制造",
     group = "物流",
     order = 53,
-    icon = "textures/construct/manufacture.texture",
+    icon = "textures/construct/goodsstation-input.texture",
     ingredients = {
         {"机器爪I", 1},
         {"小铁制箱子I", 1},
@@ -1221,7 +1221,7 @@ prototype "破损物流派送站" {
     group = "生产",
     order = 130,
     allow_as_intermediate = false,
-    icon = "textures/construct/manufacture.texture",
+    icon = "textures/construct/broken-goodsstation-output.texture",
     ingredients = {
         {"铁齿轮", 1},
         {"破损物流派送站", 1},
@@ -1239,7 +1239,7 @@ prototype "破损物流需求站" {
     group = "生产",
     order = 131,
     allow_as_intermediate = false,
-    icon = "textures/construct/manufacture.texture",
+    icon = "textures/construct/broken-goodsstation-input.texture",
     ingredients = {
         {"铁齿轮", 1},
         {"破损物流需求站", 1},

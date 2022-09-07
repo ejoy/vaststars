@@ -9,7 +9,7 @@ prototype "小铁制箱子I" {
     type = {"entity", "chest"},
     group = {"物流" , "自定义"},
     area = "1x1",
-    slots = 7,
+    slots = 10,
 }
 
 prototype "小铁制箱子II" {
@@ -20,7 +20,7 @@ prototype "小铁制箱子II" {
     type = {"entity", "chest"},
     group = {"物流" , "自定义"},
     area = "1x1",
-    slots = 21,
+    slots = 20,
 }
 
 prototype "大铁制箱子I" {
@@ -31,5 +31,5 @@ prototype "大铁制箱子I" {
     type = {"entity", "chest"},
     group = {"物流" , "自定义"},
     area = "2x2",
-    slots = 35,
+    slots = 30,
 }
