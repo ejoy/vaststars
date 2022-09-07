@@ -268,22 +268,20 @@ namespace roadnet {
     }
 
     void builder::loadMap(world& w, const std::map<loction, uint8_t>& mapData) {
-        for (auto& [l, v] : mapData) {
-             map[l.y][l.x] = v;
-        }
+        memset(map, 0, sizeof(map));
 
         uint16_t genCrossId = 0;
         uint16_t genStraightId = 0;
         uint32_t genLorryOffset = 0;
 
-        for (size_t i = 0; i < 256; ++i) {
-            for (size_t j = 0; j < 256; ++j) {
-                if (isCross(map[j][i])) {
-                    roadid  id  { true, genCrossId++ };
-                    loction loc {(uint8_t)i, (uint8_t)j};
-                    crossMap.emplace(loc, id);
-                    crossMapR.emplace(id, loc);
-                }
+        for (auto& [l, v] : mapData) {
+            map[l.y][l.x] = v;
+
+            if (isCross(map[l.y][l.x])) {
+                roadid  id  { true, genCrossId++ };
+                loction loc {(uint8_t)l.x, (uint8_t)l.y};
+                crossMap.emplace(loc, id);
+                crossMapR.emplace(id, loc);
             }
         }
 

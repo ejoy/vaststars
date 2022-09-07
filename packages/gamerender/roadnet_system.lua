@@ -17,6 +17,7 @@ local math3d = require "math3d"
 local roadnet_test_mb = world:sub {"roadnet"}
 local is_cross = require("gameplay.interface.roadnet").is_cross
 local entry_count = require("gameplay.interface.roadnet").entry_count
+local MULTIPLE = require("debugger").roadnet_multiple or 1
 
 local function _make_track(slots, slot_names, tickcount)
     local mat = {}
@@ -127,12 +128,14 @@ local function __add_line(roadnet_world, S, E)
     if p1 == nil or p2 == nil then -- TODO: optimize
         return
     end
-	return roadnet_world:add_line(p1 .. p2)
+	return roadnet_world:add_line(p1 .. p2), p1 .. '|' .. p2
 end
 
 local function __init_roadnet()
     local m = {}
-    local cross_coord = {}
+
+    local cross_count = 0
+    local straight_road_offset = {}
     for e in gameplay_core.select "road entity:in" do
         local prototype_name = iprototype.queryById(e.entity.prototype).name
         local dir = iprototype.dir_tostring(e.entity.direction)
@@ -140,9 +143,17 @@ local function __init_roadnet()
         m[loc] = road_mask(prototype_name, dir)
 
         if entry_count(prototype_name, dir) == 2 then
-            cross_coord[#cross_coord+1] = {x = e.entity.x, y = e.entity.y, z = 0}
-            cross_coord[#cross_coord+1] = {x = e.entity.x, y = e.entity.y, z = 1}
+            straight_road_offset[#straight_road_offset+1] = {x = e.entity.x, y = e.entity.y, z = 0}
+            straight_road_offset[#straight_road_offset+1] = {x = e.entity.x, y = e.entity.y, z = 1}
         end
+        if entry_count(prototype_name, dir) >= 3 then
+            cross_count = cross_count + 1
+        end
+    end
+
+    if cross_count <= 0 then
+        log.error("no crossing found")
+        return
     end
 
     local STRAIGHT_TICKCOUNT <const> = 10
@@ -170,15 +181,15 @@ local function __init_roadnet()
     end)
 
     --
-    cross_coord = _shuffle(cross_coord)
-    while #cross_coord >= 2 do
-        local len = #cross_coord
-        local c1 = cross_coord[len]
+    straight_road_offset = _shuffle(straight_road_offset)
+    while #straight_road_offset >= 2 do
+        local len = #straight_road_offset
+        local c1 = straight_road_offset[len]
         local S  = c1.x | (c1.y << 8) | (c1.z << 16)
-        local c2 = cross_coord[len - 1]
+        local c2 = straight_road_offset[len - 1]
         local E  = c2.x | (c2.y << 8) | (c2.z << 16)
 
-        local line_id = __add_line(roadnet_world, S, E)
+        local line_id, line = __add_line(roadnet_world, S, E)
         if line_id then
             local lorry_id = roadnet_world:add_lorry(line_id, 0, c1.x, c1.y, c1.z & 0x0F)
             if lorry_id then
@@ -198,11 +209,12 @@ local function __init_roadnet()
                     }),
                     x = c1.x, y = c1.y,
                 }
+                log.info(("lorry_id: %d, line_id: %d, (%s) from(%d,%d,%d) to(%d,%d,%d)"):format(lorry_id, line_id, line, c1.x, c1.y, c1.z, c2.x, c2.y, c2.z))
             end
         end
 
-        cross_coord[len] = nil
-        cross_coord[len - 1] = nil
+        straight_road_offset[len] = nil
+        straight_road_offset[len - 1] = nil
     end
 
     return roadnet_world
@@ -217,22 +229,29 @@ function m:update_world()
             end
             lorries = {}
             roadnet_world = __init_roadnet()
+        elseif cmd == "clean" then
+            for _, v in pairs(lorries) do
+                v.game_object:remove()
+            end
+            lorries = {}
+            roadnet_world = nil
         elseif cmd == "pause" then
             running = not running
         elseif cmd == "debug" then
-            local debugger_get = require("debugger").realtime_get
-            local func = debugger_get("roadnet")
-            if func then
-                local ok, msg = xpcall(func, debug.traceback, lorries)
-                if not ok then
-                    log.error(msg)
-                end
-            end
+            local call = require("debugger").call
+            call("roadnet", lorries)
+        elseif cmd == "reset_multiple" then
+            MULTIPLE = 1
+        elseif cmd == "set_multiple" then
+            MULTIPLE = MULTIPLE + 100
+            print("MULTIPLE: " .. MULTIPLE)
         end
     end
 
     if gameplay_core.world_update and roadnet_world and running then
-        roadnet_world:update()
+        for _ = 1, MULTIPLE do
+            roadnet_world:update()
+        end
     end
 end
 
@@ -243,4 +262,12 @@ function iroadnet.offset_matrix(prototype_name, dir, toward, tick)
     local combine_keys = ("%s:%s:%s"):format(prototype_name, dir, toward) -- TODO: optimize
     local mat = assert(cache[combine_keys])
     return assert(mat[tick])
+end
+
+function iroadnet.clean()
+    for _, v in pairs(lorries) do
+        v.game_object:remove()
+    end
+    lorries = {}
+    roadnet_world = nil
 end
