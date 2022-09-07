@@ -14,22 +14,43 @@ local options = {
     ["disable_load_resource"] = true,
 }
 
-local function realtime_get(k)
-    local t
-    if fs.exists(fs.path(fn)) then
-        local func, err = loadfile(fn)
-        if not func then
-            error(("error loading file '%s':\n\t%s"):format(fn, err))
-        end
-        t = func()
-    end
-    if not t then
+local function get(k)
+    if not fs.exists(fs.path(fn)) then
+        log.error(("can not found file '%s'"):format(fn))
         return
     end
+
+    local func, err = loadfile(fn)
+    if not func then
+        log.error(("error loading file '%s':\n\t%s"):format(fn, err))
+        return
+    end
+
+    local t = func()
+    if not t then
+        log.error(("error loading file '%s':\n\t%s"):format(fn, err))
+        return
+    end
+
     return t[k]
 end
 
-return setmetatable({realtime_get = realtime_get}, { __index = function (_, k)
+local function call(k, ...)
+    local v = get(k)
+    if not v then
+        return
+    end
+
+    local ok, msg = xpcall(v, debug.traceback, ...)
+    if not ok then
+        log.error(("failed to call function '%s':\n\t%s"):format(k, msg))
+        return
+    end
+
+    log.info(("call function '%s' success"):format(k))
+end
+
+return setmetatable({get = get, call = call}, { __index = function (_, k)
     if not debugger then
         return false
     end

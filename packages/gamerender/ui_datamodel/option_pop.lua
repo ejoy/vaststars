@@ -13,7 +13,7 @@ local saveload = ecs.require "saveload"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local gameplay_core = require "gameplay.core"
 local icanvas = ecs.require "engine.canvas"
-
+local iroadnet = ecs.import.interface "vaststars.gamerender|iroadnet"
 ---------------
 local M = {}
 
@@ -40,12 +40,14 @@ function M:stage_camera_usage()
     end
 
     for _, _, _, index in restore_mb:unpack() do -- 读档时会还原摄像机的位置
+        iroadnet.clean() -- TODO: remove this
         if saveload:restore(index) then
             iui.close("option_pop.rml")
         end
     end
 
     for _ in restart_mb:unpack() do
+        iroadnet.clean() -- TODO: remove this
         camera.init("camera_default.prefab")
         saveload:restart()
     end

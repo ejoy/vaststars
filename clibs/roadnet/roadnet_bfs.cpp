@@ -25,6 +25,16 @@ namespace roadnet {
         std::map<bfsRoad, bfsRoad> results;
     };
 
+    static constexpr direction reverse(direction dir) {
+        switch (dir) {
+        case direction::l: return direction::r;
+        case direction::t: return direction::b;
+        case direction::r: return direction::l;
+        case direction::b: return direction::t;
+        case direction::n: default: return direction::n;
+        }
+    }
+
     static constexpr char directionName(direction dir) {
         switch (dir) {
         case direction::l: return 'L';
@@ -82,10 +92,11 @@ namespace roadnet {
 
     static std::optional<direction> applyCross(world& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
         direction prev = G.dir;
+        direction prev_reverse = reverse(prev);
         for (uint8_t i = 0; i < 4; ++i) {
             direction dir = (direction)i;
             roadid Next = w.crossAry[N.id].neighbor[i];
-            if (Next && prev != dir) {
+            if (Next && prev != dir && prev_reverse != dir) {
                 if (!ctx.results.contains({N, dir})) {
                     ctx.results.emplace(bfsRoad{N, dir}, G);
                     if (N == E) {

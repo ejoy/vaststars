@@ -200,6 +200,8 @@ function M:stage_ui_update(datamodel)
 
         inventory:flush()
         datamodel.construct_menu = _get_construct_menu()
+
+        world:pub {"roadnet", "clean"} -- TODO: remove this
         ::continue::
     end
 

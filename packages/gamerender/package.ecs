@@ -132,6 +132,7 @@ system "roadnet_system"
 interface "iroadnet"
     .implement "roadnet_system.lua"
     .method "offset_matrix"
+    .method "clean"
 
 interface "idetail"
     .implement "detail_system.lua"

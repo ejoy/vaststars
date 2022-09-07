@@ -110,8 +110,8 @@ function M:refresh_flow_shape(cache_names_r, cache_name_w, object, entry_dir, ra
 end
 
 local function shift_pipe(object, prototype_name, dir)
-    local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    if not typeobject.pipe then
+    -- TODO: prototype_name or direction of entity may changed when it's neighbor has removed, need to rebuild the entity in gameplay
+    if not ( iprototype.is_road(object.prototype_name) or iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) )  then
         return
     end
 
