@@ -407,7 +407,7 @@ prototype "物流派送站1" {
     category = "物流中型制造",
     group = "物流",
     order = 52,
-    icon = "textures/construct/manufacture.texture",
+    icon = "textures/construct/goodsstation-output.texture",
     ingredients = {
         {"机器爪I", 1},
         {"小铁制箱子I", 1},
@@ -424,7 +424,7 @@ prototype "物流需求站1" {
     category = "物流中型制造",
     group = "物流",
     order = 53,
-    icon = "textures/construct/manufacture.texture",
+    icon = "textures/construct/goodsstation-input.texture",
     ingredients = {
         {"机器爪I", 1},
         {"小铁制箱子I", 1},
