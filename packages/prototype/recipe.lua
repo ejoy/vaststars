@@ -1221,7 +1221,7 @@ prototype "破损物流派送站" {
     group = "生产",
     order = 130,
     allow_as_intermediate = false,
-    icon = "textures/construct/manufacture.texture",
+    icon = "textures/construct/broken-goodsstation-output.texture",
     ingredients = {
         {"铁齿轮", 1},
         {"破损物流派送站", 1},
@@ -1239,7 +1239,7 @@ prototype "破损物流需求站" {
     group = "生产",
     order = 131,
     allow_as_intermediate = false,
-    icon = "textures/construct/manufacture.texture",
+    icon = "textures/construct/broken-goodsstation-input.texture",
     ingredients = {
         {"铁齿轮", 1},
         {"破损物流需求站", 1},
