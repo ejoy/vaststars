@@ -108,7 +108,7 @@ prototype "科研中心I" {
 
 prototype "砖石公路-I型" {
     model = "prefabs/road/road_I.prefab",
-    icon = "textures/construct/processor.texture",
+    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
     flow_direction = {"N", "E"},
