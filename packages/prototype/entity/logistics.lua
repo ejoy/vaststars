@@ -42,7 +42,7 @@ prototype "物流需求站" {
 
 prototype "物流中心I" {
     model = "prefabs/logistics-center-1.prefab",
-    icon = "textures/construct/logisitic2.texture",
+    icon = "textures/building_pic/small_pic_logistics_center2.texture",
     background = "textures/build_background/pic_logisticscenter.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer"},
@@ -59,7 +59,7 @@ prototype "物流中心I" {
 
 prototype "运输车辆I" {
     model = "prefabs/mars-truck.prefab",
-    icon = "textures/construct/truck.texture",
+    icon = "textures/building_pic/small_pic_mars_truck.texture",
     background = "textures/build_background/pic_mars_truck.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer"},
@@ -127,7 +127,7 @@ prototype "砖石公路-I型" {
 
 prototype "砖石公路-L型" {
     model = "prefabs/road/road_L.prefab",
-    icon = "textures/construct/processor.texture",
+    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
     flow_direction = {"N", "E", "S", "W"},
@@ -146,7 +146,7 @@ prototype "砖石公路-L型" {
 
 prototype "砖石公路-T型" {
     model = "prefabs/road/road_T.prefab",
-    icon = "textures/construct/processor.texture",
+    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
     flow_direction = {"N", "E", "S", "W"},
@@ -167,7 +167,7 @@ prototype "砖石公路-T型" {
 prototype "砖石公路-X型" {
     show_prototype_name = "砖石公路",
     model = "prefabs/road/road_X.prefab",
-    icon = "textures/construct/processor.texture",
+    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
     flow_direction = {"N"},
@@ -188,7 +188,7 @@ prototype "砖石公路-X型" {
 
 prototype "砖石公路-O型" {
     model = "prefabs/road/road_O.prefab",
-    icon = "textures/construct/processor.texture",
+    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
     flow_direction = {"N"},
@@ -206,7 +206,7 @@ prototype "砖石公路-O型" {
 
 prototype "砖石公路-U型" {
     model = "prefabs/road/road_U.prefab",
-    icon = "textures/construct/processor.texture",
+    icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
     flow_direction = {"N", "E", "S", "W"},
