@@ -1,7 +1,10 @@
 ---
 data:
   name: Scene
-  scene: {}
+  scene:
+    r: {0, 0, 0, 1}
+    s: {1, 1, 1}
+    t: {0, 2, 0}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -17,6 +20,66 @@ policy:
   ant.animation|meshskin
   ant.general|name
   ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/plane_P1.meshbin
+  name: 0.001
+  scene:
+    t: {0.06279541552066803, 2, -0.004578660242259502}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/Cube_P1.meshbin
+  name: Cube
+  scene: {}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/Cube_P1.meshbin
+  name: Cube.001
+  scene:
+    t: {3.725925922393799, 0, 0}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/Cube_P1.meshbin
+  name: Cube.002
+  scene:
+    r: {0, 1, 0, 1.6292068494294654e-07}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/Cube_P1.meshbin
+  name: Cube.003
+  scene:
+    r: {0, 1, 0, 1.6292068494294654e-07}
+    t: {-3.725925922393799, 0, 0}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
 ---
 data:
   material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material_skin.material
@@ -69,18 +132,6 @@ policy:
   ant.render|skinrender
 ---
 data:
-  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/plane_P1.meshbin
-  name: .001
-  scene:
-    t: {0.06279541552066803, 2, -0.004578660242259502}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
   material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material_skin.material
   mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/plane.001_P1.meshbin
   name: plane.002
@@ -99,54 +150,6 @@ data:
 policy:
   ant.general|name
   ant.render|skinrender
----
-data:
-  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/Cube_P1.meshbin
-  name: Cube
-  scene: {}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/Cube_P1.meshbin
-  name: Cube.001
-  scene:
-    t: {3.725925922393799, 0, 0}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/Cube_P1.meshbin
-  name: Cube.002
-  scene:
-    r: {0, 1, 0, 1.6292068494294654e-07}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/goods-station-1.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/goods-station-1.glb|meshes/Cube_P1.meshbin
-  name: Cube.003
-  scene:
-    r: {0, 1, 0, 1.6292068494294654e-07}
-    t: {-3.725925922393799, 0, 0}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
 ---
 data:
   anim_ctrl: {}
