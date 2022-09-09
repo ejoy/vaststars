@@ -223,7 +223,7 @@ function M:stage_ui_update(datamodel)
         end
 
         _show_grid_entity(false)
-        ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
+        ieditor:revert_changes({"TEMPORARY", "CONFIRM", "POWER_AREA"})
         datamodel.show_teardown = _has_teardown_entity()
 
         global.mode = "teardown"
@@ -276,7 +276,7 @@ function M:stage_ui_update(datamodel)
             goto continue
         end
 
-        ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
+        ieditor:revert_changes({"TEMPORARY", "CONFIRM", "POWER_AREA"})
         gameplay_core.world_update = true
         global.mode = "normal"
         camera.transition("camera_default.prefab")
@@ -341,7 +341,7 @@ function M:stage_camera_usage(datamodel)
     for _, _, _, prototype_name in construct_entity_mb:unpack() do
         if last_prototype_name ~= prototype_name then
             if builder then
-                builder:clean(datamodel, true)
+                builder:clean(datamodel)
             end
 
             if iprototype.is_pipe_to_ground(prototype_name) then

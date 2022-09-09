@@ -297,12 +297,8 @@ local function rotate_pickup_object(self, datamodel)
     _update_fluid_name(self, datamodel, pickup_object, failed)
 end
 
-local function clean(self, datamodel, flag)
-    if not flag then -- TODO: remove flag
-        ieditor:revert_changes({"TEMPORARY", "POWER_AREA"})
-    else
-        ieditor:revert_changes({"TEMPORARY"})
-    end
+local function clean(self, datamodel)
+    ieditor:revert_changes({"TEMPORARY"})
     inventory:revert()
     datamodel.show_confirm = false
     datamodel.show_rotate = false
