@@ -151,12 +151,7 @@ local function touch_move(self, datamodel, delta_vec)
             datamodel.show_confirm = false
             return
         end
-        if typeobject.supply_area and typeobject.supply_distance then
-            --show power pole line
-            local aw, ah = iprototype.unpackarea(typeobject.area)
-            local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-            ipower.merge_pole({key = pickup_object.id, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance})
-        end
+        
         if not self:check_construct_detector(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) then
             pickup_object.state = _get_state(pickup_object.prototype_name, false)
             datamodel.show_confirm = false
@@ -165,6 +160,13 @@ local function touch_move(self, datamodel, delta_vec)
 
         pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) -- TODO: maybe set recipt according to entity type?
         _update_fluid_name(self, datamodel, pickup_object, false, coord[1], coord[2], pickup_object.dir)
+        
+        -- update temp pole
+        if typeobject.supply_area and typeobject.supply_distance then
+            local aw, ah = iprototype.unpackarea(typeobject.area)
+            local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
+            ipower.merge_pole({key = pickup_object.id, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, smooth_pos = true})
+        end
     end
 end
 
@@ -186,6 +188,14 @@ local function touch_end(self, datamodel)
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
     _update_fluid_name(self, datamodel, pickup_object, false)
+
+    -- update temp pole
+    local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
+    if typeobject.supply_area and typeobject.supply_distance then
+        local aw, ah = iprototype.unpackarea(typeobject.area)
+        local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
+        ipower.merge_pole({key = pickup_object.id, x = self.pickup_object.x, y = self.pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance})
+    end
 end
 
 local function confirm(self, datamodel)
