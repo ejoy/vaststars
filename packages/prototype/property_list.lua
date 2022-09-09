@@ -126,12 +126,12 @@ local property_list = {
 		pos = 24,
 	},
 	["supple_area"] = {
-		icon = "textures/property/temperature-max.texture",
+		icon = "textures/property/supply-area.texture",
 		desc = "覆盖范围",
 		pos = 25,
 	},
 	["supple_distance"] = {
-		icon = "textures/property/temperature-max.texture",
+		icon = "textures/property/supply-distance.texture",
 		desc = "连接距离",
 		pos = 26,
 	},
