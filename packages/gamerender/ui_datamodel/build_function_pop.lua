@@ -66,7 +66,9 @@ local current_object_id
 function M:create(object_id, left, top)
     if current_object_id and current_object_id ~= object_id then
         local vsobject = vsobject_manager:get(current_object_id)
-        vsobject:modifier("start", {name = "over", forwards = true})
+        if vsobject then -- current_object_id may be destroyed
+            vsobject:modifier("start", {name = "over", forwards = true})
+        end
     end
     if current_object_id ~= object_id then
         local vsobject = vsobject_manager:get(object_id)
