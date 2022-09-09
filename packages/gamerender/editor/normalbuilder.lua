@@ -13,17 +13,19 @@ local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local irecipe = require "gameplay.interface.recipe"
 local global = require "global"
 local iobject = ecs.require "object"
+local ipower = ecs.require "power"
 local imining = require "gameplay.interface.mining"
 local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
+local gameplay_core = require "gameplay.core"
 
 local function _get_state(prototype_name, ok)
     local typeobject = iprototype.queryByName("entity", prototype_name)
-    if typeobject.power_pole then
+    if typeobject.supply_area then
         if ok then
-            return "power_pole_construct"
+            return ("power_pole_construct_%s"):format(typeobject.supply_area)
         else
-            return "power_pole_invalid_construct"
+            return ("power_pole_invalid_construct_%s"):format(typeobject.supply_area)
         end
     else
         if ok then
@@ -142,7 +144,6 @@ local function touch_move(self, datamodel, delta_vec)
     if self.pickup_object then
         local pickup_object = self.pickup_object
         iobject.move_delta(pickup_object, delta_vec)
-
         local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
         local coord = terrain:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, pickup_object.dir))
         if not coord then
@@ -150,7 +151,12 @@ local function touch_move(self, datamodel, delta_vec)
             datamodel.show_confirm = false
             return
         end
-
+        if typeobject.supply_area and typeobject.supply_distance then
+            --show power pole line
+            local aw, ah = iprototype.unpackarea(typeobject.area)
+            local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
+            ipower.merge_pole({key = pickup_object.id, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance})
+        end
         if not self:check_construct_detector(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) then
             pickup_object.state = _get_state(pickup_object.prototype_name, false)
             datamodel.show_confirm = false
@@ -201,7 +207,11 @@ local function confirm(self, datamodel)
         self:update_fluidbox(EDITOR_CACHE_NAMES, "CONFIRM", pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.fluid_name)
     end
 
-    pickup_object.state = "confirm"
+    if typeobject.supply_area then
+        pickup_object.state = ("power_pole_confirm_%s"):format(typeobject.supply_area)
+    else
+        pickup_object.state = "confirm"
+    end
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
 
@@ -213,7 +223,13 @@ local function confirm(self, datamodel)
     datamodel.show_confirm = false
     datamodel.show_rotate = false
     datamodel.show_construct_complete = true
-
+    --
+    if typeobject.supply_area and typeobject.supply_distance then
+        local coord = terrain:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, pickup_object.dir))
+        local aw, ah = iprototype.unpackarea(typeobject.area)
+        local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
+        ipower.merge_pole({key = pickup_object.id, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance}, true)
+    end
     self.pickup_object = nil
     __new_entity(self, datamodel, typeobject)
 end
@@ -226,12 +242,14 @@ local function complete(self, datamodel)
     iobject.remove(self.pickup_object)
     self.pickup_object = nil
 
-    ieditor:revert_changes({"TEMPORARY"})
+    ieditor:revert_changes({"TEMPORARY", "POWER_AREA"})
     datamodel.show_construct_complete = false
     datamodel.show_rotate = false
     datamodel.show_confirm = false
 
     self.super.complete(self)
+    -- update power network
+    ipower.build_power_network(gameplay_core.get_world())
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
@@ -279,12 +297,18 @@ local function rotate_pickup_object(self, datamodel)
     _update_fluid_name(self, datamodel, pickup_object, failed)
 end
 
-local function clean(self, datamodel)
-    ieditor:revert_changes({"TEMPORARY"})
+local function clean(self, datamodel, flag)
+    if not flag then -- TODO: remove flag
+        ieditor:revert_changes({"TEMPORARY", "POWER_AREA"})
+    else
+        ieditor:revert_changes({"TEMPORARY"})
+    end
     inventory:revert()
     datamodel.show_confirm = false
     datamodel.show_rotate = false
     self.super.clean(self, datamodel)
+    -- clear temp pole
+    ipower.clear_all_temp_pole()
 end
 
 local function create()

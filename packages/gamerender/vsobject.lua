@@ -42,20 +42,17 @@ local FLUIDFLOW_CHOCOLATE <const> = math3d.constant("v4", {2.1, 2.0, 0.3, 0.55})
 local FLUIDFLOW_DARKVIOLET <const> = math3d.constant("v4", {1.4, 0.0, 2.1, 0.55})
 
 local CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
-local CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 2.5, 0.0, 1.0})
+local CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 2.5, 0.0, 0.5})
 
 local typeinfos = {
     ["indicator"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已确认
     ["construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 4}, -- 未确认, 合法
     ["invalid_construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_RED, block_edge_size = 4}, -- 未确认, 非法
-    ["power_pole_construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = 0}, -- 未确认, 合法
-    ["power_pole_invalid_construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED, block_edge_size = 0}, -- 未确认, 非法
     ["confirm"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已确认
     ["constructed"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已施工
     ["teardown"] = {state = "translucent", color = CONSTRUCT_COLOR_YELLOW, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 拆除
     ["task"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_RED, block_edge_size = 4}, -- 新手任务初始需要拆除建筑的底色
     ["selected"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 6},
-    ["power_pole_selected"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 0},
 
     ["fluidflow_blue"] = {state = "translucent", color = FLUIDFLOW_BLUE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0},
     ["fluidflow_chartreuse"] = {state = "translucent", color = FLUIDFLOW_CHARTREUSE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0},
@@ -63,20 +60,20 @@ local typeinfos = {
     ["fluidflow_darkviolet"] = {state = "translucent", color = FLUIDFLOW_DARKVIOLET, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0},
 }
 
-local function _get_power_pole_area()
-    for _, typeobject in pairs(iprototype.each_maintype "entity") do
-        if typeobject.power_pole then
-            local w, h = typeobject.supply_area:match("(%d+)x(%d+)")
-            w, h = tonumber(w), tonumber(h)
-            assert(w == h)
-            return w
-        end
+for _, typeobject in pairs(iprototype.each_maintype "entity") do
+    if typeobject.supply_area then
+        local w, h = typeobject.supply_area:match("(%d+)x(%d+)")
+        w, h = tonumber(w), tonumber(h)
+
+        local ew, eh = iprototype.unpackarea(typeobject.area)
+        assert(w == h)
+        assert(ew == eh)
+        typeinfos[("power_pole_construct_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}--, material = "/pkg/vaststars.resources/materials/translucent.material"}
+        typeinfos[("power_pole_invalid_construct_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED, block_edge_size = (w - ew) * 10}--, material = "/pkg/vaststars.resources/materials/translucent.material"}
+        typeinfos[("power_pole_selected_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}--, material = "/pkg/vaststars.resources/materials/translucent.material"}
+        typeinfos[("power_pole_confirm_%s"):format(typeobject.supply_area)] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}--, material = "/pkg/vaststars.resources/materials/translucent.material"}
     end
-    return 0
 end
-typeinfos.power_pole_construct.block_edge_size = (_get_power_pole_area() - 1) * 10
-typeinfos.power_pole_invalid_construct.block_edge_size = (_get_power_pole_area() - 1) * 10
-typeinfos.power_pole_selected.block_edge_size = (_get_power_pole_area() - 1) * 10
 
 local gen_id do
     local id = 0
