@@ -125,6 +125,16 @@ local property_list = {
 		desc = "最高温度",
 		pos = 24,
 	},
+	["supple_area"] = {
+		icon = "textures/property/temperature-max.texture",
+		desc = "覆盖范围",
+		pos = 25,
+	},
+	["supple_distance"] = {
+		icon = "textures/property/temperature-max.texture",
+		desc = "连接距离",
+		pos = 26,
+	},
 }
 
 -- for debug

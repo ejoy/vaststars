@@ -111,8 +111,8 @@ local building_detail_config = {
 		"fluid_rate",
 	},
 	["铁制电线杆"] = {
-		"fluid_name",
-		"fluid_volume",
+		"supple_area",
+		"supple_distance",
 	},
 }
 
