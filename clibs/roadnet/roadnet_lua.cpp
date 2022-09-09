@@ -72,7 +72,7 @@ namespace roadnet::lua {
             uint8_t m = (uint8_t)luaL_checkinteger(L, -1);
             map.emplace(l, m);
         }
-        return std::move(map);
+        return map;
     }
 
     static void push_map_coord(lua_State* L, map_coord& c) {
