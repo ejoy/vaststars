@@ -33,6 +33,7 @@ local math3d = require "math3d"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
+local ipower = ecs.require "power"
 
 local MAX_ARCHIVING_COUNT <const> = 9
 
@@ -294,6 +295,8 @@ local function restore_world()
 
     iobject.flush()
     iscience.update_tech_list(gameplay_core.get_world())
+    -- update power network
+    ipower.build_power_network(gameplay_core.get_world())
 end
 
 local function writeall(file, content)

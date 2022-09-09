@@ -20,6 +20,7 @@ local global = require "global"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local icamera = ecs.require "engine.camera"
+local ipower = ecs.require "power"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local DISABLE_FPS = require("debugger").disable_fps
@@ -47,7 +48,6 @@ local imanual = require "ui_datamodel.common.manual"
 local inventory = global.inventory
 local pickup_mb = world:sub {"pickup"}
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
-
 local builder
 local last_prototype_name
 
@@ -200,7 +200,7 @@ function M:stage_ui_update(datamodel)
 
         inventory:flush()
         datamodel.construct_menu = _get_construct_menu()
-
+        ipower.show_supply_area()
         world:pub {"roadnet", "clean"} -- TODO: remove this
         ::continue::
     end
@@ -341,7 +341,7 @@ function M:stage_camera_usage(datamodel)
     for _, _, _, prototype_name in construct_entity_mb:unpack() do
         if last_prototype_name ~= prototype_name then
             if builder then
-                builder:clean(datamodel)
+                builder:clean(datamodel, true)
             end
 
             if iprototype.is_pipe_to_ground(prototype_name) then

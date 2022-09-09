@@ -13,7 +13,7 @@ local iobject = ecs.require "object"
 local iflow_connector = require "gameplay.interface.flow_connector"
 local terrain = ecs.require "terrain"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
-
+local ipower = ecs.require "power"
 --
 local M = {}
 
@@ -263,6 +263,9 @@ function M:teardown_complete()
     gameplay_core.build()
 
     objects:clear({"TEMPORARY"})
+
+    -- update power network
+    ipower.build_power_network(gameplay_core.get_world())
 end
 
 function M:teardown(id)
