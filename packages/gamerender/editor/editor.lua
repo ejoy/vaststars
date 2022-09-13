@@ -213,6 +213,7 @@ function M:teardown_complete()
         removed_set[object.id] = object
     end
 
+    local has_power_pole
     local item_counts = {}
     for id, object in pairs(removed_set) do
         iobject.remove(object)
@@ -244,6 +245,10 @@ function M:teardown_complete()
         if typeobject_item then
             item_counts[typeobject_item.id] = (item_counts[typeobject_item.id] or 0) + 1
         end
+        local typeobject = iprototype.queryByName("entity", prototype_name)
+        if not has_power_pole and typeobject.power_pole then
+            has_power_pole = true
+        end
 
         igameplay.remove_entity(object.gameplay_eid)
         changed_set[id] = nil
@@ -264,8 +269,10 @@ function M:teardown_complete()
 
     objects:clear({"TEMPORARY"})
 
-    -- update power network
-    ipower.build_power_network(gameplay_core.get_world())
+    if has_power_pole then
+        -- update power network
+        ipower.build_power_network(gameplay_core.get_world())
+    end
 end
 
 function M:teardown(id)

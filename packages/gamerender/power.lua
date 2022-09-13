@@ -177,10 +177,6 @@ end
 function M.merge_pole(pole, add)
     local network = global.power_network
     if pole.key and temp_pole[pole.key] then
-        -- local ep = temp_pole[pole.key]
-        -- if ep.pole.x == pole.x and ep.pole.y == pole.y and pole.line then
-        --     return
-        -- end
         clear_temp_pole(pole)
     end
     local net
@@ -265,6 +261,7 @@ function M.build_power_network(gw)
         end
         if v.capacitance then
             capacitance[#capacitance + 1] = {
+                name = typeobject.name,
                 eid = v.eid,
                 x = e.x,
                 y = e.y,
@@ -274,6 +271,7 @@ function M.build_power_network(gw)
         end
         if typeobject.name == "指挥中心" or typeobject.power_pole then
             powerpole[#powerpole + 1] = {
+                name = typeobject.name,
                 eid = v.eid,
                 x = e.x,
                 y = e.y,
