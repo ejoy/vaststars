@@ -83,8 +83,8 @@ stat_accumulator(lua_State *L, world& w, powergrid pg[]) {
 
 static void
 calc_efficiency(lua_State *L, world& w, powergrid pgs[]) {
-	for (int i = 1; i < 256; ++i) {
-		powergrid& pg = pgs[i];
+	for (int ii = 1; ii < 256; ++ii) {
+		powergrid& pg = pgs[ii];
 		if (!pg.active) {
 			break;
 		}
@@ -99,7 +99,7 @@ calc_efficiency(lua_State *L, world& w, powergrid pgs[]) {
 
 		if (need_power > offer_power) {
 			// power is not enough, all generator efficiency are 100%
-			for (i=0;i<GENERATOR_PRIORITY;i++) {
+			for (int i=0;i<GENERATOR_PRIORITY;i++) {
 				pg.generator_efficiency[i] = 1.0f;
 			}
 
@@ -112,7 +112,7 @@ calc_efficiency(lua_State *L, world& w, powergrid pgs[]) {
 					pg.accumulator_efficiency = 1.0f;
 					offer_power += pg.accumulator_output;
 				}
-				for (i=0;i<CONSUMER_PRIORITY;i++) {
+				for (int i=0;i<CONSUMER_PRIORITY;i++) {
 					if (offer_power == 0) {
 						// no power
 						pg.consumer_efficiency[i] = 0;
@@ -128,13 +128,13 @@ calc_efficiency(lua_State *L, world& w, powergrid pgs[]) {
 			} else {
 				pg.accumulator_efficiency = (float)need_power / pg.accumulator_output;
 				// power is enough now.
-				for (i=0;i<CONSUMER_PRIORITY;i++) {
+				for (int i=0;i<CONSUMER_PRIORITY;i++) {
 					pg.consumer_efficiency[i] = 1.0f;
 				}
 			}
 		} else {
 			// power is enough, all consumer efficiency are 100%
-			for (i=0;i<CONSUMER_PRIORITY;i++) {
+			for (int i=0;i<CONSUMER_PRIORITY;i++) {
 				pg.consumer_efficiency[i] = 1.0f;
 			}
 			offer_power -= need_power;
@@ -146,7 +146,7 @@ calc_efficiency(lua_State *L, world& w, powergrid pgs[]) {
 					pg.accumulator_efficiency = -1.0f;
 					need_power += pg.accumulator_input;
 				}
-				for (i=0;i<GENERATOR_PRIORITY;i++) {
+				for (int i=0;i<GENERATOR_PRIORITY;i++) {
 					if (need_power == 0) {
 						// Don't need power yet
 						pg.generator_efficiency[i] = 0;
@@ -162,7 +162,7 @@ calc_efficiency(lua_State *L, world& w, powergrid pgs[]) {
 			} else {
 				pg.accumulator_efficiency = -(float)offer_power / pg.accumulator_input;
 				// part charge, generators full output
-				for (i=0;i<GENERATOR_PRIORITY;i++) {
+				for (int i=0;i<GENERATOR_PRIORITY;i++) {
 					pg.generator_efficiency[i] = 1.0f;
 				}
 			}
