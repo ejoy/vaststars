@@ -68,6 +68,8 @@ local building_detail_config = {
 	["指挥中心"] = {
 		"generate_power",
 		"chest_capacity",
+		"supply_area",
+		"supply_distance",
 	},
 	["物流中心"] = {
 		"work_power",
