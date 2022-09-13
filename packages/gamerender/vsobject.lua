@@ -42,7 +42,7 @@ local FLUIDFLOW_CHOCOLATE <const> = math3d.constant("v4", {2.1, 2.0, 0.3, 0.55})
 local FLUIDFLOW_DARKVIOLET <const> = math3d.constant("v4", {1.4, 0.0, 2.1, 0.55})
 
 local CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
-local CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 2.5, 0.0, 0.5})
+local CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
 
 local typeinfos = {
     ["indicator"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已确认

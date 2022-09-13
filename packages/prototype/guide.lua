@@ -38,6 +38,26 @@ local guide = {
     {
         name = "guide-3",
 		narrative = {
+            {"哔哩..整个基地的用电设施都需要被电网覆盖，否则它们将无法工作..哔哩(无奈）", "textures/guide/guide-6.texture"},
+            {"指挥中心可产生电力..哔哩..放置电线杆把指挥中心的电力扩散出去..哔哩(期待)", "textures/guide/guide-3.texture"},
+            {"当电线杆之间出现红色电线时则表示成功连接，在电线蓝色范围内就会有电力传输(兴奋)", "textures/guide/guide-3.texture"},
+            {"若指挥中心和电线杆形成一个电网，处于电网内的用电设施就可以工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            guide_progress = 10,
+            task = {
+                "放置电线杆",
+            }
+        },
+        prerequisites = {
+            "放置科研中心",
+        },
+	},
+
+
+    {
+        name = "guide-4",
+		narrative = {
             {"哔哩..我们终于恢复了研究能力..哔哩..目前存活概率提升为0.07672%..(轻松)", "textures/guide/guide-1.texture"},
             {"哔哩..让我们点击“研究中心”按钮，开始研究第一个科技..(兴奋)", "textures/guide/guide-3.texture"},
         },
@@ -47,12 +67,13 @@ local guide = {
             }
         },
         prerequisites = {
-            "放置科研中心",
+            "放置电线杆",
         },
 	},
 
+
     {
-        name = "guide-4",
+        name = "guide-5",
 		narrative = {
             {"采集P4031地质样本制造科技包..哔哩..我们就能更好地研究星球地质结构。", "textures/guide/guide-2.texture"},
             {"P4031蕴含丰富的矿藏..哔哩..先用采矿机挖掘铁矿和石矿资源..开工开工..(兴奋)", "textures/guide/guide-3.texture"},
@@ -69,7 +90,7 @@ local guide = {
 	},
 
     {
-        name = "guide-5",
+        name = "guide-6",
 		narrative = {
             {"哔哩..哔哩..矿物采集进展非常顺利，存活概率大幅提升至0.3244%！(兴奋)", "textures/guide/guide-3.texture"},
             {"哔哩..指挥中心有制造舱，可以生产简单物件..请使用制造舱生产几个地质科技包..哔哩(期待)", "textures/guide/guide-2.texture"},
@@ -87,7 +108,7 @@ local guide = {
 	},
 
     {
-        name = "guide-6",
+        name = "guide-7",
 		narrative = {
             {"组装机可使用3D打印技术制造地质科技包..哔哩..哔哗..请求建造组装机..(兴奋)", "textures/guide/guide-3.texture"},
         },
@@ -103,7 +124,7 @@ local guide = {
 	},
 
     {
-        name = "guide-7",
+        name = "guide-8",
 		narrative = {
             {"“科技包”是研究的必需材料..哔哩..请将地质科技包运送科研中心进行下一个科技研究(期待)", "textures/guide/guide-2.texture"},
             {"研究不可一蹴而就，也许需要长时的等待。足够的耐心是必需的科研品质..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
@@ -121,7 +142,7 @@ local guide = {
 	},
 
     {
-        name = "guide-8",
+        name = "guide-9",
 		narrative = {
             {"哔哩..哔哗..基地开始采集气液资源，管道正是运输此类资源的关键..(兴奋)", "textures/guide/guide-3.texture"},
         },
@@ -137,7 +158,7 @@ local guide = {
 	},
 
     {
-        name = "guide-9",
+        name = "guide-10",
 		narrative = {
             {"合理的铺设管道让液体运输更加高效...哔哩..注意管道和机器液口的连接，耐心..和眼神..是关键(期待)", "textures/guide/guide-2.texture"},
         },
@@ -152,7 +173,7 @@ local guide = {
 	},
 
     {
-        name = "guide-10",
+        name = "guide-11",
 		narrative = {
             {"化工厂准备就绪，让我们正式进入化工生产..哔哩..哔哩..(兴奋）", "textures/guide/guide-3.texture"},
         },
@@ -169,7 +190,7 @@ local guide = {
 	},
 
     {
-        name = "guide-11",
+        name = "guide-12",
 		narrative = {
             {"塑料可制造更多精密元件，掌握这种新材料，存活概率提升为1.2923%..哔哩(兴奋）", "textures/guide/guide-3.texture"},
         },
