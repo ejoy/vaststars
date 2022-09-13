@@ -51,7 +51,8 @@ local prototype = gameplay.register.prototype
     prerequisites = {"放置科研中心"},
     count = 2,
     tips_pic = {
-      "textures/task_tips_pic/task_click_build.texture",
+      "textures/task_tips_pic/task_place_pole1.texture",
+      "textures/task_tips_pic/task_place_pole2.texture",
     },
     sign_desc = {
       { desc = "使用“建造”放置2个铁制电线杆", icon = "textures/construct/industry.texture"},
