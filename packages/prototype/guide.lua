@@ -205,6 +205,22 @@ local guide = {
         },
 	},
 
+    {
+        name = "guide-13",
+		narrative = {
+            {"终于可以研制机械装置进入自动化生产，这可以大大提高效率..哔哩..和放松你的手臂..哔哩(期待）", "textures/guide/guide-2.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "生产机械科技包",
+            }
+        },
+        prerequisites = {
+            "机械研究",
+        },
+	},
+
 }
 
 return guide

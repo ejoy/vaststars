@@ -800,20 +800,19 @@ prototype "机械研究" {
   sign_icon = "textures/science/tech-important.texture",
 }
 
-prototype "蒸馏1" {
-  desc = "将液体混合物汽化进行成分分离的技术",
-  type = { "tech" },
-  icon = "textures/science/tech-research.texture",
-  effects = {
-    unlock_recipe = {"蒸馏厂1"},
-  },
+prototype "生产机械科技包" {
+  desc = "生产科技包用于科技研究",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"stat_production", 0, "机械科技包"},
   prerequisites = {"机械研究"},
-  ingredients = {
-    {"气候科技包", 1},
-    {"机械科技包", 1},
+  count = 3,
+  tips_pic = {
+    "textures/task_tips_pic/task_produce_plastic.texture",
   },
-  count = 4,
-  time = "7s"
+  sign_desc = {
+    { desc = "用组装机生产3个机械科技包", icon = "textures/construct/industry.texture"},
+  },
 }
 
 prototype "挖掘1" {
@@ -823,7 +822,7 @@ prototype "挖掘1" {
   effects = {
     unlock_recipe = {"采矿机1"},
   },
-  prerequisites = {"机械研究"},
+  prerequisites = {"生产机械科技包"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -839,12 +838,28 @@ prototype "驱动1" {
   effects = {
     unlock_recipe = {"机器爪1"},
   },
-  prerequisites = {"机械研究"},
+  prerequisites = {"生产机械科技包"},
   ingredients = {
     {"机械科技包", 1},
   },
   count = 3,
   time = "8s"
+}
+
+prototype "蒸馏1" {
+  desc = "将液体混合物汽化进行成分分离的技术",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"蒸馏厂1"},
+  },
+  prerequisites = {"驱动1"},
+  ingredients = {
+    {"气候科技包", 1},
+    {"机械科技包", 1},
+  },
+  count = 4,
+  time = "7s"
 }
 
 prototype "电力传输1" {
@@ -854,7 +869,7 @@ prototype "电力传输1" {
   effects = {
     unlock_recipe = {"铁制电线杆"},
   },
-  prerequisites = {"机械研究"},
+  prerequisites = {"生产机械科技包"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
@@ -871,7 +886,7 @@ prototype "泵系统1" {
   effects = {
     unlock_recipe = {"压力泵1"},
   },
-  prerequisites = {"机械研究"},
+  prerequisites = {"电力传输1"},
   ingredients = {
     {"气候科技包", 1},
     {"机械科技包", 1},
