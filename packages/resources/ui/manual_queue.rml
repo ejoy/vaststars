@@ -269,18 +269,18 @@
                 local function page_item_update(item, index)
                     if index <= #start.ingredients then
                         item.outerHTML = ([[
-                            <div class="small-item" style='background-image:"%s"; width: 10.00vmin;height: 10.00vmin;'>
-                                <div class="small-name">%s</div>
-                            </div> 
-                            <div style="flex-direction:row; align-items:center; justify-content:center; width: 27.00vmin; height: 100%%; background-color: rgb(0, 225, 255);border: 0.27vmin rgb(89, 73, 39);">
-                                <div class="item-title-new">X %d</div>
+                            <div class="item-research" style="width:45%%; margin-left: 2vmin;">
+                                <div class="small-item" style='background-image:"%s"; width: 10.00vmin;height: 10.00vmin;'>
+                                    <div class="small-name">%s</div>
+                                </div> 
+                                <div style="flex-direction:row; align-items:center; justify-content:center; width: 27.00vmin; height: 100%%; background-color: rgb(0, 225, 255);border: 0.27vmin rgb(89, 73, 39);">
+                                    <div class="item-title-new">X %d</div>
+                                </div>
                             </div>
                         ]]):format(start.ingredients[index].icon, start.ingredients[index].name, start.ingredients[index].count)
                     end
                 end
                 local function page_item_init(item, index)
-                    item.class = "item-research"
-                    item.style.width = "45%"
                     page_item_update(item, index)
                 end
                 start.page = pageclass.create(document, e, page_item_init, page_item_update)
