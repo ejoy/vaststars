@@ -7,6 +7,17 @@
 #include <string_view>
 
 namespace roadnet {
+
+    struct routeKey {
+        roadid from;
+        roadid to;
+
+        routeKey(roadid from, roadid to) : from(from), to(to) {}
+        bool operator<(const routeKey& other) const {
+            return from < other.from || (from == other.from && to < other.to);
+        }
+    };
+
     class builder {
     public:
         builder();
@@ -18,6 +29,11 @@ namespace roadnet {
         road_coord coordConvert(world& w, loction l, direction from, direction to, uint8_t z);
         road_coord coordConvert(world& w, map_coord  mc);
         map_coord  coordConvert(world& w, road_coord rc);
+
+        std::map<routeKey, uint16_t> getRouteCost();
+        std::optional<roadid> getPrevRoadId(roadid id);
+        std::optional<roadid> getNextRoadId(roadid id);
+        std::optional<direction> getRouteDir(roadid from, roadid to);
 
     private:
         uint8_t map[256][256];
@@ -42,6 +58,11 @@ namespace roadnet {
         std::vector<straightData>    straightVec;
         std::map<loction, roadid>    crossMap;
         std::map<roadid, loction>    crossMapR;
+
+        std::map<routeKey, uint16_t> routeCost;
+        std::map<roadid, roadid> routePrev;
+        std::map<roadid, roadid> routeNext;
+        std::map<routeKey, direction> routeDir;
 
         roadid   findCrossRoad(loction l);
         std::optional<loction> whereCrossRoad(roadid id);

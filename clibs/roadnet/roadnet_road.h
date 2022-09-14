@@ -16,7 +16,7 @@ namespace roadnet {
         constexpr roadid(uint16_t v) : cross((v & 0x8000) >> 15), id(v & 0x7FFF) {}
         constexpr roadid(uint16_t cross, uint16_t id) : cross(cross), id(id) {}
 
-        constexpr uint16_t toint() {
+        constexpr uint16_t toint() const {
             return (cross << 15) | id;
         }
 
