@@ -277,7 +277,7 @@ local function update_property_list(datamodel, property_list)
     datamodel.property_list = property_list
 end
 function M:create(object_id)
-    counter = 25
+    counter = update_interval
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
