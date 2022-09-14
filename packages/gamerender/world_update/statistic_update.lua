@@ -9,7 +9,7 @@ local entity_remove = world:sub {"gameplay", "remove_entity"}
 local function create_statistic_node(cfg)
     return {
         cfg = cfg,
-        period = 50,
+        period = 51,
         tail = 1,
         head = 1,
         frames = {},
