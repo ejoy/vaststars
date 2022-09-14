@@ -1706,8 +1706,8 @@ prototype "塑料1" {
     order = 20,
     icon = "textures/construct/plastic.texture",
     ingredients = {
-        {"氯气", 30},
         {"乙烯", 30},
+        {"氯气", 30},
     },
     results = {
         {"塑料", 1},
