@@ -351,9 +351,7 @@
                 ui_sys.pub {"laying_pipe_confirm"}
             end
             function start.clickTask(event, is_task)
-                if is_task then
-                    ui_sys.pub {"open_taskui"}
-                end
+                ui_sys.pub {"open_taskui", is_task}
             end
             function start.clickCollapsedBar(event, index)
                 if index == 0 then

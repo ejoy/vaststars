@@ -36,6 +36,19 @@ local function get_property_list(entity)
     return r
 end
 
+local function get_solar_panel_power(total)
+    local t = global.frame_count % 25000
+    if t <= 6250 or t > 18750 then
+        return total
+    elseif t <= 11250  then
+        return -total/5000 * t + total * (1 + 6250/5000)
+    elseif t <= 13750 then
+        return 0
+    elseif t <= 18750 then
+        return total/5000 * t - total * (6250 + 7500) / 5000
+    end
+end
+
 local function get_display_info(e, typeobject, t)
     local key = string.match(typeobject.name, "([^%u%d]+)")
     local tname = key and key or typeobject.name
@@ -63,6 +76,8 @@ local function get_display_info(e, typeobject, t)
                             current = st[cn]
                         elseif typeobject.name == "指挥中心" then
                             current = global.statistic.power_consumed
+                        elseif e.solar_panel then
+                            current = get_solar_panel_power(total) * 50
                         end
                     end
                     total = total * 50
