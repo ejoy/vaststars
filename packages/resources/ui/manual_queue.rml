@@ -269,7 +269,7 @@
                 local function page_item_update(item, index)
                     if index <= #start.ingredients then
                         item.outerHTML = ([[
-                            <div class="item-research" style="width:45%%; margin-left: 2vmin;">
+                            <div class="item-research" style="width:45%%; margin-left: 1.6vmin;">
                                 <div class="small-item" style='background-image:"%s"; width: 10.00vmin;height: 10.00vmin;'>
                                     <div class="small-name">%s</div>
                                 </div> 
