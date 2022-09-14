@@ -296,14 +296,14 @@ function M.build_power_network(gw)
         power_network[#power_network + 1] = new_network(pole)
     end
     if #power_network > 1 then
-        local remove_net = {}
+        local remove_flags = {}
         for idx = 1, #power_network -1 do
             local net1 = power_network[idx]
             for i = idx + 1, #power_network do
-                local connect = shortest_conect(power_network[idx].poles, power_network[i].poles)
+                local net2 = power_network[i]
+                local connect = shortest_conect(net1.poles, net2.poles)
                 if connect then
-                    remove_net[idx] = true
-                    local net2 = power_network[i]
+                    remove_flags[idx] = true
                     for _, l in ipairs(net1.lines) do
                         net2.lines[#net2.lines + 1] = l
                     end
@@ -319,7 +319,7 @@ function M.build_power_network(gw)
         end
         local network = {}
         for index, value in ipairs(power_network) do
-            if not remove_net[index] then
+            if not remove_flags[index] then
                 network[#network + 1] = value
             end
         end

@@ -7,5 +7,6 @@ return {
         power = {},
         power_consumed = 0
     },
+    frame_count = 0,
     inventory = require "inventory"(),
 }

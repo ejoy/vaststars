@@ -19,6 +19,7 @@ local function create_statistic_node(cfg)
     
 end
 local function update_world(world, get_object_func)
+    global.frame_count = global.frame_count + 1
     -- local delta_time = timer.delta()
     local statistic = global.statistic
     for _, _, eid, cfg in entity_create:unpack() do
