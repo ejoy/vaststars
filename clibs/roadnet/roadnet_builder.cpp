@@ -204,8 +204,8 @@ namespace roadnet {
                 ;
         case mask(L'╗'):
             return (z & 0x10)
-                ? direction::l
-                : direction::b
+                ? direction::b
+                : direction::l
                 ;
         case mask(L'╝'):
             return (z & 0x10)
@@ -269,6 +269,10 @@ namespace roadnet {
 
     void builder::loadMap(world& w, const std::map<loction, uint8_t>& mapData) {
         memset(map, 0, sizeof(map));
+        routeCost.clear();
+        routePrev.clear();
+        routeNext.clear();
+        routeDir.clear();
 
         uint16_t genCrossId = 0;
         uint16_t genStraightId = 0;
@@ -299,6 +303,10 @@ namespace roadnet {
                     if (isRealNeighbor(loc, result.l)) {
                         crossroad.setNeighbor(dir, neighbor_id);
                         neighbor.setNeighbor(reverse(result.dir), id);
+
+                        routeCost.emplace(routeKey { id, neighbor_id }, 0);
+                        routeDir.emplace(routeKey { id, neighbor_id }, dir);
+                        routeDir.emplace(routeKey { neighbor_id, id }, reverse(result.dir));
                     }
                     else if (loc == result.l) {
                         straightData& straight = straightVec.emplace_back(
@@ -310,6 +318,9 @@ namespace roadnet {
                             id
                         );
                         crossroad.setNeighbor(dir, {false, straight.id});
+
+                        routeCost.emplace(routeKey { id, {false, straight.id} }, 0);
+                        routeDir.emplace(routeKey { id, {false, straight.id} }, dir);
                     }
                     else {
                         straightData& straight1 = straightVec.emplace_back(
@@ -321,6 +332,8 @@ namespace roadnet {
                             neighbor_id
                         );
                         crossroad.setNeighbor(dir, {false, straight1.id});
+                        routePrev.emplace(roadid{false, straight1.id}, id);
+                        routeNext.emplace(roadid{false, straight1.id}, neighbor_id);
 
                         straightData& straight2 = straightVec.emplace_back(
                             genStraightId++,
@@ -331,6 +344,12 @@ namespace roadnet {
                             id
                         );
                         neighbor.setNeighbor(reverse(result.dir), {false, straight2.id});
+                        routePrev.emplace(roadid{false, straight2.id}, neighbor_id);
+                        routeNext.emplace(roadid{false, straight2.id}, id);
+
+                        routeCost.emplace(routeKey { id, neighbor_id}, result.n);
+                        routeDir.emplace(routeKey { id, neighbor_id }, dir);
+                        routeDir.emplace(routeKey { neighbor_id, id }, reverse(result.dir));
                     }
                 }
             }
@@ -419,21 +438,6 @@ namespace roadnet {
         }
     }
 
-    lorryid builder::addLorry(world& w, lineid lineId, uint8_t lineIdx, loction l, uint8_t z) {
-        line&  line = w.lineVec[lineId.id];
-        size_t N    = line.path.size();
-        if (lineIdx >= N) {
-            return lorryid::invalid();
-        }
-        direction from = line.path[(lineIdx+N-1) % N];
-        direction to   = line.path[lineIdx];
-        auto rc = coordConvert(w, l, from, to, z);
-        if (!rc) {
-            return lorryid::invalid();
-        }
-        return addLorry(w, lineId, lineIdx, rc);
-    }
-
     roadid builder::findCrossRoad(loction l) {
         auto iter = crossMap.find(l);
         if (iter != crossMap.end()) {
@@ -448,30 +452,6 @@ namespace roadnet {
             return iter->second;
         }
         return std::nullopt;
-    }
-
-    road_coord builder::coordConvert(world& w, loction l, direction from, direction to, uint8_t z) {
-        if (auto cross = findCrossRoad(l); cross) {
-            if (z == 0) {
-                RoadType z = RoadType(0x10 | (uint8_t)from);
-                return {cross, z};
-            }
-            RoadType z = RoadType(((uint8_t)from << 2) | (uint8_t)to);
-            if (!isValidRoadType(map[l.y][l.x], z)) {
-                return road_coord::invalid();
-            }
-            return {cross, z};
-        }
-        direction dir = reverse(from);
-        auto result = findNeighbor2(map, l, dir);
-        if (auto cross = findCrossRoad(result.l); cross) {
-            roadid id = w.crossAry[cross.id].neighbor[(uint8_t)reverse(result.dir)];
-            assert(id);
-            uint16_t n = road::straight::N * result.n + z;
-            uint16_t offset = w.straightAry[id.id].len - n - 1;
-            return {id, offset};
-        }
-        return road_coord::invalid();
     }
 
     road_coord builder::coordConvert(world& w, map_coord mc) {
@@ -514,5 +494,33 @@ namespace roadnet {
             return {res->l.x, res->l.y, (uint8_t)((n % road::straight::N) + (z? 0x00u: 0x10u))};
         }
         return map_coord::invalid();
+    }
+
+    std::map<routeKey, uint16_t> builder::getRouteCost() {
+        return routeCost;
+    }
+
+    std::optional<roadid> builder::getPrevRoadId(roadid id) {
+        auto iter = routePrev.find(id);
+        if (iter != routePrev.end()) {
+            return iter->second;
+        }
+        return std::nullopt;
+    }
+
+    std::optional<roadid> builder::getNextRoadId(roadid id) {
+        auto iter = routeNext.find(id);
+        if (iter != routeNext.end()) {
+            return iter->second;
+        }
+        return std::nullopt;
+    }
+
+    std::optional<direction> builder::getRouteDir(roadid from, roadid to) {
+        auto iter = routeDir.find({from, to});
+        if (iter != routeDir.end()) {
+            return iter->second;
+        }
+        return std::nullopt;
     }
 }

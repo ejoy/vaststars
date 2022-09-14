@@ -75,12 +75,6 @@ local function _make_cache()
                     else
                         z = (((z & 0xF) + t) % 4) | 0x10
                     end
-                else
-                    if entity_dir == "S" or entity_dir == "W" then -- see also: get_direction_straight(m, z)
-                        z = (z + 1) % 2
-                    else
-                        z = toward
-                    end
                 end
 
                 local combine_keys = ("%s:%s:%s"):format(typeobject.name, entity_dir, z) -- TODO: optimize
@@ -97,6 +91,7 @@ end
 local gameplay_core = require "gameplay.core"
 local create_roadnet = require("gameplay.interface.roadnet").create
 local road_mask = require("gameplay.interface.roadnet").road_mask
+local rc_rid = require("gameplay.interface.roadnet").rc_rid
 local iprototype = require "gameplay.interface.prototype"
 local vsobject_manager = ecs.require "vsobject_manager"
 local objects = require "objects"
@@ -123,12 +118,12 @@ local function _shuffle(t)
 end
 
 local function __add_line(roadnet_world, S, E)
-	local p1 = roadnet_world:bfs(S, E)
-	local p2 = roadnet_world:bfs(E, S)
-    if p1 == nil or p2 == nil then -- TODO: optimize
-        return
-    end
-	return roadnet_world:add_line(p1 .. p2), p1 .. '|' .. p2
+    local p = roadnet_world:path(S, E)
+	return roadnet_world:add_line(p), p
+end
+
+local function _rc_rid(rc)
+    return rc & 0xFFFF
 end
 
 local function __init_roadnet()
@@ -171,7 +166,7 @@ local function __init_roadnet()
             toward = z
         else
             local pos
-            pos, toward = z & 0x0F, (z >> 4) & 0x0F -- pos: 0-1, toward: 0-1, tick: 0-(STRAIGHT_TICKCOUNT - 1)
+            pos, toward = z & 0x0F, (z >> 4) & 0x0F -- pos: [0, 1], toward: [0, 1], tick: [0, (STRAIGHT_TICKCOUNT - 1)]
             ti = pos * STRAIGHT_TICKCOUNT + (STRAIGHT_TICKCOUNT - tick)
         end
 
@@ -182,6 +177,10 @@ local function __init_roadnet()
 
     --
     straight_road_offset = _shuffle(straight_road_offset)
+    -- straight_road_offset = {}
+    -- straight_road_offset[#straight_road_offset+1] = {x = 155, y = 123, z = 0}
+    -- straight_road_offset[#straight_road_offset+1] = {x = 143, y = 127, z = 1}
+
     while #straight_road_offset >= 2 do
         local len = #straight_road_offset
         local c1 = straight_road_offset[len]
@@ -189,13 +188,44 @@ local function __init_roadnet()
         local c2 = straight_road_offset[len - 1]
         local E  = c2.x | (c2.y << 8) | (c2.z << 16)
 
+        local rc1, rc2 = roadnet_world.road_coord[S], roadnet_world.road_coord[E]
+        local roadid1, roadid2 = _rc_rid(rc1), _rc_rid(rc2)
+
+        if roadid1 == roadid2 then -- TODO: avoid two endpoins are on the same road
+            straight_road_offset[len] = nil
+            straight_road_offset = _shuffle(straight_road_offset)
+            goto continue
+        end
+
+        if roadnet_world.cworld:prev_roadid(roadid1) == roadnet_world.cworld:next_roadid(roadid1) then -- TODO: avoid two endpoins are on the same road (U-turn)
+            straight_road_offset[len] = nil
+            straight_road_offset = _shuffle(straight_road_offset)
+            goto continue
+        end
+
+        if roadnet_world.cworld:prev_roadid(roadid2) == roadnet_world.cworld:next_roadid(roadid2) then -- TODO: avoid two endpoins are on the same road (U-turn)
+            straight_road_offset[len] = nil
+            straight_road_offset = _shuffle(straight_road_offset)
+            goto continue
+        end
+
+        local from, to = roadnet_world.road_coord[S], roadnet_world.road_coord[E] -- TODO： avoid two endpoins are on the same road (from == to)
+        local source = roadnet_world.cworld:prev_roadid(from) or rc_rid(from)
+        from = roadnet_world.cworld:next_roadid(from) or rc_rid(from)
+        to = roadnet_world.cworld:next_roadid(to) or rc_rid(to)
+        if from == to then
+            straight_road_offset[len] = nil
+            straight_road_offset = _shuffle(straight_road_offset)
+            goto continue
+        end
+
         local line_id, line = __add_line(roadnet_world, S, E)
         if line_id then
-            local lorry_id = roadnet_world:add_lorry(line_id, 0, c1.x, c1.y, c1.z & 0x0F)
+            local lorry_id = roadnet_world:add_lorry(line_id, 0, c1.x, c1.y, c1.z)
             if lorry_id then
                 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
                 local COLOR_INVALID <const> = math3d.constant "null"
-                local offset_mat = _get_offset_matrix(c1.x, c1.y, c1.z & 0x0F, 1) -- first tick is 1
+                local offset_mat = _get_offset_matrix(c1.x, c1.y, (c1.z >> 4) & 0xF, (STRAIGHT_TICKCOUNT * (c1.z & 0xF)) + 1 )
                 local s, r, t = math3d.srt(offset_mat)
 
                 assert(lorries[lorry_id] == nil)
@@ -215,6 +245,7 @@ local function __init_roadnet()
 
         straight_road_offset[len] = nil
         straight_road_offset[len - 1] = nil
+        ::continue::
     end
 
     return roadnet_world

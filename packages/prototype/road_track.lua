@@ -51,7 +51,6 @@ local road_track = {
         [19] = {'path_b2t_1', 'path_b2t_1'}, -- bottom
     },
     ['U'] = {
-        [1] = {'path_t2t_1', 'path_t2t_2', 'path_t2t_3', 'path_t2t_4', 'path_t2t_5'},
         [0] = {'path_t2t_1', 'path_t2t_2', 'path_t2t_3', 'path_t2t_4', 'path_t2t_5'},
     },
 }

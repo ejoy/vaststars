@@ -90,6 +90,22 @@ namespace roadnet::lua {
         lua_pushinteger(L, v);
     }
 
+    static void push_route_map(lua_State* L, int from, int to, int cost) {
+        lua_createtable(L, 4, 0);
+
+        lua_pushinteger(L, 1);
+        lua_pushinteger(L, from);
+        lua_settable(L, -3);
+
+        lua_pushinteger(L, 2);
+        lua_pushinteger(L, to);
+        lua_settable(L, -3);
+        
+        lua_pushinteger(L, 3);
+        lua_pushinteger(L, cost);
+        lua_settable(L, -3);
+    }
+
     namespace world {
         struct object {
             roadnet::world w;
@@ -100,6 +116,50 @@ namespace roadnet::lua {
             auto& o = class_get<object>(L, 1);
             o.b.loadMap(o.w, get_map_data(L, 2));
             return 0;
+        }
+        static int route_cost(lua_State* L) {
+            auto& o = class_get<object>(L, 1);
+            auto m = o.b.getRouteCost();
+            int i = 0;
+            lua_createtable(L, (int)m.size(), 0);
+            for(auto& [k, v] : m) {
+                push_route_map(L, k.from.toint(), k.to.toint(), v);
+                lua_rawseti(L, -2, ++i);
+            }
+            return 1;
+        }
+        static int prev_roadid(lua_State* L) {
+            auto& o = class_get<object>(L, 1);
+            auto r = get_road_coord(L, 2);
+            auto id = o.b.getPrevRoadId(r.id);
+            if (id) {
+                lua_pushinteger(L, id->toint());
+            } else {
+                lua_pushnil(L);
+            }
+            return 1;
+        }
+        static int next_roadid(lua_State* L) {
+            auto& o = class_get<object>(L, 1);
+            auto r = get_road_coord(L, 2);
+            auto id = o.b.getNextRoadId(r.id);
+            if (id) {
+                lua_pushinteger(L, id->toint());
+            } else {
+                lua_pushnil(L);
+            }
+            return 1;
+        }
+        static int route_dir(lua_State* L) {
+            auto& o = class_get<object>(L, 1);
+            auto from = (uint16_t)luaL_checkinteger(L, 2);
+            auto to = (uint16_t)luaL_checkinteger(L, 3);
+            auto dir = o.b.getRouteDir({from}, {to});
+            if(dir)
+                lua_pushinteger(L, (int)*dir);
+            else
+                lua_pushnil(L);
+            return 1;
         }
         static int add_line(lua_State* L) {
             auto& o = class_get<object>(L, 1);
@@ -115,9 +175,8 @@ namespace roadnet::lua {
             auto& o = class_get<object>(L, 1);
             uint16_t lineId = (uint16_t)luaL_checkinteger(L, 2);
             uint8_t lineIdx = (uint8_t)luaL_checkinteger(L, 3);
-            auto l = get_loction(L, 4);
-            uint8_t z = (uint8_t)luaL_optinteger(L, 5, 0);
-            auto id = o.b.addLorry(o.w, roadnet::lineid{lineId}, lineIdx, l, z);
+            auto rc = o.b.coordConvert(o.w, get_map_coord(L, 4));
+            auto id = o.b.addLorry(o.w, roadnet::lineid{lineId}, lineIdx, rc);
             if (id == roadnet::lorryid::invalid()) {
                 return 0;
             }
@@ -237,6 +296,10 @@ namespace roadnet::lua {
         static int create(lua_State* L) {
             luaL_Reg l[] = {
                 { "load_map", load_map },
+                { "route_cost", route_cost },
+                { "prev_roadid", prev_roadid },
+                { "next_roadid", next_roadid },
+                { "route_dir", route_dir },
                 { "add_line", add_line },
                 { "add_lorry", add_lorry },
                 { "map_coord", map_coord },

@@ -1,5 +1,6 @@
 local roadnet_core = require "vaststars.roadnet.core"
 local iprototype = require "gameplay.interface.prototype"
+local roadmap_core = require "vaststars.roadmap.core"
 
 local mt = {}
 mt.__index = mt
@@ -28,8 +29,63 @@ function mt:add_line(...)
 end
 
 function mt:add_lorry(lineid, idx, x, y, z)
-    local l = ((y & 0xFF) << 8) | (x & 0xFF)
-    return self.cworld:add_lorry(lineid, idx, l, z)
+    local rc = x | (y << 8) | (z << 16)
+    return self.cworld:add_lorry(lineid, idx, rc)
+end
+
+local mapping_id, mapping_sid ; do
+    local mapping = {}
+    local mapping_s = {}
+    local id = 0
+    function mapping_id(v)
+        if not mapping[v] then
+            id = id + 1
+            mapping[v] = id
+            mapping_s[id] = v
+            return id
+        else
+            return mapping[v]
+        end
+    end
+    function mapping_sid(id)
+        return assert(mapping_s[id])
+    end
+end
+
+local route = {} ; do
+    local cache
+    function route.map(m)
+        local r = {}
+        for _, v in ipairs(m) do -- TODO: from, to, length avoid 0 for routecache
+            r[#r+1] = {mapping_id(v[1]), mapping_id(v[2]), v[3] + 1}
+        end
+        cache = roadmap_core.routecache(roadmap_core.map(r))
+    end
+    function route.path(source, from, to)
+        local r = {}
+        source, from, to = mapping_id(source), mapping_id(from), mapping_id(to) -- TODO: source, from, to avoid 0 for routecache
+
+        local checkpoint = from
+        while checkpoint ~= to do
+            local index = source << 32 | checkpoint << 16 | to
+            local dest = assert(cache[index])
+            r[#r+1] = {mapping_sid(checkpoint), mapping_sid(dest)} -- TODO: checkpoint, dest avoid 0 for routecache
+            source = checkpoint
+            checkpoint = dest
+        end
+        return r
+    end
+end
+
+-- road id to map coord
+local function rid_mc(w, roadid, offset)
+    local road_coord = (offset or 1) << 16 | (roadid & 0xFFFF)
+    local map_coord = w.map_coord[road_coord]
+    return {x = map_coord & 0xFF, y = (map_coord >> 8) & 0xFF, z = (map_coord >> 16) & 0xFF}
+end
+
+local function rc_rid(rc)
+    return rc & 0xFFFF
 end
 
 local function create(map, callback)
@@ -39,6 +95,43 @@ local function create(map, callback)
     w.callback = callback
     w.cworld = cworld
     w.cworld:load_map(map)
+    local directionName = {
+        [0] = 'L',
+        [1] = 'T',
+        [2] = 'R',
+        [3] = 'B',
+    }
+
+    route.map(w.cworld:route_cost())
+    w.path = function(self, S, E)
+        local from, to = self.road_coord[S], self.road_coord[E]
+        local endpoint = {}
+
+        -- TODO: optimize
+        endpoint[#endpoint+1] = {
+            source = self.cworld:prev_roadid(from) or rc_rid(from),
+            from = self.cworld:next_roadid(from) or rc_rid(from),
+            to = self.cworld:next_roadid(to) or rc_rid(to),
+        }
+        endpoint[#endpoint+1] = { to = self.cworld:next_roadid(from) or rc_rid(from) }
+
+        local paths = {}
+        for i = 1, #endpoint do
+            local e = endpoint[i]
+            local prev = endpoint[i - 1] or {}
+            local last = paths[#paths] or {prev.from, prev.to}
+            local path = route.path(e.source or last[1], e.from or last[2], e.to)
+            for _, v in ipairs(path) do
+                paths[#paths+1] = v
+            end
+        end
+
+        local r = {}
+        for _, path in ipairs(paths) do
+            r[#r+1] = directionName[self.cworld:route_dir(path[1], path[2])]
+        end
+        return table.concat(r), paths, endpoint
+    end
 
     local road_coord = {}
     local map_coord  = {}
@@ -115,4 +208,6 @@ return {
     is_cross = is_cross,
     entry_count = entry_count,
     road_mask = get_road_mask,
+    rid_mc = rid_mc,
+    rc_rid = rc_rid,
 }
