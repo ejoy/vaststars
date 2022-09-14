@@ -171,7 +171,7 @@ namespace roadnet::road {
                 continue;
             }
             direction out = l.getDirection(w);
-            assert((direction)i != out);
+            // assert((direction)i != out);
             if (!w.Road(neighbor[(uint8_t)out]).canEntry(w, reverse(out))) {
                 continue;
             }

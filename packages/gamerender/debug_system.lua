@@ -10,10 +10,10 @@ funcs[1] = function ()
 end
 
 function debug_sys:ui_update()
-    for _, i in debug_mb:unpack() do
-        local func = funcs[i]
+    for msg in debug_mb:each() do
+        local func = funcs[msg[2]]
         if func then
-            func()
+            func(table.unpack(msg, 3))
         end
     end
 end

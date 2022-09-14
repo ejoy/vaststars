@@ -6,6 +6,7 @@
 #include <string.h>
 #include <limits.h>
 #include <assert.h>
+#include <stdint.h>
 
 #define MAX_EDGE 4
 
@@ -40,7 +41,7 @@ count_endpoint(lua_State *L, int index) {
 	for (i=1;lua_geti(L, index, i) == LUA_TTABLE;i++) {
 		int a = get_int(L, 1);
 		int b = get_int(L, 2);
-		get_int(L, 3);	// length
+		// get_int(L, 3);	// length
 		if (a > n)
 			n = a;
 		if (b > n)
@@ -152,13 +153,13 @@ fetch_route(struct route *r, crossing_t id) {
 }
 
 static void
-find_route(struct crossing *c, struct route r[], int sz, crossing_t from, crossing_t to) {
+find_route(struct crossing *c, struct route r[], int sz, crossing_t from, crossing_t to, crossing_t source) {
 	memset(r, 0, sizeof(struct route) * sz);
 	int n = 0;
 	struct route *current = &r[n++];
 	current->len = 0;
 	current->id = from;
-	current->from = from;
+	current->from = source;
 	r[from-1].index = n;
 
 	int i;
@@ -170,19 +171,23 @@ find_route(struct crossing *c, struct route r[], int sz, crossing_t from, crossi
 		int len = current->len;
 		for (i=0;i<MAX_EDGE && edge->e[i].len != 0;i++) {
 			crossing_t id = edge->e[i].endpoint;
-			int path_len = len + edge->e[i].len;
-			struct route *e = fetch_route(r, id);
-			if (e == NULL) {
-				// new endpoint
-				e = &r[n++];
-				e->len = path_len;
-				e->id = id;
-				e->from = current->id;
-				r[id-1].index = n;
-			} else {
-				if (e->len > path_len) {
+			int cfrom = current->from;
+			if ((i == 0 && edge->e[1].len == 0)	// trun around
+				|| id != cfrom) {
+				int path_len = len + edge->e[i].len;
+				struct route *e = fetch_route(r, id);
+				if (e == NULL) {
+					// new endpoint
+					e = &r[n++];
 					e->len = path_len;
+					e->id = id;
 					e->from = current->id;
+					r[id-1].index = n;
+				} else {
+					if (e->len > path_len) {
+						e->len = path_len;
+						e->from = current->id;
+					}
 				}
 			}
 		}
@@ -192,19 +197,37 @@ find_route(struct crossing *c, struct route r[], int sz, crossing_t from, crossi
 static int
 findroute(lua_State *L) {
 	luaL_checktype(L, 1, LUA_TTABLE);
-	unsigned int index = luaL_checkinteger(L, 2);
-	crossing_t from = index >> 16;
+	uint64_t index = luaL_checkinteger(L, 2);
+	crossing_t source = (index >> 32) & 0xffff;
+	crossing_t from = (index >> 16) & 0xffff;
 	crossing_t to = index & 0xffff;
 	struct crossing *c = (struct crossing *)lua_touserdata(L, lua_upvalueindex(1));
 	size_t sz = lua_rawlen(L, lua_upvalueindex(1));
 	int n = sz / sizeof(struct crossing);
+	if (source == 0 || source == from)
+		source = from;
+	else if (source > n)
+		return luaL_error(L, "Invalid source %d", source);
+	else {
+		struct crossing * p = &c[from-1];
+		int i;
+		int found = 0;
+		for (i=0;i<MAX_EDGE && p->e[i].len != 0;i++) {
+			if (p->e[i].endpoint == source) {
+				found = 1;
+				break;
+			}
+		}
+		if (!found)
+			return luaL_error(L, "Invalid source %d to %d", source, from);
+	}
 	if (from == 0 || from > n)
 		return luaL_error(L, "Invalid from %d", from);
 	if (to == 0 || to > n)
 		return luaL_error(L, "Invalid to %d", to);
 
 	struct route tmp[0x10000];
-	find_route(c, tmp, n, from, to);
+	find_route(c, tmp, n, from, to, source);
 	crossing_t checkpoint = to;
 	crossing_t dest = to;
 
@@ -214,8 +237,11 @@ findroute(lua_State *L) {
 			return 0;
 		dest = checkpoint;
 		checkpoint = e->from;
+		struct route *f = fetch_route(tmp, checkpoint);
+		if (f == NULL)
+			return 0;
 		// checkpoint -> dest -> to
-		unsigned int index = ((unsigned int)checkpoint << 16) | to;
+		uint64_t index = ((uint64_t) f->from << 32) | ((uint64_t)checkpoint << 16) | to;
 		lua_pushinteger(L, dest);
 		lua_rawseti(L, 1, index);
 	}
