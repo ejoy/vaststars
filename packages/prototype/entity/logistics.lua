@@ -19,7 +19,7 @@ prototype "指挥中心" {
 }
 
 prototype "物流派送站" {
-    model = "prefabs/goods-station-1.prefab",
+    model = "prefabs/goods-station-output-1.prefab",
     icon = "textures/building_pic/small_pic_goodsstation_output.texture",
     background = "textures/build_background/small_pic_goodsstation_output.texture",
     construct_detector = {"exclusive"},
@@ -30,7 +30,7 @@ prototype "物流派送站" {
 }
 
 prototype "物流需求站" {
-    model = "prefabs/goods-station-1.prefab",
+    model = "prefabs/goods-station-input-1.prefab",
     icon = "textures/building_pic/small_pic_goodsstation_input.texture",
     background = "textures/build_background/small_pic_goodsstation_input.texture",
     construct_detector = {"exclusive"},
