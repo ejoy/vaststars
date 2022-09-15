@@ -2,7 +2,7 @@ local guide = {
 	{
         name = "guide-1",
 		narrative = {
-            {"哔哩..哔哗..已迫降在代号P4031的星球。尚未发现任何生命迹象..(失望)", "textures/guide/guide-6.texture"},
+            {"哔哩..哔哗..已迫降在[#00ff00]代号P[#]4031的星球。尚未发现任何生命迹象..(失望)", "textures/guide/guide-6.texture"},
             {"哔哩..哔哗..哔哩..启动大气分析协议中..P4031缺少氧气..(失望)"},
             {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031铁铝丰富..(轻松)","textures/guide/guide-1.texture"},
             {"哔哩..哔哗..启动生存可靠性分析..0.04565%存活概率..(情绪表达跳过中)","textures/guide/guide-4.texture"},

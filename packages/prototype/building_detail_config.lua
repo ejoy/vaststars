@@ -95,8 +95,12 @@ local building_detail_config = {
 		"fluid_volume",
 	},
 	["地下水挖掘机"] = {
+		"work_power",
 		"fluid_name",
 		"fluid_volume",
+	},
+	["空气过滤器"] = {
+		"work_power",
 	},
 	["烟囱"] = {
 		"fluid_name",
