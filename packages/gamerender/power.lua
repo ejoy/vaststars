@@ -64,7 +64,7 @@ local function contain(e, x, y)
     return true
 end
 
-local function connect(e0, e1)
+local function can_connect(e0, e1)
     local min_e = e0
     local max_e = e1
     if e1.sd < e0.sd then
@@ -91,20 +91,25 @@ local function dist_sqr(pole1, pole2)
 end
 
 local function shortest_conect(poles1, poles2)
-    local min_connect
-    local min_dist = 0xffffffff
+    local connects = {}
     for _, p1 in ipairs(poles1) do
+        connects[p1] = {}
         for _, p2 in ipairs(poles2) do
-            if connect(p1, p2) then
-                local d = dist_sqr(p1, p2)
-                if min_dist > d then
-                    min_connect = {p1, p2}
-                    min_dist = d
-                end
+            if can_connect(p1, p2) then
+                local cons = connects[p1]
+                cons[#cons + 1] = {p1, p2, dist = dist_sqr(p1, p2)}
             end
         end
     end
-    return min_connect
+    for _, value in pairs(connects) do
+        if #value > 1 then
+            table.sort(value, function (a, b)
+                return a.dist < b.dist
+            end)
+        end
+    end
+    
+    return connects
 end
 
 local function area_supply_overlap(e0, e1)
@@ -116,7 +121,14 @@ end
 
 local pole_height = 30
 local temp_pole = {}
-
+local function remove_from_table(pole, poles)
+    for index, value in ipairs(poles) do
+        if pole == value then
+            table.remove(poles, index)
+            break
+        end
+    end
+end
 local function clear_temp_pole(pole, keep)
     local network = global.power_network
     if not temp_pole[pole.key] or not network then
@@ -136,9 +148,13 @@ local function clear_temp_pole(pole, keep)
         end
     end
     ::continue::
-    local line_eid = temp_pole[pole.key].line
-    if line_eid then
-        w:remove(line_eid)
+    local lines = temp_pole[pole.key].lines
+    if lines and #lines > 0 then
+       for _, line in ipairs(lines) do
+            w:remove(line.eid)
+            remove_from_table(line.p1, line.p2.targets)
+            remove_from_table(line.p2, line.p1.targets)
+       end
     end
     if not keep then
         temp_pole[pole.key] = nil
@@ -152,7 +168,7 @@ local function clear_temp_pole(pole, keep)
     end
 end
 
-local function create_line(pole1, pole2)
+local function do_create_line(pole1, pole2)
     local pos1
     local pos2
     if pole1.key and pole1.smooth_pos then
@@ -171,7 +187,46 @@ local function create_line(pole1, pole2)
     pos2[2] = pos2[2] + pole_height
     
     local line = iline_entity.create_lines({pos1, pos2}, 80, {1.0, 0.0, 0.0, 0.7})
-    return line
+    pole1.targets[#pole1.targets + 1] = pole2
+    pole2.targets[#pole2.targets + 1] = pole1
+    return {eid = line, p1 = pole1, p2 = pole2}
+end
+local poles_lines = {}
+local function has_connected(p, poles)
+    for _, connected in ipairs(poles) do
+        for _, target in ipairs(connected.targets) do
+            if p == target then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+local function create_lines(head, connects)
+    local function has_connected(p, poles)
+        for _, connected in ipairs(poles) do
+            for _, target in ipairs(connected.targets) do
+                if p == target then
+                    return true
+                end
+            end
+        end
+        return false
+    end
+    local lines = {}
+    local connected_pole = {}
+    for _, con in ipairs(connects) do
+        -- same head, multi tail
+        assert(con[1] == head )
+        local tail = con[2]
+        local skip = has_connected(tail, connected_pole)
+        if not skip and #head.targets < 5 and #tail.targets < 5 then
+            lines[#lines + 1] = do_create_line(head, tail)
+            connected_pole[#connected_pole + 1] = tail
+        end
+    end
+    return lines
 end
 
 function M.merge_pole(pole, add)
@@ -180,12 +235,11 @@ function M.merge_pole(pole, add)
         clear_temp_pole(pole)
     end
     local net
-    local connect_pole
+    local connects
     for _, nw in ipairs(network) do
-        local connect = shortest_conect({pole}, nw.poles)
-        if connect then
+        connects = shortest_conect({pole}, nw.poles)
+        if #connects[pole] > 0 then
             net = nw
-            connect_pole = connect[2]
             goto continue
         end
     end
@@ -193,11 +247,14 @@ function M.merge_pole(pole, add)
     if net then
         net.poles[#net.poles + 1] = pole
         set_supply_area(net.area, pole)
-        local line = create_line(connect_pole, pole)
+        local lines = create_lines(pole, connects[pole])
         if not pole.key then
-            net.lines[#net.lines + 1] = line
+            -- net.lines[#net.lines + 1] = line
+            for _, line in ipairs(lines) do
+                poles_lines[poles_lines + 1] = line
+            end
         else
-            temp_pole[pole.key] = {line = line, pole = pole}
+            temp_pole[pole.key] = {lines = lines, pole = pole}
         end
     else
         if add then
@@ -261,6 +318,7 @@ function M.build_power_network(gw)
         end
         if v.capacitance then
             capacitance[#capacitance + 1] = {
+                targets = {},
                 name = typeobject.name,
                 eid = v.eid,
                 x = e.x,
@@ -271,6 +329,7 @@ function M.build_power_network(gw)
         end
         if typeobject.name == "指挥中心" or typeobject.power_pole then
             powerpole[#powerpole + 1] = {
+                targets = {},
                 name = typeobject.name,
                 eid = v.eid,
                 x = e.x,
@@ -284,13 +343,13 @@ function M.build_power_network(gw)
         end
     end
 
-    if global.power_network then
-        for _, net in ipairs(global.power_network) do
-            for _, value in ipairs(net.lines) do
-                w:remove(value)
-            end
+    if #poles_lines > 0 then
+        for _, line in ipairs(poles_lines) do
+            w:remove(line.eid)
         end
+        poles_lines = {}
     end
+
     local power_network = {}
     for _, pole in ipairs(powerpole) do
         power_network[#power_network + 1] = new_network(pole)
@@ -301,13 +360,25 @@ function M.build_power_network(gw)
             local net1 = power_network[idx]
             for i = idx + 1, #power_network do
                 local net2 = power_network[i]
-                local connect = shortest_conect(net1.poles, net2.poles)
-                if connect then
-                    remove_flags[idx] = true
-                    for _, l in ipairs(net1.lines) do
-                        net2.lines[#net2.lines + 1] = l
+                local has_connect = false
+                local connects = shortest_conect(net2.poles, net1.poles)
+                for key, value in pairs(connects) do
+                    local lines = create_lines(key, value)
+                    for _, line in ipairs(lines) do
+                        poles_lines[#poles_lines + 1] = line
                     end
-                    net2.lines[#net2.lines + 1] = create_line(connect[1], connect[2])
+                    if not has_connect and #lines > 0 then
+                        remove_flags[idx] = true
+                        has_connect = true
+                    end
+                    -- for _, con in ipairs(connects) do
+                    --     if #con[1].targets < 5 and #con[2].targets < 5 then
+                    --         poles_lines[#poles_lines + 1] = do_create_line(con[1], con[2])
+                    --     end
+                    -- end
+                    
+                end
+                if has_connect then
                     for _, p in ipairs(net1.poles) do
                         set_supply_area(net2.area, p)
                         table.insert(net2.poles, p)
