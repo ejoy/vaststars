@@ -15,6 +15,7 @@ local function create_statistic_node(cfg)
         frames = {},
         drain = 0,
         power = 0,
+        state = 0,
     }
     
 end
