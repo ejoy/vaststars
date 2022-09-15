@@ -10,19 +10,6 @@
                 height: 90%;
                 justify-content: space-evenly;
             }
-            .recipe-name-block {
-                background-color: rgb(203, 118, 24);
-                width: 100%;
-                height:5%;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                border: 0.10vmin rgb(89, 73, 39);
-            }
-            .recipe-time-block {
-                flex-direction: row;
-                align-items: center;
-            }
             .name-block {
                 background-color: rgb(203, 118, 24);
                 height:100%;
@@ -74,50 +61,6 @@
                 width: 100%;
                 height:80%;
             }
-            .materials {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                background-size: cover;
-                width: 100%;
-                height:15%;
-            }
-            .materials-item {
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-            }
-            .materials-icon {
-                margin-left: 0.5em;
-                width: 3.67vmin;
-                height: 3.67vmin;
-                background-color: rgb(250, 205, 9);;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-                background-size: cover;
-            }
-            .materials-name {
-                padding-bottom: 0.3em;
-                padding-left: 0.2em;
-                padding-right:1em;
-                font-size: 3.73vmin;
-                text-align: center;
-            }
-            .materials-num {
-                padding-bottom: 0.3em;
-                padding-right:1em;
-                font-size: 3.73vmin;
-                text-align: center;
-            }
-            .building-info {
-                margin-top:1em;
-                width: 28%;
-                height:80%;
-                flex-direction: column;
-                align-items: center;
-                justify-content: space-evenly;
-            }
             .drone-title-block {
                 width:32%;
                 height:8%;
@@ -149,12 +92,6 @@
                 width:100%;
                 height:60%;
             }
-            .item-recipe-block {
-                flex-direction: column;
-                align-items: center;
-                width:100%;
-                height:30%;
-            }
             .item-building-block {
                 flex-direction: column;
                 align-items: center;
@@ -180,32 +117,6 @@
                 -webkit-text-stroke: 0.13vmin rgb(89, 73, 39);
                 text-align: center;
             }
-            .small-item-1 {
-                flex-direction: column;
-                align-items:center;
-                justify-content:flex-end;
-                background-color: rgb(250, 205, 9);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size:cover;
-                width: 8.00vmin;
-                height: 8.00vmin;
-                font-size: 4.40vmin;
-                background-image: "textures/construct/insert1.texture";
-            }
-            .small-item-count {
-                margin-bottom: -0.1em;
-                font-size: 4vmin;
-                text-align:center;
-                color:rgb(87, 238, 0);
-                -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);
-            }
-            .small-arrow {
-                margin: auto 0.2em;
-                width:61px;
-                height:47px;
-                background-image:"textures/exchange/right_arrow.texture";
-                background-size:cover
-            }
             .small-building {
                 width:50px;
                 height:70px;
@@ -215,6 +126,22 @@
             .draw-separator {
                 width: 100%;
                 border-bottom: 1.5px rgb(89, 73, 39);
+            }
+            .button-change-block {
+                margin: auto;
+                flex-direction: row;
+                width: 100%;
+                height:30%;
+                align-items: center;
+                justify-content: space-evenly;
+            }
+            .button-change {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width: 24.00vmin;
+                height: 9.33vmin;
+                background-color: rgb(52, 207, 115);
             }
         </style>
         <style path = "common/building_style.rcss"/>
@@ -340,7 +267,7 @@
             <!-- 物流物品选择 end -->
 
 
-            <div class="recipe-panel" style="flex-direction: column; height:100%;" data-if="false">
+            <div class="recipe-panel" style="flex-direction: column; height:100%;" data-if="true">
                 <!-- 物品基本信息 start -->
                 <div class="item-info-block">
                     <div class = "name-block" style="height: 13%; width:100%; border: 1px #fff;">
@@ -385,17 +312,17 @@
                     <div style="flex-direction:row; justify-content: flex-start; width:100%;height:20%;">
                         <div class ="drone-title-block" style="height:5vmin;">
                             <div class = "drone-pic" style='background-image:"textures/construct/assembler.texture";'/>
-                            <div class = "drone-title">生产建筑</div>
+                            <div class = "drone-title">需求数量</div>
                         </div>
                     </div>
                     <div style="flex-direction:row; justify-content: center; width:100%; padding-top:0.3em;height:80%; align-items: center;">
-                        <div class="small-building"/>
-                        <div class="small-building"/>
-                        <div class="small-building"/>
-                        <div class="small-building"/>
-                        <div class="small-building"/>
-                        <div class="small-building"/>
-                        <div class="small-building"/>               
+                        <button class="button-change" style = "width: 15.00vmin; height: 7.33vmin; background-color: rgb(112,48,160); border: 0.20vmin rgb(255,249,214);">
+                            <div class = "button-change-text">-1个</div>
+                        </button>
+                        <div style="font-size: 5.33vmin; margin:auto 0.6em;">60个</div>
+                        <button class="button-change" style = "width: 15.00vmin; height: 7.33vmin; background-color: rgb(112,48,160); border: 0.20vmin rgb(255,249,214);">
+                            <div class = "button-change-text">+1个</div>
+                        </button>         
                     </div>
                 </div> 
                 <!-- 物品生产建筑 end -->
