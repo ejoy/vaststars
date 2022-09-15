@@ -36,7 +36,9 @@ end
 
 function M:stage_camera_usage()
     for _ in save_mb:unpack() do -- 存档时会保存摄像机的位置
-        saveload:backup()
+        if saveload:backup() then
+            iui.close("option_pop.rml")
+        end
     end
 
     for _, _, _, index in restore_mb:unpack() do -- 读档时会还原摄像机的位置
