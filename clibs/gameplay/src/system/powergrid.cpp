@@ -178,6 +178,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 	for (auto& v : w.select<ecs::capacitance, ecs::entity>(L)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0 || !pg[c.network].active) {
+			c.delta = 0;
 			continue;
 		}
 		ecs::entity& e = v.get<ecs::entity>();
