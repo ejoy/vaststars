@@ -191,18 +191,8 @@ local function do_create_line(pole1, pole2)
     pole2.targets[#pole2.targets + 1] = pole1
     return {eid = line, p1 = pole1, p2 = pole2}
 end
-local poles_lines = {}
-local function has_connected(p, poles)
-    for _, connected in ipairs(poles) do
-        for _, target in ipairs(connected.targets) do
-            if p == target then
-                return true
-            end
-        end
-    end
-    return false
-end
 
+local poles_lines = {}
 local function create_lines(head, connects)
     local function has_connected(p, poles)
         for _, connected in ipairs(poles) do
