@@ -58,7 +58,7 @@ local function get_display_info(e, typeobject, t)
         return
     end
     local values = t.values
-    local status = 1 --shutdown status
+    local status = 3 --work status
     for _, propertyName in ipairs(detail) do
         local cfg = property_list[propertyName]
         if cfg.value then
@@ -78,17 +78,16 @@ local function get_display_info(e, typeobject, t)
                             current = st[cn]
                         elseif typeobject.name == "指挥中心" then
                             current = global.statistic.power_consumed
-                            status = 3
                         elseif e.solar_panel then
                             current = get_solar_panel_power(total) * 50
-                            if current > 0 then
-                                status = 3
+                            if current <= 0 then
+                                status = 1 --shundown status
                             end
                         end
                         if typeobject.drain then
-                            if current > typeobject.drain * 50 then
-                                status = 3 --work status
-                            elseif current > 0 then
+                            if current <= 0 then
+                                status = 1 --shundown status
+                            elseif current <= typeobject.drain * 50 then
                                 status = 2 --idle status
                             end
                         end
