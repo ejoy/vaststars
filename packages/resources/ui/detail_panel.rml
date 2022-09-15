@@ -82,7 +82,6 @@
                 property_list = {},
                 icon = "",
                 prototype_name = " ",
-
                 detail_panel_status_icon = "textures/work_status_icon/normal.texture",
                 detail_panel_status_desc = "正常工作",
                 showchest = false,

@@ -33,6 +33,7 @@ local function get_property_list(entity)
     table.sort(r, function(a, b) return a.pos < b.pos end)
     r.chest_list0 = entity.chest_list0
     r.chest_list1 = entity.chest_list1
+    r.status = entity.status
     return r
 end
 
@@ -56,7 +57,8 @@ local function get_display_info(e, typeobject, t)
     if not detail then
         return
     end
-    local values = t.values;
+    local values = t.values
+    local status = 1 --shutdown status
     for _, propertyName in ipairs(detail) do
         local cfg = property_list[propertyName]
         if cfg.value then
@@ -76,8 +78,19 @@ local function get_display_info(e, typeobject, t)
                             current = st[cn]
                         elseif typeobject.name == "指挥中心" then
                             current = global.statistic.power_consumed
+                            status = 3
                         elseif e.solar_panel then
                             current = get_solar_panel_power(total) * 50
+                            if current > 0 then
+                                status = 3
+                            end
+                        end
+                        if typeobject.drain then
+                            if current > typeobject.drain * 50 then
+                                status = 3 --work status
+                            elseif current > 0 then
+                                status = 2 --idle status
+                            end
                         end
                     end
                     total = total * 50
@@ -114,6 +127,7 @@ local function get_display_info(e, typeobject, t)
         end
         t[propertyName] = cfg
     end
+    t.status = status
 end
 local function get_property(e, typeobject)
     local t = {
@@ -260,6 +274,8 @@ local function get_entity_property_list(object_id)
 end
 
 ---------------
+local detail_panel_status_icon = {"textures/work_status_icon/shutdown.texture","textures/work_status_icon/Inefficient.texture","textures/work_status_icon/normal.texture"}
+local detail_panel_status_desc = {"断电", "待机", "正常工作"}
 local M = {}
 local update_interval = 25 --update per 25 frame
 local counter = 1
@@ -270,10 +286,14 @@ local function update_property_list(datamodel, property_list)
     datamodel.minner_progress = property_list.minner_progress or "0%"
     datamodel.minner_info = property_list.minner_info or {}
     datamodel.show_minner = (datamodel.minner_info.icon ~= nil)
+    local status = property_list.status
+    datamodel.detail_panel_status_icon = detail_panel_status_icon[status]
+    datamodel.detail_panel_status_desc = detail_panel_status_desc[status]
     property_list.chest_list0 = nil
     property_list.chest_list1 = nil
     property_list.minner_progress = nil
     property_list.minner_info = nil
+    property_list.status = nil
     datamodel.property_list = property_list
 end
 function M:create(object_id)
