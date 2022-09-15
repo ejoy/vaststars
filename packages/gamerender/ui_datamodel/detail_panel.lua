@@ -274,7 +274,7 @@ end
 
 ---------------
 local detail_panel_status_icon = {"textures/work_status_icon/shutdown.texture","textures/work_status_icon/Inefficient.texture","textures/work_status_icon/normal.texture"}
-local detail_panel_status_desc = {"断电", "待机", "正常工作"}
+local detail_panel_status_desc = {"断电停机", "待机空闲", "正常工作"}
 local M = {}
 local update_interval = 25 --update per 25 frame
 local counter = 1
