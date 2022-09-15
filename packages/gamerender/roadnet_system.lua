@@ -155,7 +155,7 @@ local function __init_roadnet()
     local WAIT_TICKCOUNT <const> = 10
     local CROSS_TICKCOUNT <const> = 20
 
-    roadnet_world = create_roadnet(m, function(lorry_id, is_cross, x, y, z, tick)
+    local rnworld = create_roadnet(m, function(lorry_id, is_cross, x, y, z, tick)
         local ti, toward
         if is_cross then
             if z <= 0xf then
@@ -188,7 +188,7 @@ local function __init_roadnet()
         local c2 = straight_road_offset[len - 1]
         local E  = c2.x | (c2.y << 8) | (c2.z << 16)
 
-        local rc1, rc2 = roadnet_world.road_coord[S], roadnet_world.road_coord[E]
+        local rc1, rc2 = rnworld.road_coord[S], rnworld.road_coord[E]
         local roadid1, roadid2 = _rc_rid(rc1), _rc_rid(rc2)
 
         if roadid1 == roadid2 then -- TODO: avoid two endpoins are on the same road
@@ -197,31 +197,30 @@ local function __init_roadnet()
             goto continue
         end
 
-        if roadnet_world.cworld:prev_roadid(roadid1) == roadnet_world.cworld:next_roadid(roadid1) then -- TODO: avoid two endpoins are on the same road (U-turn)
+        if rnworld.cworld:prev_roadid(roadid1) == rnworld.cworld:next_roadid(roadid1) then -- TODO: avoid two endpoins are on the same road (U-turn)
             straight_road_offset[len] = nil
             straight_road_offset = _shuffle(straight_road_offset)
             goto continue
         end
 
-        if roadnet_world.cworld:prev_roadid(roadid2) == roadnet_world.cworld:next_roadid(roadid2) then -- TODO: avoid two endpoins are on the same road (U-turn)
+        if rnworld.cworld:prev_roadid(roadid2) == rnworld.cworld:next_roadid(roadid2) then -- TODO: avoid two endpoins are on the same road (U-turn)
             straight_road_offset[len] = nil
             straight_road_offset = _shuffle(straight_road_offset)
             goto continue
         end
 
-        local from, to = roadnet_world.road_coord[S], roadnet_world.road_coord[E] -- TODO： avoid two endpoins are on the same road (from == to)
-        local source = roadnet_world.cworld:prev_roadid(from) or rc_rid(from)
-        from = roadnet_world.cworld:next_roadid(from) or rc_rid(from)
-        to = roadnet_world.cworld:next_roadid(to) or rc_rid(to)
+        local from, to = rnworld.road_coord[S], rnworld.road_coord[E] -- TODO： avoid two endpoins are on the same road (from == to)
+        from = rnworld.cworld:next_roadid(from) or rc_rid(from)
+        to = rnworld.cworld:next_roadid(to) or rc_rid(to)
         if from == to then
             straight_road_offset[len] = nil
             straight_road_offset = _shuffle(straight_road_offset)
             goto continue
         end
 
-        local line_id, line = __add_line(roadnet_world, S, E)
+        local line_id, line = __add_line(rnworld, S, E)
         if line_id then
-            local lorry_id = roadnet_world:add_lorry(line_id, 0, c1.x, c1.y, c1.z)
+            local lorry_id = rnworld:add_lorry(line_id, 0, c1.x, c1.y, c1.z)
             if lorry_id then
                 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
                 local COLOR_INVALID <const> = math3d.constant "null"
@@ -248,7 +247,7 @@ local function __init_roadnet()
         ::continue::
     end
 
-    return roadnet_world
+    return rnworld
 end
 
 -- TODO: remove temporary codes below

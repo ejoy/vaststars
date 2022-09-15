@@ -340,7 +340,7 @@ end
 function M:backup()
     if not self.running then
         log.error("not running")
-        return
+        return false
     end
 
     while #archival_list + 1 > MAX_ARCHIVING_COUNT do
@@ -354,12 +354,14 @@ function M:backup()
     local dn = ("%04d-%02d-%02d-%02d-%02d-%02d"):format(t.year, t.month, t.day, t.hour, t.min, t.sec)
     local archival_dir = archival_base_dir .. ("/%s"):format(dn)
 
-    archival_list[#archival_list + 1] = {dir = dn, version = require("version")}
+    archival_list[#archival_list + 1] = {dir = dn}
     gameplay_core.backup(archival_dir)
 
+    writeall(archival_dir .. "/version", json.encode({gameplay_version = GAMEPLAY_VERSION}))
     writeall(archiving_list_path, json.encode(archival_list))
     writeall(camera_setting_path, json.encode(get_camera_setting()))
     print("save success", archival_dir)
+    return true
 end
 
 function M:restore(index)
@@ -397,7 +399,15 @@ function M:restore(index)
             goto continue
         end
 
-        if archival_list[index].version ~= GAMEPLAY_VERSION then
+        if not fs.exists(fs.path(archival_dir .. "/version")) then
+            log.warn(("`%s` not exists"):format(archival_dir .. "/version"))
+            archival_list[index] = nil
+            index = index - 1
+            goto continue
+        end
+
+        local version = json.decode(readall(archival_dir .. "/version"))
+        if version.gameplay_version ~= GAMEPLAY_VERSION then
             log.error(("Failed `%s` version `%s` current `%s`"):format(archival_relative_dir, archival_list[index].version, GAMEPLAY_VERSION))
             iui.open("option_pop.rml")
             return false
