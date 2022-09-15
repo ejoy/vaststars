@@ -48,6 +48,7 @@
                 avatar = "none",
                 count = 0,
                 total_count = 0,
+                richtext = true,
             })
 
             function start.click(event)
