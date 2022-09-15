@@ -165,7 +165,7 @@ local function touch_move(self, datamodel, delta_vec)
         if typeobject.supply_area and typeobject.supply_distance then
             local aw, ah = iprototype.unpackarea(typeobject.area)
             local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-            ipower.merge_pole({key = pickup_object.id, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, smooth_pos = true})
+            ipower.merge_pole({key = pickup_object.id, targets = {}, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, smooth_pos = true})
         end
     end
 end
@@ -194,7 +194,7 @@ local function touch_end(self, datamodel)
     if typeobject.supply_area and typeobject.supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-        ipower.merge_pole({key = pickup_object.id, x = self.pickup_object.x, y = self.pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance})
+        ipower.merge_pole({key = pickup_object.id, targets = {}, x = self.pickup_object.x, y = self.pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance})
     end
 end
 
@@ -238,7 +238,7 @@ local function confirm(self, datamodel)
         local coord = terrain:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, pickup_object.dir))
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-        ipower.merge_pole({key = pickup_object.id, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance}, true)
+        ipower.merge_pole({key = pickup_object.id, targets = {}, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance}, true)
     end
     self.pickup_object = nil
     __new_entity(self, datamodel, typeobject)
