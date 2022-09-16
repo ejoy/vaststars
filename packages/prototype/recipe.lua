@@ -1654,8 +1654,8 @@ prototype "甲烷转乙烯" {
     order = 36,
     icon = "textures/fluid/gas-ethene.texture",
     ingredients = {
-        {"甲烷", 40},
         {"氧气", 40},
+        {"甲烷", 40},
     },
     results = {
         {"乙烯", 16},
