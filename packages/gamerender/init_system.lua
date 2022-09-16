@@ -34,7 +34,8 @@ function m:init_world()
     -- check_prototype()
     bgfx.maxfps(FRAMES_PER_SECOND)
 
-    iRmlUi.preload_dir "/pkg/vaststars.resources/ui"
+    iRmlUi.set_prefix "/pkg/vaststars.resources/ui/"
+    iRmlUi.add_bundle "/pkg/vaststars.resources/ui/ui.bundle"
     iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
 
     if not DISABLE_LOADING then

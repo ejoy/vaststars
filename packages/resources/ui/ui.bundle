@@ -1,0 +1,3 @@
+s /pkg/vaststars.resources/ui/**/*.lua
+s /pkg/vaststars.resources/ui/**/*.rml
+s /pkg/vaststars.resources/ui/**/*.rcss
