@@ -224,22 +224,28 @@ function M.merge_pole(pole, add)
     if pole.key and temp_pole[pole.key] then
         clear_temp_pole(pole)
     end
-    local net
-    local connects
+    local has_net
+    local all_connects = {}
     for _, nw in ipairs(network) do
-        connects = shortest_conect({pole}, nw.poles)
-        if #connects[pole] > 0 then
-            net = nw
-            goto continue
+        local connects = shortest_conect({pole}, nw.poles)
+        if not has_net and #connects[pole] > 0 then
+            nw.poles[#nw.poles + 1] = pole
+            has_net = true
         end
+        all_connects[#all_connects + 1] = connects
     end
-    ::continue::
-    if net then
-        net.poles[#net.poles + 1] = pole
-        set_supply_area(net.area, pole)
-        local lines = create_lines(pole, connects[pole])
+    if has_net then
+        local lines = {}
+        for _, connects in ipairs(all_connects) do
+            local ls = create_lines(pole, connects[pole])
+            for _, l in ipairs(ls) do
+                lines[#lines + 1] = l
+            end
+        end
+        --net.poles[#net.poles + 1] = pole
+        --set_supply_area(net.area, pole)
+        -- local lines = create_lines(pole, connects[pole])
         if not pole.key then
-            -- net.lines[#net.lines + 1] = line
             for _, line in ipairs(lines) do
                 poles_lines[poles_lines + 1] = line
             end
