@@ -330,6 +330,11 @@ function igame_object.create(init)
                 parent = hitch_entity_object.id
             }
         })
+        iefk.preload {
+            "/pkg/vaststars.resources/effect/efk/a1.texture",
+            "/pkg/vaststars.resources/effect/efk/a2.texture",
+            "/pkg/vaststars.resources/effect/efk/a3.texture",
+        }
     end
 
     local outer = {hitch_entity_object = hitch_entity_object, slot_attach = {}}
