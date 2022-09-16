@@ -242,9 +242,6 @@ function M.merge_pole(pole, add)
                 lines[#lines + 1] = l
             end
         end
-        --net.poles[#net.poles + 1] = pole
-        --set_supply_area(net.area, pole)
-        -- local lines = create_lines(pole, connects[pole])
         if not pole.key then
             for _, line in ipairs(lines) do
                 poles_lines[poles_lines + 1] = line
@@ -262,21 +259,24 @@ function M.merge_pole(pole, add)
     end
 end
 
-local function set_network_id(w, network, e)
-    local nid = 0
-    for idx, net in ipairs(network) do
-        local minx = min_area_x(e)
-        local maxx = max_area_x(e)
-        local miny = min_area_y(e)
-        local maxy = max_area_y(e)
-        if net.area[miny][minx] or net.area[miny][maxx] or net.area[maxy][minx] or net.area[maxy][maxx] then
-            nid = idx
-            break
+function M.set_network_id(gw, capacitance)
+    local network = global.power_network
+    for _, e in ipairs(capacitance) do
+        local nid = 0
+        for idx, net in ipairs(network) do
+            local minx = min_area_x(e)
+            local maxx = max_area_x(e)
+            local miny = min_area_y(e)
+            local maxy = max_area_y(e)
+            if net.area[miny][minx] or net.area[miny][maxx] or net.area[maxy][minx] or net.area[maxy][maxx] then
+                nid = idx
+                break
+            end
         end
-    end
-    local v = w.entity[e.eid]
-    if v.capacitance then
-        v.capacitance.network = nid
+        local v = gw.entity[e.eid]
+        if v.capacitance then
+            v.capacitance.network = nid
+        end
     end
 end
 
@@ -367,12 +367,6 @@ function M.build_power_network(gw)
                         remove_flags[idx] = true
                         has_connect = true
                     end
-                    -- for _, con in ipairs(connects) do
-                    --     if #con[1].targets < 5 and #con[2].targets < 5 then
-                    --         poles_lines[#poles_lines + 1] = do_create_line(con[1], con[2])
-                    --     end
-                    -- end
-                    
                 end
                 if has_connect then
                     for _, p in ipairs(net1.poles) do
@@ -393,9 +387,7 @@ function M.build_power_network(gw)
         power_network = network
     end
     global.power_network = power_network
-    for _, e in ipairs(capacitance) do
-        set_network_id(gw, power_network, e)
-    end
+    M.set_network_id(gw, capacitance)
 end
 
 function M.remove_pole()

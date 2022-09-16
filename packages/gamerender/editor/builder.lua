@@ -11,6 +11,7 @@ local ientity = require "gameplay.interface.entity"
 local imining = require "gameplay.interface.mining"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
+local ipower = ecs.require "power"
 local global = require "global"
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
@@ -123,6 +124,7 @@ end
 
 local function complete(self)
     local needbuild = false
+    local power_network_dirty = false
     for object_id, object in objects:all("CONFIRM") do -- TODO: duplicate code, see also pipe_function_pop.lua
         if object.REMOVED then
             if object.gameplay_eid then
@@ -169,6 +171,10 @@ local function complete(self)
                 end
             end
             object.inserter_arrow = nil -- TODO: inserter_arrow optimize
+
+            if not power_network_dirty and typeobject.power_pole then
+                power_network_dirty = true
+            end
         end
         needbuild = true
     end
@@ -178,6 +184,30 @@ local function complete(self)
 
     if needbuild then
         gameplay_core.build()
+    end
+
+    local gw = gameplay_core.get_world()
+    if power_network_dirty then
+        -- update power network
+        ipower.build_power_network(gw)
+    else
+        local capacitance = {}
+        for v in gameplay_core.select("eid:in entity:in capacitance:in") do
+            if v.capacitance then
+                local e = v.entity
+                local typeobject = iprototype.queryById(e.prototype)
+                local aw, ah = iprototype.unpackarea(typeobject.area)
+                capacitance[#capacitance + 1] = {
+                    targets = {},
+                    eid = v.eid,
+                    x = e.x,
+                    y = e.y,
+                    w = aw,
+                    h = ah,
+                }
+            end
+        end
+        ipower.set_network_id(gw, capacitance)
     end
 end
 

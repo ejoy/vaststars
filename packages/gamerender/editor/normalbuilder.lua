@@ -17,7 +17,6 @@ local ipower = ecs.require "power"
 local imining = require "gameplay.interface.mining"
 local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local gameplay_core = require "gameplay.core"
 
 local function _get_state(prototype_name, ok)
     local typeobject = iprototype.queryByName("entity", prototype_name)
@@ -258,8 +257,6 @@ local function complete(self, datamodel)
     datamodel.show_confirm = false
 
     self.super.complete(self)
-    -- update power network
-    ipower.build_power_network(gameplay_core.get_world())
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
