@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/work_status_icon/inefficient.png
+path: /pkg/vaststars.resources/ui/image/work_status_icon/out_of_ores.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR
