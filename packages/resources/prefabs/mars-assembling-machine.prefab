@@ -34,3 +34,75 @@ mount: 1
 policy:
   ant.general|name
   ant.render|render
+---
+data:
+  name: shelf-input1
+  scene:
+    t: {0, -7.699999809265137, 13.100000381469727, 1}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+editor: false
+mount: 4
+prefab: /pkg/vaststars.resources/prefabs/shelf-input.prefab
+---
+data:
+  name: shelf-input2
+  scene:
+    t: {-7, -11.600000381469727, 13.100000381469727, 1}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+editor: false
+mount: 6
+prefab: /pkg/vaststars.resources/prefabs/shelf-input.prefab
+---
+data:
+  name: shelf-input3
+  scene:
+    t: {7, -11.600000381469727, 13.100000381469727, 1}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+editor: false
+mount: 8
+prefab: /pkg/vaststars.resources/prefabs/shelf-input.prefab
+---
+data:
+  name: shelf-output1
+  scene:
+    t: {0, -12.399999618530273, -13.100000381469727, 1}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+editor: false
+mount: 10
+prefab: /pkg/vaststars.resources/prefabs/shelf-output.prefab
+---
+data:
+  name: shelf-output2
+  scene:
+    t: {-7, -16.399999618530273, -12.5, 1}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+editor: false
+mount: 12
+prefab: /pkg/vaststars.resources/prefabs/shelf-output.prefab
+---
+data:
+  name: shelf-output3
+  scene:
+    t: {7, -16.399999618530273, -12.5, 1}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+editor: false
+mount: 14
+prefab: /pkg/vaststars.resources/prefabs/shelf-output.prefab
