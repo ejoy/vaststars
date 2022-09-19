@@ -206,6 +206,9 @@ function M:stage_ui_update(datamodel)
     end
 
     for _, _, _, double_confirm in dismantle_begin_mb:unpack() do
+        if global.mode == "teardown" then -- already in teardown mode
+            goto continue
+        end
         idetail.unselected()
         if builder then
             if builder:check_unconfirmed(double_confirm) then
