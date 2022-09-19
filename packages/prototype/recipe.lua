@@ -2040,6 +2040,21 @@ prototype "氯气排泄" {
     time = "1s",
     description = "氢气排泄",
 }
+
+prototype "盐酸排泄" {
+    type = { "recipe" },
+    category = "流体液体排泄",
+    --group = "流体",
+    order = 111,
+    icon = "textures/fluid/liquid.texture",
+    ingredients = {
+        {"盐酸", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "盐酸排泄",
+}
 ---------地下卤水生成矿物配方----------
 prototype "地下卤水分离铁" {
     type = { "recipe" },
