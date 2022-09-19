@@ -2,7 +2,6 @@ local ecs   = ...
 local world = ecs.world
 local w     = world.w
 local math3d    = require "math3d"
-local camera = ecs.require "engine.camera"
 local vsobject_manager = ecs.require "vsobject_manager"
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
@@ -259,23 +258,56 @@ function M.merge_pole(pole, add)
     end
 end
 
-function M.set_network_id(gw, capacitance)
+function M.get_network_id(e, first)
+    local net = {}
     local network = global.power_network
-    for _, e in ipairs(capacitance) do
-        local nid = 0
-        for idx, net in ipairs(network) do
-            local minx = min_area_x(e)
-            local maxx = max_area_x(e)
-            local miny = min_area_y(e)
-            local maxy = max_area_y(e)
-            if net.area[miny][minx] or net.area[miny][maxx] or net.area[maxy][minx] or net.area[maxy][maxx] then
-                nid = idx
+    for idx, pn in ipairs(network) do
+        local minx = min_area_x(e)
+        local maxx = max_area_x(e)
+        local miny = min_area_y(e)
+        local maxy = max_area_y(e)
+        if pn.area[miny][minx] or pn.area[miny][maxx] or pn.area[maxy][minx] or pn.area[maxy][maxx] then
+            net[#net + 1] = idx
+            if first then
                 break
             end
         end
+    end
+    return net
+end
+
+local function merge_network(net1, net2)
+    for _, p in ipairs(net1.poles) do
+        set_supply_area(net2.area, p)
+        table.insert(net2.poles, p)
+    end
+end
+
+function M.set_network_id(gw, capacitance)
+    for _, e in ipairs(capacitance) do
+        local nid = M.get_network_id(e)
+        if #nid > 1 then
+            -- merge network
+            local network = global.power_network
+            local remove_flags = {}
+            for i = 1, #nid - 1 do
+                remove_flags[nid[i]] = true
+                merge_network(network[nid[i]], network[nid[i+1]])
+            end
+            local new_network = {}
+            for index, value in ipairs(network) do
+                if not remove_flags[index] then
+                    new_network[#new_network + 1] = value
+                end
+            end
+            global.power_network = new_network
+        end
+    end
+    for _, e in ipairs(capacitance) do
+        local nid = M.get_network_id(e, true)
         local v = gw.entity[e.eid]
         if v.capacitance then
-            v.capacitance.network = nid
+            v.capacitance.network = #nid > 0 and nid[1] or 0
         end
     end
 end
@@ -315,7 +347,7 @@ function M.build_power_network(gw)
         if v.capacitance then
             capacitance[#capacitance + 1] = {
                 targets = {},
-                name = typeobject.name,
+                -- name = typeobject.name,
                 eid = v.eid,
                 x = e.x,
                 y = e.y,
@@ -326,7 +358,7 @@ function M.build_power_network(gw)
         if typeobject.name == "指挥中心" or typeobject.power_pole then
             powerpole[#powerpole + 1] = {
                 targets = {},
-                name = typeobject.name,
+                -- name = typeobject.name,
                 eid = v.eid,
                 x = e.x,
                 y = e.y,
@@ -369,10 +401,11 @@ function M.build_power_network(gw)
                     end
                 end
                 if has_connect then
-                    for _, p in ipairs(net1.poles) do
-                        set_supply_area(net2.area, p)
-                        table.insert(net2.poles, p)
-                    end
+                    -- for _, p in ipairs(net1.poles) do
+                    --     set_supply_area(net2.area, p)
+                    --     table.insert(net2.poles, p)
+                    -- end
+                    merge_network(net1, net2)
                     goto continue
                 end
             end
