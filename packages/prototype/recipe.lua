@@ -1920,11 +1920,41 @@ prototype "碱性溶液排泄" {
     description = "碱性溶液排泄",
 }
 
+prototype "盐酸排泄" {
+    type = { "recipe" },
+    category = "流体液体排泄",
+    --group = "流体",
+    order = 104,
+    icon = "textures/fluid/liquid.texture",
+    ingredients = {
+        {"盐酸", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "盐酸排泄",
+}
+
+prototype "润滑油排泄" {
+    type = { "recipe" },
+    category = "流体液体排泄",
+    --group = "流体",
+    order = 105,
+    icon = "textures/fluid/liquid.texture",
+    ingredients = {
+        {"润滑油", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "润滑油排泄",
+}
+
 prototype "氮气排泄" {
     type = { "recipe" },
     category = "流体气体排泄",
     --group = "流体",
-    order = 104,
+    order = 110,
     icon = "textures/fluid/gas.texture",
     ingredients = {
         {"氮气", 100},
@@ -1939,7 +1969,7 @@ prototype "氧气排泄" {
     type = { "recipe" },
     category = "流体气体排泄",
     --group = "流体",
-    order = 105,
+    order = 111,
     icon = "textures/fluid/gas.texture",
     ingredients = {
         {"氧气", 100},
@@ -1954,7 +1984,7 @@ prototype "二氧化碳排泄" {
     type = { "recipe" },
     category = "流体气体排泄",
     --group = "流体",
-    order = 106,
+    order = 112,
     icon = "textures/fluid/gas.texture",
     ingredients = {
         {"二氧化碳", 100},
@@ -1969,7 +1999,7 @@ prototype "氢气排泄" {
     type = { "recipe" },
     category = "流体气体排泄",
     --group = "流体",
-    order = 107,
+    order = 113,
     icon = "textures/fluid/gas.texture",
     ingredients = {
         {"氢气", 100},
@@ -1985,7 +2015,7 @@ prototype "蒸汽排泄" {
     type = { "recipe" },
     category = "流体气体排泄",
     --group = "流体",
-    order = 108,
+    order = 114,
     icon = "textures/fluid/gas.texture",
     ingredients = {
         {"蒸汽", 100},
@@ -2000,7 +2030,7 @@ prototype "甲烷排泄" {
     type = { "recipe" },
     category = "流体气体排泄",
     --group = "流体",
-    order = 109,
+    order = 115,
     icon = "textures/fluid/gas.texture",
     ingredients = {
         {"甲烷", 100},
@@ -2015,7 +2045,7 @@ prototype "废水排泄" {
     type = { "recipe" },
     category = "流体液体排泄",
     --group = "流体",
-    order = 109,
+    order = 116,
     icon = "textures/fluid/liquid-wastewater.texture",
     ingredients = {
         {"废水", 100},
@@ -2030,7 +2060,7 @@ prototype "氯气排泄" {
     type = { "recipe" },
     category = "流体气体排泄",
     --group = "流体",
-    order = 110,
+    order = 117,
     icon = "textures/fluid/gas.texture",
     ingredients = {
         {"氯气", 100},
@@ -2041,19 +2071,34 @@ prototype "氯气排泄" {
     description = "氢气排泄",
 }
 
-prototype "盐酸排泄" {
+prototype "一氧化碳排泄" {
     type = { "recipe" },
-    category = "流体液体排泄",
+    category = "流体气体排泄",
     --group = "流体",
-    order = 111,
-    icon = "textures/fluid/liquid.texture",
+    order = 117,
+    icon = "textures/fluid/gas.texture",
     ingredients = {
-        {"盐酸", 100},
+        {"一氧化碳", 100},
     },
     results = {
     },
     time = "1s",
-    description = "盐酸排泄",
+    description = "一氧化碳排泄",
+}
+
+prototype "丁二烯排泄" {
+    type = { "recipe" },
+    category = "流体气体排泄",
+    --group = "流体",
+    order = 118,
+    icon = "textures/fluid/gas.texture",
+    ingredients = {
+        {"丁二烯", 100},
+    },
+    results = {
+    },
+    time = "1s",
+    description = "丁二烯排泄",
 }
 ---------地下卤水生成矿物配方----------
 prototype "地下卤水分离铁" {
