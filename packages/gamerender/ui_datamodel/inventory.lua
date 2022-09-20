@@ -122,7 +122,7 @@ function M:stage_ui_update(datamodel)
         self:flush()
     end
 
-    for _, _, _, chest_object_id, prototype in to_chest_mb:unpack() do
+    for _, _, _, chest_object_id, prototype, count in to_chest_mb:unpack() do
         local headquater_item_counts = iworld.base_chest(gameplay_core.get_world())
         if not headquater_item_counts[prototype] then
             log.info(("can not found item `%s`"):format(prototype))
@@ -149,18 +149,15 @@ function M:stage_ui_update(datamodel)
 
         --
         local typeobject_item = iprototype.queryById(prototype)
-        if chest_item_counts[prototype] >= typeobject_item.stack then
-            log.info(("stack `%s`"):format(typeobject_item.stack))
-            goto continue
+        local pickup_count = math.min(typeobject_item.stack - count, headquater_item_counts[prototype])
+        if pickup_count > 0 then
+            iworld.base_container_pickup_place(gameplay_core.get_world(), chest_e, prototype, pickup_count, true)
         end
-
-        local pickup_count = math.min(typeobject_item.stack - chest_item_counts[prototype], headquater_item_counts[prototype])
-        iworld.base_container_pickup_place(gameplay_core.get_world(), chest_e, prototype, pickup_count, true)
         self:flush()
         ::continue::
     end
 
-    for _, _, _, chest_object_id, prototype in to_headquater_mb:unpack() do
+    for _, _, _, chest_object_id, prototype, count in to_headquater_mb:unpack() do
         local chest_object = objects:get(chest_object_id)
         if not chest_object then
             log.error(("can not found chest `%s`"):format(chest_object_id))
@@ -178,11 +175,10 @@ function M:stage_ui_update(datamodel)
             log.info(("can not found item `%s`"):format(prototype))
             goto continue
         end
-
         local typeobject_item = iprototype.queryById(prototype)
-        local pickup_count = math.min(typeobject_item.stack, chest_item_counts[prototype])
+        assert(count <= typeobject_item.stack)
 
-        iworld.base_container_pickup_place(gameplay_core.get_world(), chest_e, prototype, pickup_count, false)
+        iworld.base_container_pickup_place(gameplay_core.get_world(), chest_e, prototype, count, false)
         self:flush()
         ::continue::
     end

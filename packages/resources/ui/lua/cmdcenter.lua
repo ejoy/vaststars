@@ -66,7 +66,8 @@ end
 
 function start.clickToChest(event, index)
     if start.sub_inventory[index] then
-        ui_sys.pub {"to_chest", start.object_id, start.sub_inventory[index].id}
+        local i = start.sub_inventory[index]
+        ui_sys.pub {"to_chest", start.object_id, i.id, i.count}
         -- <!-- tag page begin -->
         start.page:show_detail(select_item_index, false)
         select_item_index = nil
@@ -76,7 +77,8 @@ end
 
 function start.clickToHeadquater(event, index)
     if start.sub_inventory[index] then
-        ui_sys.pub {"to_headquater", start.object_id, start.sub_inventory[index].id}
+        local i = start.sub_inventory[index]
+        ui_sys.pub {"to_headquater", start.object_id, i.id, i.count}
         -- <!-- tag page begin -->
         start.page:show_detail(select_item_index, false)
         select_item_index = nil
