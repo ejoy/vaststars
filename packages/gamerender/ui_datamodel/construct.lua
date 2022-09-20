@@ -290,7 +290,7 @@ function M:stage_ui_update(datamodel)
     for _ in headquater_mb:unpack() do
         local object_id = get_headquater_object_id()
         if object_id then
-            iui.open("inventory.rml", object_id)
+            iui.open("chest.rml", object_id)
         else
             log.error("can not found headquater")
         end

@@ -44,17 +44,22 @@ prototype "物流中心I" {
     model = "prefabs/logistics-center-1.prefab",
     icon = "textures/building_pic/small_pic_logistics_center2.texture",
     background = "textures/build_background/pic_logisticscenter.texture",
-    construct_detector = {"exclusive"},
+    construct_detector = {"replacing"},
+    construct_replacing = {
+        type = "road",
+        connections = {
+            {0,1},
+            {1,0},
+            {1,1},
+            {1,2},
+            {2,1},
+        },
+    },
     type ={"entity", "consumer"},
     area = "3x3",
     power = "300kW",
     priority = "secondary",
     group = {"物流"},
-    crossing = {
-        connections = {
-            {type="output", position={1,2,"S"}},
-        },
-    }
 }
 
 prototype "运输车辆I" {

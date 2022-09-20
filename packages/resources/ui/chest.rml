@@ -116,7 +116,7 @@
                 text-align: center;
             }
         </style>
-        <script type="text/x-lua" path = "lua/inventory.lua" />
+        <script type="text/x-lua" path = "lua/chest.lua" />
     </head>
     <body>
         <div class="item-container-region"  data-model="start">
@@ -301,12 +301,10 @@
                                 <div class = "drone-title">生产建筑</div>
                             </div>
                         </div>
-                        <div style="flex-direction:row; justify-content: center; width:100%; align-items: center; height:70%;" data-for = "item_info">
-                            <div data-for = "entity : it.entities">
-                                <div class="small-building-block">
-                                    <div class="small-building" data-style-background-image = "entity.icon" />
-                                    <div class="small-building-name">组装机</div>
-                                </div>
+                        <div style="flex-direction:row; justify-content: center; width:100%; align-items: center; height:70%;">
+                            <div class="small-building-block" data-for = "entity:entities">
+                                <div class="small-building" data-style-background-image = "entity.icon" />
+                                <div class="small-building-name">{{entity.name}}</div>
                             </div>
                         </div>
                     </div>

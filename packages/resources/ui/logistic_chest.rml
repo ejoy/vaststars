@@ -1,0 +1,78 @@
+<rml>
+    <head>
+        <style path = "common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+            })
+
+            function start.ClickClose()
+                ui_sys.close()
+            end
+
+        </script>
+    </head>
+    <body>
+        <div class="item-container-region"  data-model="start">
+            <!-- 左边面板 begin -->
+            <div class="panel" style="width: 45%;">
+                <div class="header" id = "item-name-block">
+                    <button class = "back-button" data-event-click="ClickClose()"/>
+                    <div class = "menu-title" style="width: 70%;">需求物流箱</div>
+                </div>
+                <div style="border-bottom: 1px rgb(89, 73, 39);"/>
+                <div class="column" style="width: 100%;height: 93%;">
+                    <div class="build-info-reigon" style='background-image: "textures/build_background/pic_chest.texture"; background-size: cover;'>
+                        <div class="build-model-block">
+                            <div class="build-model"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 左边面板 end -->
+
+            <!-- 右边面板 begin -->
+            <div class="panel" style="width: 45%;">
+                <div class="header" style="justify-content: flex-end; border: 0.13vmin rgb(89, 73, 39);">
+                    <div class="menu-title" style="flex-direction: row; align-items: center; width:auto;">物品</div>
+                </div>
+                <div class="column" style="width: 100%;height: 93%;">
+                    <!-- 物品栏显示 start -->
+                    <div class="item-container" style="height: 80%;">
+                        <div style="width:100%; overflow: hidden;">
+                            <div class = "item-page-block" style="width:90%; height:100%;">
+                                <div class ="row">
+                                    <div style="width:95%; height:100%;">
+                                        <div />
+                                    </div>
+                                </div>
+                                <div style="position: absolute; align-items: center;">
+                                    <button class="item">
+                                        <div class="item-count">99</div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div style='flex-direction: row; justify-content: center; width:100%; height:5%;'>
+                            <div>
+                                <div style="width: 2.67vmin; height: 2.67vmin; background-size:cover;" />
+                            </div>
+                        </div>         
+                    </div>
+                    <!-- 物品栏显示 end -->
+
+                    <!-- 物流需求栏显示 start -->
+                    <div class="row" data-event-click="false" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 15%; justify-content: center; align-items: center;">
+                        <button class="item"/>                       
+                        <button class="item"/>                      
+                        <button class="item"/>
+                        <button class="item"/>                       
+                        <button class="item"/>                        
+                        <button class="item-add"/>
+                    </div>
+                    <!-- 物流需求栏显示 end -->
+                </div>
+            </div>       
+        </div>
+    </body>
+</rml>
