@@ -202,6 +202,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 					c.delta = -(int32_t)power;
 					c.shortage -= power;
 					consume_power += power;
+					continue;
 				}
 			}
 		}
@@ -213,6 +214,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 				c.delta = power;
 				c.shortage += power;
 				generate_power += power;
+				continue;
 			}
 		}
 		else if (pg[c.network].accumulator_efficiency != 0 && v.sibling<ecs::accumulator>(w)) {
@@ -228,6 +230,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 				c.delta = power;
 				c.shortage += power;
 				generate_power += power;
+				continue;
 			} else {
 				// charge
 				eff = -eff;
@@ -238,9 +241,10 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 				c.delta = -(int32_t)charge_power;
 				c.shortage -= charge_power;
 				consume_power += charge_power;
+				continue;
 			}
 		}
-
+		c.delta = 0;
 	}
 
 	w.stat.generate_power = generate_power;
