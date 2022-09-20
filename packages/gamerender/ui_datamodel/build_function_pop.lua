@@ -185,7 +185,7 @@ function M:stage_ui_update(datamodel, object_id)
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(object.gameplay_eid)
         local items = iassembling.pickup_material(gameplay_core.get_world(), e)
-        iui.open("message_pop.rml", {id = 1, items = items, left = datamodel.left, top = datamodel.top})
+        iui.open("message_pop.rml", {id = "item", items = items, left = datamodel.left, top = datamodel.top})
     end
 
     for _, _, _, object_id in place_material_mb:unpack() do

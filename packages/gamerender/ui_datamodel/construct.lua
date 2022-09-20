@@ -169,7 +169,7 @@ function M:update_tech(datamodel, tech)
     else
         datamodel.show_tech_progress = false
         datamodel.tech_count = get_new_tech_count(global.science.tech_list)
-        world:pub {"ui_message", "tech_finish_animation"}
+        -- world:pub {"ui_message", "tech_finish_animation"}
     end
 end
 
