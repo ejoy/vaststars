@@ -1013,7 +1013,7 @@ local t = {
 	"/pkg/vaststars.resources/ui/logistic_pop.rml",
 	"/pkg/vaststars.resources/ui/logistics_center.rml",
 	"/pkg/vaststars.resources/ui/lua/assemble_2.lua",
-	"/pkg/vaststars.resources/ui/lua/cmdcenter.lua",
+	"/pkg/vaststars.resources/ui/lua/inventory.lua",
 	"/pkg/vaststars.resources/ui/lua/custom.lua",
 	"/pkg/vaststars.resources/ui/lua/popup_bound.lua",
 	"/pkg/vaststars.resources/ui/lua/tracedoc.lua",
