@@ -154,14 +154,6 @@
                 height: 100%;
                 background-color: rgb(87, 238, 0);
             }
-            .accomplished {
-                position: absolute;
-                right: 1vmin; 
-                top: 2vmin;
-                color:chartreuse;
-                -webkit-text-stroke: 0.3vmin rgb(0,0,0);
-                opacity: 0;
-            }
             .accomplished2 {
                 bottom: 22vmin;
                 color:chartreuse;
@@ -279,7 +271,6 @@
                 current_tech_icon = "none",     --当前科技图标
                 current_tech_name = "none",     --当前科技名字
                 current_tech_progress = "0%",   --当前科技进度
-                tech_finish_animation = "0s linear 0s enlarge",
                 manual_finish_animation = "0s linear 0s wordmovement",
                 guide_progress = 0
             })
@@ -381,10 +372,6 @@
                 ["manual_finish"] = function()
                     start.manual_finish_animation = ("2.8s linear 0s wordmovement")
                     window.setTimeout(function() start.manual_finish_animation = "none" end, 2800)
-                end,
-                ["tech_finish_animation"] = function()
-                    start.tech_finish_animation = ("3s sine-in-out 0s enlarge")
-                    window.setTimeout(function() start.tech_finish_animation = "none" end, 3000)
                 end,
             })
 
@@ -518,8 +505,6 @@
                     </p>
                 </button>
             </div>
-            <!-- data-if = "!show_tech_progress" -->
-            <div class="accomplished" data-style-animation="tech_finish_animation" data-if = "false">研究完成</div>
 
             <!-- 右下角手搓队列 -->
             <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; right:0vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "cur_edit_mode == ''">
