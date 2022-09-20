@@ -11,6 +11,7 @@ local function update_world(world, get_object_func)
             iui.update("construct.rml", "update_tech")
             w:pub {"research_finished", science.current_tech.name}
             science.current_tech = nil
+            iui.open("message_pop.rml", {id = 2, items = {}, left = 170, top = 5})
         end
     end
     local queue = world:research_queue()
