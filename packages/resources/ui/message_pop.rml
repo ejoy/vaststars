@@ -83,6 +83,15 @@
                 color: rgb(79, 250, 0);
                 -webkit-text-stroke: 0.15vmin #000;
             }
+            .accomplished {
+                position: absolute;
+                right: 1vmin; 
+                top: 2vmin;
+                color:chartreuse;
+                -webkit-text-stroke: 0.3vmin rgb(0,0,0);
+                opacity: 0;
+                animation: 3s sine-in-out 0s enlarge;
+            }
             @keyframes slideup {
                 0% {
                      bottom: 30%; 
@@ -94,6 +103,24 @@
                 }
                 100% { 
                     bottom: 60%; 
+                    opacity: 0;
+                }
+            }
+            @keyframes enlarge {
+                0% {
+                    font-size: 2vmin;
+                    opacity: 1;
+                }
+                20% {
+                    font-size: 10vmin;
+                    opacity: 1;
+                }
+                70% {
+                    font-size: 10vmin;
+                    opacity: 1;
+                }
+                100% {
+                    font-size: 2vmin;
                     opacity: 0;
                 }
             }
@@ -140,6 +167,9 @@
                     <div class = "materials-num">X {{it.count}}</div>
                 </div>
             </div>
+
+            <!-- 科研完成动画 -->
+            <div class="accomplished" data-if="show_id == 2">研究完成</div>
         </div>
     </body>
 </rml>
