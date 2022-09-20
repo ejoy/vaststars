@@ -113,6 +113,27 @@ local function decrease(self, prototype, count)
     return true
 end
 
+local function increase(self, prototype, count)
+    if _VASTSTARS_DEBUG_INFINITE_ITEM then
+        return true
+    end
+
+    local function clone(item) -- TODO: maybe have a better way to clone?
+        local new = {}
+        new.prototype = item.prototype
+        new.count = item.count
+        return new
+    end
+
+    local item = self._inventory:modify(CACHE_NAMES, prototype, clone)
+    if not item then
+        return false
+    end
+
+    item.count = item.count + count
+    return true
+end
+
 local function modity(self, prototype)
     if _VASTSTARS_DEBUG_INFINITE_ITEM then
         return {
@@ -145,6 +166,7 @@ return function ()
 
     M.flush = flush
     M.get = get
+    M.increase = increase
     M.decrease = decrease
     M.modity = modity
     M.revert = revert
