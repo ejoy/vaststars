@@ -116,7 +116,7 @@
                 text-align: center;
             }
         </style>
-        <script type="text/x-lua" path = "lua/cmdcenter.lua" />
+        <script type="text/x-lua" path = "lua/inventory.lua" />
     </head>
     <body>
         <div class="item-container-region"  data-model="start">
