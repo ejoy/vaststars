@@ -1326,7 +1326,7 @@ prototype "石铁矿挖掘" {
     --group = "金属",
     allow_manual = false,
     order = 20,
-    icon = "textures/construct/air-filter1.texture",
+    icon = "textures/construct/ore-Fe.texture",
     ingredients = {
     },
     results = {
@@ -1343,7 +1343,7 @@ prototype "铁矿石挖掘" {
     --group = "金属",
     allow_manual = false,
     order = 21,
-    icon = "textures/construct/air-filter1.texture",
+    icon = "textures/construct/ore-Fe.texture",
     ingredients = {
     },
     results = {
@@ -1359,7 +1359,7 @@ prototype "碎石挖掘" {
     --group = "金属",
     allow_manual = false,
     order = 22,
-    icon = "textures/construct/air-filter1.texture",
+    icon = "textures/construct/gravel.texture",
     ingredients = {
     },
     results = {
