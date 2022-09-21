@@ -32,7 +32,7 @@ prototype "铁板1" {
     allow_manual = false,
     icon = "textures/construct/plate-Fe.texture",
     ingredients = {
-        {"铁矿石", 5},
+        -- {"铁矿石", 5},
     },
     results = {
         {"铁板", 2},
@@ -393,10 +393,10 @@ prototype "砖石公路" {
     order = 104,
     icon = "textures/construct/road1.texture",
     ingredients = {
-        {"石砖", 2},
+        -- {"石砖", 2},
     },
     results = {
-        {"砖石公路-X型", 8},
+        {"砖石公路-X型", 2},
     },
     time = "6s",
     description = "使用石砖制造公路",
