@@ -297,8 +297,8 @@ function M:teardown(id)
 
     if typeobject.teardown ~= nil then
         assert(type(typeobject.teardown) == "number")
-        if typeobject.teardown < iguide.get_progress() then
-            log.info(("`%s` cannot be torn down before the progress of `%s`"):format(object.prototype_name, typeobject.teardown))
+        if typeobject.teardown > iguide.get_progress() then
+            log.info(("`%s` - `%s` cannot be torn down before the progress of `%s`"):format(object.prototype_name, iguide.get_progress(), typeobject.teardown))
             return
         end
     end
