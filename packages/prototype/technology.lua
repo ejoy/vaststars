@@ -28,6 +28,21 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "修复阻断公路" {
+    desc = "放置1座科研中心",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "砖石公路-I型"},
+    prerequisites = {"清除废墟"},
+    count = 49,
+    tips_pic = {
+      "textures/task_tips_pic/task_click_build.texture",
+    },
+    sign_desc = {
+      { desc = "使用“建造”放置4段道路使得道路联通", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "放置科研中心" {
     desc = "放置1座科研中心",
     icon = "textures/construct/industry.texture",
@@ -161,6 +176,9 @@ prototype "放置组装机" {
     { desc = "使用“建造”放置2台组装机", icon = "textures/construct/industry.texture"},
   },
 }
+
+
+
 
 prototype "自动化生产" {
   desc = "自动化生产科技包用于科技研究",
