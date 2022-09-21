@@ -34,12 +34,12 @@ local prototype = gameplay.register.prototype
     type = { "tech", "task" },
     task = {"select_entity", 0, "砖石公路-I型"},
     prerequisites = {"清除废墟"},
-    count = 49,
+    count = 47,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
     },
     sign_desc = {
-      { desc = "使用“建造”放置4段道路使得道路联通", icon = "textures/construct/industry.texture"},
+      { desc = "使用“建造”放置8段道路使得道路联通", icon = "textures/construct/industry.texture"},
     },
   }
 
