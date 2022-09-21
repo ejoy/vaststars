@@ -1,12 +1,10 @@
 require "system.fluidflow"
-require "system.inserter"
 require "system.saveload"
 
 local csystem = require "register.csystem"
 
 csystem "generator"
 csystem "powergrid"
-csystem "inserter"
 csystem "fluid"
 csystem "burner"
 csystem "assembling"

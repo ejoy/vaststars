@@ -14,6 +14,8 @@ end
 local _get_progress = _round(20)
 
 local function update_world(world, get_object_func)
+    --TODO
+    do return end
     local t = {}
     for e in world.ecs:select "inserter:in entity:in" do
         local vsobject = get_object_func(e.entity.x, e.entity.y)

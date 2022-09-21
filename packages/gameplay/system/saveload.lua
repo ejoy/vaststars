@@ -71,7 +71,7 @@ do
         local metafile = world.storage_path.."/world.json"
         local binfile = world.storage_path.."/world.bin"
         writeall(metafile, json.encode(cworld:backup_world(binfile)))
-        cworld:backup_container(world.storage_path.."/container.bin")
+        cworld:backup_chest(world.storage_path.."/chest.bin")
     end
     function m.restore(world)
         local cworld = world._cworld
@@ -79,6 +79,6 @@ do
         local binfile = world.storage_path.."/world.bin"
         local metajson = json.decode(readall(metafile))
         cworld:restore_world(binfile, metajson)
-        cworld:restore_container(world.storage_path.."/container.bin")
+        cworld:restore_chest(world.storage_path.."/chest.bin")
     end
 end

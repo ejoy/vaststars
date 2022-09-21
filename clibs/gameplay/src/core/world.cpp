@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "core/world.h"
-#include "core/container.h"
+#include "core/chest.h"
 #include "system/fluid.h"
 extern "C" {
     #include "core/fluidflow.h"
@@ -14,46 +14,10 @@ extern "C" {
 #else
 #endif
 
-#define CONTAINER_TYPE(id)  ((id) & 0x8000)
-#define CONTAINER_INDEX(id) ((id) & 0x3FFF)
-#define CONTAINER_TYPE_CHEST  0x0000
-#define CONTAINER_TYPE_RECIPE 0x8000
 
-template <>
-container& world::query_container<container>(uint16_t id) {
-    uint16_t idx = CONTAINER_INDEX(id);
-    if (CONTAINER_TYPE(id) == CONTAINER_TYPE_CHEST) {
-        assert(containers.chest.size() > idx);
-        return containers.chest[idx];
-    }
-    assert(containers.recipe.size() > idx);
-    return containers.recipe[idx];
-}
-
-template <>
-chest_container& world::query_container<chest_container>(uint16_t id) {
-    uint16_t idx = CONTAINER_INDEX(id);
-    assert(CONTAINER_TYPE(id) == CONTAINER_TYPE_CHEST);
-    assert(containers.chest.size() > idx);
-    return containers.chest[idx];
-}
-
-template <>
-recipe_container& world::query_container<recipe_container>(uint16_t id) {
-    uint16_t idx = CONTAINER_INDEX(id);
-    assert(CONTAINER_TYPE(id) != CONTAINER_TYPE_CHEST);
-    assert(containers.recipe.size() > idx);
-    return containers.recipe[idx];
-}
-
-template <>
-uint16_t world::container_id<chest_container>() {
-    return CONTAINER_TYPE_CHEST | (uint16_t)(containers.chest.size()-1);
-}
-
-template <>
-uint16_t world::container_id<recipe_container>() {
-    return CONTAINER_TYPE_RECIPE | (uint16_t)(containers.recipe.size()-1);
+chest& world::query_chest(uint16_t id) {
+    assert(id < chests.size());
+    return chests[id];
 }
 
 namespace lua_world {
@@ -131,8 +95,7 @@ namespace lua_world {
     reset(lua_State* L) {
         struct world& w = getworld(L, 1);
         w.fluidflows.clear();
-        w.containers.chest.clear();
-        w.containers.recipe.clear();
+        w.chests.clear();
         return 0;
     }
 
@@ -345,7 +308,7 @@ namespace lua_world {
         for (auto& v : w.select<ecs::manual, ecs::chest>(L)) {
             ecs::manual& m = v.get<ecs::manual>();
             ecs::chest& c = v.get<ecs::chest>();
-            if (w.manual.rebuild(L, w, c.container)) {
+            if (w.manual.rebuild(L, w, c.chest)) {
                 if (reset) {
                     w.manual.sync(m);
                 }
@@ -356,7 +319,7 @@ namespace lua_world {
     }
 
     static int
-    manual_container(lua_State *L) {
+    manual_chest(lua_State *L) {
         struct world& w = getworld(L, 1);
         lua_createtable(L, 0, (int)w.manual.container.size());
         for (auto [item, amount] : w.manual.container) {
@@ -369,9 +332,8 @@ namespace lua_world {
 
     int backup_world(lua_State* L);
     int restore_world(lua_State* L);
-    int backup_container(lua_State* L);
-    int restore_container(lua_State* L);
-
+    int backup_chest(lua_State* L);
+    int restore_chest(lua_State* L);
 
     constexpr static intptr_t LuaFunction = 0x7000000000000000;
 
@@ -505,12 +467,12 @@ namespace lua_world {
                 { "fluidflow_rebuild", fluidflow_rebuild },
                 // manual
                 { "manual", manual },
-                { "manual_container", manual_container },
+                { "manual_chest", manual_chest },
                 // saveload
                 { "backup_world", backup_world },
                 { "restore_world", restore_world },
-                { "backup_container", backup_container },
-                { "restore_container", restore_container },
+                { "backup_chest", backup_chest },
+                { "restore_chest", restore_chest },
                 // misc
                 {"reset", reset},
                 {"system_solve", system_solve},
