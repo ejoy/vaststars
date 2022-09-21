@@ -1,7 +1,8 @@
 local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
-
+local global = require "global"
+local tech_finish_pop_close_mb = mailbox:sub {"tech_finish_pop_close"}
 local M = {}
 
 function M:create(content)
@@ -15,7 +16,9 @@ function M:create(content)
 end
 
 function M:stage_ui_update(datamodel)
-
+    for _ in tech_finish_pop_close_mb:unpack() do
+        global.tech_finish_pop = false
+    end
 end
 
 return M
