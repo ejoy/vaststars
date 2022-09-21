@@ -14,6 +14,8 @@ local iflow_connector = require "gameplay.interface.flow_connector"
 local terrain = ecs.require "terrain"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local ipower = ecs.require "power"
+local iguide = require "gameplay.interface.guide"
+
 --
 local M = {}
 
@@ -291,6 +293,14 @@ function M:teardown(id)
     if typeobject.teardown == false then
         log.info(("`%s` cannot be demolished"):format(object.prototype_name))
         return
+    end
+
+    if typeobject.teardown ~= nil then
+        assert(type(typeobject.teardown) == "number")
+        if typeobject.teardown < iguide.get_progress() then
+            log.info(("`%s` cannot be torn down before the progress of `%s`"):format(object.prototype_name, typeobject.teardown))
+            return
+        end
     end
 
     object.teardown = not object.teardown

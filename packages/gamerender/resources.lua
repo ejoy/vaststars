@@ -340,7 +340,6 @@ local t = {
 	"/pkg/ant.render/sampler.lua",
 	"/pkg/ant.render/service/bgfx_main.lua",
 	"/pkg/ant.render/shadow/TODO.md",
-	"/pkg/ant.render/shadow/common.lua",
 	"/pkg/ant.render/shadow/omni_shadow.lua",
 	"/pkg/ant.render/shadow/shadow.ecs",
 	"/pkg/ant.render/shadow/shadow.lua",
