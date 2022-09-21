@@ -53,7 +53,7 @@ local function update_world(world)
             end
         end
     end
-    if iguide.is_running() then
+    if iguide.is_running() or global.tech_finish_pop or science.current_tech then
         return
     end
     local guide = iguide.get_guide()
@@ -70,6 +70,13 @@ local function update_world(world)
         end
     end
     if run_guide then
+        -- hide pop ui
+        iui.close("detail_panel.rml")
+        iui.close("build_function_pop.rml")
+        iui.close("assemble_2.rml")
+        iui.close("chest.rml")
+        iui.close("lab.rml")
+        -- pop guide ui
         iui.open("guide_pop.rml", guide)
         iguide.set_running()
     end
