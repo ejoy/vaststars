@@ -12,14 +12,14 @@ local function isFluidId(id)
     return id & 0x0C00 == 0x0C00
 end
 
-local function createContainer(world, s)
+local function createChest(world, s)
     local container_in = {}
     for idx = 2, #s//2 do
         local id = string.unpack("<I2", s, 2*idx-1)
         assert(not isFluidId(id))
-        container_in[#container_in+1] = string.pack("<I2I2", id, 2)
+        container_in[#container_in+1] = string.pack("<I2I2I2I2", 0, id, 0, 2)
     end
-    return world:container_create("assembling", table.concat(container_in), "")
+    return world:container_create("blue", table.concat(container_in))
 end
 
 function c:ctor(init, pt)
@@ -27,7 +27,7 @@ function c:ctor(init, pt)
     local e = {
         laboratory = {
             tech = 0,
-            container = createContainer(world, pt.inputs),
+            chest = createChest(world, pt.inputs),
             speed = math.floor(pt.speed * 100),
             status = STATUS_IDLE,
             progress = 0,

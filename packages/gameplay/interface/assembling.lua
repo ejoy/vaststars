@@ -39,10 +39,10 @@ local function needRecipeLimit(fb)
     return true
 end
 
-local function createContainerAndFluidBox(init, fluidboxes, s, max, needlimit)
+local function createChestAndFluidBox(init, fluidboxes, s, max, needlimit)
     s = s:sub(5)
     assert(#s <= 4 * 15)
-    local container = {}
+    local chest = {}
     local fluids = {}
     for idx = 1, #s//4 do
         local id, n = string.unpack("<I2I2", s, 4*idx-3)
@@ -62,9 +62,8 @@ local function createContainerAndFluidBox(init, fluidboxes, s, max, needlimit)
         else
             limit = n * 2
         end
-        container[#container+1] = string.pack("<I2I2", id, limit)
+        chest[#chest+1] = string.pack("<I2I2I2I2", 0, id, 0, limit)
     end
-    container = table.concat(container)
     for i = 1, max do
         fluids[i] = fluids[i] or 0
     end
@@ -72,18 +71,18 @@ local function createContainerAndFluidBox(init, fluidboxes, s, max, needlimit)
     for i = max, 1, -1 do
         fb = (fb << 4) | fluids[i]
     end
-    return container, fb
+    return table.concat(chest), fb
 end
 
-local function createContainer(s)
-    local container = {}
+local function createChest(s)
+    local chest = {}
     for idx = 2, #s//4 do
         local id, n = string.unpack("<I2I2", s, 4*idx-3)
         assert(not isFluidId(id))
         local limit = n * 2
-        container[#container+1] = string.pack("<I2I2", id, limit)
+        chest[#chest+1] = string.pack("<I2I2I2I2", 0, id, 0, limit)
     end
-    return table.concat(container)
+    return table.concat(chest)
 end
 
 local function set_recipe(world, e, pt, recipe_name, fluids)
@@ -93,26 +92,29 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     fluidbox.update_fluidboxes(e, pt, fluids)
     if recipe_name == nil then
         assembling.recipe = 0
-        assembling.container = 0xffff
+        assembling.chest_in = 0xffff
+        assembling.chest_out = 0xffff
         assembling.fluidbox_in = 0
         assembling.fluidbox_out = 0
         return
     end
     local recipe = assert(prototype.queryByName("recipe", recipe_name), "unknown recipe: "..recipe_name)
     if not fluids or not pt.fluidboxes then
-        local container_in = createContainer(recipe.ingredients)
-        local container_out = createContainer(recipe.results)
+        local chest_in = createChest(recipe.ingredients)
+        local chest_out = createChest(recipe.results)
         assembling.recipe = recipe.id
-        assembling.container = world:container_create("assembling", container_in, container_out)
+        assembling.chest_in = world:container_create("blue", chest_in)
+        assembling.chest_out = world:container_create("red", chest_out)
         assembling.fluidbox_in = 0
         assembling.fluidbox_out = 0
         return
     end
     local needlimit = #pt.fluidboxes.input > 0
-    local container_in, fluidbox_in = createContainerAndFluidBox(fluids.input, pt.fluidboxes.input, recipe.ingredients, 4, needlimit)
-    local container_out, fluidbox_out = createContainerAndFluidBox(fluids.output, pt.fluidboxes.output, recipe.results, 3, needlimit)
+    local chest_in, fluidbox_in = createChestAndFluidBox(fluids.input, pt.fluidboxes.input, recipe.ingredients, 4, needlimit)
+    local chest_out, fluidbox_out = createChestAndFluidBox(fluids.output, pt.fluidboxes.output, recipe.results, 3, needlimit)
     assembling.recipe = recipe.id
-    assembling.container = world:container_create("assembling", container_in, container_out)
+    assembling.chest_in = world:container_create("blue", chest_in)
+    assembling.chest_out = world:container_create("red", chest_out)
     assembling.fluidbox_in = fluidbox_in
     assembling.fluidbox_out = fluidbox_out
 end

@@ -164,7 +164,7 @@ function m.manual_chest()
     for v in ecs:select "manual chest:in" do
         local i = 1
         while true do
-            local c, n = world:container_get(v.chest.container, i)
+            local c, n = world:container_get(v.chest.chest, i)
             if c then
                 chest[gameplay.prototype.queryById(c).name] = n
             else

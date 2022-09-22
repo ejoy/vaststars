@@ -12,14 +12,14 @@ end
 -- itemid, count
 function M.base_container_place(world, ...)
     for e in world.ecs:select "manual chest:in" do
-        return world:container_place(e.chest.container, ...)
+        return world:container_place(e.chest.chest, ...)
     end
 end
 
 -- itemid, count
 function M.base_container_pickup(world, ...)
     for e in world.ecs:select "manual chest:in" do
-        return world:container_pickup(e.chest.container, ...)
+        return world:container_pickup(e.chest.chest, ...)
     end
 end
 
@@ -28,12 +28,12 @@ function M.base_container_pickup_place(world, e, prototype, count, from)
         if not M.base_container_pickup(world, prototype, count) then
             log.error(("failed to pickup `%s` `%s` from base"):format(prototype, count))
         else
-            if not world:container_place(e.chest.container, prototype, count) then
+            if not world:container_place(e.chest.chest, prototype, count) then
                 log.error(("failed to place `%s` `%s`"):format(prototype, count))
             end
         end
     else
-        if not world:container_pickup(e.chest.container, prototype, count) then
+        if not world:container_pickup(e.chest.chest, prototype, count) then
             log.error(("failed to pickup `%s` `%s` from base"):format(prototype, count))
         else
             if not M.base_container_place(world, prototype, count) then
@@ -49,7 +49,7 @@ function M.base_chest(world)
     for v in ecs:select "manual chest:in" do
         local i = 1
         while true do
-            local c, n = world:container_get(v.chest.container, i)
+            local c, n = world:container_get(v.chest.chest, i)
             if c then
                 chest[c] = n
             else

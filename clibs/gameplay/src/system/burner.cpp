@@ -15,9 +15,9 @@ static void
 checkFinish(lua_State* L, world& w, ecs::burner& b) {
 	if (b.progress == STATUS_DONE) {
 		prototype_context recipe = w.prototype(L, b.recipe);
-		recipe_container& container = w.query_container<recipe_container>(b.container);
+		chest& chest = w.query_chest(b.chest_out);
 		recipe_items* r = (recipe_items*)pt_results(&recipe);
-		if (container.recipe_place(w, r)) {
+		if (chest.place(r)) {
 			b.progress = STATUS_IDLE;
 		}
 	}
@@ -42,16 +42,17 @@ lupdate(lua_State *L) {
 		ecs::burner& b = v.get<ecs::burner>();
 		if (b.progress == STATUS_DONE || b.progress == STATUS_IDLE) {
 			prototype_context recipe = w.prototype(L, b.recipe);
-			recipe_container& container = w.query_container<recipe_container>(b.container);
 			if (b.progress == STATUS_DONE) {
+				chest& chest = w.query_chest(b.chest_out);
 				recipe_items* items = (recipe_items*)pt_results(&recipe);
-				if (container.recipe_place(w, items)) {
+				if (chest.place(items)) {
 					b.progress = STATUS_IDLE;
 				}
 			}
 			if (b.progress == STATUS_IDLE) {
+				chest& chest = w.query_chest(b.chest_in);
 				recipe_items* items = (recipe_items*)pt_ingredients(&recipe);
-				if (container.recipe_pickup(w, items)) {
+				if (chest.pickup(items)) {
 					int time = pt_time(&recipe);
 					b.progress = time + STATUS_DONE;
 				}

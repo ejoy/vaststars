@@ -128,7 +128,8 @@ lupdate(lua_State *L) {
 		ecs::assembling& a = e.get<ecs::assembling>();
 		if (a.recipe != 0) {
 			ecs::fluidboxes& fb = e.get<ecs::fluidboxes>();
-			recipe_container& container = w.query_container<recipe_container>(a.container);
+			chest& chest_in = w.query_chest(a.chest_in);
+			chest& chest_out = w.query_chest(a.chest_out);
 			for (size_t i = 0; i < 4; ++i) {
 				uint16_t fluid = fb.in[i].fluid;
 				if (fluid != 0) {
@@ -136,7 +137,7 @@ lupdate(lua_State *L) {
 					uint8_t index = ((a.fluidbox_in >> (i*4)) & 0xF) - 1;
 					fluid_state state;
 					if (f.query(fb.in[i].id, state)) {
-						container.recipe_set(recipe_container::slot_type::in, index, state.volume / f.multiple);
+						chest_in.set(index, state.volume / f.multiple);
 					}
 				}
 			}
@@ -147,7 +148,7 @@ lupdate(lua_State *L) {
 					uint8_t index = ((a.fluidbox_out >> (i*4)) & 0xF) - 1;
 					fluid_state state;
 					if (f.query(fb.out[i].id, state)) {
-						container.recipe_set(recipe_container::slot_type::out, index, state.volume / f.multiple);
+						chest_out.set(index, state.volume / f.multiple);
 					}
 				}
 			}

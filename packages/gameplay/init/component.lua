@@ -8,34 +8,26 @@ component "entity" {
 }
 
 component "chest" {
-    "container:word",
+    "chest:word",
 }
 
 component "assembling" {
     "recipe:word",
+    "speed:word",
     "fluidbox_in:word",
     "fluidbox_out:word",
-    "container:word",
-    "speed:word",
+    "chest_in:word",
+    "chest_out:word",
     "status:byte",
     "progress:int",
 }
 
 component "laboratory" {
     "tech:word",
-    "container:word",
+    "chest:word",
     "speed:word",
     "status:byte",
     "progress:int",
-}
-
-component "inserter" {
-    "input_container:word",
-    "output_container:word",
-    "hold_item:word",
-    "hold_amount:word",
-    "progress:word",
-    "status:byte",
 }
 
 component "capacitance" {
@@ -46,7 +38,8 @@ component "capacitance" {
 
 component "burner" {
 	"recipe:word",
-	"container:word",
+    "chest_in:word",
+    "chest_out:word",
 	"progress:word",
 }
 
@@ -107,7 +100,4 @@ component "manual" {
     "speed:word",
     "status:byte",
     "progress:int",
-}
-
-component "_working" {
 }
