@@ -9,23 +9,39 @@ function M.get_entity(world, eid)
     return world.entity[eid]
 end
 
+function M.chest_get(world, ...)
+    return world:container_get(...)
+end
+
+function M.chest_pickup(world, ...)
+    return world:container_pickup(...)
+end
+
+function M.chest_place(world, ...)
+    return world:container_place(...)
+end
+
+function M.manual_chest_item_counts(world)
+    return world:manual_container()
+end
+
 -- itemid, count
-function M.base_container_place(world, ...)
+function M.base_chest_place(world, ...)
     for e in world.ecs:select "manual chest:in" do
         return world:container_place(e.chest.chest, ...)
     end
 end
 
 -- itemid, count
-function M.base_container_pickup(world, ...)
+function M.base_chest_pickup(world, ...)
     for e in world.ecs:select "manual chest:in" do
         return world:container_pickup(e.chest.chest, ...)
     end
 end
 
-function M.base_container_pickup_place(world, e, prototype, count, from)
+function M.base_chest_pickup_place(world, e, prototype, count, from)
     if from then
-        if not M.base_container_pickup(world, prototype, count) then
+        if not M.base_chest_pickup(world, prototype, count) then
             log.error(("failed to pickup `%s` `%s` from base"):format(prototype, count))
         else
             local r = world:container_place(e.chest.chest, prototype, count)
@@ -37,7 +53,7 @@ function M.base_container_pickup_place(world, e, prototype, count, from)
         if not world:container_pickup(e.chest.chest, prototype, count) then
             log.error(("failed to pickup `%s` `%s` from base"):format(prototype, count))
         else
-            local r = M.base_container_place(world, prototype, count)
+            local r = M.base_chest_place(world, prototype, count)
             if r ~= 0 then
                 log.error(("failed to place `%s` `%s` `%s`"):format(prototype, count, r))
             end

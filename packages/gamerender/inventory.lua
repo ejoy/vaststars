@@ -72,13 +72,13 @@ local function complete(self)
                 goto continue
             end
 
-            if not iworld.base_container_pickup(gameplay_core.get_world(), item.prototype, dec) then
+            if not iworld.base_chest_pickup(gameplay_core.get_world(), item.prototype, dec) then
                 log.error("can not pickup item", iprototype.queryById(item.prototype).name, dec)
                 return false
             end
         else
             local inc = item.count - original.count
-            local r = iworld.base_container_place(gameplay_core.get_world(), item.prototype, inc)
+            local r = iworld.base_chest_place(gameplay_core.get_world(), item.prototype, inc)
             if r ~= 0 then
                 log.error("can not place item `%s` `%s` `%s`", iprototype.queryById(item.prototype).name, inc, r)
                 return false
