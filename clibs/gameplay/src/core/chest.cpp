@@ -233,7 +233,7 @@ lplace(lua_State* L) {
     uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);
     chest& c = w.query_chest(id);
     uint16_t n = c.place(item, amount, getstack(w, L, item));
-    lua_pushboolean(L, n);
+    lua_pushinteger(L, n);
     return 1;
 }
 

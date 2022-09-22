@@ -266,8 +266,9 @@ function M:teardown_complete()
 
     -- TODO: inventory full check -> revert teardown
     for prototype, count in pairs(item_counts) do
-        if not iworld.base_container_place(gameplay_core.get_world(), prototype, count) then
-            log.error(("failed to place `%s` `%s`"):format(prototype, count))
+        local r = iworld.base_container_place(gameplay_core.get_world(), prototype, count)
+        if r ~= 0 then
+            log.error(("failed to place `%s` `%s` `%s`"):format(prototype, count, r))
         end
     end
 

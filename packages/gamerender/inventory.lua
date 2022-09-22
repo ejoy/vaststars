@@ -78,8 +78,9 @@ local function complete(self)
             end
         else
             local inc = item.count - original.count
-            if not iworld.base_container_place(gameplay_core.get_world(), item.prototype, inc) then
-                log.error("can not place item", iprototype.queryById(item.prototype).name, inc)
+            local r = iworld.base_container_place(gameplay_core.get_world(), item.prototype, inc)
+            if r ~= 0 then
+                log.error("can not place item `%s` `%s` `%s`", iprototype.queryById(item.prototype).name, inc, r)
                 return false
             end
         end

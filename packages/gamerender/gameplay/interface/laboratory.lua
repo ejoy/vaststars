@@ -61,11 +61,13 @@ function M:place_material(world, e)
         if headquater_item_counts[id] then
             local c = math.min(headquater_item_counts[id], count)
             if c > 0 then
-                if not iworld.base_container_pickup(world, id, c) then
-                    log.error(("failed to pickup `%s` `%s`"):format(id, c))
+                local r = iworld.base_container_pickup(world, id, c)
+                if r ~= 0 then
+                    log.error(("failed to pickup `%s` `%s` `%s`"):format(id, c, r))
                 else
-                    if not world:container_place(e.laboratory.container, id, c) then
-                        log.error(("failed to place `%s` `%s`"):format(id, c))
+                    r = world:container_place(e.laboratory.container, id, c)
+                    if r ~= 0 then
+                        log.error(("failed to place `%s` `%s` `%s`"):format(id, c, r))
                     end
                 end
             end
