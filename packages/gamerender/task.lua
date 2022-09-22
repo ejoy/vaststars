@@ -10,10 +10,10 @@ local iconstant = require "gameplay.interface.constant"
 local terrain = ecs.require "terrain"
 
 local ALL_DIR = iconstant.ALL_DIR
-local function _check_routemap(sx, sy, dx, dy, checked)
-    checked = checked or {}
-    assert(checked[sx << 16 | sy] == nil)
-    checked[sx << 16 | sy] = true
+local function _check_routemap(sx, sy, dx, dy, marked)
+    marked = marked or {}
+    assert(marked[sx << 16 | sy] == nil)
+    marked[sx << 16 | sy] = true
 
     if sx == dx and sy == dy then
         return true
@@ -32,7 +32,7 @@ local function _check_routemap(sx, sy, dx, dy, checked)
             goto continue
         end
 
-        if checked[neighbor_x << 16 | neighbor_y] then
+        if marked[neighbor_x << 16 | neighbor_y] then
             goto continue
         end
 
@@ -50,7 +50,7 @@ local function _check_routemap(sx, sy, dx, dy, checked)
             return true
         end
 
-        if _check_routemap(neighbor_x, neighbor_y, dx, dy, checked) then
+        if _check_routemap(neighbor_x, neighbor_y, dx, dy, marked) then
             return true
         end
         ::continue::
