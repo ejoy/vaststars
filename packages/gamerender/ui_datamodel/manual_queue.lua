@@ -5,11 +5,12 @@ local w = world.w
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
 local imanual = require "ui_datamodel.common.manual"
+local iworld = require "gameplay.interface.world"
 local cancel_mb = mailbox:sub {"cancel"}
 
 local function get_ingredients()
     local t = {}
-    for item, count in pairs(gameplay_core.get_world():manual_container()) do
+    for item, count in pairs(iworld.manual_chest_item_counts(gameplay_core.get_world())) do
         local item_typeobject = iprototype.queryByName("item", item)
         t[#t+1] = {name = item_typeobject.name, count = count, icon = item_typeobject.icon}
     end

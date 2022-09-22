@@ -315,7 +315,7 @@ function M:stage_ui_update(datamodel, object_id)
 
             if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name) then
                 for prototype, count in pairs(item_counts) do
-                    local r = iworld.base_container_place(gameplay_core.get_world(), prototype, count)
+                    local r = iworld.base_chest_place(gameplay_core.get_world(), prototype, count)
                     if r ~= 0 then
                         log.error(("failed to place `%s` `%s` `%s`"):format(prototype, count, r))
                     end

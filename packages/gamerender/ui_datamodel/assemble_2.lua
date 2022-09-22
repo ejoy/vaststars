@@ -4,6 +4,7 @@ local objects = require "objects"
 local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
 local itypes = require "gameplay.interface.types"
+local iworld = require "gameplay.interface.world"
 
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
@@ -95,7 +96,7 @@ function M:stage_ui_update(datamodel, object_id)
     local recipe_results_count = {}
     if e.assembling.chest ~= 0xFFFF then
         for index, v in ipairs(datamodel.recipe_ingredients) do
-            local c, n = gameplay_core.get_world():container_get(e.assembling.chest_in, index)
+            local c, n = iworld.chest_get(gameplay_core.get_world(), e.assembling.chest_in, index)
             if c then
                 recipe_ingredients_count[index] = {icon = v.icon, count = n, need_count = v.count}
             else
@@ -104,7 +105,7 @@ function M:stage_ui_update(datamodel, object_id)
         end
 
         for index, v in ipairs(datamodel.recipe_results) do
-            local c, n = gameplay_core.get_world():container_get(e.assembling.chest_out, index)
+            local c, n = iworld.chest_get(gameplay_core.get_world(), e.assembling.chest_out, index)
             if c then
                 recipe_results_count[index] = {icon = v.icon, count = n, need_count = v.count}
             else

@@ -32,18 +32,6 @@ function m.set_multiple(n)
     m.multiple = n
 end
 
-function m.container_get(...)
-    return world:container_get(...)
-end
-
-function m.container_pickup(...)
-    return world:container_pickup(...)
-end
-
-function m.container_place(...)
-    return world:container_place(...)
-end
-
 function m.remove_entity(eid)
     print("remove_entity", eid)
     world.ecs:remove(eid)

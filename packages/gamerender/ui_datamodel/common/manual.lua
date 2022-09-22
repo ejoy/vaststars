@@ -162,7 +162,7 @@ local function get_manual_queue()
     return _get_manual_state().manual_queue
 end
 
-local function manual_chest()
+local function base_chest_item_counts()
     local r = {}
     for prototype, count in pairs(iworld.base_chest(gameplay_core.get_world())) do
         local typeobject = iprototype.queryById(prototype)
@@ -178,7 +178,7 @@ local function cancel(index)
     end
     table.remove(queue, index)
 
-    local output = imanual.evaluate(solver, manual_chest(), gameplay_core.get_world():manual_container(), queue)
+    local output = imanual.evaluate(solver, base_chest_item_counts(), iworld.manual_chest_item_counts(gameplay_core.get_world()), queue)
     if not output then
         assert(false)
     else
@@ -188,7 +188,7 @@ local function cancel(index)
 end
 
 return {
-    manual_chest = manual_chest,
+    base_chest_item_counts = base_chest_item_counts,
     get_manual_queue = get_manual_queue,
     get_queue = get_queue,
     cancel = cancel,
