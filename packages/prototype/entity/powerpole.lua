@@ -10,5 +10,5 @@ prototype "铁制电线杆" {
     area = "1x1",
     supply_area = "5x5",
     supply_distance = 7,
-    group = {"物流","自定义"},
+    group = {"电力","默认"},
 }
