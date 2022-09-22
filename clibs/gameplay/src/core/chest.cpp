@@ -8,10 +8,6 @@ extern "C" {
 #include "util/prototype.h"
 }
 
-static bool isFluidId(uint16_t id) {
-    return (id & 0x0C00) == 0x0C00;
-}
-
 chest::chest(type type_, chest::slot* data, size_t size)
     : slots()
     , type_(type_)
