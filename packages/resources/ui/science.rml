@@ -523,6 +523,11 @@
             function start.startSwitch(event)
                 ui_sys.pub {"switch"}
                 if not start.current_running then
+                    if not start.selected_tech then
+                        -- clear new flag
+                        clickTech(1)
+                        start.techitems[1].new = false
+                    end
                     onclose()
                 end
             end
