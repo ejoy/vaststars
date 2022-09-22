@@ -691,6 +691,21 @@ prototype "基地生产2" {
   sign_icon = "textures/science/tech-cycle.texture",
 }
 
+prototype "维修运输汽车" {
+  desc = "维修运输车参与物流",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"stat_consumption", 0, "破损运输车辆"},
+  prerequisites = {"基地生产2"},
+  count = 4,
+  tips_pic = {
+    "textures/task_tips_pic/task_repair_chemicalplant1.texture",
+  },
+  sign_desc = {
+    { desc = "使用组装机或制造舱维修4辆破损运输车辆", icon = "textures/construct/industry.texture"},
+  },
+}
+
 prototype "维修化工厂" {
   desc = "维修化工厂生成化工原料",
   icon = "textures/construct/industry.texture",
@@ -790,7 +805,7 @@ prototype "电磁学1" {
   effects = {
     unlock_recipe = {"电动机1"},
   },
-  prerequisites = {"生产塑料","基地生产2","排放"},
+  prerequisites = {"生产塑料","维修运输汽车","排放"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
