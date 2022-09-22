@@ -26,6 +26,7 @@ namespace lua_world {
     template <typename T>
     void file_write(FILE* f, const T& v) {
         size_t n = fwrite(&v, sizeof(T), 1, f);
+        (void)n;
         assert(n == 1);
     }
 
@@ -33,6 +34,7 @@ namespace lua_world {
     T file_read(FILE* f) {
         T v;
         size_t n = fread(&v, sizeof(T), 1, f);
+        (void)n;
         assert(n == 1);
         return std::move(v);
     }
@@ -40,6 +42,7 @@ namespace lua_world {
     template <typename T>
     void file_read(FILE* f, T& v) {
         size_t n = fread(&v, sizeof(T), 1, f);
+        (void)n;
         assert(n == 1);
     }
 
@@ -49,6 +52,7 @@ namespace lua_world {
             return;
         }
         size_t n = fwrite(v, sizeof(T), sz, f);
+        (void)n;
         assert(n == sz);
     }
 
@@ -58,6 +62,7 @@ namespace lua_world {
             return;
         }
         size_t n = fread(v, sizeof(T), sz, f);
+        (void)n;
         assert(n == sz);
     }
 
