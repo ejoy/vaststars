@@ -17,6 +17,7 @@ local objects = require "objects"
 local terrain = ecs.require "terrain"
 local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
+local task = ecs.require "task"
 
 local EDITOR_CACHE_TEMPORARY = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 
@@ -444,6 +445,8 @@ local function complete(self, datamodel)
 
     datamodel.show_laying_road_begin = false
     datamodel.show_construct_complete = false
+
+    task.update_progress("routemap")
 end
 
 local function laying_pipe_begin(self, datamodel)
