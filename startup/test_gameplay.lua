@@ -14,16 +14,13 @@ world:build()
 local function manual_chest()
     local chest = {}
     local ecs = world.ecs
-    for v in ecs:select "manual chest:in" do
-        local i = 1
-        while true do
-            local c, n = world:container_get(v.chest.container, i)
+    for v in ecs:select "manual entity:in chest:in" do
+        local typeobject = gameplay.prototype.queryById(v.entity.prototype)
+        for i = 1, typeobject.slots do
+            local c, n = world:container_get(v.chest.chest, i)
             if c then
-                chest[gameplay.prototype.queryById(c).name] = n
-            else
-                break
+                chest[gameplay.prototype.queryById(c).nam] = n
             end
-            i = i + 1
         end
         break
     end
@@ -48,13 +45,12 @@ manual_update {
 local function dump_item()
     print "=================="
     local ecs = world.ecs
-    for v in ecs:select "chest:in" do
-        for i = 1, 10 do
-            local c, n = world:container_get(v.chest.container, i)
+    for v in ecs:select "chest:in entity:in" do
+        local typeobject = gameplay.prototype.queryById(v.entity.prototype)
+        for i = 1, typeobject.slots do
+            local c, n = world:container_get(v.chest.chest, i)
             if c then
                 print(gameplay.prototype.queryById(c).name, n)
-            else
-                break
             end
         end
     end
