@@ -231,7 +231,7 @@ local function get_entity_property_list(object_id)
     end
 
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    
+
     local entity = get_property(e, typeobject)
     local property_list = get_property_list(entity)
     if e.mining then
@@ -247,7 +247,7 @@ local function get_entity_property_list(object_id)
         else
             property_list.minner_progress = itypes.progress_str(progress, total_progress)
         end
-        
+
         local recipe_typeobject = iprototype.queryById(e.assembling.recipe)
         local recipe_ingredients = irecipe.get_elements(recipe_typeobject.ingredients)
         local recipe_results = irecipe.get_elements(recipe_typeobject.results)

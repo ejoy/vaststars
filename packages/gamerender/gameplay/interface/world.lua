@@ -48,16 +48,13 @@ end
 function M.base_chest(world)
     local chest = {}
     local ecs = world.ecs
-    for v in ecs:select "manual chest:in" do
-        local i = 1
-        while true do
+    for v in ecs:select "manual entity:in chest:in" do
+        local typeobject = iprototype.queryById(v.entity.prototype)
+        for i = 1, typeobject.slots do
             local c, n = world:container_get(v.chest.chest, i)
             if c then
                 chest[c] = n
-            else
-                break
             end
-            i = i + 1
         end
         break
     end
