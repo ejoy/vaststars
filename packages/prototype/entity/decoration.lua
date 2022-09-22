@@ -33,3 +33,21 @@ prototype "抽水泵残骸" {
     area = "2x2",
     slots = 13,
 }
+
+prototype "铁矿" {
+    model = "prefabs/terrain/mine_iron.prefab",
+    icon = "textures/construct/broken-pump.texture",
+    background = "textures/build_background/pic_pumpjack.texture",
+    construct_detector = {"exclusive"},
+    type = {"entity"},
+    area = "4x4",
+}
+
+prototype "石矿" {
+    model = "prefabs/terrain/mine_Stone.prefab",
+    icon = "textures/construct/broken-pump.texture",
+    background = "textures/build_background/pic_pumpjack.texture",
+    construct_detector = {"exclusive"},
+    type = {"entity"},
+    area = "4x4",
+}
