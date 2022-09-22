@@ -8,7 +8,7 @@ function M:item_counts(world, e)
     for i = 1, typeobject.slots do
         local c, n = world:container_get(e.chest.chest, i)
         if c then
-            r[c] = n
+            r[c] = (r[c] or 0) + n -- different slot may have same prototype
         end
     end
     return r

@@ -158,21 +158,4 @@ function m.get_storage()
     return world.storage
 end
 
--- TODO: remove this function, similiar to M.base_chest(...) ?
-function m.manual_chest()
-    local chest = {}
-    local ecs = world.ecs
-    for v in ecs:select "manual entity:in chest:in" do
-        local typeobject = iprototype.queryById(v.entity.prototype)
-        for i = 1, typeobject.slots do
-            local c, n = world:container_get(v.chest.chest, i)
-            if c then
-                chest[gameplay.prototype.queryById(c).name] = n
-            end
-        end
-        break
-    end
-    return chest
-end
-
 return m
