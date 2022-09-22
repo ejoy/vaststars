@@ -90,7 +90,7 @@ prototype "机器爪I" {
     speed = "1s",
     power = "12kW",
     priority = "secondary",
-    group = {"物流","自定义"},
+    group = {"物流","默认"},
 }
 
 prototype "科研中心I" {
@@ -207,7 +207,7 @@ prototype "砖石公路-O型" {
     show_build_function = false,
     type ={"entity", "road"},
     area = "1x1",
-    group = {"物流","自定义"},
+    group = {"物流","默认"},
     crossing = {
         connections = {
         }
