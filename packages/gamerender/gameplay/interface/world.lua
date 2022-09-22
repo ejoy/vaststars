@@ -28,16 +28,18 @@ function M.base_container_pickup_place(world, e, prototype, count, from)
         if not M.base_container_pickup(world, prototype, count) then
             log.error(("failed to pickup `%s` `%s` from base"):format(prototype, count))
         else
-            if not world:container_place(e.chest.chest, prototype, count) then
-                log.error(("failed to place `%s` `%s`"):format(prototype, count))
+            local r = world:container_place(e.chest.chest, prototype, count)
+            if r ~= 0 then
+                log.error(("failed to place `%s` `%s` `%s`"):format(prototype, count, r))
             end
         end
     else
         if not world:container_pickup(e.chest.chest, prototype, count) then
             log.error(("failed to pickup `%s` `%s` from base"):format(prototype, count))
         else
-            if not M.base_container_place(world, prototype, count) then
-                log.error(("failed to place `%s` `%s`"):format(prototype, count))
+            local r = M.base_container_place(world, prototype, count)
+            if r ~= 0 then
+                log.error(("failed to place `%s` `%s` `%s`"):format(prototype, count, r))
             end
         end
     end

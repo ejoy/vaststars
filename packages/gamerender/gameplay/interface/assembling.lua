@@ -31,8 +31,9 @@ function M.pickup_material(world, e)
                 if not world:container_pickup(e.assembling.container, c, n) then
                     log.error(("failed to pickup `%s` `%s`"):format(c, n))
                 else
-                    if not iworld.base_container_place(world, c, n) then
-                        log.error(("failed to place `%s` `%s`"):format(n, c))
+                    local r = iworld.base_container_place(world, c, n)
+                    if r ~= 0 then
+                        log.error(("failed to place `%s` `%s` `%s`"):format(n, c, r))
                     else
                         items[#items + 1] = {name = item_typeobject.name, count = n, icon = item_typeobject.icon}
                     end
@@ -86,8 +87,9 @@ function M.place_material(world, e)
                 if not iworld.base_container_pickup(world, id, c) then
                     log.error(("failed to pickup `%s` `%s`"):format(id, c))
                 else
-                    if not world:container_place(e.assembling.container, id, c) then
-                        log.error(("failed to place `%s` `%s`"):format(id, c))
+                    local r = world:container_place(e.assembling.container, id, c)
+                    if r ~= 0 then
+                        log.error(("failed to place `%s` `%s` `%s`"):format(id, c, r))
                     end
                 end
             end
