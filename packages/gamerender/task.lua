@@ -10,13 +10,11 @@ local iconstant = require "gameplay.interface.constant"
 local terrain = ecs.require "terrain"
 
 local ALL_DIR = iconstant.ALL_DIR
-local i = 0
-local function _check_routemap(sx, sy, dx, dy, entry_dir)
-    print(sx, sy, dx, dy, entry_dir)
-    i = i + 1
-    if i > 100 then
-        return false
-    end
+local function _check_routemap(sx, sy, dx, dy, checked)
+    checked = checked or {}
+    assert(checked[sx << 16 | sy] == nil)
+    checked[sx << 16 | sy] = true
+
     if sx == dx and sy == dy then
         return true
     end
@@ -29,12 +27,12 @@ local function _check_routemap(sx, sy, dx, dy, entry_dir)
 
     local succ, neighbor_x, neighbor_y
     for _, neighbor_dir in ipairs(ALL_DIR) do
-        if entry_dir == neighbor_dir then
+        succ, neighbor_x, neighbor_y = terrain:move_coord(sx, sy, neighbor_dir, 1)
+        if not succ then
             goto continue
         end
 
-        succ, neighbor_x, neighbor_y = terrain:move_coord(sx, sy, neighbor_dir, 1)
-        if not succ then
+        if checked[neighbor_x << 16 | neighbor_y] then
             goto continue
         end
 
@@ -52,7 +50,7 @@ local function _check_routemap(sx, sy, dx, dy, entry_dir)
             return true
         end
 
-        if _check_routemap(neighbor_x, neighbor_y, dx, dy, iprototype.reverse_dir(neighbor_dir)) then
+        if _check_routemap(neighbor_x, neighbor_y, dx, dy, checked) then
             return true
         end
         ::continue::
