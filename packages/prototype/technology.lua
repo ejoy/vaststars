@@ -15,7 +15,7 @@ local prototype = gameplay.register.prototype
     desc = "清除指挥中心附近的3处废墟",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"unknown", 0, "铁齿轮"},
+    task = {"unknown", 0},
     prerequisites = {},
     count = 3,
     tips_pic = {
@@ -32,9 +32,10 @@ local prototype = gameplay.register.prototype
     desc = "放置1座科研中心",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"select_entity", 0, "砖石公路-I型"},
+    task = {"unknown", 1},
+    task_params = {starting = {117, 125}, ending = {135, 125}},
     prerequisites = {"清除废墟"},
-    count = 47,
+    count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_road1.texture",
       "textures/task_tips_pic/task_place_road2.texture",
