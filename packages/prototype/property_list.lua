@@ -137,6 +137,11 @@ local property_list = {
 		value = "$supply_distance$",
 		pos = 26,
 	},
+	["mine_deposit"] = {
+		icon = "textures/property/mine-deposit.texture",
+		desc = "矿物储量",
+		pos = 27,
+	},
 }
 
 -- for debug

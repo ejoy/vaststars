@@ -2,6 +2,7 @@ local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
 local itypes = require "gameplay.interface.types"
 local imanual = require "gameplay.interface.manual"
+local iworld = require "gameplay.interface.world"
 
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
@@ -161,6 +162,15 @@ local function get_manual_queue()
     return _get_manual_state().manual_queue
 end
 
+local function manual_chest()
+    local r = {}
+    for prototype, count in pairs(iworld.base_chest(gameplay_core.get_world())) do
+        local typeobject = iprototype.queryById(prototype)
+        r[typeobject.name] = count
+    end
+    return r
+end
+
 local function cancel(index)
     local queue = _get_manual_state().manual_queue
     if #queue < index then
@@ -168,7 +178,7 @@ local function cancel(index)
     end
     table.remove(queue, index)
 
-    local output = imanual.evaluate(solver, gameplay_core.manual_chest(), gameplay_core.get_world():manual_container(), queue)
+    local output = imanual.evaluate(solver, manual_chest(), gameplay_core.get_world():manual_container(), queue)
     if not output then
         assert(false)
     else
@@ -178,6 +188,7 @@ local function cancel(index)
 end
 
 return {
+    manual_chest = manual_chest,
     get_manual_queue = get_manual_queue,
     get_queue = get_queue,
     cancel = cancel,
