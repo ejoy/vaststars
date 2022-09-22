@@ -96,6 +96,7 @@ function M.update_progress(custom_type_mapping)
     end
 
     local taskname = science.current_tech.name
+    local progress = science.current_tech.progress
     local c = cache[custom_type_mapping][taskname]
     if not c then
         return
@@ -103,7 +104,7 @@ function M.update_progress(custom_type_mapping)
 
     if c.check(c.task_params) then
         local gwworld = gameplay_core.get_world()
-        gwworld:research_progress(taskname, 1)
+        gwworld:research_progress(taskname, progress + 1)
     end
 end
 return M
