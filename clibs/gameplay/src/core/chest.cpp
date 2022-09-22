@@ -130,14 +130,14 @@ uint16_t chest::pickup(uint16_t item, uint16_t max) {
 static uint16_t place_slot(chest::slot& s, uint16_t amount) {
     if (s.amount + amount <= s.limit) {
         s.amount += amount;
-        return 0;
+        return amount;
     }
     if (s.amount <= s.limit) {
         uint16_t n = s.limit - s.amount;
         s.amount = s.limit;
         return amount - n;
     }
-    return amount;
+    return 0;
 }
 
 uint16_t chest::place(uint16_t item, uint16_t amount, uint16_t limit) {
