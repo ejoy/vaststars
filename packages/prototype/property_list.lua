@@ -138,7 +138,7 @@ local property_list = {
 		pos = 26,
 	},
 	["mine_deposit"] = {
-		icon = "textures/property/chest-capacity.png.texture",
+		icon = "textures/property/mine-deposit.texture",
 		desc = "矿物储量",
 		pos = 27,
 	},
