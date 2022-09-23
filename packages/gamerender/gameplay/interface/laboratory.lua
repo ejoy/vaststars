@@ -61,15 +61,7 @@ function M:place_material(world, e)
         if headquater_item_counts[id] then
             local c = math.min(headquater_item_counts[id], count)
             if c > 0 then
-                local r = iworld.base_chest_pickup(world, id, c)
-                if r ~= 0 then
-                    log.error(("failed to pickup `%s` `%s` `%s`"):format(id, c, r))
-                else
-                    r = iworld.chest_get(world, e.laboratory.chest, id, c)
-                    if r ~= 0 then
-                        log.error(("failed to place `%s` `%s` `%s`"):format(id, c, r))
-                    end
-                end
+                iworld.base_chest_pickup_place(world, e.laboratory.chest, id, c, true)
             end
         end
     end
