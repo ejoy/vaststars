@@ -10,21 +10,11 @@ function touch_simulate_sys:data_changed()
     for _, state, datas in touch_mb:unpack() do
         for _, data in pairs(datas) do
             if state == "START" then
-                if not touch_id then
-                    world:pub {"single_touch", "START", data}
-                    touch_id = data.id
-                end
-
+                world:pub {"single_touch", "START", data}
             elseif state == "MOVE" then
-                if touch_id == data.id then
-                    world:pub {"single_touch", "MOVE", data}
-                end
-
+                world:pub {"single_touch", "MOVE", data}
             elseif state == "CANCEL" or state == "END" then
-                if touch_id == data.id then
-                    world:pub {"single_touch", state, data}
-                    touch_id = nil
-                end
+                world:pub {"single_touch", state, data}
             end
         end
     end
