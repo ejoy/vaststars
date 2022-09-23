@@ -243,7 +243,7 @@ return function ()
 
     function world:manual_container()
         local c = {}
-        local cc = cworld:manual_container()
+        local cc = cworld:manual_chest()
         for k, v in pairs(cc) do
             local pt = prototype.queryById(k)
             assert(pt, "unknown ID: " .. k)
