@@ -13,9 +13,9 @@ local single_touch_mb = world:sub {"single_touch"}
 local mouse_wheel_mb    = world:sub {"mouse_wheel"}
 local mouse_mb    = world:sub {"mouse"}
 
-local cam_target
-local cam_dir
-local cam_pos
+local cam_target = math3d.ref()
+local cam_dir = math3d.ref()
+local cam_pos = math3d.ref()
 local cam_euler
 local cam_dist = 0
 local pitch_offset = 0
@@ -54,7 +54,7 @@ local function zoom(ce, delta)
     elseif cam_dist < min_dist then
         cam_dist = min_dist
     end
-    cam_pos = math3d.ref(math3d.add(cam_target, math3d.mul(cam_dir, -cam_dist)))
+    cam_pos.v = math3d.add(cam_target, math3d.mul(cam_dir, -cam_dist))
     iom.set_position(ce, cam_pos)
 end
 local function dist_sqr(x1,y1, x2,y2)
@@ -113,13 +113,13 @@ function dragdrop_camera_sys:camera_usage()
         end
     end
 
-    if not cam_pos then
-        cam_pos = math3d.ref(iom.get_position(ce))
+    if not cam_pos.v then
+        cam_pos.v = iom.get_position(ce)
         local rot = iom.get_rotation(ce)
-        local rad = math3d.tovalue(math3d.quat2euler(rot))
-        cam_euler = { math.deg(rad[1]), math.deg(rad[2]), math.deg(rad[3]) }
-        cam_dir = math3d.ref(math3d.normalize(math3d.transform(rot, math3d.vector(0.0, 0.0, 1.0), 0)))
-        cam_target = math3d.ref(ray_hit_plane({origin = cam_pos, dir = cam_dir}))
+        -- local rad = math3d.tovalue(math3d.quat2euler(rot))
+        -- cam_euler = { math.deg(rad[1]), math.deg(rad[2]), math.deg(rad[3]) }
+        cam_dir.v = math3d.normalize(math3d.transform(rot, math3d.vector(0.0, 0.0, 1.0), 0))
+        cam_target.v = ray_hit_plane({origin = cam_pos, dir = cam_dir})
         cam_dist = math3d.length(math3d.sub(cam_target, cam_pos))
     end
     if not zoom_mode then
@@ -128,8 +128,8 @@ function dragdrop_camera_sys:camera_usage()
             local delta = math3d.sub(begin_pos, pos)
             iom.move_delta(ce, delta)
             world:pub {"dragdrop_camera", math3d.ref(delta)}
-            cam_pos = math3d.ref(math3d.add(cam_pos, delta))
-            cam_target = math3d.ref(math3d.add(cam_target, delta))
+            cam_pos.v = math3d.add(cam_pos, delta)
+            cam_target.v = math3d.add(cam_target, delta)
         end
     elseif delta_dist then
         zoom(ce, delta_dist)
@@ -150,9 +150,9 @@ function dragdrop_camera_sys:camera_usage()
             end
             local deg = {cam_euler[1] + pitch_offset, 0.0, 0.0}
             local rot = math3d.quaternion{math.rad(deg[1]), math.rad(deg[2]), math.rad(deg[3])}
-            cam_dir = math3d.ref(math3d.normalize(math3d.transform(rot, math3d.vector(0.0, 0.0, 1.0), 0)))
+            cam_dir.v = math3d.normalize(math3d.transform(rot, math3d.vector(0.0, 0.0, 1.0), 0))
             iom.set_rotation(ce, rot)
-            cam_pos = math3d.ref(math3d.add(cam_target, math3d.mul(cam_dir, -cam_dist)))
+            cam_pos.v = math3d.add(cam_target, math3d.mul(cam_dir, -cam_dist))
             iom.set_position(ce, cam_pos)
         end
     end
