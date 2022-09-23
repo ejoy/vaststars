@@ -9,16 +9,26 @@ function M.get_entity(world, eid)
     return world.entity[eid]
 end
 
-function M.chest_get(world, ...)
-    return world:container_get(...)
+function M.chest_get(world, chest, ...)
+    if chest == 0xFFFF then
+        return
+    end
+    return world:container_get(chest, ...)
 end
 
-function M.chest_pickup(world, ...)
-    return world:container_pickup(...)
+function M.chest_pickup(world, chest, id, count)
+    if chest == 0xFFFF then
+        return
+    end
+    return world:container_pickup(chest, id, count)
 end
 
-function M.chest_place(world, ...)
-    return world:container_place(...)
+function M.chest_place(world, chest, id, count)
+    if chest == 0xFFFF then
+        assert(false)
+        return count
+    end
+    return world:container_place(chest, id, count)
 end
 
 function M.manual_chest_item_counts(world)
