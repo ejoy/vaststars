@@ -45,6 +45,7 @@ function M:stage_ui_update(datamodel)
             end
             iguide.step_progress()
             iui.set_guide_progress(iguide.get_progress())
+            log.info("story_click_mb update ui", iguide.get_progress()) -- TODO: remove this log
         end
     end
 end
