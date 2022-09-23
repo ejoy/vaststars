@@ -95,7 +95,7 @@ function dragdrop_camera_sys:camera_usage()
             end
             if touch_id1 and touch_id2 then
                 local current_dist = dist_sqr(last_move_x, last_move_y, last_move_x2, last_move_y2)
-                delta_dist = (current_dist - down_cam_dist) * 0.2
+                delta_dist = (current_dist - down_cam_dist) * 0.25
                 down_cam_dist = current_dist
             end
         elseif state == "CANCEL" or state == "END" then
