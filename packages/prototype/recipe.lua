@@ -32,7 +32,7 @@ prototype "铁板1" {
     allow_manual = false,
     icon = "textures/construct/plate-Fe.texture",
     ingredients = {
-        -- {"铁矿石", 5},
+        {"铁矿石", 5},
     },
     results = {
         {"铁板", 2},
