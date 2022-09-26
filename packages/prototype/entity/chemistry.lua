@@ -140,7 +140,7 @@ prototype "电解厂I" {
                 height = 100,
                 base_level = -100,
                 connections = {
-                    {type="input", position={0,0,"N"}},
+                    {type="input", position={0,1,"W"}},
                 }
             },
         },
@@ -150,7 +150,7 @@ prototype "电解厂I" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={3,0,"N"}},
+                    {type="output", position={3,1,"E"}},
                 }
             },
             {
