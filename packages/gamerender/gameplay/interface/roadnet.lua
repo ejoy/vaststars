@@ -28,9 +28,9 @@ function mt:add_line(...)
     return self.cworld:add_line(...)
 end
 
-function mt:add_lorry(lineid, idx, x, y, z)
-    local rc = x | (y << 8) | (z << 16)
-    return self.cworld:add_lorry(lineid, idx, rc)
+-- starting & ending road coord
+function mt:add_lorry(lineid, starting, ending)
+    return self.cworld:add_lorry(lineid, starting, ending)
 end
 
 local mapping_id, mapping_sid ; do

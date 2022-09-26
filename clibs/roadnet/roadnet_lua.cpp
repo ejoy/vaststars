@@ -174,9 +174,10 @@ namespace roadnet::lua {
         static int add_lorry(lua_State* L) {
             auto& o = class_get<object>(L, 1);
             uint16_t lineId = (uint16_t)luaL_checkinteger(L, 2);
-            uint8_t lineIdx = (uint8_t)luaL_checkinteger(L, 3);
-            auto rc = o.b.coordConvert(o.w, get_map_coord(L, 4));
-            auto id = o.b.addLorry(o.w, roadnet::lineid{lineId}, lineIdx, rc);
+            auto starting_rc = o.b.coordConvert(o.w, get_map_coord(L, 3));
+            auto ending_rc = o.b.coordConvert(o.w, get_map_coord(L, 4));
+            assert(starting_rc.id.cross == 0 && ending_rc.id.cross == 0);
+            auto id = o.b.addLorry(o.w, roadnet::lineid{lineId}, starting_rc, ending_rc);
             if (id == roadnet::lorryid::invalid()) {
                 return 0;
             }

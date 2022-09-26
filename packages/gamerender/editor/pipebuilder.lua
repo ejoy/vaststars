@@ -572,7 +572,6 @@ local function laying_pipe_cancel(self, datamodel)
     self.state = STATE_NONE
     datamodel.show_laying_pipe_confirm = false
     datamodel.show_laying_pipe_cancel = false
-    datamodel.show_construct_complete = true
 end
 
 local function laying_pipe_confirm(self, datamodel)

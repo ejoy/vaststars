@@ -215,7 +215,6 @@ local function complete(self)
                     end
                 end
             end
-            object.inserter_arrow = nil -- TODO: inserter_arrow optimize
 
             if not power_network_dirty and typeobject.power_pole then
                 power_network_dirty = true

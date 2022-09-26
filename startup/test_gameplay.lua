@@ -19,7 +19,7 @@ local function manual_chest()
         for i = 1, typeobject.slots do
             local c, n = world:container_get(v.chest.chest, i)
             if c then
-                chest[gameplay.prototype.queryById(c).nam] = n
+                chest[gameplay.prototype.queryById(c).name] = n
             end
         end
         break

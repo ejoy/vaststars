@@ -53,4 +53,6 @@ namespace roadnet {
             return id < r.id;
         }
     };
+
+    using lorryid = objectid;
 }
