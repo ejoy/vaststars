@@ -270,7 +270,7 @@ prototype "水电站I" {
     order = 70,
 }
 
-prototype "砖石公路-X型" {
+prototype "砖石公路-X型-01" {
     show_prototype_name = "砖石公路",
     type = {"item"},
     stack = 100,

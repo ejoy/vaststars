@@ -1,6 +1,38 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
+local function prototype_road(name)
+    return function (object)
+        assert(object.crossing)
+
+        local len = (1 << #object.crossing) - 1
+        for i = 0, len do
+            local o = {}
+            for k, v in pairs(object) do
+                if k ~= "crossing" then
+                    o[k] = v
+                end
+            end
+            o.crossing = { connections = {} }
+
+            local connections = object.crossing.connections
+            for j = 1, #connections do
+                local roadside
+                if i & (1 << (j - 1)) ~= 0 then
+                   roadside = true
+                end
+                o.crossing.connections[j] = {
+                    type = connections[j].type,
+                    position = connections[j].position,
+                    roadside = roadside
+                }
+            end
+
+            prototype(name:format(i + 1))(o)
+        end
+    end
+end
+
 prototype "指挥中心" {
     model = "prefabs/headquater-1.prefab",
     icon = "textures/building_pic/small_pic_headquarter.texture",
@@ -44,17 +76,7 @@ prototype "物流中心I" {
     model = "prefabs/logistics-center-1.prefab",
     icon = "textures/building_pic/small_pic_logistics_center2.texture",
     background = "textures/build_background/pic_logisticscenter.texture",
-    construct_detector = {"replacing"},
-    construct_replacing = {
-        type = "road",
-        connections = {
-            {0,1},
-            {1,0},
-            {1,1},
-            {1,2},
-            {2,1},
-        },
-    },
+    construct_detector = {"exclusive"},
     type ={"entity", "consumer"},
     area = "3x3",
     power = "300kW",
@@ -111,7 +133,7 @@ prototype "科研中心I" {
     group = {"物流"},
 }
 
-prototype "砖石公路-I型" {
+prototype_road "砖石公路-I型-%02d" {
     model = "prefabs/road/road_I.prefab",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
@@ -131,7 +153,7 @@ prototype "砖石公路-I型" {
     }
 }
 
-prototype "砖石公路-L型" {
+prototype_road "砖石公路-L型-%02d" {
     model = "prefabs/road/road_L.prefab",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
@@ -151,7 +173,7 @@ prototype "砖石公路-L型" {
     }
 }
 
-prototype "砖石公路-T型" {
+prototype_road "砖石公路-T型-%02d" {
     model = "prefabs/road/road_T.prefab",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
@@ -172,7 +194,7 @@ prototype "砖石公路-T型" {
     }
 }
 
-prototype "砖石公路-X型" {
+prototype_road "砖石公路-X型-%02d" {
     show_prototype_name = "砖石公路",
     model = "prefabs/road/road_X.prefab",
     icon = "textures/construct/road1.texture",
@@ -195,7 +217,7 @@ prototype "砖石公路-X型" {
     }
 }
 
-prototype "砖石公路-O型" {
+prototype "砖石公路-O型-01" {
     model = "prefabs/road/road_O.prefab",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
@@ -214,7 +236,7 @@ prototype "砖石公路-O型" {
     }
 }
 
-prototype "砖石公路-U型" {
+prototype_road "砖石公路-U型-%02d" {
     model = "prefabs/road/road_U.prefab",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},

@@ -1,3 +1,5 @@
+local iprototype = require "gameplay.interface.prototype"
+
 local M = {}
 
 local North <const> = 0
@@ -67,8 +69,9 @@ function M.to_type_dir(connectable_state)
     return t.shape_type, t.dir
 end
 
+-- TODO: remove this function
 function M.to_prototype_name(prototype_name, shape_type)
-    return prototype_name:gsub("(.*%-)(%u*)(.*)", ("%%1%s%%3"):format(shape_type))
+    return prototype_name:gsub("(.-%-)(%u*)(.*)", ("%%1%s%%3"):format(shape_type))
 end
 
 function M.set_shape_edge(connectable_state, connectable_dir, state)
@@ -79,8 +82,9 @@ function M.set_shape_edge(connectable_state, connectable_dir, state)
     end
 end
 
+-- TODO: remove this function
 function M.get_init_prototype_name(prototype_name)
-    return prototype_name:gsub("(.*%-)(%u)(.*)", ("%%1%s%%3"):format("O"))
+    return prototype_name:gsub("(.-%-)(%u*)(.*)", ("%%1%s%%3"):format("O"))
 end
 
 function M.get_state(prototype_name, dir, check_dir)

@@ -399,41 +399,38 @@ namespace roadnet {
             ;
     }
 
-    static lorryid createLorry(world& w, lineid lineId, uint8_t lineIdx) {
+    static lorryid createLorry(world& w, lineid lineId, uint8_t lineIdx, road_coord ending) {
         lorryid lorryId((uint16_t)w.lorryVec.size());
         roadnet::lorry lorry;
-        lorry.initLine(lineId, lineIdx);
+        lorry.initLine(lineId, lineIdx, ending);
         w.lorryVec.push_back(lorry);
         return lorryId;
     }
 
-    lorryid builder::addLorry(world& w, lineid lineId, uint8_t lineIdx, road_coord where) {
+    lorryid builder::addLorry(world& w, lineid lineId, road_coord starting, road_coord ending) {
         line& line = w.lineVec[lineId.id];
-        if (lineIdx >= line.path.size()) {
-            return lorryid::invalid();
-        }
         if (w.lorryVec.size() >= (size_t)(uint16_t)-1) {
             return lorryid::invalid();
         }
-        if (!where) {
+        if (!starting || !ending) {
             return lorryid::invalid();
         }
-        if (where.id.cross) {
-            road::crossroad& road = w.crossAry[where.id.id];
-            if (road.hasLorry(w, where.offset)) {
+        if (starting.id.cross) {
+            road::crossroad& road = w.crossAry[starting.id.id];
+            if (road.hasLorry(w, starting.offset)) {
                 return lorryid::invalid();
             }
-            lorryid lorryId = createLorry(w, lineId, lineIdx);
-            road.addLorry(w, lorryId, where.offset);
+            lorryid lorryId = createLorry(w, lineId, 0, ending);
+            road.addLorry(w, lorryId, starting.offset);
             return lorryId;
         }
         else {
-            road::straight& road = w.straightAry[where.id.id];
-            if (road.hasLorry(w, where.offset)) {
+            road::straight& road = w.straightAry[starting.id.id];
+            if (road.hasLorry(w, starting.offset)) {
                 return lorryid::invalid();
             }
-            lorryid lorryId = createLorry(w, lineId, lineIdx);
-            road.addLorry(w, lorryId, where.offset);
+            lorryid lorryId = createLorry(w, lineId, 0, ending);
+            road.addLorry(w, lorryId, starting.offset);
             return lorryId;
         }
     }

@@ -80,7 +80,6 @@ local function __new_entity(self, datamodel, typeobject)
         y = y,
         fluid_name = fluid_name,
         state = state,
-        inserter_arrow = iprototype.has_type(typeobject.type, "inserter"), -- TODO: inserter_arrow optimize
     }
 end
 
