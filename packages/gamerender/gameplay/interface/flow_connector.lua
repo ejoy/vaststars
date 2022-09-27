@@ -2,16 +2,26 @@ local iprototype = require "gameplay.interface.prototype"
 
 local get_dir_bit do
     local function get_bit_func()
-        local shift = 0
-        local dir_bit = {}
+        local dir_bit <const> = {
+            N = 0,
+            E = 1,
+            S = 2,
+            W = 3,
+        }
+
+        local ground_bit <const> = {
+            N = 4,
+            E = 5,
+            S = 6,
+            W = 7,
+        }
 
         return function (dir, ground)
-            dir_bit[dir] = dir_bit[dir] or {}
-            if not dir_bit[dir][ground] then
-                shift = shift + 1
-                dir_bit[dir][ground] = shift
+            if ground == true then
+                return ground_bit[dir]
+            else
+                return dir_bit[dir]
             end
-            return dir_bit[dir][ground]
         end
     end
 
@@ -45,7 +55,7 @@ for _, typeobject in pairs(iprototype.each_maintype "entity") do
         local bits = 0
         for _, connection in ipairs(_get_connections(typeobject)) do
             local dir = iprototype.rotate_dir(connection.position[3], entity_dir)
-            bits = bits | (1 << get_dir_bit(typeobject.flow_type, dir, connection.ground ~= nil))
+            bits = bits | (1 << get_dir_bit(typeobject.flow_type, dir, (connection.ground ~= nil or connection.roadside ~= nil ) )) -- TODO: special case for pipe-to-ground and road
 
             -- 
             if connection.ground then
@@ -79,6 +89,16 @@ local function _get_covers(flow_type, pipe_bits)
     return assert(accel[flow_type][r])
 end
 
+local function _get_road_covers(flow_type, pipe_bits)
+    local r = pipe_bits & 0xF
+    for bits in pairs(accel[flow_type]) do
+        if pipe_bits ~= bits and pipe_bits & bits == pipe_bits then
+            r = r | (bits & 0xF)
+        end
+    end
+    return assert(accel[flow_type][r])
+end
+
 local function _get_cleanup(prototype_name, entity_dir)
     local typeobject = assert(iprototype.queryByName("entity", prototype_name))
     local bits = 0
@@ -97,7 +117,12 @@ for prototype_name, t in pairs(prototype_bits) do
     for entity_dir, bits in pairs(t) do
         local typeobject = iprototype.queryByName("entity", prototype_name)
         prototype_covers[prototype_name] = prototype_covers[prototype_name] or {}
-        prototype_covers[prototype_name][entity_dir] = _get_covers(typeobject.flow_type, bits)
+
+        if iprototype.is_road(typeobject.name) then -- TODO: special case for road
+            prototype_covers[prototype_name][entity_dir] = _get_road_covers(typeobject.flow_type, bits)
+        else
+            prototype_covers[prototype_name][entity_dir] = _get_covers(typeobject.flow_type, bits)
+        end
 
         prototype_cleanup[prototype_name] = prototype_cleanup[prototype_name] or {}
         prototype_cleanup[prototype_name][entity_dir] = _get_cleanup(prototype_name, entity_dir)
@@ -131,6 +156,25 @@ function M.covers_pipe_to_ground(flow_type, dir, ground_dir)
     return c.prototype_name, c.entity_dir
 end
 
+-- TODO: spec case for road
+function M.covers_roadside(prototype_name, entity_dir, roadside_dir, v)
+    local prototype_name, dir = M.set_connection(prototype_name, entity_dir, roadside_dir, false)
+    local bits
+    local typeobject = iprototype.queryByName("entity", prototype_name)
+
+    if v == true then
+        bits = assert(prototype_bits[prototype_name][dir])
+        bits = prototype_bits[prototype_name][entity_dir]
+        bits = bits | (1 << get_dir_bit(typeobject.flow_type, roadside_dir, v))
+    else
+        bits = prototype_bits[prototype_name][entity_dir]
+        bits = bits & ~(1 << get_dir_bit(typeobject.flow_type, roadside_dir, v))
+    end
+
+    local c = assert(accel[typeobject.flow_type][bits])
+    return c.prototype_name, c.entity_dir
+end
+
 function M.set_connection(prototype_name, entity_dir, connection_dir, s)
     local covers_prototype_name, covers_dir = M.covers(prototype_name, entity_dir)
 
@@ -141,13 +185,29 @@ function M.set_connection(prototype_name, entity_dir, connection_dir, s)
 
     if s == true then
         bits = prototype_bits[covers_prototype_name][covers_dir]
-        if bits & (1 << get_dir_bit(typeobject.flow_type, connection_dir, false)) == 0 then
+        if bits & (1 << get_dir_bit(typeobject.flow_type, connection_dir, false)) == 0 then -- TODO: special case for pipe-to-ground
             return
         end
         bits = prototype_bits[prototype_name][entity_dir]
         bits = bits | (1 << get_dir_bit(typeobject.flow_type, connection_dir, false))
     else
         bits = prototype_bits[prototype_name][entity_dir]
+        bits = bits & ~(1 << get_dir_bit(typeobject.flow_type, connection_dir, false))
+    end
+    local c = assert(accel[typeobject.flow_type][bits])
+    return c.prototype_name, c.entity_dir
+end
+
+function M.set_road_connection(prototype_name, entity_dir, connection_dir, s)
+    local bits
+    local typeobject = iprototype.queryByName("entity", prototype_name)
+
+    -- & 0xF -- exclude road side
+    if s == true then
+        bits = prototype_bits[prototype_name][entity_dir] & 0xF
+        bits = bits | (1 << get_dir_bit(typeobject.flow_type, connection_dir, false))
+    else
+        bits = prototype_bits[prototype_name][entity_dir] & 0xF
         bits = bits & ~(1 << get_dir_bit(typeobject.flow_type, connection_dir, false))
     end
     local c = assert(accel[typeobject.flow_type][bits])

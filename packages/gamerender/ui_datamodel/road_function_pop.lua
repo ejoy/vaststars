@@ -101,8 +101,7 @@ end
 function M:stage_ui_update(datamodel)
     --
     for _, _, _, dir, oper in pipe_edge_mb:unpack() do
-        print(datamodel.object_id, dir, oper)
-        local object = objects:get(datamodel.object_id)
+        local object = assert(objects:get(datamodel.object_id))
         local succ, x, y = terrain:move_coord(object.x, object.y, dir, 1)
         assert(succ)
         local neighbor = assert(objects:coord(x, y))
@@ -117,12 +116,20 @@ function M:stage_ui_update(datamodel)
         end
 
         if iprototype.is_road(object.prototype_name) then
-            object.prototype_name, object.dir = iflow_connector.set_connection(object.prototype_name, object.dir, dir, connected)
-            assert(object.prototype_name)
-
             if iprototype.is_road(neighbor.prototype_name) then
-                neighbor.prototype_name, neighbor.dir = iflow_connector.set_connection(neighbor.prototype_name, neighbor.dir, iprototype.reverse_dir(dir), connected)
+                object.prototype_name, object.dir = iflow_connector.set_road_connection(object.prototype_name, object.dir, dir, connected)
+                assert(object.prototype_name)
+
+                neighbor.prototype_name, neighbor.dir = iflow_connector.set_road_connection(neighbor.prototype_name, neighbor.dir, iprototype.reverse_dir(dir), connected)
                 assert(neighbor.prototype_name)
+            else
+                if not connected then
+                    object.prototype_name, object.dir = iflow_connector.set_road_connection(object.prototype_name, object.dir, dir, connected)
+                    assert(object.prototype_name)
+                else
+                    object.prototype_name, object.dir = iflow_connector.covers_roadside(object.prototype_name, object.dir, dir, connected)
+                    assert(object.prototype_name)
+                end
             end
         else
             assert(false)
