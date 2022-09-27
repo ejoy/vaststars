@@ -77,7 +77,7 @@ local function _connect_to_neighbor(x, y, State, prototype_name, dir)
 end
 
 -- prototype_name is the prototype_name of the pipe currently being built
-local function _get_covers_fluidbox(prototype_name, object)
+local function _get_covers_connections(prototype_name, object)
     local _prototype_name
     if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
         -- because pipe can replace other pipe
@@ -89,7 +89,7 @@ local function _get_covers_fluidbox(prototype_name, object)
     return ifluid:get_fluidbox(_prototype_name, object.x, object.y, object.dir, object.fluid_name)
 end
 
-local function _set_endpoint_connection(prototype_name, State, object, fluidbox, dir)
+local function _set_endpoint_connection(prototype_name, State, object, connection, dir)
     if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
         _update_fluid_name(State, object.fluid_name, object.fluidflow_id)
 
@@ -105,10 +105,10 @@ local function _set_endpoint_connection(prototype_name, State, object, fluidbox,
             return _prototype_name, _dir
         end
     else
-        if not fluidbox then
+        if not connection then
             State.succ = false
         else
-            _update_fluid_name(State, fluidbox.fluid_name, object.fluidflow_id)
+            _update_fluid_name(State, connection.fluid_name, object.fluidflow_id)
         end
         return object.prototype_name, object.dir
     end
@@ -128,14 +128,14 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     local remove = {}
 
     local from_x, from_y
-    if State.starting_fluidbox then
-        from_x, from_y = State.starting_fluidbox.x, State.starting_fluidbox.y
+    if State.starting_connection then
+        from_x, from_y = State.starting_connection.x, State.starting_connection.y
     else
         from_x, from_y = State.from_x, State.from_y
     end
     local to_x, to_y
-    if State.ending_fluidbox then
-        to_x, to_y = State.ending_fluidbox.x, State.ending_fluidbox.y
+    if State.ending_connection then
+        to_x, to_y = State.ending_connection.x, State.ending_connection.y
     else
         to_x, to_y = State.to_x, State.to_y
     end
@@ -147,7 +147,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
 
         if x == from_x and y == from_y then
             if object then
-                map[coord] = {_set_endpoint_connection(prototype_name, State, object, State.starting_fluidbox, dir)}
+                map[coord] = {_set_endpoint_connection(prototype_name, State, object, State.starting_connection, dir)}
             else
                 local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
                 endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(x, y, State, endpoint_prototype_name, endpoint_dir)
@@ -159,7 +159,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
 
         elseif x == to_x and y == to_y then
             if object then
-                map[coord] = {_set_endpoint_connection(prototype_name, State, object, State.ending_fluidbox, reverse_dir)}
+                map[coord] = {_set_endpoint_connection(prototype_name, State, object, State.ending_connection, reverse_dir)}
             else
                 local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
                 endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(x, y, State, endpoint_prototype_name, endpoint_dir)
@@ -268,7 +268,7 @@ local function _builder_init(self, datamodel)
 
     local function show_indicator(prototype_name, object)
         local succ, dx, dy, obj, _prototype_name, _dir
-        for _, fb in ipairs(_get_covers_fluidbox(prototype_name, object)) do
+        for _, fb in ipairs(_get_covers_connections(prototype_name, object)) do
             succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
             if not succ then
                 goto continue
@@ -307,7 +307,7 @@ local function _builder_init(self, datamodel)
         if not object then
             return true
         end
-        return #_get_covers_fluidbox(prototype_name, object) > 0
+        return #_get_covers_connections(prototype_name, object) > 0
     end
 
     if is_valid_starting(coord_indicator.x, coord_indicator.y) then
@@ -326,15 +326,15 @@ end
 
 -- sort by distance and direction
 -- prototype_name is the prototype_name of the pipe currently being built
-local function _find_starting_fluidbox(prototype_name, object, dx, dy, dir)
-    local fluidboxes = _get_covers_fluidbox(prototype_name, object)
-    assert(#fluidboxes > 0) -- promised by _builder_init()
+local function _find_starting_connection(prototype_name, object, dx, dy, dir)
+    local connections = _get_covers_connections(prototype_name, object)
+    assert(#connections > 0) -- promised by _builder_init()
 
     local function _get_distance(x1, y1, x2, y2)
         return (x1 - x2) ^ 2 + (y1 - y2) ^ 2
     end
 
-    table.sort(fluidboxes, function(a, b)
+    table.sort(connections, function(a, b)
         local dist1 = _get_distance(a.x, a.y, dx, dy)
         local dist2 = _get_distance(b.x, b.y, dx, dy)
         if dist1 < dist2 then
@@ -345,7 +345,7 @@ local function _find_starting_fluidbox(prototype_name, object, dx, dy, dir)
             return ((a.dir == dir) and 0 or 1) < ((b.dir == dir) and 0 or 1)
         end
     end)
-    return fluidboxes[1]
+    return connections[1]
 end
 
 local function _builder_start(self, datamodel)
@@ -361,9 +361,9 @@ local function _builder_start(self, datamodel)
         succ = true,
         fluid_name = "",
         fluidflow_ids = {},
-        starting_fluidbox = nil,
+        starting_connection = nil,
         starting_fluidflow_id = nil,
-        ending_fluidbox = nil,
+        ending_connection = nil,
         ending_fluidflow_id = nil,
         from_x = from_x,
         from_y = from_y,
@@ -372,17 +372,17 @@ local function _builder_start(self, datamodel)
     }
 
     if starting then
-        -- starting object should at least have one fluidbox, promised by _builder_init()
-        local fluidbox = _find_starting_fluidbox(prototype_name, starting, to_x, to_y, dir)
-        State.starting_fluidbox, State.starting_fluidflow_id = fluidbox, starting.fluidflow_id
-        if fluidbox.dir ~= dir then
+        -- starting object should at least have one connection, promised by _builder_init()
+        local connection = _find_starting_connection(prototype_name, starting, to_x, to_y, dir)
+        State.starting_connection, State.starting_fluidflow_id = connection, starting.fluidflow_id
+        if connection.dir ~= dir then
             State.succ = false
         end
 
         local succ
-        succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
-            math_min(math_abs(to_x - fluidbox.x), item.count),
-            math_min(math_abs(to_y - fluidbox.y), item.count)
+        succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
+            math_min(math_abs(to_x - connection.x), item.count),
+            math_min(math_abs(to_y - connection.y), item.count)
         )
         if not succ then
             State.succ = false
@@ -392,21 +392,21 @@ local function _builder_start(self, datamodel)
         if ending then
             if starting.id == ending.id then
                 State.succ = false
-                State.ending_fluidbox, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
+                State.ending_connection, State.ending_fluidflow_id = connection, ending.fluidflow_id
             else
-                for _, another in ipairs(_get_covers_fluidbox(prototype_name, ending)) do
+                for _, another in ipairs(_get_covers_connections(prototype_name, ending)) do
                     if another.dir ~= iprototype.reverse_dir(dir) then
                         goto continue
                     end
-                    succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
-                        math_abs(another.x - fluidbox.x),
-                        math_abs(another.y - fluidbox.y)
+                    succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
+                        math_abs(another.x - connection.x),
+                        math_abs(another.y - connection.y)
                     )
                     if not succ then
                         goto continue
                     end
                     if to_x == another.x and to_y == another.y then
-                        State.ending_fluidbox, State.ending_fluidflow_id = another, ending.fluidflow_id
+                        State.ending_connection, State.ending_fluidflow_id = another, ending.fluidflow_id
                         _builder_end(self, datamodel, State, dir, delta)
                         return
                     end
@@ -420,7 +420,7 @@ local function _builder_start(self, datamodel)
             State.succ = false
         end
         State.to_x, State.to_y = to_x, to_y
-        dir, delta = iprototype.calc_dir(fluidbox.x, fluidbox.y, to_x, to_y)
+        dir, delta = iprototype.calc_dir(connection.x, connection.y, to_x, to_y)
         _builder_end(self, datamodel, State, dir, delta)
         return
     else
@@ -441,7 +441,7 @@ local function _builder_start(self, datamodel)
 
         local ending = objects:coord(to_x, to_y, EDITOR_CACHE_NAMES)
         if ending then
-            for _, fluidbox in ipairs(_get_covers_fluidbox(prototype_name, ending)) do
+            for _, fluidbox in ipairs(_get_covers_connections(prototype_name, ending)) do
                 if fluidbox.dir ~= iprototype.reverse_dir(dir) then
                     goto continue
                 end
@@ -453,7 +453,7 @@ local function _builder_start(self, datamodel)
                     goto continue
                 end
                 if to_x == fluidbox.x and to_y == fluidbox.y then
-                    State.ending_fluidbox, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
+                    State.ending_connection, State.ending_fluidflow_id = fluidbox, ending.fluidflow_id
                     _builder_end(self, datamodel, State, dir, delta)
                     return
                 end

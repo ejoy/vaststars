@@ -5,7 +5,9 @@ local function prototype_road(name)
     return function (object)
         assert(object.crossing)
 
-        local len = (1 << #object.crossing) - 1
+        local connections = object.crossing.connections
+        local len = (1 << #connections) - 1
+
         for i = 0, len do
             local o = {}
             for k, v in pairs(object) do
@@ -15,7 +17,6 @@ local function prototype_road(name)
             end
             o.crossing = { connections = {} }
 
-            local connections = object.crossing.connections
             for j = 1, #connections do
                 local roadside
                 if i & (1 << (j - 1)) ~= 0 then
