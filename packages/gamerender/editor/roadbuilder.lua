@@ -18,6 +18,7 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local math_abs = math.abs
 local math_min = math.min
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+local task = ecs.require "task"
 
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
@@ -522,6 +523,8 @@ local function complete(self, datamodel)
 
     datamodel.show_laying_road_begin = false
     datamodel.show_construct_complete = false
+
+    task.update_progress("routemap")
 end
 
 local function laying_pipe_begin(self, datamodel)
