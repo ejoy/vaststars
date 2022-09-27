@@ -16,15 +16,15 @@ local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
 local cam_target = math3d.ref()
 local cam_dir = math3d.ref()
 local cam_pos = math3d.ref()
-local cam_euler
 local cam_dist = 0
+local max_dist = 220
+local min_dist = 100
+local zoom_speed = 2
+local cam_euler
 local pitch_offset = 0
 local max_pitch = 15
 local min_pitch = -25
 local pitch_speed = 0.5
-local max_dist = 220
-local min_dist = 100
-local zoom_speed = 2
 local last_y
 local last_pitch = 0
 local function ray_hit_plane(ray, plane_info)
@@ -165,16 +165,11 @@ function dragdrop_camera_sys:camera_usage()
         zoom(ce, delta)
     end
     
-    local function _get_vmin(w, h, ratio)
-        local w = w / ratio
-        local h = h / ratio
-        return math.min(w, h)
-    end
     for _, _, left, top, object_id in ui_message_move_camera_mb:unpack() do
         local vsobject = assert(vsobject_manager:get(object_id))
         local mq = w:first("main_queue render_target:in")
         local vr = mq.render_target.view_rect
-        local vmin = _get_vmin(vr.w, vr.h, vr.ratio)
+        local vmin = math.min(vr.w / vr.ratio, vr.h / vr.ratio)
         local pos = camera.screen_to_world(left / 100 * vmin, top / 100 * vmin, PLANES)[1]
         local delta = math3d.set_index(math3d.sub(vsobject:get_position(), pos), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
         camera.move({t = math3d.add(delta, cam_pos)})
