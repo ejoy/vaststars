@@ -307,7 +307,7 @@ function M:create(object_id)
     local datamodel = {
         object_id = object_id,
         icon = typeobject.icon,
-        prototype_name = object.prototype_name
+        prototype_name = iprototype.show_prototype_name(typeobject)
     }
     update_property_list(datamodel, get_entity_property_list(object_id))
     return datamodel
