@@ -149,7 +149,7 @@ local function touch_move(self, datamodel, delta_vec)
             datamodel.show_confirm = false
             return
         end
-        
+
         if not self:check_construct_detector(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) then
             pickup_object.state = _get_state(pickup_object.prototype_name, false)
             datamodel.show_confirm = false
@@ -158,7 +158,7 @@ local function touch_move(self, datamodel, delta_vec)
 
         pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) -- TODO: maybe set recipt according to entity type?
         _update_fluid_name(self, datamodel, pickup_object, false, coord[1], coord[2], pickup_object.dir)
-        
+
         -- update temp pole
         if typeobject.supply_area and typeobject.supply_distance then
             local aw, ah = iprototype.unpackarea(typeobject.area)
