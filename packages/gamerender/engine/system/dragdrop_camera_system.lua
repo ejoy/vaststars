@@ -5,14 +5,14 @@ local w = world.w
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local math3d = require "math3d"
 local camera = ecs.require "engine.camera"
-
+local vsobject_manager = ecs.require "vsobject_manager"
 local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local PLANES <const> = {YAXIS_PLANE}
 local dragdrop_camera_sys = ecs.system "dragdrop_camera_system"
 local single_touch_mb = world:sub {"single_touch"}
 local mouse_wheel_mb    = world:sub {"mouse_wheel"}
 local mouse_mb    = world:sub {"mouse"}
-
+local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
 local cam_target = math3d.ref()
 local cam_dir = math3d.ref()
 local cam_pos = math3d.ref()
@@ -69,6 +69,10 @@ local down_cam_dist
 local last_move_x, last_move_y
 local last_move_x2, last_move_y2
 local zoom_mode = false
+local function update_camera_position(delta)
+    cam_pos.v = math3d.add(cam_pos, delta)
+    cam_target.v = math3d.add(cam_target, delta)
+end
 function dragdrop_camera_sys:camera_usage()
     local mq = w:first("main_queue camera_ref:in")
     local ce <close> = w:entity(mq.camera_ref)
@@ -127,9 +131,8 @@ function dragdrop_camera_sys:camera_usage()
             local pos = camera.screen_to_world(last_move_x, last_move_y, PLANES)[1]
             local delta = math3d.sub(begin_pos, pos)
             iom.move_delta(ce, delta)
+            update_camera_position(delta)
             world:pub {"dragdrop_camera", math3d.ref(delta)}
-            cam_pos.v = math3d.add(cam_pos, delta)
-            cam_target.v = math3d.add(cam_target, delta)
         end
     elseif delta_dist then
         zoom(ce, delta_dist)
@@ -160,5 +163,21 @@ function dragdrop_camera_sys:camera_usage()
     --zoom in/out
     for _, delta in mouse_wheel_mb:unpack() do
         zoom(ce, delta)
+    end
+    
+    local function _get_vmin(w, h, ratio)
+        local w = w / ratio
+        local h = h / ratio
+        return math.min(w, h)
+    end
+    for _, _, left, top, object_id in ui_message_move_camera_mb:unpack() do
+        local vsobject = assert(vsobject_manager:get(object_id))
+        local mq = w:first("main_queue render_target:in")
+        local vr = mq.render_target.view_rect
+        local vmin = _get_vmin(vr.w, vr.h, vr.ratio)
+        local pos = camera.screen_to_world(left / 100 * vmin, top / 100 * vmin, PLANES)[1]
+        local delta = math3d.set_index(math3d.sub(vsobject:get_position(), pos), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
+        camera.move({t = math3d.add(delta, cam_pos)})
+        update_camera_position(delta)
     end
 end
