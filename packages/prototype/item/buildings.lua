@@ -80,6 +80,36 @@ prototype "大铁制箱子I" {
     order = 14,
 }
 
+prototype "修路设备箱" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/road_box.texture",
+    model = "prefabs/rock.prefab",
+    description = "修建道路的专用设备",
+    group = "物流",
+    order = 16,
+}
+
+prototype "管道设备箱" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/pipe_box.texture",
+    model = "prefabs/rock.prefab",
+    description = "修建道路的专用设备",
+    group = "物流",
+    order = 18,
+}
+
+prototype "电网设备箱" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/pole_box.texture",
+    model = "prefabs/rock.prefab",
+    description = "修建道路的专用设备",
+    group = "物流",
+    order = 20,
+}
+
 prototype "物流派送站" {
     type = {"item"},
     stack = 25,
