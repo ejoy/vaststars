@@ -261,7 +261,7 @@ prototype_road "砖石公路-U型-%02d" {
     }
 }
 
-prototype "修路设备箱" {
+prototype "道路设备箱" {
     model = "prefabs/small-chest.prefab",
     icon = "textures/building_pic/small_pic_chest.texture",
     background = "textures/build_background/pic_chest.texture",

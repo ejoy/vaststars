@@ -80,7 +80,7 @@ prototype "大铁制箱子I" {
     order = 14,
 }
 
-prototype "修路设备箱" {
+prototype "道路设备箱" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/road_box.texture",
