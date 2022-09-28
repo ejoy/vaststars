@@ -136,6 +136,7 @@ prototype "科研中心I" {
 
 prototype_road "砖石公路-I型-%02d" {
     model = "prefabs/road/road_I.prefab",
+    show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
@@ -156,6 +157,7 @@ prototype_road "砖石公路-I型-%02d" {
 
 prototype_road "砖石公路-L型-%02d" {
     model = "prefabs/road/road_L.prefab",
+    show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
@@ -176,6 +178,7 @@ prototype_road "砖石公路-L型-%02d" {
 
 prototype_road "砖石公路-T型-%02d" {
     model = "prefabs/road/road_T.prefab",
+    show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
@@ -196,7 +199,7 @@ prototype_road "砖石公路-T型-%02d" {
 }
 
 prototype_road "砖石公路-X型-%02d" {
-    show_prototype_name = "砖石公路",
+    show_prototype_name = "砖石公路-I型",
     model = "prefabs/road/road_X.prefab",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
@@ -220,6 +223,7 @@ prototype_road "砖石公路-X型-%02d" {
 
 prototype "砖石公路-O型-01" {
     model = "prefabs/road/road_O.prefab",
+    show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
@@ -239,6 +243,7 @@ prototype "砖石公路-O型-01" {
 
 prototype_road "砖石公路-U型-%02d" {
     model = "prefabs/road/road_U.prefab",
+    show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
@@ -254,4 +259,34 @@ prototype_road "砖石公路-U型-%02d" {
             {type="input-output", position={0,0,"N"}},
         },
     }
+}
+
+prototype "修路设备箱" {
+    model = "prefabs/small-chest.prefab",
+    icon = "textures/building_pic/small_pic_chest.texture",
+    background = "textures/build_background/pic_chest.texture",
+    construct_detector = {"exclusive"},
+    type = {"entity"},
+    area = "1x1",
+    supply_area = "21x21",
+}
+
+prototype "管道设备箱" {
+    model = "prefabs/small-chest.prefab",
+    icon = "textures/building_pic/small_pic_chest.texture",
+    background = "textures/build_background/pic_chest.texture",
+    construct_detector = {"exclusive"},
+    type = {"entity"},
+    area = "1x1",
+    supply_area = "21x21",
+}
+
+prototype "电网设备箱" {
+    model = "prefabs/small-chest.prefab",
+    icon = "textures/building_pic/small_pic_chest.texture",
+    background = "textures/build_background/pic_chest.texture",
+    construct_detector = {"exclusive"},
+    type = {"entity"},
+    area = "1x1",
+    supply_area = "21x21",
 }
