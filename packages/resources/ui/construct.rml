@@ -250,6 +250,7 @@
                 construct_menu = {},
                 manual_queue = {},
 
+                show_construct_menu = true,        -- 是否显示右侧建造菜单
                 cur_construct_menu = "",  -- 当前选中的二级建造菜单名
                 cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
                 show_load_resource = false,
@@ -322,6 +323,10 @@
             end
             function start.clickConstructMenuItem(event, prototype_name)
                 ui_sys.pub {"construct_entity", prototype_name}
+                start.show_construct_menu = false
+            end
+            function start.showConstructMenu(event)
+                start.show_construct_menu = true
             end
             function start.clickHeadquater(event)
                 ui_sys.pub {"headquater"}
@@ -607,7 +612,7 @@
             </div>
 
             <!-- 右边菜单 -->
-            <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="guide_progress >= 10">
+            <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="show_construct_menu && guide_progress >= 10">
                 <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;" data-if="cur_edit_mode == 'construct'" >
                     <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name ? 'rgb(0, 176, 80)' : 'rgb(246, 142, 14)'">
                         <div class="workbutton-bg" data-style-background-image = "it.icon" />
@@ -628,6 +633,9 @@
                     </div>
                 </div>
             </div>
+            <button style = "background-color: green; width: 100px; height: 50px; left: 95%; top: 40%;" data-event-click="showConstructMenu()" data-if="!show_construct_menu">
+                <div>显示菜单</div>
+            </button>
         </div>
     </body>
 </rml>
