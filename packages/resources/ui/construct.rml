@@ -306,6 +306,7 @@
             function start.clickConstructComplete(event)
                 start.cur_edit_mode = ''
                 ui_sys.pub {"construct_complete"}
+                start.show_construct_menu = true
             end
             function start.clickTeardownComplete(event)
                 start.cur_edit_mode = ''
@@ -317,6 +318,7 @@
                     start.cur_edit_mode = ''
                     ui_sys.pub {"cancel", true}
                 end
+                start.show_construct_menu = true
             end
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
