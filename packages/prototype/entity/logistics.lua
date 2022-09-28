@@ -267,8 +267,8 @@ prototype "修路设备箱" {
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"entity"},
-    area = "1x1",
-    supply_area = "21x21",
+    area = "2x2",
+    supply_area = "20x20",
 }
 
 prototype "管道设备箱" {
@@ -277,8 +277,8 @@ prototype "管道设备箱" {
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"entity"},
-    area = "1x1",
-    supply_area = "21x21",
+    area = "2x2",
+    supply_area = "20x20",
 }
 
 prototype "电网设备箱" {
@@ -287,6 +287,6 @@ prototype "电网设备箱" {
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"entity"},
-    area = "1x1",
-    supply_area = "21x21",
+    area = "2x2",
+    supply_area = "20x20",
 }
