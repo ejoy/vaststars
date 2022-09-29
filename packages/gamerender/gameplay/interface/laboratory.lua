@@ -40,7 +40,7 @@ function M:place_material(world, e)
     local tech_ingredients = irecipe.get_elements(tech_typeobject.ingredients)
     local laboratory_item_counts = {}
     for i, v in ipairs(tech_ingredients) do
-        local c, n = world:container_get(e.laboratory.container, i)
+        local c, n = iworld.chest_get(world, e.laboratory.chest, i)
         if c then
             local count = v.count
             if n < count then
@@ -61,13 +61,7 @@ function M:place_material(world, e)
         if headquater_item_counts[id] then
             local c = math.min(headquater_item_counts[id], count)
             if c > 0 then
-                if not iworld.base_container_pickup(world, id, c) then
-                    log.error(("failed to pickup `%s` `%s`"):format(id, c))
-                else
-                    if not world:container_place(e.laboratory.container, id, c) then
-                        log.error(("failed to place `%s` `%s`"):format(id, c))
-                    end
-                end
+                iworld.base_chest_pickup_place(world, e.laboratory.chest, id, c, true)
             end
         end
     end

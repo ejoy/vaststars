@@ -9,6 +9,7 @@ local start = ui_sys.createDataMode("start", {
     sub_inventory = {},
     cur_item_category = "",
     item_info = {},
+    entities = {},
     item_prototype_name = "",
 
     max_slot_count = 0,
@@ -20,7 +21,6 @@ local start = ui_sys.createDataMode("start", {
 
 function start.ClickBuilding(event)
     start.show = not start.show
-    console.log("---ClickBuilding---")
 end
 
 function start.ClickBack(event)
@@ -46,7 +46,7 @@ local function update_category(category)
         start.slot_count = math.max(start.max_slot_count, start.slot_count)
     end
     start("sub_inventory")
-    
+
     -- <!-- tag page begin -->
     start.page:on_dirty_all(start.slot_count)
     start.page:show_detail(select_item_index, true)
@@ -66,7 +66,8 @@ end
 
 function start.clickToChest(event, index)
     if start.sub_inventory[index] then
-        ui_sys.pub {"to_chest", start.object_id, start.sub_inventory[index].id}
+        local i = start.sub_inventory[index]
+        ui_sys.pub {"to_chest", start.object_id, i.id, i.count}
         -- <!-- tag page begin -->
         start.page:show_detail(select_item_index, false)
         select_item_index = nil
@@ -76,7 +77,8 @@ end
 
 function start.clickToHeadquater(event, index)
     if start.sub_inventory[index] then
-        ui_sys.pub {"to_headquater", start.object_id, start.sub_inventory[index].id}
+        local i = start.sub_inventory[index]
+        ui_sys.pub {"to_headquater", start.object_id, i.id, i.count}
         -- <!-- tag page begin -->
         start.page:show_detail(select_item_index, false)
         select_item_index = nil
@@ -105,9 +107,7 @@ end
 local function page_item_update(item, index)
     item.removeEventListener('click')
     if index > #start.sub_inventory then
-        --if index <= start.slot_count then
-            item.outerHTML = '<div class="item" style="width:100%; height:100%;"/>'
-        --end
+        item.outerHTML = '<div class="item" style="width:100%; height:100%;"/>'
         if index <= start.slot_count then
             item.addEventListener('click', start.clickBlankSlot)
         else
@@ -136,14 +136,10 @@ local function page_item_update(item, index)
     end
 end
 
-local function page_item_init(item, index)
-    -- item.style.width = '14.07vmin'
-    -- item.style.height = '14.07vmin'
-    page_item_update(item, index)
-end
+local page_item_init = page_item_update
 
 local function page_item_detail_renderer(index)
-    if start.is_headquater then -- only normal box would show item's detail
+    if start.is_headquater then -- only normal chest would show item's detail
         return
     end
     local detail = document.createElement "div"

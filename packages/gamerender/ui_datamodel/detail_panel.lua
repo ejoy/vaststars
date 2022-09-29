@@ -7,6 +7,7 @@ local gameplay_core = require "gameplay.core"
 local itypes = require "gameplay.interface.types"
 local irecipe = require "gameplay.interface.recipe"
 local ilaboratory = require "gameplay.interface.laboratory"
+local iworld = require "gameplay.interface.world"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
 
 local function format_vars(fmt, vars)
@@ -231,7 +232,7 @@ local function get_entity_property_list(object_id)
     end
 
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    
+
     local entity = get_property(e, typeobject)
     local property_list = get_property_list(entity)
     if e.mining then
@@ -241,30 +242,29 @@ local function get_entity_property_list(object_id)
             local recipe_typeobject = assert(iprototype.queryById(e.assembling.recipe))
             total_progress = recipe_typeobject.time * 100
             progress = e.assembling.progress
+
+            local recipe_results = irecipe.get_elements(recipe_typeobject.results)
+            for index, v in ipairs(recipe_results) do
+                local c, n = iworld.chest_get(gameplay_core.get_world(), e.assembling.chest_out, index)
+                if c then
+                    property_list.minner_info = {icon = v.icon, count = n, need_count = v.count}
+                else
+                    property_list.minner_info = {icon = v.icon, count = 0, need_count = v.count}
+                end
+                break
+            end
         end
         if e.assembling.status == STATUS_IDLE then
             property_list.minner_progress = "0%"
         else
             property_list.minner_progress = itypes.progress_str(progress, total_progress)
         end
-        
-        local recipe_typeobject = iprototype.queryById(e.assembling.recipe)
-        local recipe_ingredients = irecipe.get_elements(recipe_typeobject.ingredients)
-        local recipe_results = irecipe.get_elements(recipe_typeobject.results)
-        for index, v in ipairs(recipe_results) do
-            local c, n = gameplay_core.get_world():container_get(e.assembling.container, #recipe_ingredients + index)
-            if c then
-                property_list.minner_info = {icon = v.icon, count = n, need_count = v.count}
-            else
-                property_list.minner_info = {icon = v.icon, count = 0, need_count = v.count}
-            end
-            break
-        end
+
     elseif e.laboratory then
         local current_inputs = ilaboratory:get_elements(typeobject.inputs)
         local items = {}
         for i, value in ipairs(current_inputs) do
-            local c, n = gameplay_core.get_world():container_get(e.laboratory.container, i)
+            local c, n = iworld.chest_get(gameplay_core.get_world(), e.laboratory.chest, i)
             items[#items+1] = {icon = value.icon, count = n or 0}
         end
         property_list.chest_list0 = items
@@ -307,7 +307,7 @@ function M:create(object_id)
     local datamodel = {
         object_id = object_id,
         icon = typeobject.icon,
-        prototype_name = object.prototype_name
+        prototype_name = iprototype.show_prototype_name(typeobject)
     }
     update_property_list(datamodel, get_entity_property_list(object_id))
     return datamodel

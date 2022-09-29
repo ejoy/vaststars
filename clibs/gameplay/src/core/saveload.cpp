@@ -26,6 +26,7 @@ namespace lua_world {
     template <typename T>
     void file_write(FILE* f, const T& v) {
         size_t n = fwrite(&v, sizeof(T), 1, f);
+        (void)n;
         assert(n == 1);
     }
 
@@ -33,6 +34,7 @@ namespace lua_world {
     T file_read(FILE* f) {
         T v;
         size_t n = fread(&v, sizeof(T), 1, f);
+        (void)n;
         assert(n == 1);
         return std::move(v);
     }
@@ -40,6 +42,7 @@ namespace lua_world {
     template <typename T>
     void file_read(FILE* f, T& v) {
         size_t n = fread(&v, sizeof(T), 1, f);
+        (void)n;
         assert(n == 1);
     }
 
@@ -49,6 +52,7 @@ namespace lua_world {
             return;
         }
         size_t n = fwrite(v, sizeof(T), sz, f);
+        (void)n;
         assert(n == sz);
     }
 
@@ -58,6 +62,7 @@ namespace lua_world {
             return;
         }
         size_t n = fread(v, sizeof(T), sz, f);
+        (void)n;
         assert(n == sz);
     }
 
@@ -240,35 +245,20 @@ namespace lua_world {
         return 0;
     }
 
-    namespace sav_container {
+    namespace sav_chest {
         struct header {
             uint16_t chest_size;
-            uint16_t recipe_size;
-        };
-
-        struct chest_header {
-            uint16_t used;
-            uint16_t size;
         };
 
         static void backup(lua_State* L, world& w) {
             FILE* f = createfile(L, 2, filemode::write);
             header h {
-                (uint16_t)w.containers.chest.size(),
-                (uint16_t)w.containers.recipe.size(),
+                (uint16_t)w.chests.size(),
             };
             file_write(f, h);
-            for (auto const& c : w.containers.chest) {
-                chest_header chest_h {
-                    c.used,
-                    c.size,
-                };
-                file_write(f, chest_h);
+            for (auto const& c : w.chests) {
+                file_write(f, c.type_);
                 write_vector(f, c.slots);
-            }
-            for (auto const& c : w.containers.recipe) {
-                write_vector(f, c.inslots);
-                write_vector(f, c.outslots);
             }
             fclose(f);
         }
@@ -276,29 +266,22 @@ namespace lua_world {
         static void restore(lua_State* L, world& w) {
             FILE* f = createfile(L, 2, filemode::read);
             auto h = file_read<header>(f);
-            w.containers.chest.resize(h.chest_size);
-            w.containers.recipe.resize(h.recipe_size);
-            for (auto& c : w.containers.chest) {
-                auto chest_h = file_read<chest_header>(f);
-                c.used = chest_h.used;
-                c.size = chest_h.size;
+            w.chests.resize(h.chest_size, {chest::type::none, nullptr, 0});
+            for (auto& c : w.chests) {
+                file_read(f, c.type_);
                 read_vector(f, c.slots);
-            }
-            for (auto& c : w.containers.recipe) {
-                read_vector(f, c.inslots);
-                read_vector(f, c.outslots);
             }
             fclose(f);
         }
     }
-    int backup_container(lua_State* L) {
+    int backup_chest(lua_State* L) {
         world& w = *(world*)lua_touserdata(L, 1);
-        sav_container::backup(L, w);
+        sav_chest::backup(L, w);
         return 0;
     }
-    int restore_container(lua_State* L) {
+    int restore_chest(lua_State* L) {
         world& w = *(world*)lua_touserdata(L, 1);
-        sav_container::restore(L, w);
+        sav_chest::restore(L, w);
         return 0;
     }
 }

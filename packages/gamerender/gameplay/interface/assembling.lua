@@ -19,20 +19,20 @@ function M.pickup_material(world, e)
 
     local recipe = e.assembling.recipe
     local typeobject = iprototype.queryById(recipe)
-    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
     local recipe_results = irecipe.get_elements(typeobject.results)
 
     local items = {}
     for i = 1, #recipe_results do
-        local c, n = world:container_get(e.assembling.container, #recipe_ingredients + i)
+        local c, n = iworld.chest_get(world, e.assembling.chest_out, i)
         if c then
             local item_typeobject = iprototype.queryById(c)
             if iprototype.queryByName("item", item_typeobject.name) then
-                if not world:container_pickup(e.assembling.container, c, n) then
+                if not iworld.chest_pickup(world, e.assembling.chest_out, c, n) then
                     log.error(("failed to pickup `%s` `%s`"):format(c, n))
                 else
-                    if not iworld.base_container_place(world, c, n) then
-                        log.error(("failed to place `%s` `%s`"):format(n, c))
+                    local r = iworld.base_chest_place(world, c, n)
+                    if r ~= 0 then
+                        log.error(("failed to place `%s` `%s` `%s`"):format(n, c, r))
                     else
                         items[#items + 1] = {name = item_typeobject.name, count = n, icon = item_typeobject.icon}
                     end
@@ -62,7 +62,7 @@ function M.place_material(world, e)
 
     local assembling_item_counts = {}
     for i, v in ipairs(recipe_ingredients) do
-        local c, n = world:container_get(e.assembling.container, i)
+        local c, n = iworld.chest_get(world, e.assembling.chest_in, i)
         if c then
             local count = v.count
             if n < count then
@@ -83,11 +83,12 @@ function M.place_material(world, e)
         if headquater_item_counts[id] then
             local c = math.min(headquater_item_counts[id], count)
             if c > 0 then
-                if not iworld.base_container_pickup(world, id, c) then
+                if not iworld.base_chest_pickup(world, id, c) then
                     log.error(("failed to pickup `%s` `%s`"):format(id, c))
                 else
-                    if not world:container_place(e.assembling.container, id, c) then
-                        log.error(("failed to place `%s` `%s`"):format(id, c))
+                    local r = iworld.chest_place(world, e.assembling.chest_in, id, c)
+                    if r ~= 0 then
+                        log.error(("failed to place `%s` `%s` `%s`"):format(id, c, r))
                     end
                 end
             end
@@ -113,8 +114,16 @@ function M.item_counts(world, e)
     local recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
     local recipe_results = irecipe.get_elements(typeobject.results)
 
-    for i = 1, #recipe_ingredients + #recipe_results do
-        local c, n = world:container_get(e.assembling.container, i)
+    for i = 1, #recipe_ingredients do
+        local c, n = iworld.chest_get(world, e.assembling.chest_in, i)
+        if c then
+            local item_typeobject = iprototype.queryById(c)
+            r[item_typeobject.name] = n
+        end
+    end
+
+    for i = 1, #recipe_results do
+        local c, n = iworld.chest_get(world, e.assembling.chest_out, i)
         if c then
             local item_typeobject = iprototype.queryById(c)
             r[item_typeobject.name] = n
@@ -135,11 +144,10 @@ function M.has_result(world, e)
     end
 
     local typeobject = iprototype.queryById(recipe)
-    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients) -- TODO: optimize, no need to get ingredients & results every time?
     local recipe_results = irecipe.get_elements(typeobject.results)
 
     for i = 1, #recipe_results do
-        if world:container_get(e.assembling.container, #recipe_ingredients + i) then
+        if iworld.chest_get(world, e.assembling.chest_out, i) then
             return true
         end
     end
@@ -158,17 +166,16 @@ function M.need_ingredients(world, e)
     end
 
     local typeobject = iprototype.queryById(recipe)
-    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients) -- TODO: optimize, no need to get ingredients & results every time?
+    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
 
     local headquater_item_counts = iworld.base_chest(world)
     for i = 1, #recipe_ingredients do
-        local id, c = world:container_get(e.assembling.container, i)
+        local id, c = iworld.chest_get(world, e.assembling.chest_in, i)
         if not id then
             if headquater_item_counts[recipe_ingredients[i].id] then
                 return true
             end
         else
-            assert(id == recipe_ingredients[i].id) -- TODO: remove this assert
             if c < recipe_ingredients[i].count and headquater_item_counts[id] then
                 return true
             end

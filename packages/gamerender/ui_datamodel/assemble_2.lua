@@ -4,6 +4,7 @@ local objects = require "objects"
 local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
 local itypes = require "gameplay.interface.types"
+local iworld = require "gameplay.interface.world"
 
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
@@ -93,24 +94,22 @@ function M:stage_ui_update(datamodel, object_id)
 
     local recipe_ingredients_count = {}
     local recipe_results_count = {}
-    if e.assembling.container ~= 0xFFFF then
-        for index, v in ipairs(datamodel.recipe_ingredients) do
-            local c, n = gameplay_core.get_world():container_get(e.assembling.container, index)
-            if c then
-                recipe_ingredients_count[index] = {icon = v.icon, count = n, need_count = v.count}
-            else
-                recipe_ingredients_count[index] = {icon = v.icon, count = 0, need_count = v.count}
-            end
+    for index, v in ipairs(datamodel.recipe_ingredients) do
+        local c, n = iworld.chest_get(gameplay_core.get_world(), e.assembling.chest_in, index)
+        if c then
+            recipe_ingredients_count[index] = {icon = v.icon, count = n, need_count = v.count}
+        else
+            recipe_ingredients_count[index] = {icon = v.icon, count = 0, need_count = v.count}
         end
+    end
 
-        for index, v in ipairs(datamodel.recipe_results) do
-            local c, n = gameplay_core.get_world():container_get(e.assembling.container, #datamodel.recipe_ingredients + index)
-            if c then
-                recipe_results_count[index] = {icon = v.icon, count = n, need_count = v.count}
-            else
-                recipe_results_count[index] = {icon = v.icon, count = 0, need_count = v.count}
+    for index, v in ipairs(datamodel.recipe_results) do
+        local c, n = iworld.chest_get(gameplay_core.get_world(), e.assembling.chest_out, index)
+        if c then
+            recipe_results_count[index] = {icon = v.icon, count = n, need_count = v.count}
+        else
+            recipe_results_count[index] = {icon = v.icon, count = 0, need_count = v.count}
 
-            end
         end
     end
 

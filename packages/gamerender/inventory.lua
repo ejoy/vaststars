@@ -72,14 +72,15 @@ local function complete(self)
                 goto continue
             end
 
-            if not iworld.base_container_pickup(gameplay_core.get_world(), item.prototype, dec) then
+            if not iworld.base_chest_pickup(gameplay_core.get_world(), item.prototype, dec) then
                 log.error("can not pickup item", iprototype.queryById(item.prototype).name, dec)
                 return false
             end
         else
             local inc = item.count - original.count
-            if not iworld.base_container_place(gameplay_core.get_world(), item.prototype, inc) then
-                log.error("can not place item", iprototype.queryById(item.prototype).name, inc)
+            local r = iworld.base_chest_place(gameplay_core.get_world(), item.prototype, inc)
+            if r ~= 0 then
+                log.error("can not place item `%s` `%s` `%s`", iprototype.queryById(item.prototype).name, inc, r)
                 return false
             end
         end
@@ -110,6 +111,27 @@ local function decrease(self, prototype, count)
     end
 
     item.count = item.count - count
+    return true
+end
+
+local function increase(self, prototype, count)
+    if _VASTSTARS_DEBUG_INFINITE_ITEM then
+        return true
+    end
+
+    local function clone(item) -- TODO: maybe have a better way to clone?
+        local new = {}
+        new.prototype = item.prototype
+        new.count = item.count
+        return new
+    end
+
+    local item = self._inventory:modify(CACHE_NAMES, prototype, clone)
+    if not item then
+        return false
+    end
+
+    item.count = item.count + count
     return true
 end
 
@@ -145,6 +167,7 @@ return function ()
 
     M.flush = flush
     M.get = get
+    M.increase = increase
     M.decrease = decrease
     M.modity = modity
     M.revert = revert

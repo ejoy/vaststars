@@ -60,15 +60,21 @@ end
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
 
-function burner:ctor(init, pt)
-    local recipe = assert(prototype.queryByName("recipe", init.recipe))
-	local id = self:container_create("assembling", recipe.ingredients, recipe.results)
-	if init.items then
-        for _, item in pairs(init.items) do
-            local what = prototype.queryByName("item", item[1])
-            self:container_place(id, what.id, item[2])
-        end
+local function createChest(s)
+    local chest = {}
+    for idx = 2, #s//4 do
+        local id, n = string.unpack("<I2I2", s, 4*idx-3)
+        local limit = n * 2
+        chest[#chest+1] = string.pack("<I2I2I2I2", 0, id, 0, limit)
     end
+    return table.concat(chest)
+end
+
+function burner:ctor(init, pt)
+    local world = self
+    local recipe = assert(prototype.queryByName("recipe", init.recipe))
+	local chest_in = createChest(recipe.ingredients)
+	local chest_out = createChest(recipe.results)
 	return {
 		capacitance = {
 			shortage = pt.capacitance,
@@ -77,7 +83,8 @@ function burner:ctor(init, pt)
 		},
 		burner = {
             recipe = recipe.id,
-            container = id,
+            chest_in = world:container_create("blue", chest_in),
+            chest_out = world:container_create("red", chest_out),
             progress = STATUS_IDLE,
 		}
 	}

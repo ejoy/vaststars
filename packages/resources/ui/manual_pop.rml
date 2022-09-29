@@ -176,7 +176,7 @@
                 end
                 ui_sys.pub {"manual_add", start.recipe_name, start.manual_crafting_times}
                 ui_sys.close()
-                ui_sys.close("inventory.rml")
+                ui_sys.close("chest.rml")
             end
 
             local enabled_item_count <const> = {

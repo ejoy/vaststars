@@ -15,7 +15,7 @@ local prototype = gameplay.register.prototype
     desc = "清除指挥中心附近的3处废墟",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"unknown", 0, "铁齿轮"},
+    task = {"unknown", 0},
     prerequisites = {},
     count = 3,
     tips_pic = {
@@ -25,6 +25,24 @@ local prototype = gameplay.register.prototype
     },
     sign_desc = {
       { desc = "清除指挥中心附近的3处废墟", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "修复阻断公路" {
+    desc = "放置1座科研中心",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 1},
+    task_params = {starting = {117, 125}, ending = {135, 125}},
+    prerequisites = {"清除废墟"},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_road1.texture",
+      "textures/task_tips_pic/task_place_road2.texture",
+      "textures/task_tips_pic/task_place_road3.texture",
+    },
+    sign_desc = {
+      { desc = "使用“建造”放置8段道路使得道路联通", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -161,6 +179,9 @@ prototype "放置组装机" {
     { desc = "使用“建造”放置2台组装机", icon = "textures/construct/industry.texture"},
   },
 }
+
+
+
 
 prototype "自动化生产" {
   desc = "自动化生产科技包用于科技研究",
@@ -671,6 +692,21 @@ prototype "基地生产2" {
   sign_icon = "textures/science/tech-cycle.texture",
 }
 
+prototype "维修运输汽车" {
+  desc = "维修运输车参与物流",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"stat_consumption", 0, "破损运输车辆"},
+  prerequisites = {"基地生产2"},
+  count = 4,
+  tips_pic = {
+    "textures/task_tips_pic/task_repair_chemicalplant1.texture",
+  },
+  sign_desc = {
+    { desc = "使用组装机或制造舱维修4辆破损运输车辆", icon = "textures/construct/industry.texture"},
+  },
+}
+
 prototype "维修化工厂" {
   desc = "维修化工厂生成化工原料",
   icon = "textures/construct/industry.texture",
@@ -770,7 +806,7 @@ prototype "电磁学1" {
   effects = {
     unlock_recipe = {"电动机1"},
   },
-  prerequisites = {"生产塑料","基地生产2","排放"},
+  prerequisites = {"生产塑料","维修运输汽车","排放"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},

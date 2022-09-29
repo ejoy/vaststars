@@ -32,18 +32,6 @@ function m.set_multiple(n)
     m.multiple = n
 end
 
-function m.container_get(...)
-    return world:container_get(...)
-end
-
-function m.container_pickup(...)
-    return world:container_pickup(...)
-end
-
-function m.container_place(...)
-    return world:container_place(...)
-end
-
 function m.remove_entity(eid)
     print("remove_entity", eid)
     world.ecs:remove(eid)
@@ -156,25 +144,6 @@ end
 function m.get_storage()
     world.storage = world.storage or {}
     return world.storage
-end
-
-function m.manual_chest()
-    local chest = {}
-    local ecs = world.ecs
-    for v in ecs:select "manual chest:in" do
-        local i = 1
-        while true do
-            local c, n = world:container_get(v.chest.container, i)
-            if c then
-                chest[gameplay.prototype.queryById(c).name] = n
-            else
-                break
-            end
-            i = i + 1
-        end
-        break
-    end
-    return chest
 end
 
 return m

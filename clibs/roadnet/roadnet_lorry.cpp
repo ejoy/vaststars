@@ -2,9 +2,10 @@
 #include "roadnet_world.h"
 
 namespace roadnet {
-    void lorry::initLine(lineid id, uint8_t idx) {
+    void lorry::initLine(lineid id, uint8_t idx, road_coord ending) {
         lineIdx = idx;
         lineId = id;
+        ending = ending;
     }
     direction lorry::getDirection(world& w) {
         return w.Line(lineId).getDirection(lineIdx);

@@ -17,6 +17,7 @@ local revert_item_count_mb = mailbox:sub {"revert_item_count"}
 local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
 local inventory = require "global".inventory
 local solver = imanual.create()
+local iworld = require "gameplay.interface.world"
 
 local function _has_fluid(s)
     for _, v in ipairs(itypes.items(s)) do
@@ -272,7 +273,7 @@ end
 function M:stage_ui_update(datamodel)
     for _, _, _, name, count in manual_add_mb:unpack() do
         local origin = gameplay_core.get_world():manual()
-        local output = imanual.evaluate(solver, gameplay_core.manual_chest(), gameplay_core.get_world():manual_container(), {{name, count}})
+        local output = imanual.evaluate(solver, imanual_common.base_chest_item_counts(), iworld.manual_chest_item_counts(gameplay_core.get_world()), {{name, count}})
         if not output then
             log.error("material shortages")
         else

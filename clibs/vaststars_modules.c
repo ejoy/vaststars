@@ -14,7 +14,6 @@ static void loadmodules(lua_State* L) {
     SYSTEM(laboratory)
     SYSTEM(burner)
     SYSTEM(chimney)
-    SYSTEM(inserter)
     SYSTEM(generator)
     SYSTEM(powergrid)
     SYSTEM(pump)

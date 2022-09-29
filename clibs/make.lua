@@ -19,7 +19,6 @@ if lm.os == "ios" then
     lm:lib "vaststars" {
         deps = {
             "ant_runtime",
-            "bgfx-lib",
             "ant_links",
             modules
         },

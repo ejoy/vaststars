@@ -31,7 +31,7 @@ prototype "地下水挖掘机" {
     power = "6kW",
     priority = "secondary",
     recipe = "离岸抽水",
-    group = {"管道","自定义"},
+    group = {"管道","默认"},
     fluidboxes = {
         input = {},
         output = {
@@ -143,7 +143,7 @@ prototype "管道1-I型" {
     show_build_function = false,
     type = {"entity","fluidbox"},
     area = "1x1",
-    group = {"管道","自定义"},
+    group = {"管道","默认"},
     fluidbox = {
         capacity = 100,
         height = 100,

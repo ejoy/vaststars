@@ -3,7 +3,7 @@
 #include <optional>
 #include <vector>
 #include <map>
-#include "container.h"
+#include "chest.h"
 #include "util/flatmap.h"
 
 struct world;

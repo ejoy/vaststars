@@ -12,13 +12,13 @@ extern "C" {
 #define STATUS_WORKING 2
 
 static void
-sync_input_fluidbox(world& w, ecs::assembling& a, ecs::fluidboxes& fb, recipe_container& container) {
+sync_input_fluidbox(world& w, ecs::assembling& a, ecs::fluidboxes& fb, chest& chest) {
 	for (size_t i = 0; i < 4; ++i) {
 		uint16_t fluid = fb.in[i].fluid;
 		if (fluid != 0) {
 			uint8_t index = ((a.fluidbox_in >> (i*4)) & 0xF) - 1;
 			uint16_t value = 0;
-			if (container.recipe_get(recipe_container::slot_type::in, index, value)) {
+			if (chest.get(index, value)) {
 				w.fluidflows[fluid].set(fb.in[i].id, value);
 			}
 		}
@@ -26,13 +26,13 @@ sync_input_fluidbox(world& w, ecs::assembling& a, ecs::fluidboxes& fb, recipe_co
 }
 
 static void
-sync_output_fluidbox(world& w, ecs::assembling& a, ecs::fluidboxes& fb, recipe_container& container) {
+sync_output_fluidbox(world& w, ecs::assembling& a, ecs::fluidboxes& fb, chest& chest) {
 	for (size_t i = 0; i < 3; ++i) {
 		uint16_t fluid = fb.out[i].fluid;
 		if (fluid != 0) {
 			uint8_t index = ((a.fluidbox_out >> (i*4)) & 0xF) - 1;
 			uint16_t value = 0;
-			if (container.recipe_get(recipe_container::slot_type::out, index, value)) {
+			if (chest.get(index, value)) {
 				w.fluidflows[fluid].set(fb.out[i].id, value);
 			}
 		}
@@ -56,10 +56,10 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
     // step.2
     while (a.progress <= 0) {
         prototype_context recipe = w.prototype(L, a.recipe);
-        recipe_container& container = w.query_container<recipe_container>(a.container);
         if (a.status == STATUS_DONE) {
+            chest& chest = w.query_chest(a.chest_out);
             recipe_items* r = (recipe_items*)pt_results(&recipe);
-            if (!container.recipe_place(w, r)) {
+            if (!chest.place(r)) {
                 return;
             }
             w.stat.finish_recipe(L, w, a.recipe, false);
@@ -67,13 +67,14 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
             if (a.fluidbox_out != 0) {
                 ecs::fluidboxes* fb = v.sibling<ecs::fluidboxes>(w);
                 if (fb) {
-                    sync_output_fluidbox(w, a, *fb, container);
+                    sync_output_fluidbox(w, a, *fb, chest);
                 }
             }
         }
         if (a.status == STATUS_IDLE) {
+            chest& chest = w.query_chest(a.chest_in);
             recipe_items* r = (recipe_items*)pt_ingredients(&recipe);
-            if (!container.recipe_pickup(w, r)) {
+            if (!chest.pickup(r)) {
                 return;
             }
             int time = pt_time(&recipe);
@@ -82,7 +83,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
             if (a.fluidbox_in != 0) {
                 ecs::fluidboxes* fb = v.sibling<ecs::fluidboxes>(w);
                 if (fb) {
-                    sync_input_fluidbox(w, a, *fb, container);
+                    sync_input_fluidbox(w, a, *fb, chest);
                 }
             }
         }

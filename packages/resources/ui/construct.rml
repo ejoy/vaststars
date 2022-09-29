@@ -154,14 +154,6 @@
                 height: 100%;
                 background-color: rgb(87, 238, 0);
             }
-            .accomplished {
-                position: absolute;
-                right: 1vmin; 
-                top: 2vmin;
-                color:chartreuse;
-                -webkit-text-stroke: 0.3vmin rgb(0,0,0);
-                opacity: 0;
-            }
             .accomplished2 {
                 bottom: 22vmin;
                 color:chartreuse;
@@ -247,6 +239,17 @@
                 height: 100%;
                 pointer-events: none;
             }
+            .panel-switch {
+                height: 6.9vmin;
+                width: 16.6vmin;
+                background-image: "textures/common/arrow.texture";
+                background-size: cover;
+                transform: rotate(270deg);
+                border: 0vmin #fff; 
+                left: 95%; 
+                top: 40%;
+                background-color: transparent;
+            }
         </style>
         <script type="text/x-lua" path = "lua/custom.lua" />
         <script type="text/x-lua" >
@@ -258,6 +261,7 @@
                 construct_menu = {},
                 manual_queue = {},
 
+                show_construct_menu = true,        -- 是否显示右侧建造菜单
                 cur_construct_menu = "",  -- 当前选中的二级建造菜单名
                 cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
                 show_load_resource = false,
@@ -279,7 +283,6 @@
                 current_tech_icon = "none",     --当前科技图标
                 current_tech_name = "none",     --当前科技名字
                 current_tech_progress = "0%",   --当前科技进度
-                tech_finish_animation = "0s linear 0s enlarge",
                 manual_finish_animation = "0s linear 0s wordmovement",
                 guide_progress = 0
             })
@@ -314,6 +317,7 @@
             function start.clickConstructComplete(event)
                 start.cur_edit_mode = ''
                 ui_sys.pub {"construct_complete"}
+                start.show_construct_menu = true
             end
             function start.clickTeardownComplete(event)
                 start.cur_edit_mode = ''
@@ -325,12 +329,17 @@
                     start.cur_edit_mode = ''
                     ui_sys.pub {"cancel", true}
                 end
+                start.show_construct_menu = true
             end
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
             end
             function start.clickConstructMenuItem(event, prototype_name)
                 ui_sys.pub {"construct_entity", prototype_name}
+                start.show_construct_menu = false
+            end
+            function start.showConstructMenu(event)
+                start.show_construct_menu = true
             end
             function start.clickHeadquater(event)
                 ui_sys.pub {"headquater"}
@@ -381,10 +390,6 @@
                 ["manual_finish"] = function()
                     start.manual_finish_animation = ("2.8s linear 0s wordmovement")
                     window.setTimeout(function() start.manual_finish_animation = "none" end, 2800)
-                end,
-                ["tech_finish_animation"] = function()
-                    start.tech_finish_animation = ("3s sine-in-out 0s enlarge")
-                    window.setTimeout(function() start.tech_finish_animation = "none" end, 3000)
                 end,
             })
 
@@ -518,7 +523,6 @@
                     </p>
                 </button>
             </div>
-            <div class="accomplished" data-style-animation="tech_finish_animation" data-if = "!show_tech_progress">研究完成</div>
 
             <!-- 右下角手搓队列 -->
             <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; right:0vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "cur_edit_mode == ''">
@@ -621,7 +625,7 @@
             </div>
 
             <!-- 右边菜单 -->
-            <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="guide_progress >= 10">
+            <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="show_construct_menu && guide_progress >= 10">
                 <div style = "width: 16.00vmin; height: 80.00vmin; flex-direction: column; justify-content: space-between;" data-if="cur_edit_mode == 'construct'" >
                     <workbutton data-event-click="clickShowConstructMenuDetail(it.name)" data-for = "construct_menu" data-style-background-color="cur_construct_menu == it.name ? 'rgb(0, 176, 80)' : 'rgb(246, 142, 14)'">
                         <div class="workbutton-bg" data-style-background-image = "it.icon" />
@@ -642,6 +646,7 @@
                     </div>
                 </div>
             </div>
+            <workbutton class = "panel-switch" data-event-click="showConstructMenu()" data-if="!show_construct_menu"/>
         </div>
     </body>
 </rml>

@@ -14,6 +14,8 @@ local iflow_connector = require "gameplay.interface.flow_connector"
 local terrain = ecs.require "terrain"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local ipower = ecs.require "power"
+local iguide = require "gameplay.interface.guide"
+
 --
 local M = {}
 
@@ -213,7 +215,7 @@ function M:teardown_complete()
         removed_set[object.id] = object
     end
 
-    local has_power_pole
+    local power_network_dirty = false
     local item_counts = {}
     for id, object in pairs(removed_set) do
         iobject.remove(object)
@@ -246,8 +248,16 @@ function M:teardown_complete()
             item_counts[typeobject_item.id] = (item_counts[typeobject_item.id] or 0) + 1
         end
         local typeobject = iprototype.queryByName("entity", prototype_name)
-        if not has_power_pole and typeobject.power_pole then
-            has_power_pole = true
+        if not power_network_dirty then
+            if typeobject.power_pole then
+                power_network_dirty = true
+            else
+                local aw, ah = iprototype.unpackarea(typeobject.area)
+                local net = ipower.get_network_id({x = object.x, y = object.y, w = aw, h = ah })
+                if #net > 1 then
+                    power_network_dirty = true
+                end
+            end
         end
 
         igameplay.remove_entity(object.gameplay_eid)
@@ -256,8 +266,9 @@ function M:teardown_complete()
 
     -- TODO: inventory full check -> revert teardown
     for prototype, count in pairs(item_counts) do
-        if not iworld.base_container_place(gameplay_core.get_world(), prototype, count) then
-            log.error(("failed to place `%s` `%s`"):format(prototype, count))
+        local r = iworld.base_chest_place(gameplay_core.get_world(), prototype, count)
+        if r ~= 0 then
+            log.error(("failed to place `%s` `%s` `%s`"):format(prototype, count, r))
         end
     end
 
@@ -269,9 +280,11 @@ function M:teardown_complete()
 
     objects:clear({"TEMPORARY"})
 
-    if has_power_pole then
+    if power_network_dirty then
         -- update power network
         ipower.build_power_network(gameplay_core.get_world())
+    else
+
     end
 end
 
@@ -281,6 +294,14 @@ function M:teardown(id)
     if typeobject.teardown == false then
         log.info(("`%s` cannot be demolished"):format(object.prototype_name))
         return
+    end
+
+    if typeobject.teardown ~= nil then
+        assert(type(typeobject.teardown) == "number")
+        if typeobject.teardown > iguide.get_progress() then
+            log.info(("`%s` - `%s` cannot be torn down before the progress of `%s`"):format(object.prototype_name, iguide.get_progress(), typeobject.teardown))
+            return
+        end
     end
 
     object.teardown = not object.teardown

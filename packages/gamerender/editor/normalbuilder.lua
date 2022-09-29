@@ -80,7 +80,6 @@ local function __new_entity(self, datamodel, typeobject)
         y = y,
         fluid_name = fluid_name,
         state = state,
-        inserter_arrow = iprototype.has_type(typeobject.type, "inserter"), -- TODO: inserter_arrow optimize
     }
 end
 
@@ -150,7 +149,7 @@ local function touch_move(self, datamodel, delta_vec)
             datamodel.show_confirm = false
             return
         end
-        
+
         if not self:check_construct_detector(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) then
             pickup_object.state = _get_state(pickup_object.prototype_name, false)
             datamodel.show_confirm = false
@@ -159,7 +158,7 @@ local function touch_move(self, datamodel, delta_vec)
 
         pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) -- TODO: maybe set recipt according to entity type?
         _update_fluid_name(self, datamodel, pickup_object, false, coord[1], coord[2], pickup_object.dir)
-        
+
         -- update temp pole
         if typeobject.supply_area and typeobject.supply_distance then
             local aw, ah = iprototype.unpackarea(typeobject.area)
@@ -197,10 +196,16 @@ local function touch_end(self, datamodel)
     end
 end
 
+local iflow_connector = require "gameplay.interface.flow_connector"
+local function _get_item_name(prototype_name)
+    local typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
+    return typeobject.name
+end
+
 local function confirm(self, datamodel)
     local pickup_object = assert(self.pickup_object)
-
-    if not self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) then
+    local succ, replaced_objects = self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
+    if not succ then
         log.info("can not construct")
         return
     end
@@ -215,6 +220,17 @@ local function confirm(self, datamodel)
     if iprototype.has_type(typeobject.type, "fluidboxes") then
         self:update_fluidbox(EDITOR_CACHE_NAMES, "CONFIRM", pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir, pickup_object.fluid_name)
     end
+
+    --
+    for _, object in ipairs(replaced_objects) do
+        local _obj = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
+        iobject.remove(_obj)
+
+        local item_name = _get_item_name(object.prototype_name)
+        local item_typeobject = iprototype.queryByName("item", item_name)
+        assert(inventory:increase(item_typeobject.id, 1))
+    end
+    objects:commit("TEMPORARY", "CONFIRM")
 
     if typeobject.supply_area then
         pickup_object.state = ("power_pole_confirm_%s"):format(typeobject.supply_area)
@@ -260,19 +276,20 @@ local function complete(self, datamodel)
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
-    if not self.super:check_construct_detector(prototype_name, x, y, dir) then
+    local succ, replaced_objects = self.super:check_construct_detector(prototype_name, x, y, dir)
+    if not succ then
         return false
     end
 
     if not ifluid:need_set_fluid(prototype_name) then
-        return true
+        return true, replaced_objects
     end
 
     local fluid_types = self:get_neighbor_fluid_types(EDITOR_CACHE_NAMES, prototype_name, x, y, dir)
     if #fluid_types > 1 then
         return false
     end
-    return true
+    return true, replaced_objects
 end
 
 local function rotate_pickup_object(self, datamodel)

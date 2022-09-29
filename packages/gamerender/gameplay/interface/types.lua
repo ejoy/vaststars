@@ -19,7 +19,7 @@ end
 function M.progress(progress, total)
     assert(progress <= total, ("progress must be less than total, %s - %s"):format(progress, total))
     progress = math.max(progress, 0)
-    return (total - progress) / total -- the progress of inserter is decreasing from total to 0
+    return (total - progress) / total -- the progress is decreasing from total to 0
 end
 
 function M.progress_str(progress, total)

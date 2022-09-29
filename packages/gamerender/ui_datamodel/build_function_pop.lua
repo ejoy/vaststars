@@ -32,8 +32,11 @@ local detail_event = { -- entity_type -> function
         iui.open("assemble_2.rml", object_id)
     end,
     ["chest"] = function(object_id)
-        iui.open("inventory.rml", object_id)
+        iui.open("chest.rml", object_id)
     end,
+--    ["logistic_chest_requester"] = function (object_id)
+--        iui.open("logistic_chest.rml", object_id)
+--    end,
     ["laboratory"] = function(object_id)
         iui.open("lab.rml", object_id)
     end,
@@ -185,7 +188,7 @@ function M:stage_ui_update(datamodel, object_id)
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(object.gameplay_eid)
         local items = iassembling.pickup_material(gameplay_core.get_world(), e)
-        iui.open("message_pop.rml", {id = 1, items = items, left = datamodel.left, top = datamodel.top})
+        iui.open("message_pop.rml", {id = "item", items = items, left = datamodel.left, top = datamodel.top})
     end
 
     for _, _, _, object_id in place_material_mb:unpack() do

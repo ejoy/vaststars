@@ -70,6 +70,7 @@ prototype "蒸馏厂I" {
     type ={"entity", "assembling", "consumer", "fluidboxes"},
     area = "5x5",
     power = "240kW",
+    group = {"化工"},
     priority = "secondary",
     craft_category = {"过滤"},
     fluidboxes = {
@@ -129,6 +130,7 @@ prototype "电解厂I" {
     area = "4x4",
     power = "1MW",
     drain = "30kW",
+    group = {"化工"},
     priority = "secondary",
     craft_category = {"电解"},
     fluidboxes = {
@@ -138,7 +140,7 @@ prototype "电解厂I" {
                 height = 100,
                 base_level = -100,
                 connections = {
-                    {type="input", position={0,0,"N"}},
+                    {type="input", position={0,1,"W"}},
                 }
             },
         },
@@ -148,7 +150,7 @@ prototype "电解厂I" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={3,0,"N"}},
+                    {type="output", position={3,1,"E"}},
                 }
             },
             {
@@ -180,6 +182,7 @@ prototype "水电站I" {
     area = "5x5",
     power = "150kW",
     priority = "secondary",
+    group = {"化工"},
     craft_category = {"流体液体处理"},
     fluidboxes = {
         input = {

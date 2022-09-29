@@ -25,6 +25,7 @@ local function _package_files(root)
         "^.*%.png$",
         "^.*%.glb$",
         "^.*%.sc$",
+        "^.*%.md$",
         "^/pkg/vaststars.prototype/debugger.lua$",
         "^/pkg/ant.resources.binary/ui/test/.*$",
         "^/pkg/ant.resources.binary/ui/tmp/.*$",
@@ -63,6 +64,7 @@ local function _package_files(root)
         "^/pkg/ant.resources/materials/msaa_depth_resolve.material$", -- iphone
         "^/pkg/ant.bake/materials/bake_lighting.material$",
         "^/pkg/ant.resources/materials/water.material$",
+        "^/pkg/ant.resources/materials/water2.material$",
         ".*mars_pumpjack.*",
     }
 

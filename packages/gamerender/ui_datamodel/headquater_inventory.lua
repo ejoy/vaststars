@@ -61,9 +61,9 @@ function M:stage_ui_update(datamodel)
             goto continue
         end
 
-        iworld.base_container_pickup_place(gameplay_core.get_world(), chest_e, prototype, count, true)
+        iworld.base_chest_pickup_place(gameplay_core.get_world(), chest_e.chest.chest, prototype, count, true)
 
-        iui.update("inventory.rml", "update")
+        iui.update("chest.rml", "update")
         ::continue::
     end
 end

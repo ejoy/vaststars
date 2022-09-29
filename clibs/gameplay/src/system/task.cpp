@@ -12,7 +12,7 @@ struct task {
         stat_production = 0,
         stat_consumption,
         select_entity,
-        select_chect,
+        select_chest,
         power_generator,
         unknown,
         stat_manual_production,
@@ -26,7 +26,7 @@ struct task {
     uint64_t stat_manual_production(lua_State* L, world& w);
     uint64_t stat_consumption(lua_State* L, world& w);
     uint64_t select_entity(lua_State* L, world& w);
-    uint64_t select_chect(lua_State* L, world& w);
+    uint64_t select_chest(lua_State* L, world& w);
     uint64_t power_generator(lua_State* L, world& w);
     uint64_t eval(lua_State* L, world& w);
     uint16_t progress(lua_State* L, world& w);
@@ -68,14 +68,14 @@ uint64_t task::select_entity(lua_State* L, world& w) {
     return n;
 }
 
-uint64_t task::select_chect(lua_State* L, world& w) {
+uint64_t task::select_chest(lua_State* L, world& w) {
     uint64_t n = 0;
     for (auto& v : w.select<ecs::chest, ecs::entity>(L)) {
         ecs::entity& e = v.get<ecs::entity>();
         if (e.prototype == p1) {
             ecs::chest& c = v.get<ecs::chest>();
-            auto& container = w.query_container<chest_container>(c.container);
-            for (auto& slot : container.slots) {
+            auto& chest = w.query_chest(c.chest);
+            for (auto& slot : chest.slots) {
                 if (slot.item == p2) {
                     n += slot.amount;
                     break;
@@ -96,7 +96,7 @@ uint64_t task::eval(lua_State* L, world& w) {
     case task::type::stat_manual_production:  return stat_manual_production(L, w);
     case task::type::stat_consumption:        return stat_consumption(L, w);
     case task::type::select_entity:           return select_entity(L, w);
-    case task::type::select_chect:            return select_chect(L, w);
+    case task::type::select_chest:            return select_chest(L, w);
     case task::type::power_generator:         return power_generator(L, w);
     default: return 0;
     }

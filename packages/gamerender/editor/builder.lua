@@ -16,43 +16,88 @@ local global = require "global"
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
+local function _has_type(prototype_name, t)
+    local typeobject = iprototype.queryByName("entity", prototype_name)
+    return iprototype.has_type(typeobject.type, t)
+end
+
+local function _check_connections(connections, offset_x, offset_y)
+    for _, connection in ipairs(connections) do
+        local x, y = connection[1], connection[2]
+        if x == offset_x and y == offset_y then
+            return true
+        end
+    end
+    return false
+end
+
 local function check_construct_detector(self, prototype_name, x, y, dir)
     dir = dir or DEFAULT_DIR
     local typeobject = iprototype.queryByName("entity", prototype_name)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
-    for i = 0, w - 1 do
-        for j = 0, h - 1 do
-            if objects:coord(x + i, y + j, EDITOR_CACHE_NAMES) then
+    local replaced_objects = {}
+
+    if typeobject.construct_detector[1] == "exclusive" then
+        local found_mineral
+        for i = 0, w - 1 do
+            for j = 0, h - 1 do
+                if objects:coord(x + i, y + j, EDITOR_CACHE_NAMES) then
+                    return false
+                end
+
+                local mineral = terrain:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
+                if mineral then
+                    found_mineral = mineral
+                end
+            end
+        end
+
+        if iprototype.has_type(typeobject.type, "mining") then -- TODO: special case for mining
+            if not found_mineral then
+                return false
+            end
+
+            if not imining.get_mineral_recipe(prototype_name, found_mineral) then
+                return false
+            end
+        else
+            if found_mineral then -- can not construct in the area with mineral
                 return false
             end
         end
-    end
 
-    local found_mineral
-    for i = 0, w - 1 do
-        for j = 0, h - 1 do
-            local mineral = terrain:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
-            if mineral then
-                found_mineral = mineral
+    elseif typeobject.construct_detector[1] == "replacing" then
+        local construct_replacing = typeobject.construct_replacing
+
+        for i = 0, w - 1 do
+            for j = 0, h - 1 do
+                local mineral = terrain:get_mineral(x + i, y + j) -- TODO: maybe have multiple minerals in the area
+                if mineral then
+                    return false
+                end
+
+                local object = objects:coord(x + i, y + j, EDITOR_CACHE_NAMES)
+                if object then
+                    if not _has_type(object.prototype_name, construct_replacing.type) then
+                        return false
+                    end
+
+                    if not _check_connections(construct_replacing.connections, i, j) then
+                        return false
+                    else
+                        replaced_objects[#replaced_objects + 1] = object
+                    end
+                end
             end
         end
+
+        if #replaced_objects <= 0 then
+            return false
+        end
+
     end
 
-    if iprototype.has_type(typeobject.type, "mining") then
-        if not found_mineral then
-            return false
-        end
-
-        if not imining.get_mineral_recipe(prototype_name, found_mineral) then
-            return false
-        end
-    else
-        if found_mineral then -- can not construct in the area with mineral
-            return false
-        end
-    end
-
-    return true
+    return true, replaced_objects
 end
 
 local get_neighbor_fluid_types; do
@@ -170,7 +215,6 @@ local function complete(self)
                     end
                 end
             end
-            object.inserter_arrow = nil -- TODO: inserter_arrow optimize
 
             if not power_network_dirty and typeobject.power_pole then
                 power_network_dirty = true

@@ -1,6 +1,39 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
+local function prototype_road(name)
+    return function (object)
+        assert(object.crossing)
+
+        local connections = object.crossing.connections
+        local len = (1 << #connections) - 1
+
+        for i = 0, len do
+            local o = {}
+            for k, v in pairs(object) do
+                if k ~= "crossing" then
+                    o[k] = v
+                end
+            end
+            o.crossing = { connections = {} }
+
+            for j = 1, #connections do
+                local roadside
+                if i & (1 << (j - 1)) ~= 0 then
+                   roadside = true
+                end
+                o.crossing.connections[j] = {
+                    type = connections[j].type,
+                    position = connections[j].position,
+                    roadside = roadside
+                }
+            end
+
+            prototype(name:format(i + 1))(o)
+        end
+    end
+end
+
 prototype "指挥中心" {
     model = "prefabs/headquater-1.prefab",
     icon = "textures/building_pic/small_pic_headquarter.texture",
@@ -50,11 +83,6 @@ prototype "物流中心I" {
     power = "300kW",
     priority = "secondary",
     group = {"物流"},
-    crossing = {
-        connections = {
-            {type="output", position={1,2,"S"}},
-        },
-    }
 }
 
 prototype "运输车辆I" {
@@ -85,7 +113,7 @@ prototype "机器爪I" {
     speed = "1s",
     power = "12kW",
     priority = "secondary",
-    group = {"物流","自定义"},
+    group = {"物流","默认"},
 }
 
 prototype "科研中心I" {
@@ -106,11 +134,13 @@ prototype "科研中心I" {
     group = {"物流"},
 }
 
-prototype "砖石公路-I型" {
+prototype_road "砖石公路-I型-%02d" {
     model = "prefabs/road/road_I.prefab",
+    show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
+    teardown = 20,
     flow_direction = {"N", "E"},
     track = "I",
     tickcount = 20,
@@ -125,11 +155,13 @@ prototype "砖石公路-I型" {
     }
 }
 
-prototype "砖石公路-L型" {
+prototype_road "砖石公路-L型-%02d" {
     model = "prefabs/road/road_L.prefab",
+    show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
+    teardown = 20,
     flow_direction = {"N", "E", "S", "W"},
     track = "L",
     tickcount = 20,
@@ -144,11 +176,13 @@ prototype "砖石公路-L型" {
     }
 }
 
-prototype "砖石公路-T型" {
+prototype_road "砖石公路-T型-%02d" {
     model = "prefabs/road/road_T.prefab",
+    show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
+    teardown = 20,
     flow_direction = {"N", "E", "S", "W"},
     track = "T",
     tickcount = 20,
@@ -164,12 +198,13 @@ prototype "砖石公路-T型" {
     }
 }
 
-prototype "砖石公路-X型" {
-    show_prototype_name = "砖石公路",
+prototype_road "砖石公路-X型-%02d" {
+    show_prototype_name = "砖石公路-I型",
     model = "prefabs/road/road_X.prefab",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
+    teardown = 20,
     flow_direction = {"N"},
     track = "X",
     tickcount = 20,
@@ -186,29 +221,33 @@ prototype "砖石公路-X型" {
     }
 }
 
-prototype "砖石公路-O型" {
+prototype "砖石公路-O型-01" {
     model = "prefabs/road/road_O.prefab",
+    show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
+    teardown = 20,
     flow_direction = {"N"},
     track = "O",
     tickcount = 0,
     show_build_function = false,
     type ={"entity", "road"},
     area = "1x1",
-    group = {"物流","自定义"},
+    group = {"物流","默认"},
     crossing = {
         connections = {
         }
     }
 }
 
-prototype "砖石公路-U型" {
+prototype_road "砖石公路-U型-%02d" {
     model = "prefabs/road/road_U.prefab",
+    show_prototype_name = "砖石公路-I型",
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
+    teardown = 20,
     flow_direction = {"N", "E", "S", "W"},
     track = "U",
     tickcount = 20,
@@ -220,4 +259,34 @@ prototype "砖石公路-U型" {
             {type="input-output", position={0,0,"N"}},
         },
     }
+}
+
+prototype "道路设备箱" {
+    model = "prefabs/small-chest.prefab",
+    icon = "textures/building_pic/small_pic_chest.texture",
+    background = "textures/build_background/pic_chest.texture",
+    construct_detector = {"exclusive"},
+    type = {"entity"},
+    area = "2x2",
+    supply_area = "20x20",
+}
+
+prototype "管道设备箱" {
+    model = "prefabs/small-chest.prefab",
+    icon = "textures/building_pic/small_pic_chest.texture",
+    background = "textures/build_background/pic_chest.texture",
+    construct_detector = {"exclusive"},
+    type = {"entity"},
+    area = "2x2",
+    supply_area = "20x20",
+}
+
+prototype "电网设备箱" {
+    model = "prefabs/small-chest.prefab",
+    icon = "textures/building_pic/small_pic_chest.texture",
+    background = "textures/build_background/pic_chest.texture",
+    construct_detector = {"exclusive"},
+    type = {"entity"},
+    area = "2x2",
+    supply_area = "20x20",
 }

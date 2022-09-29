@@ -393,10 +393,10 @@ prototype "砖石公路" {
     order = 104,
     icon = "textures/construct/road1.texture",
     ingredients = {
-        {"石砖", 2},
+        -- {"石砖", 2},
     },
     results = {
-        {"砖石公路-X型", 8},
+        {"砖石公路-X型-01", 2},
     },
     time = "6s",
     description = "使用石砖制造公路",
@@ -446,7 +446,7 @@ prototype "物流中心1" {
         {"蒸汽发电机I", 1},
         {"物流派送站", 1},
         {"物流需求站", 1},
-        {"砖石公路-X型", 10},
+        {"砖石公路-X型-01", 10},
     },
     results = {
         {"物流中心I", 1},
@@ -1326,7 +1326,7 @@ prototype "石铁矿挖掘" {
     --group = "金属",
     allow_manual = false,
     order = 20,
-    icon = "textures/construct/air-filter1.texture",
+    icon = "textures/construct/ore-Fe.texture",
     ingredients = {
     },
     results = {
@@ -1343,7 +1343,7 @@ prototype "铁矿石挖掘" {
     --group = "金属",
     allow_manual = false,
     order = 21,
-    icon = "textures/construct/air-filter1.texture",
+    icon = "textures/construct/ore-Fe.texture",
     ingredients = {
     },
     results = {
@@ -1359,7 +1359,7 @@ prototype "碎石挖掘" {
     --group = "金属",
     allow_manual = false,
     order = 22,
-    icon = "textures/construct/air-filter1.texture",
+    icon = "textures/construct/gravel.texture",
     ingredients = {
     },
     results = {

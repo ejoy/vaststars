@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/container.h"
+#include "core/chest.h"
 #include "util/component.h"
 #include "ecs/select.h"
 #include "core/techtree.h"
@@ -18,17 +18,14 @@ struct prototype_cache;
 
 struct world: public ecs_api::context {
     struct prototype_cache* P;
-    struct container_mgr containers;
+    std::vector<chest> chests;
     std::map<uint16_t, fluidflow> fluidflows;
     techtree_mgr techtree;
     statistics stat;
     manual_crafting manual;
     uint64_t time = 0;
 
-    template <typename C>
-    C& query_container(uint16_t id);
-    template <typename C>
-    uint16_t container_id();
+    chest& query_chest(uint16_t id);
 
     prototype_context prototype(lua_State* L, int id) {
         return {L, P, id};

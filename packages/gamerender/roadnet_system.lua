@@ -177,9 +177,6 @@ local function __init_roadnet()
 
     --
     straight_road_offset = _shuffle(straight_road_offset)
-    -- straight_road_offset = {}
-    -- straight_road_offset[#straight_road_offset+1] = {x = 155, y = 123, z = 0}
-    -- straight_road_offset[#straight_road_offset+1] = {x = 143, y = 127, z = 1}
 
     while #straight_road_offset >= 2 do
         local len = #straight_road_offset
@@ -220,7 +217,7 @@ local function __init_roadnet()
 
         local line_id, line = __add_line(rnworld, S, E)
         if line_id then
-            local lorry_id = rnworld:add_lorry(line_id, 0, c1.x, c1.y, c1.z)
+            local lorry_id = rnworld:add_lorry(line_id, S, E)
             if lorry_id then
                 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
                 local COLOR_INVALID <const> = math3d.constant "null"
@@ -244,6 +241,7 @@ local function __init_roadnet()
 
         straight_road_offset[len] = nil
         straight_road_offset[len - 1] = nil
+        break -- TODO
         ::continue::
     end
 
