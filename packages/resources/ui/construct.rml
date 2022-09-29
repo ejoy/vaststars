@@ -239,6 +239,17 @@
                 height: 100%;
                 pointer-events: none;
             }
+            .panel-switch {
+                height: 6.9vmin;
+                width: 16.6vmin;
+                background-image: "textures/common/arrow.texture";
+                background-size: cover;
+                transform: rotate(270deg);
+                border: 0vmin #fff; 
+                left: 95%; 
+                top: 40%;
+                background-color: transparent;
+            }
         </style>
         <script type="text/x-lua" path = "lua/custom.lua" />
         <script type="text/x-lua" >
@@ -635,9 +646,7 @@
                     </div>
                 </div>
             </div>
-            <button style = "background-color: green; width: 100px; height: 50px; left: 95%; top: 40%;" data-event-click="showConstructMenu()" data-if="!show_construct_menu">
-                <div>显示菜单</div>
-            </button>
+            <workbutton class = "panel-switch" data-event-click="showConstructMenu()" data-if="!show_construct_menu"/>
         </div>
     </body>
 </rml>
