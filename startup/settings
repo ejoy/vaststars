@@ -39,11 +39,13 @@ graphic:
     bias: 0.003
     color: {0, 0, 0, 1}
     enable: true
-    normal_offset: 0
+    normal_offset: 0.012
     size: 512
     split_lamada: 1
+    stabilize: false
     split_ratios:
-      {0.1, 0.5}
-      {0.5, 0.9}
-    stabilize: true
+      {0.0, 0.2},
+      {0.2, 0.78},
     type: inv_z
+    min_variance: 0.012
+    depth_multiplier: 1000
