@@ -17,6 +17,21 @@ local ipower = ecs.require "power"
 local imining = require "gameplay.interface.mining"
 local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
+local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
+local math3d = require "math3d"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+local ientity = ecs.import.interface "ant.render|ientity"
+local imesh = ecs.import.interface "ant.asset|imesh"
+local ivs = ecs.import.interface "ant.scene|ivisible_state"
+local imaterial = ecs.import.interface "ant.asset|imaterial"
+local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
+local iconstant = require "gameplay.interface.constant"
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
+local ALL_DIR = iconstant.ALL_DIR
+local CONSTRUCT_COLOR_ROADSIDE_ARROW <const> = math3d.constant("v4", {0.0, 1.0, 0.0, 1})
+local CONSTRUCT_COLOR_ROADSIDE_BLOCK <const> = math3d.constant("v4", {0.0, 2.5, 0.0, 0.5})
+local CONSTRUCT_COLOR_ROADSIDE_ARROW_INVALID <const> = math3d.constant("v4", {1.0, 0.0, 0.0, 1})
+local CONSTRUCT_COLOR_ROADSIDE_BLOCK_INVALID <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 0.5})
 
 local function _get_state(prototype_name, ok)
     local typeobject = iprototype.queryByName("entity", prototype_name)
@@ -33,6 +48,83 @@ local function _get_state(prototype_name, ok)
             return "invalid_construct"
         end
     end
+end
+
+-- TODO: duplicate from vsobject.lua
+local entity_events = {}
+entity_events["obj_motion"] = function(_, e, method, ...)
+    iom[method](e, ...)
+end
+entity_events["material"] = function(_, e, method, ...)
+    imaterial[method](e, ...)
+end
+
+local gen_id do
+    local id = 0
+    function gen_id()
+        id = id + 1
+        return id
+    end
+end
+
+local plane_vb <const> = {
+	-0.5, 0, 0.5, 0, 1, 0,	--left top
+	0.5,  0, 0.5, 0, 1, 0,	--right top
+	-0.5, 0,-0.5, 0, 1, 0,	--left bottom
+	-0.5, 0,-0.5, 0, 1, 0,
+	0.5,  0, 0.5, 0, 1, 0,
+	0.5,  0,-0.5, 0, 1, 0,	--right bottom
+}
+
+local function create_block(color, width, height, position)
+    local eid = ecs.create_entity{
+		policy = {
+			"ant.render|simplerender",
+			"ant.general|name",
+		},
+		data = {
+			scene 		= { s = {terrain.tile_size * width, 1, terrain.tile_size * height}, t = position},
+			material 	= "/pkg/vaststars.resources/materials/translucent.material",
+			visible_state= "main_view",
+			name 		= ("plane_%d"):format(gen_id()),
+			simplemesh 	= imesh.init_mesh(ientity.create_mesh({"p3|n3", plane_vb}, nil, math3d.ref(math3d.aabb({-0.5, 0, -0.5}, {0.5, 0, 0.5}))), true),
+			on_ready = function (e)
+				ivs.set_state(e, "main_view", true)
+                imaterial.set_property(e, "u_basecolor_factor", color)
+			end
+		},
+	}
+
+    return ientity_object.create(eid, entity_events)
+end
+
+-- TODO: duplicate from roadbuilder.lua
+local function _get_connections(prototype_name, x, y, dir)
+    local typeobject = iprototype.queryByName("entity", prototype_name)
+    local r = {}
+    if not typeobject.crossing then
+        return r
+    end
+
+    for _, conn in ipairs(typeobject.crossing.connections) do
+        local dx, dy, dir = iprototype.rotate_fluidbox(conn.position, dir, typeobject.area)
+        r[#r+1] = {x = x + dx, y = y + dy, dir = dir, roadside = conn.roadside}
+    end
+    return r
+end
+
+local function _get_roadside_position(typeobject, x, y, dir)
+    if not typeobject.crossing then
+        return
+    end
+    local connections = _get_connections(typeobject.name, x, y, dir)
+    assert(#connections == 1) -- only one roadside
+    local conn = connections[1]
+    local succ, neighbor_x, neighbor_y = terrain:move_coord(conn.x, conn.y, conn.dir, 1)
+    if not succ then
+        return
+    end
+    return terrain:get_position_by_coord(neighbor_x, neighbor_y, 1, 1), neighbor_x, neighbor_y, conn.dir
 end
 
 local function __new_entity(self, datamodel, typeobject)
@@ -81,6 +173,35 @@ local function __new_entity(self, datamodel, typeobject)
         fluid_name = fluid_name,
         state = state,
     }
+
+    local roadside_position = _get_roadside_position(typeobject, x, y, dir)
+    if roadside_position then
+        self.roadside_position = roadside_position
+
+        if datamodel.show_confirm then
+            self.roadside_block = create_block(CONSTRUCT_COLOR_ROADSIDE_BLOCK, 1, 1, roadside_position)
+        else
+            self.roadside_block = create_block(CONSTRUCT_COLOR_ROADSIDE_BLOCK_INVALID, 1, 1, roadside_position)
+        end
+
+        if datamodel.show_confirm then
+            self.roadside_arrow = assert(igame_object.create({
+                state = "translucent",
+                color = CONSTRUCT_COLOR_ROADSIDE_ARROW,
+                prefab = "prefabs/road/roadside_arrow.prefab",
+                group_id = 0,
+                srt = {t = roadside_position},
+            }))
+        else
+            self.roadside_arrow = assert(igame_object.create({
+                state = "translucent",
+                color = CONSTRUCT_COLOR_ROADSIDE_ARROW_INVALID,
+                prefab = "prefabs/road/roadside_arrow.prefab",
+                group_id = 0,
+                srt = {t = roadside_position},
+            }))
+        end
+    end
 end
 
 local function new_entity(self, datamodel, typeobject)
@@ -142,6 +263,7 @@ local function touch_move(self, datamodel, delta_vec)
     if self.pickup_object then
         local pickup_object = self.pickup_object
         iobject.move_delta(pickup_object, delta_vec)
+
         local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
         local coord = terrain:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, pickup_object.dir))
         if not coord then
@@ -150,10 +272,44 @@ local function touch_move(self, datamodel, delta_vec)
             return
         end
 
+        if self.roadside_position then
+            self.roadside_position = math3d.ref(math3d.add(self.roadside_position, delta_vec))
+
+            self.roadside_block:send("obj_motion", "set_position", self.roadside_position)
+            self.roadside_block:send("obj_motion", "set_rotation", ROTATORS[pickup_object.dir])
+
+            self.roadside_arrow:send("obj_motion", "set_position", self.roadside_position)
+            self.roadside_arrow:send("obj_motion", "set_rotation", ROTATORS[pickup_object.dir])
+
+            local t = {}
+            for _, dir in ipairs(ALL_DIR) do
+                local _, dx, dy = _get_roadside_position(typeobject, coord[1], coord[2], dir)
+                if dx and dy then
+                    local road = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
+                    if road and iprototype.is_road(road.prototype_name) then
+                        t[#t+1] = dir
+                    end
+                end
+            end
+            if #t == 1 and t[1] ~= pickup_object.dir then
+                self:rotate_pickup_object(datamodel, t[1], delta_vec)
+            end
+        end
+
         if not self:check_construct_detector(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) then
             pickup_object.state = _get_state(pickup_object.prototype_name, false)
             datamodel.show_confirm = false
+
+            if self.roadside_block then
+                self.roadside_block:send("material", "set_property", "u_basecolor_factor", CONSTRUCT_COLOR_ROADSIDE_BLOCK_INVALID)
+                self.roadside_arrow:update("prefabs/road/roadside_arrow.prefab", "translucent", CONSTRUCT_COLOR_ROADSIDE_ARROW_INVALID)
+            end
             return
+        else
+            if self.roadside_block then
+                self.roadside_block:send("material", "set_property", "u_basecolor_factor", CONSTRUCT_COLOR_ROADSIDE_BLOCK)
+                self.roadside_arrow:update("prefabs/road/roadside_arrow.prefab", "translucent", CONSTRUCT_COLOR_ROADSIDE_ARROW)
+            end
         end
 
         pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, coord[1], coord[2], pickup_object.dir) -- TODO: maybe set recipt according to entity type?
@@ -178,17 +334,44 @@ local function touch_end(self, datamodel)
 
     iobject.align(self.pickup_object)
 
+    local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
+
+    local dx, dy, ddir
+    self.roadside_position, dx, dy, ddir = _get_roadside_position(typeobject, pickup_object.x, pickup_object.y, pickup_object.dir)
+    if self.roadside_position then
+        local iflow_connector = require "gameplay.interface.flow_connector"
+        self.roadside_block:send("obj_motion", "set_position", self.roadside_position)
+        self.roadside_block:send("obj_motion", "set_rotation", ROTATORS[pickup_object.dir])
+
+        self.roadside_arrow:send("obj_motion", "set_position", self.roadside_position)
+        self.roadside_arrow:send("obj_motion", "set_rotation", ROTATORS[pickup_object.dir])
+
+        local obj = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
+        if obj and iprototype.is_road(obj.prototype_name) then
+            obj = assert(objects:modify(dx, dy, EDITOR_CACHE_NAMES, iobject.clone))
+            obj.prototype_name, obj.dir = iflow_connector.covers_roadside(obj.prototype_name, obj.dir, iprototype.reverse_dir(ddir), true)
+        end
+    end
+
     if not self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) then
         pickup_object.state = _get_state(pickup_object.prototype_name, false)
         datamodel.show_confirm = false
+        if self.roadside_block then
+            self.roadside_block:send("material", "set_property", "u_basecolor_factor", CONSTRUCT_COLOR_ROADSIDE_BLOCK_INVALID)
+            self.roadside_arrow:update("prefabs/road/roadside_arrow.prefab", "translucent", CONSTRUCT_COLOR_ROADSIDE_ARROW_INVALID)
+        end
         return
+    else
+        if self.roadside_block then
+            self.roadside_block:send("material", "set_property", "u_basecolor_factor", CONSTRUCT_COLOR_ROADSIDE_BLOCK)
+            self.roadside_arrow:update("prefabs/road/roadside_arrow.prefab", "translucent", CONSTRUCT_COLOR_ROADSIDE_ARROW)
+        end
     end
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
     _update_fluid_name(self, datamodel, pickup_object, false)
 
     -- update temp pole
-    local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
     if typeobject.supply_area and typeobject.supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
@@ -255,7 +438,15 @@ local function confirm(self, datamodel)
         local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
         ipower.merge_pole({key = pickup_object.id, targets = {}, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance}, true)
     end
+
     self.pickup_object = nil
+    if self.roadside_position then
+        self.roadside_block:remove()
+        self.roadside_arrow:remove()
+        self.roadside_block = nil
+        self.roadside_arrow = nil
+        self.roadside_position = nil
+    end
     __new_entity(self, datamodel, typeobject)
 end
 
@@ -273,6 +464,13 @@ local function complete(self, datamodel)
     datamodel.show_confirm = false
 
     self.super.complete(self)
+
+    if self.roadside_block then
+        self.roadside_block:remove()
+    end
+    if self.roadside_arrow then
+        self.roadside_arrow:remove()
+    end
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
@@ -292,11 +490,11 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     return true, replaced_objects
 end
 
-local function rotate_pickup_object(self, datamodel)
+local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     local pickup_object = assert(self.pickup_object)
 
     ieditor:revert_changes({"TEMPORARY"})
-    local dir = iprototype.rotate_dir_times(pickup_object.dir, -1)
+    dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
 
     local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
     local coord = terrain:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
@@ -319,6 +517,15 @@ local function rotate_pickup_object(self, datamodel)
     pickup_object.dir = dir
     pickup_object.x, pickup_object.y = coord[1], coord[2]
     _update_fluid_name(self, datamodel, pickup_object, failed)
+
+    self.roadside_position = _get_roadside_position(typeobject, pickup_object.x, pickup_object.y, pickup_object.dir)
+    if self.roadside_position then
+        self.roadside_block:send("obj_motion", "set_position", self.roadside_position)
+        self.roadside_block:send("obj_motion", "set_rotation", ROTATORS[pickup_object.dir])
+
+        self.roadside_arrow:send("obj_motion", "set_position", self.roadside_position)
+        self.roadside_arrow:send("obj_motion", "set_rotation", ROTATORS[pickup_object.dir])
+    end
 end
 
 local function clean(self, datamodel)
@@ -329,6 +536,13 @@ local function clean(self, datamodel)
     self.super.clean(self, datamodel)
     -- clear temp pole
     ipower.clear_all_temp_pole()
+
+    if self.roadside_block then
+        self.roadside_block:remove()
+    end
+    if self.roadside_arrow then
+        self.roadside_arrow:remove()
+    end
 end
 
 local function create()
