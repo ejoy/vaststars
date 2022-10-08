@@ -358,7 +358,7 @@ namespace roadnet {
         w.straightAry.reset(genStraightId);
         for (auto& data: straightVec) {
             road::straight& straight = w.straightAry[data.id];
-            straight.init(data.len * road::straight::N, data.finish_dir);
+            straight.init(data.len * road::straight::N, data.finish_dir, {}); // TODO
             straight.setLorryOffset(genLorryOffset);
             straight.setNeighbor(data.neighbor);
             genLorryOffset += data.len * road::straight::N;
