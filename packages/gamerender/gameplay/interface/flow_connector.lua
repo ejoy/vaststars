@@ -9,7 +9,7 @@ local get_dir_bit do
             W = 3,
         }
 
-        local ground_bit <const> = {
+        local ground_bit <const> = { -- ground for the pipe, roadside for the road
             N = 4,
             E = 5,
             S = 6,

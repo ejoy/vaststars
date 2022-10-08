@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+#include <list>
 #include "roadnet_road.h"
 #include "roadnet_lorry.h"
 #include "roadnet_coord.h"
@@ -12,8 +14,13 @@ namespace roadnet::road {
         uint32_t lorryOffset;
         roadid neighbor = roadid::invalid();
         direction dir = direction::n;
-        void init(uint16_t len, direction dir);
+        std::map<uint16_t, std::list<lorryid>> endpointMap; // offset -> lorryid list
+        std::map<uint16_t, bool> reservationMap; // offset -> true
+
+        void init(uint16_t len, direction dir, const std::vector<uint16_t>& endpoints);
+        void preupdate(world& w, uint64_t ti);
         void update(world& w, uint64_t ti);
+        void postupdate(world& w, uint64_t ti);
         bool canEntry(world& w, direction dir) override;
         bool tryEntry(world& w, lorryid l, direction dir) override;
         void setNeighbor(roadid id);

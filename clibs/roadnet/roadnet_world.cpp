@@ -3,16 +3,32 @@
 
 namespace roadnet {
     template <typename T>
+    static void ary_preupdate(world& w, uint64_t ti, T& ary) {
+        size_t N = ary.size();
+        for (size_t i = 0; i < N; ++i) {
+            ary[i].preupdate(w, ti);
+        }
+    }
+    template <typename T>
     static void ary_update(world& w, uint64_t ti, T& ary) {
         size_t N = ary.size();
         for (size_t i = 0; i < N; ++i) {
             ary[i].update(w, ti);
         }
     }
+    template <typename T>
+    static void ary_postupdate(world& w, uint64_t ti, T& ary) {
+        size_t N = ary.size();
+        for (size_t i = 0; i < N; ++i) {
+            ary[i].postupdate(w, ti);
+        }
+    }
     void world::update(uint64_t ti) {
         marked = !marked;
+        ary_preupdate(*this, ti, straightAry);
         ary_update(*this, ti, crossAry);
         ary_update(*this, ti, straightAry);
+        ary_postupdate(*this, ti, straightAry);
     }
     basic_road& world::Road(roadid id) {
         assert(id != roadid::invalid());
