@@ -30,7 +30,7 @@ local function ipairs_remove(t)
 
 local function _replace_material(template, material_file_path)
     for _, v in ipairs(template) do
-        if v.prefab then -- TODO: special case for prefab
+        if v.prefab then -- TODO: special case for prefab include other prefab, skip it
             goto continue
         end
         for _, policy in ipairs(v.policy) do
@@ -204,7 +204,7 @@ local _get_hitch_children ; do
         if state == "translucent" or state == "opacity" then
             instance:send("material", "set_property", "u_basecolor_factor", color)
         end
-        if emissive_color then
+        if emissive_color then -- see also: meno/u_emissive_factor
             instance:send("material_tag", "set_property", "u_emissive_factor", "u_emissive_factor", emissive_color)
         end
 
