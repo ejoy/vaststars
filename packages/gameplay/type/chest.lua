@@ -8,7 +8,7 @@ function c:ctor(init, pt)
     local world = self
     local chest = {}
     for _ = 1, pt.slots do
-        chest[#chest+1] = string.pack("<I2I2I2I2", 1, 0, 0, 0)
+        chest[#chest+1] = string.pack("<I2I2I2I2I2", 1, 0, 0, 0, 0)
     end
     local id = world:container_create("none", table.concat(chest))
     if init.items then

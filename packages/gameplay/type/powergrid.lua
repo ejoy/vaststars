@@ -65,7 +65,7 @@ local function createChest(s)
     for idx = 2, #s//4 do
         local id, n = string.unpack("<I2I2", s, 4*idx-3)
         local limit = n * 2
-        chest[#chest+1] = string.pack("<I2I2I2I2", 0, id, 0, limit)
+        chest[#chest+1] = string.pack("<I2I2I2I2I2", 0, id, 0, limit, 0)
     end
     return table.concat(chest)
 end

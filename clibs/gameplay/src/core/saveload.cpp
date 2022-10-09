@@ -266,8 +266,10 @@ namespace lua_world {
         static void restore(lua_State* L, world& w) {
             FILE* f = createfile(L, 2, filemode::read);
             auto h = file_read<header>(f);
-            w.chests.resize(h.chest_size, {chest::type::none, nullptr, 0});
+            w.chests.resize(h.chest_size, {0, chest::type::none, nullptr, 0});
+            uint16_t id = 0;
             for (auto& c : w.chests) {
+                c.id = id++;
                 file_read(f, c.type_);
                 read_vector(f, c.slots);
             }

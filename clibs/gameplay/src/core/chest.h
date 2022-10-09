@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <vector>
+#include <util/flatmap.h>
 
 struct world;
 struct lua_State;
@@ -14,7 +15,6 @@ struct recipe_items {
         uint16_t amount;
     } items[1];
 };
-
 
 struct chest {
     enum class type: uint8_t {
@@ -31,20 +31,25 @@ struct chest {
         uint16_t item;
         uint16_t amount;
         uint16_t limit;
+        uint16_t lock;
     };
 
-    chest(type type_, chest::slot* data, size_t size);
-    std::vector<slot> slots;
-    type type_;
+    chest(uint16_t id, type type_, chest::slot* data, size_t size);
+    uint16_t get_fluid(uint16_t index);
+    void     set_fluid(uint16_t index, uint16_t value);
+    bool     pickup(world& w, const recipe_items* r);
+    bool     place(world& w, const recipe_items* r);
+    bool     recover(world& w, const recipe_items* r);
+    void     limit(world& w, const uint16_t* r);
+    size_t   size() const;
+    const slot* getslot(uint16_t index) const;
+    uint16_t pickup(world& w, uint16_t item, uint16_t max);
+    uint16_t place(world& w, uint16_t item, uint16_t amount, uint16_t limit);
+    bool     pickup(world& w, flatmap<uint16_t, uint16_t>& items);
 
-    bool     get(uint16_t index, uint16_t& value);
-    bool     set(uint16_t index, uint16_t value);
-    slot*    getslot(uint16_t index);
-    bool     pickup(const recipe_items* r);
-    bool     place(const recipe_items* r);
-    bool     recover(const recipe_items* r);
-    void     limit(const uint16_t* r);
-    size_t   find(uint16_t item);
-    uint16_t pickup(uint16_t item, uint16_t max);
-    uint16_t place(uint16_t item, uint16_t amount, uint16_t limit);
+public:
+    std::vector<slot> slots;
+    uint16_t id;
+    uint8_t network = 0;
+    type type_;
 };
