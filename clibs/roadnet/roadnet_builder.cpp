@@ -409,7 +409,7 @@ namespace roadnet {
         return lorryId;
     }
 
-    lorryid builder::addLorry(world& w, lineid lineId, road_coord starting, road_coord ending) {
+    lorryid builder::pushLorry(world& w, lineid lineId, road_coord starting, road_coord ending) {
         line& line = w.lineVec[lineId.id];
         if (w.lorryVec.size() >= (size_t)(uint16_t)-1) {
             return lorryid::invalid();
@@ -417,24 +417,14 @@ namespace roadnet {
         if (!starting || !ending) {
             return lorryid::invalid();
         }
-        if (starting.id.cross) {
-            road::crossroad& road = w.crossAry[starting.id.id];
-            if (road.hasLorry(w, starting.offset)) {
-                return lorryid::invalid();
-            }
-            lorryid lorryId = createLorry(w, lineId, 0, ending);
-            road.addLorry(w, lorryId, starting.offset);
-            return lorryId;
+        assert(starting.id.cross == 0);
+        road::straight& road = w.straightAry[starting.id.id];
+        if (road.hasLorry(w, starting.offset)) {
+            return lorryid::invalid();
         }
-        else {
-            road::straight& road = w.straightAry[starting.id.id];
-            if (road.hasLorry(w, starting.offset)) {
-                return lorryid::invalid();
-            }
-            lorryid lorryId = createLorry(w, lineId, 0, ending);
-            road.addLorry(w, lorryId, starting.offset);
-            return lorryId;
-        }
+        lorryid lorryId = createLorry(w, lineId, 0, ending);
+        road.pushLorry(w, lorryId, starting.offset);
+        return lorryId;
     }
 
     roadid builder::findCrossRoad(loction l) {

@@ -29,8 +29,8 @@ function mt:add_line(...)
 end
 
 -- starting & ending road coord
-function mt:add_lorry(lineid, starting, ending)
-    return self.cworld:add_lorry(lineid, starting, ending)
+function mt:push_lorry(lineid, starting, ending)
+    return self.cworld:push_lorry(lineid, starting, ending)
 end
 
 local mapping_id, mapping_sid ; do

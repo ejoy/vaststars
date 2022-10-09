@@ -23,7 +23,7 @@ namespace roadnet {
         builder();
         void    loadMap(world& w, const std::map<loction, uint8_t>& mapData);
         lineid  addLine(world& w, std::string_view strpath);
-        lorryid addLorry(world& w, lineid lineId, road_coord starting, road_coord ending);
+        lorryid pushLorry(world& w, lineid lineId, road_coord starting, road_coord ending);
 
         road_coord coordConvert(world& w, map_coord  mc);
         map_coord  coordConvert(world& w, road_coord rc);

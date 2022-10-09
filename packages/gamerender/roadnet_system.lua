@@ -217,7 +217,7 @@ local function __init_roadnet()
 
         local line_id, line = __add_line(rnworld, S, E)
         if line_id then
-            local lorry_id = rnworld:add_lorry(line_id, S, E)
+            local lorry_id = rnworld:push_lorry(line_id, S, E)
             if lorry_id then
                 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
                 local COLOR_INVALID <const> = math3d.constant "null"
