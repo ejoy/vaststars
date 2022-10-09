@@ -702,7 +702,25 @@ prototype "液罐1" {
         {"液罐I", 1},
     },
     time = "6s",
-    description = "制造可装载气液资源的容器",
+    description = "制造可装载液体资源的容器",
+}
+
+prototype "气罐1" {
+    type = { "recipe" },
+    category = "器件中型制造",
+    group = "化工",
+    order = 23,
+    icon = "textures/construct/tank1.texture",
+    ingredients = {
+        {"管道1-X型", 3},
+        -- {"铁棒", 1},
+        {"铁板", 8},
+    },
+    results = {
+        {"气罐I", 1},
+    },
+    time = "6s",
+    description = "制造可装载气体资源的容器",
 }
 
 prototype "化工厂1" {
