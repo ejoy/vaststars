@@ -33,6 +33,7 @@ local menu = {
             "管道1-X型",
             "地下管1-JI型",
             "液罐I",
+            "气罐I",
             "烟囱I",
             "排水口I",
             "空气过滤器I",
@@ -57,6 +58,7 @@ local menu = {
         icon = "textures/construct/modify.texture",
         detail = {
             "液罐I",
+            "气罐I",
             "管道1-X型",
             "机器爪I",
             "小铁制箱子I",

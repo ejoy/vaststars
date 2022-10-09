@@ -23,7 +23,7 @@ prototype "液罐I" {
 }
 
 prototype "气罐I" {
-    model = "prefabs/storage-tank-1.prefab",
+    model = "prefabs/gas-tank-1.prefab",
     icon = "textures/building_pic/small_pic_tank.texture",
     construct_detector = {"exclusive"},
     storage_tank = true,

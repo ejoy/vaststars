@@ -42,7 +42,7 @@ namespace roadnet {
             loction   loc;
             direction start_dir;
             direction finish_dir;
-            roadid neighbor;
+            roadid neighbor; // the next crossroad along this straight road
             straightData(uint16_t id, uint16_t len, loction loc, direction start_dir, direction finish_dir, roadid neighbor)
                 : id(id)
                 , len(len)
