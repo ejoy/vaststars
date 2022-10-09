@@ -88,6 +88,8 @@ local function rc_rid(rc)
     return rc & 0xFFFF
 end
 
+-- map = {loc = roadmask, ...}
+-- loc = (y << 8) | x -- see also: get_location(lua_State *L, int idx)
 local function create(map, callback)
     local cworld = roadnet_core.create_world()
 
@@ -157,7 +159,7 @@ local function create(map, callback)
     return setmetatable(w, mt)
 end
 
-local get_road_mask, is_cross, entry_count; do -- TODO: we really need the entry_count api?
+local get_road_mask, is_cross, entry_count, all_prototype_bits; do -- TODO: we really need the entry_count api?
     local mt = {}
     function mt:__index(k)
         local v = {}
@@ -173,6 +175,7 @@ local get_road_mask, is_cross, entry_count; do -- TODO: we really need the entry
         S = 3, -- bottom
     }
 
+    -- every 2 bits represent one direction of a road, 00 means nothing, 01 means road, 10 means roadside, total 8 bits represent 4 directions
     for _, typeobject in pairs(iprototype.each_maintype("entity", "road")) do
         for _, entity_dir in pairs(typeobject.flow_direction) do
             local bits = 0
@@ -180,8 +183,14 @@ local get_road_mask, is_cross, entry_count; do -- TODO: we really need the entry
 
             local connections = typeobject.crossing.connections
             for _, connection in ipairs(connections) do
-                local dir = iprototype.rotate_dir(connection.position[3], entity_dir)
-                bits = bits | (1 << mapping[dir])
+                local dir = assert(mapping[iprototype.rotate_dir(connection.position[3], entity_dir)])
+                local value
+                if connection.roadside then
+                    value = 2
+                else
+                    value = 1
+                end
+                bits = bits | (value << (dir * 2))
                 c = c + 1
             end
 
@@ -201,6 +210,10 @@ local get_road_mask, is_cross, entry_count; do -- TODO: we really need the entry
     function entry_count(prototype_name, dir)
         return assert(prototype_bits[prototype_name][dir]).c
     end
+
+    function all_prototype_bits()
+        return prototype_bits
+    end
 end
 
 return {
@@ -208,6 +221,7 @@ return {
     is_cross = is_cross,
     entry_count = entry_count,
     road_mask = get_road_mask,
+    prototype_bits = all_prototype_bits,
     rid_mc = rid_mc,
     rc_rid = rc_rid,
 }

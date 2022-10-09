@@ -2,33 +2,19 @@
 #include <assert.h>
 
 namespace roadnet {
-    template <typename T>
-    static void ary_preupdate(world& w, uint64_t ti, T& ary) {
+    template <typename T, typename F>
+    void ary_call(world& w, uint64_t ti, T& ary, F func) {
         size_t N = ary.size();
         for (size_t i = 0; i < N; ++i) {
-            ary[i].preupdate(w, ti);
-        }
-    }
-    template <typename T>
-    static void ary_update(world& w, uint64_t ti, T& ary) {
-        size_t N = ary.size();
-        for (size_t i = 0; i < N; ++i) {
-            ary[i].update(w, ti);
-        }
-    }
-    template <typename T>
-    static void ary_postupdate(world& w, uint64_t ti, T& ary) {
-        size_t N = ary.size();
-        for (size_t i = 0; i < N; ++i) {
-            ary[i].postupdate(w, ti);
+            (ary[i].*func)(w, ti);
         }
     }
     void world::update(uint64_t ti) {
         marked = !marked;
-        ary_preupdate(*this, ti, straightAry);
-        ary_update(*this, ti, crossAry);
-        ary_update(*this, ti, straightAry);
-        ary_postupdate(*this, ti, straightAry);
+        ary_call(*this, ti, straightAry, &road::straight::preupdate);
+        ary_call(*this, ti, crossAry, &road::crossroad::update);
+        ary_call(*this, ti, straightAry, &road::straight::update);
+        ary_call(*this, ti, straightAry, &road::straight::postupdate);
     }
     basic_road& world::Road(roadid id) {
         assert(id != roadid::invalid());
