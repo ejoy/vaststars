@@ -25,6 +25,7 @@ namespace roadnet::road {
         bool tryEntry(world& w, lorryid l, direction dir) override;
         void setNeighbor(roadid id);
         void setLorryOffset(uint32_t offset) { lorryOffset = offset; }
+        void pushLorry(world& w, lorryid l, uint16_t offset);
         void addLorry(world& w, lorryid l, uint16_t offset);
         bool hasLorry(world& w, uint16_t offset);
         void delLorry(world& w, uint16_t offset);

@@ -29,6 +29,11 @@ namespace roadnet::road {
         assert(neighbor == roadid::invalid());
         neighbor = id;
     }
+    void straight::pushLorry(world& w, lorryid l, uint16_t offset) {
+        auto iter = endpointMap.find(offset);
+        assert(iter != endpointMap.end());
+        iter->second.push_back(l);
+    }
     void straight::addLorry(world& w, lorryid l, uint16_t offset) {
         w.LorryInRoad(lorryOffset + offset) = l;
         w.Lorry(l).initTick(w, kTime);
