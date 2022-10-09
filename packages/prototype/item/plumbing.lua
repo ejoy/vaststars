@@ -6,9 +6,19 @@ prototype "液罐I" {
     stack = 50,
     icon = "textures/construct/tank1.texture",
     model = "prefabs/rock.prefab",
-    description = "专门贮藏液体或气体的容器",
+    description = "专门贮藏液体的容器",
     group = "管道",
     order = 22,
+}
+
+prototype "气罐I" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/tank1.texture",
+    model = "prefabs/rock.prefab",
+    description = "专门贮藏气体的容器",
+    group = "管道",
+    order = 23,
 }
 
 prototype "地下水挖掘机" {
