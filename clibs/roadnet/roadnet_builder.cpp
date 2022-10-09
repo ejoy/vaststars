@@ -32,12 +32,13 @@ namespace roadnet {
         memset(map, 0, sizeof(map));
     }
 
+    // every 2 bits represent one direction of a road, 00 means nothing, 01 means road, 10 means roadside, total 8 bits represent 4 directions
     static constexpr uint8_t makeMask(const char* maskstr) {
         uint8_t m = 0;
-        m |= maskstr[0] != '_'? (1 << (uint8_t)direction::l): 0;
-        m |= maskstr[1] != '_'? (1 << (uint8_t)direction::t): 0;
-        m |= maskstr[2] != '_'? (1 << (uint8_t)direction::r): 0;
-        m |= maskstr[3] != '_'? (1 << (uint8_t)direction::b): 0;
+        m |= maskstr[0] != '_'? (1 << (uint8_t)direction::l * 2): 0;
+        m |= maskstr[1] != '_'? (1 << (uint8_t)direction::t * 2): 0;
+        m |= maskstr[2] != '_'? (1 << (uint8_t)direction::r * 2): 0;
+        m |= maskstr[3] != '_'? (1 << (uint8_t)direction::b * 2): 0;
         return m;
     }
 
@@ -278,8 +279,8 @@ namespace roadnet {
         uint16_t genStraightId = 0;
         uint32_t genLorryOffset = 0;
 
-        for (auto& [l, v] : mapData) {
-            map[l.y][l.x] = v;
+        for (auto& [l, bitmask] : mapData) {
+            map[l.y][l.x] = bitmask;
 
             if (isCross(map[l.y][l.x])) {
                 roadid  id  { true, genCrossId++ };
@@ -296,7 +297,8 @@ namespace roadnet {
 
             for (uint8_t i = 0; i < 4; ++i) {
                 direction dir = (direction)i;
-                if (m & (1 << i) && !crossroad.hasNeighbor(dir)) {
+                // 01 means road, 10 means roadside
+                if (m & (1 << i * 2) && !crossroad.hasNeighbor(dir)) {
                     auto result = findNeighbor(map, loc, dir);
                     roadid neighbor_id = crossMap[result.l];
                     road::crossroad& neighbor = w.crossAry[neighbor_id.id];

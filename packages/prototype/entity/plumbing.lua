@@ -22,6 +22,27 @@ prototype "液罐I" {
     }
 }
 
+prototype "气罐I" {
+    model = "prefabs/gas-tank-1.prefab",
+    icon = "textures/building_pic/small_pic_tank.texture",
+    construct_detector = {"exclusive"},
+    storage_tank = true,
+    type ={"entity", "fluidbox"},
+    area = "3x3",
+    group = {"管道"},
+    fluidbox = {
+        capacity = 15000,
+        height = 100,
+        base_level = 0,
+        connections = {
+            {type="input-output", position={1,0,"N"}},
+            {type="input-output", position={2,1,"E"}},
+            {type="input-output", position={1,2,"S"}},
+            {type="input-output", position={0,1,"W"}},
+        }
+    }
+}
+
 prototype "地下水挖掘机" {
     model = "prefabs/offshore-pump-1.prefab",
     icon = "textures/building_pic/small_pic_offshore.texture",
