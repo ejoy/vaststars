@@ -21,14 +21,12 @@ namespace roadnet {
     class builder {
     public:
         builder();
-        void    loadMap(world& w, const std::map<loction, uint8_t>& mapData);
-        lorryid pushLorry(world& w, road_coord starting, road_coord ending);
+        void loadMap(world& w, const std::map<loction, uint8_t>& mapData);
+        bool    pushLorry(world& w, lorryid lorryId, road_coord starting, road_coord ending);
+        lorryid popLorry(world& w, road_coord r);
 
         road_coord coordConvert(world& w, map_coord  mc);
         map_coord  coordConvert(world& w, road_coord rc);
-
-        std::map<routeKey, uint16_t> getRouteCost();
-
     private:
         uint8_t map[256][256];
         
@@ -52,8 +50,6 @@ namespace roadnet {
         std::vector<straightData>    straightVec;
         std::map<loction, roadid>    crossMap;
         std::map<roadid, loction>    crossMapR;
-
-        std::map<routeKey, uint16_t> routeCost;
 
         roadid   findCrossRoad(loction l);
         std::optional<loction> whereCrossRoad(roadid id);
