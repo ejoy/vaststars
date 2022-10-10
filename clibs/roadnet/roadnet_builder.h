@@ -50,7 +50,6 @@ namespace roadnet {
         std::vector<straightData>    straightVec;
         std::map<loction, roadid>    crossMap;
         std::map<roadid, loction>    crossMapR;
-
         roadid   findCrossRoad(loction l);
         std::optional<loction> whereCrossRoad(roadid id);
     };

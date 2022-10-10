@@ -3,10 +3,10 @@
 
 namespace roadnet {
     direction lorry::getDirection(world& w) {
-        return direction::n; // TODO call roadmap.c
+        return path[pathIdx];
     }
     void lorry::nextDirection(world& w) {
-        // TODO call roadmap.c
+        pathIdx++;
     }
     void lorry::initTick(world& w, uint8_t v) {
         tick = v - 1; // [0, v), total v ticks
