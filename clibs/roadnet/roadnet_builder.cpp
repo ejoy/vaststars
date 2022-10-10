@@ -271,9 +271,6 @@ namespace roadnet {
     void builder::loadMap(world& w, const std::map<loction, uint8_t>& mapData) {
         memset(map, 0, sizeof(map));
         routeCost.clear();
-        routePrev.clear();
-        routeNext.clear();
-        routeDir.clear();
 
         uint16_t genCrossId = 0;
         uint16_t genStraightId = 0;
@@ -307,8 +304,6 @@ namespace roadnet {
                         neighbor.setNeighbor(reverse(result.dir), id);
 
                         routeCost.emplace(routeKey { id, neighbor_id }, 0);
-                        routeDir.emplace(routeKey { id, neighbor_id }, dir);
-                        routeDir.emplace(routeKey { neighbor_id, id }, reverse(result.dir));
                     }
                     else if (loc == result.l) {
                         straightData& straight = straightVec.emplace_back(
@@ -322,7 +317,6 @@ namespace roadnet {
                         crossroad.setNeighbor(dir, {false, straight.id});
 
                         routeCost.emplace(routeKey { id, {false, straight.id} }, 0);
-                        routeDir.emplace(routeKey { id, {false, straight.id} }, dir);
                     }
                     else {
                         straightData& straight1 = straightVec.emplace_back(
@@ -334,8 +328,6 @@ namespace roadnet {
                             neighbor_id
                         );
                         crossroad.setNeighbor(dir, {false, straight1.id});
-                        routePrev.emplace(roadid{false, straight1.id}, id);
-                        routeNext.emplace(roadid{false, straight1.id}, neighbor_id);
 
                         straightData& straight2 = straightVec.emplace_back(
                             genStraightId++,
@@ -346,12 +338,8 @@ namespace roadnet {
                             id
                         );
                         neighbor.setNeighbor(reverse(result.dir), {false, straight2.id});
-                        routePrev.emplace(roadid{false, straight2.id}, neighbor_id);
-                        routeNext.emplace(roadid{false, straight2.id}, id);
 
                         routeCost.emplace(routeKey { id, neighbor_id}, result.n);
-                        routeDir.emplace(routeKey { id, neighbor_id }, dir);
-                        routeDir.emplace(routeKey { neighbor_id, id }, reverse(result.dir));
                     }
                 }
             }
@@ -369,23 +357,6 @@ namespace roadnet {
         w.lorryAry.reset(genLorryOffset);
     }
 
-    lineid builder::addLine(world& w, std::string_view strpath) {
-        line line;
-        line.path.reset(strpath.size());
-        for (size_t i = 0; i < strpath.size(); ++i) {
-            switch (strpath[i]) {
-            case L'L': line.path[i] = direction::l; break;
-            case L'T': line.path[i] = direction::t; break;
-            case L'R': line.path[i] = direction::r; break;
-            case L'B': line.path[i] = direction::b; break;
-            default:   line.path[i] = direction::n; break;
-            }
-        }
-        lineid lineId((uint16_t)w.lineVec.size());
-        w.lineVec.emplace_back(std::move(line));
-        return lineId;
-    }
-
     static constexpr direction getDirection(loction start, loction end) {
         assert(start != end);
         assert((start.x == end.x) || (start.y == end.y));
@@ -401,16 +372,14 @@ namespace roadnet {
             ;
     }
 
-    static lorryid createLorry(world& w, lineid lineId, uint8_t lineIdx, road_coord ending) {
+    static lorryid createLorry(world& w) {
         lorryid lorryId((uint16_t)w.lorryVec.size());
         roadnet::lorry lorry;
-        lorry.initLine(lineId, lineIdx, ending);
         w.lorryVec.push_back(lorry);
         return lorryId;
     }
 
-    lorryid builder::pushLorry(world& w, lineid lineId, road_coord starting, road_coord ending) {
-        line& line = w.lineVec[lineId.id];
+    lorryid builder::pushLorry(world& w, road_coord starting, road_coord ending) {
         if (w.lorryVec.size() >= (size_t)(uint16_t)-1) {
             return lorryid::invalid();
         }
@@ -422,8 +391,8 @@ namespace roadnet {
         if (road.hasLorry(w, starting.offset)) {
             return lorryid::invalid();
         }
-        lorryid lorryId = createLorry(w, lineId, 0, ending);
-        road.pushLorry(w, lorryId, starting.offset);
+        lorryid lorryId = createLorry(w);
+        road.pushLorry(lorryId, starting.offset);
         return lorryId;
     }
 
@@ -487,29 +456,5 @@ namespace roadnet {
 
     std::map<routeKey, uint16_t> builder::getRouteCost() {
         return routeCost;
-    }
-
-    std::optional<roadid> builder::getPrevRoadId(roadid id) {
-        auto iter = routePrev.find(id);
-        if (iter != routePrev.end()) {
-            return iter->second;
-        }
-        return std::nullopt;
-    }
-
-    std::optional<roadid> builder::getNextRoadId(roadid id) {
-        auto iter = routeNext.find(id);
-        if (iter != routeNext.end()) {
-            return iter->second;
-        }
-        return std::nullopt;
-    }
-
-    std::optional<direction> builder::getRouteDir(roadid from, roadid to) {
-        auto iter = routeDir.find({from, to});
-        if (iter != routeDir.end()) {
-            return iter->second;
-        }
-        return std::nullopt;
     }
 }

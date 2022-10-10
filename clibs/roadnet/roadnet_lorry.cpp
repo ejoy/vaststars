@@ -2,16 +2,11 @@
 #include "roadnet_world.h"
 
 namespace roadnet {
-    void lorry::initLine(lineid id, uint8_t idx, road_coord ending) {
-        lineIdx = idx;
-        lineId = id;
-        ending = ending;
-    }
     direction lorry::getDirection(world& w) {
-        return w.Line(lineId).getDirection(lineIdx);
+        return direction::n; // TODO call roadmap.c
     }
     void lorry::nextDirection(world& w) {
-        w.Line(lineId).nextDirection(lineIdx);
+        // TODO call roadmap.c
     }
     void lorry::initTick(world& w, uint8_t v) {
         tick = v - 1; // [0, v), total v ticks
