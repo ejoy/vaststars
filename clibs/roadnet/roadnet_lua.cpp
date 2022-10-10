@@ -1,7 +1,6 @@
 #include <lua.hpp>
 #include <string>
 #include "roadnet_builder.h"
-#include "roadnet_bfs.h"
 
 namespace roadnet::lua {
     template <typename T>
@@ -128,56 +127,12 @@ namespace roadnet::lua {
             }
             return 1;
         }
-        static int prev_roadid(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
-            auto r = get_road_coord(L, 2);
-            auto id = o.b.getPrevRoadId(r.id);
-            if (id) {
-                lua_pushinteger(L, id->toint());
-            } else {
-                lua_pushnil(L);
-            }
-            return 1;
-        }
-        static int next_roadid(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
-            auto r = get_road_coord(L, 2);
-            auto id = o.b.getNextRoadId(r.id);
-            if (id) {
-                lua_pushinteger(L, id->toint());
-            } else {
-                lua_pushnil(L);
-            }
-            return 1;
-        }
-        static int route_dir(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
-            auto from = (uint16_t)luaL_checkinteger(L, 2);
-            auto to = (uint16_t)luaL_checkinteger(L, 3);
-            auto dir = o.b.getRouteDir({from}, {to});
-            if(dir)
-                lua_pushinteger(L, (int)*dir);
-            else
-                lua_pushnil(L);
-            return 1;
-        }
-        static int add_line(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
-            auto strpath = get_strview(L, 2);
-            auto id = o.b.addLine(o.w, strpath);
-            if (id == roadnet::lineid::invalid()) {
-                return 0;
-            }
-            lua_pushinteger(L, id.id);
-            return 1;
-        }
         static int push_lorry(lua_State* L) {
             auto& o = class_get<object>(L, 1);
-            uint16_t lineId = (uint16_t)luaL_checkinteger(L, 2);
-            auto starting_rc = o.b.coordConvert(o.w, get_map_coord(L, 3));
-            auto ending_rc = o.b.coordConvert(o.w, get_map_coord(L, 4));
+            auto starting_rc = o.b.coordConvert(o.w, get_map_coord(L, 2));
+            auto ending_rc = o.b.coordConvert(o.w, get_map_coord(L, 3));
             assert(starting_rc.id.cross == 0 && ending_rc.id.cross == 0);
-            auto id = o.b.pushLorry(o.w, roadnet::lineid{lineId}, starting_rc, ending_rc);
+            auto id = o.b.pushLorry(o.w, starting_rc, ending_rc);
             if (id == roadnet::lorryid::invalid()) {
                 return 0;
             }
@@ -188,21 +143,6 @@ namespace roadnet::lua {
             auto& o = class_get<object>(L, 1);
             auto r = o.b.coordConvert(o.w, get_road_coord(L, 2));
             push_map_coord(L, r);
-            return 1;
-        }
-        static int road_coord(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
-            auto r = o.b.coordConvert(o.w, get_map_coord(L, 2));
-            push_road_coord(L, r);
-            return 1;
-        }
-        static int bfs(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
-            std::vector<char> path;
-            if (!bfs(o.w, get_road_coord(L, 2).id, get_road_coord(L, 3).id, path)) {
-                return 0;
-            }
-            lua_pushlstring(L, path.data(), path.size());
             return 1;
         }
         struct eachlorry {
@@ -298,14 +238,8 @@ namespace roadnet::lua {
             luaL_Reg l[] = {
                 { "load_map", load_map },
                 { "route_cost", route_cost },
-                { "prev_roadid", prev_roadid },
-                { "next_roadid", next_roadid },
-                { "route_dir", route_dir },
-                { "add_line", add_line },
                 { "push_lorry", push_lorry },
                 { "map_coord", map_coord },
-                { "road_coord", road_coord },
-                { "bfs", bfs },
                 { "each_lorry", each_lorry },
                 { "update", update },
                 { NULL, NULL },

@@ -3,8 +3,8 @@
 
 namespace roadnet::road {
     static constexpr uint8_t kTime = 10;
-    static bool reservation(straight *r, uint16_t offset) {
-        auto m = r->reservationMap;
+    static bool isLocked(straight *r, uint16_t offset) {
+        auto m = r->offsetLockMap;
         return m.find(offset) != m.end();
     }
 
@@ -12,14 +12,14 @@ namespace roadnet::road {
         this->len = len;
         this->dir = dir;
         for (auto offset : endpoints) {
-            endpointMap[offset] = std::list<lorryid>();
+            pushMap[offset] = std::list<lorryid>();
         }
     }
     bool straight::canEntry(world& w, direction dir)  {
-        return !reservation(this, len-1) && !hasLorry(w, len-1);
+        return !isLocked(this, len-1) && !hasLorry(w, len-1);
     }
     bool straight::tryEntry(world& w, lorryid l, direction dir) {
-        if (hasLorry(w, len-1) || reservation(this, len-1)) {
+        if (hasLorry(w, len-1) || isLocked(this, len-1)) {
             return false;
         }
         addLorry(w, l, len-1);
@@ -29,10 +29,20 @@ namespace roadnet::road {
         assert(neighbor == roadid::invalid());
         neighbor = id;
     }
-    void straight::pushLorry(world& w, lorryid l, uint16_t offset) {
-        auto iter = endpointMap.find(offset);
-        assert(iter != endpointMap.end());
+    void straight::pushLorry(lorryid l, uint16_t offset) {
+        auto iter = pushMap.find(offset);
+        assert(iter != pushMap.end());
         iter->second.push_back(l);
+    }
+    lorryid straight::popLorry(uint16_t offset) {
+        auto iter = popMap.find(offset);
+        assert(iter != popMap.end());
+        if (iter->second.empty()) {
+            return lorryid::invalid();
+        }
+        auto l = iter->second.front();
+        iter->second.pop_front();
+        return l;
     }
     void straight::addLorry(world& w, lorryid l, uint16_t offset) {
         w.LorryInRoad(lorryOffset + offset) = l;
@@ -45,21 +55,16 @@ namespace roadnet::road {
         w.LorryInRoad(lorryOffset + offset) = lorryid::invalid();
     }
     void straight::preupdate(world& w, uint64_t ti) {
-        for (auto iter = endpointMap.begin(); iter != endpointMap.end(); iter++) {
+        for (auto iter = pushMap.begin(); iter != pushMap.end(); iter++) {
             auto& list = iter->second;
             auto l = list.front();
             if (l != *list.end()) {                
-                auto& lorry = w.Lorry(l);
-                if (!lorry.updateTick(w)) {
-                    if (tryEntry(w, l, dir)) {
-                        list.pop_front();
-                    }
-                    else {
-                        reservationMap[iter->first] = true;
-                    }
-                }
+                if (tryEntry(w, l, dir))
+                    list.pop_front();
+                else
+                    offsetLockMap[iter->first] = true;
             }
-        }        
+        }
     }
     void straight::update(world& w, uint64_t ti) {
         lorryid l = w.LorryInRoad(lorryOffset + 0);
@@ -75,7 +80,7 @@ namespace roadnet::road {
         for (uint16_t i = 1; i < len; ++i) {
             lorryid l = w.LorryInRoad(lorryOffset + i);
             if (l) {
-                if (!w.Lorry(l).updateTick(w) && !w.LorryInRoad(lorryOffset+i-1) && !reservation(this, i-1)) {
+                if (!w.Lorry(l).updateTick(w) && !w.LorryInRoad(lorryOffset+i-1) && !isLocked(this, i-1)) {
                     delLorry(w, i);
                     addLorry(w, l, i-1);
                 }
@@ -83,8 +88,8 @@ namespace roadnet::road {
          }
     }
     void straight::postupdate(world& w, uint64_t ti) {
-        for (auto iter = reservationMap.begin(); iter != reservationMap.end(); iter++) {
-            auto& list = endpointMap[iter->first];
+        for (auto iter = offsetLockMap.begin(); iter != offsetLockMap.end(); iter++) {
+            auto& list = pushMap[iter->first];
             if (list.size() > 0) {
                 if (!w.LorryInRoad(lorryOffset+iter->first)) {
                     auto l = list.front();
@@ -93,6 +98,6 @@ namespace roadnet::road {
                 }
             }
         }
-        reservationMap.clear();
+        offsetLockMap.clear();
     }
 }

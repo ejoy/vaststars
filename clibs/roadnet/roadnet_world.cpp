@@ -30,8 +30,4 @@ namespace roadnet {
         assert(id.id < lorryVec.size());
         return lorryVec[id.id];
     }
-    line& world::Line(lineid id) {
-        assert(id.id < lineVec.size());
-        return lineVec[id.id];
-    }
 }

@@ -14,8 +14,10 @@ namespace roadnet::road {
         uint32_t lorryOffset;
         roadid neighbor = roadid::invalid();
         direction dir = direction::n;
-        std::map<uint16_t, std::list<lorryid>> endpointMap; // offset -> lorryid list
-        std::map<uint16_t, bool> reservationMap; // offset -> true
+
+        std::map<uint16_t, std::list<lorryid>> pushMap; // offset -> lorryid list
+        std::map<uint16_t, std::list<lorryid>> popMap;  // same as above
+        std::map<uint16_t, bool> offsetLockMap; // offset -> true
 
         void init(uint16_t len, direction dir, const std::vector<uint16_t>& endpoints);
         void preupdate(world& w, uint64_t ti);
@@ -25,7 +27,8 @@ namespace roadnet::road {
         bool tryEntry(world& w, lorryid l, direction dir) override;
         void setNeighbor(roadid id);
         void setLorryOffset(uint32_t offset) { lorryOffset = offset; }
-        void pushLorry(world& w, lorryid l, uint16_t offset);
+        void pushLorry(lorryid l, uint16_t offset);
+        lorryid popLorry(uint16_t offset);
         void addLorry(world& w, lorryid l, uint16_t offset);
         bool hasLorry(world& w, uint16_t offset);
         void delLorry(world& w, uint16_t offset);

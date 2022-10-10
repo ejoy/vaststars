@@ -91,7 +91,6 @@ end
 local gameplay_core = require "gameplay.core"
 local create_roadnet = require("gameplay.interface.roadnet").create
 local road_mask = require("gameplay.interface.roadnet").road_mask
-local rc_rid = require("gameplay.interface.roadnet").rc_rid
 local iprototype = require "gameplay.interface.prototype"
 local vsobject_manager = ecs.require "vsobject_manager"
 local objects = require "objects"
@@ -115,15 +114,6 @@ local function _shuffle(t)
 		t[i], t[rnd] = t[rnd], t[i]
 	end
 	return t
-end
-
-local function __add_line(roadnet_world, S, E)
-    local p = roadnet_world:path(S, E)
-	return roadnet_world:add_line(p), p
-end
-
-local function _rc_rid(rc)
-    return rc & 0xFFFF
 end
 
 local function __init_roadnet()
@@ -184,65 +174,6 @@ local function __init_roadnet()
         local S  = c1.x | (c1.y << 8) | (c1.z << 16)
         local c2 = straight_road_offset[len - 1]
         local E  = c2.x | (c2.y << 8) | (c2.z << 16)
-
-        local rc1, rc2 = rnworld.road_coord[S], rnworld.road_coord[E]
-        local roadid1, roadid2 = _rc_rid(rc1), _rc_rid(rc2)
-
-        if roadid1 == roadid2 then -- TODO: avoid two endpoins are on the same road
-            straight_road_offset[len] = nil
-            straight_road_offset = _shuffle(straight_road_offset)
-            goto continue
-        end
-
-        if rnworld.cworld:prev_roadid(roadid1) == rnworld.cworld:next_roadid(roadid1) then -- TODO: avoid two endpoins are on the same road (U-turn)
-            straight_road_offset[len] = nil
-            straight_road_offset = _shuffle(straight_road_offset)
-            goto continue
-        end
-
-        if rnworld.cworld:prev_roadid(roadid2) == rnworld.cworld:next_roadid(roadid2) then -- TODO: avoid two endpoins are on the same road (U-turn)
-            straight_road_offset[len] = nil
-            straight_road_offset = _shuffle(straight_road_offset)
-            goto continue
-        end
-
-        local from, to = rnworld.road_coord[S], rnworld.road_coord[E] -- TODO： avoid two endpoins are on the same road (from == to)
-        from = rnworld.cworld:next_roadid(from) or rc_rid(from)
-        to = rnworld.cworld:next_roadid(to) or rc_rid(to)
-        if from == to then
-            straight_road_offset[len] = nil
-            straight_road_offset = _shuffle(straight_road_offset)
-            goto continue
-        end
-
-        local line_id, line = __add_line(rnworld, S, E)
-        if line_id then
-            local lorry_id = rnworld:push_lorry(line_id, S, E)
-            if lorry_id then
-                local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
-                local COLOR_INVALID <const> = math3d.constant "null"
-                local offset_mat = _get_offset_matrix(c1.x, c1.y, (c1.z >> 4) & 0xF, (STRAIGHT_TICKCOUNT * (c1.z & 0xF)) + 1 )
-                local s, r, t = math3d.srt(offset_mat)
-
-                assert(lorries[lorry_id] == nil)
-                lorries[lorry_id] = { game_object = igame_object.create({
-                        prefab = "prefabs/lorry-1.prefab",
-                        effect = nil,
-                        group_id = 0, -- TODO: change group_id when lorry is moving to the new road block?
-                        state = "opaque",
-                        color = COLOR_INVALID,
-                        srt = {s = s, r = r, t = t},
-                    }),
-                    x = c1.x, y = c1.y,
-                }
-                log.info(("lorry_id: %d, line_id: %d, (%s) from(%d,%d,%d) to(%d,%d,%d)"):format(lorry_id, line_id, line, c1.x, c1.y, c1.z, c2.x, c2.y, c2.z))
-            end
-        end
-
-        straight_road_offset[len] = nil
-        straight_road_offset[len - 1] = nil
-        break -- TODO
-        ::continue::
     end
 
     return rnworld
