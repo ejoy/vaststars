@@ -43,7 +43,7 @@ void trading_buy(world& w, uint16_t who, uint8_t network, chest::slot& s) {
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (uint8_t i = 0; i <= 255; ++i) {
+    for (size_t i = 0; i <= 255; ++i) {
         auto& network = w.tradings[i];
         for (auto& [item, q] : network.queues) {
             trading_match(w, network, item, q);
