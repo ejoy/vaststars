@@ -2,8 +2,9 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "蒸汽发电机I" {
-    model = "prefabs/assembling-1.prefab",
-    icon = "textures/construct/turbine1.texture",
+    model = "prefabs/turbine-1.prefab",
+    icon = "textures/building_pic/small_pic_turbine.texture",
+    background = "textures/build_background/pic_turbine.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "generator", "fluidbox"},
     area = "3x5",

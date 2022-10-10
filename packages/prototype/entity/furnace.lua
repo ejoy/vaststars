@@ -42,9 +42,9 @@ prototype "熔炼炉II" {
 }
 
 prototype "粉碎机I" {
-    model = "prefabs/assembling-1.prefab",
-    icon = "textures/building_pic/small_pic_furnace.texture",
-    background = "textures/build_background/pic_furnace.texture",
+    model = "prefabs/crusher-1.prefab",
+    icon = "textures/building_pic/small_pic_crusher.texture",
+    background = "textures/build_background/pic_crusher.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer"},
     area = "3x3",
@@ -62,9 +62,9 @@ prototype "粉碎机I" {
 }
 
 prototype "浮选器I" {
-    model = "prefabs/distillery-1.prefab",
-    icon = "textures/building_pic/small_pic_distillery.texture",
-    background = "textures/build_background/pic_distillery.texture",
+    model = "prefabs/flotation-cell-1.prefab",
+    icon = "textures/building_pic/small_pic_flotation_cell.texture",
+    background = "textures/build_background/pic_flotation_cell.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer"},
     area = "4x4",

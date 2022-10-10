@@ -122,9 +122,9 @@ prototype "蒸馏厂I" {
 }
 
 prototype "电解厂I" {
-    model = "prefabs/distillery-1.prefab",
-    icon = "textures/building_pic/small_pic_distillery.texture",
-    background = "textures/build_background/pic_distillery.texture",
+    model = "prefabs/electrolyzer-1.prefab",
+    icon = "textures/building_pic/small_pic_electrolyzer.texture",
+    background = "textures/build_background/pic_electrolyzer.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer", "fluidboxes"},
     area = "4x4",
@@ -174,9 +174,9 @@ prototype "电解厂I" {
 }
 
 prototype "水电站I" {
-    model = "prefabs/distillery-1.prefab",
-    icon = "textures/building_pic/small_pic_distillery.texture",
-    background = "textures/build_background/pic_distillery.texture",
+    model = "prefabs/hydro-plant-1.prefab",
+    icon = "textures/building_pic/small_pic_hydro_plant.texture",
+    background = "textures/build_background/pic_hydro_plant.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "assembling", "consumer", "fluidboxes"},
     area = "5x5",
