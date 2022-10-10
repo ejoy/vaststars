@@ -692,7 +692,7 @@ prototype "液罐1" {
     category = "器件中型制造",
     group = "化工",
     order = 22,
-    icon = "textures/construct/tank1.texture",
+    icon = "textures/construct/liquid-tank.texture",
     ingredients = {
         {"管道1-X型", 4},
         -- {"铁棒", 1},
@@ -710,7 +710,7 @@ prototype "气罐1" {
     category = "器件中型制造",
     group = "化工",
     order = 23,
-    icon = "textures/construct/tank1.texture",
+    icon = "textures/construct/gas-tank.texture",
     ingredients = {
         {"管道1-X型", 3},
         -- {"铁棒", 1},
