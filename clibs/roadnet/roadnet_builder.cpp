@@ -1,4 +1,5 @@
 ﻿#include "roadnet_builder.h"
+#include "roadnet_bfs.h"
 #include <assert.h>
 #include <stdint.h>
 #include <memory.h>
@@ -380,6 +381,14 @@ namespace roadnet {
         
         assert(starting.id.cross == 0);
         road::straight& road = w.straightAry[starting.id.id];
+        if (road.hasLorry(w, starting.offset)) {
+            return false;
+        }
+        auto& lorry = w.Lorry(lorryId);
+        if (!bfs(w, starting.id, ending.id, lorry.path)) {
+            return false;
+        }
+        lorry.pathIdx = 0;
         road.pushLorry(lorryId, starting.offset);
         return true;
     }

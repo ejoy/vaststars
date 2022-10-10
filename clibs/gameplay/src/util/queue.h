@@ -1,0 +1,117 @@
+#pragma once
+
+#include <assert.h>
+#include <memory>
+
+template <typename T, std::size_t N = 256>
+class queue {
+public:
+    typedef T                 value_type;
+    typedef value_type*       pointer;
+    typedef value_type&       reference;
+    typedef value_type const& const_reference;
+    struct chunk_type {
+        value_type  values[N];
+        chunk_type* next;
+    };
+    struct chunk_index {
+        chunk_type* chunk;
+        std::size_t pos;
+        chunk_index(chunk_type* chunk)
+            : chunk(chunk)
+            , pos(pos)
+        {}
+        chunk_index(const chunk_index& rhs)
+            : chunk(rhs.chunk)
+            , pos(rhs.pos)
+        {}
+        bool operator==(const chunk_index& rhs) const {
+            return chunk == rhs.chunk && pos == rhs.pos;
+        }
+        reference get() {
+            return chunk->values[pos];
+        }
+        const_reference get() const {
+            return chunk->values[pos];
+        }
+    };
+public:
+    queue()
+        : front_(new chunk_type)
+        , back_(front_)
+    {
+        assert(empty());
+    }
+    ~queue() {
+        for (;;) {
+            if (front_.chunk == back_.chunk) {
+                delete front_.chunk;
+                break;
+            }
+            chunk_type *o = front_.chunk;
+            front_.chunk = front_.chunk->next;
+            delete o;
+        }
+    }
+    queue(const queue&) = delete;
+    queue(queue&&) = delete;
+    queue& operator=(const queue&) = delete;
+    queue& operator=(queue&&) = delete;
+    void push(value_type&& val) {
+        new(&back()) T(::std::move(val));
+        do_push();
+    }
+    void push(const_reference val) {
+        new(&back()) T(val);
+        do_push();
+    }
+    void pop() {
+        assert(!empty());
+        front().~T();
+        do_pop();
+    }
+    bool try_pop(reference val) {
+        if (empty())
+            return false;
+        val.~T();
+        new(&val) T(front());
+        pop();
+        return true;
+    }
+    bool empty() const {
+        return front_ == back_;
+    }
+    reference front() {
+        return front_.get();
+    }
+    const_reference front() const {
+        return front_.get();
+    }
+    reference back() {
+        return back_.get();
+    }
+    const_reference back() const {
+        return back_.get();
+    }
+private:
+    void do_push() {
+        if (++back_.pos != N)
+            return;
+        chunk_type* o = spare_chunk
+            ? spare_chunk.release()
+            : new chunk_type;
+        back_.chunk->next = o;
+        back_ = {o};
+    }
+    void do_pop() {
+        if (++front_.pos != N) 
+            return;
+        chunk_type* o = front_.chunk;
+        front_ = { o->next };
+        spare_chunk.reset(o);
+    }
+private:
+    chunk_index front_;
+    chunk_index back_;
+    std::unique_ptr<chunk_type> spare_chunk;
+};

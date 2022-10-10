@@ -62,7 +62,7 @@ local function createChestAndFluidBox(init, fluidboxes, s, max, needlimit)
         else
             limit = n * 2
         end
-        chest[#chest+1] = string.pack("<I2I2I2I2", 0, id, 0, limit)
+        chest[#chest+1] = string.pack("<I2I2I2I2I2", 0, id, 0, limit, 0)
     end
     for i = 1, max do
         fluids[i] = fluids[i] or 0
@@ -80,7 +80,7 @@ local function createChest(s)
         local id, n = string.unpack("<I2I2", s, 4*idx-3)
         assert(not isFluidId(id))
         local limit = n * 2
-        chest[#chest+1] = string.pack("<I2I2I2I2", 0, id, 0, limit)
+        chest[#chest+1] = string.pack("<I2I2I2I2I2", 0, id, 0, limit, 0)
     end
     return table.concat(chest)
 end

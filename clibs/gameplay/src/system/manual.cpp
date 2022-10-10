@@ -152,7 +152,7 @@ bool manual_crafting::rebuild(lua_State* L, world& w, int id) {
     manual_container abound = sub(container, expected);
     for (auto [item, amount] : abound) {
         uint16_t r = container.pickup(item, amount);
-        uint16_t n = chest.place(item, amount - r, getstack(w, L, item));
+        uint16_t n = chest.place(w, item, amount - r, getstack(w, L, item));
         if (n != 0) {
             container.place(item, n);
             return false;
@@ -160,16 +160,10 @@ bool manual_crafting::rebuild(lua_State* L, world& w, int id) {
     }
 
     manual_container lack = sub(expected, container);
-    for (auto [item, amount] : lack) {
-        auto idx = chest.find(item);
-        if (idx == -1 || chest.slots[idx].amount < amount) {
-            return false;
+    if (chest.pickup(w, lack)) {
+        for (auto [item, amount] : lack) {
+            container.place(item, amount);
         }
-    }
-    for (auto [item, amount] : lack) {
-        auto idx = chest.find(item);
-        chest.slots[idx].amount -= amount;
-        container.place(item, amount);
     }
     return true;
 }
@@ -193,7 +187,7 @@ lupdate(lua_State *L) {
                 continue;
             }
             auto& chest = w.query_chest(c.chest);
-            uint16_t n = chest.place(m.recipe, 1, getstack(w, L, m.recipe));
+            uint16_t n = chest.place(w, m.recipe, 1, getstack(w, L, m.recipe));
             if (n != 0) {
                 w.manual.container.place(m.recipe, n);
                 continue;

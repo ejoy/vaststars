@@ -5,6 +5,7 @@
 #include "ecs/select.h"
 #include "core/techtree.h"
 #include "core/statistics.h"
+#include "system/trading.h"
 #include "system/fluid.h"
 #include "system/manual.h"
 #include <map>
@@ -20,6 +21,7 @@ struct world: public ecs_api::context {
     struct prototype_cache* P;
     std::vector<chest> chests;
     std::map<uint16_t, fluidflow> fluidflows;
+    trading_network tradings[256];
     techtree_mgr techtree;
     statistics stat;
     manual_crafting manual;

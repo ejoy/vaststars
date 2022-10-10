@@ -137,7 +137,7 @@ lupdate(lua_State *L) {
 					uint8_t index = ((a.fluidbox_in >> (i*4)) & 0xF) - 1;
 					fluid_state state;
 					if (f.query(fb.in[i].id, state)) {
-						chest_in.set(index, state.volume / f.multiple);
+						chest_in.set_fluid(index, state.volume / f.multiple);
 					}
 				}
 			}
@@ -148,7 +148,7 @@ lupdate(lua_State *L) {
 					uint8_t index = ((a.fluidbox_out >> (i*4)) & 0xF) - 1;
 					fluid_state state;
 					if (f.query(fb.out[i].id, state)) {
-						chest_out.set(index, state.volume / f.multiple);
+						chest_out.set_fluid(index, state.volume / f.multiple);
 					}
 				}
 			}
