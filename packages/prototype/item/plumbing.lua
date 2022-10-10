@@ -4,7 +4,7 @@ local prototype = gameplay.register.prototype
 prototype "液罐I" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/tank1.texture",
+    icon = "textures/construct/liquid-tank.texture",
     model = "prefabs/rock.prefab",
     description = "专门贮藏液体的容器",
     group = "管道",
@@ -14,7 +14,7 @@ prototype "液罐I" {
 prototype "气罐I" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/tank1.texture",
+    icon = "textures/construct/gas-tank.texture",
     model = "prefabs/rock.prefab",
     description = "专门贮藏气体的容器",
     group = "管道",
