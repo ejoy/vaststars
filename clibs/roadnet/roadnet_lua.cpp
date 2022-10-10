@@ -116,28 +116,25 @@ namespace roadnet::lua {
             o.b.loadMap(o.w, get_map_data(L, 2));
             return 0;
         }
-        static int route_cost(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
-            auto m = o.b.getRouteCost();
-            int i = 0;
-            lua_createtable(L, (int)m.size(), 0);
-            for(auto& [k, v] : m) {
-                push_route_map(L, k.from.toint(), k.to.toint(), v);
-                lua_rawseti(L, -2, ++i);
-            }
-            return 1;
-        }
         static int push_lorry(lua_State* L) {
             auto& o = class_get<object>(L, 1);
+            lorryid l((uint16_t)luaL_checkinteger(L, 2));
             auto starting_rc = o.b.coordConvert(o.w, get_map_coord(L, 2));
             auto ending_rc = o.b.coordConvert(o.w, get_map_coord(L, 3));
             assert(starting_rc.id.cross == 0 && ending_rc.id.cross == 0);
-            auto id = o.b.pushLorry(o.w, starting_rc, ending_rc);
-            if (id == roadnet::lorryid::invalid()) {
-                return 0;
-            }
-            lua_pushinteger(L, id.id);
+            lua_pushboolean(L, o.b.pushLorry(o.w, l, starting_rc, ending_rc));
             return 1;
+        }
+        static int pop_lorry(lua_State* L) {
+            auto& o = class_get<object>(L, 1);
+            auto rc = o.b.coordConvert(o.w, get_map_coord(L, 2));
+            assert(rc.id.cross == 0);
+            auto l = o.b.popLorry(o.w, rc);
+            if (l) {
+                lua_pushinteger(L, l.id);
+            } else {
+                lua_pushnil(L);
+            }
         }
         static int map_coord(lua_State* L) {
             auto& o = class_get<object>(L, 1);
@@ -237,7 +234,6 @@ namespace roadnet::lua {
         static int create(lua_State* L) {
             luaL_Reg l[] = {
                 { "load_map", load_map },
-                { "route_cost", route_cost },
                 { "push_lorry", push_lorry },
                 { "map_coord", map_coord },
                 { "each_lorry", each_lorry },
