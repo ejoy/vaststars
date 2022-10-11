@@ -1,6 +1,5 @@
 local roadnet_core = require "vaststars.roadnet.core"
 local iprototype = require "gameplay.interface.prototype"
-local roadmap_core = require "vaststars.roadmap.core"
 
 local mt = {}
 mt.__index = mt
