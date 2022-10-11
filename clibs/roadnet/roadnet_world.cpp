@@ -10,7 +10,7 @@ namespace roadnet {
         }
     }
     void world::update(uint64_t ti) {
-        marked = !marked;
+        ary_call(*this, ti, lorryVec, &lorry::update);
         ary_call(*this, ti, crossAry, &road::crossroad::update);
         ary_call(*this, ti, straightAry, &road::straight::update);
     }

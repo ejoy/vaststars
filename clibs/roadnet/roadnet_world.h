@@ -8,9 +8,6 @@
 
 namespace roadnet {
     struct world {
-        static inline const uint8_t kMarkedWhite = 0;
-        static inline const uint8_t kMarkedBlack = 1;
-
         void        update(uint64_t ti);
         basic_road& Road(roadid id);
         lorry&      Lorry(lorryid id);
@@ -20,6 +17,5 @@ namespace roadnet {
         dynarray<straight_endpoints> endpointsAry;
         dynarray<lorryid>         lorryAry;
         std::vector<lorry>        lorryVec;
-        uint8_t                   marked = kMarkedWhite;
     };
 }
