@@ -295,7 +295,7 @@ namespace roadnet {
             for (uint8_t i = 0; i < 4; ++i) {
                 direction dir = (direction)i;
                 // 01 means road, 10 means roadside
-                if (m & (1 << i * 2) && !crossroad.hasNeighbor(dir)) {
+                if (((m >> i * 2) & 0x3) == 0x1 && !crossroad.hasNeighbor(dir)) {
                     auto result = findNeighbor(map, loc, dir);
                     roadid neighbor_id = crossMap[result.l];
                     road::crossroad& neighbor = w.crossAry[neighbor_id.id];

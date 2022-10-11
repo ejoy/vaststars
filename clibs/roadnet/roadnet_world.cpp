@@ -11,10 +11,8 @@ namespace roadnet {
     }
     void world::update(uint64_t ti) {
         marked = !marked;
-        ary_call(*this, ti, straightAry, &road::straight::preupdate);
         ary_call(*this, ti, crossAry, &road::crossroad::update);
         ary_call(*this, ti, straightAry, &road::straight::update);
-        ary_call(*this, ti, straightAry, &road::straight::postupdate);
     }
     basic_road& world::Road(roadid id) {
         assert(id != roadid::invalid());

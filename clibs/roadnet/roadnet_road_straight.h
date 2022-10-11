@@ -17,12 +17,9 @@ namespace roadnet::road {
 
         std::map<uint16_t, std::list<lorryid>> pushMap; // offset -> lorryid list
         std::map<uint16_t, std::list<lorryid>> popMap;  // same as above
-        std::map<uint16_t, bool> offsetLockMap; // offset -> true
 
         void init(uint16_t len, direction dir, const std::vector<uint16_t>& endpoints);
-        void preupdate(world& w, uint64_t ti);
         void update(world& w, uint64_t ti);
-        void postupdate(world& w, uint64_t ti);
         bool canEntry(world& w, direction dir) override;
         bool tryEntry(world& w, lorryid l, direction dir) override;
         void setNeighbor(roadid id);

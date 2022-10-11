@@ -3,10 +3,6 @@
 
 namespace roadnet::road {
     static constexpr uint8_t kTime = 10;
-    static bool isLocked(straight *r, uint16_t offset) {
-        auto m = r->offsetLockMap;
-        return m.find(offset) != m.end();
-    }
 
     void straight::init(uint16_t len, direction dir, const std::vector<uint16_t>& endpoints) {
         this->len = len;
@@ -16,10 +12,10 @@ namespace roadnet::road {
         }
     }
     bool straight::canEntry(world& w, direction dir)  {
-        return !isLocked(this, len-1) && !hasLorry(w, len-1);
+        return !hasLorry(w, len-1);
     }
     bool straight::tryEntry(world& w, lorryid l, direction dir) {
-        if (hasLorry(w, len-1) || isLocked(this, len-1)) {
+        if (hasLorry(w, len-1)) {
             return false;
         }
         addLorry(w, l, len-1);
@@ -54,21 +50,19 @@ namespace roadnet::road {
     void straight::delLorry(world& w, uint16_t offset) {
         w.LorryInRoad(lorryOffset + offset) = lorryid::invalid();
     }
-    void straight::preupdate(world& w, uint64_t ti) {
-        for (auto iter = pushMap.begin(); iter != pushMap.end(); iter++) {
-            auto& list = iter->second;
-            auto l = list.front();
-            if (l != *list.end()) {                
-                if (tryEntry(w, l, dir))
-                    list.pop_front();
-                else
-                    offsetLockMap[iter->first] = true;
-            }
-        }
-    }
     void straight::update(world& w, uint64_t ti) {
         lorryid l = w.LorryInRoad(lorryOffset + 0);
         if (l) {
+            auto iter = pushMap.find(lorryOffset + 0);
+            if( iter != pushMap.end() ) {
+                auto& list = iter->second;
+                auto l = list.front();
+                if (l != *list.end()) {
+                    if (tryEntry(w, l, dir))
+                        list.pop_front();
+                }
+            }
+
             auto& lorry = w.Lorry(l);
             if (!lorry.updateTick(w)) {
                 auto& n = w.Road(neighbor);
@@ -78,26 +72,26 @@ namespace roadnet::road {
             }
         }
         for (uint16_t i = 1; i < len; ++i) {
+            auto iter = pushMap.find(lorryOffset + i);
+            if( iter != pushMap.end() ) {
+                auto& list = iter->second;
+                auto l = list.front();
+                if (l != *list.end()) {
+                    if (!w.LorryInRoad(lorryOffset+i-1)) {
+                        auto l = list.front();
+                        list.pop_front();
+                        addLorry(w, l, i-1);
+                    }
+                }
+            }
+
             lorryid l = w.LorryInRoad(lorryOffset + i);
             if (l) {
-                if (!w.Lorry(l).updateTick(w) && !w.LorryInRoad(lorryOffset+i-1) && !isLocked(this, i-1)) {
+                if (!w.Lorry(l).updateTick(w) && !w.LorryInRoad(lorryOffset+i-1)) {
                     delLorry(w, i);
                     addLorry(w, l, i-1);
                 }
             }
          }
-    }
-    void straight::postupdate(world& w, uint64_t ti) {
-        for (auto iter = offsetLockMap.begin(); iter != offsetLockMap.end(); iter++) {
-            auto& list = pushMap[iter->first];
-            if (list.size() > 0) {
-                if (!w.LorryInRoad(lorryOffset+iter->first)) {
-                    auto l = list.front();
-                    addLorry(w, l, iter->first);
-                    list.pop_front();
-                }
-            }
-        }
-        offsetLockMap.clear();
     }
 }
