@@ -378,7 +378,6 @@ namespace roadnet {
             return false;
         }
         assert(starting && ending);
-        
         assert(starting.id.cross == 0);
         road::straight& road = w.straightAry[starting.id.id];
         if (road.hasLorry(w, starting.offset)) {
@@ -389,6 +388,7 @@ namespace roadnet {
             return false;
         }
         lorry.pathIdx = 0;
+        lorry.ending = ending;
         road.pushLorry(w, lorryId, starting.offset);
         return true;
     }

@@ -3,53 +3,29 @@
 #include "roadnet_type.h"
 #include <list>
 #include <map>
+#include <vector>
 
 namespace roadnet {
+    struct world;
+
     struct endpoint {
+        static inline const size_t IN = 0;
+        static inline const size_t OUT = 1;
+
         std::list<lorryid> pushMap;
         std::list<lorryid> popMap;
+        lorryid lorry[2] = {lorryid::invalid(), lorryid::invalid()};
     };
 
     struct straight_endpoints {
         std::map<uint16_t, endpoint> endpoints; // offset -> endpoint
 
-        void init(const std::vector<uint16_t>& endpoints) {
-            for (auto offset : endpoints) {
-                this->endpoints[offset].pushMap = std::list<lorryid>();
-                this->endpoints[offset].popMap = std::list<lorryid>();
-            }
-        }
-        void pushLorry(lorryid l, uint16_t offset) {
-            auto iter = endpoints.find(offset);
-            assert(iter != endpoints.end());
-            iter->second.pushMap.push_back(l);
-        }
-        lorryid popLorry(uint16_t offset) {
-            auto iter = endpoints.find(offset);
-            assert(iter != endpoints.end());
-            if (iter->second.popMap.empty()) {
-                return lorryid::invalid();
-            }
-            auto l = iter->second.popMap.front();
-            iter->second.popMap.pop_front();
-            return l;
-        }
-        lorryid front(uint16_t offset) {
-            auto iter = endpoints.find(offset);
-            if( iter == endpoints.end() ) {
-                return lorryid::invalid();
-            }
-            auto& e = iter->second;
-            auto l = e.pushMap.front();
-            if (l == *e.pushMap.end()) {
-                return lorryid::invalid();
-            }
-            return l;
-        }
-        void pop_front(uint16_t offset) {
-            auto iter = endpoints.find(offset);
-            assert(iter != endpoints.end());
-            iter->second.pushMap.pop_front();
-        }
+        void init(const std::vector<uint16_t>& endpoints);
+        void pushLorry(lorryid l, uint16_t offset);
+        lorryid popLorry(uint16_t offset);
+        bool tryEntry(world& w, uint16_t offset, lorryid id);
+        lorryid getLorry(world& w, uint16_t offset);
+        void exit(world& w, uint16_t offset);
+        void update(world& w);
     };
 }
