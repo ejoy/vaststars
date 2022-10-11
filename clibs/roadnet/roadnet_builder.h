@@ -29,7 +29,7 @@ namespace roadnet {
         map_coord  coordConvert(world& w, road_coord rc);
     private:
         uint8_t map[256][256];
-        
+
         struct straightData {
             uint16_t  id;
             uint16_t  len;

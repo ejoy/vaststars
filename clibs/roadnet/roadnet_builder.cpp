@@ -342,12 +342,12 @@ namespace roadnet {
         w.straightAry.reset(genStraightId);
         for (auto& data: straightVec) {
             road::straight& straight = w.straightAry[data.id];
-            straight.init(data.len * road::straight::N, data.finish_dir, {}); // TODO
+            straight.init(data.id, data.len * road::straight::N, data.finish_dir);
             straight.setLorryOffset(genLorryOffset);
             straight.setNeighbor(data.neighbor);
             genLorryOffset += data.len * road::straight::N;
         }
-
+        w.endpointsAry.reset(w.straightAry.size());
         w.lorryAry.reset(genLorryOffset);
     }
 
@@ -389,7 +389,7 @@ namespace roadnet {
             return false;
         }
         lorry.pathIdx = 0;
-        road.pushLorry(lorryId, starting.offset);
+        road.pushLorry(w, lorryId, starting.offset);
         return true;
     }
 
@@ -397,7 +397,7 @@ namespace roadnet {
         assert(r);
         assert(r.id.cross == 0);
         road::straight& road = w.straightAry[r.id.id];
-        return road.popLorry(r.offset);
+        return road.popLorry(w, r.offset);
     }
 
     roadid builder::findCrossRoad(loction l) {
