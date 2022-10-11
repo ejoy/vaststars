@@ -261,7 +261,7 @@ prototype_road "砖石公路-U型-%02d" {
     }
 }
 
-prototype "道路设备箱" {
+prototype "基建站" {
     model = "prefabs/small-chest.prefab",
     icon = "textures/building_pic/small_pic_chest.texture",
     background = "textures/build_background/pic_chest.texture",
@@ -271,22 +271,3 @@ prototype "道路设备箱" {
     supply_area = "20x20",
 }
 
-prototype "管道设备箱" {
-    model = "prefabs/small-chest.prefab",
-    icon = "textures/building_pic/small_pic_chest.texture",
-    background = "textures/build_background/pic_chest.texture",
-    construct_detector = {"exclusive"},
-    type = {"entity"},
-    area = "2x2",
-    supply_area = "20x20",
-}
-
-prototype "电网设备箱" {
-    model = "prefabs/small-chest.prefab",
-    icon = "textures/building_pic/small_pic_chest.texture",
-    background = "textures/build_background/pic_chest.texture",
-    construct_detector = {"exclusive"},
-    type = {"entity"},
-    area = "2x2",
-    supply_area = "20x20",
-}
