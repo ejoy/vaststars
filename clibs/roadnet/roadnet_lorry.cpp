@@ -8,17 +8,15 @@ namespace roadnet {
     void lorry::nextDirection(world& w) {
         pathIdx++;
     }
-    void lorry::initTick(world& w, uint8_t v) {
-        tick = v - 1; // [0, v), total v ticks
-        marked = w.marked;
+    void lorry::initTick(uint8_t v) {
+        tick = v;
     }
-    uint8_t lorry::updateTick(world& w) {
-        if (marked != w.marked) {
-            marked = w.marked;
-            if (tick != 0) {
-                --tick;
-            }
+    void lorry::update(world& w, uint64_t ti) {
+        if (tick != 0) {
+            --tick;
         }
-        return tick;
+    }
+    bool lorry::ready() {
+        return tick == 0;
     }
 }

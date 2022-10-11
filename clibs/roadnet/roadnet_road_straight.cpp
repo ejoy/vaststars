@@ -33,7 +33,7 @@ namespace roadnet::road {
     }
     void straight::addLorry(world& w, lorryid l, uint16_t offset) {
         w.LorryInRoad(lorryOffset + offset) = l;
-        w.Lorry(l).initTick(w, kTime);
+        w.Lorry(l).initTick(kTime);
     }
     bool straight::hasLorry(world& w, uint16_t offset) {
         return !!w.LorryInRoad(lorryOffset + offset);
@@ -53,7 +53,7 @@ namespace roadnet::road {
             }
 
             auto& lorry = w.Lorry(l);
-            if (!lorry.updateTick(w)) {
+            if (lorry.ready()) {
                 auto& n = w.Road(neighbor);
                 if (n.tryEntry(w, l, dir)) {
                     delLorry(w, 0);
@@ -71,7 +71,7 @@ namespace roadnet::road {
 
             lorryid l = w.LorryInRoad(lorryOffset + i);
             if (l) {
-                if (!w.Lorry(l).updateTick(w) && !w.LorryInRoad(lorryOffset+i-1)) {
+                if (w.Lorry(l).ready() && !w.LorryInRoad(lorryOffset+i-1)) {
                     delLorry(w, i);
                     addLorry(w, l, i-1);
                 }

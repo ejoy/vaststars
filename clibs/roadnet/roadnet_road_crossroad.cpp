@@ -86,7 +86,7 @@ namespace roadnet::road {
         }
         wait_lorry[idx] = id;
         auto& l = w.Lorry(id);
-        l.initTick(w, kWaitTime);
+        l.initTick(kWaitTime);
         return true;
     }
 
@@ -102,7 +102,7 @@ namespace roadnet::road {
                 auto& l = w.Lorry(id);
                 cross_lorry[i] = id;
                 cross_status[i] = type;
-                l.initTick(w, kCrossTime);
+                l.initTick(kCrossTime);
                 l.nextDirection(w);
                 return;
             }
@@ -147,7 +147,7 @@ namespace roadnet::road {
                 continue;
             }
             auto& l = w.Lorry(id);
-            if (l.updateTick(w)) {
+            if (!l.ready()) {
                 continue;
             }
             RoadType t = cross_status[i];
@@ -164,7 +164,7 @@ namespace roadnet::road {
                 continue;
             }
             auto& l = w.Lorry(id);
-            if (l.updateTick(w)) {
+            if (!l.ready()) {
                 continue;
             }
             if (cross_lorry[0] && cross_lorry[1]) {
@@ -195,7 +195,7 @@ namespace roadnet::road {
             wait_lorry[i] = lorryid::invalid();
             cross_lorry[idx] = id;
             cross_status[idx] = type;
-            l.initTick(w, kCrossTime);
+            l.initTick(kCrossTime);
             l.nextDirection(w);
         }
     }
