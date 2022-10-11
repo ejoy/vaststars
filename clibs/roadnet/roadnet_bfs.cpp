@@ -131,6 +131,7 @@ namespace roadnet {
     }
 
     bool bfs(world& w, roadid S, roadid E, std::vector<direction>& path) {
+        path.clear();
         if (S == E) {
             return false;
         }
