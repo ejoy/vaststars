@@ -5,12 +5,12 @@
                 font: 120% "微软雅黑";
             }
             .small-item1 {
-                margin:0 0.1vmin;
+                margin:0 0.075vmin;
                 flex-direction: column;
                 align-items:center;
                 justify-content:flex-end;
                 background-color: rgb(252, 138, 0);
-                border: 0.2vmin rgb(89, 73, 39);
+                border: 0.1vmin rgb(89, 73, 39);
                 background-size:cover;
                 width: 5.70vmin;
                 height: 5.70vmin;
@@ -143,12 +143,12 @@
                 
                 <div style="height:19%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "showchest">
                     <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin"/>
-                    <div style="padding-top:0.3vmin; width:100%; flex-direction: row; justify-content: flex-start; align-items: center;">
+                    <div style="padding-top:0.3vmin; padding-left:0.04vmin; width:100%; flex-direction: row; justify-content: flex-start; align-items: center;">
                         <div data-for = "chest : chest_list0" class="small-item1" data-style-background-image="chest.icon">
                             <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
                         </div>
                     </div>
-                    <div style="padding-top:0.3vmin; width:100%;flex-direction: row; justify-content: flex-start; align-items: center;">
+                    <div style="padding-top:0.3vmin; padding-left:0.04vmin; width:100%;flex-direction: row; justify-content: flex-start; align-items: center;">
                         <div data-for = "chest : chest_list1" class="small-item1" data-style-background-image="chest.icon">
                             <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{chest.count}}</div>
                         </div>
