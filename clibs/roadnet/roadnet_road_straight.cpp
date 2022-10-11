@@ -43,12 +43,17 @@ namespace roadnet::road {
     }
     void straight::update(world& w, uint64_t ti) {
         straight_endpoints es = w.endpointsAry[id];
+        es.update(w);
+
         lorryid l = w.LorryInRoad(lorryOffset + 0);
         if (l) {
-            auto f = es.front(0);
+            auto f = es.getLorry(w, 0);
             if( f != lorryid::invalid() ) {
-                if (tryEntry(w, l, dir)) {
-                    es.pop_front(0);
+                auto& lorry = w.Lorry(l);
+                if (lorry.ready()) {
+                    if (tryEntry(w, f, dir)) {
+                        es.exit(w, 0);
+                    }
                 }
             }
 
@@ -61,19 +66,30 @@ namespace roadnet::road {
             }
         }
         for (uint16_t i = 1; i < len; ++i) {
-            auto f = es.front(i);
+            auto f = es.getLorry(w, i-1);
             if( f != lorryid::invalid() ) {
-                if (!w.LorryInRoad(lorryOffset+i-1)) {
-                    es.pop_front(i);
-                    addLorry(w, l, i-1);
+                auto& lorry = w.Lorry(l);
+                if (lorry.ready()) {
+                    if (tryEntry(w, f, dir)) {
+                        es.exit(w, i-1);
+                    }
                 }
             }
 
             lorryid l = w.LorryInRoad(lorryOffset + i);
             if (l) {
-                if (w.Lorry(l).ready() && !w.LorryInRoad(lorryOffset+i-1)) {
-                    delLorry(w, i);
-                    addLorry(w, l, i-1);
+                auto& lorry = w.Lorry(l);
+                if (lorry.ready()) {
+                    if (lorry.ending.id == id && lorry.ending.offset == i-1) {
+                        if (es.tryEntry(w, i-1, l)) {
+                            delLorry(w, i);
+                        }
+                    } else {
+                        if (!w.LorryInRoad(lorryOffset+i+1)) {
+                            addLorry(w, l, i+1);
+                            delLorry(w, i);
+                        }
+                    }
                 }
             }
          }
