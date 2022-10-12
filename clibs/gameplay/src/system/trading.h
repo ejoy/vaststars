@@ -23,6 +23,6 @@ struct trading_network {
     queue<trading_order> orders;
 };
 
-void trading_sell(world& w, uint16_t who, uint8_t network, chest::slot& s);
-void trading_buy(world& w, uint16_t who, uint8_t network, chest::slot& s);
+void trading_sell(world& w, uint16_t who, chest::slot& s);
+void trading_buy(world& w, uint16_t who, chest::slot& s);
 void trading_update(world& w);

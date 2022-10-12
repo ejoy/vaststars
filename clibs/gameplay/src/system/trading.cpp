@@ -2,9 +2,9 @@
 #include <core/world.h>
 #include <lua.hpp>
 
-static void trading_match(world& w, trading_network& network, uint16_t item, trading_queue& q) {
+static void trading_match(world& w, uint16_t item, trading_queue& q) {
     while (!q.sell.empty() && !q.buy.empty()) {
-        network.orders.push({
+        w.tradings.orders.push({
             item,
             q.sell.front(),
             q.buy.front()
@@ -14,27 +14,27 @@ static void trading_match(world& w, trading_network& network, uint16_t item, tra
     }
 }
 
-void trading_sell(world& w, uint16_t who, uint8_t network, chest::slot& s) {
+void trading_sell(world& w, uint16_t who, chest::slot& s) {
     if (s.amount <= s.lock) {
         return;
     }
     uint16_t item = s.item;
     uint16_t amount = s.amount - s.lock;
     s.lock = s.amount;
-    auto& n = w.tradings[network].queues[item];
+    auto& n = w.tradings.queues[item];
     for (uint16_t i = 0; i < amount; ++i) {
         n.sell.push(who);
     }
 }
 
-void trading_buy(world& w, uint16_t who, uint8_t network, chest::slot& s) {
+void trading_buy(world& w, uint16_t who, chest::slot& s) {
     if (s.amount + s.lock <= s.limit) {
         return;
     }
     uint16_t item = s.item;
     uint16_t amount = s.limit - s.amount - s.lock;
     s.lock = s.limit - s.amount;
-    auto& n = w.tradings[network].queues[item];
+    auto& n = w.tradings.queues[item];
     for (uint16_t i = 0; i < amount; ++i) {
         n.buy.push(who);
     }
@@ -43,10 +43,11 @@ void trading_buy(world& w, uint16_t who, uint8_t network, chest::slot& s) {
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (size_t i = 0; i <= 255; ++i) {
-        auto& network = w.tradings[i];
-        for (auto& [item, q] : network.queues) {
-            trading_match(w, network, item, q);
+    for (auto& [item, q] : w.tradings.queues) {
+        trading_match(w, item, q);
+    }
+    if (!w.tradings.orders.empty()) {
+        for (auto& v : w.select<ecs::station>(L)) {
         }
     }
     return 0;

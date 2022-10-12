@@ -21,7 +21,7 @@ struct world: public ecs_api::context {
     struct prototype_cache* P;
     std::vector<chest> chests;
     std::map<uint16_t, fluidflow> fluidflows;
-    trading_network tradings[256];
+    trading_network tradings;
     techtree_mgr techtree;
     statistics stat;
     manual_crafting manual;

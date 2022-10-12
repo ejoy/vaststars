@@ -11,23 +11,31 @@ component "chest" {
     "chest:word",
 }
 
-component "assembling" {
-    "recipe:word",
-    "speed:word",
-    "fluidbox_in:word",
-    "fluidbox_out:word",
+component "chest_2" {
     "chest_in:word",
     "chest_out:word",
-    "status:byte",
+    "fluidbox_in:word",
+    "fluidbox_out:word",
+    "endpoint:word",
+}
+
+component "station" {
+    "endpoint:word",
+}
+
+component "assembling" {
     "progress:int",
+    "recipe:word",
+    "speed:word",
+    "status:byte",
 }
 
 component "laboratory" {
+    "progress:int",
     "tech:word",
     "chest:word",
     "speed:word",
     "status:byte",
-    "progress:int",
 }
 
 component "capacitance" {
@@ -38,16 +46,14 @@ component "capacitance" {
 
 component "burner" {
 	"recipe:word",
-    "chest_in:word",
-    "chest_out:word",
 	"progress:word",
 }
 
 component "chimney" {
+    "progress:int",
     "recipe:word",
     "speed:word",
     "status:byte",
-    "progress:int",
 }
 
 component "consumer" {
@@ -76,11 +82,6 @@ component "mining" {
 }
 
 component "road" {
-}
-
-component "station" {
-	"id:word",
-	"coord:word",
 }
 
 component "save_fluidflow" {

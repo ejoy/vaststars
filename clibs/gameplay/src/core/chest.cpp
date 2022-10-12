@@ -35,7 +35,6 @@ void chest::set_fluid(uint16_t index, uint16_t value) {
 }
 
 bool chest::pickup(world& w, const recipe_items* r) {
-    assert(type_ == type::blue);
     for (size_t i = 0; i < slots.size(); ++i) {
         auto& s = slots[i];
         auto& t = r->items[i];
@@ -49,13 +48,14 @@ bool chest::pickup(world& w, const recipe_items* r) {
         auto& s = slots[i];
         auto& t = r->items[i];
         s.amount -= t.amount;
-        trading_buy(w, id, network, s);
+        if (type_ == type::blue) {
+            trading_buy(w, id, s);
+        }
     }
     return true;
 }
 
 bool chest::place(world& w, const recipe_items* r) {
-    assert(type_ == type::red);
     for (size_t i = 0; i < slots.size(); ++i) {
         auto& s = slots[i];
         auto& t = r->items[i];
@@ -69,7 +69,9 @@ bool chest::place(world& w, const recipe_items* r) {
         auto& s = slots[i];
         auto& t = r->items[i];
         s.amount += t.amount;
-        trading_sell(w, id, network, s);
+        if (type_ == type::red) {
+            trading_sell(w, id, s);
+        }
     }
     return true;
 }
@@ -92,7 +94,9 @@ void chest::limit(world& w, const uint16_t* r) {
         auto& s = slots[i];
         assert(s.type == slot::type::limit);
         s.limit = r[i];
-        trading_buy(w, id, network, s);
+        if (type_ == type::blue) {
+            trading_buy(w, id, s);
+        }
     }
 }
 
