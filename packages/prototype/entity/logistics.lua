@@ -78,7 +78,7 @@ prototype "物流中心I" {
     icon = "textures/building_pic/small_pic_logistics_center2.texture",
     background = "textures/build_background/pic_logisticscenter.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "consumer"},
+    type ={"entity", "consumer", "station"},
     area = "3x3",
     power = "300kW",
     priority = "secondary",

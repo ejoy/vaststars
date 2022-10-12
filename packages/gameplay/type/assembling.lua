@@ -8,9 +8,10 @@ function c:ctor(init, pt)
     local recipe_name = pt.recipe and pt.recipe or init.recipe
     local e = {
         fluidboxes = {},
+        chest_2 = {},
         assembling = {
             speed = math.floor(pt.speed * 100),
-        }
+        },
     }
     assembling.set_recipe(self, e, pt, recipe_name, init.fluids)
     return e
