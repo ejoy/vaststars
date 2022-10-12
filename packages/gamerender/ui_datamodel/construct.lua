@@ -303,9 +303,11 @@ function M:stage_ui_update(datamodel)
         end
     end
 
-    for _ in technology_mb:unpack() do
-        gameplay_core.world_update = false
-        iui.open("science.rml")
+    if not global.tech_finish_pop then
+        for _ in technology_mb:unpack() do
+            gameplay_core.world_update = false
+            iui.open("science.rml")
+        end
     end
 
     for _ in show_setting_mb:unpack() do
