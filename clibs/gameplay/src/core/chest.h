@@ -50,6 +50,5 @@ struct chest {
 public:
     std::vector<slot> slots;
     uint16_t id;
-    uint8_t network = 0;
     type type_;
 };

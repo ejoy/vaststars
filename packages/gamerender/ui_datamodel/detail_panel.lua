@@ -245,7 +245,7 @@ local function get_entity_property_list(object_id)
 
             local recipe_results = irecipe.get_elements(recipe_typeobject.results)
             for index, v in ipairs(recipe_results) do
-                local c, n = iworld.chest_get(gameplay_core.get_world(), e.assembling.chest_out, index)
+                local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest_2.chest_out, index)
                 if c then
                     property_list.minner_info = {icon = v.icon, count = n, need_count = v.count}
                 else

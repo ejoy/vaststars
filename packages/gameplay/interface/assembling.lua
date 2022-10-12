@@ -87,15 +87,17 @@ end
 
 local function set_recipe(world, e, pt, recipe_name, fluids)
     local assembling = e.assembling
+    local chest = e.chest_2
     assembling.progress = 0
     assembling.status = STATUS_IDLE
+    chest.endpoint = 0 -- TODO
     fluidbox.update_fluidboxes(e, pt, fluids)
     if recipe_name == nil then
         assembling.recipe = 0
-        assembling.chest_in = 0xffff
-        assembling.chest_out = 0xffff
-        assembling.fluidbox_in = 0
-        assembling.fluidbox_out = 0
+        chest.chest_in = 0xffff
+        chest.chest_out = 0xffff
+        chest.fluidbox_in = 0
+        chest.fluidbox_out = 0
         return
     end
     local recipe = assert(prototype.queryByName("recipe", recipe_name), "unknown recipe: "..recipe_name)
@@ -103,20 +105,20 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
         local chest_in = createChest(recipe.ingredients)
         local chest_out = createChest(recipe.results)
         assembling.recipe = recipe.id
-        assembling.chest_in = world:container_create("blue", chest_in)
-        assembling.chest_out = world:container_create("red", chest_out)
-        assembling.fluidbox_in = 0
-        assembling.fluidbox_out = 0
+        chest.chest_in = world:container_create("blue", chest_in)
+        chest.chest_out = world:container_create("red", chest_out)
+        chest.fluidbox_in = 0
+        chest.fluidbox_out = 0
         return
     end
     local needlimit = #pt.fluidboxes.input > 0
     local chest_in, fluidbox_in = createChestAndFluidBox(fluids.input, pt.fluidboxes.input, recipe.ingredients, 4, needlimit)
     local chest_out, fluidbox_out = createChestAndFluidBox(fluids.output, pt.fluidboxes.output, recipe.results, 3, needlimit)
     assembling.recipe = recipe.id
-    assembling.chest_in = world:container_create("blue", chest_in)
-    assembling.chest_out = world:container_create("red", chest_out)
-    assembling.fluidbox_in = fluidbox_in
-    assembling.fluidbox_out = fluidbox_out
+    chest.chest_in = world:container_create("blue", chest_in)
+    chest.chest_out = world:container_create("red", chest_out)
+    chest.fluidbox_in = fluidbox_in
+    chest.fluidbox_out = fluidbox_out
 end
 
 local function set_direction(_, e, dir)
