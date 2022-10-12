@@ -74,5 +74,6 @@ lm:default {
     lm.compiler == "msvc" and EnableSanitize and "copy_asan",
     "copy_manual",
     "vaststars",
+    lm.os == "ios" and "bgfx-lib",
     lm.os ~= "ios" and "vaststars_rt",
 }
