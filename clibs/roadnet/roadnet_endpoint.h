@@ -17,9 +17,11 @@ namespace roadnet {
         lorryid lorry[2] = {lorryid::invalid(), lorryid::invalid()};
     };
 
-    struct straight_endpoints {
+    class endpointManager {
+    private:
         std::map<uint16_t, endpoint> endpoints; // offset -> endpoint
 
+    public:
         void init(const std::vector<uint16_t>& endpoints);
         void pushLorry(lorryid l, uint16_t offset);
         lorryid popLorry(uint16_t offset);

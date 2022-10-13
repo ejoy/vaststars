@@ -55,4 +55,5 @@ namespace roadnet {
     };
 
     using lorryid = objectid;
+    using endpointid = objectid;
 }

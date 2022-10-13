@@ -24,12 +24,12 @@ namespace roadnet::road {
         neighbor = id;
     }
     void straight::pushLorry(world& w, lorryid l, uint16_t offset) {
-        straight_endpoints es = w.endpointsAry[id];
-        es.pushLorry(l, offset);
+        endpointManager m = w.endpointsAry[id];
+        m.pushLorry(l, offset);
     }
     lorryid straight::popLorry(world& w, uint16_t offset) {
-        straight_endpoints es = w.endpointsAry[id];
-        return es.popLorry(offset);
+        endpointManager m = w.endpointsAry[id];
+        return m.popLorry(offset);
     }
     void straight::addLorry(world& w, lorryid l, uint16_t offset) {
         w.LorryInRoad(lorryOffset + offset) = l;
@@ -42,17 +42,17 @@ namespace roadnet::road {
         w.LorryInRoad(lorryOffset + offset) = lorryid::invalid();
     }
     void straight::update(world& w, uint64_t ti) {
-        straight_endpoints es = w.endpointsAry[id];
-        es.update(w);
+        endpointManager m = w.endpointsAry[id];
+        m.update(w);
 
         lorryid l = w.LorryInRoad(lorryOffset + 0);
         if (l) {
-            auto f = es.getLorry(w, 0);
+            auto f = m.getLorry(w, 0);
             if( f != lorryid::invalid() ) {
                 auto& lorry = w.Lorry(l);
                 if (lorry.ready()) {
                     if (tryEntry(w, f, dir)) {
-                        es.exit(w, 0);
+                        m.exit(w, 0);
                     }
                 }
             }
@@ -66,12 +66,12 @@ namespace roadnet::road {
             }
         }
         for (uint16_t i = 1; i < len; ++i) {
-            auto f = es.getLorry(w, i-1);
+            auto f = m.getLorry(w, i-1);
             if( f != lorryid::invalid() ) {
                 auto& lorry = w.Lorry(l);
                 if (lorry.ready()) {
                     if (tryEntry(w, f, dir)) {
-                        es.exit(w, i-1);
+                        m.exit(w, i-1);
                     }
                 }
             }
@@ -81,7 +81,7 @@ namespace roadnet::road {
                 auto& lorry = w.Lorry(l);
                 if (lorry.ready()) {
                     if (lorry.ending.id == id && lorry.ending.offset == i-1) {
-                        if (es.tryEntry(w, i-1, l)) {
+                        if (m.tryEntry(w, i-1, l)) {
                             delLorry(w, i);
                         }
                     } else {

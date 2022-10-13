@@ -321,8 +321,6 @@ function M:stage_ui_update(datamodel, object_id)
                     end
                 end
 
-                gameplay_core.build()
-
                 -- TODO viewport
                 local recipe_typeobject = iprototype.queryByName("recipe", recipe_name)
                 assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))

@@ -7,23 +7,14 @@
 #include <string_view>
 
 namespace roadnet {
-
-    struct routeKey {
-        roadid from;
-        roadid to;
-
-        routeKey(roadid from, roadid to) : from(from), to(to) {}
-        bool operator<(const routeKey& other) const {
-            return from < other.from || (from == other.from && to < other.to);
-        }
-    };
-
     class builder {
     public:
         builder();
         void loadMap(world& w, const std::map<loction, uint8_t>& mapData);
-        bool    pushLorry(world& w, lorryid lorryId, road_coord starting, road_coord ending);
-        lorryid popLorry(world& w, road_coord r);
+
+        lorryid createLorry(world& w);
+        bool    pushLorry(world& w, lorryid lorryId, endpointid starting, endpointid ending);
+        lorryid popLorry(world& w, endpointid e);
 
         road_coord coordConvert(world& w, map_coord  mc);
         map_coord  coordConvert(world& w, road_coord rc);
@@ -47,9 +38,22 @@ namespace roadnet {
             {}
         };
 
+        struct EndpointData {
+            roadid id;
+            uint16_t offset;
+            endpointid eid;
+            EndpointData(roadid id, uint16_t offset, endpointid eid)
+                : id(id)
+                , offset(offset)
+                , eid(eid)
+            {}
+        };
+
         std::vector<straightData>    straightVec;
         std::map<loction, roadid>    crossMap;
         std::map<roadid, loction>    crossMapR;
+        std::map<endpointid, EndpointData> endpointMap;
+
         roadid   findCrossRoad(loction l);
         std::optional<loction> whereCrossRoad(roadid id);
     };

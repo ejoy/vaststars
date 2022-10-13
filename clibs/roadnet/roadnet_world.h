@@ -14,7 +14,7 @@ namespace roadnet {
         lorryid&    LorryInRoad(uint32_t index);
         dynarray<road::crossroad>   crossAry;
         dynarray<road::straight>    straightAry;
-        dynarray<straight_endpoints> endpointsAry;
+        dynarray<endpointManager> endpointsAry;
         dynarray<lorryid>         lorryAry;
         std::vector<lorry>        lorryVec;
     };

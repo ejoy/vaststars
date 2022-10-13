@@ -119,17 +119,15 @@ namespace roadnet::lua {
         static int push_lorry(lua_State* L) {
             auto& o = class_get<object>(L, 1);
             lorryid l((uint16_t)luaL_checkinteger(L, 2));
-            auto starting_rc = o.b.coordConvert(o.w, get_map_coord(L, 2));
-            auto ending_rc = o.b.coordConvert(o.w, get_map_coord(L, 3));
-            assert(starting_rc.id.cross == 0 && ending_rc.id.cross == 0);
-            lua_pushboolean(L, o.b.pushLorry(o.w, l, starting_rc, ending_rc));
+            auto starting((uint16_t)luaL_checkinteger(L, 3));
+            auto ending((uint16_t)luaL_checkinteger(L, 4));
+            lua_pushboolean(L, o.b.pushLorry(o.w, l, (endpointid)starting, (endpointid)ending));
             return 1;
         }
         static int pop_lorry(lua_State* L) {
             auto& o = class_get<object>(L, 1);
-            auto rc = o.b.coordConvert(o.w, get_map_coord(L, 2));
-            assert(rc.id.cross == 0);
-            auto l = o.b.popLorry(o.w, rc);
+            auto id((uint16_t)luaL_checkinteger(L, 2));
+            auto l = o.b.popLorry(o.w, (endpointid)id);
             if (l) {
                 lua_pushinteger(L, l.id);
             } else {
