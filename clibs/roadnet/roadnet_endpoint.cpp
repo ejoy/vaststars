@@ -4,18 +4,18 @@
 namespace roadnet {
     static constexpr uint8_t kTime = 10;
 
-    void straight_endpoints::init(const std::vector<uint16_t>& endpoints) {
+    void endpointManager::init(const std::vector<uint16_t>& endpoints) {
         for (auto offset : endpoints) {
             this->endpoints[offset].pushMap = std::list<lorryid>();
             this->endpoints[offset].popMap = std::list<lorryid>();
         }
     }
-    void straight_endpoints::pushLorry(lorryid l, uint16_t offset) {
+    void endpointManager::pushLorry(lorryid l, uint16_t offset) {
         auto iter = endpoints.find(offset);
         assert(iter != endpoints.end());
         iter->second.pushMap.push_back(l);
     }
-    lorryid straight_endpoints::popLorry(uint16_t offset) {
+    lorryid endpointManager::popLorry(uint16_t offset) {
         auto iter = endpoints.find(offset);
         assert(iter != endpoints.end());
         if (iter->second.popMap.empty()) {
@@ -25,7 +25,7 @@ namespace roadnet {
         iter->second.popMap.pop_front();
         return l;
     }
-    bool straight_endpoints::tryEntry(world& w, uint16_t offset, lorryid id) {
+    bool endpointManager::tryEntry(world& w, uint16_t offset, lorryid id) {
         auto iter = endpoints.find(offset);
         assert(iter != endpoints.end());
         auto& e = iter->second;
@@ -37,7 +37,7 @@ namespace roadnet {
         l.initTick(kTime);
         return true;
     }
-    lorryid straight_endpoints::getLorry(world& w, uint16_t offset) {
+    lorryid endpointManager::getLorry(world& w, uint16_t offset) {
         auto iter = endpoints.find(offset);
         if( iter == endpoints.end() ) {
             return lorryid::invalid();
@@ -45,7 +45,7 @@ namespace roadnet {
         auto& e = iter->second;
         return e.lorry[endpoint::OUT];
     }
-    void straight_endpoints::exit(world& w, uint16_t offset) {
+    void endpointManager::exit(world& w, uint16_t offset) {
         auto iter = endpoints.find(offset);
         if( iter == endpoints.end() ) {
             return;
@@ -53,7 +53,7 @@ namespace roadnet {
         auto& e = iter->second;
         e.lorry[endpoint::OUT] = lorryid::invalid();
     }
-    void straight_endpoints::update(world& w) {
+    void endpointManager::update(world& w) {
         for (auto& [offset, e] : endpoints) {
             auto l = e.lorry[endpoint::IN];
             if (l != lorryid::invalid()) {
