@@ -192,7 +192,6 @@ bool chest::pickup(world& w, flatmap<uint16_t, uint16_t>& items) {
                 index.insert_or_assign((uint16_t)i, amount);
             }
         }
-        return false;
     }
     for (auto [i, amount] : index) {
         slots[i].amount -= amount;
