@@ -1,6 +1,9 @@
 <rml>
     <head>
         <style>
+            body {
+                font: 100% "宋体";
+            }
             #item-recipe-region {
                 justify-content: space-between; 
                 height: 100%; 

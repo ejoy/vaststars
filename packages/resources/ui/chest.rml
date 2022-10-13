@@ -3,6 +3,9 @@
         <style path = "common/building_style.rcss"/>
         <style path = "common/listpage_style.rcss"/>
         <style>
+            body {
+                font: 100% "宋体";
+            }
             .building-info {
                 margin-top:1em;
                 width: 28%;

@@ -1,6 +1,10 @@
 <rml>
     <head>
         <style>
+        <style>
+            body {
+                font: 100% "宋体";
+            }
             .small-button {
                 margin: 0.00vmin;
                 opacity: 1;

@@ -1,6 +1,9 @@
 <rml>
     <head>
         <style>
+            body {
+                font: 100% "宋体";
+            }
             .banner {
                 animation:3.5s linear 0s invisible;
                 pointer-events: none;

@@ -1,6 +1,9 @@
 <rml>
     <head>
         <style>
+            body {
+                font: 100% "宋体";
+            }
             /*单个物品按钮*/
             .item-new {
                 flex-direction: column;
