@@ -108,7 +108,7 @@ prototype "机器爪I" {
     model = "prefabs/inserter-1.prefab",
     icon = "textures/building_pic/small_pic_inserter.texture",
     construct_detector = {"exclusive"},
-    type = {"entity", "inserter", "consumer"},
+    type = {"entity", "consumer"},
     area = "1x1",
     speed = "1s",
     power = "12kW",
