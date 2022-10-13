@@ -65,6 +65,7 @@ local function _package_files(root)
         "^/pkg/ant.bake/materials/bake_lighting.material$",
         "^/pkg/ant.resources/materials/water.material$",
         "^/pkg/ant.resources/materials/water2.material$",
+        "^/pkg/ant.resources/materials/shadow/shadowmap_quad.material$", -- error X3004: undeclared identifier 's_shadowmap'
         ".*mars_pumpjack.*",
     }
 
