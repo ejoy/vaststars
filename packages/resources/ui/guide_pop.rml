@@ -1,6 +1,9 @@
 <rml>
     <head>
         <style>
+            body {
+                font: 100% "宋体";
+            }
             .guide-speech-block {
                 margin-left: 10vmin;
                 flex-direction: row;

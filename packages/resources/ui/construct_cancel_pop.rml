@@ -1,6 +1,9 @@
 <rml>
     <head>
         <style>
+            body {
+                font: 100% "宋体";
+            }
             .title-text {
                 text-align: center;
                 font-size: 5.80vmin;

@@ -1,6 +1,9 @@
 <rml>
     <head>
         <style>
+            body {
+                font: 100% "宋体";
+            }
             .fluid-number-block {
                 margin-top: 1em;
                 flex-direction: row;

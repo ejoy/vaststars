@@ -1,5 +1,10 @@
 <rml>
     <head>
+        <style>
+            body {
+                font: 100% "宋体";
+            }
+        </style>
         <style path = "common/building_style.rcss" />
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"

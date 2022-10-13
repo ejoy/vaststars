@@ -1,6 +1,9 @@
 <rml>
     <head>
         <style>
+            body {
+                font: 100% "宋体";
+            }
             .warning-panel {
                 pointer-events: none;
                 background-color: rgb(44, 32, 18);

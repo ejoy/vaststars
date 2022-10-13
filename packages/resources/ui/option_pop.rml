@@ -1,6 +1,9 @@
 <rml>
     <head>
         <style>
+            body {
+                font: 100% "宋体";
+            }
             .recipe-panel {
                 background-color: rgb(44, 32, 18);
                 border: 0.27vmin rgb(89, 73, 39);

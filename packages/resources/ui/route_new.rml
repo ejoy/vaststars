@@ -1,5 +1,10 @@
 <rml>
     <head>
+        <style>
+            body {
+                font: 100% "宋体";
+            }
+        </style>
         <style path = "common/building_style.rcss"/>
         <style path = "common/normal-table.rcss"/>
         <style path = "common/error-tip.rcss"/>
