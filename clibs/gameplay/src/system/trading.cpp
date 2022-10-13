@@ -1,5 +1,6 @@
 #include <system/trading.h>
 #include <core/world.h>
+#include <util/kdtree.h>
 #include <lua.hpp>
 
 static void trading_match(world& w, uint16_t item, trading_queue& q) {
