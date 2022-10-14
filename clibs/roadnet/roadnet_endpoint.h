@@ -16,18 +16,4 @@ namespace roadnet {
         std::list<lorryid> popMap;
         lorryid lorry[2] = {lorryid::invalid(), lorryid::invalid()};
     };
-
-    class endpointManager {
-    private:
-        std::map<uint16_t, endpoint> endpoints; // offset -> endpoint
-
-    public:
-        void init(const std::vector<uint16_t>& endpoints);
-        void pushLorry(lorryid l, uint16_t offset);
-        lorryid popLorry(uint16_t offset);
-        bool tryEntry(world& w, uint16_t offset, lorryid id);
-        lorryid getLorry(world& w, uint16_t offset);
-        void exit(world& w, uint16_t offset);
-        void update(world& w);
-    };
 }
