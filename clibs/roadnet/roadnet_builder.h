@@ -13,6 +13,7 @@ namespace roadnet {
         void loadMap(world& w, const std::map<loction, uint8_t>& mapData);
 
         lorryid createLorry(world& w);
+        endpointid createEndpoint(world& w);
         bool    pushLorry(world& w, lorryid lorryId, endpointid starting, endpointid ending);
         lorryid popLorry(world& w, endpointid e);
 
@@ -38,21 +39,21 @@ namespace roadnet {
             {}
         };
 
-        struct EndpointData {
+        struct endpointData {
             roadid id;
             uint16_t offset;
             endpointid eid;
-            EndpointData(roadid id, uint16_t offset, endpointid eid)
+            endpointData(roadid id, uint16_t offset, endpointid eid)
                 : id(id)
                 , offset(offset)
                 , eid(eid)
             {}
         };
 
-        std::vector<straightData>    straightVec;
-        std::map<loction, roadid>    crossMap;
-        std::map<roadid, loction>    crossMapR;
-        std::map<endpointid, EndpointData> endpointMap;
+        std::vector<straightData> straightVec;
+        std::vector<endpointData> endpointDataVec;
+        std::map<loction, roadid> crossMap;
+        std::map<roadid, loction> crossMapR;
 
         roadid   findCrossRoad(loction l);
         std::optional<loction> whereCrossRoad(roadid id);

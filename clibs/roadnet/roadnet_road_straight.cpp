@@ -23,14 +23,6 @@ namespace roadnet::road {
         assert(neighbor == roadid::invalid());
         neighbor = id;
     }
-    void straight::pushLorry(world& w, lorryid l, uint16_t offset) {
-        endpointManager m = w.endpointsAry[id];
-        m.pushLorry(l, offset);
-    }
-    lorryid straight::popLorry(world& w, uint16_t offset) {
-        endpointManager m = w.endpointsAry[id];
-        return m.popLorry(offset);
-    }
     void straight::addLorry(world& w, lorryid l, uint16_t offset) {
         w.LorryInRoad(lorryOffset + offset) = l;
         w.Lorry(l).initTick(kTime);
@@ -42,17 +34,40 @@ namespace roadnet::road {
         w.LorryInRoad(lorryOffset + offset) = lorryid::invalid();
     }
     void straight::update(world& w, uint64_t ti) {
-        endpointManager m = w.endpointsAry[id];
-        m.update(w);
+        for (uint16_t i = 0; i < len; ++i) {
+            endpointid& eid = w.EndpointInRoad(lorryOffset + i);
+            if ( eid != endpointid::invalid() ) {
+                endpoint e = w.Endpoint(eid);
+
+                auto l = e.lorry[endpoint::IN];
+                if (l != lorryid::invalid()) {
+                    auto& lorry = w.Lorry(l);
+                    if (lorry.ready()) {
+                        e.popMap.push_back(e.lorry[endpoint::IN]);
+                        e.lorry[endpoint::IN] = lorryid::invalid();
+                    }
+                }
+
+                l = e.lorry[endpoint::OUT];
+                if (l == lorryid::invalid() && e.pushMap.size() > 0) {
+                    e.lorry[endpoint::OUT] = e.pushMap.front();
+                    e.pushMap.pop_front();
+                }
+            }
+        }
 
         lorryid l = w.LorryInRoad(lorryOffset + 0);
         if (l) {
-            auto f = m.getLorry(w, 0);
-            if( f != lorryid::invalid() ) {
-                auto& lorry = w.Lorry(l);
-                if (lorry.ready()) {
-                    if (tryEntry(w, f, dir)) {
-                        m.exit(w, 0);
+            endpointid& eid = w.EndpointInRoad(lorryOffset + 0);
+            if ( eid != endpointid::invalid() ) {
+                auto& e = w.Endpoint(eid);
+                auto f = e.lorry[endpoint::OUT];
+                if( f != lorryid::invalid() ) {
+                    auto& lorry = w.Lorry(l);
+                    if (lorry.ready()) {
+                        if (tryEntry(w, f, dir)) {
+                            e.lorry[endpoint::OUT] = lorryid::invalid();
+                        }
                     }
                 }
             }
@@ -66,12 +81,16 @@ namespace roadnet::road {
             }
         }
         for (uint16_t i = 1; i < len; ++i) {
-            auto f = m.getLorry(w, i-1);
-            if( f != lorryid::invalid() ) {
-                auto& lorry = w.Lorry(l);
-                if (lorry.ready()) {
-                    if (tryEntry(w, f, dir)) {
-                        m.exit(w, i-1);
+            endpointid& eid = w.EndpointInRoad(lorryOffset + i);
+            if ( eid != endpointid::invalid() ) {
+                auto& e = w.Endpoint(eid);
+                auto f = e.lorry[endpoint::OUT];
+                if( f != lorryid::invalid() ) {
+                    auto& lorry = w.Lorry(l);
+                    if (lorry.ready()) {
+                        if (tryEntry(w, f, dir)) {
+                            e.lorry[endpoint::OUT] = lorryid::invalid();
+                        }
                     }
                 }
             }
@@ -81,7 +100,14 @@ namespace roadnet::road {
                 auto& lorry = w.Lorry(l);
                 if (lorry.ready()) {
                     if (lorry.ending.id == id && lorry.ending.offset == i-1) {
-                        if (m.tryEntry(w, i-1, l)) {
+                        endpointid& eid = w.EndpointInRoad(lorryOffset + i);
+                        assert(eid != endpointid::invalid());
+                        auto& e = w.Endpoint(eid);
+                        if (e.lorry[endpoint::IN] == lorryid::invalid()) {
+                            e.lorry[endpoint::IN] = l;
+                            auto& lorry = w.Lorry(l);
+                            lorry.initTick(kTime);
+
                             delLorry(w, i);
                         }
                     } else {
@@ -92,6 +118,6 @@ namespace roadnet::road {
                     }
                 }
             }
-         }
+        }
     }
 }

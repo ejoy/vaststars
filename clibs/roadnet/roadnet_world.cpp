@@ -28,4 +28,11 @@ namespace roadnet {
         assert(id.id < lorryVec.size());
         return lorryVec[id.id];
     }
+    endpointid& world::EndpointInRoad(uint32_t index) {
+        return endpointAry[index];
+    }
+    endpoint& world::Endpoint(endpointid id) {
+        assert(id.id < endpointVec.size());
+        return endpointVec[id.id];
+    }
 }
