@@ -12,9 +12,9 @@ static bool isFluidId(uint16_t id) {
     return (id & 0x0C00) == 0x0C00;
 }
 
-chest::chest(uint16_t id, type type_, chest::slot* data, size_t size)
+chest::chest(uint16_t who, type type_, chest::slot* data, size_t size)
     : slots()
-    , id(id)
+    , who(who)
     , type_(type_)
 {
     for (size_t i = 0; i < size; ++i) {
@@ -48,8 +48,8 @@ bool chest::pickup(world& w, const recipe_items* r) {
         auto& s = slots[i];
         auto& t = r->items[i];
         s.amount -= t.amount;
-        if (type_ == type::blue) {
-            trading_buy(w, id, s);
+        if (type_ == type::blue && who != 0xffff) {
+            trading_buy(w, {who}, s);
         }
     }
     return true;
@@ -69,8 +69,8 @@ bool chest::place(world& w, const recipe_items* r) {
         auto& s = slots[i];
         auto& t = r->items[i];
         s.amount += t.amount;
-        if (type_ == type::red) {
-            trading_sell(w, id, s);
+        if (type_ == type::red && who != 0xffff) {
+            trading_sell(w, {who}, s);
         }
     }
     return true;
@@ -89,13 +89,12 @@ bool chest::recover(world& w, const recipe_items* r) {
 }
 
 void chest::limit(world& w, const uint16_t* r) {
-    assert(type_ == type::blue);
     for (size_t i = 0; i < slots.size(); ++i) {
         auto& s = slots[i];
         assert(s.type == slot::type::limit);
         s.limit = r[i];
-        if (type_ == type::blue) {
-            trading_buy(w, id, s);
+        if (type_ == type::blue && who != 0xffff) {
+            trading_buy(w, {who}, s);
         }
     }
 }
@@ -205,13 +204,13 @@ lcreate(lua_State* L) {
     static const char *const opts[] = {"none", "red", "blue", NULL};
     static const chest::type optsnum[] = {chest::type::none, chest::type::red, chest::type::blue};
     size_t sz = 0;
-    chest::slot* p = (chest::slot*)luaL_checklstring(L, 3, &sz);
+    chest::slot* p = (chest::slot*)luaL_checklstring(L, 4, &sz);
     size_t n = sz / sizeof(chest::slot);
     if (n < 0 || n > (uint16_t) -1) {
         return luaL_error(L, "size out of range.");
     }
     uint16_t id = (uint16_t)w.chests.size();
-    w.chests.emplace_back(id, optsnum[luaL_checkoption(L, 2, NULL, opts)], p, n);
+    w.chests.emplace_back((uint16_t)luaL_checkinteger(L, 2), optsnum[luaL_checkoption(L, 3, NULL, opts)], p, n);
     lua_pushinteger(L, id);
     return 1;
 }

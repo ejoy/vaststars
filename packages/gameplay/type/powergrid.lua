@@ -83,8 +83,8 @@ function burner:ctor(init, pt)
 		},
 		burner = {
             recipe = recipe.id,
-            chest_in = world:container_create("blue", chest_in),
-            chest_out = world:container_create("red", chest_out),
+            chest_in = world:container_create(0xffff, "blue", chest_in),
+            chest_out = world:container_create(0xffff, "red", chest_out),
             progress = STATUS_IDLE,
 		}
 	}

@@ -10,7 +10,7 @@ function c:ctor(init, pt)
     for _ = 1, pt.slots do
         chest[#chest+1] = string.pack("<I2I2I2I2I2", 1, 0, 0, 0, 0)
     end
-    local id = world:container_create("none", table.concat(chest))
+    local id = world:container_create(0xffff, "none", table.concat(chest))
     if init.items then
         for _, item in pairs(init.items) do
             local what = prototype.queryByName("item", item[1])

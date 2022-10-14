@@ -19,7 +19,7 @@ local function createChest(world, s)
         assert(not isFluidId(id))
         container_in[#container_in+1] = string.pack("<I2I2I2I2I2", 0, id, 0, 2, 0)
     end
-    return world:container_create("blue", table.concat(container_in))
+    return world:container_create(0xffff, "blue", table.concat(container_in))
 end
 
 function c:ctor(init, pt)

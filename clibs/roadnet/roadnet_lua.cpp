@@ -251,7 +251,10 @@ namespace roadnet::lua {
                 { "update", update },
                 { NULL, NULL },
             };
-            return class_create<object>(L, l);
+            class_create<object>(L, l);
+            lua_pushvalue(L, -1);
+            lua_setfield(L, LUA_REGISTRYINDEX, "ROADNET_WORLD");
+            return 1;
         }
     }
 

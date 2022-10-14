@@ -6,6 +6,9 @@
 #include <optional>
 #include <vector>
 
+template <typename T, typename Dataset, typename AccessorType = uint16_t>
+T kdtree_getdata(Dataset const& dataset, AccessorType i, uint8_t dim);
+
 template <typename T, uint8_t DIM = 2, typename Dataset = std::vector<std::array<T, DIM>>, typename AccessorType = uint16_t>
 class kdtree {
 public:
@@ -55,14 +58,15 @@ public:
         for (Size i = 0; i < N; ++i)
             acc[i] = i;
         for (Dimension i = 0; i < DIM; ++i) {
-            root_bbox[i].low = root_bbox[i].high = dataset[acc[0]][i];
+            root_bbox[i].low = root_bbox[i].high = kdtree_getdata<ElementType>(dataset, acc[0], i);
         }
         for (Offset k = 1; k < N; ++k) {
             for (Dimension i = 0; i < DIM; ++i) {
-                if (dataset[acc[k]][i] < root_bbox[i].low)
-                    root_bbox[i].low = dataset[acc[k]][i];
-                if (dataset[acc[k]][i] > root_bbox[i].high)
-                    root_bbox[i].high = dataset[acc[k]][i];
+                ElementType v = kdtree_getdata<ElementType>(dataset, acc[k], i);
+                if (v < root_bbox[i].low)
+                    root_bbox[i].low = v;
+                if (v > root_bbox[i].high)
+                    root_bbox[i].high = v;
             }
         }
         root_node = divideTree(0, N, root_bbox);
@@ -87,15 +91,15 @@ public:
             }
         }
         searchLevel(result_set, query_point, root_node, distance, dists, epsError);
-        return true;
+        return !!result_set;
     }
 
 private:
     void computeMinMax(Offset ind, Size count, Dimension element, ElementType& min_elem, ElementType& max_elem) {
-        min_elem = dataset[acc[ind]][element];
+        min_elem = kdtree_getdata<ElementType>(dataset, acc[ind], element);
         max_elem = min_elem;
         for (Offset i = 1; i < count; ++i) {
-            ElementType val = dataset[acc[ind + i]][element];
+            ElementType val = kdtree_getdata<ElementType>(dataset, acc[ind+i], element);
             if (val < min_elem) min_elem = val;
             if (val > max_elem) max_elem = val;
         }
@@ -111,15 +115,17 @@ private:
             node->node_type.lr.right = right;
 
             for (Dimension i = 0; i < DIM; ++i) {
-                bbox[i].low  = dataset[acc[left]][i];
-                bbox[i].high = dataset[acc[left]][i];
+                ElementType v = kdtree_getdata<ElementType>(dataset, acc[left], i);
+                bbox[i].low  = v;
+                bbox[i].high = v;
             }
             for (Offset k = left + 1; k < right; ++k) {
                 for (Dimension i = 0; i < DIM; ++i) {
-                    if (bbox[i].low > dataset[acc[k]][i])
-                        bbox[i].low = dataset[acc[k]][i];
-                    if (bbox[i].high < dataset[acc[k]][i])
-                        bbox[i].high = dataset[acc[k]][i];
+                    ElementType v = kdtree_getdata<ElementType>(dataset, acc[k], i);
+                    if (bbox[i].low > v)
+                        bbox[i].low = v;
+                    if (bbox[i].high < v)
+                        bbox[i].high = v;
                 }
             }
         }
@@ -197,11 +203,9 @@ private:
         Offset left  = 0;
         Offset right = count - 1;
         for (;;) {
-            while (left <= right &&
-                   dataset[acc[ind + left]][cutfeat] < cutval)
+            while (left <= right && kdtree_getdata<ElementType>(dataset, acc[ind + left], cutfeat) < cutval)
                 ++left;
-            while (right && left <= right &&
-                   dataset[acc[ind + right]][cutfeat] >= cutval)
+            while (right && left <= right && kdtree_getdata<ElementType>(dataset, acc[ind + right], cutfeat) >= cutval)
                 --right;
             if (left > right || !right)
                 break;
@@ -212,9 +216,9 @@ private:
         lim1  = left;
         right = count - 1;
         for (;;) {
-            while (left <= right && dataset[acc[ind + left]][cutfeat] <= cutval)
+            while (left <= right && kdtree_getdata<ElementType>(dataset, acc[ind + left], cutfeat) <= cutval)
                 ++left;
-            while (right && left <= right && dataset[acc[ind + right]][cutfeat] > cutval)
+            while (right && left <= right && kdtree_getdata<ElementType>(dataset, acc[ind + right], cutfeat) > cutval)
                 --right;
             if (left > right || !right)
                 break;
@@ -233,10 +237,10 @@ private:
                 AccessorType accessor = acc[i];
                 ElementType distance = ElementType();
                 for (Dimension i = 0; i < DIM; ++i) {
-                    distance += result_set.accumDist(pt[i], dataset[accessor][i]);
+                    distance += result_set.accumDist(pt[i], kdtree_getdata<ElementType>(dataset, accessor, i));
                 }
                 if (distance < worst_dist) {
-                    if (!result_set.addPoint(distance, accessor)) {
+                    if (!result_set.addPoint(dataset, distance, accessor)) {
                         return false;
                     }
                 }
