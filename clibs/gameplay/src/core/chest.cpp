@@ -12,9 +12,9 @@ static bool isFluidId(uint16_t id) {
     return (id & 0x0C00) == 0x0C00;
 }
 
-chest::chest(uint16_t who, type type_, chest::slot* data, size_t size)
+chest::chest(uint16_t endpoint, type type_, chest::slot* data, size_t size)
     : slots()
-    , who(who)
+    , endpoint(endpoint)
     , type_(type_)
 {
     for (size_t i = 0; i < size; ++i) {
@@ -48,8 +48,8 @@ bool chest::pickup(world& w, const recipe_items* r) {
         auto& s = slots[i];
         auto& t = r->items[i];
         s.amount -= t.amount;
-        if (type_ == type::blue && who != 0xffff) {
-            trading_buy(w, {who}, s);
+        if (type_ == type::blue && endpoint != 0xffff) {
+            trading_buy(w, {endpoint}, s);
         }
     }
     return true;
@@ -69,8 +69,8 @@ bool chest::place(world& w, const recipe_items* r) {
         auto& s = slots[i];
         auto& t = r->items[i];
         s.amount += t.amount;
-        if (type_ == type::red && who != 0xffff) {
-            trading_sell(w, {who}, s);
+        if (type_ == type::red && endpoint != 0xffff) {
+            trading_sell(w, {endpoint}, s);
         }
     }
     return true;
@@ -93,8 +93,8 @@ void chest::limit(world& w, const uint16_t* r) {
         auto& s = slots[i];
         assert(s.type == slot::type::limit);
         s.limit = r[i];
-        if (type_ == type::blue && who != 0xffff) {
-            trading_buy(w, {who}, s);
+        if (type_ == type::blue && endpoint != 0xffff) {
+            trading_buy(w, {endpoint}, s);
         }
     }
 }
@@ -169,6 +169,35 @@ uint16_t chest::place(world& w, uint16_t item, uint16_t amount, uint16_t limit) 
         }
     }
     return amount;
+}
+
+void chest::pickup_force(world& w, uint16_t item, uint16_t max) {
+    assert(type_ == type::red || type_ == type::none);
+    uint16_t n = 0;
+    for (size_t i = 0; i < slots.size(); ++i) {
+        auto& s = slots[i];
+        if (s.item == item) {
+            n += pickup_slot(s, max - n);
+            if (n >= max) {
+                break;
+            }
+        }
+    }
+    assert(n == max);
+}
+
+void chest::place_force(world& w, uint16_t item, uint16_t amount) {
+    assert(type_ == type::blue || type_ == type::none);
+    for (size_t i = 0; i < slots.size(); ++i) {
+        auto& s = slots[i];
+        if (s.item == item) {
+            amount -= place_slot(s, amount);
+            if (amount == 0) {
+                return;
+            }
+        }
+    }
+    assert(amount == 0);
 }
 
 const chest::slot* chest::getslot(uint16_t index) const {

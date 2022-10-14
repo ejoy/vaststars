@@ -13,6 +13,11 @@ namespace roadnet {
         road_coord ending;
         uint8_t pathIdx;
         std::vector<direction> path;
+        struct  {
+            uint16_t item;
+            uint16_t sell;
+            uint16_t buy;
+        } gameplay;
         direction getDirection(world& w);
         void nextDirection(world& w);
         void initTick(uint8_t v);
