@@ -5,7 +5,7 @@
 #include "roadnet_dynarray.h"
 
 namespace roadnet {
-    struct world;
+    class world;
 
     struct roadid {
         uint16_t cross : 1;

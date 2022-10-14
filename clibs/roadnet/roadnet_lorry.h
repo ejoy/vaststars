@@ -5,7 +5,7 @@
 #include <vector>
 
 namespace roadnet {
-    struct world;
+    class world;
     struct road_coord;
 
     struct lorry {
