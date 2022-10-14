@@ -13,6 +13,7 @@ lm:source_set "gameplay" {
     objdeps = "compile_gameplay_ecs",
     includes = {
         "src/",
+        "../roadnet",
         antdir .. "3rd/luaecs",
         antdir .. "clibs/lua/",
         antdir .. "clibs/ecs/",
