@@ -417,10 +417,16 @@ namespace roadnet {
         return lorryId;
     }
 
-    endpointid builder::createEndpoint(world& w) {
+    endpointid builder::createEndpoint(world& w, map_coord mc) {
         lorryid endpointId((uint16_t)w.endpointVec.size());
-        roadnet::endpoint endpoint;
+        roadnet::endpoint endpoint({mc.x, mc.y});
         w.endpointVec.push_back(endpoint);
+
+        road_coord rc = coordConvert(w, mc);
+        assert(rc.id.cross == 0);
+        auto& straight = w.straightAry[rc.id.id];
+        straight.setEndpoint(w, rc.offset, endpointId);
+
         return endpointId;
     }
 

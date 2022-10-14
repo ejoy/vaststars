@@ -1,5 +1,6 @@
 #pragma once
 
+#include "roadnet_type.h"
 #include "roadnet_world.h"
 #include "roadnet_coord.h"
 #include <map>
@@ -13,7 +14,7 @@ namespace roadnet {
         void loadMap(world& w, const std::map<loction, uint8_t>& mapData);
 
         lorryid createLorry(world& w);
-        endpointid createEndpoint(world& w);
+        endpointid createEndpoint(world& w, map_coord mc);
         bool    pushLorry(world& w, lorryid lorryId, endpointid starting, endpointid ending);
         lorryid popLorry(world& w, endpointid e);
 
