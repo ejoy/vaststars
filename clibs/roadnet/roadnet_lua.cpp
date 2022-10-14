@@ -1,6 +1,8 @@
 #include <lua.hpp>
 #include <string>
-#include "roadnet_builder.h"
+#include <map>
+#include "roadnet_coord.h"
+#include "roadnet_world.h"
 
 namespace roadnet::lua {
     template <typename T>
@@ -108,23 +110,22 @@ namespace roadnet::lua {
     namespace world {
         struct object {
             roadnet::world w;
-            roadnet::builder b;
         };
 
         static int load_map(lua_State* L) {
             auto& o = class_get<object>(L, 1);
-            o.b.loadMap(o.w, get_map_data(L, 2));
+            o.w.loadMap(get_map_data(L, 2));
             return 0;
         }
         static int create_lorry(lua_State* L) {
             auto& o = class_get<object>(L, 1);
-            auto l = o.b.createLorry(o.w);
+            auto l = o.w.createLorry();
             return 1;
         }
         static int create_endpoint(lua_State* L) {
             auto& o = class_get<object>(L, 1);
             auto mc = get_map_coord(L, 2);
-            auto l = o.b.createEndpoint(o.w, mc);
+            auto l = o.w.createEndpoint(mc);
             return 1;
         }
         static int push_lorry(lua_State* L) {
@@ -132,13 +133,13 @@ namespace roadnet::lua {
             lorryid l((uint16_t)luaL_checkinteger(L, 2));
             auto starting((uint16_t)luaL_checkinteger(L, 3));
             auto ending((uint16_t)luaL_checkinteger(L, 4));
-            lua_pushboolean(L, o.b.pushLorry(o.w, l, (endpointid)starting, (endpointid)ending));
+            lua_pushboolean(L, o.w.pushLorry(l, (endpointid)starting, (endpointid)ending));
             return 1;
         }
         static int pop_lorry(lua_State* L) {
             auto& o = class_get<object>(L, 1);
             auto id((uint16_t)luaL_checkinteger(L, 2));
-            auto l = o.b.popLorry(o.w, (endpointid)id);
+            auto l = o.w.popLorry((endpointid)id);
             if (l) {
                 lua_pushinteger(L, l.id);
             } else {
@@ -147,7 +148,7 @@ namespace roadnet::lua {
         }
         static int map_coord(lua_State* L) {
             auto& o = class_get<object>(L, 1);
-            auto r = o.b.coordConvert(o.w, get_road_coord(L, 2));
+            auto r = o.w.coordConvert(get_road_coord(L, 2));
             push_map_coord(L, r);
             return 1;
         }

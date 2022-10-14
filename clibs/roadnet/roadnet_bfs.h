@@ -5,6 +5,6 @@
 #include <vector>
 
 namespace roadnet {
-    struct world;
+    class world;
     bool bfs(world& w, roadid start, roadid end, std::vector<direction>& path);
 }

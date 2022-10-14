@@ -6,7 +6,7 @@
 #include <vector>
 
 namespace roadnet {
-    struct world;
+    class world;
 
     struct endpoint {
         static inline const size_t IN = 0;
