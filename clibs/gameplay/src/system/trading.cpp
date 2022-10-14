@@ -2,6 +2,7 @@
 #include <core/world.h>
 #include <lua.hpp>
 #include "roadnet_world.h"
+#include "roadnet_builder.h"
 
 static void trading_match(world& w, uint16_t item, trading_queue& q) {
     while (!q.sell.empty() && !q.buy.empty()) {
@@ -41,6 +42,13 @@ void trading_buy(world& w, trading_who who, chest::slot& s) {
     }
 }
 
+namespace roadnet {
+    struct object {
+        world w;
+        builder b;
+    };
+}
+
 template <>
 uint8_t kdtree_getdata<uint8_t, trading_kdtree::pointcolud>(trading_kdtree::pointcolud const& dataset, uint16_t i, uint8_t dim) {
     if (dim == 0) {
@@ -49,18 +57,20 @@ uint8_t kdtree_getdata<uint8_t, trading_kdtree::pointcolud>(trading_kdtree::poin
     return dataset[i].y;
 }
 
-template <typename ElementType, typename Dataset, typename AccessorType = uint16_t>
+template <bool Check, typename ElementType = uint8_t, typename Dataset = trading_kdtree::pointcolud, typename AccessorType = uint16_t>
 class nearest_result {
 public:
-    nearest_result(roadnet::world& w)
+    nearest_result(roadnet::object& w)
         : w(w)
         , indices()
         , dists((std::numeric_limits<ElementType>::max)())
     {}
+    bool hasLorry(const Dataset& dataset, AccessorType index) {
+        return w.w.Endpoint(roadnet::endpointid{dataset[index].id}).popMap.size() > 0;
+    }
     bool addPoint(const Dataset& dataset, ElementType dist, AccessorType index) {
         if ((dists > dist) || ((dist == dists) && (indices > index))) {
-            auto& ep = w.Endpoint(roadnet::endpointid{dataset[index].id});
-            if (ep.popMap.size() > 0) {
+            if (!Check || hasLorry(dataset, index)) {
                 dists   = dist;
                 indices = index;
             }
@@ -78,27 +88,27 @@ public:
         return indices;
     }
 private:
-    roadnet::world& w;
+    roadnet::object& w;
     AccessorType indices;
     ElementType  dists;
 };
 
-static roadnet::world&
+static roadnet::object&
 getroadnetworld(lua_State* L) {
     lua_getfield(L, LUA_REGISTRYINDEX, "ROADNET_WORLD");
-    auto& rw = *(roadnet::world*)lua_touserdata(L, -1);
+    auto& rw = *(roadnet::object*)lua_touserdata(L, -1);
     lua_pop(L, 1);
     return rw;
 }
 
-static roadnet::loction getxy(roadnet::world& w, uint16_t id) {
-    auto& ep = w.Endpoint(roadnet::endpointid{id});
+static roadnet::loction getxy(roadnet::object& w, uint16_t id) {
+    auto& ep = w.w.Endpoint(roadnet::endpointid{id});
     return ep.loc;
 }
 
 static int
 lbuild(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = *(world*)lua_touserdata(L, 1);
     auto& rw = getroadnetworld(L);
     auto& kdtree = w.tradings.station_kdtree;
     for (auto& v : w.select<ecs::station>(L)) {
@@ -112,25 +122,60 @@ lbuild(lua_State *L) {
 
 static int
 lupdate(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = *(world*)lua_touserdata(L, 1);
+    auto& rw = getroadnetworld(L);
+    auto& kdtree = w.tradings.station_kdtree;
     for (auto& [item, q] : w.tradings.queues) {
         trading_match(w, item, q);
     }
-    if (w.tradings.orders.empty()) {
-        return 0;
-    }
     while (!w.tradings.orders.empty()) {
-        auto& rw = getroadnetworld(L);
         auto& order = w.tradings.orders.front();
-        auto& kdtree = w.tradings.station_kdtree;
-        nearest_result<uint8_t, trading_kdtree::pointcolud> result(rw);
-        auto loc = getxy(rw, order.sell.id);
+        nearest_result<true> result(rw);
+        auto loc = getxy(rw, order.sell.endpoint);
         if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
             break;
         }
         roadnet::endpointid s{kdtree.dataset[result.value()].id};
-        roadnet::endpointid e{order.sell.id};
+        roadnet::endpointid e{order.sell.endpoint};
+        auto lorryId = rw.b.popLorry(rw.w, s);
+        if (!rw.b.pushLorry(rw.w, lorryId, s, e)) {
+            assert(false);
+            break;
+        }
+        auto& l = rw.w.Lorry(lorryId);
+        l.gameplay = {
+            order.item,
+            order.sell.endpoint,
+            order.buy.endpoint,
+        };
         w.tradings.orders.pop();
+    }
+    for (auto& v : w.select<ecs::chest_2>(L)) {
+        auto& c = v.get<ecs::chest_2>();
+        auto& ep = rw.w.Endpoint(roadnet::endpointid{c.endpoint});
+        while (!ep.popMap.empty()) {
+            auto lorryId = ep.popMap.front();
+            ep.popMap.pop_front();
+            auto& l = rw.w.Lorry(lorryId);
+            if (l.gameplay.sell == 0xffff) {
+                auto& chest = w.query_chest(c.chest_in);
+                chest.place_force(w, l.gameplay.item, 1);
+                nearest_result<false> result(rw);
+                auto loc = getxy(rw, c.endpoint);
+                if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
+                    assert(false);
+                }
+                bool ok = rw.b.pushLorry(rw.w, lorryId, roadnet::endpointid{c.endpoint}, roadnet::endpointid{kdtree.dataset[result.value()].id});
+                (void)ok;assert(ok);
+            }
+            else {
+                auto& chest = w.query_chest(c.chest_out);
+                chest.pickup_force(w, l.gameplay.item, 1);
+                bool ok = rw.b.pushLorry(rw.w, lorryId, roadnet::endpointid{c.endpoint}, roadnet::endpointid{l.gameplay.buy});
+                (void)ok;assert(ok);
+                l.gameplay.sell = 0xffff;
+            }
+        }
     }
     return 0;
 }

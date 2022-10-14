@@ -9,7 +9,7 @@
 struct world;
 
 struct trading_who {
-    uint16_t id;
+    uint16_t endpoint;
 };
 
 struct trading_order {

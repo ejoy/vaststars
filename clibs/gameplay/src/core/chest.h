@@ -34,7 +34,7 @@ struct chest {
         uint16_t lock;
     };
 
-    chest(uint16_t who, type type_, chest::slot* data, size_t size);
+    chest(uint16_t endpoint, type type_, chest::slot* data, size_t size);
     uint16_t get_fluid(uint16_t index);
     void     set_fluid(uint16_t index, uint16_t value);
     bool     pickup(world& w, const recipe_items* r);
@@ -47,8 +47,11 @@ struct chest {
     uint16_t place(world& w, uint16_t item, uint16_t amount, uint16_t limit);
     bool     pickup(world& w, flatmap<uint16_t, uint16_t>& items);
 
+    void pickup_force(world& w, uint16_t item, uint16_t max);
+    void place_force(world& w, uint16_t item, uint16_t amount);
+
 public:
     std::vector<slot> slots;
-    uint16_t who;
+    uint16_t endpoint;
     type type_;
 };
