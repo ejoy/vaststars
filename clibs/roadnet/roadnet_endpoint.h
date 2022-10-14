@@ -12,8 +12,12 @@ namespace roadnet {
         static inline const size_t IN = 0;
         static inline const size_t OUT = 1;
 
+        loction loc;
         std::list<lorryid> pushMap;
         std::list<lorryid> popMap;
         lorryid lorry[2] = {lorryid::invalid(), lorryid::invalid()};
+
+        endpoint(loction loc)
+            : loc(loc) {}
     };
 }

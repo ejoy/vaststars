@@ -116,6 +116,17 @@ namespace roadnet::lua {
             o.b.loadMap(o.w, get_map_data(L, 2));
             return 0;
         }
+        static int create_lorry(lua_State* L) {
+            auto& o = class_get<object>(L, 1);
+            auto l = o.b.createLorry(o.w);
+            return 1;
+        }
+        static int create_endpoint(lua_State* L) {
+            auto& o = class_get<object>(L, 1);
+            auto mc = get_map_coord(L, 2);
+            auto l = o.b.createEndpoint(o.w, mc);
+            return 1;
+        }
         static int push_lorry(lua_State* L) {
             auto& o = class_get<object>(L, 1);
             lorryid l((uint16_t)luaL_checkinteger(L, 2));
@@ -232,6 +243,8 @@ namespace roadnet::lua {
         static int create(lua_State* L) {
             luaL_Reg l[] = {
                 { "load_map", load_map },
+                { "create_lorry", create_lorry},
+                { "create_endpoint", create_endpoint},
                 { "push_lorry", push_lorry },
                 { "map_coord", map_coord },
                 { "each_lorry", each_lorry },
