@@ -34,8 +34,7 @@ end
 
 local function _load_game()
     camera.init("camera_default.prefab")
-    ecs.create_instance "/pkg/vaststars.resources/light_directional.prefab"
-    ecs.create_instance "/pkg/vaststars.resources/skybox.prefab"
+    ecs.create_instance "/pkg/vaststars.resources/light.prefab"
     if NOTHING then
         saveload:restore_camera_setting()
         return
