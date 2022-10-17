@@ -266,7 +266,8 @@ prototype "基建站" {
     icon = "textures/building_pic/small_pic_goodsstation_input.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
-    type = {"entity"},
+    power = "300kW",
+    type ={"entity", "consumer"},
     area = "2x2",
     supply_area = "20x20",
 }
