@@ -523,7 +523,7 @@ prototype "基地生产1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     modifier = {["headquarter-mining-speed"] = 0.1},
-    unlock_recipe = {"破损铁制电线杆"},
+    unlock_recipe = {"破损铁制电线杆","破损基建站"},
   },
   prerequisites = {"维修破损组装机"},
   ingredients = {
@@ -537,6 +537,21 @@ prototype "基地生产1" {
   sign_icon = "textures/science/tech-cycle.texture",
 }
 
+prototype "放置基建站" {
+  desc = "放置基建站扩大建造范围",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"select_entity", 0, "基建站"},
+  prerequisites = {"基地生产1"},
+  count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_place_solarpanel.texture",
+  },
+  sign_desc = {
+    { desc = "放置1个基建站", icon = "textures/construct/industry.texture"},
+  },
+}
+
 prototype "储存1" {
   desc = "研究更便捷的存储方式",
   type = { "tech" },
@@ -544,7 +559,7 @@ prototype "储存1" {
   effects = {
     unlock_recipe = {"小铁制箱子1"},
   },
-  prerequisites = {"维修破损组装机"},
+  prerequisites = {"维修破损组装机","放置基建站"},
   ingredients = {
       {"地质科技包", 1},
       {"气候科技包", 1},
@@ -558,7 +573,7 @@ prototype "生产铁制箱子" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "小铁制箱子I"},
-  prerequisites = {"储存1","基地生产1"},
+  prerequisites = {"储存1"},
   count = 3,
   tips_pic = {
     "textures/task_tips_pic/task_produce_chest.texture",
@@ -681,7 +696,7 @@ prototype "基地生产2" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"破损运输汽车","破损物流中心","破损基建站","砖石公路",},
+    unlock_recipe = {"破损运输汽车","破损物流中心","砖石公路",},
   },
   prerequisites = {"冶金学1"},
   ingredients = {
