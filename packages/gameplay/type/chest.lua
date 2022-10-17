@@ -19,6 +19,7 @@ function c:ctor(init, pt)
         end
     end
     return {
+        endpoint_changed = true,
         chest = {
             chest = id
         }
