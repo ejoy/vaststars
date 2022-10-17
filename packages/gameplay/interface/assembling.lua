@@ -90,7 +90,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     local chest = e.chest_2
     assembling.progress = 0
     assembling.status = STATUS_IDLE
-    assert(chest.endpoint > 0)
+    chest.endpoint = 0xffff
     fluidbox.update_fluidboxes(e, pt, fluids)
     if recipe_name == nil then
         assembling.recipe = 0
