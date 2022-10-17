@@ -478,11 +478,12 @@ namespace roadnet {
     }
 
     lorryid world::popLorry(endpointid ending) {
-        if (Endpoint(ending).popMap.empty()) {
+        auto& ep = Endpoint(ending);
+        if (ep.popMap.empty()) {
             return lorryid::invalid();
         }
-        lorryid lorryId = Endpoint(ending).popMap.front();
-        Endpoint(ending).popMap.pop_front();
+        lorryid lorryId = ep.popMap.front();
+        ep.popMap.pop_front();
         return lorryId;
     }
 
