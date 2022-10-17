@@ -145,10 +145,7 @@ lupdate(lua_State *L) {
     }
     for (auto& v : w.select<ecs::chest_2>(L)) {
         auto& c = v.get<ecs::chest_2>();
-        auto& ep = rw.Endpoint(roadnet::endpointid{c.endpoint});
-        while (!ep.popMap.empty()) {
-            auto lorryId = ep.popMap.front();
-            ep.popMap.pop_front();
+        for (auto lorryId = rw.popLorry(roadnet::endpointid{c.endpoint}); !!lorryId; lorryId = rw.popLorry(roadnet::endpointid{c.endpoint})) {
             auto& l = rw.Lorry(lorryId);
             if (l.gameplay.sell == 0xffff) {
                 auto& chest = w.query_chest(c.chest_in);
