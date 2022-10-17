@@ -267,8 +267,10 @@ prototype "基建站" {
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     power = "300kW",
-    type ={"entity", "consumer"},
+    type ={"entity","consumer"},
+    priority = "secondary",
     area = "2x2",
     supply_area = "20x20",
+    group = {"物流"},
 }
 
