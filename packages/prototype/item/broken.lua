@@ -111,12 +111,12 @@ prototype "破损运输车辆" {
     order = 128,
 }
 
-prototype "破损物流派送站" {
+prototype "破损基建站" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/broken-goodsstation-output.texture",
     model = "prefabs/rock.prefab",
-    description = "损坏的物流运送站",
+    description = "损坏的基建站",
     group = "加工",
     order = 132,
 }
