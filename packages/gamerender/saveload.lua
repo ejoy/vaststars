@@ -7,6 +7,8 @@ local fs = require "bee.filesystem"
 local json = import_package "ant.json"
 local SKIP_GUIDE <const> = require "debugger".skip_guide
 local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
+local startup_lua <const> = require "debugger".startup or "item.startup"
+
 local archival_base_dir
 if CUSTOM_ARCHIVING then
     archival_base_dir = (fs.exe_path():parent_path() / CUSTOM_ARCHIVING):lexically_normal():string()
@@ -16,7 +18,7 @@ end
 local archiving_list_path = archival_base_dir .. "/archiving.json"
 local camera_setting_path = archival_base_dir .. "/camera.json"
 local iprototype = require "gameplay.interface.prototype"
-local startup_entities = import_package("vaststars.prototype")("item.startup").entities
+local startup_entities = import_package("vaststars.prototype")(startup_lua).entities
 local objects = require "objects"
 local ifluid = require "gameplay.interface.fluid"
 local iscience = require "gameplay.interface.science"

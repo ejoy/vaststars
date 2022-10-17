@@ -4,6 +4,7 @@ local status = require "status"
 local prototype = require "prototype"
 local vaststars = require "vaststars.world.core"
 local container = require "vaststars.container.core"
+local roadnet = require "vaststars.roadnet.core"
 local luaecs = import_package "ant.luaecs"
 
 local perf -- = {}
@@ -65,6 +66,7 @@ return function ()
     local ptable = require "vaststars.prototype.core"
     local cworld = vaststars.create_world(context, ptable)
     world.ecs = ecs
+    world.roadnet = roadnet.create_world()
     world._cworld = cworld
     world._context = context
 
