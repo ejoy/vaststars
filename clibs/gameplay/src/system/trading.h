@@ -28,6 +28,11 @@ struct trading_kdtree {
         uint8_t x;
         uint8_t y;
         uint16_t id;
+        point(uint8_t x, uint8_t y, uint16_t id)
+            : x(x)
+            , y(y)
+            , id(id)
+        {}
     };
     using pointcolud = std::vector<point>;
     pointcolud dataset;

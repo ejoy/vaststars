@@ -19,7 +19,7 @@ public:
         std::size_t pos;
         chunk_index(chunk_type* chunk)
             : chunk(chunk)
-            , pos(pos)
+            , pos(0)
         {}
         chunk_index(const chunk_index& rhs)
             : chunk(rhs.chunk)
