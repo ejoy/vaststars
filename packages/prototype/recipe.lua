@@ -419,7 +419,7 @@ prototype "物流派送站1" {
     description = "使用机器爪和箱子制造物流派送站",
 }
 
-prototype "物流需求站1" {
+prototype "基建站1" {
     type = { "recipe" },
     category = "物流中型制造",
     group = "物流",
@@ -430,10 +430,10 @@ prototype "物流需求站1" {
         {"小铁制箱子I", 1},
     },
     results = {
-        {"物流需求站", 1},
+        {"基建站", 1},
     },
     time = "4s",
-    description = "使用机器爪和箱子制造物流需求站",
+    description = "使用机器爪和箱子制造基建站",
 }
 
 prototype "物流中心1" {
@@ -1233,7 +1233,7 @@ prototype "破损运输汽车" {
     description = "修复损坏的运输汽车",
 }
 
-prototype "破损物流派送站" {
+prototype "破损基建站" {
     type = { "recipe" },
     category = "生产手工制造",
     group = "生产",
@@ -1242,13 +1242,13 @@ prototype "破损物流派送站" {
     icon = "textures/construct/broken-goodsstation-output.texture",
     ingredients = {
         {"铁齿轮", 1},
-        {"破损物流派送站", 1},
+        {"破损基建站", 1},
     },
     results = {
-        {"物流派送站", 1},
+        {"基建站", 1},
     },
     time = "5s",
-    description = "修复损坏的物流派送站",
+    description = "修复损坏的基建站",
 }
 
 prototype "破损物流需求站" {

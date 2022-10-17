@@ -262,8 +262,8 @@ prototype_road "砖石公路-U型-%02d" {
 }
 
 prototype "基建站" {
-    model = "prefabs/small-chest.prefab",
-    icon = "textures/building_pic/small_pic_chest.texture",
+    model = "prefabs/goods-station-input-1.prefab",
+    icon = "textures/building_pic/small_pic_goodsstation_input.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"entity"},

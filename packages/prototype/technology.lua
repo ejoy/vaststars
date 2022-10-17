@@ -681,7 +681,7 @@ prototype "基地生产2" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"破损运输汽车","破损物流中心","破损物流派送站","破损物流需求站","砖石公路",},
+    unlock_recipe = {"破损运输汽车","破损物流中心","破损基建站","砖石公路",},
   },
   prerequisites = {"冶金学1"},
   ingredients = {
@@ -1001,7 +1001,7 @@ prototype "物流1" {
   type = { "tech" },
   icon = "textures/science/tech-logistics.texture",
   effects = {
-    unlock_recipe ={"物流派送站1","物流需求站1","物流中心1","运输车辆1"},
+    unlock_recipe ={"基建站1","物流中心1","运输车辆1"},
   },
   prerequisites = {"发电机1"},
   ingredients = {
