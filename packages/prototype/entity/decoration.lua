@@ -31,7 +31,7 @@ prototype "抽水泵残骸" {
     type = {"entity", "chest"},
     group = {"物流" , "默认"},
     area = "2x2",
-    slots = 13,
+    slots = 12,
 }
 
 prototype "铁矿" {
