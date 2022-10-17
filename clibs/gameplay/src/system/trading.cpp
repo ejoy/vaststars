@@ -41,12 +41,6 @@ void trading_buy(world& w, trading_who who, chest::slot& s) {
     }
 }
 
-namespace roadnet {
-    struct object {
-        world w;
-    };
-}
-
 template <>
 uint8_t kdtree_getdata<uint8_t, trading_kdtree::pointcolud>(trading_kdtree::pointcolud const& dataset, uint16_t i, uint8_t dim) {
     if (dim == 0) {
@@ -58,13 +52,13 @@ uint8_t kdtree_getdata<uint8_t, trading_kdtree::pointcolud>(trading_kdtree::poin
 template <bool Check, typename ElementType = uint8_t, typename Dataset = trading_kdtree::pointcolud, typename AccessorType = uint16_t>
 class nearest_result {
 public:
-    nearest_result(roadnet::object& w)
+    nearest_result(roadnet::world& w)
         : w(w)
         , indices()
         , dists((std::numeric_limits<ElementType>::max)())
     {}
     bool hasLorry(const Dataset& dataset, AccessorType index) {
-        return w.w.Endpoint(roadnet::endpointid{dataset[index].id}).popMap.size() > 0;
+        return w.Endpoint(roadnet::endpointid{dataset[index].id}).popMap.size() > 0;
     }
     bool addPoint(const Dataset& dataset, ElementType dist, AccessorType index) {
         if ((dists > dist) || ((dist == dists) && (indices > index))) {
@@ -86,21 +80,21 @@ public:
         return indices;
     }
 private:
-    roadnet::object& w;
+    roadnet::world& w;
     AccessorType indices;
     ElementType  dists;
 };
 
-static roadnet::object&
+static roadnet::world&
 getroadnetworld(lua_State* L) {
     lua_getfield(L, LUA_REGISTRYINDEX, "ROADNET_WORLD");
-    auto& rw = *(roadnet::object*)lua_touserdata(L, -1);
+    auto& rw = *(roadnet::world*)lua_touserdata(L, -1);
     lua_pop(L, 1);
     return rw;
 }
 
-static roadnet::loction getxy(roadnet::object& w, uint16_t id) {
-    auto& ep = w.w.Endpoint(roadnet::endpointid{id});
+static roadnet::loction getxy(roadnet::world& w, uint16_t id) {
+    auto& ep = w.Endpoint(roadnet::endpointid{id});
     return ep.loc;
 }
 
@@ -136,12 +130,12 @@ lupdate(lua_State *L) {
         }
         roadnet::endpointid s{kdtree.dataset[result.value()].id};
         roadnet::endpointid e{order.sell.endpoint};
-        auto lorryId = rw.w.popLorry(s);
-        if (!rw.w.pushLorry(lorryId, s, e)) {
+        auto lorryId = rw.popLorry(s);
+        if (!rw.pushLorry(lorryId, s, e)) {
             assert(false);
             break;
         }
-        auto& l = rw.w.Lorry(lorryId);
+        auto& l = rw.Lorry(lorryId);
         l.gameplay = {
             order.item,
             order.sell.endpoint,
@@ -151,11 +145,11 @@ lupdate(lua_State *L) {
     }
     for (auto& v : w.select<ecs::chest_2>(L)) {
         auto& c = v.get<ecs::chest_2>();
-        auto& ep = rw.w.Endpoint(roadnet::endpointid{c.endpoint});
+        auto& ep = rw.Endpoint(roadnet::endpointid{c.endpoint});
         while (!ep.popMap.empty()) {
             auto lorryId = ep.popMap.front();
             ep.popMap.pop_front();
-            auto& l = rw.w.Lorry(lorryId);
+            auto& l = rw.Lorry(lorryId);
             if (l.gameplay.sell == 0xffff) {
                 auto& chest = w.query_chest(c.chest_in);
                 chest.place_force(w, l.gameplay.item, 1);
@@ -164,13 +158,13 @@ lupdate(lua_State *L) {
                 if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
                     assert(false);
                 }
-                bool ok = rw.w.pushLorry(lorryId, roadnet::endpointid{c.endpoint}, roadnet::endpointid{kdtree.dataset[result.value()].id});
+                bool ok = rw.pushLorry(lorryId, roadnet::endpointid{c.endpoint}, roadnet::endpointid{kdtree.dataset[result.value()].id});
                 (void)ok;assert(ok);
             }
             else {
                 auto& chest = w.query_chest(c.chest_out);
                 chest.pickup_force(w, l.gameplay.item, 1);
-                bool ok = rw.w.pushLorry(lorryId, roadnet::endpointid{c.endpoint}, roadnet::endpointid{l.gameplay.buy});
+                bool ok = rw.pushLorry(lorryId, roadnet::endpointid{c.endpoint}, roadnet::endpointid{l.gameplay.buy});
                 (void)ok;assert(ok);
                 l.gameplay.sell = 0xffff;
             }
