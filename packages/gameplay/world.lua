@@ -48,7 +48,6 @@ end
 
 return function ()
     local world = {}
-    local needBuild = false
     local ecs = luaecs.world()
     local timer = dofile(package.searchpath("timer", package.path))
     local components = {}
@@ -64,6 +63,10 @@ return function ()
 
     ecs:register {
         name = "endpoint_changed"
+    }
+
+    ecs:register {
+        name = "road_changed"
     }
 
     local context = ecs:context(components)

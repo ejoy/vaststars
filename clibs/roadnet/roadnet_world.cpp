@@ -478,6 +478,9 @@ namespace roadnet {
     }
 
     lorryid world::popLorry(endpointid ending) {
+        // TODO
+        if (ending.id == 0xffff)
+            return lorryid::invalid();
         auto& ep = Endpoint(ending);
         if (ep.popMap.empty()) {
             return lorryid::invalid();
