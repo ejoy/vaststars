@@ -2,7 +2,6 @@
 #include <core/world.h>
 #include <lua.hpp>
 #include "roadnet_world.h"
-#include "roadnet_builder.h"
 
 static void trading_match(world& w, uint16_t item, trading_queue& q) {
     while (!q.sell.empty() && !q.buy.empty()) {
@@ -45,7 +44,6 @@ void trading_buy(world& w, trading_who who, chest::slot& s) {
 namespace roadnet {
     struct object {
         world w;
-        builder b;
     };
 }
 
@@ -113,6 +111,7 @@ lbuild(lua_State *L) {
     auto& kdtree = w.tradings.station_kdtree;
     for (auto& v : w.select<ecs::station>(L)) {
         auto& s = v.get<ecs::station>();
+        assert(s.endpoint > 0);
         auto loc = getxy(rw, s.endpoint);
         kdtree.dataset.emplace_back(loc.x, loc.y, s.endpoint);
     }
@@ -137,8 +136,8 @@ lupdate(lua_State *L) {
         }
         roadnet::endpointid s{kdtree.dataset[result.value()].id};
         roadnet::endpointid e{order.sell.endpoint};
-        auto lorryId = rw.b.popLorry(rw.w, s);
-        if (!rw.b.pushLorry(rw.w, lorryId, s, e)) {
+        auto lorryId = rw.w.popLorry(s);
+        if (!rw.w.pushLorry(lorryId, s, e)) {
             assert(false);
             break;
         }
@@ -165,13 +164,13 @@ lupdate(lua_State *L) {
                 if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
                     assert(false);
                 }
-                bool ok = rw.b.pushLorry(rw.w, lorryId, roadnet::endpointid{c.endpoint}, roadnet::endpointid{kdtree.dataset[result.value()].id});
+                bool ok = rw.w.pushLorry(lorryId, roadnet::endpointid{c.endpoint}, roadnet::endpointid{kdtree.dataset[result.value()].id});
                 (void)ok;assert(ok);
             }
             else {
                 auto& chest = w.query_chest(c.chest_out);
                 chest.pickup_force(w, l.gameplay.item, 1);
-                bool ok = rw.b.pushLorry(rw.w, lorryId, roadnet::endpointid{c.endpoint}, roadnet::endpointid{l.gameplay.buy});
+                bool ok = rw.w.pushLorry(lorryId, roadnet::endpointid{c.endpoint}, roadnet::endpointid{l.gameplay.buy});
                 (void)ok;assert(ok);
                 l.gameplay.sell = 0xffff;
             }
