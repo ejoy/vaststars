@@ -108,38 +108,34 @@ namespace roadnet::lua {
     }
 
     namespace world {
-        struct object {
-            roadnet::world w;
-        };
-
         static int load_map(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
-            o.w.loadMap(get_map_data(L, 2));
+            auto& w = class_get<roadnet::world>(L, 1);
+            w.loadMap(get_map_data(L, 2));
             return 0;
         }
         static int create_lorry(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
-            auto l = o.w.createLorry();
+            auto& w = class_get<roadnet::world>(L, 1);
+            auto l = w.createLorry();
             return 1;
         }
         static int create_endpoint(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
+            auto& w = class_get<roadnet::world>(L, 1);
             auto mc = get_map_coord(L, 2);
-            auto l = o.w.createEndpoint(mc);
+            auto l = w.createEndpoint(mc);
             return 1;
         }
         static int push_lorry(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
+            auto& w = class_get<roadnet::world>(L, 1);
             lorryid l((uint16_t)luaL_checkinteger(L, 2));
             auto starting((uint16_t)luaL_checkinteger(L, 3));
             auto ending((uint16_t)luaL_checkinteger(L, 4));
-            lua_pushboolean(L, o.w.pushLorry(l, (endpointid)starting, (endpointid)ending));
+            lua_pushboolean(L, w.pushLorry(l, (endpointid)starting, (endpointid)ending));
             return 1;
         }
         static int pop_lorry(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
+            auto& w = class_get<roadnet::world>(L, 1);
             auto id((uint16_t)luaL_checkinteger(L, 2));
-            auto l = o.w.popLorry((endpointid)id);
+            auto l = w.popLorry((endpointid)id);
             if (l) {
                 lua_pushinteger(L, l.id);
             } else {
@@ -147,8 +143,8 @@ namespace roadnet::lua {
             }
         }
         static int map_coord(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
-            auto r = o.w.coordConvert(get_road_coord(L, 2));
+            auto& w = class_get<roadnet::world>(L, 1);
+            auto r = w.coordConvert(get_road_coord(L, 2));
             push_map_coord(L, r);
             return 1;
         }
@@ -156,13 +152,13 @@ namespace roadnet::lua {
             bool cross = true;
             uint32_t index = 0;
             uint16_t straight = 0;
-            lorryid next(lua_State* L, object& o, roadnet::road_coord& coord) {
+            lorryid next(lua_State* L, roadnet::world& w, roadnet::road_coord& coord) {
                 if (cross) {
-                    if (index < 6 * o.w.crossAry.size()) {
+                    if (index < 6 * w.crossAry.size()) {
                         uint16_t road_idx = (uint16_t)(index / 6);
                         uint8_t  entry_idx = index % 6;
                         index++;
-                        auto& road = o.w.crossAry[road_idx];
+                        auto& road = w.crossAry[road_idx];
                         if (entry_idx < 4) {
                             auto& id = road.wait_lorry[entry_idx];
                             if (id != roadnet::lorryid::invalid()) {
@@ -177,24 +173,24 @@ namespace roadnet::lua {
                                 return id;
                             }
                         }
-                        return next(L, o, coord);
+                        return next(L, w, coord);
                     }
                     cross = false;
                     index = 0;
                 }
                 
-                if (index < o.w.lorryAry.size()) {
-                    auto& id = o.w.lorryAry[index];
+                if (index < w.lorryAry.size()) {
+                    auto& id = w.lorryAry[index];
                     if (id != roadnet::lorryid::invalid()) {
-                        while (index >= o.w.straightAry[straight].lorryOffset + o.w.straightAry[straight].len) {
+                        while (index >= w.straightAry[straight].lorryOffset + w.straightAry[straight].len) {
                             straight++;
                         }
-                        coord = {{0, straight}, (uint16_t)(index - o.w.straightAry[straight].lorryOffset)};
+                        coord = {{0, straight}, (uint16_t)(index - w.straightAry[straight].lorryOffset)};
                         index++;
                         return id;
                     }
                     index++;
-                    return next(L, o, coord);
+                    return next(L, w, coord);
                 }
                 return roadnet::lorryid::invalid();
             }
@@ -203,16 +199,16 @@ namespace roadnet::lua {
                 return *static_cast<eachlorry*>(lua_touserdata(L, idx));
             }
             static int next(lua_State* L) {
-                auto& o = class_get<object>(L, lua_upvalueindex(2));
+                auto& w = class_get<roadnet::world>(L, lua_upvalueindex(2));
                 eachlorry& self = get(L, lua_upvalueindex(1));
                 roadnet::road_coord coord;
-                auto id = self.next(L, o, coord);
+                auto id = self.next(L, w, coord);
                 if (id == roadnet::lorryid::invalid()) {
                     return 0;
                 }
                 lua_pushinteger(L, id.id);
                 push_road_coord(L, coord);
-                lua_pushinteger(L, o.w.Lorry(id).tick);
+                lua_pushinteger(L, w.Lorry(id).tick);
                 return 3;
             }
             static int gc(lua_State* L) {
@@ -237,8 +233,8 @@ namespace roadnet::lua {
             return 1;
         }
         static int update(lua_State* L) {
-            auto& o = class_get<object>(L, 1);
-            o.w.update(0);
+            auto& w = class_get<roadnet::world>(L, 1);
+            w.update(0);
             return 0;
         }
         static int create(lua_State* L) {
@@ -252,7 +248,7 @@ namespace roadnet::lua {
                 { "update", update },
                 { NULL, NULL },
             };
-            class_create<object>(L, l);
+            class_create<roadnet::world>(L, l);
             lua_pushvalue(L, -1);
             lua_setfield(L, LUA_REGISTRYINDEX, "ROADNET_WORLD");
             return 1;
@@ -260,7 +256,7 @@ namespace roadnet::lua {
     }
 
     template <>
-    struct class_metatable<world::object> {
+    struct class_metatable<roadnet::world> {
         static inline const char name[] = "roadnet::world";
     };
 }
