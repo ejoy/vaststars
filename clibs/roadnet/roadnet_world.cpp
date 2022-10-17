@@ -462,7 +462,6 @@ namespace roadnet {
 
         auto es = endpointDataVec[starting.id];
         auto roadIdS = es.id;
-        auto so = es.offset;
 
         auto ee = endpointDataVec[ending.id];
         auto roadIdE = ee.id;

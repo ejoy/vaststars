@@ -36,7 +36,7 @@ namespace roadnet {
         std::vector<lorry>        lorryVec;
 
     private:
-        uint8_t map[256][256] = {0};
+        uint8_t map[256][256];
 
         struct straightData {
             uint16_t  id;
