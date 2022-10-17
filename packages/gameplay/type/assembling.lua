@@ -7,6 +7,7 @@ local c = type "assembling"
 function c:ctor(init, pt)
     local recipe_name = pt.recipe and pt.recipe or init.recipe
     local e = {
+        endpoint_changed = true,
         fluidboxes = {},
         chest_2 = {},
         assembling = {

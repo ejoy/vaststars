@@ -449,6 +449,7 @@ namespace roadnet {
 
         road_coord rc = coordConvert(mc);
         assert(rc.id.cross == 0);
+        assert(straightAry.size() > 0);
         auto& straight = straightAry[rc.id.id];
         straight.setEndpoint(*this, rc.offset, endpointId);
 

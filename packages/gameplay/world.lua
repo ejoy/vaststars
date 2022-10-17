@@ -62,6 +62,10 @@ return function ()
         name = "fluidbox_changed"
     }
 
+    ecs:register {
+        name = "endpoint_changed"
+    }
+
     local context = ecs:context(components)
     local ptable = require "vaststars.prototype.core"
     local cworld = vaststars.create_world(context, ptable)
