@@ -6,7 +6,7 @@ function c:ctor(init, pt)
     return {
         endpoint_changed = true,
         station = {
-            endpoint = 0 --TODO
+            endpoint = 0xffff --TODO
         }
     }
 end

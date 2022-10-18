@@ -105,9 +105,11 @@ lbuild(lua_State *L) {
     auto& kdtree = w.tradings.station_kdtree;
     for (auto& v : w.select<ecs::station>(L)) {
         auto& s = v.get<ecs::station>();
-        assert(s.endpoint > 0);
-        auto loc = getxy(rw, s.endpoint);
-        kdtree.dataset.emplace_back(loc.x, loc.y, s.endpoint);
+        if (s.endpoint != 0xffff) {
+            assert(s.endpoint > 0);
+            auto loc = getxy(rw, s.endpoint);
+            kdtree.dataset.emplace_back(loc.x, loc.y, s.endpoint);
+        }
     }
     kdtree.tree.build();
     return 0;
