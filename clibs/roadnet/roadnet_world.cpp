@@ -231,6 +231,7 @@ namespace roadnet {
             if (isCross(m)) {
                 break;
             }
+            m = m & 0x55; // TODO: remove this
             dir = nextDirection(m, dir);
             n++;
         }
@@ -254,6 +255,7 @@ namespace roadnet {
             if (i >= n) {
                 return NeighborResult {l, dir, n};
             }
+            m = m & 0x55; // TODO: remove this
             dir = nextDirection(m, dir);
         }
     }
@@ -269,6 +271,7 @@ namespace roadnet {
     }
 
     static constexpr bool isEndpoint(uint8_t m, direction dir) {
+        dir = (direction)(((uint8_t)dir + 1) % 4);
         auto d = direction::n;
         switch (dir) {
         case direction::l: d = direction::t; break;
@@ -305,7 +308,6 @@ namespace roadnet {
         uint16_t genCrossId = 0;
         uint16_t genStraightId = 0;
         uint32_t genLorryOffset = 0;
-        uint16_t genEndpointId = 0;
 
         for (auto& [l, bitmask] : mapData) {
             map[l.y][l.x] = bitmask;
@@ -345,13 +347,21 @@ namespace roadnet {
                         );
                         crossroad.setNeighbor(dir, {false, straight.id});
 
-                        auto l = result.l;
-                        for (auto i = 0; i < result.n; ++i) {
-                            if (isEndpoint(map[l.y][l.x], reverse(dir))) {
-                                endpointData d({false, straight.id}, i, (endpointid)(uint16_t)genEndpointId++);
-                                endpointDataVec.push_back(d);
+                        // TODO: optimize
+                        {
+                            auto l = result.l;
+                            // auto dir = dir;
+                            for (auto i = 0; i < result.n; ++i) {
+                                l = move(l, dir);
+                                auto conn_dir = (direction)(((uint8_t)dir + 1) % 4);
+                                if (isEndpoint(map[l.y][l.x], conn_dir)) {
+                                    auto cl = move(l, reverse(conn_dir));
+                                    endpointData d({false, straight.id}, i, cl.x, cl.y, conn_dir);
+                                    endpointDataVec.push_back(d);
+                                }
+                                auto m = map[l.y][l.x] & 0x55;
+                                dir = nextDirection(m, dir);
                             }
-                            l = move(l, reverse(dir));
                         }
                     }
                     else {
@@ -365,13 +375,21 @@ namespace roadnet {
                         );
                         crossroad.setNeighbor(dir, {false, straight1.id});
 
-                        auto l1 = loc;
-                        for (auto i = 0; i < result.n; ++i) {
-                            if (isEndpoint(map[l1.y][l1.x], reverse(result.dir))) {
-                                endpointData d({false, straight1.id}, i, (endpointid)(uint16_t)genEndpointId++);
-                                endpointDataVec.push_back(d);
+                        // TODO: optimize
+                        {
+                            auto l = loc;
+                            // auto dir = dir;
+                            for (auto i = 0; i < result.n; ++i) {
+                                l = move(l, dir);
+                                auto conn_dir = (direction)(((uint8_t)dir + 1) % 4);
+                                if (isEndpoint(map[l.y][l.x], conn_dir)) {
+                                    auto cl = move(l, reverse(conn_dir));
+                                    endpointData d({false, straight1.id}, i, cl.x, cl.y, conn_dir);
+                                    endpointDataVec.push_back(d);
+                                }
+                                auto m = map[l.y][l.x] & 0x55;
+                                dir = nextDirection(m, dir);
                             }
-                            l1 = move(l1, reverse(result.dir));
                         }
 
                         straightData& straight2 = straightVec.emplace_back(
@@ -384,13 +402,21 @@ namespace roadnet {
                         );
                         neighbor.setNeighbor(reverse(result.dir), {false, straight2.id});
 
-                        auto l2 = result.l;
-                        for (auto i = 0; i < result.n; ++i) {
-                            if (isEndpoint(map[l2.y][l2.x], dir)) {
-                                endpointData d({false, straight1.id}, i, (endpointid)(uint16_t)genEndpointId++);
-                                endpointDataVec.push_back(d);
+                        // TODO: optimize
+                        {
+                            auto l = result.l;
+                            auto dir = reverse(result.dir);
+                            for (auto i = 0; i < result.n; ++i) {
+                                l = move(l, dir);
+                                auto conn_dir = (direction)(((uint8_t)dir + 1) % 4);
+                                if (isEndpoint(map[l.y][l.x], conn_dir)) {
+                                    auto cl = move(l, reverse(conn_dir));
+                                    endpointData d({false, straight2.id}, i, cl.x, cl.y, conn_dir);
+                                    endpointDataVec.push_back(d);
+                                }
+                                auto m = map[l.y][l.x] & 0x55;
+                                dir = nextDirection(m, dir);
                             }
-                            l2 = move(l2, dir);
                         }
                     }
                 }
@@ -442,17 +468,25 @@ namespace roadnet {
         return endpointVec[id.id];
     }
 
-    endpointid world::createEndpoint(map_coord mc) {
-        lorryid endpointId((uint16_t)endpointVec.size());
-        roadnet::endpoint endpoint({mc.x, mc.y});
+    endpointid world::createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir) {
+        endpointid endpointId((uint16_t)endpointVec.size());
+        roadnet::endpoint endpoint({connection_x, connection_y});
         endpointVec.push_back(endpoint);
 
-        road_coord rc = coordConvert(mc);
-        assert(rc.id.cross == 0);
-        assert(straightAry.size() > 0);
+        // TODO: optimize
+        road_coord rc = road_coord::invalid();
+        for (auto& data: endpointDataVec) {
+            if (data.x == connection_x && data.y == connection_y && data.dir == connection_dir) {
+                rc.id = data.id;
+                rc.offset = data.offset;
+                break;
+            }
+        }
+
+        assert(rc != road_coord::invalid() && rc.id.cross == 0);
+        assert(rc.id.id < straightAry.size());
         auto& straight = straightAry[rc.id.id];
         straight.setEndpoint(*this, rc.offset, endpointId);
-
         return endpointId;
     }
     bool world::pushLorry(lorryid lorryId, endpointid starting, endpointid ending) {

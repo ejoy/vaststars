@@ -120,8 +120,10 @@ namespace roadnet::lua {
         }
         static int create_endpoint(lua_State* L) {
             auto& w = class_get<roadnet::world>(L, 1);
-            auto mc = get_map_coord(L, 2);
-            auto l = w.createEndpoint(mc);
+            auto connection_x ((uint8_t)luaL_checkinteger(L, 2));
+            auto connection_y ((uint8_t)luaL_checkinteger(L, 3));
+            auto connection_dir ((direction)luaL_checkinteger(L, 4));
+            lua_pushinteger(L, w.createEndpoint(connection_x, connection_y, connection_dir).id);
             return 1;
         }
         static int push_lorry(lua_State* L) {
