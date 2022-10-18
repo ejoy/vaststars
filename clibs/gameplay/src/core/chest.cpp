@@ -20,7 +20,6 @@ chest::chest(uint16_t endpoint, type type_, chest::slot* data, size_t size)
     for (size_t i = 0; i < size; ++i) {
         slots.push_back(data[i]);
     }
-    assert(endpoint == 0xffff);
 }
 
 uint16_t chest::get_fluid(uint16_t index) {
