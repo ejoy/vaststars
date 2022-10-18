@@ -18,6 +18,11 @@ prototype "熔炼炉I" {
         },
         output = {
         },
+    },
+    crossing = {
+        connections = {
+            {type="input-output", position={1,2,"S"}, roadside = true},
+        },
     }
 }
 
@@ -37,6 +42,11 @@ prototype "熔炼炉II" {
         input = {
         },
         output = {
+        },
+    },
+    crossing = {
+        connections = {
+            {type="input-output", position={1,2,"S"}, roadside = true},
         },
     }
 }

@@ -55,7 +55,7 @@ function m.init(world)
             local loc = (e.entity.y << 8) | e.entity.x -- see also: get_location(lua_State *L, int idx)
             map[loc] = road_mask(e.entity.prototype, e.entity.direction)
         end
-        world.roadnet:load_map(map)
+        -- world.roadnet:load_map(map)
     end
     ecs:clear "road_changed"
 end

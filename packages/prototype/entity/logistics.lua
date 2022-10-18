@@ -83,6 +83,11 @@ prototype "物流中心I" {
     power = "300kW",
     priority = "secondary",
     group = {"物流"},
+    crossing = {
+        connections = {
+            {type="input-output", position={1,2,"S"}, roadside = true},
+        },
+    }
 }
 
 prototype "运输车辆I" {
