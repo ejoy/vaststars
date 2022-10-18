@@ -191,7 +191,8 @@ local guide = {
     {
         name = "guide-12",
 		narrative = {
-            {"{/g 基建站}允许在更远的区域修建建筑，为了扩建我们的基地，准备放置{/g 基建站}吧(兴奋)", "textures/guide/guide-3.texture"},
+            {"{/g 基建站}允许在更远的区域修建建筑，基建站可将建筑材料运送到在覆盖区域..哔哩..(兴奋)", "textures/guide/guide-2.texture"},
+            {"为了扩建我们的基地，准备放置{/g 基建站}吧..哔哩..哔哩(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 30,
