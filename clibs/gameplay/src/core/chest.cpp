@@ -20,6 +20,7 @@ chest::chest(uint16_t endpoint, type type_, chest::slot* data, size_t size)
     for (size_t i = 0; i < size; ++i) {
         slots.push_back(data[i]);
     }
+    assert(endpoint == 0xffff);
 }
 
 uint16_t chest::get_fluid(uint16_t index) {
@@ -131,8 +132,22 @@ uint16_t chest::pickup(world& w, uint16_t item, uint16_t max) {
     return n;
 }
 
-void chest::set_endpoint(uint16_t endpoint) {
+void chest::set_endpoint(world& w, uint16_t endpoint) {
     this->endpoint = endpoint;
+    if (endpoint != 0xffff) {
+        if (type_ == type::red) {
+            for (size_t i = 0; i < slots.size(); ++i) {
+                auto& s = slots[i];
+                trading_sell(w, {endpoint}, s);
+            }
+        }
+        else if (type_ == type::blue) {
+            for (size_t i = 0; i < slots.size(); ++i) {
+                auto& s = slots[i];
+                trading_buy(w, {endpoint}, s);
+            }
+        }
+    }
 }
 
 static uint16_t place_slot(chest::slot& s, uint16_t amount) {
@@ -299,7 +314,7 @@ lset_endpoint(lua_State* L) {
     uint16_t id = (uint16_t)luaL_checkinteger(L, 2);
     uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
     chest& c = w.query_chest(id);
-    c.set_endpoint(endpoint);
+    c.set_endpoint(w, endpoint);
     return 0;
 }
 
