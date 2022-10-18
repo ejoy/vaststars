@@ -2,22 +2,12 @@ local system = require "register.system"
 local query = require "prototype".queryById
 
 local m = system "endpoint"
-
-local DIRECTION <const> = {
-    N = 0,
-    E = 1,
-    S = 2,
-    W = 3,
+local mapping = {
+    W = 0, -- left
+    N = 1, -- top
+    E = 2, -- right
+    S = 3, -- bottom
 }
-
-local DIRECTION_REV = {}
-for dir, v in pairs(DIRECTION) do
-    DIRECTION_REV[v] = dir
-end
-
-local function rotate(dir, rotate_dir)
-    return (DIRECTION[dir] + rotate_dir) % 4
-end
 
 local road_mask; do
     local mt = {}
@@ -38,8 +28,8 @@ local road_mask; do
 
         local connections = pt.crossing.connections
         for _, connection in ipairs(connections) do
-            assert(DIRECTION[connection.position[3]])
-            local d = (DIRECTION[connection.position[3]] + dir) % 4
+            assert(mapping[connection.position[3]])
+            local d = (mapping[connection.position[3]] + dir) % 4
             local value
             if connection.roadside then
                 value = 2
@@ -50,8 +40,8 @@ local road_mask; do
             c = c + 1
         end
 
-        assert(cache[pt.id][dir] == nil)
-        cache[pt.id][dir] = bits
+        assert(cache[prototype][dir] == nil)
+        cache[prototype][dir] = bits
         return bits
     end
 end
@@ -65,7 +55,7 @@ function m.init(world)
             local loc = (e.entity.y << 8) | e.entity.x -- see also: get_location(lua_State *L, int idx)
             map[loc] = road_mask(e.entity.prototype, e.entity.direction)
         end
-        -- world.roadnet:load_map(map)
+        world.roadnet:load_map(map)
     end
     ecs:clear "road_changed"
 end
