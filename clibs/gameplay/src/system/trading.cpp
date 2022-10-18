@@ -106,7 +106,7 @@ lbuild(lua_State *L) {
     for (auto& v : w.select<ecs::station>(L)) {
         auto& s = v.get<ecs::station>();
         if (s.endpoint != 0xffff) {
-            assert(s.endpoint > 0);
+            assert(s.endpoint >= 0);
             auto loc = getxy(rw, s.endpoint);
             kdtree.dataset.emplace_back(loc.x, loc.y, s.endpoint);
         }
