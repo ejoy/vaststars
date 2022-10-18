@@ -131,6 +131,10 @@ uint16_t chest::pickup(world& w, uint16_t item, uint16_t max) {
     return n;
 }
 
+void chest::set_endpoint(uint16_t endpoint) {
+    this->endpoint = endpoint;
+}
+
 static uint16_t place_slot(chest::slot& s, uint16_t amount) {
     if (s.amount + amount <= s.limit) {
         s.amount += amount;
@@ -289,6 +293,16 @@ lplace(lua_State* L) {
     return 1;
 }
 
+static int
+lset_endpoint(lua_State* L) {
+    world& w = *(world *)lua_touserdata(L, 1);
+    uint16_t id = (uint16_t)luaL_checkinteger(L, 2);
+    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
+    chest& c = w.query_chest(id);
+    c.set_endpoint(endpoint);
+    return 0;
+}
+
 extern "C" int
 luaopen_vaststars_container_core(lua_State *L) {
 	luaL_checkversion(L);
@@ -297,6 +311,7 @@ luaopen_vaststars_container_core(lua_State *L) {
 		{ "get", lget },
 		{ "pickup", lpickup },
 		{ "place", lplace },
+        { "set_endpoint", lset_endpoint },
 		{ NULL, NULL },
 	};
 	luaL_newlib(L, l);

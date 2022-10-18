@@ -277,6 +277,9 @@ return function ()
     function world:container_get(...)
         return container.get(cworld, ...)
     end
+    function world:container_set_endpoint(...)
+        return container.set_endpoint(cworld, ...)
+    end
 
     function world:wait(...)
         return timer.wait(...)
