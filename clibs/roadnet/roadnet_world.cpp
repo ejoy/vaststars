@@ -512,13 +512,18 @@ namespace roadnet {
     }
 
     lorryid world::popLorry(endpointid ending) {
-        // TODO
+        // the building does not connect to any road
         if (ending.id == 0xffff)
             return lorryid::invalid();
         auto& ep = Endpoint(ending);
+
+        // todo: remove this temporary solution
+        ep.popMap.push_back(this->createLorry());
+
         if (ep.popMap.empty()) {
             return lorryid::invalid();
         }
+
         lorryid lorryId = ep.popMap.front();
         ep.popMap.pop_front();
         return lorryId;

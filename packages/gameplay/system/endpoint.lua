@@ -47,9 +47,11 @@ function m.build(world)
     --     y = y + e.entity.y
     --     dir = mapping[DIRECTION[dir]] -- TODO
     --     local endpoint = world.roadnet:create_endpoint(x, y, dir)
-    --     log.error("endpoint", x, y, dir, endpoint)
     --     if e.chest_2 then
-    --         e.chest_2.endpoint = endpoint
+    --         local chest = e.chest_2
+    --         chest.endpoint = endpoint
+    --         world:container_set_endpoint(chest.chest_in, endpoint)
+    --         world:container_set_endpoint(chest.chest_out, endpoint)
     --     elseif e.station then
     --         e.station.endpoint = endpoint
     --     else
