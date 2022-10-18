@@ -191,6 +191,22 @@ local guide = {
     {
         name = "guide-12",
 		narrative = {
+            {"{/g 基建站}允许在更远的区域修建建筑，为了扩建我们的基地，准备放置{/g 基建站}吧(兴奋)", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "放置基建站",
+            }
+        },
+        prerequisites = {
+            "基地生产1",
+        },
+	},
+
+    {
+        name = "guide-13",
+		narrative = {
             {"{/g 化工厂}准备就绪，让我们正式进入化工生产..哔哩..哔哩..(兴奋）", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
@@ -206,7 +222,7 @@ local guide = {
 	},
 
     {
-        name = "guide-13",
+        name = "guide-14",
 		narrative = {
             {"{/g 塑料}可制造更多精密元件，掌握这种新材料，存活概率提升为1.2923%..哔哩(兴奋）", "textures/guide/guide-3.texture"},
         },
@@ -222,7 +238,7 @@ local guide = {
 	},
 
     {
-        name = "guide-14",
+        name = "guide-15",
 		narrative = {
             {"终于可以研制机械装置进入自动化生产，这可以大大提高效率..哔哩..和放松你的手臂..哔哩(期待）", "textures/guide/guide-2.texture"},
         },
