@@ -17,6 +17,7 @@ namespace roadnet {
         endpointid createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir);
         bool    pushLorry(lorryid lorryId, endpointid starting, endpointid ending);
         lorryid popLorry(endpointid e);
+        void placeLorry(endpointid e, lorryid l);
 
         void        update(uint64_t ti);
         basic_road& Road(roadid id);

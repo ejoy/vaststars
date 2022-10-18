@@ -115,8 +115,15 @@ namespace roadnet::lua {
         }
         static int create_lorry(lua_State* L) {
             auto& w = class_get<roadnet::world>(L, 1);
-            auto l = w.createLorry();
+            lua_pushinteger(L, w.createLorry().id);
             return 1;
+        }
+        static int place_lorry(lua_State* L) {
+            auto& w = class_get<roadnet::world>(L, 1);
+            endpointid e ((uint16_t)luaL_checkinteger(L, 2));
+            lorryid l ((uint16_t)luaL_checkinteger(L, 3));
+            w.placeLorry(e, l);
+            return 0;
         }
         static int create_endpoint(lua_State* L) {
             auto& w = class_get<roadnet::world>(L, 1);
@@ -245,6 +252,7 @@ namespace roadnet::lua {
                 { "create_lorry", create_lorry},
                 { "create_endpoint", create_endpoint},
                 { "push_lorry", push_lorry },
+                { "place_lorry", place_lorry },
                 { "map_coord", map_coord },
                 { "each_lorry", each_lorry },
                 { "update", update },
