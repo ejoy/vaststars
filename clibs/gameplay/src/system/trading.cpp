@@ -29,7 +29,7 @@ void trading_sell(world& w, trading_who who, chest::slot& s) {
 }
 
 void trading_buy(world& w, trading_who who, chest::slot& s) {
-    if (s.amount + s.lock <= s.limit) {
+    if (s.amount + s.lock >= s.limit) {
         return;
     }
     uint16_t item = s.item;

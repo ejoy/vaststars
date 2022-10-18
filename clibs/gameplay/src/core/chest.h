@@ -46,7 +46,7 @@ struct chest {
     uint16_t pickup(world& w, uint16_t item, uint16_t max);
     uint16_t place(world& w, uint16_t item, uint16_t amount, uint16_t limit);
     bool     pickup(world& w, flatmap<uint16_t, uint16_t>& items);
-    void     set_endpoint(uint16_t endpoint);
+    void     set_endpoint(world& w, uint16_t endpoint);
 
     void pickup_force(world& w, uint16_t item, uint16_t max);
     void place_force(world& w, uint16_t item, uint16_t amount);
