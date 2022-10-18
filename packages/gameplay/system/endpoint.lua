@@ -54,6 +54,8 @@ function m.build(world)
     --         world:container_set_endpoint(chest.chest_out, endpoint)
     --     elseif e.station then
     --         e.station.endpoint = endpoint
+    --         local l = world.roadnet:create_lorry()
+    --         world.roadnet:place_lorry(endpoint, l)
     --     else
     --         assert(false)
     --     end

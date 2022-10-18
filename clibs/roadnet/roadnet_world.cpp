@@ -441,6 +441,10 @@ namespace roadnet {
         lorryVec.push_back(lorry);
         return lorryId;
     }
+    void world::placeLorry(endpointid e, lorryid l) {
+        auto& ep = Endpoint(e);
+        ep.popMap.push_back(l);
+    }
     void world::update(uint64_t ti) {
         ary_call(*this, ti, lorryVec, &lorry::update);
         ary_call(*this, ti, crossAry, &road::crossroad::update);
@@ -516,10 +520,6 @@ namespace roadnet {
         if (ending.id == 0xffff)
             return lorryid::invalid();
         auto& ep = Endpoint(ending);
-
-        // todo: remove this temporary solution
-        ep.popMap.push_back(this->createLorry());
-
         if (ep.popMap.empty()) {
             return lorryid::invalid();
         }
