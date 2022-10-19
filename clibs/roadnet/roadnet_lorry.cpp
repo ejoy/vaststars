@@ -3,6 +3,7 @@
 
 namespace roadnet {
     direction lorry::getDirection(world& w) {
+        assert(pathIdx < path.size());
         return path[pathIdx];
     }
     void lorry::nextDirection(world& w) {

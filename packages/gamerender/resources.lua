@@ -779,7 +779,6 @@ local t = {
 	"/pkg/vaststars.gamerender/package.lua",
 	"/pkg/vaststars.gamerender/power.lua",
 	"/pkg/vaststars.gamerender/resources.lua",
-	"/pkg/vaststars.gamerender/roadnet_system.lua",
 	"/pkg/vaststars.gamerender/saveload.lua",
 	"/pkg/vaststars.gamerender/task.lua",
 	"/pkg/vaststars.gamerender/terrain.lua",
