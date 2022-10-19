@@ -26,6 +26,7 @@ local math3d = require "math3d"
 local camera = ecs.require "engine.camera"
 local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local PLANES <const> = {YAXIS_PLANE}
+local lorry_update = ecs.require "lorry"
 
 local m = ecs.system 'init_system'
 function m:init_world()
@@ -76,9 +77,23 @@ end
 
 function m:update_world()
     camera.update()
-    gameplay_core.update()
+
+    local gameplay_world = gameplay_core.get_world()
+    local roadnet = gameplay_world.roadnet
     if gameplay_core.world_update then
-        world_update(gameplay_core.get_world(), get_object)
+        roadnet:update()
+        gameplay_core.update()
+        world_update(gameplay_world, get_object)
+
+        local is_cross, mc, x, y, z
+        for lorry_id, rc, tick in roadnet:each_lorry() do
+            is_cross = (rc & 0x8000 ~= 0) -- see also: push_road_coord() in c code
+            mc = roadnet:map_coord(rc)
+            x = (mc >>  0) & 0xFF
+            y = (mc >>  8) & 0xFF
+            z = (mc >> 16) & 0xFF
+            lorry_update(lorry_id, is_cross, x, y, z, tick)
+        end
     end
     fps()
 end

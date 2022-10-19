@@ -7,7 +7,7 @@ function M:item_counts(world, e)
     local r = {}
     local typeobject = iprototype.queryById(e.entity.prototype)
     for i = 1, typeobject.slots do
-        local c, n = iworld.chest_get(world, e.chest.chest, i)
+        local c, n = iworld.chest_get(world, e.chest_2.chest_in, i)
         if c then
             r[c] = (r[c] or 0) + n -- different slot may have same prototype
         end

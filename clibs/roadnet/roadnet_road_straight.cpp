@@ -37,86 +37,100 @@ namespace roadnet::road {
         w.LorryInRoad(lorryOffset + offset) = lorryid::invalid();
     }
     void straight::update(world& w, uint64_t ti) {
-        for (uint16_t i = 0; i < len; ++i) {
-            endpointid& eid = w.EndpointInRoad(lorryOffset + i);
-            if ( eid != endpointid::invalid() ) {
-                endpoint e = w.Endpoint(eid);
+        endpointid& e = w.EndpointInRoad(lorryOffset + 0);
+        if (e) {
+            endpoint& ep = w.Endpoint(e);
 
-                auto l = e.lorry[endpoint::IN];
-                if (l != lorryid::invalid()) {
-                    auto& lorry = w.Lorry(l);
-                    if (lorry.ready()) {
-                        e.popMap.push_back(e.lorry[endpoint::IN]);
-                        e.lorry[endpoint::IN] = lorryid::invalid();
-                    }
+            auto l = ep.lorry[endpoint::IN];
+            if (l) {
+                auto& lorry = w.Lorry(l);
+                if (lorry.ready()) {
+                    ep.popMap.push_back(ep.lorry[endpoint::IN]);
+                    ep.lorry[endpoint::IN] = lorryid::invalid();
                 }
+            }
 
-                l = e.lorry[endpoint::OUT];
-                if (l == lorryid::invalid() && e.pushMap.size() > 0) {
-                    e.lorry[endpoint::OUT] = e.pushMap.front();
-                    e.pushMap.pop_front();
+            l = ep.lorry[endpoint::OUT];
+            if (!l) {
+                if (ep.pushMap.size() > 0) {
+                    auto l = ep.pushMap.front();
+                    w.Lorry(l).initTick(kTime);
+                    ep.lorry[endpoint::OUT] = l;
+                    ep.pushMap.pop_front();
+                }
+            }
+            else {
+                auto& lorry = w.Lorry(l);
+                if (lorry.ready()) {
+                    auto& n = w.Road(neighbor);
+                    if (n.tryEntry(w, l, dir)) {
+                        ep.lorry[endpoint::OUT] = lorryid::invalid();
+                    }
                 }
             }
         }
-
         lorryid l = w.LorryInRoad(lorryOffset + 0);
         if (l) {
-            endpointid& eid = w.EndpointInRoad(lorryOffset + 0);
-            if ( eid != endpointid::invalid() ) {
-                auto& e = w.Endpoint(eid);
-                auto f = e.lorry[endpoint::OUT];
-                if( f != lorryid::invalid() ) {
-                    auto& lorry = w.Lorry(l);
-                    if (lorry.ready()) {
-                        if (tryEntry(w, f, dir)) {
-                            e.lorry[endpoint::OUT] = lorryid::invalid();
-                        }
-                    }
-                }
-            }
-
             auto& lorry = w.Lorry(l);
-            if (lorry.ready()) {
+            if (!lorry.ready()) {
                 auto& n = w.Road(neighbor);
                 if (n.tryEntry(w, l, dir)) {
                     delLorry(w, 0);
                 }
             }
         }
+
         for (uint16_t i = 1; i < len; ++i) {
-            endpointid& eid = w.EndpointInRoad(lorryOffset + i);
-            if ( eid != endpointid::invalid() ) {
-                auto& e = w.Endpoint(eid);
-                auto f = e.lorry[endpoint::OUT];
-                if( f != lorryid::invalid() ) {
+            endpointid& e = w.EndpointInRoad(lorryOffset+i);
+            if (e) {
+                endpoint& ep = w.Endpoint(e);
+
+                auto l = ep.lorry[endpoint::IN];
+                if (l) {
                     auto& lorry = w.Lorry(l);
                     if (lorry.ready()) {
-                        if (tryEntry(w, f, dir)) {
-                            e.lorry[endpoint::OUT] = lorryid::invalid();
-                        }
+                        ep.popMap.push_back(ep.lorry[endpoint::IN]);
+                        ep.lorry[endpoint::IN] = lorryid::invalid();
+                    }
+                }
+
+                l = ep.lorry[endpoint::OUT];
+                if (!l) {
+                    if (ep.pushMap.size() > 0) {
+                        auto l = ep.pushMap.front();
+                        w.Lorry(l).initTick(kTime);
+                        ep.lorry[endpoint::OUT] = l;
+                        ep.pushMap.pop_front();
+                    }
+                }
+                else {
+                    auto& lorry = w.Lorry(l);
+                    if (lorry.ready() && !w.LorryInRoad(lorryOffset+i-1)) {
+                        ep.lorry[endpoint::OUT] = lorryid::invalid();
+                        addLorry(w, l, i-1);
                     }
                 }
             }
-
-            lorryid l = w.LorryInRoad(lorryOffset + i);
+            lorryid l = w.LorryInRoad(lorryOffset+i);
             if (l) {
                 auto& lorry = w.Lorry(l);
                 if (lorry.ready()) {
-                    if (lorry.ending.id == id && lorry.ending.offset == i-1) {
-                        endpointid& eid = w.EndpointInRoad(lorryOffset + i);
-                        assert(eid != endpointid::invalid());
-                        auto& e = w.Endpoint(eid);
-                        if (e.lorry[endpoint::IN] == lorryid::invalid()) {
-                            e.lorry[endpoint::IN] = l;
-                            auto& lorry = w.Lorry(l);
-                            lorry.initTick(kTime);
-
-                            delLorry(w, i);
+                    delLorry(w, i);
+                    endpointid& e = w.EndpointInRoad(lorryOffset+i-1);
+                    if (e) {
+                        endpoint& ep = w.Endpoint(e);
+                        // next offset is endpoint
+                        if(lorry.ending.id == id && lorry.ending.offset == i-1) {
+                            w.Lorry(l).initTick(kTime);
+                            ep.lorry[endpoint::IN] = l;
                         }
-                    } else {
-                        if (!w.LorryInRoad(lorryOffset+i+1)) {
-                            addLorry(w, l, i+1);
-                            delLorry(w, i);
+                        if (!ep.lorry[endpoint::OUT] && !ep.lorry[endpoint::IN] && !w.LorryInRoad(lorryOffset+i-1)) {
+                            addLorry(w, l, i-1);
+                        }
+                    }
+                    else {
+                        if (!w.LorryInRoad(lorryOffset+i-1)) {
+                            addLorry(w, l, i-1);
                         }
                     }
                 }
