@@ -28,5 +28,5 @@ struct manual_crafting {
 
     void next();
     void sync(ecs::manual& m);
-    bool rebuild(lua_State* L, world& w, int id);
+    bool rebuild(lua_State* L, world& w, ecs::chest_2& c);
 };

@@ -120,8 +120,9 @@ static manual_container sub(manual_container const& a, manual_container const& b
     return ab;
 }
 
-bool manual_crafting::rebuild(lua_State* L, world& w, int id) {
-    auto& chest = w.query_chest(id);
+bool manual_crafting::rebuild(lua_State* L, world& w, ecs::chest_2& c) {
+    auto& chest_in = w.query_chest(c.chest_in);
+    auto& chest_out = w.query_chest(c.chest_out);
 
     manual_container expected;
     manual_container current;
@@ -152,7 +153,7 @@ bool manual_crafting::rebuild(lua_State* L, world& w, int id) {
     manual_container abound = sub(container, expected);
     for (auto [item, amount] : abound) {
         uint16_t r = container.pickup(item, amount);
-        uint16_t n = chest.place(w, item, amount - r, getstack(w, L, item));
+        uint16_t n = chest_out.place(w, item, amount - r, getstack(w, L, item));
         if (n != 0) {
             container.place(item, n);
             return false;
@@ -160,7 +161,7 @@ bool manual_crafting::rebuild(lua_State* L, world& w, int id) {
     }
 
     manual_container lack = sub(expected, container);
-    if (chest.pickup(w, lack)) {
+    if (chest_in.pickup(w, lack)) {
         for (auto [item, amount] : lack) {
             container.place(item, amount);
         }
@@ -172,12 +173,12 @@ static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
 
-    for (auto& v : w.select<ecs::manual, ecs::chest>(L)) {
-        ecs::manual& m = v.get<ecs::manual>();
-        ecs::chest& c = v.get<ecs::chest>();
+    for (auto& v : w.select<ecs::manual, ecs::chest_2>(L)) {
+        auto& m = v.get<ecs::manual>();
+        auto& c = v.get<ecs::chest_2>();
 
         if (m.status == STATUS_REBUILD) {
-            if (!w.manual.rebuild(L, w, c.chest)) {
+            if (!w.manual.rebuild(L, w, c)) {
                 continue;
             }
             w.manual.sync(m);
@@ -186,7 +187,7 @@ lupdate(lua_State *L) {
             if (!w.manual.container.pickup(m.recipe, 1)) {
                 continue;
             }
-            auto& chest = w.query_chest(c.chest);
+            auto& chest = w.query_chest(c.chest_out);
             uint16_t n = chest.place(w, m.recipe, 1, getstack(w, L, m.recipe));
             if (n != 0) {
                 w.manual.container.place(m.recipe, n);

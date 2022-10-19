@@ -3,7 +3,7 @@ require "register.types"
 local status = require "status"
 local prototype = require "prototype"
 local vaststars = require "vaststars.world.core"
-local container = require "vaststars.container.core"
+local chest = require "vaststars.chest.core"
 local roadnet = require "vaststars.roadnet.core"
 local luaecs = import_package "ant.luaecs"
 
@@ -266,19 +266,19 @@ return function ()
     end
 
     function world:container_create(...)
-        return container.create(cworld, ...)
+        return chest.create(cworld, ...)
     end
     function world:container_pickup(...)
-        return container.pickup(cworld, ...)
+        return chest.pickup(cworld, ...)
     end
     function world:container_place(...)
-        return container.place(cworld, ...)
+        return chest.place(cworld, ...)
     end
     function world:container_get(...)
-        return container.get(cworld, ...)
+        return chest.get(cworld, ...)
     end
-    function world:container_set_endpoint(...)
-        return container.set_endpoint(cworld, ...)
+    function world:container_flush(...)
+        return chest.flush(cworld, ...)
     end
 
     function world:wait(...)

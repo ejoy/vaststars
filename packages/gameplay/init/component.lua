@@ -7,10 +7,6 @@ component "entity" {
     "direction:byte",	-- 0:North 1:East 2:South 3:West
 }
 
-component "chest" {
-    "chest:word",
-}
-
 component "chest_2" {
     "chest_in:word",
     "chest_out:word",
@@ -33,7 +29,6 @@ component "assembling" {
 component "laboratory" {
     "progress:int",
     "tech:word",
-    "chest:word",
     "speed:word",
     "status:byte",
 }
