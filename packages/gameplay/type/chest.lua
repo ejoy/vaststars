@@ -19,8 +19,12 @@ function c:ctor(init, pt)
         end
     end
     return {
-        chest = {
-            chest = id
+        chest_2 = {
+            endpoint = 0xffff,
+            chest_in = id,
+            chest_out = id,
+            fluidbox_in = 0,
+            fluidbox_out = 0,
         }
     }
 end
