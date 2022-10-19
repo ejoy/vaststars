@@ -30,6 +30,7 @@ local function get_fluid_canvas_items(object, x, y, w, h)
     local typeobject = iprototype.queryByName("fluid", object.fluid_name)
     local cfg = fluid_icon_canvas_cfg[typeobject.icon]
     if not cfg then
+        assert(false)
         log.error(("can not found `%s`"):format(typeobject.icon))
         return
     end
