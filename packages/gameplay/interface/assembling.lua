@@ -105,8 +105,8 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
         local chest_in = createChest(recipe.ingredients)
         local chest_out = createChest(recipe.results)
         assembling.recipe = recipe.id
-        chest.chest_in = world:container_create(chest.endpoint, "blue", chest_in)
-        chest.chest_out = world:container_create(chest.endpoint, "red", chest_out)
+        chest.chest_in = world:container_create("blue", chest_in)
+        chest.chest_out = world:container_create("red", chest_out)
         chest.fluidbox_in = 0
         chest.fluidbox_out = 0
         return
@@ -115,8 +115,8 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     local chest_in, fluidbox_in = createChestAndFluidBox(fluids.input, pt.fluidboxes.input, recipe.ingredients, 4, needlimit)
     local chest_out, fluidbox_out = createChestAndFluidBox(fluids.output, pt.fluidboxes.output, recipe.results, 3, needlimit)
     assembling.recipe = recipe.id
-    chest.chest_in = world:container_create(chest.endpoint, "blue", chest_in)
-    chest.chest_out = world:container_create(chest.endpoint, "red", chest_out)
+    chest.chest_in = world:container_create("blue", chest_in)
+    chest.chest_out = world:container_create("red", chest_out)
     chest.fluidbox_in = fluidbox_in
     chest.fluidbox_out = fluidbox_out
 end

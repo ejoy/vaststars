@@ -30,7 +30,7 @@ laboratory_set_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, 
             limit[i] = 2 * (std::max)((uint16_t)1, (*r)[i+1].amount);
         }
     }
-    chest.limit(w, limit.data());
+    chest.limit(w, 0xffff, limit.data());
 }
 
 static void
@@ -60,7 +60,7 @@ laboratory_next_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l,
         return;
     }
     laboratory_set_tech(L, w, e, l, techid);
-    if (chest.pickup(w, to_recipe(newr))) {
+    if (chest.pickup(w, 0xffff, to_recipe(newr))) {
         prototype_context tech = w.prototype(L, techid);
         int time = pt_time(&tech);
         l.progress = time * 100;
@@ -104,7 +104,7 @@ laboratory_update(lua_State* L, world& w, ecs_api::entity<ecs::laboratory, ecs::
         }
         if (l.status == STATUS_IDLE) {
             auto& r = w.techtree.get_ingredients(L, w, e.prototype, l.tech);
-            if (!r || !chest.pickup(w, to_recipe(r))) {
+            if (!r || !chest.pickup(w, 0xffff, to_recipe(r))) {
                 return;
             }
             int time = pt_time(&tech);

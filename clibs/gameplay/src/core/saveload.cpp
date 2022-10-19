@@ -257,7 +257,6 @@ namespace lua_world {
             };
             file_write(f, h);
             for (auto const& c : w.chests) {
-                file_write(f, c.endpoint);
                 file_write(f, c.type_);
                 write_vector(f, c.slots);
             }
@@ -267,9 +266,8 @@ namespace lua_world {
         static void restore(lua_State* L, world& w) {
             FILE* f = createfile(L, 2, filemode::read);
             auto h = file_read<header>(f);
-            w.chests.resize(h.chest_size, {0, chest::type::none, nullptr, 0});
+            w.chests.resize(h.chest_size, {chest::type::none, nullptr, 0});
             for (auto& c : w.chests) {
-                file_read(f, c.endpoint);
                 file_read(f, c.type_);
                 read_vector(f, c.slots);
             }
