@@ -55,6 +55,7 @@ local function get_assembling_canvas_items(object, x, y, w, h)
     local recipe_typeobject = iprototype.queryByName("recipe", object.recipe)
     local cfg = recipe_icon_canvas_cfg[recipe_typeobject.icon]
     if not cfg then
+        assert(cfg)
         log.error(("can not found `%s`"):format(recipe_typeobject.icon))
         return
     end
