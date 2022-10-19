@@ -56,7 +56,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
         if (a.status == STATUS_DONE) {
             chest& chest = w.query_chest(c2.chest_out);
             recipe_items* r = (recipe_items*)pt_results(&recipe);
-            if (!chest.place(w, r)) {
+            if (!chest.place(w, c2.endpoint, r)) {
                 return;
             }
             w.stat.finish_recipe(L, w, a.recipe, false);
@@ -71,7 +71,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
         if (a.status == STATUS_IDLE) {
             chest& chest = w.query_chest(c2.chest_in);
             recipe_items* r = (recipe_items*)pt_ingredients(&recipe);
-            if (!chest.pickup(w, r)) {
+            if (!chest.pickup(w, c2.endpoint, r)) {
                 return;
             }
             int time = pt_time(&recipe);

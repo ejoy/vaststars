@@ -19,15 +19,21 @@ local function createChest(world, s)
         assert(not isFluidId(id))
         container_in[#container_in+1] = string.pack("<I2I2I2I2I2", 0, id, 0, 2, 0)
     end
-    return world:container_create(0xffff, "blue", table.concat(container_in))
+    return world:container_create("blue", table.concat(container_in))
 end
 
 function c:ctor(init, pt)
     local world = self
     local e = {
+        chest_2 = {
+            endpoint = 0xffff,
+            chest_in = createChest(world, pt.inputs),
+            chest_out = 0xffff,
+            fluidbox_in = 0,
+            fluidbox_out = 0,
+        },
         laboratory = {
             tech = 0,
-            chest = createChest(world, pt.inputs),
             speed = math.floor(pt.speed * 100),
             status = STATUS_IDLE,
             progress = 0,

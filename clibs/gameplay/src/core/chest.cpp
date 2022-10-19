@@ -12,9 +12,8 @@ static bool isFluidId(uint16_t id) {
     return (id & 0x0C00) == 0x0C00;
 }
 
-chest::chest(uint16_t endpoint, type type_, chest::slot* data, size_t size)
+chest::chest(type type_, chest::slot* data, size_t size)
     : slots()
-    , endpoint(endpoint)
     , type_(type_)
 {
     for (size_t i = 0; i < size; ++i) {
@@ -34,7 +33,7 @@ void chest::set_fluid(uint16_t index, uint16_t value) {
     slots[index].amount = value;
 }
 
-bool chest::pickup(world& w, const recipe_items* r) {
+bool chest::pickup(world& w, uint16_t endpoint, const recipe_items* r) {
     for (size_t i = 0; i < slots.size(); ++i) {
         auto& s = slots[i];
         auto& t = r->items[i];
@@ -55,7 +54,7 @@ bool chest::pickup(world& w, const recipe_items* r) {
     return true;
 }
 
-bool chest::place(world& w, const recipe_items* r) {
+bool chest::place(world& w, uint16_t endpoint, const recipe_items* r) {
     for (size_t i = 0; i < slots.size(); ++i) {
         auto& s = slots[i];
         auto& t = r->items[i];
@@ -88,7 +87,7 @@ bool chest::recover(world& w, const recipe_items* r) {
     return true;
 }
 
-void chest::limit(world& w, const uint16_t* r) {
+void chest::limit(world& w, uint16_t endpoint, const uint16_t* r) {
     for (size_t i = 0; i < slots.size(); ++i) {
         auto& s = slots[i];
         assert(s.type == slot::type::limit);
@@ -131,8 +130,7 @@ uint16_t chest::pickup(world& w, uint16_t item, uint16_t max) {
     return n;
 }
 
-void chest::set_endpoint(world& w, uint16_t endpoint) {
-    this->endpoint = endpoint;
+void chest::flush(world& w, uint16_t endpoint) {
     if (endpoint != 0xffff) {
         if (type_ == type::red) {
             for (size_t i = 0; i < slots.size(); ++i) {
@@ -257,7 +255,7 @@ lcreate(lua_State* L) {
         return luaL_error(L, "size out of range.");
     }
     uint16_t id = (uint16_t)w.chests.size();
-    w.chests.emplace_back((uint16_t)luaL_checkinteger(L, 2), optsnum[luaL_checkoption(L, 3, NULL, opts)], p, n);
+    w.chests.emplace_back(optsnum[luaL_checkoption(L, 3, NULL, opts)], p, n);
     lua_pushinteger(L, id);
     return 1;
 }
@@ -308,24 +306,24 @@ lplace(lua_State* L) {
 }
 
 static int
-lset_endpoint(lua_State* L) {
+lflush(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
     uint16_t id = (uint16_t)luaL_checkinteger(L, 2);
     uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
     chest& c = w.query_chest(id);
-    c.set_endpoint(w, endpoint);
+    c.flush(w, endpoint);
     return 0;
 }
 
 extern "C" int
-luaopen_vaststars_container_core(lua_State *L) {
+luaopen_vaststars_chest_core(lua_State *L) {
 	luaL_checkversion(L);
 	luaL_Reg l[] = {
 		{ "create", lcreate },
 		{ "get", lget },
 		{ "pickup", lpickup },
 		{ "place", lplace },
-        { "set_endpoint", lset_endpoint },
+        { "flush", lflush },
 		{ NULL, NULL },
 	};
 	luaL_newlib(L, l);
