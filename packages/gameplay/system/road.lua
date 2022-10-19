@@ -47,15 +47,15 @@ local road_mask; do
 end
 
 function m.init(world)
-    local ecs = world.ecs
-    if ecs:first("road_changed:in entity:in") then
-        local map = {}
-        -- pre 2 bits represent one direction of a road, 00 means nothing, 01 means road, 10 means roadside, total 8 bits represent 4 directions
-        for e in ecs:select "road entity:in" do
-            local loc = (e.entity.y << 8) | e.entity.x -- see also: get_location(lua_State *L, int idx)
-            map[loc] = road_mask(e.entity.prototype, e.entity.direction)
-        end
-        world.roadnet:load_map(map)
-    end
-    ecs:clear "road_changed"
+    -- local ecs = world.ecs
+    -- if ecs:first("road_changed:in entity:in") then
+    --     local map = {}
+    --     -- pre 2 bits represent one direction of a road, 00 means nothing, 01 means road, 10 means roadside, total 8 bits represent 4 directions
+    --     for e in ecs:select "road entity:in" do
+    --         local loc = (e.entity.y << 8) | e.entity.x -- see also: get_location(lua_State *L, int idx)
+    --         map[loc] = road_mask(e.entity.prototype, e.entity.direction)
+    --     end
+    --     world.roadnet:load_map(map)
+    -- end
+    -- ecs:clear "road_changed"
 end
