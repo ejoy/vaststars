@@ -25,9 +25,15 @@ end
 function c:ctor(init, pt)
     local world = self
     local e = {
+        chest_2 = {
+            endpoint = 0xffff,
+            chest_in = createChest(world, pt.inputs),
+            chest_out = 0xffff,
+            fluidbox_in = 0,
+            fluidbox_out = 0,
+        },
         laboratory = {
             tech = 0,
-            chest = createChest(world, pt.inputs),
             speed = math.floor(pt.speed * 100),
             status = STATUS_IDLE,
             progress = 0,

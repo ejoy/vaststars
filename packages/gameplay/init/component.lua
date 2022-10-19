@@ -33,7 +33,6 @@ component "assembling" {
 component "laboratory" {
     "progress:int",
     "tech:word",
-    "chest:word",
     "speed:word",
     "status:byte",
 }

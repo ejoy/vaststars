@@ -14,9 +14,9 @@ extern "C" {
 #define STATUS_INVALID 2
 
 static void
-laboratory_set_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, uint16_t techid) {
+laboratory_set_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, ecs::chest_2& c2, uint16_t techid) {
     l.tech = techid;
-    auto& chest = w.query_chest(l.chest);
+    auto& chest = w.query_chest(c2.chest_in);
     std::vector<uint16_t> limit(chest.size());
     if (techid == 0 || l.status == STATUS_INVALID) {
         for (auto& v : limit) {
@@ -30,15 +30,15 @@ laboratory_set_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, 
             limit[i] = 2 * (std::max)((uint16_t)1, (*r)[i+1].amount);
         }
     }
-    chest.limit(w, 0xffff, limit.data());
+    chest.limit(w, c2.endpoint, limit.data());
 }
 
 static void
-laboratory_next_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, uint16_t techid) {
+laboratory_next_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, ecs::chest_2& c2, uint16_t techid) {
     if (l.tech == techid) {
         return;
     }
-    auto& chest = w.query_chest(l.chest);
+    auto& chest = w.query_chest(c2.chest_in);
     if (l.tech) {
         auto& oldr = w.techtree.get_ingredients(L, w, e.prototype, l.tech);
         if (oldr) {
@@ -46,7 +46,7 @@ laboratory_next_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l,
         }
     }
     if (!techid) {
-        laboratory_set_tech(L, w, e, l, 0);
+        laboratory_set_tech(L, w, e, l, c2, 0);
         l.progress = 0;
         l.status = STATUS_IDLE;
         return;
@@ -59,8 +59,8 @@ laboratory_next_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l,
         l.status = STATUS_INVALID;
         return;
     }
-    laboratory_set_tech(L, w, e, l, techid);
-    if (chest.pickup(w, 0xffff, to_recipe(newr))) {
+    laboratory_set_tech(L, w, e, l, c2, techid);
+    if (chest.pickup(w, c2.endpoint, to_recipe(newr))) {
         prototype_context tech = w.prototype(L, techid);
         int time = pt_time(&tech);
         l.progress = time * 100;
@@ -73,9 +73,10 @@ laboratory_next_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l,
 }
 
 static void
-laboratory_update(lua_State* L, world& w, ecs_api::entity<ecs::laboratory, ecs::capacitance, ecs::entity>& v, bool& updated) {
-    ecs::entity& e = v.get<ecs::entity>();
-    ecs::laboratory& l = v.get<ecs::laboratory>();
+laboratory_update(lua_State* L, world& w, ecs_api::entity<ecs::laboratory, ecs::chest_2, ecs::capacitance, ecs::entity>& v, bool& updated) {
+    auto& e = v.get<ecs::entity>();
+    auto& l = v.get<ecs::laboratory>();
+    auto& c2 = v.get<ecs::chest_2>();
     auto consumer = get_consumer(L, w, v);
 
     // step.1
@@ -89,7 +90,7 @@ laboratory_update(lua_State* L, world& w, ecs_api::entity<ecs::laboratory, ecs::
     // step.2
     while (l.progress <= 0) {
         prototype_context tech = w.prototype(L, l.tech);
-        chest& chest = w.query_chest(l.chest);
+        chest& chest = w.query_chest(c2.chest_in);
         if (l.status == STATUS_DONE) {
             int count = pt_count(&tech);
             if (w.techtree.research_add(l.tech, count, 1)) {
@@ -104,7 +105,7 @@ laboratory_update(lua_State* L, world& w, ecs_api::entity<ecs::laboratory, ecs::
         }
         if (l.status == STATUS_IDLE) {
             auto& r = w.techtree.get_ingredients(L, w, e.prototype, l.tech);
-            if (!r || !chest.pickup(w, 0xffff, to_recipe(r))) {
+            if (!r || !chest.pickup(w, c2.endpoint, to_recipe(r))) {
                 return;
             }
             int time = pt_time(&tech);
@@ -125,10 +126,11 @@ laboratory_update(lua_State* L, world& w, ecs_api::entity<ecs::laboratory, ecs::
 static int
 lbuild(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (auto& v : w.select<ecs::laboratory, ecs::entity>(L)) {
-        ecs::entity& e = v.get<ecs::entity>();
-        ecs::laboratory& l = v.get<ecs::laboratory>();
-        laboratory_set_tech(L, w, e, l, l.tech);
+    for (auto& v : w.select<ecs::laboratory, ecs::chest_2, ecs::entity>(L)) {
+        auto& e = v.get<ecs::entity>();
+        auto& l = v.get<ecs::laboratory>();
+        auto& c2 = v.get<ecs::chest_2>();
+        laboratory_set_tech(L, w, e, l, c2, l.tech);
     }
     return 0;
 }
@@ -137,21 +139,23 @@ static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     bool updated = false;
-    for (auto& v : w.select<ecs::laboratory, ecs::capacitance, ecs::entity>(L)) {
-        ecs::laboratory& l = v.get<ecs::laboratory>();
+    for (auto& v : w.select<ecs::laboratory, ecs::chest_2, ecs::capacitance, ecs::entity>(L)) {
+        auto& l = v.get<ecs::laboratory>();
+        auto& c2 = v.get<ecs::chest_2>();
         uint16_t techid = w.techtree.queue_top();
         if (techid != l.tech) {
             ecs::entity& e = v.get<ecs::entity>();
-            laboratory_next_tech(L, w, e, l, techid);
+            laboratory_next_tech(L, w, e, l, c2, techid);
         }
         laboratory_update(L, w, v, updated);
     }
     if (updated) {
         uint16_t techid = w.techtree.queue_top();
-        for (auto& v : w.select<ecs::laboratory, ecs::entity>(L)) {
-            ecs::entity& e = v.get<ecs::entity>();
-            ecs::laboratory& l = v.get<ecs::laboratory>();
-            laboratory_next_tech(L, w, e, l, techid);
+        for (auto& v : w.select<ecs::laboratory, ecs::chest_2, ecs::entity>(L)) {
+            auto& e = v.get<ecs::entity>();
+            auto& l = v.get<ecs::laboratory>();
+            auto& c2 = v.get<ecs::chest_2>();
+            laboratory_next_tech(L, w, e, l, c2, techid);
         }
     }
     return 0;
