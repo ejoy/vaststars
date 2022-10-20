@@ -14,6 +14,7 @@ local modules = {
 }
 
 local Antdir = "../" .. lm.antdir
+local LuaInclude = Antdir .. "3rd/bee.lua/3rd/lua"
 
 if lm.os == "ios" then
     lm:lib "vaststars" {
@@ -23,7 +24,7 @@ if lm.os == "ios" then
             modules
         },
         includes = {
-            Antdir .. "clibs/lua",
+            LuaInclude,
             Antdir .. "runtime/common",
         },
         sources = "vaststars_modules.c"
@@ -40,7 +41,7 @@ lm:exe "vaststars" {
         modules
     },
     includes = {
-        Antdir .. "clibs/lua",
+        LuaInclude,
         Antdir .. "runtime/common",
     },
     sources = "vaststars_modules.c"
@@ -55,7 +56,7 @@ lm:exe "vaststars_rt" {
         modules
     },
     includes = {
-        Antdir .. "clibs/lua",
+        LuaInclude,
         Antdir .. "runtime/common",
     },
     sources = "vaststars_modules.c"
