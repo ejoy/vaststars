@@ -1,10 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 3, 0}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -35,6 +32,7 @@ data:
   anim_ctrl: {}
   animation:
     ArmatureAction: /pkg/vaststars.resources/glb/lab-1.glb|animations/ArmatureAction.ozz
+    lab_animat: /pkg/vaststars.resources/prefabs/lab_animat.anim
   animation_birth: ArmatureAction
   name: animation
   skeleton: /pkg/vaststars.resources/glb/lab-1.glb|animations/skeleton.ozz
