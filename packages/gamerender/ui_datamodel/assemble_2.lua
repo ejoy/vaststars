@@ -123,7 +123,7 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     -- 更新背包界面对应的道具
-    for e in gameplay_core.select "chest:in entity:in" do
+    for e in gameplay_core.select "chest_2:in entity:in" do
         local typeobject = iprototype.queryById(e.entity.prototype)
         if typeobject.headquater then
             local inventory = {}

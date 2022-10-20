@@ -135,7 +135,7 @@ local function get_property(e, typeobject)
     }
     -- 显示建筑详细信息
     get_display_info(e, typeobject, t)
-    if e.chest_2 and e.chest_2.chest_in == e.chest_2.chest_out then
+    if e.chest_2 and e.chest_2.chest_in == e.chest_2.chest_out and e.chest_2.chest_in ~= 0xffff then
         local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
         local slotnum = 0--t.values.slots
         local chest_list0 = {}
