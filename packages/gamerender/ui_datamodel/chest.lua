@@ -189,7 +189,7 @@ function M:stage_ui_update(datamodel)
         local typeobject_item = iprototype.queryById(prototype)
         local pickup_count = math.min(typeobject_item.stack - count, headquater_item_counts[prototype])
         if pickup_count > 0 then
-            iworld.base_chest_pickup_place(gameplay_core.get_world(), chest_e.chest.chest, prototype, pickup_count, true)
+            iworld.base_chest_pickup_place(gameplay_core.get_world(), chest_e.chest_2.chest_in, prototype, pickup_count, true)
         end
         self:flush()
         ::continue::
@@ -216,7 +216,7 @@ function M:stage_ui_update(datamodel)
         local typeobject_item = iprototype.queryById(prototype)
         assert(count <= typeobject_item.stack)
 
-        iworld.base_chest_pickup_place(gameplay_core.get_world(), chest_e.chest.chest, prototype, count, false)
+        iworld.base_chest_pickup_place(gameplay_core.get_world(), chest_e.chest_2.chest_in, prototype, count, false)
         self:flush()
         ::continue::
     end
