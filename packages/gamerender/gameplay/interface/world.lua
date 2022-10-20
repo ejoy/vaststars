@@ -60,7 +60,7 @@ function M.base_chest_pickup_place(world, chest, prototype, count, from)
             end
         end
     else
-        if not world:container_pickup(chest.chest, prototype, count) then
+        if not world:container_pickup(chest, prototype, count) then
             log.error(("failed to pickup `%s` `%s` from base"):format(prototype, count))
         else
             local r = M.base_chest_place(world, prototype, count)
