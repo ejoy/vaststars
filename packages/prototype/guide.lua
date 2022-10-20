@@ -5,9 +5,9 @@ local guide = {
             {"哔哩..哔哗..已迫降在{/g 代号P4031}的星球。尚未发现任何生命迹象..(失望)", "textures/guide/guide-6.texture"},
             {"哔哩..哔哗..哔哩..启动大气分析协议中..P4031{/g 缺少氧气}..(失望)"},
             {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 铁铝丰富}..(轻松)","textures/guide/guide-1.texture"},
-            {"哔哩..哔哗..启动生存可靠性分析..0.04565%{/g 存活概率}..(情绪表达跳过中)","textures/guide/guide-4.texture"},
-            {"博士，作为助理AI，我建议你立刻开始工作..哔哩..你的剩余生存时间理论上只有348.26{/g 地球小时}..(担忧)", "textures/guide/guide-6.texture"},
-            {"迫降不算太糟糕，我们先{/g 清理指挥中心周边残骸}，兴许能找到一些有用的物资..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..哔哗..启动生存可靠性分析..{/g 0.04565%}存活概率..(情绪表达跳过中)","textures/guide/guide-4.texture"},
+            {"博士，作为助理AI，我建议你立刻开始工作..哔哩..你的剩余生存时间理论上只有{/g 348.26}地球小时..(担忧)", "textures/guide/guide-6.texture"},
+            {"迫降不算太糟糕，我们先清理指挥中心{/g 周边残骸}，兴许能找到一些有用的物资..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
