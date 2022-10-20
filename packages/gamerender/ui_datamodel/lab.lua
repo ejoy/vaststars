@@ -13,14 +13,13 @@ local current_inputs
 local inputs_count
 local current_e
 function M:create(object_id)
-    local game_world = gameplay_core.get_world()
     local object = assert(objects:get(object_id))
     current_e = gameplay_core.get_entity(assert(object.gameplay_eid))
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
     current_inputs = ilaboratory:get_elements(typeobject.inputs)
     local items = {}
     for i, value in ipairs(current_inputs) do
-        local c, n = iworld.chest_get(gameplay_core.get_world(), current_e.laboratory.chest_2.chest_in, i)
+        local c, n = iworld.chest_get(gameplay_core.get_world(), current_e.chest_2.chest_in, i)
         items[#items+1] = {name = value.name, icon = value.icon, stack = value.stack, count = n or 0}
     end
     inputs_count = #current_inputs
@@ -35,7 +34,7 @@ end
 function M:stage_ui_update(datamodel)
     --tech.process
     for i = 1, inputs_count do
-        local c, n = iworld.chest_get(gameplay_core.get_world(), current_e.laboratory.chest_2.chest_in, i)
+        local c, n = iworld.chest_get(gameplay_core.get_world(), current_e.chest_2.chest_in, i)
         if c and n then
             datamodel.items[i].count = n
         end

@@ -264,7 +264,7 @@ local function get_entity_property_list(object_id)
         local current_inputs = ilaboratory:get_elements(typeobject.inputs)
         local items = {}
         for i, value in ipairs(current_inputs) do
-            local c, n = iworld.chest_get(gameplay_core.get_world(), e.laboratory.chest, i)
+            local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest_2.chest_in, i)
             items[#items+1] = {icon = value.icon, count = n or 0}
         end
         property_list.chest_list0 = items
