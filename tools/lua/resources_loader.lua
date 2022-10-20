@@ -27,6 +27,7 @@ local function _package_files(root)
         "^.*%.sc$",
         "^.*%.md$",
         "^/pkg/vaststars.prototype/debugger.lua$",
+        "^/pkg/ant.bake/.*$",
         "^/pkg/ant.resources.binary/ui/test/.*$",
         "^/pkg/ant.resources.binary/ui/tmp/.*$",
         "^/pkg/ant.resources.binary/test/.*$",
@@ -61,11 +62,7 @@ local function _package_files(root)
         "^/pkg/ant.resources/textures/default_sibl.texture$",
         "^/pkg/ant.resources/textures/pochuan_d.texture$",
         "^/pkg/ant.resources/textures/pochuan_n.texture$",
-        "^/pkg/ant.resources/materials/msaa_depth_resolve.material$", -- iphone
         "^/pkg/ant.bake/materials/bake_lighting.material$",
-        "^/pkg/ant.resources/materials/water.material$",
-        "^/pkg/ant.resources/materials/water2.material$",
-        "^/pkg/ant.resources/materials/shadow/shadowmap_quad.material$", -- error X3004: undeclared identifier 's_shadowmap'
         ".*mars_pumpjack.*",
     }
 
