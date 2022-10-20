@@ -112,7 +112,7 @@ prototype "物流需求站" {
 
 prototype "采矿机I" {
     type = {"item"},
-    stack = 100,
+    stack = 25,
     icon = "textures/construct/miner.texture",
     model = "prefabs/rock.prefab",
     description = "用来挖掘矿物资源的机器",
@@ -122,7 +122,7 @@ prototype "采矿机I" {
 
 prototype "采矿机II" {
     type = {"item"},
-    stack = 100,
+    stack = 25,
     icon = "textures/construct/miner.texture",
     model = "prefabs/rock.prefab",
     description = "用来挖掘矿物资源的机器",
