@@ -8,7 +8,7 @@ namespace roadnet {
         uint16_t id;
 
         constexpr objectid() : id(0xFFFF) {}
-        explicit constexpr objectid(uint16_t id): id(id) {}
+        constexpr objectid(uint16_t id): id(id) {}
 
         //TODO: use consteval
         static constexpr objectid invalid() {

@@ -58,7 +58,7 @@ public:
         , dists((std::numeric_limits<ElementType>::max)())
     {}
     bool hasLorry(const Dataset& dataset, AccessorType index) {
-        return w.Endpoint(roadnet::endpointid{dataset[index].id}).popMap.size() > 0;
+        return w.Endpoint(dataset[index].id).popMap.size() > 0;
     }
     bool addPoint(const Dataset& dataset, ElementType dist, AccessorType index) {
         if ((dists > dist) || ((dist == dists) && (indices > index))) {
@@ -94,7 +94,7 @@ getroadnetworld(lua_State* L) {
 }
 
 static roadnet::loction getxy(roadnet::world& w, uint16_t id) {
-    auto& ep = w.Endpoint(roadnet::endpointid{id});
+    auto& ep = w.Endpoint(id);
     return ep.loc;
 }
 
@@ -147,7 +147,7 @@ lupdate(lua_State *L) {
     }
     for (auto& v : w.select<ecs::chest_2>(L)) {
         auto& c = v.get<ecs::chest_2>();
-        for (auto lorryId = rw.popLorry(roadnet::endpointid{c.endpoint}); !!lorryId; lorryId = rw.popLorry(roadnet::endpointid{c.endpoint})) {
+        for (auto lorryId = rw.popLorry(c.endpoint); !!lorryId; lorryId = rw.popLorry(c.endpoint)) {
             auto& l = rw.Lorry(lorryId);
             if (l.gameplay.sell == 0xffff) {
                 auto& chest = w.query_chest(c.chest_in);
@@ -157,14 +157,16 @@ lupdate(lua_State *L) {
                 if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
                     assert(false);
                 }
-                bool ok = rw.pushLorry(lorryId, roadnet::endpointid{c.endpoint}, roadnet::endpointid{kdtree.dataset[result.value()].id});
-                (void)ok;assert(ok);
+                if (!rw.pushLorry(lorryId, c.endpoint, kdtree.dataset[result.value()].id)) {
+                    assert(false);
+                }
             }
             else {
                 auto& chest = w.query_chest(c.chest_out);
                 chest.pickup_force(w, l.gameplay.item, 1);
-                bool ok = rw.pushLorry(lorryId, roadnet::endpointid{c.endpoint}, roadnet::endpointid{l.gameplay.buy});
-                (void)ok;assert(ok);
+                if (!rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy)) {
+                    assert(false);
+                }
                 l.gameplay.sell = 0xffff;
             }
         }
