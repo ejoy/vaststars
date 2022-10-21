@@ -142,18 +142,19 @@ local guide = {
     {
         name = "guide-9",
 		narrative = {
-            {"“科技包”是研究的必需材料..哔哩..请将地质科技包{/g 运送科研中心}进行下一个科技研究(期待)", "textures/guide/guide-2.texture"},
-            {"研究不可一蹴而就，也许需要长时的等待。足够的耐心是必需的科研品质..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
+            {"物流运输遇到了瓶颈，仅依靠一辆车运输效率最多维持{/g 374.09}地球小时的生存..哔哩..(担忧)", "textures/guide/guide-6.texture"},
+            {"我们修理好{/g 破损物流中心}和{/g 破损运输车}就可以开展更高效的物流运输了..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
-            pop_chapter = {"第一阶段","科学研究"},
+            pop_chapter = {"第一阶段","物流网络"},
             guide_progress = 30,
             task = {
-                "基地生产1",
+                "放置物流中心",
             }
         },
         prerequisites = {
-            "自动化生产",
+            "维修运输汽车",
+            "维修物流中心",
         },
 	},
 
