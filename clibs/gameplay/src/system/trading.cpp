@@ -93,9 +93,43 @@ getroadnetworld(lua_State* L) {
     return rw;
 }
 
-static roadnet::loction getxy(roadnet::world& w, uint16_t id) {
+static roadnet::loction getxy(roadnet::world& w, roadnet::endpointid id) {
     auto& ep = w.Endpoint(id);
     return ep.loc;
+}
+
+static void GoHome(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadnet::endpointid current) {
+    auto& kdtree = w.tradings.station_kdtree;
+    nearest_result<false> result(rw);
+    auto loc = getxy(rw, current);
+    if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
+        assert(false);
+    }
+    if (!rw.pushLorry(lorryId, current, kdtree.dataset[result.value()].id)) {
+        assert(false);
+    }
+}
+
+static bool DoTask(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadnet::endpointid current) {
+    if (w.tradings.orders.empty()) {
+        return false;
+    }
+    auto& kdtree = w.tradings.station_kdtree;
+    auto& order = w.tradings.orders.front();
+    roadnet::endpointid s{current};
+    roadnet::endpointid e{order.sell.endpoint};
+    if (!rw.pushLorry(lorryId, s, e)) {
+        assert(false);
+        return false;
+    }
+    auto& l = rw.Lorry(lorryId);
+    l.gameplay = {
+        order.item,
+        order.sell.endpoint,
+        order.buy.endpoint,
+    };
+    w.tradings.orders.pop();
+    return true;
 }
 
 static int
@@ -131,19 +165,11 @@ lupdate(lua_State *L) {
             break;
         }
         roadnet::endpointid s{kdtree.dataset[result.value()].id};
-        roadnet::endpointid e{order.sell.endpoint};
         auto lorryId = rw.popLorry(s);
-        if (!rw.pushLorry(lorryId, s, e)) {
+        if (!DoTask(w, rw, lorryId, s)) {
             assert(false);
             break;
         }
-        auto& l = rw.Lorry(lorryId);
-        l.gameplay = {
-            order.item,
-            order.sell.endpoint,
-            order.buy.endpoint,
-        };
-        w.tradings.orders.pop();
     }
     for (auto& v : w.select<ecs::chest_2>(L)) {
         auto& c = v.get<ecs::chest_2>();
@@ -152,13 +178,8 @@ lupdate(lua_State *L) {
             if (l.gameplay.sell == 0xffff) {
                 auto& chest = w.query_chest(c.chest_in);
                 chest.place_force(w, l.gameplay.item, 1);
-                nearest_result<false> result(rw);
-                auto loc = getxy(rw, c.endpoint);
-                if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
-                    assert(false);
-                }
-                if (!rw.pushLorry(lorryId, c.endpoint, kdtree.dataset[result.value()].id)) {
-                    assert(false);
+                if (!DoTask(w, rw, lorryId, c.endpoint)) {
+                    GoHome(w, rw, lorryId, c.endpoint);
                 }
             }
             else {
