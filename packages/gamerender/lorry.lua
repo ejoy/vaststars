@@ -20,7 +20,7 @@ local STRAIGHT_TICKCOUNT <const> = 10
 local WAIT_TICKCOUNT <const> = 10
 local CROSS_TICKCOUNT <const> = 20
 
-local is_cross; do
+local is_cross, to_prototype_name; do
     local mt = {}
     function mt:__index(k)
         local v = {}
@@ -28,6 +28,7 @@ local is_cross; do
         return v
     end
     local prototype_bits = setmetatable({}, mt) -- = [prototype][direction] = bits
+    local bits_prototype = setmetatable({}, mt)
 
     local mapping = {
         W = 0, -- left
@@ -57,11 +58,23 @@ local is_cross; do
 
             assert(prototype_bits[typeobject.name][entity_dir] == nil)
             prototype_bits[typeobject.name][entity_dir] = {bits = bits, is_cross = (c >= 3), c = c}
+            bits_prototype[bits] = {name = typeobject.name, dir = entity_dir}
         end
     end
 
     function is_cross(prototype_name, dir)
         return assert(prototype_bits[prototype_name][dir]).is_cross
+    end
+
+    local function __to_prototype_name(bits)
+        local v = assert(bits_prototype[bits])
+        return v.name, v.dir
+    end
+
+    function to_prototype_name(prototype_name, dir)
+        local bits = assert(prototype_bits[prototype_name][dir]).bits
+        bits = bits & 0x55
+        return __to_prototype_name(bits)
     end
 end
 
@@ -145,7 +158,8 @@ end
 local function _get_offset_matrix(x, y, toward, tick)
     local object = assert(objects:coord(x, y))
     local vsobject = assert(vsobject_manager:get(object.id))
-    local offset_mat = offset_matrix(object.prototype_name, object.dir, toward, tick)
+    local prototype_name, dir = to_prototype_name(object.prototype_name, object.dir)
+    local offset_mat = offset_matrix(prototype_name, dir, toward, tick)
     return math3d.ref(math3d.mul(vsobject:get_matrix(), offset_mat))
 end
 
@@ -161,8 +175,9 @@ return function(lorry_id, is_cross, x, y, z, tick)
     else
         local pos
         pos, toward = z & 0x0F, (z >> 4) & 0x0F -- pos: [0, 1], toward: [0, 1], tick: [0, (STRAIGHT_TICKCOUNT - 1)]
-        ti = pos * STRAIGHT_TICKCOUNT + (STRAIGHT_TICKCOUNT - tick) + 1
+        ti = pos * STRAIGHT_TICKCOUNT + (STRAIGHT_TICKCOUNT - tick)
     end
+    ti = ti + 1
 
     if not lorries[lorry_id] then
         local offset_mat = _get_offset_matrix(x, y, toward, ti)
