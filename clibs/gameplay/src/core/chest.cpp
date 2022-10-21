@@ -187,30 +187,32 @@ uint16_t chest::place(world& w, uint16_t item, uint16_t amount, uint16_t limit) 
     return amount;
 }
 
-void chest::pickup_force(world& w, uint16_t item, uint16_t max) {
-    assert(type_ == type::red || type_ == type::none);
+void chest::pickup_force(world& w, uint16_t item, uint16_t amount) {
+    assert(type_ == type::red);
     uint16_t n = 0;
     for (size_t i = 0; i < slots.size(); ++i) {
         auto& s = slots[i];
         if (s.item == item) {
-            n += pickup_slot(s, max - n);
-            if (n >= max) {
-                break;
-            }
+            assert(amount <= s.lock);
+            assert(amount <= s.amount);
+            s.amount -= amount;
+            s.lock -= amount;
+            return;
         }
     }
-    assert(n == max);
+    assert(amount == 0);
 }
 
 void chest::place_force(world& w, uint16_t item, uint16_t amount) {
-    assert(type_ == type::blue || type_ == type::none);
+    assert(type_ == type::blue);
     for (size_t i = 0; i < slots.size(); ++i) {
         auto& s = slots[i];
         if (s.item == item) {
-            amount -= place_slot(s, amount);
-            if (amount == 0) {
-                return;
-            }
+            assert(amount <= s.lock);
+            assert(s.amount + amount <= s.limit);
+            s.amount += amount;
+            s.lock -= amount;
+            return;
         }
     }
     assert(amount == 0);
