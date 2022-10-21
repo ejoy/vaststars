@@ -72,10 +72,9 @@ namespace roadnet {
         };
 
         std::vector<straightData> straightVec;
-        std::vector<endpointData> endpointDataVec;
-        std::map<endpointid, uint8_t> endpointMap; // TODO: remove this temporary map
         std::map<loction, roadid> crossMap;
         std::map<roadid, loction> crossMapR;
+        std::map<endpointid, road_coord> EndpointToRoadcoordMap; // temporary map, endpointid -> road_coord, used for bsf
 
         roadid   findCrossRoad(loction l);
         std::optional<loction> whereCrossRoad(roadid id);
