@@ -8,7 +8,7 @@
 
 namespace roadnet::road {
     struct straight: public basic_road {
-        static inline const size_t N = 2;
+        static inline const uint16_t N = 2;
 
         uint16_t id;
         uint16_t len;
