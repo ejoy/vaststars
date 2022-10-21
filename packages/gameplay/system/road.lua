@@ -22,24 +22,20 @@ local road_mask; do
         end
 
         local bits = 0
-        local c = 0
-
         local pt = query(prototype)
 
         local connections = pt.crossing.connections
         for _, connection in ipairs(connections) do
             assert(mapping[connection.position[3]])
             local d = (mapping[connection.position[3]] + dir) % 4
-            local value
-            if connection.roadside then
-                value = 2
-            else
+            local value = 0
+            if not connection.roadside then
                 value = 1
             end
-            bits = bits | (value << (d * 2))
-            c = c + 1
+            bits = bits | (value << d)
         end
 
+        assert(bits == (bits & 0xF))
         assert(cache[prototype][dir] == nil)
         cache[prototype][dir] = bits
         return bits
@@ -48,9 +44,8 @@ end
 
 function m.init(world)
     local ecs = world.ecs
-    if ecs:first("road_changed:in") or ecs:first("endpoint_changed:in") then -- TODO: optimize
+    if ecs:first("road_changed:in") then -- TODO: optimize
         local map = {}
-        -- pre 2 bits represent one direction of a road, 00 means nothing, 01 means road, 10 means roadside, total 8 bits represent 4 directions
         for e in ecs:select "road entity:in" do
             local loc = (e.entity.y << 8) | e.entity.x -- see also: get_location(lua_State *L, int idx)
             map[loc] = road_mask(e.entity.prototype, e.entity.direction)
@@ -63,7 +58,6 @@ end
 function m.pre_restore_finish(world)
     local ecs = world.ecs
     local map = {}
-    -- pre 2 bits represent one direction of a road, 00 means nothing, 01 means road, 10 means roadside, total 8 bits represent 4 directions
     for e in ecs:select "road entity:in" do
         local loc = (e.entity.y << 8) | e.entity.x -- see also: get_location(lua_State *L, int idx)
         map[loc] = road_mask(e.entity.prototype, e.entity.direction)

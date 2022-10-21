@@ -45,8 +45,7 @@ function m.pre_build(world)
         local x, y, dir = rotate(pt.crossing.connections[1].position, e.entity.direction, pt.area)
         x = x + e.entity.x
         y = y + e.entity.y
-        dir = mapping[DIRECTION[dir]] -- TODO
-        local endpoint = world.roadnet:create_endpoint(x, y, dir)
+        local endpoint = world.roadnet:create_endpoint(x, y, mapping[DIRECTION[dir]])
         if e.chest_2 then
             local chest = e.chest_2
             if chest.chest_in ~= 0xffff and chest.chest_out ~= 0xffff then
@@ -82,8 +81,7 @@ function m.restore_finish(world)
         local x, y, dir = rotate(pt.crossing.connections[1].position, e.entity.direction, pt.area)
         x = x + e.entity.x
         y = y + e.entity.y
-        dir = mapping[DIRECTION[dir]] -- TODO
-        local endpoint = world.roadnet:create_endpoint(x, y, dir)
+        local endpoint = world.roadnet:create_endpoint(x, y, mapping[DIRECTION[dir]])
         if e.chest_2 then
             local chest = e.chest_2
             if chest.chest_in ~= 0xffff and chest.chest_out ~= 0xffff then
