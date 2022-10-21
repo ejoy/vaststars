@@ -114,7 +114,6 @@ static bool DoTask(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadn
     if (w.tradings.orders.empty()) {
         return false;
     }
-    auto& kdtree = w.tradings.station_kdtree;
     auto& order = w.tradings.orders.front();
     roadnet::endpointid s{current};
     roadnet::endpointid e{order.sell.endpoint};
