@@ -143,7 +143,8 @@ local guide = {
         name = "guide-9",
 		narrative = {
             {"物流运输遇到了瓶颈，仅依靠一辆车运输效率最多维持{/g 374.09}地球小时的生存..哔哩..(担忧)", "textures/guide/guide-6.texture"},
-            {"我们修理好{/g 破损物流中心}和{/g 破损运输车}就可以开展更高效的物流运输了..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
+            {"我们修理好{/g 破损物流中心}和{/g 破损运输车}就可以开展更高效的物流运输了..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"首先让我们在道路边修建一座{/g 物流中心}..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             pop_chapter = {"第一阶段","物流网络"},

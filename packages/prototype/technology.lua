@@ -222,7 +222,7 @@ prototype "维修运输汽车" {
   prerequisites = {"基地生产1"},
   count = 2,
   tips_pic = {
-    "textures/task_tips_pic/task_repair_chemicalplant1.texture",
+    "textures/task_tips_pic/task_repair_truck.texture",
   },
   sign_desc = {
     { desc = "使用组装机或制造舱维修2辆破损运输车辆", icon = "textures/construct/industry.texture"},
@@ -237,7 +237,7 @@ prototype "维修物流中心" {
   prerequisites = {"基地生产1"},
   count = 1,
   tips_pic = {
-    "textures/task_tips_pic/task_repair_chemicalplant1.texture",
+    "textures/task_tips_pic/task_repair_logistics.texture",
   },
   sign_desc = {
     { desc = "使用组装机或制造舱维修1个破损物流中心", icon = "textures/construct/industry.texture"},
@@ -252,10 +252,7 @@ prototype "放置物流中心" {
   prerequisites = {"维修物流中心","维修运输汽车"},
   count = 1,
   tips_pic = {
-    "textures/task_tips_pic/task_click_build.texture",
-    "textures/task_tips_pic/task_produce_geopack1.texture",
-    "textures/task_tips_pic/task_produce_geopack2.texture",
-    "textures/task_tips_pic/start_construct.texture",
+    "textures/task_tips_pic/task_place_logistics.texture",
   },
   sign_desc = {
     { desc = "使用“建造”放置1个物流中心", icon = "textures/construct/industry.texture"},
