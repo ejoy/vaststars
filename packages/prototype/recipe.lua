@@ -1204,7 +1204,7 @@ prototype "破损物流中心" {
     allow_as_intermediate = false,
     icon = "textures/construct/broken-logisitic.texture",
     ingredients = {
-        {"小铁制箱子I", 2},
+        {"碎石", 3},
         {"破损物流中心", 1},
     },
     results = {
@@ -1223,7 +1223,7 @@ prototype "破损运输汽车" {
     icon = "textures/construct/broken-truck.texture",
     ingredients = {
         -- {"铁丝", 10},
-        {"铁齿轮", 3},
+        {"铁矿石", 3},
         {"破损运输车辆", 1},
     },
     results = {
