@@ -249,7 +249,7 @@ prototype "放置物流中心" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "物流中心I"},
-  prerequisites = {"维修物流中心"},
+  prerequisites = {"维修物流中心","维修运输汽车"},
   count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
