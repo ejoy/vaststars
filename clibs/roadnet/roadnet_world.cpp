@@ -270,8 +270,7 @@ namespace roadnet {
         return false;
     }
 
-    static constexpr bool isEndpoint(uint8_t m, direction dir) {
-        dir = (direction)(((uint8_t)dir + 1) % 4);
+    static constexpr bool isEndpoint(uint8_t m, direction dir, direction& endpointDir) {
         auto d = direction::n;
         switch (dir) {
         case direction::l: d = direction::t; break;
@@ -280,6 +279,8 @@ namespace roadnet {
         case direction::b: d = direction::l; break;
         default: assert(false); break;
         }
+
+        endpointDir = d;
         return ((m >> (uint8_t)d * 2) & 0x3) == 0x2;
     }
 
@@ -308,6 +309,7 @@ namespace roadnet {
         uint16_t genCrossId = 0;
         uint16_t genStraightId = 0;
         uint32_t genLorryOffset = 0;
+        uint16_t crossCount = 0;
 
         for (auto& [l, bitmask] : mapData) {
             map[l.y][l.x] = bitmask;
@@ -317,7 +319,14 @@ namespace roadnet {
                 loction loc {(uint8_t)l.x, (uint8_t)l.y};
                 crossMap.emplace(loc, id);
                 crossMapR.emplace(id, loc);
+                ++crossCount;
             }
+        }
+
+        if (crossCount <= 0) {
+            crossMap.clear();
+            crossMapR.clear();
+            return;
         }
 
         crossAry.reset(genCrossId);
@@ -353,10 +362,10 @@ namespace roadnet {
                             // auto dir = dir;
                             for (auto i = 0; i < result.n; ++i) {
                                 l = move(l, dir);
-                                auto conn_dir = (direction)(((uint8_t)dir + 1) % 4);
-                                if (isEndpoint(map[l.y][l.x], conn_dir)) {
-                                    auto cl = move(l, reverse(conn_dir));
-                                    endpointData d({false, straight.id}, i, cl.x, cl.y, conn_dir);
+                                direction endpointDir;
+                                if (isEndpoint(map[l.y][l.x], dir, endpointDir)) {
+                                    auto cl = move(l, endpointDir);
+                                    endpointData d({false, straight.id}, (result.n - i) * road::straight::N, cl.x, cl.y, reverse(endpointDir));
                                     endpointDataVec.push_back(d);
                                 }
                                 auto m = map[l.y][l.x] & 0x55;
@@ -378,17 +387,17 @@ namespace roadnet {
                         // TODO: optimize
                         {
                             auto l = loc;
-                            // auto dir = dir;
+                            auto walk_dir = dir;
                             for (auto i = 0; i < result.n; ++i) {
-                                l = move(l, dir);
-                                auto conn_dir = (direction)(((uint8_t)dir + 1) % 4);
-                                if (isEndpoint(map[l.y][l.x], conn_dir)) {
-                                    auto cl = move(l, reverse(conn_dir));
-                                    endpointData d({false, straight1.id}, i, cl.x, cl.y, conn_dir);
+                                l = move(l, walk_dir);
+                                direction endpointDir;
+                                if (isEndpoint(map[l.y][l.x], walk_dir, endpointDir)) {
+                                    auto cl = move(l, endpointDir);
+                                    endpointData d({false, straight1.id}, (result.n - i) * road::straight::N, cl.x, cl.y, reverse(endpointDir));
                                     endpointDataVec.push_back(d);
                                 }
                                 auto m = map[l.y][l.x] & 0x55;
-                                dir = nextDirection(m, dir);
+                                walk_dir = nextDirection(m, walk_dir);
                             }
                         }
 
@@ -405,17 +414,18 @@ namespace roadnet {
                         // TODO: optimize
                         {
                             auto l = result.l;
-                            auto dir = reverse(result.dir);
+                            auto walk_dir = reverse(result.dir);
                             for (auto i = 0; i < result.n; ++i) {
-                                l = move(l, dir);
-                                auto conn_dir = (direction)(((uint8_t)dir + 1) % 4);
-                                if (isEndpoint(map[l.y][l.x], conn_dir)) {
-                                    auto cl = move(l, reverse(conn_dir));
-                                    endpointData d({false, straight2.id}, i, cl.x, cl.y, conn_dir);
+                                l = move(l, walk_dir);
+                                direction endpointDir;
+
+                                if (isEndpoint(map[l.y][l.x], walk_dir, endpointDir)) {
+                                    auto cl = move(l, endpointDir);
+                                    endpointData d({false, straight2.id}, (result.n - i) * road::straight::N, cl.x, cl.y, reverse(endpointDir));
                                     endpointDataVec.push_back(d);
                                 }
                                 auto m = map[l.y][l.x] & 0x55;
-                                dir = nextDirection(m, dir);
+                                walk_dir = nextDirection(m, walk_dir);
                             }
                         }
                     }
@@ -479,18 +489,27 @@ namespace roadnet {
 
         // TODO: optimize
         road_coord rc = road_coord::invalid();
+        int i = 0;
         for (auto& data: endpointDataVec) {
             if (data.x == connection_x && data.y == connection_y && data.dir == connection_dir) {
                 rc.id = data.id;
                 rc.offset = data.offset;
                 break;
             }
+            ++i;
         }
 
-        assert(rc != road_coord::invalid() && rc.id.cross == 0);
+        // cannot find endpoint
+        if (rc == road_coord::invalid()) {
+            return endpointid(0xffff);
+        }
+
+        assert(rc.id.cross == 0);
         assert(rc.id.id < straightAry.size());
         auto& straight = straightAry[rc.id.id];
         straight.setEndpoint(*this, rc.offset, endpointId);
+
+        endpointMap.emplace(endpointId, i); // TODO: remove this
         return endpointId;
     }
     bool world::pushLorry(lorryid lorryId, endpointid starting, endpointid ending) {
@@ -498,15 +517,20 @@ namespace roadnet {
             return false;
         }
 
-        auto es = endpointDataVec[starting.id];
+        // TODO remove this
+        auto it1 = endpointMap.find(starting);
+        assert(it1 != endpointMap.end());
+        auto es = endpointDataVec[it1->second];
         auto roadIdS = es.id;
 
-        auto ee = endpointDataVec[ending.id];
+        auto it2 = endpointMap.find(ending);
+        assert(it2 != endpointMap.end());
+        auto ee = endpointDataVec[it2->second];
         auto roadIdE = ee.id;
         auto eo = ee.offset;
 
         auto& lorry = Lorry(lorryId);
-        if (!bfs(*this, roadIdS.id, ending.id, lorry.path)) {
+        if (!bfs(*this, roadIdS, roadIdE, lorry.path)) {
             return false;
         }
         lorry.pathIdx = 0;
