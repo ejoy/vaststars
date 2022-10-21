@@ -20,7 +20,7 @@ local STRAIGHT_TICKCOUNT <const> = 10
 local WAIT_TICKCOUNT <const> = 10
 local CROSS_TICKCOUNT <const> = 20
 
-local is_cross, to_prototype_name; do
+local is_cross; do
     local mt = {}
     function mt:__index(k)
         local v = {}
@@ -52,8 +52,8 @@ local is_cross, to_prototype_name; do
                 else
                     value = 1
                 end
-                bits = bits | (value << (dir * 2))
                 c = c + 1
+                bits = bits | (value << (dir * 2))
             end
 
             assert(prototype_bits[typeobject.name][entity_dir] == nil)
@@ -64,17 +64,6 @@ local is_cross, to_prototype_name; do
 
     function is_cross(prototype_name, dir)
         return assert(prototype_bits[prototype_name][dir]).is_cross
-    end
-
-    local function __to_prototype_name(bits)
-        local v = assert(bits_prototype[bits])
-        return v.name, v.dir
-    end
-
-    function to_prototype_name(prototype_name, dir)
-        local bits = assert(prototype_bits[prototype_name][dir]).bits
-        bits = bits & 0x55
-        return __to_prototype_name(bits)
     end
 end
 
@@ -110,6 +99,13 @@ local function _make_track(slots, slot_names, tickcount)
     return mat
 end
 
+local DIRECTION <const> = {
+    N = 0,
+    E = 1,
+    S = 2,
+    W = 3,
+}
+
 local cache = {}
 local function _make_cache()
     -- TODO: cache matrix move to prototype?
@@ -134,10 +130,12 @@ local function _make_cache()
                     else
                         z = (((z & 0xF) + t) % 4) | 0x10
                     end
+                else
+                    z = (z + DIRECTION[entity_dir])%4
                 end
 
                 local combine_keys = ("%s:%s:%s"):format(typeobject.name, entity_dir, z) -- TODO: optimize
-                assert(cache[combine_keys] == nil)
+                -- assert(cache[combine_keys] == nil)
                 cache[combine_keys] = _make_track(slots, slot_names, typeobject.tickcount)
             end
         end
@@ -155,11 +153,30 @@ local function offset_matrix(prototype_name, dir, toward, tick)
     return assert(mat[tick])
 end
 
-local function _get_offset_matrix(x, y, toward, tick)
+local function _get_offset_matrix(is_cross_flag, x, y, toward, tick)
     local object = assert(objects:coord(x, y))
     local vsobject = assert(vsobject_manager:get(object.id))
-    local prototype_name, dir = to_prototype_name(object.prototype_name, object.dir)
-    local offset_mat = offset_matrix(prototype_name, dir, toward, tick)
+    if not is_cross_flag then
+        if is_cross(object.prototype_name, object.dir) then
+            local REVERSE <const> = {
+                [0] = 2,
+                [1] = 3,
+                [2] = 0,
+                [3] = 1,
+            }
+            toward = toward << 2 | REVERSE[toward]
+        else
+            local mapping = {
+                [0] = DIRECTION.W, -- left
+                [1] = DIRECTION.N, -- top
+                [2] = DIRECTION.E, -- right
+                [3] = DIRECTION.S, -- bottom
+            }
+            toward = mapping[toward]
+        end
+    end
+
+    local offset_mat = offset_matrix(object.prototype_name, object.dir, toward, tick)
     return math3d.ref(math3d.mul(vsobject:get_matrix(), offset_mat))
 end
 
@@ -180,7 +197,7 @@ return function(lorry_id, is_cross, x, y, z, tick)
     ti = ti + 1
 
     if not lorries[lorry_id] then
-        local offset_mat = _get_offset_matrix(x, y, toward, ti)
+        local offset_mat = _get_offset_matrix(is_cross, x, y, toward, ti)
         local s, r, t = math3d.srt(offset_mat)
 
         lorries[lorry_id] = { game_object = igame_object.create({
@@ -194,7 +211,7 @@ return function(lorry_id, is_cross, x, y, z, tick)
             x = x, y = y,
         }
     else
-        local mat = _get_offset_matrix(x, y, toward, ti)
+        local mat = _get_offset_matrix(is_cross, x, y, toward, ti)
         local game_object = assert(lorries[lorry_id]).game_object
         game_object:send("obj_motion", "set_srt_matrix", mat)
     end

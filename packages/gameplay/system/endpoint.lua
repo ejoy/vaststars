@@ -37,9 +37,9 @@ local function rotate(position, direction, area)
     end
 end
 
-function m.build(world)
+function m.pre_build(world)
     local ecs = world.ecs
-    for e in ecs:select "endpoint_changed:in entity:in chest_2?update station?update " do
+    for e in ecs:select "endpoint_changed:in entity:in chest_2?update station?update" do
         local pt = query(e.entity.prototype)
         assert(#pt.crossing.connections == 1)
         local x, y, dir = rotate(pt.crossing.connections[1].position, e.entity.direction, pt.area)
@@ -49,16 +49,56 @@ function m.build(world)
         local endpoint = world.roadnet:create_endpoint(x, y, dir)
         if e.chest_2 then
             local chest = e.chest_2
-            chest.endpoint = endpoint
-            world:container_flush(chest.chest_in, endpoint)
-            world:container_flush(chest.chest_out, endpoint)
+            if chest.chest_in ~= 0xffff and chest.chest_out ~= 0xffff then
+                chest.endpoint = endpoint
+                world:container_flush(chest.chest_in, endpoint)
+                world:container_flush(chest.chest_out, endpoint)
+            end
         elseif e.station then
             e.station.endpoint = endpoint
             local l = world.roadnet:create_lorry()
+            assert(endpoint ~= 0xffff)
             world.roadnet:place_lorry(endpoint, l)
         else
             assert(false)
         end
     end
     ecs:clear "endpoint_changed"
+end
+
+function m.restore_finish(world)
+    local ecs = world.ecs
+    for e in ecs:select "entity:in chest_2?update station?update" do
+        if not e.chest_2 and not e.station then
+            goto continue
+        end
+
+        local pt = query(e.entity.prototype)
+        if not pt.crossing then
+            goto continue
+        end
+
+        assert(#pt.crossing.connections == 1)
+        local x, y, dir = rotate(pt.crossing.connections[1].position, e.entity.direction, pt.area)
+        x = x + e.entity.x
+        y = y + e.entity.y
+        dir = mapping[DIRECTION[dir]] -- TODO
+        local endpoint = world.roadnet:create_endpoint(x, y, dir)
+        if e.chest_2 then
+            local chest = e.chest_2
+            if chest.chest_in ~= 0xffff and chest.chest_out ~= 0xffff then
+                chest.endpoint = endpoint
+                world:container_flush(chest.chest_in, endpoint)
+                world:container_flush(chest.chest_out, endpoint)
+            end
+        elseif e.station then
+            e.station.endpoint = endpoint
+            local l = world.roadnet:create_lorry()
+            assert(endpoint ~= 0xffff)
+            world.roadnet:place_lorry(endpoint, l)
+        else
+            assert(false)
+        end
+        ::continue::
+    end
 end

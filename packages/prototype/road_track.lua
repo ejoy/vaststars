@@ -1,14 +1,16 @@
 local road_track = {
     ['I'] = {
-        [1] = {'path_l_1', 'path_l_2'}, -- top to bottom
-        [0] = {'path_r_1', 'path_r_2'}, -- bottom to top
+        [0] = {'path_l_1', 'path_l_2'}, -- top to bottom
+        [2] = {'path_r_1', 'path_r_2'}, -- bottom to top
     },
     ['L'] = {
-        [1] = {'path_l_1', 'path_l_2', 'path_l_3'}, -- top to right
-        [0] = {'path_r_1', 'path_r_2', 'path_r_3'}, -- right to top
+        [0] = {'path_l_1', 'path_l_2', 'path_l_3'}, -- top to right
+        [1] = {'path_r_1', 'path_r_2', 'path_r_3'}, -- right to top
     },
     ['T'] = {
-        [0] = {'path_l_1', 'path_l_1'}, -- left to left -- TODO
+        [0] = {'path_l_1', 'path_l_2'}, -- left to right
+        [1]  = {'path_r_1', 'path_r_2'}, -- right to left
+
         [2] = {'path_l_1', 'path_l_2'}, -- left to right
         [3] = {'path_l2b_1', 'path_l2b_2','path_l2b_3'}, -- left to bottom
 
