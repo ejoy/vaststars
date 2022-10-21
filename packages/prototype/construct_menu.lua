@@ -46,7 +46,7 @@ local menu = {
         detail = {
             "科研中心I",
             "小铁制箱子I",
-            "机器爪I",
+            "物流中心I",
             "采矿机I",
             "砖石公路-X型-01",
             "基建站",
@@ -57,9 +57,7 @@ local menu = {
         icon = "textures/construct/modify.texture",
         detail = {
             "液罐I",
-            "气罐I",
             "管道1-X型",
-            "机器爪I",
             "小铁制箱子I",
             "熔炼炉I",
             "组装机I",

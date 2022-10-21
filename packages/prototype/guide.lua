@@ -149,7 +149,7 @@ local guide = {
             pop_chapter = {"第一阶段","科学研究"},
             guide_progress = 30,
             task = {
-                "铁矿熔炼",
+                "基地生产1",
             }
         },
         prerequisites = {

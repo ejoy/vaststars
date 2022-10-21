@@ -180,9 +180,6 @@ prototype "放置组装机" {
   },
 }
 
-
-
-
 prototype "自动化生产" {
   desc = "自动化生产科技包用于科技研究",
   icon = "textures/construct/industry.texture",
@@ -201,6 +198,71 @@ prototype "自动化生产" {
   },
 }
 
+prototype "基地生产1" {
+  desc = "维修物流中心引入公路运输",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"破损运输汽车","破损物流中心","砖石公路",},
+  },
+  prerequisites = {"自动化生产"},
+  ingredients = {
+      {"地质科技包", 1},
+  },
+  count = 3,
+  time = "2s",
+  sign_icon = "textures/science/tech-cycle.texture",
+}
+
+prototype "维修运输汽车" {
+  desc = "维修运输车参与物流",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"stat_consumption", 0, "破损运输车辆"},
+  prerequisites = {"基地生产1"},
+  count = 2,
+  tips_pic = {
+    "textures/task_tips_pic/task_repair_chemicalplant1.texture",
+  },
+  sign_desc = {
+    { desc = "使用组装机或制造舱维修2辆破损运输车辆", icon = "textures/construct/industry.texture"},
+  },
+}
+
+prototype "维修物流中心" {
+  desc = "维修运输车参与物流",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"stat_consumption", 0, "破损物流中心"},
+  prerequisites = {"基地生产1"},
+  count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_repair_chemicalplant1.texture",
+  },
+  sign_desc = {
+    { desc = "使用组装机或制造舱维修1个破损物流中心", icon = "textures/construct/industry.texture"},
+  },
+}
+
+prototype "放置物流中心" {
+  desc = "放置组装机",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"select_entity", 0, "物流中心I"},
+  prerequisites = {"维修物流中心"},
+  count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_click_build.texture",
+    "textures/task_tips_pic/task_produce_geopack1.texture",
+    "textures/task_tips_pic/task_produce_geopack2.texture",
+    "textures/task_tips_pic/start_construct.texture",
+  },
+  sign_desc = {
+    { desc = "使用“建造”放置1个物流中心", icon = "textures/construct/industry.texture"},
+  },
+}
+
+
 prototype "铁矿熔炼" {
   desc = "掌握熔炼铁矿石冶炼成铁板的工艺",
   type = { "tech" },
@@ -208,7 +270,7 @@ prototype "铁矿熔炼" {
   effects = {
     unlock_recipe = {"铁板1"},
   },
-  prerequisites = {"自动化生产"},
+  prerequisites = {"维修运输汽车","放置物流中心"},
   ingredients = {
       {"地质科技包", 1},
   },
@@ -517,7 +579,7 @@ prototype "放置太阳能板" {
   },
 }
 
-prototype "基地生产1" {
+prototype "基地生产2" {
   desc = "提高指挥中心的生产效率",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
@@ -542,7 +604,7 @@ prototype "放置基建站" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "基建站"},
-  prerequisites = {"基地生产1"},
+  prerequisites = {"基地生产2"},
   count = 1,
   tips_pic = {
     "textures/task_tips_pic/task_place_solarpanel.texture",
@@ -689,37 +751,6 @@ prototype "冶金学1" {
   },
   count = 5,
   time = "4s"
-}
-
-prototype "基地生产2" {
-  desc = "维修物流中心引入公路运输",
-  type = { "tech" },
-  icon = "textures/science/tech-research.texture",
-  effects = {
-    unlock_recipe = {"破损运输汽车","破损物流中心","砖石公路",},
-  },
-  prerequisites = {"冶金学1"},
-  ingredients = {
-      {"地质科技包", 1},
-  },
-  count = 10,
-  time = "2s",
-  sign_icon = "textures/science/tech-cycle.texture",
-}
-
-prototype "维修运输汽车" {
-  desc = "维修运输车参与物流",
-  icon = "textures/construct/industry.texture",
-  type = { "tech", "task" },
-  task = {"stat_consumption", 0, "破损运输车辆"},
-  prerequisites = {"基地生产2"},
-  count = 4,
-  tips_pic = {
-    "textures/task_tips_pic/task_repair_chemicalplant1.texture",
-  },
-  sign_desc = {
-    { desc = "使用组装机或制造舱维修4辆破损运输车辆", icon = "textures/construct/industry.texture"},
-  },
 }
 
 prototype "维修化工厂" {
