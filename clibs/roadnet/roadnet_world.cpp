@@ -605,8 +605,15 @@ namespace roadnet {
         auto& straight = straightVec[rc.id.id];
         uint16_t n = road::straight::N * straight.len - rc.offset - 1;
         if (auto res = moveToNeighbor(map, straight.loc, straight.start_dir, n / road::straight::N); res) {
-            bool z = reverse(res->dir) == straightDirection(map[res->l.y][res->l.x], 0);
-            return {res->l.x, res->l.y, (uint8_t)((n % road::straight::N) + (z? 0x00u: 0x10u))};
+            auto m = map[res->l.y][res->l.x] & 0x55;
+            bool b = reverse(res->dir) == straightDirection(m, 0); // TODO: remove this
+            uint8_t z = (uint8_t)direction::n;
+            if (b)
+                z = (uint8_t)straightDirection(m, 0x00);
+            else
+                z = (uint8_t)straightDirection(m, 0x10);
+
+            return {res->l.x, res->l.y, (uint8_t)((n % road::straight::N) | (z << 4))};
         }
         return map_coord::invalid();
     }
