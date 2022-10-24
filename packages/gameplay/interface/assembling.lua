@@ -94,6 +94,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     fluidbox.update_fluidboxes(e, pt, fluids)
     if recipe_name == nil then
         assembling.recipe = 0
+        assembling.endpoint_changed = true
         chest.chest_in = 0xffff
         chest.chest_out = 0xffff
         chest.fluidbox_in = 0
@@ -115,6 +116,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     local chest_in, fluidbox_in = createChestAndFluidBox(fluids.input, pt.fluidboxes.input, recipe.ingredients, 4, needlimit)
     local chest_out, fluidbox_out = createChestAndFluidBox(fluids.output, pt.fluidboxes.output, recipe.results, 3, needlimit)
     assembling.recipe = recipe.id
+    assembling.endpoint_changed = true
     chest.chest_in = world:container_create("blue", chest_in)
     chest.chest_out = world:container_create("red", chest_out)
     chest.fluidbox_in = fluidbox_in

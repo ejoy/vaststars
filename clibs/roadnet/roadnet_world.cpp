@@ -284,6 +284,10 @@ namespace roadnet {
         straightVec.clear();
         crossMap.clear();
         crossMapR.clear();
+        EndpointToRoadcoordMap.clear();
+
+        endpointVec.clear();
+        lorryVec.clear();
 
         uint16_t genCrossId = 0;
         uint16_t genStraightId = 0;

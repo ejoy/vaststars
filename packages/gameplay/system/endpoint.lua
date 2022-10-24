@@ -37,66 +37,62 @@ local function rotate(position, direction, area)
     end
 end
 
+local function build(e, world)
+    local pt = query(e.entity.prototype)
+    if not pt.crossing then -- TODO: temporary code
+        return
+    end
+    assert(#pt.crossing.connections == 1)
+    local x, y, dir = rotate(pt.crossing.connections[1].position, e.entity.direction, pt.area)
+    x = x + e.entity.x
+    y = y + e.entity.y
+    local endpoint = world.roadnet:create_endpoint(x, y, mapping[DIRECTION[dir]])
+    if e.chest_2 then
+        local chest = e.chest_2
+        if chest.chest_in ~= 0xffff and chest.chest_out ~= 0xffff then
+            chest.endpoint = endpoint
+            world:container_flush(chest.chest_in, endpoint)
+            world:container_flush(chest.chest_out, endpoint)
+        end
+    elseif e.station then
+        e.station.endpoint = endpoint
+        local l = world.roadnet:create_lorry()
+        assert(endpoint ~= 0xffff)
+        world.roadnet:place_lorry(endpoint, l)
+    else
+        assert(false)
+    end
+end
+
 function m.pre_build(world)
     local ecs = world.ecs
-    for e in ecs:select "endpoint_changed:in entity:in chest_2?update station?update" do
-        local pt = query(e.entity.prototype)
-        assert(#pt.crossing.connections == 1)
-        local x, y, dir = rotate(pt.crossing.connections[1].position, e.entity.direction, pt.area)
-        x = x + e.entity.x
-        y = y + e.entity.y
-        local endpoint = world.roadnet:create_endpoint(x, y, mapping[DIRECTION[dir]])
-        if e.chest_2 then
-            local chest = e.chest_2
-            if chest.chest_in ~= 0xffff and chest.chest_out ~= 0xffff then
-                chest.endpoint = endpoint
-                world:container_flush(chest.chest_in, endpoint)
-                world:container_flush(chest.chest_out, endpoint)
-            end
-        elseif e.station then
-            e.station.endpoint = endpoint
-            local l = world.roadnet:create_lorry()
-            assert(endpoint ~= 0xffff)
-            world.roadnet:place_lorry(endpoint, l)
-        else
-            assert(false)
+    if ecs:first("road_changed:in") then -- TODO: remove this temporary code
+        for e in ecs:select "chest_2:update entity:in" do
+            build(e, world)
         end
+        for e in ecs:select "station:update entity:in" do
+            build(e, world)
+        end
+        ecs:clear "road_changed"
+        return
+    end
+    ecs:clear "road_changed" -- TODO: temporary code
+
+    for e in ecs:select "endpoint_changed:in chest_2:update entity:in" do
+        build(e, world)
+    end
+    for e in ecs:select "endpoint_changed:in station:update entity:in" do
+        build(e, world)
     end
     ecs:clear "endpoint_changed"
 end
 
 function m.restore_finish(world)
     local ecs = world.ecs
-    for e in ecs:select "entity:in chest_2?update station?update" do
-        if not e.chest_2 and not e.station then
-            goto continue
-        end
-
-        local pt = query(e.entity.prototype)
-        if not pt.crossing then
-            goto continue
-        end
-
-        assert(#pt.crossing.connections == 1)
-        local x, y, dir = rotate(pt.crossing.connections[1].position, e.entity.direction, pt.area)
-        x = x + e.entity.x
-        y = y + e.entity.y
-        local endpoint = world.roadnet:create_endpoint(x, y, mapping[DIRECTION[dir]])
-        if e.chest_2 then
-            local chest = e.chest_2
-            if chest.chest_in ~= 0xffff and chest.chest_out ~= 0xffff then
-                chest.endpoint = endpoint
-                world:container_flush(chest.chest_in, endpoint)
-                world:container_flush(chest.chest_out, endpoint)
-            end
-        elseif e.station then
-            e.station.endpoint = endpoint
-            local l = world.roadnet:create_lorry()
-            assert(endpoint ~= 0xffff)
-            world.roadnet:place_lorry(endpoint, l)
-        else
-            assert(false)
-        end
-        ::continue::
+    for e in ecs:select "chest_2:update entity:in" do
+       build(e, world)
     end
+    for e in ecs:select "station:update entity:in" do
+        build(e, world)
+     end
 end
