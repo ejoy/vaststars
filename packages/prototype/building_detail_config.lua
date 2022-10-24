@@ -72,7 +72,6 @@ local building_detail_config = {
 		"supply_distance",
 	},
 	["物流中心"] = {
-		"work_power",
 		"truck",
 	},
 	["机器爪"] = {
