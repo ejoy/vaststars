@@ -113,12 +113,27 @@ prototype "放置采矿机" {
   },
 }
 
+prototype "放置物流中心" {
+  desc = "放置组装机",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"select_entity", 0, "物流中心I"},
+  prerequisites = {"放置采矿机"},
+  count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_place_logistics.texture",
+  },
+  sign_desc = {
+    { desc = "使用“建造”放置1个物流中心", icon = "textures/construct/industry.texture"},
+  },
+}
+
 prototype "转运铁矿石" {
   desc = "挖掘足够的铁矿石可以开始进行锻造",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"select_chest", 0, "指挥中心", "铁矿石"},
-  prerequisites = {"放置采矿机"},
+  prerequisites = {"放置物流中心"},
   count = 4,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ore3.texture",
@@ -133,7 +148,7 @@ prototype "转运碎石矿" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"select_chest", 0, "指挥中心", "碎石"},
-  prerequisites = {"放置采矿机"},
+  prerequisites = {"放置物流中心"},
   count = 4,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ore3.texture",
@@ -244,21 +259,6 @@ prototype "维修物流中心" {
   },
 }
 
-prototype "放置物流中心" {
-  desc = "放置组装机",
-  icon = "textures/construct/industry.texture",
-  type = { "tech", "task" },
-  task = {"select_entity", 0, "物流中心I"},
-  prerequisites = {"维修物流中心","维修运输汽车"},
-  count = 1,
-  tips_pic = {
-    "textures/task_tips_pic/task_place_logistics.texture",
-  },
-  sign_desc = {
-    { desc = "使用“建造”放置1个物流中心", icon = "textures/construct/industry.texture"},
-  },
-}
-
 
 prototype "铁矿熔炼" {
   desc = "掌握熔炼铁矿石冶炼成铁板的工艺",
@@ -267,7 +267,7 @@ prototype "铁矿熔炼" {
   effects = {
     unlock_recipe = {"铁板1"},
   },
-  prerequisites = {"维修运输汽车","放置物流中心"},
+  prerequisites = {"维修运输汽车","维修物流中心", "维修运输汽车"},
   ingredients = {
       {"地质科技包", 1},
   },
