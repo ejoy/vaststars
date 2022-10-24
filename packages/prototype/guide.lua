@@ -108,6 +108,25 @@ local guide = {
     {
         name = "guide-7",
 		narrative = {
+            {"缺少高效的物流运输最多维持{/g 374.09}地球小时的生存..哔哩..(担忧)", "textures/guide/guide-6.texture"},
+            {"不过我们在废墟中发现了保存完好的{/g 物流中心}，物流中心可以高效开展物流运输..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
+            {"让我们在道路边赶紧修建一座{/g 物流中心}..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            pop_chapter = {"第一阶段","物流网络"},
+            guide_progress = 30,
+            task = {
+                "放置物流中心",
+            }
+        },
+        prerequisites = {
+            "放置采矿机",
+        },
+	},
+
+    {
+        name = "guide-8",
+		narrative = {
             {"哔哩..哔哩..矿物采集进展非常顺利，{/g 存活概率}大幅提升至0.3244%！(兴奋)", "textures/guide/guide-3.texture"},
             {"哔哩..指挥中心有{/g 制造舱}，可以生产简单物件..请使用制造舱生产几个{/g 地质科技包}..哔哩(期待)", "textures/guide/guide-2.texture"},
         },
@@ -124,7 +143,7 @@ local guide = {
 	},
 
     {
-        name = "guide-8",
+        name = "guide-9",
 		narrative = {
             {"{/g 组装机}可使用3D打印技术制造地质科技包..哔哩..哔哗..请求建造{/g 组装机}..(兴奋)", "textures/guide/guide-3.texture"},
         },
@@ -139,25 +158,6 @@ local guide = {
         },
 	},
 
-    {
-        name = "guide-9",
-		narrative = {
-            {"物流运输遇到了瓶颈，仅依靠一辆车运输效率最多维持{/g 374.09}地球小时的生存..哔哩..(担忧)", "textures/guide/guide-6.texture"},
-            {"我们修理好{/g 破损物流中心}和{/g 破损运输车}就可以开展更高效的物流运输了..哔哩..(期待)", "textures/guide/guide-2.texture"},
-            {"首先让我们在道路边修建一座{/g 物流中心}..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
-        },
-        narrative_end = {
-            pop_chapter = {"第一阶段","物流网络"},
-            guide_progress = 30,
-            task = {
-                "放置物流中心",
-            }
-        },
-        prerequisites = {
-            "维修运输汽车",
-            "维修物流中心",
-        },
-	},
 
     {
         name = "guide-10",

@@ -9,7 +9,7 @@ prototype "组装机残骸" {
     type = {"entity", "chest"},
     group = {"物流" , "默认"},
     area = "3x3",
-    slots = 9,
+    slots = 8,
 }
 
 prototype "排水口残骸" {
