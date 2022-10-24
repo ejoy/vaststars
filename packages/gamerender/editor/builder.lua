@@ -12,6 +12,7 @@ local imining = require "gameplay.interface.mining"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local ipower = ecs.require "power"
+local ipower_line = ecs.require "power_line"
 local global = require "global"
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
@@ -233,7 +234,8 @@ local function complete(self)
     local gw = gameplay_core.get_world()
     if power_network_dirty then
         -- update power network
-        ipower.build_power_network(gw)
+        ipower:build_power_network(gw)
+        ipower_line.update_line(ipower:get_pole_lines())
     else
         local capacitance = {}
         for v in gameplay_core.select("eid:in entity:in capacitance:in") do
@@ -251,7 +253,7 @@ local function complete(self)
                 }
             end
         end
-        ipower.set_network_id(gw, capacitance)
+        ipower:set_network_id(gw, capacitance)
     end
 end
 

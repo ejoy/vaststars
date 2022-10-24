@@ -14,6 +14,7 @@ local irecipe = require "gameplay.interface.recipe"
 local global = require "global"
 local iobject = ecs.require "object"
 local ipower = ecs.require "power"
+local ipower_line = ecs.require "power_line"
 local imining = require "gameplay.interface.mining"
 local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
@@ -319,7 +320,8 @@ local function touch_move(self, datamodel, delta_vec)
         if typeobject.supply_area and typeobject.supply_distance then
             local aw, ah = iprototype.unpackarea(typeobject.area)
             local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-            ipower.merge_pole({key = pickup_object.id, targets = {}, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, smooth_pos = true})
+            ipower:merge_pole({key = pickup_object.id, targets = {}, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, smooth_pos = true})
+            ipower_line.update_temp_line(ipower:get_temp_pole())
         end
     end
 end
@@ -375,7 +377,8 @@ local function touch_end(self, datamodel)
     if typeobject.supply_area and typeobject.supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-        ipower.merge_pole({key = pickup_object.id, targets = {}, x = self.pickup_object.x, y = self.pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance})
+        ipower:merge_pole({key = pickup_object.id, targets = {}, x = self.pickup_object.x, y = self.pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance})
+        ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 end
 
@@ -436,7 +439,8 @@ local function confirm(self, datamodel)
         local coord = terrain:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, pickup_object.dir))
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-        ipower.merge_pole({key = pickup_object.id, targets = {}, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance}, true)
+        ipower:merge_pole({key = pickup_object.id, targets = {}, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance}, true)
+        ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
     self.pickup_object = nil
@@ -535,8 +539,8 @@ local function clean(self, datamodel)
     datamodel.show_rotate = false
     self.super.clean(self, datamodel)
     -- clear temp pole
-    ipower.clear_all_temp_pole()
-
+    ipower:clear_all_temp_pole()
+    ipower_line.update_temp_line(ipower:get_temp_pole())
     if self.roadside_block then
         self.roadside_block:remove()
     end

@@ -20,7 +20,7 @@ local global = require "global"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local icamera = ecs.require "engine.camera"
-local ipower = ecs.require "power"
+local ipower_line = ecs.require "power_line"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local DISABLE_FPS = require("debugger").disable_fps
@@ -200,7 +200,7 @@ function M:stage_ui_update(datamodel)
 
         inventory:flush()
         datamodel.construct_menu = _get_construct_menu()
-        ipower.show_supply_area()
+        ipower_line.show_supply_area()
         world:pub {"roadnet", "clean"} -- TODO: remove this
         ::continue::
     end

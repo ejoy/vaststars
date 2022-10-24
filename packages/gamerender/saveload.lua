@@ -36,7 +36,7 @@ local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
 local ipower = ecs.require "power"
-
+local ipower_line = ecs.require "power_line"
 local MAX_ARCHIVING_COUNT <const> = 9
 
 local archival_list = {}
@@ -298,7 +298,8 @@ local function restore_world()
     iobject.flush()
     iscience.update_tech_list(gameplay_core.get_world())
     -- update power network
-    ipower.build_power_network(gameplay_core.get_world())
+    ipower:build_power_network(gameplay_core.get_world())
+    ipower_line.update_line(ipower:get_pole_lines())
 end
 
 local function writeall(file, content)
