@@ -225,24 +225,20 @@ namespace roadnet {
     };
     static constexpr NeighborResult findNeighbor(const uint8_t map[256][256], loction l, direction dir) {
         uint16_t n = 0;
+        loction ln = l;
         for (;;) {
-            l = move(l, dir);
-            uint8_t m = map[l.y][l.x];
+            ln = move(ln, dir);
+            uint8_t m = map[ln.y][ln.x];
             if (isCross(m)) {
+                break;
+            }
+            if (ln == l) {
                 break;
             }
             dir = nextDirection(m, dir);
             n++;
         }
-        return {l, dir, n};
-    }
-    static constexpr NeighborResult findNeighbor2(const uint8_t map[256][256], loction l, direction dir) {
-        uint8_t m = map[l.y][l.x];
-        auto r = findNeighbor(map, l, straightDirection(m, 0));
-        if (r.dir == dir) {
-            return r;
-        }
-        return findNeighbor(map, l, straightDirection(m, 0x10));
+        return {ln, dir, n};
     }
     static constexpr std::optional<NeighborResult> moveToNeighbor(const uint8_t map[256][256], loction l, direction dir, uint16_t n) {
         for (uint16_t i = 0; ; ++i) {
