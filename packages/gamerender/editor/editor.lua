@@ -14,6 +14,7 @@ local iflow_connector = require "gameplay.interface.flow_connector"
 local terrain = ecs.require "terrain"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local ipower = ecs.require "power"
+local ipower_line = ecs.require "power_line"
 local iguide = require "gameplay.interface.guide"
 
 --
@@ -253,7 +254,7 @@ function M:teardown_complete()
                 power_network_dirty = true
             else
                 local aw, ah = iprototype.unpackarea(typeobject.area)
-                local net = ipower.get_network_id({x = object.x, y = object.y, w = aw, h = ah })
+                local net = ipower:get_network_id({x = object.x, y = object.y, w = aw, h = ah })
                 if #net > 1 then
                     power_network_dirty = true
                 end
@@ -282,7 +283,8 @@ function M:teardown_complete()
 
     if power_network_dirty then
         -- update power network
-        ipower.build_power_network(gameplay_core.get_world())
+        ipower:build_power_network(gameplay_core.get_world())
+        ipower_line.update_line(ipower:get_pole_lines())
     else
 
     end
