@@ -42,20 +42,7 @@ local road_mask; do
     end
 end
 
-function m.init(world)
-    local ecs = world.ecs
-    if ecs:first("road_changed:in") then -- TODO: optimize
-        local map = {}
-        for e in ecs:select "road entity:in" do
-            local loc = (e.entity.y << 8) | e.entity.x -- see also: get_location(lua_State *L, int idx)
-            map[loc] = road_mask(e.entity.prototype, e.entity.direction)
-        end
-        world.roadnet:load_map(map)
-    end
-    ecs:clear "road_changed"
-end
-
-function m.pre_restore_finish(world)
+local function load_map(world)
     local ecs = world.ecs
     local map = {}
     for e in ecs:select "road entity:in" do
@@ -63,4 +50,16 @@ function m.pre_restore_finish(world)
         map[loc] = road_mask(e.entity.prototype, e.entity.direction)
     end
     world.roadnet:load_map(map)
+end
+
+function m.init(world)
+    local ecs = world.ecs
+    if ecs:first("road_changed:in") then
+        load_map(world)
+    end
+    -- ecs:clear "road_changed" -- TODO: temporary code
+end
+
+function m.pre_restore_finish(world)
+    load_map(world)
 end
