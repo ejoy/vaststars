@@ -77,8 +77,6 @@ function m.pre_build(world)
         ecs:clear "endpoint_changed"
         return
     end
-    ecs:clear "road_changed" -- TODO: temporary code
-
     for e in ecs:select "endpoint_changed:in chest_2:update entity:in" do
         build(e, world)
     end

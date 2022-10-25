@@ -16,14 +16,14 @@ for v in ecs:select "eid:in entity:in capacitance?update" do
     end
 end
 
-world:wait(1500*50, function ()
+world:wait(2000*50, function ()
     world.quit = true
 end)
 
 local eids = {}; do
     for v in ecs:select "eid:in entity:in" do
         local typeobject = gameplay.prototype.queryById(v.entity.prototype)
-        if typeobject.name == "组装机I" then
+        if typeobject.name == "科研中心I" then
             assert(not eids[v.eid])
             eids[v.eid] = true
         end
