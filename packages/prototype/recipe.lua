@@ -1276,13 +1276,13 @@ prototype "地质科技包1" {
     order = 80,
     icon = "textures/recipe/geology-pack.texture",
     ingredients = {
-        {"铁矿石", 2},
-        {"碎石", 2},
+        {"铁矿石", 1},
+        {"碎石", 1},
     },
     results = {
         {"地质科技包", 1},
     },
-    time = "15s",
+    time = "20s",
     description = "地质材料制造地质科技包",
 }
 
