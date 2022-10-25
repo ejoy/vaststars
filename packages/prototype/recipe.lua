@@ -32,13 +32,13 @@ prototype "铁板1" {
     allow_manual = false,
     icon = "textures/construct/plate-Fe.texture",
     ingredients = {
-        {"铁矿石", 5},
+        {"铁矿石", 4},
     },
     results = {
         {"铁板", 2},
         -- {"碎石", 2},
     },
-    time = "3s",
+    time = "6s",
     description = "铁矿石通过金属冶炼获得铁板",
 }
 
@@ -409,14 +409,14 @@ prototype "物流派送站1" {
     order = 52,
     icon = "textures/construct/goodsstation-output.texture",
     ingredients = {
-        {"机器爪I", 1},
+        {"电动机I", 2},
         {"小铁制箱子I", 1},
     },
     results = {
         {"物流派送站", 1},
     },
     time = "4s",
-    description = "使用机器爪和箱子制造物流派送站",
+    description = "使用电动机和箱子制造物流派送站",
 }
 
 prototype "基建站1" {
@@ -426,14 +426,14 @@ prototype "基建站1" {
     order = 53,
     icon = "textures/construct/goodsstation-input.texture",
     ingredients = {
-        {"机器爪I", 1},
+        {"电动机I", 2},
         {"小铁制箱子I", 1},
     },
     results = {
         {"基建站", 1},
     },
     time = "4s",
-    description = "使用机器爪和箱子制造基建站",
+    description = "使用电动机和箱子制造基建站",
 }
 
 prototype "物流中心1" {
@@ -624,7 +624,7 @@ prototype "组装机1" {
     icon = "textures/construct/assembler1.texture",
     ingredients = {
         {"小铁制箱子I", 1},
-        {"机器爪I", 1},
+        {"电动机I", 2},
         {"铁齿轮", 4},
     },
     results = {
@@ -750,7 +750,7 @@ prototype "铸造厂1" {
     icon = "textures/construct/assembler.texture",
     ingredients = {
         {"铁板", 3},
-        {"机器爪I", 2},
+        {"电动机I", 4},
         {"熔炼炉I", 1},
     },
     results = {
@@ -1014,7 +1014,7 @@ prototype "科研中心1" {
     order = 80,
     icon = "textures/property/research-packs.texture",
     ingredients = {
-        {"机器爪I", 4},
+        {"电动机I", 8},
         {"铁板", 20},
         {"电动机I", 1},
         {"玻璃", 4}, 
