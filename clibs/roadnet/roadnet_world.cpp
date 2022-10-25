@@ -452,9 +452,29 @@ namespace roadnet {
         auto eo = ee.offset;
 
         auto& lorry = Lorry(lorryId);
-        if (!bfs(*this, roadIdS, roadIdE, lorry.path)) {
-            return false;
+        lorry.path.clear();
+        if (roadIdS == roadIdE) {
+            roadid other = roadid::invalid();
+            for(auto iter = straightAry.begin(); iter != straightAry.end(); iter++) {
+                if (iter->id != roadIdS.id) {
+                    other = roadid(iter->id); // TODO: temp solution, other straight road may not connected to roadnet
+                    break;
+                }
+            }
+            assert(other != roadid::invalid());
+            if (!bfs(*this, roadIdS, other, lorry.path)) {
+                return false;
+            }
+            if (!bfs(*this, other, roadIdE, lorry.path)) {
+                return false;
+            }
         }
+        else {
+            if (!bfs(*this, roadIdS, roadIdE, lorry.path)) {
+                return false;
+            }
+        }
+
         lorry.pathIdx = 0;
         lorry.ending = {roadIdE.id, eo};
         Endpoint(starting).pushMap.push_back(lorryId);
