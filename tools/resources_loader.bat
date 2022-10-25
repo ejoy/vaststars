@@ -15,4 +15,4 @@ if not exist "%exe%" (
 %current_dir%%exe% %param% %command%
 
 popd
-pause
+if /i "%1" == "" (pause)
