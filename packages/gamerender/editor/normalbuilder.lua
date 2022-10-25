@@ -522,13 +522,21 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     pickup_object.x, pickup_object.y = coord[1], coord[2]
     _update_fluid_name(self, datamodel, pickup_object, failed)
 
-    self.roadside_position = _get_roadside_position(typeobject, pickup_object.x, pickup_object.y, pickup_object.dir)
+    local dx, dy, ddir
+    self.roadside_position, dx, dy, ddir = _get_roadside_position(typeobject, pickup_object.x, pickup_object.y, pickup_object.dir)
     if self.roadside_position then
         self.roadside_block:send("obj_motion", "set_position", self.roadside_position)
         self.roadside_block:send("obj_motion", "set_rotation", ROTATORS[pickup_object.dir])
 
         self.roadside_arrow:send("obj_motion", "set_position", self.roadside_position)
         self.roadside_arrow:send("obj_motion", "set_rotation", ROTATORS[pickup_object.dir])
+
+
+        local obj = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
+        if obj and iprototype.is_road(obj.prototype_name) then
+            obj = assert(objects:modify(dx, dy, EDITOR_CACHE_NAMES, iobject.clone))
+            obj.prototype_name, obj.dir = iflow_connector.covers_roadside(obj.prototype_name, obj.dir, iprototype.reverse_dir(ddir), true)
+        end
     end
 end
 
