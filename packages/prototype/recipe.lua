@@ -32,13 +32,13 @@ prototype "铁板1" {
     allow_manual = false,
     icon = "textures/construct/plate-Fe.texture",
     ingredients = {
-        {"铁矿石", 4},
+        {"铁矿石", 2},
     },
     results = {
-        {"铁板", 2},
+        {"铁板", 1},
         -- {"碎石", 2},
     },
-    time = "6s",
+    time = "4s",
     description = "铁矿石通过金属冶炼获得铁板",
 }
 
