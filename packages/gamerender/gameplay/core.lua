@@ -12,8 +12,8 @@ function m.select(...)
     return world.ecs:select(...)
 end
 
-function m.sync(...)
-    return world.ecs:sync(...)
+function m.extend(...)
+    return world.ecs:extend(...)
 end
 
 function m.build(...)

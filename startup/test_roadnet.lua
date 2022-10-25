@@ -20,16 +20,16 @@ world:wait(1500*50, function ()
     world.quit = true
 end)
 
-local eid; do
+local eids = {}; do
     for v in ecs:select "eid:in entity:in" do
         local typeobject = gameplay.prototype.queryById(v.entity.prototype)
-        if typeobject.name == "熔炼炉I" then
-            assert(not eid)
-            eid = v.eid
+        if typeobject.name == "组装机I" then
+            assert(not eids[v.eid])
+            eids[v.eid] = true
         end
     end
 end
-assert(eid)
+assert(next(eids))
 
 local function dump_item(eid)
     local ecs = world.ecs
@@ -61,6 +61,8 @@ while not world.quit do
     -- dump_item(eid)
 end
 
-dump_item(eid)
+for eid in pairs(eids) do
+    dump_item(eid)
+end
 
 print "ok"
