@@ -94,5 +94,5 @@ function m.restore_finish(world)
     end
     for e in ecs:select "station:update entity:in" do
         build(e, world)
-     end
+    end
 end
