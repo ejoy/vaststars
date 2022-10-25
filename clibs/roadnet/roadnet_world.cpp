@@ -226,19 +226,20 @@ namespace roadnet {
     static constexpr NeighborResult findNeighbor(const uint8_t map[256][256], loction l, direction dir) {
         uint16_t n = 0;
         loction ln = l;
+        direction nd = dir;
         for (;;) {
-            ln = move(ln, dir);
+            ln = move(ln, nd);
             uint8_t m = map[ln.y][ln.x];
             if (isCross(m)) {
                 break;
             }
-            if (ln == l) {
+            if (ln == l && nd == dir) {
                 break;
             }
-            dir = nextDirection(m, dir);
+            nd = nextDirection(m, nd);
             n++;
         }
-        return {ln, dir, n};
+        return {ln, nd, n};
     }
     static constexpr std::optional<NeighborResult> moveToNeighbor(const uint8_t map[256][256], loction l, direction dir, uint16_t n) {
         for (uint16_t i = 0; ; ++i) {
@@ -415,8 +416,7 @@ namespace roadnet {
     endpointid world::createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir) {
         loction l = move({connection_x, connection_y}, connection_dir);
         direction dir = (direction)(((uint8_t)connection_dir + 1) % 4); // direction of straight road
-        uint8_t z = (straightDirection(map[l.y][l.x], 0x10) == dir) ? 0x00 : 0x10; // entry point of offset is 0
-        road_coord rc = coordConvert(map_coord{l.x, l.y, z});
+        road_coord rc = coordConvert(l, dir);
 
         // cannot find endpoint, such as endpoint is not connected to any road
         if (rc == road_coord::invalid()) {
@@ -508,6 +508,23 @@ namespace roadnet {
             roadid id = crossAry[cross.id].neighbor[(uint8_t)reverse(result.dir)];
             assert(id);
             uint16_t n = road::straight::N * result.n + (mc.z & 0x0Fu);
+            uint16_t offset = straightAry[id.id].len - n - 1;
+            return {id, offset};
+        }
+        return road_coord::invalid();
+    }
+
+    road_coord world::coordConvert(loction l, direction dir, uint16_t offset) {
+        if (auto cross = findCrossRoad(l); cross) {
+            assert(false);
+        }
+        assert(dir != direction::n);
+
+        auto result = findNeighbor(map, l, reverse(dir));
+        if (auto cross = findCrossRoad(result.l); cross) {
+            roadid id = crossAry[cross.id].neighbor[(uint8_t)reverse(result.dir)];
+            assert(id);
+            uint16_t n = road::straight::N * result.n + offset;
             uint16_t offset = straightAry[id.id].len - n - 1;
             return {id, offset};
         }
