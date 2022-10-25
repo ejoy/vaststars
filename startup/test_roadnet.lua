@@ -16,7 +16,7 @@ for v in ecs:select "eid:in entity:in capacitance?update" do
     end
 end
 
-world:wait(240*50, function ()
+world:wait(1500*50, function ()
     world.quit = true
 end)
 
@@ -58,7 +58,9 @@ while not world.quit do
         y = (mc >>  8) & 0xFF
         z = (mc >> 16) & 0xFF
     end
-    dump_item(eid)
+    -- dump_item(eid)
 end
+
+dump_item(eid)
 
 print "ok"
