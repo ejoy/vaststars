@@ -910,20 +910,20 @@ prototype "挖掘1" {
   time = "7s"
 }
 
-prototype "驱动1" {
-  desc = "使用机械手臂快速转移物品",
-  type = { "tech" },
-  icon = "textures/science/tech-research.texture",
-  effects = {
-    unlock_recipe = {"机器爪1"},
-  },
-  prerequisites = {"生产机械科技包"},
-  ingredients = {
-    {"机械科技包", 1},
-  },
-  count = 3,
-  time = "8s"
-}
+-- prototype "驱动1" {
+--   desc = "使用机械手臂快速转移物品",
+--   type = { "tech" },
+--   icon = "textures/science/tech-research.texture",
+--   effects = {
+--     unlock_recipe = {"机器爪1"},
+--   },
+--   prerequisites = {"生产机械科技包"},
+--   ingredients = {
+--     {"机械科技包", 1},
+--   },
+--   count = 3,
+--   time = "8s"
+-- }
 
 prototype "蒸馏1" {
   desc = "将液体混合物汽化进行成分分离的技术",
@@ -932,7 +932,7 @@ prototype "蒸馏1" {
   effects = {
     unlock_recipe = {"蒸馏厂1"},
   },
-  prerequisites = {"驱动1"},
+  prerequisites = {"挖掘1"},
   ingredients = {
     {"气候科技包", 1},
     {"机械科技包", 1},
@@ -981,7 +981,7 @@ prototype "自动化1" {
   effects = {
     unlock_recipe = {"组装机1"},
   },
-  prerequisites = {"驱动1","电力传输1"},
+  prerequisites = {"挖掘1","电力传输1"},
   ingredients = {
     {"机械科技包", 1},
   },
