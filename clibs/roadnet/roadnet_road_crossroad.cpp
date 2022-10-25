@@ -3,8 +3,6 @@
 #include <assert.h>
 
 namespace roadnet::road {
-    static constexpr uint8_t kWaitTime  = 10;
-    static constexpr uint8_t kCrossTime = 20;
     static constexpr bool constIsCross(RoadType a, RoadType b) {
         if ((a & 0x03) == (b & 0x03)) {
             return true;

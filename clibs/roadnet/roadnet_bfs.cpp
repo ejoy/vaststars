@@ -131,11 +131,6 @@ namespace roadnet {
     }
 
     bool bfs(world& w, roadid S, roadid E, std::vector<direction>& path) {
-        path.clear();
-        if (S == E) {
-            return true;
-        }
-
         bfsContext ctx;
         if (auto res = applyResult(w, ctx, {S, direction::n}, S, E); res) {
             return buildPath(ctx, {S, direction::n}, {E, *res}, path);

@@ -2,8 +2,6 @@
 #include "roadnet_world.h"
 
 namespace roadnet::road {
-    static constexpr uint8_t kTime = 10;
-
     void straight::init(uint16_t id, uint16_t len, direction dir) {
         this->id = id;
         this->len = len;
