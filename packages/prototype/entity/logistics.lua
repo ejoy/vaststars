@@ -43,6 +43,7 @@ prototype "指挥中心" {
     area = "5x5",
     supply_area = "9x9",
     supply_distance = 9,
+    dismantle_area = "21x21",
     power = "1MW",
     priority = "primary",
     group = {"物流"},
@@ -279,3 +280,15 @@ prototype "基建站" {
     group = {"物流"},
 }
 
+prototype "拆除点" {
+    model = "prefabs/small-chest.prefab",
+    icon = "textures/building_pic/small_pic_chest.texture",
+    background = "textures/build_background/pic_chest.texture",
+    construct_detector = {"exclusive"},
+    type ={"entity", "chest"},
+    area = "1x1",
+    dismantle_area = "21x21",
+    group = {"物流"},
+    slots = 30,
+    teardown = false,
+}
