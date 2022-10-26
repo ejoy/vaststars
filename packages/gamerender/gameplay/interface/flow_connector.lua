@@ -92,7 +92,7 @@ end
 local function _get_road_covers(flow_type, pipe_bits)
     local r = pipe_bits & 0xF
     for bits in pairs(accel[flow_type]) do
-        if pipe_bits ~= bits and pipe_bits & bits == pipe_bits then
+        if pipe_bits ~= bits and r & bits == r then
             r = r | (bits & 0xF)
         end
     end

@@ -59,9 +59,10 @@ local function build(e, world)
         end
     elseif e.station then
         e.station.endpoint = endpoint
-        local l = world.roadnet:create_lorry()
-        assert(endpoint ~= 0xffff)
-        world.roadnet:place_lorry(endpoint, l)
+        if e.station.endpoint ~= 0xffff then
+            local l = world.roadnet:create_lorry()
+            world.roadnet:place_lorry(endpoint, l)
+        end
     else
         assert(false)
     end
