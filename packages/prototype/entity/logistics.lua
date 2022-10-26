@@ -138,6 +138,11 @@ prototype "科研中心I" {
         "机械科技包",
     },
     group = {"物流"},
+    crossing = {
+        connections = {
+            {type="input-output", position={1,2,"S"}, roadside = true},
+        },
+    }
 }
 
 prototype_road "砖石公路-I型-%02d" {
