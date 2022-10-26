@@ -47,7 +47,7 @@ prototype "指挥中心" {
     power = "1MW",
     priority = "primary",
     group = {"物流"},
-    slots = 70,
+    slots = 60,
     headquater = true,
     teardown = false,
 }
@@ -275,6 +275,7 @@ prototype "基建站" {
     power = "300kW",
     type ={"entity","consumer"},
     priority = "secondary",
+    slots = 20,
     area = "2x2",
     supply_area = "20x20",
     group = {"物流"},
@@ -289,6 +290,6 @@ prototype "拆除点" {
     area = "1x1",
     dismantle_area = "21x21",
     group = {"物流"},
-    slots = 30,
+    slots = 20,
     teardown = false,
 }
