@@ -98,6 +98,18 @@ namespace roadnet {
             return true;
         }
     }
+
+    static constexpr bool isSpecCross(uint8_t m) {
+        switch (m) {
+        case mask(L'>'):
+        case mask(L'v'):
+        case mask(L'<'):
+        case mask(L'^'):
+            return true;
+        default:
+            return false;
+        }
+    }
     
     static constexpr direction nextDirection(uint8_t m, direction dir) {
         switch (m) {
@@ -294,9 +306,14 @@ namespace roadnet {
         uint16_t genStraightId = 0;
         uint32_t genLorryOffset = 0;
         uint16_t crossCount = 0;
+        std::map<loction, uint16_t> specCrossMap;
 
         for (auto& [l, bitmask] : mapData) {
             map[l.y][l.x] = bitmask;
+
+            if (isSpecCross(map[l.y][l.x])) {
+                specCrossMap.emplace(l, true);
+            }
 
             if (isCross(map[l.y][l.x])) {
                 roadid  id  { true, genCrossId++ };
@@ -308,8 +325,12 @@ namespace roadnet {
         }
 
         if (crossCount <= 0) {
-            crossMap.clear();
-            crossMapR.clear();
+            for(auto & [l, b] : specCrossMap) {
+                roadid  id  { true, genCrossId++ };
+                loction loc {(uint8_t)l.x, (uint8_t)l.y};
+                crossMap.emplace(loc, id);
+                crossMapR.emplace(id, loc);
+            }
             return;
         }
 
@@ -436,6 +457,7 @@ namespace roadnet {
     }
     bool world::pushLorry(lorryid lorryId, endpointid starting, endpointid ending) {
         if (lorryVec.size() >= (size_t)(uint16_t)-1) {
+            assert(false);
             return false;
         }
 
@@ -463,14 +485,17 @@ namespace roadnet {
             }
             assert(other != roadid::invalid());
             if (!bfs(*this, roadIdS, other, lorry.path)) {
+                assert(false);
                 return false;
             }
             if (!bfs(*this, other, roadIdE, lorry.path)) {
+                assert(false);
                 return false;
             }
         }
         else {
             if (!bfs(*this, roadIdS, roadIdE, lorry.path)) {
+                assert(false);
                 return false;
             }
         }
@@ -536,7 +561,7 @@ namespace roadnet {
 
     road_coord world::coordConvert(loction l, direction dir, uint16_t offset) {
         if (auto cross = findCrossRoad(l); cross) {
-            assert(false);
+            return road_coord::invalid();
         }
         assert(dir != direction::n);
 

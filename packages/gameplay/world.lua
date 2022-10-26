@@ -274,8 +274,9 @@ return function ()
     function world:container_place(...)
         return chest.place(cworld, ...)
     end
-    function world:container_get(...)
-        return chest.get(cworld, ...)
+    function world:container_get(c, ...)
+        assert(c ~= 0xffff)
+        return chest.get(cworld, c, ...)
     end
     function world:container_flush(...)
         return chest.flush(cworld, ...)
