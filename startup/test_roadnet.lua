@@ -35,7 +35,7 @@ local function dump_item(eid)
     local ecs = world.ecs
     for v in ecs:select "eid:in chest_2:in entity:in" do
         if v.eid == eid then
-            for i = 1, 1 do -- hardcode: recipe "铁板1"
+            for i = 1, 10 do -- hardcode: recipe "铁板1"
                 local c, n = world:container_get(v.chest_2.chest_in, i)
                 if c then
                     print(gameplay.prototype.queryById(c).name, n)
