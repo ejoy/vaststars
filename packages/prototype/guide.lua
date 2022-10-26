@@ -124,26 +124,26 @@ local guide = {
         },
 	},
 
-    {
-        name = "guide-8",
-		narrative = {
-            {"哔哩..哔哩..矿物采集进展非常顺利，{/g 存活概率}大幅提升至0.3244%！(兴奋)", "textures/guide/guide-3.texture"},
-            {"哔哩..指挥中心有{/g 制造舱}，可以生产简单物件..请使用制造舱生产几个{/g 地质科技包}..哔哩(期待)", "textures/guide/guide-2.texture"},
-        },
-        narrative_end = {
-            guide_progress = 25,
-            task = {
-                "制造舱生产",
-            }
-        },
-        prerequisites = {
-            "转运铁矿石",
-            "转运碎石矿",
-        },
-	},
+    -- {
+    --     name = "guide-8",
+	-- 	narrative = {
+    --         {"哔哩..哔哩..矿物采集进展非常顺利，{/g 存活概率}大幅提升至0.3244%！(兴奋)", "textures/guide/guide-3.texture"},
+    --         {"哔哩..指挥中心有{/g 制造舱}，可以生产简单物件..请使用制造舱生产几个{/g 地质科技包}..哔哩(期待)", "textures/guide/guide-2.texture"},
+    --     },
+    --     narrative_end = {
+    --         guide_progress = 25,
+    --         task = {
+    --             "制造舱生产",
+    --         }
+    --     },
+    --     prerequisites = {
+    --         "转运铁矿石",
+    --         "转运碎石矿",
+    --     },
+	-- },
 
     {
-        name = "guide-9",
+        name = "guide-8",
 		narrative = {
             {"{/g 组装机}可使用3D打印技术制造地质科技包..哔哩..哔哗..请求建造{/g 组装机}..(兴奋)", "textures/guide/guide-3.texture"},
         },
@@ -154,13 +154,14 @@ local guide = {
             }
         },
         prerequisites = {
-            "制造舱生产",
+            "生产铁矿石",
+            "生产碎石矿",
         },
 	},
 
 
     {
-        name = "guide-10",
+        name = "guide-9",
 		narrative = {
             {"哔哩..哔哗..基地开始采集气液资源，{/g 管道}正是运输此类资源的关键..(兴奋)", "textures/guide/guide-3.texture"},
         },
@@ -176,7 +177,7 @@ local guide = {
 	},
 
     {
-        name = "guide-11",
+        name = "guide-10",
 		narrative = {
             {"合理的铺设管道让液体运输更加高效...哔哩..注意管道和机器液口的连接，耐心..和眼神..是关键(期待)", "textures/guide/guide-2.texture"},
         },
@@ -191,7 +192,7 @@ local guide = {
 	},
 
     {
-        name = "guide-12",
+        name = "guide-11",
 		narrative = {
             {"{/g 基建站}允许在更远的区域修建建筑，基建站可将建筑材料运送到在覆盖区域..哔哩..(兴奋)", "textures/guide/guide-2.texture"},
             {"为了扩建我们的基地，准备放置{/g 基建站}吧..哔哩..哔哩(兴奋)", "textures/guide/guide-3.texture"},
@@ -208,7 +209,7 @@ local guide = {
 	},
 
     {
-        name = "guide-13",
+        name = "guide-12",
 		narrative = {
             {"{/g 化工厂}准备就绪，让我们正式进入化工生产..哔哩..哔哩..(兴奋）", "textures/guide/guide-3.texture"},
         },
@@ -225,7 +226,7 @@ local guide = {
 	},
 
     {
-        name = "guide-14",
+        name = "guide-13",
 		narrative = {
             {"{/g 塑料}可制造更多精密元件，掌握这种新材料，存活概率提升为1.2923%..哔哩(兴奋）", "textures/guide/guide-3.texture"},
         },
@@ -241,7 +242,7 @@ local guide = {
 	},
 
     {
-        name = "guide-15",
+        name = "guide-14",
 		narrative = {
             {"终于可以研制机械装置进入自动化生产，这可以大大提高效率..哔哩..和放松你的手臂..哔哩(期待）", "textures/guide/guide-2.texture"},
         },
