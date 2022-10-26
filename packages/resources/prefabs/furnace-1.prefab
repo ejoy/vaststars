@@ -7,13 +7,49 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/furnace-1.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/furnace-1.glb|meshes/Cylinder.008_P1.meshbin
-  name: Cylinder.006
-  scene:
-    t: {0, 0.9241397380828857, 0}
-  visible_state: main_view|selectable|cast_shadow
+  meshskin: /pkg/vaststars.resources/glb/furnace-1.glb|meshes/Armature.skinbin
+  name: meshskin
+  scene: {}
+  skeleton: /pkg/vaststars.resources/glb/furnace-1.glb|animations/skeleton.ozz
+  skinning: true
 mount: 1
 policy:
+  ant.animation|meshskin
   ant.general|name
-  ant.render|render
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/furnace-1.glb|materials/Material_skin.material
+  mesh: /pkg/vaststars.resources/glb/furnace-1.glb|meshes/Cylinder.001_P1.meshbin
+  name: Cylinder.001
+  skinning: true
+  visible_state: main_view|selectable|cast_shadow
+policy:
+  ant.general|name
+  ant.render|skinrender
+---
+data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/furnace-1.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/furnace-1.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name
+---
+data:
+  name: hitch1
+  scene:
+    s: {3.200000047683716, 3.200000047683716, 3.200000047683716}
+    t: {0, 11.5, 0, 1}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    hitch1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot

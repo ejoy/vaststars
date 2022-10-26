@@ -1,10 +1,7 @@
 ---
 data:
   name: Scene
-  scene:
-    r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 3.9000000953674316, 0}
+  scene: {}
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -22,24 +19,38 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Plane.005_P1.meshbin
-  name: Plane.003
-  scene:
-    s: {0.9525759816169739, 1, 0.9617353081703186}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material.material
+  material: /pkg/vaststars.resources/glb/logistics-center-1.glb|materials/Material_skin.material
   mesh: /pkg/vaststars.resources/glb/logistics-center-1.glb|meshes/Plane.002_P1.meshbin
   name: Plane.002
-  scene: {}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
+  skinning: true
+  visible_state: selectable|cast_shadow|main_view
 policy:
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
+---
+data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/logistics-center-1.glb|animations/ArmatureAction.ozz
+    logistics-center-animat: /pkg/vaststars.resources/prefabs/logistics-center-animat.anim
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/logistics-center-1.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name
+---
+data:
+  name: hitch2
+  scene:
+    s: {0.699999988079071, 0.699999988079071, 0.699999988079071}
+    t: {0, 10.5, 0, 1}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    hitch2
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot

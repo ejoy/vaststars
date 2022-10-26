@@ -10,6 +10,18 @@ policy:
   ant.scene|scene_object
 ---
 data:
+  meshskin: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|meshes/Armature.skinbin
+  name: meshskin
+  scene: {}
+  skeleton: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|animations/skeleton.ozz
+  skinning: true
+mount: 1
+policy:
+  ant.animation|meshskin
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
   material: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|materials/Material.material
   mesh: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|meshes/Cylinder_P1.meshbin
   name: Cylinder
@@ -23,17 +35,14 @@ policy:
   ant.render|render
 ---
 data:
-  material: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|materials/Material.material
+  material: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|materials/Material_skin.material
   mesh: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|meshes/Torus.004_P1.meshbin
   name: Torus.003
-  scene:
-    r: {0, 0, 0.6917752623558044, -0.7221129536628723}
-    t: {9.407983779907227, 9.94575309753418, 0}
+  skinning: true
   visible_state: main_view|selectable|cast_shadow
-mount: 1
 policy:
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
 ---
 data:
   name: shelf-input1
@@ -95,7 +104,7 @@ policy:
 data:
   name: shelf-output2
   scene:
-    r: {-0, 1, -0, -4.371138828673793e-08}
+    r: {0, 1, 0, -4.371138828673793e-08}
     t: {-7, -16.399999618530273, -12.5, 1}
   slot:
     follow_flag: 1
@@ -121,3 +130,15 @@ policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
+---
+data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|animations/ArmatureAction.ozz
+    mars-assembling-machine_animat: /pkg/vaststars.resources/prefabs/mars-assembling-machine_animat.anim
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|animations/skeleton.ozz
+policy:
+  ant.general|name
+  ant.animation|animation
