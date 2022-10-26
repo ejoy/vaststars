@@ -45,6 +45,17 @@ policy:
   ant.render|skinrender
 ---
 data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name
+---
+data:
   name: shelf-input1
   scene:
     t: {0, -7.699999809265137, 13.100000381469727, 1}
@@ -130,15 +141,3 @@ policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
----
-data:
-  anim_ctrl: {}
-  animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|animations/ArmatureAction.ozz
-    mars-assembling-machine_animat: /pkg/vaststars.resources/prefabs/mars-assembling-machine_animat.anim
-  animation_birth: ArmatureAction
-  name: animation
-  skeleton: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|animations/skeleton.ozz
-policy:
-  ant.general|name
-  ant.animation|animation
