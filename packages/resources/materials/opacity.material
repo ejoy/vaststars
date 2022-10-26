@@ -3,7 +3,6 @@ fx:
   setting:
     lighting: off
     shadow_receive: off
-    lighting: off
     surfacetype: opacity
   vs: /pkg/ant.resources/shaders/pbr/vs_pbr.sc
 properties:
