@@ -49,9 +49,12 @@ local function build(e, world)
     local endpoint = world.roadnet:create_endpoint(x, y, mapping[DIRECTION[dir]])
     if e.chest_2 then
         local chest = e.chest_2
-        if chest.chest_in ~= 0xffff and chest.chest_out ~= 0xffff then
-            chest.endpoint = endpoint
+        chest.endpoint = endpoint
+
+        if chest.chest_in ~= 0xffff then
             world:container_flush(chest.chest_in, endpoint)
+        end
+        if chest.chest_out ~= 0xffff then
             world:container_flush(chest.chest_out, endpoint)
         end
     elseif e.station then
