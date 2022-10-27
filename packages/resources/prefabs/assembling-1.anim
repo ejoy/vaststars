@@ -1,5 +1,5 @@
 duration: 2.4
-joint_anims:
+target_anims:
   ---
   clips:
     ---
@@ -12,7 +12,7 @@ joint_anims:
     rot_axis: 2
     tween: 3
     type: 3
-  joint_name: chongcheng1
+  target_name: chongcheng1
   ---
   clips:
     ---
@@ -25,7 +25,7 @@ joint_anims:
     rot_axis: 2
     tween: 3
     type: 3
-  joint_name: chongcheng2
+  target_name: chongcheng2
   ---
   clips:
     ---
@@ -38,7 +38,7 @@ joint_anims:
     rot_axis: 2
     tween: 3
     type: 3
-  joint_name: chongcheng3
+  target_name: chongcheng3
   ---
   clips:
     ---
@@ -51,7 +51,7 @@ joint_anims:
     rot_axis: 2
     tween: 3
     type: 3
-  joint_name: chongcheng4
+  target_name: chongcheng4
   ---
   clips:
     ---
@@ -64,7 +64,7 @@ joint_anims:
     rot_axis: 2
     tween: 1
     type: 3
-  joint_name: diaobi1
+  target_name: diaobi1
   ---
   clips:
     ---
@@ -77,7 +77,7 @@ joint_anims:
     rot_axis: 2
     tween: 5
     type: 2
-  joint_name: diaobi2
+  target_name: diaobi2
 name: chongcheng
 sample_ratio: 50
 skeleton: /pkg/vaststars.resources/glb/assembling-1.glb|animations/skeleton.ozz
