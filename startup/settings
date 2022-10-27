@@ -7,29 +7,29 @@ _osx:
 _windows:
   graphic:
     api: d3d11
+debug:
+  show_bounding: false
 graphic:
-  disable_cull: false
+  curve_world:
+    curve_rate: 0.11999999731779099
+    distance: 100
+    enable: false
+    flat_distance: 0
+    type: cylinder
   framebuffer:
     ratio: 1
     scene_ratio: 1
-  curve_world:
-    curve_rate: 0.11999999731779099
-    dirVS: {0, 0, 1, 0}
-    distance: 100
-    enable: false
-    flat_distance: 50
-    max_range: 20
-    type: cylinder
   hdr:
-    enable: true
+    enable: false
     format: RGBA16F
+  inv_z: true
   lighting:
     cluster_shading: 1
   postprocess:
     bloom:
-      enable: false
-      inv_highlight: 1e-06
-      threshold: 120000
+      enable: true
+      inv_highlight: 0.2
+      threshold: 1.5
   render:
     clear: CDS
     clear_color: 255
@@ -39,13 +39,9 @@ graphic:
     bias: 0.003
     color: {0, 0, 0, 1}
     enable: true
-    normal_offset: 0.012
+    normal_offset: 0
     size: 1024
-    split_lamada: 1
-    stabilize: false
-    split_ratios:
-      {0.0, 0.5},
-      {0.5, 1},
+    split_lamada: 0.8
+    split_num: 4
+    stabilize: true
     type: inv_z
-    min_variance: 0.012
-    depth_multiplier: 1000
