@@ -103,15 +103,11 @@ namespace roadnet {
 
     static std::optional<direction> applyCross(world& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
         direction prev = G.dir;
-        direction dirAry[] = { direction::l, direction::t, direction::r, direction::b };
-        if (prev != direction::n && prev != direction::b) {
-            dirAry[(uint8_t)prev] = direction::b;
-            dirAry[(uint8_t)direction::b] = prev;
-        }
         for (uint8_t i = 0; i < 4; ++i) {
-            direction dir = dirAry[i];
-            roadid Next = w.crossAry[N.id].neighbor[i];
-            if (Next) {
+            direction dir = (direction)i;
+            auto cross = w.crossAry[N.id];
+            roadid Next = cross.neighbor[i];
+            if (Next && (cross.u_turn || prev != dir)) {
                 if (!ctx.results.contains({N, dir})) {
                     ctx.results.emplace(bfsRoad{N, dir}, G);
                     if (N == E) {

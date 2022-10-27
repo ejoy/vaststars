@@ -10,6 +10,7 @@ namespace roadnet::road {
         lorryid  wait_lorry[4] = {};
         lorryid  cross_lorry[2] = {};
         RoadType cross_status[2];
+        bool u_turn = false;
         void update(world& w, uint64_t ti);
         bool canEntry(world& w, direction dir) override;
         bool tryEntry(world& w, lorryid l, direction dir) override;
