@@ -1,0 +1,37 @@
+fx:
+  fs: /pkg/ant.resources/shaders/pbr/fs_pbr.sc
+  setting:
+    ALPHAMODE_OPAQUE: 1
+    GPU_SKINNING: 1
+    HAS_BASECOLOR_TEXTURE: 1
+    HAS_EMISSIVE_TEXTURE: 1
+    HAS_METALLIC_ROUGHNESS_TEXTURE: 1
+    HAS_NORMAL_TEXTURE: 1
+    lighting: on
+    shadow_cast: on
+    shadow_receive: on
+    subsurface: off
+    surfacetype: opacity
+  vs: /pkg/ant.resources/shaders/pbr/vs_pbr.sc
+properties:
+  s_basecolor:
+    stage: 0
+    texture: /pkg/vaststars.resources/glb/turbine.glb|materials/./../images/turbine_color.texture
+  s_emissive:
+    stage: 3
+    texture: /pkg/vaststars.resources/glb/turbine.glb|materials/./../images/turbine_light.texture
+  s_metallic_roughness:
+    stage: 1
+    texture: /pkg/vaststars.resources/glb/turbine.glb|materials/./../images/turbine_Metallic-turbine_Roughness.texture
+  s_normal:
+    stage: 2
+    texture: /pkg/vaststars.resources/glb/turbine.glb|materials/./../images/turbine_normal.texture
+  u_basecolor_factor: {1, 1, 1, 1}
+  u_emissive_factor: {1000, 1000, 1, 0}
+  u_pbr_factor: {1, 1, 0.5, 1}
+state:
+  ALPHA_REF: 0
+  CULL: CCW
+  DEPTH_TEST: GREATER
+  MSAA: true
+  WRITE_MASK: RGBAZ
