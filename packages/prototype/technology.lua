@@ -139,7 +139,7 @@ prototype "生产铁矿石" {
     "textures/task_tips_pic/task_produce_ore3.texture",
   },
   sign_desc = {
-    { desc = "放置挖矿机在铁矿上并挖掘2个铁矿石", icon = "textures/construct/industry.texture"},
+    { desc = "在铁矿上放置挖矿机并挖掘2个铁矿石", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -154,7 +154,7 @@ prototype "生产碎石矿" {
     "textures/task_tips_pic/task_produce_ore3.texture",
   },
   sign_desc = {
-    { desc = "放置挖矿机在碎石矿上并挖掘2个碎石矿", icon = "textures/construct/industry.texture"},
+    { desc = "在碎石矿上放置挖矿机并挖掘2个碎石矿", icon = "textures/construct/industry.texture"},
   },
 }
 
