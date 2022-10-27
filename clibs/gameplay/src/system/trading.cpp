@@ -136,6 +136,7 @@ lbuild(lua_State *L) {
     auto& w = *(world*)lua_touserdata(L, 1);
     auto& rw = getroadnetworld(L);
     auto& kdtree = w.tradings.station_kdtree;
+    kdtree.dataset.clear();
     for (auto& v : w.select<ecs::station>(L)) {
         auto& s = v.get<ecs::station>();
         if (s.endpoint != 0xffff) {
