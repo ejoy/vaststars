@@ -19,3 +19,142 @@ mount: 1
 policy:
   ant.general|name
   ant.render|render
+---
+data:
+  name: hitch1
+  scene:
+    s: {6, 6, 6}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    hitch1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  efk: /pkg/vaststars.resources/effect/efk/furnace_smoke.efk
+  name: root
+  scene: {}
+  tag:
+    effect
+mount: 3
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  name: hitch2
+  scene:
+    s: {4, 4, 4}
+    t: {-6, 23.299999237060547, -6, 1}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    hitch2
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  efk: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+  name: root
+  scene: {}
+  tag:
+    effect
+mount: 5
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  name: hitch3
+  scene:
+    s: {4, 4, 4}
+    t: {6, 23.299999237060547, 6, 1}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    hitch3
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  efk: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+  name: root
+  scene: {}
+  tag:
+    effect
+mount: 7
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  name: hitch4
+  scene:
+    s: {4, 4, 4}
+    t: {-6, 23.299999237060547, 6, 1}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    hitch4
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  efk: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+  name: root
+  scene: {}
+  tag:
+    effect
+mount: 9
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  name: hitch5
+  scene: {}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    hitch5
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  efk: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+  name: root
+  scene:
+    s: {4, 4, 4}
+    t: {6, 23.299999237060547, -6, 1}
+  tag:
+    effect
+mount: 11
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
