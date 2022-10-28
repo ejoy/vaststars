@@ -13,9 +13,6 @@ namespace roadnet::road {
         if (((a == RoadCrossLR) || (a == RoadCrossRL)) && ((b == RoadCrossTB) || (b == RoadCrossBT))) {
             return true;
         }
-        if (((a == RoadCrossTB) || (a == RoadCrossBT)) && ((b == RoadCrossLR) || (b == RoadCrossRL))) {
-            return true;
-        }
         if (a == RoadCrossLR && (b == RoadCrossBL || b == RoadCrossRB)) {
             return true;
         }
@@ -33,7 +30,7 @@ namespace roadnet::road {
     static constexpr uint16_t constGetCrossMask(RoadType a) {
         uint16_t m = 0;
         for (uint8_t i = 0; i < 16; ++i) {
-            if (constIsCross(a, RoadType(i))) {
+            if (constIsCross(a, RoadType(i)) || constIsCross(RoadType(i), a)) {
                 m |= 1 << i;
             }
         }
@@ -169,7 +166,6 @@ namespace roadnet::road {
                 continue;
             }
             direction out = l.getDirection(w);
-            // assert((direction)i != out);
             if (!w.Road(neighbor[(uint8_t)out]).canEntry(w, reverse(out))) {
                 continue;
             }
