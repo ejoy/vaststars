@@ -16,6 +16,7 @@
             .two-item-block {
                 width: 95%;
                 height: 17%;
+                margin: 0.3vmin 0;
                 flex-direction: row;
                 justify-content: space-evenly;
                 align-items: center;
@@ -27,7 +28,6 @@
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: center;
-                margin:0.3vmin 0;
                 background-color:burlywood;
             }
             .region-title {
