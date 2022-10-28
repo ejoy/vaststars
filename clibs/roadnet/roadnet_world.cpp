@@ -345,11 +345,7 @@ namespace roadnet {
                     auto result = findNeighbor(map, loc, dir);
                     roadid neighbor_id = crossMap[result.l];
                     road::crossroad& neighbor = crossAry[neighbor_id.id];
-                    if (isRealNeighbor(loc, result.l)) {
-                        crossroad.setNeighbor(dir, neighbor_id);
-                        neighbor.setNeighbor(reverse(result.dir), id);
-                    }
-                    else if (loc == result.l) {
+                    if (loc == result.l) {
                         straightData& straight = straightVec.emplace_back(
                             genStraightId++,
                             result.n,
@@ -388,10 +384,13 @@ namespace roadnet {
         straightAry.reset(genStraightId);
         for (auto& data: straightVec) {
             road::straight& straight = straightAry[data.id];
-            straight.init(data.id, data.len * road::straight::N, data.finish_dir);
+            size_t length = data.len * road::straight::N + 1;
+            straight.init(data.id, length, data.finish_dir);
             straight.setLorryOffset(genLorryOffset);
             straight.setNeighbor(data.neighbor);
-            genLorryOffset += data.len * road::straight::N;
+            auto& crossroad = crossAry[data.neighbor.id];
+            crossroad.setWaiting(data.finish_dir, genLorryOffset + length - 1);
+            genLorryOffset += length;
         }
         endpointAry.reset(genLorryOffset);
         lorryAry.reset(genLorryOffset);
@@ -412,12 +411,15 @@ namespace roadnet {
         ary_call(*this, ti, crossAry, &road::crossroad::update);
         ary_call(*this, ti, straightAry, &road::straight::update);
     }
-    basic_road& world::Road(roadid id) {
+    road::straight& world::StraightRoad(roadid id) {
         assert(id != roadid::invalid());
-        if (id.cross) {
-            return crossAry[id.id];
-        }
+        assert(!id.cross);
         return straightAry[id.id];
+    }
+    road::crossroad& world::CrossRoad(roadid id) {
+        assert(id != roadid::invalid());
+        assert(id.cross);
+        return crossAry[id.id];
     }
     lorryid& world::LorryInRoad(uint32_t index) {
         return lorryAry[index];

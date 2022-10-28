@@ -33,7 +33,6 @@ namespace roadnet {
         RoadCrossTL,   RoadCrossTT, RoadCrossTR, RoadCrossTB,
         RoadCrossRL,   RoadCrossRT, RoadCrossRR, RoadCrossRB,
         RoadCrossBL,   RoadCrossBT, RoadCrossBR, RoadCrossBB,
-        RoadCrossZL,   RoadCrossZT, RoadCrossZR, RoadCrossZB
     };
 
     struct loction {

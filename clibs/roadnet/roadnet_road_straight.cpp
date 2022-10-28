@@ -57,25 +57,6 @@ namespace roadnet::road {
                     ep.pushMap.pop_front();
                 }
             }
-            else {
-                auto& lorry = w.Lorry(l);
-                if (lorry.ready()) {
-                    auto& n = w.Road(neighbor);
-                    if (n.tryEntry(w, l, dir)) {
-                        ep.lorry[endpoint::OUT] = lorryid::invalid();
-                    }
-                }
-            }
-        }
-        lorryid l = w.LorryInRoad(lorryOffset + 0);
-        if (l) {
-            auto& lorry = w.Lorry(l);
-            if (!lorry.ready()) {
-                auto& n = w.Road(neighbor);
-                if (n.tryEntry(w, l, dir)) {
-                    delLorry(w, 0);
-                }
-            }
         }
 
         for (uint16_t i = 1; i < len; ++i) {

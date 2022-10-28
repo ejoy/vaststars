@@ -163,24 +163,15 @@ namespace roadnet::lua {
             uint16_t straight = 0;
             lorryid next(lua_State* L, roadnet::world& w, roadnet::road_coord& coord) {
                 if (cross) {
-                    if (index < 6 * w.crossAry.size()) {
-                        uint16_t road_idx = (uint16_t)(index / 6);
-                        uint8_t  entry_idx = index % 6;
+                    if (index < 2 * w.crossAry.size()) {
+                        uint16_t road_idx = (uint16_t)(index / 2);
+                        uint8_t  entry_idx = index % 2;
                         index++;
                         auto& road = w.crossAry[road_idx];
-                        if (entry_idx < 4) {
-                            auto& id = road.wait_lorry[entry_idx];
-                            if (id != roadnet::lorryid::invalid()) {
-                                coord = {{1, road_idx}, (uint16_t)(0x10 | entry_idx)};
-                                return id;
-                            }
-                        }
-                        else {
-                            auto& id = road.cross_lorry[entry_idx-4];
-                            if (id != roadnet::lorryid::invalid()) {
-                                coord = {{1, road_idx}, (uint16_t)road.cross_status[entry_idx-4]};
-                                return id;
-                            }
+                        auto& id = road.cross_lorry[entry_idx];
+                        if (id != roadnet::lorryid::invalid()) {
+                            coord = {{1, road_idx}, (uint16_t)road.cross_status[entry_idx]};
+                            return id;
                         }
                         return next(L, w, coord);
                     }
