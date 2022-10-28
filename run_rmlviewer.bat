@@ -1,19 +1,25 @@
 @echo off
 chcp 65001
 set current_dir=%~dp0
-set exe=bin\msvc\debug\vaststars.exe
-set titlemsg=debug
-set param=.\3rd\ant\tools\rmlviewer\main.lua
+set mode=release
+set exe=bin\msvc\%mode%\vaststars.exe
+set cachedir=.build
+set param=startup/main.lua
 set /p rml=rml file:
 
 :AGAIN
 
 pushd %current_dir%
-if not exist "%exe%" (
-	set exe=bin\msvc\release\vaststars.exe
-	set titlemsg=release
+if exist "%cachedir%" (
+	rem rd /s /q %cachedir%
 )
 
+if not exist "%exe%" (
+	set mode=debug
+	set exe=bin\msvc\debug\vaststars.exe
+)
+
+title %mode% - %current_dir%%exe%
 %current_dir%%exe% %param% %rml%
 popd
 
