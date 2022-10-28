@@ -49,6 +49,17 @@ local function get_relative(file, dir)
     return file:match(s)
 end
 
+local checked = {}
+checked[#checked+1] = function(v)
+    return v.data.name == "Scene" and next(v.data.scene)
+end
+checked[#checked+1] = function(v)
+    return v.data.slot
+end
+checked[#checked+1] = function(v)
+    return v.data.efk
+end
+
 local function save(prefab_dir, prefab_patch_dir)
     if not fs.exists(prefab_patch_dir) then
         fs.create_directories(prefab_patch_dir)
@@ -62,8 +73,10 @@ local function save(prefab_dir, prefab_patch_dir)
 
         local backup_data = {}
         for _, v in ipairs(data) do
-            if v.data and (v.data.name == "Scene" and next(v.data.scene) or v.data.slot) then
-                backup_data[#backup_data+1] = v
+            for _, check in ipairs(checked) do
+                if v.data and check(v) then
+                    backup_data[#backup_data+1] = v
+                end
             end
         end
 
@@ -104,7 +117,7 @@ local function patch(prefab_dir, prefab_patch_dir)
 
         local replace = {}
         for index, v in ipairs(data) do
-            if cache[v.data.name] then
+            if v.data and cache[v.data.name] then
                 replace[#replace + 1] = {index = index, v = cache[v.data.name].v}
                 cache[v.data.name] = nil
             end

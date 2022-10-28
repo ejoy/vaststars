@@ -158,12 +158,12 @@ end
 
 -- TODO: spec case for road
 function M.covers_roadside(prototype_name, entity_dir, roadside_dir, v)
-    local prototype_name, dir = M.set_connection(prototype_name, entity_dir, roadside_dir, false)
+    -- local prototype_name, dir = M.set_connection(prototype_name, entity_dir, roadside_dir, false)
     local bits
     local typeobject = iprototype.queryByName("entity", prototype_name)
 
     if v == true then
-        bits = assert(prototype_bits[prototype_name][dir])
+        bits = assert(prototype_bits[prototype_name][entity_dir])
         bits = prototype_bits[prototype_name][entity_dir]
         bits = bits | (1 << get_dir_bit(typeobject.flow_type, roadside_dir, v))
     else

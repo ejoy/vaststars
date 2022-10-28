@@ -35,12 +35,14 @@ policy:
   ant.animation|slot
 ---
 data:
-  efk: /pkg/vaststars.resources/effect/efk/furnace_smoke.efk
+  efk: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
   name: root
-  scene: {}
+  scene:
+    s: {4, 4, 4}
+    t: {6, 23.299999237060547, -6, 1}
   tag:
     effect
-mount: 3
+mount: 11
 policy:
   ant.general|name
   ant.scene|scene_object
