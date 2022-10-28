@@ -23,3 +23,16 @@ policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
+---
+data:
+  efk: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+  name: root
+  scene: {}
+  tag:
+    effect
+mount: 5
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag

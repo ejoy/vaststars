@@ -23,9 +23,9 @@ data:
   mesh: /pkg/vaststars.resources/glb/miner-1.glb|meshes/Cylinder.001_P1.meshbin
   name: Cylinder.001
   skinning: true
-  visible_state: main_view|selectable|cast_shadow
   tag:
     u_emissive_factor
+  visible_state: main_view|selectable|cast_shadow
 policy:
   ant.general|name
   ant.render|skinrender
@@ -36,9 +36,9 @@ data:
   mesh: /pkg/vaststars.resources/glb/miner-1.glb|meshes/BezierCurve.001_P1.meshbin
   name: BezierCurve.001
   skinning: true
-  visible_state: main_view|selectable|cast_shadow
   tag:
     u_emissive_factor
+  visible_state: main_view|selectable|cast_shadow
 policy:
   ant.general|name
   ant.render|skinrender
@@ -50,9 +50,9 @@ data:
   name: Cylinder
   scene:
     t: {-1.3385653495788574, 2, 0}
-  visible_state: main_view|selectable|cast_shadow
   tag:
     u_emissive_factor
+  visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name
@@ -64,9 +64,9 @@ data:
   mesh: /pkg/vaststars.resources/glb/miner-1.glb|meshes/Cylinder.005_P1.meshbin
   name: Cylinder.004
   skinning: true
-  visible_state: main_view|selectable|cast_shadow
   tag:
     u_emissive_factor
+  visible_state: main_view|selectable|cast_shadow
 policy:
   ant.general|name
   ant.render|skinrender
@@ -77,9 +77,9 @@ data:
   mesh: /pkg/vaststars.resources/glb/miner-1.glb|meshes/Plane_P1.meshbin
   name: Plane.004
   skinning: true
-  visible_state: main_view|selectable|cast_shadow
   tag:
     u_emissive_factor
+  visible_state: main_view|selectable|cast_shadow
 policy:
   ant.general|name
   ant.render|skinrender

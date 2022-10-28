@@ -1,0 +1,12 @@
+---
+data:
+  efk: /pkg/vaststars.resources/effect/efk/baiyan.efk
+  name: root
+  scene: {}
+  tag:
+    effect
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
