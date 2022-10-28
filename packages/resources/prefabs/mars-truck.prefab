@@ -11,8 +11,37 @@ data:
   mesh: /pkg/vaststars.resources/glb/mars-truck.glb|meshes/Cylinder_P1.meshbin
   name: Cylinder
   scene: {}
-  visible_state: main_view|selectable|cast_shadow
+  visible_state: cast_shadow|selectable|main_view
 mount: 1
 policy:
   ant.general|name
   ant.render|render
+---
+data:
+  name: hitch1
+  scene:
+    s: {4, 4, 4}
+    t: {0, 0, 0.699999988079071, 1}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    hitch1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  efk: /pkg/vaststars.resources/effect/efk/mars-truck_smoke.efk
+  name: root
+  scene:
+    s: {1, 1, 1}
+  tag:
+    effect
+mount: 3
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
