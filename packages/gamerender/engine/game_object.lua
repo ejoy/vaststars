@@ -334,6 +334,7 @@ function igame_object.create(init)
             "/pkg/vaststars.resources/effect/efk/a1.texture",
             "/pkg/vaststars.resources/effect/efk/a2.texture",
             "/pkg/vaststars.resources/effect/efk/a3.texture",
+            "/pkg/vaststars.resources/effect/efk/a4.texture",
         }
     end
 
