@@ -3,10 +3,6 @@ fx:
   setting:
     ALPHAMODE_OPAQUE: 1
     GPU_SKINNING: 1
-    HAS_BASECOLOR_TEXTURE: 1
-    HAS_EMISSIVE_TEXTURE: 1
-    HAS_METALLIC_ROUGHNESS_TEXTURE: 1
-    HAS_NORMAL_TEXTURE: 1
     lighting: on
     shadow_cast: on
     shadow_receive: on
