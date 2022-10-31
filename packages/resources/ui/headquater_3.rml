@@ -1,0 +1,191 @@
+<rml>
+    <head>
+        <style>
+            body {
+                font: 100% "宋体";
+            }
+
+            .items-region {
+                width: 100%;
+                height: 100%;
+                border: 1px rgb(89, 73, 39);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .two-item-block {
+                width: 95%;
+                height: 17%;
+                margin: 0.3vmin 0;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+            }
+            .single-item-block {
+                width: 47%;
+                height: 100%;
+                border: 1px rgb(89, 73, 39);
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                background-color:burlywood;
+            }
+            .region-title {
+                width: 33%;
+                height: 100%;
+                -webkit-text-stroke: 0.2vmin #000;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                font-size: 5vmin;
+                text-align: center;
+            }
+            .single-item {
+                flex-direction: column;
+                align-items:center;
+                justify-content:center;
+                background-size:cover;
+                height:100%;
+                width:50%;
+            }
+            .single-item-icon {
+                width: 8.00vmin;
+                height: 8.00vmin;
+                background-image: "textures/construct/chest.texture";
+                background-size: cover;
+            }
+            .single-item-title {
+                font-size: 2.80vmin;
+                text-align: center;
+                color:rgb(255, 255, 255);
+                -webkit-text-stroke: 0.3vmin rgb(0, 0, 0);
+                width: 50%;
+            }
+        </style>
+        <style path = "common/building_style.rcss"/>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+            })
+
+            function start.ClickClose()
+                ui_sys.close()
+            end
+
+        </script>
+    </head>
+    <body>
+        <div class="item-container-region"  data-model="start">
+            <!-- 左边面板 begin -->
+            <div class="panel" style="width: 45%;">
+                <div class="header" id = "item-name-block">
+                    <button class = "back-button" data-event-click="ClickClose()"/>
+                    <div class = "menu-title" style="width: 70%;">指挥中心</div>
+                </div>
+                <div style="border-bottom: 1px rgb(89, 73, 39);"/>
+                <div class="column" style="width: 100%;height: 93%;">
+                    <div class="build-info-reigon" style='background-image: "textures/build_background/pic_chest.texture"; background-size: cover;'>
+                        <div class="build-model-block">
+                            <div class="build-model"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 左边面板 end -->
+
+            <!-- 右边面板 begin -->
+            <div class="panel" style="width: 45%;">
+                <div class="header" style="justify-content: flex-end; border: 0.13vmin rgb(89, 73, 39);">
+                    <div class="menu-title" style="flex-direction: row; align-items: center; width:auto;">储存仓库</div>
+                </div>
+                <div class="column" style="width: 100%;height: 93%;">
+                    <!-- 物品栏显示 start -->
+                    <div class="item-container" style="height: 75%;">
+                        <div style="width:100%; overflow: hidden;">
+                            <div class = "items-region" style="justify-content:flex-start;">
+                                <div class="single-item-block" style="width:100%; height:10%; background-color: transparent; border: 0vmin; justify-content: flex-end;">
+                                    <div class="region-title" style="font-size:4vmin;">库存： 100/100</div>
+                                </div>
+                                <div class="two-item-block">
+                                    <div class="single-item-block">
+                                        <div class="single-item">
+                                            <div class="single-item-icon"/>
+                                            <div class="single-item-title">储藏箱</div>
+                                        </div>
+                                        <div class = "single-item-title" style="font-size: 4vmin; text-align: left;">X 100</div>
+                                    </div>
+                                    <div class="single-item-block">
+                                        <div class="single-item">
+                                            <div class="single-item-icon"/>
+                                            <div class="single-item-title">储藏箱</div>
+                                        </div>
+                                        <div class = "single-item-title" style="font-size: 4vmin; text-align: left;">X 1000</div>
+                                    </div>
+                                </div>
+                                <div class="two-item-block">
+                                    <div class="single-item-block">
+                                        <div class="single-item">
+                                            <div class="single-item-icon"/>
+                                            <div class="single-item-title">储藏箱</div>
+                                        </div>
+                                        <div class = "single-item-title" style="font-size: 4vmin; text-align: left;">X 10</div>
+                                    </div>
+                                    <div class="single-item-block">
+                                        <div class="single-item">
+                                            <div class="single-item-icon"/>
+                                            <div class="single-item-title">储藏箱</div>
+                                        </div>
+                                        <div class = "single-item-title" style="font-size: 4vmin; text-align: left;">X 1</div>
+                                    </div>
+                                </div>
+                                <div class="two-item-block">
+                                    <div class="single-item-block">
+                                        <div class="single-item">
+                                            <div class="single-item-icon"/>
+                                            <div class="single-item-title">储藏箱</div>
+                                        </div>
+                                        <div class = "single-item-title" style="font-size: 4vmin; text-align: left;">X 100</div>
+                                    </div>
+                                    <div class="single-item-block">
+                                        <div class="single-item">
+                                            <div class="single-item-icon"/>
+                                            <div class="single-item-title">储藏箱</div>
+                                        </div>
+                                        <div class = "single-item-title" style="font-size: 4vmin; text-align: left;">X 100</div>
+                                    </div>
+                                </div>
+                                <div class="two-item-block">
+                                    <div class="single-item-block">
+                                        <div class="single-item">
+                                            <div class="single-item-icon"/>
+                                            <div class="single-item-title">储藏箱</div>
+                                        </div>
+                                        <div class = "single-item-title" style="font-size: 4vmin; text-align: left;">X 100</div>
+                                    </div>
+                                    <div class="single-item-block">
+                                        <div class="single-item">
+                                            <div class="single-item-icon"/>
+                                            <div class="single-item-title">储藏箱</div>
+                                        </div>
+                                        <div class = "single-item-title" style="font-size: 4vmin; text-align: left;">X 100</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>      
+                    </div>
+                    <!-- 物品栏显示 end -->
+                    <!-- 物品栏分类页签 start -->
+                    <div class = "tab-container" style="flex-grow: 1;">
+                        <div data-for = "item_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 53%;">
+                            <workbutton data-event-click="clickCategory(it.category)" style = "width: 100%;" data-style-background-color="it.category == cur_item_category ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'">
+                                <div class="workbutton-bg" data-style-background-image="it.icon" />
+                                <div class="catalog-desc">{{it.category}}</div>
+                            </workbutton>
+                        </div>
+                    </div>
+                    <!-- 物品栏分类页签 end -->
+                </div>
+            </div>       
+        </div>
+    </body>
+</rml>

@@ -13,9 +13,6 @@ namespace roadnet::road {
         if (((a == RoadCrossLR) || (a == RoadCrossRL)) && ((b == RoadCrossTB) || (b == RoadCrossBT))) {
             return true;
         }
-        if (((a == RoadCrossTB) || (a == RoadCrossBT)) && ((b == RoadCrossLR) || (b == RoadCrossRL))) {
-            return true;
-        }
         if (a == RoadCrossLR && (b == RoadCrossBL || b == RoadCrossRB)) {
             return true;
         }
@@ -33,7 +30,7 @@ namespace roadnet::road {
     static constexpr uint16_t constGetCrossMask(RoadType a) {
         uint16_t m = 0;
         for (uint8_t i = 0; i < 16; ++i) {
-            if (constIsCross(a, RoadType(i))) {
+            if (constIsCross(a, RoadType(i)) || constIsCross(RoadType(i), a)) {
                 m |= 1 << i;
             }
         }
@@ -72,29 +69,8 @@ namespace roadnet::road {
         neighbor[(uint8_t)dir] = id;
     }
 
-    bool crossroad::canEntry(world& w, direction dir) {
-        uint8_t idx = (uint8_t)dir;
-        return !wait_lorry[idx];
-    }
-
-    bool crossroad::tryEntry(world& w, lorryid id, direction dir) {
-        uint8_t idx = (uint8_t)dir;
-        if (wait_lorry[idx]) {
-            return false;
-        }
-        wait_lorry[idx] = id;
-        auto& l = w.Lorry(id);
-        l.initTick(kWaitTime);
-        return true;
-    }
-
     void crossroad::addLorry(world& w, lorryid id, uint16_t offset) {
         RoadType type = RoadType(offset);
-        if (type >= RoadCrossZL) {
-            delLorry(w, offset);
-            tryEntry(w, id, direction(type & 0x03u));
-            return;
-        }
         for (size_t i = 0; i < 2; ++i) {
             if (!cross_lorry[i]) {
                 auto& l = w.Lorry(id);
@@ -109,9 +85,6 @@ namespace roadnet::road {
 
     bool crossroad::hasLorry(world& w, uint16_t offset) {
         RoadType type = RoadType(offset);
-        if (type >= RoadCrossZL) {
-            return !wait_lorry[type & 0x03u];
-        }
         if (cross_lorry[0] && cross_lorry[1]) {
             return false;
         }
@@ -126,16 +99,20 @@ namespace roadnet::road {
 
     void crossroad::delLorry(world& w, uint16_t offset) {
         RoadType type = RoadType(offset);
-        if (type >= RoadCrossZL) {
-            wait_lorry[type & 0x03u] = lorryid::invalid();
-            return;
-        }
         for (size_t i = 0; i < 2; ++i) {
             if (cross_lorry[i] && cross_status[i] == type) {
                 cross_lorry[i] = lorryid::invalid();
                 return;
             }
         }
+    }
+
+    void crossroad::setWaiting(direction dir, uint32_t offset) {
+        waiting[(size_t)dir] = offset;
+    }
+
+    lorryid& crossroad::waitingLorry(world& w, direction dir) {
+        return w.LorryInRoad(waiting[(size_t)dir]);
     }
 
     void crossroad::update(world& w, uint64_t ti) {
@@ -149,7 +126,7 @@ namespace roadnet::road {
                 continue;
             }
             RoadType t = cross_status[i];
-            auto& road = w.Road(neighbor[t & 0x03u]);
+            auto& road = w.StraightRoad(neighbor[t & 0x03u]);
             direction out = direction(t & 0x03u);
             if (road.tryEntry(w, id, reverse(out))) {
                 cross_lorry[i] = lorryid::invalid();
@@ -157,7 +134,7 @@ namespace roadnet::road {
         }
         for (uint8_t ii = 0; ii < 4; ++ii) {
             uint8_t i = (ii + (ti>>4)) % 4; // swap the order of the lorries every 16 ticks
-            lorryid id = wait_lorry[i];
+            lorryid id = waitingLorry(w, direction(i));
             if (!id) {
                 continue;
             }
@@ -169,8 +146,7 @@ namespace roadnet::road {
                 continue;
             }
             direction out = l.getDirection(w);
-            // assert((direction)i != out);
-            if (!w.Road(neighbor[(uint8_t)out]).canEntry(w, reverse(out))) {
+            if (!w.StraightRoad(neighbor[(uint8_t)out]).canEntry(w, reverse(out))) {
                 continue;
             }
             RoadType type = RoadType(((uint8_t)i << 2) | (uint8_t)out);
@@ -190,7 +166,7 @@ namespace roadnet::road {
                 }
                 idx = 0;
             }
-            wait_lorry[i] = lorryid::invalid();
+            waitingLorry(w, direction(i)) = lorryid::invalid();
             cross_lorry[idx] = id;
             cross_status[idx] = type;
             l.initTick(kCrossTime);

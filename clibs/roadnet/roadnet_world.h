@@ -20,7 +20,8 @@ namespace roadnet {
         void placeLorry(endpointid e, lorryid l);
 
         void        update(uint64_t ti);
-        basic_road& Road(roadid id);
+        road::straight& StraightRoad(roadid id);
+        road::crossroad& CrossRoad(roadid id);
         lorry&      Lorry(lorryid id);
         lorryid&    LorryInRoad(uint32_t index);
         endpointid& EndpointInRoad(uint32_t index);

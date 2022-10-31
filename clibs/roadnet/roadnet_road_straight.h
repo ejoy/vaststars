@@ -7,7 +7,7 @@
 #include "roadnet_coord.h"
 
 namespace roadnet::road {
-    struct straight: public basic_road {
+    struct straight {
         static inline const uint16_t N = 2;
 
         uint16_t id;
@@ -18,8 +18,8 @@ namespace roadnet::road {
 
         void init(uint16_t id, uint16_t len, direction dir);
         void update(world& w, uint64_t ti);
-        bool canEntry(world& w, direction dir) override;
-        bool tryEntry(world& w, lorryid l, direction dir) override;
+        bool canEntry(world& w, direction dir);
+        bool tryEntry(world& w, lorryid l, direction dir);
         void setNeighbor(roadid id);
         void setLorryOffset(uint32_t offset) { lorryOffset = offset; }
         void setEndpoint(world& w, uint16_t offset, endpointid id);
