@@ -56,6 +56,14 @@
                 width: 11.33vmin;
                 margin: 0.00vmin;
             }
+            .button-change {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width: 24.00vmin;
+                height: 9.33vmin;
+                background-color: rgb(52, 207, 115);
+            }
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
@@ -111,16 +119,21 @@
                                         <div class = "percent-num" style="position:absolute; left:18.5vmin; top:0.5vmin;">100/100</div>
                                     </div>   
                                 </div>
-                                <div class="single-item-block">
-                                    <div class="single-item">
-                                        <div class="single-item-icon"/>
-                                        <div class="single-item-title">储藏箱</div>
-                                    </div>
-                                    <div class="progress-bar-block" style = "margin:0 0.2vmin; width: 70%; height:50%;">
-                                        <div class="progress-background"/>
-                                        <div class = "percent-num" style="position:absolute; left:18.5vmin; top:0.5vmin;">100/100</div>
-                                    </div>  
+
+                                <!-- 点击数量下拉菜单 begin -->
+                                <div class="single-item-block" style="background-color:dimgrey;">
+                                    <div style="flex-direction:row; justify-content: center; width:100%; padding-top:0.3em;height:80%; align-items: center;">
+                                        <button class="button-change" style = "width: 15.00vmin; height: 7.33vmin; background-color: rgb(112,48,160); border: 0.20vmin rgb(255,249,214);">
+                                            <div class = "single-item-title" style="font-size: 6vmin;">-5</div>
+                                        </button>
+                                        <div style="font-size: 7.33vmin; margin:auto 0.6em; -webkit-text-stroke: 0.2vmin #000;">60</div>
+                                        <button class="button-change" style = "width: 15.00vmin; height: 7.33vmin; background-color: rgb(112,48,160); border: 0.20vmin rgb(255,249,214);">
+                                            <div class = "single-item-title" style="font-size: 6vmin;">+5</div>
+                                        </button>         
+                                    </div> 
                                 </div>
+                                <!-- 点击数量下拉菜单 end -->
+
                                 <div class="single-item-block">
                                     <div class="single-item">
                                         <div class="single-item-icon"/>
