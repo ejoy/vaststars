@@ -132,6 +132,7 @@ prototype "电解厂I" {
     drain = "30kW",
     group = {"化工"},
     priority = "secondary",
+    effect_file = "effect/efk/electrolyzer_lightning.efk",
     craft_category = {"电解"},
     fluidboxes = {
         input = {
@@ -183,6 +184,7 @@ prototype "水电站I" {
     power = "150kW",
     priority = "secondary",
     group = {"化工"},
+    effect_file = "effect/efk/hydro-plant_smoke.efk",
     craft_category = {"流体液体处理"},
     fluidboxes = {
         input = {
