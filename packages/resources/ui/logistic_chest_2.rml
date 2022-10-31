@@ -121,7 +121,7 @@
                                 </div>
 
                                 <!-- 点击数量下拉菜单 begin -->
-                                <div class="single-item-block" style="background-color:dimgrey;">
+                                <div class="single-item-block" style="background-color:rgb(114,87,4);">
                                     <div style="flex-direction:row; justify-content: center; width:100%; padding-top:0.3em;height:80%; align-items: center;">
                                         <button class="button-change" style = "width: 15.00vmin; height: 7.33vmin; background-color: rgb(112,48,160); border: 0.20vmin rgb(255,249,214);">
                                             <div class = "single-item-title" style="font-size: 6vmin;">-5</div>
