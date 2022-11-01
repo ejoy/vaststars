@@ -18,7 +18,6 @@ prototype "采矿机I" {
         input = {},
         output = {},
     },
-    effect_file = "effect/efk/miner_dust.efk",
     crossing = {
         connections = {
             {type="input-output", position={1,2,"S"}, roadside = true},
@@ -43,7 +42,6 @@ prototype "采矿机II" {
         input = {},
         output = {},
     },
-    effect_file = "effect/efk/miner_dust.efk",
     crossing = {
         connections = {
             {type="input-output", position={1,2,"S"}, roadside = true},
