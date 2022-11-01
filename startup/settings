@@ -29,7 +29,7 @@ graphic:
     bloom:
       enable: true
       inv_highlight: 0.2
-      threshold: 1.5
+      threshold: 2.3
   render:
     clear: CDS
     clear_color: 255
