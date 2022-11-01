@@ -232,7 +232,7 @@ function M:teardown_complete()
                 end
             end
         end
-        if e.chest_2 and e.chest_2.chest_in == e.chest_2.chest_out and e.chest_2.chest_in ~= 0xffff then
+        if e.chest and e.chest.chest_in == e.chest.chest_out and e.chest.chest_in ~= 0xffff then
             for prototype, count in pairs(ichest:item_counts(gameplay_core.get_world(), e)) do
                 item_counts[prototype] = item_counts[prototype] or 0
                 item_counts[prototype] = item_counts[prototype] + count

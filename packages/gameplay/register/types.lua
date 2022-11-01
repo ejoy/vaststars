@@ -238,6 +238,11 @@ local enum = {
 		nuclear = 1,
 		antimatter = 2,
 	},
+	chest_type = {
+		none = 0,
+		red = 1,
+		blue = 2,
+	},
 }
 
 local function register_enum(tname)

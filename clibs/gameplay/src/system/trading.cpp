@@ -171,8 +171,8 @@ lupdate(lua_State *L) {
             break;
         }
     }
-    for (auto& v : w.select<ecs::chest_2>(L)) {
-        auto& c = v.get<ecs::chest_2>();
+    for (auto& v : w.select<ecs::chest>(L)) {
+        auto& c = v.get<ecs::chest>();
         for (auto lorryId = rw.popLorry(c.endpoint); !!lorryId; lorryId = rw.popLorry(c.endpoint)) {
             auto& l = rw.Lorry(lorryId);
             if (l.gameplay.sell == 0xffff) {

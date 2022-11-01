@@ -37,15 +37,15 @@ end
 
 -- itemid, count
 function M.base_chest_place(world, ...)
-    for e in world.ecs:select "manual chest_2:in" do
-        return world:container_place(e.chest_2.chest_in, ...)
+    for e in world.ecs:select "manual chest:in" do
+        return world:container_place(e.chest.chest_in, ...)
     end
 end
 
 -- itemid, count
 function M.base_chest_pickup(world, ...)
-    for e in world.ecs:select "manual chest_2:in" do
-        return world:container_pickup(e.chest_2.chest_in, ...)
+    for e in world.ecs:select "manual chest:in" do
+        return world:container_pickup(e.chest.chest_in, ...)
     end
 end
 
@@ -74,10 +74,10 @@ end
 function M.base_chest(world)
     local chest = {}
     local ecs = world.ecs
-    for v in ecs:select "manual entity:in chest_2:in" do
+    for v in ecs:select "manual entity:in chest:in" do
         local typeobject = iprototype.queryById(v.entity.prototype)
         for i = 1, typeobject.slots do
-            local c, n = world:container_get(v.chest_2.chest_in, i)
+            local c, n = world:container_get(v.chest.chest_in, i)
             if c then
                 chest[c] = n
             end
