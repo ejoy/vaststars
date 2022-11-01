@@ -47,8 +47,8 @@ local function build(e, world)
     x = x + e.entity.x
     y = y + e.entity.y
     local endpoint = world.roadnet:create_endpoint(x, y, mapping[DIRECTION[dir]])
-    if e.chest_2 then
-        local chest = e.chest_2
+    if e.chest then
+        local chest = e.chest
         chest.endpoint = endpoint
 
         if chest.chest_in ~= 0xffff then
@@ -71,7 +71,7 @@ end
 function m.pre_build(world)
     local ecs = world.ecs
     if ecs:first("road_changed:in") then -- TODO: remove this temporary code
-        for e in ecs:select "chest_2:update entity:in" do
+        for e in ecs:select "chest:update entity:in" do
             build(e, world)
         end
         for e in ecs:select "station:update entity:in" do
@@ -81,7 +81,7 @@ function m.pre_build(world)
         ecs:clear "endpoint_changed"
         return
     end
-    for e in ecs:select "endpoint_changed:in chest_2:update entity:in" do
+    for e in ecs:select "endpoint_changed:in chest:update entity:in" do
         build(e, world)
     end
     for e in ecs:select "endpoint_changed:in station:update entity:in" do
@@ -92,7 +92,7 @@ end
 
 function m.restore_finish(world)
     local ecs = world.ecs
-    for e in ecs:select "chest_2:update entity:in" do
+    for e in ecs:select "chest:update entity:in" do
        build(e, world)
     end
     for e in ecs:select "station:update entity:in" do

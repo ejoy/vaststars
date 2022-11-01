@@ -29,9 +29,4 @@ namespace roadnet {
         auto operator <=>(const roadid& o) const = default;
     };
     static_assert(sizeof(roadid)==2);
-
-    struct basic_road {
-        virtual bool canEntry(world& w, direction dir) = 0;
-        virtual bool tryEntry(world& w, lorryid l, direction dir) = 0;
-    };
 }

@@ -305,9 +305,9 @@ namespace lua_world {
             }
         }
         std::swap(w.manual.todos, todos);
-        for (auto& v : w.select<ecs::manual, ecs::chest_2>(L)) {
+        for (auto& v : w.select<ecs::manual, ecs::chest>(L)) {
             auto& m = v.get<ecs::manual>();
-            auto& c = v.get<ecs::chest_2>();
+            auto& c = v.get<ecs::chest>();
             if (w.manual.rebuild(L, w, c)) {
                 if (reset) {
                     w.manual.sync(m);

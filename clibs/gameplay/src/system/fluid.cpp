@@ -124,9 +124,9 @@ lupdate(lua_State *L) {
 	for (auto& [_,f] : w.fluidflows) {
 		f.update();
 	}
-	for (auto& e : w.select<ecs::fluidboxes, ecs::assembling, ecs::chest_2>(L)) {
+	for (auto& e : w.select<ecs::fluidboxes, ecs::assembling, ecs::chest>(L)) {
 		ecs::assembling& a = e.get<ecs::assembling>();
-		ecs::chest_2& c2 = e.get<ecs::chest_2>();
+		ecs::chest& c2 = e.get<ecs::chest>();
 		if (a.recipe != 0) {
 			ecs::fluidboxes& fb = e.get<ecs::fluidboxes>();
 			chest& chest_in = w.query_chest(c2.chest_in);

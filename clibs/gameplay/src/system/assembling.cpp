@@ -12,7 +12,7 @@ extern "C" {
 #define STATUS_WORKING 2
 
 static void
-sync_input_fluidbox(world& w, ecs::chest_2& c2, ecs::fluidboxes& fb, chest& chest) {
+sync_input_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb, chest& chest) {
 	for (size_t i = 0; i < 4; ++i) {
 		uint16_t fluid = fb.in[i].fluid;
 		if (fluid != 0) {
@@ -24,7 +24,7 @@ sync_input_fluidbox(world& w, ecs::chest_2& c2, ecs::fluidboxes& fb, chest& ches
 }
 
 static void
-sync_output_fluidbox(world& w, ecs::chest_2& c2, ecs::fluidboxes& fb, chest& chest) {
+sync_output_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb, chest& chest) {
 	for (size_t i = 0; i < 3; ++i) {
 		uint16_t fluid = fb.out[i].fluid;
 		if (fluid != 0) {
@@ -36,9 +36,9 @@ sync_output_fluidbox(world& w, ecs::chest_2& c2, ecs::fluidboxes& fb, chest& che
 }
 
 static void
-assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::chest_2, ecs::capacitance, ecs::entity>& v) {
+assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::chest, ecs::capacitance, ecs::entity>& v) {
     ecs::assembling& a = v.get<ecs::assembling>();
-    ecs::chest_2& c2 = v.get<ecs::chest_2>();
+    ecs::chest& c2 = v.get<ecs::chest>();
     auto consumer = get_consumer(L, w, v);
 
     // step.1
@@ -98,7 +98,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (auto& v : w.select<ecs::assembling, ecs::chest_2, ecs::capacitance, ecs::entity>(L)) {
+    for (auto& v : w.select<ecs::assembling, ecs::chest, ecs::capacitance, ecs::entity>(L)) {
         assembling_update(L, w, v);
     }
     return 0;

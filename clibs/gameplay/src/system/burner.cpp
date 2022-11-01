@@ -12,7 +12,7 @@ extern "C" {
 #define STATUS_DONE 1
 
 static void
-checkFinish(lua_State* L, world& w, ecs::burner& b, ecs::chest_2& c) {
+checkFinish(lua_State* L, world& w, ecs::burner& b, ecs::chest& c) {
 	if (b.progress == STATUS_DONE) {
 		prototype_context recipe = w.prototype(L, b.recipe);
 		chest& chest = w.query_chest(c.chest_out);
@@ -26,21 +26,21 @@ checkFinish(lua_State* L, world& w, ecs::burner& b, ecs::chest_2& c) {
 static int
 lupdate(lua_State *L) {
 	world& w = *(world*)lua_touserdata(L, 1);
-	for (auto& v: w.select<ecs::burner, ecs::chest_2, ecs::entity, ecs::capacitance>(L)) {
+	for (auto& v: w.select<ecs::burner, ecs::chest, ecs::entity, ecs::capacitance>(L)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.shortage <= 0) {
-			checkFinish(L, w, v.get<ecs::burner>(), v.get<ecs::chest_2>());
+			checkFinish(L, w, v.get<ecs::burner>(), v.get<ecs::chest>());
 			continue;
 		}
 		ecs::entity& e = v.get<ecs::entity>();
 		prototype_context p = w.prototype(L, e.prototype);
 		unsigned int power = pt_power(&p);
 		if (c.shortage < power) {
-			checkFinish(L, w, v.get<ecs::burner>(), v.get<ecs::chest_2>());
+			checkFinish(L, w, v.get<ecs::burner>(), v.get<ecs::chest>());
 			continue;
 		}
 		ecs::burner& b = v.get<ecs::burner>();
-		ecs::chest_2& c2 = v.get<ecs::chest_2>();
+		ecs::chest& c2 = v.get<ecs::chest>();
 		if (b.progress == STATUS_DONE || b.progress == STATUS_IDLE) {
 			prototype_context recipe = w.prototype(L, b.recipe);
 			if (b.progress == STATUS_DONE) {

@@ -21,28 +21,29 @@ policy:
   ant.render|render
 ---
 data:
-  name: hitch1
+  name: effect
   scene:
     s: {6, 6, 6}
+    t: {0, 13.899999618530273, 0, 1}
   slot:
     follow_flag: 1
     joint_name: None
   tag:
-    hitch1
+    effect
 policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
 ---
 data:
-  efk: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+  efk: /pkg/vaststars.resources/effect/efk/furnace_smoke.efk
   name: root
   scene:
-    s: {4, 4, 4}
-    t: {6, 23.299999237060547, -6, 1}
+    s: {1, 1, 1}
+    t: {0, 0, 0, 1}
   tag:
     effect
-mount: 11
+mount: 3
 policy:
   ant.general|name
   ant.scene|scene_object
@@ -50,7 +51,7 @@ policy:
   ant.general|tag
 ---
 data:
-  name: hitch2
+  name: effect2
   scene:
     s: {4, 4, 4}
     t: {-6, 23.299999237060547, -6, 1}
@@ -58,7 +59,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    hitch2
+    effect2
 policy:
   ant.general|name
   ant.general|tag
@@ -78,7 +79,7 @@ policy:
   ant.general|tag
 ---
 data:
-  name: hitch3
+  name: effect3
   scene:
     s: {4, 4, 4}
     t: {6, 23.299999237060547, 6, 1}
@@ -86,7 +87,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    hitch3
+    effect3
 policy:
   ant.general|name
   ant.general|tag
@@ -106,7 +107,7 @@ policy:
   ant.general|tag
 ---
 data:
-  name: hitch4
+  name: effect4
   scene:
     s: {4, 4, 4}
     t: {-6, 23.299999237060547, 6, 1}
@@ -114,7 +115,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    hitch4
+    effect4
 policy:
   ant.general|name
   ant.general|tag
@@ -134,13 +135,13 @@ policy:
   ant.general|tag
 ---
 data:
-  name: hitch5
+  name: effect5
   scene: {}
   slot:
     follow_flag: 1
     joint_name: None
   tag:
-    hitch5
+    effect5
 policy:
   ant.general|name
   ant.general|tag

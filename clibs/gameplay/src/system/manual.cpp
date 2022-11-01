@@ -120,7 +120,7 @@ static manual_container sub(manual_container const& a, manual_container const& b
     return ab;
 }
 
-bool manual_crafting::rebuild(lua_State* L, world& w, ecs::chest_2& c) {
+bool manual_crafting::rebuild(lua_State* L, world& w, ecs::chest& c) {
     auto& chest_in = w.query_chest(c.chest_in);
     auto& chest_out = w.query_chest(c.chest_out);
 
@@ -173,9 +173,9 @@ static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
 
-    for (auto& v : w.select<ecs::manual, ecs::chest_2>(L)) {
+    for (auto& v : w.select<ecs::manual, ecs::chest>(L)) {
         auto& m = v.get<ecs::manual>();
-        auto& c = v.get<ecs::chest_2>();
+        auto& c = v.get<ecs::chest>();
 
         if (m.status == STATUS_REBUILD) {
             if (!w.manual.rebuild(L, w, c)) {
