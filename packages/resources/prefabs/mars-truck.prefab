@@ -18,7 +18,7 @@ policy:
   ant.render|render
 ---
 data:
-  name: hitch1
+  name: effect
   scene:
     s: {4, 4, 4}
     t: {0, 0, 0.699999988079071, 1}
@@ -26,7 +26,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    hitch1
+    effect
 policy:
   ant.general|name
   ant.general|tag

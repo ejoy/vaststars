@@ -7,7 +7,7 @@ logistics-center-animat:
     event_type: Effect
     life_time: 1
     link_info:
-      slot_eid: 19081
-      slot_name: hitch2
+      slot_eid: 14231
+      slot_name: effect
     name: Effect2
   time: 0.6
