@@ -87,7 +87,7 @@ end
 
 local function set_recipe(world, e, pt, recipe_name, fluids)
     local assembling = e.assembling
-    local chest = e.chest_2
+    local chest = e.chest
     assembling.progress = 0
     assembling.status = STATUS_IDLE
     chest.endpoint = 0xffff

@@ -7,7 +7,7 @@ component "entity" {
     "direction:byte",	-- 0:North 1:East 2:South 3:West
 }
 
-component "chest_2" {
+component "chest" {
     "chest_in:word",
     "chest_out:word",
     "fluidbox_in:word",
