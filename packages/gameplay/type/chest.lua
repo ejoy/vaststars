@@ -19,7 +19,7 @@ function c:ctor(init, pt)
         end
     end
     return {
-        chest_2 = {
+        chest = {
             endpoint = 0xffff,
             chest_in = id,
             chest_out = id,

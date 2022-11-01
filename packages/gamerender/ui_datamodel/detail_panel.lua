@@ -135,7 +135,7 @@ local function get_property(e, typeobject)
     }
     -- 显示建筑详细信息
     get_display_info(e, typeobject, t)
-    if e.chest_2 and e.chest_2.chest_in == e.chest_2.chest_out and e.chest_2.chest_in ~= 0xffff then
+    if e.chest and e.chest.chest_in == e.chest.chest_out and e.chest.chest_in ~= 0xffff then
         local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
         local slotnum = 0--t.values.slots
         local chest_list0 = {}
@@ -245,7 +245,7 @@ local function get_entity_property_list(object_id)
 
             local recipe_results = irecipe.get_elements(recipe_typeobject.results)
             for index, v in ipairs(recipe_results) do
-                local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest_2.chest_out, index)
+                local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest.chest_out, index)
                 if c then
                     property_list.minner_info = {icon = v.icon, count = n, need_count = v.count}
                 else
@@ -264,7 +264,7 @@ local function get_entity_property_list(object_id)
         local current_inputs = ilaboratory:get_elements(typeobject.inputs)
         local items = {}
         for i, value in ipairs(current_inputs) do
-            local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest_2.chest_in, i)
+            local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest.chest_in, i)
             items[#items+1] = {icon = value.icon, count = n or 0}
         end
         property_list.chest_list0 = items

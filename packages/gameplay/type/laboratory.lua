@@ -25,7 +25,7 @@ end
 function c:ctor(init, pt)
     local world = self
     local e = {
-        chest_2 = {
+        chest = {
             endpoint = 0xffff,
             chest_in = createChest(world, pt.inputs),
             chest_out = 0xffff,
