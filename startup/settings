@@ -42,6 +42,13 @@ graphic:
     normal_offset: 0
     size: 1024
     split_lamada: 0.8
-    split_num: 4
+    split_num: 2
+    split_ratios: {
+      {0.0, 0.1},
+			{0.1, 1.0}
+    }
+    min_variance: 0.012
+    depth_multiplier: 1000
     stabilize: true
     type: inv_z
+    far_offset: 500
