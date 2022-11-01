@@ -44,7 +44,7 @@ policy:
   ant.general|name
 ---
 data:
-  name: hitch2
+  name: effect
   scene:
     s: {0.699999988079071, 0.699999988079071, 0.699999988079071}
     t: {0, 10.5, 0, 1}
@@ -52,7 +52,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    hitch2
+    effect
 policy:
   ant.general|name
   ant.general|tag
