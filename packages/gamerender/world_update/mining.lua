@@ -12,7 +12,7 @@ local function update_world(world, get_object_func)
     end
     counter = 1
     local statistic = global.statistic
-    for e in world.ecs:select "mining:in entity:in eid:in" do
+    for e in world.ecs:select "entity:in eid:in" do
         local vsobject = get_object_func(e.entity.x, e.entity.y)
         local st = statistic.power[e.eid]
         if st then
