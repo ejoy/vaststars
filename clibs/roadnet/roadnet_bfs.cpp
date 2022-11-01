@@ -88,9 +88,8 @@ namespace roadnet {
         return true;
     }
 
-    static std::optional<direction> applyResult(world& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E);
-
     static std::optional<direction> applyStraight(world& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
+        assert(!N.cross);
         if (!ctx.results.contains({N, direction::n})) {
             ctx.openlist.insert(N);
             ctx.results.emplace(bfsRoad{N, direction::n}, G);
@@ -102,6 +101,7 @@ namespace roadnet {
     }
 
     static std::optional<direction> applyCross(world& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
+        assert(N.cross);
         direction prev = G.dir;
         for (uint8_t i = 0; i < 4; ++i) {
             direction dir = (direction)i;
@@ -113,7 +113,7 @@ namespace roadnet {
                     if (N == E) {
                         return dir;
                     }
-                    if (auto res = applyResult(w, ctx, {N, dir}, Next, E); res) {
+                    if (auto res = applyStraight(w, ctx, {N, dir}, Next, E); res) {
                         return res;
                     }
                 }
@@ -122,26 +122,20 @@ namespace roadnet {
         return std::nullopt;
     }
 
-    static std::optional<direction> applyResult(world& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
-        if (N.cross) {
-            return applyCross(w, ctx, G, N, E);
-        }
-        else {
-            return applyStraight(w, ctx, G, N, E);
-        }
-    }
-
     bool bfs(world& w, roadid S, roadid E, std::vector<direction>& path) {
-        bfsContext ctx;
-        if (auto res = applyResult(w, ctx, {S, direction::n}, S, E); res) {
-            return buildPath(ctx, {S, direction::n}, {E, *res}, path);
+        assert(!S.cross && !E.cross);
+        if (S == E) {
+            return true;
         }
+        bfsContext ctx;
+        ctx.openlist.insert(S);
+        ctx.results.emplace(bfsRoad{S, direction::n}, bfsRoad{S, direction::n});
         while (!ctx.openlist.empty()) {
             roadid G = pop(ctx.openlist);
             assert(!G.cross);
             auto& straight = w.straightAry[G.id];
             roadid N = straight.neighbor;
-            if (auto res = applyResult(w, ctx, {G, straight.dir}, N, E); res) {
+            if (auto res = applyCross(w, ctx, {G, straight.dir}, N, E); res) {
                 return buildPath(ctx, {S, direction::n}, {E, *res}, path);
             }
         }
