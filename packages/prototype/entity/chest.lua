@@ -8,6 +8,7 @@ prototype "小铁制箱子I" {
     construct_detector = {"exclusive"},
     type = {"entity", "chest"},
     group = {"物流" , "默认"},
+    chest_type = "none",
     area = "1x1",
     slots = 10,
 }
@@ -19,6 +20,7 @@ prototype "小铁制箱子II" {
     construct_detector = {"exclusive"},
     type = {"entity", "chest"},
     group = {"物流" , "默认"},
+    chest_type = "none",
     area = "1x1",
     slots = 20,
 }
@@ -30,6 +32,7 @@ prototype "大铁制箱子I" {
     construct_detector = {"exclusive"},
     type = {"entity", "chest"},
     group = {"物流" , "默认"},
+    chest_type = "none",
     area = "2x2",
     slots = 30,
 }
