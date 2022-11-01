@@ -4,7 +4,7 @@ set current_dir=%~dp0
 set mode=release
 set exe=bin\msvc\%mode%\vaststars.exe
 set cachedir=.build
-set param=startup/main.lua
+set param=.\3rd\ant\tools\rmlviewer\main.lua
 set /p rml=rml file:
 
 :AGAIN
