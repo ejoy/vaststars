@@ -8,6 +8,7 @@ prototype "组装机残骸" {
     construct_detector = {"exclusive"},
     type = {"entity", "chest"},
     group = {"物流" , "默认"},
+    chest_type = "none",
     area = "3x3",
     slots = 8,
 }
@@ -19,6 +20,7 @@ prototype "排水口残骸" {
     construct_detector = {"exclusive"},
     type = {"entity", "chest"},
     group = {"物流" , "默认"},
+    chest_type = "none",
     area = "2x2",
     slots = 9,
 }
@@ -30,6 +32,7 @@ prototype "抽水泵残骸" {
     construct_detector = {"exclusive"},
     type = {"entity", "chest"},
     group = {"物流" , "默认"},
+    chest_type = "none",
     area = "2x2",
     slots = 12,
 }
