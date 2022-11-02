@@ -22,7 +22,7 @@ prototype "排水口残骸" {
     group = {"物流" , "默认"},
     chest_type = "none",
     area = "2x2",
-    slots = 8,
+    slots = 7,
 }
 
 prototype "抽水泵残骸" {
@@ -34,7 +34,7 @@ prototype "抽水泵残骸" {
     group = {"物流" , "默认"},
     chest_type = "none",
     area = "2x2",
-    slots = 12,
+    slots = 11,
 }
 
 prototype "铁矿" {
