@@ -31,8 +31,7 @@ function c:ctor(init, pt)
     local e = {
         chest = {
             endpoint = 0xffff,
-            chest_in = createChest(world, pt.inputs),
-            chest_out = 0xffff,
+            id = createChest(world, pt.inputs),
             fluidbox_in = 0,
             fluidbox_out = 0,
         },

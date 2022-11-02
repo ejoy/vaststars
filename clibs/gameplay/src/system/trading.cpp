@@ -132,8 +132,8 @@ static bool DoTask(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadn
     auto& l = rw.Lorry(lorryId);
     l.gameplay = {
         order.item,
-        order.sell.endpoint,
-        order.buy.endpoint,
+        {order.sell.endpoint, order.sell.index},
+        {order.buy.endpoint, order.buy.index},
     };
     w.tradings.orders.pop();
     return true;
@@ -183,20 +183,20 @@ lupdate(lua_State *L) {
         auto& c = v.get<ecs::chest>();
         for (auto lorryId = rw.popLorry(c.endpoint); !!lorryId; lorryId = rw.popLorry(c.endpoint)) {
             auto& l = rw.Lorry(lorryId);
-            if (l.gameplay.sell == 0xffff) {
-                auto& chest = w.query_chest(c.chest_in);
-                chest.place_force(w, l.gameplay.item, 1);
+            if (l.gameplay.sell.endpoint == 0xffff) {
+                auto& chest = w.query_chest(c.id);
+                chest.place_force(w, l.gameplay.item, l.gameplay.sell.index, 1);
                 if (!DoTask(w, rw, lorryId, c.endpoint)) {
                     GoHome(w, rw, lorryId, c.endpoint);
                 }
             }
             else {
-                auto& chest = w.query_chest(c.chest_out);
-                chest.pickup_force(w, l.gameplay.item, 1);
-                if (!rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy)) {
+                auto& chest = w.query_chest(c.id);
+                chest.pickup_force(w, l.gameplay.item, l.gameplay.buy.index, 1);
+                if (!rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy.endpoint)) {
                     assert(false);
                 }
-                l.gameplay.sell = 0xffff;
+                l.gameplay.sell.endpoint = 0xffff;
             }
         }
     }

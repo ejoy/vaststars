@@ -37,17 +37,18 @@ void chest::set_fluid(uint16_t index, uint16_t value) {
 }
 
 bool chest::pickup(world& w, uint16_t endpoint, prototype_context& recipe) {
-    recipe_items* r = (recipe_items*)pt_ingredients(&recipe);
-    return pickup(w, endpoint, r, 0);
+    recipe_items* ingredients = (recipe_items*)pt_ingredients(&recipe);
+    return pickup(w, endpoint, ingredients, 0);
 }
 
 bool chest::place(world& w, uint16_t endpoint, prototype_context& recipe) {
-    recipe_items* r = (recipe_items*)pt_results(&recipe);
-    return place(w, endpoint, r, 0);
+    recipe_items* ingredients = (recipe_items*)pt_ingredients(&recipe);
+    recipe_items* results = (recipe_items*)pt_results(&recipe);
+    return place(w, endpoint, results, ingredients->n);
 }
 
 bool chest::pickup(world& w, uint16_t endpoint, const recipe_items* r, uint16_t offset) {
-    assert(offset + r->n <= slots.size());
+    assert(offset + r->n < slots.size());
     for (size_t i = 0; i < r->n; ++i) {
         auto& s = slots[offset+i];
         auto& t = r->items[i];
@@ -87,7 +88,7 @@ bool chest::place(world& w, uint16_t endpoint, const recipe_items* r, uint16_t o
 }
 
 bool chest::recover(world& w, const recipe_items* r, uint16_t offset) {
-    assert(offset + r->n <= slots.size());
+    assert(offset + r->n < slots.size());
     for (size_t i = 0; i < r->n; ++i) {
         auto& s = slots[offset+i];
         auto& t = r->items[i];
@@ -119,46 +120,37 @@ void chest::flush(world& w, uint16_t endpoint) {
         auto& s = slots[i];
         switch (s.type) {
         case slot::type::red:
-            trading_sell(w, {endpoint}, RED_PRIORITY, s);
+            trading_sell(w, {endpoint, (uint16_t)i}, RED_PRIORITY, s);
             break;
         case slot::type::blue:
-            trading_buy(w, {endpoint}, BLUE_PRIORITY, s);
+            trading_buy(w, {endpoint, (uint16_t)i}, BLUE_PRIORITY, s);
             break;
         case slot::type::green:
-            trading_sell(w, {endpoint}, GREEN_PRIORITY, s);
-            trading_buy(w, {endpoint}, GREEN_PRIORITY, s);
+            trading_sell(w, {endpoint, (uint16_t)i}, GREEN_PRIORITY, s);
+            trading_buy(w, {endpoint, (uint16_t)i}, GREEN_PRIORITY, s);
             break;
         }
     }
 }
 
-void chest::pickup_force(world& w, uint16_t item, uint16_t amount) {
-    uint16_t n = 0;
-    for (size_t i = 0; i < slots.size(); ++i) {
-        auto& s = slots[i];
-        if (s.item == item) {
-            assert(amount <= s.lock_item);
-            assert(amount <= s.amount);
-            s.amount -= amount;
-            s.lock_item -= amount;
-            return;
-        }
-    }
-    assert(amount == 0);
+void chest::pickup_force(world& w, uint16_t item, uint16_t index, uint16_t amount) {
+    assert(index < slots.size());
+    auto& s = slots[index];
+    assert(item == s.item);
+    assert(amount <= s.lock_item);
+    assert(amount <= s.amount);
+    s.amount -= amount;
+    s.lock_item -= amount;
 }
 
-void chest::place_force(world& w, uint16_t item, uint16_t amount) {
-    for (size_t i = 0; i < slots.size(); ++i) {
-        auto& s = slots[i];
-        if (s.item == item) {
-            assert(amount <= s.lock_space);
-            assert(s.amount + amount <= s.limit);
-            s.amount += amount;
-            s.lock_space -= amount;
-            return;
-        }
-    }
-    assert(amount == 0);
+void chest::place_force(world& w, uint16_t item, uint16_t index, uint16_t amount) {
+    assert(index < slots.size());
+    auto& s = slots[index];
+    assert(item == s.item);
+    assert(amount <= s.lock_space);
+    assert(s.amount + amount <= s.limit);
+    s.amount += amount;
+    s.lock_space -= amount;
 }
 
 const chest::slot* chest::getslot(uint16_t index) const {
@@ -211,13 +203,13 @@ lflush(lua_State* L) {
 
 extern "C" int
 luaopen_vaststars_chest_core(lua_State *L) {
-	luaL_checkversion(L);
-	luaL_Reg l[] = {
-		{ "create", lcreate },
-		{ "get", lget },
+    luaL_checkversion(L);
+    luaL_Reg l[] = {
+        { "create", lcreate },
+        { "get", lget },
         { "flush", lflush },
-		{ NULL, NULL },
-	};
-	luaL_newlib(L, l);
-	return 1;
+        { NULL, NULL },
+    };
+    luaL_newlib(L, l);
+    return 1;
 }

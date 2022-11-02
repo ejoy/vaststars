@@ -16,7 +16,7 @@ extern "C" {
 static void
 laboratory_set_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l, ecs::chest& c2, uint16_t techid) {
     l.tech = techid;
-    auto& chest = w.query_chest(c2.chest_in);
+    auto& chest = w.query_chest(c2.id);
     std::vector<uint16_t> limit(chest.size());
     if (techid == 0 || l.status == STATUS_INVALID) {
         for (auto& v : limit) {
@@ -38,7 +38,7 @@ laboratory_next_tech(lua_State* L, world& w, ecs::entity& e, ecs::laboratory& l,
     if (l.tech == techid) {
         return;
     }
-    auto& chest = w.query_chest(c2.chest_in);
+    auto& chest = w.query_chest(c2.id);
     if (l.tech) {
         auto& oldr = w.techtree.get_ingredients(L, w, e.prototype, l.tech);
         if (oldr) {
@@ -90,7 +90,7 @@ laboratory_update(lua_State* L, world& w, ecs_api::entity<ecs::laboratory, ecs::
     // step.2
     while (l.progress <= 0) {
         prototype_context tech = w.prototype(L, l.tech);
-        chest& chest = w.query_chest(c2.chest_in);
+        chest& chest = w.query_chest(c2.id);
         if (l.status == STATUS_DONE) {
             int count = pt_count(&tech);
             if (w.techtree.research_add(l.tech, count, 1)) {
