@@ -11,22 +11,22 @@ local prototype = gameplay.register.prototype
   --time是指1个count所需的时间
 
 
-  prototype "清除废墟" {
-    desc = "清除指挥中心附近的3处废墟",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0},
-    prerequisites = {},
-    count = 3,
-    tips_pic = {
-      "textures/task_tips_pic/task_click_build.texture",
-      "textures/task_tips_pic/task_demolish2.texture",
-      "textures/task_tips_pic/task_demolish3.texture",
-    },
-    sign_desc = {
-      { desc = "清除指挥中心附近的3处废墟", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "清除废墟" {
+  --   desc = "清除指挥中心附近的3处废墟",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0},
+  --   prerequisites = {},
+  --   count = 3,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_click_build.texture",
+  --     "textures/task_tips_pic/task_demolish2.texture",
+  --     "textures/task_tips_pic/task_demolish3.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "清除指挥中心附近的3处废墟", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "修复阻断公路" {
     desc = "放置1座科研中心",
