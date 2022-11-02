@@ -118,6 +118,9 @@ void chest::flush(world& w, uint16_t endpoint) {
     }
     for (size_t i = 0; i < slots.size(); ++i) {
         auto& s = slots[i];
+        if (s.item == 0) {
+            continue;
+        }
         switch (s.type) {
         case slot::type::red:
             trading_sell(w, {endpoint, (uint16_t)i}, RED_PRIORITY, s);
@@ -141,6 +144,11 @@ void chest::pickup_force(world& w, uint16_t item, uint16_t index, uint16_t amoun
     assert(amount <= s.amount);
     s.amount -= amount;
     s.lock_item -= amount;
+    if (s.unit == slot::unit::empty) {
+        if (s.amount == 0 && s.lock_item == 0 && s.lock_space == 0) {
+            s.item = 0;
+        }
+    }
 }
 
 void chest::place_force(world& w, uint16_t item, uint16_t index, uint16_t amount) {
