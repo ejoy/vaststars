@@ -13,7 +13,7 @@ local iprototype = require "gameplay.interface.prototype"
 local iflow_connector = require "gameplay.interface.flow_connector"
 local objects = require "objects"
 local terrain = ecs.require "terrain"
-local inventory = global.inventory
+-- local inventory = global.inventory
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local math_abs = math.abs
 local math_min = math.min
@@ -114,8 +114,8 @@ end
 local function _builder_end(self, datamodel, State, dir, dir_delta)
     local reverse_dir = iprototype.reverse_dir(dir)
     local prototype_name = self.coord_indicator.prototype_name
-    local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-    local item = inventory:modity(item_typeobject.id)
+    -- local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
+    -- local item = inventory:modity(item_typeobject.id)
     local map = {}
     local remove = {}
 
@@ -223,22 +223,22 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
             decreasable = true
         end
 
-        if decreasable then
-            item.count = item.count - 1
-            assert(item.count >= 0)
-        end
+        -- if decreasable then
+        --     item.count = item.count - 1
+        --     assert(item.count >= 0)
+        -- end
     end
 
-    if State.succ then
-        for prototype_name, count in pairs(remove) do
-            local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-            local item = inventory:modity(item_typeobject.id)
-            item.count = item.count + count
-        end
-    end
+    -- if State.succ then
+    --     for prototype_name, count in pairs(remove) do
+    --         local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
+    --         local item = inventory:modity(item_typeobject.id)
+    --         item.count = item.count + count
+    --     end
+    -- end
 
     datamodel.show_laying_road_confirm = State.succ
-    iui.update("construct.rml", "update_construct_inventory")
+    -- iui.update("construct.rml", "update_construct_inventory")
 end
 
 -- NOTE:
@@ -337,7 +337,7 @@ local function _builder_start(self, datamodel)
     local starting = objects:coord(from_x, from_y, EDITOR_CACHE_NAMES)
     local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
     local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-    local item = assert(inventory:modity(item_typeobject.id)) -- promise by new_entity()
+    -- local item = assert(inventory:modity(item_typeobject.id)) -- promise by new_entity()
 
     local State = {
         succ = true,
@@ -359,8 +359,7 @@ local function _builder_start(self, datamodel)
 
         local succ
         succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
-            math_min(math_abs(to_x - connection.x), item.count),
-            math_min(math_abs(to_y - connection.y), item.count)
+            math_abs(to_x - connection.x)
         )
         if not succ then
             State.succ = false
@@ -409,8 +408,7 @@ local function _builder_start(self, datamodel)
         State.from_x, State.from_y = from_x, from_y
         local succ
         succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
-            math_min(math_abs(to_x - from_x), item.count - 1),
-            math_min(math_abs(to_y - from_y), item.count - 1)
+            math_abs(to_x - from_x)
         )
         if not succ then
             State.succ = false
@@ -443,8 +441,7 @@ local function _builder_start(self, datamodel)
         --
         local succ
         succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
-            math_min(math_abs(to_x - from_x), item.count - 1),
-            math_min(math_abs(to_y - from_y), item.count - 1)
+            math_abs(to_y - from_y)
         )
         if not succ then
             State.succ = false
@@ -461,13 +458,13 @@ end
 
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject)
-    -- check if item is in the inventory
-    local item_typeobject = iprototype.queryByName("item", typeobject.name)
-    local item = inventory:get(item_typeobject.id)
-    if item.count <= 0 then
-        self:clean(datamodel)
-        return
-    end
+    -- -- check if item is in the inventory
+    -- local item_typeobject = iprototype.queryByName("item", typeobject.name)
+    -- local item = inventory:get(item_typeobject.id)
+    -- if item.count <= 0 then
+    --     self:clean(datamodel)
+    --     return
+    -- end
 
     iobject.remove(self.coord_indicator)
     local dir = DEFAULT_DIR
@@ -496,7 +493,7 @@ local function touch_end(self, datamodel)
     end
     iobject.align(self.coord_indicator)
     self:revert_changes({"INDICATOR", "TEMPORARY"})
-    inventory:revert()
+    -- inventory:revert()
 
     if self.state ~= STATE_START then
         _builder_init(self, datamodel)
@@ -506,9 +503,9 @@ local function touch_end(self, datamodel)
 end
 
 local function complete(self, datamodel)
-    if not inventory:complete() then -- TODO: revert changes if not complete
-        return
-    end
+    -- if not inventory:complete() then -- TODO: revert changes if not complete
+    --     return
+    -- end
 
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
@@ -541,8 +538,8 @@ local function laying_pipe_begin(self, datamodel)
 end
 
 local function laying_pipe_cancel(self, datamodel)
-    inventory:revert()
-    iui.update("construct.rml", "update_construct_inventory")
+    -- inventory:revert()
+    -- iui.update("construct.rml", "update_construct_inventory")
 
     self:revert_changes({"INDICATOR", "TEMPORARY"})
     local typeobject = iprototype.queryByName("entity", self.coord_indicator.prototype_name)
@@ -559,7 +556,7 @@ local function laying_pipe_confirm(self, datamodel)
         object.PREPARE = true
     end
     objects:commit("TEMPORARY", "CONFIRM")
-    inventory:confirm()
+    -- inventory:confirm()
 
     local typeobject = iprototype.queryByName("entity", self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)

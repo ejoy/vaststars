@@ -285,7 +285,8 @@
                 current_tech_icon = "none",     --当前科技图标
                 current_tech_name = "none",     --当前科技名字
                 current_tech_progress = "0%",   --当前科技进度
-                guide_progress = 0
+                guide_progress = 0,
+                button_selected = ""
             })
             -- TODO: remove this
             --
@@ -314,9 +315,11 @@
             --
             function start.ConstructPoint(event)
                 ui_sys.pub {"construct_point", "基建站"}
+                start.button_selected = 'construct_point'
             end
             function start.TeardownPoint(event)
                 ui_sys.pub {"teardown_point", "拆除点"}
+                start.button_selected = 'teardown_point'
             end
             function start.clickConstructRotate(event)
                 ui_sys.pub {"rotate"}
@@ -463,14 +466,14 @@
             </div>
             
             <!-- 拆除点 -->
-            <div data-if = "cur_edit_mode != '' && guide_progress >= 5" data-event-click="TeardownPoint()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+            <div data-if = "cur_edit_mode == 'construct' && guide_progress >= 5" data-event-click="TeardownPoint()" data-style-border = "button_selected == 'teardown_point' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/demolish.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
                 <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除点</div>
             </div>
 
             <!-- 基建站 -->
             <!-- see also start.clickConstructBegin() -->
-            <div data-if = "cur_edit_mode != '' && guide_progress >= 10" data-event-click="ConstructPoint()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+            <div data-if = "cur_edit_mode == 'construct' && guide_progress >= 10" data-event-click="ConstructPoint()" data-style-border = "button_selected == 'construct_point' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/construct.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
                 <div style ="font-size: 4vmin; top: 2.67vmin;">基建站</div>
             </div>
