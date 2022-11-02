@@ -99,10 +99,6 @@ function start.clickBlank(event)
     select_item_index = nil
 end
 
-function start.clickManual(event)
-    ui_sys.open("manual_pop.rml")
-end
-
 -- <!-- tag page begin -->
 local function page_item_update(item, index)
     item.removeEventListener('click')

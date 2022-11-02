@@ -6,9 +6,8 @@ prototype "组装机残骸" {
     icon = "textures/construct/broken-assembler.texture",
     background = "textures/build_background/pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
-    type = {"entity", "chest"},
+    type = {"entity"},
     group = {"物流" , "默认"},
-    chest_type = "none",
     area = "3x3",
     slots = 8,
 }
@@ -18,9 +17,8 @@ prototype "排水口残骸" {
     icon = "textures/construct/broken-hydroplant.texture",
     background = "textures/build_background/pic_mars_outfall.texture",
     construct_detector = {"exclusive"},
-    type = {"entity", "chest"},
+    type = {"entity"},
     group = {"物流" , "默认"},
-    chest_type = "none",
     area = "2x2",
     slots = 8,
 }
@@ -30,9 +28,8 @@ prototype "抽水泵残骸" {
     icon = "textures/construct/broken-pump.texture",
     background = "textures/build_background/pic_pumpjack.texture",
     construct_detector = {"exclusive"},
-    type = {"entity", "chest"},
+    type = {"entity"},
     group = {"物流" , "默认"},
-    chest_type = "none",
     area = "2x2",
     slots = 12,
 }

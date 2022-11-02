@@ -44,7 +44,6 @@ local laying_pipe_confirm_mb = mailbox:sub {"laying_pipe_confirm"} -- 铺管结�
 local open_taskui_event = mailbox:sub {"open_taskui"}
 local load_resource_mb = mailbox:sub {"load_resource"}
 local single_touch_mb = world:sub {"single_touch"}
-local imanual = require "ui_datamodel.common.manual"
 local inventory = global.inventory
 local pickup_mb = world:sub {"pickup"}
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
@@ -129,8 +128,6 @@ function M:create()
         current_tech_icon = "none",    --当前科技图标
         current_tech_name = "none",    --当前科技名字
         current_tech_progress = "0%",  --当前科技进度
-        manual_queue = {},
-        manual_queue_length = 0, -- cache the length of manual queue, for animation when manual queue has been finished
     }
 end
 
@@ -421,12 +418,6 @@ function M:stage_camera_usage(datamodel)
             break
         end
     end
-
-    datamodel.manual_queue = imanual.get_queue(4)
-    if datamodel.manual_queue_length > 0 and #datamodel.manual_queue == 0 then
-        world:pub {"ui_message", "manual_finish"}
-    end
-    datamodel.manual_queue_length = #datamodel.manual_queue
 
     iobject.flush()
 end

@@ -78,7 +78,6 @@
             end
 
             function start.clickManual(event)
-                ui_sys.open("manual_pop.rml")
             end
 
             function start.clickDetail(event)
