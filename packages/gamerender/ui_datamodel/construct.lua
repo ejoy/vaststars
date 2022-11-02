@@ -74,15 +74,11 @@ local function _get_construct_menu()
 
         for _, prototype_name in ipairs(menu.detail) do
             local typeobject = assert(iprototype.queryByName("item", prototype_name))
-            local c = inventory:get(typeobject.id)
-            if c.count > 0 then
-                m.detail[#m.detail + 1] = {
-                    show_prototype_name = iprototype.show_prototype_name(typeobject),
-                    prototype_name = prototype_name,
-                    icon = typeobject.icon,
-                    count = c.count,
-                }
-            end
+            m.detail[#m.detail + 1] = {
+                show_prototype_name = iprototype.show_prototype_name(typeobject),
+                prototype_name = prototype_name,
+                icon = typeobject.icon,
+            }
         end
 
         construct_menu[#construct_menu+1] = m

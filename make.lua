@@ -64,15 +64,9 @@ if lm.os == "windows" then
     }
 end
 
-lm:copy "copy_manual" {
-    input = "startup/test_manual.lua",
-    output = "packages/gamerender/gameplay/interface/manual.lua",
-}
-
 lm:default {
     lm.os == "windows" and "fmod_dll",
     lm.compiler == "msvc" and EnableSanitize and "copy_asan",
-    "copy_manual",
     "vaststars",
     lm.os == "ios" and "bgfx-lib",
     lm.os ~= "ios" and "vaststars_rt",

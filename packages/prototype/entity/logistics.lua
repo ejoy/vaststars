@@ -241,7 +241,7 @@ prototype "砖石公路-O型-01" {
     teardown = 20,
     flow_direction = {"N"},
     track = "O",
-    tickcount = 0,
+    tickcount = 20,
     show_build_function = false,
     type ={"entity", "road"},
     area = "1x1",
