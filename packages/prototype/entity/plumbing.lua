@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "液罐I" {
-    model = "prefabs/storage-tank-1.prefab",
+    model = "prefabs/gas-tank-1.prefab",
     icon = "textures/building_pic/small_pic_tank.texture",
     construct_detector = {"exclusive"},
     storage_tank = true,

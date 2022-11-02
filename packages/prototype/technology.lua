@@ -393,7 +393,7 @@ prototype "管道系统1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"管道1","管道2","液罐1","气罐1"},
+    unlock_recipe = {"管道1","管道2","液罐1"},
   },
   prerequisites = {"生产气候科技包"},
   ingredients = {
