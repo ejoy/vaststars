@@ -39,11 +39,6 @@ component "capacitance" {
     "network:byte"
 }
 
-component "burner" {
-	"recipe:word",
-	"progress:word",
-}
-
 component "chimney" {
     "progress:int",
     "recipe:word",

@@ -1,11 +1,6 @@
 local type = require "register.type"
 local prototype = require "prototype"
 
-local burner = type "burner"
-	.power "power"
-	.capacitance "energy"
-	--.fuel_filter "filter"
-
 -- output inner capacitance to powergrid
 local generator = type "generator"
 	.power "power"
@@ -71,24 +66,4 @@ local function createChest(world, type, s)
         }
     end
     return table.concat(chest)
-end
-
-function burner:ctor(init, pt)
-    local world = self
-    local recipe = assert(prototype.queryByName("recipe", init.recipe))
-	local chest_in = createChest(world, "blue", recipe.ingredients)
-	local chest_out = createChest(world, "red", recipe.results)
-	return {
-		capacitance = {
-			shortage = pt.capacitance,
-			delta = 0,
-			network = 0,
-		},
-		burner = {
-            recipe = recipe.id,
-            chest_in = world:container_create(chest_in),
-            chest_out = world:container_create(chest_out),
-            progress = STATUS_IDLE,
-		}
-	}
 end
