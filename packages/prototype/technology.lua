@@ -46,12 +46,27 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "放置物流中心" {
+    desc = "放置1座物流中心",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "物流中心I"},
+    prerequisites = {"修复阻断公路"},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "使用“建造”放置1个物流中心", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "放置科研中心" {
     desc = "放置1座科研中心",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "科研中心I"},
-    prerequisites = {""},
+    prerequisites = {"放置物流中心"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
@@ -113,27 +128,12 @@ prototype "放置采矿机" {
   },
 }
 
-prototype "放置物流中心" {
-  desc = "放置组装机",
-  icon = "textures/construct/industry.texture",
-  type = { "tech", "task" },
-  task = {"select_entity", 0, "物流中心I"},
-  prerequisites = {"放置采矿机"},
-  count = 1,
-  tips_pic = {
-    "textures/task_tips_pic/task_place_logistics.texture",
-  },
-  sign_desc = {
-    { desc = "使用“建造”放置1个物流中心", icon = "textures/construct/industry.texture"},
-  },
-}
-
 prototype "生产铁矿石" {
   desc = "挖掘足够的铁矿石可以开始进行锻造",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "铁矿石"},
-  prerequisites = {"放置物流中心"},
+  prerequisites = {"放置采矿机"},
   count = 2,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ore3.texture",
@@ -148,7 +148,7 @@ prototype "生产碎石矿" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "碎石"},
-  prerequisites = {"放置物流中心"},
+  prerequisites = {"放置采矿机"},
   count = 2,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ore3.texture",

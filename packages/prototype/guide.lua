@@ -19,6 +19,26 @@ local guide = {
         prerequisites = {},
 	},
 
+
+    {
+        name = "guide-2",
+		narrative = {
+            {"缺少高效的物流运输最多维持{/g 374.09}地球小时的生存..哔哩..(担忧)", "textures/guide/guide-6.texture"},
+            {"不过我们在废墟中发现了保存完好的{/g 物流中心}，物流中心可以高效开展物流运输..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
+            {"让我们在道路边赶紧修建一座{/g 物流中心}..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            -- pop_chapter = {"第一阶段","物流网络"},
+            guide_progress = 10,
+            task = {
+                "放置物流中心",
+            }
+        },
+        prerequisites = {
+            "修复阻断公路",
+        },
+	},
+
     -- {
     --     name = "guide-2",
 	-- 	narrative = {
@@ -36,7 +56,7 @@ local guide = {
 	-- },
 
     {
-        name = "guide-2",
+        name = "guide-3",
 		narrative = {
             {"我们捡到了不少有价值的破烂..哔哩..物资。科技就是第一生产力，建议先{/g 建造一所科研中心}..(期待)", "textures/guide/guide-2.texture"},
         },
@@ -47,12 +67,12 @@ local guide = {
             }
         },
         prerequisites = {
-            "修复阻断公路",
+            "放置物流中心",
         },
 	},
 
     {
-        name = "guide-3",
+        name = "guide-4",
 		narrative = {
             {"哔哩..整个基地的用电设施都需要被{/g 电网覆盖}，否则它们将无法工作..哔哩(无奈）", "textures/guide/guide-6.texture"},
             {"指挥中心可产生电力..哔哩..{/g 放置电线杆}把指挥中心的电力扩散出去..哔哩(期待)", "textures/guide/guide-3.texture"},
@@ -72,7 +92,7 @@ local guide = {
 
 
     {
-        name = "guide-4",
+        name = "guide-5",
 		narrative = {
             {"哔哩..我们终于恢复了研究能力..哔哩..目前{/g 存活概率}提升为0.07672%..(轻松)", "textures/guide/guide-1.texture"},
             {"哔哩..让我们点击{/g 研究中心}按钮，开始研究第一个科技..(兴奋)", "textures/guide/guide-3.texture"},
@@ -89,7 +109,7 @@ local guide = {
 
 
     {
-        name = "guide-5",
+        name = "guide-6",
 		narrative = {
             {"采集P4031地质样本制造{/g 科技包}..哔哩..我们就能更好地研究星球地质结构。", "textures/guide/guide-2.texture"},
             {"P4031蕴含丰富的矿藏..哔哩..先用{/g 采矿机}挖掘铁矿和石矿资源..开工开工..(兴奋)", "textures/guide/guide-3.texture"},
@@ -102,25 +122,6 @@ local guide = {
         },
         prerequisites = {
             "地质研究",
-        },
-	},
-
-    {
-        name = "guide-6",
-		narrative = {
-            {"缺少高效的物流运输最多维持{/g 374.09}地球小时的生存..哔哩..(担忧)", "textures/guide/guide-6.texture"},
-            {"不过我们在废墟中发现了保存完好的{/g 物流中心}，物流中心可以高效开展物流运输..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
-            {"让我们在道路边赶紧修建一座{/g 物流中心}..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
-        },
-        narrative_end = {
-            pop_chapter = {"第一阶段","物流网络"},
-            guide_progress = 30,
-            task = {
-                "放置物流中心",
-            }
-        },
-        prerequisites = {
-            "放置采矿机",
         },
 	},
 
@@ -148,6 +149,7 @@ local guide = {
             {"{/g 组装机}可使用3D打印技术制造地质科技包..哔哩..哔哗..请求建造{/g 组装机}..(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
+            pop_chapter = {"第一章","自动生产"},
             guide_progress = 30,
             task = {
                 "放置组装机",
