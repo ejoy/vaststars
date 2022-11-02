@@ -27,6 +27,10 @@ local DISABLE_FPS = require("debugger").disable_fps
 local SHOW_LOAD_RESOURCE = not require("debugger").disable_load_resource
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
+
+local construct_point_mb = mailbox:sub {"construct_point"}
+local teardown_point_mb = mailbox:sub {"teardown_point"}
+
 local construct_begin_mb = mailbox:sub {"construct_begin"} -- 建造 -> 建造模式
 local dismantle_begin_mb = mailbox:sub {"dismantle_begin"} -- 建造 -> 拆除模式
 local rotate_mb = mailbox:sub {"rotate"} -- 旋转建筑
@@ -167,6 +171,8 @@ function M:update_tech(datamodel, tech)
 end
 
 function M:stage_ui_update(datamodel)
+    -- TODO: remove this
+    --
     for _, _, _, double_confirm in construct_begin_mb:unpack() do
         idetail.unselected()
         if builder then
@@ -194,7 +200,6 @@ function M:stage_ui_update(datamodel)
         inventory:flush()
         datamodel.construct_menu = _get_construct_menu()
         ipower_line.show_supply_area()
-        world:pub {"roadnet", "clean"} -- TODO: remove this
         ::continue::
     end
 
@@ -226,6 +231,41 @@ function M:stage_ui_update(datamodel)
         gameplay_core.world_update = false
         camera.transition("camera_construct.prefab")
         ::continue::
+    end
+    --
+
+    for _, _, _, prototype_name in construct_point_mb:unpack() do
+        global.mode = "construct"
+        gameplay_core.world_update = false
+
+        if last_prototype_name ~= prototype_name then
+            if builder then
+                builder:clean(datamodel)
+            end
+            builder = create_normalbuilder()
+            local typeobject = iprototype.queryByName("entity", prototype_name)
+            builder:new_entity(datamodel, typeobject)
+            self:flush()
+
+            last_prototype_name = prototype_name
+        end
+    end
+
+    for _, _, _, prototype_name in teardown_point_mb:unpack() do
+        global.mode = "teardown"
+        gameplay_core.world_update = false
+
+        if last_prototype_name ~= prototype_name then
+            if builder then
+                builder:clean(datamodel)
+            end
+            builder = create_normalbuilder()
+            local typeobject = iprototype.queryByName("entity", prototype_name)
+            builder:new_entity(datamodel, typeobject)
+            self:flush()
+
+            last_prototype_name = prototype_name
+        end
     end
 
     for _ in rotate_mb:unpack() do

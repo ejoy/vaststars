@@ -130,12 +130,12 @@ end
 
 local function __new_entity(self, datamodel, typeobject)
     -- check if item is in the inventory
-    local item_typeobject = iprototype.queryByName("item", typeobject.name)
-    local item = inventory:get(item_typeobject.id)
-    if item.count <= 0 then
-        log.error("Lack of item: " .. typeobject.name) -- TODO: show error message?
-        return
-    end
+    -- local item_typeobject = iprototype.queryByName("item", typeobject.name)
+    -- local item = inventory:get(item_typeobject.id)
+    -- if item.count <= 0 then
+    --     log.error("Lack of item: " .. typeobject.name) -- TODO: show error message?
+    --     return
+    -- end
 
     iobject.remove(self.pickup_object)
     local dir = DEFAULT_DIR
@@ -426,10 +426,10 @@ local function confirm(self, datamodel)
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
 
-    local item_typeobject = iprototype.queryByName("item", typeobject.name)
-    assert(inventory:decrease(item_typeobject.id, 1)) -- promised by new_entity
-    inventory:confirm()
-    iui.update("construct.rml", "update_construct_inventory")
+    -- local item_typeobject = iprototype.queryByName("item", typeobject.name)
+    -- assert(inventory:decrease(item_typeobject.id, 1)) -- promised by new_entity
+    -- inventory:confirm()
+    -- iui.update("construct.rml", "update_construct_inventory")
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false

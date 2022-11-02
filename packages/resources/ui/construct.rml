@@ -287,6 +287,8 @@
                 current_tech_progress = "0%",   --当前科技进度
                 guide_progress = 0
             })
+            -- TODO: remove this
+            --
             function start.clickConstructBegin(event)
                 if not (start.guide_progress >= 10) then
                     ui_sys.pub {"dismantle_begin", false}
@@ -308,6 +310,13 @@
                     start.cur_edit_mode = 'dismantle'
                     ui_sys.pub {"dismantle_begin", true}
                 end
+            end
+            --
+            function start.ConstructPoint(event)
+                ui_sys.pub {"construct_point", "基建站"}
+            end
+            function start.TeardownPoint(event)
+                ui_sys.pub {"teardown_point", "拆除点"}
             end
             function start.clickConstructRotate(event)
                 ui_sys.pub {"rotate"}
@@ -453,17 +462,17 @@
                 <div style='margin: 0 auto; background-image:"textures/construct/joystick.texture"; width: 35vmin; height: 35vmin; background-size:cover; pointer-events: none;'/>
             </div>
             
-            <!-- 拆除模式 -->
-            <div data-if = "cur_edit_mode != '' && guide_progress >= 5" data-event-click="clickTeardownBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+            <!-- 拆除点 -->
+            <div data-if = "cur_edit_mode != '' && guide_progress >= 5" data-event-click="TeardownPoint()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/demolish.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
-                <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除模式</div>
+                <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除点</div>
             </div>
 
-            <!-- 建造模式 -->
+            <!-- 基建站 -->
             <!-- see also start.clickConstructBegin() -->
-            <div data-if = "cur_edit_mode != '' && guide_progress >= 10" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+            <div data-if = "cur_edit_mode != '' && guide_progress >= 10" data-event-click="ConstructPoint()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/construct.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
-                <div style ="font-size: 4vmin; top: 2.67vmin;">建造模式</div>
+                <div style ="font-size: 4vmin; top: 2.67vmin;">基建站</div>
             </div>
 
             <!-- 右上角：当前科技进度 data-if = "cur_edit_mode == '' && show_tech_progress"-->
@@ -573,7 +582,6 @@
                         <button class="tools-button" data-event-click="clickConstructMenuItem(menu.prototype_name)">
                             <div class="workbutton-bg" data-style-background-image = "menu.icon" />
                             <div class="tools-button-title">{{menu.show_prototype_name}}</div>
-                            <div class="item-num">{{menu.count}}</div>
                         </button>
                     </div>
                 </div>

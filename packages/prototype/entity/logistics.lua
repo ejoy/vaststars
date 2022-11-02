@@ -284,6 +284,11 @@ prototype "基建站" {
     area = "2x2",
     supply_area = "20x20",
     group = {"物流"},
+    crossing = {
+        connections = {
+            {type="input-output", position={0,1,"S"}, roadside = true},
+        },
+    }
 }
 
 prototype "拆除点" {
@@ -298,4 +303,9 @@ prototype "拆除点" {
     group = {"物流"},
     slots = 20,
     teardown = false,
+    crossing = {
+        connections = {
+            {type="input-output", position={0,0,"S"}, roadside = true},
+        },
+    }
 }

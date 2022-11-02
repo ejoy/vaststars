@@ -34,7 +34,7 @@ local prototype = gameplay.register.prototype
     type = { "tech", "task" },
     task = {"unknown", 1},
     task_params = {starting = {117, 125}, ending = {135, 125}},
-    prerequisites = {"清除废墟"},
+    prerequisites = {""},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_road1.texture",
@@ -51,7 +51,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "科研中心I"},
-    prerequisites = {"清除废墟"},
+    prerequisites = {""},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
