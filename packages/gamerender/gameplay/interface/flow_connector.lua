@@ -171,7 +171,11 @@ function M.covers_roadside(prototype_name, entity_dir, roadside_dir, v)
         bits = bits & ~(1 << get_dir_bit(typeobject.flow_type, roadside_dir, v))
     end
 
-    local c = assert(accel[typeobject.flow_type][bits])
+    if not accel[typeobject.flow_type][bits] then -- TODO: remove this
+        return prototype_name, entity_dir
+    end
+    -- local c = assert(accel[typeobject.flow_type][bits])
+    local c = accel[typeobject.flow_type][bits]
     return c.prototype_name, c.entity_dir
 end
 

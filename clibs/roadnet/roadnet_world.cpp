@@ -337,6 +337,10 @@ namespace roadnet {
         crossAry.reset(genCrossId);
         for (auto const& [loc, id]: crossMap) {
             road::crossroad& crossroad = crossAry[id.id];
+#ifdef _DEBUG
+            crossroad.loc = loc;
+            crossroad.id = id;
+#endif
             uint8_t m = map[loc.y][loc.x];
 
             for (uint8_t i = 0; i < 4; ++i) {
@@ -389,7 +393,7 @@ namespace roadnet {
             straight.setLorryOffset(genLorryOffset);
             straight.setNeighbor(data.neighbor);
             auto& crossroad = crossAry[data.neighbor.id];
-            crossroad.setWaiting(data.finish_dir, genLorryOffset + length - 1);
+            crossroad.setWaiting(data.finish_dir, genLorryOffset);
             genLorryOffset += length;
         }
         endpointAry.reset(genLorryOffset);
@@ -589,7 +593,10 @@ namespace roadnet {
             return map_coord::invalid();
         }
         auto& straight = straightVec[rc.id.id];
-        uint16_t n = road::straight::N * straight.len - rc.offset - 1;
+        uint16_t n = road::straight::N * straight.len + 1 - rc.offset - 1;
+        if (rc.offset == 0)
+            n -= 1;
+            
         if (auto res = moveToNeighbor(map, straight.loc, straight.start_dir, n / road::straight::N); res) {
             auto m = map[res->l.y][res->l.x];
             bool b = reverse(res->dir) == straightDirection(m, 0); // TODO: remove this
