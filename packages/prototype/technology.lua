@@ -182,7 +182,7 @@ prototype "自动化生产" {
   type = { "tech", "task" },
   task = {"stat_production", 0, "地质科技包"},
   prerequisites = {"放置组装机"},
-  count = 3,
+  count = 2,
   tips_pic = {
     "textures/task_tips_pic/task_produce_geopack3.texture",
     "textures/task_tips_pic/task_produce_geopack4.texture",
@@ -190,7 +190,7 @@ prototype "自动化生产" {
     "textures/task_tips_pic/task_produce_geopack6.texture",
   },
   sign_desc = {
-    { desc = "使用组装机生产至3个地质科技包", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机生产至2个地质科技包", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -393,7 +393,7 @@ prototype "管道系统1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"管道1","管道2","液罐1","气罐1"},
+    unlock_recipe = {"管道1","管道2","液罐1"},
   },
   prerequisites = {"生产气候科技包"},
   ingredients = {

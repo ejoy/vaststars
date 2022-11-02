@@ -240,7 +240,6 @@ return function (init)
 
     local game_object = assert(igame_object.create({
         prefab = typeobject.model,
-        effect = typeobject.effect_file,
         group_id = init.group_id,
         state = typeinfo.state,
         color = typeinfo.color,

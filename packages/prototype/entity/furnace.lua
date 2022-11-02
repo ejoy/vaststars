@@ -12,7 +12,6 @@ prototype "熔炼炉I" {
     power = "75kW",
     priority = "secondary",
     group = {"加工"},
-    effect_file = "effect/efk/furnace_smoke.efk.efk",
     craft_category = {"金属冶炼"},
     fluidboxes = {
         input = {
@@ -38,7 +37,6 @@ prototype "熔炼炉II" {
     power = "150kW",
     priority = "secondary",
     group = {"加工"},
-    effect_file = "effect/efk/furnace_smoke.efk.efk",
     craft_category = {"金属冶炼"},
     fluidboxes = {
         input = {

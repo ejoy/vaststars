@@ -126,19 +126,22 @@ local _get_hitch_children ; do
     end
 
     local function _cache_prefab_info(template)
+        local effects = {}
         local slots = {}
         local scene = {}
         for _, v in ipairs(template) do
             if v.data then
                 if v.data.slot then
                     slots[v.data.name] = v.data
+                elseif v.data.efk then
+                    effects[#effects + 1] = {path = v.data.efk, slotname = v.mount and template[v.mount].data.name}
                 end
                 if v.data.name == "Scene" and v.data.scene then -- TODO: special for hitch which attach to slot
                     scene = v.data.scene
                 end
             end
         end
-        return scene, slots
+        return scene, slots, effects
     end
 
     function _get_hitch_children(prefab_file_path, state, color, animation_name, process, emissive_color)
@@ -158,7 +161,7 @@ local _get_hitch_children ; do
         end
 
         -- cache all slots & srt of the prefab
-        local scene, slots = _cache_prefab_info(template)
+        local scene, slots, effects = _cache_prefab_info(template)
 
         hitch_group_id = hitch_group_id + 1
         local g = ecs.group(hitch_group_id)
@@ -208,7 +211,7 @@ local _get_hitch_children ; do
             instance:send("material_tag", "set_property", "u_emissive_factor", "u_emissive_factor", emissive_color)
         end
 
-        cache[hash] = {prefab_file_name = prefab_file_path, instance = instance, hitch_group_id = hitch_group_id, scene = scene, slots = slots, pose = pose}
+        cache[hash] = {prefab_file_name = prefab_file_path, instance = instance, hitch_group_id = hitch_group_id, scene = scene, slots = slots, pose = pose, effects = effects}
         return cache[hash]
     end
 end
@@ -316,11 +319,13 @@ function igame_object.create(init)
     local function send(self, ...)
         self.hitch_entity_object:send(...)
     end
-
-    local effect
-    if init.effect then
-        local slot_scene = children.slots["effect"].scene
-        effect = iefk.create(RESOURCES_BASE_PATH:format(init.effect), {
+    local effects = {}
+    for _, efkinfo in ipairs(children.effects) do
+        local slot_scene = {s = 1, t = {0,0,0}}
+        if efkinfo.slotname then
+            slot_scene = children.slots[efkinfo.slotname].scene
+        end
+        effects[#effects + 1] = iefk.create(efkinfo.path, {
             play_on_create = false,
             loop = false,
             speed = 1.0,
@@ -337,25 +342,31 @@ function igame_object.create(init)
             "/pkg/vaststars.resources/effect/efk/a4.texture",
         }
     end
-
+    
     local outer = {hitch_entity_object = hitch_entity_object, slot_attach = {}}
     outer.remove = remove
     outer.update = update
     outer.attach = attach
     outer.detach = detach
     outer.send   = send
-    if effect then
+    if #effects > 0 then
         outer.play_effect = function ()
-            local e <close> = w:entity(effect)
-            iefk.play(e)
+            for _, eid in ipairs(effects) do
+                local e <close> = w:entity(eid)
+                iefk.play(e)
+            end
         end
         outer.stop_effect = function ()
-            local e <close> = w:entity(effect)
-            iefk.stop(e, true)
+            for _, eid in ipairs(effects) do
+                local e <close> = w:entity(eid)
+                iefk.stop(e, true)
+            end
         end
         outer.is_effect_playing = function ()
-            local e <close> = w:entity(effect)
-            return iefk.is_playing(e)
+            for _, eid in ipairs(effects) do
+                local e <close> = w:entity(eid)
+                return iefk.is_playing(e)
+            end
         end
     end
     return outer
