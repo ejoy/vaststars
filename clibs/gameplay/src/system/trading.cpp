@@ -184,15 +184,17 @@ lupdate(lua_State *L) {
         for (auto lorryId = rw.popLorry(c.endpoint); !!lorryId; lorryId = rw.popLorry(c.endpoint)) {
             auto& l = rw.Lorry(lorryId);
             if (l.gameplay.sell.endpoint == 0xffff) {
+                assert(c.endpoint == l.gameplay.buy.endpoint);
                 auto& chest = w.query_chest(c.id);
-                chest.place_force(w, l.gameplay.item, l.gameplay.sell.index, 1);
+                chest.place_force(w, l.gameplay.item, l.gameplay.buy.index, 1);
                 if (!DoTask(w, rw, lorryId, c.endpoint)) {
                     GoHome(w, rw, lorryId, c.endpoint);
                 }
             }
             else {
+                assert(c.endpoint == l.gameplay.sell.endpoint);
                 auto& chest = w.query_chest(c.id);
-                chest.pickup_force(w, l.gameplay.item, l.gameplay.buy.index, 1);
+                chest.pickup_force(w, l.gameplay.item, l.gameplay.sell.index, 1);
                 if (!rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy.endpoint)) {
                     assert(false);
                 }
