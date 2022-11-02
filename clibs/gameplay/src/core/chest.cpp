@@ -36,9 +36,20 @@ void chest::set_fluid(uint16_t index, uint16_t value) {
     slots[index].amount = value;
 }
 
-bool chest::pickup(world& w, uint16_t endpoint, const recipe_items* r) {
-    for (size_t i = 0; i < slots.size(); ++i) {
-        auto& s = slots[i];
+bool chest::pickup(world& w, uint16_t endpoint, prototype_context& recipe) {
+    recipe_items* r = (recipe_items*)pt_ingredients(&recipe);
+    return pickup(w, endpoint, r, 0);
+}
+
+bool chest::place(world& w, uint16_t endpoint, prototype_context& recipe) {
+    recipe_items* r = (recipe_items*)pt_results(&recipe);
+    return place(w, endpoint, r, 0);
+}
+
+bool chest::pickup(world& w, uint16_t endpoint, const recipe_items* r, uint16_t offset) {
+    assert(offset + r->n <= slots.size());
+    for (size_t i = 0; i < r->n; ++i) {
+        auto& s = slots[offset+i];
         auto& t = r->items[i];
         assert(s.unit == slot::unit::limit);
         assert(s.item == t.item);
@@ -46,8 +57,8 @@ bool chest::pickup(world& w, uint16_t endpoint, const recipe_items* r) {
             return false;
         }
     }
-    for (size_t i = 0; i < slots.size(); ++i) {
-        auto& s = slots[i];
+    for (size_t i = 0; i < r->n; ++i) {
+        auto& s = slots[offset+i];
         auto& t = r->items[i];
         s.amount -= t.amount;
     }
@@ -55,9 +66,10 @@ bool chest::pickup(world& w, uint16_t endpoint, const recipe_items* r) {
     return true;
 }
 
-bool chest::place(world& w, uint16_t endpoint, const recipe_items* r) {
-    for (size_t i = 0; i < slots.size(); ++i) {
-        auto& s = slots[i];
+bool chest::place(world& w, uint16_t endpoint, const recipe_items* r, uint16_t offset) {
+    assert(offset + r->n <= slots.size());
+    for (size_t i = 0; i < r->n; ++i) {
+        auto& s = slots[offset+i];
         auto& t = r->items[i];
         assert(s.unit == slot::unit::limit);
         assert(s.item == t.item);
@@ -65,8 +77,8 @@ bool chest::place(world& w, uint16_t endpoint, const recipe_items* r) {
             return false;
         }
     }
-    for (size_t i = 0; i < slots.size(); ++i) {
-        auto& s = slots[i];
+    for (size_t i = 0; i < r->n; ++i) {
+        auto& s = slots[offset+i];
         auto& t = r->items[i];
         s.amount += t.amount;
     }
@@ -74,9 +86,10 @@ bool chest::place(world& w, uint16_t endpoint, const recipe_items* r) {
     return true;
 }
 
-bool chest::recover(world& w, const recipe_items* r) {
-    for (size_t i = 0; i < slots.size(); ++i) {
-        auto& s = slots[i];
+bool chest::recover(world& w, const recipe_items* r, uint16_t offset) {
+    assert(offset + r->n <= slots.size());
+    for (size_t i = 0; i < r->n; ++i) {
+        auto& s = slots[offset+i];
         auto& t = r->items[i];
         assert(s.unit == slot::unit::limit);
         assert(s.item == t.item);

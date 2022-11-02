@@ -33,7 +33,6 @@ static const luaL_Reg loadedlibs[] = {
 static void loadmodules(lua_State* L) {
     SYSTEM(assembling)
     SYSTEM(laboratory)
-    SYSTEM(burner)
     SYSTEM(chimney)
     SYSTEM(generator)
     SYSTEM(powergrid)

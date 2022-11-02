@@ -3,6 +3,9 @@
 #include <stdint.h>
 #include <vector>
 #include <util/flatmap.h>
+extern "C" {
+#include "util/prototype.h"
+}
 
 struct world;
 struct lua_State;
@@ -39,9 +42,11 @@ struct chest {
     chest(chest::slot* data, size_t size);
     uint16_t get_fluid(uint16_t index);
     void     set_fluid(uint16_t index, uint16_t value);
-    bool     pickup(world& w, uint16_t endpoint, const recipe_items* r);
-    bool     place(world& w, uint16_t endpoint, const recipe_items* r);
-    bool     recover(world& w, const recipe_items* r);
+    bool     pickup(world& w, uint16_t endpoint, prototype_context& recipe);
+    bool     place(world& w, uint16_t endpoint, prototype_context& recipe);
+    bool     pickup(world& w, uint16_t endpoint, const recipe_items* r, uint16_t offset = 0);
+    bool     place(world& w, uint16_t endpoint, const recipe_items* r, uint16_t offset = 0);
+    bool     recover(world& w, const recipe_items* r, uint16_t offset = 0);
     void     limit(world& w, uint16_t endpoint, const uint16_t* r);
     size_t   size() const;
     const slot* getslot(uint16_t index) const;
