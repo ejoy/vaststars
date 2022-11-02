@@ -239,9 +239,9 @@ local enum = {
 		antimatter = 2,
 	},
 	chest_type = {
-		none = 0,
-		red = 1,
-		blue = 2,
+		red = 0,
+		blue = 1,
+		green = 2,
 	},
 }
 

@@ -7,7 +7,6 @@
 #include "core/statistics.h"
 #include "system/trading.h"
 #include "system/fluid.h"
-#include "system/manual.h"
 #include <map>
 extern "C" {
 #include "util/prototype.h"
@@ -24,7 +23,6 @@ struct world: public ecs_api::context {
     trading_network tradings;
     techtree_mgr techtree;
     statistics stat;
-    manual_crafting manual;
     uint64_t time = 0;
 
     chest& query_chest(uint16_t id);

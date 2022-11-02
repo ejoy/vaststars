@@ -236,100 +236,6 @@ namespace lua_world {
         return 0;
     }
 
-    static int
-    manual(lua_State *L) {
-        struct world& w = getworld(L, 1);
-        if (lua_gettop(L) == 1) {
-            auto& q = w.manual.todos;
-            size_t N = q.size();
-            lua_createtable(L, (int)N, 0);
-            for (size_t i = 0; i < N; ++i) {
-                lua_createtable(L, 2, 0);
-                switch (q[i].type) {
-                case manual_crafting::type::crafting:
-                    lua_pushstring(L, "crafting");
-                    break;
-                case manual_crafting::type::finish:
-                    lua_pushstring(L, "finish");
-                    break;
-                case manual_crafting::type::separator:
-                    lua_pushstring(L, "separator");
-                    break;
-                default:
-                    return 0;
-                }
-                lua_rawseti(L, -2, 1);
-                lua_pushinteger(L, q[i].id);
-                lua_rawseti(L, -2, 2);
-
-                lua_rawseti(L, -2, i+1);
-            }
-            return 1;
-        }
-
-        luaL_checktype(L, 2, LUA_TTABLE);
-        std::vector<manual_crafting::todo> todos;
-        lua_Integer n = luaL_len(L, 2);
-        for (lua_Integer i = 1; i <= n; ++i) {
-            if (LUA_TTABLE != lua_rawgeti(L, 2, i)) {
-                lua_pushboolean(L, 0);
-                return 1;
-            }
-            manual_crafting::todo todo;
-            {
-                lua_rawgeti(L, -1, 1);
-                static const char *const opts[] = {"crafting", "finish", "separator", NULL};
-                static const manual_crafting::type optsnum[] = {manual_crafting::type::crafting, manual_crafting::type::finish, manual_crafting::type::separator};
-                todo.type = optsnum[luaL_checkoption(L, -1, NULL, opts)];
-                lua_pop(L, 1);
-            }
-            {
-                lua_rawgeti(L, -1, 2);
-                todo.id = checkinteger<uint16_t>(L, -1);
-                lua_pop(L, 1);
-            }
-            todos.emplace_back(todo);
-            lua_pop(L, 1);
-        }
-
-        while (todos.size() > 0 && todos.back().type == manual_crafting::type::separator) {
-            todos.pop_back();
-        }
-
-        bool reset = true;
-        if (w.manual.todos.size() > 0 && todos.size() > 0) {
-            if (w.manual.todos.back().id == todos.back().id) {
-                if (w.manual.todos.back().type == todos.back().type && todos.back().type == manual_crafting::type::crafting) {
-                    reset = false;
-                }
-            }
-        }
-        std::swap(w.manual.todos, todos);
-        for (auto& v : w.select<ecs::manual, ecs::chest>(L)) {
-            auto& m = v.get<ecs::manual>();
-            auto& c = v.get<ecs::chest>();
-            if (w.manual.rebuild(L, w, c)) {
-                if (reset) {
-                    w.manual.sync(m);
-                }
-            }
-        }
-        lua_pushboolean(L, 1);
-        return 1;
-    }
-
-    static int
-    manual_chest(lua_State *L) {
-        struct world& w = getworld(L, 1);
-        lua_createtable(L, 0, (int)w.manual.container.size());
-        for (auto [item, amount] : w.manual.container) {
-            lua_pushinteger(L, item);
-            lua_pushinteger(L, amount);
-            lua_rawset(L, -3);
-        }
-        return 1;
-    }
-
     int backup_world(lua_State* L);
     int restore_world(lua_State* L);
     int backup_chest(lua_State* L);
@@ -465,9 +371,6 @@ namespace lua_world {
                 { "fluidflow_query", fluidflow_query },
                 { "fluidflow_set", fluidflow_set },
                 { "fluidflow_rebuild", fluidflow_rebuild },
-                // manual
-                { "manual", manual },
-                { "manual_chest", manual_chest },
                 // saveload
                 { "backup_world", backup_world },
                 { "restore_world", restore_world },

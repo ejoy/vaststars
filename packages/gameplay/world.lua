@@ -265,14 +265,50 @@ return function ()
         return cworld:fluidflow_query(fluid, id)
     end
 
+    local CHEST_TYPE <const> = {
+        [0] = 0,
+        [1] = 1,
+        [2] = 2,
+        red = 0,
+        blue = 1,
+        green = 2,
+    }
+    local CHEST_UNIT <const> = {
+        limit = 0,
+        empty = 1,
+    }
+    function world:chest_slot(t)
+        if t.item then
+            local unit = t.unit or "limit"
+            local id = t.item
+            if type(id) == "string" then
+                id = prototype.queryByName("item", id).id
+            end
+            return string.pack("<I1I1I2I2I2I2I2",
+                CHEST_TYPE[t.type],
+                CHEST_UNIT[unit],
+                id,
+                t.amount or 0,
+                unit == "limit" and (t.limit or 2) or 0,
+                t.lock_item or 0,
+                t.lock_space or 0
+            )
+        else
+            assert(t.amount == nil and t.limit == nil and t.lock_item == nil and t.lock_space == nil)
+            return string.pack("<I1I1I2I2I2I2I2",
+                CHEST_TYPE[t.type],
+                CHEST_UNIT.empty,
+                0,
+                0,
+                0,
+                0,
+                0
+            )
+        end
+    end
+
     function world:container_create(...)
         return chest.create(cworld, ...)
-    end
-    function world:container_pickup(...)
-        return chest.pickup(cworld, ...)
-    end
-    function world:container_place(...)
-        return chest.place(cworld, ...)
     end
     function world:container_get(c, ...)
         assert(c ~= 0xffff)

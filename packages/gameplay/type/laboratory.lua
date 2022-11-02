@@ -17,9 +17,13 @@ local function createChest(world, s)
     for idx = 2, #s//2 do
         local id = string.unpack("<I2", s, 2*idx-1)
         assert(not isFluidId(id))
-        container_in[#container_in+1] = string.pack("<I2I2I2I2I2", 0, id, 0, 2, 0)
+        container_in[#container_in+1] = world:chest_slot {
+            type = "blue",
+            item = id,
+            limit = 2,
+        }
     end
-    return world:container_create("blue", table.concat(container_in))
+    return world:container_create(table.concat(container_in))
 end
 
 function c:ctor(init, pt)

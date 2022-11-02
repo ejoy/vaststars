@@ -192,11 +192,6 @@ namespace lua_world {
             write_flatmap(f, w.techtree.progress);
         });
 
-        backup_scope(L, f, "manual", [&](){
-            write_vector(f, w.manual.todos);
-            write_flatmap(f, w.manual.container);
-        });
-
         fclose(f);
         return 1;
     }
@@ -233,14 +228,6 @@ namespace lua_world {
             w.techtree.progress.clear();
         });
 
-        restore_scope(L, f, "manual", [&](){
-            read_vector(f, w.manual.todos);
-            read_flatmap(f, w.manual.container);
-        }, [&](){
-            w.manual.todos.clear();
-            w.manual.container.clear();
-        });
-
         fclose(f);
         return 0;
     }
@@ -257,7 +244,6 @@ namespace lua_world {
             };
             file_write(f, h);
             for (auto const& c : w.chests) {
-                file_write(f, c.type_);
                 write_vector(f, c.slots);
             }
             fclose(f);
@@ -266,9 +252,8 @@ namespace lua_world {
         static void restore(lua_State* L, world& w) {
             FILE* f = createfile(L, 2, filemode::read);
             auto h = file_read<header>(f);
-            w.chests.resize(h.chest_size, {chest::type::none, nullptr, 0});
+            w.chests.resize(h.chest_size, {nullptr, 0});
             for (auto& c : w.chests) {
-                file_read(f, c.type_);
                 read_vector(f, c.slots);
             }
             fclose(f);

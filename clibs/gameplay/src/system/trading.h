@@ -18,9 +18,12 @@ struct trading_order {
     trading_who buy;
 };
 
+constexpr size_t SELL_PRIORITY = 2;
+constexpr size_t BUY_PRIORITY = 2;
+
 struct trading_queue {
-    queue<trading_who> sell;
-    queue<trading_who> buy;
+    queue<trading_who> sell[SELL_PRIORITY];
+    queue<trading_who> buy[BUY_PRIORITY];
 };
 
 struct trading_kdtree {
@@ -49,6 +52,6 @@ struct trading_network {
     trading_kdtree station_kdtree;
 };
 
-void trading_sell(world& w, trading_who who, chest::slot& s);
-void trading_buy(world& w, trading_who who, chest::slot& s);
+void trading_sell(world& w, trading_who who, uint8_t priority, chest::slot& s);
+void trading_buy(world& w, trading_who who, uint8_t priority, chest::slot& s);
 void trading_update(world& w);
