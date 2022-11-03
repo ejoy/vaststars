@@ -19,9 +19,6 @@ graphic:
   framebuffer:
     ratio: 1
     scene_ratio: 1
-  hdr:
-    enable: false
-    format: RGBA16F
   inv_z: true
   lighting:
     cluster_shading: 1
