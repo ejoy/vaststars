@@ -136,7 +136,7 @@ void chest::flush(world& w, uint16_t endpoint) {
     }
 }
 
-void chest::pickup_force(world& w, uint16_t item, uint16_t index, uint16_t amount) {
+void chest::pickup_force(world& w, uint16_t index, uint16_t item, uint16_t amount) {
     assert(index < slots.size());
     auto& s = slots[index];
     assert(item == s.item);
@@ -151,7 +151,7 @@ void chest::pickup_force(world& w, uint16_t item, uint16_t index, uint16_t amoun
     }
 }
 
-void chest::place_force(world& w, uint16_t item, uint16_t index, uint16_t amount) {
+void chest::place_force(world& w, uint16_t index, uint16_t item, uint16_t amount) {
     assert(index < slots.size());
     auto& s = slots[index];
     assert(item == s.item);

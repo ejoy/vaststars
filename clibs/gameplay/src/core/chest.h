@@ -61,8 +61,8 @@ struct chest {
     void     flush(world& w, uint16_t endpoint);
 
     // for trading
-    void pickup_force(world& w, uint16_t item, uint16_t index, uint16_t amount);
-    void place_force(world& w, uint16_t item, uint16_t index, uint16_t amount);
+    void pickup_force(world& w, uint16_t index, uint16_t item, uint16_t amount);
+    void place_force(world& w, uint16_t index, uint16_t item, uint16_t amount);
 
 public:
     std::vector<slot> slots;
