@@ -27,6 +27,8 @@ graphic:
       enable: true
       inv_highlight: 0.1
       threshold: 2.3
+    fxaa:
+      enable: true
   render:
     clear: CDS
     clear_color: 255
