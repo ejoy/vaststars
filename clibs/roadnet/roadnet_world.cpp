@@ -230,18 +230,30 @@ namespace roadnet {
         return direction::n;
     }
 
+    static void setMapBits(std::map<loction, uint8_t>& map, const loction& l, uint8_t bits) {
+        map.emplace(l, bits);
+    }
+
+    static uint8_t getMapBits(const std::map<loction, uint8_t>& map, const loction& l) {
+        auto iter = map.find(l);
+        if (iter == map.end()) {
+            return 0;
+        }
+        return iter->second;
+    }
+
     struct NeighborResult {
         loction   l;
         direction dir;
         uint16_t  n;
     };
-    static constexpr NeighborResult findNeighbor(const uint8_t map[256][256], loction l, direction dir) {
+    static NeighborResult findNeighbor(const std::map<loction, uint8_t>& map, loction l, direction dir) {
         uint16_t n = 0;
         loction ln = l;
         direction nd = dir;
         for (;;) {
             ln = move(ln, nd);
-            uint8_t m = map[ln.y][ln.x];
+            uint8_t m = getMapBits(map, ln);
             if (isCross(m)) {
                 break;
             }
@@ -253,10 +265,10 @@ namespace roadnet {
         }
         return {ln, nd, n};
     }
-    static constexpr std::optional<NeighborResult> moveToNeighbor(const uint8_t map[256][256], loction l, direction dir, uint16_t n) {
+    static std::optional<NeighborResult> moveToNeighbor(const std::map<loction, uint8_t>& map, loction l, direction dir, uint16_t n) {
         for (uint16_t i = 0; ; ++i) {
             l = move(l, dir);
-            uint8_t m = map[l.y][l.x];
+            uint8_t m = getMapBits(map, l);
             if (isCross(m)) {
                 return std::nullopt;
             }
@@ -293,7 +305,7 @@ namespace roadnet {
     }
 
     void world::loadMap(const std::map<loction, uint8_t>& mapData) {
-        memset(map, 0, sizeof(map));
+        map.clear();
         straightVec.clear();
         crossMap.clear();
         crossMapR.clear();
@@ -309,13 +321,13 @@ namespace roadnet {
         std::map<loction, uint16_t> specCrossMap;
 
         for (auto& [l, bitmask] : mapData) {
-            map[l.y][l.x] = bitmask;
+            setMapBits(map, l, bitmask);
 
-            if (isSpecCross(map[l.y][l.x])) {
+            if (isSpecCross(bitmask)) {
                 specCrossMap.emplace(l, true);
             }
 
-            if (isCross(map[l.y][l.x])) {
+            if (isCross(bitmask)) {
                 roadid  id  { true, genCrossId++ };
                 loction loc {(uint8_t)l.x, (uint8_t)l.y};
                 crossMap.emplace(loc, id);
@@ -341,7 +353,7 @@ namespace roadnet {
             crossroad.loc = loc;
             crossroad.id = id;
 #endif
-            uint8_t m = map[loc.y][loc.x];
+            uint8_t m = getMapBits(map, loc);
 
             for (uint8_t i = 0; i < 4; ++i) {
                 direction dir = (direction)i;
@@ -544,13 +556,13 @@ namespace roadnet {
 
     road_coord world::coordConvert(map_coord mc) {
         if (auto cross = findCrossRoad(mc); cross) {
-            if (!isValidRoadType(map[mc.y][mc.x], RoadType(mc.z))) {
+            if (!isValidRoadType(getMapBits(map, loction{mc.x, mc.y}), RoadType(mc.z))) {
                 return road_coord::invalid();
             }
             return {cross, mc.z};
         }
 
-        direction dir = straightDirection(map[mc.y][mc.x], mc.z);
+        direction dir = straightDirection(getMapBits(map, loction{mc.x, mc.y}), mc.z);
         if (dir == direction::n) {
             return road_coord::invalid();
         }
@@ -598,7 +610,7 @@ namespace roadnet {
             n -= 1;
             
         if (auto res = moveToNeighbor(map, straight.loc, straight.start_dir, n / road::straight::N); res) {
-            auto m = map[res->l.y][res->l.x];
+            auto m = getMapBits(map, res->l);
             bool b = reverse(res->dir) == straightDirection(m, 0); // TODO: remove this
             uint8_t z = (uint8_t)direction::n;
             if (b)

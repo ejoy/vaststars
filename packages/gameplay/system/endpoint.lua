@@ -85,13 +85,3 @@ function m.pre_build(world)
     end
     ecs:clear "endpoint_changed"
 end
-
-function m.restore_finish(world)
-    local ecs = world.ecs
-    for e in ecs:select "chest:update entity:in" do
-       build(e, world)
-    end
-    for e in ecs:select "station:update entity:in" do
-        build(e, world)
-    end
-end

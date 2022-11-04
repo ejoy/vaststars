@@ -122,13 +122,10 @@ local function _make_cache()
             for toward, slot_names in pairs(track) do
                 local z = toward
                 if is_cross(typeobject.name, entity_dir) then
-                    if toward <= 0xf then -- see also: enum RoadType
-                        local s = ((z >> 2)  + t) % 4 -- high 2 bits is indir
-                        local e = ((z & 0x3) + t) % 4 -- low  2 bits is outdir
-                        z = s << 2 | e
-                    else
-                        z = (((z & 0xF) + t) % 4) | 0x10
-                    end
+                    assert(toward <= 0xf) -- see also: enum RoadType
+                    local s = ((z >> 2)  + t) % 4 -- high 2 bits is indir
+                    local e = ((z & 0x3) + t) % 4 -- low  2 bits is outdir
+                    z = s << 2 | e
                 else
                     z = (z + DIRECTION[entity_dir])%4
                 end

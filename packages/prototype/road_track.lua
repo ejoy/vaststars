@@ -21,10 +21,6 @@ local road_track = {
         [12] = {'path_b2l_1', 'path_b2l_2', 'path_b2l_3', 'path_b2l_4'}, -- bottom to left
         [14] = {'path_b2r_1', 'path_b2r_2', 'path_b2r_3'}, -- bottom to right
         [15] = {'path_b2l_1', 'path_l2b_3'}, -- bottom to bottom -- TODO
-
-        [16] = {'path_l_1', 'path_l_1'}, -- left
-        [18] = {'path_r_1', 'path_r_1'}, -- right
-        [19] = {'path_b2r_1', 'path_b2r_1'}, -- bottom
     },
     ['X'] = {
         [0] = {'path_b2t_1', 'path_b2t_1'}, -- left to left -- TODO
@@ -46,11 +42,6 @@ local road_track = {
         [13] = {'path_b2t_1', 'path_b2t_2'}, -- bottom to top
         [14] = {'path_b2r_1', 'path_b2r_2','path_b2r_3','path_b2r_4'}, -- bottom to right
         [15] = {'path_b2r_1', 'path_b2r_1'}, -- bottom to bottom -- TODO
-
-        [16] = {'path_l2t_1', 'path_l2t_1'}, -- left
-        [17] = {'path_t2b_1', 'path_t2b_1'}, -- top
-        [18] = {'path_r2t_1', 'path_r2t_1'}, -- right
-        [19] = {'path_b2t_1', 'path_b2t_1'}, -- bottom
     },
     ['U'] = {
         [0] = {'path_t2t_1', 'path_t2t_2', 'path_t2t_3', 'path_t2t_4', 'path_t2t_5'},
