@@ -116,23 +116,27 @@
             </div>
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!(show_rotate)" /> <!-- TODO -->
 
+            <div class="button-fuction-block" style="top: -3.33vmin;" data-if = "true && !show_manual_manufacture">
+                <button class="button-function" style ='background-image: "textures/factory/demolition.texture";'/>
+                <div class="title-text">拆除</div>
+            </div>
 
-            <div class="button-fuction-block" style="top: -2.33vmin;" />
 
             <div class="button-fuction-block" style="top: -5.33vmin;" data-event-click="clickRecipe()" data-if = "show_set_recipe">
                 <button class="button-function" style ='background-image: "textures/assemble/wheel.texture";'/>
                 <div class="title-text">修改配方</div>
             </div>
 
-            <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "true">
-                <button class="button-function" style ='background-image: "textures/factory/demolition.texture";'/>
-                <div class="title-text">拆除</div>
-            </div>
+            <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_set_recipe"/>
+
+            <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "show_set_recipe" /> <!-- TODO -->
+
 
             <div class="button-fuction-block" style="top: -5.33vmin;" data-event-click="clickManual()" data-if = "show_manual_manufacture && guide_progress >= 25">
                 <button class="button-function" style ='background-image: "textures/cmdcenter/manual_manufacture.texture";'/>
                 <div class="title-text">制造</div>
             </div>
+
             <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe && !(show_manual_manufacture && guide_progress >= 25)" /> <!-- TODO -->
 
 
