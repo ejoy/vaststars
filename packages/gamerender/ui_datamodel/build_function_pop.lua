@@ -15,17 +15,7 @@ local rotate_mb = mailbox:sub {"rotate"}
 local recipe_mb = mailbox:sub {"recipe"}
 local detail_mb = mailbox:sub {"detail"}
 local manual_mb = mailbox:sub {"manual"}
-local pickup_material_mb = mailbox:sub {"pickup_material"}
-local place_material_mb = mailbox:sub {"place_material"}
 local close_mb = mailbox:sub {"close_build_function_pop"}
-local place_material_func = {}
-place_material_func["assembling"] = function(gameplay_world, e)
-    iassembling.place_material(gameplay_world, e)
-end
-
-place_material_func["laboratory"] = function(gameplay_world, e)
-    ilaboratory:place_material(gameplay_world, e)
-end
 
 local detail_event = { -- entity_type -> function
     ["assembling"] = function(object_id)
@@ -34,9 +24,6 @@ local detail_event = { -- entity_type -> function
     ["chest"] = function(object_id)
         iui.open("chest.rml", object_id)
     end,
---    ["logistic_chest_requester"] = function (object_id)
---        iui.open("logistic_chest.rml", object_id)
---    end,
     ["laboratory"] = function(object_id)
         iui.open("lab.rml", object_id)
     end,
@@ -180,26 +167,6 @@ function M:stage_ui_update(datamodel, object_id)
         for _, t in ipairs(typeobject.type) do
             if detail_event[t] then
                 detail_event[t](object_id)
-            end
-        end
-    end
-
-    for _, _, _, object_id in pickup_material_mb:unpack() do
-        local object = assert(objects:get(object_id))
-        local e = gameplay_core.get_entity(object.gameplay_eid)
-        local items = iassembling.pickup_material(gameplay_core.get_world(), e)
-        iui.open("message_pop.rml", {id = "item", items = items, left = datamodel.left, top = datamodel.top})
-    end
-
-    for _, _, _, object_id in place_material_mb:unpack() do
-        local object = assert(objects:get(object_id))
-        local e = gameplay_core.get_entity(object.gameplay_eid)
-        local typeobject = iprototype.queryByName("entity", object.prototype_name)
-        for _, type in ipairs(typeobject.type) do
-            local func = place_material_func[type]
-            if func then
-                func(gameplay_core.get_world(), e)
-                break
             end
         end
     end

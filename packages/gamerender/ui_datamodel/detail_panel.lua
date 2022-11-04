@@ -135,27 +135,27 @@ local function get_property(e, typeobject)
     }
     -- 显示建筑详细信息
     get_display_info(e, typeobject, t)
-    if e.chest and e.chest.chest_in == e.chest.chest_out and e.chest.chest_in ~= 0xffff then
-        local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
-        local slotnum = 0--t.values.slots
-        local chest_list0 = {}
-        local chest_list1 = {}
-        for id, count in pairs(item_counts) do
-            local typeobject_item = assert(iprototype.queryById(id))
-            slotnum = slotnum + math.floor(count / typeobject_item.stack)
-            if count % typeobject_item.stack > 0 then
-                slotnum = slotnum + 1
-            end
-            if #chest_list0 < 5 then
-                chest_list0[#chest_list0 + 1] = {icon = typeobject_item.icon, count = count}
-            elseif #chest_list1 < 5 then
-                chest_list1[#chest_list1 + 1] = {icon = typeobject_item.icon, count = count}
-            end
-        end
-        t.chest_list0 = #chest_list0 > 0 and chest_list0 or nil
-        t.chest_list1 = #chest_list1 > 0 and chest_list1 or nil
-        t.values.slots = string.format("%d/%d", slotnum, t.values.slots or 0)
-    end
+    -- if e.chest and e.chest.id == e.chest.id and e.chest.id ~= 0xffff then
+    --     local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
+    --     local slotnum = 0--t.values.slots
+    --     local chest_list0 = {}
+    --     local chest_list1 = {}
+    --     for id, count in pairs(item_counts) do
+    --         local typeobject_item = assert(iprototype.queryById(id))
+    --         slotnum = slotnum + math.floor(count / typeobject_item.stack)
+    --         if count % typeobject_item.stack > 0 then
+    --             slotnum = slotnum + 1
+    --         end
+    --         if #chest_list0 < 5 then
+    --             chest_list0[#chest_list0 + 1] = {icon = typeobject_item.icon, count = count}
+    --         elseif #chest_list1 < 5 then
+    --             chest_list1[#chest_list1 + 1] = {icon = typeobject_item.icon, count = count}
+    --         end
+    --     end
+    --     t.chest_list0 = #chest_list0 > 0 and chest_list0 or nil
+    --     t.chest_list1 = #chest_list1 > 0 and chest_list1 or nil
+    --     t.values.slots = string.format("%d/%d", slotnum, t.values.slots or 0)
+    -- end
     if e.fluidbox then
         local name = "无"
         local volume = 0
@@ -245,7 +245,7 @@ local function get_entity_property_list(object_id)
 
             local recipe_results = irecipe.get_elements(recipe_typeobject.results)
             for index, v in ipairs(recipe_results) do
-                local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest.chest_out, index)
+                local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest.id, index)
                 if c then
                     property_list.minner_info = {icon = v.icon, count = n, need_count = v.count}
                 else
@@ -264,7 +264,7 @@ local function get_entity_property_list(object_id)
         local current_inputs = ilaboratory:get_elements(typeobject.inputs)
         local items = {}
         for i, value in ipairs(current_inputs) do
-            local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest.chest_in, i)
+            local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest.id, i)
             items[#items+1] = {icon = value.icon, count = n or 0}
         end
         property_list.chest_list0 = items
