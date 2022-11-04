@@ -20,16 +20,15 @@ graphic:
     flat_distance: 50
     max_range: 20
     type: cylinder
-  hdr:
-    enable: true
-    format: RGBA16F
   lighting:
     cluster_shading: 1
   postprocess:
     bloom:
-      enable: false
-      inv_highlight: 1e-06
-      threshold: 120000
+      enable: true
+      inv_highlight: 0.1
+      threshold: 2.3
+    fxaa:
+      enable: true
   render:
     clear: CDS
     clear_color: 255

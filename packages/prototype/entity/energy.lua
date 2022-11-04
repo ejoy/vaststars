@@ -61,7 +61,7 @@ prototype "核反应堆" {
     model = "prefabs/wind-turbine-1.prefab",
     icon = "textures/construct/solar-panel.texture",
     construct_detector = {"exclusive"},
-    type = {"entity", "generator", "burner"},
+    type = {"entity", "generator"},
     area = "3x3",
     power = "40MW",
     priority = "primary",

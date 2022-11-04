@@ -262,7 +262,6 @@
                 fps_text = " ",           -- fps 信息
                 drawcall_text = " ",      -- drawcall 信息
                 construct_menu = {},
-                manual_queue = {},
 
                 show_construct_menu = true,        -- 是否显示右侧建造菜单
                 cur_construct_menu = "",  -- 当前选中的二级建造菜单名
@@ -286,9 +285,11 @@
                 current_tech_icon = "none",     --当前科技图标
                 current_tech_name = "none",     --当前科技名字
                 current_tech_progress = "0%",   --当前科技进度
-                manual_finish_animation = "0s linear 0s wordmovement",
-                guide_progress = 0
+                guide_progress = 0,
+                button_selected = ""
             })
+            -- TODO: remove this
+            --
             function start.clickConstructBegin(event)
                 if not (start.guide_progress >= 10) then
                     ui_sys.pub {"dismantle_begin", false}
@@ -310,6 +311,15 @@
                     start.cur_edit_mode = 'dismantle'
                     ui_sys.pub {"dismantle_begin", true}
                 end
+            end
+            --
+            function start.ConstructPoint(event)
+                ui_sys.pub {"construct_point", "基建站"}
+                start.button_selected = 'construct_point'
+            end
+            function start.TeardownPoint(event)
+                ui_sys.pub {"teardown_point", "拆除点"}
+                start.button_selected = 'teardown_point'
             end
             function start.clickConstructRotate(event)
                 ui_sys.pub {"rotate"}
@@ -366,12 +376,6 @@
                 ui_sys.pub {"open_taskui", is_task}
             end
             function start.clickCollapsedBar(event, index)
-                if index == 0 then
-                    local e = document.getElementById("manual-queue")
-                    if e and e.attributes.expanded == "true" then
-                        ui_sys.open("manual_queue.rml")
-                    end
-                end
             end
             function start.clickLoadResource(event)
                 ui_sys.pub {"load_resource"}
@@ -390,45 +394,6 @@
                         unconfirmed_double_confirm_continuation = nil
                     end
                 end,
-                ["manual_finish"] = function()
-                    start.manual_finish_animation = ("2.8s linear 0s wordmovement")
-                    window.setTimeout(function() start.manual_finish_animation = "none" end, 2800)
-                end,
-            })
-
-            local function manual_progress(percent)
-                local full_value <const> = 100
-                local half_value <const> = math.floor(full_value / 2)
-
-                percent = math.floor(percent)
-                percent = math.max(percent, 0)
-                percent = math.min(percent, full_value)
-
-                if percent <= half_value then
-                    local deg
-                    start.progress_bar_left = "rotate(0deg)"
-                else
-                    local deg = math.floor(180 * ((percent - half_value)/ half_value))
-                    start.progress_bar_left = string.format("rotate(%ddeg)", math.floor(deg))
-                end
-
-                if percent >= half_value then
-                    start.progress_bar_right = "rotate(180deg)"
-                else
-                    local deg = math.floor(180 * (percent / half_value))
-                    start.progress_bar_right = string.format("rotate(%ddeg)", math.floor(deg))
-                end
-            end
-            ui_sys.mapping(start, {
-                {
-                    "manual_queue",
-                    function()
-                        start("manual_queue")
-                        if start.manual_queue[1] then
-                            manual_progress(start.manual_queue[1].progress)
-                        end
-                    end
-                }
             })
 
             start.progress_bar_left = "rotate(0deg)"
@@ -500,17 +465,17 @@
                 <div style='margin: 0 auto; background-image:"textures/construct/joystick.texture"; width: 35vmin; height: 35vmin; background-size:cover; pointer-events: none;'/>
             </div>
             
-            <!-- 拆除模式 -->
-            <div data-if = "cur_edit_mode != '' && guide_progress >= 5" data-event-click="clickTeardownBegin()" data-style-border = "cur_edit_mode == 'dismantle' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+            <!-- 拆除点 -->
+            <div data-if = "cur_edit_mode == 'construct' && guide_progress >= 5" data-event-click="TeardownPoint()" data-style-border = "button_selected == 'teardown_point' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/demolish.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
-                <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除模式</div>
+                <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除点</div>
             </div>
 
-            <!-- 建造模式 -->
+            <!-- 基建站 -->
             <!-- see also start.clickConstructBegin() -->
-            <div data-if = "cur_edit_mode != '' && guide_progress >= 10" data-event-click="clickConstructBegin()" data-style-border = "cur_edit_mode == 'construct' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
+            <div data-if = "cur_edit_mode == 'construct' && guide_progress >= 10" data-event-click="ConstructPoint()" data-style-border = "button_selected == 'construct_point' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
                 <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/construct.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
-                <div style ="font-size: 4vmin; top: 2.67vmin;">建造模式</div>
+                <div style ="font-size: 4vmin; top: 2.67vmin;">基建站</div>
             </div>
 
             <!-- 右上角：当前科技进度 data-if = "cur_edit_mode == '' && show_tech_progress"-->
@@ -525,30 +490,6 @@
                         <div style='width:2.8vmin; height:7.6vmin; background-image: "textures/common/exclamation2.texture"; background-size: cover;'/>
                     </p>
                 </button>
-            </div>
-
-            <!-- 右下角手搓队列 -->
-            <div style = "pointer-events: none; position: absolute; width: 97vmax; height: 98.5vmin; right:0vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "cur_edit_mode == ''">
-                <collapsed-bar id = "manual-queue" init-expanded = "false" min-width = "13.50vmin" max-width = "auto" style = "height: 35vmin; flex-direction: row; overflow: hidden;">
-                    <div data-for = "manual_queue" style = "flex-direction: row; pointer-events: none;">
-                        <div style = "width: 0.5vmin;" />
-                        <manual_workbutton data-event-click="clickCollapsedBar(it_index)" style="background-color:rgb(250,205,9);width: 13vmin; height: 13vmin;">
-                            <div class="workbutton-bg" data-style-background-image = "it.icon" style = "pointer-events: none;" />
-                            <div class="workbutton-text" style = "pointer-events: none; -webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 2.5vmin; color: #fff; word-break: break-all; text-align: center;">{{it.name}}</div>
-                            <div class = "progressbar-half-cycle-container" style = "left: 0%; pointer-events: none;">
-                                <div class = "progressbar-half-cycle-left" data-style-transform = "progress_bar_left" style = "pointer-events: none;" data-if = "it_index == 0" />
-                                <div class = "progressbar-half-cycle-left" style = "pointer-events: none;" data-if = "it_index > 0" />
-                            </div>
-                            <div class = "progressbar-half-cycle-container" style = "left: 50%; pointer-events: none;">
-                                <div class = "progressbar-half-cycle-right" data-style-transform = "progress_bar_right" style = "pointer-events: none;" data-if = "it_index == 0" />
-                                <div class = "progressbar-half-cycle-right" style = "pointer-events: none;" data-if = "it_index > 0"/>
-                            </div>
-                            <!-- 右下角手搓物品数量显示 -->
-                            <div style="position:absolute; 	font-size: 4vmin; top: -0.5vmin; left: 0vmin;-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);">{{it.count}}</div>
-                        </manual_workbutton>
-                    </div>
-                </collapsed-bar>
-                <div class="accomplished2" style = "pointer-events: none;" data-style-animation="manual_finish_animation">制造完成</div>
             </div>
 
             <!-- 指示器 -->
@@ -644,7 +585,6 @@
                         <button class="tools-button" data-event-click="clickConstructMenuItem(menu.prototype_name)">
                             <div class="workbutton-bg" data-style-background-image = "menu.icon" />
                             <div class="tools-button-title">{{menu.show_prototype_name}}</div>
-                            <div class="item-num">{{menu.count}}</div>
                         </button>
                     </div>
                 </div>

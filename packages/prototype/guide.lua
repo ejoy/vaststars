@@ -7,33 +7,53 @@ local guide = {
             {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 铁铝丰富}..(轻松)","textures/guide/guide-1.texture"},
             {"哔哩..哔哗..启动生存可靠性分析..{/g 0.04565%}存活概率..(情绪表达跳过中)","textures/guide/guide-4.texture"},
             {"博士，作为助理AI，我建议你立刻开始工作..哔哩..你的剩余生存时间理论上只有{/g 348.26}地球小时..(担忧)", "textures/guide/guide-6.texture"},
-            {"迫降不算太糟糕，我们先清理指挥中心{/g 周边残骸}，兴许能找到一些有用的物资..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..发现道路阻断..哔哩..建议{/g 修复道路}..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
             task = {
-                "清除废墟",
+                "修复阻断公路",
             },
-            guide_progress = 5,
+            guide_progress = 10,
         },
         prerequisites = {},
 	},
 
+
     {
         name = "guide-2",
 		narrative = {
-            {"哔哩..发现道路阻断..哔哩..建议{/g 修复道路}..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"缺少高效的物流运输最多维持{/g 374.09}地球小时的生存..哔哩..(担忧)", "textures/guide/guide-6.texture"},
+            {"不过我们在废墟中发现了保存完好的{/g 物流中心}，物流中心可以高效开展物流运输..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
+            {"让我们在道路边赶紧修建一座{/g 物流中心}..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
+            -- pop_chapter = {"第一阶段","物流网络"},
             guide_progress = 10,
             task = {
-                "修复阻断公路",
+                "放置物流中心",
             }
         },
         prerequisites = {
-            "清除废墟",
+            "修复阻断公路",
         },
 	},
+
+    -- {
+    --     name = "guide-2",
+	-- 	narrative = {
+    --         {"哔哩..发现道路阻断..哔哩..建议{/g 修复道路}..哔哩..(期待)", "textures/guide/guide-2.texture"},
+    --     },
+    --     narrative_end = {
+    --         guide_progress = 10,
+    --         task = {
+    --             "修复阻断公路",
+    --         }
+    --     },
+    --     prerequisites = {
+    --         "清除废墟",
+    --     },
+	-- },
 
     {
         name = "guide-3",
@@ -47,7 +67,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "修复阻断公路",
+            "放置物流中心",
         },
 	},
 
@@ -105,25 +125,6 @@ local guide = {
         },
 	},
 
-    {
-        name = "guide-7",
-		narrative = {
-            {"缺少高效的物流运输最多维持{/g 374.09}地球小时的生存..哔哩..(担忧)", "textures/guide/guide-6.texture"},
-            {"不过我们在废墟中发现了保存完好的{/g 物流中心}，物流中心可以高效开展物流运输..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
-            {"让我们在道路边赶紧修建一座{/g 物流中心}..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
-        },
-        narrative_end = {
-            pop_chapter = {"第一阶段","物流网络"},
-            guide_progress = 30,
-            task = {
-                "放置物流中心",
-            }
-        },
-        prerequisites = {
-            "放置采矿机",
-        },
-	},
-
     -- {
     --     name = "guide-8",
 	-- 	narrative = {
@@ -143,11 +144,12 @@ local guide = {
 	-- },
 
     {
-        name = "guide-8",
+        name = "guide-7",
 		narrative = {
             {"{/g 组装机}可使用3D打印技术制造地质科技包..哔哩..哔哗..请求建造{/g 组装机}..(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
+            pop_chapter = {"第一章","自动生产"},
             guide_progress = 30,
             task = {
                 "放置组装机",
@@ -161,7 +163,7 @@ local guide = {
 
 
     {
-        name = "guide-9",
+        name = "guide-8",
 		narrative = {
             {"哔哩..哔哗..基地开始采集气液资源，{/g 管道}正是运输此类资源的关键..(兴奋)", "textures/guide/guide-3.texture"},
         },
@@ -177,7 +179,7 @@ local guide = {
 	},
 
     {
-        name = "guide-10",
+        name = "guide-9",
 		narrative = {
             {"合理的铺设管道让液体运输更加高效...哔哩..注意管道和机器液口的连接，耐心..和眼神..是关键(期待)", "textures/guide/guide-2.texture"},
         },
@@ -192,7 +194,7 @@ local guide = {
 	},
 
     {
-        name = "guide-11",
+        name = "guide-10",
 		narrative = {
             {"{/g 基建站}允许在更远的区域修建建筑，基建站可将建筑材料运送到在覆盖区域..哔哩..(兴奋)", "textures/guide/guide-2.texture"},
             {"为了扩建我们的基地，准备放置{/g 基建站}吧..哔哩..哔哩(兴奋)", "textures/guide/guide-3.texture"},
@@ -209,7 +211,7 @@ local guide = {
 	},
 
     {
-        name = "guide-12",
+        name = "guide-11",
 		narrative = {
             {"{/g 化工厂}准备就绪，让我们正式进入化工生产..哔哩..哔哩..(兴奋）", "textures/guide/guide-3.texture"},
         },
@@ -226,7 +228,7 @@ local guide = {
 	},
 
     {
-        name = "guide-13",
+        name = "guide-12",
 		narrative = {
             {"{/g 塑料}可制造更多精密元件，掌握这种新材料，存活概率提升为1.2923%..哔哩(兴奋）", "textures/guide/guide-3.texture"},
         },
@@ -242,7 +244,7 @@ local guide = {
 	},
 
     {
-        name = "guide-14",
+        name = "guide-13",
 		narrative = {
             {"终于可以研制机械装置进入自动化生产，这可以大大提高效率..哔哩..和放松你的手臂..哔哩(期待）", "textures/guide/guide-2.texture"},
         },

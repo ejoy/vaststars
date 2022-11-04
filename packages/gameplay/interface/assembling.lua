@@ -39,21 +39,27 @@ local function needRecipeLimit(fb)
     return true
 end
 
-local function createChestAndFluidBox(init, fluidboxes, s, max, needlimit)
-    s = s:sub(5)
-    assert(#s <= 4 * 15)
+--createChestAndFluidBox(world, "blue", fluids.input, pt.fluidboxes.input, recipe.ingredients, 4, needlimit)
+--createChestAndFluidBox(world, "red", fluids.output, pt.fluidboxes.output, recipe.results, 3, needlimit)
+
+local function createChestAndFluidBox(world, init, fluidboxes, recipe, needlimit)
     local chest = {}
-    local fluids = {}
-    for idx = 1, #s//4 do
-        local id, n = string.unpack("<I2I2", s, 4*idx-3)
+    local input_fluids = {}
+    local output_fluids = {}
+    local ingredients_n <const> = #recipe.ingredients//4 - 1
+    local results_n <const> = #recipe.results//4 - 1
+    assert(ingredients_n <= 16 and results_n <= 16)
+    for idx = 1, ingredients_n do
+        local MAX <const> = 4
+        local id, n = string.unpack("<I2I2", recipe.ingredients, 4*idx+1)
         local limit = 0
         if isFluidId(id) then
-            local fluid_idx = findFluidbox(init, id)
-            if fluid_idx > max then
+            local fluid_idx = findFluidbox(init.input, id)
+            if fluid_idx > MAX then
                 error "The assembling does not support this recipe."
             end
-            fluids[fluid_idx] = idx
-            local fb = fluidboxes[fluid_idx]
+            input_fluids[fluid_idx] = idx
+            local fb = fluidboxes.input[fluid_idx]
             if needlimit and needRecipeLimit(fb) then
                 limit = n * 2
             else
@@ -62,25 +68,69 @@ local function createChestAndFluidBox(init, fluidboxes, s, max, needlimit)
         else
             limit = n * 2
         end
-        chest[#chest+1] = string.pack("<I2I2I2I2I2", 0, id, 0, limit, 0)
+        chest[#chest+1] = world:chest_slot {
+            type = "blue",
+            item = id,
+            limit = limit,
+        }
     end
-    for i = 1, max do
-        fluids[i] = fluids[i] or 0
+    for idx = 1, results_n do
+        local MAX <const> = 3
+        local id, n = string.unpack("<I2I2", recipe.results, 4*idx+1)
+        local limit = 0
+        if isFluidId(id) then
+            local fluid_idx = findFluidbox(init.output, id)
+            if fluid_idx > MAX then
+                error "The assembling does not support this recipe."
+            end
+            output_fluids[fluid_idx] = idx + ingredients_n
+            local fb = fluidboxes.output[fluid_idx]
+            if needlimit and needRecipeLimit(fb) then
+                limit = n * 2
+            else
+                limit = fb.capacity
+            end
+        else
+            limit = n * 2
+        end
+        chest[#chest+1] = world:chest_slot {
+            type = "red",
+            item = id,
+            limit = limit,
+        }
     end
-    local fb = 0
-    for i = max, 1, -1 do
-        fb = (fb << 4) | fluids[i]
+    local fluidbox_in = 0
+    local fluidbox_out = 0
+    for i = 4, 1, -1 do
+        fluidbox_in = (fluidbox_in << 4) | (input_fluids[i] or 0)
     end
-    return table.concat(chest), fb
+    for i = 3, 1, -1 do
+        fluidbox_out = (fluidbox_out << 4) | (output_fluids[i] or 0)
+    end
+    return table.concat(chest), fluidbox_in, fluidbox_out
 end
 
-local function createChest(s)
+local function createChest(world, recipe)
     local chest = {}
-    for idx = 2, #s//4 do
-        local id, n = string.unpack("<I2I2", s, 4*idx-3)
+    local ingredients_n <const> = #recipe.ingredients//4 - 1
+    local results_n <const> = #recipe.results//4 - 1
+    for idx = 1, ingredients_n do
+        local id, n = string.unpack("<I2I2", recipe.ingredients, 4*idx+1)
         assert(not isFluidId(id))
-        local limit = n * 2
-        chest[#chest+1] = string.pack("<I2I2I2I2I2", 0, id, 0, limit, 0)
+        chest[#chest+1] = world:chest_slot {
+            type = "blue",
+            item = id,
+            limit = n * 2,
+        }
+    end
+    for idx = 1, results_n do
+        local id, n = string.unpack("<I2I2", recipe.results, 4*idx+1)
+        assert(not isFluidId(id))
+        chest[#chest+1] = world:chest_slot {
+            type = "red",
+            item = id,
+            limit = n * 2,
+        }
     end
     return table.concat(chest)
 end
@@ -95,31 +145,26 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     if recipe_name == nil then
         assembling.recipe = 0
         e.endpoint_changed = true
-        chest.chest_in = 0xffff
-        chest.chest_out = 0xffff
+        chest.id = 0xffff
         chest.fluidbox_in = 0
         chest.fluidbox_out = 0
         return
     end
     local recipe = assert(prototype.queryByName("recipe", recipe_name), "unknown recipe: "..recipe_name)
     if not fluids or not pt.fluidboxes then
-        local chest_in = createChest(recipe.ingredients)
-        local chest_out = createChest(recipe.results)
+        local id = createChest(world, recipe)
         assembling.recipe = recipe.id
         e.endpoint_changed = true
-        chest.chest_in = world:container_create("blue", chest_in)
-        chest.chest_out = world:container_create("red", chest_out)
+        chest.id = world:container_create(id)
         chest.fluidbox_in = 0
         chest.fluidbox_out = 0
         return
     end
     local needlimit = #pt.fluidboxes.input > 0
-    local chest_in, fluidbox_in = createChestAndFluidBox(fluids.input, pt.fluidboxes.input, recipe.ingredients, 4, needlimit)
-    local chest_out, fluidbox_out = createChestAndFluidBox(fluids.output, pt.fluidboxes.output, recipe.results, 3, needlimit)
+    local id, fluidbox_in, fluidbox_out = createChestAndFluidBox(world, fluids, pt.fluidboxes, recipe, needlimit)
     assembling.recipe = recipe.id
     e.endpoint_changed = true
-    chest.chest_in = world:container_create("blue", chest_in)
-    chest.chest_out = world:container_create("red", chest_out)
+    chest.id = world:container_create(id)
     chest.fluidbox_in = fluidbox_in
     chest.fluidbox_out = fluidbox_out
 end

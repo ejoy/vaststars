@@ -17,7 +17,6 @@ local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
 
 local STRAIGHT_TICKCOUNT <const> = 10
-local WAIT_TICKCOUNT <const> = 10
 local CROSS_TICKCOUNT <const> = 20
 
 local is_cross; do
@@ -123,13 +122,10 @@ local function _make_cache()
             for toward, slot_names in pairs(track) do
                 local z = toward
                 if is_cross(typeobject.name, entity_dir) then
-                    if toward <= 0xf then -- see also: enum RoadType
-                        local s = ((z >> 2)  + t) % 4 -- high 2 bits is indir
-                        local e = ((z & 0x3) + t) % 4 -- low  2 bits is outdir
-                        z = s << 2 | e
-                    else
-                        z = (((z & 0xF) + t) % 4) | 0x10
-                    end
+                    assert(toward <= 0xf) -- see also: enum RoadType
+                    local s = ((z >> 2)  + t) % 4 -- high 2 bits is indir
+                    local e = ((z & 0x3) + t) % 4 -- low  2 bits is outdir
+                    z = s << 2 | e
                 else
                     z = (z + DIRECTION[entity_dir])%4
                 end
@@ -154,7 +150,7 @@ local function offset_matrix(prototype_name, dir, toward, tick)
 end
 
 local function _get_offset_matrix(is_cross_flag, x, y, toward, tick)
-    local object = assert(objects:coord(x, y))
+    local object = assert(objects:coord(x, y), ("no object at (%d, %d)"):format(x, y))
     local vsobject = assert(vsobject_manager:get(object.id))
     if not is_cross_flag then
         if is_cross(object.prototype_name, object.dir) then
@@ -183,18 +179,15 @@ end
 return function(lorry_id, is_cross, x, y, z, tick)
     local ti, toward
     if is_cross then
-        if z <= 0xf then
-            ti = (CROSS_TICKCOUNT - tick)
-        else
-            ti = (WAIT_TICKCOUNT - tick)
-        end
+        assert(z <= 0xf)
+        ti = (CROSS_TICKCOUNT - tick)
         toward = z
     else
         local pos
         pos, toward = z & 0x0F, (z >> 4) & 0x0F -- pos: [0, 1], toward: [0, 1], tick: [0, (STRAIGHT_TICKCOUNT - 1)]
         ti = pos * STRAIGHT_TICKCOUNT + (STRAIGHT_TICKCOUNT - tick)
     end
-    ti = ti + 1
+    ti = ti + 1 -- offset matrix start from 1
 
     if not lorries[lorry_id] then
         local offset_mat = _get_offset_matrix(is_cross, x, y, toward, ti)

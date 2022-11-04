@@ -43,6 +43,8 @@ namespace roadnet {
             };
             uint16_t id;
         };
+        constexpr loction() : id(0xFFFF)
+        {}
         constexpr loction(uint16_t id) : id(id)
         {}
         constexpr loction(uint8_t x, uint8_t y) : x(x), y(y)

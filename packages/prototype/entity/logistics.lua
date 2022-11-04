@@ -39,8 +39,7 @@ prototype "指挥中心" {
     icon = "textures/building_pic/small_pic_headquarter.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "generator", "chest", "base"},
-    chest_type = "none",
+    type ={"entity", "generator", "base"},
     area = "5x5",
     supply_area = "9x9",
     supply_distance = 9,
@@ -58,8 +57,7 @@ prototype "物流派送站" {
     icon = "textures/building_pic/small_pic_goodsstation_output.texture",
     background = "textures/build_background/small_pic_goodsstation_output.texture",
     construct_detector = {"exclusive"},
-    type = {"entity", "chest"},
-    chest_type = "none",
+    type = {"entity"},
     area = "1x1",
     slots = 10,
     group = {"物流"},
@@ -70,8 +68,7 @@ prototype "物流需求站" {
     icon = "textures/building_pic/small_pic_goodsstation_input.texture",
     background = "textures/build_background/small_pic_goodsstation_input.texture",
     construct_detector = {"exclusive"},
-    type = {"entity", "chest"},
-    chest_type = "none",
+    type = {"entity"},
     area = "1x1",
     slots = 10,
     group = {"物流"},
@@ -244,7 +241,7 @@ prototype "砖石公路-O型-01" {
     teardown = 20,
     flow_direction = {"N"},
     track = "O",
-    tickcount = 0,
+    tickcount = 20,
     show_build_function = false,
     type ={"entity", "road"},
     area = "1x1",
@@ -284,9 +281,14 @@ prototype "基建站" {
     type ={"entity","consumer"},
     priority = "secondary",
     slots = 20,
-    area = "2x2",
-    supply_area = "20x20",
+    area = "1x1",
+    supply_area = "23x23",
     group = {"物流"},
+    crossing = {
+        connections = {
+            {type="input-output", position={0,1,"S"}, roadside = true},
+        },
+    }
 }
 
 prototype "拆除点" {
@@ -297,8 +299,13 @@ prototype "拆除点" {
     type ={"entity", "chest"},
     chest_type = "red",
     area = "1x1",
-    dismantle_area = "21x21",
+    dismantle_area = "23x23",
     group = {"物流"},
     slots = 20,
     teardown = false,
+    crossing = {
+        connections = {
+            {type="input-output", position={0,0,"S"}, roadside = true},
+        },
+    }
 }

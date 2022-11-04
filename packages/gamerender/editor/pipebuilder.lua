@@ -483,13 +483,13 @@ end
 
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject)
-    -- check if item is in the inventory
-    local item_typeobject = iprototype.queryByName("item", typeobject.name)
-    local item = inventory:get(item_typeobject.id)
-    if item.count <= 0 then
-        self:clean(datamodel)
-        return
-    end
+    -- -- check if item is in the inventory
+    -- local item_typeobject = iprototype.queryByName("item", typeobject.name)
+    -- local item = inventory:get(item_typeobject.id)
+    -- if item.count <= 0 then
+    --     self:clean(datamodel)
+    --     return
+    -- end
 
     iobject.remove(self.coord_indicator)
     local dir = DEFAULT_DIR

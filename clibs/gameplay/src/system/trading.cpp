@@ -3,41 +3,49 @@
 #include <lua.hpp>
 #include "roadnet_world.h"
 
-static void trading_match(world& w, uint16_t item, trading_queue& q) {
-    while (!q.sell.empty() && !q.buy.empty()) {
+static void trading_match(world& w, uint16_t item, trading_queue& q, uint8_t sell_priority, uint8_t buy_priority) {
+    auto& s = q.sell[sell_priority];
+    auto& b = q.buy[buy_priority];
+    while (!s.empty() && !b.empty()) {
         w.tradings.orders.push({
             item,
-            q.sell.front(),
-            q.buy.front()
+            s.front(),
+            b.front()
         });
-        q.buy.pop();
-        q.sell.pop();
+        b.pop();
+        s.pop();
     }
 }
 
-void trading_sell(world& w, trading_who who, chest::slot& s) {
-    if (s.amount <= s.lock) {
+static void trading_match(world& w, uint16_t item, trading_queue& q) {
+    trading_match(w, item, q, 0, 0);
+    trading_match(w, item, q, 0, 1);
+    trading_match(w, item, q, 1, 0);
+}
+
+void trading_sell(world& w, trading_who who, uint8_t priority, chest::slot& s) {
+    if (s.amount <= s.lock_item) {
         return;
     }
     uint16_t item = s.item;
-    uint16_t amount = s.amount - s.lock;
-    s.lock = s.amount;
+    uint16_t amount = s.amount - s.lock_item;
+    s.lock_item = s.amount;
     auto& n = w.tradings.queues[item];
     for (uint16_t i = 0; i < amount; ++i) {
-        n.sell.push(who);
+        n.sell[priority].push(who);
     }
 }
 
-void trading_buy(world& w, trading_who who, chest::slot& s) {
-    if (s.amount + s.lock >= s.limit) {
+void trading_buy(world& w, trading_who who, uint8_t priority, chest::slot& s) {
+    if (s.amount + s.lock_space >= s.limit) {
         return;
     }
     uint16_t item = s.item;
-    uint16_t amount = s.limit - s.amount - s.lock;
-    s.lock = s.limit - s.amount;
+    uint16_t amount = s.limit - s.amount - s.lock_space;
+    s.lock_space = s.limit - s.amount;
     auto& n = w.tradings.queues[item];
     for (uint16_t i = 0; i < amount; ++i) {
-        n.buy.push(who);
+        n.buy[priority].push(who);
     }
 }
 
@@ -124,8 +132,8 @@ static bool DoTask(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadn
     auto& l = rw.Lorry(lorryId);
     l.gameplay = {
         order.item,
-        order.sell.endpoint,
-        order.buy.endpoint,
+        {order.sell.endpoint, order.sell.index},
+        {order.buy.endpoint, order.buy.index},
     };
     w.tradings.orders.pop();
     return true;
@@ -175,20 +183,22 @@ lupdate(lua_State *L) {
         auto& c = v.get<ecs::chest>();
         for (auto lorryId = rw.popLorry(c.endpoint); !!lorryId; lorryId = rw.popLorry(c.endpoint)) {
             auto& l = rw.Lorry(lorryId);
-            if (l.gameplay.sell == 0xffff) {
-                auto& chest = w.query_chest(c.chest_in);
-                chest.place_force(w, l.gameplay.item, 1);
+            if (l.gameplay.sell.endpoint == 0xffff) {
+                assert(c.endpoint == l.gameplay.buy.endpoint);
+                auto& chest = w.query_chest(c.id);
+                chest.place_force(w, l.gameplay.buy.index, l.gameplay.item, 1);
                 if (!DoTask(w, rw, lorryId, c.endpoint)) {
                     GoHome(w, rw, lorryId, c.endpoint);
                 }
             }
             else {
-                auto& chest = w.query_chest(c.chest_out);
-                chest.pickup_force(w, l.gameplay.item, 1);
-                if (!rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy)) {
+                assert(c.endpoint == l.gameplay.sell.endpoint);
+                auto& chest = w.query_chest(c.id);
+                chest.pickup_force(w, l.gameplay.sell.index, l.gameplay.item, 1);
+                if (!rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy.endpoint)) {
                     assert(false);
                 }
-                l.gameplay.sell = 0xffff;
+                l.gameplay.sell.endpoint = 0xffff;
             }
         }
     }

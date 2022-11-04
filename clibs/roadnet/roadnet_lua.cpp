@@ -3,6 +3,7 @@
 #include <map>
 #include "roadnet_coord.h"
 #include "roadnet_world.h"
+#include "core/saveload.h"
 
 namespace roadnet::lua {
     template <typename T>
@@ -237,6 +238,67 @@ namespace roadnet::lua {
             w.update(0);
             return 0;
         }
+        static int backup(lua_State* L) {
+            auto& w = class_get<roadnet::world>(L, 1);
+            FILE* f = lua_world::createfile(L, 2, lua_world::filemode::write);
+            lua_world::write_dynarray(f, w.crossAry);
+            lua_world::write_dynarray(f, w.straightAry);
+            lua_world::write_dynarray(f, w.endpointAry);
+            lua_world::write_vector(f, w.endpointVec, [&](const endpoint& e) {
+                lua_world::file_write(f, e.loc);
+                lua_world::write_list(f, e.pushMap);
+                lua_world::write_list(f, e.popMap);
+                lua_world::file_write(f, e.lorry[0]);
+                lua_world::file_write(f, e.lorry[1]);
+            });
+
+            lua_world::write_dynarray(f, w.lorryAry);
+            lua_world::write_vector(f, w.lorryVec, [&](const lorry& l) {
+                lua_world::file_write(f, l.tick);
+                lua_world::file_write(f, l.ending);
+                lua_world::file_write(f, l.pathIdx);
+                lua_world::write_vector(f, l.path);
+                lua_world::file_write(f, l.gameplay);
+            });
+
+            lua_world::write_vector(f, w.straightVec);
+            lua_world::write_map(f, w.map);
+            lua_world::write_map(f, w.crossMap);
+            lua_world::write_map(f, w.crossMapR);
+            lua_world::write_map(f, w.EndpointToRoadcoordMap);
+            fclose(f);
+            return 0;
+        }
+        static int restore(lua_State* L) {
+            auto& w = class_get<roadnet::world>(L, 1);
+            FILE* f = lua_world::createfile(L, 2, lua_world::filemode::read);
+            lua_world::read_dynarray(f, w.crossAry);
+            lua_world::read_dynarray(f, w.straightAry);
+            lua_world::read_dynarray(f, w.endpointAry);
+            lua_world::read_vector(f, w.endpointVec, [&](endpoint& e) {
+                lua_world::file_read(f, e.loc);
+                lua_world::read_list(f, e.pushMap);
+                lua_world::read_list(f, e.popMap);
+                lua_world::file_read(f, e.lorry[0]);
+                lua_world::file_read(f, e.lorry[1]);
+            });
+            lua_world::read_dynarray(f, w.lorryAry);
+            lua_world::read_vector(f, w.lorryVec, [&](lorry& l) {
+                lua_world::file_read(f, l.tick);
+                lua_world::file_read(f, l.ending);
+                lua_world::file_read(f, l.pathIdx);
+                lua_world::read_vector(f, l.path);
+                lua_world::file_read(f, l.gameplay);
+            });
+
+            lua_world::read_vector(f, w.straightVec);
+            lua_world::read_map(f, w.map);
+            lua_world::read_map(f, w.crossMap);
+            lua_world::read_map(f, w.crossMapR);
+            lua_world::read_map(f, w.EndpointToRoadcoordMap);
+            fclose(f);
+            return 0;
+        }
         static int create(lua_State* L) {
             luaL_Reg l[] = {
                 { "load_map", load_map },
@@ -247,6 +309,8 @@ namespace roadnet::lua {
                 { "map_coord", map_coord },
                 { "each_lorry", each_lorry },
                 { "update", update },
+                { "backup", backup },
+                { "restore", restore },
                 { NULL, NULL },
             };
             class_create<roadnet::world>(L, l);

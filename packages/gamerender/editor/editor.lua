@@ -211,7 +211,6 @@ function M:teardown_complete()
     local changed_set = {}
     local removed_set = {}
     for _, object in objects:select("TEMPORARY", "teardown", true) do
-        world:pub {"teardown", object.prototype_name}
         teardown(self, object, changed_set)
         removed_set[object.id] = object
     end
@@ -232,7 +231,7 @@ function M:teardown_complete()
                 end
             end
         end
-        if e.chest and e.chest.chest_in == e.chest.chest_out and e.chest.chest_in ~= 0xffff then
+        if e.chest and e.chest.id ~= 0xffff then
             for prototype, count in pairs(ichest:item_counts(gameplay_core.get_world(), e)) do
                 item_counts[prototype] = item_counts[prototype] or 0
                 item_counts[prototype] = item_counts[prototype] + count

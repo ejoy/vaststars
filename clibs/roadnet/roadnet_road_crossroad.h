@@ -6,6 +6,10 @@
 
 namespace roadnet::road {
     struct crossroad {
+#ifdef _DEBUG
+        loction loc = {0, 0};
+        roadid id;
+#endif//_DEBUG
         roadid   neighbor[4] = {};
         lorryid  cross_lorry[2] = {};
         RoadType cross_status[2];

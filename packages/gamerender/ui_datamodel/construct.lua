@@ -27,6 +27,10 @@ local DISABLE_FPS = require("debugger").disable_fps
 local SHOW_LOAD_RESOURCE = not require("debugger").disable_load_resource
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
+
+local construct_point_mb = mailbox:sub {"construct_point"}
+local teardown_point_mb = mailbox:sub {"teardown_point"}
+
 local construct_begin_mb = mailbox:sub {"construct_begin"} -- 建造 -> 建造模式
 local dismantle_begin_mb = mailbox:sub {"dismantle_begin"} -- 建造 -> 拆除模式
 local rotate_mb = mailbox:sub {"rotate"} -- 旋转建筑
@@ -44,7 +48,6 @@ local laying_pipe_confirm_mb = mailbox:sub {"laying_pipe_confirm"} -- 铺管结�
 local open_taskui_event = mailbox:sub {"open_taskui"}
 local load_resource_mb = mailbox:sub {"load_resource"}
 local single_touch_mb = world:sub {"single_touch"}
-local imanual = require "ui_datamodel.common.manual"
 local inventory = global.inventory
 local pickup_mb = world:sub {"pickup"}
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
@@ -75,15 +78,11 @@ local function _get_construct_menu()
 
         for _, prototype_name in ipairs(menu.detail) do
             local typeobject = assert(iprototype.queryByName("item", prototype_name))
-            local c = inventory:get(typeobject.id)
-            if c.count > 0 then
-                m.detail[#m.detail + 1] = {
-                    show_prototype_name = iprototype.show_prototype_name(typeobject),
-                    prototype_name = prototype_name,
-                    icon = typeobject.icon,
-                    count = c.count,
-                }
-            end
+            m.detail[#m.detail + 1] = {
+                show_prototype_name = iprototype.show_prototype_name(typeobject),
+                prototype_name = prototype_name,
+                icon = typeobject.icon,
+            }
         end
 
         construct_menu[#construct_menu+1] = m
@@ -129,8 +128,6 @@ function M:create()
         current_tech_icon = "none",    --当前科技图标
         current_tech_name = "none",    --当前科技名字
         current_tech_progress = "0%",  --当前科技进度
-        manual_queue = {},
-        manual_queue_length = 0, -- cache the length of manual queue, for animation when manual queue has been finished
     }
 end
 
@@ -174,6 +171,8 @@ function M:update_tech(datamodel, tech)
 end
 
 function M:stage_ui_update(datamodel)
+    -- TODO: remove this
+    --
     for _, _, _, double_confirm in construct_begin_mb:unpack() do
         idetail.unselected()
         if builder then
@@ -201,7 +200,6 @@ function M:stage_ui_update(datamodel)
         inventory:flush()
         datamodel.construct_menu = _get_construct_menu()
         ipower_line.show_supply_area()
-        world:pub {"roadnet", "clean"} -- TODO: remove this
         ::continue::
     end
 
@@ -233,6 +231,41 @@ function M:stage_ui_update(datamodel)
         gameplay_core.world_update = false
         camera.transition("camera_construct.prefab")
         ::continue::
+    end
+    --
+
+    for _, _, _, prototype_name in construct_point_mb:unpack() do
+        global.mode = "construct"
+        gameplay_core.world_update = false
+
+        if last_prototype_name ~= prototype_name then
+            if builder then
+                builder:clean(datamodel)
+            end
+            builder = create_normalbuilder()
+            local typeobject = iprototype.queryByName("entity", prototype_name)
+            builder:new_entity(datamodel, typeobject)
+            self:flush()
+
+            last_prototype_name = prototype_name
+        end
+    end
+
+    for _, _, _, prototype_name in teardown_point_mb:unpack() do
+        global.mode = "teardown"
+        gameplay_core.world_update = false
+
+        if last_prototype_name ~= prototype_name then
+            if builder then
+                builder:clean(datamodel)
+            end
+            builder = create_normalbuilder()
+            local typeobject = iprototype.queryByName("entity", prototype_name)
+            builder:new_entity(datamodel, typeobject)
+            self:flush()
+
+            last_prototype_name = prototype_name
+        end
     end
 
     for _ in rotate_mb:unpack() do
@@ -421,12 +454,6 @@ function M:stage_camera_usage(datamodel)
             break
         end
     end
-
-    datamodel.manual_queue = imanual.get_queue(4)
-    if datamodel.manual_queue_length > 0 and #datamodel.manual_queue == 0 then
-        world:pub {"ui_message", "manual_finish"}
-    end
-    datamodel.manual_queue_length = #datamodel.manual_queue
 
     iobject.flush()
 end

@@ -8,8 +8,7 @@ component "entity" {
 }
 
 component "chest" {
-    "chest_in:word",
-    "chest_out:word",
+    "id:word",
     "fluidbox_in:word",
     "fluidbox_out:word",
     "endpoint:word",
@@ -37,11 +36,6 @@ component "capacitance" {
     "shortage:dword",
     "delta:int",
     "network:byte"
-}
-
-component "burner" {
-	"recipe:word",
-	"progress:word",
 }
 
 component "chimney" {

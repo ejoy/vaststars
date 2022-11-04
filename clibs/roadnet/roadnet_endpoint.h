@@ -17,6 +17,7 @@ namespace roadnet {
         std::list<lorryid> popMap;
         lorryid lorry[2] = {lorryid::invalid(), lorryid::invalid()};
 
+        endpoint() {}
         endpoint(loction loc)
             : loc(loc) {}
     };

@@ -45,6 +45,7 @@ end
 local function load_map(world)
     local ecs = world.ecs
     local map = {}
+
     for e in ecs:select "road entity:in" do
         local loc = (e.entity.y << 8) | e.entity.x -- see also: get_location(lua_State *L, int idx)
         map[loc] = road_mask(e.entity.prototype, e.entity.direction)
@@ -58,8 +59,4 @@ function m.init(world)
         load_map(world)
     end
     -- ecs:clear "road_changed" -- TODO: temporary code
-end
-
-function m.pre_restore_finish(world)
-    load_map(world)
 end

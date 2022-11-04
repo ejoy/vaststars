@@ -38,9 +38,6 @@ namespace roadnet {
         dynarray<lorryid>         lorryAry;
         std::vector<lorry>        lorryVec;
 
-    private:
-        uint8_t map[256][256];
-
         struct straightData {
             uint16_t  id;
             uint16_t  len;
@@ -48,6 +45,7 @@ namespace roadnet {
             direction start_dir;
             direction finish_dir;
             roadid neighbor; // the next crossroad along this straight road
+            straightData() {}
             straightData(uint16_t id, uint16_t len, loction loc, direction start_dir, direction finish_dir, roadid neighbor)
                 : id(id)
                 , len(len)
@@ -64,6 +62,7 @@ namespace roadnet {
             uint8_t x;
             uint8_t y;
             direction dir;
+            endpointData() {}
             endpointData(roadid id, uint16_t offset, uint8_t x, uint8_t y, direction dir)
                 : id(id)
                 , offset(offset)
@@ -73,11 +72,13 @@ namespace roadnet {
             {}
         };
 
+        std::map<loction, uint8_t> map;
         std::vector<straightData> straightVec;
         std::map<loction, roadid> crossMap;
         std::map<roadid, loction> crossMapR;
         std::map<endpointid, road_coord> EndpointToRoadcoordMap; // temporary map, endpointid -> road_coord, used for bsf
 
+    private:
         roadid   findCrossRoad(loction l);
         std::optional<loction> whereCrossRoad(roadid id);
     };

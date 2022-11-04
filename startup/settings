@@ -19,9 +19,6 @@ graphic:
   framebuffer:
     ratio: 1
     scene_ratio: 1
-  hdr:
-    enable: false
-    format: RGBA16F
   inv_z: true
   lighting:
     cluster_shading: 1
@@ -30,6 +27,8 @@ graphic:
       enable: true
       inv_highlight: 0.2
       threshold: 2.3
+    fxaa:
+      enable: true
   render:
     clear: CDS
     clear_color: 255

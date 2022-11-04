@@ -95,7 +95,7 @@ function M:stage_ui_update(datamodel, object_id)
     local recipe_ingredients_count = {}
     local recipe_results_count = {}
     for index, v in ipairs(datamodel.recipe_ingredients) do
-        local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest.chest_in, index)
+        local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest.id, index)
         if c then
             recipe_ingredients_count[index] = {icon = v.icon, count = n, need_count = v.count}
         else
@@ -104,7 +104,7 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     for index, v in ipairs(datamodel.recipe_results) do
-        local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest.chest_out, index)
+        local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest.id, index)
         if c then
             recipe_results_count[index] = {icon = v.icon, count = n, need_count = v.count}
         else

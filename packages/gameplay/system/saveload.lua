@@ -82,3 +82,16 @@ do
         cworld:restore_chest(world.storage_path.."/chest.bin")
     end
 end
+
+do
+    local m = system "saveload-roadnet"
+    function m.backup(world)
+        local metafile = world.storage_path.."/roadnet.json"
+        local binfile = world.storage_path.."/roadnet.bin"
+        writeall(metafile, json.encode(world.roadnet:backup(binfile)))
+    end
+    function m.restore(world)
+        local binfile = world.storage_path.."/roadnet.bin"
+        world.roadnet:restore(binfile)
+    end
+end

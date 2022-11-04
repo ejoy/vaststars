@@ -1,138 +1,8 @@
-#include <lua.hpp>
 #include <string>
 #include "core/world.h"
-#include <functional>
-
-#if defined(_MSC_VER)
-#include <windows.h>
-#endif
+#include "core/saveload.h"
 
 namespace lua_world {
-#if defined(_MSC_VER)
-    static std::wstring u2w(const std::string_view& str) {
-        if (str.empty())  {
-            return L"";
-        }
-        int wlen = ::MultiByteToWideChar(CP_UTF8, 0, str.data(), (int)str.size(), NULL, 0);
-        if (wlen <= 0)  {
-            return L"";
-        }
-        std::vector<wchar_t> result(wlen);
-        ::MultiByteToWideChar(CP_UTF8, 0, str.data(), (int)str.size(), result.data(), wlen);
-        return std::wstring(result.data(), result.size());
-    }
-#endif
-
-    template <typename T>
-    void file_write(FILE* f, const T& v) {
-        size_t n = fwrite(&v, sizeof(T), 1, f);
-        (void)n;
-        assert(n == 1);
-    }
-
-    template <typename T>
-    T file_read(FILE* f) {
-        T v;
-        size_t n = fread(&v, sizeof(T), 1, f);
-        (void)n;
-        assert(n == 1);
-        return std::move(v);
-    }
-
-    template <typename T>
-    void file_read(FILE* f, T& v) {
-        size_t n = fread(&v, sizeof(T), 1, f);
-        (void)n;
-        assert(n == 1);
-    }
-
-    template <typename T>
-    void file_write(FILE* f, const T* v, size_t sz) {
-        if (sz == 0) {
-            return;
-        }
-        size_t n = fwrite(v, sizeof(T), sz, f);
-        (void)n;
-        assert(n == sz);
-    }
-
-    template <typename T>
-    void file_read(FILE* f, T* v, size_t sz) {
-        if (sz == 0) {
-            return;
-        }
-        size_t n = fread(v, sizeof(T), sz, f);
-        (void)n;
-        assert(n == sz);
-    }
-
-    enum class filemode {
-        read,
-        write,
-    };
-
-    static FILE* createfile(lua_State* L, int idx, filemode mode) {
-        const char* filename = luaL_checkstring(L, idx);
-#if defined(_MSC_VER)
-        FILE* f = NULL;
-        errno_t err = _wfopen_s(&f, u2w(filename).c_str(), mode == filemode::read? L"rb": L"wb");
-        if (err != 0 || !f) {
-            if (!f) {
-                fclose(f);
-            }
-            luaL_error(L, "open file `%s` failed.", filename);
-        }
-#else
-        FILE* f = fopen(filename, mode == filemode::read? "r": "w");
-        if (!f) {
-            luaL_error(L, "open file `%s` failed.", filename);
-        }
-#endif
-        return f;
-    }
-
-    template <typename Map>
-    static void write_flatmap(FILE* f, const Map& map) {
-        auto const& data = map.toraw();
-        file_write(f, data.h);
-        if (data.h.mask != 0) {
-            file_write(f, data.buckets, data.h.mask + 1);
-        }
-    }
-
-    template <typename Map>
-    static void read_flatmap(FILE* f, Map& map) {
-        auto& data = map.toraw();
-        if (data.h.mask != 0) {
-            std::free(data.buckets);
-        }
-        file_read(f, data.h);
-        if (data.h.mask == 0) {
-            data.buckets = reinterpret_cast<decltype(data.buckets)>(&data.h.mask);
-        }
-        else {
-            data.buckets = static_cast<decltype(data.buckets)>(std::malloc(sizeof(data.buckets[0]) * (data.h.mask + 1)));
-            if (!data.buckets) {
-                throw std::bad_alloc {};
-            }
-            file_read(f, data.buckets, data.h.mask + 1);
-        }
-    }
-
-    template <typename Vec>
-    static void write_vector(FILE* f, const Vec& vec) {
-        file_write(f, vec.size());
-        file_write(f, vec.data(), vec.size());
-    }
-
-    template <typename Vec>
-    static void read_vector(FILE* f, Vec& vec) {
-        size_t n = 0;
-        file_read(f, n);
-        vec.resize(n);
-        file_read(f, vec.data(), vec.size());
-    }
-
     static void backup_scope(lua_State* L, FILE* f, const char* name, std::function<void()> func) {
         lua_Integer head = (lua_Integer)ftell(f);
         func();
@@ -192,11 +62,6 @@ namespace lua_world {
             write_flatmap(f, w.techtree.progress);
         });
 
-        backup_scope(L, f, "manual", [&](){
-            write_vector(f, w.manual.todos);
-            write_flatmap(f, w.manual.container);
-        });
-
         fclose(f);
         return 1;
     }
@@ -233,14 +98,6 @@ namespace lua_world {
             w.techtree.progress.clear();
         });
 
-        restore_scope(L, f, "manual", [&](){
-            read_vector(f, w.manual.todos);
-            read_flatmap(f, w.manual.container);
-        }, [&](){
-            w.manual.todos.clear();
-            w.manual.container.clear();
-        });
-
         fclose(f);
         return 0;
     }
@@ -257,7 +114,6 @@ namespace lua_world {
             };
             file_write(f, h);
             for (auto const& c : w.chests) {
-                file_write(f, c.type_);
                 write_vector(f, c.slots);
             }
             fclose(f);
@@ -266,9 +122,8 @@ namespace lua_world {
         static void restore(lua_State* L, world& w) {
             FILE* f = createfile(L, 2, filemode::read);
             auto h = file_read<header>(f);
-            w.chests.resize(h.chest_size, {chest::type::none, nullptr, 0});
+            w.chests.resize(h.chest_size, {nullptr, 0});
             for (auto& c : w.chests) {
-                file_read(f, c.type_);
                 read_vector(f, c.slots);
             }
             fclose(f);

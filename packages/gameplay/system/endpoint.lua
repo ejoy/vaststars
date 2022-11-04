@@ -50,12 +50,8 @@ local function build(e, world)
     if e.chest then
         local chest = e.chest
         chest.endpoint = endpoint
-
-        if chest.chest_in ~= 0xffff then
-            world:container_flush(chest.chest_in, endpoint)
-        end
-        if chest.chest_out ~= 0xffff then
-            world:container_flush(chest.chest_out, endpoint)
+        if chest.id ~= 0xffff then
+            world:container_flush(chest.id, endpoint)
         end
     elseif e.station then
         e.station.endpoint = endpoint
@@ -88,14 +84,4 @@ function m.pre_build(world)
         build(e, world)
     end
     ecs:clear "endpoint_changed"
-end
-
-function m.restore_finish(world)
-    local ecs = world.ecs
-    for e in ecs:select "chest:update entity:in" do
-       build(e, world)
-    end
-    for e in ecs:select "station:update entity:in" do
-        build(e, world)
-    end
 end

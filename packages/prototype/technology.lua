@@ -11,22 +11,22 @@ local prototype = gameplay.register.prototype
   --time是指1个count所需的时间
 
 
-  prototype "清除废墟" {
-    desc = "清除指挥中心附近的3处废墟",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0},
-    prerequisites = {},
-    count = 3,
-    tips_pic = {
-      "textures/task_tips_pic/task_click_build.texture",
-      "textures/task_tips_pic/task_demolish2.texture",
-      "textures/task_tips_pic/task_demolish3.texture",
-    },
-    sign_desc = {
-      { desc = "清除指挥中心附近的3处废墟", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "清除废墟" {
+  --   desc = "清除指挥中心附近的3处废墟",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0},
+  --   prerequisites = {},
+  --   count = 3,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_click_build.texture",
+  --     "textures/task_tips_pic/task_demolish2.texture",
+  --     "textures/task_tips_pic/task_demolish3.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "清除指挥中心附近的3处废墟", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "修复阻断公路" {
     desc = "放置1座科研中心",
@@ -34,7 +34,7 @@ local prototype = gameplay.register.prototype
     type = { "tech", "task" },
     task = {"unknown", 1},
     task_params = {starting = {117, 125}, ending = {135, 125}},
-    prerequisites = {"清除废墟"},
+    prerequisites = {""},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_road1.texture",
@@ -46,12 +46,27 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "放置物流中心" {
+    desc = "放置1座物流中心",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "物流中心I"},
+    prerequisites = {"修复阻断公路"},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "使用“建造”放置1个物流中心", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "放置科研中心" {
     desc = "放置1座科研中心",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "科研中心I"},
-    prerequisites = {"清除废墟"},
+    prerequisites = {"放置物流中心"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
@@ -113,27 +128,12 @@ prototype "放置采矿机" {
   },
 }
 
-prototype "放置物流中心" {
-  desc = "放置组装机",
-  icon = "textures/construct/industry.texture",
-  type = { "tech", "task" },
-  task = {"select_entity", 0, "物流中心I"},
-  prerequisites = {"放置采矿机"},
-  count = 1,
-  tips_pic = {
-    "textures/task_tips_pic/task_place_logistics.texture",
-  },
-  sign_desc = {
-    { desc = "使用“建造”放置1个物流中心", icon = "textures/construct/industry.texture"},
-  },
-}
-
 prototype "生产铁矿石" {
   desc = "挖掘足够的铁矿石可以开始进行锻造",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "铁矿石"},
-  prerequisites = {"放置物流中心"},
+  prerequisites = {"放置采矿机"},
   count = 2,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ore3.texture",
@@ -148,7 +148,7 @@ prototype "生产碎石矿" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "碎石"},
-  prerequisites = {"放置物流中心"},
+  prerequisites = {"放置采矿机"},
   count = 2,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ore3.texture",
