@@ -50,9 +50,7 @@ local function build(e, world)
     if e.chest then
         local chest = e.chest
         chest.endpoint = endpoint
-        if chest.id ~= 0xffff then
-            world:container_flush(chest.id, endpoint)
-        end
+        world:container_flush(chest)
     elseif e.station then
         e.station.endpoint = endpoint
         if e.station.endpoint ~= 0xffff then

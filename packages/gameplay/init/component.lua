@@ -8,7 +8,8 @@ component "entity" {
 }
 
 component "chest" {
-    "id:word",
+    "index:word",
+    "asize:word",
     "fluidbox_in:word",
     "fluidbox_out:word",
     "endpoint:word",

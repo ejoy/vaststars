@@ -14,12 +14,6 @@ extern "C" {
 #else
 #endif
 
-
-chest& world::query_chest(uint16_t id) {
-    assert(id < chests.size());
-    return chests[id];
-}
-
 namespace lua_world {
     template <typename T, typename R>
     T checklimit(lua_State* L, int idx, R const& r) {
@@ -95,7 +89,6 @@ namespace lua_world {
     reset(lua_State* L) {
         struct world& w = getworld(L, 1);
         w.fluidflows.clear();
-        w.chests.clear();
         return 0;
     }
 

@@ -185,16 +185,16 @@ lupdate(lua_State *L) {
             auto& l = rw.Lorry(lorryId);
             if (l.gameplay.sell.endpoint == 0xffff) {
                 assert(c.endpoint == l.gameplay.buy.endpoint);
-                auto& chest = w.query_chest(c.id);
-                chest.place_force(w, l.gameplay.buy.index, l.gameplay.item, 1);
+                auto& chest = chest::query(c);
+                chest::place_force(w, chest, l.gameplay.buy.index, l.gameplay.item, 1);
                 if (!DoTask(w, rw, lorryId, c.endpoint)) {
                     GoHome(w, rw, lorryId, c.endpoint);
                 }
             }
             else {
                 assert(c.endpoint == l.gameplay.sell.endpoint);
-                auto& chest = w.query_chest(c.id);
-                chest.pickup_force(w, l.gameplay.sell.index, l.gameplay.item, 1);
+                auto& chest = chest::query(c);
+                chest::pickup_force(w, chest, l.gameplay.sell.index, l.gameplay.item, 1);
                 if (!rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy.endpoint)) {
                     assert(false);
                 }

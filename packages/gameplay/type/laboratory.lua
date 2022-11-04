@@ -28,10 +28,12 @@ end
 
 function c:ctor(init, pt)
     local world = self
+    local index, asize = createChest(world, pt.inputs)
     local e = {
         chest = {
             endpoint = 0xffff,
-            id = createChest(world, pt.inputs),
+            index = index,
+            asize = asize,
             fluidbox_in = 0,
             fluidbox_out = 0,
         },

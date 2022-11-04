@@ -310,12 +310,11 @@ return function ()
     function world:container_create(...)
         return chest.create(cworld, ...)
     end
-    function world:container_get(c, ...)
-        assert(c ~= 0xffff)
-        return chest.get(cworld, c, ...)
+    function world:container_get(c, i)
+        return chest.get(cworld, c.index, c.asize, i)
     end
-    function world:container_flush(...)
-        return chest.flush(cworld, ...)
+    function world:container_flush(c)
+        return chest.flush(cworld, c.index, c.asize, c.endpoint)
     end
 
     function world:wait(...)

@@ -22,7 +22,7 @@ function M.place_material(world, e)
 
     local assembling_item_counts = {}
     for i, v in ipairs(recipe_ingredients) do
-        local c, n = iworld.chest_get(world, e.chest.id, i)
+        local c, n = iworld.chest_get(world, e.chest, i)
         if c then
             local count = v.count
             if n < count then
@@ -75,7 +75,7 @@ function M.item_counts(world, e)
     local recipe_results = irecipe.get_elements(typeobject.results)
 
     for i = 1, #recipe_ingredients do
-        local c, n = iworld.chest_get(world, e.chest.id, i)
+        local c, n = iworld.chest_get(world, e.chest, i)
         if c then
             local item_typeobject = iprototype.queryById(c)
             r[item_typeobject.name] = n
@@ -83,7 +83,7 @@ function M.item_counts(world, e)
     end
 
     for i = 1, #recipe_results do
-        local c, n = iworld.chest_get(world, e.chest.id, i)
+        local c, n = iworld.chest_get(world, e.chest, i)
         if c then
             local item_typeobject = iprototype.queryById(c)
             r[item_typeobject.name] = n
@@ -107,7 +107,7 @@ function M.has_result(world, e)
     local recipe_results = irecipe.get_elements(typeobject.results)
 
     for i = 1, #recipe_results do
-        if iworld.chest_get(world, e.chest.id, i) then
+        if iworld.chest_get(world, e.chest, i) then
             return true
         end
     end
@@ -130,7 +130,7 @@ function M.need_ingredients(world, e)
 
     local headquater_item_counts = iworld.base_chest(world)
     for i = 1, #recipe_ingredients do
-        local id, c = iworld.chest_get(world, e.chest.id, i)
+        local id, c = iworld.chest_get(world, e.chest, i)
         if not id then
             if headquater_item_counts[recipe_ingredients[i].id] then
                 return true

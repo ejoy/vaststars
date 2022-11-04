@@ -12,24 +12,24 @@ extern "C" {
 #define STATUS_WORKING 2
 
 static void
-sync_input_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb, chest& chest) {
+sync_input_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb, chest::chest_data& chest) {
 	for (size_t i = 0; i < 4; ++i) {
 		uint16_t fluid = fb.in[i].fluid;
 		if (fluid != 0) {
 			uint8_t index = ((c2.fluidbox_in >> (i*4)) & 0xF) - 1;
-			uint16_t value = chest.get_fluid(w, index);
+			uint16_t value = chest::get_fluid(w, chest, index);
 			w.fluidflows[fluid].set(fb.in[i].id, value);
 		}
 	}
 }
 
 static void
-sync_output_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb, chest& chest) {
+sync_output_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb, chest::chest_data& chest) {
 	for (size_t i = 0; i < 3; ++i) {
 		uint16_t fluid = fb.out[i].fluid;
 		if (fluid != 0) {
 			uint8_t index = ((c2.fluidbox_out >> (i*4)) & 0xF) - 1;
-			uint16_t value = chest.get_fluid(w, index);
+			uint16_t value = chest::get_fluid(w, chest, index);
 			w.fluidflows[fluid].set(fb.out[i].id, value);
 		}
 	}
@@ -54,8 +54,8 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
     while (a.progress <= 0) {
         prototype_context recipe = w.prototype(L, a.recipe);
         if (a.status == STATUS_DONE) {
-            chest& chest = w.query_chest(c2.id);
-            if (!chest.place(w, c2.endpoint, recipe)) {
+            auto& chest = chest::query(c2);
+            if (!chest::place(w, chest, c2.endpoint, recipe)) {
                 return;
             }
             w.stat.finish_recipe(L, w, a.recipe, false);
@@ -68,8 +68,8 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
             }
         }
         if (a.status == STATUS_IDLE) {
-            chest& chest = w.query_chest(c2.id);
-            if (!chest.pickup(w, c2.endpoint, recipe)) {
+            auto& chest = chest::query(c2);
+            if (!chest::pickup(w, chest, c2.endpoint, recipe)) {
                 return;
             }
             int time = pt_time(&recipe);

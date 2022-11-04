@@ -129,7 +129,7 @@ lupdate(lua_State *L) {
 		ecs::chest& c2 = e.get<ecs::chest>();
 		if (a.recipe != 0) {
 			ecs::fluidboxes& fb = e.get<ecs::fluidboxes>();
-			chest& chest = w.query_chest(c2.id);
+            auto& chest = chest::query(c2);
 			for (size_t i = 0; i < 4; ++i) {
 				uint16_t fluid = fb.in[i].fluid;
 				if (fluid != 0) {
@@ -137,7 +137,7 @@ lupdate(lua_State *L) {
 					uint8_t index = ((c2.fluidbox_in >> (i*4)) & 0xF) - 1;
 					fluid_state state;
 					if (f.query(fb.in[i].id, state)) {
-						chest.set_fluid(w, index, state.volume / f.multiple);
+						chest::set_fluid(w, chest, index, state.volume / f.multiple);
 					}
 				}
 			}
@@ -148,7 +148,7 @@ lupdate(lua_State *L) {
 					uint8_t index = ((c2.fluidbox_out >> (i*4)) & 0xF) - 1;
 					fluid_state state;
 					if (f.query(fb.out[i].id, state)) {
-						chest.set_fluid(w, index, state.volume / f.multiple);
+						chest::set_fluid(w, chest, index, state.volume / f.multiple);
 					}
 				}
 			}

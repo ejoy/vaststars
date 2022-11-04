@@ -18,15 +18,12 @@ struct prototype_cache;
 
 struct world: public ecs_api::context {
     struct prototype_cache* P;
-    std::vector<chest> chests;
     container container;
     std::map<uint16_t, fluidflow> fluidflows;
     trading_network tradings;
     techtree_mgr techtree;
     statistics stat;
     uint64_t time = 0;
-
-    chest& query_chest(uint16_t id);
 
     prototype_context prototype(lua_State* L, int id) {
         return {L, P, id};

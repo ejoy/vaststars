@@ -142,45 +142,10 @@ namespace lua_world {
         return 0;
     }
 
-    namespace sav_chest {
-        struct header {
-            uint16_t chest_size;
-        };
-
-        static void backup(lua_State* L, world& w) {
-            FILE* f = createfile(L, 2, filemode::write);
-            header h {
-                (uint16_t)w.chests.size(),
-            };
-            file_write(f, h);
-            for (auto const& c : w.chests) {
-                auto [index, size] = c.save();
-                file_write(f, index);
-                file_write(f, size);
-            }
-            fclose(f);
-        }
-
-        static void restore(lua_State* L, world& w) {
-            FILE* f = createfile(L, 2, filemode::read);
-            auto h = file_read<header>(f);
-            w.chests.reserve(h.chest_size);
-            for (uint16_t i = 0; i < h.chest_size; ++i) {
-                auto index = file_read<container::index>(f);
-                auto size = file_read<container::size_type>(f);
-                w.chests.emplace_back(index, size);
-            }
-            fclose(f);
-        }
-    }
     int backup_chest(lua_State* L) {
-        world& w = *(world*)lua_touserdata(L, 1);
-        sav_chest::backup(L, w);
         return 0;
     }
     int restore_chest(lua_State* L) {
-        world& w = *(world*)lua_touserdata(L, 1);
-        sav_chest::restore(L, w);
         return 0;
     }
 }
