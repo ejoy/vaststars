@@ -135,7 +135,7 @@
             </div>
             <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe && !(show_manual_manufacture && guide_progress >= 25)" /> <!-- TODO -->
 
-            <div class="button-fuction-block" style="top: -2.33vmin;" />
+
 
             <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickDetail()" data-if = "show_detail">
                 <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>
