@@ -286,7 +286,7 @@ prototype "基建站" {
     group = {"物流"},
     crossing = {
         connections = {
-            {type="input-output", position={0,1,"S"}, roadside = true},
+            {type="input-output", position={0,0,"S"}, roadside = true},
         },
     }
 }
