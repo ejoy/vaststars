@@ -23,7 +23,7 @@ static void trading_match(world& w, uint16_t item, trading_queue& q) {
     trading_match(w, item, q, 1, 0);
 }
 
-void trading_sell(world& w, trading_who who, uint8_t priority, chest::slot& s) {
+void trading_sell(world& w, trading_who who, uint8_t priority, container_slot& s) {
     if (s.amount <= s.lock_item) {
         return;
     }
@@ -36,7 +36,7 @@ void trading_sell(world& w, trading_who who, uint8_t priority, chest::slot& s) {
     }
 }
 
-void trading_buy(world& w, trading_who who, uint8_t priority, chest::slot& s) {
+void trading_buy(world& w, trading_who who, uint8_t priority, container_slot& s) {
     if (s.amount + s.lock_space >= s.limit) {
         return;
     }

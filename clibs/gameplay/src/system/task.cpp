@@ -70,19 +70,19 @@ uint64_t task::select_entity(lua_State* L, world& w) {
 
 uint64_t task::select_chest(lua_State* L, world& w) {
     uint64_t n = 0;
-    for (auto& v : w.select<ecs::chest, ecs::entity>(L)) {
-        ecs::entity& e = v.get<ecs::entity>();
-        if (e.prototype == p1) {
-            auto& c = v.get<ecs::chest>();
-            auto& chest = w.query_chest(c.id);
-            for (auto& slot : chest.slots) {
-                if (slot.item == p2) {
-                    n += slot.amount;
-                    break;
-                }
-            }
-        }
-    }
+    //for (auto& v : w.select<ecs::chest, ecs::entity>(L)) {
+    //    ecs::entity& e = v.get<ecs::entity>();
+    //    if (e.prototype == p1) {
+    //        auto& c = v.get<ecs::chest>();
+    //        auto& chest = w.query_chest(c.id);
+    //        for (auto& slot : chest.slots) {
+    //            if (slot.item == p2) {
+    //                n += slot.amount;
+    //                break;
+    //            }
+    //        }
+    //    }
+    //}
     return n;
 }
 

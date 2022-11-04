@@ -10,7 +10,7 @@ struct world;
 
 struct trading_who {
     uint16_t endpoint;
-    uint16_t index;
+    uint8_t index;
 };
 
 struct trading_order {
@@ -53,6 +53,6 @@ struct trading_network {
     trading_kdtree station_kdtree;
 };
 
-void trading_sell(world& w, trading_who who, uint8_t priority, chest::slot& s);
-void trading_buy(world& w, trading_who who, uint8_t priority, chest::slot& s);
+void trading_sell(world& w, trading_who who, uint8_t priority, container_slot& s);
+void trading_buy(world& w, trading_who who, uint8_t priority, container_slot& s);
 void trading_update(world& w);
