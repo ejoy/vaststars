@@ -195,7 +195,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     for coord, v in pairs(map) do
         local x, y = unpackcoord(coord)
         local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
-        local decreasable = false
+        -- local decreasable = false
         if object then
             object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
             if object.prototype_name ~= v[1] or object.dir ~= v[2] then
@@ -203,11 +203,12 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                     local item_name = _get_item_name(object.prototype_name) -- TODO: use prototype_name?
                     remove[item_name] = (remove[item_name] or 0) + 1
 
-                    decreasable = true
+                    -- decreasable = true
                 end
 
                 object.prototype_name = v[1]
                 object.dir = v[2]
+                object.road_changed = true
             end
             object.state = object_state
         else
@@ -217,10 +218,11 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 x = x,
                 y = y,
                 state = object_state,
+                road_changed = true,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
 
-            decreasable = true
+            -- decreasable = true
         end
 
         -- if decreasable then

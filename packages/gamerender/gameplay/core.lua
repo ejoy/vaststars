@@ -92,6 +92,7 @@ function m.create_entity(init)
         fluid = init.fluid_name,
         items = init.items,
         recipe = init.recipe, -- for debugging
+        road_changed = init.road_changed,
     }
 
     local typeobject = iprototype.queryByName("entity", init.prototype_name)

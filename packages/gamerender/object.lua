@@ -125,6 +125,9 @@ local function flush()
         fluid_icon = function (outer, value)
             outer.__object.fluid_icon = value
         end,
+        road_changed = function (outer, value)
+            outer.__object.road_changed = value
+        end,
     }
 
     local prepare = {}
