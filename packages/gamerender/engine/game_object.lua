@@ -180,9 +180,19 @@ local _get_hitch_children ; do
         end
         prefab.on_ready = function(prefab)
             on_prefab_ready(prefab)
-
+            -- not for hitch object
+            -- local event_file = prefab_file_path:gsub("^(.*)(%.prefab)$", "%1.event")
+            -- if fs.exists(fs.path(event_file)) then
+            --     iani.load_events(prefab, event_file)
+            -- end
             for _, eid in ipairs(prefab.tag["*"]) do
-                local e <close> = w:entity(eid, "tag?in")
+                local e <close> = w:entity(eid, "tag?in animation?in")
+                if e.animation then
+                    if e.animation["work"] then
+                        pose.has_work_anim = true
+                    end
+                    pose.eid = eid
+                end
                 if not e.tag then
                     goto continue
                 end
@@ -349,24 +359,36 @@ function igame_object.create(init)
     outer.attach = attach
     outer.detach = detach
     outer.send   = send
-    if #effects > 0 then
-        outer.play_effect = function ()
+    outer.on_work = function ()
+        local effeting = false
+        if #effects > 0 then
+            local e <close> = w:entity(effects[1])
+            effeting = iefk.is_playing(e)
+        end
+        if not effeting then
             for _, eid in ipairs(effects) do
                 local e <close> = w:entity(eid)
                 iefk.play(e)
             end
         end
-        outer.stop_effect = function ()
+        if children.pose.has_work_anim and not iani.is_playing(children.pose.eid) then
+            iani.play(children.pose.eid, {name = "work", loop = true, manual = false, speed = 1.0})
+        end
+    end
+    outer.on_idle = function ()
+        local effeting = false
+        if #effects > 0 then
+            local e <close> = w:entity(effects[1])
+            effeting = iefk.is_playing(e)
+        end
+        if effeting then
             for _, eid in ipairs(effects) do
                 local e <close> = w:entity(eid)
                 iefk.stop(e, true)
             end
         end
-        outer.is_effect_playing = function ()
-            for _, eid in ipairs(effects) do
-                local e <close> = w:entity(eid)
-                return iefk.is_playing(e)
-            end
+        if children.pose.has_work_anim and iani.is_playing(children.pose.eid) then
+            iani.pause(children.pose.eid, true)
         end
     end
     return outer

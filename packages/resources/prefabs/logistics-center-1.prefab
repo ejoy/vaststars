@@ -35,7 +35,7 @@ data:
   anim_ctrl: {}
   animation:
     ArmatureAction: /pkg/vaststars.resources/glb/logistics-center-1.glb|animations/ArmatureAction.ozz
-    logistics-center-animat: /pkg/vaststars.resources/prefabs/logistics-center-animat.anim
+    work: /pkg/vaststars.resources/prefabs/logistics-center-animat.anim
   animation_birth: ArmatureAction
   name: animation
   skeleton: /pkg/vaststars.resources/glb/logistics-center-1.glb|animations/skeleton.ozz

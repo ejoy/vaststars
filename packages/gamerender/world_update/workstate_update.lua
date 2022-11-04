@@ -19,15 +19,15 @@ local function update_world(world, get_object_func)
             local game_object = vsobject.game_object
             -- is working ?
             if st.power < 25 * st.cfg.power then
-                if game_object.stop_effect then
-                    game_object.stop_effect()
+                if game_object.on_idle then
+                    game_object.on_idle()
                 end
-                vsobject:emissive_color_update(STATE_NO_POWER)
+                -- vsobject:emissive_color_update(STATE_NO_POWER)
             else
-                if game_object.play_effect and not game_object.is_effect_playing() then
-                    game_object.play_effect()
+                if game_object.on_work then
+                    game_object.on_work()
                 end
-                vsobject:emissive_color_update(STATE_WORKING)
+                -- vsobject:emissive_color_update(STATE_WORKING)
             end
         end
     end

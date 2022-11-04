@@ -31,8 +31,8 @@ policy:
 data:
   anim_ctrl: {}
   animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/furnace-1.glb|animations/ArmatureAction.ozz
-  animation_birth: ArmatureAction
+    work: /pkg/vaststars.resources/glb/furnace-1.glb|animations/ArmatureAction.ozz
+  animation_birth: work
   name: animation
   skeleton: /pkg/vaststars.resources/glb/furnace-1.glb|animations/skeleton.ozz
 policy:
