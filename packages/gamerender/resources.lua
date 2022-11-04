@@ -538,6 +538,7 @@ local t = {
 	"/pkg/ant.resources/shaders/postprocess/bloom/bloom.sh",
 	"/pkg/ant.resources/shaders/postprocess/dof/utils.sh",
 	"/pkg/ant.resources/shaders/postprocess/exposure.sh",
+	"/pkg/ant.resources/shaders/postprocess/fxaa/fxaa.sh",
 	"/pkg/ant.resources/shaders/postprocess/ssao/ssct.sh",
 	"/pkg/ant.resources/shaders/postprocess/ssao/uniforms.sh",
 	"/pkg/ant.resources/shaders/postprocess/tonemapping.sh",
