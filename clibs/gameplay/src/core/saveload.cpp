@@ -62,6 +62,21 @@ namespace lua_world {
             write_flatmap(f, w.techtree.progress);
         });
 
+        backup_scope(L, f, "container", [&](){
+            file_write(f, w.container.pages.size());
+            for (auto const& page : w.container.pages) {
+                file_write(f, page->slots);
+            }
+            file_write(f, w.container.freelist.size());
+            for (auto const& lst : w.container.freelist) {
+                file_write(f, lst.size());
+                for (auto const& node : lst) {
+                    file_write(f, node);
+                }
+            }
+            file_write(f, w.container.top);
+        });
+
         fclose(f);
         return 1;
     }
@@ -98,6 +113,31 @@ namespace lua_world {
             w.techtree.progress.clear();
         });
 
+        restore_scope(L, f, "container", [&](){
+            w.container.clear();
+            auto page_n = file_read<size_t>(f);
+            w.container.pages.reserve(page_n);
+            for (size_t i = 0; i < page_n; ++i) {
+                auto page = std::make_unique<container::page>();
+                file_read(f, page->slots);
+                w.container.pages.emplace_back(std::move(page));
+            }
+            auto freelist_n = file_read<size_t>(f);
+            w.container.freelist.reserve(freelist_n);
+            for (size_t i = 0; i < freelist_n; ++i) {
+                std::list<container::chunk> lst;
+                auto lst_n = file_read<size_t>(f);
+                for (size_t j = 0; j < lst_n; ++j) {
+                    lst.push_back(std::move(file_read<container::chunk>(f)));
+                }
+                w.container.freelist.emplace_back(std::move(lst));
+            }
+            file_read(f, w.container.top);
+        }, [&](){
+            w.container.clear();
+            w.container.init();
+        });
+
         fclose(f);
         return 0;
     }
@@ -114,7 +154,9 @@ namespace lua_world {
             };
             file_write(f, h);
             for (auto const& c : w.chests) {
-                write_vector(f, c.slots);
+                auto [index, size] = c.save();
+                file_write(f, index);
+                file_write(f, size);
             }
             fclose(f);
         }
@@ -122,9 +164,11 @@ namespace lua_world {
         static void restore(lua_State* L, world& w) {
             FILE* f = createfile(L, 2, filemode::read);
             auto h = file_read<header>(f);
-            w.chests.resize(h.chest_size, {nullptr, 0});
-            for (auto& c : w.chests) {
-                read_vector(f, c.slots);
+            w.chests.reserve(h.chest_size);
+            for (uint16_t i = 0; i < h.chest_size; ++i) {
+                auto index = file_read<container::index>(f);
+                auto size = file_read<container::size_type>(f);
+                w.chests.emplace_back(index, size);
             }
             fclose(f);
         }

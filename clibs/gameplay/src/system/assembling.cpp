@@ -17,7 +17,7 @@ sync_input_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb, chest& chest)
 		uint16_t fluid = fb.in[i].fluid;
 		if (fluid != 0) {
 			uint8_t index = ((c2.fluidbox_in >> (i*4)) & 0xF) - 1;
-			uint16_t value = chest.get_fluid(index);
+			uint16_t value = chest.get_fluid(w, index);
 			w.fluidflows[fluid].set(fb.in[i].id, value);
 		}
 	}
@@ -29,7 +29,7 @@ sync_output_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb, chest& chest
 		uint16_t fluid = fb.out[i].fluid;
 		if (fluid != 0) {
 			uint8_t index = ((c2.fluidbox_out >> (i*4)) & 0xF) - 1;
-			uint16_t value = chest.get_fluid(index);
+			uint16_t value = chest.get_fluid(w, index);
 			w.fluidflows[fluid].set(fb.out[i].id, value);
 		}
 	}
