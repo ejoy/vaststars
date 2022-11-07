@@ -129,12 +129,12 @@ local function _get_covers_fluidbox(object)
 end
 
 local function _decrease_item(State, PipeToGroundState)
-    local item = PipeToGroundState.inventory_item
-    if item.count <= 0 then
-        State.succ = false
-        return
-    end
-    item.count = item.count - 1
+    -- local item = PipeToGroundState.inventory_item
+    -- if item.count <= 0 then
+    --     State.succ = false
+    --     return
+    -- end
+    -- item.count = item.count - 1
     return
 end
 

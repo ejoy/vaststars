@@ -122,8 +122,8 @@ end
 local function _builder_end(self, datamodel, State, dir, dir_delta)
     local reverse_dir = iprototype.reverse_dir(dir)
     local prototype_name = self.coord_indicator.prototype_name
-    local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-    local item = inventory:modity(item_typeobject.id)
+    -- local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
+    -- local item = inventory:modity(item_typeobject.id)
     local map = {}
     local remove = {}
 
@@ -206,7 +206,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         local decreasable = false
         if object then
-            object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
+            object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
             if object.prototype_name ~= v[1] or object.dir ~= v[2] then
                 if _get_item_name(object.prototype_name) ~= _get_item_name(v[1]) then
                     local item_name = _get_item_name(object.prototype_name) -- TODO: use prototype_name?
@@ -231,19 +231,19 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
 
-            decreasable = true
+            -- decreasable = true
         end
 
-        if decreasable then
-            item.count = item.count - 1
-            assert(item.count >= 0)
-        end
+        -- if decreasable then
+        --     item.count = item.count - 1
+        --     assert(item.count >= 0)
+        -- end
     end
 
     if State.succ then
         for fluidflow_id in pairs(State.fluidflow_ids) do
             for _, object in objects:selectall("fluidflow_id", fluidflow_id, EDITOR_CACHE_NAMES) do
-                local _object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
+                local _object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
                 assert(iprototype.has_type(iprototype.queryByName("entity", _object.prototype_name).type, "fluidbox"))
                 _object.fluid_name = State.fluid_name
                 _object.fluidflow_id = new_fluidflow_id
@@ -380,10 +380,15 @@ local function _builder_start(self, datamodel)
         end
 
         local succ
+        -- succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
+        --     math_min(math_abs(to_x - connection.x), item.count),
+        --     math_min(math_abs(to_y - connection.y), item.count)
+        -- )
         succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
-            math_min(math_abs(to_x - connection.x), item.count),
-            math_min(math_abs(to_y - connection.y), item.count)
+            math_abs(to_x - connection.x),
+            math_abs(to_y - connection.y)
         )
+
         if not succ then
             State.succ = false
         end
@@ -430,9 +435,13 @@ local function _builder_start(self, datamodel)
 
         State.from_x, State.from_y = from_x, from_y
         local succ
+        -- succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
+        --     math_min(math_abs(to_x - from_x), item.count - 1),
+        --     math_min(math_abs(to_y - from_y), item.count - 1)
+        -- )
         succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
-            math_min(math_abs(to_x - from_x), item.count - 1),
-            math_min(math_abs(to_y - from_y), item.count - 1)
+            math_abs(to_x - from_x),
+            math_abs(to_y - from_y)
         )
         if not succ then
             State.succ = false
@@ -464,9 +473,13 @@ local function _builder_start(self, datamodel)
 
         --
         local succ
+        -- succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
+        --     math_min(math_abs(to_x - from_x), item.count - 1),
+        --     math_min(math_abs(to_y - from_y), item.count - 1)
+        -- )
         succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
-            math_min(math_abs(to_x - from_x), item.count - 1),
-            math_min(math_abs(to_y - from_y), item.count - 1)
+            math_abs(to_x - from_x),
+            math_abs(to_y - from_y)
         )
         if not succ then
             State.succ = false

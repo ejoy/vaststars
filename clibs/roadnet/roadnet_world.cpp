@@ -349,7 +349,7 @@ namespace roadnet {
         crossAry.reset(genCrossId);
         for (auto const& [loc, id]: crossMap) {
             road::crossroad& crossroad = crossAry[id.id];
-#ifdef _DEBUG
+#ifdef _DEBUG_ROADNET
             crossroad.loc = loc;
             crossroad.id = id;
 #endif
