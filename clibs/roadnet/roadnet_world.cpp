@@ -622,4 +622,13 @@ namespace roadnet {
         }
         return map_coord::invalid();
     }
+
+    void world::debugEndpointLorry() {
+        for (auto& ep : endpointVec) {
+            printf("endpoint: (%d, %d) \n", ep.loc.x, ep.loc.y);
+            for (auto& l : ep.popMap) {
+                printf(" %d \n", l.id);
+            }
+        }
+    }
 }

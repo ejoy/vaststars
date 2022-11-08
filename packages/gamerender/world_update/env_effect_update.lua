@@ -21,12 +21,6 @@ local function update_world(world, get_object_func)
             speed = 1.0,
             scene = {t={0, 0, 0}, s = 30, parent = mq.camera_ref}
         })
-        iefk.preload {
-            "/pkg/vaststars.resources/effect/efk/a1.texture",
-            "/pkg/vaststars.resources/effect/efk/a2.texture",
-            "/pkg/vaststars.resources/effect/efk/a3.texture",
-            "/pkg/vaststars.resources/effect/efk/a4.texture",
-        }
     end
     if show_shorm then
         storm_current_time = storm_current_time + timer.delta() * 0.001

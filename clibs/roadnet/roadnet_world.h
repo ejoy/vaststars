@@ -31,6 +31,8 @@ namespace roadnet {
         road_coord coordConvert(loction l, direction dir, uint16_t offset = 0);
         map_coord  coordConvert(road_coord rc);
 
+        void debugEndpointLorry();
+
         dynarray<road::crossroad> crossAry;
         dynarray<road::straight>  straightAry;
         dynarray<endpointid>      endpointAry;

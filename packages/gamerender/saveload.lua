@@ -434,6 +434,7 @@ function M:restore(index)
 
     gameplay_core.build()
     restore_world()
+    -- gameplay_core.get_world().roadnet:debug_endpoint_lorry()
 
     print("restore success", archival_dir)
     return true

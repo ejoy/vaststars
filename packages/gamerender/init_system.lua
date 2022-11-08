@@ -27,11 +27,13 @@ local camera = ecs.require "engine.camera"
 local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local PLANES <const> = {YAXIS_PLANE}
 local lorry_update = ecs.require "lorry"
+local iefk = ecs.require "engine.efk"
 
 local m = ecs.system 'init_system'
 function m:init_world()
     -- check_prototype()
     bgfx.maxfps(FRAMES_PER_SECOND)
+    iefk.preload "/pkg/vaststars.resources/effect/efk/"
 
     iRmlUi.set_prefix "/pkg/vaststars.resources/ui/"
     iRmlUi.add_bundle "/pkg/vaststars.resources/ui/ui.bundle"
@@ -87,7 +89,7 @@ function m:update_world()
         world_update(gameplay_world, get_object)
 
         tick = tick + 1
-        if tick > 1 then -- TODO: remove this
+        if tick > 3 then -- TODO: remove this
             local is_cross, mc, x, y, z
             for lorry_id, rc, tick in roadnet:each_lorry() do
                 is_cross = (rc & 0x8000 ~= 0) -- see also: push_road_coord() in c code

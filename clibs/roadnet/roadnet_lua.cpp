@@ -8,7 +8,9 @@
 namespace roadnet::lua {
     template <typename T>
     static T& class_get(lua_State* L, int idx) {
-        return *(T*)lua_touserdata(L, idx);
+        void* p = lua_touserdata(L, idx);
+        assert(p);
+        return *(T*)p;
     }
 
     template <typename T>
@@ -299,6 +301,11 @@ namespace roadnet::lua {
             fclose(f);
             return 0;
         }
+        static int debug_endpoint_lorry(lua_State* L) {
+            auto& w = class_get<roadnet::world>(L, 1);
+            w.debugEndpointLorry();
+            return 0;
+        }
         static int create(lua_State* L) {
             luaL_Reg l[] = {
                 { "load_map", load_map },
@@ -311,6 +318,7 @@ namespace roadnet::lua {
                 { "update", update },
                 { "backup", backup },
                 { "restore", restore },
+                { "debug_endpoint_lorry", debug_endpoint_lorry},
                 { NULL, NULL },
             };
             class_create<roadnet::world>(L, l);

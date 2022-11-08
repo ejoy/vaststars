@@ -33,10 +33,10 @@ assert(next(eids))
 
 local function dump_item(eid)
     local ecs = world.ecs
-    for v in ecs:select "eid:in chest_2:in entity:in" do
+    for v in ecs:select "eid:in chest:in entity:in" do
         if v.eid == eid then
             for i = 1, 10 do -- hardcode: recipe "铁板1"
-                local c, n = world:container_get(v.chest_2.id, i)
+                local c, n = world:container_get(v.chest, i)
                 if c then
                     print(gameplay.prototype.queryById(c).name, n)
                 end
