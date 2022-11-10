@@ -15,8 +15,8 @@ if CUSTOM_ARCHIVING then
 else
     archival_base_dir = (fs.app_path "vaststars" / "archiving"):string()
 end
-local archiving_list_path = archival_base_dir .. "/archiving.json"
-local camera_setting_path = archival_base_dir .. "/camera.json"
+local archiving_list_path = archival_base_dir .. "archiving.json"
+local camera_setting_path = archival_base_dir .. "camera.json"
 local iprototype = require "gameplay.interface.prototype"
 local startup_entities = import_package("vaststars.prototype")(startup_lua).entities
 local objects = require "objects"
@@ -348,14 +348,14 @@ function M:backup()
 
     while #archival_list + 1 > MAX_ARCHIVING_COUNT do
         local archival = table.remove(archival_list, 1)
-        local archival_dir = archival_base_dir .. ("/%s"):format(archival.dir)
+        local archival_dir = archival_base_dir .. ("%s"):format(archival.dir)
         print("remove", archival_dir)
         fs.remove_all(archival_dir)
     end
 
     local t = os.date("*t")
     local dn = ("%04d-%02d-%02d-%02d-%02d-%02d"):format(t.year, t.month, t.day, t.hour, t.min, t.sec)
-    local archival_dir = archival_base_dir .. ("/%s"):format(dn)
+    local archival_dir = archival_base_dir .. ("%s"):format(dn)
 
     archival_list[#archival_list + 1] = {dir = dn}
     gameplay_core.backup(archival_dir)
@@ -393,7 +393,7 @@ function M:restore(index)
     local archival_dir
     while index > 0 do
         local archival_relative_dir = archival_list[index].dir
-        archival_dir = archival_base_dir .. ("/%s"):format(archival_relative_dir)
+        archival_dir = archival_base_dir .. ("%s"):format(archival_relative_dir)
 
         if not fs.exists(fs.path(archival_dir)) then
             log.warn(("`%s` not exists"):format(archival_relative_dir))

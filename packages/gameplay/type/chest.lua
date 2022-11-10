@@ -15,6 +15,7 @@ function c:ctor(init, pt)
     end
     local index, asize = world:container_create(table.concat(chest))
     return {
+        endpoint_changed = true,
         chest = {
             endpoint = 0xffff,
             index = index,

@@ -30,6 +30,7 @@ function c:ctor(init, pt)
     local world = self
     local index, asize = createChest(world, pt.inputs)
     local e = {
+        endpoint_changed = true,
         chest = {
             endpoint = 0xffff,
             index = index,

@@ -140,15 +140,14 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     local chest = e.chest
     assembling.progress = 0
     assembling.status = STATUS_IDLE
-    chest.endpoint = 0xffff
     fluidbox.update_fluidboxes(e, pt, fluids)
     if recipe_name == nil then
         assembling.recipe = 0
-        e.endpoint_changed = true
         chest.index = 0
         chest.asize = 0
         chest.fluidbox_in = 0
         chest.fluidbox_out = 0
+        world:container_flush(chest)
         return
     end
     local recipe = assert(prototype.queryByName("recipe", recipe_name), "unknown recipe: "..recipe_name)
@@ -156,22 +155,22 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
         local id = createChest(world, recipe)
         local index, asize = world:container_create(id)
         assembling.recipe = recipe.id
-        e.endpoint_changed = true
         chest.index = index
         chest.asize = asize
         chest.fluidbox_in = 0
         chest.fluidbox_out = 0
+        world:container_flush(chest)
         return
     end
     local needlimit = #pt.fluidboxes.input > 0
     local id, fluidbox_in, fluidbox_out = createChestAndFluidBox(world, fluids, pt.fluidboxes, recipe, needlimit)
     local index, asize = world:container_create(id)
     assembling.recipe = recipe.id
-    e.endpoint_changed = true
     chest.index = index
     chest.asize = asize
     chest.fluidbox_in = fluidbox_in
     chest.fluidbox_out = fluidbox_out
+    world:container_flush(chest)
 end
 
 local function set_direction(_, e, dir)

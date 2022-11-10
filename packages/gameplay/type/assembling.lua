@@ -9,7 +9,9 @@ function c:ctor(init, pt)
     local e = {
         endpoint_changed = true,
         fluidboxes = {},
-        chest = {},
+        chest = {
+            endpoint = 0xffff
+        },
         assembling = {
             speed = math.floor(pt.speed * 100),
         },
