@@ -83,6 +83,7 @@ local t = {
 	"/pkg/ant.compile_resource/editor/texture/dds_util.lua",
 	"/pkg/ant.compile_resource/editor/texture/png.lua",
 	"/pkg/ant.compile_resource/editor/texture/png_param.lua",
+	"/pkg/ant.compile_resource/editor/texture/sampler.lua",
 	"/pkg/ant.compile_resource/editor/texture/util.lua",
 	"/pkg/ant.compile_resource/main.lua",
 	"/pkg/ant.compile_resource/package.lua",
