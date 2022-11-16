@@ -1,7 +1,7 @@
 @echo off
 chcp 65001
 set current_dir=%~dp0
-set mode=release
+set mode=debug
 set exe=bin\msvc\%mode%\vaststars.exe
 set cachedir=.build
 set param=startup/main.lua
