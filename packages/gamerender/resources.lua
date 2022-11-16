@@ -124,7 +124,6 @@ local t = {
 	"/pkg/ant.debugger/common/base64.lua",
 	"/pkg/ant.debugger/common/capabilities.lua",
 	"/pkg/ant.debugger/common/event.lua",
-	"/pkg/ant.debugger/common/init_thread.lua",
 	"/pkg/ant.debugger/common/ipc.lua",
 	"/pkg/ant.debugger/common/json.lua",
 	"/pkg/ant.debugger/common/log.lua",
