@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/cmdcenter/fetch_material.png
+path: ../../image/cmdcenter/fetch_material.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/guide/guide-1.png
+path: ../../image/guide/guide-1.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

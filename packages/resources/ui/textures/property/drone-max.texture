@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/property/drone-max.png
+path: ../../image/property/drone-max.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

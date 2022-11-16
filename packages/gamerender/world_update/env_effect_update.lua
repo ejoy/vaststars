@@ -2,16 +2,16 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 local iefk = ecs.import.interface "ant.efk|iefk"
-local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
+
 local timer = ecs.import.interface "ant.timer|itimer"
 local math3d = require "math3d"
-local global = require "global"
 local storm_effect
 local storm_current_time = 0
 local storm_rest_time = 0
 local storm_life = 20
 local storm_interval = 40
 local show_shorm = true
+
 local function update_world(world, get_object_func)
     if not storm_effect then
         local mq = w:first("main_queue camera_ref:in")

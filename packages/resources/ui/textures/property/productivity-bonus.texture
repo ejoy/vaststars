@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/property/productivity-bonus.png
+path: ../../image/property/productivity-bonus.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

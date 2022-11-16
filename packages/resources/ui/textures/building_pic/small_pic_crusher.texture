@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/building_pic/small_pic_crusher.png
+path: ../../image/building_pic/small_pic_crusher.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

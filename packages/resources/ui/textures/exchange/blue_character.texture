@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/exchange/blue_character.png
+path: ../../image/exchange/blue_character.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

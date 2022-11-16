@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/task_tips_pic/task_repair_truck.png
+path: ../../image/task_tips_pic/task_repair_truck.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/property/chest-max.png
+path: ../../image/property/chest-max.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

@@ -43,7 +43,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/%s
+path: ../../image/%s
 sampler:
     MAG: LINEAR
     MIN: LINEAR

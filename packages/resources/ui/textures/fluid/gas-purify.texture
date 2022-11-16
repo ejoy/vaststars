@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/fluid/gas-purify.png
+path: ../../image/fluid/gas-purify.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

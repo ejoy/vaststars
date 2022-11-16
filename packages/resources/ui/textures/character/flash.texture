@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/character/flash.png
+path: ../../image/character/flash.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

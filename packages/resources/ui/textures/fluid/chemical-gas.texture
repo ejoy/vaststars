@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/fluid/chemical-gas.png
+path: ../../image/fluid/chemical-gas.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

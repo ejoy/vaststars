@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/road/add.png
+path: ../../image/road/add.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

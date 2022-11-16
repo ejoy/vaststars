@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/construct/aluminum-hydroxide.png
+path: ../../image/construct/aluminum-hydroxide.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

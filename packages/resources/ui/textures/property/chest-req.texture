@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/property/chest-req.png
+path: ../../image/property/chest-req.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

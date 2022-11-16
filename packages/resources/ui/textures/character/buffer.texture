@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/character/buffer.png
+path: ../../image/character/buffer.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR

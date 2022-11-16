@@ -5,7 +5,7 @@ compress:
     windows: BC3
 noresize: true
 normalmap: false
-path: /pkg/vaststars.resources/ui/image/fluid/water-electrolysis.png
+path: ../../image/fluid/water-electrolysis.png
 sampler:
     MAG: LINEAR
     MIN: LINEAR
