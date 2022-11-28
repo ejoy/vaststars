@@ -117,36 +117,3 @@ prototype "热管1-X型" {
     area = "1x1",
     group = {"物流"},
 }
-
-prototype "锅炉I" {
-    model = "prefabs/distillery-1.prefab",
-    icon = "textures/building_pic/small_pic_distillery.texture",
-    background = "textures/build_background/pic_distillery.texture",
-    construct_detector = {"exclusive"},
-    type ={"entity", "assembling", "fluidboxes"},
-    area = "3x2",
-    craft_category = {"流体换热处理"},
-    fluidboxes = {
-        input = {
-            {
-                capacity = 500,
-                height = 150,
-                base_level = -100,
-                connections = {
-                    {type="input-output", position={0,1,"E"}},
-                    {type="input-output", position={2,1,"W"}},
-                }
-            },
-        },
-        output = {
-            {
-                capacity = 1000,
-                height = 100,
-                base_level = 150,
-                connections = {
-                    {type="output", position={1,1,"S"}},
-                }
-            },
-        },
-    },
-}

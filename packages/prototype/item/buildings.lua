@@ -80,16 +80,6 @@ prototype "大铁制箱子I" {
     order = 14,
 }
 
-prototype "仓库" {
-    type = {"item"},
-    stack = 25,
-    icon = "textures/construct/warehouse.texture",
-    model = "prefabs/rock.prefab",
-    description = "贮藏物品的容器",
-    group = "物流",
-    order = 14,
-}
-
 prototype "基建站" {
     type = {"item"},
     stack = 50,
@@ -319,16 +309,6 @@ prototype "换热器I" {
     description = "将水变成蒸汽的机器",
     group = "加工",
     order = 130,
-}
-
-prototype "锅炉I" {
-    type = {"item"},
-    stack = 25,
-    icon = "textures/construct/boiler.texture",
-    model = "prefabs/rock.prefab",
-    description = "将水变成蒸汽的机器",
-    group = "加工",
-    order = 120,
 }
 
 prototype "热管1-X型" {
