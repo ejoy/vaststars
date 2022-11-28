@@ -13,7 +13,7 @@ local archival_base_dir
 if CUSTOM_ARCHIVING then
     archival_base_dir = (fs.exe_path():parent_path() / CUSTOM_ARCHIVING):lexically_normal():string()
 else
-    archival_base_dir = (fs.app_path "vaststars" / "archiving"):string()
+    archival_base_dir = (fs.app_path "vaststars" / "archiving/"):string()
 end
 local archiving_list_path = archival_base_dir .. "archiving.json"
 local camera_setting_path = archival_base_dir .. "camera.json"
