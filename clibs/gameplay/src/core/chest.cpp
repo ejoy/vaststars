@@ -16,13 +16,24 @@ static bool isFluidId(uint16_t id) {
     return (id & 0x0C00) == 0x0C00;
 }
 
-chest::chest_data chest::create(world& w, container_slot* data, container::size_type size) {
-    auto asize = (container::size_type)size;
-    auto index = w.container.create_chest(asize, 0);
-    for (auto& slot: w.container.slice(index, asize)) {
+chest::chest_data chest::create(world& w, container_slot* data, container::size_type asize, container::size_type lsize) {
+    if (asize == 0 && lsize == 0) {
+        return {0,0};
+    }
+    auto start = w.container.create_chest(asize, lsize);
+    for (auto& slot: w.container.slice(start, asize)) {
         (container_slot&)slot = *data++;
     }
-    return {index, asize};
+    auto index = start;
+    if (asize > 0) {
+        index.slot += (asize-1);
+    }
+    for (container::size_type i = 0; i < lsize; ++i) {
+        auto& slot = w.container.at(index);
+        (container_slot&)slot = *data++;
+        index = slot.next;
+    }
+    return { start, asize };
 }
 
 chest::chest_data& chest::query(ecs::chest& c) {
@@ -177,7 +188,19 @@ void chest::place_force(world& w, chest_data& c, uint8_t offset, uint16_t item, 
 
 const container_slot* chest::getslot(world& w, chest_data& c, uint8_t offset) {
     if (offset >= c.asize) {
-        return nullptr;
+        auto idx = c.index;
+        if (c.asize != 0) {
+            idx.slot += (c.asize-1);
+            offset -= (c.asize-1);
+        }
+        for (uint8_t i = 0; i < offset; ++i) {
+            idx = w.container.at(idx).next;
+            if (idx == container::kInvalidIndex) {
+                return nullptr;
+            }
+        }
+        auto& s = w.container.at(idx);
+        return &s;
     }
     auto& s = w.container.at(c.index + offset);
     return &s;
@@ -186,16 +209,19 @@ const container_slot* chest::getslot(world& w, chest_data& c, uint8_t offset) {
 static int
 lcreate(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
+    uint16_t asize = (uint16_t)luaL_checkinteger(L, 2);
     size_t sz = 0;
-    container_slot* p = (container_slot*)luaL_checklstring(L, 2, &sz);
+    container_slot* s = (container_slot*)luaL_checklstring(L, 3, &sz);
     size_t n = sz / sizeof(container_slot);
     if (n < 0 || n > (uint16_t) -1) {
         return luaL_error(L, "size out of range.");
     }
-    auto c = chest::create(w, p, (uint16_t)n);
+    if (asize > n) {
+        return luaL_error(L, "asize out of range.");
+    }
+    auto c = chest::create(w, s, asize, (uint16_t)n-asize);
     lua_pushinteger(L, std::bit_cast<uint16_t>(c.index));
-    lua_pushinteger(L, c.asize);
-    return 2;
+    return 1;
 }
 
 static int

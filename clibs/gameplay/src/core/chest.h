@@ -54,6 +54,9 @@ public:
             assert((size_t)slot + v < kPageSize);
             return {page, (uint8_t)(slot + v)};
         }
+        bool operator==(const index& rhs) const {
+            return page == rhs.page && slot == rhs.slot;
+        }
     };
     struct slot : public container_slot {
         index next;
@@ -259,7 +262,7 @@ namespace chest {
         container::size_type asize;
     };
 
-    chest_data create(world& w, container_slot* data, container::size_type size);
+    chest_data create(world& w, container_slot* data, container::size_type asize, container::size_type lsize);
     chest_data& query(ecs::chest& c);
 
     // for fluidflow
