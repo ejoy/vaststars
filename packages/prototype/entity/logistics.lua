@@ -58,7 +58,7 @@ prototype "物流派送站" {
     background = "textures/build_background/small_pic_goodsstation_output.texture",
     construct_detector = {"exclusive"},
     type = {"entity"},
-    area = "1x1",
+    area = "2x2",
     slots = 10,
     group = {"物流"},
 }
@@ -69,7 +69,7 @@ prototype "物流需求站" {
     background = "textures/build_background/small_pic_goodsstation_input.texture",
     construct_detector = {"exclusive"},
     type = {"entity"},
-    area = "1x1",
+    area = "2x2",
     slots = 10,
     group = {"物流"},
 }
@@ -281,7 +281,7 @@ prototype "基建站" {
     type ={"entity","consumer"},
     priority = "secondary",
     slots = 20,
-    area = "1x1",
+    area = "2x2",
     supply_area = "23x23",
     group = {"物流"},
     crossing = {
@@ -298,7 +298,7 @@ prototype "拆除点" {
     construct_detector = {"exclusive"},
     type ={"entity", "chest"},
     chest_type = "red",
-    area = "1x1",
+    area = "2x2",
     dismantle_area = "23x23",
     group = {"物流"},
     slots = 20,
