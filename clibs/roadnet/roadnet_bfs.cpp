@@ -137,4 +137,33 @@ namespace roadnet {
         }
         return false;
     }
+
+    static roadid next_road(world& w, roadid C, direction dir) {
+        assert(!C.cross);
+        roadid N = w.straightAry[C.id].neighbor;
+        roadid Next = w.crossAry[N.id].neighbor[(uint8_t)dir];
+        assert(!Next.cross);
+        return Next;
+    }
+
+    bool route(world& w, roadid S, roadid E, direction& dir) {
+        auto key = std::make_pair(S, E);
+        auto it = w.routeMap.find(key);
+        if (it != w.routeMap.end()) {
+            dir = it->second;
+            return true;
+        }
+        std::vector<direction> path;
+        if (bfs(w, S, E, path)) {
+            assert(!path.empty());
+            dir = path[0];
+            auto C = S;
+            for (auto d : path) {
+                w.routeMap.emplace(std::make_pair(C, E), d);
+                C = next_road(w, C, d);
+            }
+            return true;
+        }
+        return false;
+    }
 }

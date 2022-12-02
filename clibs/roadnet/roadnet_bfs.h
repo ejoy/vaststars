@@ -6,5 +6,6 @@
 
 namespace roadnet {
     class world;
-    bool bfs(world& w, roadid start, roadid end, std::vector<direction>& path);
+    bool bfs(world& w, roadid S, roadid E, std::vector<direction>& path);
+    bool route(world& w, roadid S, roadid E, direction& dir);
 }

@@ -25,7 +25,7 @@ namespace roadnet {
             where sell;
             where buy;
         } gameplay;
-        direction getDirection(world& w);
+        direction getDirection(world& w, roadid C);
         void nextDirection(world& w);
         void initTick(uint8_t v);
         void update(world& w, uint64_t ti);

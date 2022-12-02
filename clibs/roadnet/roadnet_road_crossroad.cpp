@@ -69,6 +69,11 @@ namespace roadnet::road {
         neighbor[(uint8_t)dir] = id;
     }
 
+    void crossroad::setRevNeighbor(direction dir, roadid id) {
+        assert(rev_neighbor[(uint8_t)dir] == roadid::invalid());
+        rev_neighbor[(uint8_t)dir] = id;
+    }
+
     void crossroad::addLorry(world& w, lorryid id, uint16_t offset) {
         RoadType type = RoadType(offset);
         for (size_t i = 0; i < 2; ++i) {
@@ -107,12 +112,9 @@ namespace roadnet::road {
         }
     }
 
-    void crossroad::setWaiting(direction dir, uint32_t offset) {
-        waiting[(size_t)dir] = offset;
-    }
-
     lorryid& crossroad::waitingLorry(world& w, direction dir) {
-        return w.LorryInRoad(waiting[(size_t)dir]);
+        uint32_t waiting = w.StraightRoad(rev_neighbor[(size_t)dir]).lorryOffset;
+        return w.LorryInRoad(waiting);
     }
 
     void crossroad::update(world& w, uint64_t ti) {
@@ -148,7 +150,7 @@ namespace roadnet::road {
             if (cross_lorry[0] && cross_lorry[1]) {
                 continue;
             }
-            direction out = l.getDirection(w);
+            direction out = l.getDirection(w, rev_neighbor[i]);
             if (!w.StraightRoad(neighbor[(uint8_t)out]).canEntry(w, reverse(out))) {
                 continue;
             }

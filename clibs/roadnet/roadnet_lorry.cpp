@@ -1,13 +1,15 @@
 #include "roadnet_lorry.h"
 #include "roadnet_world.h"
+#include "roadnet_bfs.h"
 
 namespace roadnet {
-    direction lorry::getDirection(world& w) {
-        assert(pathIdx < path.size());
-        return path[pathIdx];
+    direction lorry::getDirection(world& w, roadid C) {
+        direction result;
+        bool ok = route(w, C, ending.id, result);
+        (void)ok; assert(ok);
+        return result;
     }
     void lorry::nextDirection(world& w) {
-        pathIdx++;
     }
     void lorry::initTick(uint8_t v) {
         tick = v;

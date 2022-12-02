@@ -405,7 +405,7 @@ namespace roadnet {
             straight.setLorryOffset(genLorryOffset);
             straight.setNeighbor(data.neighbor);
             auto& crossroad = crossAry[data.neighbor.id];
-            crossroad.setWaiting(data.finish_dir, genLorryOffset);
+            crossroad.setRevNeighbor(data.finish_dir, straight.id);
             genLorryOffset += (uint16_t)length;
         }
         endpointAry.reset(genLorryOffset);

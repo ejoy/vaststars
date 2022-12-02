@@ -39,6 +39,7 @@ namespace roadnet {
         std::vector<endpoint>     endpointVec;
         dynarray<lorryid>         lorryAry;
         std::vector<lorry>        lorryVec;
+        std::map<std::pair<roadid,roadid>, direction> routeMap;
 
         struct straightData {
             uint16_t  id;
