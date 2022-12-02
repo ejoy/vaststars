@@ -113,6 +113,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     local assembling = e.assembling
     local chest = e.chest
     local items = collectItem(world, chest)
+    world:container_rollback(chest)
     assembling.progress = 0
     assembling.status = STATUS_IDLE
     fluidbox.update_fluidboxes(e, pt, fluids)

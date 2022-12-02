@@ -35,6 +35,28 @@ public:
             return chunk->values[pos];
         }
     };
+    struct iterator {
+        bool operator==(const iterator& rhs) const {
+            return index == rhs.index;
+        }
+        bool operator!=(const iterator& rhs) const {
+            return !(index == rhs.index);
+        }
+        iterator& operator++() {
+            if (++index.pos == N) {
+                index.chunk = index.chunk->next;
+                index.pos = 0;
+            }
+            return *this;
+        }
+        reference operator*() {
+            return index.get();
+        }
+        const_reference operator*() const {
+            return index.get();
+        }
+        chunk_index index;
+    };
 public:
     queue()
         : front_(new chunk_type)
@@ -93,6 +115,19 @@ public:
     const_reference back() const {
         return back_.get();
     }
+    iterator begin() {
+        return {front_};
+    }
+    iterator end() {
+        return {back_};
+    }
+    void erase_end(iterator it) {
+        for (auto o = it.index.chunk; o != back_.chunk; o = o->next) {
+            delete o;
+        }
+        back_ = it.index;
+    }
+
 private:
     void do_push() {
         if (++back_.pos != N)

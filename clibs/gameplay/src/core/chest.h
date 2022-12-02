@@ -283,6 +283,7 @@ namespace chest {
     // for lua api
     const container_slot* getslot(world& w, chest_data& c, uint8_t offset);
     void     flush(world& w, chest_data& c, uint16_t endpoint);
+    void     rollback(world& w, chest_data& c, uint16_t endpoint);
 
     // for trading
     void pickup_force(world& w, container::index index, uint16_t item, uint16_t amount);

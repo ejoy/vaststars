@@ -316,6 +316,10 @@ return function ()
     function world:container_flush(c)
         return chest.flush(cworld, c.index, c.asize, c.endpoint)
     end
+    function world:container_rollback(c)
+        return chest.rollback(cworld, c.index, c.asize, c.endpoint)
+    end
+
 
     function world:wait(...)
         return timer.wait(...)

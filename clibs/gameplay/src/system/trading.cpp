@@ -3,6 +3,10 @@
 #include <lua.hpp>
 #include "roadnet_world.h"
 
+constexpr uint8_t BLUE_PRIORITY = 0;
+constexpr uint8_t RED_PRIORITY = 0;
+constexpr uint8_t GREEN_PRIORITY = 1;
+
 static void trading_match(world& w, uint16_t item, trading_queue& q, uint8_t sell_priority, uint8_t buy_priority) {
     auto& s = q.sell[sell_priority];
     auto& b = q.buy[buy_priority];
@@ -23,7 +27,7 @@ static void trading_match(world& w, uint16_t item, trading_queue& q) {
     trading_match(w, item, q, 1, 0);
 }
 
-void trading_sell(world& w, trading_who who, uint8_t priority, container_slot& s) {
+static void trading_sell(world& w, trading_who who, uint8_t priority, container_slot& s) {
     if (s.amount <= s.lock_item) {
         return;
     }
@@ -36,7 +40,7 @@ void trading_sell(world& w, trading_who who, uint8_t priority, container_slot& s
     }
 }
 
-void trading_buy(world& w, trading_who who, uint8_t priority, container_slot& s) {
+static void trading_buy(world& w, trading_who who, uint8_t priority, container_slot& s) {
     if (s.amount + s.lock_space >= s.limit) {
         return;
     }
@@ -46,6 +50,60 @@ void trading_buy(world& w, trading_who who, uint8_t priority, container_slot& s)
     auto& n = w.tradings.queues[item];
     for (uint16_t i = 0; i < amount; ++i) {
         n.buy[priority].push(who);
+    }
+}
+
+void trading_flush(world& w, trading_who who, container_slot& s) {
+    if (s.item == 0) {
+        return;
+    }
+    switch (s.type) {
+    case container_slot::type::red:
+        trading_sell(w, who, RED_PRIORITY, s);
+        break;
+    case container_slot::type::blue:
+        trading_buy(w, who, BLUE_PRIORITY, s);
+        break;
+    case container_slot::type::green:
+        trading_sell(w, who, GREEN_PRIORITY, s);
+        trading_buy(w, who, GREEN_PRIORITY, s);
+        break;
+    }
+}
+
+static void queue_remove(queue<trading_who>& queue, trading_who who) {
+    auto removed = std::remove_if(queue.begin(), queue.end(), [](auto who){
+        return true;
+    });
+    queue.erase_end(removed);
+}
+
+void trading_rollback(world& w, trading_who who, container_slot& s) {
+    if (s.item == 0) {
+        return;
+    }
+    auto& n = w.tradings.queues[s.item];
+    if (s.lock_item > 0) {
+        s.lock_item = 0;
+        switch (s.type) {
+        case container_slot::type::red:
+            queue_remove(n.sell[RED_PRIORITY], who);
+            break;
+        case container_slot::type::green:
+            queue_remove(n.sell[GREEN_PRIORITY], who);
+            break;
+        }
+    }
+    if (s.lock_space > 0) {
+        s.lock_space = 0;
+        switch (s.type) {
+        case container_slot::type::blue:
+            queue_remove(n.buy[BLUE_PRIORITY], who);
+            break;
+        case container_slot::type::green:
+            queue_remove(n.buy[GREEN_PRIORITY], who);
+            break;
+        }
     }
 }
 

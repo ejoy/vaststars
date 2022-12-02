@@ -8,10 +8,6 @@ extern "C" {
 #include "util/prototype.h"
 }
 
-constexpr uint8_t BLUE_PRIORITY = 0;
-constexpr uint8_t RED_PRIORITY = 0;
-constexpr uint8_t GREEN_PRIORITY = 1;
-
 static bool isFluidId(uint16_t id) {
     return (id & 0x0C00) == 0x0C00;
 }
@@ -139,20 +135,19 @@ void chest::flush(world& w, chest_data& c, uint16_t endpoint) {
     auto index = c.index;
     for (;index != container::kInvalidIndex;) {
         auto& s = w.container.at(index);
-        if (s.item != 0) {
-            switch (s.type) {
-            case container_slot::type::red:
-                trading_sell(w, {endpoint, index}, RED_PRIORITY, s);
-                break;
-            case container_slot::type::blue:
-                trading_buy(w, {endpoint, index}, BLUE_PRIORITY, s);
-                break;
-            case container_slot::type::green:
-                trading_sell(w, {endpoint, index}, GREEN_PRIORITY, s);
-                trading_buy(w, {endpoint, index}, GREEN_PRIORITY, s);
-                break;
-            }
-        }
+        trading_flush(w, {endpoint, index}, s);
+        index = s.next;
+    }
+}
+
+void chest::rollback(world& w, chest_data& c, uint16_t endpoint) {
+    if (endpoint == 0xffff) {
+        return;
+    }
+    auto index = c.index;
+    for (;index != container::kInvalidIndex;) {
+        auto& s = w.container.at(index);
+        trading_rollback(w, {endpoint, index}, s);
         index = s.next;
     }
 }
@@ -252,6 +247,20 @@ lflush(lua_State* L) {
     return 0;
 }
 
+static int
+lrollback(lua_State* L) {
+    world& w = *(world *)lua_touserdata(L, 1);
+    uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
+    uint16_t asize = (uint16_t)luaL_checkinteger(L, 3);
+    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 4);
+    chest::chest_data c {
+        std::bit_cast<container::index>(index),
+        asize
+    };
+    chest::rollback(w, c, endpoint);
+    return 0;
+}
+
 extern "C" int
 luaopen_vaststars_chest_core(lua_State *L) {
     luaL_checkversion(L);
@@ -259,6 +268,7 @@ luaopen_vaststars_chest_core(lua_State *L) {
         { "create", lcreate },
         { "get", lget },
         { "flush", lflush },
+        { "rollback", lrollback },
         { NULL, NULL },
     };
     luaL_newlib(L, l);

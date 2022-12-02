@@ -53,6 +53,6 @@ struct trading_network {
     trading_kdtree station_kdtree;
 };
 
-void trading_sell(world& w, trading_who who, uint8_t priority, container_slot& s);
-void trading_buy(world& w, trading_who who, uint8_t priority, container_slot& s);
+void trading_flush(world& w, trading_who who, container_slot& s);
+void trading_rollback(world& w, trading_who who, container_slot& s);
 void trading_update(world& w);
