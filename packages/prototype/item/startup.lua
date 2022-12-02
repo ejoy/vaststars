@@ -36,12 +36,12 @@ local entities = {
             {"铁板",400},
         },
     },
-    -- {
-    --     prototype_name = "科研中心I",
-    --     dir = "N",
-    --     x = 122,
-    --     y = 127,
-    -- },
+    {
+        prototype_name = "基建站",
+        dir = "S",
+        x = 128,
+        y = 123,
+    },
     {
         prototype_name = "组装机残骸",
         dir = "W",

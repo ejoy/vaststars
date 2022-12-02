@@ -282,7 +282,7 @@ prototype "基建站" {
     priority = "secondary",
     slots = 20,
     area = "2x2",
-    supply_area = "23x23",
+    supply_area = "32x32",
     group = {"物流"},
     crossing = {
         connections = {
@@ -299,7 +299,7 @@ prototype "拆除点" {
     type ={"entity", "chest"},
     chest_type = "red",
     area = "2x2",
-    dismantle_area = "23x23",
+    dismantle_area = "32x32",
     group = {"物流"},
     slots = 20,
     teardown = false,
