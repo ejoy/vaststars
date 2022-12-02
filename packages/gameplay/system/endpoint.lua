@@ -48,9 +48,9 @@ local function build(e, world)
     y = y + e.entity.y
     local endpoint = world.roadnet:create_endpoint(x, y, mapping[DIRECTION[dir]])
     if e.chest then
-        local chest = e.chest
-        chest.endpoint = endpoint
-        world:container_flush(chest)
+        -- local chest = e.chest
+        -- chest.endpoint = endpoint
+        -- world:container_flush(chest)
     elseif e.station then
         e.station.endpoint = endpoint
         if e.station.endpoint ~= 0xffff then
