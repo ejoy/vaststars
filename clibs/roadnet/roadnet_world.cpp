@@ -401,12 +401,12 @@ namespace roadnet {
         for (auto& data: straightVec) {
             road::straight& straight = straightAry[data.id];
             size_t length = data.len * road::straight::N + 1;
-            straight.init(data.id, length, data.finish_dir);
+            straight.init(data.id, (uint16_t)length, data.finish_dir);
             straight.setLorryOffset(genLorryOffset);
             straight.setNeighbor(data.neighbor);
             auto& crossroad = crossAry[data.neighbor.id];
             crossroad.setWaiting(data.finish_dir, genLorryOffset);
-            genLorryOffset += length;
+            genLorryOffset += (uint16_t)length;
         }
         endpointAry.reset(genLorryOffset);
         lorryAry.reset(genLorryOffset);
@@ -473,53 +473,33 @@ namespace roadnet {
         EndpointToRoadcoordMap.emplace(endpointId, rc);
         return endpointId;
     }
+
+    road_coord world::whereEndpoint(endpointid ep) {
+        auto it = EndpointToRoadcoordMap.find(ep);
+        assert(it != EndpointToRoadcoordMap.end());
+        return it->second;
+    }
+
     bool world::pushLorry(lorryid lorryId, endpointid starting, endpointid ending) {
         if (lorryVec.size() >= (size_t)(uint16_t)-1) {
             assert(false);
             return false;
         }
 
-        // TODO remove this
-        auto it1 = EndpointToRoadcoordMap.find(starting);
-        assert(it1 != EndpointToRoadcoordMap.end());
-        auto es = it1->second;
-        auto roadIdS = es.id;
-
-        auto it2 = EndpointToRoadcoordMap.find(ending);
-        assert(it2 != EndpointToRoadcoordMap.end());
-        auto ee = it2->second;
-        auto roadIdE = ee.id;
-        auto eo = ee.offset;
+        auto S = whereEndpoint(starting);
+        auto E = whereEndpoint(ending);
 
         auto& lorry = Lorry(lorryId);
         lorry.path.clear();
-        if (roadIdS == roadIdE) {
-            roadid other = roadid::invalid();
-            for(auto iter = straightAry.begin(); iter != straightAry.end(); iter++) {
-                if (iter->id != roadIdS.id) {
-                    other = roadid(iter->id); // TODO: temp solution, other straight road may not connected to roadnet
-                    break;
-                }
-            }
-            assert(other != roadid::invalid());
-            if (!bfs(*this, roadIdS, other, lorry.path)) {
-                assert(false);
-                return false;
-            }
-            if (!bfs(*this, other, roadIdE, lorry.path)) {
-                assert(false);
-                return false;
-            }
-        }
-        else {
-            if (!bfs(*this, roadIdS, roadIdE, lorry.path)) {
+        if (S.id != E.id || S.offset < E.offset) {
+            if (!bfs(*this, S.id, E.id, lorry.path)) {
                 assert(false);
                 return false;
             }
         }
 
         lorry.pathIdx = 0;
-        lorry.ending = {roadIdE.id, eo};
+        lorry.ending = E;
         Endpoint(starting).pushMap.push_back(lorryId);
         return true;
     }

@@ -67,7 +67,7 @@ namespace roadnet {
     static bool buildPath(bfsContext& ctx, bfsRoad S, bfsRoad E, std::vector<direction>& path) {
         std::vector<direction> r;
         bfsRoad C = E;
-        while (C != S) {
+        do {
             auto iter = ctx.results.find(C);
             if (iter == ctx.results.end()) {
                 return false;
@@ -81,7 +81,7 @@ namespace roadnet {
             else {
                 C.dir = direction::n;
             }
-        }
+        } while (C != S);
         for (size_t i = 0; i < r.size(); ++i) {
             path.push_back(r[r.size()-i-1]);
         }
@@ -124,12 +124,8 @@ namespace roadnet {
 
     bool bfs(world& w, roadid S, roadid E, std::vector<direction>& path) {
         assert(!S.cross && !E.cross);
-        if (S == E) {
-            return true;
-        }
         bfsContext ctx;
         ctx.openlist.insert(S);
-        ctx.results.emplace(bfsRoad{S, direction::n}, bfsRoad{S, direction::n});
         while (!ctx.openlist.empty()) {
             roadid G = pop(ctx.openlist);
             assert(!G.cross);

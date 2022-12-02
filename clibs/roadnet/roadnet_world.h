@@ -83,5 +83,6 @@ namespace roadnet {
     private:
         roadid   findCrossRoad(loction l);
         std::optional<loction> whereCrossRoad(roadid id);
+        road_coord whereEndpoint(endpointid ep);
     };
 }
