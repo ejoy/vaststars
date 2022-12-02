@@ -10,7 +10,7 @@ struct world;
 
 struct trading_who {
     uint16_t endpoint;
-    uint8_t index;
+    container::index index;
 };
 
 struct trading_order {

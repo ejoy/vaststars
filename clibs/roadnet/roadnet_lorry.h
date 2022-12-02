@@ -15,7 +15,10 @@ namespace roadnet {
         std::vector<direction> path;
         struct where {
             uint16_t endpoint;
-            uint8_t index;
+            struct {
+                uint8_t page;
+                uint8_t slot;
+            } index;
         };
         struct  {
             uint16_t item;

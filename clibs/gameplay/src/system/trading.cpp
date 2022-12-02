@@ -132,8 +132,8 @@ static bool DoTask(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadn
     auto& l = rw.Lorry(lorryId);
     l.gameplay = {
         order.item,
-        {order.sell.endpoint, order.sell.index},
-        {order.buy.endpoint, order.buy.index},
+        {order.sell.endpoint, {order.sell.index.page, order.sell.index.slot}},
+        {order.buy.endpoint, {order.buy.index.page, order.buy.index.slot}},
     };
     w.tradings.orders.pop();
     return true;
@@ -186,7 +186,8 @@ lupdate(lua_State *L) {
             if (l.gameplay.sell.endpoint == 0xffff) {
                 assert(c.endpoint == l.gameplay.buy.endpoint);
                 auto& chest = chest::query(c);
-                chest::place_force(w, chest, l.gameplay.buy.index, l.gameplay.item, 1);
+                auto& index = l.gameplay.buy.index;
+                chest::place_force(w, {index.page, index.slot}, l.gameplay.item, 1);
                 if (!DoTask(w, rw, lorryId, c.endpoint)) {
                     GoHome(w, rw, lorryId, c.endpoint);
                 }
@@ -194,7 +195,8 @@ lupdate(lua_State *L) {
             else {
                 assert(c.endpoint == l.gameplay.sell.endpoint);
                 auto& chest = chest::query(c);
-                chest::pickup_force(w, chest, l.gameplay.sell.index, l.gameplay.item, 1);
+                auto& index = l.gameplay.sell.index;
+                chest::pickup_force(w, {index.page, index.slot}, l.gameplay.item, 1);
                 if (!rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy.endpoint)) {
                     assert(false);
                 }

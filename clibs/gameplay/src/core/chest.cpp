@@ -133,37 +133,32 @@ size_t chest::size(chest_data& c) {
 }
 
 void chest::flush(world& w, chest_data& c, uint16_t endpoint) {
-    chest::flush(w, c, endpoint, 0, c.asize);
-}
-
-void chest::flush(world& w, chest_data& c, uint16_t endpoint, uint8_t offset, container::size_type size) {
     if (endpoint == 0xffff) {
         return;
     }
-    assert(offset + size <= c.asize);
-    uint8_t i = offset;
-    for (auto& s: w.container.slice(c.index + offset, size)) {
+    auto index = c.index;
+    for (;index != container::kInvalidIndex;) {
+        auto& s = w.container.at(index);
         if (s.item != 0) {
             switch (s.type) {
             case container_slot::type::red:
-                trading_sell(w, {endpoint, i}, RED_PRIORITY, s);
+                trading_sell(w, {endpoint, index}, RED_PRIORITY, s);
                 break;
             case container_slot::type::blue:
-                trading_buy(w, {endpoint, i}, BLUE_PRIORITY, s);
+                trading_buy(w, {endpoint, index}, BLUE_PRIORITY, s);
                 break;
             case container_slot::type::green:
-                trading_sell(w, {endpoint, i}, GREEN_PRIORITY, s);
-                trading_buy(w, {endpoint, i}, GREEN_PRIORITY, s);
+                trading_sell(w, {endpoint, index}, GREEN_PRIORITY, s);
+                trading_buy(w, {endpoint, index}, GREEN_PRIORITY, s);
                 break;
             }
         }
-        i++;
+        index = s.next;
     }
 }
 
-void chest::pickup_force(world& w, chest_data& c, uint8_t offset, uint16_t item, uint16_t amount) {
-    assert(offset < c.asize);
-    auto& s = w.container.at(c.index + offset);
+void chest::pickup_force(world& w, container::index index, uint16_t item, uint16_t amount) {
+    auto& s = w.container.at(index);
     assert(item == s.item);
     assert(amount <= s.lock_item);
     assert(amount <= s.amount);
@@ -176,9 +171,8 @@ void chest::pickup_force(world& w, chest_data& c, uint8_t offset, uint16_t item,
     }
 }
 
-void chest::place_force(world& w, chest_data& c, uint8_t offset, uint16_t item, uint16_t amount) {
-    assert(offset < c.asize);
-    auto& s = w.container.at(c.index + offset);
+void chest::place_force(world& w, container::index index, uint16_t item, uint16_t amount) {
+    auto& s = w.container.at(index);
     assert(item == s.item);
     assert(amount <= s.lock_space);
     assert(s.amount + amount <= s.limit);
