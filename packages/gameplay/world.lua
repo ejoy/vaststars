@@ -57,18 +57,6 @@ return function ()
         components[#components+1] = c.name
     end
 
-    ecs:register {
-        name = "fluidbox_changed"
-    }
-
-    ecs:register {
-        name = "endpoint_changed"
-    }
-
-    ecs:register {
-        name = "road_changed"
-    }
-
     local context = ecs:context(components)
     local ptable = require "vaststars.prototype.core"
     local cworld = vaststars.create_world(context, ptable)

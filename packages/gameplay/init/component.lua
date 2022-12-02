@@ -92,3 +92,7 @@ component "manual" {
     "status:byte",
     "progress:int",
 }
+
+component "fluidbox_changed" {}
+component "endpoint_changed" {}
+component "road_changed" {}
