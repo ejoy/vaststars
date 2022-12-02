@@ -130,7 +130,7 @@ private:
     void init_array(index start, size_type size) {
         size_type last = (size_type)(size-1);
         for (size_type i = 0; i < last; ++i) {
-            pages[start.page]->slots[start.slot+i].next = {start.page, (uint8_t)(i+1)};
+            pages[start.page]->slots[start.slot+i].next = {start.page, (uint8_t)(start.slot + i+1)};
         }
         pages[start.page]->slots[start.slot+last].next = kInvalidIndex;
     }
