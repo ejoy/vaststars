@@ -4,7 +4,7 @@ local counter = 1
 local math3d = require "math3d"
 local STATE_WORKING  = math3d.constant("v4", {0.0, 1.0, 0.0, 1})
 local STATE_NO_POWER = math3d.constant("v4", {1.0, 1.0, 0.0, 1})
-
+local last_frame_count = 0
 local function update_world(world, get_object_func)
     counter = counter + 1
     if counter < update_interval then
@@ -18,7 +18,7 @@ local function update_world(world, get_object_func)
         if st then
             local game_object = vsobject.game_object
             -- is working ?
-            if st.power < 25 * st.cfg.power then
+            if st.power < math.floor((global.frame_count - last_frame_count) * 0.5) * st.cfg.power then
                 if game_object.on_idle then
                     game_object.on_idle()
                 end
@@ -31,5 +31,6 @@ local function update_world(world, get_object_func)
             end
         end
     end
+    last_frame_count = global.frame_count
 end
 return update_world

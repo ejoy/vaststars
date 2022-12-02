@@ -21,11 +21,11 @@ target_anims:
   clips:
     ---
     amplitude_pos: 0
-    amplitude_rot: -360
+    amplitude_rot: -1080
     direction: 2
     random_amplitude: false
     range: {0, 179}
-    repeat_count: 3
+    repeat_count: 1
     rot_axis: 2
     tween: 1
     type: 1
@@ -35,11 +35,11 @@ target_anims:
   clips:
     ---
     amplitude_pos: 0
-    amplitude_rot: 360
+    amplitude_rot: 3600
     direction: 2
     random_amplitude: false
     range: {0, 179}
-    repeat_count: 10
+    repeat_count: 1
     rot_axis: 2
     tween: 1
     type: 1
