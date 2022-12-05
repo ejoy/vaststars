@@ -171,22 +171,19 @@ static void GoHome(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadn
     if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
         assert(false);
     }
-    if (!rw.pushLorry(lorryId, current, kdtree.dataset[result.value()].id)) {
-        assert(false);
-    }
+    rw.pushLorry(lorryId, current, kdtree.dataset[result.value()].id);
 }
 
-static bool DoTask(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadnet::endpointid current) {
-    if (w.tradings.orders.empty()) {
-        return false;
-    }
+static bool HasTask(world& w) {
+    return !w.tradings.orders.empty();
+}
+
+static void DoTask(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadnet::endpointid current) {
+    assert(!w.tradings.orders.empty());
     auto& order = w.tradings.orders.front();
     roadnet::endpointid s{current};
     roadnet::endpointid e{order.sell.endpoint};
-    if (!rw.pushLorry(lorryId, s, e)) {
-        assert(false);
-        return false;
-    }
+    rw.pushLorry(lorryId, s, e);
     auto& l = rw.Lorry(lorryId);
     l.gameplay = {
         order.item,
@@ -194,7 +191,6 @@ static bool DoTask(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadn
         {order.buy.endpoint, {order.buy.index.page, order.buy.index.slot}},
     };
     w.tradings.orders.pop();
-    return true;
 }
 
 static int
@@ -232,10 +228,7 @@ lupdate(lua_State *L) {
         }
         roadnet::endpointid s{kdtree.dataset[result.value()].id};
         auto lorryId = rw.popLorry(s);
-        if (!DoTask(w, rw, lorryId, s)) {
-            assert(false);
-            break;
-        }
+        DoTask(w, rw, lorryId, s);
     }
     for (auto& v : w.select<ecs::chest>(L)) {
         auto& c = v.get<ecs::chest>();
@@ -246,7 +239,10 @@ lupdate(lua_State *L) {
                 auto& chest = chest::query(c);
                 auto& index = l.gameplay.buy.index;
                 chest::place_force(w, {index.page, index.slot}, l.gameplay.item, 1);
-                if (!DoTask(w, rw, lorryId, c.endpoint)) {
+                if (HasTask(w)) {
+                    DoTask(w, rw, lorryId, c.endpoint);
+                }
+                else {
                     GoHome(w, rw, lorryId, c.endpoint);
                 }
             }
@@ -255,9 +251,7 @@ lupdate(lua_State *L) {
                 auto& chest = chest::query(c);
                 auto& index = l.gameplay.sell.index;
                 chest::pickup_force(w, {index.page, index.slot}, l.gameplay.item, 1);
-                if (!rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy.endpoint)) {
-                    assert(false);
-                }
+                rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy.endpoint);
                 l.gameplay.sell.endpoint = 0xffff;
             }
         }

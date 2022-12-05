@@ -141,8 +141,8 @@ namespace roadnet::lua {
             lorryid l((uint16_t)luaL_checkinteger(L, 2));
             auto starting((uint16_t)luaL_checkinteger(L, 3));
             auto ending((uint16_t)luaL_checkinteger(L, 4));
-            lua_pushboolean(L, w.pushLorry(l, (endpointid)starting, (endpointid)ending));
-            return 1;
+            w.pushLorry(l, (endpointid)starting, (endpointid)ending);
+            return 0;
         }
         static int pop_lorry(lua_State* L) {
             auto& w = class_get<roadnet::world>(L, 1);
@@ -258,8 +258,6 @@ namespace roadnet::lua {
             lua_world::write_vector(f, w.lorryVec, [&](const lorry& l) {
                 lua_world::file_write(f, l.tick);
                 lua_world::file_write(f, l.ending);
-                lua_world::file_write(f, l.pathIdx);
-                lua_world::write_vector(f, l.path);
                 lua_world::file_write(f, l.gameplay);
             });
 
@@ -288,8 +286,6 @@ namespace roadnet::lua {
             lua_world::read_vector(f, w.lorryVec, [&](lorry& l) {
                 lua_world::file_read(f, l.tick);
                 lua_world::file_read(f, l.ending);
-                lua_world::file_read(f, l.pathIdx);
-                lua_world::read_vector(f, l.path);
                 lua_world::file_read(f, l.gameplay);
             });
 

@@ -11,8 +11,6 @@ namespace roadnet {
     struct lorry {
         uint8_t tick;
         road_coord ending;
-        uint8_t pathIdx;
-        std::vector<direction> path;
         struct where {
             uint16_t endpoint;
             struct {
@@ -26,7 +24,6 @@ namespace roadnet {
             where buy;
         } gameplay;
         direction getDirection(world& w, roadid C);
-        void nextDirection(world& w);
         void initTick(uint8_t v);
         void update(world& w, uint64_t ti);
         bool ready();

@@ -9,8 +9,6 @@ namespace roadnet {
         (void)ok; assert(ok);
         return result;
     }
-    void lorry::nextDirection(world& w) {
-    }
     void lorry::initTick(uint8_t v) {
         tick = v;
     }

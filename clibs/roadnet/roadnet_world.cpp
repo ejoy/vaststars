@@ -480,28 +480,10 @@ namespace roadnet {
         return it->second;
     }
 
-    bool world::pushLorry(lorryid lorryId, endpointid starting, endpointid ending) {
-        if (lorryVec.size() >= (size_t)(uint16_t)-1) {
-            assert(false);
-            return false;
-        }
-
-        auto S = whereEndpoint(starting);
-        auto E = whereEndpoint(ending);
-
+    void world::pushLorry(lorryid lorryId, endpointid starting, endpointid ending) {
         auto& lorry = Lorry(lorryId);
-        lorry.path.clear();
-        if (S.id != E.id || S.offset < E.offset) {
-            if (!bfs(*this, S.id, E.id, lorry.path)) {
-                assert(false);
-                return false;
-            }
-        }
-
-        lorry.pathIdx = 0;
-        lorry.ending = E;
+        lorry.ending = whereEndpoint(ending);
         Endpoint(starting).pushMap.push_back(lorryId);
-        return true;
     }
 
     lorryid world::popLorry(endpointid ending) {

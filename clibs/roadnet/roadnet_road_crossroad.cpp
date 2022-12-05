@@ -82,7 +82,6 @@ namespace roadnet::road {
                 cross_lorry[i] = id;
                 cross_status[i] = type;
                 l.initTick(kCrossTime);
-                l.nextDirection(w);
                 return;
             }
         }
@@ -175,7 +174,6 @@ namespace roadnet::road {
             cross_lorry[idx] = id;
             cross_status[idx] = type;
             l.initTick(kCrossTime);
-            l.nextDirection(w);
         }
     }
 }
