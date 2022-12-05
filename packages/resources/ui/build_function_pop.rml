@@ -120,22 +120,18 @@
 
             <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "show_set_recipe" /> <!-- TODO -->
 
-            <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickDetail()" data-if = "show_detail">
-                <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>
-                <div class="title-text">详细</div>
-            </div>
-
-            <div class="button-fuction-block" style="top: -2.33vmin;" data-event-click="clickRecipe()" data-if = "show_set_recipe">
+            <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickRecipe()" data-if = "show_set_recipe">
                 <button class="button-function" style ='background-image: "textures/assemble/wheel.texture";'/>
                 <div class="title-text">修改配方</div>
             </div>
-            <div class="button-fuction-block" style="top: -3.33vmin;" data-if = "!show_detail" /> <!-- TODO -->
-            <div class="button-fuction-block" style="top: -3.33vmin;" data-if = "show_detail && !show_set_recipe" /> <!-- TODO -->
-            <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe && !show_detail"  /> <!-- TODO -->
 
-            <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickConstructRotate()" data-if = "show_rotate">
-                <button class="button-function" style ='background-image: "textures/construct/rotate.texture";'/>
-                <div class="title-text">旋转</div>
+            <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "true" />
+            <div class="button-fuction-block" style="top: -3.33vmin;" data-if = "!show_detail" /> <!-- TODO -->
+            <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe && show_detail"  /> <!-- TODO -->
+
+            <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickDetail()" data-if = "show_detail">
+                <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>
+                <div class="title-text">详细</div>
             </div>
         </div>
     </body>
