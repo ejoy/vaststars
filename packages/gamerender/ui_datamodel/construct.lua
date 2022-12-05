@@ -174,32 +174,34 @@ function M:stage_ui_update(datamodel)
     -- TODO: remove this
     --
     for _, _, _, double_confirm in construct_begin_mb:unpack() do
-        idetail.unselected()
-        if builder then
-            if builder:check_unconfirmed(double_confirm) then
-                world:pub {"ui_message", "show_unconfirmed_double_confirm"}
+        if not global.tech_finish_pop then
+            idetail.unselected()
+            if builder then
+                if builder:check_unconfirmed(double_confirm) then
+                    world:pub {"ui_message", "show_unconfirmed_double_confirm"}
+                    goto continue
+                end
+            end
+
+            if not double_confirm then
+                world:pub {"ui_message", "unconfirmed_double_confirm_continuation"}
                 goto continue
             end
+
+            _show_grid_entity(true)
+            ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
+            datamodel.show_rotate = false
+            datamodel.show_confirm = false
+            datamodel.show_construct_complete = false
+            gameplay_core.world_update = false
+            global.mode = "construct"
+            camera.transition("camera_construct.prefab")
+            last_prototype_name = nil
+
+            inventory:flush()
+            datamodel.construct_menu = _get_construct_menu()
+            ipower_line.show_supply_area()
         end
-
-        if not double_confirm then
-            world:pub {"ui_message", "unconfirmed_double_confirm_continuation"}
-            goto continue
-        end
-
-        _show_grid_entity(true)
-        ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
-        datamodel.show_rotate = false
-        datamodel.show_confirm = false
-        datamodel.show_construct_complete = false
-        gameplay_core.world_update = false
-        global.mode = "construct"
-        camera.transition("camera_construct.prefab")
-        last_prototype_name = nil
-
-        inventory:flush()
-        datamodel.construct_menu = _get_construct_menu()
-        ipower_line.show_supply_area()
         ::continue::
     end
 
@@ -320,15 +322,6 @@ function M:stage_ui_update(datamodel)
         ::continue::
     end
 
-    for _ in headquater_mb:unpack() do
-        local object_id = get_headquater_object_id()
-        if object_id then
-            iui.open("chest.rml", object_id)
-        else
-            log.error("can not found headquater")
-        end
-    end
-
     for _, _, _, is_task in open_taskui_event:unpack() do
         if gameplay_core.world_update and global.science.current_tech then
             gameplay_core.world_update = false
@@ -336,15 +329,25 @@ function M:stage_ui_update(datamodel)
         end
     end
 
+    --任务完成提示界面
     if not global.tech_finish_pop then
+        for _ in headquater_mb:unpack() do
+            local object_id = get_headquater_object_id()
+            if object_id then
+                iui.open("chest.rml", object_id)
+            else
+                log.error("can not found headquater")
+            end
+        end
+
         for _ in technology_mb:unpack() do
             gameplay_core.world_update = false
             iui.open("science.rml")
         end
-    end
-
-    for _ in show_setting_mb:unpack() do
-        iui.open("option_pop.rml")
+        
+        for _ in show_setting_mb:unpack() do
+            iui.open("option_pop.rml")
+        end
     end
 
     for _ in laying_pipe_begin_mb:unpack() do
