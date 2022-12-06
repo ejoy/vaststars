@@ -149,7 +149,10 @@ namespace roadnet::road {
             if (cross_lorry[0] && cross_lorry[1]) {
                 continue;
             }
-            direction out = l.getDirection(w, rev_neighbor[i]);
+            direction out;
+            if (!l.nextDirection(w, rev_neighbor[i], out)) {
+                continue;
+            }
             if (!w.StraightRoad(neighbor[(uint8_t)out]).canEntry(w, reverse(out))) {
                 continue;
             }

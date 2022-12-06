@@ -3,11 +3,8 @@
 #include "roadnet_bfs.h"
 
 namespace roadnet {
-    direction lorry::getDirection(world& w, roadid C) {
-        direction result;
-        bool ok = route(w, C, ending.id, result);
-        (void)ok; assert(ok);
-        return result;
+    bool lorry::nextDirection(world& w, roadid C, direction& dir) {
+        return route(w, C, ending.id, dir);
     }
     void lorry::initTick(uint8_t v) {
         tick = v;
