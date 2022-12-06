@@ -20,22 +20,29 @@ chest::chest_data chest::create(world& w, container_slot* data, container::size_
     for (auto& slot: w.container.slice(start, asize)) {
         (container_slot&)slot = *data++;
     }
-    auto index = start;
-    if (asize > 0) {
-        index.slot += (asize-1);
-    }
+    chest::chest_data c { start, asize };
+    auto index = chest::list_head(w, c);
     for (container::size_type i = 0; i < lsize; ++i) {
         auto& slot = w.container.at(index);
         (container_slot&)slot = *data++;
         index = slot.next;
     }
-    return { start, asize };
+    return c;
 }
 
 chest::chest_data& chest::query(ecs::chest& c) {
     static_assert(sizeof(chest::chest_data::index) == sizeof(ecs::chest::index));
     static_assert(sizeof(chest::chest_data::asize) == sizeof(ecs::chest::asize));
     return (chest_data&)c;
+}
+
+container::index chest::list_head(world& w, chest_data& c) {
+    if (c.asize == 0) {
+        return c.index;
+    }
+    auto index = c.index;
+    index.slot += (c.asize-1);
+    return w.container.at(index).next;
 }
 
 uint16_t chest::get_fluid(world& w, chest_data& c, uint8_t offset) {
@@ -69,7 +76,6 @@ bool chest::pickup(world& w, chest_data& c, uint16_t endpoint, const recipe_item
     size_t i = 0;
     for (auto& s: w.container.slice(c.index + offset, r->n)) {
         auto& t = r->items[i++];
-        assert(s.unit == container_slot::unit::limit);
         assert(s.item == t.item);
         if (s.amount < t.amount) {
             return false;
@@ -89,7 +95,6 @@ bool chest::place(world& w, chest_data& c, uint16_t endpoint, const recipe_items
     size_t i = 0;
     for (auto& s: w.container.slice(c.index + offset, r->n)) {
         auto& t = r->items[i++];
-        assert(s.unit == container_slot::unit::limit);
         assert(s.item == t.item);
         if (s.amount + t.amount > s.limit) {
             return false;
@@ -109,7 +114,6 @@ bool chest::recover(world& w, chest_data& c, const recipe_items* r, uint8_t offs
     size_t i = 0;
     for (auto& s: w.container.slice(c.index + offset, r->n)) {
         auto& t = r->items[i++];
-        assert(s.unit == container_slot::unit::limit);
         assert(s.item == t.item);
         s.amount += t.amount;
     }
@@ -118,7 +122,6 @@ bool chest::recover(world& w, chest_data& c, const recipe_items* r, uint8_t offs
 
 void chest::limit(world& w, chest_data& c, uint16_t endpoint, const uint16_t* r) {
     for (auto& s: w.container.slice(c.index, c.asize)) {
-        assert(s.unit == container_slot::unit::limit);
         s.limit = *r++;
     }
     chest::flush(w, c, endpoint);
@@ -152,16 +155,36 @@ void chest::rollback(world& w, chest_data& c, uint16_t endpoint) {
     }
 }
 
-void chest::pickup_force(world& w, container::index index, uint16_t item, uint16_t amount) {
+static void list_remove(world& w, chest::chest_data& c, container::index index) {
+    if (c.asize == 0 && c.index == index) {
+        c.index = w.container.at(index).next;
+        return;
+    }
+    auto head = c.index;
+    if (c.asize > 0) {
+        head.slot += (c.asize-1);
+    }
+    while (head != container::kInvalidIndex) {
+        auto& slot = w.container.at(index);
+        if (slot.next == index) {
+            slot.next = w.container.at(index).next;
+            w.container.free_slot(index);
+            break;
+        }
+        head = slot.next;
+    }
+}
+
+void chest::pickup_force(world& w, chest_data& c, container::index index, uint16_t item, uint16_t amount) {
     auto& s = w.container.at(index);
     assert(item == s.item);
     assert(amount <= s.lock_item);
     assert(amount <= s.amount);
     s.amount -= amount;
     s.lock_item -= amount;
-    if (s.unit == container_slot::unit::empty) {
-        if (s.amount == 0 && s.lock_item == 0 && s.lock_space == 0) {
-            s.item = 0;
+    if (s.amount == 0 && s.lock_item == 0 && s.lock_space == 0) {
+        if (index.page != c.index.page || (index.slot < c.index.slot) || (index.slot >= c.index.slot + c.asize)) {
+            list_remove(w, c, index);
         }
     }
 }
@@ -177,18 +200,17 @@ void chest::place_force(world& w, container::index index, uint16_t item, uint16_
 
 const container_slot* chest::getslot(world& w, chest_data& c, uint8_t offset) {
     if (offset >= c.asize) {
-        auto idx = c.index;
-        if (c.asize != 0) {
-            idx.slot += (c.asize-1);
-            offset -= (c.asize-1);
-        }
-        for (uint8_t i = 0; i < offset; ++i) {
-            idx = w.container.at(idx).next;
-            if (idx == container::kInvalidIndex) {
+        auto index = chest::list_head(w, c);
+        for (uint8_t i = 0; i < offset - c.asize; ++i) {
+            if (index == container::kInvalidIndex) {
                 return nullptr;
             }
+            index = w.container.at(index).next;
         }
-        auto& s = w.container.at(idx);
+        if (index == container::kInvalidIndex) {
+            return nullptr;
+        }
+        auto& s = w.container.at(index);
         return &s;
     }
     auto& s = w.container.at(c.index + offset);

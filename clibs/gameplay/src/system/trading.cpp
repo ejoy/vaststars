@@ -250,7 +250,7 @@ lupdate(lua_State *L) {
                 assert(c.endpoint == l.gameplay.sell.endpoint);
                 auto& chest = chest::query(c);
                 auto& index = l.gameplay.sell.index;
-                chest::pickup_force(w, {index.page, index.slot}, l.gameplay.item, 1);
+                chest::pickup_force(w, chest, {index.page, index.slot}, l.gameplay.item, 1);
                 rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy.endpoint);
                 l.gameplay.sell.endpoint = 0xffff;
             }

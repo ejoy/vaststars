@@ -30,12 +30,8 @@ struct container_slot {
         blue,
         green,
     };
-    enum class unit: uint8_t {
-        limit = 0,
-        empty,
-    };
     type     type;
-    unit     unit;
+    uint8_t  xxxx;
     uint16_t item;
     uint16_t amount;
     uint16_t limit;
@@ -125,6 +121,9 @@ public:
     void clear() {
         pages.clear();
         freelist.clear();
+    }
+    void free_slot(index idx) {
+        free_chunk(idx.page, {idx.slot, 1});
     }
 private:
     void init_array(index start, size_type size) {
@@ -264,6 +263,7 @@ namespace chest {
 
     chest_data create(world& w, container_slot* data, container::size_type asize, container::size_type lsize);
     chest_data& query(ecs::chest& c);
+    container::index list_head(world& w, chest_data& c);
 
     // for fluidflow
     uint16_t get_fluid(world& w, chest_data& c, uint8_t offset);
@@ -286,6 +286,6 @@ namespace chest {
     void     rollback(world& w, chest_data& c, uint16_t endpoint);
 
     // for trading
-    void pickup_force(world& w, container::index index, uint16_t item, uint16_t amount);
+    void pickup_force(world& w, chest_data& c, container::index index, uint16_t item, uint16_t amount);
     void place_force(world& w, container::index index, uint16_t item, uint16_t amount);
 }
