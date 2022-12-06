@@ -113,6 +113,37 @@
                 background-color: rgba(200,200,200,80);
                 border-radius: 1.33vmin;
             }
+            .building-block {
+                /* width: 78vmin; */
+                width: 28vmin;
+                height: 40.00vmin;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                position: absolute; 
+                left:0vmin; 
+                top:10vmin;
+                z-index: 999;
+                border-radius: 1.33vmin;
+            }
+            .building-info {
+                flex-direction: row;
+                justify-content: flex-start;
+                margin: 0.1vmin;
+                width: 26vmin;
+                height: 8vmin;
+            }
+            .building-pic {
+                margin: 1vmin;
+                background-size: cover;
+                width: 5.67vmin;
+                height: 5.67vmin;
+            }
+            .building-num {
+                padding-top: 0.5vmin;
+                font-size: 5.00vmin;
+                -webkit-text-stroke: 0.3vmin #000;
+            }
             .main-menu-button {
                 margin : 0 0.5em;
                 width: 15.33vmin;
@@ -411,6 +442,26 @@
                 <div style = "pointer-events: none; position: absolute; top: 0vmin; width: 90.00vmax; height: auto; font-size: 6.25vmin; color: rgb(0,255,0);">{{drawcall_text}}</div>
             </div>
 
+            <!-- 建造队列 显示 -->
+            <div class = "building-block" data-if="false">
+                <div class = "building-info">
+                    <div class = "building-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
+                    <div class = "building-num">10/10</div>
+                </div>
+                <div class = "building-info">
+                    <div class = "building-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
+                    <div class = "building-num">10/10</div>
+                </div>
+                <div class = "building-info">
+                    <div class = "building-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
+                    <div class = "building-num">10/10</div>
+                </div>
+                <div class = "building-info">
+                    <div class = "building-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
+                    <div class = "building-num">10/10</div>
+                </div>
+            </div>
+            
             <!-- 主菜单按钮 -->
             <div class = "main-menu-block" data-if = "cur_edit_mode == '' && guide_progress >= 10">
                 <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()" data-if = "guide_progress >= 10">
