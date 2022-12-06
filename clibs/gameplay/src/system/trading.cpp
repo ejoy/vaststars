@@ -7,6 +7,14 @@ constexpr uint8_t BLUE_PRIORITY = 0;
 constexpr uint8_t RED_PRIORITY = 0;
 constexpr uint8_t GREEN_PRIORITY = 1;
 
+static roadnet::world&
+getroadnetworld(lua_State* L) {
+    lua_getfield(L, LUA_REGISTRYINDEX, "ROADNET_WORLD");
+    auto& rw = *(roadnet::world*)lua_touserdata(L, -1);
+    lua_pop(L, 1);
+    return rw;
+}
+
 static void trading_match(world& w, uint16_t item, trading_queue& q, uint8_t sell_priority, uint8_t buy_priority) {
     auto& s = q.sell[sell_priority];
     auto& b = q.buy[buy_priority];
@@ -58,13 +66,13 @@ void trading_flush(world& w, trading_who who, container_slot& s) {
         return;
     }
     switch (s.type) {
-    case container_slot::type::red:
+    case container_slot::slot_type::red:
         trading_sell(w, who, RED_PRIORITY, s);
         break;
-    case container_slot::type::blue:
+    case container_slot::slot_type::blue:
         trading_buy(w, who, BLUE_PRIORITY, s);
         break;
-    case container_slot::type::green:
+    case container_slot::slot_type::green:
         trading_sell(w, who, GREEN_PRIORITY, s);
         trading_buy(w, who, GREEN_PRIORITY, s);
         break;
@@ -86,10 +94,10 @@ void trading_rollback(world& w, trading_who who, container_slot& s) {
     if (s.lock_item > 0) {
         s.lock_item = 0;
         switch (s.type) {
-        case container_slot::type::red:
+        case container_slot::slot_type::red:
             queue_remove(n.sell[RED_PRIORITY], who);
             break;
-        case container_slot::type::green:
+        case container_slot::slot_type::green:
             queue_remove(n.sell[GREEN_PRIORITY], who);
             break;
         }
@@ -97,10 +105,10 @@ void trading_rollback(world& w, trading_who who, container_slot& s) {
     if (s.lock_space > 0) {
         s.lock_space = 0;
         switch (s.type) {
-        case container_slot::type::blue:
+        case container_slot::slot_type::blue:
             queue_remove(n.buy[BLUE_PRIORITY], who);
             break;
-        case container_slot::type::green:
+        case container_slot::slot_type::green:
             queue_remove(n.buy[GREEN_PRIORITY], who);
             break;
         }
@@ -151,23 +159,10 @@ private:
     ElementType  dists;
 };
 
-static roadnet::world&
-getroadnetworld(lua_State* L) {
-    lua_getfield(L, LUA_REGISTRYINDEX, "ROADNET_WORLD");
-    auto& rw = *(roadnet::world*)lua_touserdata(L, -1);
-    lua_pop(L, 1);
-    return rw;
-}
-
-static roadnet::loction getxy(roadnet::world& w, roadnet::endpointid id) {
-    auto& ep = w.Endpoint(id);
-    return ep.loc;
-}
-
 static void GoHome(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadnet::endpointid current) {
     auto& kdtree = w.tradings.station_kdtree;
     nearest_result<false> result(rw);
-    auto loc = getxy(rw, current);
+    auto loc = rw.Endpoint(current).loc;
     if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
         assert(false);
     }
@@ -187,8 +182,8 @@ static void DoTask(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadn
     auto& l = rw.Lorry(lorryId);
     l.gameplay = {
         order.item,
-        {order.sell.endpoint, {order.sell.index.page, order.sell.index.slot}},
-        {order.buy.endpoint, {order.buy.index.page, order.buy.index.slot}},
+        {order.sell.endpoint},
+        {order.buy.endpoint},
     };
     w.tradings.orders.pop();
 }
@@ -203,7 +198,7 @@ lbuild(lua_State *L) {
         auto& s = v.get<ecs::station>();
         if (s.endpoint != 0xffff) {
             assert(s.endpoint >= 0);
-            auto loc = getxy(rw, s.endpoint);
+            auto loc = rw.Endpoint(s.endpoint).loc;
             kdtree.dataset.emplace_back(loc.x, loc.y, s.endpoint);
         }
     }
@@ -222,7 +217,7 @@ lupdate(lua_State *L) {
     while (!w.tradings.orders.empty()) {
         auto& order = w.tradings.orders.front();
         nearest_result<true> result(rw);
-        auto loc = getxy(rw, order.sell.endpoint);
+        auto loc = rw.Endpoint(order.sell.endpoint).loc;
         if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
             break;
         }
@@ -237,8 +232,7 @@ lupdate(lua_State *L) {
             if (l.gameplay.sell.endpoint == 0xffff) {
                 assert(c.endpoint == l.gameplay.buy.endpoint);
                 auto& chest = chest::query(c);
-                auto& index = l.gameplay.buy.index;
-                chest::place_force(w, {index.page, index.slot}, l.gameplay.item, 1);
+                chest::place_force(w, chest, l.gameplay.item, 1);
                 if (HasTask(w)) {
                     DoTask(w, rw, lorryId, c.endpoint);
                 }
@@ -249,10 +243,14 @@ lupdate(lua_State *L) {
             else {
                 assert(c.endpoint == l.gameplay.sell.endpoint);
                 auto& chest = chest::query(c);
-                auto& index = l.gameplay.sell.index;
-                chest::pickup_force(w, chest, {index.page, index.slot}, l.gameplay.item, 1);
-                rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy.endpoint);
-                l.gameplay.sell.endpoint = 0xffff;
+                if (chest::pickup_force(w, chest, l.gameplay.item, 1)) {
+                    rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy.endpoint);
+                    l.gameplay.sell.endpoint = 0xffff;
+                }
+                else {
+                    l.gameplay.sell.endpoint = 0xffff;
+                    GoHome(w, rw, lorryId, c.endpoint);
+                }
             }
         }
     }

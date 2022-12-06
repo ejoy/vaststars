@@ -25,12 +25,12 @@ struct recipe_items {
 };
 
 struct container_slot {
-    enum class type: uint8_t {
+    enum class slot_type: uint8_t {
         red = 0,
         blue,
         green,
     };
-    type     type;
+    slot_type type;
     uint8_t  xxxx;
     uint16_t item;
     uint16_t amount;
@@ -121,6 +121,9 @@ public:
     void clear() {
         pages.clear();
         freelist.clear();
+    }
+    index alloc_slot() {
+        return alloc_list(1);
     }
     void free_slot(index idx) {
         free_chunk(idx.page, {idx.slot, 1});
@@ -286,6 +289,6 @@ namespace chest {
     void     rollback(world& w, chest_data& c, uint16_t endpoint);
 
     // for trading
-    void pickup_force(world& w, chest_data& c, container::index index, uint16_t item, uint16_t amount);
-    void place_force(world& w, container::index index, uint16_t item, uint16_t amount);
+    bool pickup_force(world& w, chest_data& c, uint16_t item, uint16_t amount);
+    void place_force(world& w, chest_data& c, uint16_t item, uint16_t amount);
 }

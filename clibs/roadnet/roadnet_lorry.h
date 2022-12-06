@@ -13,10 +13,6 @@ namespace roadnet {
         road_coord ending;
         struct where {
             uint16_t endpoint;
-            struct {
-                uint8_t page;
-                uint8_t slot;
-            } index;
         };
         struct  {
             uint16_t item;

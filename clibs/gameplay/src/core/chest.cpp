@@ -136,9 +136,9 @@ void chest::flush(world& w, chest_data& c, uint16_t endpoint) {
         return;
     }
     auto index = c.index;
-    for (;index != container::kInvalidIndex;) {
+    while (index != container::kInvalidIndex) {
         auto& s = w.container.at(index);
-        trading_flush(w, {endpoint, index}, s);
+        trading_flush(w, {endpoint}, s);
         index = s.next;
     }
 }
@@ -148,9 +148,9 @@ void chest::rollback(world& w, chest_data& c, uint16_t endpoint) {
         return;
     }
     auto index = c.index;
-    for (;index != container::kInvalidIndex;) {
+    while (index != container::kInvalidIndex) {
         auto& s = w.container.at(index);
-        trading_rollback(w, {endpoint, index}, s);
+        trading_rollback(w, {endpoint}, s);
         index = s.next;
     }
 }
@@ -175,27 +175,67 @@ static void list_remove(world& w, chest::chest_data& c, container::index index) 
     }
 }
 
-void chest::pickup_force(world& w, chest_data& c, container::index index, uint16_t item, uint16_t amount) {
-    auto& s = w.container.at(index);
-    assert(item == s.item);
-    assert(amount <= s.lock_item);
-    assert(amount <= s.amount);
-    s.amount -= amount;
-    s.lock_item -= amount;
-    if (s.amount == 0 && s.lock_item == 0 && s.lock_space == 0) {
-        if (index.page != c.index.page || (index.slot < c.index.slot) || (index.slot >= c.index.slot + c.asize)) {
-            list_remove(w, c, index);
+bool chest::pickup_force(world& w, chest_data& c, uint16_t item, uint16_t amount) {
+    auto index = c.index;
+    while (index != container::kInvalidIndex) {
+        auto& s = w.container.at(index);
+        if (s.item == item) {
+            if (amount > s.amount) {
+                return false;
+            }
+            s.amount -= amount;
+            if (amount <= s.lock_item) {
+                s.lock_item -= amount;
+            }
+            else {
+                s.lock_item = 0;
+            }
+            if (s.amount == 0 && s.lock_item == 0 && s.lock_space == 0) {
+                if (index.page != c.index.page || (index.slot < c.index.slot) || (index.slot >= c.index.slot + c.asize)) {
+                    list_remove(w, c, index);
+                }
+            }
+            return true;
         }
+        index = s.next;
     }
+    return false;
 }
 
-void chest::place_force(world& w, container::index index, uint16_t item, uint16_t amount) {
-    auto& s = w.container.at(index);
-    assert(item == s.item);
-    assert(amount <= s.lock_space);
-    assert(s.amount + amount <= s.limit);
-    s.amount += amount;
-    s.lock_space -= amount;
+void chest::place_force(world& w, chest_data& c, uint16_t item, uint16_t amount) {
+    for (auto index = c.index; index != container::kInvalidIndex;) {
+        auto& s = w.container.at(index);
+        if (s.item == item) {
+            s.amount += amount;
+            if (amount <= s.lock_space) {
+                s.lock_space -= amount;
+            }
+            else {
+                s.lock_space = 0;
+            }
+            return;
+        }
+        index = s.next;
+    }
+
+    auto idx = w.container.alloc_slot();
+    auto& newslot = w.container.at(idx);
+    newslot.type = container_slot::slot_type::red;
+    newslot.xxxx = 0;
+    newslot.item = item;
+    newslot.amount = amount;
+    newslot.limit = 0;
+    newslot.lock_item = 0;
+    newslot.lock_space = 0;
+    newslot.next = container::kInvalidIndex;
+    for (auto index = c.index;;) {
+        auto& s = w.container.at(index);
+        if (s.next == container::kInvalidIndex) {
+            s.next = idx;
+            break;
+        }
+        index = s.next;
+    }
 }
 
 const container_slot* chest::getslot(world& w, chest_data& c, uint8_t offset) {
