@@ -79,11 +79,9 @@ namespace roadnet {
         std::vector<straightData> straightVec;
         std::map<loction, roadid> crossMap;
         std::map<roadid, loction> crossMapR;
-        std::map<endpointid, road_coord> EndpointToRoadcoordMap; // temporary map, endpointid -> road_coord, used for bsf
 
     private:
         roadid   findCrossRoad(loction l);
         std::optional<loction> whereCrossRoad(roadid id);
-        road_coord whereEndpoint(endpointid ep);
     };
 }

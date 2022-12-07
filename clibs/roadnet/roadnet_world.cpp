@@ -309,7 +309,6 @@ namespace roadnet {
         straightVec.clear();
         crossMap.clear();
         crossMapR.clear();
-        EndpointToRoadcoordMap.clear();
 
         endpointVec.clear();
         lorryVec.clear();
@@ -463,26 +462,20 @@ namespace roadnet {
         }
 
         endpointid endpointId((uint16_t)endpointVec.size());
-        roadnet::endpoint endpoint({connection_x, connection_y});
+        roadnet::endpoint endpoint;
+        endpoint.loc = {connection_x, connection_y};
+        endpoint.coord = rc;
         endpointVec.push_back(endpoint);
 
         assert(rc.id.cross == 0 && rc.id.id < straightAry.size());
         auto& straight = straightAry[rc.id.id];
         straight.setEndpoint(*this, rc.offset, endpointId);
-
-        EndpointToRoadcoordMap.emplace(endpointId, rc);
         return endpointId;
-    }
-
-    road_coord world::whereEndpoint(endpointid ep) {
-        auto it = EndpointToRoadcoordMap.find(ep);
-        assert(it != EndpointToRoadcoordMap.end());
-        return it->second;
     }
 
     void world::pushLorry(lorryid lorryId, endpointid starting, endpointid ending) {
         auto& lorry = Lorry(lorryId);
-        lorry.ending = whereEndpoint(ending);
+        lorry.ending = Endpoint(ending).coord;
         Endpoint(starting).pushMap.push_back(lorryId);
     }
 

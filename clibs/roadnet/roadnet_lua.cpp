@@ -265,7 +265,6 @@ namespace roadnet::lua {
             lua_world::write_map(f, w.map);
             lua_world::write_map(f, w.crossMap);
             lua_world::write_map(f, w.crossMapR);
-            lua_world::write_map(f, w.EndpointToRoadcoordMap);
             fclose(f);
             return 0;
         }
@@ -293,7 +292,6 @@ namespace roadnet::lua {
             lua_world::read_map(f, w.map);
             lua_world::read_map(f, w.crossMap);
             lua_world::read_map(f, w.crossMapR);
-            lua_world::read_map(f, w.EndpointToRoadcoordMap);
             fclose(f);
             return 0;
         }
