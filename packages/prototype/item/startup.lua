@@ -37,12 +37,6 @@ local entities = {
         },
     },
     {
-        prototype_name = "基建站",
-        dir = "S",
-        x = 128,
-        y = 123,
-    },
-    {
         prototype_name = "组装机残骸",
         dir = "W",
         items = {
