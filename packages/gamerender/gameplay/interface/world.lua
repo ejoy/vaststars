@@ -10,7 +10,10 @@ function M.get_entity(world, eid)
 end
 
 function M.chest_get(world, chest, i)
-    return world:container_get(chest, i)
+    local slot = world:container_get(chest, i)
+    if slot then
+        return slot.item, slot.amount
+    end
 end
 
 function M.chest_pickup(world, chest, id, count)
@@ -70,9 +73,9 @@ function M.base_chest(world)
     for v in ecs:select "base entity:in chest:in" do
         local typeobject = iprototype.queryById(v.entity.prototype)
         for i = 1, typeobject.slots do
-            local c, n = world:container_get(v.chest, i)
-            if c then
-                chest[c] = n
+            local slot = world:container_get(v.chest, i)
+            if slot and slot.item ~= 0 then
+                chest[slot.item] = slot.amount
             end
         end
         break

@@ -65,12 +65,13 @@ local function collectItem(world, chest)
     local items = {}
     local i = 1
     while true do
-        local item, n = world:container_get(chest, i)
-        if not item then
+        local slot = world:container_get(chest, i)
+        if not slot then
             break
         end
-        if not isFluidId(item) then
-            items[item] = (items[item] or 0) + n
+        if not isFluidId(slot.item) then
+            assert(not items[slot.item])
+            items[slot.item] = slot
         end
         i = i + 1
     end
@@ -81,11 +82,14 @@ local function createChest(world, recipe, items)
     local chest = {}
     local asize = 0
     local function create_slot(type, id, limit)
+        local o = items[id]
         chest[#chest+1] = world:chest_slot {
             type = type,
             item = id,
             limit = limit,
-            amount = items[id],
+            amount = o.amount,
+            lock_item = type ~= "blue" and o.lock_item or nil,
+            lock_space = o.lock_space,
         }
     end
     if recipe then
@@ -103,8 +107,8 @@ local function createChest(world, recipe, items)
             items[id] = nil
         end
     end
-    for id, n in pairs(items) do
-        create_slot("red", id, n)
+    for id, slot in pairs(items) do
+        create_slot("red", id, slot.amount)
     end
     return table.concat(chest), asize
 end

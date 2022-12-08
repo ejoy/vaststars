@@ -180,6 +180,9 @@ bool chest::pickup_force(world& w, chest_data& c, uint16_t item, uint16_t amount
     while (index != container::kInvalidIndex) {
         auto& s = w.container.at(index);
         if (s.item == item) {
+            if (s.type == container_slot::slot_type::blue) {
+                return false;
+            }
             if (amount > s.amount) {
                 return false;
             }
@@ -286,13 +289,36 @@ lget(lua_State* L) {
         asize
     };
     auto r = chest::getslot(w, c, offset);
-    if (!r || !r->amount) {
+    if (!r) {
         return 0;
     }
+    lua_createtable(L, 0, 10);
+    switch (r->type) {
+    case container_slot::slot_type::red:
+        lua_pushstring(L, "red");
+        break;
+    case container_slot::slot_type::blue:
+        lua_pushstring(L, "blue");
+        break;
+    case container_slot::slot_type::green:
+        lua_pushstring(L, "green");
+        break;
+    default:
+        lua_pushstring(L, "unknown");
+        break;
+    }
+    lua_setfield(L, -2, "type");
     lua_pushinteger(L, r->item);
+    lua_setfield(L, -2, "item");
     lua_pushinteger(L, r->amount);
+    lua_setfield(L, -2, "amount");
     lua_pushinteger(L, r->limit);
-    return 3;
+    lua_setfield(L, -2, "limit");
+    lua_pushinteger(L, r->lock_item);
+    lua_setfield(L, -2, "lock_item");
+    lua_pushinteger(L, r->lock_space);
+    lua_setfield(L, -2, "lock_space");
+    return 1;
 }
 
 static int
