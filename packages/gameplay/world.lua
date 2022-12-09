@@ -261,48 +261,31 @@ return function ()
         blue = 1,
         green = 2,
     }
-    local CHEST_UNIT <const> = {
-        limit = 0,
-        empty = 1,
-    }
     function world:chest_slot(t)
-        if t.item then
-            local unit = t.unit or "limit"
-            local id = t.item
-            if type(id) == "string" then
-                id = prototype.queryByName("item", id).id
-            end
-            return string.pack("<I1I1I2I2I2I2I2",
-                CHEST_TYPE[t.type],
-                CHEST_UNIT[unit],
-                id,
-                t.amount or 0,
-                unit == "limit" and (t.limit or 2) or 0,
-                t.lock_item or 0,
-                t.lock_space or 0
-            )
-        else
-            assert(t.amount == nil and t.limit == nil and t.lock_item == nil and t.lock_space == nil)
-            return string.pack("<I1I1I2I2I2I2I2",
-                CHEST_TYPE[t.type],
-                CHEST_UNIT.empty,
-                0,
-                0,
-                0,
-                0,
-                0
-            )
+        assert(t.item)
+        local id = t.item
+        if type(id) == "string" then
+            id = prototype.queryByName("item", id).id
         end
+        return string.pack("<I1I1I2I2I2I2I2",
+            CHEST_TYPE[t.type],
+            0, --unused
+            id,
+            t.amount or 0,
+            t.limit or 2,
+            t.lock_item or 0,
+            t.lock_space or 0
+        )
     end
 
-    function world:container_create(...)
-        return chest.create(cworld, ...)
+    function world:container_create(endpoint, info, asize)
+        return chest.create(cworld, endpoint, info, asize)
+    end
+    function world:container_add(c, info)
+        return chest.add(cworld,  c.index, c.endpoint, info)
     end
     function world:container_get(c, i)
         return chest.get(cworld, c.index, i)
-    end
-    function world:container_flush(c)
-        return chest.flush(cworld, c.index, c.endpoint)
     end
     function world:container_rollback(c)
         return chest.rollback(cworld, c.index, c.endpoint)

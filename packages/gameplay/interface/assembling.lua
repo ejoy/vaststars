@@ -131,7 +131,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
         assembling.recipe = recipe.id
     end
     local info, asize = createChest(world, recipe, items)
-    local index = world:container_create(asize, info)
+    local index = world:container_create(chest.endpoint, info, asize)
     chest.index = index
     chest.asize = asize
     if recipe and fluids and pt.fluidboxes then
@@ -142,7 +142,6 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
         chest.fluidbox_in = 0
         chest.fluidbox_out = 0
     end
-    world:container_flush(chest)
 end
 
 local function set_direction(_, e, dir)

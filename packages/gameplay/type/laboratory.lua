@@ -24,7 +24,7 @@ local function createChest(world, s)
         }
     end
     local asize = #container_in
-    return world:container_create(asize, table.concat(container_in)), asize
+    return world:container_create(0xffff, table.concat(container_in), asize), asize
 end
 
 function c:ctor(init, pt)

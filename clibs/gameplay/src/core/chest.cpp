@@ -12,17 +12,67 @@ static bool isFluidId(uint16_t id) {
     return (id & 0x0C00) == 0x0C00;
 }
 
-container::index chest::create(world& w, container_slot* data, container::size_type asize, container::size_type lsize) {
+static void list_remove(world& w, chest::chest_data& c, container::index index) {
+    if (c.asize == 0 && c.index == index) {
+        c.index = w.container.at(index).next;
+        return;
+    }
+    auto head = c.index;
+    if (c.asize > 0) {
+        head.slot += (c.asize-1);
+    }
+    while (head != container::kInvalidIndex) {
+        auto& slot = w.container.at(index);
+        if (slot.next == index) {
+            slot.next = w.container.at(index).next;
+            w.container.free_slot(index);
+            break;
+        }
+        head = slot.next;
+    }
+}
+
+static void list_append(world& w, container::index index, container::index v) {
+    for (auto i = index;;) {
+        auto& s = w.container.at(i);
+        if (s.next == container::kInvalidIndex) {
+            s.next = v;
+            break;
+        }
+        i = s.next;
+    }
+}
+
+container::index chest::create(world& w, uint16_t endpoint, container_slot* data, container::size_type asize, container::size_type lsize) {
     if (asize == 0 && lsize == 0) {
         return {0, 0};
     }
     auto start = w.container.create_chest(asize, lsize);
-    for (auto index = start; index != container::kInvalidIndex;) {
-        auto& s = w.container.at(index);
+    for (auto i = start; i != container::kInvalidIndex;) {
+        auto& s = w.container.at(i);
         (container_slot&)s = *data++;
-        index = s.next;
+        if (endpoint != 0xffff) {
+            trading_flush(w, {endpoint}, s);
+        }
+        i = s.next;
     }
     return start;
+}
+
+void chest::add(world& w, container::index index, uint16_t endpoint, container_slot* data, container::size_type lsize) {
+    if (lsize == 0) {
+        return;
+    }
+    auto start = w.container.alloc_slot(lsize);
+    list_append(w, index, start);
+    for (auto i = start; i != container::kInvalidIndex;) {
+        auto& s = w.container.at(i);
+        (container_slot&)s = *data++;
+        if (endpoint != 0xffff) {
+            trading_flush(w, {endpoint}, s);
+        }
+        i = s.next;
+    }
 }
 
 chest::chest_data& chest::query(ecs::chest& c) {
@@ -139,33 +189,10 @@ void chest::rollback(world& w, container::index index, uint16_t endpoint) {
     }
 }
 
-static void list_remove(world& w, chest::chest_data& c, container::index index) {
-    if (c.asize == 0 && c.index == index) {
-        c.index = w.container.at(index).next;
-        return;
-    }
-    auto head = c.index;
-    if (c.asize > 0) {
-        head.slot += (c.asize-1);
-    }
-    while (head != container::kInvalidIndex) {
-        auto& slot = w.container.at(index);
-        if (slot.next == index) {
-            slot.next = w.container.at(index).next;
-            w.container.free_slot(index);
-            break;
-        }
-        head = slot.next;
-    }
-}
-
 bool chest::pickup_force(world& w, chest_data& c, uint16_t item, uint16_t amount) {
     for (auto index = c.index; index != container::kInvalidIndex;) {
         auto& s = w.container.at(index);
         if (s.item == item) {
-            if (s.type == container_slot::slot_type::blue) {
-                return false;
-            }
             if (amount > s.amount) {
                 return false;
             }
@@ -204,24 +231,17 @@ void chest::place_force(world& w, chest_data& c, uint16_t item, uint16_t amount)
         index = s.next;
     }
 
-    auto idx = w.container.alloc_slot();
+    auto idx = w.container.alloc_slot(1);
     auto& newslot = w.container.at(idx);
     newslot.type = container_slot::slot_type::red;
-    newslot.xxxx = 0;
+    newslot.unused = 0;
     newslot.item = item;
     newslot.amount = amount;
     newslot.limit = 0;
     newslot.lock_item = 0;
     newslot.lock_space = 0;
     newslot.next = container::kInvalidIndex;
-    for (auto index = c.index;;) {
-        auto& s = w.container.at(index);
-        if (s.next == container::kInvalidIndex) {
-            s.next = idx;
-            break;
-        }
-        index = s.next;
-    }
+    list_append(w, c.index, idx);
 }
 
 const container_slot* chest::getslot(world& w, container::index index, uint8_t offset) {
@@ -238,19 +258,35 @@ const container_slot* chest::getslot(world& w, container::index index, uint8_t o
 static int
 lcreate(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
-    uint16_t asize = (uint16_t)luaL_checkinteger(L, 2);
+    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 2);
     size_t sz = 0;
     container_slot* s = (container_slot*)luaL_checklstring(L, 3, &sz);
     size_t n = sz / sizeof(container_slot);
-    if (n < 0 || n > (uint16_t) -1) {
+    if (n < 0 || n > (uint16_t) -1 || sz % sizeof(container_slot) != 0) {
         return luaL_error(L, "size out of range.");
     }
+    uint16_t asize = (uint16_t)luaL_checkinteger(L, 4);
     if (asize > n) {
         return luaL_error(L, "asize out of range.");
     }
-    auto index = chest::create(w, s, asize, (uint16_t)n-asize);
+    auto index = chest::create(w, endpoint, s, asize, (uint16_t)n-asize);
     lua_pushinteger(L, index);
     return 1;
+}
+
+static int
+ladd(lua_State* L) {
+    world& w = *(world *)lua_touserdata(L, 1);
+    uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
+    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
+    size_t sz = 0;
+    container_slot* s = (container_slot*)luaL_checklstring(L, 4, &sz);
+    size_t n = sz / sizeof(container_slot);
+    if (n < 0 || n > (uint16_t) -1 || sz % sizeof(container_slot) != 0) {
+        return luaL_error(L, "size out of range.");
+    }
+    chest::add(w, container::index::from(index), endpoint, s, (uint16_t)n);
+    return 0;
 }
 
 static int
@@ -262,7 +298,7 @@ lget(lua_State* L) {
     if (!r) {
         return 0;
     }
-    lua_createtable(L, 0, 10);
+    lua_createtable(L, 0, 7);
     switch (r->type) {
     case container_slot::slot_type::red:
         lua_pushstring(L, "red");
@@ -292,15 +328,6 @@ lget(lua_State* L) {
 }
 
 static int
-lflush(lua_State* L) {
-    world& w = *(world *)lua_touserdata(L, 1);
-    uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
-    chest::flush(w, container::index::from(index), endpoint);
-    return 0;
-}
-
-static int
 lrollback(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
@@ -314,8 +341,8 @@ luaopen_vaststars_chest_core(lua_State *L) {
     luaL_checkversion(L);
     luaL_Reg l[] = {
         { "create", lcreate },
+        { "add", ladd },
         { "get", lget },
-        { "flush", lflush },
         { "rollback", lrollback },
         { NULL, NULL },
     };

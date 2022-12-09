@@ -31,7 +31,7 @@ struct container_slot {
         green,
     };
     slot_type type;
-    uint8_t  xxxx;
+    uint8_t  unused;
     uint16_t item;
     uint16_t amount;
     uint16_t limit;
@@ -128,8 +128,8 @@ public:
         pages.clear();
         freelist.clear();
     }
-    index alloc_slot() {
-        return alloc_list(1);
+    index alloc_slot(size_type size) {
+        return alloc_list(size);
     }
     void free_slot(index idx) {
         free_chunk(idx.page, {idx.slot, 1});
@@ -270,7 +270,8 @@ namespace chest {
         container::size_type asize;
     };
 
-    container::index create(world& w, container_slot* data, container::size_type asize, container::size_type lsize);
+    container::index create(world& w, uint16_t endpoint, container_slot* data, container::size_type asize, container::size_type lsize);
+    void add(world& w, container::index index, uint16_t endpoint, container_slot* data, container::size_type lsize);
     chest_data& query(ecs::chest& c);
 
     // for fluidflow
