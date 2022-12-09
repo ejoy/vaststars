@@ -128,7 +128,7 @@ namespace lua_world {
                 std::list<container::chunk> lst;
                 auto lst_n = file_read<size_t>(f);
                 for (size_t j = 0; j < lst_n; ++j) {
-                    lst.push_back(std::move(file_read<container::chunk>(f)));
+                    lst.push_back(file_read<container::chunk>(f));
                 }
                 w.container.freelist.emplace_back(std::move(lst));
             }

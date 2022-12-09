@@ -100,6 +100,8 @@ void trading_rollback(world& w, trading_who who, container_slot& s) {
         case container_slot::slot_type::green:
             queue_remove(n.sell[GREEN_PRIORITY], who);
             break;
+        default:
+            break;
         }
     }
     if (s.lock_space > 0) {
@@ -110,6 +112,8 @@ void trading_rollback(world& w, trading_who who, container_slot& s) {
             break;
         case container_slot::slot_type::green:
             queue_remove(n.buy[GREEN_PRIORITY], who);
+            break;
+        default:
             break;
         }
     }
