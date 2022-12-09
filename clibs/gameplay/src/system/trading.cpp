@@ -79,42 +79,60 @@ void trading_flush(world& w, trading_who who, container_slot& s) {
     }
 }
 
-static void queue_remove(queue<trading_who>& queue, trading_who who) {
-    auto removed = std::remove_if(queue.begin(), queue.end(), [](auto who){
-        return true;
+static size_t queue_remove(queue<trading_who>& queue, trading_who who) {
+    size_t n = 0;
+    auto removed = std::remove_if(queue.begin(), queue.end(), [&](auto w) {
+        if (w.endpoint == who.endpoint) {
+            n++;
+            return true;
+        }
+        return false;
     });
     queue.erase_end(removed);
+    return n;
 }
 
 void trading_rollback(world& w, trading_who who, container_slot& s) {
     if (s.item == 0) {
         return;
     }
-    auto& n = w.tradings.queues[s.item];
+    auto& q = w.tradings.queues[s.item];
     if (s.lock_item > 0) {
-        s.lock_item = 0;
+        size_t n = 0;
         switch (s.type) {
         case container_slot::slot_type::red:
-            queue_remove(n.sell[RED_PRIORITY], who);
+            n = queue_remove(q.sell[RED_PRIORITY], who);
             break;
         case container_slot::slot_type::green:
-            queue_remove(n.sell[GREEN_PRIORITY], who);
+            n = queue_remove(q.sell[GREEN_PRIORITY], who);
             break;
         default:
             break;
         }
+        if (n < s.lock_item) {
+            s.lock_item -= (uint16_t)n;
+        }
+        else {
+            s.lock_item = 0;
+        }
     }
     if (s.lock_space > 0) {
-        s.lock_space = 0;
+        size_t n = 0;
         switch (s.type) {
         case container_slot::slot_type::blue:
-            queue_remove(n.buy[BLUE_PRIORITY], who);
+            n = queue_remove(q.buy[BLUE_PRIORITY], who);
             break;
         case container_slot::slot_type::green:
-            queue_remove(n.buy[GREEN_PRIORITY], who);
+            n = queue_remove(q.buy[GREEN_PRIORITY], who);
             break;
         default:
             break;
+        }
+        if (n < s.lock_space) {
+            s.lock_space -= (uint16_t)n;
+        }
+        else {
+            s.lock_space = 0;
         }
     }
 }
