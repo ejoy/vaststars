@@ -14,7 +14,7 @@ static bool isFluidId(uint16_t id) {
 
 chest::chest_data chest::create(world& w, container_slot* data, container::size_type asize, container::size_type lsize) {
     if (asize == 0 && lsize == 0) {
-        return {0,0};
+        return {{0,0},0};
     }
     auto start = w.container.create_chest(asize, lsize);
     for (auto& slot: w.container.slice(start, asize)) {
