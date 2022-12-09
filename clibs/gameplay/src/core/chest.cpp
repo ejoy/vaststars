@@ -274,7 +274,7 @@ lcreate(lua_State* L) {
         return luaL_error(L, "asize out of range.");
     }
     auto c = chest::create(w, s, asize, (uint16_t)n-asize);
-    lua_pushinteger(L, std::bit_cast<uint16_t>(c.index));
+    lua_pushinteger(L, c.index);
     return 1;
 }
 
@@ -285,7 +285,7 @@ lget(lua_State* L) {
     uint16_t asize = (uint16_t)luaL_checkinteger(L, 3);
     uint8_t offset = (uint8_t)(luaL_checkinteger(L, 4)-1);
     chest::chest_data c {
-        std::bit_cast<container::index>(index),
+        container::index::from(index),
         asize
     };
     auto r = chest::getslot(w, c, offset);
@@ -328,7 +328,7 @@ lflush(lua_State* L) {
     uint16_t asize = (uint16_t)luaL_checkinteger(L, 3);
     uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 4);
     chest::chest_data c {
-        std::bit_cast<container::index>(index),
+        container::index::from(index),
         asize
     };
     chest::flush(w, c, endpoint);
@@ -342,7 +342,7 @@ lrollback(lua_State* L) {
     uint16_t asize = (uint16_t)luaL_checkinteger(L, 3);
     uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 4);
     chest::chest_data c {
-        std::bit_cast<container::index>(index),
+        container::index::from(index),
         asize
     };
     chest::rollback(w, c, endpoint);

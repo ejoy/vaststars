@@ -53,6 +53,12 @@ public:
         bool operator==(const index& rhs) const {
             return page == rhs.page && slot == rhs.slot;
         }
+        operator const uint16_t&() const {
+            return *(uint16_t*)this;
+        }
+        static index from(uint16_t v) {
+            return *(index*)&v;
+        }
     };
     struct slot : public container_slot {
         index next;
