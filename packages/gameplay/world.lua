@@ -299,13 +299,13 @@ return function ()
         return chest.create(cworld, ...)
     end
     function world:container_get(c, i)
-        return chest.get(cworld, c.index, c.asize, i)
+        return chest.get(cworld, c.index, i)
     end
     function world:container_flush(c)
-        return chest.flush(cworld, c.index, c.asize, c.endpoint)
+        return chest.flush(cworld, c.index, c.endpoint)
     end
     function world:container_rollback(c)
-        return chest.rollback(cworld, c.index, c.asize, c.endpoint)
+        return chest.rollback(cworld, c.index, c.endpoint)
     end
 
 
