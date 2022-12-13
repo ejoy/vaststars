@@ -19,6 +19,7 @@ local function createChest(world, s)
         assert(not isFluidId(id))
         container_in[#container_in+1] = world:chest_slot {
             type = "blue",
+            unit = "array",
             item = id,
             limit = 2,
         }

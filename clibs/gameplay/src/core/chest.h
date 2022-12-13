@@ -30,8 +30,13 @@ struct container_slot {
         blue,
         green,
     };
+    enum class slot_unit: uint8_t {
+        list,
+        array,
+        head,
+    };
     slot_type type;
-    uint8_t  unused;
+    slot_unit unit;
     uint16_t item;
     uint16_t amount;
     uint16_t limit;
@@ -62,6 +67,16 @@ public:
     };
     struct slot : public container_slot {
         index next;
+        void init() {
+            type = container_slot::slot_type::red;
+            unit = container_slot::slot_unit::list;
+            item = 0;
+            amount = 0;
+            limit = 0;
+            lock_item = 0;
+            lock_space = 0;
+            next = container::kInvalidIndex;
+        }
     };
     struct page {
         slot slots[kPageSize];
@@ -100,16 +115,19 @@ public:
     }
     index create_chest(size_type asize, size_type lsize) {
         assert(asize <= kPageSize && lsize <= kPageSize);
+        auto start = alloc_list(1);
         if (asize == 0) {
-            return alloc_list(lsize);
+            alloc_list(start, lsize);
+            return start;
         }
         auto array_start = alloc_array(asize);
+        at(start).next = array_start;
         if (lsize == 0) {
-            return array_start;
+            return start;
         }
         index l = array_start + (uint8_t)(asize-1);
         alloc_list(l, lsize);
-        return array_start;
+        return start;
     }
     slot& at(index idx) {
         assert(idx.page < pages.size());
@@ -273,6 +291,9 @@ namespace chest {
     container::index create(world& w, uint16_t endpoint, container_slot* data, container::size_type asize, container::size_type lsize);
     void add(world& w, container::index index, uint16_t endpoint, container_slot* data, container::size_type lsize);
     chest_data& query(ecs::chest& c);
+    container::index head(world& w, container::index start);
+    container::slot& array_at(world& w, container::index start, uint8_t offset);
+    std::span<container::slot> array_slice(world& w, container::index start, uint8_t offset, uint16_t size);
 
     // for fluidflow
     uint16_t get_fluid(world& w, chest_data& c, uint8_t offset);
@@ -295,6 +316,6 @@ namespace chest {
     void     rollback(world& w, container::index index, uint16_t endpoint);
 
     // for trading
-    bool pickup_force(world& w, chest_data& c, uint16_t item, uint16_t amount);
-    void place_force(world& w, chest_data& c, uint16_t item, uint16_t amount);
+    bool pickup_force(world& w, container::index start, uint16_t item, uint16_t amount, bool unlock);
+    void place_force(world& w, container::index start, uint16_t item, uint16_t amount, bool unlock);
 }
