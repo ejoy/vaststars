@@ -456,7 +456,6 @@ local t = {
 	"/pkg/ant.resources/materials/mesh_shadow.material",
 	"/pkg/ant.resources/materials/meshcolor.material",
 	"/pkg/ant.resources/materials/meshcolor_nodepth.material",
-	"/pkg/ant.resources/materials/msaa_depth_resolve.material",
 	"/pkg/ant.resources/materials/outline/scale.material",
 	"/pkg/ant.resources/materials/panorama2cubemap.material",
 	"/pkg/ant.resources/materials/particle/particle.material",
