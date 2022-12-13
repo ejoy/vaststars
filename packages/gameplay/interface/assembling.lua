@@ -82,7 +82,7 @@ local function createChest(world, recipe, items)
     local chest = {}
     local asize = 0
     local function create_slot(type, id, limit)
-        local o = items[id]
+        local o = items[id] or {}
         chest[#chest+1] = world:chest_slot {
             type = type,
             item = id,
