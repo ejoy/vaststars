@@ -208,7 +208,7 @@ private:
         return alloc_array_(size);
     }
     index alloc_list(size_type size) {
-        for (size_t i = 0; i < pages.size(); ++i) {
+        for (size_t i = 0; i < freelist.size(); ++i) {
             auto& lst = freelist[i];
             for (auto it = lst.begin(); it != lst.end(); ++it) {
                 if (it->size() < size) {
