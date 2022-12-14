@@ -55,6 +55,9 @@ static void trading_buy(world& w, trading_who who, uint8_t priority, container_s
     uint16_t item = s.item;
     uint16_t amount = s.limit - s.amount - s.lock_space;
     s.lock_space = s.limit - s.amount;
+    if (s.unit == container_slot::slot_unit::once) {
+        s.limit = 0;
+    }
     auto& n = w.tradings.queues[item];
     for (uint16_t i = 0; i < amount; ++i) {
         n.buy[priority].push(who);
@@ -254,7 +257,7 @@ lupdate(lua_State *L) {
             if (l.gameplay.sell.endpoint == 0xffff) {
                 assert(c.endpoint == l.gameplay.buy.endpoint);
                 auto& chest = chest::query(c);
-                chest::place_force(w, chest.index, l.gameplay.item, 1, true);
+                chest::place_force(w, chest.index, c.endpoint, l.gameplay.item, 1, true);
                 if (HasTask(w)) {
                     DoTask(w, rw, lorryId, c.endpoint);
                 }
@@ -265,7 +268,7 @@ lupdate(lua_State *L) {
             else {
                 assert(c.endpoint == l.gameplay.sell.endpoint);
                 auto& chest = chest::query(c);
-                if (chest::pickup_force(w, chest.index, l.gameplay.item, 1, true)) {
+                if (chest::pickup_force(w, chest.index, c.endpoint, l.gameplay.item, 1, true)) {
                     rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy.endpoint);
                     l.gameplay.sell.endpoint = 0xffff;
                 }

@@ -264,8 +264,12 @@ return function ()
     local CHEST_UNIT <const> = {
         [0] = 0,
         [1] = 1,
-        list = 0,
-        array = 0,
+        [2] = 2,
+        [3] = 3,
+        once = 0,
+        fixed = 1,
+        array = 2,
+        head = 3,
     }
     function world:chest_slot(t)
         assert(t.type)

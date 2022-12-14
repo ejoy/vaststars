@@ -191,7 +191,7 @@ void chest::rollback(world& w, container::index start, uint16_t endpoint) {
     }
 }
 
-bool chest::pickup_force(world& w, container::index start, uint16_t item, uint16_t amount, bool unlock) {
+bool chest::pickup_force(world& w, container::index start, uint16_t endpoint, uint16_t item, uint16_t amount, bool unlock) {
     for (auto index = chest::head(w, start); index != container::kInvalidIndex;) {
         auto& s = w.container.at(index);
         if (s.item == item) {
@@ -213,9 +213,13 @@ bool chest::pickup_force(world& w, container::index start, uint16_t item, uint16
             }
             s.amount -= amount;
             if (s.amount == 0 && s.lock_item == 0 && s.lock_space == 0) {
-                if (s.unit == container_slot::slot_unit::list) {
+                if (s.unit == container_slot::slot_unit::once) {
                     list_remove(w, start, index);
+                    return true;
                 }
+            }
+            if (!unlock) {
+                trading_flush(w, {endpoint}, s);
             }
             return true;
         }
@@ -224,7 +228,7 @@ bool chest::pickup_force(world& w, container::index start, uint16_t item, uint16
     return false;
 }
 
-void chest::place_force(world& w, container::index start, uint16_t item, uint16_t amount, bool unlock) {
+void chest::place_force(world& w, container::index start, uint16_t endpoint, uint16_t item, uint16_t amount, bool unlock) {
     for (auto index = chest::head(w, start); index != container::kInvalidIndex;) {
         auto& s = w.container.at(index);
         if (s.item == item) {
@@ -237,6 +241,9 @@ void chest::place_force(world& w, container::index start, uint16_t item, uint16_
                 }
             }
             s.amount += amount;
+            if (!unlock) {
+                trading_flush(w, {endpoint}, s);
+            }
             return;
         }
         index = s.next;
@@ -248,6 +255,7 @@ void chest::place_force(world& w, container::index start, uint16_t item, uint16_
     newslot.item = item;
     newslot.amount = amount;
     list_append(w, start, idx);
+    trading_flush(w, {endpoint}, newslot);
 }
 
 const container_slot* chest::getslot(world& w, container::index start, uint8_t offset) {
@@ -310,20 +318,20 @@ lget(lua_State* L) {
     }
     lua_createtable(L, 0, 7);
     switch (r->type) {
-    case container_slot::slot_type::red:
-        lua_pushstring(L, "red");
-        break;
-    case container_slot::slot_type::blue:
-        lua_pushstring(L, "blue");
-        break;
-    case container_slot::slot_type::green:
-        lua_pushstring(L, "green");
-        break;
-    default:
-        lua_pushstring(L, "unknown");
-        break;
+    case container_slot::slot_type::red:   lua_pushstring(L, "red"); break;
+    case container_slot::slot_type::blue:  lua_pushstring(L, "blue"); break;
+    case container_slot::slot_type::green: lua_pushstring(L, "green"); break;
+    default:                               lua_pushstring(L, "unknown"); break;
     }
     lua_setfield(L, -2, "type");
+    switch (r->unit) {
+    case container_slot::slot_unit::once:  lua_pushstring(L, "once"); break;
+    case container_slot::slot_unit::fixed: lua_pushstring(L, "fixed"); break;
+    case container_slot::slot_unit::array: lua_pushstring(L, "array"); break;
+    case container_slot::slot_unit::head:  lua_pushstring(L, "head"); break;
+    default:                               lua_pushstring(L, "unknown"); break;
+    }
+    lua_setfield(L, -2, "unit");
     lua_pushinteger(L, r->item);
     lua_setfield(L, -2, "item");
     lua_pushinteger(L, r->amount);
@@ -341,9 +349,10 @@ static int
 lpickup(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
-    uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);
-    bool ok = chest::pickup_force(w, container::index::from(index), item, amount, false);
+    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
+    uint16_t item = (uint16_t)luaL_checkinteger(L, 4);
+    uint16_t amount = (uint16_t)luaL_checkinteger(L, 5);
+    bool ok = chest::pickup_force(w, container::index::from(index), endpoint, item, amount, false);
     lua_pushboolean(L, ok);
     return 1;
 }
@@ -352,9 +361,10 @@ static int
 lplace(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
-    uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);
-    chest::place_force(w, container::index::from(index), item, amount, false);
+    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
+    uint16_t item = (uint16_t)luaL_checkinteger(L, 4);
+    uint16_t amount = (uint16_t)luaL_checkinteger(L, 5);
+    chest::place_force(w, container::index::from(index), endpoint, item, amount, false);
     return 0;
 }
 

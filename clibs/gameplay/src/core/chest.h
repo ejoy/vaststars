@@ -31,7 +31,8 @@ struct container_slot {
         green,
     };
     enum class slot_unit: uint8_t {
-        list,
+        once,
+        fixed,
         array,
         head,
     };
@@ -69,7 +70,7 @@ public:
         index next;
         void init() {
             type = container_slot::slot_type::red;
-            unit = container_slot::slot_unit::list;
+            unit = container_slot::slot_unit::once;
             item = 0;
             amount = 0;
             limit = 0;
@@ -318,6 +319,6 @@ namespace chest {
     void     rollback(world& w, container::index index, uint16_t endpoint);
 
     // for trading
-    bool pickup_force(world& w, container::index start, uint16_t item, uint16_t amount, bool unlock);
-    void place_force(world& w, container::index start, uint16_t item, uint16_t amount, bool unlock);
+    bool pickup_force(world& w, container::index start, uint16_t endpoint, uint16_t item, uint16_t amount, bool unlock);
+    void place_force(world& w, container::index start, uint16_t endpoint, uint16_t item, uint16_t amount, bool unlock);
 }
