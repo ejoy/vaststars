@@ -299,10 +299,10 @@ return function ()
         return chest.get(cworld, c.index, i)
     end
     function world:container_pickup(c, item, amount)
-        return chest.pickup(cworld, c.index, item, amount)
+        return chest.pickup(cworld, c.index, c.endpoint, item, amount)
     end
     function world:container_place(c, item, amount)
-        chest.place(cworld, c.index, item, amount)
+        chest.place(cworld, c.index, c.endpoint, item, amount)
     end
     function world:container_rollback(c)
         return chest.rollback(cworld, c.index, c.endpoint)
