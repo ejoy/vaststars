@@ -49,9 +49,6 @@ std::span<container::slot> chest::array_slice(world& w, container::index start, 
 }
 
 container::index chest::create(world& w, uint16_t endpoint, container_slot* data, container::size_type asize, container::size_type lsize) {
-    if (asize == 0 && lsize == 0) {
-        return {0, 0};
-    }
     auto start = w.container.create_chest(asize, lsize);
     for (auto i = chest::head(w, start); i != container::kInvalidIndex;) {
         auto& s = w.container.at(i);
@@ -70,7 +67,7 @@ void chest::add(world& w, container::index index, uint16_t endpoint, container_s
     }
     auto start = w.container.alloc_slot(lsize);
     list_append(w, index, start);
-    for (auto i = chest::head(w, start); i != container::kInvalidIndex;) {
+    for (auto i = start; i != container::kInvalidIndex;) {
         auto& s = w.container.at(i);
         (container_slot&)s = *data++;
         if (endpoint != 0xffff) {
@@ -253,12 +250,16 @@ void chest::place_force(world& w, container::index start, uint16_t item, uint16_
     list_append(w, start, idx);
 }
 
-const container_slot* chest::getslot(world& w, container::index index, uint8_t offset) {
+const container_slot* chest::getslot(world& w, container::index start, uint8_t offset) {
+    auto index = chest::head(w, start);
     for (uint8_t i = 0; i < offset; ++i) {
-        index = w.container.at(index).next;
         if (index == container::kInvalidIndex) {
             return nullptr;
         }
+        index = w.container.at(index).next;
+    }
+    if (index == container::kInvalidIndex) {
+        return nullptr;
     }
     auto& s = w.container.at(index);
     return &s;

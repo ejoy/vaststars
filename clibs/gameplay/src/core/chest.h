@@ -117,7 +117,9 @@ public:
         assert(asize <= kPageSize && lsize <= kPageSize);
         auto start = alloc_list(1);
         if (asize == 0) {
-            alloc_list(start, lsize);
+            if (lsize != 0) {
+                alloc_list(start, lsize);
+            }
             return start;
         }
         auto array_start = alloc_array(asize);
