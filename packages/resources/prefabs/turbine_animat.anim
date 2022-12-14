@@ -1,4 +1,4 @@
-duration: 6
+duration: 0.6
 name: turbine_animat
 sample_ratio: 50
 skeleton: /pkg/vaststars.resources/glb/turbine.glb|animations/skeleton.ozz
@@ -10,7 +10,7 @@ target_anims:
     amplitude_rot: 360
     direction: 2
     random_amplitude: false
-    range: {0, 299}
+    range: {0, 29}
     repeat_count: 1
     rot_axis: 3
     tween: 1
@@ -24,7 +24,7 @@ target_anims:
     amplitude_rot: -360
     direction: 2
     random_amplitude: false
-    range: {0, 299}
+    range: {0, 29}
     repeat_count: 1
     rot_axis: 2
     tween: 1
