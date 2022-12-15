@@ -199,7 +199,8 @@ prototype "基地生产1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"破损运输汽车","破损物流中心","砖石公路",},
+    unlock_recipe = {"破损运输汽车","破损物流中心","砖石公路"},
+    unlock_building = {"砖石公路-X型-01"},
   },
   prerequisites = {"自动化生产"},
   ingredients = {
@@ -311,6 +312,7 @@ prototype "气候研究" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"破损空气过滤器","破损地下水挖掘机","气候科技包1"},
+    unlock_building = {"空气过滤器I","地下水挖掘机"},
   },
   prerequisites = {"生产石砖"},
   ingredients = {
@@ -394,6 +396,7 @@ prototype "管道系统1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"管道1","管道2","液罐1"},
+    unlock_building = {"液罐I","管道1-X型"},
   },
   prerequisites = {"生产气候科技包"},
   ingredients = {
@@ -425,6 +428,7 @@ prototype "水利研究" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"破损水电站"},
+    unlock_building = {"水电站I"},
   },
   prerequisites = {"生产管道"},
   ingredients = {
@@ -442,6 +446,7 @@ prototype "电解" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"地下卤水电解","隔膜电解","破损电解厂"},
+    unlock_building = {"电解厂I"},
   },
   prerequisites = {"水利研究"},
   ingredients = {
@@ -488,6 +493,7 @@ prototype "铁加工1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"铁齿轮","破损组装机"},
+    unlock_building = {"组装机I"},
   },
   prerequisites = {"生产管道"},
   ingredients = {
@@ -518,6 +524,7 @@ prototype "石头处理2" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"破损太阳能板","破损蓄电池"},
+    unlock_building = {"太阳能板I","蓄电池I"},
   },
   prerequisites = {"维修破损组装机","电解"},
   ingredients = {
@@ -563,7 +570,8 @@ prototype "基地生产2" {
   icon = "textures/science/tech-research.texture",
   effects = {
     modifier = {["headquarter-mining-speed"] = 0.1},
-    unlock_recipe = {"破损铁制电线杆","破损基建站"},
+    unlock_recipe = {"破损铁制电线杆"},
+    unlock_building = {"铁制电线杆"},
   },
   prerequisites = {"维修破损组装机"},
   ingredients = {
@@ -577,29 +585,15 @@ prototype "基地生产2" {
   sign_icon = "textures/science/tech-cycle.texture",
 }
 
-prototype "放置基建站" {
-  desc = "放置基建站扩大建造范围",
-  icon = "textures/construct/industry.texture",
-  type = { "tech", "task" },
-  task = {"select_entity", 0, "基建站"},
-  prerequisites = {"基地生产2"},
-  count = 1,
-  tips_pic = {
-    "textures/task_tips_pic/task_place_solarpanel.texture",
-  },
-  sign_desc = {
-    { desc = "放置1个基建站", icon = "textures/construct/industry.texture"},
-  },
-}
-
 prototype "储存1" {
   desc = "研究更便捷的存储方式",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"小铁制箱子1"},
+    unlock_building = {"小铁制箱子I"},
   },
-  prerequisites = {"维修破损组装机","放置基建站"},
+  prerequisites = {"维修破损组装机","基地生产2"},
   ingredients = {
       {"地质科技包", 1},
       {"气候科技包", 1},
@@ -629,6 +623,7 @@ prototype "碳处理1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"二氧化碳转甲烷","破损化工厂"},
+    unlock_building = {"化工厂I"},
   },
   prerequisites = {"电解","空气分离","放置太阳能板"},
   ingredients = {
@@ -691,6 +686,7 @@ prototype "管道系统2" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"地下管1"},
+    unlock_building = {"地下管1-JI型"},
   },
   prerequisites = {"收集空气","放置太阳能板"},
   ingredients = {
@@ -707,6 +703,7 @@ prototype "排放" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"烟囱1","排水口1"},
+    unlock_building = {"烟囱I","排水口I"},
   },
   prerequisites = {"管道系统2"},
   ingredients = {
@@ -722,6 +719,7 @@ prototype "冶金学1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"熔炼炉1"},
+    unlock_building = {"熔炼炉I"},
   },
   prerequisites = {"放置太阳能板","生产铁制箱子"},
   ingredients = {
@@ -881,6 +879,7 @@ prototype "挖掘1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"采矿机1"},
+    unlock_building = {"采矿机I"},
   },
   prerequisites = {"生产机械科技包"},
   ingredients = {
@@ -912,6 +911,7 @@ prototype "蒸馏1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"蒸馏厂1"},
+    unlock_building = {"蒸馏厂I"},
   },
   prerequisites = {"挖掘1"},
   ingredients = {
@@ -928,6 +928,7 @@ prototype "电力传输1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"铁制电线杆"},
+    unlock_building = {"铁制电线杆"},
   },
   prerequisites = {"生产机械科技包"},
   ingredients = {
@@ -945,6 +946,7 @@ prototype "泵系统1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"压力泵1"},
+    unlock_building = {"压力泵I"},
   },
   prerequisites = {"电力传输1"},
   ingredients = {
@@ -961,6 +963,7 @@ prototype "自动化1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"组装机1"},
+    unlock_building = {"组装机I"},
   },
   prerequisites = {"挖掘1","电力传输1"},
   ingredients = {
@@ -976,6 +979,7 @@ prototype "地下水净化" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"地下卤水净化","地下水挖掘机","水电站1"},
+    unlock_building = {"地下水挖掘机","水电站I"},
   },
   prerequisites = {"蒸馏1"},
   ingredients = {
@@ -1010,6 +1014,7 @@ prototype "发电机1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"蒸汽发电机1"},
+    unlock_building = {"蒸汽发电机I"},
   },
   prerequisites = {"电力传输1"},
   ingredients = {
@@ -1026,6 +1031,7 @@ prototype "物流1" {
   icon = "textures/science/tech-logistics.texture",
   effects = {
     unlock_recipe ={"基建站1","物流中心1","运输车辆1"},
+    unlock_building = {"物流中心I"},
   },
   prerequisites = {"发电机1"},
   ingredients = {
@@ -1041,6 +1047,7 @@ prototype "空气过滤" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"空气过滤器1"},
+    unlock_building = {"空气过滤器I"},
   },
   prerequisites = {"泵系统1","发电机1"},
   ingredients = {
@@ -1056,6 +1063,7 @@ prototype "矿物处理1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"粉碎机1","沙子1"},
+    unlock_building = {"粉碎机I"},
   },
   prerequisites = {"挖掘1","自动化1"},
   ingredients = {
@@ -1088,6 +1096,7 @@ prototype "浮选" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"浮选器1"},
+    unlock_building = {"浮选器I"},
   },
   prerequisites = {"矿物处理1","地下水净化"},
   ingredients = {
@@ -1137,6 +1146,7 @@ prototype "能量存储" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"电解厂1"},
+    unlock_building = {"电解厂I"},
   },
   prerequisites = {"空气过滤"},
   ingredients = {
@@ -1169,6 +1179,7 @@ prototype "化学工程" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"化工厂1","纯水电解"},
+    unlock_building = {"化工厂I"},
   },
   prerequisites = {"有机化学2"},
   ingredients = {
@@ -1186,6 +1197,7 @@ prototype "管道系统3" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"地下管2"},
+    unlock_building = {"地下管2-JI型"},
   },
   prerequisites = {"空气过滤","浮选"},
   ingredients = {
@@ -1269,6 +1281,7 @@ prototype "储存2" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"大铁制箱子1","小铁制箱子2"},
+    unlock_building = {"大铁制箱子I","小铁制箱子II"},
   },
   prerequisites = {"有机化学3","炼钢"},
   ingredients = {
@@ -1285,6 +1298,7 @@ prototype "冶金学2" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"熔炼炉2"},
+    unlock_building = {"熔炼炉II"},
   },
   prerequisites = {"石头处理3","铁矿熔炼2"},
   ingredients = {
@@ -1367,6 +1381,7 @@ prototype "沸腾实验" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"换热器1","热管1","纯水沸腾","卤水沸腾"},
+    unlock_building = {"换热器I","热管1-X型"},
   },
   prerequisites = {"铝生产"},
   ingredients = {
