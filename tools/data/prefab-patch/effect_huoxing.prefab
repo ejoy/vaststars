@@ -1,6 +1,7 @@
 ---
 data:
-  efk: /pkg/vaststars.resources/effect/efk/huoxing.efk
+  efk:
+    path: /pkg/vaststars.resources/effect/efk/huoxing.efk
   name: root
   scene: {}
   tag:

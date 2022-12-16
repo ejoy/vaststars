@@ -133,8 +133,9 @@ local _get_hitch_children ; do
             if v.data then
                 if v.data.slot then
                     slots[v.data.name] = v.data
-                elseif v.data.efk then
-                    effects[#effects + 1] = {path = v.data.efk, slotname = v.mount and template[v.mount].data.name}
+                elseif v.data.efk and not v.data.efk.auto_play then
+                    -- work effects
+                    effects[#effects + 1] = {efk = v.data.efk, slotname = v.mount and template[v.mount].data.name}
                 end
                 if v.data.name == "Scene" and v.data.scene then -- TODO: special for hitch which attach to slot
                     scene = v.data.scene
@@ -335,10 +336,10 @@ function igame_object.create(init)
         if efkinfo.slotname then
             slot_scene = children.slots[efkinfo.slotname].scene
         end
-        effects[#effects + 1] = iefk.create(efkinfo.path, {
-            play_on_create = false,
-            loop = false,
-            speed = 1.0,
+        effects[#effects + 1] = iefk.create(efkinfo.efk.path, {
+            auto_play = efkinfo.efk.auto_play or false,
+            loop = efkinfo.efk.loop or false,
+            speed = efkinfo.efk.loop or 1.0,
             scene = {
                 s = slot_scene.s,
                 t = slot_scene.t,

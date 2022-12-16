@@ -36,7 +36,8 @@ policy:
   ant.animation|slot
 ---
 data:
-  efk: /pkg/vaststars.resources/effect/efk/furnace_smoke.efk
+  efk:
+    path: /pkg/vaststars.resources/effect/efk/furnace_smoke.efk
   name: root
   scene:
     s: {1, 1, 1}
@@ -66,7 +67,8 @@ policy:
   ant.animation|slot
 ---
 data:
-  efk: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+  efk:
+    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
   name: root
   scene: {}
   tag:
@@ -94,7 +96,8 @@ policy:
   ant.animation|slot
 ---
 data:
-  efk: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+  efk:
+    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
   name: root
   scene: {}
   tag:
@@ -122,7 +125,8 @@ policy:
   ant.animation|slot
 ---
 data:
-  efk: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+  efk:
+    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
   name: root
   scene: {}
   tag:
@@ -148,7 +152,8 @@ policy:
   ant.animation|slot
 ---
 data:
-  efk: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+  efk:
+    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
   name: root
   scene:
     s: {4, 4, 4}

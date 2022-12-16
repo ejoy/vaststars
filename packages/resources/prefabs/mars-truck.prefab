@@ -33,7 +33,8 @@ policy:
   ant.animation|slot
 ---
 data:
-  efk: /pkg/vaststars.resources/effect/efk/mars-truck_smoke.efk
+  efk:
+    path: /pkg/vaststars.resources/effect/efk/mars-truck_smoke.efk
   name: root
   scene:
     s: {1, 1, 1}

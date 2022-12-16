@@ -16,7 +16,7 @@ local function update_world(world, get_object_func)
     if not storm_effect then
         local mq = w:first("main_queue camera_ref:in")
         storm_effect = iefk.create("/pkg/vaststars.resources/effect/efk/sandstorm.efk", {
-            play_on_create = true,
+            auto_play = true,
             loop = false,
             speed = 1.0,
             scene = {t={0, 0, 0}, s = 30, parent = mq.camera_ref}
