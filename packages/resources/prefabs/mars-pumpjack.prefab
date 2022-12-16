@@ -7,25 +7,34 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/mars-pumpjack.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/mars-pumpjack.glb|meshes/Cylinder_P1.meshbin
-  name: Cylinder
-  scene:
-    s: {0.7257625460624695, 0.7781884670257568, 0.7257625460624695}
-  visible_state: main_view|selectable|cast_shadow
+  meshskin: /pkg/vaststars.resources/glb/mars-pumpjack.glb|meshes/Armature.skinbin
+  name: meshskin
+  scene: {}
+  skeleton: /pkg/vaststars.resources/glb/mars-pumpjack.glb|animations/skeleton.ozz
+  skinning: true
 mount: 1
 policy:
+  ant.animation|meshskin
   ant.general|name
-  ant.render|render
+  ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/mars-pumpjack.glb|materials/Material.014.material
-  mesh: /pkg/vaststars.resources/glb/mars-pumpjack.glb|meshes/Cylinder.002_P1.meshbin
+  material: /pkg/vaststars.resources/glb/mars-pumpjack.glb|materials/Material.002_skin.material
+  mesh: /pkg/vaststars.resources/glb/mars-pumpjack.glb|meshes/Cylinder.003_P1.meshbin
   name: Cylinder.001
-  scene:
-    s: {0.7257625460624695, 0.7781884670257568, 0.7257625460624695}
+  skinning: true
   visible_state: main_view|selectable|cast_shadow
-mount: 1
 policy:
   ant.general|name
-  ant.render|render
+  ant.render|skinrender
+---
+data:
+  anim_ctrl: {}
+  animation:
+    ArmatureAction: /pkg/vaststars.resources/glb/mars-pumpjack.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
+  name: animation
+  skeleton: /pkg/vaststars.resources/glb/mars-pumpjack.glb|animations/skeleton.ozz
+policy:
+  ant.animation|animation
+  ant.general|name
