@@ -44,11 +44,11 @@ prototype "气罐I" {
 }
 
 prototype "地下水挖掘机" {
-    model = "prefabs/offshore-pump-1.prefab",
+    model = "prefabs/mars-pumpjack.prefab",
     icon = "textures/building_pic/small_pic_offshore.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer", "assembling", "fluidboxes"},
-    area = "1x2",
+    area = "3x3",
     power = "6kW",
     priority = "secondary",
     recipe = "离岸抽水",
