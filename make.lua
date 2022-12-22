@@ -64,8 +64,19 @@ if lm.os == "windows" then
     }
 end
 
+if lm.os == "windows" then
+    lm:copy "vulkan_dll" {
+        input = {
+            lm.antdir .. "3rd/vulkan/x64/vulkan-1.dll",
+        },
+        output = {
+            lm.bindir .. "/vulkan-1.dll",
+        },
+    }
+end
+
 lm:default {
-    lm.os == "windows" and "fmod_dll",
+    lm.os == "windows" and "fmod_dll" and "vulkan_dll",
     lm.compiler == "msvc" and EnableSanitize and "copy_asan",
     "vaststars",
     lm.os == "ios" and "bgfx-lib",
