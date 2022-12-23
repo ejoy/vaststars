@@ -76,7 +76,8 @@ if lm.os == "windows" then
 end
 
 lm:default {
-    lm.os == "windows" and "fmod_dll" and "vulkan_dll",
+    lm.os == "windows" and "fmod_dll",
+    lm.os == "windows" and "vulkan_dll",
     lm.compiler == "msvc" and EnableSanitize and "copy_asan",
     "vaststars",
     lm.os == "ios" and "bgfx-lib",
