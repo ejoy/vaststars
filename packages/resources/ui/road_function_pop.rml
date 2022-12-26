@@ -65,6 +65,7 @@
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
                 object_id = 0,
+                object_position = {},
                 left = "0vmin",
                 top = "0vmin",
                 connections = {
@@ -120,7 +121,7 @@
                         local move_camera, _left, _top = popup_bound(left, top, OFFSET_LEFT, OFFSET_TOP, PANDEL_WIDTH, PANDEL_HEIGHT)
                         start.left, start.top = ("%0.2fvmin"):format(_left), ("%0.2fvmin"):format(_top)
                         if move_camera then
-                            ui_sys.world_pub {"ui_message", "move_camera", _left + OFFSET_LEFT, _top + OFFSET_TOP, start.object_id}
+                            ui_sys.world_pub {"ui_message", "move_camera", _left + OFFSET_LEFT, _top + OFFSET_TOP, start.object_position}
                         end
                     end,
                     "left", "top",

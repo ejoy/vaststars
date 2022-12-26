@@ -17,10 +17,11 @@ local builder
 
 ---------------
 local M = {}
-function M:create(left, top, x, y)
+function M:create(position, ui_x, ui_y, x, y)
     return {
-        left = left,
-        top = top,
+        position = position,
+        left = ui_x,
+        top = ui_y,
         x = x,
         y = y,
         show_laying_road_begin = true,

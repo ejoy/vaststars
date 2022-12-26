@@ -30,11 +30,11 @@ function idetail.show(object_id)
     local ui_x, ui_y = iui.convert_coord(vr, math3d.index(p, 1), math3d.index(p, 2))
 
     if typeobject.show_build_function ~= false then
-        iui.open("build_function_pop.rml", object_id, ui_x, ui_y, object.srt.t[1], object.srt.t[3])
+        iui.open("build_function_pop.rml", object_id, object.srt.t, ui_x, ui_y)
     elseif iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
-        iui.open("pipe_function_pop.rml", object_id, ui_x, ui_y, object.srt.t[1], object.srt.t[3])
+        iui.open("pipe_function_pop.rml", object_id, object.srt.t, ui_x, ui_y)
     elseif iprototype.is_road(object.prototype_name) then
-        iui.open("road_function_pop.rml", object_id, ui_x, ui_y, object.srt.t[1], object.srt.t[3])
+        iui.open("road_function_pop.rml", object_id, object.srt.t, ui_x, ui_y)
     end
 
     do
@@ -53,7 +53,7 @@ function idetail.show_road(x, y)
     local p = mu.world_to_screen(vp, vr, pos) -- the position always in the center of the screen after move camera
     local ui_x, ui_y = iui.convert_coord(vr, math3d.index(p, 1), math3d.index(p, 2))
 
-    iui.open("build_road_function_pop.rml", ui_x, ui_y, x, y)
+    iui.open("build_road_function_pop.rml", pos, ui_x, ui_y, x, y)
     return true
 end
 

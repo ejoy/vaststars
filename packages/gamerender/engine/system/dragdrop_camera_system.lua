@@ -20,13 +20,7 @@ local cam_dist = 0
 local max_dist = 220
 local min_dist = 100
 local zoom_speed = 2
-local cam_euler
-local pitch_offset = 0
-local max_pitch = 15
-local min_pitch = -25
-local pitch_speed = 0.5
-local last_y
-local last_pitch = 0
+
 local function ray_hit_plane(ray, plane_info)
     if not plane_info then
         plane_info = {dir = math3d.vector{0, 1, 0}, pos = math3d.vector{0, 0, 0}}
@@ -36,7 +30,7 @@ local function ray_hit_plane(ray, plane_info)
 	local rayOriginVec = ray.origin
 	local rayDirVec = ray.dir
 	local planeDirVec = plane.n
-	
+
 	local d = math3d.dot(planeDirVec, rayDirVec)
 	if math.abs(d) > 0.00001 then
 		local t = -(math3d.dot(planeDirVec, rayOriginVec) + plane.d) / d
@@ -120,8 +114,6 @@ function dragdrop_camera_sys:camera_usage()
     if not cam_pos.v then
         cam_pos.v = iom.get_position(ce)
         local rot = iom.get_rotation(ce)
-        -- local rad = math3d.tovalue(math3d.quat2euler(rot))
-        -- cam_euler = { math.deg(rad[1]), math.deg(rad[2]), math.deg(rad[3]) }
         cam_dir.v = math3d.normalize(math3d.transform(rot, math3d.vector(0.0, 0.0, 1.0), 0))
         cam_target.v = ray_hit_plane({origin = cam_pos, dir = cam_dir})
         cam_dist = math3d.length(math3d.sub(cam_target, cam_pos))
@@ -137,48 +129,20 @@ function dragdrop_camera_sys:camera_usage()
     elseif delta_dist then
         zoom(ce, delta_dist)
     end
-    --pitch up/down
-    --[[
-    for _, btn, state, x, y in mouse_mb:unpack() do
-        if state == "DOWN" then
-            last_y = y
-            last_pitch = pitch_offset
-        end
-        if btn == "RIGHT" then
-            pitch_offset = last_pitch + (y - last_y) * pitch_speed
-            if pitch_offset > max_pitch then
-                pitch_offset = max_pitch
-            elseif pitch_offset < min_pitch then
-                pitch_offset = min_pitch
-            end
-            local deg = {cam_euler[1] + pitch_offset, 0.0, 0.0}
-            local rot = math3d.quaternion{math.rad(deg[1]), math.rad(deg[2]), math.rad(deg[3])}
-            cam_dir.v = math3d.normalize(math3d.transform(rot, math3d.vector(0.0, 0.0, 1.0), 0))
-            iom.set_rotation(ce, rot)
-            cam_pos.v = math3d.add(cam_target, math3d.mul(cam_dir, -cam_dist))
-            iom.set_position(ce, cam_pos)
-        end
-    end
-    --]]
+
     --zoom in/out
     for _, delta in mouse_wheel_mb:unpack() do
         zoom(ce, delta)
     end
 
-    for _, _, left, top, x, y in ui_message_move_camera_mb:unpack() do
-        local origin = iterrain:get_position_by_coord(x, y, 1, 1)
-        if not origin then
-            goto continue
-        end
-
+    for _, _, left, top, position in ui_message_move_camera_mb:unpack() do
         local mq = w:first("main_queue render_target:in")
         local vr = mq.render_target.view_rect
         local vmin = math.min(vr.w / vr.ratio, vr.h / vr.ratio)
-        local pos = camera.screen_to_world(left / 100 * vmin, top / 100 * vmin, PLANES)[1]
+        local ui_position = camera.screen_to_world(left / 100 * vmin, top / 100 * vmin, PLANES)[1]
 
-        local delta = math3d.set_index(math3d.sub(origin, pos), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
+        local delta = math3d.set_index(math3d.sub(position, ui_position), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
         camera.move({t = math3d.add(delta, cam_pos)})
         update_camera_position(delta)
-        ::continue::
     end
 end

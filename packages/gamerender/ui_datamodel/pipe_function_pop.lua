@@ -202,7 +202,7 @@ local EDITOR_CACHE_TEMPORARY = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 
 ---------------
 local M = {}
-function M:create(object_id, left, top)
+function M:create(object_id, object_position, ui_x, ui_y)
     local pipe_object = assert(objects:get(object_id))
     local color = {
         [1] = "fluidflow_blue",
@@ -248,8 +248,9 @@ function M:create(object_id, left, top)
 
     return {
         object_id = object_id,
-        left = left,
-        top = top,
+        object_position = object_position,
+        left = ui_x,
+        top = ui_y,
         connections = get_connections(object_id),
     }
 end

@@ -89,11 +89,12 @@ end
 
 ---------------
 local M = {}
-function M:create(object_id, left, top)
+function M:create(object_id, object_position, ui_x, ui_y)
     return {
         object_id = object_id,
-        left = left,
-        top = top,
+        object_position = object_position,
+        left = ui_x,
+        top = ui_y,
         connections = get_connections(object_id),
     }
 end

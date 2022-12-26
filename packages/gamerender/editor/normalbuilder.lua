@@ -311,13 +311,6 @@ local function confirm(self, datamodel)
     end
 
     local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
-    if iprototype.has_type(typeobject.type, "fluidbox") then
-        -- fluid_name of object has been set in touch_end(), so we don't need to set it again
-        global.fluidflow_id = global.fluidflow_id + 1
-        pickup_object.fluidflow_id = global.fluidflow_id
-    end
-    objects:commit("TEMPORARY", "CONFIRM")
-
     if typeobject.supply_area then
         pickup_object.state = ("power_pole_confirm_%s"):format(typeobject.supply_area)
     else
@@ -462,7 +455,6 @@ local function create()
     M.confirm = confirm
     M.complete = complete
     M.rotate_pickup_object = rotate_pickup_object
-
     M.check_construct_detector = check_construct_detector
     M.clean = clean
 

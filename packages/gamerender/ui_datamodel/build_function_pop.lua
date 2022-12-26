@@ -52,7 +52,7 @@ end
 ---------------
 local M = {}
 local current_object_id
-function M:create(object_id, left, top, x, y)
+function M:create(object_id, object_position, ui_x, ui_y)
     if current_object_id and current_object_id ~= object_id then
         local vsobject = vsobject_manager:get(current_object_id)
         if vsobject then -- current_object_id may be destroyed
@@ -112,10 +112,9 @@ function M:create(object_id, left, top, x, y)
         show_detail = show_detail,
         recipe_name = recipe_name,
         object_id = object_id,
-        left = left,
-        top = top,
-        x = x,
-        y = y,
+        left = ui_x,
+        top = ui_y,
+        object_position = object_position,
     }
 end
 
