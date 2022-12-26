@@ -26,7 +26,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/chimney-1.glb|meshes/Plane_P1.meshbin
   name: Plane
   skinning: true
-  visible_state: cast_shadow|selectable|main_view
+  visible_state: main_view|selectable|cast_shadow
 policy:
   ant.general|name
   ant.render|skinrender

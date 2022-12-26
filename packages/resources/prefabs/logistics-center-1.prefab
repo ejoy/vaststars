@@ -35,7 +35,6 @@ data:
   anim_ctrl: {}
   animation:
     ArmatureAction: /pkg/vaststars.resources/glb/logistics-center-1.glb|animations/ArmatureAction.ozz
-    work: /pkg/vaststars.resources/prefabs/logistics-center-animat.anim
   animation_birth: ArmatureAction
   name: animation
   skeleton: /pkg/vaststars.resources/glb/logistics-center-1.glb|animations/skeleton.ozz
@@ -44,7 +43,7 @@ policy:
   ant.general|name
 ---
 data:
-  name: effect
+  name: hitch2
   scene:
     s: {0.699999988079071, 0.699999988079071, 0.699999988079071}
     t: {0, 10.5, 0, 1}
@@ -52,7 +51,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    effect
+    hitch2
 policy:
   ant.general|name
   ant.general|tag

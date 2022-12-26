@@ -21,38 +21,21 @@ policy:
   ant.render|render
 ---
 data:
-  name: effect
+  name: hitch1
   scene:
     s: {6, 6, 6}
-    t: {0, 13.899999618530273, 0, 1}
   slot:
     follow_flag: 1
     joint_name: None
   tag:
-    effect
+    hitch1
 policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
 ---
 data:
-  efk:
-    path: /pkg/vaststars.resources/effect/efk/furnace_smoke.efk
-  name: root
-  scene:
-    s: {1, 1, 1}
-    t: {0, 0, 0, 1}
-  tag:
-    effect
-mount: 3
-policy:
-  ant.general|name
-  ant.scene|scene_object
-  ant.efk|efk
-  ant.general|tag
----
-data:
-  name: effect2
+  name: hitch2
   scene:
     s: {4, 4, 4}
     t: {-6, 23.299999237060547, -6, 1}
@@ -60,28 +43,14 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    effect2
+    hitch2
 policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
 ---
 data:
-  efk:
-    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
-  name: root
-  scene: {}
-  tag:
-    effect
-mount: 5
-policy:
-  ant.general|name
-  ant.scene|scene_object
-  ant.efk|efk
-  ant.general|tag
----
-data:
-  name: effect3
+  name: hitch3
   scene:
     s: {4, 4, 4}
     t: {6, 23.299999237060547, 6, 1}
@@ -89,28 +58,14 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    effect3
+    hitch3
 policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
 ---
 data:
-  efk:
-    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
-  name: root
-  scene: {}
-  tag:
-    effect
-mount: 7
-policy:
-  ant.general|name
-  ant.scene|scene_object
-  ant.efk|efk
-  ant.general|tag
----
-data:
-  name: effect4
+  name: hitch4
   scene:
     s: {4, 4, 4}
     t: {-6, 23.299999237060547, 6, 1}
@@ -118,34 +73,20 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    effect4
+    hitch4
 policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
 ---
 data:
-  efk:
-    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
-  name: root
-  scene: {}
-  tag:
-    effect
-mount: 9
-policy:
-  ant.general|name
-  ant.scene|scene_object
-  ant.efk|efk
-  ant.general|tag
----
-data:
-  name: effect5
+  name: hitch5
   scene: {}
   slot:
     follow_flag: 1
     joint_name: None
   tag:
-    effect5
+    hitch5
 policy:
   ant.general|name
   ant.general|tag

@@ -31,8 +31,8 @@ policy:
 data:
   anim_ctrl: {}
   animation:
-    work: /pkg/vaststars.resources/glb/furnace-1.glb|animations/ArmatureAction.ozz
-  animation_birth: work
+    ArmatureAction: /pkg/vaststars.resources/glb/furnace-1.glb|animations/ArmatureAction.ozz
+  animation_birth: ArmatureAction
   name: animation
   skeleton: /pkg/vaststars.resources/glb/furnace-1.glb|animations/skeleton.ozz
 policy:
@@ -40,7 +40,7 @@ policy:
   ant.general|name
 ---
 data:
-  name: effect
+  name: hitch1
   scene:
     s: {3.200000047683716, 3.200000047683716, 3.200000047683716}
     t: {0, 11.5, 0, 1}
@@ -48,7 +48,7 @@ data:
     follow_flag: 1
     joint_name: None
   tag:
-    effect
+    hitch1
 policy:
   ant.general|name
   ant.general|tag
