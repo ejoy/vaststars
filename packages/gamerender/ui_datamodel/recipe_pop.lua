@@ -294,8 +294,7 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     for _, _, _, object_id, recipe_name in set_recipe_mb:unpack() do
-        local object = assert(objects:get(object_id))
-        object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
+        local object = assert(objects:get(object_id, {"CONSTRUCTED"}))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if e.assembling then
             -- get all of assembling's items before set new recipe
@@ -337,8 +336,6 @@ function M:stage_ui_update(datamodel, object_id)
                 local w, h = iprototype.unpackarea(typeobject.area)
                 object.recipe = recipe_name
                 vsobject:add_canvas(get_assembling_canvas_items(object, object.x, object.y, w, h))
-
-                objects:commit("TEMPORARY", "CONSTRUCTED")
             end
         else
             log.error(("can not found assembling `%s`(%s, %s)"):format(object.name, object.x, object.y))

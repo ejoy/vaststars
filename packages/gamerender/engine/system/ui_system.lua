@@ -238,11 +238,6 @@ function iui.update(url, event, ...)
     end
 end
 
--- for debuger
-function iui.add_datamodel_listener(url, func)
-    datamodel_listener[url] = func
-end
-
 function iui.set_guide_progress(progress)
     guide_progress = progress
     for url, binding in pairs(window_bindings) do
@@ -251,4 +246,29 @@ function iui.set_guide_progress(progress)
             datamodel_changed[url] = true
         end
     end
+end
+
+local function _get_vmin(w, h, ratio)
+    local w = w / ratio
+    local h = h / ratio
+    return math.min(w, h)
+end
+
+local function _to_vmin(vmin, v)
+    return v / vmin * 100
+end
+
+-- vr: view_rect
+function iui.convert_coord(vr, x, y)
+    local vmin = _get_vmin(vr.w, vr.h, vr.ratio)
+    return _to_vmin(vmin, x), _to_vmin(vmin, y)
+end
+
+function iui.redirect(url, ...)
+    world:pub {"rmlui_message_pub", url, ...}
+end
+
+-- for debuger
+function iui.add_datamodel_listener(url, func)
+    datamodel_listener[url] = func
 end

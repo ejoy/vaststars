@@ -202,7 +202,6 @@ local guide = {
         narrative_end = {
             guide_progress = 30,
             task = {
-                "放置基建站",
             }
         },
         prerequisites = {

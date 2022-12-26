@@ -29,7 +29,7 @@ local function _get_road_connections(prototype_name, dir, x, y)
     end
 
     for _, conn in ipairs(typeobject.crossing.connections) do
-        local dx, dy, dir = iprototype.rotate_fluidbox(conn.position, dir, typeobject.area)
+        local dx, dy, dir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
         result[dir] = {x = x + dx, y = y + dy, dir = dir, ground = conn.ground}
     end
     return result
@@ -137,13 +137,13 @@ function M:stage_ui_update(datamodel)
 
         -- TODO: rebuild entity in builder.lua ?
         if object then
-            if object.__change.prototype_name then
+            if object.__change_keys.prototype_name then
                 igameplay.remove_entity(object.gameplay_eid)
                 object.gameplay_eid = igameplay.create_entity(object)
             end
         end
         if neighbor then
-            if neighbor.__change.prototype_name then
+            if neighbor.__change_keys.prototype_name then
                 igameplay.remove_entity(neighbor.gameplay_eid)
                 neighbor.gameplay_eid = igameplay.create_entity(neighbor)
             end

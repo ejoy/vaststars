@@ -1,5 +1,6 @@
 local type = require "register.type"
 local prototype = require "prototype"
+local iendpoint = require "interface.endpoint"
 
 local c = type "laboratory"
     .inputs "itemtypes"
@@ -12,7 +13,7 @@ local function isFluidId(id)
     return id & 0x0C00 == 0x0C00
 end
 
-local function createChest(world, s)
+local function createChest(world, s, endpoint)
     local container_in = {}
     for idx = 2, #s//2 do
         local id = string.unpack("<I2", s, 2*idx-1)
@@ -25,16 +26,17 @@ local function createChest(world, s)
         }
     end
     local asize = #container_in
-    return world:container_create(0xffff, table.concat(container_in), asize), asize
+    return world:container_create(endpoint, table.concat(container_in), asize), asize
 end
 
 function c:ctor(init, pt)
     local world = self
-    local index, asize = createChest(world, pt.inputs)
+    local endpoint = iendpoint.create(world, init, pt)
+    local index, asize = createChest(world, pt.inputs, endpoint)
     local e = {
         endpoint_changed = true,
         chest = {
-            endpoint = 0xffff,
+            endpoint = endpoint,
             index = index,
             asize = asize,
             fluidbox_in = 0,

@@ -6,19 +6,14 @@ local DEFAULT_CACHE_NAME <const> = "CONSTRUCTED"
 
 local ALL_CACHE_NAMES = {"SELECTED", "INDICATOR", "TEMPORARY", "CONFIRM", "CONSTRUCTED", "POWER_AREA"}
 
-local objects = create_cache(ALL_CACHE_NAMES, "id", "REMOVED", "OBJECT_REMOVED", "teardown", "headquater", "fluidflow_id", "gameplay_eid") -- = {[id] = object, ...}
+local objects = create_cache(ALL_CACHE_NAMES, "id", "fluidflow_id", "gameplay_eid") -- = {[id] = object, ...}
 local tile_objects = create_cache(ALL_CACHE_NAMES, "coord", "id") -- = {[coord] = {id = xx, coord = coord}
 
 local M = {}
 function M:get(id, cache_names)
     cache_names = cache_names or DEFAULT_CACHE_NAMES
     assert(type(cache_names) == "table")
-    local object = objects:get(cache_names, id)
-    if object and object.OBJECT_REMOVED then
-        return
-    else
-        return object
-    end
+    return objects:get(cache_names, id)
 end
 
 function M:set(object, cache_name)
@@ -42,12 +37,7 @@ function M:coord(x, y, cache_names)
     if not tile then
         return
     end
-    local object = self:get(tile.id, cache_names)
-    if object and object.OBJECT_REMOVED then
-        return
-    else
-        return object
-    end
+    return self:get(tile.id, cache_names)
 end
 
 function M:modify(x, y, cache_names, clone)
@@ -88,26 +78,12 @@ function M:select(...)
 end
 
 function M:selectall(index_field, cache_value, cache_names)
-    local t = {}
-    for id, obj in objects:selectall(cache_names, index_field, cache_value) do
-        if not (obj.OBJECT_REMOVED == true) then
-            t[id] = obj
-        end
-    end
-    return next, t, nil
+    return objects:selectall(cache_names, index_field, cache_value)
 end
 
 function M:commit(cache_name_1, cache_name_2)
     objects:commit(cache_name_1, cache_name_2)
     tile_objects:commit(cache_name_1, cache_name_2)
-end
-
-function M:cleanup(cache_name)
-    for id, obj in objects:all(cache_name) do
-        if obj.REMOVED then
-            self:remove(id, cache_name)
-        end
-    end
 end
 
 function M:sync(...)

@@ -111,7 +111,7 @@ namespace roadnet {
         }
     }
     
-    static constexpr direction nextDirection(uint8_t m, direction dir) {
+    static constexpr direction nextDirection(loction l, uint8_t m, direction dir) {
         switch (m) {
         case mask(L'║'):
             switch (dir) {
@@ -181,6 +181,7 @@ namespace roadnet {
             break;
         default: break;
         }
+        printf("Invalid road type: (%d,%d) %d\n", l.x, l.y, m);
         assert(false);
         return direction::n;
     }
@@ -260,7 +261,7 @@ namespace roadnet {
             if (ln == l && nd == dir) {
                 break;
             }
-            nd = nextDirection(m, nd);
+            nd = nextDirection(ln, m, nd);
             n++;
         }
         return {ln, nd, n};
@@ -275,7 +276,7 @@ namespace roadnet {
             if (i >= n) {
                 return NeighborResult {l, dir, n};
             }
-            dir = nextDirection(m, dir);
+            dir = nextDirection(l, m, dir);
         }
     }
 
@@ -537,6 +538,7 @@ namespace roadnet {
             return road_coord::invalid();
         }
         assert(dir != direction::n);
+        assert(map.size() != 0);
 
         auto result = findNeighbor(map, l, reverse(dir));
         if (auto cross = findCrossRoad(result.l); cross) {

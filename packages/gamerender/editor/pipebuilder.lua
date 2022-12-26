@@ -19,6 +19,7 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local math_abs = math.abs
 local math_min = math.min
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
+local igrid_entity = ecs.require "engine.grid_entity"
 
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
@@ -122,6 +123,8 @@ end
 local function _builder_end(self, datamodel, State, dir, dir_delta)
     local reverse_dir = iprototype.reverse_dir(dir)
     local prototype_name = self.coord_indicator.prototype_name
+    local typeobject = iprototype.queryByName("entity", prototype_name)
+
     -- local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
     -- local item = inventory:modity(item_typeobject.id)
     local map = {}
@@ -225,9 +228,13 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 dir = v[2],
                 x = x,
                 y = y,
+                srt = {
+                    t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
+                },
                 fluid_name = State.fluid_name,
                 fluidflow_id = new_fluidflow_id,
                 state = object_state,
+                object_state = "none",
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
 
@@ -288,13 +295,18 @@ local function _builder_init(self, datamodel)
             -- why use DEFAULT_DIR? because iprototype.reverse_dir(fb.dir) will cause assert error by iflow_connector.set_connection(), such as '管道1-O型' + S
             _prototype_name, _dir = iflow_connector.set_connection(init_prototype_name, DEFAULT_DIR, iprototype.reverse_dir(fb.dir), true)
             if _prototype_name then
+                local typeobject = iprototype.queryByName("entity", _prototype_name)
                 obj = iobject.new {
                     prototype_name = _prototype_name,
                     dir = _dir,
                     x = dx,
                     y = dy,
+                    srt = {
+                        t = terrain:get_position_by_coord(dx, dy, iprototype.rotate_area(typeobject.area, _dir)),
+                    },
                     fluid_name = "",
                     state = "indicator",
+                    object_state = "none",
                 }
                 objects:set(obj, "INDICATOR")
             end
@@ -504,6 +516,11 @@ local function new_entity(self, datamodel, typeobject)
     --     return
     -- end
 
+    if not self.grid_entity then
+        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = {0, 8.5, 0}})
+        self.grid_entity:show(true)
+    end
+
     iobject.remove(self.coord_indicator)
     local dir = DEFAULT_DIR
     local x, y = iobject.central_coord(typeobject.name, dir)
@@ -512,8 +529,12 @@ local function new_entity(self, datamodel, typeobject)
         dir = dir,
         x = x,
         y = y,
+        srt = {
+            t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
+        },
         fluid_name = "",
-        state = "construct"
+        state = "construct",
+        object_state = "none",
     }
 
     --
@@ -530,7 +551,11 @@ local function touch_end(self, datamodel)
     if not self.coord_indicator then
         return
     end
-    iobject.align(self.coord_indicator)
+
+    local x, y
+    self.coord_indicator, x, y = iobject.align(self.coord_indicator)
+    self.coord_indicator.x, self.coord_indicator.y = x, y
+
     self:revert_changes({"INDICATOR", "TEMPORARY"})
     inventory:revert()
 
@@ -546,6 +571,10 @@ local function complete(self, datamodel)
         return
     end
 
+    if self.grid_entity then
+        self.grid_entity:remove()
+    end
+
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
@@ -558,11 +587,13 @@ local function complete(self, datamodel)
     self.super.complete(self)
 
     datamodel.show_laying_pipe_begin = false
-    datamodel.show_construct_complete = false
 end
 
 local function laying_pipe_begin(self, datamodel)
-    iobject.align(self.coord_indicator)
+    local x, y
+    self.coord_indicator, x, y = iobject.align(self.coord_indicator)
+    self.coord_indicator.x, self.coord_indicator.y = x, y
+
     self:revert_changes({"INDICATOR", "TEMPORARY"})
     datamodel.show_laying_pipe_begin = false
     datamodel.show_laying_pipe_cancel = true
@@ -601,10 +632,12 @@ local function laying_pipe_confirm(self, datamodel)
     self.state = STATE_NONE
     datamodel.show_laying_pipe_confirm = false
     datamodel.show_laying_pipe_cancel = false
-    datamodel.show_construct_complete = true
 end
 
 local function clean(self, datamodel)
+    if self.grid_entity then
+        self.grid_entity:remove()
+    end
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 

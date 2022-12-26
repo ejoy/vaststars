@@ -6,7 +6,6 @@ local gameplay_core = require "gameplay.core"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local iassembling = require "gameplay.interface.assembling"
-local ilaboratory = require "gameplay.interface.laboratory"
 local ientity = require "gameplay.interface.entity"
 local vsobject_manager = ecs.require "vsobject_manager"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
@@ -53,7 +52,7 @@ end
 ---------------
 local M = {}
 local current_object_id
-function M:create(object_id, left, top)
+function M:create(object_id, left, top, x, y)
     if current_object_id and current_object_id ~= object_id then
         local vsobject = vsobject_manager:get(current_object_id)
         if vsobject then -- current_object_id may be destroyed
@@ -114,7 +113,9 @@ function M:create(object_id, left, top)
         recipe_name = recipe_name,
         object_id = object_id,
         left = left,
-        top = top
+        top = top,
+        x = x,
+        y = y,
     }
 end
 

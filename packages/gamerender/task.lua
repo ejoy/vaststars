@@ -5,9 +5,9 @@ local w = world.w
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
 local global = require "global"
-local objects = require "objects"
 local iconstant = require "gameplay.interface.constant"
 local terrain = ecs.require "terrain"
+local iroadnet = ecs.require "roadnet"
 
 local ALL_DIR = iconstant.ALL_DIR
 local function _check_routemap(sx, sy, dx, dy, marked)
@@ -19,8 +19,8 @@ local function _check_routemap(sx, sy, dx, dy, marked)
         return true
     end
 
-    local starting = objects:coord(sx, sy)
-    local ending = objects:coord(dx, dy)
+    local starting = iroadnet.editor_get(sx, sy)
+    local ending = iroadnet.editor_get(dx, dy)
     if not starting or not ending then
         return false
     end
@@ -36,13 +36,8 @@ local function _check_routemap(sx, sy, dx, dy, marked)
             goto continue
         end
 
-        local neighbor = objects:coord(neighbor_x, neighbor_y)
+        local neighbor = iroadnet.editor_get(neighbor_x, neighbor_y)
         if not neighbor then
-            goto continue
-        end
-
-        local typeobject = iprototype.queryByName("entity", neighbor.prototype_name)
-        if not iprototype.has_type(typeobject.type, "road") then -- TODO: remove road type?
             goto continue
         end
 

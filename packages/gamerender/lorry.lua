@@ -15,6 +15,9 @@ local animation = hierarchy.animation
 local skeleton = hierarchy.skeleton
 local mathpkg = import_package "ant.math"
 local mc = mathpkg.constant
+local iroadnet = ecs.require "roadnet"
+local iterrain = ecs.require "terrain"
+local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
 local STRAIGHT_TICKCOUNT <const> = 10
 local CROSS_TICKCOUNT <const> = 20
@@ -150,10 +153,14 @@ local function offset_matrix(prototype_name, dir, toward, tick)
 end
 
 local function _get_offset_matrix(is_cross_flag, x, y, toward, tick)
-    local object = assert(objects:coord(x, y), ("no object at (%d, %d)"):format(x, y))
-    local vsobject = assert(vsobject_manager:get(object.id))
+    local _, mask = iroadnet.editor_get(x, y)
+    assert(mask)
+
+    local prototype_name, dir = iroadnet.get_prototype_name(0, mask) -- TODO
+    local matrix = math3d.matrix {t = iterrain:get_position_by_coord(x, y, 1, 1), r = ROTATORS[dir]}
+
     if not is_cross_flag then
-        if is_cross(object.prototype_name, object.dir) then
+        if is_cross(prototype_name, dir) then
             local REVERSE <const> = {
                 [0] = 2,
                 [1] = 3,
@@ -172,8 +179,10 @@ local function _get_offset_matrix(is_cross_flag, x, y, toward, tick)
         end
     end
 
-    local offset_mat = offset_matrix(object.prototype_name, object.dir, toward, tick)
-    return math3d.ref(math3d.mul(vsobject:get_matrix(), offset_mat))
+    local offset_mat = offset_matrix(prototype_name, dir, toward, tick)
+    local s, r, t = math3d.srt(math3d.mul(matrix, offset_mat))
+    t = math3d.set_index(t, 2, 0.0)
+    return math3d.ref(math3d.matrix {s = s, r = r, t = t})
 end
 
 return function(lorry_id, is_cross, x, y, z, tick)

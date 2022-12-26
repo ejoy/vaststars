@@ -8,7 +8,7 @@ prototype "小铁制箱子I" {
     construct_detector = {"exclusive"},
     type = {"entity"},
     group = {"物流" , "默认"},
-    area = "2x2",
+    area = "1x1",
     slots = 10,
 }
 
@@ -19,7 +19,7 @@ prototype "小铁制箱子II" {
     construct_detector = {"exclusive"},
     type = {"entity"},
     group = {"物流" , "默认"},
-    area = "2x2",
+    area = "1x1",
     slots = 20,
 }
 

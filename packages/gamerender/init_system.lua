@@ -8,7 +8,6 @@ local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
-local check_prototype = require "gameplay.check"
 local fps = ecs.require "fps"
 local world_update = ecs.require "world_update.init"
 local saveload = ecs.require "saveload"
@@ -28,10 +27,10 @@ local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local PLANES <const> = {YAXIS_PLANE}
 local lorry_update = ecs.require "lorry"
 local iefk = ecs.require "engine.efk"
+local iroadnet = ecs.require "roadnet"
 
 local m = ecs.system 'init_system'
 function m:init_world()
-    -- check_prototype()
     bgfx.maxfps(FRAMES_PER_SECOND)
     iefk.preload "/pkg/vaststars.resources/effect/efk/"
 
@@ -50,6 +49,7 @@ function m:init_world()
         saveload:restore_camera_setting()
         return
     end
+
     terrain:create()
     if TERRAIN_ONLY then
         saveload:restore_camera_setting()
@@ -80,6 +80,8 @@ end
 local tick = 0
 function m:update_world()
     camera.update()
+    iroadnet.world_update()
+    iroadnet.render_update()
 
     local gameplay_world = gameplay_core.get_world()
     local roadnet = gameplay_world.roadnet

@@ -18,7 +18,9 @@ end
 local archiving_list_path = archival_base_dir .. "archiving.json"
 local camera_setting_path = archival_base_dir .. "camera.json"
 local iprototype = require "gameplay.interface.prototype"
-local startup_entities = import_package("vaststars.prototype")(startup_lua).entities
+local startup_lua = import_package("vaststars.prototype")(startup_lua)
+local startup_entities = startup_lua.entities
+local startup_road = require "startup.road"(startup_lua.road)
 local objects = require "objects"
 local ifluid = require "gameplay.interface.fluid"
 local iscience = require "gameplay.interface.science"
@@ -37,6 +39,7 @@ local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
+local iroadnet = ecs.require "roadnet"
 local MAX_ARCHIVING_COUNT <const> = 9
 
 local archival_list = {}
@@ -96,6 +99,7 @@ local function restore_world()
     end
 
     --
+    local coord_transform_building = global.coord_transform_building
     local function restore_object(all_object, map, gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id, recipe)
         local typeobject = iprototype.queryByName("entity", prototype_name)
 
@@ -115,12 +119,15 @@ local function restore_world()
             dir = dir,
             x = x,
             y = y,
+            srt = {
+                t = coord_transform_building:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
+            },
             fluid_name = fluid_name,
             fluidflow_id = fluidflow_id,
-            headquater = typeobject.headquater or false,
             state = "constructed",
             recipe = recipe,
             fluid_icon = fluid_icon,
+            object_state = "constructed",
         }
         object.gameplay_eid = gameplay_eid
         objects:set(object)
@@ -434,7 +441,6 @@ function M:restore(index)
 
     gameplay_core.build()
     restore_world()
-    -- gameplay_core.get_world().roadnet:debug_endpoint_lorry()
 
     print("restore success", archival_dir)
     return true
@@ -455,6 +461,7 @@ function M:restart()
         terrain:enable_terrain(coord[1], coord[2])
     end
 
+    iroadnet.init(startup_road)
     for _, e in ipairs(startup_entities) do
         igameplay.create_entity(e)
     end

@@ -71,8 +71,8 @@ local function can_connect(e0, e1)
 end
 
 local function dist_sqr(pole1, pole2)
-    local pos1 = {pole1.x, pole1.y}--iterrain:get_position_by_coord(pole1.x, pole1.y, pole1.w, pole1.h)
-    local pos2 = {pole2.x, pole2.y}--iterrain:get_position_by_coord(pole2.x, pole2.y, pole2.w, pole2.h)
+    local pos1 = {pole1.x, pole1.y}
+    local pos2 = {pole2.x, pole2.y}
     local dx = (pos1[1] - pos2[1])
     local dz = (pos1[2] - pos2[2])
     return dx * dx + dz * dz

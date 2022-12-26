@@ -9,6 +9,7 @@ local math3d = require "math3d"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
 local changeset = {}
+local removed = {}
 
 local _new_object_id; do
     local id = 0
@@ -18,14 +19,26 @@ local _new_object_id; do
     end
 end
 
-local function object_newindex(self, key, value)
-    self.__object[key] = value
-    self.__change[key] = value
-    changeset[self.__object.id] = self
-end
+local mt = {
+    __index = function(t, k)
+        return t.__lastversion[k]
+    end,
+    __newindex = function(t, k, v)
+        t.__change_keys[k] = true
+        t.__lastversion[k] = v
+        changeset[t.__lastversion.id] = t
+    end,
+    __pairs = function (t)
+        return function(t, key)
+            return next(t.__lastversion, key)
+        end, t
+    end,
+}
 
 local function new(init)
-    local object = {
+    local t = {}
+    t.__change_keys = {}
+	t.__lastversion = {
         id = _new_object_id(),
         prototype_name = assert(init.prototype_name),
         dir = assert(init.dir), 
@@ -34,18 +47,21 @@ local function new(init)
         fluid_name = init.fluid_name,
         fluidflow_id = init.fluidflow_id,
         state = assert(init.state),
-        headquater = init.headquater,
+        object_state = assert(init.object_state),
         recipe = init.recipe,
         fluid_icon = init.fluid_icon,
+        srt = init.srt,
     }
 
-    local outer = setmetatable({__object = object, __change = {}}, {__index = object, __newindex = object_newindex})
-    changeset[object.id] = outer
+    local outer = setmetatable(t, mt)
+    changeset[t.__lastversion.id] = outer
     return outer
 end
 
 local function clone(outer)
-    local object = {
+    local t = {}
+    t.__change_keys = {}
+	t.__lastversion = {
         id = outer.id or _new_object_id(),
         prototype_name = assert(outer.prototype_name),
         dir = assert(outer.dir),
@@ -54,15 +70,15 @@ local function clone(outer)
         fluid_name = outer.fluid_name,
         fluidflow_id = outer.fluidflow_id,
         state = assert(outer.state),
-        gameplay_eid = outer.gameplay_eid, --TODO
-        teardown = outer.teardown,
+        gameplay_eid = outer.gameplay_eid,
         recipe = outer.recipe,
         fluid_icon = outer.fluid_icon,
+        srt = {s = outer.srt.s, r = outer.srt.r, t = outer.srt.t},
     }
 
-    local clone = setmetatable({__object = object, __change = {}}, {__index = object, __newindex = object_newindex})
-    changeset[object.id] = clone
-    return clone
+    local outer = setmetatable(t, mt)
+    changeset[t.__lastversion.id] = outer
+    return outer
 end
 
 local function remove(outer)
@@ -70,63 +86,26 @@ local function remove(outer)
         return
     end
 
-    -- assert(outer.__object.OBJECT_REMOVED == nil) -- TODO
-    outer.__object.OBJECT_REMOVED = true
-    changeset[outer.__object.id] = outer
+    removed[outer.id] = true
 end
 
 local function flush()
     local funcs = {
-        prototype_name = function(outer, value)
-            outer.__object.prototype_name = value
+        prototype_name = function(outer)
             local vsobject = assert(vsobject_manager:get(outer.id))
-            vsobject:update {prototype_name = outer.prototype_name}
+            vsobject:update {prototype_name = outer.prototype_name, srt = outer.srt}
         end,
-        dir = function(outer, value)
-            outer.__object.dir = value
+        dir = function(outer)
             local vsobject = assert(vsobject_manager:get(outer.id))
-            vsobject:set_dir(value)
-
-            local typeobject = iprototype.queryByName("entity", outer.__object.prototype_name)
-            local position = terrain:get_position_by_coord(outer.__object.x, outer.__object.y, iprototype.rotate_area(typeobject.area, outer.__object.dir))
-            if position then
-                vsobject:set_position(position)
-            end
+            vsobject:set_dir(outer.dir)
         end,
-        state = function(outer, value)
-            outer.__object.state = value
+        state = function(outer)
             local vsobject = assert(vsobject_manager:get(outer.id))
-            vsobject:update {type = outer.state}
+            vsobject:update {type = outer.state, srt = outer.srt}
         end,
-        x = function (outer, value)
-            outer.__object._x = value
-        end,
-        y = function (outer, value)
-            outer.__object._y = value
-        end,
-        fluid_name = function(outer, value)
-            outer.__object.fluid_name = value
-        end,
-        fluidflow_id = function (outer, value)
-            outer.__object.fluidflow_id = value
-        end,
-        gameplay_eid = function (outer, value)
-            outer.__object.gameplay_eid = value
-        end,
-        teardown = function (outer, value)
-            outer.__object.teardown = value
-        end,
-        PREPARE = function (outer, value) -- 放置建筑后
-            outer.__object.PREPARE = value
-        end,
-        recipe = function (outer, value)
-            outer.__object.recipe = value
-        end,
-        fluid_icon = function (outer, value)
-            outer.__object.fluid_icon = value
-        end,
-        road_changed = function (outer, value)
-            outer.__object.road_changed = value
+        srt = function(outer)
+            local vsobject = assert(vsobject_manager:get(outer.id))
+            vsobject:set_position(outer.srt.t)
         end,
     }
 
@@ -135,79 +114,74 @@ local function flush()
 
     local vsobject
     for object_id, outer in pairs(changeset) do
-        if outer.__object.OBJECT_REMOVED then
-            if not outer.__object.REMOVED then
-                outer.__object.REMOVED = true
-                vsobject_manager:remove(outer.id)
+        if removed[object_id] then
+            goto continue
+        end
+        vsobject = vsobject_manager:get(object_id)
+        local typeobject = iprototype.queryByName("entity", outer.prototype_name)
+        outer.srt = outer.srt or {}
+
+        if not vsobject then
+            vsobject = vsobject_manager:create {
+                id = outer.id,
+                prototype_name = outer.prototype_name,
+                dir = outer.dir,
+                position = outer.srt.t,
+                type = outer.state,
+                group_id = terrain:get_group_id(outer.x, outer.y),
+            }
+
+            local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
+            -- display recipe icon of assembling machine
+            if outer.recipe then
+                vsobject:add_canvas(get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
+            end
+            if outer.fluid_icon then
+                vsobject:add_canvas(get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
             end
         else
-            vsobject = vsobject_manager:get(object_id)
-            local typeobject = iprototype.queryByName("entity", outer.prototype_name)
+            for k in pairs(outer.__change_keys) do
+                local func = funcs[k]
+                if func then
+                    func(outer)
+                end
+            end
 
-            if not vsobject then
-                local position = terrain:get_position_by_coord(outer.x, outer.y, iprototype.rotate_area(typeobject.area, outer.dir))
-                assert(position)
+            -- display recipe icon of assembling machine
+            -- TODO: special case for mining 
+            local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
 
-                vsobject = vsobject_manager:create {
-                    id = outer.id,
-                    prototype_name = outer.prototype_name,
-                    dir = outer.dir,
-                    position = position,
-                    type = outer.state,
-                    group_id = terrain:get_group_id(outer.x, outer.y),
-                }
-
-                local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
-                -- display recipe icon of assembling machine
+            -- TODO: special case for mining & chimney
+            -- refresh recipe icon of assembling machine when recipe changed or direction changed
+            if (outer.__change_keys.recipe or outer.__change_keys.dir) and not iprototype.has_type(typeobject.type, "mining") and not iprototype.has_type(typeobject.type, "chimney") and iprototype.has_type(typeobject.type, "assembling") and not typeobject.recipe then
                 if outer.recipe then
                     vsobject:add_canvas(get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
                 end
-                if outer.fluid_icon then
-                    vsobject:add_canvas(get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
-                end
-            else
-                for k, v in pairs(outer.__change) do
-                    local func = assert(funcs[k])
-                    func(outer, v)
-                end
-                if outer.__object._x or outer.__object._y then
-                    outer.__object.x = outer.__object._x or outer.__object.x
-                    outer.__object.y = outer.__object._y or outer.__object.y
-                    local position = terrain:get_position_by_coord(outer.x, outer.y, iprototype.rotate_area(typeobject.area, outer.dir))
-                    local vsobject = assert(vsobject_manager:get(outer.id))
-                    vsobject:set_position(position)
-                    outer.__object._x, outer.__object._y = nil, nil
-                end
-
-                -- display recipe icon of assembling machine
-                -- TODO: special case for mining 
-                local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
-
-                -- TODO: special case for mining & chimney
-                -- refresh recipe icon of assembling machine when recipe changed or direction changed
-                if (outer.__change.recipe or outer.__change.dir) and not iprototype.has_type(typeobject.type, "mining") and not iprototype.has_type(typeobject.type, "chimney") and iprototype.has_type(typeobject.type, "assembling") and not typeobject.recipe then
-                    if outer.recipe then
-                        vsobject:add_canvas(get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
-                    end
-                end
-                if outer.__change.fluid_icon and outer.fluid_name ~= "" then
-                    vsobject:add_canvas(get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
-                end
-                outer.__change = {}
+            end
+            if outer.__change_keys.fluid_icon and outer.fluid_name ~= "" then
+                vsobject:add_canvas(get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
             end
         end
 
-        if outer.__object.PREPARE then
+        if outer.PREPARE then
             prepare[#prepare+1] = outer
-            outer.__object.PREPARE = nil
+            outer.PREPARE = nil
         end
 
-        if outer.__object.APPEAR then
+        if outer.APPEAR then
             appear[#appear+1] = outer
-            outer.__object.APPEAR = nil
+            outer.APPEAR = nil
         end
+
+        outer.__change_keys = {}
+        ::continue::
     end
     changeset = {}
+
+    for object_id in pairs(removed) do
+        vsobject_manager:remove(object_id)
+    end
+    removed = {}
 
     for _, outer in ipairs(prepare) do
         local vsobject = vsobject_manager:get(outer.id)
@@ -224,47 +198,58 @@ local function flush()
     end
 end
 
-local function move_delta(object, delta_vec)
+local function move_delta(object, delta_vec, coord_transform, method, area_inc)
+    coord_transform = coord_transform or terrain
+    method = method or "align"
+
     local vsobject = assert(vsobject_manager:get(object.id))
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    local position = math3d.ref(math3d.add(vsobject:get_position(), delta_vec))
-    local coord = terrain:align(position, iprototype.rotate_area(typeobject.area, object.dir))
+    local position = math3d.ref(math3d.add(object.srt.t, delta_vec))
+    local coord = coord_transform[method](coord_transform, position, iprototype.rotate_area(typeobject.area, object.dir, area_inc, area_inc))
     if not coord then
         log.error(("can not get coord"))
         return
     end
 
-    object.__object.x, object.__object.y = coord[1], coord[2]
+    object.x, object.y = coord[1], coord[2]
+    object.srt.t = position
     vsobject:set_position(position)
     return object
 end
 
-local function central_coord(prototype_name, dir)
+local function central_coord(prototype_name, dir, coord_transform, method, area_inc)
+    coord_transform = coord_transform or terrain
+    method = method or "align"
+
     local typeobject = iprototype.queryByName("entity", prototype_name)
-    local coord = terrain:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
+    local coord = coord_transform[method](coord_transform, camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir, area_inc, area_inc))
     if not coord then
         return
     end
     return coord[1], coord[2]
 end
 
-local function align(object)
+local function align(object, coord_transform, method, area_inc)
+    coord_transform = coord_transform or terrain
+    method = method or "align"
+
     assert(object)
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    local coord = terrain:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
+    local coord = coord_transform[method](coord_transform, camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir, area_inc, area_inc))
     if not coord then
         return object
     end
-    object.x, object.y = coord[1], coord[2]
-    return object
+    object.srt.t = coord_transform:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir, area_inc, area_inc))
+    return object, coord[1], coord[2]
 end
 
-local function coord(object, x, y)
+local function coord(object, x, y, coord_transform)
+    coord_transform = coord_transform or terrain
     assert(object)
     assert(object.prototype_name ~= "")
     local vsobject = assert(vsobject_manager:get(object.id))
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    local position = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, object.dir))
+    local position = coord_transform:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, object.dir))
     if not position then
         log.error(("can not get position"))
         return
@@ -275,11 +260,12 @@ end
 
 return {
     new = new,
-    remove = remove,
+    new_object_id = _new_object_id,
     clone = clone,
     flush = flush,
     move_delta = move_delta,
     align = align,
     central_coord = central_coord,
     coord = coord,
+    remove = remove,
 }

@@ -50,6 +50,11 @@ prototype "指挥中心" {
     slots = 60,
     headquater = true,
     teardown = false,
+    crossing = {
+        connections = {
+            {type="input-output", position={2,4,"S"}, roadside = true},
+        },
+    }
 }
 
 prototype "物流派送站" {
@@ -58,7 +63,7 @@ prototype "物流派送站" {
     background = "textures/build_background/small_pic_goodsstation_output.texture",
     construct_detector = {"exclusive"},
     type = {"entity"},
-    area = "2x2",
+    area = "1x1",
     slots = 10,
     group = {"物流"},
 }
@@ -69,7 +74,7 @@ prototype "物流需求站" {
     background = "textures/build_background/small_pic_goodsstation_input.texture",
     construct_detector = {"exclusive"},
     type = {"entity"},
-    area = "2x2",
+    area = "1x1",
     slots = 10,
     group = {"物流"},
 }
@@ -281,7 +286,7 @@ prototype "基建站" {
     type ={"entity","consumer"},
     priority = "secondary",
     slots = 20,
-    area = "2x2",
+    area = "1x1",
     supply_area = "32x32",
     group = {"物流"},
     crossing = {
@@ -298,7 +303,7 @@ prototype "拆除点" {
     construct_detector = {"exclusive"},
     type ={"entity", "chest"},
     chest_type = "red",
-    area = "2x2",
+    area = "1x1",
     dismantle_area = "32x32",
     group = {"物流"},
     slots = 20,

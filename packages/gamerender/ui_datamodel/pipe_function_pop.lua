@@ -54,7 +54,7 @@ local function get_connections(object_id)
     local function __get_connections(typeobject, dir, x, y)
         local connections = {}
         for _, conn in ipairs(typeobject.fluidbox.connections) do
-            local dx, dy, dir = iprototype.rotate_fluidbox(conn.position, dir, typeobject.area)
+            local dx, dy, dir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
             dx = dx + x
             dy = dy + y
             connections[dir] = {x = dx, y = dy, ground = conn.ground}
@@ -405,13 +405,13 @@ function M:stage_ui_update(datamodel)
 
         -- TODO: rebuild entity in builder.lua ?
         if pipe_object then
-            if pipe_object.__change.prototype_name then
+            if pipe_object.__change_keys.prototype_name then
                 igameplay.remove_entity(pipe_object.gameplay_eid)
                 pipe_object.gameplay_eid = igameplay.create_entity(pipe_object)
             end
         end
         if object then
-            if object.__change.prototype_name then
+            if object.__change_keys.prototype_name then
                 igameplay.remove_entity(object.gameplay_eid)
                 object.gameplay_eid = igameplay.create_entity(object)
             end

@@ -25,7 +25,7 @@ local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 
 local terrain = {}
 
-local SURFACE_HEIGHT <const> = 4
+local SURFACE_HEIGHT <const> = 1
 local TILE_SIZE <const> = 10
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256
@@ -36,7 +36,7 @@ local GRID_HEIGHT <const> = ((5 + 3) * GROUND_HEIGHT)
 assert(GRID_WIDTH % 2 == 0 and GRID_HEIGHT % 2 == 0)
 local TERRAIN_MAX_GROUP_ID = 10000
 
-local function _pack(x, y)
+local function _hash(x, y)
     assert(x & 0xFF == x and y & 0xFF == y)
     return x | (y<<8)
 end
@@ -44,7 +44,7 @@ end
 local function _get_screen_group_id(self, x, y)
 	local grid_x = x//GRID_WIDTH
 	local grid_y = y//GRID_HEIGHT
-	assert(self._group_id[_pack(grid_x, grid_y)])
+	assert(self._group_id[_hash(grid_x, grid_y)])
 
     local result = {}
     local min_x, max_x = self._grid_bounds[1][1], self._grid_bounds[2][1]
@@ -68,7 +68,7 @@ local function _get_screen_group_id(self, x, y)
 
 	for i = xb, xe do
 		for j = yb, ye do
-            local group_id = self._group_id[_pack(i, j)]
+            local group_id = self._group_id[_hash(i, j)]
 			result[group_id] = true
 		end
 	end
@@ -92,7 +92,7 @@ end
 local function _get_grid_id(x, y)
     local grid_x = x//GRID_WIDTH
     local grid_y = y//GRID_HEIGHT
-    return _pack(grid_x, grid_y)
+    return _hash(grid_x, grid_y)
 end
 
 function terrain:get_group_id(x, y)
@@ -103,6 +103,7 @@ function terrain:create(width, height)
     self.ground_width, self.ground_height = GROUND_WIDTH, GROUND_HEIGHT
     self.surface_height = SURFACE_HEIGHT
     self.tile_size = TILE_SIZE
+    self.tile_width, self.tile_height = width or WIDTH, height or HEIGHT
 
     self._width, self._height = width or WIDTH, height or HEIGHT
     local offset_3d = {-(self._width * TILE_SIZE)/2, 0.0, -(self._height * TILE_SIZE)/2}
@@ -131,7 +132,7 @@ function terrain:create(width, height)
         for x = min_x, max_x do
             for y = min_y, max_y do
                 group_id = group_id + 1
-                result[_pack(x, y)] = group_id
+                result[_hash(x, y)] = group_id
             end
         end
         assert(group_id < TERRAIN_MAX_GROUP_ID)
@@ -145,13 +146,6 @@ function terrain:create(width, height)
     for _, eid in ipairs(self.eids) do
         w:remove(eid)
     end
-    --
-    local meshes = {
-        "prefabs/terrain/ground_01.prefab",
-        "prefabs/terrain/ground_02.prefab",
-        "prefabs/terrain/ground_03.prefab",
-        "prefabs/terrain/ground_04.prefab",
-    }
 
     local mineral_meshes = {
         ["铁矿石"] = "prefabs/terrain/ground_iron_ore.prefab", -- TODO: remove hard code
@@ -165,33 +159,31 @@ function terrain:create(width, height)
         x, y = x - (x % terrain.ground_width), y - (y % terrain.ground_height)
         for i = 0, GROUND_WIDTH - 1 do
             for j = 0, GROUND_HEIGHT - 1 do
-                self.mineral_map[_pack(x + i, y + j)] = mineral
+                self.mineral_map[_hash(x + i, y + j)] = mineral
             end
         end
     end
 
-    assert(self._width % GROUND_WIDTH == 0 and self._height % GROUND_HEIGHT == 0)
+    -- assert(self._width % GROUND_WIDTH == 0 and self._height % GROUND_HEIGHT == 0)
     local w, h = self._width // GROUND_WIDTH, self._height // GROUND_HEIGHT
     for y = 0, h - 1 do
         for x = 0, w - 1 do
             local _x, _y = x * GROUND_WIDTH, y * GROUND_HEIGHT
             local srt = {r = ROTATORS[math.random(1, 4)], t = self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT)}
             local prefab
-            if self.mineral_map[_pack(_x, _y)] then
-                prefab = mineral_meshes[self.mineral_map[_pack(_x, _y)]]
-            else
-                prefab = meshes[math.random(1, #meshes)]
+            if self.mineral_map[_hash(_x, _y)] then
+                prefab = mineral_meshes[self.mineral_map[_hash(_x, _y)]]
+                self.eids[#self.eids+1] = igame_object.create {
+                    prefab = prefab,
+                    effect = nil,
+                    group_id = self:get_group_id(_x, _y),
+                    state = "opaque",
+                    color = COLOR_INVALID,
+                    srt = srt,
+                    parent = nil,
+                    slot = nil
+                }
             end
-            self.eids[#self.eids+1] = igame_object.create {
-                prefab = prefab,
-                effect = nil,
-                group_id = self:get_group_id(_x, _y),
-                state = "opaque",
-                color = COLOR_INVALID,
-                srt = srt,
-                parent = nil,
-                slot = nil
-            }
         end
     end
 
@@ -199,7 +191,7 @@ function terrain:create(width, height)
 end
 
 function terrain:get_mineral(x, y)
-    return self.mineral_map[_pack(x, y)]
+    return self.mineral_map[_hash(x, y)]
 end
 
 function terrain:enable_terrain(x, y)

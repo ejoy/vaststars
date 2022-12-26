@@ -2,7 +2,6 @@ local property_list = import_package "vaststars.prototype"("property_list")
 local objects = require "objects"
 local global = require "global"
 local iprototype = require "gameplay.interface.prototype"
-local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
 local itypes = require "gameplay.interface.types"
 local irecipe = require "gameplay.interface.recipe"

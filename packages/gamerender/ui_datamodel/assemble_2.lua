@@ -121,25 +121,6 @@ function M:stage_ui_update(datamodel, object_id)
     else
         datamodel.progress = itypes.progress_str(progress, total_progress)
     end
-
-    -- 更新背包界面对应的道具
-    for e in gameplay_core.select "chest:in entity:in" do
-        local typeobject = iprototype.queryById(e.entity.prototype)
-        if typeobject.headquater then
-            local inventory = {}
-            local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
-            for id, count in pairs(item_counts) do
-                local typeobject_item = assert(iprototype.queryById(id))
-                local t = {}
-                t.name = typeobject_item.name
-                t.icon = typeobject_item.icon
-                t.count = count
-                inventory[#inventory+1] = t
-            end
-            datamodel.inventory = inventory
-            break
-        end
-    end
 end
 
 function M:update(datamodel, object_id)

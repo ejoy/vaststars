@@ -6,7 +6,7 @@ local iguide = require "gameplay.interface.guide"
 
 local function update_world(world)
     local science = global.science
-    if iguide.is_running() or global.tech_finish_pop or science.current_tech then
+    if iguide.is_running() or science.current_tech then
         return
     end
     local guide = iguide.get_guide()

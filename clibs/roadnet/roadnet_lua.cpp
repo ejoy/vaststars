@@ -9,7 +9,7 @@ namespace roadnet::lua {
     template <typename T>
     static T& class_get(lua_State* L, int idx) {
         void* p = lua_touserdata(L, idx);
-        assert(p);
+        assert(p); // usage: roadnet:method_name()
         return *(T*)p;
     }
 
@@ -153,6 +153,7 @@ namespace roadnet::lua {
             } else {
                 lua_pushnil(L);
             }
+            return 1;
         }
         static int map_coord(lua_State* L) {
             auto& w = class_get<roadnet::world>(L, 1);
@@ -306,6 +307,7 @@ namespace roadnet::lua {
                 { "create_lorry", create_lorry},
                 { "create_endpoint", create_endpoint},
                 { "push_lorry", push_lorry },
+                { "pop_lorry", pop_lorry},
                 { "place_lorry", place_lorry },
                 { "map_coord", map_coord },
                 { "each_lorry", each_lorry },

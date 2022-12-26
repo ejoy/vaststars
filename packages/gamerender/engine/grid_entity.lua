@@ -53,6 +53,8 @@ function M.create(name, width, height, unit, srt)
 	pids[#pids+1] = ipl.add_linelist(p1, LINE_WIDTH, COLOR, material, srt)
 	pids[#pids+1] = ipl.add_linelist(p2, LINE_WIDTH * 2, COLOR, material, srt)
 
+	log.info("create grid entity")
+
 	local outer_proxy = {
 		pids = pids,
 		show = function(self, b)
@@ -63,6 +65,16 @@ function M.create(name, width, height, unit, srt)
 				end
                 ivs.set_state(e, "main_view", b)
                 ivs.set_state(e, "selectable", b)
+			end
+		end,
+		remove = function(self)
+			log.info("remove grid entity")
+			for _, eid in ipairs(self.pids) do
+				local e <close> = w:entity(eid)
+				if not e then
+					return
+				end
+				w:remove(eid)
 			end
 		end,
 	}

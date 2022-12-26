@@ -25,21 +25,19 @@ local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local DISABLE_FPS = require("debugger").disable_fps
 local SHOW_LOAD_RESOURCE = not require("debugger").disable_load_resource
+local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
+local create_builder = ecs.require "editor.builder"
+
+local rotate_mb = mailbox:sub {"rotate"} -- 旋转建筑
+local confirm_mb = mailbox:sub {"confirm"} -- 建造
+local cancel_mb = mailbox:sub {"cancel"} -- 取消
+local confirm_cancel_mb = mailbox:sub {"confirm_cancel"} -- 取消已确定的建筑
+local iworld = require "gameplay.interface.world"
+local tracedoc = require "utility.tracedoc"
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
-
-local construct_point_mb = mailbox:sub {"construct_point"}
-local teardown_point_mb = mailbox:sub {"teardown_point"}
-
 local construct_begin_mb = mailbox:sub {"construct_begin"} -- 建造 -> 建造模式
-local dismantle_begin_mb = mailbox:sub {"dismantle_begin"} -- 建造 -> 拆除模式
-local rotate_mb = mailbox:sub {"rotate"} -- 旋转建筑
-local construct_confirm_mb = mailbox:sub {"construct_confirm"} -- 确认放置
-local construct_complete_mb = mailbox:sub {"construct_complete"} -- 开始施工
-local dismantle_complete_mb = mailbox:sub {"dismantle_complete"} -- 开始拆除
-local cancel_mb = mailbox:sub {"cancel"} -- 主界面左上角返回按钮
 local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> 游戏设置
-local headquater_mb = mailbox:sub {"headquater"} -- 主界面左下角 -> 指挥中心
 local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研中心
 local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
 local laying_pipe_begin_mb = mailbox:sub {"laying_pipe_begin"} -- 铺管开始
@@ -47,25 +45,21 @@ local laying_pipe_cancel_mb = mailbox:sub {"laying_pipe_cancel"} -- 铺管取消
 local laying_pipe_confirm_mb = mailbox:sub {"laying_pipe_confirm"} -- 铺管结束
 local open_taskui_event = mailbox:sub {"open_taskui"}
 local load_resource_mb = mailbox:sub {"load_resource"}
+local construct_mb = mailbox:sub {"construct"}
 local single_touch_mb = world:sub {"single_touch"}
 local inventory = global.inventory
 local pickup_mb = world:sub {"pickup"}
+local handle_pickup = true
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 local builder
-local last_prototype_name
+local iroadnet = ecs.require "roadnet"
+local ltask = require "ltask"
+local ltask_now = ltask.now
+local last_update_time
 
--- TODO: we really need to get headquater object?
-local function get_headquater_object_id()
-    for id in objects:select("CONSTRUCTED", "headquater", true) do
-        return id
-    end
-end
-
-local function _has_teardown_entity()
-    for _ in objects:select("TEMPORARY", "teardown", true) do
-        return true
-    end
-    return false
+local function _gettime()
+    local _, t = ltask_now() --10ms
+    return t * 10
 end
 
 local function _get_construct_menu()
@@ -88,24 +82,6 @@ local function _get_construct_menu()
         construct_menu[#construct_menu+1] = m
     end
     return construct_menu
-end
-
-local _show_grid_entity ; do
-    local igrid_entity = ecs.require "engine.grid_entity"
-    local obj
-    function _show_grid_entity(b)
-        if b then
-            if not obj then
-                obj = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = {0, 8.5, 0}})
-            else
-                obj:show(true)
-            end
-        else
-            if obj then
-                obj:show(false)
-            end
-        end
-    end
 end
 
 ---------------
@@ -166,160 +142,52 @@ function M:update_tech(datamodel, tech)
     else
         datamodel.show_tech_progress = false
         datamodel.tech_count = get_new_tech_count(global.science.tech_list)
-        -- world:pub {"ui_message", "tech_finish_animation"}
     end
 end
 
 function M:stage_ui_update(datamodel)
-    -- TODO: remove this
-    --
-    for _, _, _, double_confirm in construct_begin_mb:unpack() do
-        if not global.tech_finish_pop then
-            idetail.unselected()
-            if builder then
-                if builder:check_unconfirmed(double_confirm) then
-                    world:pub {"ui_message", "show_unconfirmed_double_confirm"}
-                    goto continue
-                end
-            end
-
-            if not double_confirm then
-                world:pub {"ui_message", "unconfirmed_double_confirm_continuation"}
-                goto continue
-            end
-
-            _show_grid_entity(true)
-            ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
-            datamodel.show_rotate = false
-            datamodel.show_confirm = false
-            datamodel.show_construct_complete = false
-            gameplay_core.world_update = false
-            global.mode = "construct"
-            camera.transition("camera_construct.prefab")
-            last_prototype_name = nil
-
-            inventory:flush()
-            datamodel.construct_menu = _get_construct_menu()
-            ipower_line.show_supply_area()
-        end
-        ::continue::
-    end
-
-    for _, _, _, double_confirm in dismantle_begin_mb:unpack() do
-        if global.mode == "teardown" then -- already in teardown mode
-            goto continue
-        end
-        idetail.unselected()
-        if builder then
-            if builder:check_unconfirmed(double_confirm) then
-                world:pub {"ui_message", "show_unconfirmed_double_confirm"}
-                goto continue
-            end
-
-            builder:clean(datamodel)
-            builder = nil
-        end
-
-        if not double_confirm then
-            world:pub {"ui_message", "unconfirmed_double_confirm_continuation"}
-            goto continue
-        end
-
-        _show_grid_entity(false)
-        ieditor:revert_changes({"TEMPORARY", "CONFIRM", "POWER_AREA"})
-        datamodel.show_teardown = _has_teardown_entity()
-
-        global.mode = "teardown"
-        gameplay_core.world_update = false
-        camera.transition("camera_construct.prefab")
-        ::continue::
-    end
-    --
-
-    for _, _, _, prototype_name in construct_point_mb:unpack() do
-        global.mode = "construct"
-        gameplay_core.world_update = false
-
-        if last_prototype_name ~= prototype_name then
-            if builder then
-                builder:clean(datamodel)
-            end
-            builder = create_normalbuilder()
-            local typeobject = iprototype.queryByName("entity", prototype_name)
-            builder:new_entity(datamodel, typeobject)
-            self:flush()
-
-            last_prototype_name = prototype_name
-        end
-    end
-
-    for _, _, _, prototype_name in teardown_point_mb:unpack() do
-        global.mode = "teardown"
-        gameplay_core.world_update = false
-
-        if last_prototype_name ~= prototype_name then
-            if builder then
-                builder:clean(datamodel)
-            end
-            builder = create_normalbuilder()
-            local typeobject = iprototype.queryByName("entity", prototype_name)
-            builder:new_entity(datamodel, typeobject)
-            self:flush()
-
-            last_prototype_name = prototype_name
-        end
-    end
-
     for _ in rotate_mb:unpack() do
-        assert(gameplay_core.world_update == false)
-        builder:rotate_pickup_object(datamodel)
-    end
-
-    for _ in construct_confirm_mb:unpack() do
-        assert(gameplay_core.world_update == false)
-        builder:confirm(datamodel)
-        self:flush()
-    end
-
-    for _ in construct_complete_mb:unpack() do
-        builder:complete(datamodel)
-        self:flush()
-        builder = nil
-        gameplay_core.world_update = true
-        global.mode = "normal"
-        camera.transition("camera_default.prefab")
-        _show_grid_entity(false)
-    end
-
-    for _ in dismantle_complete_mb:unpack() do
-        ieditor:teardown_complete()
-        global.mode = "normal"
-        gameplay_core.world_update = true
-        camera.transition("camera_default.prefab")
-    end
-
-    for _, _, _, double_confirm in cancel_mb:unpack() do
         if builder then
-            if builder:check_unconfirmed(double_confirm) then
-                world:pub {"ui_message", "show_unconfirmed_double_confirm"}
-                goto continue
-            end
+            builder:rotate_pickup_object(datamodel)
+        end
+    end
 
+    for _ in confirm_mb:unpack() do
+        if builder then
+            builder:confirm(datamodel)
+        end
+        self:flush()
+    end
+
+    for _, _, _, x, y in confirm_cancel_mb:unpack() do
+        local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
+        assert(object)
+        assert(object.object_state == "confirm")
+        objects:remove(object.id, "CONFIRM")
+        iobject.remove(object)
+        global.construct_queue:remove(object.prototype_name, object.id)
+        iui.close("construct_confirm_pop.rml")
+        datamodel.show_construct = false
+    end
+
+    for _ in cancel_mb:unpack() do
+        if builder then
             builder:clean(datamodel)
             builder = nil
         end
+        handle_pickup = true
+    end
 
-        if not double_confirm then
-            world:pub {"ui_message", "unconfirmed_double_confirm_continuation"}
-            goto continue
-        end
+    for _ in construct_begin_mb:unpack() do
+        idetail.unselected()
+        ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
+        datamodel.show_rotate = false
+        datamodel.show_confirm = false
+        last_prototype_name = nil
 
-        ieditor:revert_changes({"TEMPORARY", "CONFIRM", "POWER_AREA"})
-        gameplay_core.world_update = true
-        global.mode = "normal"
-        camera.transition("camera_default.prefab")
-        _show_grid_entity(false)
-        ::continue::
+        inventory:flush()
+        datamodel.construct_menu = _get_construct_menu()
+        ipower_line.show_supply_area()
     end
 
     for _, _, _, is_task in open_taskui_event:unpack() do
@@ -330,24 +198,13 @@ function M:stage_ui_update(datamodel)
     end
 
     --任务完成提示界面
-    if not global.tech_finish_pop then
-        for _ in headquater_mb:unpack() do
-            local object_id = get_headquater_object_id()
-            if object_id then
-                iui.open("chest.rml", object_id)
-            else
-                log.error("can not found headquater")
-            end
-        end
+    for _ in technology_mb:unpack() do
+        gameplay_core.world_update = false
+        iui.open("science.rml")
+    end
 
-        for _ in technology_mb:unpack() do
-            gameplay_core.world_update = false
-            iui.open("science.rml")
-        end
-        
-        for _ in show_setting_mb:unpack() do
-            iui.open("option_pop.rml")
-        end
+    for _ in show_setting_mb:unpack() do
+        iui.open("option_pop.rml")
     end
 
     for _ in laying_pipe_begin_mb:unpack() do
@@ -380,27 +237,24 @@ function M:stage_camera_usage(datamodel)
     end
 
     for _, _, _, prototype_name in construct_entity_mb:unpack() do
-        if last_prototype_name ~= prototype_name then
-            if builder then
-                builder:clean(datamodel)
-            end
-
-            if iprototype.is_pipe_to_ground(prototype_name) then
-                builder = create_pipetogroundbuilder()
-            elseif iprototype.is_pipe(prototype_name) then
-                builder = create_pipebuilder()
-            elseif iprototype.is_road(prototype_name) then
-                builder = create_roadbuilder()
-            else
-                builder = create_normalbuilder()
-            end
-
-            local typeobject = iprototype.queryByName("entity", prototype_name)
-            builder:new_entity(datamodel, typeobject)
-            self:flush()
-
-            last_prototype_name = prototype_name
+        if builder then
+            builder:clean(datamodel)
         end
+
+        if iprototype.is_pipe_to_ground(prototype_name) then
+            builder = create_pipetogroundbuilder()
+        elseif iprototype.is_pipe(prototype_name) then
+            builder = create_pipebuilder()
+        elseif iprototype.is_road(prototype_name) then
+            builder = create_roadbuilder()
+        else
+            builder = create_normalbuilder()
+        end
+
+        local typeobject = iprototype.queryByName("entity", prototype_name)
+        builder:new_entity(datamodel, typeobject)
+        self:flush()
+        handle_pickup = false
     end
 
     for _, state in single_touch_mb:unpack() do
@@ -418,7 +272,7 @@ function M:stage_camera_usage(datamodel)
         for _, pos in ipairs(icamera.screen_to_world(pickup_x, pickup_y, PLANES)) do
             local coord = terrain:get_coord_by_position(pos)
             if coord then
-                local object = objects:coord(coord[1], coord[2])
+                local object = objects:coord(coord[1], coord[2], EDITOR_CACHE_NAMES)
                 if object then
                     return object
                 end
@@ -426,18 +280,38 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
+    local function _get_road(pickup_x, pickup_y)
+        for _, pos in ipairs(icamera.screen_to_world(pickup_x, pickup_y, PLANES)) do
+            local coord = terrain:get_coord_by_position(pos)
+            if coord then
+                local road = iroadnet.editor_get(coord[1], coord[2])
+                if road then
+                    return coord[1], coord[2]
+                end
+            end
+        end
+    end
+
     -- 点击其它建筑 或 拖动时, 将弹出窗口隐藏
     for _, _, x, y in pickup_mb:unpack() do
-        local object = _get_object(x, y)
-        if object then -- object may be nil, such as when user click on empty space
-            if global.mode == "teardown" then
-                ieditor:teardown(object.id)
-                datamodel.show_teardown = _has_teardown_entity()
+        if not handle_pickup then
+            goto continue
+        end
 
-            elseif global.mode == "normal" then
+        local object = _get_object(x, y)
+        local coord_x, coord_y = _get_road(x, y)
+        if object then -- object may be nil, such as when user click on empty space
+            if object.object_state == "constructed" then
                 if idetail.show(object.id) then
                     leave = false
                 end
+            elseif object.object_state == "confirm" then
+                iui.open("construct_confirm_pop.rml", object.srt.t, object.x, object.y)
+                leave = false
+            end
+        elseif coord_x then
+            if idetail.show_road(coord_x, coord_y) then
+                leave = false
             end
         else
             idetail.unselected()
@@ -448,6 +322,7 @@ function M:stage_camera_usage(datamodel)
             leave = false
             break
         end
+        ::continue::
     end
 
     for _ in single_touch_move_mb:unpack() do
@@ -456,6 +331,59 @@ function M:stage_camera_usage(datamodel)
             leave = false
             break
         end
+    end
+
+    for _ in construct_mb:unpack() do
+        local pbuilder = create_builder()
+        for prototype_name in global.construct_queue:for_each() do
+            local typeobject = iprototype.queryByName("item", prototype_name)
+            local count = global.base_chest[typeobject.id] or 0
+            local total_count = global.construct_queue:size(prototype_name)
+            count = math.min(count, total_count)
+            assert(total_count > 0)
+
+            if count > 0 then
+                for i = 1, count do
+                    local object_id = global.construct_queue:pop(prototype_name)
+                    pbuilder:complete(object_id)
+                end
+
+                -- decrease item count
+                assert(iworld.base_chest_pickup(gameplay_core.get_world(), typeobject.id, count))
+            end
+        end
+
+        if builder then
+            builder:clean(datamodel)
+            builder = nil
+        end
+        self:flush()
+
+        datamodel.cur_edit_mode = ""
+        handle_pickup = true
+    end
+
+    --
+    local current = _gettime()
+    last_update_time = last_update_time or current
+    if current - last_update_time > 1000 then
+        last_update_time = current
+        global.base_chest = tracedoc.new(iworld.base_chest(gameplay_core.get_world()))
+    end
+
+    if tracedoc.changed(global.base_chest) or global.construct_queue:changed() then
+        local construct_queue = {}
+        for prototype_name in global.construct_queue:for_each() do
+            local typeobject = iprototype.queryByName("item", prototype_name)
+            local count = global.base_chest[typeobject.id] or 0
+            local total_count = global.construct_queue:size(prototype_name)
+            count = math.min(count, total_count)
+            table.insert(construct_queue, {icon = typeobject.icon, count = count, total_count = total_count})
+        end
+        datamodel.construct_queue = construct_queue
+
+        tracedoc.commit(global.base_chest)
+        global.construct_queue:commmit()
     end
 
     iobject.flush()

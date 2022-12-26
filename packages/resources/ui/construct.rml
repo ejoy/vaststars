@@ -21,12 +21,8 @@
                 transform: scale(1.0);
                 /* box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6), inset -2px -2px 3px rgba(0, 0, 0, .6); */
             }
-            /* button:hover {
-                transform: scale(1.1);
-            } */
             button:active {
                 transform: scale(1.3);
-                /* box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6), inset 2px 2px 3px rgba(0, 0, 0, .6); */
             }
             button#work {
                 position: absolute;
@@ -288,27 +284,22 @@
         <script type="text/x-lua" path = "lua/custom.lua" />
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
-            local unconfirmed_double_confirm_continuation = function() end
             local start = ui_sys.createDataMode("start", {
                 fps_text = " ",           -- fps 信息
                 drawcall_text = " ",      -- drawcall 信息
                 construct_menu = {},
 
-                show_construct_menu = true,        -- 是否显示右侧建造菜单
+                show_construct_menu = false, -- 是否显示右侧建造菜单
                 cur_construct_menu = "",  -- 当前选中的二级建造菜单名
                 cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
                 show_load_resource = false,
 
-                show_construct_complete = false,
-                show_rotate = false,
-                show_confirm = false,
                 show_laying_pipe_begin   = false,
                 show_laying_pipe_cancel  = false,
                 show_laying_pipe_confirm = false,
                 show_laying_road_begin  = false,
                 show_laying_road_cancel = false,
                 show_laying_road_confirm = false,
-                show_teardown = false,
 
                 tech_count = 0,                 --当前可研究的科技数量
                 show_tech_progress = false,     --是否显示科技进度
@@ -317,64 +308,9 @@
                 current_tech_name = "none",     --当前科技名字
                 current_tech_progress = "0%",   --当前科技进度
                 guide_progress = 0,
-                button_selected = ""
+                construct_queue = {}, -- = {{icon = xx, count = xx, total_count = xx}, ...}
+                show_construct = false,
             })
-            -- TODO: remove this
-            --
-            function start.clickConstructBegin(event)
-                if not (start.guide_progress >= 10) then
-                    ui_sys.pub {"dismantle_begin", false}
-                    unconfirmed_double_confirm_continuation = function()
-                        start.cur_edit_mode = 'dismantle'
-                        ui_sys.pub {"dismantle_begin", true}
-                    end
-                else
-                    ui_sys.pub {"construct_begin", false}
-                    unconfirmed_double_confirm_continuation = function()
-                        start.cur_edit_mode = 'construct'
-                        ui_sys.pub {"construct_begin", true}
-                    end
-                end
-            end
-            function start.clickTeardownBegin(event)
-                ui_sys.pub {"dismantle_begin", false}
-                unconfirmed_double_confirm_continuation = function()
-                    start.cur_edit_mode = 'dismantle'
-                    ui_sys.pub {"dismantle_begin", true}
-                end
-            end
-            --
-            function start.ConstructPoint(event)
-                ui_sys.pub {"construct_point", "基建站"}
-                start.button_selected = 'construct_point'
-            end
-            function start.TeardownPoint(event)
-                ui_sys.pub {"teardown_point", "拆除点"}
-                start.button_selected = 'teardown_point'
-            end
-            function start.clickConstructRotate(event)
-                ui_sys.pub {"rotate"}
-            end
-            function start.clickConstructConfirm(event)
-                ui_sys.pub {"construct_confirm"}
-            end
-            function start.clickConstructComplete(event)
-                start.cur_edit_mode = ''
-                ui_sys.pub {"construct_complete"}
-                start.show_construct_menu = true
-            end
-            function start.clickTeardownComplete(event)
-                start.cur_edit_mode = ''
-                ui_sys.pub {"dismantle_complete"}
-            end
-            function start.clickCancel(event)
-                ui_sys.pub {"cancel", false}
-                unconfirmed_double_confirm_continuation = function()
-                    start.cur_edit_mode = ''
-                    ui_sys.pub {"cancel", true}
-                end
-                start.show_construct_menu = true
-            end
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
             end
@@ -383,7 +319,13 @@
                 start.show_construct_menu = false
             end
             function start.showConstructMenu(event)
-                start.show_construct_menu = true
+                start.show_construct_menu = not start.show_construct_menu
+                if start.show_construct_menu then
+                    start.cur_edit_mode = "construct"
+                    ui_sys.pub {"construct_begin", true}
+                else
+                    start.cur_edit_mode = ""
+                end
             end
             function start.clickHeadquater(event)
                 ui_sys.pub {"headquater"}
@@ -406,29 +348,33 @@
             function start.clickTask(event, is_task)
                 ui_sys.pub {"open_taskui", is_task}
             end
-            function start.clickCollapsedBar(event, index)
-            end
             function start.clickLoadResource(event)
                 ui_sys.pub {"load_resource"}
+            end
+            function start.clickConstruct(evnet)
+                ui_sys.pub {"construct"}
             end
             window.addEventListener('mousedown', function(event)
                 ui_sys.world_pub {"ui_message", "leave"}
             end)
 
-            ui_sys.addEventListener({
-                ["show_unconfirmed_double_confirm"] = function()
-                    ui_sys.open("construct_cancel_pop.rml")
-                end,
-                ["unconfirmed_double_confirm_continuation"] = function()
-                    if unconfirmed_double_confirm_continuation then
-                        unconfirmed_double_confirm_continuation()
-                        unconfirmed_double_confirm_continuation = nil
-                    end
-                end,
-            })
-
             start.progress_bar_left = "rotate(0deg)"
             start.progress_bar_right = "rotate(0deg)"
+
+            ui_sys.mapping(start, {
+                {
+                    "construct_queue",
+                    function()
+                        for _, v in ipairs(start.construct_queue) do
+                            if v.count > 0 then
+                                start.show_construct = true
+                                return
+                            end
+                        end
+                        start.show_construct = false
+                    end
+                },
+            })
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
@@ -443,22 +389,10 @@
             </div>
 
             <!-- 建造队列 显示 -->
-            <div class = "building-block" data-if="false">
-                <div class = "building-info">
-                    <div class = "building-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
-                    <div class = "building-num">10/10</div>
-                </div>
-                <div class = "building-info">
-                    <div class = "building-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
-                    <div class = "building-num">10/10</div>
-                </div>
-                <div class = "building-info">
-                    <div class = "building-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
-                    <div class = "building-num">10/10</div>
-                </div>
-                <div class = "building-info">
-                    <div class = "building-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
-                    <div class = "building-num">10/10</div>
+            <div class = "building-block">
+                <div class = "building-info" data-for = "construct_queue">
+                    <div class = "building-pic" data-style-background-image = "it.icon" />
+                    <div class = "building-num">{{it.count}}/{{it.total_count}}</div>
                 </div>
             </div>
             
@@ -491,42 +425,14 @@
                     <div class = "menu-button-text">游戏设置</div>
                 </button>
             </div>
-
-            <!-- 施工返回按钮 -->
-            <div data-if = "cur_edit_mode != ''" data-event-click="clickCancel()" style='position: absolute; left: 0.67vmin; top: 0.67vmin; background-image:"textures/construct/return.texture"; width: 14.67vmin; height: 14.67vmin; background-size:cover;' />
             <!-- 加载资源按钮 -->
             <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left: -5vmin; top: -4vmin;" data-event-click="clickLoadResource()" data-if = "cur_edit_mode == '' && guide_progress >= 10 && show_load_resource">
                 <div class = "menu-button-pic" style='width:8vmin; height:8vmin; background-image:"textures/cmdcenter/big_bag.texture"'/>
             </button>
 
-            <!-- 开始施工 -->
-            <button data-if = "cur_edit_mode == 'construct' && show_construct_complete" data-event-click="clickConstructComplete()" style='position: absolute; right:70vmin;  bottom: 2vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(19,175,240); flex-direction: column; justify-content: center;'>
-                <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
-                <div>开始施工</div>
-            </button>
-
-            <!-- 开始拆除 -->
-            <button data-if = "cur_edit_mode == 'dismantle' && show_teardown" data-event-click="clickTeardownComplete()" style='position: absolute; right:70vmin; bottom: 2vmin; width: 20.00vmin; height: 20.00vmin; background-color: rgb(255, 4, 4); flex-direction: column; justify-content: center;'>
-                <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 10.67vmin; height: 10.67vmin; background-size:cover;'/>
-                <div>开始拆除</div>
-            </button>
-
             <!-- 方向键区域 -->
             <div data-if = "cur_edit_mode == 'construct' || cur_edit_mode == 'dismantle' && 'false'" style='position: absolute; left:2.37vmin;  bottom: 2vmin; width: 35.00vmin; height: 35.00vmin; flex-direction: column; justify-content: center; pointer-events: none;'>
                 <div style='margin: 0 auto; background-image:"textures/construct/joystick.texture"; width: 35vmin; height: 35vmin; background-size:cover; pointer-events: none;'/>
-            </div>
-            
-            <!-- 拆除点 -->
-            <div data-if = "cur_edit_mode == 'construct' && guide_progress >= 5" data-event-click="TeardownPoint()" data-style-border = "button_selected == 'teardown_point' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 45.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(211, 59, 59); flex-direction: column; justify-content: flex-start; border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
-                <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/demolish.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
-                <div style ="font-size: 3.73vmin; top: 2.67vmin;">拆除点</div>
-            </div>
-
-            <!-- 基建站 -->
-            <!-- see also start.clickConstructBegin() -->
-            <div data-if = "cur_edit_mode == 'construct' && guide_progress >= 10" data-event-click="ConstructPoint()" data-style-border = "button_selected == 'construct_point' ? '0.53vmin yellow' : '0.27vmin black'" style='position: absolute; left: 2.37vmin; top: 28.67vmin; width: 22.00vmin; height: 16.00vmin; background-color: rgb(92, 184, 92); flex-direction: column; justify-content: flex-start;  border-radius: 2.00vmin; text-align: center; font-size: 90%;'>
-                <div style='margin: 0 auto; top: 2.67vmin; background-image:"textures/construct/construct.texture"; width: 8.00vmin; height: 8.00vmin; background-size:cover;'/>
-                <div style ="font-size: 4vmin; top: 2.67vmin;">基建站</div>
             </div>
 
             <!-- 右上角：当前科技进度 data-if = "cur_edit_mode == '' && show_tech_progress"-->
@@ -549,28 +455,17 @@
                     <div style='margin: 0 auto; background-image:"textures/common/indicator.texture"; width: 10vmin; height: 10vmin; background-size:cover;'/>
                 </button>
             </div>
-            <!-- 右下角按钮 -->
+
+            <!-- 展开建筑菜单的三角 -->
+            <workbutton class = "panel-switch" data-event-click="showConstructMenu()"/>
+            
             <div style = "pointer-events: none; position: absolute; bottom:0vmin; right:0vmin; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "guide_progress >= 5">
-                <!-- 建造 -->
-                <button data-if = "cur_edit_mode == ''" data-event-click="clickConstructBegin()" style='width: 20.00vmin; height: 20.00vmin; bottom: 2vmin; background-color: rgb(59,211,124); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; background-image:"textures/construct/work.texture"; width: 13.67vmin; height: 13.67vmin; background-size:cover;'/>
-                    <div style="font-size: 5vmin;">建造</div>
-                </button>
-
                 <!-- separator -->
-                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_confirm" />
+                <div style = "width: 2.67vmin;" data-if = "!show_construct" />
                 <!-- 确认放置 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_confirm" data-event-click="clickConstructConfirm()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "show_construct" data-event-click="clickConstruct()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"textures/construct/confirm.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
-                    <div style="font-size: 85%;">确认放置</div>
-                </button>
-
-                <!-- separator -->
-                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_rotate" />
-                <!-- 旋转建筑 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_rotate" data-event-click="clickConstructRotate()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto;background-image:"textures/construct/rotate.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
-                    <div style="font-size: 85%;">旋转建筑</div>
+                    <div style="font-size: 85%;">施工</div>
                 </button>
 
                 <!-- 确认放置水管 -->
@@ -640,7 +535,6 @@
                     </div>
                 </div>
             </div>
-            <workbutton class = "panel-switch" data-event-click="showConstructMenu()" data-if="!show_construct_menu"/>
         </div>
     </body>
 </rml>

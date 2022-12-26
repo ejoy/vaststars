@@ -140,7 +140,6 @@
                 top = "0vmin",
             })
             window.setTimeout(function()
-                ui_sys.pub {"tech_finish_pop_close"}
                 ui_sys.close()
             end, 3000)
             ui_sys.mapping(start, {

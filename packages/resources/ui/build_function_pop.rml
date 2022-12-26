@@ -65,6 +65,8 @@
                 guide_progress = 0,
                 left = "0vmin",
                 top = "0vmin",
+                x = x,
+                y = y,
             })
 
             function start.clickConstructRotate(event)
@@ -96,11 +98,11 @@
             local popup_bound = require "lua.popup_bound"
             ui_sys.mapping(start, {
                 {
-                    function(_, left, top)
+                    function(_, left, top, x, y)
                         local move_camera, _left, _top = popup_bound(left, top, OFFSET_LEFT, OFFSET_TOP, PANDEL_WIDTH, PANDEL_HEIGHT)
                         start.left, start.top = ("%0.2fvmin"):format(_left), ("%0.2fvmin"):format(_top)
                         if move_camera then
-                            ui_sys.world_pub {"ui_message", "move_camera", _left + OFFSET_LEFT, _top + OFFSET_TOP, start.object_id}
+                            ui_sys.world_pub {"ui_message", "move_camera", _left + OFFSET_LEFT, _top + OFFSET_TOP, start.x, start.y}
                         end
                     end,
                     "left", "top",
@@ -118,7 +120,7 @@
             
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_set_recipe"/>
 
-            <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "show_set_recipe" /> <!-- TODO -->
+            <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "show_set_recipe" />
 
             <div class="button-fuction-block" style="top: -3.33vmin;" data-event-click="clickRecipe()" data-if = "show_set_recipe">
                 <button class="button-function" style ='background-image: "textures/assemble/wheel.texture";'/>
@@ -126,8 +128,8 @@
             </div>
 
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "true" />
-            <div class="button-fuction-block" style="top: -3.33vmin;" data-if = "!show_detail" /> <!-- TODO -->
-            <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe && show_detail"  /> <!-- TODO -->
+            <div class="button-fuction-block" style="top: -3.33vmin;" data-if = "!show_detail" />
+            <div class="button-fuction-block" style="top: -5.33vmin;" data-if = "!show_set_recipe && show_detail"  />
 
             <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickDetail()" data-if = "show_detail">
                 <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>

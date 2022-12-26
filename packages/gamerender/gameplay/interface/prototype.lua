@@ -140,8 +140,11 @@ function M.calc_dir(x1, y1, x2, y2)
     end
 end
 
-function M.rotate_area(area, dir)
+function M.rotate_area(area, dir, incw, inch)
+    incw = incw or 0
+    inch = inch or 0
     local w, h = M.unpackarea(area)
+    w, h = w + incw, h + inch
     if dir == 'N' or dir == 'S' then
         return w, h
     elseif dir == 'E' or dir == 'W' then
@@ -157,12 +160,11 @@ function M.move_coord(x, y, dir, dx, dy)
     return x + c.x * dx, y + c.y * dy
 end
 
-function M.rotate_fluidbox(position, direction, area) -- TODO: -> rotate_connection ?
+function M.rotate_connection(position, direction, area)
     local w, h = M.unpackarea(area)
+    w, h = w - 1, h - 1
     local x, y = position[1], position[2]
     local dir = M.rotate_dir(position[3], direction)
-    w = w - 1
-    h = h - 1
     if direction == 'N' then
         return x, y, dir
     elseif direction == 'E' then

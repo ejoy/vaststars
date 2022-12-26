@@ -34,14 +34,14 @@ end
 -- itemid, count
 function M.base_chest_place(world, ...)
     for e in world.ecs:select "base chest:in" do
-        return world:container_place(e.chest.id, ...)
+        return world:container_place(e.chest, ...)
     end
 end
 
 -- itemid, count
 function M.base_chest_pickup(world, ...)
     for e in world.ecs:select "base chest:in" do
-        return world:container_pickup(e.chest.id, ...)
+        return world:container_pickup(e.chest, ...)
     end
 end
 
@@ -75,7 +75,8 @@ function M.base_chest(world)
         for i = 1, typeobject.slots do
             local slot = world:container_get(v.chest, i)
             if slot and slot.item ~= 0 then
-                chest[slot.item] = slot.amount
+                chest[slot.item] = chest[slot.item] or 0
+                chest[slot.item] = chest[slot.item] + slot.amount
             end
         end
         break
