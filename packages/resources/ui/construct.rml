@@ -322,7 +322,7 @@
                 start.show_construct_menu = not start.show_construct_menu
                 if start.show_construct_menu then
                     start.cur_edit_mode = "construct"
-                    ui_sys.pub {"construct_begin", true}
+                    ui_sys.pub {"show_construct_menu"}
                 else
                     start.cur_edit_mode = ""
                 end

@@ -36,7 +36,7 @@ local iworld = require "gameplay.interface.world"
 local tracedoc = require "utility.tracedoc"
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
-local construct_begin_mb = mailbox:sub {"construct_begin"} -- 建造 -> 建造模式
+local show_construct_menu_mb = mailbox:sub {"show_construct_menu"}
 local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> 游戏设置
 local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研中心
 local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
@@ -45,7 +45,7 @@ local laying_pipe_cancel_mb = mailbox:sub {"laying_pipe_cancel"} -- 铺管取消
 local laying_pipe_confirm_mb = mailbox:sub {"laying_pipe_confirm"} -- 铺管结束
 local open_taskui_event = mailbox:sub {"open_taskui"}
 local load_resource_mb = mailbox:sub {"load_resource"}
-local construct_mb = mailbox:sub {"construct"}
+local construct_mb = mailbox:sub {"construct"} -- 施工
 local single_touch_mb = world:sub {"single_touch"}
 local inventory = global.inventory
 local pickup_mb = world:sub {"pickup"}
@@ -178,9 +178,9 @@ function M:stage_ui_update(datamodel)
         handle_pickup = true
     end
 
-    for _ in construct_begin_mb:unpack() do
+    for _ in show_construct_menu_mb:unpack() do
         idetail.unselected()
-        ieditor:revert_changes({"TEMPORARY", "CONFIRM"})
+        ieditor:revert_changes({"TEMPORARY"})
         datamodel.show_rotate = false
         datamodel.show_confirm = false
         last_prototype_name = nil
