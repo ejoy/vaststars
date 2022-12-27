@@ -14,7 +14,7 @@ prototype "组装机残骸" {
         },
     },
     group = {"物流" , "默认"},
-    area = "3x3",
+    area = "5x5",
     slots = 8,
 }
 
