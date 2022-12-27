@@ -316,7 +316,7 @@ local function __add_requirement(prototype_name)
     local info = gameplay_world:chest_slot {
         type = "blue",
         item = prototype_name,
-        amount = 1,
+        amount = 0,
         limit = 1,
     }
 

@@ -37,7 +37,7 @@ local entities = {
     },
     {
         prototype_name = "组装机残骸",
-        dir = "W",
+        dir = "N",
         items = {
             {"科研中心I",1},
 	        {"水电站I",1},
