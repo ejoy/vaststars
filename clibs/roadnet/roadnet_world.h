@@ -28,7 +28,7 @@ namespace roadnet {
         endpoint&   Endpoint(endpointid id);
 
         road_coord coordConvert(map_coord  mc);
-        road_coord coordConvert(loction l, direction dir, uint16_t offset = 0);
+        road_coord coordConvert(loction l, direction dir);
         map_coord  coordConvert(road_coord rc);
 
         void debugEndpointLorry();

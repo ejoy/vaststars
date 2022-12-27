@@ -20,8 +20,8 @@ function c2:ctor(init, pt)
             limit = v[2],
         }
     end
-    local endpoint = iendpoint.create(world, init, pt)
 
+    local endpoint = iendpoint.create(world, init, pt)
     local asize = #chest
     local index = world:container_create(endpoint, table.concat(chest), asize)
 
@@ -33,7 +33,6 @@ function c2:ctor(init, pt)
             status = 0,
             progress = 0,
         },
-        endpoint_changed = true,
         chest = {
             endpoint = endpoint,
             index = index,

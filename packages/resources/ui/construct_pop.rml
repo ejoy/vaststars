@@ -68,8 +68,8 @@
                 ui_sys.pub {"rotate"}
             end
 
-            function start.clickConfirm(event)
-                ui_sys.pub {"confirm"}
+            function start.clickBuild(event)
+                ui_sys.pub {"build"}
             end
 
             function start.clickCancel(event)
@@ -112,7 +112,7 @@
 
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "true" /> <!-- separator -->
 
-            <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickConfirm()" data-if = "show_confirm">
+            <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickBuild()" data-if = "show_confirm">
                 <button class="button-function" style ='background-image: "textures/construct/confirm.texture";'/>
                 <div class="title-text">修建</div>
             </div>

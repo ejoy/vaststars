@@ -157,7 +157,6 @@ local function set_direction(_, e, dir)
     if entity.direction ~= d then
         entity.direction = d
         e.fluidbox_changed = true
-        e.endpoint_changed = true
     end
 end
 

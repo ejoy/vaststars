@@ -54,7 +54,7 @@ function mt:changed()
     return tracedoc.changed(self.__queue)
 end
 
-function mt:commmit()
+function mt:commit()
     return tracedoc.commit(self.__queue)
 end
 

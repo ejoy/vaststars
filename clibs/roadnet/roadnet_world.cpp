@@ -533,18 +533,22 @@ namespace roadnet {
         return road_coord::invalid();
     }
 
-    road_coord world::coordConvert(loction l, direction dir, uint16_t offset) {
+    road_coord world::coordConvert(loction l, direction dir) {
         if (auto cross = findCrossRoad(l); cross) {
             return road_coord::invalid();
         }
         assert(dir != direction::n);
         assert(map.size() != 0);
+        uint8_t m = getMapBits(map, l);
+        if (m == 0) {
+            return road_coord::invalid();
+        }
 
         auto result = findNeighbor(map, l, reverse(dir));
         if (auto cross = findCrossRoad(result.l); cross) {
             roadid id = crossAry[cross.id].neighbor[(uint8_t)reverse(result.dir)];
             assert(id);
-            uint16_t n = road::straight::N * result.n + offset;
+            uint16_t n = road::straight::N * result.n + 0;
             uint16_t offset = straightAry[id.id].len - n - 1;
             return {id, offset};
         }

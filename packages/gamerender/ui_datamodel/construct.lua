@@ -28,9 +28,9 @@ local SHOW_LOAD_RESOURCE = not require("debugger").disable_load_resource
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_builder = ecs.require "editor.builder"
 
-local rotate_mb = mailbox:sub {"rotate"} -- 旋转建筑
-local confirm_mb = mailbox:sub {"confirm"} -- 建造
-local cancel_mb = mailbox:sub {"cancel"} -- 取消
+local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转建筑
+local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
+local cancel_mb = mailbox:sub {"cancel"} -- construct_pop.rml -> 取消
 local confirm_cancel_mb = mailbox:sub {"confirm_cancel"} -- 取消已确定的建筑
 local iworld = require "gameplay.interface.world"
 local tracedoc = require "utility.tracedoc"
@@ -152,7 +152,7 @@ function M:stage_ui_update(datamodel)
         end
     end
 
-    for _ in confirm_mb:unpack() do
+    for _ in build_mb:unpack() do
         if builder then
             builder:confirm(datamodel)
         end
@@ -383,7 +383,7 @@ function M:stage_camera_usage(datamodel)
         datamodel.construct_queue = construct_queue
 
         tracedoc.commit(global.base_chest)
-        global.construct_queue:commmit()
+        global.construct_queue:commit()
     end
 
     iobject.flush()

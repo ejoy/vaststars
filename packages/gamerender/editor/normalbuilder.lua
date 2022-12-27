@@ -302,6 +302,28 @@ local function touch_end(self, datamodel)
     end
 end
 
+local function __add_requirement(prototype_name)
+    local gameplay_core = require "gameplay.core"
+    local gameplay_world = gameplay_core.get_world()
+
+    local function get_base_chest(world)
+        local ecs = world.ecs
+        for v in ecs:select "base entity:in chest:in" do
+            return v.chest
+        end
+    end
+
+    local info = gameplay_world:chest_slot {
+        type = "blue",
+        item = prototype_name,
+        amount = 1,
+        limit = 1,
+    }
+
+    local c = assert(get_base_chest(gameplay_world))
+    gameplay_world:container_add(c, info)
+end
+
 local iflow_connector = require "gameplay.interface.flow_connector"
 local function confirm(self, datamodel)
     local pickup_object = assert(self.pickup_object)
@@ -331,7 +353,15 @@ local function confirm(self, datamodel)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
-    global.construct_queue:put(pickup_object.prototype_name, pickup_object.id)
+    do
+        global.construct_queue:put(pickup_object.prototype_name, pickup_object.id)
+        local typeobject = iprototype.queryByName("item", pickup_object.prototype_name)
+        local count = global.base_chest[typeobject.id] or 0
+        local request_count = global.construct_queue:size(pickup_object.prototype_name)
+        if count < request_count then
+            __add_requirement(pickup_object.prototype_name)
+        end
+    end
 
     self.pickup_object = nil
     if self.road_entrance then

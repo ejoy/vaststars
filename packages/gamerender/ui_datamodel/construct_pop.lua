@@ -8,7 +8,7 @@ local math3d = require "math3d"
 
 local rotate_mb = mailbox:sub {"rotate"}
 local cancel_mb = mailbox:sub {"cancel"}
-local confirm_mb = mailbox:sub {"confirm"}
+local build_mb = mailbox:sub {"build"}
 
 ---------------
 local M = {}
@@ -41,8 +41,8 @@ function M:stage_ui_update(datamodel)
         iui.redirect("construct.rml", "cancel")
     end
 
-    for _ in confirm_mb:unpack() do
-        iui.redirect("construct.rml", "confirm")
+    for _ in build_mb:unpack() do
+        iui.redirect("construct.rml", "build")
     end
 end
 

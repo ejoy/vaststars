@@ -34,7 +34,6 @@ function c:ctor(init, pt)
     local endpoint = iendpoint.create(world, init, pt)
     local index, asize = createChest(world, pt.inputs, endpoint)
     local e = {
-        endpoint_changed = true,
         chest = {
             endpoint = endpoint,
             index = index,
