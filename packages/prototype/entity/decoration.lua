@@ -19,7 +19,7 @@ prototype "排水口残骸" {
     construct_detector = {"exclusive"},
     type = {"entity"},
     group = {"物流" , "默认"},
-    area = "2x2",
+    area = "3x3",
     slots = 7,
 }
 
@@ -30,7 +30,7 @@ prototype "抽水泵残骸" {
     construct_detector = {"exclusive"},
     type = {"entity"},
     group = {"物流" , "默认"},
-    area = "2x2",
+    area = "3x3",
     slots = 11,
 }
 

@@ -69,7 +69,7 @@ local entities = {
             {"破损运输车辆",20},
         },
         x = 118,
-        y = 122,
+        y = 121,
     },
     {
         prototype_name = "排水口残骸",
