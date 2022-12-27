@@ -324,10 +324,9 @@ local function confirm(self, datamodel)
     datamodel.show_rotate = false
     --
     if typeobject.supply_area and typeobject.supply_distance then
-        local coord = coord_transform:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, pickup_object.dir, 1, 1))
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({key = pickup_object.id, targets = {}, x = coord[1], y = coord[2], w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance}, true)
+        ipower:merge_pole({key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance}, true)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
