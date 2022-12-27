@@ -26,6 +26,7 @@ local igrid_entity = ecs.require "engine.grid_entity"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
+local iroadnet = ecs.require "roadnet"
 
 local function _get_state(prototype_name, ok)
     local typeobject = iprototype.queryByName("entity", prototype_name)
@@ -199,25 +200,25 @@ local function touch_move(self, datamodel, delta_vec)
 
     local x, y
     self.pickup_object, x, y = __align(self.pickup_object)
+    x, y = _building_to_logisitic(x, y)
     if not x then
         pickup_object.state = _get_state(pickup_object.prototype_name, false)
         datamodel.show_confirm = false
         return
     end
+    pickup_object.x, pickup_object.y = x, y
 
     local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
 
     if self.road_entrance then
-        local dx, dy = _building_to_logisitic(x, y)
-        local road_entrance_position = _get_road_entrance_position(typeobject, dx, dy, pickup_object.dir)
+        local road_entrance_position = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
         self.road_entrance:set_srt(mc.ONE, ROTATORS[pickup_object.dir], road_entrance_position)
 
         local t = {}
         for _, dir in ipairs(ALL_DIR) do
             local _, dx, dy = _get_road_entrance_position(typeobject, x, y, dir)
             if dx and dy then
-                local road = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
-                if road and iprototype.is_road(road.prototype_name) then
+                if iroadnet.editor_get(dx, dy) then
                     t[#t+1] = dir
                 end
             end
