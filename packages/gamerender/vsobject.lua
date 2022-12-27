@@ -29,6 +29,9 @@ local FLUIDFLOW_CHARTREUSE <const> = math3d.constant("v4", {1.2, 2.5, 0.0, 0.55}
 local FLUIDFLOW_CHOCOLATE <const> = math3d.constant("v4", {2.1, 2.0, 0.3, 0.55})
 local FLUIDFLOW_DARKVIOLET <const> = math3d.constant("v4", {1.4, 0.0, 2.1, 0.55})
 
+local CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
+local CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
+
 local typeinfos = {
     ["indicator"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已确认
     ["construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 0}, -- 未确认, 合法
@@ -52,10 +55,10 @@ for _, typeobject in pairs(iprototype.each_maintype "entity") do
         local ew, eh = iprototype.unpackarea(typeobject.area)
         assert(w == h)
         assert(ew == eh)
-        typeinfos[("power_pole_construct_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_COLOR_INVALID, block_edge_size = (w - ew) * 10}
-        typeinfos[("power_pole_invalid_construct_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_COLOR_INVALID, block_edge_size = (w - ew) * 10}
-        typeinfos[("power_pole_selected_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_COLOR_INVALID, block_edge_size = (w - ew) * 10}
-        typeinfos[("power_pole_confirm_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_COLOR_INVALID, block_edge_size = (w - ew) * 10}
+        typeinfos[("power_pole_construct_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}
+        typeinfos[("power_pole_invalid_construct_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED, block_edge_size = (w - ew) * 10}
+        typeinfos[("power_pole_selected_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}
+        typeinfos[("power_pole_confirm_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED, block_edge_size = (w - ew) * 10}
     end
 end
 

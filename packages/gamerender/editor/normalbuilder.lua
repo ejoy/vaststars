@@ -428,7 +428,7 @@ local function clean(self, datamodel)
         self.grid_entity:remove()
     end
 
-    ieditor:revert_changes({"TEMPORARY"})
+    ieditor:revert_changes({"TEMPORARY", "POWER_AREA"})
     inventory:revert()
     datamodel.show_confirm = false
     datamodel.show_rotate = false
