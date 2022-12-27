@@ -202,7 +202,11 @@ local function move_delta(object, delta_vec, coord_transform, method, area_inc)
     coord_transform = coord_transform or terrain
     method = method or "align"
 
-    local vsobject = assert(vsobject_manager:get(object.id))
+    local vsobject = vsobject_manager:get(object.id)
+    if not vsobject then
+        return
+    end
+
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
     local position = math3d.ref(math3d.add(object.srt.t, delta_vec))
     local coord = coord_transform[method](coord_transform, position, iprototype.rotate_area(typeobject.area, object.dir, area_inc, area_inc))
