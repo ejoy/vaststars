@@ -11,7 +11,6 @@ local dragdrop_camera_sys = ecs.system "dragdrop_camera_system"
 local single_touch_mb = world:sub {"single_touch"}
 local mouse_wheel_mb    = world:sub {"mouse_wheel"}
 local ui_message_move_camera_mb = world:sub {"ui_message", "move_camera"}
-local iterrain = ecs.require "terrain"
 
 local cam_target = math3d.ref()
 local cam_dir = math3d.ref()
@@ -142,7 +141,6 @@ function dragdrop_camera_sys:camera_usage()
         local ui_position = camera.screen_to_world(left / 100 * vmin, top / 100 * vmin, PLANES)[1]
 
         local delta = math3d.set_index(math3d.sub(position, ui_position), 2, 0) -- the camera is always moving in the x/z axis and the y axis is always 0
-        camera.move({t = math3d.add(delta, cam_pos)})
-        update_camera_position(delta)
+        iom.move_delta(ce, delta)
     end
 end
