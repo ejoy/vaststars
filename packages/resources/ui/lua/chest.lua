@@ -43,13 +43,12 @@ local function update_category(category)
 
     start.slot_count = #start.sub_inventory
     if category == "全部" then
-        start.slot_count = math.max(start.max_slot_count, start.slot_count)
+        start.slot_count = math.min(start.max_slot_count, start.slot_count)
     end
     start("sub_inventory")
 
     -- <!-- tag page begin -->
     start.page:on_dirty_all(start.slot_count)
-    start.page:show_detail(select_item_index, true)
     -- <!-- tag page end -->
 end
 
@@ -59,58 +58,25 @@ end
 
 function start.clickCategory(event, category)
     start.cur_item_category = category
-    start.page:show_detail(select_item_index, false)
     select_item_index = nil
     update_category(category)
-end
-
-function start.clickToChest(event, index)
-    if start.sub_inventory[index] then
-        local i = start.sub_inventory[index]
-        ui_sys.pub {"to_chest", start.object_id, i.id, i.count}
-        -- <!-- tag page begin -->
-        start.page:show_detail(select_item_index, false)
-        select_item_index = nil
-        -- <!-- tag page end -->
-    end
-end
-
-function start.clickToHeadquater(event, index)
-    if start.sub_inventory[index] then
-        local i = start.sub_inventory[index]
-        ui_sys.pub {"to_headquater", start.object_id, i.id, i.count}
-        -- <!-- tag page begin -->
-        start.page:show_detail(select_item_index, false)
-        select_item_index = nil
-        -- <!-- tag page end -->
-    end
-end
-
-function start.clickBlankSlot(event)
-    start.page:show_detail(select_item_index, false)
-    select_item_index = nil
-    if not start.is_headquater then
-        ui_sys.open("headquater_inventory.rml", start.object_id)
-    end
-end
-
-function start.clickBlank(event)
-    start.page:show_detail(select_item_index, false)
-    select_item_index = nil
 end
 
 -- <!-- tag page begin -->
 local function page_item_update(item, index)
     item.removeEventListener('click')
     if index > #start.sub_inventory then
-        item.outerHTML = '<div class="item" style="width:100%; height:100%;"/>'
-        if index <= start.slot_count then
-            item.addEventListener('click', start.clickBlankSlot)
-        else
-            item.addEventListener('click', start.clickBlank)
-        end
+        return
     else
-        item.outerHTML = ([[<div class="item" style="width:100%%; height:100%%; background-size: cover; backgroundImage: %s;"> <div class="item-count">%s</div> </div>]]):format(start.sub_inventory[index].icon, start.sub_inventory[index].count)
+        item.outerHTML = ([[
+            <div class="single-item-block">
+                <div class="single-item">
+                    <div class="single-item-icon" style = "background-image: %s;" />
+                    <div class="single-item-title">%s</div>
+                </div>
+                <div class = "single-item-title" style="font-size: 4vmin; text-align: left;">X %s</div>
+            </div>
+        ]]):format(start.sub_inventory[index].icon, start.sub_inventory[index].name, start.sub_inventory[index].count)
         if select_item_index ~= index then
             item.style.border = unselect_style_border
         else
@@ -123,10 +89,8 @@ local function page_item_update(item, index)
                 if v then
                     v.item.style.border = unselect_style_border
                 end
-                start.page:show_detail(select_item_index, false)
             end
             select_item_index = index
-            start.page:show_detail(select_item_index, true)
             ui_sys.pub {"click_item", start.sub_inventory[index].id}
         end)
     end
@@ -134,29 +98,9 @@ end
 
 local page_item_init = page_item_update
 
-local function page_item_detail_renderer(index)
-    if start.is_headquater then -- only normal chest would show item's detail
-        return
-    end
-    local detail = document.createElement "div"
-    detail.outerHTML = ([[
-            <div class="button-exchange-block" style = "background-color: rgb(203, 118, 24); width: 88vmin; height: 12vmin; border: 1px rgb(89, 73, 39);" data-if="guide_progress >= 10">
-                <button class="button-exchange" style = "background-color: rgb(0,176,80); width: 30.00vmin;" data-event-click = "clickToChest(%s)">
-                    <div class = "button-exchange-box" style='width:8vmin; height:8vmin; background-image: "textures/cmdcenter/send_material.texture";'/>
-                    <div class = "button-exchange-text">指挥中心转箱子</div>
-                </button>
-                <button class="button-exchange" style = "background-color: rgb(0,176,80); width: 30.00vmin;" data-event-click = "clickToHeadquater(%s)">
-                    <div class = "button-exchange-box" style='width:8vmin; height:8vmin; background-image: "textures/cmdcenter/fetch_material.texture";'/>
-                    <div class = "button-exchange-text">箱子转指挥中心</div>
-                </button>
-            </div>
-    ]]):format(index, index)
-    return detail
-end
-
 local pageclass = require "page"
 window.customElements.define("page", function(e)
-    start.page = pageclass.create(document, e, page_item_init, page_item_update, page_item_detail_renderer)
+    start.page = pageclass.create(document, e, page_item_init, page_item_update)
 end)
 -- <!-- tag page end -->
 

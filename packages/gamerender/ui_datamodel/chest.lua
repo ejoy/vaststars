@@ -10,9 +10,6 @@ local itypes = require "gameplay.interface.types"
 local objects = require "objects"
 local irecipe = require "gameplay.interface.recipe"
 local click_item_mb = mailbox:sub {"click_item"}
-local to_chest_mb = mailbox:sub {"to_chest"}
-local to_headquater_mb = mailbox:sub {"to_headquater"}
-local iworld = require "gameplay.interface.world"
 
 local mt = {}
 function mt:__index(k)
@@ -23,11 +20,7 @@ local item_crafting_recipe = setmetatable({}, mt)   -- item id -> crafting recip
 local item_crafting_entities = setmetatable({}, mt) -- item id -> crafting entity info
 local category_to_entities = setmetatable({}, mt)
 
-for _, typeobject in pairs(iprototype.each_maintype("entity")) do
-    if not iprototype.has_type(typeobject.type, "assembling") then
-        goto continue
-    end
-
+for _, typeobject in pairs(iprototype.each_maintype("entity", "assembling")) do
     if typeobject.recipe then -- default recipe, such as "miner"
         local typeobject_recipe = assert(iprototype.queryByName("recipe", typeobject.recipe))
         category_to_entities[typeobject_recipe.category][typeobject.id] = {icon = typeobject.icon, name = typeobject.name}
@@ -40,7 +33,6 @@ for _, typeobject in pairs(iprototype.each_maintype("entity")) do
             end
         end
     end
-    ::continue::
 end
 
 local function _has_type(prototype, type)
@@ -141,10 +133,9 @@ function M:create(object_id)
     return {
         object_id = object_id, -- for update
         prototype_name = iprototype.show_prototype_name(typeobject),
-        background = typeobject.background,
+        background = typeobject.background, -- The picture displayed on the far left when the UI is opened.
         item_category = item_category,
         inventory = get_inventory(object_id),
-        is_headquater = false,
         item_prototype_name = "",
         max_slot_count = typeobject.slots,
     }
@@ -158,67 +149,6 @@ function M:stage_ui_update(datamodel)
         datamodel.item_info = item_crafting_recipe[tonumber(prototype)] or {}
         datamodel.entities = item_crafting_entities[tonumber(prototype)] or {}
         self:flush()
-    end
-
-    for _, _, _, chest_object_id, prototype, count in to_chest_mb:unpack() do
-        local headquater_item_counts = iworld.base_chest(gameplay_core.get_world())
-        if not headquater_item_counts[prototype] then
-            log.info(("can not found item `%s`"):format(prototype))
-            goto continue
-        end
-
-        local chest_object = objects:get(chest_object_id)
-        if not chest_object then
-            log.error(("can not found chest `%s`"):format(chest_object_id))
-            goto continue
-        end
-
-        local chest_e = gameplay_core.get_entity(chest_object.gameplay_eid)
-        if not chest_e then
-            log.error(("can not found chest `%s`"):format(chest_object_id))
-            goto continue
-        end
-
-        local chest_item_counts = ichest:item_counts(gameplay_core.get_world(), chest_e)
-        if not chest_item_counts[prototype] then
-            log.info(("can not found item `%s`"):format(prototype))
-            goto continue
-        end
-
-        --
-        local typeobject_item = iprototype.queryById(prototype)
-        local pickup_count = math.min(typeobject_item.stack - count, headquater_item_counts[prototype])
-        if pickup_count > 0 then
-            iworld.base_chest_pickup_place(gameplay_core.get_world(), chest_e.chest.id, prototype, pickup_count, true)
-        end
-        self:flush()
-        ::continue::
-    end
-
-    for _, _, _, chest_object_id, prototype, count in to_headquater_mb:unpack() do
-        local chest_object = objects:get(chest_object_id)
-        if not chest_object then
-            log.error(("can not found chest `%s`"):format(chest_object_id))
-            goto continue
-        end
-
-        local chest_e = gameplay_core.get_entity(chest_object.gameplay_eid)
-        if not chest_e then
-            log.error(("can not found chest `%s`"):format(chest_object_id))
-            goto continue
-        end
-
-        local chest_item_counts = ichest:item_counts(gameplay_core.get_world(), chest_e)
-        if not chest_item_counts[prototype] then
-            log.info(("can not found item `%s`"):format(prototype))
-            goto continue
-        end
-        local typeobject_item = iprototype.queryById(prototype)
-        assert(count <= typeobject_item.stack)
-
-        iworld.base_chest_pickup_place(gameplay_core.get_world(), chest_e.chest.id, prototype, count, false)
-        self:flush()
-        ::continue::
     end
 
     update(datamodel, datamodel.object_id) -- TODO

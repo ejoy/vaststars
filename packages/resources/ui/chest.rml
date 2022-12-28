@@ -1,18 +1,47 @@
 <rml>
     <head>
-        <style path = "common/building_style.rcss"/>
-        <style path = "common/listpage_style.rcss"/>
         <style>
             body {
                 font: 100% "宋体";
             }
-            .building-info {
-                margin-top:1em;
-                width: 28%;
-                height:80%;
-                flex-direction: column;
+            .single-item-block {
+                width: 35.37vmin;
+                height: 11.70vmin;
+                border: 1px rgb(89, 73, 39);
+                flex-direction: row;
+                justify-content: flex-start;
                 align-items: center;
-                justify-content: space-evenly;
+                background-color:burlywood;
+            }
+            .region-title {
+                width: 33%;
+                height: 100%;
+                -webkit-text-stroke: 0.2vmin #000;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                font-size: 5vmin;
+                text-align: center;
+            }
+            .single-item {
+                flex-direction: column;
+                align-items:center;
+                justify-content:center;
+                background-size:cover;
+                height:100%;
+                width:50%;
+            }
+            .single-item-icon {
+                width: 8.00vmin;
+                height: 8.00vmin;
+                background-size: cover;
+            }
+            .single-item-title {
+                font-size: 2.80vmin;
+                text-align: center;
+                color:rgb(255, 255, 255);
+                -webkit-text-stroke: 0.3vmin rgb(0, 0, 0);
+                width: 50%;
             }
             .drone-title-block {
                 width:21%;
@@ -38,68 +67,11 @@
                 text-align: left;
                 margin-bottom: 0.2em;
             }
-            .item-info-block {
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                width:100%;
-                height:30%;
-            }
             .item-recipe-block {
                 flex-direction: column;
                 align-items: center;
                 width:100%;
                 height:50%;
-            }
-            .item-material-block {
-                flex-direction: column;
-                align-items: center;
-                width:100%;
-                height:30%;
-            }
-            .item-building-block {
-                flex-direction: column;
-                align-items: center;
-                width:100%;
-                height:20%;
-            }
-            .pre-title-block {
-                justify-content: center;
-                width:20%;
-                height:5vmin; 
-                background-color: rgb(255,217,102);
-                border-radius: 0.37vmin;
-                border: 0.13vmin rgb(89, 73, 39);
-                font-size: 3.47vmin;
-                color:rgb(255,255,255);
-                -webkit-text-stroke: 0.13vmin rgb(89, 73, 39);
-                text-align: center;
-            }
-            .small-item-1 {
-                flex-direction: column;
-                align-items:center;
-                justify-content:flex-end;
-                background-color: rgb(250, 205, 9);
-                border: 0.27vmin rgb(89, 73, 39);
-                background-size:cover;
-                width: 8.00vmin;
-                height: 8.00vmin;
-                font-size: 4.40vmin;
-            }
-            .small-item-count {
-                margin-bottom: -0.1em;
-                font-size: 4vmin;
-                text-align:center;
-                color:rgb(87, 238, 0);
-                -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);
-            }
-            .small-arrow {
-                margin: auto 0.2em;
-                width:61px;
-                height:47px;
-                background-image:"textures/exchange/right_arrow.texture";
-                background-size:cover;
-                transform: rotate(180deg)
             }
             .small-building-block{
                 flex-direction: column;
@@ -118,151 +90,55 @@
                 -webkit-text-stroke: 1px rgb(0, 0, 0);
                 text-align: center;
             }
+            .small-item-1 {
+                flex-direction: column;
+                align-items:center;
+                justify-content:flex-end;
+                background-color: rgb(250, 205, 9);
+                border: 0.27vmin rgb(89, 73, 39);
+                background-size:cover;
+                width: 8.00vmin;
+                height: 8.00vmin;
+                font-size: 4.40vmin;
+            }
+            .small-arrow {
+                margin: auto 0.2em;
+                width:61px;
+                height:47px;
+                background-image:"textures/exchange/right_arrow.texture";
+                background-size:cover;
+                transform: rotate(180deg)
+            }
+            .small-item-count {
+                margin-bottom: -0.1em;
+                font-size: 4vmin;
+                text-align:center;
+                color:rgb(87, 238, 0);
+                -webkit-text-stroke: 0.2vmin rgb(0, 0, 0);
+            }
         </style>
+        <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" path = "lua/chest.lua" />
     </head>
     <body>
         <div class="item-container-region"  data-model="start">
-            <div class="panel" style = "width: 45%;">
-                <div class="column" style="width:100%; height:100%;" data-if="!show_item_info">
-                    <!-- 指挥中心标题 start -->
-                    <div class="header" id = "item-name-block">
-                        <button class = "back-button" data-event-click="clickClose()" />
-                        <div class = "menu-title" style="width: 70%;">{{prototype_name}}</div>
-                    </div>
-                    <!-- 指挥中心标题 end -->
-
-                    <div style="border-bottom: 1px rgb(89, 73, 39);"/>
-
-                    <!-- 指挥中心建筑信息 start -->
-                    <div class="column" style="width: 100%;height: 95%;">
-                        <div class="build-info-reigon" data-style-background-image="background" style='background-size: cover;'>
-                            <div class ="building-info">
-                                <div data-if="show">
-                                    <div class="row">
-                                        <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
-                                        <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
-                                    </div>
-                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                                </div>
-                                <div data-if="show">
-                                    <div class="row">
-                                        <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
-                                        <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
-                                    </div>
-                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                                </div>
-                                <div data-if="show">
-                                    <div class="row">
-                                        <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
-                                        <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
-                                    </div>
-                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                                </div>
-                                <div data-if="show">
-                                    <div class="row">
-                                        <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
-                                        <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
-                                    </div>
-                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                                </div>
-                            </div>
-                            <div class="build-model-block" data-event-mousedown="ClickBuilding()">
-                                <div class="build-model"/>
-                            </div>
-                            <div class ="building-info">
-                                <div data-if="show">
-                                    <div class="row">
-                                        <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
-                                        <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
-                                    </div>
-                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                                </div>
-                                <div data-if="show">
-                                    <div class="row">
-                                        <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
-                                        <div class="property-text" style="color: rgb(0,176,240);">工作功率</div>
-                                    </div>
-                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                                </div>
-                                <div data-if="show">
-                                    <div class="row">
-                                        <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
-                                        <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
-                                    </div>
-                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                                </div>
-                                <div data-if="show">
-                                    <div class="row">
-                                        <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
-                                        <div class="property-text" style="color: rgb(0,176,240);">待机能耗</div>
-                                    </div>
-                                    <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                                </div>
-                            </div>
-                        </div>
-                         <!-- 指挥中心建筑信息 end -->
-                    </div>
+            <!-- 左边面板 begin -->
+            <div class="panel" style="width: 45%;" data-if="!show_item_info">
+                <div class="header" id = "item-name-block">
+                    <button class = "back-button" data-event-click="clickClose()"/>
+                    <div class = "menu-title" style="width: 70%;">{{prototype_name}}</div>
                 </div>
-
-                <!-- 物品基础信息 start -->
-                <div class="item-info-block" data-if = "false">
-                    <div style="flex-direction:row; justify-content: flex-start; align-items: center; width:100%;height:20%;">
-                        <div class ="drone-title-block" style="height:5vmin;">
-                            <div class = "drone-pic" style='background-image:"textures/science/book.texture";'/>
-                            <div class = "drone-title">基本信息</div>
-                        </div>
-                        <div class="property-text" style="-webkit-text-stroke: 0.20vmin rgb(39, 32, 17);color: rgb(221, 235, 26)">一种用于抓取货物的机械手臂</div>
-                    </div>
-                    <div class="row" style="width:100%; height:80%; justify-content: flex-start; align-items: center;">
-                        <div class="info-block" style="margin-top:0; margin-left:1em; justify-content: center; align-items: flex-start">
-                            <div class="row">
-                                <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
-                                <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
-                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                            </div>
-                            <div class="row">
-                                <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
-                                <div class="property-text" style="color: rgb(0,176,240);">产能加成</div>
-                                <div class="property-text" style="color:#fff;">40%</div>
-                            </div>
-                            <div class="row">
-                                <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
-                                <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
-                                <div class="property-text" style="color:#fff;">200/990</div>
-                            </div>
-                            <div class="row">
-                                <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
-                                <div class="property-text" style="color: rgb(0,176,240);">建筑能耗</div>
-                                <div class="property-text" style="color:#fff;">500kw(-250kw)</div>
-                            </div>
-                        </div>
-                        <div class="info-block" style="margin-top:0; margin-left:2.2em; justify-content: center; align-items: flex-start;">
-                            <div class="row">
-                                <div class="property-icon" style='background-image:"textures/character/timer.texture";'/>
-                                <div class="property-text" style="color: rgb(0,176,240);">制造速度</div>
-                                <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
-                            </div>
-                            <div class="row">
-                                <div class="property-icon" style='background-image:"textures/character/buffer.texture";'/>
-                                <div class="property-text" style="color: rgb(0,176,240);">产能加成</div>
-                                <div class="property-text" style="color:#fff;">40%</div>
-                            </div>
-                            <div class="row">
-                                <div class="property-icon" style='background-image:"textures/character/health.texture";'/>
-                                <div class="property-text" style="color: rgb(0,176,240);">建筑生命</div>
-                                <div class="property-text" style="color:#fff;">200/990</div>
-                            </div>
-                            <div class="row">
-                                <div class="property-icon" style='background-image:"textures/character/flash.texture";'/>
-                                <div class="property-text" style="color: rgb(0,176,240);">建筑能耗</div>
-                                <div class="property-text" style="color:#fff;">500kw(-250kw)</div>
-                            </div>
+                <div style="border-bottom: 1px rgb(89, 73, 39);"/>
+                <div class="column" style="width: 100%;height: 93%;">
+                    <div class="build-info-reigon" data-style-background-image="background" stype = "background-size: cover;">
+                        <div class="build-model-block">
+                            <div class="build-model"/>
                         </div>
                     </div>
                 </div>
-                <!-- 物品基础信息 end -->
+            </div>
 
+            <div class="panel" style="width: 45%;" data-if="show_item_info">
                 <!-- 物品配方展示标题 start -->
                 <div class="header" id = "item-name-block">
                     <button class = "back-button" data-event-click="clickClose()" />
@@ -311,118 +187,37 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 可生产该物品建筑展示 end --> 
-
-                    <div class = "draw-line"/>
-
-                    <!-- 物品所需资源展示 start -->
-                    <div class="item-material-block" data-if = "false">
-                        <div style="flex-direction:row; justify-content: flex-start; width:100%;">
-                            <div class ="drone-title-block" style="height:5vmin;">
-                                <div class = "drone-pic" style='background-image:"textures/construct/industry.texture";'/>
-                                <div class = "drone-title">基础资源</div>
-                            </div>
-                        </div>
-                        <div class="column" style="justify-content: center; align-items: center;width:100%;height:80%;">
-                            <div style="flex-direction:row; justify-content: center; width:100%;">
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                            </div>
-                            <div style="flex-direction:row; justify-content: center; width:100%;">
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                                <div class="small-item-1">
-                                    <div class="small-item-count">99</div>                          
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 物品所需资源展示 end -->
+                    <!-- 可生产该物品建筑展示 end -->
                 </div>
             </div>
-            <div class="panel" style= "flex-direction: column; width: 45%;">
-                <!-- 制造舱按钮 start -->
-                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if = "is_headquater && guide_progress >= 25" >
-                    <div class = "menu-title" style="text-align: right; width: 70%;" >制造舱</div>
-                    <button class = "recipe-change-button" data-event-click="clickManual()"/>  
+            <!-- 左边面板 end -->
+
+            <!-- 右边面板 begin -->
+            <div class="panel" style="width: 45%;">
+                <div class="header" style="justify-content: flex-end; border: 0.13vmin rgb(89, 73, 39);">
+                    <div class="menu-title" style="flex-direction: row; align-items: center; width:auto;" />
                 </div>
-                <!-- 制造舱按钮 end -->
-                <div class="header" id = "item-name-block" style="justify-content: flex-end;" data-if = "!(is_headquater && guide_progress >= 25)"/>
-
-                <!-- 指挥中心物品栏 start -->
-                <!-- tag page begin -->
-                <div class="item-container" style = "width: 100%; height: 68%;">
-                    <page width = '70vmin' height = '60.00vmin' footerheight= '3.00vmin' row='4' col='5'/>
-                </div>
-                <!-- tag page end -->
-                <!-- 指挥中心物品栏 end -->
-
-                <div class = "draw-line"/>
-
-                <!-- 物品栏分类页签 start -->
-                <div class = "tab-container" style="flex-grow: 1;">
-                    <div data-for = "item_category" style = "justify-content: center; align-items: center; flex-basis: 30%; height: 48%;">
-                        <workbutton data-event-click="clickCategory(it.category)" style = "width: 100%;" data-style-background-color="it.category == cur_item_category ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'">
-                            <div class="workbutton-bg" data-style-background-image="it.icon" />
-                            <div class="catalog-desc">{{it.category}}</div>
-                        </workbutton> 
+                <div class="column" style="width: 100%; height: 83%;">
+                    <div class="single-item-block" style="width:100%; height:10%; background-color: transparent; border: 0vmin; justify-content: flex-end;">
+                        <div class="region-title" style="font-size:4vmin;">库存： {{slot_count}}/{{max_slot_count}}</div>
                     </div>
+                    <!-- 物品栏显示 start -->
+                    <div class="item-container" style="height: 75%;">
+                        <page width = "73.00vmin" height = "60.00vmin" footerheight = "3.00vmin" row = "4" col = "2" />   
+                    </div>
+                    <!-- 物品栏显示 end -->
+                    <!-- 物品栏分类页签 start -->
+                    <div class = "tab-container" style="flex-grow: 1;">
+                        <div data-for = "item_category" style = "justify-content: center; align-items: center; flex-basis: 30%;">
+                            <workbutton data-event-click="clickCategory(it.category)" style = "width: 100%;" data-style-background-color="it.category == cur_item_category ? 'rgb(0,176,80)' : 'rgb(246, 142, 14)'">
+                                <div class="workbutton-bg" data-style-background-image="it.icon" />
+                                <div class="catalog-desc">{{it.category}}</div>
+                            </workbutton>
+                        </div>
+                    </div>
+                    <!-- 物品栏分类页签 end -->
                 </div>
-                <!-- 物品栏分类页签 end -->
-            </div>
+            </div>       
         </div>
     </body>
 </rml>
