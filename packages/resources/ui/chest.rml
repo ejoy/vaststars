@@ -203,7 +203,7 @@
                     </div>
                     <!-- 物品栏显示 start -->
                     <div class="item-container" style="height: 75%;">
-                        <page width = "73.00vmin" height = "60.00vmin" footerheight = "3.00vmin" row = "4" col = "2" />   
+                        <page width = "73.00vmin" height = "51vmin" footerheight = "3.00vmin" row = "4" col = "2" />   
                     </div>
                     <!-- 物品栏显示 end -->
                     <!-- 物品栏分类页签 start -->

@@ -162,10 +162,10 @@ function page_meta:init(item_count)
             local width = (tonumber(w) / self.col) .. wu
             item.style.width = width
         end
-        local h, hu = string.match(self.width, "([0-9]+%.*[0-9]*)([%w%%]+)")
+        local h, hu = string.match(self.height, "([0-9]+%.*[0-9]*)([%w%%]+)")
         if hu ~= '%' then
-            local height = (tonumber(h) / self.col) .. hu
-            item.style.width = height
+            local height = (tonumber(h) / self.row) .. hu
+            item.style.height = height
         end
         self.item_init(item, index)
         page[rid].appendChild(item)

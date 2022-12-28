@@ -2,7 +2,6 @@ local ui_sys = require "ui_system"
 local start = ui_sys.createDataMode("start", {
     object_id = 0,
     background = "",
-    is_headquater = false,
     item_category = {},
     inventory = {},
     prototype_name = "",
