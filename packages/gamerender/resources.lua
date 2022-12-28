@@ -922,7 +922,6 @@ local t = {
 	"/pkg/vaststars.resources/materials/translucent.material",
 	"/pkg/vaststars.resources/materials/translucent_texture_plane.material",
 	"/pkg/vaststars.resources/package.lua",
-	"/pkg/vaststars.resources/prefabs/Material/mars-truck.material",
 	"/pkg/vaststars.resources/prefabs/Material/mine_iron.material",
 	"/pkg/vaststars.resources/prefabs/Material/turbne.material",
 	"/pkg/vaststars.resources/prefabs/accumulator-1.prefab",

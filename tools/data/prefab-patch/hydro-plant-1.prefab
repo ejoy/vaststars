@@ -14,20 +14,6 @@ policy:
   ant.animation|slot
 ---
 data:
-  efk:
-    path: /pkg/vaststars.resources/effect/efk/furnace_smoke.efk
-  name: root
-  scene: {}
-  tag:
-    effect
-mount: 3
-policy:
-  ant.general|name
-  ant.scene|scene_object
-  ant.efk|efk
-  ant.general|tag
----
-data:
   name: hitch2
   scene:
     s: {4, 4, 4}
@@ -41,20 +27,6 @@ policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
----
-data:
-  efk:
-    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
-  name: root
-  scene: {}
-  tag:
-    effect
-mount: 5
-policy:
-  ant.general|name
-  ant.scene|scene_object
-  ant.efk|efk
-  ant.general|tag
 ---
 data:
   name: hitch3
@@ -72,20 +44,6 @@ policy:
   ant.animation|slot
 ---
 data:
-  efk:
-    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
-  name: root
-  scene: {}
-  tag:
-    effect
-mount: 7
-policy:
-  ant.general|name
-  ant.scene|scene_object
-  ant.efk|efk
-  ant.general|tag
----
-data:
   name: hitch4
   scene:
     s: {4, 4, 4}
@@ -99,20 +57,6 @@ policy:
   ant.general|name
   ant.general|tag
   ant.animation|slot
----
-data:
-  efk:
-    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
-  name: root
-  scene: {}
-  tag:
-    effect
-mount: 9
-policy:
-  ant.general|name
-  ant.scene|scene_object
-  ant.efk|efk
-  ant.general|tag
 ---
 data:
   name: hitch5
