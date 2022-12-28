@@ -208,11 +208,11 @@
                     transform: scale(1.0);
                     opacity: 1;
                 }
-                20% {
+                50% {
                     transform: scale(2.0);
                     opacity: 1;
                 }
-                70% {
+                60% {
                     transform: scale(2.0);
                     opacity: 1;
                 }
