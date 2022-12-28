@@ -169,6 +169,9 @@
                         <div class = "recipe-name-text" style="font-size: 7.2vmin;">确定</div>
                     </button> 
                 </div>
+
+                <!-- 科研完成动画 -->
+                <div class="accomplished">研究完成</div>
             </div>
         </div>
     </body>

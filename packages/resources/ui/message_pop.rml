@@ -172,9 +172,6 @@
                     <div class = "materials-num">X {{it.count}}</div>
                 </div>
             </div>
-
-            <!-- 科研完成动画 -->
-            <div class="accomplished" data-if="show_id == 'tech_finish'">研究完成</div>
         </div>
     </body>
 </rml>
