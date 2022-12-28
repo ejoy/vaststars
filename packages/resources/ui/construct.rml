@@ -205,19 +205,19 @@
             }
             @keyframes enlarge {
                 0% {
-                    font-size: 2vmin;
+                    transform: scale(1.0);
                     opacity: 1;
                 }
                 20% {
-                    font-size: 10vmin;
+                    transform: scale(2.0);
                     opacity: 1;
                 }
                 70% {
-                    font-size: 10vmin;
+                    transform: scale(2.0);
                     opacity: 1;
                 }
                 100% {
-                    font-size: 2vmin;
+                    transform: scale(1.0);
                     opacity: 0;
                 }
             }
@@ -392,7 +392,10 @@
             <div class = "building-block">
                 <div class = "building-info" data-for = "construct_queue">
                     <div class = "building-pic" data-style-background-image = "it.icon" />
-                    <div class = "building-num" data-style-color="it.count < it.total_count? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}/{{it.total_count}}</div>
+                    <div class = "building-num" data-style-color="it.count < it.total_count? 'rgb(255,255,255)' : 'rgb(0,255,0)'">
+                        <div data-if="it.count < it.total_count">{{it.count}}/{{it.total_count}}</div>
+                        <div data-if="it.count >= it.total_count" style="animation: 1.5s linear 0s enlarge;">{{it.count}}/{{it.total_count}}</div>
+                    </div>
                 </div>
             </div>
             
@@ -463,7 +466,7 @@
                 <!-- separator -->
                 <div style = "width: 2.67vmin;" data-if = "!show_construct" />
                 <!-- 确认放置 -->
-                <button data-if = "show_construct" data-event-click="clickConstruct()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
+                <button data-if = "show_construct" data-event-click="clickConstruct()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(3, 196, 106); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"textures/construct/confirm.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover;'/>
                     <div style="font-size: 85%;">施工</div>
                 </button>
