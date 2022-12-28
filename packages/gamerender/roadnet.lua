@@ -5,6 +5,7 @@ local w = world.w
 local iroad = ecs.require "engine.road"
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
+local gameplay = import_package "vaststars.gameplay"
 
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256 -- coordinate value range: [0, HEIGHT - 1]
@@ -321,6 +322,13 @@ local function editor_build()
         t[k] = _convert_mask(_get_mask(v))
     end
     roadnet:load_map(t)
+
+    local iendpoint = gameplay.interface "endpoint"
+    for e in gameplay_core.select "chest:update entity:in" do
+        if e.chest.endpoint == 0xffff then
+            iendpoint.update_endpoint(gameplay_world, e)
+        end
+    end
 end
 
 local function editor_clear_constructing()

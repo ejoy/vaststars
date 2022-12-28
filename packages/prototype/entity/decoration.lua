@@ -10,7 +10,7 @@ prototype "组装机残骸" {
     chest_type = "red",
     crossing = {
         connections = {
-            {type="input-output", position={2,1,"E"}, roadside = true},
+            {type="input-output", position={4,2,"E"}, roadside = true},
         },
     },
     group = {"物流" , "默认"},

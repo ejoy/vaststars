@@ -1,3 +1,5 @@
+local query = require "prototype".queryById
+
 local DIRECTION <const> = {
     N = 0,
     E = 1,
@@ -41,6 +43,70 @@ local function create_endpoint(world, init, pt)
     return world.roadnet:create_endpoint(x, y, mapping[DIRECTION[dir]]) -- endpoint equals 0xffff if doesn't connect to any road
 end
 
+--
+local function createChest(world, items)
+    local chest = {}
+    local asize = 0
+    local function create_slot(type, id, amount)
+        local o = items[id] or {}
+        chest[#chest+1] = world:chest_slot {
+            type = type,
+            item = id,
+            limit = amount,
+            amount = amount,
+        }
+    end
+    for id, slot in pairs(items) do
+        create_slot(slot.type, id, slot.amount)
+    end
+    return table.concat(chest), asize
+end
+
+local function collectItem(world, chest)
+    if chest.index == 0 or chest.index == nil then
+        return {}
+    end
+    local items = {}
+    local i = 1
+    while true do
+        local slot = world:container_get(chest, i)
+        if not slot then
+            break
+        end
+        items[slot.item] = slot
+        i = i + 1
+    end
+    return items
+end
+
+local function update_endpoint(world, e)
+    local ecs = world.ecs
+    ecs:extend(e, "chest:update entity:in")
+
+    local pt = query(e.entity.prototype)
+    local x, y, dir = rotate(pt.crossing.connections[1].position, e.entity.direction, pt.area)
+    x = x + e.entity.x
+    y = y + e.entity.y
+    local endpoint = world.roadnet:create_endpoint(x, y, mapping[DIRECTION[dir]]) -- endpoint equals 0xffff if doesn't connect to any road
+    if endpoint == 0xffff then
+        return
+    end
+
+    local chest = e.chest
+    assert(chest.endpoint == 0xffff)
+    chest.endpoint = endpoint
+    local items = collectItem(world, chest)
+    if chest.index ~= nil then
+        world:container_rollback(chest)
+    end
+
+    local info, asize = createChest(world, items)
+    local index = world:container_create(chest.endpoint, info, asize)
+    chest.index = index
+    chest.asize = asize
+end
+
 return {
     create = create_endpoint,
+    update_endpoint = update_endpoint,
 }
