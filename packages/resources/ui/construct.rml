@@ -392,7 +392,7 @@
             <div class = "building-block">
                 <div class = "building-info" data-for = "construct_queue">
                     <div class = "building-pic" data-style-background-image = "it.icon" />
-                    <div class = "building-num">{{it.count}}/{{it.total_count}}</div>
+                    <div class = "building-num" data-style-color="it.count < it.total_count? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}/{{it.total_count}}</div>
                 </div>
             </div>
             
