@@ -15,6 +15,8 @@ local teardown_mb = mailbox:sub {"teardown"}
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local iobject = ecs.require "object"
 local iworld = require "gameplay.interface.world"
+local ipower = ecs.require "power"
+local ipower_line = ecs.require "power_line"
 
 local detail_event = { -- entity_type -> function
     ["assembling"] = function(object_id)
@@ -127,8 +129,16 @@ function M:stage_ui_update(datamodel, object_id)
         iui.close("build_function_pop.rml")
         iui.close("detail_panel.rml")
 
-        local typeobject = iprototype.queryByName("item", object.prototype_name)
-        iworld.base_chest_place(gameplay_core.get_world(), typeobject.id, 1)
+        local typeobject_item = iprototype.queryByName("item", object.prototype_name)
+        if typeobject_item then
+            iworld.base_chest_place(gameplay_core.get_world(), typeobject_item.id, 1)
+        end
+
+        local typeobject_entity = iprototype.queryByName("entity", object.prototype_name)
+        if typeobject_entity.supply_area then
+            ipower:build_power_network(gameplay_core.get_world())
+            ipower_line.update_line(ipower:get_pole_lines())
+        end
     end
 
     for _, _, _, object_id in close_mb:unpack() do
