@@ -4,6 +4,9 @@
 
 namespace roadnet {
     bool lorry::nextDirection(world& w, roadid C, direction& dir) {
+        if (ending.id == roadid::invalid()) {
+            return false;
+        }
         return route(w, C, ending.id, dir);
     }
     void lorry::initTick(uint8_t v) {

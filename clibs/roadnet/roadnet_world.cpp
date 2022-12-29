@@ -474,6 +474,12 @@ namespace roadnet {
         return endpointId;
     }
 
+    void world::pushLorry(lorryid lorryId, endpointid starting) {
+        auto& lorry = Lorry(lorryId);
+        lorry.ending = {};
+        Endpoint(starting).pushMap.push_back(lorryId);
+    }
+
     void world::pushLorry(lorryid lorryId, endpointid starting, endpointid ending) {
         auto& lorry = Lorry(lorryId);
         lorry.ending = Endpoint(ending).coord;

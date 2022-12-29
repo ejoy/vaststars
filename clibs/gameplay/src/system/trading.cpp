@@ -189,7 +189,8 @@ static void GoHome(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadn
     nearest_result<false> result(rw);
     auto loc = rw.Endpoint(current).loc;
     if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
-        assert(false);
+        rw.pushLorry(lorryId, current);
+        return;
     }
     rw.pushLorry(lorryId, current, kdtree.dataset[result.value()].id);
 }
