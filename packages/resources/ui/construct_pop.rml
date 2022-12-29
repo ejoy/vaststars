@@ -99,7 +99,7 @@
                 <div class="title-text">拆除</div>
             </div>
             <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickCancel()" data-if = "show_cancel">
-                <button class="button-function" style ='background-image: "textures/factory/demolition.texture";'/>
+                <button class="button-function" style ='background-image: "textures/cmdcenter/yellow_arrow.texture";'/>
                 <div class="title-text">取消</div>
             </div>
 
