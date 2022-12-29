@@ -4,59 +4,6 @@ local iworld = require "gameplay.interface.world"
 
 local M = {}
 
--- 原料添加
-function M.place_material(world, e)
-    if not e.assembling then
-        log.error("not assembling")
-        return
-    end
-
-    local recipe = e.assembling.recipe
-    if recipe == 0 then
-        log.error("the recipe hasn't been set")
-        return
-    end
-
-    local typeobject = iprototype.queryById(recipe)
-    local recipe_ingredients = irecipe.get_elements(typeobject.ingredients)
-
-    local assembling_item_counts = {}
-    for i, v in ipairs(recipe_ingredients) do
-        local c, n = iworld.chest_get(world, e.chest, i)
-        if c then
-            local count = v.count
-            if n < count then
-                assembling_item_counts[c] = count - n
-            end
-        else
-            assembling_item_counts[v.id] = v.count
-        end
-    end
-
-    if not next(assembling_item_counts) then
-        log.error("no material place")
-        return
-    end
-
-    local headquater_item_counts = iworld.base_chest(world)
-    for id, count in pairs(assembling_item_counts) do
-        if headquater_item_counts[id] then
-            local c = math.min(headquater_item_counts[id], count)
-            if c > 0 then
-                if not iworld.base_chest_pickup(world, id, c) then
-                    log.error(("failed to pickup `%s` `%s`"):format(id, c))
-                else
-                    local r = iworld.chest_place(world, e.chest.id, id, c)
-                    if r ~= 0 then
-                        log.error(("failed to place `%s` `%s` `%s`"):format(id, c, r))
-                    end
-                end
-            end
-        end
-    end
-    world:build()
-end
-
 function M.item_counts(world, e)
     local r = {}
 

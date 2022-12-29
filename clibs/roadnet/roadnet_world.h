@@ -12,6 +12,7 @@ namespace roadnet {
     public:
         world() = default;
 
+        std::map<loction, uint8_t> getMap() const;
         void loadMap(const std::map<loction, uint8_t>& mapData);
         lorryid createLorry();
         endpointid createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir);

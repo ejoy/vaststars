@@ -31,7 +31,7 @@ local function update_world(world)
         iui.close("lab.rml")
         -- pop guide ui
         iui.open("guide_pop.rml", guide)
-        iguide.set_running()
+        iguide.set_running(true)
     end
 end
 return update_world

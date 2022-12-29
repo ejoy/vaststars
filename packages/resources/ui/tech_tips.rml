@@ -133,13 +133,13 @@
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
-                show_id = "message",
                 message = "none",
                 items = {},
                 left = "0vmin",
                 top = "0vmin",
             })
             window.setTimeout(function()
+                ui_sys.pub {"close"}
                 ui_sys.close()
             end, 3000)
             ui_sys.mapping(start, {

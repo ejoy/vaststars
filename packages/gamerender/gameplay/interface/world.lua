@@ -17,54 +17,22 @@ function M.chest_get(world, chest, i)
 end
 
 function M.chest_pickup(world, chest, id, count)
-    if chest == 0xFFFF then
-        return
-    end
     return world:container_pickup(chest, id, count)
 end
 
 function M.chest_place(world, chest, id, count)
-    if chest == 0xFFFF then
-        assert(false)
-        return count
-    end
     return world:container_place(chest, id, count)
 end
 
--- itemid, count
-function M.base_chest_place(world, ...)
-    for e in world.ecs:select "base chest:in" do
-        return world:container_place(e.chest, ...)
-    end
+function M.base_chest_place(world, prototype, count)
+    local e = assert(world.ecs:first("base chest:in"))
+    world:container_place(e.chest, prototype, count)
 end
 
--- itemid, count
+-- prototype, count
 function M.base_chest_pickup(world, ...)
-    for e in world.ecs:select "base chest:in" do
-        return world:container_pickup(e.chest, ...)
-    end
-end
-
-function M.base_chest_pickup_place(world, chest, prototype, count, from)
-    if from then
-        if not M.base_chest_pickup(world, prototype, count) then
-            log.error(("failed to pickup `%s` `%s` from base"):format(prototype, count))
-        else
-            local r = world:container_place(chest, prototype, count)
-            if r ~= 0 then
-                log.error(("failed to place `%s` `%s` `%s`"):format(prototype, count, r))
-            end
-        end
-    else
-        if not world:container_pickup(chest, prototype, count) then
-            log.error(("failed to pickup `%s` `%s` from base"):format(prototype, count))
-        else
-            local r = M.base_chest_place(world, prototype, count)
-            if r ~= 0 then
-                log.error(("failed to place `%s` `%s` `%s`"):format(prototype, count, r))
-            end
-        end
-    end
+    local e = assert(world.ecs:first("base chest:in"))
+    return world:container_pickup(e.chest, ...)
 end
 
 function M.base_chest(world)

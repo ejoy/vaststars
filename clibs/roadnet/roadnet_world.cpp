@@ -305,6 +305,10 @@ namespace roadnet {
             ;
     }
 
+    std::map<loction, uint8_t> world::getMap() const {
+        return map;
+    }
+
     void world::loadMap(const std::map<loction, uint8_t>& mapData) {
         map.clear();
         straightVec.clear();

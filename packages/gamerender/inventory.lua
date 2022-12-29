@@ -78,11 +78,7 @@ local function complete(self)
             end
         else
             local inc = item.count - original.count
-            local r = iworld.base_chest_place(gameplay_core.get_world(), item.prototype, inc)
-            if r ~= 0 then
-                log.error("can not place item `%s` `%s` `%s`", iprototype.queryById(item.prototype).name, inc, r)
-                return false
-            end
+            iworld.base_chest_place(gameplay_core.get_world(), item.prototype, inc)
         end
         ::continue::
     end

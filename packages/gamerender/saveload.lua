@@ -20,7 +20,7 @@ local camera_setting_path = archival_base_dir .. "camera.json"
 local iprototype = require "gameplay.interface.prototype"
 local startup_lua = import_package("vaststars.prototype")(startup_lua)
 local startup_entities = startup_lua.entities
-local startup_road = require "startup.road"(startup_lua.road)
+local startup_road = require("startup.road").convert(startup_lua.road)
 local objects = require "objects"
 local ifluid = require "gameplay.interface.fluid"
 local iscience = require "gameplay.interface.science"
@@ -434,8 +434,10 @@ function M:restore(index)
         return false
     end
 
-    gameplay_core.restore(archival_dir)
     self.running = true
+    gameplay_core.restore(archival_dir)
+    local map = gameplay_core.get_world().roadnet:get_map()
+    iroadnet.init(require("startup.road").from(map))
     iscience.update_tech_list(gameplay_core.get_world())
     iui.open("construct.rml")
 

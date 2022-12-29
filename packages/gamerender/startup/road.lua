@@ -32,4 +32,26 @@ local function convert(t)
 
     return res
 end
-return convert
+
+local function from(t)
+    local res = {}
+
+    for k, r in pairs(t) do
+        local v = 0
+
+        for _, b in pairs(mapping) do
+            if r & (1 << b) ~= 0 then
+                v = v | (1 << (b * 2))
+            end
+        end
+
+        res[k] = v
+    end
+
+    return res
+end
+
+return {
+    convert = convert,
+    from = from,
+}

@@ -28,7 +28,7 @@ local SHOW_LOAD_RESOURCE = not require("debugger").disable_load_resource
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_builder = ecs.require "editor.builder"
 
-local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转建筑
+local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
 local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
 local cancel_mb = mailbox:sub {"cancel"} -- construct_pop.rml -> 取消
 local confirm_cancel_mb = mailbox:sub {"confirm_cancel"} -- 取消已确定的建筑
@@ -47,7 +47,6 @@ local open_taskui_event = mailbox:sub {"open_taskui"}
 local load_resource_mb = mailbox:sub {"load_resource"}
 local construct_mb = mailbox:sub {"construct"} -- 施工
 local single_touch_mb = world:sub {"single_touch"}
-local inventory = global.inventory
 local pickup_mb = world:sub {"pickup"}
 local handle_pickup = true
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
@@ -105,10 +104,6 @@ function M:create()
         current_tech_name = "none",    --当前科技名字
         current_tech_progress = "0%",  --当前科技进度
     }
-end
-
-function M:update_construct_inventory(datamodel)
-    datamodel.construct_menu = _get_construct_menu()
 end
 
 -- TODO
@@ -178,16 +173,19 @@ function M:stage_ui_update(datamodel)
         handle_pickup = true
     end
 
-    for _ in show_construct_menu_mb:unpack() do
-        idetail.unselected()
-        ieditor:revert_changes({"TEMPORARY"})
-        datamodel.show_rotate = false
-        datamodel.show_confirm = false
-        last_prototype_name = nil
+    for _, _, _, show in show_construct_menu_mb:unpack() do
+        if show then
+            idetail.unselected()
+            ieditor:revert_changes({"TEMPORARY"})
+            datamodel.show_rotate = false
+            datamodel.show_confirm = false
+            last_prototype_name = nil
 
-        inventory:flush()
-        datamodel.construct_menu = _get_construct_menu()
-        ipower_line.show_supply_area()
+            datamodel.construct_menu = _get_construct_menu()
+            ipower_line.show_supply_area()
+        else
+            ieditor:revert_changes({"TEMPORARY", "POWER_AREA"})
+        end
     end
 
     for _, _, _, is_task in open_taskui_event:unpack() do

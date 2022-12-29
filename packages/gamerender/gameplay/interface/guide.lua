@@ -34,8 +34,8 @@ function M.step_progress()
     storage.guide_id = storage.guide_id + 1
 end
 
-function M.set_running()
-    running = true
+function M.set_running(r)
+    running = r
 end
 
 function M.is_running()

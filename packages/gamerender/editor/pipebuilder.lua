@@ -265,7 +265,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     end
 
     datamodel.show_laying_pipe_confirm = State.succ
-    iui.update("construct.rml", "update_construct_inventory")
 end
 
 local function _builder_init(self, datamodel)
@@ -607,7 +606,6 @@ end
 
 local function laying_pipe_cancel(self, datamodel)
     inventory:revert()
-    iui.update("construct.rml", "update_construct_inventory")
 
     self:revert_changes({"INDICATOR", "TEMPORARY"})
     local typeobject = iprototype.queryByName("entity", self.coord_indicator.prototype_name)

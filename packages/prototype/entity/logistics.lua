@@ -48,7 +48,6 @@ prototype "指挥中心" {
     priority = "primary",
     group = {"物流"},
     slots = 60,
-    headquater = true,
     teardown = false,
     crossing = {
         connections = {

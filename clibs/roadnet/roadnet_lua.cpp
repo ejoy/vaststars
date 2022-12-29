@@ -116,6 +116,16 @@ namespace roadnet::lua {
             w.loadMap(get_map_data(L, 2));
             return 0;
         }
+        static int get_map(lua_State* L) {
+            auto& w = class_get<roadnet::world>(L, 1);
+            lua_createtable(L, 0, 0);
+            for(auto& [l, m] : w.getMap()) {
+                lua_pushinteger(L, l.id);
+                lua_pushinteger(L, m);
+                lua_settable(L, -3);
+            }
+            return 1;
+        }
         static int create_lorry(lua_State* L) {
             auto& w = class_get<roadnet::world>(L, 1);
             lua_pushinteger(L, w.createLorry().id);
@@ -304,6 +314,7 @@ namespace roadnet::lua {
         static int create(lua_State* L) {
             luaL_Reg l[] = {
                 { "load_map", load_map },
+                { "get_map", get_map },
                 { "create_lorry", create_lorry},
                 { "create_endpoint", create_endpoint},
                 { "push_lorry", push_lorry },
