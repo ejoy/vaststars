@@ -258,7 +258,7 @@ void chest::place_force(world& w, container::index start, uint16_t endpoint, uin
     trading_flush(w, {endpoint}, newslot);
 }
 
-const container_slot* chest::getslot(world& w, container::index start, uint8_t offset) {
+container_slot* chest::getslot(world& w, container::index start, uint8_t offset) {
     auto index = chest::head(w, start);
     for (uint8_t i = 0; i < offset; ++i) {
         if (index == container::kInvalidIndex) {
@@ -344,6 +344,51 @@ lget(lua_State* L) {
     lua_setfield(L, -2, "lock_space");
     return 1;
 }
+static int
+lset(lua_State* L) {
+    world& w = *(world *)lua_touserdata(L, 1);
+    uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
+    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
+    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 4)-1);
+    auto r = chest::getslot(w, container::index::from(index), offset);
+    if (!r) {
+        return 0;
+    }
+    if (LUA_TNIL != lua_getfield(L, 5, "type")) {
+        static const char *const opts[] = {"red", "blue", "green", NULL};
+        r->type = (container_slot::slot_type)luaL_checkoption(L, -1, NULL, opts);
+    }
+    lua_pop(L, 1);
+    if (LUA_TNIL != lua_getfield(L, 5, "unit")) {
+        static const char *const opts[] = {"once", "fixed", "array", "head", NULL};
+        r->unit = (container_slot::slot_unit)luaL_checkoption(L, -1, NULL, opts);
+    }
+    lua_pop(L, 1);
+    if (LUA_TNIL != lua_getfield(L, 5, "item")) {
+        r->item = (uint16_t)luaL_checkinteger(L, -1);
+    }
+    lua_pop(L, 1);
+    if (LUA_TNIL != lua_getfield(L, 5, "amount")) {
+        r->amount = (uint16_t)luaL_checkinteger(L, -1);
+    }
+    lua_pop(L, 1);
+    if (LUA_TNIL != lua_getfield(L, 5, "limit")) {
+        r->limit = (uint16_t)luaL_checkinteger(L, -1);
+    }
+    lua_pop(L, 1);
+    if (LUA_TNIL != lua_getfield(L, 5, "lock_item")) {
+        r->lock_item = (uint16_t)luaL_checkinteger(L, -1);
+    }
+    lua_pop(L, 1);
+    if (LUA_TNIL != lua_getfield(L, 5, "lock_space")) {
+        r->lock_space = (uint16_t)luaL_checkinteger(L, -1);
+    }
+    lua_pop(L, 1);
+    if (endpoint != 0xffff) {
+        trading_flush(w, {endpoint}, *r);
+    }
+    return 0;
+}
 
 static int
 lpickup(lua_State* L) {
@@ -384,6 +429,7 @@ luaopen_vaststars_chest_core(lua_State *L) {
         { "create", lcreate },
         { "add", ladd },
         { "get", lget },
+        { "set", lset },
         { "pickup", lpickup },
         { "place", lplace },
         { "rollback", lrollback },

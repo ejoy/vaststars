@@ -298,6 +298,9 @@ return function ()
     function world:container_get(c, i)
         return chest.get(cworld, c.index, i)
     end
+    function world:container_set(c, i, t)
+        return chest.set(cworld, c.index, c.endpoint, i, t)
+    end
     function world:container_pickup(c, item, amount)
         return chest.pickup(cworld, c.index, c.endpoint, item, amount)
     end

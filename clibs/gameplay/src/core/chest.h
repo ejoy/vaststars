@@ -314,7 +314,7 @@ namespace chest {
     size_t   size(chest_data& c);
 
     // for lua api
-    const container_slot* getslot(world& w, container::index index, uint8_t offset);
+    container_slot* getslot(world& w, container::index index, uint8_t offset);
     void     flush(world& w, container::index index, uint16_t endpoint);
     void     rollback(world& w, container::index index, uint16_t endpoint);
 
