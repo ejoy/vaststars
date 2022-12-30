@@ -55,9 +55,6 @@ static void trading_buy(world& w, trading_who who, uint8_t priority, container_s
     uint16_t item = s.item;
     uint16_t amount = s.limit - s.amount - s.lock_space;
     s.lock_space = s.limit - s.amount;
-    if (s.unit == container_slot::slot_unit::once) {
-        s.limit = 0;
-    }
     auto& n = w.tradings.queues[item];
     for (uint16_t i = 0; i < amount; ++i) {
         n.buy[priority].push(who);

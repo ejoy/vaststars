@@ -212,8 +212,14 @@ bool chest::pickup_force(world& w, container::index start, uint16_t endpoint, ui
                 }
             }
             s.amount -= amount;
-            if (s.amount == 0 && s.lock_item == 0 && s.lock_space == 0) {
-                if (s.unit == container_slot::slot_unit::once) {
+            if (s.unit == container_slot::slot_unit::once) {
+                if (s.limit >= amount) {
+                    s.limit -= amount;
+                }
+                else {
+                    s.limit = 0;
+                }
+                if (s.amount == 0 && s.lock_item == 0 && s.lock_space == 0) {
                     list_remove(w, start, index);
                     return true;
                 }
