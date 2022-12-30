@@ -8,11 +8,19 @@ local UNIT <const> = 10
 
 local function _convert_coord(t)
     assert(road._offset)
+
+    local res = {}
     for _, v in ipairs(t) do
-        local x, y = v[1], v[2]
-        v[1], v[2] = x - road._offset[1], y - road._offset[1]
+        local x, y = v[1] - road._offset[1], v[2] - road._offset[1]
+        res[#res+1] = {
+            x,
+            y,
+            "Road",
+            v[3],
+            v[4],
+        }
     end
-    return t
+    return res
 end
 
 -- shape = "I" / "U" / "L" / "T" / "O"
