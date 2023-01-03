@@ -35,9 +35,17 @@ local function rotate(position, direction, area)
     end
 end
 
-local function create_endpoint(world, init, pt)
-    assert(#pt.crossing.connections == 1)
-    local x, y, dir = rotate(pt.crossing.connections[1].position, DIRECTION[init.dir], pt.area)
+local function getConnection(pt, type)
+    for _, c in ipairs(pt.crossing.connections) do
+        if c.type == type then
+            return c
+        end
+    end
+end
+
+local function create_endpoint(world, init, pt, type)
+    local c = assert(getConnection(pt, type))
+    local x, y, dir = rotate(c.position, DIRECTION[init.dir], pt.area)
     x = x + init.x
     y = y + init.y
     return world.roadnet:create_endpoint(x, y, mapping[DIRECTION[dir]]) -- endpoint equals 0xffff if doesn't connect to any road

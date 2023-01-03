@@ -20,30 +20,48 @@ world:wait(2000*50, function ()
     world.quit = true
 end)
 
-local function get_base_chest(world)
-    local ecs = world.ecs
-    for v in ecs:select "base entity:in chest:in" do
-        return v.chest
-    end
+local function print_slot(prefix, chest, i)
+    local slot = world:container_get(chest, i)
+    print(string.format("%s itme(%s) amount(%s) limit(%s) lock_space(%s) type(%s)", prefix, slot.item, slot.amount, slot.limit, slot.lock_space, slot.type))
 end
 
-local info = world:chest_slot {
-    type = "blue",
-    item = "铁矿石",
-    amount = 1,
-    limit = 100,
-}
+local function add_req(time, prototype_name, count)
+    local prototype = gameplay.prototype.queryByName("item", prototype_name).id
+    local ecs = world.ecs
+    local e = assert(ecs:first("base entity:in chest:update"))
+    local typeobject = gameplay.prototype.queryById(e.entity.prototype)
+    for i = 1, typeobject.slots do
+        local slot = world:container_get(e.chest, i)
+        if slot then
+            if slot.item == prototype then
+                world:container_set(e.chest, i, {limit = slot.limit + count})
+                return
+            end
+        end
+    end
 
-local c = assert(get_base_chest(world))
-world:container_add(c, info)
+    local info = world:chest_slot {
+        type = "blue",
+        item = prototype_name,
+        amount = 0,
+        limit = count,
+    }
+    world:container_add(e.chest, info)
+end
+
+for i = 1, 20 do
+    add_req(i, "铁矿石", 1)
+    world:build()
+end
 
 local function dump_item()
+    print("=============")
     local ecs = world.ecs
     for v in ecs:select "eid:in base:in chest:in entity:in" do
-        for i = 1, 10 do
+        for i = 1, 60 do
             local slot = world:container_get(v.chest, i)
             if slot then
-                print(gameplay.prototype.queryById(slot.item).name, slot.amount)
+                print(i, gameplay.prototype.queryById(slot.item).name, slot.amount, slot.limit, slot.lock_space, slot.type)
             end
         end
     end
@@ -61,6 +79,6 @@ while not world.quit do
 end
 
 dump_item()
-assert(movement)
+-- assert(movement)
 
 print "ok"

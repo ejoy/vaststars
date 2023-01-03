@@ -31,7 +31,7 @@ end
 
 function c:ctor(init, pt)
     local world = self
-    local endpoint = iendpoint.create(world, init, pt)
+    local endpoint = iendpoint.create(world, init, pt, "laboratory")
     local index, asize = createChest(world, pt.inputs, endpoint)
     local e = {
         chest = {

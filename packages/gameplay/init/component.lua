@@ -17,6 +17,7 @@ component "chest" {
 
 component "station" {
     "endpoint:word",
+    "lorry_count:word",
 }
 
 component "assembling" {

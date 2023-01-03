@@ -6,7 +6,7 @@ local gameplay_core = require "gameplay.core"
 local itypes = require "gameplay.interface.types"
 local irecipe = require "gameplay.interface.recipe"
 local ilaboratory = require "gameplay.interface.laboratory"
-local iworld = require "gameplay.interface.world"
+local ichest = require "gameplay.interface.chest"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
 
 local function format_vars(fmt, vars)
@@ -244,9 +244,9 @@ local function get_entity_property_list(object_id)
 
             local recipe_results = irecipe.get_elements(recipe_typeobject.results)
             for index, v in ipairs(recipe_results) do
-                local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest, index)
-                if c then
-                    property_list.minner_info = {icon = v.icon, count = n, need_count = v.count}
+                local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, index)
+                if slot then
+                    property_list.minner_info = {icon = v.icon, count = slot.amount, need_count = v.count}
                 else
                     property_list.minner_info = {icon = v.icon, count = 0, need_count = v.count}
                 end
@@ -263,8 +263,8 @@ local function get_entity_property_list(object_id)
         local current_inputs = ilaboratory:get_elements(typeobject.inputs)
         local items = {}
         for i, value in ipairs(current_inputs) do
-            local c, n = iworld.chest_get(gameplay_core.get_world(), e.chest, i)
-            items[#items+1] = {icon = value.icon, count = n or 0}
+            local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, i)
+            items[#items+1] = {icon = value.icon, count = slot.amount or 0}
         end
         property_list.chest_list0 = items
     end

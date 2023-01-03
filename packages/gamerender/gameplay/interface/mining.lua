@@ -21,12 +21,7 @@ local function _get_recipes(category)
 end
 
 local mining_recipe = {}
-for _, typeobject in pairs(iprototype.each_maintype "entity") do
-    -- find all miner entities
-    if not iprototype.has_type(typeobject.type, "mining") then
-        goto continue
-    end
-
+for _, typeobject in pairs(iprototype.each_maintype("entity", "mining")) do
     mining_recipe[typeobject.name] = {}
     for _, category in ipairs(typeobject.craft_category or {}) do -- craft_category may be nil
         local recipes = _get_recipes(category)
@@ -45,8 +40,6 @@ for _, typeobject in pairs(iprototype.each_maintype "entity") do
             mining_recipe[typeobject.name][mineral] = recipe_typeobject.name
         end
     end
-
-    ::continue::
 end
 
 local M = {}

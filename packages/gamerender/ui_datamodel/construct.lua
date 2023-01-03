@@ -32,7 +32,7 @@ local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
 local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
 local cancel_mb = mailbox:sub {"cancel"} -- construct_pop.rml -> 取消
 local confirm_cancel_mb = mailbox:sub {"confirm_cancel"} -- 取消已确定的建筑
-local iworld = require "gameplay.interface.world"
+local ichest = require "gameplay.interface.chest"
 local tracedoc = require "utility.tracedoc"
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
@@ -335,7 +335,8 @@ function M:stage_camera_usage(datamodel)
         local pbuilder = create_builder()
         for prototype_name in global.construct_queue:for_each() do
             local typeobject = iprototype.queryByName("item", prototype_name)
-            local count = global.base_chest[typeobject.id] or 0
+            local slot = global.base_chest[typeobject.id] or {amount = 0}
+            local count = slot.amount
             local total_count = global.construct_queue:size(prototype_name)
             count = math.min(count, total_count)
             assert(total_count > 0)
@@ -347,7 +348,7 @@ function M:stage_camera_usage(datamodel)
                 end
 
                 -- decrease item count
-                assert(iworld.base_chest_pickup(gameplay_core.get_world(), typeobject.id, count))
+                assert(ichest.base_chest_pickup(gameplay_core.get_world(), typeobject.id, count))
             end
         end
 
@@ -366,14 +367,15 @@ function M:stage_camera_usage(datamodel)
     last_update_time = last_update_time or current
     if current - last_update_time > 1000 then
         last_update_time = current
-        global.base_chest = tracedoc.new(iworld.base_chest(gameplay_core.get_world()))
+        global.base_chest = tracedoc.new(ichest.base_collect_item(gameplay_core.get_world()))
     end
 
     if tracedoc.changed(global.base_chest) or global.construct_queue:changed() then
         local construct_queue = {}
         for prototype_name in global.construct_queue:for_each() do
             local typeobject = iprototype.queryByName("item", prototype_name)
-            local count = global.base_chest[typeobject.id] or 0
+            local slot = global.base_chest[typeobject.id] or {amount = 0}
+            local count = slot.amount
             local total_count = global.construct_queue:size(prototype_name)
             count = math.min(count, total_count)
             table.insert(construct_queue, {icon = typeobject.icon, count = count, total_count = total_count})

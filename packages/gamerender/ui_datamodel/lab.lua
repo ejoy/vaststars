@@ -4,7 +4,7 @@ local w = world.w
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
 local ilaboratory = require "gameplay.interface.laboratory"
-local iworld = require "gameplay.interface.world"
+local ichest = require "gameplay.interface.chest"
 
 local objects = require "objects"
 local open_techui_mb = mailbox:sub {"open_techui"}
@@ -19,8 +19,8 @@ function M:create(object_id)
     current_inputs = ilaboratory:get_elements(typeobject.inputs)
     local items = {}
     for i, value in ipairs(current_inputs) do
-        local c, n = iworld.chest_get(gameplay_core.get_world(), current_e.chest, i)
-        items[#items+1] = {name = value.name, icon = value.icon, stack = value.stack, count = n or 0}
+        local slot = ichest.chest_get(gameplay_core.get_world(), current_e.chest, i)
+        items[#items+1] = {name = value.name, icon = value.icon, stack = value.stack, count = slot.amount or 0}
     end
     inputs_count = #current_inputs
     return {
@@ -34,9 +34,9 @@ end
 function M:stage_ui_update(datamodel)
     --tech.process
     for i = 1, inputs_count do
-        local c, n = iworld.chest_get(gameplay_core.get_world(), current_e.chest, i)
-        if c and n then
-            datamodel.items[i].count = n
+        local slot = ichest.chest_get(gameplay_core.get_world(), current_e.chest, i)
+        if slot then
+            datamodel.items[i].count = slot.amount
         end
     end
     datamodel.items = datamodel.items

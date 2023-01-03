@@ -10,7 +10,7 @@ prototype "组装机残骸" {
     chest_type = "red",
     crossing = {
         connections = {
-            {type="input-output", position={4,2,"E"}, roadside = true},
+            {type="chest", position={4,2,"E"}, roadside = true},
         },
     },
     group = {"物流" , "默认"},
@@ -27,7 +27,7 @@ prototype "排水口残骸" {
     chest_type = "red",
     crossing = {
         connections = {
-            {type="input-output", position={1,0,"N"}, roadside = true},
+            {type="chest", position={1,0,"N"}, roadside = true},
         },
     },
     group = {"物流" , "默认"},
@@ -44,7 +44,7 @@ prototype "抽水泵残骸" {
     chest_type = "red",
     crossing = {
         connections = {
-            {type="input-output", position={1,2,"S"}, roadside = true},
+            {type="chest", position={1,2,"S"}, roadside = true},
         },
     },
     group = {"物流" , "默认"},

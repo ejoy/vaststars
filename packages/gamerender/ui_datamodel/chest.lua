@@ -94,10 +94,9 @@ local function get_inventory(object_id)
         return inventory
     end
 
-    local item_counts = ichest:item_counts(gameplay_core.get_world(), e)
-    for id, count in pairs(item_counts) do
-        local typeobject_item = assert(iprototype.queryById(id))
-        local stack = count
+    for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e)) do
+        local typeobject_item = assert(iprototype.queryById(slot.item))
+        local stack = slot.amount
 
         while stack > 0 do
             local t = {}

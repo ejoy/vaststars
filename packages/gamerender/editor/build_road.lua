@@ -206,7 +206,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     -- TODO: map may be include some non-road objects, such as some building which have crossing, only for changing the state of the building
     for coord, v in pairs(map) do
         local x, y = unpackcoord(coord)
-        -- assert(not objects:coord(x, y, EDITOR_CACHE_NAMES))
         local road_type, road_mask = roadnet.get_road_mask(v[1], v[2])
         roadnet.editor_set(x, y, road_type, road_mask, object_state)
     end

@@ -11,6 +11,7 @@ local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iworld = require "gameplay.interface.world"
+local ichest = require "gameplay.interface.chest"
 local clear_recipe_mb = mailbox:sub {"clear_recipe"}
 local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
@@ -22,7 +23,6 @@ local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe
 local iflow_connector = require "gameplay.interface.flow_connector"
 local vsobject_manager = ecs.require "vsobject_manager"
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONSTRUCTED"}
-local iobject = ecs.require "object"
 local get_assembling_canvas_items = ecs.require "ui_datamodel.common.assembling_canvas".get_assembling_canvas_items
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
@@ -301,20 +301,19 @@ function M:stage_ui_update(datamodel, object_id)
             local item_counts = {}
             local e = gameplay_core.get_entity(object.gameplay_eid)
             if e.assembling then
-                for prototype_name, count in pairs(iassembling.item_counts(gameplay_core.get_world(), e)) do
-                    local typeobject_item = iprototype.queryByName("item", prototype_name)
+                for _, slot in pairs(iassembling.collect_item(gameplay_core.get_world(), e)) do
+                    local typeobject_item = iprototype.queryById(slot.item)
                     if not typeobject_item then
-                        log.error(("can not found item `%s`"):format(prototype_name))
+                        log.error(("can not found item `%s`"):format(typeobject_item.name))
                     else
-                        item_counts[typeobject_item.id] = item_counts[typeobject_item.id] or 0
-                        item_counts[typeobject_item.id] = item_counts[typeobject_item.id] + count
+                        item_counts[typeobject_item.id] = (item_counts[typeobject_item.id] or 0) + slot.amount
                     end
                 end
             end
 
             if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name) then
                 for prototype, count in pairs(item_counts) do
-                    iworld.base_chest_place(gameplay_core.get_world(), prototype, count)
+                    ichest.base_chest_place(gameplay_core.get_world(), prototype, count)
                 end
 
                 -- TODO viewport

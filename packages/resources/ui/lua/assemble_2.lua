@@ -38,7 +38,7 @@ function start.ClickBack(event)
     start.machine_item = false
 end
 
-function start.ClickClose(event)
+function start.clickClose(event)
     ui_sys.close()
 end
 

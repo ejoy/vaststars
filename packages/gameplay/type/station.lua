@@ -9,7 +9,8 @@ function c:ctor(init, pt)
     return {
         endpoint_changed = true,
         station = {
-            endpoint = iendpoint.create(world, init, pt),
+            endpoint = iendpoint.create(world, init, pt, "station"),
+            lorry_count = 0,
         }
     }
 end

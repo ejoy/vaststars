@@ -27,6 +27,8 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
 local iroadnet = ecs.require "roadnet"
+local ichest = require "gameplay.interface.chest"
+local gameplay_core = require "gameplay.core"
 
 local function _get_state(prototype_name, ok)
     local typeobject = iprototype.queryByName("entity", prototype_name)
@@ -76,7 +78,6 @@ local function _get_road_entrance_position(typeobject, x, y, dir)
         return
     end
     local connections = _get_connections(typeobject.name, x, y, dir)
-    assert(#connections == 1) -- only one roadside
     local conn = connections[1]
     local succ, neighbor_x, neighbor_y = terrain:move_coord(conn.x, conn.y, conn.dir, 1)
     if not succ then
@@ -302,28 +303,6 @@ local function touch_end(self, datamodel)
     end
 end
 
-local function __add_requirement(prototype_name)
-    local gameplay_core = require "gameplay.core"
-    local gameplay_world = gameplay_core.get_world()
-
-    local function get_base_chest(world)
-        local ecs = world.ecs
-        for v in ecs:select "base entity:in chest:in" do
-            return v.chest
-        end
-    end
-
-    local info = gameplay_world:chest_slot {
-        type = "blue",
-        item = prototype_name,
-        amount = 0,
-        limit = 1,
-    }
-
-    local c = assert(get_base_chest(gameplay_world))
-    gameplay_world:container_add(c, info)
-end
-
 local iflow_connector = require "gameplay.interface.flow_connector"
 local function confirm(self, datamodel)
     local pickup_object = assert(self.pickup_object)
@@ -356,10 +335,11 @@ local function confirm(self, datamodel)
     do
         global.construct_queue:put(pickup_object.prototype_name, pickup_object.id)
         local typeobject = iprototype.queryByName("item", pickup_object.prototype_name)
-        local count = global.base_chest[typeobject.id] or 0
+        local slot = global.base_chest[typeobject.id] or {amount = 0}
+        local count = slot.amount
         local request_count = global.construct_queue:size(pickup_object.prototype_name)
         if count < request_count then
-            __add_requirement(pickup_object.prototype_name)
+            ichest.base_add_req(gameplay_core.get_world(), pickup_object.prototype_name, 1)
         end
     end
 
@@ -387,11 +367,6 @@ local function complete(self, datamodel, object_id)
     datamodel.show_confirm = false
 
     self.super.complete(self, object_id)
-
-    if self.road_entrance then
-        self.road_entrance:remove()
-        self.road_entrance = nil
-    end
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)

@@ -15,7 +15,7 @@ function c:ctor(init, pt)
         }
     end
 
-    local endpoint = iendpoint.create(world, init, pt)
+    local endpoint = iendpoint.create(world, init, pt, "chest")
     local asize = #chest
     local index = world:container_create(endpoint, table.concat(chest), asize)
 

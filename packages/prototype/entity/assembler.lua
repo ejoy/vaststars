@@ -41,7 +41,7 @@ prototype "组装机I" {
     },
     crossing = {
         connections = {
-            {type="input-output", position={1,2,"S"}, roadside = true},
+            {type="assembling", position={1,2,"S"}, roadside = true},
         },
     }
 }

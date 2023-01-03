@@ -21,102 +21,67 @@
                 height: 12.00vmin;
                 margin: 0.27vmin auto;
                 font-size: 2.40vmin;
-                background-color: rgb(92, 184, 92);
-
             }
             .truck-pic {
-                width:80%;
-                height:80%;
-                background-image: "textures/construct/truck.texture";
                 background-size:cover;
-            }
-            .truck-info {
-                flex-direction: row;
-                width: 100%;
-                height: 20%;
-                align-items: center;
-                justify-content: center;
-                background-color: rgb(246, 237, 189);
-                border-radius: 0.67vmin;
-                color:rgb(73, 60, 32);
-            }
-            .truck-info-pic {
-                width: 3.47vmin;
-                height: 3.47vmin;
-                background-image: "textures/cmdcenter/small_bag.texture";
-                background-size: cover;   
-            }
-            .truck-info-num {
-                font-size: 3.20vmin;
-                text-align: center;
-                color:rgb(73, 60, 32);
-                -webkit-text-stroke: 0.07vmin rgb(73, 60, 32);
-            }
-            .button-route-examine {
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-                background-size:cover;
-                border-radius: 1.2vmin;
-                color: rgb(213,236,213);
-                font-size: 4.00vmin; 
-                margin-bottom: 0.5em;
-                width: 30.00vmin;
-                height: 14.00vmin;
-                background-color: rgb(19,175,240);
-                border: 0.27vmin rgb(89, 73, 39);
-
-            }
-            .button-info-pic {
-                width: 5.33vmin;
-                height: 5.33vmin;
-                background-size: cover; 
             }
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
-                building_info_flag = true,
                 show = false,
-                truck_interaction_1 = false,
-                truck_interaction_2 = false,
+                lorry_count = 0,
+                req_count = 0,
+                lorries = {} -- {{state = xx}, ...} -- state = 0: loaded, 1: loading, 2: none
             })
 
-            function start.ClickItemInfo(event)
-                start.building_info_flag = false
-                console.log("---ClickBack---")
+            for i = 1, 10 do
+                start.lorries[i] = {state = 2}
             end
 
-            function start.ClickBuilding(event)
-                start.show = not start.show
-                console.log("---ClickBack---")
+            function start.clickClose()
+                ui_sys.close()
             end
 
-            function start.ClickBack(event)
-                start.building_info_flag = true
+            function start.clickButton(event, idx)
+                console.log("clickButton", idx)
+                if not start.lorries[idx] then
+                    return
+                end
+
+                if start.lorries[idx].state == 2 then
+                    ui_sys.pub {"add_req"}
+                else
+                    console.log("do nothing")
+                end
             end
 
-            function start.ClickTruck1(event)
-                start.truck_interaction_1 = not start.truck_interaction_1
-                start.truck_interaction_2 = false
-                show_detail(false, 0, 0, 0)
-                console.log("---ClickTruck1---")
-            end
-
-            function start.ClickTruck2(event)
-                start.truck_interaction_2 = not start.truck_interaction_2
-                start.truck_interaction_1 = false
-                show_detail(false, 0, 0, 0)
-                console.log("---ClickTruck2---")
-            end
+            ui_sys.mapping(start, {
+                {
+                    function(_, lorry_count, req_count)
+                        local exists = lorry_count - req_count
+                        for i = 1, 10 do
+                            if i <= exists then
+                                start.lorries[i].state = 0
+                            elseif i > exists and i <= lorry_count then
+                                start.lorries[i].state = 1
+                            else
+                                start.lorries[i].state = 2
+                            end
+                        end
+                        start("lorries")
+                    end,
+                    "lorry_count", "req_count"
+                },
+            })
         </script>
     </head>
     <body>
         <div class="item-container-region"  data-model="start">
             <div class="panel">
                 <div class="header" id = "item-name-block">
-                    <button class = "back-button"/>
+                    <button class = "back-button" data-event-click="clickClose()" />
                     <div class = "menu-title" style="width: 70%;">物流中心</div>
                 </div>
                 <div class="column" style="width: 100%;height: 95%;">
@@ -151,7 +116,7 @@
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
                         </div>
-                        <div class="build-model-block" data-event-mousedown="ClickBuilding()">
+                        <div class="build-model-block">
                             <div class="build-model"/>
                             <div class="power-block">
                                 <div class="progress-pic"/>
@@ -198,123 +163,14 @@
                     <div class = "menu-title" style="flex-direction: row; align-items: center; width:auto; text-align: center; padding-right: 1vmin;">运输站</div>
                 </div>
                 <div style="border-bottom:0.27vmin rgb(89, 73, 39);"/>
-                <div class="turck-info-region" data-event-click="ClickItemInfo()" style="justify-content: center;">
-                    <div class="row">
-                        <button class="truck-block">
-                            <div class="truck-pic"/>                         
-                            <div class="truck-info">
-                                <div class="truck-info-pic"/>
-                                <div class="truck-info-num">9/10</div>
-                            </div>
-                        </button>
-                        <button class="truck-block">
-                            <div class="truck-pic"/>                         
-                            <div class="truck-info">
-                                <div class="truck-info-pic"/>
-                                <div class="truck-info-num">9/10</div>
-                            </div>
-                        </button>
-                        <button class="truck-block">
-                            <div class="truck-pic"/>                         
-                            <div class="truck-info">
-                                <div class="truck-info-pic"/>
-                                <div class="truck-info-num">9/10</div>
-                            </div>
-                        </button>
-                        <button class="truck-block">
-                            <div class="truck-pic"/>                         
-                            <div class="truck-info">
-                                <div class="truck-info-pic"/>
-                                <div class="truck-info-num">9/10</div>
-                            </div>
-                        </button>
-                        <button class="truck-block">
-                            <div class="truck-pic"/>                         
-                            <div class="truck-info">
-                                <div class="truck-info-pic"/>
-                                <div class="truck-info-num">9/10</div>
-                            </div>
+                <div class="turck-info-region">
+                    <div style="width: 80%; flex-direction: row; justify-content: flex-start; align-content: flex-start; flex-wrap: wrap;">
+                        <button class="truck-block" data-for = "it:lorries" data-style-background-color="it.state == 2 ? 'rgb(246, 237, 189);' : it.state == 1 ? 'rgb(0, 255, 255);' : 'rgb(92, 184, 92);'">
+                            <div class="truck-pic" data-style-width = "it.state == 2 ? '70%' : '80%'" data-style-height = "it.state == 2 ? '70%' : '80%'" 
+                                data-style-background-image = "it.state == 2 ? 'textures/cmdcenter/add.texture' : 'textures/construct/truck.texture'" 
+                                data-event-click = "clickButton(it_index + 1)" />
                         </button>
                     </div>
-                    <div class="row">
-                        <button class="truck-block">
-                            <div class="truck-pic"/>                         
-                            <div class="truck-info">
-                                <div class="truck-info-pic"/>
-                                <div class="truck-info-num">9/10</div>
-                            </div>
-                        </button>
-                        <button class="truck-block">
-                            <div class="truck-pic"/>                         
-                            <div class="truck-info">
-                                <div class="truck-info-pic"/>
-                                <div class="truck-info-num">9/10</div>
-                            </div>
-                        </button>
-                        <button class="truck-block">
-                            <div class="truck-pic"/>                         
-                            <div class="truck-info">
-                                <div class="truck-info-pic"/>
-                                <div class="truck-info-num">9/10</div>
-                            </div>
-                        </button>
-                        <button class="truck-block">
-                            <div class="truck-pic"/>                         
-                            <div class="truck-info">
-                                <div class="truck-info-pic"/>
-                                <div class="truck-info-num">9/10</div>
-                            </div>
-                        </button>
-                        <button class="truck-block">
-                            <div class="truck-pic"/>                         
-                            <div class="truck-info">
-                                <div class="truck-info-pic"/>
-                                <div class="truck-info-num">9/10</div>
-                            </div>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button class="truck-block">
-                            <div class="truck-pic"/>                         
-                            <div class="truck-info">
-                                <div class="truck-info-pic"/>
-                                <div class="truck-info-num">9/10</div>
-                            </div>
-                        </button>
-                        <button class="truck-block">
-                            <div class="truck-pic"/>                         
-                            <div class="truck-info">
-                                <div class="truck-info-pic"/>
-                                <div class="truck-info-num">9/10</div>
-                            </div>
-                        </button>
-                        <button class="truck-block">
-                            <div class="truck-pic"/>                         
-                            <div class="truck-info">
-                                <div class="truck-info-pic"/>
-                                <div class="truck-info-num">9/10</div>
-                            </div>
-                        </button>
-                        <button class="truck-block" style="background-color: rgb(246, 237, 189);">
-                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "textures/cmdcenter/add.texture";'/>                         
-                        </button>
-                        <button class="truck-block" style="background-color: rgb(246, 237, 189);">
-                            <div class="truck-pic"  style='width:70%; height:70%; background-image: "textures/cmdcenter/add.texture";'/>                         
-                        </button>
-                    </div>
-                </div>
-                <div class="row" style="border: 0.13vmin rgb(89, 73, 39); width:100%; height: 20%; align-items: center; justify-content: space-evenly;" data-if="false">
-                    <button class="button-route-examine">                       
-                        <div class="button-info-pic" style='background-image: "textures/science/timer.texture";'/>
-                        <div class="column">
-                            <div style="font-size: 5.00vmin; -webkit-text-stroke: 0.2vmin #000;">发车间隔</div>
-                            <div style="font-size: 3.00vmin; -webkit-text-stroke: 0.2vmin #000;">(60秒)</div>
-                        </div>
-                    </button>
-                    <button class="button-route-examine" style="background-color:rgb(203, 118, 24);">                      
-                        <div class="button-info-pic" style='background-image: "textures/road/header.texture";'/>
-                        <div style="font-size: 5.00vmin; -webkit-text-stroke: 0.2vmin #000;">路线查看</div>
-                    </button>
                 </div>
             </div>       
         </div>

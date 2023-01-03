@@ -11,7 +11,7 @@ function c:ctor(init, pt)
     local e = {
         fluidboxes = {},
         chest = {
-            endpoint = iendpoint.create(world, init, pt)
+            endpoint = iendpoint.create(world, init, pt, "assembling")
         },
         assembling = {
             speed = math.floor(pt.speed * 100),

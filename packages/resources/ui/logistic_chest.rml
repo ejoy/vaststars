@@ -11,7 +11,7 @@
             local start = ui_sys.createDataMode("start", {
             })
 
-            function start.ClickClose()
+            function start.clickClose()
                 ui_sys.close()
             end
 
@@ -22,7 +22,7 @@
             <!-- 左边面板 begin -->
             <div class="panel" style="width: 45%;">
                 <div class="header" id = "item-name-block">
-                    <button class = "back-button" data-event-click="ClickClose()"/>
+                    <button class = "back-button" data-event-click="clickClose()"/>
                     <div class = "menu-title" style="width: 70%;">需求物流箱</div>
                 </div>
                 <div style="border-bottom: 1px rgb(89, 73, 39);"/>

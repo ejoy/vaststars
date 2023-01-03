@@ -14,28 +14,38 @@ local close_mb = mailbox:sub {"close"}
 local teardown_mb = mailbox:sub {"teardown"}
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local iobject = ecs.require "object"
-local iworld = require "gameplay.interface.world"
+local ichest = require "gameplay.interface.chest"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 
-local detail_event = { -- entity_type -> function
-    ["assembling"] = function(object_id)
-        iui.open("assemble_2.rml", object_id)
-    end,
-    ["chest"] = function(object_id)
-        iui.open("chest.rml", object_id)
-    end,
-    ["base"] = function(object_id)
-        iui.open("chest.rml", object_id)
-    end,
-    ["laboratory"] = function(object_id)
-        iui.open("lab.rml", object_id)
-    end,
+-- An object may contain multiple types at the same time
+-- The types are listed in order, with the earlier ones taking precedence over the later ones
+local detail_ui = {
+    {
+        type = "station",
+        rml = "logistics_center.rml",
+    },
+    {
+        type = "assembling",
+        rml = "assemble_2.rml",
+    },
+    {
+        type = "chest",
+        rml = "chest.rml",
+    },
+    {
+        type = "base",
+        rml = "chest.rml",
+    },
+    {
+        type = "laboratory",
+        rml = "lab.rml",
+    },
 }
 
 local function _show_detail(typeobject)
-    for t in pairs(detail_event) do
-        if iprototype.has_type(typeobject.type, t) then
+    for _, v in ipairs(detail_ui) do
+        if iprototype.has_type(typeobject.type, v.type) then
             return true
         end
     end
@@ -111,9 +121,10 @@ function M:stage_ui_update(datamodel, object_id)
     for _, _, _, object_id in detail_mb:unpack() do
         local object = assert(objects:get(object_id))
         local typeobject = iprototype.queryByName("entity", object.prototype_name)
-        for _, t in ipairs(typeobject.type) do
-            if detail_event[t] then
-                detail_event[t](object_id)
+        for _, v in ipairs(detail_ui) do
+            if iprototype.has_type(typeobject.type, v.type) then
+                iui.open(v.rml, object_id)
+                break
             end
         end
     end
@@ -131,7 +142,7 @@ function M:stage_ui_update(datamodel, object_id)
 
         local typeobject_item = iprototype.queryByName("item", object.prototype_name)
         if typeobject_item then
-            iworld.base_chest_place(gameplay_core.get_world(), typeobject_item.id, 1)
+            ichest.base_chest_place(gameplay_core.get_world(), typeobject_item.id, 1)
         end
 
         local typeobject_entity = iprototype.queryByName("entity", object.prototype_name)

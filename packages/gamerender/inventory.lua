@@ -1,5 +1,5 @@
 local create_cache = require "utility.multiple_cache"
-local iworld = require "gameplay.interface.world"
+local ichest = require "gameplay.interface.chest"
 local iprototype = require "gameplay.interface.prototype"
 
 local gameplay_core = require "gameplay.core"
@@ -10,14 +10,14 @@ local _VASTSTARS_DEBUG_INFINITE_ITEM <const> = require("debugger").infinite_item
 
 local function flush(self)
     self._inventory:clear(CACHE_NAMES)
-    for prototype, count in pairs(iworld.base_chest(gameplay_core.get_world())) do
-        local t = self._inventory:get(CONSTRUCTED_CACHE_NAMES, prototype)
-        if t then -- different slot may have same prototype
-            t.count = t.count + count
+    for _, slot in pairs(ichest.base_collect_item(gameplay_core.get_world())) do
+        local t = self._inventory:get(CONSTRUCTED_CACHE_NAMES, slot.item)
+        if t then
+            t.count = t.count + slot.amount
         else
             self._inventory:set("CONSTRUCTED", {
-                prototype = prototype,
-                count = count,
+                prototype = slot.item,
+                count = slot.amount,
             })
         end
     end
@@ -72,13 +72,13 @@ local function complete(self)
                 goto continue
             end
 
-            if not iworld.base_chest_pickup(gameplay_core.get_world(), item.prototype, dec) then
+            if not ichest.base_chest_pickup(gameplay_core.get_world(), item.prototype, dec) then
                 log.error("can not pickup item", iprototype.queryById(item.prototype).name, dec)
                 return false
             end
         else
             local inc = item.count - original.count
-            iworld.base_chest_place(gameplay_core.get_world(), item.prototype, inc)
+            ichest.base_chest_place(gameplay_core.get_world(), item.prototype, inc)
         end
         ::continue::
     end

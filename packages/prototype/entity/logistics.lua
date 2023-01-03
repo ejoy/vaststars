@@ -51,7 +51,7 @@ prototype "指挥中心" {
     teardown = false,
     crossing = {
         connections = {
-            {type="input-output", position={2,4,"S"}, roadside = true},
+            {type="base", position={2,4,"S"}, roadside = true},
         },
     }
 }
@@ -83,14 +83,17 @@ prototype "物流中心I" {
     icon = "textures/building_pic/small_pic_logistics_center2.texture",
     background = "textures/build_background/pic_logisticscenter.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "consumer", "station"},
+    type ={"entity", "consumer", "station", "chest"},
+    chest_type = "blue",
+    slots = 10,
     area = "3x3",
     power = "300kW",
     priority = "secondary",
     group = {"物流"},
     crossing = {
         connections = {
-            {type="input-output", position={1,2,"S"}, roadside = true},
+            {type="station", position={1,2,"S"}, roadside = true},
+            {type="chest",   position={2,2,"S"}, roadside = true},
         },
     }
 }
@@ -144,7 +147,7 @@ prototype "科研中心I" {
     group = {"物流"},
     crossing = {
         connections = {
-            {type="input-output", position={1,2,"S"}, roadside = true},
+            {type="laboratory", position={1,2,"S"}, roadside = true},
         },
     }
 }
@@ -155,17 +158,16 @@ prototype_road "砖石公路-I型-%02d" {
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
-    teardown = 20,
     flow_direction = {"N", "E"},
     track = "I",
-    tickcount = 20,
+    tickcount = 21,
     show_build_function = false,
     type ={"entity", "road"},
     area = "1x1",
     crossing = {
         connections = {
-            {type="input-output", position={0,0,"N"}},
-            {type="input-output", position={0,0,"S"}},
+            {type="none", position={0,0,"N"}},
+            {type="none", position={0,0,"S"}},
         },
     }
 }
@@ -176,17 +178,16 @@ prototype_road "砖石公路-L型-%02d" {
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
-    teardown = 20,
     flow_direction = {"N", "E", "S", "W"},
     track = "L",
-    tickcount = 20,
+    tickcount = 21,
     show_build_function = false,
     type ={"entity", "road"},
     area = "1x1",
     crossing = {
         connections = {
-            {type="input-output", position={0,0,"N"}},
-            {type="input-output", position={0,0,"E"}},
+            {type="none", position={0,0,"N"}},
+            {type="none", position={0,0,"E"}},
         },
     }
 }
@@ -197,7 +198,6 @@ prototype_road "砖石公路-T型-%02d" {
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
-    teardown = 20,
     flow_direction = {"N", "E", "S", "W"},
     track = "T",
     tickcount = 20,
@@ -206,9 +206,9 @@ prototype_road "砖石公路-T型-%02d" {
     area = "1x1",
     crossing = {
         connections = {
-            {type="input-output", position={0,0,"E"}},
-            {type="input-output", position={0,0,"S"}},
-            {type="input-output", position={0,0,"W"}},
+            {type="none", position={0,0,"E"}},
+            {type="none", position={0,0,"S"}},
+            {type="none", position={0,0,"W"}},
         },
     }
 }
@@ -219,7 +219,6 @@ prototype_road "砖石公路-X型-%02d" {
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
-    teardown = 20,
     flow_direction = {"N"},
     track = "X",
     tickcount = 20,
@@ -228,10 +227,10 @@ prototype_road "砖石公路-X型-%02d" {
     area = "1x1",
     crossing = {
         connections = {
-            {type="input-output", position={0,0,"N"}},
-            {type="input-output", position={0,0,"E"}},
-            {type="input-output", position={0,0,"S"}},
-            {type="input-output", position={0,0,"W"}},
+            {type="none", position={0,0,"N"}},
+            {type="none", position={0,0,"E"}},
+            {type="none", position={0,0,"S"}},
+            {type="none", position={0,0,"W"}},
         },
     }
 }
@@ -242,7 +241,6 @@ prototype "砖石公路-O型-01" {
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
-    teardown = 20,
     flow_direction = {"N"},
     track = "O",
     tickcount = 20,
@@ -262,16 +260,15 @@ prototype_road "砖石公路-U型-%02d" {
     icon = "textures/construct/road1.texture",
     construct_detector = {"exclusive"},
     flow_type = 11,
-    teardown = 20,
     flow_direction = {"N", "E", "S", "W"},
     track = "U",
-    tickcount = 20,
+    tickcount = 21,
     show_build_function = false,
     type ={"entity", "road"},
     area = "1x1",
     crossing = {
         connections = {
-            {type="input-output", position={0,0,"N"}},
+            {type="none", position={0,0,"N"}},
         },
     }
 }
@@ -290,7 +287,7 @@ prototype "基建站" {
     group = {"物流"},
     crossing = {
         connections = {
-            {type="input-output", position={0,0,"S"}, roadside = true},
+            {type="none", position={0,0,"S"}, roadside = true},
         },
     }
 }
@@ -306,10 +303,9 @@ prototype "拆除点" {
     dismantle_area = "32x32",
     group = {"物流"},
     slots = 20,
-    teardown = false,
     crossing = {
         connections = {
-            {type="input-output", position={0,0,"S"}, roadside = true},
+            {type="none", position={0,0,"S"}, roadside = true},
         },
     }
 }
