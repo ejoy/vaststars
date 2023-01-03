@@ -37,6 +37,7 @@ if EnableSanitize then
     lm.builddir = ("build/%s/sanitize"):format(plat)
     lm.mode = "debug"
     lm.flags = "-fsanitize=address"
+    lm.ldflags = "-fsanitize=address"
     lm.msvc = {
         defines = "_DISABLE_STRING_ANNOTATION"
     }
