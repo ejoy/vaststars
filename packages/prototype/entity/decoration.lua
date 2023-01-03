@@ -15,7 +15,7 @@ prototype "组装机残骸" {
     },
     group = {"物流" , "默认"},
     area = "5x5",
-    slots = 6,
+    slots = 7,
 }
 
 prototype "排水口残骸" {
@@ -32,7 +32,7 @@ prototype "排水口残骸" {
     },
     group = {"物流" , "默认"},
     area = "3x3",
-    slots = 5,
+    slots = 6,
 }
 
 prototype "抽水泵残骸" {
