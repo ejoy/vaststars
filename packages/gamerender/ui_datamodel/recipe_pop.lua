@@ -16,7 +16,6 @@ local clear_recipe_mb = mailbox:sub {"clear_recipe"}
 local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
 local ifluid = require "gameplay.interface.fluid"
-local iassembling = require "gameplay.interface.assembling"
 local terrain = ecs.require "terrain"
 local itypes = require "gameplay.interface.types"
 local recipe_unlocked = ecs.require "ui_datamodel.common.recipe_unlocked".recipe_unlocked
@@ -297,25 +296,7 @@ function M:stage_ui_update(datamodel, object_id)
         local object = assert(objects:get(object_id, {"CONSTRUCTED"}))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if e.assembling then
-            -- get all of assembling's items before set new recipe
-            local item_counts = {}
-            local e = gameplay_core.get_entity(object.gameplay_eid)
-            if e.assembling then
-                for _, slot in pairs(iassembling.collect_item(gameplay_core.get_world(), e)) do
-                    local typeobject_item = iprototype.queryById(slot.item)
-                    if not typeobject_item then
-                        log.error(("can not found item `%s`"):format(typeobject_item.name))
-                    else
-                        item_counts[typeobject_item.id] = (item_counts[typeobject_item.id] or 0) + slot.amount
-                    end
-                end
-            end
-
             if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name) then
-                for prototype, count in pairs(item_counts) do
-                    ichest.base_chest_place(gameplay_core.get_world(), prototype, count)
-                end
-
                 -- TODO viewport
                 local recipe_typeobject = iprototype.queryByName("recipe", recipe_name)
                 assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
