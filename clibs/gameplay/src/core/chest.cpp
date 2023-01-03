@@ -25,12 +25,12 @@ static void list_remove(world& w, container::index start, container::index i) {
     }
 }
 
-static void list_append(world& w, container::index start, container::index v) {
+static container::index list_append(world& w, container::index start, container::index v) {
     for (auto index = start;;) {
         auto& s = w.container.at(index);
         if (s.next == container::kInvalidIndex) {
             s.next = v;
-            break;
+            return index;
         }
         index = s.next;
     }
@@ -61,12 +61,10 @@ container::index chest::create(world& w, uint16_t endpoint, container_slot* data
     return start;
 }
 
-void chest::add(world& w, container::index index, uint16_t endpoint, container_slot* data, container::size_type lsize) {
-    if (lsize == 0) {
-        return;
-    }
+container::index chest::add(world& w, container::index index, uint16_t endpoint, container_slot* data, container::size_type lsize) {
+    assert(lsize != 0);
     auto start = w.container.alloc_slot(lsize);
-    list_append(w, index, start);
+    auto r = list_append(w, index, start);
     for (auto i = start; i != container::kInvalidIndex;) {
         auto& s = w.container.at(i);
         (container_slot&)s = *data++;
@@ -75,6 +73,7 @@ void chest::add(world& w, container::index index, uint16_t endpoint, container_s
         }
         i = s.next;
     }
+    return r;
 }
 
 chest::chest_data& chest::query(ecs::chest& c) {
@@ -309,8 +308,9 @@ ladd(lua_State* L) {
     if (n < 0 || n > (uint16_t) -1 || sz % sizeof(container_slot) != 0) {
         return luaL_error(L, "size out of range.");
     }
-    chest::add(w, container::index::from(index), endpoint, s, (uint16_t)n);
-    return 0;
+    auto ret = chest::add(w, container::index::from(index), endpoint, s, (uint16_t)n);
+    lua_pushinteger(L, ret);
+    return 1;
 }
 
 static int

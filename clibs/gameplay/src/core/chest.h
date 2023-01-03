@@ -292,7 +292,7 @@ namespace chest {
     };
 
     container::index create(world& w, uint16_t endpoint, container_slot* data, container::size_type asize, container::size_type lsize);
-    void add(world& w, container::index index, uint16_t endpoint, container_slot* data, container::size_type lsize);
+    container::index add(world& w, container::index index, uint16_t endpoint, container_slot* data, container::size_type lsize);
     chest_data& query(ecs::chest& c);
     container::index head(world& w, container::index start);
     container::slot& array_at(world& w, container::index start, uint8_t offset);
