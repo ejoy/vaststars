@@ -181,7 +181,7 @@ local gameplay_cache = new() -- = { [key] = mask, ... }
 local confirm_cache = new() -- same as gameplay_cache, but only contains the road in confirm state
 local constructing_cache = new() -- same as gameplay_cache, but only contains the road in constructing state
 
-local function init(t)
+local function init(t, load)
     t = t or {}
     gameplay_cache = new(t)
 
@@ -191,11 +191,13 @@ local function init(t)
     local gameplay_world = gameplay_core.get_world()
     local roadnet = gameplay_world.roadnet
 
-    local t = {}
-    for k, v in pairs(gameplay_cache) do
-        t[k] = _convert_mask(_get_mask(v))
+    if load then
+        local t = {}
+        for k, v in pairs(gameplay_cache) do
+            t[k] = _convert_mask(_get_mask(v))
+        end
+        roadnet:load_map(t)
     end
-    roadnet:load_map(t)
 end
 
 local function world_update()

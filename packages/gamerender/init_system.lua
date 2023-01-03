@@ -10,6 +10,7 @@ local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
 local fps = ecs.require "fps"
 local world_update = ecs.require "world_update.init"
+local gameplay_update = require "gameplay.update.init"
 local saveload = ecs.require "saveload"
 local objects = require "objects"
 local vsobject_manager = ecs.require "vsobject_manager"
@@ -89,6 +90,7 @@ function m:update_world()
         roadnet:update()
         gameplay_core.update()
         world_update(gameplay_world, get_object)
+        gameplay_update(gameplay_world)
 
         tick = tick + 1
         if tick > 3 then -- TODO: remove this

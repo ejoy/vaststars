@@ -8,15 +8,15 @@ local function _gettime()
     return t * 10
 end
 
-local function update_world(world, get_object_func)
+local function update(world)
     local current = _gettime()
     last_update_time = last_update_time or current
-    local roadnet = world.roadnet
     if current - last_update_time < 1000 then
         return
     end
     last_update_time = current
 
+    local roadnet = world.roadnet
     for e in world.ecs:select "station:in chest:in entity:in" do
         for _, slot in pairs(ichest.collect_item(world, e)) do
             if slot.amount >= 0 then
@@ -33,4 +33,4 @@ local function update_world(world, get_object_func)
         end
     end
 end
-return update_world
+return update

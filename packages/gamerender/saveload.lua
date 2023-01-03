@@ -463,7 +463,7 @@ function M:restart()
         terrain:enable_terrain(coord[1], coord[2])
     end
 
-    iroadnet.init(startup_road)
+    iroadnet.init(startup_road, true)
     for _, e in ipairs(startup_entities) do
         igameplay.create_entity(e)
     end
