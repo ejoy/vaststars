@@ -103,7 +103,7 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     for index, v in ipairs(datamodel.recipe_results) do
-        local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, index)
+        local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, #datamodel.recipe_ingredients + index)
         if slot then
             recipe_results_count[index] = {icon = v.icon, count = slot.amount, need_count = v.count}
         else
