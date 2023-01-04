@@ -35,30 +35,8 @@ namespace roadnet::road {
         w.LorryInRoad(lorryOffset + offset) = lorryid::invalid();
     }
     void straight::update(world& w, uint64_t ti) {
-        endpointid& e = w.EndpointInRoad(lorryOffset + 0);
-        if (e) {
-            endpoint& ep = w.Endpoint(e);
-
-            auto l = ep.lorry[endpoint::IN];
-            if (l) {
-                auto& lorry = w.Lorry(l);
-                if (lorry.ready()) {
-                    ep.popMap.push_back(ep.lorry[endpoint::IN]);
-                    ep.lorry[endpoint::IN] = lorryid::invalid();
-                }
-            }
-
-            l = ep.lorry[endpoint::OUT];
-            if (!l) {
-                if (ep.pushMap.size() > 0) {
-                    auto l = ep.pushMap.front();
-                    w.Lorry(l).initTick(kTime);
-                    ep.lorry[endpoint::OUT] = l;
-                    ep.pushMap.pop_front();
-                }
-            }
-        }
-
+        // The last offset of straight(0) is the waiting area of crossroad, driven by crossroad.
+        // see also: crossroad::waitingLorry()
         for (uint16_t i = 1; i < len; ++i) {
             endpointid& e = w.EndpointInRoad(lorryOffset+i);
             if (e) {
@@ -84,29 +62,31 @@ namespace roadnet::road {
                 }
                 else {
                     auto& lorry = w.Lorry(l);
-                    if (lorry.ready() && !w.LorryInRoad(lorryOffset+i-1)) {
+                    if (lorry.ready() && !w.LorryInRoad(lorryOffset+i)) {
                         ep.lorry[endpoint::OUT] = lorryid::invalid();
-                        addLorry(w, l, i-1);
+                        addLorry(w, l, i);
                     }
                 }
             }
+
             lorryid l = w.LorryInRoad(lorryOffset+i);
             if (l) {
                 auto& lorry = w.Lorry(l);
                 if (lorry.ready()) {
-                    delLorry(w, i);
-                    endpointid& e = w.EndpointInRoad(lorryOffset+i-1);
+                    endpointid& e = w.EndpointInRoad(lorryOffset+i);
                     if (e) {
                         endpoint& ep = w.Endpoint(e);
                         // next offset is endpoint
-                        if(lorry.ending.id == id && lorry.ending.offset == i-1) {
+                        if(lorry.ending.id == id && lorry.ending.offset == i) {
                             delLorry(w, i);
                             w.Lorry(l).initTick(kTime);
                             ep.lorry[endpoint::IN] = l;
                         }
-                        if (!ep.lorry[endpoint::OUT] && !ep.lorry[endpoint::IN] && !w.LorryInRoad(lorryOffset+i-1)) {
-                            delLorry(w, i);
-                            addLorry(w, l, i-1);
+                        else {
+                            if (!w.LorryInRoad(lorryOffset+i-1)) {
+                                delLorry(w, i);
+                                addLorry(w, l, i-1);
+                            }
                         }
                     }
                     else {

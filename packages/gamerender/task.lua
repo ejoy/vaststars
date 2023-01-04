@@ -8,6 +8,7 @@ local global = require "global"
 local iconstant = require "gameplay.interface.constant"
 local terrain = ecs.require "terrain"
 local iroadnet = ecs.require "roadnet"
+local ichest = require "gameplay.interface.chest"
 
 local ALL_DIR = iconstant.ALL_DIR
 local function _check_routemap(sx, sy, dx, dy, marked)
@@ -57,10 +58,26 @@ end
 --[[
 custom_type :
 1. routemap, starting = {x, y}, ending = {x, y}
+2. lorry_count, count = x,
 --]]
 local custom_type_mapping = {
     [0] = {s = "undef", check = function() end}, -- TODO
     [1] = {s = "routemap", check = function(task_params) return _check_routemap(task_params.starting[1], task_params.starting[2], task_params.ending[1], task_params.ending[2]) end},
+    [2] = {s = "lorry_count", check = function(task_params)
+        local c = 0
+        local gameplay_world = gameplay_core.get_world()
+        for e in gameplay_world.ecs:select "station:in chest:in entity:in" do
+            local req_count = 0
+            for _, slot in pairs(ichest.collect_item(gameplay_world, e)) do
+                if slot.lock_space ~= 0 then
+                    req_count = req_count + slot.lock_space
+                end
+            end
+            c = c + (e.station.lorry_count - req_count)
+        end
+
+        return c >= task_params.count
+    end, }
 }
 
 local mt = {}

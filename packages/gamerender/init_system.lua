@@ -29,6 +29,26 @@ local PLANES <const> = {YAXIS_PLANE}
 local lorry_update = ecs.require "lorry"
 local iefk = ecs.require "engine.efk"
 local iroadnet = ecs.require "roadnet"
+local task = ecs.require "task"
+local ltask = require "ltask"
+local ltask_now = ltask.now
+
+local function _gettime()
+    local _, t = ltask_now() --10ms
+    return t * 10
+end
+local task_update; do
+    local last_update_time
+    function task_update()
+        local current = _gettime()
+        last_update_time = last_update_time or current
+        if current - last_update_time < 300 then
+            return
+        end
+        last_update_time = current
+        task.update_progress("lorry_count")
+    end
+end
 
 local m = ecs.system 'init_system'
 function m:init_world()
@@ -91,6 +111,7 @@ function m:update_world()
         gameplay_core.update()
         world_update(gameplay_world, get_object)
         gameplay_update(gameplay_world)
+        task_update()
 
         tick = tick + 1
         if tick > 3 then -- TODO: remove this

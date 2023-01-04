@@ -11,7 +11,7 @@ end
 local function update(world)
     local current = _gettime()
     last_update_time = last_update_time or current
-    if current - last_update_time < 1000 then
+    if current - last_update_time < 300 then
         return
     end
     last_update_time = current
