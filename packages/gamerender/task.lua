@@ -89,7 +89,7 @@ local cache = setmetatable({}, mt)
 
 local UNKNOWN <const> = 5 -- custom task type, see also register_unit("task", ...)
 for _, typeobject in pairs(iprototype.each_maintype("tech", "task")) do
-    local task_type, custom_type = string.unpack("<I2I2", typeobject.task)
+    local task_type, _, custom_type = string.unpack("<I2I2I2", typeobject.task) -- second param is multiple
     if task_type ~= UNKNOWN then
         goto continue
     end
