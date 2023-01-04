@@ -110,12 +110,30 @@ prototype "地质研究" {
     sign_icon = "textures/science/tech-important.texture",
 }
 
+prototype "增添运输车辆" {
+  desc = "增加运输车辆至4辆",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"unknown", 2},
+  prerequisites = {"地质研究"},
+  task_params = {count = 4},
+  count = 1,
+  tips_pic = {
+    "textures/task_tips_pic/task_click_build.texture",
+    "textures/task_tips_pic/task_demolish2.texture",
+    "textures/task_tips_pic/task_demolish3.texture",
+  },
+  sign_desc = {
+    { desc = "在物流中心增加运输车辆至4辆", icon = "textures/construct/industry.texture"},
+  },
+}
+
 prototype "放置采矿机" {
   desc = "矿区里放置采矿机",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "采矿机I"},
-  prerequisites = {"地质研究"},
+  prerequisites = {"增添运输车辆"},
   count = 2,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
@@ -263,7 +281,7 @@ prototype "生产铁板" {
   type = { "tech", "task" },
   task = {"stat_production", 0, "铁板"},
   prerequisites = {"铁矿熔炼"},
-  count = 8,
+  count = 4,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ironplate1.texture",
     "textures/task_tips_pic/task_produce_ironplate2.texture",

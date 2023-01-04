@@ -121,7 +121,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "地质研究",
+            "增添运输车辆",
         },
 	},
 
