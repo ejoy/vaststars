@@ -116,8 +116,8 @@ prototype "增添运输车辆" {
   type = { "tech", "task" },
   task = {"unknown", 2},
   prerequisites = {"地质研究"},
-  task_params = {count = 4},
-  count = 1,
+  task_params = {},
+  count = 4,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
     "textures/task_tips_pic/task_demolish2.texture",

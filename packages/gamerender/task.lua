@@ -17,13 +17,13 @@ local function _check_routemap(sx, sy, dx, dy, marked)
     marked[sx << 16 | sy] = true
 
     if sx == dx and sy == dy then
-        return true
+        return 1
     end
 
     local starting = iroadnet.editor_get(sx, sy)
     local ending = iroadnet.editor_get(dx, dy)
     if not starting or not ending then
-        return false
+        return 0
     end
 
     local succ, neighbor_x, neighbor_y
@@ -43,16 +43,16 @@ local function _check_routemap(sx, sy, dx, dy, marked)
         end
 
         if neighbor_x == dx and neighbor_y == dy then
-            return true
+            return 1
         end
 
         if _check_routemap(neighbor_x, neighbor_y, dx, dy, marked) then
-            return true
+            return 1
         end
         ::continue::
     end
 
-    return false
+    return 0
 end
 
 --[[
@@ -76,7 +76,7 @@ local custom_type_mapping = {
             c = c + (e.station.lorry_count - req_count)
         end
 
-        return c >= task_params.count
+        return c
     end, }
 }
 
@@ -114,9 +114,10 @@ function M.update_progress(custom_type_mapping)
         return
     end
 
-    if c.check(c.task_params) then
+    local np = c.check(c.task_params)
+    if np ~= progress then
         local gwworld = gameplay_core.get_world()
-        gwworld:research_progress(taskname, progress + 1)
+        gwworld:research_progress(taskname, np)
     end
 end
 return M
