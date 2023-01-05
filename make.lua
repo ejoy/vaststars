@@ -63,9 +63,7 @@ if lm.os == "windows" then
             lm.bindir .. "/fmodstudioL.dll",
         },
     }
-end
 
-if lm.os == "windows" then
     lm:copy "vulkan_dll" {
         input = {
             lm.antdir .. "3rd/vulkan/x64/vulkan-1.dll",
@@ -74,13 +72,27 @@ if lm.os == "windows" then
             lm.bindir .. "/vulkan-1.dll",
         },
     }
+
+    lm:phony "phony_windows" {
+        deps = {
+            "fmod_dll",
+            "vulkan_dll",
+            lm.compiler == "msvc" and EnableSanitize and "copy_asan",
+        }
+    }
+end
+
+if lm.os == "ios" then
+    lm:phony "phony_ios" {
+        deps = {
+            "bgfx-lib",
+        }
+    }
 end
 
 lm:default {
-    lm.os == "windows" and "fmod_dll",
-    lm.os == "windows" and "vulkan_dll",
-    lm.compiler == "msvc" and EnableSanitize and "copy_asan",
-    "vaststars",
-    lm.os == "ios" and "bgfx-lib",
+    lm.os == "windows" and "phony_windows",
+    lm.os == "ios" and "phony_ios",
     lm.os ~= "ios" and "vaststars_rt",
+    "vaststars",
 }
