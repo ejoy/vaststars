@@ -1,9 +1,9 @@
 local entities = {
     {
         prototype_name = "指挥中心",
-        dir = "S",
+        dir = "N",
         x = 126,
-        y = 126,
+        y = 120,
         items = {
             {"物流中心I",1},
             {"铁制电线杆",20},
@@ -27,7 +27,7 @@ local entities = {
     },
     {
         prototype_name = "抽水泵残骸",
-        dir = "N",
+        dir = "S",
         items = {
             {"破损水电站",1},
 	        {"破损电解厂",1},
@@ -42,11 +42,11 @@ local entities = {
             {"破损运输车辆",15},
         },
         x = 118,
-        y = 122,
+        y = 126,
     },
     {
         prototype_name = "排水口残骸",
-        dir = "N",
+        dir = "S",
         items = {
             {"组装机I",4},
             {"采矿机I",4},
@@ -56,7 +56,7 @@ local entities = {
             {"蓄电池I",4},
         },
         x = 133,
-        y = 126,
+        y = 122,
     },
 }
 
