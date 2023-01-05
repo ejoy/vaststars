@@ -111,20 +111,20 @@ prototype "地质研究" {
 }
 
 prototype "增添运输车辆" {
-  desc = "增加运输车辆至4辆",
+  desc = "增加运输车辆至5辆",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"unknown", 0, 2},
   prerequisites = {"地质研究"},
   task_params = {},
-  count = 4,
+  count = 5,
   tips_pic = {
     "textures/task_tips_pic/task_click_build.texture",
     "textures/task_tips_pic/task_demolish2.texture",
     "textures/task_tips_pic/task_demolish3.texture",
   },
   sign_desc = {
-    { desc = "在物流中心需求运输车辆至4辆", icon = "textures/construct/industry.texture"},
+    { desc = "在物流中心需求运输车辆至5辆", icon = "textures/construct/industry.texture"},
   },
 }
 
