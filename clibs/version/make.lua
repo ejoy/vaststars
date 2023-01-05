@@ -13,6 +13,7 @@ lm:phony {
 }
 
 lm:lua_source "version" {
+    cxx = "c++20",
     sources = {
         "version.cpp",
     }

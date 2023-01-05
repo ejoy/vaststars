@@ -1,3 +1,5 @@
+import_package "vaststars.version"
+
 local createWorld = require "world"
 
 require "init"
