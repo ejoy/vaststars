@@ -124,7 +124,7 @@ prototype "增添运输车辆" {
     "textures/task_tips_pic/task_demolish3.texture",
   },
   sign_desc = {
-    { desc = "在物流中心增加运输车辆至4辆", icon = "textures/construct/industry.texture"},
+    { desc = "在物流中心需求运输车辆至4辆", icon = "textures/construct/industry.texture"},
   },
 }
 
