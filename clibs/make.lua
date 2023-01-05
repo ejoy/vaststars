@@ -44,6 +44,7 @@ lm:exe "vaststars" {
         LuaInclude,
         Antdir .. "runtime/common",
     },
+    defines = "LUA_BUILD_AS_DLL",
     sources = "vaststars_modules.c"
 }
 
