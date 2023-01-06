@@ -120,7 +120,7 @@ policy:
   ant.render|render
 ---
 data:
-  name: anim_group
+  name: frame_group
   scene:
     t: {0, 0, 0}
 mount: 1

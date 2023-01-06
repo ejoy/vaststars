@@ -20,7 +20,7 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cylinder_P1.meshbin
-  name: Cylinder
+  name: center
   scene: {}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
@@ -112,7 +112,7 @@ policy:
   ant.render|render
 ---
 data:
-  name: anim_group
+  name: frame_group
   scene: {}
 mount: 1
 policy:
