@@ -949,6 +949,7 @@ local t = {
 	"/pkg/vaststars.resources/prefabs/building-frame/building-frame-3X5.prefab",
 	"/pkg/vaststars.resources/prefabs/building-frame/building-frame-4X4.prefab",
 	"/pkg/vaststars.resources/prefabs/building-frame/building-frame-5X5.prefab",
+	"/pkg/vaststars.resources/prefabs/building-frame/building-frame.anim",
 	"/pkg/vaststars.resources/prefabs/chimney-1.prefab",
 	"/pkg/vaststars.resources/prefabs/crusher-1.prefab",
 	"/pkg/vaststars.resources/prefabs/distillery-1.prefab",
