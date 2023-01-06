@@ -327,6 +327,7 @@ local t = {
 	"/pkg/ant.render/preprocess/preprocess.ecs",
 	"/pkg/ant.render/preprocess/ssao.lua",
 	"/pkg/ant.render/render/testmat.lua",
+	"/pkg/ant.render/render_layer.lua",
 	"/pkg/ant.render/render_system/bind_bgfx_math_adapter.lua",
 	"/pkg/ant.render/render_system/cluster_render.ecs",
 	"/pkg/ant.render/render_system/cluster_render.lua",
@@ -537,6 +538,8 @@ local t = {
 	"/pkg/ant.resources/shaders/objtrans/fs_objtrans.bin",
 	"/pkg/ant.resources/shaders/objtrans/vs_objtrans.bin",
 	"/pkg/ant.resources/shaders/pbr/ao.sh",
+	"/pkg/ant.resources/shaders/pbr/attribute_define.sh",
+	"/pkg/ant.resources/shaders/pbr/attribute_uniforms.sh",
 	"/pkg/ant.resources/shaders/pbr/attributes_getter.sh",
 	"/pkg/ant.resources/shaders/pbr/brdf.sh",
 	"/pkg/ant.resources/shaders/pbr/common.sh",
@@ -1537,6 +1540,9 @@ local t = {
 	"/pkg/vaststars.resources/ui/truck_time_pop.rml",
 	"/pkg/vaststars.resources/ui/ui.bundle",
 	"/pkg/vaststars.resources/ui/ui_system.lua",
+	"/pkg/vaststars.version/main.lua",
+	"/pkg/vaststars.version/package.lua",
+	"/pkg/vaststars.version/version.lua",
 	"/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab"
 }
 return t
