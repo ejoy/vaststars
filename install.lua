@@ -16,7 +16,7 @@ end
 
 local fs = require "bee.filesystem"
 local bytecode = dofile(ant_dir .. "tools/install/bytecode.lua")
-local argument = dofile(ant_dir .. "packages/argument/main.lua")
+local argument = dofile(ant_dir .. "pkg/ant.argument/main.lua")
 
 local function copy_directory(from, to, filter)
     fs.create_directories(to)
@@ -40,7 +40,7 @@ local input = BIN / "../../../"
 local output = BIN / "../../../../vaststars-release"
 local PLAT = BIN:parent_path():filename():string()
 
-local dirs = {"bin", "packages"}
+local dirs = {"bin", "pkg"}
 
 print "remove vaststars-release/* ..."
 if fs.exists(output) then
@@ -60,7 +60,7 @@ local directory = {
         end,
     },
     {
-        source = input / "packages", dest = output / "packages", func = function(path)
+        source = input / "pkg", dest = output / "pkg", func = function(path)
             return path:filename():string() ~= ".gitignore"
         end,
     },
