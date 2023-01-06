@@ -1,7 +1,9 @@
+---
 duration: 4.2
 name: logistics-center-animat
 sample_ratio: 50
 skeleton: /pkg/vaststars.resources/glb/logistics-center-1.glb|animations/skeleton.ozz
+type: ske
 target_anims:
   ---
   clips:
