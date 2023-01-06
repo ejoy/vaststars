@@ -4,7 +4,6 @@ fx:
   setting:
     lighting: off
     ALPHAMODE_MASK: 1
-    surfacetype: translucent
 state: /pkg/ant.resources/materials/states/translucent.state
 properties:
   s_basecolor:

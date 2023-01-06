@@ -35,7 +35,7 @@ entity_events["material"] = function(_, e, method, ...)
     imaterial[method](e, ...)
 end
 
-local function create(material, property, color, srt)
+local function create(material, property, color, srt, render_layer)
 	assert(color and color ~= MATH3D_NULL)
     local eid = ecs.create_entity{
 		policy = {
@@ -47,6 +47,7 @@ local function create(material, property, color, srt)
 			material = material,
 			visible_state = "main_view",
 			name = ("plane_%d"):format(gen_id()),
+			render_layer = "translucent",
 			simplemesh = imesh.init_mesh(ientity.create_mesh({"p3|n3", plane_vb}, nil, math3d.ref(math3d.aabb({-0.5, 0, -0.5}, {0.5, 0, 0.5}))), true),
 			on_ready = function (e)
 				ivs.set_state(e, "main_view", true)
