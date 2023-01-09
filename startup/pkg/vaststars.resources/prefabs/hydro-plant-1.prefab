@@ -1,0 +1,115 @@
+---
+data:
+  name: Scene
+  scene: {}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+data:
+  material: /pkg/vaststars.resources/glb/hydro-plant.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/hydro-plant.glb|meshes/Sphere.004_P1.meshbin
+  name: Sphere.003
+  scene:
+    r: {0, 1, 0, 1.6292068494294654e-07}
+    s: {0.8862626552581787, 0.8862626552581787, 0.8862626552581787}
+    t: {0, 1.5878984928131104, -12.407676696777344}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+    speed: 1
+    visible: true
+  name: work1
+  scene:
+    s: {2, 2, 2}
+    t: {-6, 23.299999237060547, -6}
+  tag:
+    effect
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+    speed: 1
+    visible: true
+  name: work2
+  scene:
+    s: {2, 2, 2}
+    t: {6, 23.299999237060547, 6}
+  tag:
+    effect
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+    speed: 1
+    visible: true
+  name: work3
+  scene:
+    s: {2, 2, 2}
+    t: {6, 23.299999237060547, -6}
+  tag:
+    effect
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+    speed: 1
+    visible: true
+  name: work4
+  scene:
+    s: {2, 2, 2}
+    t: {-6, 23.299999237060547, 6}
+  tag:
+    effect
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/furnace_smoke.efk
+    speed: 1
+    visible: true
+  name: work
+  scene:
+    s: {6, 6, 6}
+  tag:
+    effect
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
