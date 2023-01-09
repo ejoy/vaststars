@@ -21,87 +21,93 @@ policy:
   ant.render|render
 ---
 data:
-  name: hitch1
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+    speed: 1
+    visible: true
+  name: work1
   scene:
-    s: {6, 6, 6}
-  slot:
-    follow_flag: 1
-    joint_name: None
+    s: {2, 2, 2}
+    t: {-6, 23.299999237060547, -6}
   tag:
-    hitch1
+    effect
 policy:
   ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
   ant.general|tag
-  ant.animation|slot
----
-data:
-  name: hitch2
-  scene:
-    s: {4, 4, 4}
-    t: {-6, 23.299999237060547, -6, 1}
-  slot:
-    follow_flag: 1
-    joint_name: None
-  tag:
-    hitch2
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
----
-data:
-  name: hitch3
-  scene:
-    s: {4, 4, 4}
-    t: {6, 23.299999237060547, 6, 1}
-  slot:
-    follow_flag: 1
-    joint_name: None
-  tag:
-    hitch3
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
----
-data:
-  name: hitch4
-  scene:
-    s: {4, 4, 4}
-    t: {-6, 23.299999237060547, 6, 1}
-  slot:
-    follow_flag: 1
-    joint_name: None
-  tag:
-    hitch4
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
----
-data:
-  name: hitch5
-  scene: {}
-  slot:
-    follow_flag: 1
-    joint_name: None
-  tag:
-    hitch5
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
 ---
 data:
   efk:
+    auto_play: false
+    loop: false
     path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
-  name: root
+    speed: 1
+    visible: true
+  name: work2
   scene:
-    s: {4, 4, 4}
-    t: {6, 23.299999237060547, -6, 1}
+    s: {2, 2, 2}
+    t: {6, 23.299999237060547, 6}
   tag:
     effect
-mount: 11
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+    speed: 1
+    visible: true
+  name: work3
+  scene:
+    s: {2, 2, 2}
+    t: {6, 23.299999237060547, -6}
+  tag:
+    effect
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+    speed: 1
+    visible: true
+  name: work4
+  scene:
+    s: {2, 2, 2}
+    t: {-6, 23.299999237060547, 6}
+  tag:
+    effect
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/furnace_smoke.efk
+    speed: 1
+    visible: true
+  name: work
+  scene:
+    s: {6, 6, 6}
+  tag:
+    effect
 policy:
   ant.general|name
   ant.scene|scene_object
