@@ -1054,7 +1054,7 @@ prototype "破损空气过滤器" {
     icon = "textures/construct/broken-air-filter1.texture",
     ingredients = {
         {"石砖", 4},
-        {"铁板", 8},
+        {"铁板", 4},
         {"破损空气过滤器", 1},
     },
     results = {
@@ -1072,7 +1072,8 @@ prototype "破损地下水挖掘机" {
     allow_as_intermediate = false,
     icon = "textures/construct/broken-pump.texture",
     ingredients = {
-        {"铁板", 8},
+        {"石砖", 4},
+        {"铁板", 4},
         {"破损地下水挖掘机", 1},
     },
     results = {
