@@ -259,6 +259,7 @@ namespace roadnet::lua {
             lua_world::write_dynarray(f, w.endpointAry);
             lua_world::write_vector(f, w.endpointVec, [&](const endpoint& e) {
                 lua_world::file_write(f, e.loc);
+                lua_world::file_write(f, e.coord);
                 lua_world::write_list(f, e.pushMap);
                 lua_world::write_list(f, e.popMap);
                 lua_world::file_write(f, e.lorry[0]);
@@ -287,6 +288,7 @@ namespace roadnet::lua {
             lua_world::read_dynarray(f, w.endpointAry);
             lua_world::read_vector(f, w.endpointVec, [&](endpoint& e) {
                 lua_world::file_read(f, e.loc);
+                lua_world::file_read(f, e.coord);
                 lua_world::read_list(f, e.pushMap);
                 lua_world::read_list(f, e.popMap);
                 lua_world::file_read(f, e.lorry[0]);

@@ -315,12 +315,12 @@ prototype "生产石砖" {
   type = { "tech", "task" },
   task = {"stat_production", 0, "石砖"},
   prerequisites = {"石头处理1"},
-  count = 5,
+  count = 4,
   tips_pic = {
     "textures/task_tips_pic/task_produce_stonebrick.texture",
   },
   sign_desc = {
-    { desc = "使用组装机生产5个石砖", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机生产4个石砖", icon = "textures/construct/industry.texture"},
   },
 }
 

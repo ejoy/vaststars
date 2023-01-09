@@ -57,6 +57,6 @@ return function(srt, state)
     }))
 
     local block_srt = {s = BLOCK_SCALE, r = srt.r, t = srt.t}
-    M.block = iplant.create("/pkg/vaststars.resources/materials/translucent.material", "u_basecolor_factor", block_color, block_srt)
+    M.block = iplant.create("/pkg/vaststars.resources/materials/translucent.material", "u_basecolor_factor", block_color, block_srt, "translucent")
     return setmetatable(M, mt)
 end

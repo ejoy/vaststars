@@ -5,7 +5,7 @@ local fs = require "bee.filesystem"
 local basedir = (fs.current_path() / "../../"):lexically_normal()
 local packagedir = {
     "packages",
-    "3rd/ant/packages"
+    "3rd/ant/pkg"
 }
 
 local function _package_files(root)

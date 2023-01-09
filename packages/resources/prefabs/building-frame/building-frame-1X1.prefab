@@ -9,8 +9,10 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.003_P1.meshbin
-  name: Cube.003
-  scene: {}
+  name: corner11
+  scene:
+    s: {1, 1, 1}
+    t: {2, 0, 2}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
@@ -31,8 +33,10 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.001_P1.meshbin
-  name: Cube.001
-  scene: {}
+  name: bottom1
+  scene:
+    s: {0.800000011920929, 1, 1}
+    t: {0, 0, 2}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
@@ -42,10 +46,12 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.003_P1.meshbin
-  name: Cube.003_1
+  name: corner21
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
-  visible_state: main_view|selectable|cast_shadow
+    s: {1, 1, 1}
+    t: {2, 0, -2}
+  visible_state: cast_shadow|selectable|main_view
 mount: 1
 policy:
   ant.general|name
@@ -54,10 +60,12 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.003_P1.meshbin
-  name: Cube.003_2
+  name: corner22
   scene:
     r: {0, 1, 0, -4.371138828673793e-08}
-  visible_state: main_view|selectable|cast_shadow
+    s: {1, 1, 1}
+    t: {-2, 0, -2}
+  visible_state: cast_shadow|selectable|main_view
 mount: 1
 policy:
   ant.general|name
@@ -66,10 +74,12 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.003_P1.meshbin
-  name: Cube.003_3
+  name: corner12
   scene:
     r: {0, 0.7071067690849304, 0, -0.7071067690849304}
-  visible_state: main_view|selectable|cast_shadow
+    s: {1, 1, 1}
+    t: {-2, 0, 2}
+  visible_state: cast_shadow|selectable|main_view
 mount: 1
 policy:
   ant.general|name
@@ -78,9 +88,11 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.001_P1.meshbin
-  name: Cube.001_1
+  name: left1
   scene:
     r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+    s: {0.800000011920929, 1, 1}
+    t: {2, 0, 0}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
@@ -90,9 +102,11 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.001_P1.meshbin
-  name: Cube.001_2
+  name: top1
   scene:
     r: {0, 1, 0, -4.371138828673793e-08}
+    s: {0.800000011920929, 1, 1}
+    t: {0, 0, -2}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
@@ -102,9 +116,11 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.001_P1.meshbin
-  name: Cube.001_3
+  name: right1
   scene:
     r: {0, 0.7071067690849304, 0, -0.7071067690849304}
+    s: {0.800000011920929, 1, 1}
+    t: {-2, 0, 0}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
@@ -113,7 +129,8 @@ policy:
 ---
 data:
   name: frame_group
-  scene: {}
+  scene:
+    t: {0, 0, 0}
 mount: 1
 policy:
   ant.general|name
@@ -122,11 +139,11 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.002_P1.meshbin
-  name: Cube.005
+  name: corner11
   scene:
     r: {0, 0, 0, 1}
     s: {1, 1, 1}
-    t: {0, 0, 0}
+    t: {2, 0, 2}
   visible_state: cast_shadow|selectable|main_view
 mount: 11
 policy:
@@ -136,11 +153,11 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.005_P1.meshbin
-  name: Cube.002
+  name: bottom2
   scene:
     r: {0, 0, 0, 1}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+    s: {0.800000011920929, 1, 1}
+    t: {0, 0, 2}
   visible_state: cast_shadow|selectable|main_view
 mount: 11
 policy:
@@ -150,11 +167,11 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.002_P1.meshbin
-  name: Cube.005_1
+  name: corner21
   scene:
     r: {0, 0.7071066498756409, 0, 0.70710688829422}
-    s: {0.9999998807907104, 1, 0.9999998807907104}
-    t: {0, 0, 0}
+    s: {1, 1, 1}
+    t: {2, 0, -2}
   visible_state: cast_shadow|selectable|main_view
 mount: 11
 policy:
@@ -164,11 +181,11 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.002_P1.meshbin
-  name: Cube.005_2
+  name: corner22
   scene:
     r: {0, 1, 0, -4.371138828673793e-08}
     s: {1, 1, 1}
-    t: {0, 0, 0}
+    t: {-2, 0, -2}
   visible_state: cast_shadow|selectable|main_view
 mount: 11
 policy:
@@ -178,11 +195,11 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.002_P1.meshbin
-  name: Cube.005_3
+  name: corner12
   scene:
     r: {0, -0.7071066498756409, 0, 0.70710688829422}
-    s: {0.9999998807907104, 1, 0.9999998807907104}
-    t: {0, 0, 0}
+    s: {1, 1, 0.9999998807907104}
+    t: {-2, 0, 2}
   visible_state: cast_shadow|selectable|main_view
 mount: 11
 policy:
@@ -192,11 +209,11 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.005_P1.meshbin
-  name: Cube.002_1
+  name: left2
   scene:
     r: {0, 0.7071066498756409, 0, 0.70710688829422}
-    s: {0.9999998807907104, 1, 0.9999998807907104}
-    t: {0, 0, 0}
+    s: {0.800000011920929, 1, 1}
+    t: {2, 0, 0}
   visible_state: cast_shadow|selectable|main_view
 mount: 11
 policy:
@@ -206,11 +223,11 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.005_P1.meshbin
-  name: Cube.002_2
+  name: top2
   scene:
     r: {0, 1, 0, -4.371138828673793e-08}
-    s: {1, 1, 1}
-    t: {0, 0, 0}
+    s: {0.800000011920929, 1, 1}
+    t: {0, 0, -2}
   visible_state: cast_shadow|selectable|main_view
 mount: 11
 policy:
@@ -220,11 +237,11 @@ policy:
 data:
   material: /pkg/vaststars.resources/glb/building_station_new.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/building_station_new.glb|meshes/Cube.005_P1.meshbin
-  name: Cube.002_3
+  name: right2
   scene:
     r: {0, -0.7071066498756409, 0, 0.70710688829422}
-    s: {0.9999998807907104, 1, 0.9999998807907104}
-    t: {0, 0, 0}
+    s: {0.800000011920929, 1, 0.9999998807907104}
+    t: {-2, 0, 0}
   visible_state: cast_shadow|selectable|main_view
 mount: 11
 policy:

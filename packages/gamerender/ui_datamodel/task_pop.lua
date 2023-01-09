@@ -2,7 +2,6 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 local gameplay_core = require "gameplay.core"
-local iprototype = require "gameplay.interface.prototype"
 local global = require "global"
 local close_taskui_event = mailbox:sub {"close_taskui"}
 local M = {}

@@ -16,7 +16,7 @@ end
 
 local fs = require "bee.filesystem"
 local bytecode = dofile(ant_dir .. "tools/install/bytecode.lua")
-local argument = dofile(ant_dir .. "packages/argument/main.lua")
+local argument = dofile(ant_dir .. "pkg/ant.argument/main.lua")
 
 local function copy_directory(from, to, filter)
     fs.create_directories(to)

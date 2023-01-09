@@ -6,7 +6,6 @@ fx:
     shadow_cast: on
     shadow_receive: on
     subsurface: off
-    surfacetype: opacity
   vs: /pkg/ant.resources/shaders/pbr/vs_pbr.sc
 properties:
   u_basecolor_factor: {1, 1, 1, 1}
