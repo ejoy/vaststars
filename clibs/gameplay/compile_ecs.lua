@@ -119,7 +119,7 @@ local function writeEntityH(components)
     return table.concat(out, "\n")
 end
 
-local components = loadComponents "packages/gameplay/init/component.lua"
+local components = loadComponents "pkg/gameplay/init/component.lua"
 local data = writeEntityH(components)
 
 local f <close> = assert(io.open("clibs/gameplay/src/util/component.h", "w"))
