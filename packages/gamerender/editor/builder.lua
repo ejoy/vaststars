@@ -17,21 +17,6 @@ local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local iroadnet = ecs.require "roadnet"
 
-local function _has_type(prototype_name, t)
-    local typeobject = iprototype.queryByName("entity", prototype_name)
-    return iprototype.has_type(typeobject.type, t)
-end
-
-local function _check_connections(connections, offset_x, offset_y)
-    for _, connection in ipairs(connections) do
-        local x, y = connection[1], connection[2]
-        if x == offset_x and y == offset_y then
-            return true
-        end
-    end
-    return false
-end
-
 local function check_construct_detector(self, prototype_name, x, y, dir)
     dir = dir or DEFAULT_DIR
     local typeobject = iprototype.queryByName("entity", prototype_name)
@@ -72,36 +57,6 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     end
 
     return true
-end
-
-local get_neighbor_fluid_types; do
-    local function is_neighbor(x1, y1, dir1, x2, y2, dir2)
-        local dx1, dy1 = ieditor:get_dir_coord(x1, y1, dir1)
-        local dx2, dy2 = ieditor:get_dir_coord(x2, y2, dir2)
-        return (dx1 == x2 and dy1 == y2) and (dx2 == x1 and dy2 == y1)
-    end
-
-    function get_neighbor_fluid_types(self, cache_names_r, prototype_name, x, y, dir)
-        local fluid_names = {}
-
-        for _, v in ipairs(ifluid:get_fluidbox(prototype_name, x, y, dir, "")) do
-            local dx, dy = ieditor:get_dir_coord(v.x, v.y, v.dir)
-            local object = objects:coord(dx, dy, cache_names_r)
-            if object then
-                for _, v1 in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
-                    if is_neighbor(v.x, v.y, v.dir, v1.x, v1.y, v1.dir) and v1.fluid_name ~= "" then
-                        fluid_names[v1.fluid_name] = true
-                    end
-                end
-            end
-        end
-
-        local array = {}
-        for fluid in pairs(fluid_names) do
-            array[#array + 1] = fluid
-        end
-        return array
-    end
 end
 
 local function clean(self, datamodel)
@@ -232,7 +187,6 @@ local function create()
     local M = {}
     M.check_construct_detector = check_construct_detector
     M.revert_changes = ieditor.revert_changes
-    M.get_neighbor_fluid_types = get_neighbor_fluid_types
     M.clean = clean
     M.check_unconfirmed = check_unconfirmed
     M.complete = complete

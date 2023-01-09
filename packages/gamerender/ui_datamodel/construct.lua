@@ -14,6 +14,8 @@ local create_normalbuilder = ecs.require "editor.normalbuilder"
 local create_pipebuilder = ecs.require "editor.pipebuilder"
 local create_roadbuilder = ecs.require "editor.roadbuilder"
 local create_pipetogroundbuilder = ecs.require "editor.pipetogroundbuilder"
+local create_logisticbuilder = ecs.require "editor.logisticbuilder"
+local create_logisticchestbuilder = ecs.require "editor.logisticchestbuilder"
 local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
 local global = require "global"
@@ -81,6 +83,11 @@ local function _get_construct_menu()
         construct_menu[#construct_menu+1] = m
     end
     return construct_menu
+end
+
+local function __has_type(prototype_name, type)
+    local typeobject = assert(iprototype.queryByName("entity", prototype_name))
+    return iprototype.has_type(typeobject.type, type)
 end
 
 ---------------
@@ -245,6 +252,10 @@ function M:stage_camera_usage(datamodel)
             builder = create_pipebuilder()
         elseif iprototype.is_road(prototype_name) then
             builder = create_roadbuilder()
+        elseif __has_type(prototype_name, "logistic_hub") then
+            builder = create_logisticbuilder()
+        elseif __has_type(prototype_name, "logistic_chest") then
+            builder = create_logisticchestbuilder()
         else
             builder = create_normalbuilder()
         end
@@ -335,7 +346,7 @@ function M:stage_camera_usage(datamodel)
         local pbuilder = create_builder()
         for prototype_name in global.construct_queue:for_each() do
             local typeobject = iprototype.queryByName("item", prototype_name)
-            local slot = global.base_chest[typeobject.id] or {amount = 0}
+            local slot = global.base_chest_cache[typeobject.id] or {amount = 0}
             local count = slot.amount
             local total_count = global.construct_queue:size(prototype_name)
             count = math.min(count, total_count)
@@ -367,14 +378,14 @@ function M:stage_camera_usage(datamodel)
     last_update_time = last_update_time or current
     if current - last_update_time > 1000 then
         last_update_time = current
-        global.base_chest = tracedoc.new(ichest.base_collect_item(gameplay_core.get_world()))
+        global.base_chest_cache = tracedoc.new(ichest.base_collect_item(gameplay_core.get_world()))
     end
 
-    if tracedoc.changed(global.base_chest) or global.construct_queue:changed() then
+    if tracedoc.changed(global.base_chest_cache) or global.construct_queue:changed() then
         local construct_queue = {}
         for prototype_name in global.construct_queue:for_each() do
             local typeobject = iprototype.queryByName("item", prototype_name)
-            local slot = global.base_chest[typeobject.id] or {amount = 0}
+            local slot = global.base_chest_cache[typeobject.id] or {amount = 0}
             local count = slot.amount
             local total_count = global.construct_queue:size(prototype_name)
             count = math.min(count, total_count)
@@ -382,7 +393,7 @@ function M:stage_camera_usage(datamodel)
         end
         datamodel.construct_queue = construct_queue
 
-        tracedoc.commit(global.base_chest)
+        tracedoc.commit(global.base_chest_cache)
         global.construct_queue:commit()
     end
 

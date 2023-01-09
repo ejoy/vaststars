@@ -8,6 +8,8 @@ local json = import_package "ant.json"
 local SKIP_GUIDE <const> = require "debugger".skip_guide
 local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
 local startup_lua <const> = require "debugger".startup or "item.startup"
+local iconstant = require "gameplay.interface.constant"
+local ALL_DIR = iconstant.ALL_DIR
 
 local archival_base_dir
 if CUSTOM_ARCHIVING then
@@ -98,12 +100,12 @@ local function restore_world()
         end
     end
 
-    local coord_transform = require "global".coord_transform_building
+    local building_coord = require "global".building_coord_system
     local function _logisitic_to_building(x, y)
         local nposition = assert(terrain:get_begin_position_by_coord(x, y))
         nposition[1] = nposition[1] - 5
         nposition[3] = nposition[3] + 5
-        local ncoord = coord_transform:get_coord_by_position(math3d.vector(nposition))
+        local ncoord = building_coord:get_coord_by_position(math3d.vector(nposition))
         if not ncoord then
             return
         end
@@ -111,7 +113,6 @@ local function restore_world()
     end
 
     --
-    local coord_transform_building = global.coord_transform_building
     local function restore_object(all_object, map, gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id, recipe)
         local typeobject = iprototype.queryByName("entity", prototype_name)
 
@@ -133,7 +134,7 @@ local function restore_world()
             x = x,
             y = y,
             srt = {
-                t = coord_transform_building:get_position_by_coord(xx, yy, iprototype.rotate_area(typeobject.area, dir, 1, 1)),
+                t = building_coord:get_position_by_coord(xx, yy, iprototype.rotate_area(typeobject.area, dir, 1, 1)),
             },
             fluid_name = fluid_name,
             fluidflow_id = fluidflow_id,
@@ -150,7 +151,8 @@ local function restore_world()
     local all_object = {}
     local map = {} -- coord -> id
     local fluidbox_map = {} -- coord -> id -- only for fluidbox
-    for v in gameplay_core.select("eid:in entity:in fluidbox?in fluidboxes?in assembling?in") do
+    local logistic_chest_map = {} -- coord -> id -- only for logistic_chest&logistic_hub
+    for v in gameplay_core.select("eid:in entity:in fluidbox?in fluidboxes?in assembling?in logistic_hub:in logistic_chest:in") do
         local e = v.entity
         local typeobject = iprototype.queryById(e.prototype)
         local fluid_name = ""
@@ -186,6 +188,11 @@ local function restore_world()
                 end
             end
         end
+
+        if v.logistic_hub or v.logistic_chest then
+            logistic_chest_map[iprototype.packcoord(e.x, e.y)] = v.eid
+        end
+
         local recipe
         if v.assembling then
             local show_recipe_icon = typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining") -- TODO: special case for mining -- duplicate with build_function_pop.lua
@@ -205,6 +212,7 @@ local function restore_world()
             y = e.y,
             fluid_name = fluid_name,
             -- fluidflow_id, -- fluidflow_id is not null only when the object is a fluidbox
+            -- logistic_hub_id, -- logistic_hub_id is not null only when the object is a logistic_hub or logistic_chest
             recipe = recipe, -- for assembling machine only, display the recipe icon, see also: restore_object() -> iobject.new
         }
 
@@ -256,7 +264,7 @@ local function restore_world()
         end
     end
 
-    local function dfs(all_object, map, object, input_dir)
+    local function fluidbox_dfs(all_object, map, object, input_dir)
         for _, v in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir)) do
             if v.dir == input_dir then
                 goto continue
@@ -297,7 +305,28 @@ local function restore_world()
             end
 
             neighbor.fluidflow_id = object.fluidflow_id
-            dfs(all_object, map, neighbor, iprototype.reverse_dir(v.dir))
+            fluidbox_dfs(all_object, map, neighbor, iprototype.reverse_dir(v.dir))
+            ::continue::
+        end
+    end
+
+    local function logistic_chest_dfs(all_object, map, object, input_dir)
+        for _, dir in ipairs(ALL_DIR) do
+            if dir == input_dir then
+                goto continue
+            end
+
+            local succ, dx, dy = terrain:move_coord(object.x, object.y, dir, 1)
+            local neighbor_id = map[iprototype.packcoord(dx, dy)]
+            if not neighbor_id then
+                goto continue
+            end
+
+            local neighbor = assert(all_object[neighbor_id])
+            assert(neighbor.logistic_hub_id == nil)
+
+            neighbor.logistic_hub_id = object.logistic_hub_id
+            logistic_chest_dfs(all_object, map, neighbor, iprototype.reverse_dir(dir))
             ::continue::
         end
     end
@@ -307,10 +336,21 @@ local function restore_world()
         if not object.fluidflow_id then
             global.fluidflow_id = global.fluidflow_id + 1
             object.fluidflow_id = global.fluidflow_id
-            dfs(all_object, fluidbox_map, object)
+            fluidbox_dfs(all_object, fluidbox_map, object)
         end
     end
 
+    ---
+    for _, id in pairs(logistic_chest_map) do
+        local object = all_object[id]
+        if not object.logistic_hub_id then
+            global.logistic_hub_id = global.logistic_hub_id + 1
+            object.logistic_hub_id = global.logistic_hub_id
+            logistic_chest_dfs(all_object, logistic_chest_map, object)
+        end
+    end
+
+    -----------
     for id, v in pairs(all_object) do
         restore_object(all_object, map, id, v.prototype_name, v.dir, v.x, v.y, v.fluid_name, v.fluidflow_id, v.recipe)
     end

@@ -61,10 +61,15 @@ prototype "物流派送站" {
     icon = "textures/building_pic/small_pic_goodsstation_output.texture",
     background = "textures/build_background/small_pic_goodsstation_output.texture",
     construct_detector = {"exclusive"},
-    type = {"entity"},
+    type = {"entity", "logistic_hub"},
     area = "1x1",
     slots = 10,
     group = {"物流"},
+    crossing = {
+        connections = {
+            {type="logistic_hub", position={0,0,"S"}, roadside = true},
+        },
+    }
 }
 
 prototype "物流需求站" {

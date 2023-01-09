@@ -6,7 +6,7 @@ prototype "小铁制箱子I" {
     icon = "textures/building_pic/small_pic_chest.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
-    type = {"entity"},
+    type = {"entity", "logistic_chest"},
     group = {"物流" , "默认"},
     area = "1x1",
     slots = 10,

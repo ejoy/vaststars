@@ -12,8 +12,6 @@ local iprototype = require "gameplay.interface.prototype"
 local iflow_connector = require "gameplay.interface.flow_connector"
 local objects = require "objects"
 local terrain = ecs.require "terrain"
-local inventory = global.inventory
-local iui = ecs.import.interface "vaststars.gamerender|iui"
 local math_abs = math.abs
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local iquad_lines_entity = ecs.require "engine.quad_lines_entity" -- NOTE: different from pipe_builder
@@ -129,16 +127,6 @@ local function _get_covers_fluidbox(object)
     return t
 end
 
-local function _decrease_item(State, PipeToGroundState)
-    -- local item = PipeToGroundState.inventory_item
-    -- if item.count <= 0 then
-    --     State.succ = false
-    --     return
-    -- end
-    -- item.count = item.count - 1
-    return
-end
-
 -- check if the neighbor pipe can be replaced with a pipe to ground
 local function _can_replace(object, forward_dir)
     if not iprototype.is_pipe(object.prototype_name) and not iprototype.is_pipe_to_ground(object.prototype_name) then
@@ -172,8 +160,6 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         local endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, nil, dir)
         endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, iprototype.reverse_dir(dir), endpoint_prototype_name, endpoint_dir)
         PipeToGroundState.map[packcoord(x, y)] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
-        _decrease_item(State, PipeToGroundState)
-
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
     end
 
@@ -186,7 +172,6 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
             -- replace the neighbor pipe with a pipe to ground
             _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, iprototype.reverse_dir(dir), dir)
             PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
-            _decrease_item(State, PipeToGroundState)
             return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         end
 
@@ -206,19 +191,16 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         local next_object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         if not next_object then
             PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
-            _decrease_item(State, PipeToGroundState)
             return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         end
 
         if not _can_replace(next_object, dir) then
             State.succ = false
             PipeToGroundState.map[coord] = {assert(next_object.prototype_name), assert(next_object.dir)}
-            _decrease_item(State, PipeToGroundState)
             return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         end
 
         PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
-        _decrease_item(State, PipeToGroundState)
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
 
     elseif iprototype.is_pipe_to_ground(object.prototype_name) then
@@ -230,7 +212,6 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, iprototype.reverse_dir(dir), dir)
         local coord = packcoord(x, y)
         PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
-        _decrease_item(State, PipeToGroundState)
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
 
     else
@@ -250,19 +231,16 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         local next_object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         if not next_object then
             PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
-            _decrease_item(State, PipeToGroundState)
             return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         end
 
         if not _can_replace(next_object, dir) then
             State.succ = false
             PipeToGroundState.map[coord] = {assert(next_object.prototype_name), assert(next_object.dir)}
-            _decrease_item(State, PipeToGroundState)
             return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
         end
 
         PipeToGroundState.map[coord] = {assert(_prototype_name), assert(_dir)}
-        _decrease_item(State, PipeToGroundState)
         return x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
     end
 end
@@ -299,7 +277,6 @@ local function _set_section(prototype_name, State, PipeToGroundState, x, y, dir)
 
     local _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, dir, reverse_dir)
     PipeToGroundState.map[packcoord(x, y)] = {assert(_prototype_name), assert(_dir)}
-    _decrease_item(State, PipeToGroundState)
 
     x, y = x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
     State.dotted_line_coord = {x, y, PipeToGroundState.to_x, PipeToGroundState.to_y, dir, PipeToGroundState.dir_delta}
@@ -319,7 +296,6 @@ local function _set_section(prototype_name, State, PipeToGroundState, x, y, dir)
     end
     local _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, reverse_dir, dir)
     PipeToGroundState.map[packcoord(x, y)] = {assert(_prototype_name), assert(_dir)}
-    _decrease_item(State, PipeToGroundState)
 
     if last then
         return
@@ -338,13 +314,11 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
     local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
     if not object then
         PipeToGroundState.map[packcoord(x, y)] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
-        _decrease_item(State, PipeToGroundState)
         return
     end
 
     if _can_replace(object, dir) then
         PipeToGroundState.map[packcoord(x, y)] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
-        _decrease_item(State, PipeToGroundState)
         return
     end
 
@@ -364,7 +338,6 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
 
     endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, dir, iprototype.reverse_dir(dir))
     PipeToGroundState.map[coord] = {assert(endpoint_prototype_name), assert(endpoint_dir)}
-    _decrease_item(State, PipeToGroundState)
 
     coord = packcoord(x, y)
     local _prototype_name, _dir = iflow_connector.set_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), true)
@@ -374,7 +347,6 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
     end
 
     PipeToGroundState.map[coord] = {_prototype_name, _dir}
-    _decrease_item(State, PipeToGroundState)
 end
 
 local function _get_item_name(prototype_name)
@@ -423,7 +395,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     PipeToGroundState.replace_object = {}
     PipeToGroundState.replace = true
     PipeToGroundState.map = {}
-    PipeToGroundState.inventory_item = inventory:modity(item_typeobject.id)
 
     while true do
         if x == from_x and y == from_y then
@@ -518,12 +489,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 _object.fluid_name = State.fluid_name
                 _object.fluidflow_id = new_fluidflow_id
             end
-        end
-
-        for prototype_name, count in pairs(PipeToGroundState.remove) do
-            local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-            local item = inventory:modity(item_typeobject.id)
-            item.count = item.count + count
         end
     end
 
@@ -749,14 +714,6 @@ end
 
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject)
-    -- -- check if item is in the inventory
-    -- local item_typeobject = iprototype.queryByName("item", typeobject.name)
-    -- local item = inventory:get(item_typeobject.id)
-    -- if item.count <= 0 then
-    --     self:clean(datamodel)
-    --     return
-    -- end
-
     if not self.grid_entity then
         self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = {0, 8.5, 0}})
         self.grid_entity:show(true)
@@ -797,7 +754,6 @@ local function touch_end(self, datamodel)
     self.coord_indicator.x, self.coord_indicator.y = x, y
 
     self:revert_changes({"INDICATOR", "TEMPORARY"})
-    inventory:revert()
     self.dotted_line:show(false) -- NOTE: different from pipe_builder
 
     if self.state ~= STATE_START then
@@ -808,12 +764,7 @@ local function touch_end(self, datamodel)
 end
 
 local function complete(self, datamodel)
-    if not inventory:complete() then
-        self:revert_changes({"INDICATOR", "TEMPORARY", "CONFIRM"})
-    else
-        self.super.complete(self)
-    end
-
+    self.super.complete(self)
     if self.grid_entity then
         self.grid_entity:remove()
     end
@@ -846,8 +797,6 @@ local function laying_pipe_begin(self, datamodel)
 end
 
 local function laying_pipe_cancel(self, datamodel)
-    inventory:revert()
-
     self:revert_changes({"INDICATOR", "TEMPORARY"})
     local typeobject = iprototype.queryByName("entity", self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)
@@ -863,7 +812,6 @@ local function laying_pipe_confirm(self, datamodel)
         object.PREPARE = true
     end
     objects:commit("TEMPORARY", "CONFIRM")
-    inventory:confirm()
 
     if self.dotted_line then -- NOTE: different from pipe_builder
         self.dotted_line:show(false)

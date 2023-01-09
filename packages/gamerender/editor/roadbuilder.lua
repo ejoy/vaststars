@@ -2,21 +2,17 @@ local ecs = ...
 local world = ecs.world
 
 local iprototype = require "gameplay.interface.prototype"
-local ifluid = require "gameplay.interface.fluid"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
 local create_builder = ecs.require "editor.builder"
 local ieditor = ecs.require "editor.editor"
 local DEFAULT_DIR <const> = 'N'
-local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local irecipe = require "gameplay.interface.recipe"
-local global = require "global"
 local iobject = ecs.require "object"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local imining = require "gameplay.interface.mining"
-local inventory = global.inventory
-local coord_transform = ecs.require "terrain"
+local building_coord = ecs.require "terrain"
 local igrid_entity = ecs.require "engine.grid_entity"
 local iroadnet = ecs.require "roadnet"
 
@@ -31,7 +27,7 @@ end
 local function __new_entity(self, datamodel, typeobject)
     iobject.remove(self.pickup_object)
     local dir = DEFAULT_DIR
-    local x, y = iobject.central_coord(typeobject.name, dir, coord_transform, "align")
+    local x, y = iobject.central_coord(typeobject.name, dir, building_coord)
     if not x or not y then
         return
     end
@@ -62,7 +58,7 @@ local function __new_entity(self, datamodel, typeobject)
         x = x,
         y = y,
         srt = {
-            t = coord_transform:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
+            t = building_coord:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
         },
         fluid_name = fluid_name,
         state = state,
@@ -75,7 +71,7 @@ local function new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", coord_transform.tile_width, coord_transform.tile_height, terrain.tile_size, {t = {0, 8.5, 0}})
+        self.grid_entity = igrid_entity.create("polyline_grid", building_coord.tile_width, building_coord.tile_height, terrain.tile_size, {t = {0, 8.5, 0}})
         self.grid_entity:show(true)
     end
 end
@@ -110,10 +106,10 @@ local function touch_move(self, datamodel, delta_vec)
         return
     end
     local pickup_object = self.pickup_object
-    iobject.move_delta(pickup_object, delta_vec, coord_transform, "align")
+    iobject.move_delta(pickup_object, delta_vec, building_coord)
 
     local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
-    local coord = coord_transform:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, pickup_object.dir))
+    local coord = building_coord:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, pickup_object.dir))
     if not coord then
         pickup_object.state = _get_state(pickup_object.prototype_name, false)
         datamodel.show_confirm = false
@@ -193,29 +189,9 @@ local function confirm(self, datamodel)
     datamodel.show_confirm = false
 
     self.super.complete(self)
-
-    -- self.pickup_object = nil
-    -- __new_entity(self, datamodel, typeobject)
 end
 
 local function complete(self, datamodel)
-end
-
-local function check_construct_detector(self, prototype_name, x, y, dir)
-    local succ = self.super:check_construct_detector(prototype_name, x, y, dir)
-    if not succ then
-        return false
-    end
-
-    if not ifluid:need_set_fluid(prototype_name) then
-        return true
-    end
-
-    local fluid_types = self:get_neighbor_fluid_types(EDITOR_CACHE_NAMES, prototype_name, x, y, dir)
-    if #fluid_types > 1 then
-        return false
-    end
-    return true
 end
 
 local function rotate_pickup_object(self, datamodel, dir, delta_vec)
@@ -227,7 +203,6 @@ local function clean(self, datamodel)
     end
 
     ieditor:revert_changes({"TEMPORARY"})
-    inventory:revert()
     datamodel.show_confirm = false
     datamodel.show_rotate = false
     self.super.clean(self, datamodel)
@@ -246,8 +221,6 @@ local function create()
     M.confirm = confirm
     M.complete = complete
     M.rotate_pickup_object = rotate_pickup_object
-
-    M.check_construct_detector = check_construct_detector
     M.clean = clean
 
     return M

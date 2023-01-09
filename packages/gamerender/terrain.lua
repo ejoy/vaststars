@@ -299,8 +299,4 @@ function terrain:get_coord_by_position(position)
     return _get_coord_by_position(self, position)
 end
 
-function terrain:can_place(x, y)
-    return true
-end
-
 return terrain

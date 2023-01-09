@@ -15,6 +15,14 @@ component "chest" {
     "endpoint:word",
 }
 
+component "logistic_hub" {
+}
+
+component "logistic_chest" {
+    "head_index:word",
+    "index:word",
+}
+
 component "station" {
     "endpoint:word",
     "lorry_count:word",

@@ -27,7 +27,7 @@ local detail_ui = {
     },
     {
         type = "assembling",
-        rml = "assemble_2.rml",
+        rml = "assemble.rml",
     },
     {
         type = "chest",

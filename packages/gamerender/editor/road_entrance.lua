@@ -4,8 +4,7 @@ local world = ecs.world
 local math3d = require "math3d"
 local iplant = ecs.require "engine.plane"
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
-local mc = import_package "ant.math".constant
-local coord_transform = require "global".coord_transform_building
+local building_coord = require "global".building_coord_system
 
 local ARROW_VALID <const> = math3d.constant("v4", {0.0, 1.0, 0.0, 1})
 local ARROW_INVALID <const> = math3d.constant("v4", {1.0, 0.0, 0.0, 1})
@@ -13,7 +12,7 @@ local ARROW_INVALID <const> = math3d.constant("v4", {1.0, 0.0, 0.0, 1})
 local BLOCK_VALID <const> = math3d.constant("v4", {0.0, 2.5, 0.0, 0.5})
 local BLOCK_INVALID <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 0.5})
 
-local BLOCK_SCALE = math3d.constant("v4", {coord_transform.tile_unit_width * 1, 1, coord_transform.tile_unit_height * 1, 0.0})
+local BLOCK_SCALE = math3d.constant("v4", {building_coord.tile_unit_width * 1, 1, building_coord.tile_unit_height * 1, 0.0})
 
 local mt = {}
 mt.__index = mt

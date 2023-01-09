@@ -26,7 +26,7 @@ local function update_world(world)
         -- hide pop ui
         iui.close("detail_panel.rml")
         iui.close("build_function_pop.rml")
-        iui.close("assemble_2.rml")
+        iui.close("assemble.rml")
         iui.close("chest.rml")
         iui.close("lab.rml")
         -- pop guide ui

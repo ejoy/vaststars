@@ -51,6 +51,7 @@ local function new(init)
         recipe = init.recipe,
         fluid_icon = init.fluid_icon,
         srt = init.srt,
+        logistic_hub_id = init.logistic_hub_id,
     }
 
     local outer = setmetatable(t, mt)
@@ -198,10 +199,8 @@ local function flush()
     end
 end
 
-local function move_delta(object, delta_vec, coord_transform, method, area_inc)
-    coord_transform = coord_transform or terrain
-    method = method or "align"
-
+local function move_delta(object, delta_vec, coord_system, area_inc)
+    coord_system = coord_system or terrain
     local vsobject = vsobject_manager:get(object.id)
     if not vsobject then
         return
@@ -209,7 +208,7 @@ local function move_delta(object, delta_vec, coord_transform, method, area_inc)
 
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
     local position = math3d.ref(math3d.add(object.srt.t, delta_vec))
-    local coord = coord_transform[method](coord_transform, position, iprototype.rotate_area(typeobject.area, object.dir, area_inc, area_inc))
+    local coord = coord_system["align"](coord_system, position, iprototype.rotate_area(typeobject.area, object.dir, area_inc, area_inc))
     if not coord then
         log.error(("can not get coord"))
         return
@@ -221,39 +220,36 @@ local function move_delta(object, delta_vec, coord_transform, method, area_inc)
     return object
 end
 
-local function central_coord(prototype_name, dir, coord_transform, method, area_inc)
-    coord_transform = coord_transform or terrain
-    method = method or "align"
-
+local function central_coord(prototype_name, dir, coord_system, area_inc)
+    coord_system = coord_system or terrain
     local typeobject = iprototype.queryByName("entity", prototype_name)
-    local coord = coord_transform[method](coord_transform, camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir, area_inc, area_inc))
+    local coord = coord_system["align"](coord_system, camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir, area_inc, area_inc))
     if not coord then
         return
     end
     return coord[1], coord[2]
 end
 
-local function align(object, coord_transform, method, area_inc)
-    coord_transform = coord_transform or terrain
-    method = method or "align"
+local function align(object)
+    local coord_system = terrain
 
     assert(object)
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    local coord = coord_transform[method](coord_transform, camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir, area_inc, area_inc))
+    local coord = coord_system["align"](coord_system, camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
     end
-    object.srt.t = coord_transform:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir, area_inc, area_inc))
+    object.srt.t = coord_system:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir))
     return object, coord[1], coord[2]
 end
 
-local function coord(object, x, y, coord_transform)
-    coord_transform = coord_transform or terrain
+local function coord(object, x, y, coord_system)
+    coord_system = coord_system or terrain
     assert(object)
     assert(object.prototype_name ~= "")
     local vsobject = assert(vsobject_manager:get(object.id))
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    local position = coord_transform:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, object.dir))
+    local position = coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, object.dir))
     if not position then
         log.error(("can not get position"))
         return

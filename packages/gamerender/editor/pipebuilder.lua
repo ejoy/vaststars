@@ -14,10 +14,7 @@ local iprototype = require "gameplay.interface.prototype"
 local iflow_connector = require "gameplay.interface.flow_connector"
 local objects = require "objects"
 local terrain = ecs.require "terrain"
-local inventory = global.inventory
-local iui = ecs.import.interface "vaststars.gamerender|iui"
 local math_abs = math.abs
-local math_min = math.min
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 local igrid_entity = ecs.require "engine.grid_entity"
 
@@ -125,8 +122,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     local prototype_name = self.coord_indicator.prototype_name
     local typeobject = iprototype.queryByName("entity", prototype_name)
 
-    -- local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-    -- local item = inventory:modity(item_typeobject.id)
     local map = {}
     local remove = {}
 
@@ -237,14 +232,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 object_state = "none",
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
-
-            -- decreasable = true
         end
-
-        -- if decreasable then
-        --     item.count = item.count - 1
-        --     assert(item.count >= 0)
-        -- end
     end
 
     if State.succ then
@@ -255,12 +243,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 _object.fluid_name = State.fluid_name
                 _object.fluidflow_id = new_fluidflow_id
             end
-        end
-
-        for prototype_name, count in pairs(remove) do
-            local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-            local item = inventory:modity(item_typeobject.id)
-            item.count = item.count + count
         end
     end
 
@@ -365,8 +347,6 @@ local function _builder_start(self, datamodel)
     local prototype_name = self.coord_indicator.prototype_name
     local starting = objects:coord(from_x, from_y, EDITOR_CACHE_NAMES)
     local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
-    local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-    local item = assert(inventory:modity(item_typeobject.id)) -- promise by new_entity()
 
     local State = {
         succ = true,
@@ -391,10 +371,6 @@ local function _builder_start(self, datamodel)
         end
 
         local succ
-        -- succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
-        --     math_min(math_abs(to_x - connection.x), item.count),
-        --     math_min(math_abs(to_y - connection.y), item.count)
-        -- )
         succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
             math_abs(to_x - connection.x),
             math_abs(to_y - connection.y)
@@ -446,10 +422,6 @@ local function _builder_start(self, datamodel)
 
         State.from_x, State.from_y = from_x, from_y
         local succ
-        -- succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
-        --     math_min(math_abs(to_x - from_x), item.count - 1),
-        --     math_min(math_abs(to_y - from_y), item.count - 1)
-        -- )
         succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
             math_abs(to_x - from_x),
             math_abs(to_y - from_y)
@@ -484,10 +456,6 @@ local function _builder_start(self, datamodel)
 
         --
         local succ
-        -- succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
-        --     math_min(math_abs(to_x - from_x), item.count - 1),
-        --     math_min(math_abs(to_y - from_y), item.count - 1)
-        -- )
         succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
             math_abs(to_x - from_x),
             math_abs(to_y - from_y)
@@ -507,14 +475,6 @@ end
 
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject)
-    -- -- check if item is in the inventory
-    -- local item_typeobject = iprototype.queryByName("item", typeobject.name)
-    -- local item = inventory:get(item_typeobject.id)
-    -- if item.count <= 0 then
-    --     self:clean(datamodel)
-    --     return
-    -- end
-
     if not self.grid_entity then
         self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = {0, 8.5, 0}})
         self.grid_entity:show(true)
@@ -556,7 +516,6 @@ local function touch_end(self, datamodel)
     self.coord_indicator.x, self.coord_indicator.y = x, y
 
     self:revert_changes({"INDICATOR", "TEMPORARY"})
-    inventory:revert()
 
     if self.state ~= STATE_START then
         _builder_init(self, datamodel)
@@ -566,10 +525,6 @@ local function touch_end(self, datamodel)
 end
 
 local function complete(self, datamodel)
-    if not inventory:complete() then -- TODO: revert changes if not complete
-        return
-    end
-
     if self.grid_entity then
         self.grid_entity:remove()
     end
@@ -605,8 +560,6 @@ local function laying_pipe_begin(self, datamodel)
 end
 
 local function laying_pipe_cancel(self, datamodel)
-    inventory:revert()
-
     self:revert_changes({"INDICATOR", "TEMPORARY"})
     local typeobject = iprototype.queryByName("entity", self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)
@@ -622,7 +575,6 @@ local function laying_pipe_confirm(self, datamodel)
         object.PREPARE = true
     end
     objects:commit("TEMPORARY", "CONFIRM")
-    inventory:confirm()
 
     local typeobject = iprototype.queryByName("entity", self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)
