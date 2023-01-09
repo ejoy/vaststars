@@ -375,14 +375,38 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
         return false
     end
 
-    if not ifluid:need_set_fluid(prototype_name) then
-        return true
+    if ifluid:need_set_fluid(prototype_name) then
+        local fluid_types = self:get_neighbor_fluid_types(EDITOR_CACHE_NAMES, prototype_name, x, y, dir)
+        if #fluid_types > 1 then
+            return false
+        end
     end
 
-    local fluid_types = self:get_neighbor_fluid_types(EDITOR_CACHE_NAMES, prototype_name, x, y, dir)
-    if #fluid_types > 1 then
-        return false
+    local typeobject = iprototype.queryByName("entity", prototype_name)
+    if typeobject.crossing then
+        local valid = false
+        for _, conn in ipairs(_get_connections(prototype_name, x, y, dir)) do
+            if not conn.roadside then
+                goto continue
+            end
+
+            local succ, dx, dy = terrain:move_coord(conn.x, conn.y, conn.dir, 1)
+            if not succ then
+                goto continue
+            end
+
+            if iroadnet.editor_get(dx, dy) then
+                valid = true
+                break
+            end
+            ::continue::
+        end
+
+        if not valid then
+            return false
+        end
     end
+
     return true
 end
 
