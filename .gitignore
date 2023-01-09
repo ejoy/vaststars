@@ -4,12 +4,12 @@
 .vs/
 build/
 bin/
-packages/ecs/ecs.lua
+pkg/ecs/ecs.lua
 .DS_Store
 *.xcuserstate
 *.xcbkptlist
 *.xcscheme
 /.vscode
 /runtime/macos/FrameCapture/
-/packages/prototype/debugger.lua
+/pkg/prototype/debugger.lua
 clibs/gameplay/src/util/component.h

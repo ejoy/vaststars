@@ -1,4 +1,4 @@
 / ${project}
 engine engine
 @pkg pkg
-@pkg ${project}/../packages
+@pkg ${project}/../pkg
