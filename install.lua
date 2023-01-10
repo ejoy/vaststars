@@ -40,7 +40,7 @@ local input = BIN / "../../../"
 local output = BIN / "../../../../vaststars-release"
 local PLAT = BIN:parent_path():filename():string()
 
-local dirs = {"bin", "packages"}
+local dirs = {"bin", "startup/pkg"}
 
 print "remove vaststars-release/* ..."
 if fs.exists(output) then
@@ -60,7 +60,7 @@ local directory = {
         end,
     },
     {
-        source = input / "packages", dest = output / "packages", func = function(path)
+        source = input / "startup/pkg", dest = output / "startup/pkg", func = function(path)
             return path:filename():string() ~= ".gitignore"
         end,
     },
