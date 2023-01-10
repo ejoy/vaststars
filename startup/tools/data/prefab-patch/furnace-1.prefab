@@ -1,0 +1,15 @@
+---
+data:
+  name: hitch1
+  scene:
+    s: {3.200000047683716, 3.200000047683716, 3.200000047683716}
+    t: {0, 11.5, 0, 1}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    hitch1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot

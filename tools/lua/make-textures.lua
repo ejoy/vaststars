@@ -2,7 +2,7 @@
 
 local fs = require "bee.filesystem"
 local dir = (fs.exe_path() / "../../../../"):lexically_normal():string()
-local ui_dir = fs.path(dir .. [[packages\resources\ui\]])
+local ui_dir = fs.path(dir .. [[startup\pkg\vaststars.resources\ui\]])
 local ui_image_dir = ui_dir / [[image\]]
 local ui_texture_dir = ui_dir / [[textures\]]
 

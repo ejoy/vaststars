@@ -4,7 +4,7 @@ require "bootstrap"
 local fs = require "bee.filesystem"
 local basedir = (fs.current_path() / "../../"):lexically_normal()
 local packagedir = {
-    "packages",
+    "startup/pkg",
     "3rd/ant/pkg"
 }
 
@@ -115,5 +115,5 @@ s[#s+1] = "}"
 s[#s+1] = "return t"
 
 print("Output", fs.path(basedir) / "gamerender/resources.lua")
-local f <close> = assert(io.open(fs.path(basedir / "packages/gamerender/resources.lua"):string(), "wb"))
+local f <close> = assert(io.open(fs.path(basedir / "startup/pkg/vaststars.gamerender/resources.lua"):string(), "wb"))
 f:write(table.concat(s, "\n"))
