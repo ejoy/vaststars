@@ -152,7 +152,7 @@ local function restore_world()
     local map = {} -- coord -> id
     local fluidbox_map = {} -- coord -> id -- only for fluidbox
     local logistic_chest_map = {} -- coord -> id -- only for logistic_chest&logistic_hub
-    for v in gameplay_core.select("eid:in entity:in fluidbox?in fluidboxes?in assembling?in logistic_hub:in logistic_chest:in") do
+    for v in gameplay_core.select("eid:in entity:in fluidbox?in fluidboxes?in assembling?in logistic_hub?in logistic_chest?in") do
         local e = v.entity
         local typeobject = iprototype.queryById(e.prototype)
         local fluid_name = ""
