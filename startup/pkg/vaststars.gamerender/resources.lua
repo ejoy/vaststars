@@ -767,6 +767,7 @@ local t = {
 	"/pkg/vaststars.gamerender/engine/line_entity.lua",
 	"/pkg/vaststars.gamerender/engine/plane.lua",
 	"/pkg/vaststars.gamerender/engine/quad_lines_entity.lua",
+	"/pkg/vaststars.gamerender/engine/render_layer.lua",
 	"/pkg/vaststars.gamerender/engine/road.lua",
 	"/pkg/vaststars.gamerender/engine/system/dragdrop_camera_system.lua",
 	"/pkg/vaststars.gamerender/engine/system/entity_object_system.lua",
