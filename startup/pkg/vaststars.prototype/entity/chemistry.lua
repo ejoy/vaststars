@@ -221,10 +221,10 @@ prototype "水电站I" {
                 }
             },
         },
-        crossing = {
-            connections = {
-                {type="assembling", position={0,2,"W"}, roadside = true},
-            },
-        }
     },
+    crossing = {
+        connections = {
+            {type="assembling", position={0,2,"W"}, roadside = true},
+        },
+    }
 }

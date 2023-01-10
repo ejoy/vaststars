@@ -11,9 +11,9 @@ data:
   mesh: /pkg/vaststars.resources/glb/hydro-plant.glb|meshes/Sphere.004_P1.meshbin
   name: Sphere.003
   scene:
-    r: {0, 0.7071067690849304, 0, 0.7071067690849304}
+    r: {0, 1, 0, 1.6292068494294654e-07}
     s: {0.8862626552581787, 0.8862626552581787, 0.8862626552581787}
-    t: {0, 1.5878984928131104, -12.407676696777344}
+    t: {6.599857330322266, 1, 0}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
