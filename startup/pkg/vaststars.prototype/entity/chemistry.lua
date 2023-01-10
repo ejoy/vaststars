@@ -191,7 +191,7 @@ prototype "水电站I" {
                 height = 100,
                 base_level = -100,
                 connections = {
-                    {type="input", position={1,0,"N"}},
+                    {type="input", position={4,1,"E"}},
                 }
             },
             {
@@ -199,7 +199,7 @@ prototype "水电站I" {
                 height = 100,
                 base_level = -100,
                 connections = {
-                    {type="input", position={3,0,"N"}},
+                    {type="input", position={4,3,"E"}},
                 }
             },
         },
@@ -209,7 +209,7 @@ prototype "水电站I" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={1,4,"S"}},
+                    {type="output", position={0,1,"W"}},
                 }
             },
             {
@@ -217,14 +217,14 @@ prototype "水电站I" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={3,4,"S"}},
+                    {type="output", position={0,3,"W"}},
                 }
             },
         },
     },
     crossing = {
         connections = {
-            {type="assembling", position={0,2,"W"}, roadside = true},
+            {type="assembling", position={2,0,"N"}, roadside = true},
         },
     }
 }
