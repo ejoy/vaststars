@@ -162,9 +162,9 @@ end
 
 function M.rotate_connection(position, direction, area)
     local w, h = M.unpackarea(area)
-    w, h = w - 1, h - 1
     local x, y = position[1], position[2]
     local dir = M.rotate_dir(position[3], direction)
+    w, h = w - 1, h - 1
     if direction == 'N' then
         return x, y, dir
     elseif direction == 'E' then

@@ -13,3 +13,5 @@ pkg/ecs/ecs.lua
 /runtime/macos/FrameCapture/
 clibs/gameplay/src/util/component.h
 /startup/pkg/vaststars.prototype/debugger.lua
+/startup/imgui.layout
+/startup/log.txt
