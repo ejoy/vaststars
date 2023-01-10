@@ -879,7 +879,6 @@ local t = {
 	"/pkg/vaststars.prototype/item/intermediate.lua",
 	"/pkg/vaststars.prototype/item/plumbing.lua",
 	"/pkg/vaststars.prototype/item/startup.lua",
-	"/pkg/vaststars.prototype/item/startup_debug.lua",
 	"/pkg/vaststars.prototype/item_category.lua",
 	"/pkg/vaststars.prototype/main.lua",
 	"/pkg/vaststars.prototype/map.lua",
