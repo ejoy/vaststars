@@ -11,5 +11,5 @@ pkg/ecs/ecs.lua
 *.xcscheme
 /.vscode
 /runtime/macos/FrameCapture/
-/pkg/prototype/debugger.lua
 clibs/gameplay/src/util/component.h
+/startup/pkg/vaststars.prototype/debugger.lua
