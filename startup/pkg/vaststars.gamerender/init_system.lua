@@ -32,6 +32,12 @@ local iroadnet = ecs.require "roadnet"
 local task = ecs.require "task"
 local ltask = require "ltask"
 local ltask_now = ltask.now
+local irender_layer = ecs.require "engine.render_layer"
+local RENDER_LAYERS = {
+    {
+        "WIRE",
+    }
+}
 
 local function _gettime()
     local _, t = ltask_now() --10ms
@@ -53,6 +59,8 @@ end
 local m = ecs.system 'init_system'
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
+    irender_layer.init(RENDER_LAYERS)
+
     iefk.preload "/pkg/vaststars.resources/effect/efk/"
 
     iRmlUi.set_prefix "/pkg/vaststars.resources/ui/"
