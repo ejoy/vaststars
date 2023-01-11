@@ -122,8 +122,20 @@ public:
         return {back_};
     }
     void erase_end(iterator it) {
-        for (auto o = it.index.chunk; o != back_.chunk; o = o->next) {
-            delete o;
+        auto o = it.index.chunk;
+        if (o != back_.chunk) {
+            o = o->next;
+            for (;;) {
+                if (o == back_.chunk) {
+                    delete o;
+                    break;
+                }
+                else {
+                    auto next = o->next;
+                    delete o;
+                    o = next;
+                }
+            }
         }
         back_ = it.index;
     }
