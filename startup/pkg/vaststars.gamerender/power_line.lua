@@ -10,6 +10,7 @@ local global            = require "global"
 local iprototype        = require "gameplay.interface.prototype"
 local objects           = require "objects"
 local EDITOR_CACHE_NAMES = {"POWER_AREA", "CONSTRUCTED"}
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local M ={}
 local temp_lines = {}
@@ -32,7 +33,7 @@ local function create_line(pole1, pole2)
     pos1[2] = pos1[2] + pole_height
     pos2 = pos2 or iterrain:get_position_by_coord(pole2.x, pole2.y, pole2.w, pole2.h)
     pos2[2] = pos2[2] + pole_height
-    return iline_entity.create_lines({pos1, pos2}, 80, {1.0, 0.0, 0.0, 0.7})
+    return iline_entity.create_lines({pos1, pos2}, 80, {1.0, 0.0, 0.0, 0.7}, RENDER_LAYER.WIRE)
 end
 
 function M.clear_temp_line()

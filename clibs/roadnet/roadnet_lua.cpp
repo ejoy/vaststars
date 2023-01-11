@@ -274,9 +274,9 @@ namespace roadnet::lua {
             });
 
             lua_world::write_vector(f, w.straightVec);
-            lua_world::write_map(f, w.map);
-            lua_world::write_map(f, w.crossMap);
-            lua_world::write_map(f, w.crossMapR);
+            lua_world::file_write(f, w.map);
+            lua_world::file_write(f, w.crossMap);
+            lua_world::file_write(f, w.crossMapR);
             fclose(f);
             return 0;
         }
@@ -302,9 +302,9 @@ namespace roadnet::lua {
             });
 
             lua_world::read_vector(f, w.straightVec);
-            lua_world::read_map(f, w.map);
-            lua_world::read_map(f, w.crossMap);
-            lua_world::read_map(f, w.crossMapR);
+            lua_world::file_read(f, w.map);
+            lua_world::file_read(f, w.crossMap);
+            lua_world::file_read(f, w.crossMapR);
             fclose(f);
             return 0;
         }

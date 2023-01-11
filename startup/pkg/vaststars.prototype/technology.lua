@@ -290,7 +290,7 @@ prototype "生产铁板" {
     "textures/task_tips_pic/task_produce_ironplate5.texture",
   },
   sign_desc = {
-    { desc = "使用熔炼炉生产8个铁板", icon = "textures/construct/industry.texture"},
+    { desc = "使用熔炼炉生产4个铁板", icon = "textures/construct/industry.texture"},
   },
 }
 

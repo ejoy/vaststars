@@ -132,9 +132,9 @@ local function __new_entity(self, datamodel, typeobject)
     end
 
     local dx, dy = _building_to_logisitic(x, y)
-    local road_entrance_position = _get_road_entrance_position(typeobject, dx, dy, dir)
+    local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, dx, dy, dir)
     if road_entrance_position then
-        local srt = {t = road_entrance_position}
+        local srt = {t = road_entrance_position, r = ROTATORS[road_entrance_dir]}
         if datamodel.show_confirm then
             self.road_entrance = create_road_entrance(srt, "valid")
         else
@@ -209,8 +209,8 @@ local function touch_move(self, datamodel, delta_vec)
     local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
 
     if self.road_entrance then
-        local road_entrance_position = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
-        self.road_entrance:set_srt(mc.ONE, ROTATORS[pickup_object.dir], road_entrance_position)
+        local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
+        self.road_entrance:set_srt(mc.ONE, ROTATORS[road_entrance_dir], road_entrance_position)
 
         local t = {}
         for _, dir in ipairs(ALL_DIR) do
@@ -270,8 +270,8 @@ local function touch_end(self, datamodel)
     local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
 
     if self.road_entrance then
-        local road_entrance_position = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
-        self.road_entrance:set_srt(mc.ONE, ROTATORS[pickup_object.dir], road_entrance_position)
+        local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
+        self.road_entrance:set_srt(mc.ONE, ROTATORS[road_entrance_dir], road_entrance_position)
     end
 
     if not self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) then
@@ -434,7 +434,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
 
     local road_entrance_position, dx, dy, ddir = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
     if road_entrance_position then
-        self.road_entrance:set_srt(mc.ONE, ROTATORS[pickup_object.dir], road_entrance_position)
+        self.road_entrance:set_srt(mc.ONE, ROTATORS[ddir], road_entrance_position)
     end
 end
 

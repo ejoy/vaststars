@@ -27,6 +27,10 @@ local function get_fluid_canvas_items(object, x, y, w, h)
     end
 
     assert(object.fluid_name and object.fluid_name ~= "")
+    if type(object.fluid_name) ~= "string" then
+        return
+    end
+
     local typeobject = iprototype.queryByName("fluid", object.fluid_name)
     local cfg = fluid_icon_canvas_cfg[typeobject.icon]
     if not cfg then

@@ -49,6 +49,28 @@ namespace lua_world {
         assert(n == sz);
     }
 
+    template <typename K, typename V>
+    void file_write(FILE* f, const std::map<K, V>& map) {
+        file_write<size_t>(f, map.size());
+        for (auto& kv : map) {
+            file_write(f, kv.first);
+            file_write(f, kv.second);
+        }
+    }
+
+    template <typename K, typename V>
+    void file_read(FILE* f, std::map<std::remove_cv_t<K>, std::remove_cv_t<V>>& map) {
+        map.clear();
+        size_t n = 0;
+        file_read(f, n);
+        for (size_t i = 1; i <= n; ++i) {
+            std::pair<K, V> pair;
+            file_read(f, pair.first);
+            file_read(f, pair.second);
+            map.emplace(std::move(pair));
+        }
+    }
+
     template <typename Vec>
     static void write_vector(FILE* f, const Vec& vec) {
         file_write(f, vec.size());
@@ -139,28 +161,6 @@ namespace lua_world {
         file_read(f, n);
         vec.reset(n);
         file_read(f, vec.begin(), vec.size());
-    }
-
-    template <typename Map>
-    static void write_map(FILE* f, const Map& map) {
-        file_write<size_t>(f, map.size());
-        for (auto& kv : map) {
-            file_write(f, kv.first);
-            file_write(f, kv.second);
-        }
-    }
-
-    template <typename Map>
-    static void read_map(FILE* f, Map& map) {
-        size_t n = 0;
-        file_read(f, n);
-        for (size_t i = 1; i <= n; ++i) {
-            typename Map::key_type k;
-            typename Map::mapped_type v;
-            file_read(f, k);
-            file_read(f, v);
-            map.emplace(std::move(k), std::move(v));
-        }
     }
 
     enum class filemode {

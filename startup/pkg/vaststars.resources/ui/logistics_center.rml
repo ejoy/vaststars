@@ -116,7 +116,7 @@
                                 <div class="property-text" style="color:#fff;">2.0s(-1.75s)</div>
                             </div>
                         </div>
-                        <div class="build-model-block">
+                        <div class="build-model-block" data-if="false">
                             <div class="build-model"/>
                             <div class="power-block">
                                 <div class="progress-pic"/>

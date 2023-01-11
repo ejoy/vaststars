@@ -121,9 +121,45 @@ public:
     iterator end() {
         return {back_};
     }
-    void erase_end(iterator it) {
-        for (auto o = it.index.chunk; o != back_.chunk; o = o->next) {
+    iterator begin() const {
+        return {front_};
+    }
+    iterator end() const {
+        return {back_};
+    }
+    void clear() {
+        for (;;) {
+            if (front_.chunk == back_.chunk) {
+                front_.pos = back_.pos = 0;
+                break;
+            }
+            chunk_type *o = front_.chunk;
+            front_.chunk = front_.chunk->next;
             delete o;
+        }
+    }
+    size_t size() const {
+        size_t n = 0;
+        for (chunk_type *o = front_.chunk; o != back_.chunk; o = o->next) {
+            ++n;
+        }
+        return n * N + back_.pos - front_.pos;
+    }
+    void erase_end(iterator it) {
+        auto o = it.index.chunk;
+        if (o != back_.chunk) {
+            o = o->next;
+            for (;;) {
+                if (o == back_.chunk) {
+                    delete o;
+                    break;
+                }
+                else {
+                    auto next = o->next;
+                    delete o;
+                    o = next;
+                }
+            }
         }
         back_ = it.index;
     }

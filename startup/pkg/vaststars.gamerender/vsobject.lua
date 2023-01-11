@@ -148,6 +148,10 @@ end
 
 local function add_canvas(self, items)
     self:del_canvas()
+
+    if not items then
+        return
+    end
     self.canvas_id = icanvas.add_item(icanvas.types().RECIPE, self.id, items)
 end
 
