@@ -41,18 +41,3 @@ data:
 policy:
   ant.animation|animation
   ant.general|name
----
-data:
-  name: hitch2
-  scene:
-    s: {0.699999988079071, 0.699999988079071, 0.699999988079071}
-    t: {0, 10.5, 0, 1}
-  slot:
-    follow_flag: 1
-    joint_name: None
-  tag:
-    hitch2
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
