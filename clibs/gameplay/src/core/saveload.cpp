@@ -3,6 +3,45 @@
 #include "core/saveload.h"
 
 namespace lua_world {
+    template <typename T, size_t N>
+    void file_write(FILE* f, const queue<T, N>& q) {
+        file_write(f, q.size());
+        for (auto const& e : q) {
+            file_write(f, e);
+        }
+    }
+
+    void file_write(FILE* f, const trading_queue& tq) {
+        for (size_t i = 0; i < SELL_PRIORITY; ++i) {
+            file_write(f, tq.sell[i]);
+        }
+        for (size_t i = 0; i < BUY_PRIORITY; ++i) {
+            file_write(f, tq.buy[i]);
+        }
+    }
+
+    template <typename T, size_t N>
+    void file_read(FILE* f, queue<T, N>& q) {
+        //TODO: performance optimization
+        q.clear();
+        size_t n = 0;
+        file_read(f, n);
+        for (size_t i = 0; i < n; ++i) {
+            T v;
+            file_read(f, v);
+            q.push(v);
+        }
+    }
+
+    void file_read(FILE* f, trading_queue& tq) {
+        for (size_t i = 0; i < SELL_PRIORITY; ++i) {
+            file_read(f, tq.sell[i]);
+        }
+        for (size_t i = 0; i < BUY_PRIORITY; ++i) {
+            file_read(f, tq.buy[i]);
+        }
+    }
+
     static void backup_scope(lua_State* L, FILE* f, const char* name, std::function<void()> func) {
         lua_Integer head = (lua_Integer)ftell(f);
         func();
@@ -77,6 +116,10 @@ namespace lua_world {
             file_write(f, w.container.top);
         });
 
+        backup_scope(L, f, "tradings", [&](){
+            file_write(f, w.tradings.queues);
+            file_write(f, w.tradings.orders);
+        });
         fclose(f);
         return 1;
     }
@@ -138,6 +181,13 @@ namespace lua_world {
             w.container.init();
         });
 
+        restore_scope(L, f, "tradings", [&](){
+            file_read(f, w.tradings.queues);
+            file_read(f, w.tradings.orders);
+        }, [&](){
+            w.tradings.queues.clear();
+            w.tradings.orders.clear();
+        });
         fclose(f);
         return 0;
     }
