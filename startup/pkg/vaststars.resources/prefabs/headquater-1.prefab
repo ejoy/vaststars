@@ -18,3 +18,36 @@ mount: 1
 policy:
   ant.general|name
   ant.render|render
+---
+data:
+  name: slot1
+  scene:
+    s: {4.400000095367432, 3, 1.850000023841858}
+    t: {0, 19.299999237060547, 0}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  efk:
+    auto_play: false
+    loop: false
+    path: /pkg/vaststars.resources/effect/efk/headquater_light.efk
+    speed: 1
+    visible: true
+  name: root
+  scene: {}
+  tag:
+    effect
+mount: 3
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
