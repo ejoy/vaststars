@@ -44,6 +44,9 @@ local function getConnection(pt, type)
 end
 
 local function create_endpoint(world, init, pt, type)
+    if not pt.crossing then
+        return 0xffff -- Assembling that does not rely on logistics network, eg: groundwater excavator.
+    end
     local c = assert(getConnection(pt, type))
     local x, y, dir = rotate(c.position, DIRECTION[init.dir], pt.area)
     x = x + init.x

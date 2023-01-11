@@ -78,6 +78,9 @@ function M:create(object_id, object_position, ui_x, ui_y)
     local show_set_recipe = false
     local show_detail = _show_detail(typeobject)
     local recipe_name = ""
+    if typeobject.show_detail == false then
+        show_detail = false
+    end
 
     if iprototype.has_type(typeobject.type, "assembling") then
         show_set_recipe = typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining") -- TODO: special case for mining
