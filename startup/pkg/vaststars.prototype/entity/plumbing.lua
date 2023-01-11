@@ -62,7 +62,7 @@ prototype "地下水挖掘机" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={1,1,"E"}},
+                    {type="output", position={1,0,"E"}},
                 }
             }
         }
