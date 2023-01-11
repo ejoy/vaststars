@@ -76,6 +76,7 @@ prototype "换热器I" {
     type ={"entity", "assembling", "fluidboxes"},
     area = "3x2",
     craft_category = {"流体换热处理"},
+    show_detail = false,
     fluidboxes = {
         input = {
             {

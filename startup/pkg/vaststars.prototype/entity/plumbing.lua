@@ -48,11 +48,12 @@ prototype "地下水挖掘机" {
     icon = "textures/building_pic/small_pic_offshore.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "consumer", "assembling", "fluidboxes"},
-    area = "3x3",
+    area = "2x2",
     power = "6kW",
     priority = "secondary",
     recipe = "离岸抽水",
     group = {"管道","默认"},
+    show_detail = false,
     fluidboxes = {
         input = {},
         output = {
@@ -61,7 +62,7 @@ prototype "地下水挖掘机" {
                 height = 100,
                 base_level = 150,
                 connections = {
-                    {type="output", position={0,1,"S"}},
+                    {type="output", position={1,1,"E"}},
                 }
             }
         }
@@ -139,6 +140,7 @@ prototype "空气过滤器I" {
     priority = "secondary",
     group = {"管道"},
     recipe = "空气过滤",
+    show_detail = false,
     fluidboxes = {
         input = {},
         output = {
