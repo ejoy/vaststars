@@ -4,6 +4,7 @@ compress:
   ios: ASTC6x6
   windows: BC3
 noresize: true
+maxsize: 1024
 normalmap: false
 path: /pkg/vaststars.resources/textures/recipe_icon_canvas.png
 sampler:

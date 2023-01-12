@@ -80,7 +80,7 @@ local function get_assembling_canvas_items(object, x, y, w, h)
         }
     }
     t[#t + 1] = {
-        "/pkg/vaststars.resources/materials/recipe_icon_canvas.texture",
+        "/pkg/vaststars.resources/materials/recipe_icon_canvas.material",
         "background",
         {
             texture = {
