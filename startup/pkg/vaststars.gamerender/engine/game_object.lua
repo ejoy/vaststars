@@ -161,6 +161,13 @@ local _get_hitch_children ; do
             template = serialize.parse(prefab_file_path, cr.read_file(prefab_file_path))
         end
 
+        local patch = prefab_file_path .. ".patch"
+        if fs.exists(fs.path(patch)) then
+            for _, v in ipairs(serialize.parse(patch, cr.read_file(patch))) do
+                template[#template + 1] = v
+            end
+        end
+
         -- cache all slots & srt of the prefab
         local scene, slots, effects = _cache_prefab_info(template)
 
@@ -332,19 +339,15 @@ function igame_object.create(init)
     local function send(self, ...)
         self.hitch_entity_object:send(...)
     end
+
+    -- special for hitch
     local effects = {}
     for _, efkinfo in ipairs(children.effects) do
-        local slot_scene = {s = 1, t = {0,0,0}}
-        if efkinfo.slotname then
-            slot_scene = children.slots[efkinfo.slotname].scene
-        end
         effects[#effects + 1] = iefk.create(efkinfo.efk.path, {
             auto_play = efkinfo.efk.auto_play or false,
             loop = efkinfo.efk.loop or false,
             speed = efkinfo.efk.loop or 1.0,
             scene = {
-                s = slot_scene.s,
-                t = slot_scene.t,
                 parent = hitch_entity_object.id
             }
         })
