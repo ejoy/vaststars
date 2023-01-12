@@ -43,8 +43,8 @@ local menu = {
         name = "物流",
         icon = "textures/construct/logisitic1.texture",
         detail = {
-            "科研中心I",
             "物流中心I",
+            "科研中心I",
             "采矿机I",
             "砖石公路-X型-01",
             "物流派送站",
