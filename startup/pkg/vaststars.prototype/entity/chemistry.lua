@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "化工厂I" {
-    model = "prefabs/assembling-1.prefab",
+    model = "prefabs/chemical-plant-1.prefab",
     icon = "textures/building_pic/small_pic_assemble.texture",
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
