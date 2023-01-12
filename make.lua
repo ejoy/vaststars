@@ -73,10 +73,20 @@ if lm.os == "windows" then
         },
     }
 
+    lm:copy "vulkan_ant_dll" {
+        input = {
+            lm.antdir .. "3rd/vulkan/x64/vulkan-1.dll",
+        },
+        output = {
+            lm.antdir .. "bin/msvc/debug/vulkan-1.dll"
+        },
+    }
+
     lm:phony "phony_windows" {
         deps = {
             "fmod_dll",
             "vulkan_dll",
+            "vulkan_ant_dll",
             lm.compiler == "msvc" and EnableSanitize and "copy_asan",
         }
     }
