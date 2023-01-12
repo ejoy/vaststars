@@ -14,6 +14,7 @@ prototype "采矿机I" {
     speed = "50%",
     group = {"加工"},
     craft_category = {"矿石开采"},
+    building_base = false,
     fluidboxes = {
         input = {},
         output = {},
@@ -38,6 +39,7 @@ prototype "采矿机II" {
     speed = "100%",
     group = {"加工"},
     craft_category = {"矿石开采"},
+    building_base = false,
     fluidboxes = {
         input = {},
         output = {},
