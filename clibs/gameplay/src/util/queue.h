@@ -10,6 +10,7 @@ public:
     typedef value_type*       pointer;
     typedef value_type&       reference;
     typedef value_type const& const_reference;
+    static inline const size_t chunk_size = N;
     struct chunk_type {
         value_type  values[N];
         chunk_type* next;
@@ -76,9 +77,22 @@ public:
         }
     }
     queue(const queue&) = delete;
-    queue(queue&&) = delete;
     queue& operator=(const queue&) = delete;
-    queue& operator=(queue&&) = delete;
+
+    queue(queue&& o)
+        : front_(o.front_)
+        , back_(o.back_)
+    {
+        o.front_ = o.back_ = new chunk_type;
+    }
+
+    queue& operator=(queue&& o) {
+        if (this != &o) {
+            std::swap(*this, o);
+        }
+        return *this;
+    };
+
     void push(value_type&& val) {
         new(&back()) T(::std::move(val));
         do_push();

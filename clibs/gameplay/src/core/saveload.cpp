@@ -1,45 +1,176 @@
 #include <string>
 #include "core/world.h"
 #include "core/saveload.h"
+#include "roadnet_world.h"
 
 namespace lua_world {
-    template <typename T, size_t N>
-    void file_write(FILE* f, const queue<T, N>& q) {
-        file_write(f, q.size());
-        for (auto const& e : q) {
+
+    template<typename T>
+    concept QueueType = std::same_as<T, queue<typename T::value_type, T::chunk_size>>;
+
+    template <QueueType T>
+    void file_write(FILE* f, const T& t) {
+        file_write(f, t.size());
+        for (auto const& e : t) {
             file_write(f, e);
         }
     }
-
-    void file_write(FILE* f, const trading_queue& tq) {
-        for (size_t i = 0; i < SELL_PRIORITY; ++i) {
-            file_write(f, tq.sell[i]);
-        }
-        for (size_t i = 0; i < BUY_PRIORITY; ++i) {
-            file_write(f, tq.buy[i]);
-        }
-    }
-
-    template <typename T, size_t N>
-    void file_read(FILE* f, queue<T, N>& q) {
+    template <QueueType T>
+    void file_read(FILE* f, T& t) {
         //TODO: performance optimization
-        q.clear();
+        t.clear();
         size_t n = 0;
         file_read(f, n);
         for (size_t i = 0; i < n; ++i) {
-            T v;
+            typename T::value_type v;
             file_read(f, v);
-            q.push(v);
+            t.push(v);
         }
     }
 
-    void file_read(FILE* f, trading_queue& tq) {
+    template <typename T>
+        requires (std::same_as<T, trading_queue>)
+    void file_write(FILE* f, const T& t) {
         for (size_t i = 0; i < SELL_PRIORITY; ++i) {
-            file_read(f, tq.sell[i]);
+            file_write(f, t.sell[i]);
         }
         for (size_t i = 0; i < BUY_PRIORITY; ++i) {
-            file_read(f, tq.buy[i]);
+            file_write(f, t.buy[i]);
         }
+    }
+    template <typename T>
+        requires (std::same_as<T, trading_queue>)
+    void file_read(FILE* f, T& t) {
+        for (size_t i = 0; i < SELL_PRIORITY; ++i) {
+            file_read(f, t.sell[i]);
+        }
+        for (size_t i = 0; i < BUY_PRIORITY; ++i) {
+            file_read(f, t.buy[i]);
+        }
+    }
+
+    template<template<typename...> class Template, typename Class>
+    struct is_instantiation : std::false_type {};
+    template<template<typename...> class Template, typename... Args>
+    struct is_instantiation<Template, Template<Args...>> : std::true_type {};
+    template<typename Class, template<typename...> class Template>
+    concept is_instantiation_of = is_instantiation<Template, Class>::value;
+
+    template<typename T>
+    concept map_type =
+    is_instantiation_of<T, std::map> || is_instantiation_of<T, std::unordered_map>;
+
+    template <typename T>
+        requires (is_instantiation_of<T, std::map>)
+    void file_write(FILE* f, const T& t) {
+        file_write<size_t>(f, t.size());
+        for (auto& kv : t) {
+            file_write(f, kv.first);
+            file_write(f, kv.second);
+        }
+    }
+    template <typename T>
+        requires (is_instantiation_of<T, std::map>)
+    void file_read(FILE* f, T& t) {
+        t.clear();
+        size_t n = 0;
+        file_read(f, n);
+        for (size_t i = 1; i <= n; ++i) {
+            typename T::key_type k;
+            file_read(f, k);
+            auto r = t.emplace(typename T::value_type(std::move(k), typename T::mapped_type{}));
+            assert(r.second);
+            if (r.second) {
+                file_read(f, r.first->second);
+            }
+            else {
+                typename T::mapped_type v;
+                file_read(f, v);
+            }
+        }
+    }
+
+    template <typename T>
+        requires (is_instantiation_of<T, flatmap> || is_instantiation_of<T, flatset>)
+    void file_write(FILE* f, const T& t) {
+        auto const& data = t.toraw();
+        file_write(f, data.h);
+        if (data.h.mask != 0) {
+            file_write(f, data.buckets, data.h.mask + 1);
+        }
+    }
+    template <typename T>
+        requires (is_instantiation_of<T, flatmap> || is_instantiation_of<T, flatset>)
+    void file_read(FILE* f, T& t) {
+        auto& data = t.toraw();
+        if (data.h.mask != 0) {
+            std::free(data.buckets);
+        }
+        file_read(f, data.h);
+        if (data.h.mask == 0) {
+            data.buckets = reinterpret_cast<decltype(data.buckets)>(&data.h.mask);
+        }
+        else {
+            data.buckets = static_cast<decltype(data.buckets)>(std::malloc(sizeof(data.buckets[0]) * (data.h.mask + 1)));
+            if (!data.buckets) {
+                throw std::bad_alloc {};
+            }
+            file_read(f, data.buckets, data.h.mask + 1);
+        }
+    }
+
+    template <typename T>
+        requires (is_instantiation_of<T, roadnet::dynarray>)
+    static void file_write(FILE* f, const T& t) {
+        file_write(f, t.size());
+        file_write(f, t.begin(), t.size());
+    }
+    template <typename T>
+        requires (is_instantiation_of<T, roadnet::dynarray>)
+    static void file_read(FILE* f, T& t) {
+        size_t n = file_read<size_t>(f);
+        t.reset(n);
+        file_read(f, t.begin(), t.size());
+    }
+
+    template <typename T>
+        requires (is_instantiation_of<T, std::list>)
+    static void file_write(FILE* f, const T& t) {
+        file_write(f, t.size());
+        for (auto const& v : t) {
+            file_write(f, v);
+        }
+    }
+    template <typename T>
+        requires (is_instantiation_of<T, std::list>)
+    static void file_read(FILE* f, T& t) {
+        size_t n = file_read<size_t>(f);
+        t.resize(n);
+        for (auto& v : t) {
+            file_read(f, v);
+        }
+    }
+
+    template <typename T>
+        requires (is_instantiation_of<T, std::vector>)
+    static void file_write(FILE* f, const T& t) {
+        file_write(f, t.size());
+        file_write(f, t.data(), t.size());
+    }
+    template <typename T>
+        requires (is_instantiation_of<T, std::vector>)
+    static void file_read(FILE* f, T& t) {
+        size_t n = file_read<size_t>(f);
+        t.resize(n);
+        file_read(f, t.data(), t.size());
+    }
+
+    static roadnet::world&
+    getroadnetworld(lua_State* L) {
+        lua_getfield(L, LUA_REGISTRYINDEX, "ROADNET_WORLD");
+        auto& rw = *(roadnet::world*)lua_touserdata(L, -1);
+        lua_pop(L, 1);
+        return rw;
     }
 
     static void backup_scope(lua_State* L, FILE* f, const char* name, std::function<void()> func) {
@@ -90,15 +221,15 @@ namespace lua_world {
         });
 
         backup_scope(L, f, "stat", [&](){
-            write_flatmap(f, w.stat.production);
-            write_flatmap(f, w.stat.consumption);
-            write_flatmap(f, w.stat.manual_production);
+            file_write(f, w.stat.production);
+            file_write(f, w.stat.consumption);
+            file_write(f, w.stat.manual_production);
         });
 
         backup_scope(L, f, "techtree", [&](){
-            write_vector(f, w.techtree.queue);
-            write_flatmap(f, w.techtree.researched);
-            write_flatmap(f, w.techtree.progress);
+            file_write(f, w.techtree.queue);
+            file_write(f, w.techtree.researched);
+            file_write(f, w.techtree.progress);
         });
 
         backup_scope(L, f, "container", [&](){
@@ -120,6 +251,34 @@ namespace lua_world {
             file_write(f, w.tradings.queues);
             file_write(f, w.tradings.orders);
         });
+
+        backup_scope(L, f, "roadnet", [&](){
+            auto& rw = getroadnetworld(L);
+            file_write(f, rw.crossAry);
+            file_write(f, rw.straightAry);
+            file_write(f, rw.endpointAry);
+            write_vector(f, rw.endpointVec, [&](const roadnet::endpoint& e) {
+                file_write(f, e.loc);
+                file_write(f, e.coord);
+                file_write(f, e.pushMap);
+                file_write(f, e.popMap);
+                file_write(f, e.lorry[0]);
+                file_write(f, e.lorry[1]);
+            });
+
+            file_write(f, rw.lorryAry);
+            write_vector(f, rw.lorryVec, [&](const roadnet::lorry& l) {
+                file_write(f, l.tick);
+                file_write(f, l.ending);
+                file_write(f, l.gameplay);
+            });
+
+            file_write(f, rw.straightVec);
+            file_write(f, rw.map);
+            file_write(f, rw.crossMap);
+            file_write(f, rw.crossMapR);
+        });
+
         fclose(f);
         return 1;
     }
@@ -137,9 +296,9 @@ namespace lua_world {
         });
 
         restore_scope(L, f, "stat", [&](){
-            read_flatmap(f, w.stat.production);
-            read_flatmap(f, w.stat.consumption);
-            read_flatmap(f, w.stat.manual_production);
+            file_read(f, w.stat.production);
+            file_read(f, w.stat.consumption);
+            file_read(f, w.stat.manual_production);
         }, [&](){
             w.stat.production.clear();
             w.stat.consumption.clear();
@@ -147,9 +306,9 @@ namespace lua_world {
         });
 
         restore_scope(L, f, "techtree", [&](){
-            read_vector(f, w.techtree.queue);
-            read_flatmap(f, w.techtree.researched);
-            read_flatmap(f, w.techtree.progress);
+            file_read(f, w.techtree.queue);
+            file_read(f, w.techtree.researched);
+            file_read(f, w.techtree.progress);
         }, [&](){
             w.techtree.queue.clear();
             w.techtree.researched.clear();
@@ -188,6 +347,35 @@ namespace lua_world {
             w.tradings.queues.clear();
             w.tradings.orders.clear();
         });
+
+        restore_scope(L, f, "roadnet", [&](){
+            auto& rw = getroadnetworld(L);
+            file_read(f, rw.crossAry);
+            file_read(f, rw.straightAry);
+            file_read(f, rw.endpointAry);
+            read_vector(f, rw.endpointVec, [&](roadnet::endpoint& e) {
+                file_read(f, e.loc);
+                file_read(f, e.coord);
+                file_read(f, e.pushMap);
+                file_read(f, e.popMap);
+                file_read(f, e.lorry[0]);
+                file_read(f, e.lorry[1]);
+            });
+            file_read(f, rw.lorryAry);
+            read_vector(f, rw.lorryVec, [&](roadnet::lorry& l) {
+                file_read(f, l.tick);
+                file_read(f, l.ending);
+                file_read(f, l.gameplay);
+            });
+
+            file_read(f, rw.straightVec);
+            file_read(f, rw.map);
+            file_read(f, rw.crossMap);
+            file_read(f, rw.crossMapR);
+        }, [&](){
+            //TODO
+        });
+
         fclose(f);
         return 0;
     }

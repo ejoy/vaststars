@@ -1,6 +1,7 @@
 #pragma once
 
 #include "roadnet_type.h"
+#include "roadnet_coord.h"
 #include <list>
 #include <map>
 #include <vector>
@@ -9,8 +10,8 @@ namespace roadnet {
     class world;
 
     struct endpoint {
-        static inline const size_t IN = 0;
-        static inline const size_t OUT = 1;
+        static inline const size_t EPIN = 0;
+        static inline const size_t EPOUT = 1;
 
         loction loc;
         road_coord coord;
