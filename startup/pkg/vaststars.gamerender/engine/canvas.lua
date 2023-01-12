@@ -5,17 +5,22 @@ local w     = world.w
 local icas   = ecs.import.interface "ant.terrain|icanvas"
 local iterrain = ecs.require "terrain"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
+local fs = require "filesystem"
 
 local types <const> = {
-    RECIPE = 1,
+    BUILDING_BASE = 1,
+    -- Assembling recipe icon (displayed in the center of the assembling)
+    -- Assembling liquid icon (displayed on the corresponding liquid port of the assembling)
+    -- Fluid icon (displayed in the center of the pipe, shown every certain distance)
+    ICON = 2,
 }
 
 local cache = {} -- type = entity object of canavs
 
 local entity_events = {}
-entity_events.add_item = function(self, e, id, items)
+entity_events.add_item = function(self, e, id, ...)
     self.cache = self.cache or {}
-    self.cache[id] = icas.add_items(e, items)
+    self.cache[id] = icas.add_items(e, ...)
 end
 entity_events.remove_item = function(self, e, id)
     for _, item_id in ipairs(self.cache[id]) do
@@ -28,7 +33,7 @@ entity_events.show = function(_, e, b)
 end
 
 local M = {}
-function M.create(canvas_type, show)
+function M.create(canvas_type, show, yaxis)
     assert(cache[canvas_type] == nil)
     cache[canvas_type] = ientity_object.create(ecs.create_entity {
         policy = {
@@ -39,7 +44,7 @@ function M.create(canvas_type, show)
         data = {
             name = "canvas",
             scene = {
-                t = {0.0, iterrain.surface_height + 10, 0.0},
+                t = {0.0, yaxis or iterrain.surface_height + 10, 0.0},
             },
             canvas = {
                 textures = {},
@@ -50,9 +55,13 @@ function M.create(canvas_type, show)
     }, entity_events)
 end
 
-function M.add_item(canvas_type, id, items)
+function M.add_item(canvas_type, id, materialpath, ...)
+	if not fs.exists(fs.path(materialpath)) then
+        error("material not found: " .. materialpath)
+    end
+
     local canvas_entity_object = assert(cache[canvas_type])
-    canvas_entity_object:send("add_item", id, items)
+    canvas_entity_object:send("add_item", id, materialpath, ...)
     return id
 end
 

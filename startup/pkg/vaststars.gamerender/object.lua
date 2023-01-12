@@ -1,10 +1,12 @@
 local ecs = ...
 local world = ecs.world
 
+local icanvas = ecs.require "engine.canvas"
 local vsobject_manager = ecs.require "vsobject_manager"
 local iprototype = require "gameplay.interface.prototype"
 local get_assembling_canvas_items = ecs.require "ui_datamodel.common.assembling_canvas".get_assembling_canvas_items
 local get_fluid_canvas_items = ecs.require "ui_datamodel.common.fluid_canvas".get_fluid_canvas_items
+local get_building_base_canvas_items = ecs.require "ui_datamodel.common.building_base_canvas".get_building_base_canvas_items
 local math3d = require "math3d"
 local terrain = ecs.require "terrain"
 local camera = ecs.require "engine.camera"
@@ -121,6 +123,7 @@ local function flush()
         vsobject = vsobject_manager:get(object_id)
         local typeobject = iprototype.queryByName("entity", outer.prototype_name)
         outer.srt = outer.srt or {}
+        local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
 
         if not vsobject then
             vsobject = vsobject_manager:create {
@@ -132,13 +135,16 @@ local function flush()
                 group_id = terrain:get_group_id(outer.x, outer.y),
             }
 
-            local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
             -- display recipe icon of assembling machine
             if outer.recipe then
-                vsobject:add_canvas(get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
+                for _, v in ipairs(get_assembling_canvas_items(outer, outer.x, outer.y, w, h)) do
+                    vsobject:add_canvas(icanvas.types().ICON, table.unpack(v))
+                end
             end
             if outer.fluid_icon then
-                vsobject:add_canvas(get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
+                for _, v in ipairs(get_fluid_canvas_items(outer, outer.x, outer.y, w, h)) do
+                    vsobject:add_canvas(icanvas.types().ICON, table.unpack(v))
+                end
             end
         else
             for k in pairs(outer.__change_keys) do
@@ -149,18 +155,24 @@ local function flush()
             end
 
             -- display recipe icon of assembling machine
-            -- TODO: special case for mining 
-            local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
-
             -- TODO: special case for mining & chimney
             -- refresh recipe icon of assembling machine when recipe changed or direction changed
             if (outer.__change_keys.recipe or outer.__change_keys.dir) and not iprototype.has_type(typeobject.type, "mining") and not iprototype.has_type(typeobject.type, "chimney") and iprototype.has_type(typeobject.type, "assembling") and not typeobject.recipe then
                 if outer.recipe then
-                    vsobject:add_canvas(get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
+                    for _, v in ipairs(get_assembling_canvas_items(outer, outer.x, outer.y, w, h)) do
+                        vsobject:add_canvas(icanvas.types().ICON, table.unpack(v))
+                    end
                 end
             end
             if outer.__change_keys.fluid_icon and outer.fluid_name ~= "" then
-                vsobject:add_canvas(get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
+                for _, v in ipairs(get_fluid_canvas_items(outer, outer.x, outer.y, w, h)) do
+                    vsobject:add_canvas(icanvas.types().ICON, table.unpack(v))
+                end
+            end
+        end
+        if typeobject.building_base ~= false then
+            for _, v in ipairs(get_building_base_canvas_items(outer.srt, w, h)) do
+                vsobject:add_canvas(icanvas.types().BUILDING_BASE, table.unpack(v))
             end
         end
 

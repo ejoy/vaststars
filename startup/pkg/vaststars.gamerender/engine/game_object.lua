@@ -239,6 +239,7 @@ init = {
     parent, -- the parent of the hitch
     slot, -- the slot of the hitch
     emissive_color,
+    render_layer,
 }
 --]]
 function igame_object.create(init)
@@ -282,6 +283,7 @@ function igame_object.create(init)
             },
             slot = init.slot,
             scene_needchange = true,
+            render_layer = init.render_layer,
         }
     }, hitch_events)
 
@@ -347,7 +349,7 @@ function igame_object.create(init)
             }
         })
     end
-    
+
     local outer = {hitch_entity_object = hitch_entity_object, slot_attach = {}}
     outer.remove = remove
     outer.update = update

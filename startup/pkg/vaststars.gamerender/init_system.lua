@@ -33,11 +33,7 @@ local task = ecs.require "task"
 local ltask = require "ltask"
 local ltask_now = ltask.now
 local irender_layer = ecs.require "engine.render_layer"
-local RENDER_LAYERS = {
-    {
-        "WIRE",
-    }
-}
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local function _gettime()
     local _, t = ltask_now() --10ms
@@ -59,7 +55,32 @@ end
 local m = ecs.system 'init_system'
 function m:init_world()
     bgfx.maxfps(FRAMES_PER_SECOND)
-    irender_layer.init(RENDER_LAYERS)
+
+    -- "foreground", "opacity", "background", "translucent", "decal_stage", "ui_stage"
+    irender_layer.init({
+        {
+            "1",
+            "opacity",
+            {
+                "TERRAIN",
+            }
+        },
+        {
+            "2",
+            "1",
+            {
+                "BUILDING_BASE",
+            }
+        },
+        -- opacity
+        {
+            "3",
+            "2",
+            {
+                "WIRE",
+            }
+        }
+    })
 
     iefk.preload "/pkg/vaststars.resources/effect/efk/"
 
@@ -81,16 +102,18 @@ function m:init_world()
 
     terrain:create()
     if TERRAIN_ONLY then
+        iroadnet.init({})
         saveload:restore_camera_setting()
         return
     end
 
-    local info = true
+    local show = true
     local storage = gameplay_core.get_storage()
     if storage.info ~= nil then
-        info = storage.info
+        show = storage.info
     end
-    icanvas.create(icanvas.types().RECIPE, info)
+    icanvas.create(icanvas.types().ICON, show)
+    icanvas.create(icanvas.types().BUILDING_BASE, true, 0.01)
 
     if not saveload:restore() then
         return

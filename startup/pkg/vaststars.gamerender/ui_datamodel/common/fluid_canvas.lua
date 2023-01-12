@@ -42,18 +42,21 @@ local function get_fluid_canvas_items(object, x, y, w, h)
     local item_x, item_y = position[1] + ((w / 2 - 0.5) * iterrain.tile_size), position[3] - ((h / 2 - 0.5) * iterrain.tile_size) - iterrain.tile_size
     local x, y, w, h = _get_rect(item_x, item_y, cfg.width, cfg.height)
 
-    t[#t + 1] ={
-        texture = {
-            path = "/pkg/vaststars.resources/textures/fluid_icon_canvas.texture",
-            rect = {
-                x = cfg.x,
-                y = cfg.y,
-                w = cfg.width,
-                h = cfg.height,
+    t[#t + 1] = {
+        "/pkg/vaststars.resources/materials/fluid_icon_canvas.material",
+        "background",
+        {
+            texture = {
+                rect = {
+                    x = cfg.x,
+                    y = cfg.y,
+                    w = cfg.width,
+                    h = cfg.height,
+                },
             },
-        },
-        x = x, y = y, w = w, h = h,
-        srt = {},
+            x = x, y = y, w = w, h = h,
+            srt = {},
+        }
     }
     return t
 end

@@ -63,7 +63,7 @@ function M:stage_camera_usage()
             storage.info = true
         end
         storage.info = not storage.info
-        icanvas.show(icanvas.types().RECIPE, storage.info)
+        icanvas.show(icanvas.types().ICON, storage.info)
     end
 end
 

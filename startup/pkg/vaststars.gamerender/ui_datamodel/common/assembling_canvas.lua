@@ -26,18 +26,20 @@ local function get_assembling_canvas_items(object, x, y, w, h)
 
     if object.recipe == "" then
         local item_x, item_y = central_x, central_y
-        t[#t + 1] ={
-            texture = {
-                path = "/pkg/vaststars.resources/ui/textures/assemble/setup2.texture",
-                rect = {
-                    x = 0,
-                    y = 0,
-                    w = ICON_SIZE,
-                    h = ICON_SIZE,
+        t[#t+1] = {
+            "/pkg/vaststars.resources/materials/setup2.material",
+            "background",
+            {
+                texture = {
+                    rect = {
+                        x = 0,
+                        y = 0,
+                        w = ICON_SIZE,
+                        h = ICON_SIZE,
+                    },
                 },
-            },
-            x = item_x, y = item_y, w = iterrain.tile_size, h = iterrain.tile_size,
-            srt = {},
+                x = item_x, y = item_y, w = iterrain.tile_size, h = iterrain.tile_size,
+            }
         }
         return t
     end
@@ -63,33 +65,38 @@ local function get_assembling_canvas_items(object, x, y, w, h)
     local item_x, item_y = position[1] + ((w / 2 - 0.5) * iterrain.tile_size), position[3] - ((h / 2 - 0.5) * iterrain.tile_size) - iterrain.tile_size
     local x, y, w, h = _get_rect(item_x, item_y, cfg.width, cfg.height)
     t[#t + 1] = {
-        texture = {
-            path = "/pkg/vaststars.resources/textures/recipe_icon_bg.texture",
-            rect = { -- -- TODO: remove this hard code
-                x = 0,
-                y = 0,
-                w = 90,
-                h = 90,
+        "/pkg/vaststars.resources/materials/recipe_icon_bg.material",
+        "background",
+        {
+            texture = {
+                rect = { -- -- TODO: remove this hard code
+                    x = 0,
+                    y = 0,
+                    w = 90,
+                    h = 90,
+                },
             },
-        },
-        x = item_x, y = item_y, w = iterrain.tile_size, h = iterrain.tile_size,
-        srt = {},
+            x = item_x, y = item_y, w = iterrain.tile_size, h = iterrain.tile_size,
+        }
     }
     t[#t + 1] = {
-        texture = {
-            path = "/pkg/vaststars.resources/textures/recipe_icon_canvas.texture",
-            rect = {
-                x = cfg.x,
-                y = cfg.y,
-                w = cfg.width,
-                h = cfg.height,
+        "/pkg/vaststars.resources/materials/recipe_icon_canvas.texture",
+        "background",
+        {
+            texture = {
+                rect = {
+                    x = cfg.x,
+                    y = cfg.y,
+                    w = cfg.width,
+                    h = cfg.height,
+                },
             },
-        },
-        x = x, y = y, w = w, h = h,
-        srt = {},
+            x = x, y = y, w = w, h = h,
+        }
     }
 
     -- draw fluid icon of fluidbox
+    local bg, icon = {}, {}
     for _, fb in ipairs(ifluid:get_fluidbox(object.prototype_name, object.x, object.y, object.dir, object.fluid_name)) do
         if fb.fluid_name == "" then
             goto continue
@@ -101,9 +108,8 @@ local function get_assembling_canvas_items(object, x, y, w, h)
         local x, y, w, h
 
         x, y, w, h = _get_rect(position[1], position[3] - iterrain.tile_size, ICON_SIZE, ICON_SIZE)
-        t[#t + 1] = {
+        bg[#bg + 1] = {
             texture = {
-                path = "/pkg/vaststars.resources/textures/fluid_icon_bg.texture",
                 rect = {
                     x = 0,
                     y = 0,
@@ -116,9 +122,8 @@ local function get_assembling_canvas_items(object, x, y, w, h)
         }
 
         x, y, w, h = _get_rect(position[1], position[3] - iterrain.tile_size, cfg.width, cfg.height)
-        t[#t+1] = {
+        icon[#icon+1] = {
             texture = {
-                path = "/pkg/vaststars.resources/textures/fluid_icon_canvas.texture",
                 rect = {
                     x = cfg.x,
                     y = cfg.y,
@@ -132,6 +137,17 @@ local function get_assembling_canvas_items(object, x, y, w, h)
 
         ::continue::
     end
+
+    t[#t + 1] = {
+        "/pkg/vaststars.resources/materials/fluid_icon_bg.material",
+        "background",
+        table.unpack(bg)
+    }
+    t[#t + 1] = {
+        "/pkg/vaststars.resources/materials/fluid_icon_canvas.material",
+        "background",
+        table.unpack(icon)
+    }
 
     return t
 end

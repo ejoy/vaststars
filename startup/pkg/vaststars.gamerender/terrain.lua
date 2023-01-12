@@ -8,6 +8,7 @@ local map = import_package "vaststars.prototype"("map")
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local COLOR_INVALID <const> = math3d.constant "null"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 -- three-dimensional axial
 -- z
@@ -181,7 +182,8 @@ function terrain:create(width, height)
                     color = COLOR_INVALID,
                     srt = srt,
                     parent = nil,
-                    slot = nil
+                    slot = nil,
+                    render_layer = RENDER_LAYER.TERRAIN
                 }
             end
         end

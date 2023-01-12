@@ -8,14 +8,11 @@ local rl = renderpkg.layer
 local RENDER_LAYER = {}
 
 local function init(layers)
-    local last = "opacity"
-    for idx, v in ipairs(layers) do
-        for _, name in ipairs(v) do
-            RENDER_LAYER[name] = tostring(idx)
+    for _, v in ipairs(layers) do
+        rl.add_layer(v[1], rl.layeridx(v[2]))
+        for _, name in ipairs(v[3]) do
+            RENDER_LAYER[name] = v[1]
         end
-
-        rl.add_layer(tostring(idx), rl.layeridx(last))
-        last = tostring(idx)
     end
 end
 

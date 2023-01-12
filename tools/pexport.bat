@@ -13,7 +13,6 @@ if not exist "%exe%" (
 )
 
 %current_dir%%exe% %param%
-%current_dir%%exe% ./tools/lua/prefab-patch.lua patch
 
 popd
 pause

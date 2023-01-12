@@ -87,7 +87,9 @@ local function remove(self)
         self.block:remove()
     end
 
-    self:del_canvas()
+    for _, type in ipairs({icanvas.types().ICON, icanvas.types().BUILDING_BASE}) do
+        self:del_canvas(type)
+    end
 end
 
 local function update(self, t)
@@ -146,21 +148,17 @@ local function modifier(self, opt, ...)
     imodifier[opt](self.srt_modifier, ...)
 end
 
-local function add_canvas(self, items)
-    self:del_canvas()
-
-    if not items then
-        return
-    end
-    self.canvas_id = icanvas.add_item(icanvas.types().RECIPE, self.id, items)
+local function add_canvas(self, type, ...)
+    self:del_canvas(type)
+    self.canvas_id[type] = icanvas.add_item(type, self.id, ...)
 end
 
-local function del_canvas(self)
-    if not self.canvas_id then
+local function del_canvas(self, type)
+    if not self.canvas_id or not self.canvas_id[type] then
         return
     end
-    icanvas.remove_item(icanvas.types().RECIPE, self.canvas_id)
-    self.canvas_id = nil
+    icanvas.remove_item(type, self.canvas_id[type])
+    self.canvas_id[type] = nil
 end
 
 local function get_position(self)
@@ -204,6 +202,7 @@ return function (init)
         type = init.type,
         group_id = init.group_id,
         slots = {}, -- slot_name -> model
+        canvas_id = {}, -- type -> canvas_id
 
         game_object = game_object,
         block = block,

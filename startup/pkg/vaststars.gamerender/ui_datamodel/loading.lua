@@ -2,6 +2,7 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 local TERRAIN_ONLY = require("debugger").terrain_only
 local NOTHING = require("debugger").nothing
 local saveload = ecs.require "saveload"
@@ -45,12 +46,13 @@ local function _load_game()
         return
     end
 
-    local info = true
+    local show = true
     local storage = gameplay_core.get_storage()
     if storage.info ~= nil then
-        info = storage.info
+        show = storage.info
     end
-    icanvas.create(icanvas.types().RECIPE, info)
+    icanvas.create(icanvas.types().ICON, show)
+    icanvas.create(icanvas.types().BUILDING_BASE, true, RENDER_LAYER.BUILDING_BASE)
 
     if not saveload:restore() then
         return

@@ -4,7 +4,7 @@ require "bootstrap"
 local lfs = require "filesystem.local"
 local fs = require "bee.filesystem"
 local project_dir = (fs.current_path() / "../../")
-local resources_dir = (project_dir / "packages/resources/"):lexically_normal()
+local resources_dir = (project_dir / "startup/pkg/vaststars.resources/"):lexically_normal()
 local cr = import_package "ant.compile_resource"
 cr.init()
 

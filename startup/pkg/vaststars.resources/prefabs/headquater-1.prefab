@@ -11,43 +11,10 @@ data:
   mesh: /pkg/vaststars.resources/glb/headquater-1.glb|meshes/Plane.008_P1.meshbin
   name: Plane.011
   scene:
-    s: {1.0800000429153442, 1.1267197132110596, 1.1267197132110596}
+    s: {0.8295962810516357, 1.1267197132110596, 1.1267197132110596}
     t: {-0.970525860786438, 18.566072463989258, 0.7061567306518555}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
   ant.general|name
   ant.render|render
----
-data:
-  name: slot1
-  scene:
-    s: {4.400000095367432, 3, 1.850000023841858}
-    t: {0, 19.299999237060547, 0}
-  slot:
-    follow_flag: 1
-    joint_name: None
-  tag:
-    slot1
-policy:
-  ant.general|name
-  ant.general|tag
-  ant.animation|slot
----
-data:
-  efk:
-    auto_play: false
-    loop: false
-    path: /pkg/vaststars.resources/effect/efk/headquater_light.efk
-    speed: 1
-    visible: true
-  name: root
-  scene: {}
-  tag:
-    effect
-mount: 3
-policy:
-  ant.general|name
-  ant.scene|scene_object
-  ant.efk|efk
-  ant.general|tag

@@ -1,0 +1,16 @@
+colorspace: linear
+compress:
+  android: ASTC6x6
+  ios: ASTC6x6
+  windows: BC5
+normalmap: true
+maxsize: 1024
+mipmap: true
+path: /pkg/vaststars.resources/textures/building_base_normal.png
+sampler:
+  MAG: LINEAR
+  MIN: LINEAR
+  MIP: LINEAR
+  U: WRAP
+  V: WRAP
+type: texture
