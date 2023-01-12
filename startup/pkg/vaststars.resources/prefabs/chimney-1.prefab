@@ -41,3 +41,32 @@ data:
 policy:
   ant.animation|animation
   ant.general|name
+---
+data:
+  name: hitch1
+  scene:
+    s: {7, 7, 7}
+    t: {0, 33.70000076293945, 0, 1}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    hitch1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  efk:
+    path: /pkg/vaststars.resources/effect/efk/hydro-plant_smoke.efk
+  name: root
+  scene: {}
+  tag:
+    effect
+mount: 5
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
