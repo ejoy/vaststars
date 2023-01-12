@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "组装机残骸" {
     model = "prefabs/broken-assembling-3X3.prefab",
-    icon = "textures/construct/broken-assembler.texture",
+    icon = "textures/building_pic/small_pic_assemble.texture",
     background = "textures/build_background/pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
     type = {"entity", "chest"},
@@ -20,7 +20,7 @@ prototype "组装机残骸" {
 
 prototype "排水口残骸" {
     model = "prefabs/broken-outfall-2X2.prefab",
-    icon = "textures/construct/broken-hydroplant.texture",
+    icon = "textures/building_pic/small_pic_outfall.texture",
     background = "textures/build_background/pic_mars_outfall.texture",
     construct_detector = {"exclusive"},
     type = {"entity", "chest"},
@@ -37,8 +37,8 @@ prototype "排水口残骸" {
 
 prototype "抽水泵残骸" {
     model = "prefabs/broken-pump-2X2.prefab",
-    icon = "textures/construct/broken-pump.texture",
-    background = "textures/build_background/pic_pumpjack.texture",
+    icon = "textures/building_pic/small_pic_offshore.texture",
+    background = "textures/building_pic/pic_pumpjack.texture",
     construct_detector = {"exclusive"},
     type = {"entity", "chest"},
     chest_type = "red",
