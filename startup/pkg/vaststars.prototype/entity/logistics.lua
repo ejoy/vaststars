@@ -92,7 +92,8 @@ prototype "物流中心I" {
     chest_type = "blue",
     slots = 10,
     area = "3x3",
-    power = "300kW",
+    capacitance = "50MJ",
+    power = "400kW",
     priority = "secondary",
     group = {"物流"},
     crossing = {
@@ -111,6 +112,7 @@ prototype "运输车辆I" {
     type ={"entity", "consumer"},
     area = "1x1",
     power = "80kW",
+    charge = "50",
     stop_energy = "500kJ",
     capacitance = "10MJ",
     priority = "secondary",
