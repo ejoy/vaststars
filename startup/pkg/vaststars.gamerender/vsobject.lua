@@ -148,9 +148,12 @@ local function modifier(self, opt, ...)
     imodifier[opt](self.srt_modifier, ...)
 end
 
-local function add_canvas(self, type, ...)
+local function add_canvas(self, type, items)
     self:del_canvas(type)
-    self.canvas_id[type] = icanvas.add_item(type, self.id, ...)
+    self.canvas_id[type] = self.id
+    for _, t in ipairs(items) do
+        icanvas.add_item(type, self.id, table.unpack(t))
+    end
 end
 
 local function del_canvas(self, type)

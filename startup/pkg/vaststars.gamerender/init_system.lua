@@ -33,7 +33,6 @@ local task = ecs.require "task"
 local ltask = require "ltask"
 local ltask_now = ltask.now
 local irender_layer = ecs.require "engine.render_layer"
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local function _gettime()
     local _, t = ltask_now() --10ms
@@ -59,27 +58,16 @@ function m:init_world()
     -- "foreground", "opacity", "background", "translucent", "decal_stage", "ui_stage"
     irender_layer.init({
         {
-            "1",
             "opacity",
-            {
-                "TERRAIN",
-            }
+            {layer_name = "1", logic_layer_names = {"TERRAIN"}},
+            {layer_name = "2", logic_layer_names = {"BUILDING_BASE"}},
         },
         {
-            "2",
-            "1",
-            {
-                "BUILDING_BASE",
-            }
+            "background",
+            {layer_name = "3", logic_layer_names = {"ICON"}},
+            {layer_name = "4", logic_layer_names = {"ICON_CONTENT"}},
+            {layer_name = "5", logic_layer_names = {"WIRE"}},
         },
-        -- opacity
-        {
-            "3",
-            "2",
-            {
-                "WIRE",
-            }
-        }
     })
 
     iefk.preload "/pkg/vaststars.resources/effect/efk/"

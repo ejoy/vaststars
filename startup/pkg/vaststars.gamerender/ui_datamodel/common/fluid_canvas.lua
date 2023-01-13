@@ -7,6 +7,7 @@ local datalist = require "datalist"
 local fs = require "filesystem"
 local fluid_icon_canvas_cfg = datalist.parse(fs.open(fs.path("/pkg/vaststars.resources/textures/fluid_icon_canvas.cfg")):read "a")
 local iprototype = require "gameplay.interface.prototype"
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local function get_fluid_canvas_items(object, x, y, w, h)
     local position = iterrain:get_begin_position_by_coord(x, y)
@@ -44,7 +45,7 @@ local function get_fluid_canvas_items(object, x, y, w, h)
 
     t[#t + 1] = {
         "/pkg/vaststars.resources/materials/fluid_icon_canvas.material",
-        "background",
+        RENDER_LAYER.ICON,
         {
             texture = {
                 rect = {

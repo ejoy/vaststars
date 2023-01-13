@@ -137,14 +137,10 @@ local function flush()
 
             -- display recipe icon of assembling machine
             if outer.recipe then
-                for _, v in ipairs(get_assembling_canvas_items(outer, outer.x, outer.y, w, h)) do
-                    vsobject:add_canvas(icanvas.types().ICON, table.unpack(v))
-                end
+                vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
             end
             if outer.fluid_icon then
-                for _, v in ipairs(get_fluid_canvas_items(outer, outer.x, outer.y, w, h)) do
-                    vsobject:add_canvas(icanvas.types().ICON, table.unpack(v))
-                end
+                vsobject:add_canvas(icanvas.types().ICON, get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
             end
         else
             for k in pairs(outer.__change_keys) do
@@ -159,21 +155,15 @@ local function flush()
             -- refresh recipe icon of assembling machine when recipe changed or direction changed
             if (outer.__change_keys.recipe or outer.__change_keys.dir) and not iprototype.has_type(typeobject.type, "mining") and not iprototype.has_type(typeobject.type, "chimney") and iprototype.has_type(typeobject.type, "assembling") and not typeobject.recipe then
                 if outer.recipe then
-                    for _, v in ipairs(get_assembling_canvas_items(outer, outer.x, outer.y, w, h)) do
-                        vsobject:add_canvas(icanvas.types().ICON, table.unpack(v))
-                    end
+                    vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
                 end
             end
             if outer.__change_keys.fluid_icon and outer.fluid_name ~= "" then
-                for _, v in ipairs(get_fluid_canvas_items(outer, outer.x, outer.y, w, h)) do
-                    vsobject:add_canvas(icanvas.types().ICON, table.unpack(v))
-                end
+                vsobject:add_canvas(icanvas.types().ICON, get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
             end
         end
         if typeobject.building_base ~= false then
-            for _, v in ipairs(get_building_base_canvas_items(outer.srt, w, h)) do
-                vsobject:add_canvas(icanvas.types().BUILDING_BASE, table.unpack(v))
-            end
+            vsobject:add_canvas(icanvas.types().BUILDING_BASE, get_building_base_canvas_items(outer.srt, w, h))
         end
 
         if outer.PREPARE then

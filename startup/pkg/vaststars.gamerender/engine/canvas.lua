@@ -20,8 +20,13 @@ local cache = {} -- type = entity object of canavs
 local entity_events = {}
 entity_events.add_item = function(self, e, id, ...)
     self.cache = self.cache or {}
-    self.cache[id] = icas.add_items(e, ...)
+    self.cache[id] = self.cache[id] or {}
+
+    for _, item_id in ipairs(icas.add_items(e, ...)) do
+        self.cache[id][#self.cache[id]+1] = item_id
+    end
 end
+
 entity_events.remove_item = function(self, e, id)
     for _, item_id in ipairs(self.cache[id]) do
         icas.remove_item(e, item_id)
