@@ -458,7 +458,7 @@ namespace roadnet {
 
     endpointid world::createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir) {
         loction l = move({connection_x, connection_y}, connection_dir);
-        direction dir = (direction)(((uint8_t)connection_dir + 1) % 4); // direction of straight road
+        direction dir = (direction)(((uint8_t)connection_dir - 1) % 4); // direction of straight road
         road_coord rc = coordConvert(l, dir);
 
         // cannot find endpoint, such as endpoint is not connected to any road

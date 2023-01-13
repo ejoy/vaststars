@@ -181,11 +181,11 @@ end
 local function __align(object)
     assert(object)
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    local coord = building_coord:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir, 1, 1))
+    local coord, srt = building_coord:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir, 1, 1))
     if not coord then
         return object
     end
-    object.srt.t = building_coord:get_position_by_coord(coord[1], coord[2], iprototype.rotate_area(typeobject.area, object.dir, 1, 1))
+    object.srt.t = srt
     return object, coord[1], coord[2]
 end
 
