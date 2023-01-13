@@ -96,7 +96,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (auto& v : w.select<ecs::assembling, ecs::chest, ecs::capacitance, ecs::entity>(L)) {
+    for (auto& v : w.select<ecs::assembling, ecs::chest, ecs::capacitance, ecs::entity>()) {
         assembling_update(L, w, v);
     }
     return 0;

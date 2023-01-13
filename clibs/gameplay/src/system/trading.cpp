@@ -217,7 +217,7 @@ lbuild(lua_State *L) {
     auto& rw = getroadnetworld(L);
     auto& kdtree = w.tradings.station_kdtree;
     kdtree.dataset.clear();
-    for (auto& v : w.select<ecs::station>(L)) {
+    for (auto& v : w.select<ecs::station>()) {
         auto& s = v.get<ecs::station>();
         if (s.endpoint != 0xffff) {
             assert(s.endpoint >= 0);
@@ -248,7 +248,7 @@ lupdate(lua_State *L) {
         auto lorryId = rw.popLorry(s);
         DoTask(w, rw, lorryId, s);
     }
-    for (auto& v : w.select<ecs::chest>(L)) {
+    for (auto& v : w.select<ecs::chest>()) {
         auto& c = v.get<ecs::chest>();
         for (auto lorryId = rw.popLorry(c.endpoint); !!lorryId; lorryId = rw.popLorry(c.endpoint)) {
             auto& l = rw.Lorry(lorryId);

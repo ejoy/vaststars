@@ -25,7 +25,7 @@ struct powergrid {
 static void
 stat_consumer(lua_State *L, world& w, powergrid pg[]) {
 	struct prototype_context p = w.prototype(L, 0);
-	for (auto& v : w.select<ecs::consumer, ecs::capacitance, ecs::entity>(L)) {
+	for (auto& v : w.select<ecs::consumer, ecs::capacitance, ecs::entity>()) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
 			continue;
@@ -43,7 +43,7 @@ stat_consumer(lua_State *L, world& w, powergrid pg[]) {
 static void
 stat_generator(lua_State *L, world& w, powergrid pg[]) {
 	struct prototype_context p = w.prototype(L, 0);
-	for (auto& v : w.select<ecs::generator, ecs::capacitance, ecs::entity>(L)) {
+	for (auto& v : w.select<ecs::generator, ecs::capacitance, ecs::entity>()) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
 			continue;
@@ -60,7 +60,7 @@ stat_generator(lua_State *L, world& w, powergrid pg[]) {
 static void
 stat_accumulator(lua_State *L, world& w, powergrid pg[]) {
 	struct prototype_context p = w.prototype(L, 0);
-	for (auto& v : w.select<ecs::accumulator, ecs::capacitance, ecs::entity>(L)) {
+	for (auto& v : w.select<ecs::accumulator, ecs::capacitance, ecs::entity>()) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
 			continue;
@@ -175,7 +175,7 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 	struct prototype_context p = w.prototype(L, 0);
 	uint64_t generate_power = 0;
 	uint64_t consume_power = 0;
-	for (auto& v : w.select<ecs::capacitance, ecs::entity>(L)) {
+	for (auto& v : w.select<ecs::capacitance, ecs::entity>()) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0 || !pg[c.network].active) {
 			c.delta = 0;

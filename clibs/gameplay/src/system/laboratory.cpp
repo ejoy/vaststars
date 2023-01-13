@@ -126,7 +126,7 @@ laboratory_update(lua_State* L, world& w, ecs_api::entity<ecs::laboratory, ecs::
 static int
 lbuild(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (auto& v : w.select<ecs::laboratory, ecs::chest, ecs::entity>(L)) {
+    for (auto& v : w.select<ecs::laboratory, ecs::chest, ecs::entity>()) {
         auto& e = v.get<ecs::entity>();
         auto& l = v.get<ecs::laboratory>();
         auto& c2 = v.get<ecs::chest>();
@@ -139,7 +139,7 @@ static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     bool updated = false;
-    for (auto& v : w.select<ecs::laboratory, ecs::chest, ecs::capacitance, ecs::entity>(L)) {
+    for (auto& v : w.select<ecs::laboratory, ecs::chest, ecs::capacitance, ecs::entity>()) {
         auto& l = v.get<ecs::laboratory>();
         auto& c2 = v.get<ecs::chest>();
         uint16_t techid = w.techtree.queue_top();
@@ -151,7 +151,7 @@ lupdate(lua_State *L) {
     }
     if (updated) {
         uint16_t techid = w.techtree.queue_top();
-        for (auto& v : w.select<ecs::laboratory, ecs::chest, ecs::entity>(L)) {
+        for (auto& v : w.select<ecs::laboratory, ecs::chest, ecs::entity>()) {
             auto& e = v.get<ecs::entity>();
             auto& l = v.get<ecs::laboratory>();
             auto& c2 = v.get<ecs::chest>();
