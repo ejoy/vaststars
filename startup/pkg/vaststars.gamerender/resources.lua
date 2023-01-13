@@ -332,6 +332,7 @@ local t = {
 	"/pkg/ant.render/preprocess/preprocess.ecs",
 	"/pkg/ant.render/preprocess/ssao.lua",
 	"/pkg/ant.render/render/testmat.lua",
+	"/pkg/ant.render/render_layer.ecs",
 	"/pkg/ant.render/render_layer.lua",
 	"/pkg/ant.render/render_system/bind_bgfx_math_adapter.lua",
 	"/pkg/ant.render/render_system/cluster_render.ecs",
