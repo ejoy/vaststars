@@ -163,8 +163,16 @@ local _get_hitch_children ; do
 
         local patch = prefab_file_path .. ".patch"
         if fs.exists(fs.path(patch)) then
-            for _, v in ipairs(serialize.parse(patch, cr.read_file(patch))) do
-                template[#template + 1] = v
+            local count = #template
+            for index, value in ipairs(serialize.parse(patch, cr.read_file(patch))) do -- TODO: duplicated code - ant.ecs/main.lua -> create_template
+                if value.mount then
+                    if value.mount ~= 1 then
+                        value.mount = count + index - 1
+                    end
+                else
+                    value.mount = 1
+                end
+                template[#template + 1] = value
             end
         end
 

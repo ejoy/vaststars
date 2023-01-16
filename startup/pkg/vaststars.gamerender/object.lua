@@ -139,7 +139,7 @@ local function flush()
             if outer.recipe then
                 vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
             end
-            if outer.fluid_icon then
+            if outer.fluid_icon and type(outer.fluid_name) == "string" and outer.fluid_name ~= "" then
                 vsobject:add_canvas(icanvas.types().ICON, get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
             end
         else
@@ -158,7 +158,7 @@ local function flush()
                     vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(outer, outer.x, outer.y, w, h))
                 end
             end
-            if outer.__change_keys.fluid_icon and outer.fluid_name ~= "" then
+            if outer.__change_keys.fluid_icon and type(outer.fluid_name) == "string" and outer.fluid_name ~= "" then
                 vsobject:add_canvas(icanvas.types().ICON, get_fluid_canvas_items(outer, outer.x, outer.y, w, h))
             end
         end

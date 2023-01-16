@@ -52,7 +52,7 @@ local function _load_game()
         show = storage.info
     end
     icanvas.create(icanvas.types().ICON, show)
-    icanvas.create(icanvas.types().BUILDING_BASE, true, RENDER_LAYER.BUILDING_BASE)
+    icanvas.create(icanvas.types().BUILDING_BASE, true)
 
     if not saveload:restore() then
         return
