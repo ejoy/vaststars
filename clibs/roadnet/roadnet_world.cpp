@@ -130,24 +130,28 @@ namespace roadnet {
         case mask(L'>'):
             switch (dir) {
             case direction::r: return direction::l;
+            case direction::l: return direction::l;
             default: break;
             }
             break;
         case mask(L'v'):
             switch (dir) {
             case direction::b: return direction::t;
+            case direction::t: return direction::t;
             default: break;
             }
             break;
         case mask(L'<'):
             switch (dir) {
             case direction::l: return direction::r;
+            case direction::r: return direction::r;
             default: break;
             }
             break;
         case mask(L'^'):
             switch (dir) {
             case direction::t: return direction::b;
+            case direction::b: return direction::b;
             default: break;
             }
             break;

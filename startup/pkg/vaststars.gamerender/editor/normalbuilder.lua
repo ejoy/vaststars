@@ -367,13 +367,6 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
         return false
     end
 
-    if ifluid:need_set_fluid(prototype_name) then
-        local fluid_types = self:get_neighbor_fluid_types(EDITOR_CACHE_NAMES, prototype_name, x, y, dir)
-        if #fluid_types > 1 then
-            return false
-        end
-    end
-
     local typeobject = iprototype.queryByName("entity", prototype_name)
     if typeobject.crossing then
         local valid = false
@@ -382,7 +375,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
                 goto continue
             end
 
-            local succ, dx, dy = terrain:move_coord(conn.x, conn.y, conn.dir, 1)
+            local succ, dx, dy = logistic_coord:move_coord(conn.x, conn.y, conn.dir, 1)
             if not succ then
                 goto continue
             end
@@ -470,6 +463,7 @@ local function create()
     M.complete = complete
     M.rotate_pickup_object = rotate_pickup_object
     M.clean = clean
+    M.check_construct_detector = check_construct_detector
 
     return M
 end
