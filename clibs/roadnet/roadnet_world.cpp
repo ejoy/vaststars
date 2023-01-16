@@ -179,7 +179,13 @@ namespace roadnet {
             default: break;
             }
             break;
-        default: break;
+        case mask(L'╠'):
+        case mask(L'╦'):
+        case mask(L'╬'):
+        case mask(L'╩'):
+        case mask(L'╣'):
+            return dir;
+            break;
         }
         printf("Invalid road type: (%d,%d) %d\n", l.x, l.y, m);
         assert(false);
@@ -251,7 +257,11 @@ namespace roadnet {
     static NeighborResult findNeighbor(const std::map<loction, uint8_t>& map, loction l, direction dir) {
         uint16_t n = 0;
         loction ln = l;
-        direction nd = dir;
+
+        uint8_t cm = getMapBits(map, ln);
+        assert(cm != 0);
+        direction nd = nextDirection(ln, cm, dir);
+
         for (;;) {
             ln = move(ln, nd);
             uint8_t m = getMapBits(map, ln);
@@ -458,7 +468,7 @@ namespace roadnet {
 
     endpointid world::createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir) {
         loction l = move({connection_x, connection_y}, connection_dir);
-        direction dir = (direction)(((uint8_t)connection_dir - 1) % 4); // direction of straight road
+        direction dir = (direction)(((uint8_t)connection_dir + 1) % 4); // direction of straight road
         road_coord rc = coordConvert(l, dir);
 
         // cannot find endpoint, such as endpoint is not connected to any road

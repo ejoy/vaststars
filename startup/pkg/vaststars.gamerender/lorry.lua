@@ -16,6 +16,7 @@ local mc = mathpkg.constant
 local iroadnet = ecs.require "roadnet"
 local iterrain = ecs.require "terrain"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
+local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 
 local STRAIGHT_TICKCOUNT <const> = 10
 local CROSS_TICKCOUNT <const> = 20
@@ -183,7 +184,16 @@ local function _get_offset_matrix(is_cross_flag, x, y, toward, tick)
     return math3d.ref(math3d.matrix {s = s, r = r, t = t})
 end
 
+
+local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
+local g
+
 return function(lorry_id, is_cross, x, y, z, tick)
+    if not g then
+        g = ims.sampler_group()
+        g:enable "view_visible"
+        g:enable "scene_update"
+    end
     local ti, toward
     if is_cross then
         assert(z <= 0xf)
@@ -198,21 +208,38 @@ return function(lorry_id, is_cross, x, y, z, tick)
 
     if not lorries[lorry_id] then
         local offset_mat = _get_offset_matrix(is_cross, x, y, toward, ti)
-        local s, r, t = math3d.srt(offset_mat)
+        local s, r, t = math3d.srt(offset_mat) -- TODO: optimize
 
-        lorries[lorry_id] = { game_object = igame_object.create({
-                prefab = "prefabs/lorry-1.prefab",
-                effect = nil,
-                group_id = 0, -- TODO: change group_id when lorry is moving to the new road block?
-                state = "opaque",
-                color = COLOR_INVALID,
-                srt = {s = s, r = r, t = t},
-            }),
-            x = x, y = y,
-        }
+        local events = {}
+        events["set_target"] = function(_, e, mat)
+            local s, r, t = math3d.srt(mat)
+            ims.set_target(e, s, r, t, 20)
+        end
+        local obj = ientity_object.create(g:create_entity {
+            policy = {
+                "ant.scene|scene_object",
+                "ant.motion_sampler|motion_sampler",
+                "ant.general|name",
+            },
+            data = {
+                scene = {
+                    s = s,
+                    r = r,
+                    t = t,
+                },
+                name = "motion_sampler",
+            }
+        }, events)
+
+        lorries[lorry_id] = obj
+
+        local p = g:create_instance("/pkg/vaststars.resources/prefabs/lorry-1.prefab", obj.id)
+        p.on_ready = function (e)
+        end
+        world:create_object(p)
     else
         local mat = _get_offset_matrix(is_cross, x, y, toward, ti)
-        local game_object = assert(lorries[lorry_id]).game_object
-        game_object:send("obj_motion", "set_srt_matrix", mat)
+        local obj = assert(lorries[lorry_id])
+        obj:send("set_target", mat)
     end
 end
