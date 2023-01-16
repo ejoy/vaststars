@@ -1,0 +1,252 @@
+<rml>
+    <head>
+        <style>
+            body {
+                font: 100% "宋体";
+            }
+            .title-block {
+                background-color: rgb(250, 133, 0);
+                border: 0.2vmin rgb(89, 73, 39);
+                width: 100%;
+                height: 5%;
+                justify-content: center;
+                flex-direction: row;
+                font-size: 4vmin;
+                text-align: center;
+                align-items: center;
+            }
+            .graph-block {
+                width: 100%;
+                height: 60%;
+                flex-direction: column;
+                justify-content: flex-start;
+            }
+            .graph-content {
+                background-color: rgb(162, 202, 187);
+                border: 0.2vmin rgb(255, 255, 255);
+                width: 100%;
+                height: 100%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .building-block {
+                width: 100%;
+                height: 40%;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+            }
+            .building-sub-block {
+                width: 100%;
+                height: 30%;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+            }
+            .building-sub-content {
+                height: 100%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .indicator {
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: flex-end;
+                width: 3vmin;
+                height: 12vmin;
+                background-color: rgb(0, 255, 34);
+            }
+            .building-content {
+                flex-direction: row;
+                align-items: flex-end;
+            }
+            .time-content {
+                height: 12vmin;
+                width: 12vmin;
+                font-size: 5vmin;
+                align-items: center;
+                flex-direction: row;
+                justify-content: center;
+                text-align: center;
+                background-color: rgb(49, 245, 0);
+                margin-right: 0.8vmin;
+            }
+            .tab-block {
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                width:100%;
+                height: 100%;
+            }
+            .tab-style {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 1vmin;
+                border: 0.3vmin #fff; 
+                width:90%; 
+                height:10%; 
+                font-size: 3.5vmin; 
+                background-color: brown; 
+            }
+        </style>
+        <style path = "common/building_style.rcss" />
+        <script type="text/x-lua" path = "lua/assemble.lua" />
+    </head>
+    <body>
+        <div class="item-container-region"  data-model="start">
+            <!-- 左边面板 begin -->
+            <div class="panel" style="width: 75%;">
+                <div class="header" id = "item-name-block">
+                    <button class = "back-button"/>
+                    <div class = "menu-title" style="width: 70%;">统计</div>
+                </div>
+                <div style="border-bottom: 1px rgb(89, 73, 39);"/>
+                <div class="column" style="width: 100%;height: 88%;">
+                    <div class="graph-block">
+                        <div class="graph-content"/>     
+                    </div>
+                    <div class="building-block">
+                        <div class="building-sub-block">
+                            <div class="building-sub-content">
+                                <div class="building-content">
+                                    <div class="indicator"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="building-sub-content">
+                                <div class="building-content">
+                                    <div class="indicator" style="height: 5vmin; background-color: brown;"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="building-sub-content">
+                                <div class="building-content">
+                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="building-sub-content">
+                                <div class="building-content">
+                                    <div class="indicator" style="height: 5vmin; background-color: brown;"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="building-sub-content">
+                                <div class="building-content">
+                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="building-sub-content">
+                                <div class="building-content">
+                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="building-sub-content">
+                                <div class="building-content">
+                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="building-sub-block">
+                            <div class="building-sub-content">
+                                <div class="row">
+                                    <div class="indicator"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="building-sub-content">
+                                <div class="row">
+                                    <div class="indicator"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="building-sub-content">
+                                <div class="row">
+                                    <div class="indicator"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="building-sub-content">
+                                <div class="building-content">
+                                    <div class="indicator" style="height: 5vmin; background-color: brown;"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="building-sub-content">
+                                <div class="building-content">
+                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="building-sub-content">
+                                <div class="building-content">
+                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="building-sub-content">
+                                <div class="building-content">
+                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
+                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
+                                        <div class="item-count">99</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 左边面板 end -->
+
+            <!-- 右边面板 begin -->
+            <div class="panel" style="width: 15%;">
+                <div class="header" style="justify-content: flex-end; align-items: center;">
+                    <div class = "menu-title" style="flex-direction: row;align-items: center;height:100%;">
+                        <button class="time-content">5s</button>
+                        <button class="time-content">1m</button>
+                        <button class="time-content">10m</button>
+                        <button class="time-content">60m</button>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px rgb(89, 73, 39);"/>
+                <div class="tab-block">
+                    <button class="tab-style">发电图表</button>
+                    <button class="tab-style">耗电图表</button>
+                    <button class="tab-style">生产图表</button>
+                </div>
+            </div>       
+        </div>
+    </body>
+</rml>
