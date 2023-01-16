@@ -1452,7 +1452,7 @@ prototype "空气过滤" {
     ingredients = {
     },
     results = {
-        {"空气", 50},
+        {"空气", 100},
     },
     time = "1s",
     description = "采集大气并过滤",
