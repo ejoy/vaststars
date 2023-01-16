@@ -37,7 +37,7 @@ lupdate(lua_State *L) {
     w.time++;
     uint64_t eff = solar_efficiency(w.time / DayTick);
     if (eff != 0) {
-        for (auto& v : w.select<ecs::solar_panel, ecs::capacitance, ecs::entity>()) {
+        for (auto& v : ecs_api::select<ecs::solar_panel, ecs::capacitance, ecs::entity>(w.ecs)) {
             ecs::entity& e = v.get<ecs::entity>();
             ecs::capacitance& c = v.get<ecs::capacitance>();
             prototype_context p = w.prototype(L, e.prototype);
@@ -51,7 +51,7 @@ lupdate(lua_State *L) {
         }
     }
     
-    for (auto& v : w.select<ecs::base, ecs::capacitance, ecs::entity>()) {
+    for (auto& v : ecs_api::select<ecs::base, ecs::capacitance, ecs::entity>(w.ecs)) {
         ecs::entity& e = v.get<ecs::entity>();
         ecs::capacitance& c = v.get<ecs::capacitance>();
         prototype_context p = w.prototype(L, e.prototype);

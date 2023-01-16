@@ -16,7 +16,8 @@ struct lua_State;
 struct ecs_context;
 struct prototype_cache;
 
-struct world: public ecs_api::context {
+struct world {
+    ecs_context* ecs;
     struct prototype_cache* P;
     container container;
     std::map<uint16_t, fluidflow> fluidflows;

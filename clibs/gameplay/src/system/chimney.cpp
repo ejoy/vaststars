@@ -65,7 +65,7 @@ chimney_update(lua_State* L, world& w, ecs_api::entity<ecs::chimney, ecs::fluidb
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (auto& v : w.select<ecs::chimney, ecs::fluidbox>()) {
+    for (auto& v : ecs_api::select<ecs::chimney, ecs::fluidbox>(w.ecs)) {
         chimney_update(L, w, v);
     }
     return 0;
