@@ -213,16 +213,17 @@ local guide = {
     {
         name = "guide-11",
 		narrative = {
-            {"{/g 基建站}允许在更远的区域修建建筑，基建站可将建筑材料运送到在覆盖区域..哔哩..(兴奋)", "textures/guide/guide-2.texture"},
-            {"为了扩建我们的基地，准备放置{/g 基建站}吧..哔哩..哔哩(兴奋)", "textures/guide/guide-3.texture"},
+            {"我们具备了提取空气中有用气体的能力..哔哩..(兴奋)", "textures/guide/guide-2.texture"},
+            {"很多西游气体可以用于工业生产，让我们开始研究{/g 空气分离}吧..哔哩..哔哩(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 30,
             task = {
+                "空气分离",
             }
         },
         prerequisites = {
-            "基地生产1",
+            "水利研究",
         },
 	},
 
