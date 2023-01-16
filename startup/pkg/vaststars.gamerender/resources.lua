@@ -1138,6 +1138,7 @@ local t = {
 	"/pkg/vaststars.resources/ui/route_new.lua",
 	"/pkg/vaststars.resources/ui/route_new.rml",
 	"/pkg/vaststars.resources/ui/science.rml",
+	"/pkg/vaststars.resources/ui/statistics.rml",
 	"/pkg/vaststars.resources/ui/task_pop.rml",
 	"/pkg/vaststars.resources/ui/tech_tips.rml",
 	"/pkg/vaststars.resources/ui/textures/assemble/arrow.texture",
