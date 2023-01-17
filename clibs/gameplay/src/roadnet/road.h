@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "roadnet_type.h"
-#include "roadnet_dynarray.h"
+#include "roadnet/type.h"
+#include "util/dynarray.h"
 
 namespace roadnet {
     class world;

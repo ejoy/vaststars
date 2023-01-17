@@ -1,7 +1,7 @@
 #pragma once
 
-#include "roadnet_type.h"
-#include "roadnet_road.h"
+#include "roadnet/type.h"
+#include "roadnet/road.h"
 
 namespace roadnet {
     struct road_coord {

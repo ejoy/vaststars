@@ -1,5 +1,5 @@
-#include "roadnet_road_straight.h"
-#include "roadnet_world.h"
+#include "roadnet/road_straight.h"
+#include "roadnet/world.h"
 
 namespace roadnet::road {
     void straight::init(uint16_t id, uint16_t len, direction dir) {

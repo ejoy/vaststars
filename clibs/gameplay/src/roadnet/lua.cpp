@@ -1,8 +1,8 @@
 #include <lua.hpp>
 #include <string>
 #include <map>
-#include "roadnet_coord.h"
-#include "roadnet_world.h"
+#include "roadnet/coord.h"
+#include "roadnet/world.h"
 
 namespace roadnet::lua {
     template <typename T>

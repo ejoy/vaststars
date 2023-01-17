@@ -1,6 +1,6 @@
-#include "roadnet_lorry.h"
-#include "roadnet_world.h"
-#include "roadnet_bfs.h"
+#include "roadnet/lorry.h"
+#include "roadnet/world.h"
+#include "roadnet/bfs.h"
 
 namespace roadnet {
     bool lorry::nextDirection(world& w, roadid C, direction& dir) {

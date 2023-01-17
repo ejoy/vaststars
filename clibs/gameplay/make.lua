@@ -13,7 +13,7 @@ lm:lua_source "gameplay" {
     objdeps = "compile_gameplay_ecs",
     includes = {
         "src/",
-        "../roadnet",
+        "src/roadnet",
         antdir .. "3rd/luaecs",
         antdir .. "clibs/ecs/",
     },

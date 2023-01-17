@@ -2,10 +2,10 @@
 
 #include <stdint.h>
 #include <optional>
-#include "roadnet_road_crossroad.h"
-#include "roadnet_road_straight.h"
-#include "roadnet_endpoint.h"
-#include "roadnet_dynarray.h"
+#include "roadnet/road_crossroad.h"
+#include "roadnet/road_straight.h"
+#include "roadnet/endpoint.h"
+#include "util/dynarray.h"
 
 namespace roadnet {
     class world {

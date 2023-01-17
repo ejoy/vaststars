@@ -1,5 +1,5 @@
-﻿#include "roadnet_world.h"
-#include "roadnet_bfs.h"
+﻿#include "roadnet/world.h"
+#include "roadnet/bfs.h"
 #include <assert.h>
 
 namespace roadnet {

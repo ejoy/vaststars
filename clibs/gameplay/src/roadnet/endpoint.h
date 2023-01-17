@@ -1,7 +1,7 @@
 #pragma once
 
-#include "roadnet_type.h"
-#include "roadnet_coord.h"
+#include "roadnet/type.h"
+#include "roadnet/coord.h"
 #include <list>
 #include <map>
 #include <vector>

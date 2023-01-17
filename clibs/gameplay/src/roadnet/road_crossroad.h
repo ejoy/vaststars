@@ -1,8 +1,8 @@
 #pragma once
 
-#include "roadnet_road.h"
-#include "roadnet_coord.h"
-#include "roadnet_lorry.h"
+#include "roadnet/road.h"
+#include "roadnet/coord.h"
+#include "roadnet/lorry.h"
 
 namespace roadnet::road {
     struct crossroad {
