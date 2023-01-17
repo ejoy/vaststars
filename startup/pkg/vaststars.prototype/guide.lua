@@ -182,7 +182,7 @@ local guide = {
         name = "guide-9",
 		narrative = {
             {"这个星球蕴含丰富的铁矿，将{/g 铁}从中提炼出来就能成为我们工业原料..哔哩..哔哗..(期待)", "textures/guide/guide-2.texture"},
-            {"让我们好好利用这个星球的资源，这样我们的生存概率将会提高至{/g 0.3244%}..哔哩..哔哗..(兴奋)", "textures/guide/guide-3.texture"},
+            {"好好利用这个星球的资源，我们的生存概率将会提高至{/g 0.3244%}..哔哩..哔哗..(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 30,
@@ -199,8 +199,8 @@ local guide = {
     {
         name = "guide-10",
 		narrative = {
-            {"{/g 铁矿熔炼}研究顺利完成..哔哩..这样我们就具备生产{/g 铁板}的工艺..哔哗..(期待)", "textures/guide/guide-2.texture"},
-            {"高温{/g 熔炼炉}可以帮助我们处理铁矿，让我们开始建造吧..哔哩..哔哗..(兴奋)", "textures/guide/guide-3.texture"},
+            {"{/g 铁矿熔炼}研究顺利完成..哔哩..我们掌握了生产{/g 铁板}的工艺..哔哗..(期待)", "textures/guide/guide-2.texture"},
+            {"{/g 熔炼炉}可以帮助我们处理铁矿，让我们开始建造吧..哔哩..哔哗..(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 30,
