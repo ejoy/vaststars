@@ -11,6 +11,15 @@ struct consumer_context {
     unsigned int power;
     unsigned int drain;
     unsigned int capacitance;
+    inline unsigned int costall(unsigned int v) {
+        if (c.shortage + v > capacitance) {
+            v = capacitance - c.shortage;
+            c.shortage = capacitance;
+            return v;
+        }
+        c.shortage += v;
+        return v;
+    }
     inline bool cost(unsigned int v) {
         if (c.shortage + v > capacitance) {
             return false;
