@@ -1359,6 +1359,7 @@ local t = {
 	"/pkg/vaststars.resources/ui/textures/construct/science-pack.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/seaweed.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/solar-panel.texture",
+	"/pkg/vaststars.resources/ui/textures/construct/statistics.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/steel-beam.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/steel-gear.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/stone-brick.texture",
