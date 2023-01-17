@@ -56,24 +56,8 @@ prototype "指挥中心" {
     }
 }
 
-prototype "物流派送站" {
-    model = "prefabs/goods-station-output-1.prefab",
-    icon = "textures/building_pic/small_pic_goodsstation_output.texture",
-    background = "textures/build_background/small_pic_goodsstation_output.texture",
-    construct_detector = {"exclusive"},
-    type = {"entity", "logistic_hub"},
-    area = "1x1",
-    slots = 10,
-    group = {"物流"},
-    crossing = {
-        connections = {
-            {type="logistic_hub", position={0,0,"S"}, roadside = true},
-        },
-    }
-}
-
 prototype "物流需求站" {
-    model = "prefabs/goods-station-input-1.prefab",
+    model = "prefabs/goods-station-1.prefab",
     icon = "textures/building_pic/small_pic_goodsstation_input.texture",
     background = "textures/build_background/small_pic_goodsstation_input.texture",
     construct_detector = {"exclusive"},
@@ -276,25 +260,6 @@ prototype_road "砖石公路-U型-%02d" {
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
-        },
-    }
-}
-
-prototype "基建站" {
-    model = "prefabs/goods-station-input-1.prefab",
-    icon = "textures/building_pic/small_pic_goodsstation_input.texture",
-    background = "textures/build_background/pic_chest.texture",
-    construct_detector = {"exclusive"},
-    power = "300kW",
-    type ={"entity","consumer"},
-    priority = "secondary",
-    slots = 20,
-    area = "1x1",
-    supply_area = "32x32",
-    group = {"物流"},
-    crossing = {
-        connections = {
-            {type="none", position={0,0,"S"}, roadside = true},
         },
     }
 }
