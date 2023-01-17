@@ -178,9 +178,43 @@ local guide = {
         },
 	},
 
-
     {
         name = "guide-9",
+		narrative = {
+            {"这个星球蕴含丰富的铁矿，将{/g 铁}从中提炼出来就能成为我们工业原料..哔哩..哔哗..(期待)", "textures/guide/guide-2.texture"},
+            {"让我们好好利用这个星球的资源，这样我们的生存概率将会提高至{/g 0.3244%}..哔哩..哔哗..(兴奋)", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+            }
+        },
+        prerequisites = {
+            "维修运输汽车",
+            "维修物流中心",
+        },
+	},
+
+
+    {
+        name = "guide-10",
+		narrative = {
+            {"{/g 铁矿熔炼}研究顺利完成..哔哩..这样我们就具备生产{/g 铁板}的工艺..哔哗..(期待)", "textures/guide/guide-2.texture"},
+            {"高温{/g 熔炼炉}可以帮助我们处理铁矿，让我们开始建造吧..哔哩..哔哗..(兴奋)", "textures/guide/guide-3.texture"},
+        },
+        narrative_end = {
+            guide_progress = 30,
+            task = {
+                "放置熔炼炉",
+            }
+        },
+        prerequisites = {
+            "铁矿熔炼",
+        },
+	},
+
+    {
+        name = "guide-11",
 		narrative = {
             {"哔哩..哔哗..基地开始采集气液资源，{/g 管道}正是运输此类资源的关键..(兴奋)", "textures/guide/guide-3.texture"},
         },
@@ -196,7 +230,7 @@ local guide = {
 	},
 
     {
-        name = "guide-10",
+        name = "guide-12",
 		narrative = {
             {"合理的铺设管道让液体运输更加高效...哔哩..注意管道和机器液口的连接，耐心..和眼神..是关键(期待)", "textures/guide/guide-2.texture"},
         },
@@ -211,7 +245,7 @@ local guide = {
 	},
 
     {
-        name = "guide-11",
+        name = "guide-13",
 		narrative = {
             {"我们具备了提取空气中有用气体的能力..哔哩..(兴奋)", "textures/guide/guide-2.texture"},
             {"很多西游气体可以用于工业生产，让我们开始研究{/g 空气分离}吧..哔哩..哔哩(兴奋)", "textures/guide/guide-3.texture"},
@@ -228,7 +262,7 @@ local guide = {
 	},
 
     {
-        name = "guide-12",
+        name = "guide-14",
 		narrative = {
             {"{/g 化工厂}准备就绪，让我们正式进入化工生产..哔哩..哔哩..(兴奋）", "textures/guide/guide-3.texture"},
         },
@@ -245,7 +279,7 @@ local guide = {
 	},
 
     {
-        name = "guide-13",
+        name = "guide-15",
 		narrative = {
             {"{/g 塑料}可制造更多精密元件，掌握这种新材料，存活概率提升为1.2923%..哔哩(兴奋）", "textures/guide/guide-3.texture"},
         },
@@ -261,7 +295,7 @@ local guide = {
 	},
 
     {
-        name = "guide-14",
+        name = "guide-16",
 		narrative = {
             {"终于可以研制机械装置进入自动化生产，这可以大大提高效率..哔哩..和放松你的手臂..哔哩(期待）", "textures/guide/guide-2.texture"},
         },

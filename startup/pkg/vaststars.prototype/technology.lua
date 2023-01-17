@@ -275,12 +275,30 @@ prototype "铁矿熔炼" {
   time = "3s"
 }
 
+prototype "放置熔炼炉" {
+  desc = "放置熔炼炉",
+  icon = "textures/construct/industry.texture",
+  type = { "tech", "task" },
+  task = {"select_entity", 0, "熔炼炉I"},
+  prerequisites = {"铁矿熔炼"},
+  count = 2,
+  tips_pic = {
+    "textures/task_tips_pic/task_click_build.texture",
+    "textures/task_tips_pic/task_produce_geopack1.texture",
+    "textures/task_tips_pic/task_produce_geopack2.texture",
+    "textures/task_tips_pic/start_construct.texture",
+  },
+  sign_desc = {
+    { desc = "使用“建造”放置2台熔炼炉", icon = "textures/construct/industry.texture"},
+  },
+}
+
 prototype "生产铁板" {
   desc = "铁板可以打造坚固器材，对于基地建设多多益善",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"stat_production", 0, "铁板"},
-  prerequisites = {"铁矿熔炼"},
+  prerequisites = {"放置熔炼炉"},
   count = 4,
   tips_pic = {
     "textures/task_tips_pic/task_produce_ironplate1.texture",
