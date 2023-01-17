@@ -29,6 +29,15 @@ prototype "组装机II" {
     group = "加工",
     order = 72,
 }
+prototype "车辆厂I" {
+    type = {"item"},
+    stack = 25,
+    icon = "textures/construct/assembler1.texture",
+    model = "prefabs/rock.prefab",
+    description = "用来组装运输车的工厂",
+    group = "加工",
+    order = 74,
+}
 
 prototype "熔炼炉I" {
     type = {"item"},

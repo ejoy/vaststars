@@ -121,3 +121,22 @@ prototype "铸造厂I" {
         },
     }
 }
+
+prototype "车辆厂I" {
+    model = "prefabs/mars-assembling-machine.prefab",
+    icon = "textures/building_pic/small_pic_mars_assembling_machine.texture",
+    background = "textures/build_background/pic_mars_assembling_machine.texture",
+    construct_detector = {"exclusive"},
+    type = {"entity", "assembling", "consumer"},
+    area = "5x5",
+    speed = "50%",
+    power = "300kW",
+    priority = "secondary",
+    group = {"加工"},
+    craft_category = {"车辆制造"},
+    crossing = {
+        connections = {
+            {type="assembling", position={2,4,"S"}, roadside = true},
+        },
+    }
+}

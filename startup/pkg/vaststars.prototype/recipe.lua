@@ -457,7 +457,7 @@ prototype "物流中心1" {
 
 prototype "运输车辆1" {
     type = { "recipe" },
-    category = "物流中型制造",
+    category = "车辆制造",
     group = "物流",
     order = 53,
     icon = "textures/construct/truck.texture",
