@@ -240,7 +240,7 @@ prototype "维修运输汽车" {
     "textures/task_tips_pic/task_repair_truck.texture",
   },
   sign_desc = {
-    { desc = "使用组装机或制造舱维修2辆破损运输车辆", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机维修2辆破损运输车辆", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -255,7 +255,7 @@ prototype "维修物流中心" {
     "textures/task_tips_pic/task_repair_logistics.texture",
   },
   sign_desc = {
-    { desc = "使用组装机或制造舱维修1个破损物流中心", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机维修1个破损物流中心", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -267,7 +267,7 @@ prototype "铁矿熔炼" {
   effects = {
     unlock_recipe = {"铁板1"},
   },
-  prerequisites = {"维修运输汽车","维修物流中心", "维修运输汽车"},
+  prerequisites = {"维修运输汽车","维修物流中心"},
   ingredients = {
       {"地质科技包", 1},
   },
