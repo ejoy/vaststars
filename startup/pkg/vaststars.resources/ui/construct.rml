@@ -95,7 +95,7 @@
             }
             .main-menu-block {
                 /* width: 78vmin; */
-                width: 58vmin;
+                width: 78vmin;
                 height: 20.00vmin;
                 flex-direction: row;
                 align-items: center;
@@ -414,8 +414,8 @@
                     </div>
                     <!-- 科研中心可研究科技标识 end-->
                 </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;" data-if="false">
-                    <div class = "menu-button-pic" style='background-image:"textures/factory/seacher.texture"'/>
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-if = "guide_progress >= 15">
+                    <div class = "menu-button-pic" style='background-image:"textures/construct/statistics.texture"'/>
                     <div class = "menu-button-text">统计数据</div>
                 </button>
                 <button  class = "main-menu-button" style="border: 0.00vmin;" data-if="false"> 
