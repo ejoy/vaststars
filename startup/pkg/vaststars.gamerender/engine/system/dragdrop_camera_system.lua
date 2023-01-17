@@ -126,12 +126,12 @@ function dragdrop_camera_sys:camera_usage()
             world:pub {"dragdrop_camera", math3d.ref(delta)}
         end
     elseif delta_dist then
-        zoom(ce, delta_dist)
+        -- zoom(ce, delta_dist) -- TODO: fix zoom
     end
 
     --zoom in/out
     for _, delta in mouse_wheel_mb:unpack() do
-        zoom(ce, delta)
+        -- zoom(ce, delta) -- TODO: fix zoom
     end
 
     for _, _, left, top, position in ui_message_move_camera_mb:unpack() do
