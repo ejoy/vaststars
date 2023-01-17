@@ -7,14 +7,6 @@ constexpr uint8_t BLUE_PRIORITY = 0;
 constexpr uint8_t RED_PRIORITY = 0;
 constexpr uint8_t GREEN_PRIORITY = 1;
 
-static roadnet::world&
-getroadnetworld(lua_State* L) {
-    lua_getfield(L, LUA_REGISTRYINDEX, "ROADNET_WORLD");
-    auto& rw = *(roadnet::world*)lua_touserdata(L, -1);
-    lua_pop(L, 1);
-    return rw;
-}
-
 static void trading_match(world& w, uint16_t item, trading_queue& q, uint8_t sell_priority, uint8_t buy_priority) {
     auto& s = q.sell[sell_priority];
     auto& b = q.buy[buy_priority];
@@ -214,7 +206,7 @@ static void DoTask(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadn
 static int
 lbuild(lua_State *L) {
     auto& w = *(world*)lua_touserdata(L, 1);
-    auto& rw = getroadnetworld(L);
+    auto& rw = w.rw;
     auto& kdtree = w.tradings.station_kdtree;
     kdtree.dataset.clear();
     for (auto& v : ecs_api::select<ecs::station>(w.ecs)) {
@@ -232,7 +224,7 @@ lbuild(lua_State *L) {
 static int
 lupdate(lua_State *L) {
     auto& w = *(world*)lua_touserdata(L, 1);
-    auto& rw = getroadnetworld(L);
+    auto& rw = w.rw;
     auto& kdtree = w.tradings.station_kdtree;
     for (auto& [item, q] : w.tradings.queues) {
         trading_match(w, item, q);

@@ -16,7 +16,6 @@ local function update(world)
     end
     last_update_time = current
 
-    local roadnet = world.roadnet
     for e in world.ecs:select "station:in chest:in entity:in" do
         for _, slot in pairs(ichest.collect_item(world, e)) do
             if slot.amount >= 0 then
@@ -24,8 +23,8 @@ local function update(world)
 
                 if e.station.endpoint ~= 0xffff then
                     for _ = 1, slot.amount do
-                        local l = roadnet:create_lorry()
-                        roadnet:place_lorry(e.station.endpoint, l)
+                        local l = world:roadnet_create_lorry()
+                        world:roadnet_place_lorry(e.station.endpoint, l)
                         print("place lorry")
                     end
                 end

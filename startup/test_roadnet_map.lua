@@ -375,7 +375,7 @@ local road = {
         y = 111,
     },
 }
-world.roadnet:load_map(convert(road))
+world:roadnet_load_map(convert(road))
 
 
 world:create_entity "指挥中心"{

@@ -61,7 +61,6 @@ return function ()
     local ptable = require "vaststars.prototype.core"
     local cworld = vaststars.create_world(context, ptable)
     world.ecs = ecs
-    world.roadnet = roadnet.create_world()
     world._cworld = cworld
     world._context = context
 
@@ -316,6 +315,12 @@ return function ()
     end
     function world:loop(...)
         return timer.loop(...)
+    end
+
+    for name, f in pairs(roadnet) do
+        world["roadnet_"..name] = function (_, ...)
+            return f(cworld, ...)
+        end
     end
 
     return world

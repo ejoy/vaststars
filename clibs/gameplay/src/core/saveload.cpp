@@ -165,14 +165,6 @@ namespace lua_world {
         file_read(f, t.data(), t.size());
     }
 
-    static roadnet::world&
-    getroadnetworld(lua_State* L) {
-        lua_getfield(L, LUA_REGISTRYINDEX, "ROADNET_WORLD");
-        auto& rw = *(roadnet::world*)lua_touserdata(L, -1);
-        lua_pop(L, 1);
-        return rw;
-    }
-
     static void backup_scope(lua_State* L, FILE* f, const char* name, std::function<void()> func) {
         lua_Integer head = (lua_Integer)ftell(f);
         func();
@@ -253,7 +245,7 @@ namespace lua_world {
         });
 
         backup_scope(L, f, "roadnet", [&](){
-            auto& rw = getroadnetworld(L);
+            auto& rw = w.rw;
             file_write(f, rw.crossAry);
             file_write(f, rw.straightAry);
             file_write(f, rw.endpointAry);
@@ -349,7 +341,7 @@ namespace lua_world {
         });
 
         restore_scope(L, f, "roadnet", [&](){
-            auto& rw = getroadnetworld(L);
+            auto& rw = w.rw;
             file_read(f, rw.crossAry);
             file_read(f, rw.straightAry);
             file_read(f, rw.endpointAry);

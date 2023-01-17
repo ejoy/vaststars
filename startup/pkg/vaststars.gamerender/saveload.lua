@@ -489,7 +489,7 @@ function M:restore(index)
 
     self.running = true
     gameplay_core.restore(archival_dir)
-    local map = gameplay_core.get_world().roadnet:get_map()
+    local map = gameplay_core.get_world():roadnet_get_map()
     iroadnet.init(require("startup.road").from(map))
     iscience.update_tech_list(gameplay_core.get_world())
     iui.open("construct.rml")

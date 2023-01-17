@@ -189,14 +189,13 @@ local function init(t, load)
 
     --
     local gameplay_world = gameplay_core.get_world()
-    local roadnet = gameplay_world.roadnet
 
     if load then
         local t = {}
         for k, v in pairs(gameplay_cache) do
             t[k] = _convert_mask(_get_mask(v))
         end
-        roadnet:load_map(t)
+        gameplay_world:roadnet_load_map(t)
     end
 end
 
@@ -317,13 +316,12 @@ local function editor_build()
 
     --
     local gameplay_world = gameplay_core.get_world()
-    local roadnet = gameplay_world.roadnet
 
     local t = {}
     for k, v in pairs(gameplay_cache) do
         t[k] = _convert_mask(_get_mask(v))
     end
-    roadnet:load_map(t)
+    gameplay_world:roadnet_load_map(t)
 
     local iendpoint = gameplay.interface "endpoint"
     for e in gameplay_core.select "chest:update entity:in" do

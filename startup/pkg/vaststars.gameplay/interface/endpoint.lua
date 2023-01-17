@@ -51,7 +51,7 @@ local function create_endpoint(world, init, pt, type)
     local x, y, dir = rotate(c.position, DIRECTION[init.dir], pt.area)
     x = x + init.x
     y = y + init.y
-    return world.roadnet:create_endpoint(x, y, mapping[DIRECTION[dir]]) -- endpoint equals 0xffff if doesn't connect to any road
+    return world:roadnet_create_endpoint(x, y, mapping[DIRECTION[dir]]) -- endpoint equals 0xffff if doesn't connect to any road
 end
 
 --
@@ -98,7 +98,7 @@ local function update_endpoint(world, e)
     local x, y, dir = rotate(pt.crossing.connections[1].position, e.entity.direction, pt.area)
     x = x + e.entity.x
     y = y + e.entity.y
-    local endpoint = world.roadnet:create_endpoint(x, y, mapping[DIRECTION[dir]]) -- endpoint equals 0xffff if doesn't connect to any road
+    local endpoint = world:roadnet_create_endpoint(x, y, mapping[DIRECTION[dir]]) -- endpoint equals 0xffff if doesn't connect to any road
     if endpoint == 0xffff then
         return
     end

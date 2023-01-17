@@ -68,12 +68,10 @@ local function dump_item()
 end
 
 local movement = false
-local roadnet = world.roadnet
 while not world.quit do
-    roadnet:update()
     world:update()
 
-    for _ in roadnet:each_lorry() do
+    for _ in world:roadnet_each_lorry() do
         movement = true
     end
 end

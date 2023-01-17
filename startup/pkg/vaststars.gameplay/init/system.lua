@@ -4,6 +4,7 @@ require "system.endpoint"
 
 local csystem = require "register.csystem"
 
+csystem "roadnet"
 csystem "generator"
 csystem "powergrid"
 csystem "fluid"
