@@ -26,6 +26,7 @@ local create_road_entrance = ecs.require "editor.road_entrance"
 local iroadnet = ecs.require "roadnet"
 local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
+local DIRECT_BUILD <const> = require "debugger".direct_build
 
 local function _get_state(prototype_name, ok)
     local typeobject = iprototype.queryByName("entity", prototype_name)
@@ -335,8 +336,13 @@ local function confirm(self, datamodel)
         local count = slot.amount
         local request_count = global.construct_queue:size(pickup_object.prototype_name)
         if count < request_count then
-            ichest.base_add_req(gameplay_core.get_world(), pickup_object.prototype_name, 1)
+            if DIRECT_BUILD then
+                ichest.base_add_req_force(gameplay_core.get_world(), pickup_object.prototype_name, 1)
+            else
+                ichest.base_add_req(gameplay_core.get_world(), pickup_object.prototype_name, 1)
+            end
         end
+        gameplay_core.build()
     end
 
     self.pickup_object = nil

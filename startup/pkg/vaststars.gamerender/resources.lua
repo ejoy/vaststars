@@ -1339,7 +1339,7 @@ local t = {
 	"/pkg/vaststars.resources/ui/textures/construct/pipe1.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/pipe_box.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/plastic.texture",
-	"/pkg/vaststars.resources/ui/textures/construct/plate-Ai.texture",
+	"/pkg/vaststars.resources/ui/textures/construct/plate-Al.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/plate-Fe.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/plate-Si.texture",
 	"/pkg/vaststars.resources/ui/textures/construct/pole_box.texture",

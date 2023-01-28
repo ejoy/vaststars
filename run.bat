@@ -1,23 +1,27 @@
 @echo off
 chcp 65001
 set current_dir=%~dp0
-set mode=release
-set exe=bin\msvc\%mode%\vaststars.exe
 set cachedir=.build
 set param=startup/main.lua
+set mode=%1
+if not defined mode (
+	set mode=release
+)
 
-pushd %current_dir%
 if exist "%cachedir%" (
 	rem rd /s /q %cachedir%
 )
 
+set exe=bin\msvc\%mode%\vaststars.exe
 if not exist "%exe%" (
-	set mode=debug
-	set exe=bin\msvc\debug\vaststars.exe
+	echo can not found "%exe%"
+	goto end
 )
 
-title %mode% - %current_dir%%exe%
-%current_dir%%exe% %param%
+pushd %current_dir%
+	title %mode% - %current_dir%%exe%
+	%current_dir%%exe% %param%
 popd
 
+:end
 pause

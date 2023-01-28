@@ -25,8 +25,8 @@ local icamera = ecs.require "engine.camera"
 local ipower_line = ecs.require "power_line"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
-local DISABLE_FPS = require("debugger").disable_fps
-local SHOW_LOAD_RESOURCE = not require("debugger").disable_load_resource
+local DISABLE_FPS <const> = require "debugger".disable_fps
+local SHOW_LOAD_RESOURCE <const> = not require "debugger".disable_load_resource
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_builder = ecs.require "editor.builder"
 
@@ -351,15 +351,12 @@ function M:stage_camera_usage(datamodel)
             local total_count = global.construct_queue:size(prototype_name)
             count = math.min(count, total_count)
             assert(total_count > 0)
-
-            if count > 0 then
+            -- decrease item count
+            if count > 0 and ichest.base_chest_pickup(gameplay_core.get_world(), typeobject.id, count) then
                 for i = 1, count do
                     local object_id = global.construct_queue:pop(prototype_name)
                     pbuilder:complete(object_id)
                 end
-
-                -- decrease item count
-                assert(ichest.base_chest_pickup(gameplay_core.get_world(), typeobject.id, count))
             end
         end
 

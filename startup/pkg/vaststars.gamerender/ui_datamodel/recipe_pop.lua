@@ -11,7 +11,6 @@ local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iworld = require "gameplay.interface.world"
-local ichest = require "gameplay.interface.chest"
 local clear_recipe_mb = mailbox:sub {"clear_recipe"}
 local objects = require "objects"
 local ieditor = ecs.require "editor.editor"

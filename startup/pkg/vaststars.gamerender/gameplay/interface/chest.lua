@@ -50,6 +50,28 @@ function M.add_req(world, e, prototype_name, count)
     world:container_add(e.chest, info)
 end
 
+function M.add_req_force(world, e, prototype_name, count)
+    local prototype = iprototype.queryByName("item", prototype_name).id
+    local typeobject = iprototype.queryById(e.entity.prototype)
+    for i = 1, typeobject.slots do
+        local slot = world:container_get(e.chest, i)
+        if slot then
+            if slot.item == prototype then
+                world:container_set(e.chest, i, {amount = slot.amount + count})
+                return
+            end
+        end
+    end
+
+    local info = world:chest_slot {
+        type = "blue",
+        item = prototype_name,
+        amount = count,
+        limit = 0,
+    }
+    world:container_add(e.chest, info)
+end
+
 -- prototype, count
 function M.base_chest_place(world, ...)
     local e = assert(world.ecs:first("base chest:in"))
@@ -72,4 +94,8 @@ function M.base_add_req(world, prototype_name, count)
     return M.add_req(world, e, prototype_name, count)
 end
 
+function M.base_add_req_force(world, prototype_name, count)
+    local e = assert(world.ecs:first("base entity:in chest:in"))
+    return M.add_req_force(world, e, prototype_name, count)
+end
 return M

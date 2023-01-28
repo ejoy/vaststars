@@ -1,10 +1,14 @@
 @echo off
 set current_dir=%~dp0
-set mode=debug
-title build %mode% - %current_dir%
+set mode=%1
+if not defined mode (
+	set mode=release
+)
+
 pushd %CURRENT_DIR%
-luamake.exe -mode %mode% %1 %2
-luamake.exe tools -mode %mode% %1 %2
+	title build %mode% - %current_dir%
+	luamake.exe -mode %mode%
+	luamake.exe tools -mode %mode%
 popd
 
 pause

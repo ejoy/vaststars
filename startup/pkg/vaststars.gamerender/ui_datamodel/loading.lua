@@ -2,9 +2,8 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
-local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
-local TERRAIN_ONLY = require("debugger").terrain_only
-local NOTHING = require("debugger").nothing
+local TERRAIN_ONLY <const> = require "debugger".terrain_only
+local NOTHING <const> = require "debugger".nothing
 local saveload = ecs.require "saveload"
 local gameplay_core = require "gameplay.core"
 local terrain = ecs.require "terrain"

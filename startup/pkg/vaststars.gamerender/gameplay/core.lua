@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local world = gameplay.createWorld()
 local irecipe = require "gameplay.interface.recipe"
 local iprototype = require "gameplay.interface.prototype"
-local MULTIPLE = require("debugger").multiple
+local MULTIPLE <const> = require "debugger".multiple
 
 local m = {}
 m.world_update = true

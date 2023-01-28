@@ -139,7 +139,7 @@ prototype "铝板1" {
     group = "金属",
     order = 18,
     allow_manual = false,
-    icon = "textures/construct/plate-Ai.texture",
+    icon = "textures/construct/plate-Al.texture",
     ingredients = {
         {"氧化铝", 9},
         {"石墨", 5}
@@ -1016,8 +1016,7 @@ prototype "科研中心1" {
     ingredients = {
         {"电动机I", 8},
         {"铁板", 20},
-        {"电动机I", 1},
-        {"玻璃", 4}, 
+        {"玻璃", 4},
     },
     results = {
         {"科研中心I", 1},
