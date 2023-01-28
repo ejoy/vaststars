@@ -485,7 +485,6 @@ local t = {
 	"/pkg/ant.resources/materials/postprocess/upsample.material",
 	"/pkg/ant.resources/materials/predepth.material",
 	"/pkg/ant.resources/materials/predepth_skin.material",
-	"/pkg/ant.resources/materials/printer.material",
 	"/pkg/ant.resources/materials/quad_sphere/color.texture",
 	"/pkg/ant.resources/materials/quad_sphere/quad_sphere.material",
 	"/pkg/ant.resources/materials/quad_sphere/quad_sphere_mask.material",
