@@ -257,7 +257,8 @@ local guide = {
             }
         },
         prerequisites = {
-            "水利研究",
+            "维修破损组装机",
+            "电解",
         },
 	},
 

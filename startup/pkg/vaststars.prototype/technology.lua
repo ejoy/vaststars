@@ -373,7 +373,7 @@ prototype "维修破损空气过滤器" {
     "textures/task_tips_pic/task_repair_airfilter.texture",
   },
   sign_desc = {
-    { desc = "使用组装机或制造舱维修1个破损空气过滤器", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机维修1个破损空气过滤器", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -388,7 +388,7 @@ prototype "维修破损地下水挖掘机" {
     "textures/task_tips_pic/task_repair_digger.texture",
   },
   sign_desc = {
-    { desc = "使用组装机或制造舱维修1个破损地下水挖掘机", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机维修1个破损地下水挖掘机", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -499,7 +499,7 @@ prototype "空气分离" {
   effects = {
     unlock_recipe = {"空气分离1"},
   },
-  prerequisites = {"水利研究"},
+  prerequisites = {"维修破损组装机","电解"},
   ingredients = {
       {"气候科技包", 1},
   },
@@ -550,7 +550,7 @@ prototype "维修破损组装机" {
     "textures/task_tips_pic/task_repair_assembler.texture",
   },
   sign_desc = {
-    { desc = "使用组装机或制造舱维修3个破损组装机", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机维修3个破损组装机", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -562,7 +562,7 @@ prototype "石头处理2" {
     unlock_recipe = {"破损太阳能板","破损蓄电池"},
     unlock_building = {"太阳能板I","蓄电池I"},
   },
-  prerequisites = {"维修破损组装机","电解"},
+  prerequisites = {"空气分离"},
   ingredients = {
       {"地质科技包", 1},
   },
@@ -581,7 +581,7 @@ prototype "维修太阳能板" {
     "textures/task_tips_pic/task_repair_solarpanel.texture",
   },
   sign_desc = {
-    { desc = "使用组装机或制造舱维修2个破损太阳能板", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机维修2个破损太阳能板", icon = "textures/construct/industry.texture"},
   },
 }
 
@@ -776,7 +776,7 @@ prototype "维修化工厂" {
     "textures/task_tips_pic/task_repair_chemicalplant1.texture",
   },
   sign_desc = {
-    { desc = "使用组装机或制造舱维修1个破损化工厂", icon = "textures/construct/industry.texture"},
+    { desc = "使用组装机维修1个破损化工厂", icon = "textures/construct/industry.texture"},
   },
 }
 
