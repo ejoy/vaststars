@@ -39,8 +39,8 @@ prototype "排水口残骸" {
 
 prototype "抽水泵残骸" {
     model = "prefabs/broken-pump-2X2.prefab",
-    icon = "textures/building_pic/small_pic_offshore.texture",
-    background = "textures/building_pic/pic_pumpjack.texture",
+    icon = "textures/building_pic/small_pic_pumpjack.texture",
+    background = "textures/build_background/pic_pumpjack.texture",
     construct_detector = {"exclusive"},
     type = {"entity", "chest"},
     chest_type = "red",
