@@ -39,6 +39,7 @@ local tracedoc = require "utility.tracedoc"
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local show_construct_menu_mb = mailbox:sub {"show_construct_menu"}
+local show_statistic_mb = mailbox:sub {"statistic"} -- 主界面左下角 -> 统计信息
 local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> 游戏设置
 local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研中心
 local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
@@ -206,6 +207,10 @@ function M:stage_ui_update(datamodel)
     for _ in technology_mb:unpack() do
         gameplay_core.world_update = false
         iui.open("science.rml")
+    end
+    
+    for _ in show_statistic_mb:unpack() do
+        iui.open("statistics.rml")
     end
 
     for _ in show_setting_mb:unpack() do

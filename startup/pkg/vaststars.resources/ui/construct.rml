@@ -333,6 +333,9 @@
             function start.clickTechnology()
                 ui_sys.pub {"technology"}
             end
+            function start.clickStatistic()
+                ui_sys.pub {"statistic"}
+            end
             function start.clickSetting(event)
                 ui_sys.pub {"show_setting"}
             end
@@ -414,7 +417,7 @@
                     </div>
                     <!-- 科研中心可研究科技标识 end-->
                 </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;" data-if = "guide_progress >= 15">
+                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickStatistic()" data-if = "guide_progress >= 15">
                     <div class = "menu-button-pic" style='background-image:"textures/construct/statistics.texture"'/>
                     <div class = "menu-button-text">统计数据</div>
                 </button>

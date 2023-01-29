@@ -8,7 +8,9 @@ return {
     statistic = {
         pending_eid = {},
         power = {},
-        power_consumed = 0
+        power_group = {},
+        power_consumed = 0,
+        power_generated = 0
     },
     frame_count = 0,
     building_coord_system = require "coord_transform"(255, 255),
