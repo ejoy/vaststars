@@ -17,7 +17,7 @@
             }
             .button-fuction-block {
                 flex-direction: column;
-                width: 20%;
+                width: 14.3%;
                 height:80%;
                 align-items: center;
                 justify-content: center;
@@ -36,6 +36,7 @@
                 background-image: "textures/common/info-arc.texture";
                 background-size:cover;
                 flex-direction: row;
+                justify-content: center;
             }
         </style>
         <style path = "common/building_style.rcss"/>
@@ -96,18 +97,30 @@
                 <button class="button-function" style ='background-image: "textures/factory/demolition.texture";'/>
                 <div class="title-text">拆除</div>
             </div>
+
+            <div class="button-fuction-block" style="top: -2.33vmin; width:38.3%;" data-if = "!show_teardown" />
+
+            <div class="button-fuction-block" style="top: -2.33vmin; width:11%;" data-if = "show_teardown" />
+
+            <div class="button-fuction-block" style="top: -2.33vmin; width:14%;" data-if = "show_teardown && !show_set_recipe" />
+
+
+            <div class="button-fuction-block" style="top: -4.33vmin;" data-if = "show_teardown">
+                <button class="button-function" style ='background-image: "textures/factory/move.texture";'/>
+                <div class="title-text">移动</div>
+            </div>
+
+            <div class="button-fuction-block" style="top: -2.33vmin; width:13%;" data-if = "show_teardown" />
+
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_teardown" />
-
-
-            <div class="button-fuction-block" style="top: -2.33vmin;" />
 
             <div class="button-fuction-block" style="top: -4.33vmin;" data-event-click="clickSetRecipe()" data-if = "show_set_recipe">
                 <button class="button-function" style ='background-image: "textures/assemble/wheel.texture";'/>
                 <div class="title-text">修改配方</div>
             </div>
-            <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_set_recipe" />
+            <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_set_recipe && !show_teardown" />
 
-            <div class="button-fuction-block" style="top: -2.33vmin;" />
+            <div class="button-fuction-block" style="top: -2.33vmin; width:11%;" />
 
             <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickDetail()" data-if = "show_detail">
                 <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>
