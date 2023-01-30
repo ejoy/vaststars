@@ -3,7 +3,7 @@ local prototype = require "prototype"
 
 local unit = status.unit
 
-local UPS <const> = 50
+local UPS <const> = 30
 
 local function register_unit(name, type, converter)
 	assert(unit[name] == nil)

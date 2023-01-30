@@ -14,7 +14,7 @@ local IN <const> = 0
 local OUT <const> = 1
 local INOUT <const> = 2
 
-local UPS <const> = 50
+local UPS <const> = 30
 
 local PipeEdgeType <const> = {
     ["input"] = IN,

@@ -8,12 +8,13 @@ extern "C" {
 #include "util/prototype.h"
 }
 
-static constexpr uint64_t DuskTick   =  5000;
-static constexpr uint64_t NightTick  =  2500 + DuskTick;
-static constexpr uint64_t DawnTick   =  5000 + NightTick;
-static constexpr uint64_t DayTick    = 12500 + DawnTick;
+static constexpr uint64_t UPS        = 30;
+static constexpr uint64_t DuskTick   = 100 * UPS;
+static constexpr uint64_t NightTick  =  50 * UPS + DuskTick;
+static constexpr uint64_t DawnTick   = 100 * UPS + NightTick;
+static constexpr uint64_t DayTick    = 250 * UPS + DawnTick;
 
-static constexpr uint64_t FixedPoint = 5000;
+static constexpr uint64_t FixedPoint = 100 * UPS;
 
 static uint64_t
 solar_efficiency(uint64_t time) {
