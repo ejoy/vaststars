@@ -95,7 +95,7 @@ end
 local function update(self, t)
     local typeinfo = typeinfos[t.type or self.type]
     local typeobject = iprototype.queryByName("entity", t.prototype_name or self.prototype_name)
-    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color)
+    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, t.animation_name)
     assert(t.srt)
 
     if self.block then
@@ -117,17 +117,17 @@ local function update(self, t)
 end
 
 -- TODO: remove this function, simply use update
-local function animation_update(self, animation_name, process)
+local function emissive_color_update(self, color)
+    self.emissive_color = color
     local typeinfo = typeinfos[self.type]
     local typeobject = iprototype.queryByName("entity", self.prototype_name)
-    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, animation_name, process)
+    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, nil, color)
 end
 
--- TODO: remove this function, simply use update
-local function emissive_color_update(self, color)
+local function animation_name_update(self, animation_name)
     local typeinfo = typeinfos[self.type]
     local typeobject = iprototype.queryByName("entity", self.prototype_name)
-    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, nil, nil, color)
+    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, animation_name, self.emissive_color)
 end
 
 local function attach(self, slot_name, model, ...)
@@ -219,8 +219,8 @@ return function (init)
         remove = remove,
         attach = attach,
         detach = detach,
-        animation_update = animation_update,
         emissive_color_update = emissive_color_update,
+        animation_name_update = animation_name_update,
         modifier = modifier,
         add_canvas = add_canvas,
         del_canvas = del_canvas,

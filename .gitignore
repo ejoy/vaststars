@@ -15,4 +15,4 @@ clibs/gameplay/src/util/component.h
 /startup/pkg/vaststars.prototype/debugger.lua
 /startup/imgui.layout
 /startup/log.txt
-/mod/
+/startup/mod

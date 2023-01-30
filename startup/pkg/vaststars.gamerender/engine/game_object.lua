@@ -1,6 +1,7 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
+
 local iefk = ecs.import.interface "ant.efk|iefk"
 local cr = import_package "ant.compile_resource"
 local serialize = import_package "ant.serialize"
@@ -13,43 +14,15 @@ local math3d = require "math3d"
 local COLOR_INVALID <const> = math3d.constant "null"
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 
-local function ipairs_remove(t)
-    local i = 0
-    local remove = function()
-       table.remove(t, i)
-       i = i - 1
-    end
-    return function()
-       i = i + 1
-       if t[i] ~= nil then
-          return i, t[i], remove
-       end
-       return nil
-    end
- end
-
 local function _replace_material(template, material_file_path)
     for _, v in ipairs(template) do
-        if v.prefab then -- TODO: special case for prefab include other prefab, skip it
-            goto continue
-        end
         for _, policy in ipairs(v.policy) do
             if policy == "ant.render|render" or policy == "ant.render|simplerender" then
                 v.data.material = material_file_path
-                for _, tag, remove in ipairs_remove(v.data.tag or {}) do -- TODO: special case for tag, remove u_emissive_factor tag when the material have been replaced
-                    if tag == "u_emissive_factor" then
-                        remove()
-                    end
-                end
             end
         end
-        ::continue::
     end
-
     return template
-end
-
-local function on_prefab_ready(prefab)
 end
 
 local function on_prefab_message(prefab, inner, cmd, ...)
@@ -83,47 +56,22 @@ local _instance_hash ; do
     local state_hash = get_hash_func()
     local color_hash = get_hash_func()
     local animation_hash = get_hash_func()
-    local process_hash = get_hash_func()
     local emissive_color_hash = get_hash_func()
 
-    function _instance_hash(prefab_file_name, state, color, animation_name, process, emissive_color)
+    function _instance_hash(prefab_file_name, state, color, animation_name, emissive_color)
         local h1 = prefab_name_hash(prefab_file_name or 0)
         local h2 = state_hash(state or 0)
         local h3 = color_hash(color or 0)
         local h4 = animation_hash(animation_name or 0)
-        local h5 = process_hash(math.floor((process or 0) * 100)) -- process: float, 0.0 ~ 1.0 -> 0 ~ 100
-        local h6 = emissive_color_hash(emissive_color or 0)
+        local h5 = emissive_color_hash(emissive_color or 0)
 
-        return h1 | (h2 << 8) | (h3 << 16) | (h4 << 24) | (h5 << 32) | (h6 << 40) -- assuming 255 types of every parameter at most
+        return h1 | (h2 << 8) | (h3 << 16) | (h4 << 24) | (h5 << 32) -- assuming 255 types of every parameter at most
     end
 end
 
 local _get_hitch_children ; do
     local cache = {} -- prefab_file_name + state + color -> object
     local hitch_group_id = 10000 -- see also: terrain.lua -> TERRAIN_MAX_GROUP_ID
-
-    local function _create_animation(prefab_file_name, pose, animation_name, process)
-        local instance = ecs.create_instance(prefab_file_name:string())
-        instance.on_ready = function(prefab)
-            iani.set_pose_to_prefab(prefab, pose)
-
-            if not animation_name and not process then
-                for _, eid in ipairs(prefab.tag["*"]) do
-                    local e <close> = assert(w:entity(eid, "animation_birth?in"))
-                    if e.animation_birth then
-                        animation_name, process = e.animation_birth, 0
-                    end
-                end
-            end
-
-            assert(animation_name and process) -- animation_name and process are required, otherwise the initial pose of entity will be wrong
-            iani.play(prefab, {name = animation_name, loop = false, manual = true})
-            iani.set_time(prefab, iani.get_duration(prefab, animation_name) * process)
-        end
-        instance.on_message = function (_prefab, cmd, ...)
-        end
-        world:create_object(instance)
-    end
 
     local function _cache_prefab_info(template)
         local effects = {}
@@ -145,8 +93,8 @@ local _get_hitch_children ; do
         return scene, slots, effects
     end
 
-    function _get_hitch_children(prefab_file_path, state, color, animation_name, process, emissive_color)
-        local hash = _instance_hash(prefab_file_path, state, tostring(color), animation_name, process, tostring(emissive_color))
+    function _get_hitch_children(prefab_file_path, state, color, animation_name, emissive_color)
+        local hash = _instance_hash(prefab_file_path, state, tostring(color), animation_name, tostring(emissive_color))
         if cache[hash] then
             return cache[hash]
         end
@@ -183,7 +131,7 @@ local _get_hitch_children ; do
         local g = ecs.group(hitch_group_id)
         g:enable "scene_update"
 
-        log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab_file_path, state, require("math3d").tostring(color), animation_name, process}, " "))) -- TODO: remove this line
+        log.info(("game_object.new_instance: %s"):format(table.concat({hitch_group_id, prefab_file_path, state, require("math3d").tostring(color), animation_name}, " "))) -- TODO: remove this line
 
         local inner = { tags = {} } -- tag -> eid
         local pose = iani.create_pose()
@@ -195,35 +143,18 @@ local _get_hitch_children ; do
             end
         end
         prefab.on_ready = function(prefab)
-            on_prefab_ready(prefab)
-            -- not for hitch object
-            -- local event_file = prefab_file_path:gsub("^(.*)(%.prefab)$", "%1.event")
-            -- if fs.exists(fs.path(event_file)) then
-            --     iani.load_events(prefab, event_file)
-            -- end
             for _, eid in ipairs(prefab.tag["*"]) do
                 local e <close> = w:entity(eid, "tag?in animation?in")
-                if e.animation then
-                    if e.animation["work"] then
-                        pose.has_work_anim = true
-                    end
-                    pose.eid = eid
+                if animation_name and e.animation and e.animation[animation_name] then
+                    iani.play(eid, {name = animation_name, loop = true, manual = false})
                 end
-                if not e.tag then
-                    goto continue
-                end
-                for _, tag in ipairs(e.tag) do
-                    inner.tags[tag] = inner.tags[tag] or {}
-                    table.insert(inner.tags[tag], eid)
-                end
-                ::continue::
-            end
 
-            local animation_prefab_file_path = prefab_file_path:gsub("^(.*)(%.prefab)$", "%1-animation.prefab")
-            local _f = fs.path(animation_prefab_file_path)
-            if fs.exists(_f) then
-                iani.set_pose_to_prefab(prefab, pose)
-                _create_animation(_f, pose, animation_name, process)
+                if e.tag then
+                    for _, tag in ipairs(e.tag) do
+                        inner.tags[tag] = inner.tags[tag] or {}
+                        table.insert(inner.tags[tag], eid)
+                    end
+                end
             end
         end
         prefab.on_message = function(prefab, ...)
@@ -253,12 +184,13 @@ init = {
     srt,
     parent, -- the parent of the hitch
     slot, -- the slot of the hitch
+    animation_name,
     emissive_color,
     render_layer,
 }
 --]]
 function igame_object.create(init)
-    local children = _get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, nil, nil, init.emissive_color)
+    local children = _get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, init.animation_name, init.emissive_color)
     local hitch_events = {}
     hitch_events["group"] = function(_, e, group)
         w:extend(e, "hitch:update")
@@ -270,9 +202,6 @@ function igame_object.create(init)
     end
     hitch_events["obj_motion"] = function(_, e, method, ...)
         iom[method](e, ...)
-    end
-    hitch_events["on_ready"] = function(_, e)
-        init.on_ready(e)
     end
 
     local policy = {
@@ -305,8 +234,8 @@ function igame_object.create(init)
     local function remove(self)
         self.hitch_entity_object:remove()
     end
-    local function update(self, prefab_file_name, state, color, animation_name, process, emissive_color)
-        local children = _get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, process, emissive_color)
+    local function update(self, prefab_file_name, state, color, animation_name, emissive_color)
+        local children = _get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, emissive_color)
         self.hitch_entity_object:send("group", children.hitch_group_id)
         for _, slot_game_object in pairs(self.slot_attach) do
             slot_game_object.hitch_entity_object:send("slot_pose", children.pose)
@@ -379,9 +308,6 @@ function igame_object.create(init)
                 iefk.play(e)
             end
         end
-        if children.pose.has_work_anim and not iani.is_playing(children.pose.eid) then
-            iani.play(children.pose.eid, {name = "work", loop = true, manual = false, speed = 1.0})
-        end
     end
     outer.on_idle = function ()
         local effeting = false
@@ -395,13 +321,10 @@ function igame_object.create(init)
                 iefk.stop(e, true)
             end
         end
-        if children.pose.has_work_anim and iani.is_playing(children.pose.eid) then
-            iani.pause(children.pose.eid, true)
-        end
     end
     return outer
 end
 
 function igame_object.get_prefab(prefab)
-    return _get_hitch_children(RESOURCES_BASE_PATH:format(prefab), "opaque", COLOR_INVALID, nil, nil, nil)
+    return _get_hitch_children(RESOURCES_BASE_PATH:format(prefab), "opaque", COLOR_INVALID, nil, nil)
 end

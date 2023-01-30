@@ -53,8 +53,8 @@ local function update_world(world, get_object_func)
         end
 
         if volume > 0 then
-            local animation_name = "ArmatureAction"
-            vsobject:animation_update(animation_name, _get_progress(volume / capacity))
+            -- local animation_name = "ArmatureAction"
+            -- animation_name, _get_progress(volume / capacity)
         end
         ::continue::
     end

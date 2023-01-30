@@ -5,18 +5,13 @@ local w = world.w
 local math3d = require "math3d"
 local lorries = {}
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
-local COLOR_INVALID <const> = math3d.constant "null"
 local iprototype = require "gameplay.interface.prototype"
 local road_track = import_package "vaststars.prototype"("road_track")
-local hierarchy = require "hierarchy"
-local animation = hierarchy.animation
-local skeleton = hierarchy.skeleton
-local mathpkg = import_package "ant.math"
-local mc = mathpkg.constant
 local iroadnet = ecs.require "roadnet"
 local iterrain = ecs.require "terrain"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
+local itrack = ecs.require "engine.track"
 
 local STRAIGHT_TICKCOUNT <const> = 10
 local CROSS_TICKCOUNT <const> = 20
@@ -68,38 +63,6 @@ local is_cross; do
     end
 end
 
-local function _make_track(slots, slot_names, tickcount)
-    local mat = {}
-    local raw_animation = animation.new_raw_animation()
-    local skl = skeleton.build({{name = "root", s = mc.T_ONE, r = mc.T_IDENTITY_QUAT, t = mc.T_ZERO}})
-    local len = #slot_names
-    assert(len > 1)
-    raw_animation:setup(skl, len - 1)
-    for idx, slot_name in ipairs(slot_names) do
-        raw_animation:push_prekey(
-            "root",
-            idx - 1,
-            slots[slot_name].scene.s,
-            slots[slot_name].scene.r,
-            slots[slot_name].scene.t
-        )
-    end
-    local ani = raw_animation:build()
-    local poseresult = animation.new_pose_result(#skl)
-    poseresult:setup(skl)
-
-    local ratio = 0
-    local step = 1 / tickcount
-
-    while ratio <= 1.0 do
-        poseresult:do_sample(animation.new_sampling_context(1), ani, ratio, 0)
-        poseresult:fetch_result()
-        mat[#mat+1] = math3d.ref(poseresult:joint(1))
-        ratio = ratio + step
-    end
-    return mat
-end
-
 local DIRECTION <const> = {
     N = 0,
     E = 1,
@@ -134,7 +97,7 @@ local function _make_cache()
 
                 local combine_keys = ("%s:%s:%s"):format(typeobject.name, entity_dir, z) -- TODO: optimize
                 -- assert(cache[combine_keys] == nil)
-                cache[combine_keys] = _make_track(slots, slot_names, typeobject.tickcount)
+                cache[combine_keys] = itrack.make_track(slots, slot_names, typeobject.tickcount)
             end
         end
 
