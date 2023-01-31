@@ -434,7 +434,7 @@
                         </div>
                         <!-- 科研中心可研究科技标识 end-->
                     </button>
-                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickStatistic()" data-if = "guide_progress >= 15">
+                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickStatistic()">
                         <div class = "menu-button-pic" style='background-image:"textures/construct/statistics.texture"'/>
                         <div class = "menu-button-text">统计数据</div>
                     </button>
@@ -442,7 +442,7 @@
                         <div class = "menu-button-pic" style='background-image:"textures/construct/road.texture"'/>
                         <div class = "menu-button-text">地图信息</div>
                     </button>
-                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 0">
+                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()">
                     <!--button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 20"-->
                         <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
                         <div class = "menu-button-text">游戏设置</div>
