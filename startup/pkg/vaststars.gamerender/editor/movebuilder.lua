@@ -100,6 +100,7 @@ local function __new_entity(self, datamodel, typeobject)
         datamodel.show_confirm = true
         datamodel.show_rotate = true
     end
+    iui.redirect("move_pop.rml", "show_confirm", datamodel.show_confirm)
 
     -- some assembling machine have default recipe
     local fluid_name = ""
@@ -206,6 +207,7 @@ local function touch_move(self, datamodel, delta_vec)
     if not x then
         pickup_object.state = _get_state(pickup_object.prototype_name, false)
         datamodel.show_confirm = false
+        iui.redirect("move_pop.rml", "show_confirm", datamodel.show_confirm)
         return
     end
     pickup_object.x, pickup_object.y = x, y
@@ -233,12 +235,16 @@ local function touch_move(self, datamodel, delta_vec)
     if not self:check_construct_detector(pickup_object.prototype_name, x, y, pickup_object.dir) then
         pickup_object.state = _get_state(pickup_object.prototype_name, false)
         datamodel.show_confirm = false
+        iui.redirect("move_pop.rml", "show_confirm", datamodel.show_confirm)
 
         if self.road_entrance then
             self.road_entrance:set_state("invalid")
         end
         return
     else
+        datamodel.show_confirm = true
+        iui.redirect("move_pop.rml", "show_confirm", datamodel.show_confirm)
+
         if self.road_entrance then
             self.road_entrance:set_state("valid")
         end
@@ -284,6 +290,7 @@ local function touch_end(self, datamodel)
         if self.road_entrance then
             self.road_entrance:set_state("invalid")
         end
+        iui.redirect("move_pop.rml", "show_confirm", datamodel.show_confirm)
         return
     else
         pickup_object.state = _get_state(pickup_object.prototype_name, true)
@@ -291,6 +298,7 @@ local function touch_end(self, datamodel)
         if self.road_entrance then
             self.road_entrance:set_state("valid")
         end
+        iui.redirect("move_pop.rml", "show_confirm", datamodel.show_confirm)
     end
 
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
@@ -437,6 +445,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
         datamodel.show_confirm = true
         datamodel.show_rotate = true
     end
+    iui.redirect("move_pop.rml", "show_confirm", datamodel.show_confirm)
 
     pickup_object.dir = dir
 
