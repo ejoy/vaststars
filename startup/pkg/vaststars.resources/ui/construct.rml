@@ -93,8 +93,7 @@
                 margin: 0.00vmin;
                 left: 1.33vmin
             }
-            .main-menu-block {
-                /* width: 78vmin; */
+            .main-menu-region {
                 width: 78vmin;
                 height: 20.00vmin;
                 flex-direction: row;
@@ -103,7 +102,18 @@
                 position: absolute; 
                 left:0vmin; 
                 bottom:0vmin;
-                /* bottom: -100vmin; */
+                z-index: 999;
+                border-radius: 1.33vmin;
+            }
+            .main-menu-block {
+                width: 78vmin;
+                height: 20.00vmin;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                position: absolute; 
+                left:0vmin; 
+                bottom:0vmin;
                 border: 0.13vmin #fff;
                 z-index: 999;
                 background-color: rgba(200,200,200,80);
@@ -403,33 +413,41 @@
             </div>
             
             <!-- 主菜单按钮 -->
-            <div class = "main-menu-block" data-if = "cur_edit_mode == '' && guide_progress >= 10">
-                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()" data-if = "guide_progress >= 10">
-                    <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
-                    <div class = "menu-button-text">指挥中心</div>
-                </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()" data-if = "guide_progress >= 15">
-                    <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
-                    <div class = "menu-button-text">科研中心</div>
-                    <!-- 科研中心可研究科技标识 start-->
-                    <div class = "menu-button-pic" data-if = "tech_count > 0" style='width:3.6vmin; height:3.6vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
-                        <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{tech_count}}</div>
-                    </div>
-                    <!-- 科研中心可研究科技标识 end-->
-                </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickStatistic()" data-if = "guide_progress >= 15">
-                    <div class = "menu-button-pic" style='background-image:"textures/construct/statistics.texture"'/>
-                    <div class = "menu-button-text">统计数据</div>
-                </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;" data-if="false"> 
-                    <div class = "menu-button-pic" style='background-image:"textures/construct/road.texture"'/>
-                    <div class = "menu-button-text">地图信息</div>
-                </button>
-                <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 0">
-                <!--button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 20"-->
-                    <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
-                    <div class = "menu-button-text">游戏设置</div>
-                </button>
+            <div class="main-menu-region">
+                <div class = "main-menu-block" style="width:19.5vmin" data-if = "cur_edit_mode == '' && guide_progress == 10">
+                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()">
+                        <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
+                        <div class = "menu-button-text">指挥中心</div>
+                    </button>
+                </div>
+                <div class = "main-menu-block" data-if = "cur_edit_mode == '' && guide_progress >= 15">
+                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()">
+                        <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
+                        <div class = "menu-button-text">指挥中心</div>
+                    </button>
+                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()">
+                        <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
+                        <div class = "menu-button-text">科研中心</div>
+                        <!-- 科研中心可研究科技标识 start-->
+                        <div class = "menu-button-pic" data-if = "tech_count > 0" style='width:3.6vmin; height:3.6vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
+                            <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{tech_count}}</div>
+                        </div>
+                        <!-- 科研中心可研究科技标识 end-->
+                    </button>
+                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickStatistic()" data-if = "guide_progress >= 15">
+                        <div class = "menu-button-pic" style='background-image:"textures/construct/statistics.texture"'/>
+                        <div class = "menu-button-text">统计数据</div>
+                    </button>
+                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-if="false"> 
+                        <div class = "menu-button-pic" style='background-image:"textures/construct/road.texture"'/>
+                        <div class = "menu-button-text">地图信息</div>
+                    </button>
+                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 0">
+                    <!--button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 20"-->
+                        <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
+                        <div class = "menu-button-text">游戏设置</div>
+                    </button>
+                </div>
             </div>
             <!-- 加载资源按钮 -->
             <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left: -5vmin; top: -4vmin;" data-event-click="clickLoadResource()" data-if = "cur_edit_mode == '' && guide_progress >= 10 && show_load_resource">
