@@ -352,6 +352,7 @@ end
 local function complete(self, datamodel, object_id)
     if self.grid_entity then
         self.grid_entity:remove()
+        self.grid_entity = nil
     end
     iobject.remove(self.pickup_object)
     self.pickup_object = nil
@@ -404,6 +405,7 @@ end
 local function clean(self, datamodel)
     if self.grid_entity then
         self.grid_entity:remove()
+        self.grid_entity = nil
     end
 
     ieditor:revert_changes({"TEMPORARY", "POWER_AREA"})

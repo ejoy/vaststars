@@ -12,6 +12,7 @@ local set_recipe_mb = mailbox:sub {"set_recipe"}
 local detail_mb = mailbox:sub {"detail"}
 local close_mb = mailbox:sub {"close"}
 local teardown_mb = mailbox:sub {"teardown"}
+local move_mb = mailbox:sub {"move"}
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local iobject = ecs.require "object"
 local ichest = require "gameplay.interface.chest"
@@ -94,6 +95,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
         show_teardown = (typeobject.teardown ~= false),
         show_set_recipe = show_set_recipe,
         show_detail = show_detail,
+        show_move = (typeobject.teardown ~= false),
         recipe_name = recipe_name,
         object_id = object_id,
         left = ui_x,
@@ -153,6 +155,16 @@ function M:stage_ui_update(datamodel, object_id)
             ipower:build_power_network(gameplay_core.get_world())
             ipower_line.update_line(ipower:get_pole_lines())
         end
+    end
+
+    for _, _, _, object_id in move_mb:unpack() do
+        iui.close("build_function_pop.rml")
+        iui.close("detail_panel.rml")
+
+        local vsobject = vsobject_manager:get(object_id)
+        vsobject:modifier("start", {name = "over", forwards = true})
+
+        iui.redirect("construct.rml", "move", object_id)
     end
 
     for _, _, _, object_id in close_mb:unpack() do

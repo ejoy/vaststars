@@ -8,7 +8,6 @@ local ieditor = ecs.require "editor.editor"
 local objects = require "objects"
 local DEFAULT_DIR <const> = 'N'
 local irecipe = require "gameplay.interface.recipe"
-local global = require "global"
 local iobject = ecs.require "object"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
@@ -24,9 +23,8 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
 local iroadnet = ecs.require "roadnet"
-local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
-local DIRECT_BUILD <const> = require "debugger".direct_build
+local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 
 local function _get_state(prototype_name, ok)
     local typeobject = iprototype.queryByName("entity", prototype_name)
@@ -126,7 +124,7 @@ local function __new_entity(self, datamodel, typeobject)
         state = state,
         object_state = "none",
     }
-    iui.open("construct_pop.rml", self.pickup_object.srt.t)
+    iui.open("move_pop.rml", self.pickup_object.srt.t)
 
     if iprototype.is_road(typeobject.name) then
         return
@@ -145,6 +143,11 @@ local function __new_entity(self, datamodel, typeobject)
 end
 
 local function new_entity(self, datamodel, typeobject)
+    local object = assert(objects:get(self.move_object_id))
+    object = iobject.clone(object)
+    object.state = "moving"
+    objects:set(object, "TEMPORARY")
+
     __new_entity(self, datamodel, typeobject)
     self.pickup_object.APPEAR = true
 
@@ -301,7 +304,31 @@ local function touch_end(self, datamodel)
     end
 end
 
+local function _teardown(object_id)
+    local object = assert(objects:get(object_id))
+    igameplay.remove_entity(object.gameplay_eid)
+    gameplay_core.build()
+
+    iobject.remove(object)
+    objects:remove(object_id, "CONSTRUCTED")
+
+    local typeobject_entity = iprototype.queryByName("entity", object.prototype_name)
+    if typeobject_entity.supply_area then
+        ipower:build_power_network(gameplay_core.get_world())
+        ipower_line.update_line(ipower:get_pole_lines())
+    end
+end
+
 local function confirm(self, datamodel)
+    iui.redirect("construct.rml", "move_finish")
+
+    ---
+    iui.close("move_pop.rml")
+
+    ---
+    _teardown(self.move_object_id)
+
+    ---
     local pickup_object = assert(self.pickup_object)
     local succ = self:check_construct_detector(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir)
     if not succ then
@@ -329,31 +356,14 @@ local function confirm(self, datamodel)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
-    do
-        global.construct_queue:put(pickup_object.prototype_name, pickup_object.id)
-        local typeobject = iprototype.queryByName("item", pickup_object.prototype_name)
-        local slot = global.base_chest_cache[typeobject.id] or {amount = 0}
-        local count = slot.amount
-        local request_count = global.construct_queue:size(pickup_object.prototype_name)
-        if count < request_count then
-            if DIRECT_BUILD then
-                ichest.base_add_req_force(gameplay_core.get_world(), pickup_object.prototype_name, 1)
-            else
-                ichest.base_add_req(gameplay_core.get_world(), pickup_object.prototype_name, 1)
-            end
-        end
-        gameplay_core.build()
-    end
-
     self.pickup_object = nil
     if self.road_entrance then
         self.road_entrance:remove()
         self.road_entrance = nil
     end
-    __new_entity(self, datamodel, typeobject)
-end
 
-local function complete(self, datamodel, object_id)
+    --
+    local object_id = pickup_object.id
     if self.grid_entity then
         self.grid_entity:remove()
         self.grid_entity = nil
@@ -366,6 +376,10 @@ local function complete(self, datamodel, object_id)
     datamodel.show_confirm = false
 
     self.super.complete(self, object_id)
+end
+
+local function complete(self, datamodel, object_id)
+    assert(false)
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
@@ -432,7 +446,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     end
     pickup_object.x, pickup_object.y = x, y
 
-    local road_entrance_position, dx, dy, ddir = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
+    local road_entrance_position, _, _, ddir = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
     if road_entrance_position then
         self.road_entrance:set_srt(mc.ONE, ROTATORS[ddir], road_entrance_position)
     end
@@ -457,10 +471,10 @@ local function clean(self, datamodel)
         self.road_entrance = nil
     end
 
-    iui.close("construct_pop.rml")
+    iui.close("move_pop.rml")
 end
 
-local function create()
+local function create(move_object_id)
     local builder = create_builder()
 
     local M = setmetatable({super = builder}, {__index = builder})
@@ -472,6 +486,7 @@ local function create()
     M.rotate_pickup_object = rotate_pickup_object
     M.clean = clean
     M.check_construct_detector = check_construct_detector
+    M.move_object_id = move_object_id
 
     return M
 end

@@ -16,6 +16,7 @@ local create_roadbuilder = ecs.require "editor.roadbuilder"
 local create_pipetogroundbuilder = ecs.require "editor.pipetogroundbuilder"
 local create_logisticbuilder = ecs.require "editor.logisticbuilder"
 local create_logisticchestbuilder = ecs.require "editor.logisticchestbuilder"
+local create_movebuilder = ecs.require "editor.movebuilder"
 local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
 local global = require "global"
@@ -50,6 +51,8 @@ local open_taskui_event = mailbox:sub {"open_taskui"}
 local load_resource_mb = mailbox:sub {"load_resource"}
 local construct_mb = mailbox:sub {"construct"} -- 施工
 local single_touch_mb = world:sub {"single_touch"}
+local move_mb = mailbox:sub {"move"}
+local move_finish_mb = mailbox:sub {"move_finish"}
 local pickup_mb = world:sub {"pickup"}
 local handle_pickup = true
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
@@ -208,7 +211,7 @@ function M:stage_ui_update(datamodel)
         gameplay_core.world_update = false
         iui.open("science.rml")
     end
-    
+
     for _ in show_statistic_mb:unpack() do
         iui.open("statistics.rml")
     end
@@ -269,6 +272,28 @@ function M:stage_camera_usage(datamodel)
         builder:new_entity(datamodel, typeobject)
         self:flush()
         handle_pickup = false
+    end
+
+    for _, _, _, object_id in move_mb:unpack() do
+        if builder then
+            builder:clean(datamodel)
+        end
+
+        idetail.unselected()
+        ieditor:revert_changes({"TEMPORARY", "POWER_AREA"})
+
+        local object = assert(objects:get(object_id))
+        local prototype_name = object.prototype_name
+        builder = create_movebuilder(object_id)
+
+        local typeobject = iprototype.queryByName("entity", prototype_name)
+        builder:new_entity(datamodel, typeobject)
+        self:flush()
+        handle_pickup = false
+    end
+
+    for _ in move_finish_mb:unpack() do
+        handle_pickup = true
     end
 
     for _, state in single_touch_mb:unpack() do

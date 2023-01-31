@@ -47,6 +47,7 @@
                 show_teardown = false,
                 show_set_recipe = false,
                 show_detail = false,
+                show_move = false,
                 object_id = 0,
                 guide_progress = 0,
                 left = "0vmin",
@@ -63,6 +64,10 @@
 
             function start.clickDetail(event)
                 ui_sys.pub {"detail", start.object_id}
+            end
+
+            function start.clickMove(event)
+                ui_sys.pub {"move", start.object_id}
             end
 
             ui_sys.addEventListener({
@@ -105,7 +110,7 @@
             <div class="button-fuction-block" style="top: -2.33vmin; width:14%;" data-if = "show_teardown && !show_set_recipe" />
 
 
-            <div class="button-fuction-block" style="top: -4.33vmin;" data-if = "show_teardown">
+            <div class="button-fuction-block" style="top: -4.33vmin;" data-event-click="clickMove()" data-if = "show_move">
                 <button class="button-function" style ='background-image: "textures/factory/move.texture";'/>
                 <div class="title-text">移动</div>
             </div>

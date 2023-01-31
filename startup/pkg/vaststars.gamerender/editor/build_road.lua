@@ -537,6 +537,7 @@ end
 local function clean(self, datamodel)
     if self.grid_entity then
         self.grid_entity:remove()
+        self.grid_entity = nil
     end
 
     iobject.remove(self.coord_indicator)
