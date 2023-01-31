@@ -609,7 +609,7 @@ prototype "基地生产2" {
     unlock_recipe = {"破损铁制电线杆"},
     unlock_building = {"铁制电线杆"},
   },
-  prerequisites = {"维修破损组装机"},
+  prerequisites = {"空气分离"},
   ingredients = {
       {"地质科技包", 1},
   },
