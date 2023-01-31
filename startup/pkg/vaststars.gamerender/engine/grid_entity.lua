@@ -5,8 +5,18 @@ local w = world.w
 
 local ipl = ecs.import.interface "ant.render|ipolyline"
 local ivs = ecs.import.interface "ant.scene|ivisible_state"
+local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local COLOR <const> = {0.0, 1.0, 0.0, 0.4}
 local LINE_WIDTH = 70
+
+local events = {}
+events["show"] = function(_, e, b)
+	ivs.set_state(e, "main_view", b)
+	ivs.set_state(e, "selectable", b)
+end
+events["remove"] = function(_, e)
+	w:remove(e)
+end
 
 local M = {}
 function M.create(name, width, height, unit, srt)
@@ -46,36 +56,25 @@ function M.create(name, width, height, unit, srt)
 		end
 	end
 
-	local c <const> = 1
     local material = "/pkg/vaststars.resources/materials/polylinelist.material"
 
-	local pids = {}
-	pids[#pids+1] = ipl.add_linelist(p1, LINE_WIDTH, COLOR, material, srt)
-	pids[#pids+1] = ipl.add_linelist(p2, LINE_WIDTH * 2, COLOR, material, srt)
-
-	log.info("create grid entity")
+	local objects = {}
+	objects[#objects+1] = ientity_object.create(ipl.add_linelist(p1, LINE_WIDTH, COLOR, material, srt), events)
+	objects[#objects+1] = ientity_object.create(ipl.add_linelist(p2, LINE_WIDTH * 2, COLOR, material, srt), events)
 
 	local outer_proxy = {
-		pids = pids,
+		objects = objects,
 		show = function(self, b)
-			for _, eid in ipairs(self.pids) do
-				local e <close> = w:entity(eid)
-				if not e then
-					return
-				end
-                ivs.set_state(e, "main_view", b)
-                ivs.set_state(e, "selectable", b)
+			for _, obj in ipairs(self.objects) do
+				obj:send("show", b)
 			end
 		end,
 		remove = function(self)
-			log.info("remove grid entity")
-			for _, eid in ipairs(self.pids) do
-				local e <close> = w:entity(eid)
-				if not e then
-					return
-				end
-				w:remove(eid)
+			assert(#self.objects > 0)
+			for _, obj in ipairs(self.objects) do
+				obj:send("remove")
 			end
+			self.objects = {}
 		end,
 	}
 	return outer_proxy

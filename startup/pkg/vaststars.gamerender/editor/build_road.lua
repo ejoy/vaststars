@@ -437,9 +437,9 @@ end
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject, x, y)
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = {0, 8.5, 0}})
-        self.grid_entity:show(true)
+        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = {0, 0.1, 0}})
     end
+    self.grid_entity:show(true)
 
     iobject.remove(self.coord_indicator)
     local dir = DEFAULT_DIR
@@ -486,6 +486,7 @@ end
 local function complete(self, datamodel)
     if self.grid_entity then
         self.grid_entity:remove()
+        self.grid_entity = nil
     end
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
