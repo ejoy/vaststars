@@ -281,3 +281,42 @@ prototype "拆除点" {
         },
     }
 }
+
+prototype "建造所" {
+    model = "prefabs/headquater-1.prefab",
+    icon = "textures/building_pic/small_pic_headquarter.texture",
+    background = "textures/build_background/pic_headquater.texture",
+    construct_detector = {"exclusive"},
+    type ={"entity", "assembling"},
+    area = "5x5",
+    group = {"物流"},
+    slots = 5,
+    teardown = true,
+    crossing = {
+        connections = {
+            {type="none", position={2,4,"S"}, roadside = true},
+        },
+    }
+}
+
+prototype "道路建造站" {
+    model = "prefabs/goods-station-1.prefab",
+    icon = "textures/building_pic/small_pic_goodsstation_input.texture",
+    background = "textures/build_background/small_pic_goodsstation_input.texture",
+    construct_detector = {"exclusive"},
+    type = {"entity"},
+    area = "2x2",
+    capacity = 50,
+    group = {"物流"},
+}
+
+prototype "管道建造站" {
+    model = "prefabs/goods-station-1.prefab",
+    icon = "textures/building_pic/small_pic_goodsstation_input.texture",
+    background = "textures/build_background/small_pic_goodsstation_input.texture",
+    construct_detector = {"exclusive"},
+    type = {"entity"},
+    area = "2x2",
+    capacity = 50,
+    group = {"物流"},
+}

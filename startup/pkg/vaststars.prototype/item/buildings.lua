@@ -116,7 +116,7 @@ prototype "物流派送站" {
     model = "prefabs/rock.prefab",
     description = "将货物从货站装运到运输车",
     group = "物流",
-    order = 16,
+    order = 17,
 }
 
 prototype "物流需求站" {
@@ -127,6 +127,36 @@ prototype "物流需求站" {
     description = "将货物从运输车卸载到货站",
     group = "物流",
     order = 18,
+}
+
+prototype "建造所" {
+    type = {"item"},
+    stack = 25,
+    icon = "textures/construct/goodsstation-input.texture",
+    model = "prefabs/rock.prefab",
+    description = "用来建造建筑的场所",
+    group = "物流",
+    order = 19,
+}
+
+prototype "道路建造站" {
+    type = {"item"},
+    stack = 25,
+    icon = "textures/construct/goodsstation-input.texture",
+    model = "prefabs/rock.prefab",
+    description = "用来建造道路的场所",
+    group = "物流",
+    order = 20,
+}
+
+prototype "管道建造站" {
+    type = {"item"},
+    stack = 26,
+    icon = "textures/construct/goodsstation-input.texture",
+    model = "prefabs/rock.prefab",
+    description = "用来建造管道的场所",
+    group = "物流",
+    order = 21,
 }
 
 prototype "采矿机I" {
