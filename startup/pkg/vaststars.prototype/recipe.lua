@@ -1233,6 +1233,25 @@ prototype "破损运输汽车" {
     description = "修复损坏的运输汽车",
 }
 
+prototype "破损运输车" {
+    type = { "recipe" },
+    category = "车辆制造",
+    group = "生产",
+    order = 128,
+    allow_as_intermediate = false,
+    icon = "textures/construct/broken-truck.texture",
+    ingredients = {
+        -- {"铁丝", 10},
+        {"铁矿石", 3},
+        {"破损运输车辆", 1},
+    },
+    results = {
+        {"运输车辆I", 1},
+    },
+    time = "4s",
+    description = "修复损坏的运输汽车",
+}
+
 prototype "破损基建站" {
     type = { "recipe" },
     category = "生产手工制造",
