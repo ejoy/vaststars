@@ -103,5 +103,3 @@ component "manual" {
 }
 
 component "fluidbox_changed" {}
-component "endpoint_changed" {}
-

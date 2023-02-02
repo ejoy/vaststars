@@ -26,7 +26,7 @@ local math3d = require "math3d"
 local camera = ecs.require "engine.camera"
 local YAXIS_PLANE <const> = math3d.constant("v4", {0, 1, 0, 0})
 local PLANES <const> = {YAXIS_PLANE}
-local lorry_update = ecs.require "lorry"
+local lorry_manager = ecs.require "lorry_manager"
 local iefk = ecs.require "engine.efk"
 local iroadnet = ecs.require "roadnet"
 local task = ecs.require "task"
@@ -61,12 +61,14 @@ function m:init_world()
             "opacity",
             {layer_name = "1", logic_layer_names = {"TERRAIN"}},
             {layer_name = "2", logic_layer_names = {"BUILDING_BASE"}},
+            {layer_name = "3", logic_layer_names = {"LORRY_SHADOW"}},
+            {layer_name = "4", logic_layer_names = {"LORRY"}},
         },
         {
             "background",
-            {layer_name = "3", logic_layer_names = {"ICON"}},
-            {layer_name = "4", logic_layer_names = {"ICON_CONTENT"}},
-            {layer_name = "5", logic_layer_names = {"WIRE"}},
+            {layer_name = "5", logic_layer_names = {"ICON"}},
+            {layer_name = "6", logic_layer_names = {"ICON_CONTENT"}},
+            {layer_name = "7", logic_layer_names = {"WIRE"}},
         },
     })
 
@@ -139,7 +141,7 @@ function m:update_world()
                 x = (mc >>  0) & 0xFF
                 y = (mc >>  8) & 0xFF
                 z = (mc >> 16) & 0xFF
-                lorry_update(lorry_id, is_cross, x, y, z, tick)
+                lorry_manager.update(lorry_id, is_cross, x, y, z, tick)
             end
         end
     end

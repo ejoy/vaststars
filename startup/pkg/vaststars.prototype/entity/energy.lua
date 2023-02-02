@@ -113,7 +113,7 @@ prototype "热管1-X型" {
     model = "prefabs/pipe/pipe_I.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
-    show_build_function = false,
+    show_detail = false,
     type = {"entity"},
     area = "1x1",
     group = {"物流"},

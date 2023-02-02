@@ -12,7 +12,7 @@ local icanvas = ecs.require "engine.canvas"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local iplant = ecs.require "engine.plane"
 
-local BLOCK_POSITION_OFFSET <const> = math3d.constant("v4", {0, 3.78, 0, 0.0})
+local BLOCK_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.1, 0, 0.0})
 local CONSTRUCT_COLOR_INVALID <const> = math3d.constant "null"
 local CONSTRUCT_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 0.55})
 local CONSTRUCT_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 2.5, 0.0, 0.55})

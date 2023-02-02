@@ -325,10 +325,21 @@ local function editor_build()
 
     local iendpoint = gameplay.interface "endpoint"
     for e in gameplay_core.select "chest:update entity:in" do
-        if e.chest.endpoint == 0xffff then
-            iendpoint.update_endpoint(gameplay_world, e)
+        iendpoint.update_chest_endpoint(gameplay_world, e)
+    end
+    for e in gameplay_core.select "station:update entity:in" do
+        local pt = iprototype.queryById(e.entity.prototype)
+        local endpoint = iendpoint.create(gameplay_world, {x = e.entity.x, y = e.entity.y, dir = iprototype.dir_tostring(e.entity.direction)}, pt, "station")
+        e.station.endpoint = endpoint
+        for _ = 1, e.station.lorry_count do
+            gameplay_world:roadnet_place_lorry(e.station.endpoint, gameplay_world:roadnet_create_lorry())
         end
     end
+    gameplay_world:build()
+
+    --
+	local lorry_manager = ecs.require "lorry_manager" -- init_system.lua require "lorry_manager" & "roadnet"
+    lorry_manager.clear()
 end
 
 local function editor_clear_constructing()

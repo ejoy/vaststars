@@ -10,7 +10,6 @@ local iprototype = require "gameplay.interface.prototype"
 local idetail = ecs.interface "idetail"
 local EDITOR_CACHE_NAMES <const> = {"SELECTED", "CONSTRUCTED"}
 local iterrain = ecs.require "terrain"
-
 local iobject = ecs.require "object"
 
 function idetail.show(object_id)
@@ -29,12 +28,14 @@ function idetail.show(object_id)
     local p = mu.world_to_screen(vp, vr, object.srt.t) -- the position always in the center of the screen after move camera
     local ui_x, ui_y = iui.convert_coord(vr, math3d.index(p, 1), math3d.index(p, 2))
 
-    if typeobject.show_build_function ~= false then
-        iui.open("build_function_pop.rml", object_id, object.srt.t, ui_x, ui_y)
+    if iprototype.has_type(typeobject.type, "logistic_chest") then
+        iui.open("logistic_chest.rml", object_id, object.srt.t, ui_x, ui_y)
     elseif iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
         iui.open("pipe_function_pop.rml", object_id, object.srt.t, ui_x, ui_y)
     elseif iprototype.is_road(object.prototype_name) then
         iui.open("road_function_pop.rml", object_id, object.srt.t, ui_x, ui_y)
+    elseif typeobject.show_detail ~= false then
+        iui.open("build_function_pop.rml", object_id, object.srt.t, ui_x, ui_y)
     end
 
     do

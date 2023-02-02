@@ -25,7 +25,6 @@ local function update(world)
                     for _ = 1, slot.amount do
                         local l = world:roadnet_create_lorry()
                         world:roadnet_place_lorry(e.station.endpoint, l)
-                        print("place lorry")
                     end
                 end
             end

@@ -6,11 +6,14 @@ local c = type "station"
 function c:ctor(init, pt)
     local world = self
 
+    local endpoint = iendpoint.create(world, init, pt, "station")
+    local l = world:roadnet_create_lorry()
+    world:roadnet_place_lorry(endpoint, l)
+
     return {
-        endpoint_changed = true,
         station = {
-            endpoint = iendpoint.create(world, init, pt, "station"),
-            lorry_count = 0,
+            endpoint = endpoint,
+            lorry_count = 1,
         }
     }
 end

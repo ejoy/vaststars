@@ -2,207 +2,116 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
-local math3d = require "math3d"
-local lorries = {}
-local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
-local iprototype = require "gameplay.interface.prototype"
-local road_track = import_package "vaststars.prototype"("road_track")
-local iroadnet = ecs.require "roadnet"
-local iterrain = ecs.require "terrain"
-local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
-local itrack = ecs.require "engine.track"
-
-local STRAIGHT_TICKCOUNT <const> = 10
-local CROSS_TICKCOUNT <const> = 20
-
-local is_cross; do
-    local mt = {}
-    function mt:__index(k)
-        local v = {}
-        rawset(self, k, v)
-        return v
-    end
-    local prototype_bits = setmetatable({}, mt) -- = [prototype][direction] = bits
-    local bits_prototype = setmetatable({}, mt)
-
-    local mapping = {
-        W = 0, -- left
-        N = 1, -- top
-        E = 2, -- right
-        S = 3, -- bottom
-    }
-
-    -- every 2 bits represent one direction of a road, 00 means nothing, 01 means road, 10 means roadside, total 8 bits represent 4 directions
-    for _, typeobject in pairs(iprototype.each_maintype("entity", "road")) do
-        for _, entity_dir in pairs(typeobject.flow_direction) do
-            local bits = 0
-            local c = 0
-
-            local connections = typeobject.crossing.connections
-            for _, connection in ipairs(connections) do
-                local dir = assert(mapping[iprototype.rotate_dir(connection.position[3], entity_dir)])
-                local value
-                if connection.roadside then
-                    value = 2
-                else
-                    value = 1
-                end
-                c = c + 1
-                bits = bits | (value << (dir * 2))
-            end
-
-            assert(prototype_bits[typeobject.name][entity_dir] == nil)
-            prototype_bits[typeobject.name][entity_dir] = {bits = bits, is_cross = (c >= 3), c = c}
-            bits_prototype[bits] = {name = typeobject.name, dir = entity_dir}
-        end
-    end
-
-    function is_cross(prototype_name, dir)
-        return assert(prototype_bits[prototype_name][dir]).is_cross
-    end
-end
-
-local DIRECTION <const> = {
-    N = 0,
-    E = 1,
-    S = 2,
-    W = 3,
-}
-
-local cache = {}
-local function _make_cache()
-    -- TODO: cache matrix move to prototype?
-    for _, typeobject in pairs(iprototype.each_maintype("entity", "road")) do
-        local slots = igame_object.get_prefab(typeobject.model).slots
-        if not next(slots) then
-            goto continue
-        end
-
-        assert(typeobject.track)
-        local track = assert(road_track[typeobject.track])
-        for _, entity_dir in pairs(typeobject.flow_direction) do
-            local t = iprototype.dir_tonumber(entity_dir) - iprototype.dir_tonumber('N')
-
-            for toward, slot_names in pairs(track) do
-                local z = toward
-                if is_cross(typeobject.name, entity_dir) then
-                    assert(toward <= 0xf) -- see also: enum RoadType
-                    local s = ((z >> 2)  + t) % 4 -- high 2 bits is indir
-                    local e = ((z & 0x3) + t) % 4 -- low  2 bits is outdir
-                    z = s << 2 | e
-                else
-                    z = (z + DIRECTION[entity_dir])%4
-                end
-
-                local combine_keys = ("%s:%s:%s"):format(typeobject.name, entity_dir, z) -- TODO: optimize
-                -- assert(cache[combine_keys] == nil)
-                cache[combine_keys] = itrack.make_track(slots, slot_names, typeobject.tickcount)
-            end
-        end
-
-        ::continue::
-    end
-end
-
-local function offset_matrix(prototype_name, dir, toward, tick)
-    if not next(cache) then
-        _make_cache()
-    end
-    local combine_keys = ("%s:%s:%s"):format(prototype_name, dir, toward) -- TODO: optimize
-    local mat = assert(cache[combine_keys])
-    return assert(mat[tick])
-end
-
-local function _get_offset_matrix(is_cross_flag, x, y, toward, tick)
-    local _, mask = iroadnet.editor_get(x, y)
-    assert(mask)
-
-    local prototype_name, dir = iroadnet.get_prototype_name(0, mask) -- TODO
-    local matrix = math3d.matrix {t = iterrain:get_position_by_coord(x, y, 1, 1), r = ROTATORS[dir]}
-
-    if not is_cross_flag then
-        if is_cross(prototype_name, dir) then
-            local REVERSE <const> = {
-                [0] = 2,
-                [1] = 3,
-                [2] = 0,
-                [3] = 1,
-            }
-            toward = toward << 2 | REVERSE[toward]
-        else
-            local mapping = {
-                [0] = DIRECTION.W, -- left
-                [1] = DIRECTION.N, -- top
-                [2] = DIRECTION.E, -- right
-                [3] = DIRECTION.S, -- bottom
-            }
-            toward = mapping[toward]
-        end
-    end
-
-    local offset_mat = offset_matrix(prototype_name, dir, toward, tick)
-    local s, r, t = math3d.srt(math3d.mul(matrix, offset_mat))
-    t = math3d.set_index(t, 2, 0.0)
-    return math3d.ref(math3d.matrix {s = s, r = r, t = t})
-end
-
-
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
-local g
+local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
+local math3d = require "math3d"
+local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
-return function(lorry_id, is_cross, x, y, z, tick)
-    if not g then
-        g = ims.sampler_group()
-        g:enable "view_visible"
-        g:enable "scene_update"
+local sampler_group
+
+local function _create_motion_object(s, r, t)
+    local events = {}
+    events["set_target"] = function(_, e, mat)
+        local s, r, t = math3d.srt(mat)
+        ims.set_target(e, s, r, t, 20)
     end
-    local ti, toward
-    if is_cross then
-        assert(z <= 0xf)
-        ti = (CROSS_TICKCOUNT - tick)
-        toward = z
-    else
-        local pos
-        pos, toward = z & 0x0F, (z >> 4) & 0x0F -- pos: [0, 1], toward: [0, 1], tick: [0, (STRAIGHT_TICKCOUNT - 1)]
-        ti = pos * STRAIGHT_TICKCOUNT + (STRAIGHT_TICKCOUNT - tick)
-    end
-    ti = ti + 1 -- offset matrix start from 1
-
-    if not lorries[lorry_id] then
-        local offset_mat = _get_offset_matrix(is_cross, x, y, toward, ti)
-        local s, r, t = math3d.srt(offset_mat) -- TODO: optimize
-
-        local events = {}
-        events["set_target"] = function(_, e, mat)
-            local s, r, t = math3d.srt(mat)
-            ims.set_target(e, s, r, t, 20)
-        end
-        local obj = ientity_object.create(g:create_entity {
-            policy = {
-                "ant.scene|scene_object",
-                "ant.motion_sampler|motion_sampler",
-                "ant.general|name",
+    return ientity_object.create(sampler_group:create_entity {
+        policy = {
+            "ant.scene|scene_object",
+            "ant.motion_sampler|motion_sampler",
+            "ant.general|name",
+        },
+        data = {
+            scene = {
+                s = s,
+                r = r,
+                t = t,
             },
-            data = {
-                scene = {
-                    s = s,
-                    r = r,
-                    t = t,
-                },
-                name = "motion_sampler",
-            }
-        }, events)
-
-        lorries[lorry_id] = obj
-
-        local p = g:create_instance("/pkg/vaststars.resources/prefabs/lorry-1.prefab", obj.id)
-        p.on_ready = function (e)
-        end
-        world:create_object(p)
-    else
-        local mat = _get_offset_matrix(is_cross, x, y, toward, ti)
-        local obj = assert(lorries[lorry_id])
-        obj:send("set_target", mat)
-    end
+            name = "motion_sampler",
+        }
+    }, events)
 end
+
+local function _create_prefab_object(prefab, parent)
+    local p = sampler_group:create_instance(prefab, parent)
+    function p:on_ready()
+        for _, eid in ipairs(self.tag["*"]) do
+            local e <close> = w:entity(eid)
+        end
+    end
+    function p:on_message()
+    end
+    return world:create_object(p)
+end
+
+local function _create_shadow_object(parent)
+    local ientity = ecs.import.interface "ant.render|ientity"
+    local minv, maxv = 1, 0
+    local x, z = -5, -5
+    local w = 10
+    local h = 10
+    return ientity_object.create(ecs.create_entity {
+        policy = {
+            "ant.render|simplerender",
+            "ant.general|name",
+        },
+        data = {
+            simplemesh = ientity.create_mesh({"p3|t2", {
+                x, 		0,	z, 	    0, minv,	--bottom left
+                x,		0, 	z + h, 	0, maxv,	--top left
+                x + w, 	0,	z, 	    1, minv,	--bottom right
+                x + w, 	0, 	z + h, 	1, maxv,	--top right
+            }}),
+            material = "/pkg/vaststars.resources/materials/lorry_shadow.material",
+            scene = {t = {0, 0.1, 0}, parent = parent},
+            visible_state = "main_view",
+            name = "lorry_shadow",
+            render_layer = RENDER_LAYER.LORRY_SHADOW,
+        }
+    })
+end
+
+local function _create_cargo_object(prefab, parent)
+    local p = sampler_group:create_instance(prefab, parent)
+    function p:on_ready()
+    end
+    return world:create_object(p)
+end
+
+local function create(prefab, s, r, t)
+    if not sampler_group then
+        sampler_group = ims.sampler_group()
+        sampler_group:enable "view_visible"
+        sampler_group:enable "scene_update"
+    end
+
+    local outer = {objs = {}}
+    local motion_obj = _create_motion_object(s, r, t)
+    local prefab_obj = _create_prefab_object(prefab, motion_obj.id)
+    local shadow_obj = _create_shadow_object(motion_obj.id)
+    outer.objs[#outer.objs + 1] = motion_obj
+    outer.objs[#outer.objs + 1] = prefab_obj
+    outer.objs[#outer.objs + 1] = shadow_obj
+
+    function outer:remove()
+        for _, obj in ipairs(self.objs) do
+            obj:remove()
+        end
+    end
+    function outer:set_cargo(prefab)
+        local cargo_obj = _create_cargo_object(prefab, motion_obj.id)
+        outer.objs[#outer.objs + 1] = cargo_obj
+    end
+    function outer:reset_cargo()
+        if #outer.objs > 3 then
+            outer.objs[#outer.objs]:remove()
+            outer.objs[#outer.objs] = nil
+        end
+    end
+    function outer:set_mat(mat)
+        motion_obj:send("set_target", mat)
+    end
+
+    return outer
+end
+return create

@@ -61,10 +61,15 @@ prototype "物流需求站" {
     icon = "textures/building_pic/small_pic_goodsstation_input.texture",
     background = "textures/build_background/small_pic_goodsstation_input.texture",
     construct_detector = {"exclusive"},
-    type = {"entity"},
+    type = {"entity", "logistic_hub"},
     area = "1x1",
     slots = 10,
     group = {"物流"},
+    crossing = {
+        connections = {
+            {type="logistic_hub", position={0,0,"S"}, roadside = true},
+        },
+    }
 }
 
 prototype "物流中心I" {
@@ -152,7 +157,6 @@ prototype_road "砖石公路-I型-%02d" {
     flow_direction = {"N", "E"},
     track = "I",
     tickcount = 21,
-    show_build_function = false,
     type ={"entity", "road"},
     area = "1x1",
     crossing = {
@@ -172,7 +176,6 @@ prototype_road "砖石公路-L型-%02d" {
     flow_direction = {"N", "E", "S", "W"},
     track = "L",
     tickcount = 21,
-    show_build_function = false,
     type ={"entity", "road"},
     area = "1x1",
     crossing = {
@@ -192,7 +195,6 @@ prototype_road "砖石公路-T型-%02d" {
     flow_direction = {"N", "E", "S", "W"},
     track = "T",
     tickcount = 21,
-    show_build_function = false,
     type ={"entity", "road"},
     area = "1x1",
     crossing = {
@@ -213,7 +215,6 @@ prototype_road "砖石公路-X型-%02d" {
     flow_direction = {"N"},
     track = "X",
     tickcount = 21,
-    show_build_function = false,
     type ={"entity", "road"},
     area = "1x1",
     crossing = {
@@ -235,7 +236,6 @@ prototype "砖石公路-O型-01" {
     flow_direction = {"N"},
     track = "O",
     tickcount = 21,
-    show_build_function = false,
     type ={"entity", "road"},
     area = "1x1",
     group = {"物流","默认"},
@@ -254,7 +254,6 @@ prototype_road "砖石公路-U型-%02d" {
     flow_direction = {"N", "E", "S", "W"},
     track = "U",
     tickcount = 21,
-    show_build_function = false,
     type ={"entity", "road"},
     area = "1x1",
     crossing = {

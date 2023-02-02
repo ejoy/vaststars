@@ -57,18 +57,11 @@ end
 --
 local function createChest(world, items)
     local chest = {}
-    local asize = 0
-    local function create_slot(type, id, amount)
-        local o = items[id] or {}
-        chest[#chest+1] = world:chest_slot {
-            type = type,
-            item = id,
-            limit = amount,
-            amount = amount,
-        }
-    end
-    for id, slot in pairs(items) do
-        create_slot(slot.type, id, slot.amount)
+    local asize = #items
+    for _, slot in ipairs(items) do
+        slot.lock_space = 0
+        slot.lock_item = 0
+        chest[#chest+1] = world:chest_slot(slot)
     end
     return table.concat(chest), asize
 end
@@ -84,13 +77,13 @@ local function collectItem(world, chest)
         if not slot then
             break
         end
-        items[slot.item] = slot
+        items[#items+1] = slot
         i = i + 1
     end
     return items
 end
 
-local function update_endpoint(world, e)
+local function update_chest_endpoint(world, e)
     local ecs = world.ecs
     ecs:extend(e, "chest:update entity:in")
 
@@ -104,7 +97,6 @@ local function update_endpoint(world, e)
     end
 
     local chest = e.chest
-    assert(chest.endpoint == 0xffff)
     chest.endpoint = endpoint
     local items = collectItem(world, chest)
     if chest.index ~= nil then
@@ -119,5 +111,5 @@ end
 
 return {
     create = create_endpoint,
-    update_endpoint = update_endpoint,
+    update_chest_endpoint = update_chest_endpoint,
 }

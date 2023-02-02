@@ -24,7 +24,7 @@ local ipower_line = ecs.require "power_line"
 local detail_ui = {
     {
         type = "station",
-        rml = "logistics_center.rml",
+        rml = "logistic_center.rml",
     },
     {
         type = "assembling",

@@ -44,32 +44,24 @@
             local start = ui_sys.createDataMode("start", {
                 object_position = {},
                 show_teardown = false,
-                show_set_recipe = false,
-                show_detail = false,
+                show_set_cargo = false,
                 object_id = 0,
                 guide_progress = 0,
                 left = "0vmin",
                 top = "0vmin",
             })
 
-            function start.clickSetRecipe(event)
-                ui_sys.pub {"set_recipe", start.object_id}
-            end
-
             function start.clickTeardown(event)
                 ui_sys.pub {"teardown", start.object_id}
             end
 
-            function start.clickDetail(event)
-                ui_sys.pub {"detail", start.object_id}
+            function start.clickSetCargo(event)
+                ui_sys.pub {"set_cargo", start.object_id}
             end
 
-            ui_sys.addEventListener({
-                ["leave"] = function()
-                    ui_sys.pub {"close", start.object_id}
-                    ui_sys.close()
-                end,
-            })
+            function start.clickClearCargo(event)
+                ui_sys.pub {"clear_cargo", start.object_id}
+            end
 
             local PANDEL_WIDTH <const> = 83.47 -- the unit is vmin
             local PANDEL_HEIGHT <const> = 30
@@ -97,23 +89,18 @@
                 <div class="title-text">拆除</div>
             </div>
             <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_teardown" />
-
-
+            <div class="button-fuction-block" style="top: -2.33vmin;" />
+            <div class="button-fuction-block" style="top: -2.33vmin;" />
             <div class="button-fuction-block" style="top: -2.33vmin;" />
 
-            <div class="button-fuction-block" style="top: -4.33vmin;" data-event-click="clickSetRecipe()" data-if = "show_set_recipe">
-                <button class="button-function" style ='background-image: "textures/assemble/wheel.texture";'/>
-                <div class="title-text">修改配方</div>
-            </div>
-            <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_set_recipe" />
-
-            <div class="button-fuction-block" style="top: -2.33vmin;" />
-
-            <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickDetail()" data-if = "show_detail">
+            <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickSetCargo()" data-if = "show_set_cargo">
                 <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>
-                <div class="title-text">详细</div>
+                <div class="title-text">添加货物</div>
             </div>
-            <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_detail" />
+            <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickClearCargo()" data-if = "!show_set_cargo">
+                <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>
+                <div class="title-text">清除货物</div>
+            </div>
         </div>
     </body>
 </rml>
