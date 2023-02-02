@@ -57,6 +57,7 @@
                 width: 3vmin;
                 height: 12vmin;
                 background-color: rgb(0, 255, 34);
+                border: 1px #fff;
             }
             .building-content {
                 width: 19vmin;
