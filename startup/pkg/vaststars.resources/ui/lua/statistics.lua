@@ -23,16 +23,12 @@ function start.clickReturn(event)
     ui_sys.close()
 end
 
-function start.consumeChart(event)
-    ui_sys.pub {"chart_id", 0}
+function start.onFilterType(event, type)
+    ui_sys.pub {"statistics", "filter_type", type}
 end
 
-function start.generateChart(event)
-    ui_sys.pub {"chart_id", 1}
-end
-
-function start.productionChart(event)
-    ui_sys.pub {"chart_id", 2}
+function start.onChartType(event, type)
+    ui_sys.pub {"statistics", "chart_type", type}
 end
 
 -- <!-- tag page begin -->
@@ -41,16 +37,17 @@ local function page_item_update(item, index)
     if index > #start.items then
         return
     else
+        local itemdata = start.items[index]
         item.outerHTML = ([[
             <div class="building-sub-content">
                 <div class="building-content">
-                    <div class="indicator" style="height: %d%%; background-color: rgb(17, 0, 255);"/>
+                    <div class="indicator" style="height: %d%%; background-color: rgb(%d, %d, %d);"/>
                     <div class="item" style='background-image: %s;'>
                         <div class="item-count">%s</div>
                     </div>
                 </div>
             </div>
-        ]]):format(math.floor(start.items[index].power / start.total * 100), start.items[index].icon, start.items[index].count)
+        ]]):format(math.floor(itemdata.power / start.total * 100), itemdata.color[1], itemdata.color[2], itemdata.color[3], itemdata.icon, itemdata.count)
         -- item.outerHTML = ([[
         --     <div class="single-item-block">
         --         <div class="single-item">

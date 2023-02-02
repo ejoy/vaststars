@@ -22,7 +22,8 @@
                 justify-content: flex-start;
             }
             .graph-content {
-                background-color: rgb(162, 202, 187);
+                background-size:cover;
+                background-image:"<statistic_chart>";
                 border: 0.2vmin rgb(255, 255, 255);
                 width: 100%;
                 height: 100%;
@@ -241,17 +242,17 @@
             <div class="panel" style="width: 15%;">
                 <div class="header" style="justify-content: flex-end; align-items: center;">
                     <div class = "menu-title" style="flex-direction: row;align-items: center;height:100%;">
-                        <button class="time-content">5s</button>
-                        <button class="time-content">1m</button>
-                        <button class="time-content">10m</button>
-                        <button class="time-content">60m</button>
+                        <button class="time-content" data-event-click="onFilterType('5s')">5s</button>
+                        <button class="time-content" data-event-click="onFilterType('1m')">1m</button>
+                        <button class="time-content" data-event-click="onFilterType('10m')">10m</button>
+                        <button class="time-content" data-event-click="onFilterType('1h')">1h</button>
                     </div>
                 </div>
                 <div style="border-bottom: 1px rgb(89, 73, 39);"/>
                 <div class="tab-block">
-                    <button class="tab-style" data-event-click="consumeChart()">发电图表</button>
-                    <button class="tab-style" data-event-click="generateChart()">耗电图表</button>
-                    <button class="tab-style" data-event-click="productionChart()">生产图表</button>
+                    <button class="tab-style" data-event-click="onChartType(0)">耗电图表</button>
+                    <button class="tab-style" data-event-click="onChartType(1)">发电图表</button>
+                    <button class="tab-style" data-event-click="onChartType(2)">生产图表</button>
                 </div>
             </div>       
         </div>

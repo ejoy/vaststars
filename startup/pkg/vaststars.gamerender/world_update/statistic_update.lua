@@ -1,6 +1,6 @@
 local ecs = ...
 local world = ecs.world
--- local timer = ecs.import.interface "ant.timer|itimer"
+local timer = ecs.import.interface "ant.timer|itimer"
 local gameplay_core = require "gameplay.core"
 local global = require "global"
 local entity_create = world:sub {"gameplay", "create_entity"}
@@ -9,21 +9,40 @@ local entity_remove = world:sub {"gameplay", "remove_entity"}
 local function create_statistic_node(cfg, consumer)
     return {
         cfg = cfg,
-        period = 51,
         tail = 1,
         head = 1,
         frames = {},
         drain = 0,
         power = 0,
         state = 0,
-        count = 0,
         consumer = consumer
     }
 end
+local frame_period = 51
+local filter_statistic = {
+    ["5s"] = {interval = 0.1, elapsed = 0.0},
+    ["1m"] = {interval = 1.2, elapsed = 0.0},
+    ["10m"] = {interval = 12.0, elapsed = 0.0},
+    ["1h"] = {interval = 72.0, elapsed = 0.0},
+}
+local init_group_statistic = false
 local function update_world(world, get_object_func)
-    global.frame_count = global.frame_count + 1
-    -- local delta_time = timer.delta()
     local statistic = global.statistic
+    if not init_group_statistic then
+        init_group_statistic = true
+        statistic.power_consumed = {}
+        statistic.power_generated = {}
+        for key, _ in pairs(filter_statistic) do
+            statistic.power_consumed[key] = create_statistic_node(true)
+            statistic.power_generated[key] = create_statistic_node()
+        end
+    end
+    global.frame_count = global.frame_count + 1
+    local delta_s = timer.delta() * 0.001
+    for _, fs in pairs(filter_statistic) do
+        fs.elapsed = fs.elapsed + delta_s
+    end
+
     for _, _, eid, cfg in entity_create:unpack() do
         statistic.pending_eid[eid] = cfg
     end
@@ -43,7 +62,11 @@ local function update_world(world, get_object_func)
                     statistic.power[eid] = create_statistic_node(cfg, e.consumer)
                     local pg = statistic.power_group[cfg.name]
                     if not pg then
-                        pg = create_statistic_node(cfg, e.consumer)
+                        pg = {}
+                        for filter, _ in pairs(filter_statistic) do
+                            pg[filter] = create_statistic_node(cfg, e.consumer)
+                        end
+                        pg.count = 0
                         statistic.power_group[cfg.name] = pg
                     end
                     pg.count = pg.count + 1
@@ -57,35 +80,38 @@ local function update_world(world, get_object_func)
         statistic.pending_eid[eid] = nil
     end
 
-    local function upate_power(st, power, total)
-        local consume = power < 0
-        local frame_power = math.abs(power)
-        st.power = st.power + frame_power
-        if total then
-            if consume then
-                total.power_consumed = total.power_consumed + frame_power
-            else
-                total.power_generated = total.power_generated + frame_power
-            end
-            
-        end
-        if not st.frames[st.head] then
-            st.frames[st.head] = {power = frame_power}
-        else
-            st.frames[st.head].power = frame_power
-        end
-        st.head = (st.head >= st.period) and 1 or st.head + 1
+    local function step_frame_head(st)
+        st.head = (st.head >= frame_period) and 1 or st.head + 1
         if st.head == st.tail then
             local fp = st.frames[st.tail]
             st.power = st.power - fp.power
-            if total then
-                if consume then
-                    total.power_consumed = total.power_consumed - fp.power
-                else
-                    total.power_generated = total.power_generated - fp.power
-                end
+            fp.power = 0
+            st.tail = (st.tail >= frame_period) and 1 or st.tail + 1
+        end
+    end
+    local function do_update_power(st, power, step)
+        local frame_power = math.abs(power)
+        st.power = st.power + frame_power
+        if not st.frames[st.head] then
+            st.frames[st.head] = {power = frame_power}
+        else
+            st.frames[st.head].power = st.frames[st.head].power + frame_power
+        end
+        if step then
+            step_frame_head(st)
+        end
+    end
+
+    local function upate_power(st, power)
+        do_update_power(st, power, true)
+        local group = statistic.power_group[st.cfg.name]
+        for filter, value in pairs(filter_statistic) do
+            do_update_power(group[filter], power)
+            if power < 0 then
+                do_update_power(statistic.power_consumed[filter], power)
+            else
+                do_update_power(statistic.power_generated[filter], power)
             end
-            st.tail = (st.tail >= st.period) and 1 or st.tail + 1
         end
     end
 
@@ -94,10 +120,26 @@ local function update_world(world, get_object_func)
         if not e or not e.capacitance then
             goto continue
         end
-        local power = e.capacitance.delta
-        upate_power(st, power, statistic)
-        upate_power(statistic.power_group[st.cfg.name], power)
+        upate_power(st, e.capacitance.delta)
         ::continue::
+    end
+    --
+    local power_group = statistic.power_group
+    for filter, value in pairs(filter_statistic) do
+        local step = false
+        if value.elapsed > value.interval then
+            value.elapsed = value.elapsed - value.interval
+            step = true
+        end
+        for _, group in pairs(power_group) do
+            if step and group.count > 0 then
+                step_frame_head(group[filter])
+            end
+        end
+        if step then
+            step_frame_head(statistic.power_consumed[filter])
+            step_frame_head(statistic.power_generated[filter])
+        end
     end
 end
 return update_world

@@ -77,7 +77,10 @@ local function get_display_info(e, typeobject, t)
                         if st then
                             current = st[cn]
                         elseif typeobject.name == "指挥中心" then
-                            current = global.statistic.power_consumed
+                            current = 0
+                            for _, value in pairs(global.statistic.power_consumed) do
+                                current = current + value
+                            end
                         elseif e.solar_panel then
                             current = get_solar_panel_power(total) * 50
                             if current <= 0 then
