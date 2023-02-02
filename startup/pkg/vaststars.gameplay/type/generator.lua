@@ -39,6 +39,7 @@ function c2:ctor(init, pt)
             asize = asize,
             fluidbox_in = 0,
             fluidbox_out = 0,
+            lorry = 0xffff,
         },
     }
 end

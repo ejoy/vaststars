@@ -106,10 +106,7 @@ namespace roadnet::lua {
             return 1;
         }
         static int place_lorry(lua_State* L) {
-            auto& w = getrworld(L);
-            endpointid e ((uint16_t)luaL_checkinteger(L, 2));
-            lorryid l ((uint16_t)luaL_checkinteger(L, 3));
-            w.placeLorry(e, l);
+            //TODO
             return 0;
         }
         static int create_endpoint(lua_State* L) {
@@ -121,22 +118,11 @@ namespace roadnet::lua {
             return 1;
         }
         static int push_lorry(lua_State* L) {
-            auto& w = getrworld(L);
-            lorryid l((uint16_t)luaL_checkinteger(L, 2));
-            auto starting((uint16_t)luaL_checkinteger(L, 3));
-            auto ending((uint16_t)luaL_checkinteger(L, 4));
-            w.pushLorry(l, (endpointid)starting, (endpointid)ending);
+            //TODO
             return 0;
         }
         static int pop_lorry(lua_State* L) {
-            auto& w = getrworld(L);
-            auto id((uint16_t)luaL_checkinteger(L, 2));
-            auto l = w.popLorry((endpointid)id);
-            if (l) {
-                lua_pushinteger(L, l.id);
-            } else {
-                lua_pushnil(L);
-            }
+            //TODO
             return 1;
         }
         static int map_coord(lua_State* L) {
@@ -220,11 +206,6 @@ namespace roadnet::lua {
             lua_pushcclosure(L, eachlorry::next, 2);
             return 1;
         }
-        static int debug_endpoint_lorry(lua_State* L) {
-            auto& w = getrworld(L);
-            w.debugEndpointLorry();
-            return 0;
-        }
     }
 }
 
@@ -240,7 +221,6 @@ luaopen_vaststars_roadnet_core(lua_State* L) {
         { "place_lorry", roadnet::lua::world::place_lorry },
         { "map_coord", roadnet::lua::world::map_coord },
         { "each_lorry", roadnet::lua::world::each_lorry },
-        { "debug_endpoint_lorry", roadnet::lua::world::debug_endpoint_lorry},
         { NULL, NULL },
     };
     luaL_newlib(L,l);

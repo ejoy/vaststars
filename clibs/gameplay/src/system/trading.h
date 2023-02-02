@@ -30,11 +30,13 @@ struct trading_kdtree {
     struct point {
         uint8_t x;
         uint8_t y;
-        uint16_t id;
-        point(uint8_t x, uint8_t y, uint16_t id)
+        uint16_t ep;
+        int cid;
+        point(uint8_t x, uint8_t y, uint16_t ep, int cid)
             : x(x)
             , y(y)
-            , id(id)
+            , ep(ep)
+            , cid(cid)
         {}
     };
     using pointcolud = std::vector<point>;

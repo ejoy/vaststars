@@ -3,6 +3,7 @@ require "system.saveload"
 
 local csystem = require "register.csystem"
 
+csystem "endpoint"
 csystem "roadnet"
 csystem "generator"
 csystem "powergrid"

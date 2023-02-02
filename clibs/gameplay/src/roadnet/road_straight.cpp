@@ -42,25 +42,8 @@ namespace roadnet::road {
             if (e) {
                 endpoint& ep = w.Endpoint(e);
 
-                auto l = ep.lorry[endpoint::EPIN];
+                auto l = ep.lorry[endpoint::EPOUT];
                 if (l) {
-                    auto& lorry = w.Lorry(l);
-                    if (lorry.ready()) {
-                        ep.popMap.push_back(ep.lorry[endpoint::EPIN]);
-                        ep.lorry[endpoint::EPIN] = lorryid::invalid();
-                    }
-                }
-
-                l = ep.lorry[endpoint::EPOUT];
-                if (!l) {
-                    if (ep.pushMap.size() > 0) {
-                        auto l = ep.pushMap.front();
-                        w.Lorry(l).initTick(kTime);
-                        ep.lorry[endpoint::EPOUT] = l;
-                        ep.pushMap.pop_front();
-                    }
-                }
-                else {
                     auto& lorry = w.Lorry(l);
                     if (lorry.ready() && !w.LorryInRoad(lorryOffset+i)) {
                         ep.lorry[endpoint::EPOUT] = lorryid::invalid();

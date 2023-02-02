@@ -41,6 +41,7 @@ static void loadmodules(lua_State* L) {
     SYSTEM(task)
     SYSTEM(trading)
     SYSTEM(roadnet)
+    SYSTEM(endpoint)
     CORE(prototype)
     CORE(chest)
     CORE(roadnet)

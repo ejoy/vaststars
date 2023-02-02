@@ -436,10 +436,6 @@ namespace roadnet {
         lorryVec.push_back(lorry);
         return lorryId;
     }
-    void world::placeLorry(endpointid e, lorryid l) {
-        auto& ep = Endpoint(e);
-        ep.popMap.push_back(l);
-    }
     void world::update(uint64_t ti) {
         ary_call(*this, ti, lorryVec, &lorry::update);
         ary_call(*this, ti, crossAry, &road::crossroad::update);
@@ -492,30 +488,16 @@ namespace roadnet {
         return endpointId;
     }
 
-    void world::pushLorry(lorryid lorryId, endpointid starting) {
-        auto& lorry = Lorry(lorryId);
-        lorry.ending = {};
-        Endpoint(starting).pushMap.push_back(lorryId);
-    }
-
-    void world::pushLorry(lorryid lorryId, endpointid starting, endpointid ending) {
-        auto& lorry = Lorry(lorryId);
-        lorry.ending = Endpoint(ending).coord;
-        Endpoint(starting).pushMap.push_back(lorryId);
-    }
-
-    lorryid world::popLorry(endpointid ending) {
-        // the building does not connect to any road
-        if (ending.id == 0xffff)
-            return lorryid::invalid();
-        auto& ep = Endpoint(ending);
-        if (ep.popMap.empty()) {
-            return lorryid::invalid();
+    bool world::pushLorry(lorryid lorryId, endpointid starting, endpointid ending) {
+        auto& ep = Endpoint(starting);
+        if (!ep.lorry[endpoint::EPOUT]) {
+            return false;
         }
-
-        lorryid lorryId = ep.popMap.front();
-        ep.popMap.pop_front();
-        return lorryId;
+        auto& lorry = Lorry(lorryId);
+        lorry.ending = ep.coord;
+        lorry.initTick(kTime);
+        ep.lorry[endpoint::EPOUT] = lorryId;
+        return true;
     }
 
     roadid world::findCrossRoad(loction l) {
@@ -606,14 +588,5 @@ namespace roadnet {
             return {res->l.x, res->l.y, (uint8_t)((n % road::straight::N) | (z << 4))};
         }
         return map_coord::invalid();
-    }
-
-    void world::debugEndpointLorry() {
-        for (auto& ep : endpointVec) {
-            printf("endpoint: (%d, %d) \n", ep.loc.x, ep.loc.y);
-            for (auto& l : ep.popMap) {
-                printf(" %d \n", l.id);
-            }
-        }
     }
 }

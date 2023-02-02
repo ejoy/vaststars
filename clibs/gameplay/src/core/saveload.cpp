@@ -252,8 +252,6 @@ namespace lua_world {
             write_vector(f, rw.endpointVec, [&](const roadnet::endpoint& e) {
                 file_write(f, e.loc);
                 file_write(f, e.coord);
-                file_write(f, e.pushMap);
-                file_write(f, e.popMap);
                 file_write(f, e.lorry[0]);
                 file_write(f, e.lorry[1]);
             });
@@ -348,8 +346,6 @@ namespace lua_world {
             read_vector(f, rw.endpointVec, [&](roadnet::endpoint& e) {
                 file_read(f, e.loc);
                 file_read(f, e.coord);
-                file_read(f, e.pushMap);
-                file_read(f, e.popMap);
                 file_read(f, e.lorry[0]);
                 file_read(f, e.lorry[1]);
             });

@@ -16,10 +16,7 @@ namespace roadnet {
         void loadMap(const std::map<loction, uint8_t>& mapData);
         lorryid createLorry();
         endpointid createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir);
-        void    pushLorry(lorryid lorryId, endpointid starting);
-        void    pushLorry(lorryid lorryId, endpointid starting, endpointid ending);
-        lorryid popLorry(endpointid e);
-        void placeLorry(endpointid e, lorryid l);
+        bool    pushLorry(lorryid lorryId, endpointid starting, endpointid ending);
 
         void        update(uint64_t ti);
         road::straight& StraightRoad(roadid id);
@@ -32,8 +29,6 @@ namespace roadnet {
         road_coord coordConvert(map_coord  mc);
         road_coord coordConvert(loction l, direction dir);
         map_coord  coordConvert(road_coord rc);
-
-        void debugEndpointLorry();
 
         dynarray<road::crossroad> crossAry;
         dynarray<road::straight>  straightAry;

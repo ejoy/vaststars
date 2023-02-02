@@ -13,6 +13,7 @@ function c:ctor(init, pt)
     return {
         station = {
             endpoint = endpoint,
+            lorry = 0xffff,
             lorry_count = 1,
         }
     }

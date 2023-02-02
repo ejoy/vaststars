@@ -140,13 +140,18 @@ uint8_t kdtree_getdata<uint8_t, trading_kdtree::pointcolud>(trading_kdtree::poin
 template <bool Check, typename ElementType = uint8_t, typename Dataset = trading_kdtree::pointcolud, typename AccessorType = uint16_t>
 class nearest_result {
 public:
-    nearest_result(roadnet::world& w)
+    nearest_result(world& w)
         : w(w)
         , indices()
         , dists((std::numeric_limits<ElementType>::max)())
     {}
     bool hasLorry(const Dataset& dataset, AccessorType index) {
-        return w.Endpoint(dataset[index].id).popMap.size() > 0;
+        ecs_api::entity<ecs::station> e {w.ecs};
+        if (!e.init(dataset[index].cid)) {
+            return false;
+        }
+        auto& station = e.get<ecs::station>();
+        return !!roadnet::lorryid(station.lorry);
     }
     bool addPoint(const Dataset& dataset, ElementType dist, AccessorType index) {
         if ((dists > dist) || ((dist == dists) && (indices > index))) {
@@ -168,39 +173,96 @@ public:
         return indices;
     }
 private:
-    roadnet::world& w;
+    world& w;
     AccessorType indices;
     ElementType  dists;
 };
 
-static void GoHome(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadnet::endpointid current) {
+static bool GoHome(world& w, roadnet::lorryid lorryId, roadnet::endpointid current) {
     auto& kdtree = w.tradings.station_kdtree;
-    nearest_result<false> result(rw);
-    auto loc = rw.Endpoint(current).loc;
+    nearest_result<false> result(w);
+    auto loc = w.rw.Endpoint(current).loc;
     if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
-        rw.pushLorry(lorryId, current);
-        return;
+        return false;
     }
-    rw.pushLorry(lorryId, current, kdtree.dataset[result.value()].id);
+    return w.rw.pushLorry(lorryId, current, kdtree.dataset[result.value()].ep);
 }
 
 static bool HasTask(world& w) {
     return !w.tradings.orders.empty();
 }
 
-static void DoTask(world& w, roadnet::world& rw, roadnet::lorryid lorryId, roadnet::endpointid current) {
+static bool DoTask(world& w, roadnet::lorryid lorryId, roadnet::endpointid current) {
     assert(!w.tradings.orders.empty());
     auto& order = w.tradings.orders.front();
     roadnet::endpointid s{current};
     roadnet::endpointid e{order.sell.endpoint};
-    rw.pushLorry(lorryId, s, e);
-    auto& l = rw.Lorry(lorryId);
+    if (!w.rw.pushLorry(lorryId, s, e)) {
+        return false;
+    }
+    auto& l = w.rw.Lorry(lorryId);
     l.gameplay = {
         order.item,
         {order.sell.endpoint},
         {order.buy.endpoint},
+        roadnet::lorry_status::go_sell,
     };
     w.tradings.orders.pop();
+    return true;
+}
+
+static bool UpdateChest(world& w, ecs::chest& c) {
+    if (!roadnet::lorryid{ c.lorry }) {
+        return false;
+    }
+    auto& l = w.rw.Lorry(c.lorry);
+    for (;;) {
+        switch (l.gameplay.status) {
+        case roadnet::lorry_status::go_buy: {
+            assert(c.endpoint == l.gameplay.buy.endpoint);
+            auto& chest = chest::query(c);
+            chest::place_force(w, chest.index, c.endpoint, l.gameplay.item, 1, true);
+            l.gameplay.status = roadnet::lorry_status::want_home;
+            break;
+        }
+        case roadnet::lorry_status::go_sell: {
+            assert(c.endpoint == l.gameplay.sell.endpoint);
+            auto& chest = chest::query(c);
+            if (chest::pickup_force(w, chest.index, c.endpoint, l.gameplay.item, 1, true)) {
+                l.gameplay.status = roadnet::lorry_status::want_buy;
+            }
+            else {
+                //TODO unlock chest slot
+                l.gameplay.status = roadnet::lorry_status::want_home;
+            }
+            break;
+        }
+        case roadnet::lorry_status::want_home: {
+            if (HasTask(w)) {
+                if (DoTask(w, c.lorry, c.endpoint)) {
+                    l.gameplay.status = roadnet::lorry_status::go_sell;
+                    return true;
+                }
+            }
+            else {
+                if (GoHome(w, c.lorry, c.endpoint)) {
+                    l.gameplay.status = roadnet::lorry_status::go_home;
+                    return true;
+                }
+            }
+            return false;
+        }
+        case roadnet::lorry_status::want_buy: {
+            if (w.rw.pushLorry(c.lorry, c.endpoint, l.gameplay.buy.endpoint)) {
+                l.gameplay.status = roadnet::lorry_status::go_buy;
+                return true;
+            }
+            return false;
+        }
+        default:
+            return false;
+        }
+    }
 }
 
 static int
@@ -214,7 +276,7 @@ lbuild(lua_State *L) {
         if (s.endpoint != 0xffff) {
             assert(s.endpoint >= 0);
             auto loc = rw.Endpoint(s.endpoint).loc;
-            kdtree.dataset.emplace_back(loc.x, loc.y, s.endpoint);
+            kdtree.dataset.emplace_back(loc.x, loc.y, s.endpoint, v.getid());
         }
     }
     kdtree.tree.build();
@@ -224,50 +286,30 @@ lbuild(lua_State *L) {
 static int
 lupdate(lua_State *L) {
     auto& w = *(world*)lua_touserdata(L, 1);
-    auto& rw = w.rw;
     auto& kdtree = w.tradings.station_kdtree;
     for (auto& [item, q] : w.tradings.queues) {
         trading_match(w, item, q);
     }
     while (!w.tradings.orders.empty()) {
         auto& order = w.tradings.orders.front();
-        nearest_result<true> result(rw);
-        auto loc = rw.Endpoint(order.sell.endpoint).loc;
+        nearest_result<true> result(w);
+        auto loc = w.rw.Endpoint(order.sell.endpoint).loc;
         if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
             break;
         }
-        roadnet::endpointid s{kdtree.dataset[result.value()].id};
-        auto lorryId = rw.popLorry(s);
-        DoTask(w, rw, lorryId, s);
+        
+        ecs_api::entity<ecs::station> e {w.ecs};
+        if (!e.init(kdtree.dataset[result.value()].cid)) {
+            break;
+        }
+        roadnet::endpointid s{kdtree.dataset[result.value()].ep};
+        auto& station = e.get<ecs::station>();
+        DoTask(w, station.lorry, s);
     }
     for (auto& v : ecs_api::select<ecs::chest>(w.ecs)) {
         auto& c = v.get<ecs::chest>();
-        for (auto lorryId = rw.popLorry(c.endpoint); !!lorryId; lorryId = rw.popLorry(c.endpoint)) {
-            auto& l = rw.Lorry(lorryId);
-            if (l.gameplay.sell.endpoint == 0xffff) {
-                assert(c.endpoint == l.gameplay.buy.endpoint);
-                auto& chest = chest::query(c);
-                chest::place_force(w, chest.index, c.endpoint, l.gameplay.item, 1, true);
-                if (HasTask(w)) {
-                    DoTask(w, rw, lorryId, c.endpoint);
-                }
-                else {
-                    GoHome(w, rw, lorryId, c.endpoint);
-                }
-            }
-            else {
-                assert(c.endpoint == l.gameplay.sell.endpoint);
-                auto& chest = chest::query(c);
-                if (chest::pickup_force(w, chest.index, c.endpoint, l.gameplay.item, 1, true)) {
-                    rw.pushLorry(lorryId, c.endpoint, l.gameplay.buy.endpoint);
-                    l.gameplay.sell.endpoint = 0xffff;
-                }
-                else {
-                    //TODO unlock chest slot
-                    l.gameplay.sell.endpoint = 0xffff;
-                    GoHome(w, rw, lorryId, c.endpoint);
-                }
-            }
+        if (UpdateChest(w, c)) {
+            c.lorry = roadnet::lorryid::invalid().id;
         }
     }
     return 0;

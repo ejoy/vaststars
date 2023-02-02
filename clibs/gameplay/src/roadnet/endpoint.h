@@ -15,8 +15,6 @@ namespace roadnet {
 
         loction loc;
         road_coord coord;
-        std::list<lorryid> pushMap;
-        std::list<lorryid> popMap;
         lorryid lorry[2] = {lorryid::invalid(), lorryid::invalid()};
     };
 }

@@ -7,7 +7,14 @@
 namespace roadnet {
     class world;
     struct road_coord;
-
+    enum class lorry_status : uint8_t {
+        want_sell,
+        go_sell,
+        want_buy,
+        go_buy,
+        want_home,
+        go_home,
+    };
     struct lorry {
         uint8_t tick;
         road_coord ending;
@@ -18,6 +25,7 @@ namespace roadnet {
             uint16_t item;
             where sell;
             where buy;
+            lorry_status status;
         } gameplay;
         bool nextDirection(world& w, roadid C, direction& dir);
         void initTick(uint8_t v);
