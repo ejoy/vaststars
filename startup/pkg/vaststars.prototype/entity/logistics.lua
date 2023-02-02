@@ -289,7 +289,7 @@ prototype "建造中心" {
     type ={"entity", "assembling"},
     area = "5x5",
     group = {"物流"},
-    craft_category = {"设计图打印","建筑建造"},
+    craft_category = {"设计图打印"},
     slots = 5,
     teardown = true,
     crossing = {
