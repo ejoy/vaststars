@@ -1288,6 +1288,214 @@ prototype "破损物流需求站" {
     description = "修复损坏的物流需求站",
 }
 
+prototype "物流中心打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 52,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"物流中心设计图", 1},
+    },
+    results = {
+        {"物流中心I", 1},
+    },
+    time = "10s",
+    description = "打印可给运输车辆充电的物流中心",
+}
+
+prototype "车辆厂打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 53,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"车辆厂设计图", 1},
+    },
+    results = {
+        {"车辆厂I", 1},
+    },
+    time = "10s",
+    description = "打印制造运输汽车的工厂",
+}
+
+prototype "电线杆打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 54,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"电线杆设计图", 1},
+    },
+    results = {
+        {"铁制电线杆", 1},
+    },
+    time = "10s",
+    description = "打印可导电的电线杆",
+}
+
+prototype "太阳能板打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 54,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"太阳能板设计图", 1},
+    },
+    results = {
+        {"太阳能板I", 1},
+    },
+    time = "10s",
+    description = "打印利用太阳能发电的装置",
+}
+
+prototype "蓄电池打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 54,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"蓄电池设计图", 1},
+    },
+    results = {
+        {"蓄电池I", 1},
+    },
+    time = "10s",
+    description = "打印可存储电能的电池",
+}
+
+prototype "水电站打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 54,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"水电站设计图", 1},
+    },
+    results = {
+        {"水电站I", 1},
+    },
+    time = "10s",
+    description = "打印可处理液体的装置",
+}
+
+prototype "电解厂打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 54,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"电解厂设计图", 1},
+    },
+    results = {
+        {"电解厂I", 1},
+    },
+    time = "10s",
+    description = "打印可电解液体的工厂",
+}
+
+prototype "化工厂打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 54,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"化工厂设计图", 1},
+    },
+    results = {
+        {"化工厂I", 1},
+    },
+    time = "10s",
+    description = "打印可处理化工原料的工厂",
+}
+
+prototype "组装机打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 54,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"组装机设计图", 1},
+    },
+    results = {
+        {"组装机I", 1},
+    },
+    time = "10s",
+    description = "打印可组装元件的工厂",
+}
+
+prototype "空气过滤器打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 54,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"空气过滤器设计图", 1},
+    },
+    results = {
+        {"空气过滤器I", 1},
+    },
+    time = "10s",
+    description = "打印可过滤空气的装置",
+}
+
+prototype "地下水挖掘机打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 54,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"地下水挖掘机设计图", 1},
+    },
+    results = {
+        {"地下水挖掘机", 1},
+    },
+    time = "10s",
+    description = "打印可挖掘地下水的装置",
+}
+
+prototype "道路建造站打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 54,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"道路建造站设计图", 1},
+    },
+    results = {
+        {"道路建造站", 1},
+    },
+    time = "10s",
+    description = "打印可建造道路的装置",
+}
+
+prototype "管道建造站打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 54,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"管道建造站设计图", 1},
+    },
+    results = {
+        {"管道建造站", 1},
+    },
+    time = "10s",
+    description = "打印可建造管道的装置",
+}
+
 prototype "地质科技包1" {
     type = { "recipe" },
     category = "器件小型制造",
