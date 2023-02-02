@@ -217,7 +217,7 @@ prototype "基地生产1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"破损运输汽车","破损物流中心","砖石公路"},
+    unlock_recipe = {"破损运输汽车","破损物流中心","砖石公路","破损运输车"},
     unlock_building = {"砖石公路-X型-01"},
   },
   prerequisites = {"自动化生产"},
