@@ -282,7 +282,7 @@ prototype "拆除点" {
     }
 }
 
-prototype "建造所" {
+prototype "建造中心" {
     model = "prefabs/headquater-1.prefab",
     icon = "textures/building_pic/small_pic_headquarter.texture",
     background = "textures/build_background/pic_headquater.texture",
