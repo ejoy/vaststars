@@ -490,6 +490,7 @@ local t = {
 	"/pkg/ant.resources/materials/quad_sphere/quad_sphere_mask.material",
 	"/pkg/ant.resources/materials/quad_sphere/weight.texture",
 	"/pkg/ant.resources/materials/quadline.material",
+	"/pkg/ant.resources/materials/screenline_color.material",
 	"/pkg/ant.resources/materials/shape_terrain_edge.material",
 	"/pkg/ant.resources/materials/singlecolor.material",
 	"/pkg/ant.resources/materials/singlecolor1.material",
