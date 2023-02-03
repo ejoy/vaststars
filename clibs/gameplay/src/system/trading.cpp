@@ -216,6 +216,9 @@ static bool DoTask(world& w, roadnet::road::endpoint& ep, roadnet::endpointid cu
 }
 
 static bool UpdateChest(world& w, ecs::chest& c) {
+    if(c.endpoint == 0xffff) {
+        return false;
+    }
     auto& ep = w.rw.Endpoint(c.endpoint);
     auto lorryId = ep.getLorry(w.rw, roadnet::road::endpoint::type::wait);
     if (!lorryId) {
