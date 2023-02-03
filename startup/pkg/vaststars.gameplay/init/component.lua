@@ -13,7 +13,6 @@ component "chest" {
     "fluidbox_in:word",
     "fluidbox_out:word",
     "endpoint:word",
-    "lorry:word",
 }
 
 component "logistic_hub" {
@@ -26,7 +25,6 @@ component "logistic_chest" {
 
 component "station" {
     "endpoint:word",
-    "lorry:word[10]",
 }
 
 component "assembling" {

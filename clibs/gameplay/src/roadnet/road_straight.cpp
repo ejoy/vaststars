@@ -41,11 +41,11 @@ namespace roadnet::road {
             endpointid& e = w.EndpointInRoad(lorryOffset+i);
             if (e) {
                 endpoint& ep = w.Endpoint(e);
-                auto l = ep.lorry[endpoint::EPOUT];
+                auto l = ep.getLorry(w, endpoint::type::out);
                 if (l) {
                     auto& lorry = w.Lorry(l);
                     if (lorry.ready() && !w.LorryInRoad(lorryOffset+i)) {
-                        ep.lorry[endpoint::EPOUT] = lorryid::invalid();
+                        ep.delLorry(w, endpoint::type::out);
                         addLorry(w, l, i);
                     }
                 }
@@ -60,10 +60,10 @@ namespace roadnet::road {
                         endpoint& ep = w.Endpoint(e);
                         // next offset is endpoint
                         if (lorry.ending.id == id && lorry.ending.offset == i) {
-                            if(!ep.lorry[endpoint::EPIN]) {
+                            if (!ep.hasLorry(w, endpoint::type::in)) {
                                 delLorry(w, i);
                                 w.Lorry(l).initTick(kTime);
-                                ep.lorry[endpoint::EPIN] = l;
+                                ep.addLorry(w, l, endpoint::type::in);
                             }
                         }
                         else {

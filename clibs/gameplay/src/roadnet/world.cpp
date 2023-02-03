@@ -448,6 +448,7 @@ namespace roadnet {
     }
     void world::update(uint64_t ti) {
         ary_call(*this, ti, lorryVec, &lorry::update);
+        ary_call(*this, ti, endpointVec, &road::endpoint::update);
         ary_call(*this, ti, crossAry, &road::crossroad::update);
         ary_call(*this, ti, straightAry, &road::straight::update);
     }
@@ -471,7 +472,7 @@ namespace roadnet {
     endpointid& world::EndpointInRoad(uint32_t index) {
         return endpointAry[index];
     }
-    endpoint& world::Endpoint(endpointid id) {
+    road::endpoint& world::Endpoint(endpointid id) {
         assert(id.id < endpointVec.size());
         return endpointVec[id.id];
     }
@@ -487,7 +488,7 @@ namespace roadnet {
         }
 
         endpointid endpointId((uint16_t)endpointVec.size());
-        endpoint endpoint;
+        road::endpoint endpoint;
         endpoint.loc = {connection_x, connection_y};
         endpoint.coord = rc;
         endpointVec.push_back(endpoint);
@@ -496,19 +497,6 @@ namespace roadnet {
         auto& straight = straightAry[rc.id.id];
         straight.setEndpoint(*this, rc.offset, endpointId);
         return endpointId;
-    }
-
-    bool world::addLorryAndRun(lorryid lorryId, endpointid starting, endpointid ending) {
-        auto& s = Endpoint(starting);
-        if (s.lorry[endpoint::EPOUT]) {
-            return false;
-        }
-        auto& e = Endpoint(ending);
-        auto& lorry = Lorry(lorryId);
-        lorry.ending = Endpoint(ending).coord;
-        lorry.initTick(kTime);
-        s.lorry[endpoint::EPOUT] = lorryId;
-        return true;
     }
 
     roadid world::findCrossRoad(loction l) {

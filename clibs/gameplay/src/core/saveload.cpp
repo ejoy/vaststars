@@ -249,17 +249,10 @@ namespace lua_world {
             file_write(f, rw.crossAry);
             file_write(f, rw.straightAry);
             file_write(f, rw.endpointAry);
-            write_vector(f, rw.endpointVec, [&](const roadnet::endpoint& e) {
-                file_write(f, e.loc);
-                file_write(f, e.coord);
-                file_write(f, e.lorry[0]);
-                file_write(f, e.lorry[1]);
-            });
-
+            file_write(f, rw.endpointVec);
             file_write(f, rw.lorryAry);
             file_write(f, rw.lorryFreeList);
             file_write(f, rw.lorryVec);
-
             file_write(f, rw.straightVec);
             file_write(f, rw.map);
             file_write(f, rw.crossMap);
@@ -340,16 +333,10 @@ namespace lua_world {
             file_read(f, rw.crossAry);
             file_read(f, rw.straightAry);
             file_read(f, rw.endpointAry);
-            read_vector(f, rw.endpointVec, [&](roadnet::endpoint& e) {
-                file_read(f, e.loc);
-                file_read(f, e.coord);
-                file_read(f, e.lorry[0]);
-                file_read(f, e.lorry[1]);
-            });
+            file_read(f, rw.endpointVec);
             file_read(f, rw.lorryAry);
             file_read(f, rw.lorryFreeList);
             file_read(f, rw.lorryVec);
-
             file_read(f, rw.straightVec);
             file_read(f, rw.map);
             file_read(f, rw.crossMap);
