@@ -84,9 +84,11 @@ local function update_world(world, get_object_func)
         st.head = (st.head >= frame_period) and 1 or st.head + 1
         if st.head == st.tail then
             local fp = st.frames[st.tail]
-            st.power = st.power - fp.power
-            fp.power = 0
-            st.tail = (st.tail >= frame_period) and 1 or st.tail + 1
+            if fp then
+                st.power = st.power - fp.power
+                fp.power = 0
+                st.tail = (st.tail >= frame_period) and 1 or st.tail + 1
+            end
         end
     end
     local function do_update_power(st, power, step)
