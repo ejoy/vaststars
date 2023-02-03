@@ -206,12 +206,10 @@ static bool DoTask(world& w, roadnet::lorryid lorryId, roadnet::endpointid curre
         return false;
     }
     auto& l = w.rw.Lorry(lorryId);
-    l.gameplay = {
-        order.item,
-        {order.sell.endpoint},
-        {order.buy.endpoint},
-        roadnet::lorry_status::go_sell,
-    };
+    l.status = roadnet::lorry_status::go_sell;
+    l.item = order.item;
+    l.sell_endpoint = order.sell.endpoint;
+    l.buy_endpoint = order.buy.endpoint;
     w.tradings.orders.pop();
     return true;
 }
@@ -222,44 +220,44 @@ static bool UpdateChest(world& w, ecs::chest& c) {
     }
     auto& l = w.rw.Lorry(c.lorry);
     for (;;) {
-        switch (l.gameplay.status) {
+        switch (l.status) {
         case roadnet::lorry_status::go_buy: {
-            assert(c.endpoint == l.gameplay.buy.endpoint);
+            assert(c.endpoint == l.buy_endpoint);
             auto& chest = chest::query(c);
-            chest::place_force(w, chest.index, c.endpoint, l.gameplay.item, 1, true);
-            l.gameplay.status = roadnet::lorry_status::want_home;
+            chest::place_force(w, chest.index, c.endpoint, l.item, 1, true);
+            l.status = roadnet::lorry_status::want_home;
             break;
         }
         case roadnet::lorry_status::go_sell: {
-            assert(c.endpoint == l.gameplay.sell.endpoint);
+            assert(c.endpoint == l.sell_endpoint);
             auto& chest = chest::query(c);
-            if (chest::pickup_force(w, chest.index, c.endpoint, l.gameplay.item, 1, true)) {
-                l.gameplay.status = roadnet::lorry_status::want_buy;
+            if (chest::pickup_force(w, chest.index, c.endpoint, l.item, 1, true)) {
+                l.status = roadnet::lorry_status::want_buy;
             }
             else {
-                //TODO unlock chest slot
-                l.gameplay.status = roadnet::lorry_status::want_home;
+                l.reset(w);
+                l.status = roadnet::lorry_status::want_home;
             }
             break;
         }
         case roadnet::lorry_status::want_home: {
             if (HasTask(w)) {
                 if (DoTask(w, c.lorry, c.endpoint)) {
-                    l.gameplay.status = roadnet::lorry_status::go_sell;
+                    l.status = roadnet::lorry_status::go_sell;
                     return true;
                 }
             }
             else {
                 if (GoHome(w, c.lorry, c.endpoint)) {
-                    l.gameplay.status = roadnet::lorry_status::go_home;
+                    l.status = roadnet::lorry_status::go_home;
                     return true;
                 }
             }
             return false;
         }
         case roadnet::lorry_status::want_buy: {
-            if (w.rw.addLorryAndRun(c.lorry, c.endpoint, l.gameplay.buy.endpoint)) {
-                l.gameplay.status = roadnet::lorry_status::go_buy;
+            if (w.rw.addLorryAndRun(c.lorry, c.endpoint, l.buy_endpoint)) {
+                l.status = roadnet::lorry_status::go_buy;
                 return true;
             }
             return false;

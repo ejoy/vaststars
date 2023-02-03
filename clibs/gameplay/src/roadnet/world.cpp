@@ -431,10 +431,20 @@ namespace roadnet {
     }
 
     lorryid world::createLorry() {
+        if (!lorryFreeList.empty()) {
+            auto lorryId = lorryFreeList.back();
+            lorryFreeList.pop_back();
+            return lorryId;
+        }
         lorryid lorryId((uint16_t)lorryVec.size());
-        roadnet::lorry lorry;
+        lorry lorry;
         lorryVec.push_back(lorry);
         return lorryId;
+    }
+    void world::destroyLorry(::world& w, lorryid id) {
+        auto& lorry = Lorry(id);
+        lorry.reset(w);
+        lorryFreeList.push_back(id);
     }
     void world::update(uint64_t ti) {
         ary_call(*this, ti, lorryVec, &lorry::update);
@@ -477,7 +487,7 @@ namespace roadnet {
         }
 
         endpointid endpointId((uint16_t)endpointVec.size());
-        roadnet::endpoint endpoint;
+        endpoint endpoint;
         endpoint.loc = {connection_x, connection_y};
         endpoint.coord = rc;
         endpointVec.push_back(endpoint);
@@ -489,14 +499,15 @@ namespace roadnet {
     }
 
     bool world::addLorryAndRun(lorryid lorryId, endpointid starting, endpointid ending) {
-        auto& ep = Endpoint(starting);
-        if (ep.lorry[endpoint::EPOUT]) {
+        auto& s = Endpoint(starting);
+        if (s.lorry[endpoint::EPOUT]) {
             return false;
         }
+        auto& e = Endpoint(ending);
         auto& lorry = Lorry(lorryId);
         lorry.ending = Endpoint(ending).coord;
         lorry.initTick(kTime);
-        ep.lorry[endpoint::EPOUT] = lorryId;
+        s.lorry[endpoint::EPOUT] = lorryId;
         return true;
     }
 

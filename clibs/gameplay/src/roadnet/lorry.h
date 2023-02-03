@@ -4,6 +4,8 @@
 #include "roadnet/coord.h"
 #include <vector>
 
+struct world;
+
 namespace roadnet {
     class world;
     struct road_coord;
@@ -16,20 +18,17 @@ namespace roadnet {
         go_home,
     };
     struct lorry {
-        uint8_t tick;
+        uint16_t capacitance = 0;
         road_coord ending;
-        struct where {
-            uint16_t endpoint;
-        };
-        struct  {
-            uint16_t item;
-            where sell;
-            where buy;
-            lorry_status status;
-        } gameplay;
+        uint16_t item;
+        uint16_t sell_endpoint;
+        uint16_t buy_endpoint;
+        uint8_t tick;
+        lorry_status status;
         bool nextDirection(world& w, roadid C, direction& dir);
-        void initTick(uint8_t v);
+        void initTick(uint8_t tick);
         void update(world& w, uint64_t ti);
         bool ready();
+        void reset(::world& w);
     };
 }

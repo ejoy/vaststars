@@ -257,11 +257,8 @@ namespace lua_world {
             });
 
             file_write(f, rw.lorryAry);
-            write_vector(f, rw.lorryVec, [&](const roadnet::lorry& l) {
-                file_write(f, l.tick);
-                file_write(f, l.ending);
-                file_write(f, l.gameplay);
-            });
+            file_write(f, rw.lorryFreeList);
+            file_write(f, rw.lorryVec);
 
             file_write(f, rw.straightVec);
             file_write(f, rw.map);
@@ -350,11 +347,8 @@ namespace lua_world {
                 file_read(f, e.lorry[1]);
             });
             file_read(f, rw.lorryAry);
-            read_vector(f, rw.lorryVec, [&](roadnet::lorry& l) {
-                file_read(f, l.tick);
-                file_read(f, l.ending);
-                file_read(f, l.gameplay);
-            });
+            file_read(f, rw.lorryFreeList);
+            file_read(f, rw.lorryVec);
 
             file_read(f, rw.straightVec);
             file_read(f, rw.map);
