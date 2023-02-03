@@ -134,6 +134,10 @@ prototype "车辆厂I" {
     priority = "secondary",
     group = {"加工"},
     craft_category = {"车辆制造"},
+    fluidboxes = {
+        input = {},
+        output = {},
+    },
     crossing = {
         connections = {
             {type="assembling", position={2,4,"S"}, roadside = true},
