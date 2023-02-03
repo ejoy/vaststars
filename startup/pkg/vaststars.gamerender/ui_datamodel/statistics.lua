@@ -31,13 +31,10 @@ function M:create(object_id)
     if #chart_color_table < 1 then
         local a = 1.0
         for i = 1, 10 do
-            chart_color_table[#chart_color_table + 1] = {i * 0.1, 1, i * 0.1, a}
+            chart_color_table[#chart_color_table + 1] = {1, 0.5, 1.0 - i * 0.1, a}
         end
         for i = 1, 10 do
-            chart_color_table[#chart_color_table + 1] = {0, 1, i * 0.1, a}
-        end
-        for i = 1, 10 do
-            chart_color_table[#chart_color_table + 1] = {i * 0.1, 1, 0, a}
+            chart_color_table[#chart_color_table + 1] = {1, 1.0 - i * 0.1, 0, a}
         end
     end
     chart_data = {}

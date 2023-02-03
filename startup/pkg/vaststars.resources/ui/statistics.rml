@@ -31,8 +31,8 @@
                 align-items: center;
             }
             .graph-content-pic {
-                /* background-size:cover;
-                background-image:"<statistic_chart>"; */
+                background-size:cover;
+                background-image:"<statistic_chart>";
                 border: 0.2vmin rgb(7, 255, 7);
                 width: 97%;
                 height: 93%;
@@ -208,6 +208,7 @@
                             <div class="x-text">0</div>
                         </div>
                         <div class="graph-content">
+                            <div class="graph-content-pic"/>
                             <div class="y-axis">
                                 <div class="y-indicator"/>
                                 <div class="y-indicator"/>
@@ -230,7 +231,6 @@
                                 <div class="x-indicator"/>
                                 <div class="x-indicator"/>
                             </div>
-                            <div class="graph-content-pic"/>
                         </div>   
                     </div>
                     <!--
