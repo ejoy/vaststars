@@ -151,12 +151,8 @@ public:
             return false;
         }
         auto& station = e.get<ecs::station>();
-        for(int i = 0; i < sizeof(station.lorry) / sizeof(station.lorry[0]); ++i) {
-            if (roadnet::lorryid(station.lorry[i])) {
-                return true;
-            }
-        }
-        return false;
+        auto& ep = w.rw.Endpoint(station.endpoint);
+        return ep.hasLorry(w.rw, roadnet::road::endpoint::type::wait);
     }
     bool addPoint(const Dataset& dataset, ElementType dist, AccessorType index) {
         if ((dists > dist) || ((dist == dists) && (indices > index))) {
@@ -183,26 +179,31 @@ private:
     ElementType  dists;
 };
 
-static bool GoHome(world& w, roadnet::lorryid lorryId, roadnet::endpointid current) {
+static bool GoHome(world& w, roadnet::road::endpoint& ep, roadnet::endpointid current) {
     auto& kdtree = w.tradings.station_kdtree;
     nearest_result<false> result(w);
     auto loc = w.rw.Endpoint(current).loc;
     if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
         return false;
     }
-    return w.rw.addLorryAndRun(lorryId, current, kdtree.dataset[result.value()].ep);
+    auto lorryId = ep.getLorry(w.rw, roadnet::road::endpoint::type::wait);
+    if (!ep.setOut(w.rw, kdtree.dataset[result.value()].ep)) {
+        return false;
+    }
+    auto& l = w.rw.Lorry(lorryId);
+    l.status = roadnet::lorry_status::go_home;
+    return true;
 }
 
 static bool HasTask(world& w) {
     return !w.tradings.orders.empty();
 }
 
-static bool DoTask(world& w, roadnet::lorryid lorryId, roadnet::endpointid current) {
+static bool DoTask(world& w, roadnet::road::endpoint& ep, roadnet::endpointid current) {
     assert(!w.tradings.orders.empty());
     auto& order = w.tradings.orders.front();
-    roadnet::endpointid s{current};
-    roadnet::endpointid e{order.sell.endpoint};
-    if (!w.rw.addLorryAndRun(lorryId, s, e)) {
+    auto lorryId = ep.getLorry(w.rw, roadnet::road::endpoint::type::wait);
+    if (!ep.setOut(w.rw, order.sell.endpoint)) {
         return false;
     }
     auto& l = w.rw.Lorry(lorryId);
@@ -215,10 +216,12 @@ static bool DoTask(world& w, roadnet::lorryid lorryId, roadnet::endpointid curre
 }
 
 static bool UpdateChest(world& w, ecs::chest& c) {
-    if (!roadnet::lorryid{ c.lorry }) {
+    auto& ep = w.rw.Endpoint(c.endpoint);
+    auto lorryId = ep.getLorry(w.rw, roadnet::road::endpoint::type::wait);
+    if (!lorryId) {
         return false;
     }
-    auto& l = w.rw.Lorry(c.lorry);
+    auto& l = w.rw.Lorry(lorryId);
     for (;;) {
         switch (l.status) {
         case roadnet::lorry_status::go_buy: {
@@ -242,21 +245,19 @@ static bool UpdateChest(world& w, ecs::chest& c) {
         }
         case roadnet::lorry_status::want_home: {
             if (HasTask(w)) {
-                if (DoTask(w, c.lorry, c.endpoint)) {
-                    l.status = roadnet::lorry_status::go_sell;
+                if (DoTask(w, ep, c.endpoint)) {
                     return true;
                 }
             }
             else {
-                if (GoHome(w, c.lorry, c.endpoint)) {
-                    l.status = roadnet::lorry_status::go_home;
+                if (GoHome(w, ep, c.endpoint)) {
                     return true;
                 }
             }
             return false;
         }
         case roadnet::lorry_status::want_buy: {
-            if (w.rw.addLorryAndRun(c.lorry, c.endpoint, l.buy_endpoint)) {
+            if (ep.setOut(w.rw, l.buy_endpoint)) {
                 l.status = roadnet::lorry_status::go_buy;
                 return true;
             }
@@ -307,21 +308,12 @@ lupdate(lua_State *L) {
         }
         roadnet::endpointid s{kdtree.dataset[result.value()].ep};
         auto& station = e.get<ecs::station>();
-        for(int i = 0; i < sizeof(station.lorry) / sizeof(station.lorry[0]); ++i) {
-            if (roadnet::lorryid(station.lorry[i])) {
-                if(DoTask(w, station.lorry[i], s)) {
-                    station.lorry[i] = roadnet::lorryid::invalid().id;
-                }
-                break;
-            }
-        }
-        
+        auto& ep = w.rw.Endpoint(station.endpoint);
+        DoTask(w, ep, s);
     }
     for (auto& v : ecs_api::select<ecs::chest>(w.ecs)) {
         auto& c = v.get<ecs::chest>();
-        if (UpdateChest(w, c)) {
-            c.lorry = roadnet::lorryid::invalid().id;
-        }
+        UpdateChest(w, c);
     }
     return 0;
 }

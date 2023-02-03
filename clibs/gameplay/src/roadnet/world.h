@@ -4,7 +4,7 @@
 #include <optional>
 #include "roadnet/road_crossroad.h"
 #include "roadnet/road_straight.h"
-#include "roadnet/endpoint.h"
+#include "roadnet/road_endpoint.h"
 #include "util/dynarray.h"
 
 namespace roadnet {
@@ -17,7 +17,6 @@ namespace roadnet {
         lorryid    createLorry();
         void       destroyLorry(::world& w, lorryid id);
         endpointid createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir);
-        bool       addLorryAndRun(lorryid lorryId, endpointid starting, endpointid ending);
 
         void        update(uint64_t ti);
         road::straight& StraightRoad(roadid id);
@@ -25,19 +24,19 @@ namespace roadnet {
         lorry&      Lorry(lorryid id);
         lorryid&    LorryInRoad(uint32_t index);
         endpointid& EndpointInRoad(uint32_t index);
-        endpoint&   Endpoint(endpointid id);
+        road::endpoint& Endpoint(endpointid id);
 
         road_coord coordConvert(map_coord  mc);
         road_coord coordConvert(loction l, direction dir);
         map_coord  coordConvert(road_coord rc);
 
-        dynarray<road::crossroad> crossAry;
-        dynarray<road::straight>  straightAry;
-        dynarray<endpointid>      endpointAry;
-        std::vector<endpoint>     endpointVec;
-        dynarray<lorryid>         lorryAry;
-        std::vector<lorry>        lorryVec;
-        std::vector<lorryid>      lorryFreeList;
+        dynarray<road::crossroad>   crossAry;
+        dynarray<road::straight>    straightAry;
+        dynarray<endpointid>        endpointAry;
+        std::vector<road::endpoint> endpointVec;
+        dynarray<lorryid>           lorryAry;
+        std::vector<lorry>          lorryVec;
+        std::vector<lorryid>        lorryFreeList;
         std::map<std::pair<roadid,roadid>, direction> routeMap;
 
         struct straightData {
