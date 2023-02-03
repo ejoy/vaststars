@@ -16,7 +16,7 @@ namespace roadnet {
         void loadMap(const std::map<loction, uint8_t>& mapData);
         lorryid createLorry();
         endpointid createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir);
-        bool    pushLorry(lorryid lorryId, endpointid starting, endpointid ending);
+        bool    addLorryAndRun(lorryid lorryId, endpointid starting, endpointid ending);
 
         void        update(uint64_t ti);
         road::straight& StraightRoad(roadid id);

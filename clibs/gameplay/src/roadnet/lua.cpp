@@ -105,24 +105,12 @@ namespace roadnet::lua {
             lua_pushinteger(L, w.createLorry().id);
             return 1;
         }
-        static int place_lorry(lua_State* L) {
-            //TODO
-            return 0;
-        }
         static int create_endpoint(lua_State* L) {
             auto& w = getrworld(L);
             auto connection_x ((uint8_t)luaL_checkinteger(L, 2));
             auto connection_y ((uint8_t)luaL_checkinteger(L, 3));
             auto connection_dir ((direction)luaL_checkinteger(L, 4));
             lua_pushinteger(L, w.createEndpoint(connection_x, connection_y, connection_dir).id);
-            return 1;
-        }
-        static int push_lorry(lua_State* L) {
-            //TODO
-            return 0;
-        }
-        static int pop_lorry(lua_State* L) {
-            //TODO
             return 1;
         }
         static int map_coord(lua_State* L) {
@@ -216,9 +204,6 @@ luaopen_vaststars_roadnet_core(lua_State* L) {
         { "get_map", roadnet::lua::world::get_map },
         { "create_lorry", roadnet::lua::world::create_lorry},
         { "create_endpoint", roadnet::lua::world::create_endpoint},
-        { "push_lorry", roadnet::lua::world::push_lorry },
-        { "pop_lorry", roadnet::lua::world::pop_lorry},
-        { "place_lorry", roadnet::lua::world::place_lorry },
         { "map_coord", roadnet::lua::world::map_coord },
         { "each_lorry", roadnet::lua::world::each_lorry },
         { NULL, NULL },

@@ -11,9 +11,9 @@ prototype "采矿机I" {
     power = "75kW",
     priority = "secondary",
     mining_area = "5x5",
+    mining_category = {"矿石开采"},
     speed = "50%",
     group = {"加工"},
-    craft_category = {"矿石开采"},
     building_base = false,
     fluidboxes = {
         input = {},
@@ -36,9 +36,9 @@ prototype "采矿机II" {
     power = "150kW",
     priority = "secondary",
     mining_area = "5x5",
+    mining_category = {"矿石开采"},
     speed = "100%",
     group = {"加工"},
-    craft_category = {"矿石开采"},
     building_base = false,
     fluidboxes = {
         input = {},

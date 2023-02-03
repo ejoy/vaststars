@@ -41,7 +41,6 @@ namespace roadnet::road {
             endpointid& e = w.EndpointInRoad(lorryOffset+i);
             if (e) {
                 endpoint& ep = w.Endpoint(e);
-
                 auto l = ep.lorry[endpoint::EPOUT];
                 if (l) {
                     auto& lorry = w.Lorry(l);

@@ -6,6 +6,8 @@ local iroad = ecs.require "engine.road"
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
 local gameplay = import_package "vaststars.gameplay"
+local LORRY_CAPACITY <const> = 10
+local INVALID_LORRY_ID <const> = 0xffff
 
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256 -- coordinate value range: [0, HEIGHT - 1]
@@ -331,8 +333,10 @@ local function editor_build()
         local pt = iprototype.queryById(e.entity.prototype)
         local endpoint = iendpoint.create(gameplay_world, {x = e.entity.x, y = e.entity.y, dir = iprototype.dir_tostring(e.entity.direction)}, pt, "station")
         e.station.endpoint = endpoint
-        for _ = 1, e.station.lorry_count do
-            gameplay_world:roadnet_place_lorry(e.station.endpoint, gameplay_world:roadnet_create_lorry())
+        for i = 1, LORRY_CAPACITY do
+            if e.station["lorry" .. i] ~= INVALID_LORRY_ID then
+                e.station["lorry" .. i] = gameplay_world:roadnet_create_lorry()
+            end
         end
     end
     gameplay_world:build()

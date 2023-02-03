@@ -488,13 +488,13 @@ namespace roadnet {
         return endpointId;
     }
 
-    bool world::pushLorry(lorryid lorryId, endpointid starting, endpointid ending) {
+    bool world::addLorryAndRun(lorryid lorryId, endpointid starting, endpointid ending) {
         auto& ep = Endpoint(starting);
-        if (!ep.lorry[endpoint::EPOUT]) {
+        if (ep.lorry[endpoint::EPOUT]) {
             return false;
         }
         auto& lorry = Lorry(lorryId);
-        lorry.ending = ep.coord;
+        lorry.ending = Endpoint(ending).coord;
         lorry.initTick(kTime);
         ep.lorry[endpoint::EPOUT] = lorryId;
         return true;

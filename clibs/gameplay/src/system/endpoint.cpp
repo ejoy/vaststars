@@ -15,7 +15,7 @@ lupdate(lua_State *L) {
         auto l = ep.lorry[roadnet::endpoint::EPIN];
         if (l) {
             auto& lorry = w.rw.Lorry(l);
-            if (roadnet::lorryid(c.lorry) && lorry.ready()) {
+            if (lorry.ready() && !roadnet::lorryid(c.lorry)) {
                 c.lorry = l.id;
                 ep.lorry[roadnet::endpoint::EPIN] = roadnet::lorryid::invalid();
             }
@@ -30,9 +30,14 @@ lupdate(lua_State *L) {
         auto l = ep.lorry[roadnet::endpoint::EPIN];
         if (l) {
             auto& lorry = w.rw.Lorry(l);
-            if (roadnet::lorryid(c.lorry) && lorry.ready()) {
-                c.lorry = l.id;
-                ep.lorry[roadnet::endpoint::EPIN] = roadnet::lorryid::invalid();
+            if(lorry.ready()) {
+                for(int i = 0; i < sizeof(c.lorry)/sizeof(c.lorry[0]); ++i) {
+                    if (!roadnet::lorryid(c.lorry[i])) {
+                        c.lorry[1] = l.id;
+                        ep.lorry[roadnet::endpoint::EPIN] = roadnet::lorryid::invalid();
+                        break;
+                    }
+                }
             }
         }
     }

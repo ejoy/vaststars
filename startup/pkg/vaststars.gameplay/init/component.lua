@@ -26,8 +26,7 @@ component "logistic_chest" {
 
 component "station" {
     "endpoint:word",
-    "lorry:word",
-    "lorry_count:word",
+    "lorry:word[10]",
 }
 
 component "assembling" {

@@ -22,8 +22,9 @@ end
 
 local mining_recipe = {}
 for _, typeobject in pairs(iprototype.each_maintype("entity", "mining")) do
+    assert(typeobject.mining_category, "mining entity should have mining_category")
     mining_recipe[typeobject.name] = {}
-    for _, category in ipairs(typeobject.craft_category or {}) do -- craft_category may be nil
+    for _, category in ipairs(typeobject.mining_category) do
         local recipes = _get_recipes(category)
         if not recipes then
            error(("can not find recipe category `%s`"):format(category))

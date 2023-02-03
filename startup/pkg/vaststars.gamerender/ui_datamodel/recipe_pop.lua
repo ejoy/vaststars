@@ -58,15 +58,10 @@ local assembling_recipe = {}; local get_recipe_index; do
         if not (iprototype.has_type(v.type, "assembling") and v.craft_category )then
             goto continue
         end
-
-        if iprototype.has_type(v.type, "mining") then -- TODO: special case for mining
-            goto continue
-        end
-
         assembling_recipe[v.name] = assembling_recipe[v.name] or {}
 
         for _, c in ipairs(v.craft_category) do
-            assert(cache[c], ("can not find category `%s`"):format(c))
+            assert(cache[c], ("entity(%s).craft_category, can not find category `%s` in recipe.lua"):format(v.name, c))
             for _, recipe_item in ipairs(cache[c]) do
                 assembling_recipe[v.name][recipe_item.group] = assembling_recipe[v.name][recipe_item.group] or {}
                 assembling_recipe[v.name][recipe_item.group][#assembling_recipe[v.name][recipe_item.group] + 1] = recipe_item
