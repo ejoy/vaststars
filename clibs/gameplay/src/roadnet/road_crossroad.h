@@ -14,7 +14,7 @@ namespace roadnet::road {
         roadid   rev_neighbor[4] = {};
         lorryid  cross_lorry[2] = {};
         RoadType cross_status[2];
-        bool u_turn = false;
+        bool u_turn = true;
         void update(world& w, uint64_t ti);
         bool hasNeighbor(direction dir) const;
         void setNeighbor(direction dir, roadid id);
