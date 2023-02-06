@@ -26,7 +26,21 @@ local function hide_chart()
         ivs.set_state(e, "statistic_chart", false)
     end
 end
-
+local grid = {}
+local function create_grid(row, col)
+    local lines = {}
+    local rowstep = canvas_size_h / row
+    for index = 1, row - 1 do
+        lines[#lines + 1] = {0, index * rowstep, 0, 0.5}
+        lines[#lines + 1] = {canvas_size_w, index * rowstep, 0, 0.5}
+    end
+    local colstep = canvas_size_w / col
+    for index = 1, col - 1 do
+        lines[#lines + 1] = {index * colstep, 0, 0, 0.5}
+        lines[#lines + 1] = {index * colstep, canvas_size_h, 0, 0.5}
+    end
+    grid[#grid + 1] = ientity.create_screen_line_list("", lines, nil, {u_color = {0.3, 0.3, 0.3, 1.0}, u_canvas_size = {canvas_size_w, canvas_size_h, 0, 0} }, true, "translucent", queuename)
+end
 function M:create(object_id)
     if #chart_color_table < 1 then
         local a = 1.0
@@ -43,7 +57,9 @@ function M:create(object_id)
     hide_chart()
     return {
         items = {},
-        total = 0
+        total = 0,
+        label_x = {"10m","9m","8m","7m","6m","5m","4m","3m","2m","1m"},
+        label_y = {"8w ","7w ","6w ","5w ","4w ","3w ","2w ","1w "}
     }
 end
 local interval = 1
@@ -127,6 +143,7 @@ function M:stage_ui_update(datamodel)
         local vr = rt.view_rect
         canvas_size_w, canvas_size_h = vr.w, vr.h
         step = canvas_size_w / line_count
+        create_grid(8, 10)
     end
 
     for _, _, _, type, value in statistics_mb:unpack() do

@@ -1,7 +1,9 @@
 local ui_sys = require "ui_system"
 local start = ui_sys.createDataMode("start", {
     items = {},
-    total = 0
+    total = 0,
+    label_x = {},
+    label_y = {}
 })
 
 function start.ClickBuilding(event)

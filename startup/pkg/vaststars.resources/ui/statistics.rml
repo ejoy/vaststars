@@ -18,27 +18,14 @@
             .graph-block {
                 width: 100%;
                 height: 60%;
-                flex-direction: column;
-                justify-content: left;
-                align-items: flex-end;
-            }
-            .graph-content {
-                background-size:cover;
-                width: 96%;
-                height: 93%;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
+                flex-direction: row;
             }
             .graph-content-pic {
                 background-size:cover;
                 background-image:"<statistic_chart>";
-                border: 0.2vmin rgb(7, 255, 7);
-                width: 97%;
-                height: 93%;
-                position: absolute;
-                top:0;
-                right:0;
+                border: 2px rgb(0, 255, 0);
+                width: 100%;
+                height: 88%;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
@@ -140,34 +127,23 @@
             }
             .y-text-block {
                 flex-direction: column;
-                justify-content: space-evenly;
-                height:86.5%;
+                justify-content: flex-start;
+                height:100%;
                 width:6%;
-                position: absolute;
-                top:0;
-                left:0;
             }
             .x-text-block {
                 flex-direction: row;
-                justify-content: space-evenly;
-                height:13%;
+                justify-content: flex-start;
+                height:12%;
                 width:100%;
-                position: absolute;
-                bottom:0;
-                right:0;
             }
             .x-text {
-                width: 9%;
-                height: 100%;
                 font-size: 4.5vmin;
-                text-align:right;
+                text-align: left;
             }
             .y-text {
-                height: 12.5%;
-                width: 100%;
                 font-size: 4.5vmin;
-                padding-top: 2.8vmin;
-                text-align:right;
+                text-align: right;
             }
         </style>
         <style path = "common/building_style.rcss" />
@@ -182,56 +158,22 @@
                     <div class = "menu-title" style="width: 70%;">统计</div>
                 </div>
                 <div style="border-bottom: 1px rgb(89, 73, 39);"/>
-                <div class="column" style="width: 100%;height: 88%;">
+                <div class="column" style="width: 100%; height: 88%;">
                     <div class="graph-block">
                         <div class="y-text-block">
-                            <div class="y-text">100</div>
-                            <div class="y-text">60</div>
-                            <div class="y-text">50</div>
-                            <div class="y-text">40</div>
-                            <div class="y-text">30</div>
-                            <div class="y-text">20</div>
-                            <div class="y-text">10</div>
-                            <div class="y-text">0</div>
+                            <div style="height: 11%;" data-for="label : label_y">
+                                <div class="y-text">{{label}}</div>
+                            </div>
+                            <div style="height: 12%;"/>
                         </div>
-                        <div class="x-text-block">
-                            <div class="x-text">30</div>
-                            <div class="x-text">27</div>
-                            <div class="x-text">24</div>
-                            <div class="x-text">21</div>
-                            <div class="x-text">18</div>
-                            <div class="x-text">15</div>
-                            <div class="x-text">12</div>
-                            <div class="x-text">9</div>
-                            <div class="x-text">6</div>
-                            <div class="x-text">3</div>
-                            <div class="x-text">0</div>
-                        </div>
-                        <div class="graph-content">
+                        <div style="width: 94%;">
                             <div class="graph-content-pic"/>
-                            <div class="y-axis">
-                                <div class="y-indicator"/>
-                                <div class="y-indicator"/>
-                                <div class="y-indicator"/>
-                                <div class="y-indicator"/>
-                                <div class="y-indicator"/>
-                                <div class="y-indicator"/>
-                                <div class="y-indicator"/>
-                                <div class="y-indicator"/>
+                            <div class="x-text-block">
+                                <div style="width: 10%;" data-for="label : label_x">
+                                    <div class="x-text">{{label}}</div>
+                                </div>
                             </div>
-                            <div class="x-axis">
-                                <div class="x-indicator"/>
-                                <div class="x-indicator"/>
-                                <div class="x-indicator"/>
-                                <div class="x-indicator"/>
-                                <div class="x-indicator"/>
-                                <div class="x-indicator"/>
-                                <div class="x-indicator"/>
-                                <div class="x-indicator"/>
-                                <div class="x-indicator"/>
-                                <div class="x-indicator"/>
-                            </div>
-                        </div>   
+                        </div>
                     </div>
                     <!--
                     <div class="building-block">
