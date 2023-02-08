@@ -415,7 +415,7 @@
             <!-- 主菜单按钮 -->
             <div class="main-menu-region">
                 <!-- 主菜单隐藏/显示按钮 -->
-                <button  class = "main-menu-button" style="border: 0.00vmin; margin:0 1vmin; align-items:flex-end;" data-event-click = "clickHeadquater()">
+                <button  class = "main-menu-button" style="border: 0.00vmin; margin:0 1vmin; align-items:flex-end;" data-if = "cur_edit_mode == '' && guide_progress >= 10">
                     <div class = "menu-button-pic" style='height: 6.9vmin; width: 16.6vmin; transform: rotate(270deg); background-image: "textures/common/arrow.texture";'/>
                 </button>
                 <!-- 主菜单隐藏/显示按钮 end-->
