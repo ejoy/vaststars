@@ -14,7 +14,7 @@ namespace roadnet {
 
         std::map<loction, uint8_t> getMap() const;
         void loadMap(const std::map<loction, uint8_t>& mapData);
-        lorryid    createLorry();
+        lorryid    createLorry(::world& w, lua_State* L, uint16_t classid);
         void       destroyLorry(::world& w, lorryid id);
         endpointid createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir);
 

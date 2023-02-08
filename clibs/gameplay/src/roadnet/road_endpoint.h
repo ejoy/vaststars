@@ -24,7 +24,7 @@ namespace roadnet::road {
         bool hasLorry(world& w, type offset) const;
         void delLorry(world& w, type offset);
         lorryid getLorry(world& w, type offset) const;
-        bool setOut(world& w, lorryid lorryId, endpointid ending);
+        void setOut(world& w, lorryid lorryId, endpointid ending);
         bool setOut(world& w, endpointid ending);
         void update(world& w, uint64_t ti);
     private:

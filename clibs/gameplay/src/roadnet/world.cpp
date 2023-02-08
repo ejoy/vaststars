@@ -430,15 +430,16 @@ namespace roadnet {
         lorryAry.reset(genLorryOffset);
     }
 
-    lorryid world::createLorry() {
+    lorryid world::createLorry(::world& w, lua_State* L, uint16_t classid) {
         if (!lorryFreeList.empty()) {
             auto lorryId = lorryFreeList.back();
             lorryFreeList.pop_back();
+            Lorry(lorryId).init(w, L, classid);
             return lorryId;
         }
         lorryid lorryId((uint16_t)lorryVec.size());
-        lorry lorry;
-        lorryVec.push_back(lorry);
+        lorryVec.emplace_back();
+        Lorry(lorryId).init(w, L, classid);
         return lorryId;
     }
     void world::destroyLorry(::world& w, lorryid id) {

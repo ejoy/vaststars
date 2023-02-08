@@ -5,6 +5,7 @@
 #include <vector>
 
 struct world;
+struct lua_State;
 
 namespace roadnet {
     class world;
@@ -18,7 +19,8 @@ namespace roadnet {
         go_home,
     };
     struct lorry {
-        uint16_t capacitance = 0;
+        uint16_t classid;
+        uint16_t capacitance;
         road_coord ending;
         uint16_t item;
         uint16_t sell_endpoint;
@@ -30,5 +32,6 @@ namespace roadnet {
         void update(world& w, uint64_t ti);
         bool ready();
         void reset(::world& w);
+        void init(::world& w, lua_State* L, uint16_t classid);
     };
 }

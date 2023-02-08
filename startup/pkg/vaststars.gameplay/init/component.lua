@@ -25,6 +25,14 @@ component "logistic_chest" {
 
 component "station" {
     "endpoint:word",
+    "lorry:word[8]",
+    "count:byte",
+}
+
+component "park" {
+    "endpoint:word",
+    "lorry:word[8]",
+    "count:byte",
 }
 
 component "assembling" {

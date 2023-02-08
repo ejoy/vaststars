@@ -101,8 +101,9 @@ namespace roadnet::lua {
             return 1;
         }
         static int create_lorry(lua_State* L) {
-            auto& w = getrworld(L);
-            lua_pushinteger(L, w.createLorry().id);
+            auto& w = getworld(L, 1);
+            uint16_t classid = (uint16_t)luaL_checkinteger(L, 2);
+            lua_pushinteger(L, w.rw.createLorry(w, L, classid).id);
             return 1;
         }
         static int create_endpoint(lua_State* L) {

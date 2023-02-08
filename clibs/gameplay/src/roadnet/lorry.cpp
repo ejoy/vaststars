@@ -1,6 +1,10 @@
 #include "roadnet/lorry.h"
 #include "roadnet/world.h"
 #include "roadnet/bfs.h"
+#include "core/world.h"
+extern "C" {
+#include "util/prototype.h"
+}
 
 namespace roadnet {
     bool lorry::nextDirection(world& w, roadid C, direction& dir) {
@@ -39,5 +43,10 @@ namespace roadnet {
         default:
             break;
         }
+    }
+    void lorry::init(::world& w, lua_State* L, uint16_t classid) {
+        struct prototype_context pt = w.prototype(L, 0);
+        this->classid = classid;
+        this->capacitance = pt_capacitance(&pt);
     }
 }

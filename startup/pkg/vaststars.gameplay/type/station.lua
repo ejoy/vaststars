@@ -1,7 +1,7 @@
 local type = require "register.type"
 local iendpoint = require "interface.endpoint"
 local c = type "station"
-local LORRY_CAPACITY <const> = 10
+local LORRY_CAPACITY <const> = 8
 local INVALID_LORRY_ID <const> = 0xffff
 
 function c:ctor(init, pt)

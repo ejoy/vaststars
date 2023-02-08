@@ -146,13 +146,12 @@ public:
         , dists((std::numeric_limits<ElementType>::max)())
     {}
     bool hasLorry(const Dataset& dataset, AccessorType index) {
-        ecs_api::entity<ecs::station> e {w.ecs};
+        ecs_api::entity<ecs::park> e {w.ecs};
         if (!e.init(dataset[index].cid)) {
             return false;
         }
-        auto& station = e.get<ecs::station>();
-        auto& ep = w.rw.Endpoint(station.endpoint);
-        return ep.hasLorry(w.rw, roadnet::road::endpoint::type::wait);
+        auto& park = e.get<ecs::park>();
+        return park.count > 0;
     }
     bool addPoint(const Dataset& dataset, ElementType dist, AccessorType index) {
         if ((dists > dist) || ((dist == dists) && (indices > index))) {
@@ -197,6 +196,23 @@ static bool GoHome(world& w, roadnet::road::endpoint& ep, roadnet::endpointid cu
 
 static bool HasTask(world& w) {
     return !w.tradings.orders.empty();
+}
+
+static bool DoTask(world& w, lua_State* L, uint16_t classid, roadnet::road::endpoint& ep, roadnet::endpointid current) {
+    assert(!w.tradings.orders.empty());
+    auto& order = w.tradings.orders.front();
+    if (!ep.hasLorry(w.rw, roadnet::road::endpoint::type::out)) {
+        return false;
+    }
+    auto lorryId = w.rw.createLorry(w, L, classid);
+    ep.setOut(w.rw, lorryId, order.sell.endpoint);
+    auto& l = w.rw.Lorry(lorryId);
+    l.status = roadnet::lorry_status::go_sell;
+    l.item = order.item;
+    l.sell_endpoint = order.sell.endpoint;
+    l.buy_endpoint = order.buy.endpoint;
+    w.tradings.orders.pop();
+    return true;
 }
 
 static bool DoTask(world& w, roadnet::road::endpoint& ep, roadnet::endpointid current) {
@@ -278,13 +294,11 @@ lbuild(lua_State *L) {
     auto& rw = w.rw;
     auto& kdtree = w.tradings.station_kdtree;
     kdtree.dataset.clear();
-    for (auto& v : ecs_api::select<ecs::station>(w.ecs)) {
-        auto& s = v.get<ecs::station>();
-        if (s.endpoint != 0xffff) {
-            assert(s.endpoint >= 0);
-            auto loc = rw.Endpoint(s.endpoint).loc;
-            kdtree.dataset.emplace_back(loc.x, loc.y, s.endpoint, v.getid());
-        }
+    for (auto& v : ecs_api::select<ecs::park>(w.ecs)) {
+        auto& p = v.get<ecs::park>();
+        assert(p.endpoint != 0xffff);
+        auto loc = rw.Endpoint(p.endpoint).loc;
+        kdtree.dataset.emplace_back(loc.x, loc.y, p.endpoint, v.getid());
     }
     kdtree.tree.build();
     return 0;
@@ -305,14 +319,20 @@ lupdate(lua_State *L) {
             break;
         }
         
-        ecs_api::entity<ecs::station> e {w.ecs};
+        ecs_api::entity<ecs::park> e {w.ecs};
         if (!e.init(kdtree.dataset[result.value()].cid)) {
             break;
         }
         roadnet::endpointid s{kdtree.dataset[result.value()].ep};
-        auto& station = e.get<ecs::station>();
-        auto& ep = w.rw.Endpoint(station.endpoint);
-        DoTask(w, ep, s);
+        auto& park = e.get<ecs::park>();
+        assert(park.count > 0);
+        uint16_t classid = park.lorry[0];
+        park.count--;
+		for (size_t i = 0; i < park.count; ++i) {
+			park.lorry[i] = park.lorry[i+1];
+		}
+        auto& ep = w.rw.Endpoint(park.endpoint);
+        DoTask(w, L, classid, ep, s);
     }
     for (auto& v : ecs_api::select<ecs::chest>(w.ecs)) {
         auto& c = v.get<ecs::chest>();

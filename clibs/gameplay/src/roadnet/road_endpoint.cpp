@@ -18,16 +18,12 @@ namespace roadnet::road {
         return lorry[(size_t)offset];
     }
 
-    bool endpoint::setOut(world& w, lorryid lorryId, endpointid ending) {
-        if (!hasLorry(w, type::out)) {
-            return false;
-        }
+    void endpoint::setOut(world& w, lorryid lorryId, endpointid ending) {
         auto& e = w.Endpoint(ending);
         auto& lorry = w.Lorry(lorryId);
         lorry.ending = e.coord;
         lorry.initTick(kTime);
         addLorry(w, lorryId, type::out);
-        return true;
     }
 
     bool endpoint::setOut(world& w, endpointid ending) {
@@ -36,11 +32,7 @@ namespace roadnet::road {
         }
         auto lorryId = getLorry(w, type::wait);
         delLorry(w, type::wait);
-        auto& e = w.Endpoint(ending);
-        auto& lorry = w.Lorry(lorryId);
-        lorry.ending = e.coord;
-        lorry.initTick(kTime);
-        addLorry(w, lorryId,type::out);
+        setOut(w, lorryId, ending);
         return true;
     }
 
