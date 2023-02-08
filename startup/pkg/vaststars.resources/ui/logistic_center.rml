@@ -5,7 +5,7 @@
                 font: 100% "宋体";
             }
             .turck-info-region {
-                margin-top:1em;
+                margin-top:0;
                 flex-direction: column;
                 width: 100%; 
                 height: 48%;
@@ -164,7 +164,11 @@
                 </div>
                 <div style="border-bottom:0.27vmin rgb(89, 73, 39);"/>
                 <div class="turck-info-region">
-                    <div style="width: 80%; flex-direction: row; justify-content: flex-start; align-content: flex-start; flex-wrap: wrap;">
+                    <div class = "pic-block" style="width: 32%; height:12%; position: absolute; left:0; top: 0;">
+                        <div class = "small-bg" style='background-image: "textures/road_net/big_bag.texture";'/>
+                        <div class = "recipe-name-text">需求车辆</div>
+                    </div>
+                    <div style="margin-top:10vmin; width: 80%; flex-direction: row; justify-content: flex-start; align-content: flex-start; flex-wrap: wrap;">
                         <button class="truck-block" data-for = "it:lorries" data-style-background-color="it.state == 2 ? 'rgb(246, 237, 189);' : it.state == 1 ? 'rgb(0, 255, 255);' : 'rgb(92, 184, 92);'">
                             <div class="truck-pic" data-style-width = "it.state == 2 ? '70%' : '80%'" data-style-height = "it.state == 2 ? '70%' : '80%'" 
                                 data-style-background-image = "it.state == 2 ? 'textures/cmdcenter/add.texture' : 'textures/construct/truck.texture'" 
@@ -174,7 +178,11 @@
                 </div>
                 <div style="border-bottom:0.27vmin rgb(89, 73, 39);"/>
                 <div class="turck-info-region">
-                    <div style="width: 80%; flex-direction: row; justify-content: flex-start; align-content: flex-start; flex-wrap: wrap;">
+                    <div class = "pic-block" style="width: 32%; height:12%; position: absolute; left:0; top: 0;">
+                        <div class = "small-bg" style='background-image: "textures/road_net/big_bag.texture";'/>
+                        <div class = "recipe-name-text">充电车辆</div>
+                    </div>
+                    <div style=" margin-top:10vmin; width: 80%; flex-direction: row; justify-content: flex-start; align-content: flex-start; flex-wrap: wrap;">
                         <div class="truck-block" style="border:0.3vmin #ffff00;" data-for = "it:lorries">
                             <div class="truck-pic" data-style-width = "it.state == 2 ? '70%' : '80%'" data-style-height = "it.state == 2 ? '70%' : '80%'" 
                                 data-style-background-image = "'textures/road/car.texture'" 
