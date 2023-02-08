@@ -175,7 +175,7 @@
                 <div style="border-bottom:0.27vmin rgb(89, 73, 39);"/>
                 <div class="turck-info-region">
                     <div style="width: 80%; flex-direction: row; justify-content: flex-start; align-content: flex-start; flex-wrap: wrap;">
-                        <div class="truck-block" data-for = "it:lorries">
+                        <div class="truck-block" style="border:0.3vmin #ffff00;" data-for = "it:lorries">
                             <div class="truck-pic" data-style-width = "it.state == 2 ? '70%' : '80%'" data-style-height = "it.state == 2 ? '70%' : '80%'" 
                                 data-style-background-image = "'textures/road/car.texture'" 
                                 data-event-click = "clickButton(it_index + 1)" />
