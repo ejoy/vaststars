@@ -112,7 +112,7 @@
                 align-items: center;
                 justify-content: flex-start;
                 position: absolute; 
-                left:0vmin; 
+                left:15vmin; 
                 bottom:0vmin;
                 border: 0.13vmin #fff;
                 z-index: 999;
@@ -414,6 +414,11 @@
             
             <!-- 主菜单按钮 -->
             <div class="main-menu-region">
+                <!-- 主菜单隐藏/显示按钮 -->
+                <button  class = "main-menu-button" style="border: 0.00vmin; margin:0 1vmin; align-items:flex-end;" data-event-click = "clickHeadquater()">
+                    <div class = "menu-button-pic" style='height: 6.9vmin; width: 16.6vmin; transform: rotate(270deg); background-image: "textures/common/arrow.texture";'/>
+                </button>
+                <!-- 主菜单隐藏/显示按钮 end-->
                 <div class = "main-menu-block" style="width:19.5vmin" data-if = "cur_edit_mode == '' && guide_progress == 10">
                     <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()">
                         <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
