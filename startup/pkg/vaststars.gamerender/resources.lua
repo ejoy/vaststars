@@ -439,6 +439,7 @@ local t = {
 	"/pkg/ant.resources.binary/textures/star/stone.dds",
 	"/pkg/ant.resources.binary/textures/sun_flairs.dds",
 	"/pkg/ant.resources.binary/textures/weight_test.dds",
+	"/pkg/ant.resources/glb/light.prefab",
 	"/pkg/ant.resources/materials/billboard/simple.material",
 	"/pkg/ant.resources/materials/canvas_texture.material",
 	"/pkg/ant.resources/materials/cluster_build.material",
