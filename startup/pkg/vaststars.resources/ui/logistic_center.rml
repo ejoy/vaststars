@@ -8,7 +8,7 @@
                 margin-top:1em;
                 flex-direction: column;
                 width: 100%; 
-                height: 90%;
+                height: 48%;
                 align-items: center;
                 justify-content: flex-start;
             }
@@ -170,6 +170,16 @@
                                 data-style-background-image = "it.state == 2 ? 'textures/cmdcenter/add.texture' : 'textures/construct/truck.texture'" 
                                 data-event-click = "clickButton(it_index + 1)" />
                         </button>
+                    </div>
+                </div>
+                <div style="border-bottom:0.27vmin rgb(89, 73, 39);"/>
+                <div class="turck-info-region">
+                    <div style="width: 80%; flex-direction: row; justify-content: flex-start; align-content: flex-start; flex-wrap: wrap;">
+                        <div class="truck-block" style="border:0 0;" data-for = "it:lorries">
+                            <div class="truck-pic" data-style-width = "it.state == 2 ? '70%' : '80%'" data-style-height = "it.state == 2 ? '70%' : '80%'" 
+                                data-style-background-image = "'textures/road/car.texture'" 
+                                data-event-click = "clickButton(it_index + 1)" />
+                        </div>
                     </div>
                 </div>
             </div>       
