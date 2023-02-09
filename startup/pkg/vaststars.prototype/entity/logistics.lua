@@ -307,6 +307,7 @@ prototype "道路建造站" {
     type = {"entity"},
     area = "2x2",
     capacity = 50,
+    build_area = "30x30",
     group = {"物流"},
 }
 
@@ -318,5 +319,6 @@ prototype "管道建造站" {
     type = {"entity"},
     area = "2x2",
     capacity = 50,
+    build_area = "24x24",
     group = {"物流"},
 }
