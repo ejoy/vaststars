@@ -256,9 +256,11 @@ return function ()
         [0] = 0,
         [1] = 1,
         [2] = 2,
+        [3] = 3,
         red = 0,
         blue = 1,
         green = 2,
+        none = 3,
     }
     local CHEST_UNIT <const> = {
         [0] = 0,
@@ -288,8 +290,8 @@ return function ()
         )
     end
 
-    function world:container_create(endpoint, info, asize)
-        return chest.create(cworld, endpoint, info, asize)
+    function world:container_create(asize)
+        return chest.create(cworld, asize)
     end
     function world:container_add(c, info)
         return chest.add(cworld, c.index, c.endpoint, info)
@@ -308,6 +310,9 @@ return function ()
     end
     function world:container_rollback(c)
         return chest.rollback(cworld, c.index, c.endpoint)
+    end
+    function world:container_reset(c, info)
+        return chest.reset(cworld, c.index, c.endpoint, info, c.asize)
     end
 
     function world:wait(...)

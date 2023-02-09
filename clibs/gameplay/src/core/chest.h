@@ -29,6 +29,7 @@ struct container_slot {
         red = 0,
         blue,
         green,
+        none,
     };
     enum class slot_unit: uint8_t {
         once,
@@ -291,12 +292,14 @@ namespace chest {
         container::size_type asize;
     };
 
-    container::index create(world& w, uint16_t endpoint, container_slot* data, container::size_type asize, container::size_type lsize);
+    container::index create(world& w, container::size_type asize);
     container::index add(world& w, container::index index, uint16_t endpoint, container_slot* data, container::size_type lsize);
-    chest_data& query(ecs::chest& c);
+    chest_data&      query(ecs::chest& c);
     container::index head(world& w, container::index start);
     container::slot& array_at(world& w, container::index start, uint8_t offset);
     std::span<container::slot> array_slice(world& w, container::index start, uint8_t offset, uint16_t size);
+
+    void    reset(world& w, container::index start, uint16_t endpoint, container_slot* data, container::size_type asize);
 
     // for fluidflow
     uint16_t get_fluid(world& w, chest_data& c, uint8_t offset);

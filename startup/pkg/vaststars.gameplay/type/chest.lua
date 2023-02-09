@@ -6,9 +6,9 @@ local c = type "chest"
 
 function c:ctor(init, pt)
     local world = self
-    local chest = {}
+    local items = {}
     for _, v in ipairs(init.items or {}) do
-        chest[#chest+1] = world:chest_slot {
+        items[#items+1] = world:chest_slot {
             type = pt.chest_type,
             item = v[1],
             amount = v[2],
@@ -16,17 +16,18 @@ function c:ctor(init, pt)
     end
 
     local endpoint = iendpoint.create(world, init, pt, "chest")
-    local asize = #chest
-    local index = world:container_create(endpoint, table.concat(chest), asize)
-
+    local asize = #items
+    local index = world:container_create(asize)
+    local chest = {
+        endpoint = endpoint,
+        index = index,
+        asize = asize,
+        fluidbox_in = 0,
+        fluidbox_out = 0,
+        lorry = 0xffff,
+    }
+    world:container_reset(chest, table.concat(items))
     return {
-        chest = {
-            endpoint = endpoint,
-            index = index,
-            asize = asize,
-            fluidbox_in = 0,
-            fluidbox_out = 0,
-            lorry = 0xffff,
-        }
+        chest = chest
     }
 end

@@ -58,32 +58,35 @@ local function createFluidBox(init, recipe)
     return fluidbox_in, fluidbox_out
 end
 
-local function collectItem(world, chest)
-    if chest.index == 0 or chest.index == nil then
-        return {}
+local function resetItems(world, recipe, chest)
+    local ingredients_n <const> = #recipe.ingredients//4 - 1
+    local results_n <const> = #recipe.results//4 - 1
+    if ingredients_n + results_n > chest.asize then
+        error "The assembling does not support this recipe."
     end
-    local items = {}
-    local i = 1
-    while true do
+    local hash = {}
+    local olditems = {}
+    local newitems = {}
+    for i = 1, chest.asize do
         local slot = world:container_get(chest, i)
         if not slot then
             break
         end
         if not isFluidId(slot.item) then
-            assert(not items[slot.item])
-            items[slot.item] = slot
+            assert(not olditems[slot.item])
+            olditems[i] = slot
+            hash[slot.item] = i
         end
-        i = i + 1
     end
-    return items
-end
-
-local function createChest(world, recipe, items)
-    local chest = {}
-    local asize = 0
     local function create_slot(type, id, limit)
-        local o = items[id] or {}
-        chest[#chest+1] = world:chest_slot {
+        local o = {}
+        if hash[id] then
+            local i = hash[id]
+            o = olditems[i]
+            olditems[i] = nil
+            hash[id] = nil
+        end
+        newitems[#newitems+1] = world:chest_slot {
             type = type,
             unit = "array",
             item = id,
@@ -93,49 +96,57 @@ local function createChest(world, recipe, items)
             lock_space = o.lock_space,
         }
     end
-    if recipe then
-        local ingredients_n <const> = #recipe.ingredients//4 - 1
-        local results_n <const> = #recipe.results//4 - 1
-        asize = ingredients_n + results_n
-        for idx = 1, ingredients_n do
-            local id, n = string.unpack("<I2I2", recipe.ingredients, 4*idx+1)
-            create_slot("blue", id, n * 2)
-            items[id] = nil
-        end
-        for idx = 1, results_n do
-            local id, n = string.unpack("<I2I2", recipe.results, 4*idx+1)
-            create_slot("red", id, n * 2)
-            items[id] = nil
+    for idx = 1, ingredients_n do
+        local id, n = string.unpack("<I2I2", recipe.ingredients, 4*idx+1)
+        create_slot("blue", id, n * 2)
+    end
+    for idx = 1, results_n do
+        local id, n = string.unpack("<I2I2", recipe.results, 4*idx+1)
+        create_slot("red", id, n * 2)
+    end
+    local n = chest.asize - (ingredients_n + results_n)
+    for i = 1, chest.asize do
+        local o = olditems[i]
+        if o then
+            create_slot("none", o.item, o.amount)
         end
     end
-    for id, slot in pairs(items) do
-        create_slot("red", id, slot.amount)
+    while #newitems < chest.asize do
+        create_slot("none", 0, 0)
     end
-    return table.concat(chest), asize
+    return table.concat(newitems, "", 1, chest.asize)
+end
+
+local function del_recipe(e)
+    local assembling = e.assembling
+    local chest = e.chest
+    assembling.progress = 0
+    assembling.status = STATUS_IDLE
+    assembling.recipe = 0
+    chest.fluidbox_in = 0
+    chest.fluidbox_out = 0
 end
 
 local function set_recipe(world, e, pt, recipe_name, fluids)
-    local assembling = e.assembling
-    local chest = e.chest
-    local items = collectItem(world, chest)
-    if chest.index ~= nil then
-        world:container_rollback(chest)
+    fluidbox.update_fluidboxes(e, pt, fluids)
+
+    if recipe_name == nil then
+        del_recipe(e)
+        return
     end
+    local assembling = e.assembling
+    local recipe = assert(prototype.queryByName("recipe", recipe_name), "unknown recipe: "..recipe_name)
+    if assembling.recipe == recipe.id then
+        return
+    end
+    assembling.recipe = recipe.id
     assembling.progress = 0
     assembling.status = STATUS_IDLE
-    fluidbox.update_fluidboxes(e, pt, fluids)
-    local recipe
-    if recipe_name == nil then
-        assembling.recipe = 0
-    else
-        recipe = assert(prototype.queryByName("recipe", recipe_name), "unknown recipe: "..recipe_name)
-        assembling.recipe = recipe.id
-    end
-    local info, asize = createChest(world, recipe, items)
-    local index = world:container_create(chest.endpoint, info, asize)
-    chest.index = index
-    chest.asize = asize
-    if recipe and fluids and pt.fluidboxes then
+    local chest = e.chest
+    local items = resetItems(world, recipe, chest)
+    world:container_rollback(chest)
+    world:container_reset(chest, items)
+    if fluids and pt.fluidboxes then
         local fluidbox_in, fluidbox_out = createFluidBox(fluids, recipe)
         chest.fluidbox_in = fluidbox_in
         chest.fluidbox_out = fluidbox_out

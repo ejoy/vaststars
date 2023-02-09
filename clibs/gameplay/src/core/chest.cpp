@@ -48,17 +48,8 @@ std::span<container::slot> chest::array_slice(world& w, container::index start, 
     return w.container.slice(chest::head(w, start) + offset, size);
 }
 
-container::index chest::create(world& w, uint16_t endpoint, container_slot* data, container::size_type asize, container::size_type lsize) {
-    auto start = w.container.create_chest(asize, lsize);
-    for (auto i = chest::head(w, start); i != container::kInvalidIndex;) {
-        auto& s = w.container.at(i);
-        (container_slot&)s = *data++;
-        if (endpoint != 0xffff) {
-            trading_flush(w, {endpoint}, s);
-        }
-        i = s.next;
-    }
-    return start;
+container::index chest::create(world& w, container::size_type asize) {
+    return w.container.create_chest(asize, 0);
 }
 
 container::index chest::add(world& w, container::index index, uint16_t endpoint, container_slot* data, container::size_type lsize) {
@@ -80,6 +71,15 @@ chest::chest_data& chest::query(ecs::chest& c) {
     static_assert(sizeof(chest::chest_data::index) == sizeof(ecs::chest::index));
     static_assert(sizeof(chest::chest_data::asize) == sizeof(ecs::chest::asize));
     return (chest_data&)c;
+}
+
+void chest::reset(world& w, container::index start, uint16_t endpoint, container_slot* data, container::size_type asize) {
+    for (auto& s: chest::array_slice(w, start, 0, asize)) {
+        (container_slot&)s = *data++;
+        if (endpoint != 0xffff) {
+            trading_flush(w, {endpoint}, s);
+        }
+    }
 }
 
 uint16_t chest::get_fluid(world& w, chest_data& c, uint8_t offset) {
@@ -281,18 +281,8 @@ container_slot* chest::getslot(world& w, container::index start, uint8_t offset)
 static int
 lcreate(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
-    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 2);
-    size_t sz = 0;
-    container_slot* s = (container_slot*)luaL_checklstring(L, 3, &sz);
-    size_t n = sz / sizeof(container_slot);
-    if (n < 0 || n > (uint16_t) -1 || sz % sizeof(container_slot) != 0) {
-        return luaL_error(L, "size out of range.");
-    }
-    uint16_t asize = (uint16_t)luaL_checkinteger(L, 4);
-    if (asize > n) {
-        return luaL_error(L, "asize out of range.");
-    }
-    auto index = chest::create(w, endpoint, s, asize, (uint16_t)n-asize);
+    uint16_t asize = (uint16_t)luaL_checkinteger(L, 2);
+    auto index = chest::create(w, asize);
     lua_pushinteger(L, index);
     return 1;
 }
@@ -310,6 +300,25 @@ ladd(lua_State* L) {
     }
     auto ret = chest::add(w, container::index::from(index), endpoint, s, (uint16_t)n);
     lua_pushinteger(L, ret);
+    return 1;
+}
+
+static int
+lreset(lua_State* L) {
+    world& w = *(world *)lua_touserdata(L, 1);
+    uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
+    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
+    size_t sz = 0;
+    container_slot* s = (container_slot*)luaL_checklstring(L, 4, &sz);
+    size_t n = sz / sizeof(container_slot);
+    if (n < 0 || n > (uint16_t) -1 || sz % sizeof(container_slot) != 0) {
+        return luaL_error(L, "size out of range.");
+    }
+    uint16_t asize = (uint16_t)luaL_checkinteger(L, 5);
+    if (asize != n) {
+        return luaL_error(L, "asize out of range.");
+    }
+    chest::reset(w, container::index::from(index), endpoint, s, asize);
     return 1;
 }
 
@@ -434,6 +443,7 @@ luaopen_vaststars_chest_core(lua_State *L) {
     luaL_Reg l[] = {
         { "create", lcreate },
         { "add", ladd },
+        { "reset", lreset },
         { "get", lget },
         { "set", lset },
         { "pickup", lpickup },

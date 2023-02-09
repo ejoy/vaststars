@@ -54,35 +54,6 @@ local function create_endpoint(world, init, pt, type)
     return world:roadnet_create_endpoint(x, y, mapping[DIRECTION[dir]]) -- endpoint equals 0xffff if doesn't connect to any road
 end
 
---
-local function createChest(world, items)
-    local chest = {}
-    local asize = #items
-    for _, slot in ipairs(items) do
-        slot.lock_space = 0
-        slot.lock_item = 0
-        chest[#chest+1] = world:chest_slot(slot)
-    end
-    return table.concat(chest), asize
-end
-
-local function collectItem(world, chest)
-    if chest.index == 0 or chest.index == nil then
-        return {}
-    end
-    local items = {}
-    local i = 1
-    while true do
-        local slot = world:container_get(chest, i)
-        if not slot then
-            break
-        end
-        items[#items+1] = slot
-        i = i + 1
-    end
-    return items
-end
-
 local function update_chest_endpoint(world, e)
     local ecs = world.ecs
     ecs:extend(e, "chest:update entity:in")
@@ -98,15 +69,6 @@ local function update_chest_endpoint(world, e)
 
     local chest = e.chest
     chest.endpoint = endpoint
-    local items = collectItem(world, chest)
-    if chest.index ~= nil then
-        world:container_rollback(chest)
-    end
-
-    local info, asize = createChest(world, items)
-    local index = world:container_create(chest.endpoint, info, asize)
-    chest.index = index
-    chest.asize = asize
 end
 
 return {

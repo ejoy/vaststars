@@ -39,7 +39,7 @@ prototype "指挥中心" {
     icon = "textures/building_pic/small_pic_headquarter.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "generator", "base"},
+    type ={"entity", "generator", "base", "chest"},
     area = "5x5",
     supply_area = "9x9",
     supply_distance = 9,

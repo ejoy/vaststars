@@ -13,7 +13,7 @@ local function isFluidId(id)
     return id & 0x0C00 == 0x0C00
 end
 
-local function createChest(world, s, endpoint)
+local function createChest(world, chest, s)
     local container_in = {}
     for idx = 2, #s//2 do
         local id = string.unpack("<I2", s, 2*idx-1)
@@ -25,23 +25,23 @@ local function createChest(world, s, endpoint)
             limit = 2,
         }
     end
-    local asize = #container_in
-    return world:container_create(endpoint, table.concat(container_in), asize), asize
+    chest.asize = #container_in
+    chest.index = world:container_create(chest.asize)
+    world:container_reset(chest, table.concat(container_in))
 end
 
 function c:ctor(init, pt)
     local world = self
     local endpoint = iendpoint.create(world, init, pt, "laboratory")
-    local index, asize = createChest(world, pt.inputs, endpoint)
+    local chest = {
+        endpoint = endpoint,
+        fluidbox_in = 0,
+        fluidbox_out = 0,
+        lorry = 0xffff,
+    }
+    createChest(world, chest, pt.inputs)
     local e = {
-        chest = {
-            endpoint = endpoint,
-            index = index,
-            asize = asize,
-            fluidbox_in = 0,
-            fluidbox_out = 0,
-            lorry = 0xffff,
-        },
+        chest = chest,
         laboratory = {
             tech = 0,
             speed = math.floor(pt.speed * 100),
