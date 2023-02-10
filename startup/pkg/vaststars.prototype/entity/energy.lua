@@ -77,6 +77,7 @@ prototype "换热器I" {
     area = "3x2",
     craft_category = {"流体换热处理"},
     show_detail = false,
+    maxslot = "8",
     fluidboxes = {
         input = {
             {
@@ -127,6 +128,7 @@ prototype "锅炉I" {
     type ={"entity", "assembling", "fluidboxes"},
     area = "3x2",
     craft_category = {"流体换热处理"},
+    maxslot = "8",
     fluidboxes = {
         input = {
             {

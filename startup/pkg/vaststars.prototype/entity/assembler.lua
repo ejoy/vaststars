@@ -15,6 +15,7 @@ prototype "组装机I" {
     speed = "50%",
     power = "60kW",
     priority = "secondary",
+    maxslot = "8",
     group = {"加工"},
     craft_category = {"金属小型制造","物流小型制造","物流中型制造","物流大型制造","生产中型制造","生产大型制造","生产手工制造","器件小型制造","器件中型制造"},
     fluidboxes = {
@@ -60,6 +61,7 @@ prototype "组装机II" {
     speed = "100%",
     power = "150kW",
     priority = "secondary",
+    maxslot = "8",
     group = {"加工"},
     craft_category = {"金属小型制造","物流小型制造","物流中型制造","物流大型制造","生产中型制造","生产大型制造","生产手工制造","器件小型制造","器件中型制造"},
     fluidboxes = {
@@ -98,6 +100,7 @@ prototype "铸造厂I" {
     priority = "secondary",
     group = {"加工"},
     craft_category = {"金属锻造"},
+    maxslot = "8",
     fluidboxes = {
         input = {
             {
@@ -134,6 +137,7 @@ prototype "车辆厂I" {
     priority = "secondary",
     group = {"加工"},
     craft_category = {"车辆制造"},
+    maxslot = "8",
     fluidboxes = {
         input = {},
         output = {},

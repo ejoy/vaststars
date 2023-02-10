@@ -15,6 +15,7 @@ prototype "采矿机I" {
     speed = "50%",
     group = {"加工"},
     building_base = false,
+    maxslot = "8",
     fluidboxes = {
         input = {},
         output = {},
@@ -40,6 +41,7 @@ prototype "采矿机II" {
     speed = "100%",
     group = {"加工"},
     building_base = false,
+    maxslot = "8",
     fluidboxes = {
         input = {},
         output = {},

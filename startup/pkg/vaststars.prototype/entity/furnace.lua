@@ -13,6 +13,7 @@ prototype "熔炼炉I" {
     priority = "secondary",
     group = {"加工"},
     craft_category = {"金属冶炼"},
+    maxslot = "8",
     fluidboxes = {
         input = {
         },
@@ -38,6 +39,7 @@ prototype "熔炼炉II" {
     priority = "secondary",
     group = {"加工"},
     craft_category = {"金属冶炼"},
+    maxslot = "8",
     fluidboxes = {
         input = {
         },
@@ -63,6 +65,7 @@ prototype "粉碎机I" {
     priority = "secondary",
     group = {"加工"},
     craft_category = {"矿石粉碎"},
+    maxslot = "8",
     fluidboxes = {
         input = {
         },
@@ -83,6 +86,7 @@ prototype "浮选器I" {
     priority = "secondary",
     group = {"加工"},
     craft_category = {"矿石浮选"},
+    maxslot = "8",
     fluidboxes = {
         input = {
             {

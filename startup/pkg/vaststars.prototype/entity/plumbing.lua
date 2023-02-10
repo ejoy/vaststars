@@ -54,6 +54,7 @@ prototype "地下水挖掘机" {
     recipe = "离岸抽水",
     group = {"管道","默认"},
     show_detail = false,
+    maxslot = "8",
     fluidboxes = {
         input = {},
         output = {
@@ -140,6 +141,7 @@ prototype "空气过滤器I" {
     priority = "secondary",
     group = {"管道"},
     recipe = "空气过滤",
+    maxslot = "8",
     fluidboxes = {
         input = {},
         output = {
