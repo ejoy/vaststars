@@ -129,6 +129,16 @@ prototype "物流需求站" {
     order = 18,
 }
 
+prototype "仓库网格" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/goodsstation-input.texture",
+    model = "prefabs/rock.prefab",
+    description = "储存货物的放置点",
+    group = "物流",
+    order = 19,
+}
+
 prototype "建造中心" {
     type = {"item"},
     stack = 25,
@@ -136,7 +146,7 @@ prototype "建造中心" {
     model = "prefabs/rock.prefab",
     description = "用来建造建筑的场所",
     group = "物流",
-    order = 19,
+    order = 20,
 }
 
 prototype "道路建造站" {
@@ -146,7 +156,7 @@ prototype "道路建造站" {
     model = "prefabs/rock.prefab",
     description = "用来建造道路的场所",
     group = "物流",
-    order = 20,
+    order = 21,
 }
 
 prototype "管道建造站" {
@@ -156,7 +166,7 @@ prototype "管道建造站" {
     model = "prefabs/rock.prefab",
     description = "用来建造管道的场所",
     group = "物流",
-    order = 21,
+    order = 22,
 }
 
 prototype "采矿机I" {

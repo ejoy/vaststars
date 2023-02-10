@@ -44,3 +44,14 @@ prototype "仓库" {
     area = "5x5",
     slots = 60,
 }
+
+prototype "仓库网格" {
+    model = "prefabs/small-chest.prefab",
+    icon = "textures/building_pic/small_pic_chest.texture",
+    background = "textures/build_background/pic_chest.texture",
+    construct_detector = {"exclusive"},
+    type = {"entity"},
+    group = {"物流" , "默认"},
+    area = "1x1",
+    slots = 1,
+}
