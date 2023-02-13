@@ -201,7 +201,7 @@ static bool HasTask(world& w) {
 static bool DoTask(world& w, lua_State* L, uint16_t classid, roadnet::road::endpoint& ep, roadnet::endpointid current) {
     assert(!w.tradings.orders.empty());
     auto& order = w.tradings.orders.front();
-    if (!ep.hasLorry(w.rw, roadnet::road::endpoint::type::out)) {
+    if (ep.hasLorry(w.rw, roadnet::road::endpoint::type::out)) {
         return false;
     }
     auto lorryId = w.rw.createLorry(w, L, classid);
