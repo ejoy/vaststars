@@ -42,7 +42,7 @@ consumer_context get_consumer(lua_State* L, world& w, Entity& v) {
     prototype_context p = w.prototype(L, e.prototype);
     unsigned int power = pt_power(&p);
     unsigned int drain = pt_drain(&p);
-    unsigned int capacitance = power * 2;
+    unsigned int capacitance = pt_capacitance(&p);
     return {
         c, power, drain, capacitance
     };
