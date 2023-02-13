@@ -135,7 +135,6 @@ interface "idetail"
     .method "show"
     .method "selected"
     .method "unselected"
-    .method "show_road"
 
 interface "igame_object"
     .implement "engine/game_object.lua"

@@ -1,7 +1,20 @@
+local ecs = ...
+local world = ecs.world
+local w = world.w
+
 local iprototype = require "gameplay.interface.prototype"
 local gameplay_core = require "gameplay.core"
 local math3d = require "math3d"
 local DEFAULT_COLOR <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 0.55})
+local objects = require "objects"
+local vsobject_manager = ecs.require "vsobject_manager"
+
+local function get_object(x, y)
+    local object = objects:coord(x, y)
+    if object then
+        return vsobject_manager:get(object.id)
+    end
+end
 
 local function _round(max_tick)
     local v <const> = 100 / max_tick / 100
@@ -24,7 +37,7 @@ local function _get_fluid_color(fluid)
     end
 end
 
-local function update_world(world, get_object_func)
+local function update_world(world)
     local t = {}
     for e in world.ecs:select "fluidbox:in entity:in" do
         local typeobject = assert(iprototype.queryById(e.entity.prototype))
@@ -44,7 +57,7 @@ local function update_world(world, get_object_func)
             end
         end
 
-        local vsobject = get_object_func(e.entity.x, e.entity.y)
+        local vsobject = get_object(e.entity.x, e.entity.y)
 
         if volume > 0 then
             vsobject:attach("water_slot", "prefabs/storage-tank-water.prefab", "opacity", color or DEFAULT_COLOR)

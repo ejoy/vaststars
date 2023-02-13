@@ -7,11 +7,12 @@ local lorries = {}
 local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprototype = require "gameplay.interface.prototype"
 local road_track = import_package "vaststars.prototype"("road_track")
-local iroadnet = ecs.require "roadnet"
+local iroadnet_converter = require "roadnet_converter"
 local iterrain = ecs.require "terrain"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local itrack = ecs.require "engine.track"
 local create_lorry = ecs.require "lorry"
+local global = require "global"
 
 local STRAIGHT_TICKCOUNT <const> = 10
 local CROSS_TICKCOUNT <const> = 20
@@ -115,10 +116,9 @@ local function offset_matrix(prototype_name, dir, toward, tick)
 end
 
 local function _get_offset_matrix(is_cross_flag, x, y, toward, tick)
-    local _, mask = iroadnet.editor_get(x, y)
-    assert(mask)
-
-    local prototype_name, dir = iroadnet.get_prototype_name(0, mask) -- TODO
+    local coord = iprototype.packcoord(x, y)
+    local v = assert(global.roadnet[coord])
+    local prototype_name, dir = v[1], v[2]
     local matrix = math3d.matrix {t = iterrain:get_position_by_coord(x, y, 1, 1), r = ROTATORS[dir]}
 
     if not is_cross_flag then

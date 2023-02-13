@@ -16,11 +16,7 @@
                 bottom:0.5em;
             }
             .button-fuction-block {
-                flex-direction: column;
-                width: 14.3%;
-                height:80%;
-                align-items: center;
-                justify-content: center;
+                width: 13.33vmin;
             }
             .button-function {
                 flex-direction: row;
@@ -35,8 +31,6 @@
                 width: 83.47vmin;
                 background-image: "textures/common/info-arc.texture";
                 background-size:cover;
-                flex-direction: row;
-                justify-content: center;
             }
         </style>
         <style path = "common/building_style.rcss"/>
@@ -45,29 +39,47 @@
             local start = ui_sys.createDataMode("start", {
                 object_position = {},
                 show_teardown = false,
-                show_set_recipe = false,
-                show_detail = false,
                 show_move = false,
+                show_set_recipe = false,
+                show_road_builder = false,
+                show_detail = false,
                 object_id = 0,
                 guide_progress = 0,
                 left = "0vmin",
                 top = "0vmin",
+                buttons = {},
             })
 
-            function start.clickSetRecipe(event)
-                ui_sys.pub {"set_recipe", start.object_id}
-            end
+            local positions <const> = {
+                [1] = {
+                    {top = "15.00vmin", left = "2vmin"},
+                },
+                [2] = {
+                    {top = "15.00vmin", left = "2vmin"},
+                    {top = "15.00vmin", left = "69.34vmin"},
+                },
+                [3] = {
+                    {top = "15.00vmin", left = "2vmin"},
+                    {top = "-2vmin", left = "35vmin"},
+                    {top = "15.00vmin", left = "69.34vmin"},
+                },
+                [4] = {
+                    {top = "15.00vmin", left = "2vmin"},
+                    {top = "0.00vmin", left = "21.62vmin"},
+                    {top = "0.00vmin", left = "48.48vmin"},
+                    {top = "15.00vmin", left = "69.34vmin"},
+                },
+                [5] = {
+                    {top = "15.00vmin", left = "2vmin"},
+                    {top = "3.00vmin", left = "16.62vmin"},
+                    {top = "-2vmin", left = "35vmin"},
+                    {top = "3.00vmin", left = "53.48vmin"},
+                    {top = "15.00vmin", left = "69.34vmin"},
+                },
+            }
 
-            function start.clickTeardown(event)
-                ui_sys.pub {"teardown", start.object_id}
-            end
-
-            function start.clickDetail(event)
-                ui_sys.pub {"detail", start.object_id}
-            end
-
-            function start.clickMove(event)
-                ui_sys.pub {"move", start.object_id}
+            function start.clickButton(event, message)
+                ui_sys.pub {message, start.object_id}
             end
 
             ui_sys.addEventListener({
@@ -92,46 +104,71 @@
                         end
                     end,
                     "left", "top",
+                },
+                {
+                    function(_)
+                        start.buttons = {}
+                        if start.show_teardown then
+                            local v = {}
+                            v.text = "拆除"
+                            v.message = "teardown"
+                            v.background_image = "textures/factory/demolition.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.show_move then
+                            local v = {}
+                            v.text = "移动"
+                            v.message = "move"
+                            v.background_image = "textures/factory/move.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.show_set_recipe then
+                            local v = {}
+                            v.text = "修改配方"
+                            v.message = "set_recipe"
+                            v.background_image = "textures/assemble/wheel.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.show_road_builder then
+                            local v = {}
+                            v.text = "道路建造"
+                            v.message = "road_builder"
+                            v.background_image = "textures/assemble/wheel.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.show_detail then
+                            local v = {}
+                            v.text = "详细"
+                            v.message = "detail"
+                            v.background_image = "textures/factory/seacher.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        console.log(#start.buttons)
+                        local pos = assert(positions[#start.buttons])
+                        for i = 1, #start.buttons do
+                            local v = start.buttons[i]
+                            v.left = pos[i].left
+                            v.top = pos[i].top
+                            start.buttons[#start.buttons + 1] = v
+                        end
+                        start("buttons")
+                    end,
+                    "show_teardown", "show_move", "show_set_recipe", "show_road_builder", "show_detail",
                 }
             })
         </script>
     </head>
     <body style = "pointer-events: none;">
-        <div class="info-panel" style="position: absolute; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top">
-            <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickTeardown()" data-if = "show_teardown">
-                <button class="button-function" style ='background-image: "textures/factory/demolition.texture";'/>
-                <div class="title-text">拆除</div>
+        <div class="info-panel" style="position: relative; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top">
+            <div class="button-fuction-block" style="position: absolute;" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message)" data-for = "it : buttons">
+                <button class="button-function" data-style-background-image = "it.background_image" />
+                <div class="title-text">{{it.text}}</div>
             </div>
-
-            <div class="button-fuction-block" style="top: -2.33vmin; width:38.3%;" data-if = "!show_teardown" />
-
-            <div class="button-fuction-block" style="top: -2.33vmin; width:11%;" data-if = "show_teardown" />
-
-            <div class="button-fuction-block" style="top: -2.33vmin; width:14%;" data-if = "show_teardown && !show_set_recipe" />
-
-
-            <div class="button-fuction-block" style="top: -4.33vmin;" data-event-click="clickMove()" data-if = "show_move">
-                <button class="button-function" style ='background-image: "textures/factory/move.texture";'/>
-                <div class="title-text">移动</div>
-            </div>
-
-            <div class="button-fuction-block" style="top: -2.33vmin; width:13%;" data-if = "show_teardown" />
-
-            <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_teardown" />
-
-            <div class="button-fuction-block" style="top: -4.33vmin;" data-event-click="clickSetRecipe()" data-if = "show_set_recipe">
-                <button class="button-function" style ='background-image: "textures/assemble/wheel.texture";'/>
-                <div class="title-text">修改配方</div>
-            </div>
-            <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_set_recipe && !show_teardown" />
-
-            <div class="button-fuction-block" style="top: -2.33vmin; width:11%;" />
-
-            <div class="button-fuction-block" style="top: 10.67vmin;" data-event-click="clickDetail()" data-if = "show_detail">
-                <button class="button-function" style ='background-image: "textures/factory/seacher.texture";'/>
-                <div class="title-text">详细</div>
-            </div>
-            <div class="button-fuction-block" style="top: -2.33vmin;" data-if = "!show_detail" />
         </div>
     </body>
 </rml>

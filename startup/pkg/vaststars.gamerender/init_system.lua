@@ -8,16 +8,14 @@ local iRmlUi   = ecs.import.interface "ant.rmlui|irmlui"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local terrain = ecs.require "terrain"
 local gameplay_core = require "gameplay.core"
-local fps = ecs.require "fps"
 local world_update = ecs.require "world_update.init"
 local gameplay_update = require "gameplay.update.init"
 local saveload = ecs.require "saveload"
-local objects = require "objects"
-local vsobject_manager = ecs.require "vsobject_manager"
 local iguide = require "gameplay.interface.guide"
 local TERRAIN_ONLY <const> = require "debugger".terrain_only
 local NOTHING <const> = require "debugger".nothing
 local DISABLE_LOADING <const> = require "debugger".disable_loading
+local DEBUG_TERRAIN <const> = require "debugger".debug_terrain
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local pickup_mb = world:sub {"pickup"}
 local icanvas = ecs.require "engine.canvas"
@@ -29,27 +27,7 @@ local PLANES <const> = {YAXIS_PLANE}
 local lorry_manager = ecs.require "lorry_manager"
 local iefk = ecs.require "engine.efk"
 local iroadnet = ecs.require "roadnet"
-local task = ecs.require "task"
-local ltask = require "ltask"
-local ltask_now = ltask.now
 local irender_layer = ecs.require "engine.render_layer"
-
-local function _gettime()
-    local _, t = ltask_now() --10ms
-    return t * 10
-end
-local task_update; do
-    local last_update_time
-    function task_update()
-        local current = _gettime()
-        last_update_time = last_update_time or current
-        if current - last_update_time < 300 then
-            return
-        end
-        last_update_time = current
-        task.update_progress("lorry_count")
-    end
-end
 
 local m = ecs.system 'init_system'
 function m:init_world()
@@ -78,6 +56,8 @@ function m:init_world()
     iRmlUi.add_bundle "/pkg/vaststars.resources/ui/ui.bundle"
     iRmlUi.font_dir "/pkg/vaststars.resources/ui/font/"
 
+    iroadnet:create()
+
     if not DISABLE_LOADING then
         iui.open("loading.rml")
         return
@@ -90,9 +70,17 @@ function m:init_world()
         return
     end
 
+    if DEBUG_TERRAIN then
+        gameplay_core.get_world().world_update = false
+        local iterrain  = ecs.import.interface "ant.terrain|iterrain"
+        iterrain.gen_terrain_field(255, 255, 0, 0)
+        iterrain.create_roadnet_entity(DEBUG_TERRAIN)
+        return
+    end
+
     terrain:create()
     if TERRAIN_ONLY then
-        iroadnet.init({})
+        iroadnet:init({})
         saveload:restore_camera_setting()
         return
     end
@@ -112,25 +100,20 @@ function m:init_world()
     iui.set_guide_progress(iguide.get_progress())
 end
 
-local function get_object(x, y) -- TODO: optimize
-    local object = objects:coord(x, y)
-    if object then
-        return vsobject_manager:get(object.id)
-    end
-end
-
 local tick = 0
 function m:update_world()
+    if DEBUG_TERRAIN then
+        return
+    end
+
     camera.update()
-    iroadnet.world_update()
-    iroadnet.render_update()
+    iroadnet:update()
 
     local gameplay_world = gameplay_core.get_world()
     if gameplay_core.world_update then
         gameplay_core.update()
-        world_update(gameplay_world, get_object)
+        world_update(gameplay_world)
         gameplay_update(gameplay_world)
-        task_update()
 
         tick = tick + 1
         if tick > 3 then -- TODO: remove this
@@ -145,7 +128,6 @@ function m:update_world()
             end
         end
     end
-    fps()
 end
 
 function m:camera_usage()

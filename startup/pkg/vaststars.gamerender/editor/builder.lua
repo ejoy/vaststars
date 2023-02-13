@@ -15,7 +15,7 @@ local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
-local iroadnet = ecs.require "roadnet"
+local global = require "global"
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
     dir = dir or DEFAULT_DIR
@@ -30,7 +30,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
                     return false
                 end
 
-                if iroadnet.editor_get(x + i, y + j) then
+                if global.roadnet[iprototype.packcoord(x + i, y + j)] then
                     return false
                 end
 
@@ -99,11 +99,9 @@ end
 
 local function complete(self, object_id)
     assert(object_id)
-    local needbuild = false
     local object = objects:get(object_id, {"CONFIRM"})
 
     local power_network_dirty = false
-    -- TODO: duplicate code, see also pipe_function_pop.lua
     object.state = "constructed"
     object.object_state = "constructed"
 
@@ -148,14 +146,9 @@ local function complete(self, object_id)
     if not power_network_dirty and typeobject.power_pole then
         power_network_dirty = true
     end
-    needbuild = true
-
     objects:remove(object_id, "CONFIRM")
     objects:set(object, "CONSTRUCTED")
-
-    if needbuild then
-        gameplay_core.build()
-    end
+    gameplay_core.build()
 
     local gw = gameplay_core.get_world()
     if power_network_dirty then

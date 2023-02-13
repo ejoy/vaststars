@@ -5,7 +5,7 @@ local iprototype = require "gameplay.interface.prototype"
 local MULTIPLE <const> = require "debugger".multiple
 
 local m = {}
-m.world_update = true
+m.world_update = false
 m.multiple = MULTIPLE or 1
 
 function m.select(...)
@@ -17,6 +17,7 @@ function m.extend(...)
 end
 
 function m.build(...)
+    m.world_update = true
     return world:build()
 end
 

@@ -12,7 +12,6 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iprototype = require "gameplay.interface.prototype"
 local create_normalbuilder = ecs.require "editor.normalbuilder"
 local create_pipebuilder = ecs.require "editor.pipebuilder"
-local create_roadbuilder = ecs.require "editor.roadbuilder"
 local create_pipetogroundbuilder = ecs.require "editor.pipetogroundbuilder"
 local create_logisticbuilder = ecs.require "editor.logisticbuilder"
 local create_logisticchestbuilder = ecs.require "editor.logisticchestbuilder"
@@ -26,7 +25,6 @@ local icamera = ecs.require "engine.camera"
 local ipower_line = ecs.require "power_line"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
-local DISABLE_FPS <const> = require "debugger".disable_fps
 local SHOW_LOAD_RESOURCE <const> = not require "debugger".disable_load_resource
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_builder = ecs.require "editor.builder"
@@ -34,9 +32,9 @@ local create_builder = ecs.require "editor.builder"
 local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
 local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
 local cancel_mb = mailbox:sub {"cancel"} -- construct_pop.rml -> 取消
+local road_builder_mb = mailbox:sub {"road_builder"}
 local confirm_cancel_mb = mailbox:sub {"confirm_cancel"} -- 取消已确定的建筑
 local ichest = require "gameplay.interface.chest"
-local tracedoc = require "utility.tracedoc"
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local show_construct_menu_mb = mailbox:sub {"show_construct_menu"}
@@ -53,19 +51,11 @@ local construct_mb = mailbox:sub {"construct"} -- 施工
 local single_touch_mb = world:sub {"single_touch"}
 local move_mb = mailbox:sub {"move"}
 local move_finish_mb = mailbox:sub {"move_finish"}
+local revert_roadbuilder_mb = mailbox:sub {"revert_roadbuilder"}
 local pickup_mb = world:sub {"pickup"}
 local handle_pickup = true
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
 local builder
-local iroadnet = ecs.require "roadnet"
-local ltask = require "ltask"
-local ltask_now = ltask.now
-local last_update_time
-
-local function _gettime()
-    local _, t = ltask_now() --10ms
-    return t * 10
-end
 
 local function _get_construct_menu()
     local construct_menu = {}
@@ -117,21 +107,6 @@ function M:create()
     }
 end
 
--- TODO
-function M:fps_text(datamodel, text)
-    if DISABLE_FPS then
-        return
-    end
-    datamodel.fps_text = text
-end
-
-function M:drawcall_text(datamodel, text)
-    if DISABLE_FPS then
-        return
-    end
-    datamodel.drawcall_text = text
-end
-
 function M:show_chapter(datamodel, main_text, sub_text)
     datamodel.show_chapter = true
     datamodel.chapter_main_text = main_text
@@ -149,6 +124,10 @@ function M:update_tech(datamodel, tech)
         datamodel.show_tech_progress = false
         datamodel.tech_count = get_new_tech_count(global.science.tech_list)
     end
+end
+
+function M:construct_queue(datamodel, construct_queue)
+    datamodel.construct_queue = construct_queue
 end
 
 function M:stage_ui_update(datamodel)
@@ -190,8 +169,6 @@ function M:stage_ui_update(datamodel)
             ieditor:revert_changes({"TEMPORARY"})
             datamodel.show_rotate = false
             datamodel.show_confirm = false
-            last_prototype_name = nil
-
             datamodel.construct_menu = _get_construct_menu()
             ipower_line.show_supply_area()
         else
@@ -258,8 +235,6 @@ function M:stage_camera_usage(datamodel)
             builder = create_pipetogroundbuilder()
         elseif iprototype.is_pipe(prototype_name) then
             builder = create_pipebuilder()
-        elseif iprototype.is_road(prototype_name) then
-            builder = create_roadbuilder()
         elseif __has_type(prototype_name, "logistic_hub") then
             builder = create_logisticbuilder()
         elseif __has_type(prototype_name, "logistic_chest") then
@@ -319,18 +294,6 @@ function M:stage_camera_usage(datamodel)
         end
     end
 
-    local function _get_road(pickup_x, pickup_y)
-        for _, pos in ipairs(icamera.screen_to_world(pickup_x, pickup_y, PLANES)) do
-            local coord = terrain:get_coord_by_position(pos)
-            if coord then
-                local road = iroadnet.editor_get(coord[1], coord[2])
-                if road then
-                    return coord[1], coord[2]
-                end
-            end
-        end
-    end
-
     -- 点击其它建筑 或 拖动时, 将弹出窗口隐藏
     for _, _, x, y in pickup_mb:unpack() do
         if not handle_pickup then
@@ -338,7 +301,6 @@ function M:stage_camera_usage(datamodel)
         end
 
         local object = _get_object(x, y)
-        local coord_x, coord_y = _get_road(x, y)
         if object then -- object may be nil, such as when user click on empty space
             if object.object_state == "constructed" then
                 if idetail.show(object.id) then
@@ -346,10 +308,6 @@ function M:stage_camera_usage(datamodel)
                 end
             elseif object.object_state == "confirm" then
                 iui.open("construct_confirm_pop.rml", object.srt.t, object.x, object.y)
-                leave = false
-            end
-        elseif coord_x then
-            if idetail.show_road(coord_x, coord_y) then
                 leave = false
             end
         else
@@ -400,28 +358,19 @@ function M:stage_camera_usage(datamodel)
         handle_pickup = true
     end
 
-    --
-    local current = _gettime()
-    last_update_time = last_update_time or current
-    if current - last_update_time > 1000 then
-        last_update_time = current
-        global.base_chest_cache = tracedoc.new(ichest.base_collect_item(gameplay_core.get_world()))
+    for _ in road_builder_mb:unpack() do
+        iui.close("build_function_pop.rml")
+        iui.close("detail_panel.rml")
+        datamodel.cur_edit_mode = "construct"
+        idetail.unselected()
+        handle_pickup = false
+        iui.open("road_build.rml")
     end
 
-    if tracedoc.changed(global.base_chest_cache) or global.construct_queue:changed() then
-        local construct_queue = {}
-        for prototype_name in global.construct_queue:for_each() do
-            local typeobject = iprototype.queryByName("item", prototype_name)
-            local slot = global.base_chest_cache[typeobject.id] or {amount = 0}
-            local count = slot.amount
-            local total_count = global.construct_queue:size(prototype_name)
-            count = math.min(count, total_count)
-            table.insert(construct_queue, {icon = typeobject.icon, count = count, total_count = total_count})
-        end
-        datamodel.construct_queue = construct_queue
-
-        tracedoc.commit(global.base_chest_cache)
-        global.construct_queue:commit()
+    for _ in revert_roadbuilder_mb:unpack() do
+        datamodel.cur_edit_mode = ""
+        handle_pickup = true
+        iui.close("road_build.rml")
     end
 
     iobject.flush()

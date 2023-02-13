@@ -13,6 +13,7 @@ local detail_mb = mailbox:sub {"detail"}
 local close_mb = mailbox:sub {"close"}
 local teardown_mb = mailbox:sub {"teardown"}
 local move_mb = mailbox:sub {"move"}
+local road_builder_mb = mailbox:sub {"road_builder"}
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local iobject = ecs.require "object"
 local ichest = require "gameplay.interface.chest"
@@ -94,6 +95,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
     return {
         show_teardown = (typeobject.teardown ~= false),
         show_set_recipe = show_set_recipe,
+        show_road_builder = typeobject.road_builder,
         show_detail = show_detail,
         show_move = (typeobject.teardown ~= false),
         recipe_name = recipe_name,
@@ -170,6 +172,10 @@ function M:stage_ui_update(datamodel, object_id)
     for _, _, _, object_id in close_mb:unpack() do
         local vsobject = vsobject_manager:get(object_id)
         vsobject:modifier("start", {name = "over", forwards = true})
+    end
+
+    for _, _, _, object_id in road_builder_mb:unpack() do
+        iui.redirect("construct.rml", "road_builder", object_id)
     end
 end
 

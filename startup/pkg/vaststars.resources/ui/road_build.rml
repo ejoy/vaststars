@@ -1,0 +1,115 @@
+<rml>
+    <head>
+        <style>
+            body {
+                font: 100% "宋体";
+            }
+            div {
+                font: 100% "微软雅黑";
+            }
+            button {
+                text-align: center;
+                border-radius: 2.00vmin;
+                border: 0.53vmin white;
+                font-size: 4.00vmin;
+                transition: transform 1s elastic-out;
+            }
+            button:active {
+                transform: scale(1.3);
+            }
+            button#work {
+                position: absolute;
+                width: 16.00vmin;
+                height: 16.00vmin;
+                margin: 0.00vmin;
+                font-size: 150%;
+            }
+        </style>
+        <script type="text/x-lua" >
+            local ui_sys = require "ui_system"
+            local start = ui_sys.createDataMode("start", {
+                buttons = {},
+                show_confirm = false,
+                show_batch_teardown_begin = false,
+                show_batch_construct_begin = false,
+                show_construct = false,
+                show_teardown = false,
+                show_batch_teardown_end = false,
+                show_batch_construct_end = false,
+            })
+
+            start.clickButton = function(event, message)
+                ui_sys.pub {message}
+            end
+
+            start.clickConfirm = function(event)
+                ui_sys.pub {"confirm"}
+            end
+
+            ui_sys.mapping(start, {
+                {
+                    function(_)
+                        start.buttons = {}
+                        console.log("start.show_batch_teardown_begin", start.show_batch_teardown_begin)
+                        if start.show_batch_teardown_begin then
+                            start.buttons[#start.buttons+1] = {name = "拆除开始", message = "batch_teardown_begin", background_image = "textures/construct/cancel.texture"}
+                        end
+                        if start.show_batch_construct_begin then
+                            start.buttons[#start.buttons+1] = {name = "修建开始", message = "batch_construct_begin", background_image = "textures/construct/cancel.texture"}
+                        end
+                        if start.show_construct then
+                            start.buttons[#start.buttons+1] = {name = "修建 1 个", message = "construct", background_image = "textures/construct/cancel.texture"}
+                        end
+                        if start.show_teardown then
+                            start.buttons[#start.buttons+1] = {name = "拆除 1 个", message = "teardown", background_image = "textures/construct/cancel.texture"}
+                        end
+                        if start.show_batch_teardown_end then
+                            start.buttons[#start.buttons+1] = {name = "拆除结束", message = "batch_teardown_end", background_image = "textures/construct/cancel.texture"}
+                        end
+                        if start.show_batch_construct_end then
+                            start.buttons[#start.buttons+1] = {name = "修建结束", message = "batch_construct_end", background_image = "textures/construct/cancel.texture"}
+                        end
+                        if start.show_cancel then
+                            start.buttons[#start.buttons+1] = {name = "修建取消", message = "cancel", background_image = "textures/construct/cancel.texture"}
+                        end
+
+                        for i = 1, #start.buttons do
+                            if i ~= #start.buttons then
+                                start.buttons[i].separator = true
+                            end
+                        end
+                        start("buttons")
+                    end,
+                    "show_batch_teardown_begin", "show_batch_construct_begin", "show_construct", "show_teardown", "show_batch_teardown_end", "show_batch_construct_end", "show_cancel"
+                }
+            })
+        </script>
+    </head>
+    <body style = "pointer-events: none;">
+        <div data-model="start" style = "pointer-events: none; width: 100%; height:100%;">
+            <div style = "pointer-events: none; position: absolute; width: 100%; height:100%; flex-direction: column-reverse;">
+                <div style = "pointer-events: none; margin: 0 auto; margin-bottom: 2vmin; flex-direction: row;">
+                    <div data-for = "it : buttons" style = "flex-direction: row;">
+                        <button style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24);' data-event-click="clickButton(it.message)" >
+                            <div style="margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-size:cover;" data-style-background-image = "it.background_image" />
+                            <div style="font-size: 85%;">{{it.name}}</div>
+                        </button>
+                        <div style = "width: 2vmin;" data-if = "it.separator" />
+                    </div>
+                </div>
+            </div>
+
+            <div style = "pointer-events: none; position: absolute; width: 100%; height:100%; flex-direction: column-reverse;">
+                <div style = "pointer-events: none; width: 100%; margin-bottom: 2vmin; flex-direction: row-reverse;">
+                    <div style = "width: 5vmin;" />
+                    <div style = "flex-direction: row;">
+                        <button style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24);' data-event-click="clickConfirm()" data-if = "show_confirm" >
+                            <div style="margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-size:cover; background-image: textures/construct/cancel.texture" />
+                            <div style="font-size: 85%;">确认</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>

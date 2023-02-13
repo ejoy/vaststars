@@ -40,6 +40,7 @@ prototype "指挥中心" {
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
     type ={"entity", "generator", "base", "chest"},
+    chest_type = "blue",
     area = "5x5",
     supply_area = "9x9",
     supply_distance = 9,
@@ -51,7 +52,7 @@ prototype "指挥中心" {
     teardown = false,
     crossing = {
         connections = {
-            {type="base", position={2,4,"S"}, roadside = true},
+            {type="chest", position={2,4,"S"}, roadside = true},
         },
     }
 }
@@ -77,18 +78,17 @@ prototype "物流中心I" {
     icon = "textures/building_pic/small_pic_logistics_center2.texture",
     background = "textures/build_background/pic_logisticscenter.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "consumer", "station", "chest"},
-    chest_type = "blue",
-    slots = 10,
+    type ={"entity", "consumer", "station"},
     area = "3x3",
     capacitance = "50MJ",
     power = "400kW",
     priority = "secondary",
     group = {"物流"},
+    lorry = {"运输车辆I"},
     crossing = {
         connections = {
             {type="station", position={1,2,"S"}, roadside = true},
-            {type="chest",   position={2,2,"S"}, roadside = true},
+            {type="park",    position={2,2,"S"}, roadside = true},
         },
     }
 }
@@ -288,10 +288,10 @@ prototype "建造中心" {
     construct_detector = {"exclusive"},
     type ={"entity", "assembling"},
     area = "5x5",
+    maxslot = 8,
     group = {"物流"},
     craft_category = {"设计图打印"},
     slots = 5,
-    teardown = true,
     crossing = {
         connections = {
             {type="none", position={2,4,"S"}, roadside = true},
@@ -309,6 +309,7 @@ prototype "道路建造站" {
     capacity = 50,
     build_area = "30x30",
     group = {"物流"},
+    road_builder = true,
 }
 
 prototype "管道建造站" {

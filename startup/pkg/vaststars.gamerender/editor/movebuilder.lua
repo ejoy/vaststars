@@ -22,9 +22,9 @@ local igrid_entity = ecs.require "engine.grid_entity"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
-local iroadnet = ecs.require "roadnet"
 local gameplay_core = require "gameplay.core"
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
+local global = require "global"
 
 local function _get_state(prototype_name, ok)
     local typeobject = iprototype.queryByName("entity", prototype_name)
@@ -127,10 +127,6 @@ local function __new_entity(self, datamodel, typeobject)
     }
     iui.open("move_pop.rml", self.pickup_object.srt.t)
 
-    if iprototype.is_road(typeobject.name) then
-        return
-    end
-
     local dx, dy = _building_to_logisitic(x, y)
     local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, dx, dy, dir)
     if road_entrance_position then
@@ -222,7 +218,7 @@ local function touch_move(self, datamodel, delta_vec)
         for _, dir in ipairs(ALL_DIR) do
             local _, dx, dy = _get_road_entrance_position(typeobject, x, y, dir)
             if dx and dy then
-                if iroadnet.editor_get(dx, dy) then
+                if global.roadnet[iprototype.packcoord(dx, dy)] then
                     t[#t+1] = dir
                 end
             end
@@ -409,7 +405,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
                 goto continue
             end
 
-            if iroadnet.editor_get(dx, dy) then
+            if global.roadnet[iprototype.packcoord(dx, dy)] then
                 valid = true
                 break
             end

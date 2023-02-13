@@ -1,5 +1,7 @@
 local ecs = ...
 local world = ecs.world
+local w = world.w
+
 local timer = ecs.import.interface "ant.timer|itimer"
 local gameplay_core = require "gameplay.core"
 local global = require "global"
@@ -26,7 +28,7 @@ local filter_statistic = {
     ["1h"] = {interval = 72.0, elapsed = 0.0},
 }
 local init_group_statistic = false
-local function update_world(world, get_object_func)
+local function update_world(world)
     local statistic = global.statistic
     if not init_group_statistic then
         init_group_statistic = true

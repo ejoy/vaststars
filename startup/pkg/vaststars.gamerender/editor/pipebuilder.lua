@@ -254,47 +254,6 @@ local function _builder_init(self, datamodel)
     local prototype_name = self.coord_indicator.prototype_name
     local init_prototype_name = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
 
-    local function show_indicator(prototype_name, object)
-        local succ, dx, dy, obj, _prototype_name, _dir
-        for _, fb in ipairs(_get_covers_connections(prototype_name, object)) do
-            succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
-            if not succ then
-                goto continue
-            end
-            if not self:check_construct_detector(prototype_name, dx, dy) then
-                goto continue
-            end
-
-            obj = objects:coord(dx, dy, EDITOR_CACHE_NAMES)
-            if obj then
-                -- pipe can replace other pipe
-                if not iprototype.is_pipe(obj.prototype_name) and not iprototype.is_pipe_to_ground(obj.prototype_name) then
-                    goto continue
-                end
-            end
-
-            -- why use DEFAULT_DIR? because iprototype.reverse_dir(fb.dir) will cause assert error by iflow_connector.set_connection(), such as '管道1-O型' + S
-            _prototype_name, _dir = iflow_connector.set_connection(init_prototype_name, DEFAULT_DIR, iprototype.reverse_dir(fb.dir), true)
-            if _prototype_name then
-                local typeobject = iprototype.queryByName("entity", _prototype_name)
-                obj = iobject.new {
-                    prototype_name = _prototype_name,
-                    dir = _dir,
-                    x = dx,
-                    y = dy,
-                    srt = {
-                        t = terrain:get_position_by_coord(dx, dy, iprototype.rotate_area(typeobject.area, _dir)),
-                    },
-                    fluid_name = "",
-                    state = "indicator",
-                    object_state = "none",
-                }
-                objects:set(obj, "INDICATOR")
-            end
-            ::continue::
-        end
-    end
-
     local function is_valid_starting(x, y)
         local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
         if not object then
@@ -306,11 +265,6 @@ local function _builder_init(self, datamodel)
     if is_valid_starting(coord_indicator.x, coord_indicator.y) then
         datamodel.show_laying_pipe_begin = true
         coord_indicator.state = "construct"
-
-        local object = objects:coord(coord_indicator.x, coord_indicator.y, EDITOR_CACHE_NAMES)
-        if object then
-            show_indicator(prototype_name, object)
-        end
     else
         datamodel.show_laying_pipe_begin = false
         coord_indicator.state = "invalid_construct"
@@ -515,7 +469,7 @@ local function touch_end(self, datamodel)
     self.coord_indicator, x, y = iobject.align(self.coord_indicator)
     self.coord_indicator.x, self.coord_indicator.y = x, y
 
-    self:revert_changes({"INDICATOR", "TEMPORARY"})
+    self:revert_changes({"TEMPORARY"})
 
     if self.state ~= STATE_START then
         _builder_init(self, datamodel)
@@ -533,7 +487,7 @@ local function complete(self, datamodel)
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
-    self:revert_changes({"INDICATOR", "TEMPORARY"})
+    self:revert_changes({"TEMPORARY"})
 
     datamodel.show_rotate = false
     datamodel.show_laying_pipe_confirm = false
@@ -549,7 +503,7 @@ local function laying_pipe_begin(self, datamodel)
     self.coord_indicator, x, y = iobject.align(self.coord_indicator)
     self.coord_indicator.x, self.coord_indicator.y = x, y
 
-    self:revert_changes({"INDICATOR", "TEMPORARY"})
+    self:revert_changes({"TEMPORARY"})
     datamodel.show_laying_pipe_begin = false
     datamodel.show_laying_pipe_cancel = true
 
@@ -561,7 +515,7 @@ local function laying_pipe_begin(self, datamodel)
 end
 
 local function laying_pipe_cancel(self, datamodel)
-    self:revert_changes({"INDICATOR", "TEMPORARY"})
+    self:revert_changes({"TEMPORARY"})
     local typeobject = iprototype.queryByName("entity", self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)
 
@@ -593,7 +547,7 @@ local function clean(self, datamodel)
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
-    self:revert_changes({"INDICATOR", "TEMPORARY"})
+    self:revert_changes({"TEMPORARY"})
     datamodel.show_rotate = false
     self.state = STATE_NONE
     datamodel.show_laying_pipe_confirm = false

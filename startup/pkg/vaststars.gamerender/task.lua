@@ -7,9 +7,6 @@ local gameplay_core = require "gameplay.core"
 local global = require "global"
 local iconstant = require "gameplay.interface.constant"
 local terrain = ecs.require "terrain"
-local iroadnet = ecs.require "roadnet"
-local LORRY_CAPACITY <const> = 10
-local INVALID_LORRY_ID <const> = 0xffff
 
 local ALL_DIR = iconstant.ALL_DIR
 local function _check_routemap(sx, sy, dx, dy, marked)
@@ -21,8 +18,8 @@ local function _check_routemap(sx, sy, dx, dy, marked)
         return 1
     end
 
-    local starting = iroadnet.editor_get(sx, sy)
-    local ending = iroadnet.editor_get(dx, dy)
+    local starting = global.roadnet[iprototype.packcoord(sx, sy)]
+    local ending = global.roadnet[iprototype.packcoord(dx, dy)]
     if not starting or not ending then
         return 0
     end
@@ -38,7 +35,7 @@ local function _check_routemap(sx, sy, dx, dy, marked)
             goto continue
         end
 
-        local neighbor = iroadnet.editor_get(neighbor_x, neighbor_y)
+        local neighbor = global.roadnet[iprototype.packcoord(neighbor_x, neighbor_y)]
         if not neighbor then
             goto continue
         end
@@ -56,16 +53,6 @@ local function _check_routemap(sx, sy, dx, dy, marked)
     return 0
 end
 
-local function __get_lorry_count(e)
-    local lorry_count = 0
-    for i = 1, LORRY_CAPACITY do
-        if e.station["lorry" .. i] ~= INVALID_LORRY_ID then
-            lorry_count = lorry_count + 1
-        end
-    end
-    return lorry_count
-end
-
 --[[
 custom_type :
 1. routemap, starting = {x, y}, ending = {x, y}
@@ -78,7 +65,7 @@ local custom_type_mapping = {
         local c = 0
         local gameplay_world = gameplay_core.get_world()
         for e in gameplay_world.ecs:select "station:in chest:in entity:in" do
-            c = c + __get_lorry_count(e)
+            -- TODO
         end
 
         return c

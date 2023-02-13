@@ -1,10 +1,23 @@
+local ecs = ...
+local world = ecs.world
+local w = world.w
+
 local iprototype = require "gameplay.interface.prototype"
 local irecipe = require "gameplay.interface.recipe"
+local objects = require "objects"
+local vsobject_manager = ecs.require "vsobject_manager"
 
-local function update_world(world, get_object_func)
+local function get_object(x, y)
+    local object = objects:coord(x, y)
+    if object then
+        return vsobject_manager:get(object.id)
+    end
+end
+
+local function update_world(world)
     local t = {}
     for e in world.ecs:select "assembling:in entity:in fluidbox?in fluidboxes?in" do
-        local vsobject = get_object_func(e.entity.x, e.entity.y)
+        local vsobject = get_object(e.entity.x, e.entity.y)
         local typeobject = iprototype.queryById(e.entity.prototype)
         if typeobject.assembling_slot then
             local assembling = e.assembling

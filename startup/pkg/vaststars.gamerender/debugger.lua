@@ -9,7 +9,6 @@ local options = {
     ["skip_guide"] = true,
     ["recipe_unlocked"] = true,
     ["infinite_item"] = true,
-    ["disable_fps"] = true,
     ["disable_loading"] = true,
     ["disable_load_resource"] = true,
 }

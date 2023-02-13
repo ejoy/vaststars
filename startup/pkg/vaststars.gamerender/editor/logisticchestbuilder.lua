@@ -12,17 +12,14 @@ local global = require "global"
 local iobject = ecs.require "object"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
-local imining = require "gameplay.interface.mining"
 local iconstant = require "gameplay.interface.constant"
 local logistic_coord = ecs.require "terrain"
-local building_coord = require "global".building_coord_system
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local ALL_DIR = iconstant.ALL_DIR
 local igrid_entity = ecs.require "engine.grid_entity"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
-local iroadnet = ecs.require "roadnet"
 local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
@@ -156,10 +153,6 @@ local function __new_entity(self, datamodel, typeobject)
     }
     iui.open("construct_pop.rml", self.pickup_object.srt.t)
 
-    if iprototype.is_road(typeobject.name) then
-        return
-    end
-
     local road_entrance_position = _get_road_entrance_position(typeobject, x, y, dir)
     if road_entrance_position then
         local srt = {t = road_entrance_position}
@@ -218,7 +211,7 @@ local function touch_move(self, datamodel, delta_vec)
         for _, dir in ipairs(ALL_DIR) do
             local _, dx, dy = _get_road_entrance_position(typeobject, x, y, dir)
             if dx and dy then
-                if iroadnet.editor_get(dx, dy) then
+                if global.roadnet[iprototype.packcoord(dx, dy)] then
                     t[#t+1] = dir
                 end
             end

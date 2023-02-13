@@ -1,4 +1,6 @@
 local ecs = ...
+local world = ecs.world
+local w = world.w
 
 local global = require "global"
 local iui = ecs.import.interface "vaststars.gamerender|iui"

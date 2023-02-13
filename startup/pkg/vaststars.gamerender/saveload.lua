@@ -22,7 +22,8 @@ local camera_setting_path = archival_base_dir .. "camera.json"
 local iprototype = require "gameplay.interface.prototype"
 local startup_lua = import_package("vaststars.prototype")(startup_lua)
 local startup_entities = startup_lua.entities
-local startup_road = require("startup.road").convert(startup_lua.road)
+local iroadnet_converter = require "roadnet_converter"
+local startup_road = iroadnet_converter.convert(startup_lua.road)
 local objects = require "objects"
 local ifluid = require "gameplay.interface.fluid"
 local iscience = require "gameplay.interface.science"
@@ -490,7 +491,9 @@ function M:restore(index)
     self.running = true
     gameplay_core.restore(archival_dir)
     local map = gameplay_core.get_world():roadnet_get_map()
-    iroadnet.init(require("startup.road").from(map))
+    iroadnet:init(iroadnet_converter.from(map))
+    global.roadnet = iroadnet_converter.to_roadnet_data(map)
+
     iscience.update_tech_list(gameplay_core.get_world())
     iui.open("construct.rml")
 
@@ -516,7 +519,17 @@ function M:restart()
         terrain:enable_terrain(coord[1], coord[2])
     end
 
-    iroadnet.init(startup_road, true)
+    --
+    iroadnet:init(startup_road, true)
+    global.roadnet = {}
+    local t = {}
+    for _, v in ipairs(startup_lua.road) do
+        global.roadnet[iprototype.packcoord(v.x, v.y)] = {v.prototype_name, v.dir}
+        t[iprototype.packcoord(v.x, v.y)] = iroadnet_converter.prototype_name_dir_to_mask(v.prototype_name, v.dir)
+    end
+    gameplay_core.get_world():roadnet_load_map(t)
+
+    --
     for _, e in ipairs(startup_entities) do
         igameplay.create_entity(e)
     end

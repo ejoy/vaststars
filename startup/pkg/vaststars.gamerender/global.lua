@@ -17,4 +17,5 @@ return {
     logistic_coord_system = require "coord_transform"(256, 256),
     construct_queue = create_consruct_queue(),
     base_chest_cache = tracedoc.new {},
+    roadnet = {}, -- = {[coord] = {shape, dir}, ...}
 }

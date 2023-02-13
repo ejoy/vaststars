@@ -1,6 +1,7 @@
 local ecs = ...
 local world = ecs.world
 local w = world.w
+
 local iefk = ecs.import.interface "ant.efk|iefk"
 
 local timer = ecs.import.interface "ant.timer|itimer"
@@ -12,7 +13,7 @@ local storm_life = 20
 local storm_interval = 40
 local show_shorm = true
 
-local function update_world(world, get_object_func)
+local function update_world(world)
     if not storm_effect then
         local mq = w:first("main_queue camera_ref:in")
         storm_effect = iefk.create("/pkg/vaststars.resources/effect/efk/sandstorm.efk", {
