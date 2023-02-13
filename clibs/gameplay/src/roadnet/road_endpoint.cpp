@@ -3,6 +3,7 @@
 
 namespace roadnet::road {
     void endpoint::addLorry(world& w, lorryid l, type offset) {
+        w.Lorry(l).initTick(kTime);
         lorry[(size_t)offset] = l;
     }
 
@@ -22,7 +23,6 @@ namespace roadnet::road {
         auto& e = w.Endpoint(ending);
         auto& lorry = w.Lorry(lorryId);
         lorry.ending = e.coord;
-        lorry.initTick(kTime);
         addLorry(w, lorryId, type::out);
     }
 

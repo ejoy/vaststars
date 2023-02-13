@@ -41,28 +41,20 @@ namespace roadnet::road {
             endpointid& e = w.EndpointInRoad(lorryOffset+i);
             if (e) {
                 endpoint& ep = w.Endpoint(e);
-                auto l = ep.getLorry(w, endpoint::type::out);
-                if (l) {
+                if (auto l = ep.getLorry(w, endpoint::type::out)) {
                     auto& lorry = w.Lorry(l);
                     if (lorry.ready() && !w.LorryInRoad(lorryOffset+i)) {
                         ep.delLorry(w, endpoint::type::out);
                         addLorry(w, l, i);
                     }
                 }
-            }
-
-            lorryid l = w.LorryInRoad(lorryOffset+i);
-            if (l) {
-                auto& lorry = w.Lorry(l);
-                if (lorry.ready()) {
-                    endpointid& e = w.EndpointInRoad(lorryOffset+i);
-                    if (e) {
-                        endpoint& ep = w.Endpoint(e);
+                if (lorryid l = w.LorryInRoad(lorryOffset+i)) {
+                    auto& lorry = w.Lorry(l);
+                    if (lorry.ready()) {
                         // next offset is endpoint
                         if (lorry.ending.id == id && lorry.ending.offset == i) {
                             if (!ep.hasLorry(w, endpoint::type::in)) {
                                 delLorry(w, i);
-                                w.Lorry(l).initTick(kTime);
                                 ep.addLorry(w, l, endpoint::type::in);
                             }
                         }
@@ -73,7 +65,12 @@ namespace roadnet::road {
                             }
                         }
                     }
-                    else {
+                }
+            }
+            else {
+                if (lorryid l = w.LorryInRoad(lorryOffset+i)) {
+                    auto& lorry = w.Lorry(l);
+                    if (lorry.ready()) {
                         if (!w.LorryInRoad(lorryOffset+i-1)) {
                             delLorry(w, i);
                             addLorry(w, l, i-1);
