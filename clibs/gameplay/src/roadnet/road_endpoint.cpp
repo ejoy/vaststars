@@ -27,7 +27,7 @@ namespace roadnet::road {
     }
 
     bool endpoint::setOut(world& w, endpointid ending) {
-        if (!hasLorry(w, type::out)) {
+        if (hasLorry(w, type::out)) {
             return false;
         }
         auto lorryId = getLorry(w, type::wait);
