@@ -159,18 +159,46 @@ local road = {
         x = 116,
         y = 125,
     },
+    -- {
+    --     prototype_name = "砖石公路-U型-01",
+    --     dir = "W",
+    --     x = 117,
+    --     y = 125,
+    -- },
+------------------------
+
     {
-        prototype_name = "砖石公路-U型-01",
-        dir = "W",
+        prototype_name = "砖石公路-I型-01",
+        dir = "E",
         x = 117,
         y = 125,
     },
     {
-        prototype_name = "砖石公路-U型-01",
+        prototype_name = "砖石公路-I型-01",
+        dir = "E",
+        x = 118,
+        y = 125,
+    },
+    {
+        prototype_name = "砖石公路-I型-01",
+        dir = "E",
+        x = 119,
+        y = 125,
+    },
+
+    {
+        prototype_name = "砖石公路-I型-01",
         dir = "E",
         x = 120,
         y = 125,
     },
+-------------------------
+    -- {
+    --     prototype_name = "砖石公路-U型-01",
+    --     dir = "E",
+    --     x = 120,
+    --     y = 125,
+    -- },
     {
         prototype_name = "砖石公路-I型-01",
         dir = "E",
@@ -237,18 +265,46 @@ local road = {
         x = 131,
         y = 125,
     },
+
+    ----------------
     {
-        prototype_name = "砖石公路-U型-01",
-        dir = "W",
+        prototype_name = "砖石公路-I型-01",
+        dir = "E",
         x = 132,
         y = 125,
     },
     {
-        prototype_name = "砖石公路-U型-01",
+        prototype_name = "砖石公路-I型-01",
+        dir = "E",
+        x = 133,
+        y = 125,
+    },
+    {
+        prototype_name = "砖石公路-I型-01",
+        dir = "E",
+        x = 134,
+        y = 125,
+    },
+    {
+        prototype_name = "砖石公路-I型-01",
         dir = "E",
         x = 135,
         y = 125,
     },
+    ------------------
+    -- {
+    --     prototype_name = "砖石公路-U型-01",
+    --     dir = "W",
+    --     x = 132,
+    --     y = 125,
+    -- },
+    -- {
+    --     prototype_name = "砖石公路-U型-01",
+    --     dir = "E",
+    --     x = 135,
+    --     y = 125,
+    -- },
+
     {
         prototype_name = "砖石公路-I型-01",
         dir = "E",
@@ -327,6 +383,10 @@ local road = {
         x = 148,
         y = 125,
     },
+    -------------------------------
+    
+
+    
     {
         prototype_name = "砖石公路-U型-01",
         dir = "W",
