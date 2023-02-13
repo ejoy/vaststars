@@ -22,7 +22,7 @@ function c:ctor(init, pt)
     end
     for index, v in ipairs(pt.lorry) do
         local lpt = prototype.queryByName("entity", v)
-        park["lorry" .. index] = world:roadnet_create_lorry(lpt.id)
+        park["lorry" .. index] = lpt.id
     end
 
     return {
