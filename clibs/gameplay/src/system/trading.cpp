@@ -296,9 +296,10 @@ lbuild(lua_State *L) {
     kdtree.dataset.clear();
     for (auto& v : ecs_api::select<ecs::park>(w.ecs)) {
         auto& p = v.get<ecs::park>();
-        assert(p.endpoint != 0xffff);
-        auto loc = rw.Endpoint(p.endpoint).loc;
-        kdtree.dataset.emplace_back(loc.x, loc.y, p.endpoint, v.getid());
+        if (p.endpoint != roadnet::endpointid::invalid()) {
+            auto loc = rw.Endpoint(p.endpoint).loc;
+            kdtree.dataset.emplace_back(loc.x, loc.y, p.endpoint, v.getid());
+        }
     }
     kdtree.tree.build();
     return 0;

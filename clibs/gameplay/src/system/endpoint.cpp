@@ -41,6 +41,9 @@ static void charge(lua_State* L, world& w, ecs_api::entity<ecs::station, ecs::pa
 }
 
 static void entry(lua_State* L, world& w, ecs::station& station, ecs::park& park) {
+	if (station.endpoint == roadnet::endpointid::invalid()) {
+		return;
+	}
 	auto& ep = w.rw.Endpoint(station.endpoint);
 	auto lorryId = ep.getLorry(w.rw, roadnet::road::endpoint::type::wait);
 	if (!lorryId) {
