@@ -17,7 +17,7 @@
                 border-radius: 2.00vmin;
                 border: 0.53vmin white;
                 font-size: 4.00vmin;
-                transition: transform 2s elastic-out;
+                transition: transform 0.15s elastic-out;
                 transform: scale(1.0);
                 /* box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6), inset -2px -2px 3px rgba(0, 0, 0, .6); */
             }
