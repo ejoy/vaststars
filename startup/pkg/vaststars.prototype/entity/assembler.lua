@@ -130,21 +130,17 @@ prototype "车辆厂I" {
     icon = "textures/building_pic/small_pic_mars_assembling_machine.texture",
     background = "textures/build_background/pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
-    type = {"entity", "assembling", "consumer"},
+    type = {"entity", "consumer", "lorry_factory"},
     area = "5x5",
     speed = "50%",
     power = "300kW",
     priority = "secondary",
     group = {"加工"},
     craft_category = {"车辆制造"},
-    maxslot = "8",
-    fluidboxes = {
-        input = {},
-        output = {},
-    },
     crossing = {
         connections = {
-            {type="assembling", position={2,4,"S"}, roadside = true},
+            {type="assembling", position={1,2,"S"}, roadside = true},
+            {type="park",       position={2,2,"S"}, roadside = true},
         },
     }
 }

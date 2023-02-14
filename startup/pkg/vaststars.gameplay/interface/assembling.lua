@@ -58,7 +58,7 @@ local function createFluidBox(init, recipe)
     return fluidbox_in, fluidbox_out
 end
 
-local function resetItems(world, recipe, chest)
+local function resetItems(world, recipe, chest, option)
     local ingredients_n <const> = #recipe.ingredients//4 - 1
     local results_n <const> = #recipe.results//4 - 1
     if ingredients_n + results_n > chest.asize then
@@ -98,11 +98,11 @@ local function resetItems(world, recipe, chest)
     end
     for idx = 1, ingredients_n do
         local id, n = string.unpack("<I2I2", recipe.ingredients, 4*idx+1)
-        create_slot("blue", id, n * 2)
+        create_slot("blue", id, n * option.ingredientsLimit)
     end
     for idx = 1, results_n do
         local id, n = string.unpack("<I2I2", recipe.results, 4*idx+1)
-        create_slot("red", id, n * 2)
+        create_slot("red", id, n * option.resultsLimit)
     end
     local n = chest.asize - (ingredients_n + results_n)
     for i = 1, chest.asize do
@@ -127,13 +127,18 @@ local function del_recipe(e)
     chest.fluidbox_out = 0
 end
 
-local function set_recipe(world, e, pt, recipe_name, fluids)
+local function set_recipe(world, e, pt, recipe_name, fluids, option)
     fluidbox.update_fluidboxes(e, pt, fluids)
 
     if recipe_name == nil then
         del_recipe(e)
         return
     end
+    option = option or {
+        ingredientsLimit = 2,
+        resultsLimit = 2,
+    }
+
     local assembling = e.assembling
     local recipe = assert(prototype.queryByName("recipe", recipe_name), "unknown recipe: "..recipe_name)
     if assembling.recipe == recipe.id then
@@ -143,7 +148,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids)
     assembling.progress = 0
     assembling.status = STATUS_IDLE
     local chest = e.chest
-    local items = resetItems(world, recipe, chest)
+    local items = resetItems(world, recipe, chest, option)
     world:container_rollback(chest)
     world:container_reset(chest, items)
     if fluids and pt.fluidboxes then
