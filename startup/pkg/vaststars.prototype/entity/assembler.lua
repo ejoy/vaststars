@@ -137,6 +137,7 @@ prototype "车辆厂I" {
     priority = "secondary",
     group = {"加工"},
     craft_category = {"车辆制造"},
+    maxslot = "8",
     crossing = {
         connections = {
             {type="assembling", position={1,2,"S"}, roadside = true},
