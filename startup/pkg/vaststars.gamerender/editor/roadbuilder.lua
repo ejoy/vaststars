@@ -249,6 +249,15 @@ local function _builder_init(self, datamodel)
         return #_get_covers_connections(prototype_name, object) > 0
     end
 
+    local object = _get_object(self, coord_indicator.x, coord_indicator.y, EDITOR_CACHE_NAMES)
+    if object and iprototype.is_road(object.prototype_name) then
+        datamodel.show_construct = true
+        datamodel.show_teardown = true
+    else
+        datamodel.show_construct = false
+        datamodel.show_teardown = false
+    end
+
     if is_valid_starting(coord_indicator.x, coord_indicator.y) then
         datamodel.show_batch_construct_begin = true
         coord_indicator.state = "construct"
@@ -543,6 +552,33 @@ local function laying_pipe_confirm(self, datamodel)
     self.temporary_map = {}
 end
 
+local function construct(self, datamodel)
+    local coord_indicator = self.coord_indicator
+    local x, y = coord_indicator.x, coord_indicator.y
+    local coord = iprototype.packcoord(x, y)
+    assert(not global.roadnet[coord])
+    datamodel.show_confirm = true
+
+    iroadnet:editor_set("road", "valid", x, y, "O", "N")
+    self.update_cache[coord] = {"砖石公路-O型-01", "N"}
+
+    _builder_init(self, datamodel)
+end
+
+local function teardown(self, datamodel)
+    local coord_indicator = self.coord_indicator
+    local x, y = coord_indicator.x, coord_indicator.y
+    datamodel.show_confirm = true
+
+    local object = _get_object(self, x, y, EDITOR_CACHE_NAMES)
+    assert(object and iprototype.is_road(object.prototype_name))
+    local typeobject = iprototype.queryByName("entity", object.prototype_name)
+
+    iroadnet:editor_set("road", "remove", x, y, typeobject.track, object.dir)
+
+    _builder_init(self, datamodel)
+end
+
 local function clean(self, datamodel)
     if self.grid_entity then
         self.grid_entity:remove()
@@ -577,6 +613,8 @@ local function create()
     M.laying_pipe_begin = laying_pipe_begin
     M.laying_pipe_cancel = laying_pipe_cancel
     M.laying_pipe_confirm = laying_pipe_confirm
+    M.construct = construct
+    M.teardown = teardown
 
     M.temporary_map = {}
     M.update_cache = {}

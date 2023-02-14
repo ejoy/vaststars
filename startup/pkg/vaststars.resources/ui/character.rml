@@ -15,7 +15,7 @@
                 text-decoration: none;
                 border-radius: 8px;
                 border: 2px white;
-                transition: transform 2s elastic-out;
+                transition: transform 0.15s elastic-out;
                 background-color: rgba(237,125,49,255);
                 transform: scale(1.0);
             }

@@ -94,6 +94,11 @@ function roadnet:editor_set(layer_name, shape_type, x, y, shape, dir)
     self._layer_cache[layer_name][__pack(x, y)] = true
 end
 
+function roadnet:editor_del(layer_name, x, y)
+    local dx, dy = _convert_coord(x, y)
+    iroad:del(layer_name, dx, dy)
+end
+
 function roadnet:editor_build()
     --
     local gameplay_world = gameplay_core.get_world()

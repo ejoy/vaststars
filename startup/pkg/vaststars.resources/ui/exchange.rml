@@ -15,7 +15,7 @@
                 text-decoration: none;
                 border-radius: 1.07vmin;
                 opacity: 1;
-                transition: transform 2s elastic-out;
+                transition: transform 0.15s elastic-out;
                 transform: scale(1.0);
             }
             button:hover {

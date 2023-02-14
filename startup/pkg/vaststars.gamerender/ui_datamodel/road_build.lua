@@ -7,8 +7,10 @@ local single_touch_mb = world:sub {"single_touch"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local batch_construct_begin_mb = mailbox:sub {"batch_construct_begin"}
 local batch_construct_end_mb = mailbox:sub {"batch_construct_end"}
+local construct_mb = mailbox:sub {"construct"}
 local cancel_mb = mailbox:sub {"cancel"}
 local confirm_mb = mailbox:sub {"confirm"}
+local teardown_mb = mailbox:sub {"teardown"}
 
 ---------------
 local M = {}
@@ -67,6 +69,16 @@ function M:stage_ui_update(datamodel)
 
     for _ in batch_construct_end_mb:unpack() do
         builder:laying_pipe_confirm(datamodel)
+        self:flush()
+    end
+
+    for _ in construct_mb:unpack() do
+        builder:construct(datamodel)
+        self:flush()
+    end
+
+    for _ in teardown_mb:unpack() do
+        builder:teardown(datamodel)
         self:flush()
     end
 end

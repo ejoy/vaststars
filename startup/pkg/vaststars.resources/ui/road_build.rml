@@ -12,7 +12,7 @@
                 border-radius: 2.00vmin;
                 border: 0.53vmin white;
                 font-size: 4.00vmin;
-                transition: transform 1s elastic-out;
+                transition: transform 0.15s elastic-out;
             }
             button:active {
                 transform: scale(1.3);
