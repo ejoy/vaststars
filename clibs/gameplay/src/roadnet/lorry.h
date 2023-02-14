@@ -19,9 +19,9 @@ namespace roadnet {
         go_home,
     };
     struct lorry {
-        uint16_t classid;
-        uint16_t capacitance;
+        uint32_t capacitance;
         road_coord ending;
+        uint16_t classid;
         uint16_t item;
         uint16_t sell_endpoint;
         uint16_t buy_endpoint;

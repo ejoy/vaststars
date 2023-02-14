@@ -30,12 +30,10 @@ struct trading_kdtree {
     struct point {
         uint8_t x;
         uint8_t y;
-        uint16_t ep;
         int cid;
-        point(uint8_t x, uint8_t y, uint16_t ep, int cid)
+        point(uint8_t x, uint8_t y, int cid)
             : x(x)
             , y(y)
-            , ep(ep)
             , cid(cid)
         {}
     };

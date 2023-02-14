@@ -146,7 +146,7 @@ public:
         , dists((std::numeric_limits<ElementType>::max)())
     {}
     bool hasLorry(const Dataset& dataset, AccessorType index) {
-        ecs_api::entity<ecs::park> e {w.ecs};
+        ecs_api::entity<ecs::park, ecs::station> e {w.ecs};
         if (!e.init(dataset[index].cid)) {
             return false;
         }
@@ -178,15 +178,20 @@ private:
     ElementType  dists;
 };
 
-static bool GoHome(world& w, roadnet::road::endpoint& ep, roadnet::endpointid current) {
+static bool GoHome(world& w, roadnet::road::endpoint& ep) {
     auto& kdtree = w.tradings.station_kdtree;
     nearest_result<false> result(w);
-    auto loc = w.rw.Endpoint(current).loc;
+    auto loc = ep.loc;
     if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
         return false;
     }
+    ecs_api::entity<ecs::park, ecs::station> e {w.ecs};
+    if (!e.init(kdtree.dataset[result.value()].cid)) {
+        return false;
+    }
+    auto& station = e.get<ecs::station>();
     auto lorryId = ep.getWaitLorry(w.rw);
-    if (!ep.setOut(w.rw, kdtree.dataset[result.value()].ep)) {
+    if (!ep.setOut(w.rw, station.endpoint)) {
         return false;
     }
     auto& l = w.rw.Lorry(lorryId);
@@ -198,7 +203,7 @@ static bool HasTask(world& w) {
     return !w.tradings.orders.empty();
 }
 
-static bool DoTask(world& w, lua_State* L, uint16_t classid, roadnet::road::endpoint& ep, roadnet::endpointid current) {
+static bool DoTask(world& w, lua_State* L, uint16_t classid, roadnet::road::endpoint& ep) {
     assert(!w.tradings.orders.empty());
     auto& order = w.tradings.orders.front();
     if (!ep.canEntry(w.rw, roadnet::road::endpoint::type::out)) {
@@ -215,7 +220,7 @@ static bool DoTask(world& w, lua_State* L, uint16_t classid, roadnet::road::endp
     return true;
 }
 
-static bool DoTask(world& w, roadnet::road::endpoint& ep, roadnet::endpointid current) {
+static bool DoTask(world& w, roadnet::road::endpoint& ep) {
     assert(!w.tradings.orders.empty());
     auto& order = w.tradings.orders.front();
     auto lorryId = ep.getWaitLorry(w.rw);
@@ -264,12 +269,12 @@ static bool UpdateChest(world& w, ecs::chest& c) {
         }
         case roadnet::lorry_status::want_home: {
             if (HasTask(w)) {
-                if (DoTask(w, ep, c.endpoint)) {
+                if (DoTask(w, ep)) {
                     return true;
                 }
             }
             else {
-                if (GoHome(w, ep, c.endpoint)) {
+                if (GoHome(w, ep)) {
                     return true;
                 }
             }
@@ -294,11 +299,11 @@ lbuild(lua_State *L) {
     auto& rw = w.rw;
     auto& kdtree = w.tradings.station_kdtree;
     kdtree.dataset.clear();
-    for (auto& v : ecs_api::select<ecs::park>(w.ecs)) {
-        auto& p = v.get<ecs::park>();
-        if (p.endpoint != roadnet::endpointid::invalid()) {
-            auto loc = rw.Endpoint(p.endpoint).loc;
-            kdtree.dataset.emplace_back(loc.x, loc.y, p.endpoint, v.getid());
+    for (auto& v : ecs_api::select<ecs::park, ecs::station>(w.ecs)) {
+        auto& station = v.get<ecs::station>();
+        if (station.endpoint != roadnet::endpointid::invalid()) {
+            auto loc = rw.Endpoint(station.endpoint).loc;
+            kdtree.dataset.emplace_back(loc.x, loc.y, v.getid());
         }
     }
     kdtree.tree.build();
@@ -319,12 +324,10 @@ lupdate(lua_State *L) {
         if (!kdtree.tree.nearest(result, {loc.x, loc.y})) {
             break;
         }
-        
-        ecs_api::entity<ecs::park> e {w.ecs};
+        ecs_api::entity<ecs::park, ecs::station> e {w.ecs};
         if (!e.init(kdtree.dataset[result.value()].cid)) {
             break;
         }
-        roadnet::endpointid s{kdtree.dataset[result.value()].ep};
         auto& park = e.get<ecs::park>();
         assert(park.count > 0);
         uint16_t classid = park.lorry[0];
@@ -333,7 +336,7 @@ lupdate(lua_State *L) {
 			park.lorry[i] = park.lorry[i+1];
 		}
         auto& ep = w.rw.Endpoint(park.endpoint);
-        DoTask(w, L, classid, ep, s);
+        DoTask(w, L, classid, ep);
     }
     for (auto& v : ecs_api::select<ecs::chest>(w.ecs)) {
         auto& c = v.get<ecs::chest>();
