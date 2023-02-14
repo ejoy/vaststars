@@ -221,8 +221,11 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     self.coord_indicator.state = object_state
     local shape_type = State.succ and "valid" or "invalid"
 
-    -- TODO: map may be include some non-road objects, such as some building which have crossing, only for changing the state of the building
     for coord in pairs(map) do
+        local object = _get_object(self, x, y, EDITOR_CACHE_NAMES)
+        if object and not iprototype.is_road(object.prototype_name) then -- TODO: remove this check
+            goto continue
+        end
         local x, y = unpackcoord(coord)
         if x == from_x and y == from_y then
             iroadnet:editor_set("indicator", shape_type, x, y, "U", dir)
@@ -231,6 +234,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         else
             iroadnet:editor_set("indicator", shape_type, x, y, "I", dir)
         end
+        ::continue::
     end
     self.temporary_map = map
 

@@ -135,6 +135,7 @@ prototype "车辆厂I" {
     speed = "50%",
     power = "300kW",
     priority = "secondary",
+    maxslot = "8",
     group = {"加工"},
     craft_category = {"车辆制造"},
     crossing = {
