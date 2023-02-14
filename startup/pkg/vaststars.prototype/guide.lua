@@ -12,7 +12,7 @@ local guide = {
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
             task = {
-                "修复阻断公路",
+                "放置道路建造站",
             },
             guide_progress = 10,
         },
@@ -35,7 +35,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "修复阻断公路",
+            "放置道路建造站",
         },
 	},
 

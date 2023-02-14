@@ -32,7 +32,7 @@ local prototype = gameplay.register.prototype
     desc = "放置1座道路建造站",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"stat_production", 0, "道路建造站"},
+    task = {"select_entity", 0, "道路建造站"},
     prerequisites = {""},
     count = 1,
     tips_pic = {
@@ -43,30 +43,30 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "修复阻断公路" {
-    desc = "放置1座科研中心",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 1},
-    task_params = {starting = {117, 125}, ending = {135, 125}},
-    prerequisites = {"放置道路建造站"},
-    count = 1,
-    tips_pic = {
-      "textures/task_tips_pic/task_place_road1.texture",
-      "textures/task_tips_pic/task_place_road2.texture",
-      "textures/task_tips_pic/task_place_road3.texture",
-    },
-    sign_desc = {
-      { desc = "使用“建造”放置8段道路使得道路联通", icon = "textures/construct/industry.texture"},
-    },
-  }
+  -- prototype "修复阻断公路" {
+  --   desc = "放置1座科研中心",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"unknown", 0, 1},
+  --   task_params = {starting = {117, 125}, ending = {135, 125}},
+  --   prerequisites = {"放置道路建造站"},
+  --   count = 1,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_road1.texture",
+  --     "textures/task_tips_pic/task_place_road2.texture",
+  --     "textures/task_tips_pic/task_place_road3.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "使用“建造”放置8段道路使得道路联通", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
 
   prototype "放置物流中心" {
     desc = "放置1座物流中心",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "物流中心I"},
-    prerequisites = {"修复阻断公路"},
+    prerequisites = {"放置道路建造站"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
