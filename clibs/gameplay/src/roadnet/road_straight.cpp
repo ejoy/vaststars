@@ -7,14 +7,49 @@ namespace roadnet::road {
         this->len = len;
         this->dir = dir;
     }
-    bool straight::canEntry(world& w, direction dir)  {
-        return !hasLorry(w, len-1);
+    bool straight::canEntry(world& w, lorryid l, uint16_t offset)  {
+        if (offset == std::numeric_limits<uint16_t>::max()) {
+            offset = len-1;
+        }
+
+        if(endpointid& e = w.EndpointInRoad(lorryOffset+offset)) {
+            auto& lorry = w.Lorry(l);
+            endpoint& ep = w.Endpoint(e);
+            // the lorry arrived at the destination?
+            if (lorry.ending.id == id && lorry.ending.offset == offset) {
+                if(ep.hasLorry(w, endpoint::type::in)) {
+                    return false;
+                }
+            }
+            else {
+                if(ep.hasLorry(w, endpoint::type::out)) {
+                    return false;
+                }
+            }
+        }
+
+        return !hasLorry(w, offset);
     }
-    bool straight::tryEntry(world& w, lorryid l, direction dir) {
-        if (hasLorry(w, len-1)) {
+    bool straight::tryEntry(world& w, lorryid l, uint16_t offset) {
+        if (offset == std::numeric_limits<uint16_t>::max()) {
+            offset = len-1;
+        }
+
+        if (!canEntry(w, l, offset)) {
             return false;
         }
-        addLorry(w, l, len-1);
+
+        if(endpointid& e = w.EndpointInRoad(lorryOffset+offset)) {
+            auto& lorry = w.Lorry(l);
+            // the lorry arrived at the destination?
+            if (lorry.ending.id == id && lorry.ending.offset == offset) {
+                endpoint& ep = w.Endpoint(e);
+                ep.addLorry(w, l, endpoint::type::in);
+                return true;
+            }
+        }
+
+        addLorry(w, l, offset);
         return true;
     }
     void straight::setNeighbor(roadid id) {
@@ -38,43 +73,17 @@ namespace roadnet::road {
         // The last offset of straight(0) is the waiting area of crossroad, driven by crossroad.
         // see also: crossroad::waitingLorry()
         for (uint16_t i = 1; i < len; ++i) {
-            endpointid& e = w.EndpointInRoad(lorryOffset+i);
-            if (e) {
-                endpoint& ep = w.Endpoint(e);
-                if (auto l = ep.getLorry(w, endpoint::type::out)) {
-                    auto& lorry = w.Lorry(l);
-                    if (lorry.ready() && !w.LorryInRoad(lorryOffset+i)) {
-                        ep.delLorry(w, endpoint::type::out);
-                        addLorry(w, l, i);
-                    }
-                }
-                if (lorryid l = w.LorryInRoad(lorryOffset+i)) {
-                    auto& lorry = w.Lorry(l);
-                    if (lorry.ready()) {
-                        // next offset is endpoint
-                        if (lorry.ending.id == id && lorry.ending.offset == i) {
-                            if (!ep.hasLorry(w, endpoint::type::in)) {
-                                delLorry(w, i);
-                                ep.addLorry(w, l, endpoint::type::in);
-                            }
-                        }
-                        else {
-                            if (!w.LorryInRoad(lorryOffset+i-1)) {
-                                delLorry(w, i);
-                                addLorry(w, l, i-1);
-                            }
-                        }
-                    }
+            if(lorryid l = w.LorryInRoad(lorryOffset+i)) {
+                if(tryEntry(w, l, i-1)) {
+                    delLorry(w, i);
                 }
             }
-            else {
-                if (lorryid l = w.LorryInRoad(lorryOffset+i)) {
-                    auto& lorry = w.Lorry(l);
-                    if (lorry.ready()) {
-                        if (!w.LorryInRoad(lorryOffset+i-1)) {
-                            delLorry(w, i);
-                            addLorry(w, l, i-1);
-                        }
+
+            if(endpointid& e = w.EndpointInRoad(lorryOffset+i)) {
+                endpoint& ep = w.Endpoint(e);
+                if (auto l = ep.getLorry(w, endpoint::type::out)) {
+                    if (w.Lorry(l).ready() && tryEntry(w, l, i-1)) {
+                        ep.delLorry(w, endpoint::type::out);
                     }
                 }
             }

@@ -129,7 +129,7 @@ namespace roadnet::road {
             RoadType t = cross_status[i];
             auto& road = w.StraightRoad(neighbor[t & 0x03u]);
             direction out = direction(t & 0x03u);
-            if (road.tryEntry(w, id, reverse(out))) {
+            if (road.tryEntry(w, id)) {
                 cross_lorry[i] = lorryid::invalid();
             }
         }
@@ -153,7 +153,7 @@ namespace roadnet::road {
             if (!l.nextDirection(w, rev_neighbor[i], out)) {
                 continue;
             }
-            if (!w.StraightRoad(neighbor[(uint8_t)out]).canEntry(w, reverse(out))) {
+            if (!w.StraightRoad(neighbor[(uint8_t)out]).canEntry(w, id)) {
                 continue;
             }
             RoadType type = RoadType(((uint8_t)i << 2) | (uint8_t)out);
