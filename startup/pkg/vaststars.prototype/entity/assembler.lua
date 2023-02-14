@@ -139,8 +139,8 @@ prototype "车辆厂I" {
     craft_category = {"车辆制造"},
     crossing = {
         connections = {
-            {type="assembling", position={1,2,"S"}, roadside = true},
-            {type="park",       position={2,2,"S"}, roadside = true},
+            {type="assembling", position={1,4,"S"}, roadside = true},
+            {type="park",       position={2,4,"S"}, roadside = true},
         },
     }
 }
