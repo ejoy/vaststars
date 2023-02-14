@@ -56,11 +56,39 @@ static void entry(lua_State* L, world& w, ecs::station& station, ecs::park& park
 	ep.delWaitLorry(w.rw);
 }
 
+#define STATUS_IDLE 0
+#define STATUS_DONE 1
+
 static int lupdate(lua_State *L) {
 	world& w = *(world*)lua_touserdata(L, 1);
 	for (auto& v : ecs_api::select<ecs::station, ecs::park, ecs::entity, ecs::capacitance>(w.ecs)) {
 		charge(L, w, v);
 		entry(L, w, v.get<ecs::station>(), v.get<ecs::park>());
+	}
+	for (auto& v : ecs_api::select<ecs::lorry_factory, ecs::park, ecs::assembling>(w.ecs)) {
+		auto& assembling = v.get<ecs::assembling>();
+		auto& park = v.get<ecs::park>();
+		if (park.count >= 1) {
+			continue;
+		}
+		if (assembling.progress < 0) {
+			if (assembling.status == STATUS_DONE) {
+				prototype_context recipe = w.prototype(L, assembling.recipe);
+				recipe_items* results = (recipe_items*)pt_results(&recipe);
+				if (results->n > 0) {
+					w.stat.finish_recipe(L, w, assembling.recipe, false);
+					assembling.status = STATUS_IDLE;
+					for (size_t i = 0; i < results->n; ++i) {
+						uint16_t classid = results->items[i].item;
+						for (size_t j = 0; j < results->items[i].amount; ++j) {
+							if (park.count < kParkMaxLorry) {
+								park.lorry[park.count++] = classid;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	return 0;
 }

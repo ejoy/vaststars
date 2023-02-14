@@ -35,6 +35,9 @@ component "park" {
     "count:byte",
 }
 
+component "lorry_factory" {
+}
+
 component "assembling" {
     "progress:int",
     "recipe:word",
