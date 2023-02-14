@@ -8,49 +8,32 @@ namespace roadnet::road {
         this->dir = dir;
     }
     bool straight::canEntry(world& w, lorryid l, uint16_t offset)  {
-        if (offset == std::numeric_limits<uint16_t>::max()) {
-            offset = len-1;
-        }
-
-        if(endpointid& e = w.EndpointInRoad(lorryOffset+offset)) {
-            auto& lorry = w.Lorry(l);
+        if (endpointid& e = w.EndpointInRoad(lorryOffset+offset)) {
             endpoint& ep = w.Endpoint(e);
-            // the lorry arrived at the destination?
-            if (lorry.ending.id == id && lorry.ending.offset == offset) {
-                if(ep.hasLorry(w, endpoint::type::in)) {
-                    return false;
-                }
-            }
-            else {
-                if(ep.hasLorry(w, endpoint::type::out)) {
-                    return false;
-                }
-            }
+            auto& lorry = w.Lorry(l);
+            bool arrive = lorry.ending.id == id && lorry.ending.offset == offset;
+            return ep.canEntry(w, arrive? endpoint::type::in: endpoint::type::straight);
         }
-
         return !hasLorry(w, offset);
     }
+    bool straight::canEntry(world& w, lorryid l)  {
+        return canEntry(w, l, len-1);
+    }
     bool straight::tryEntry(world& w, lorryid l, uint16_t offset) {
-        if (offset == std::numeric_limits<uint16_t>::max()) {
-            offset = len-1;
-        }
-
-        if (!canEntry(w, l, offset)) {
-            return false;
-        }
-
-        if(endpointid& e = w.EndpointInRoad(lorryOffset+offset)) {
+        if (endpointid& e = w.EndpointInRoad(lorryOffset+offset)) {
+            endpoint& ep = w.Endpoint(e);
             auto& lorry = w.Lorry(l);
-            // the lorry arrived at the destination?
-            if (lorry.ending.id == id && lorry.ending.offset == offset) {
-                endpoint& ep = w.Endpoint(e);
-                ep.addLorry(w, l, endpoint::type::in);
-                return true;
-            }
+            bool arrive = lorry.ending.id == id && lorry.ending.offset == offset;
+            return ep.tryEntry(w, l, arrive? endpoint::type::in: endpoint::type::straight);
         }
-
-        addLorry(w, l, offset);
-        return true;
+        if (!hasLorry(w, offset)) {
+            addLorry(w, l, offset);
+            return true;
+        }
+        return false;
+    }
+    bool straight::tryEntry(world& w, lorryid l)  {
+        return tryEntry(w, l, len-1);
     }
     void straight::setNeighbor(roadid id) {
         assert(neighbor == roadid::invalid());
@@ -73,20 +56,24 @@ namespace roadnet::road {
         // The last offset of straight(0) is the waiting area of crossroad, driven by crossroad.
         // see also: crossroad::waitingLorry()
         for (uint16_t i = 1; i < len; ++i) {
-            if(lorryid l = w.LorryInRoad(lorryOffset+i)) {
-                if(tryEntry(w, l, i-1)) {
+            if (endpointid& e = w.EndpointInRoad(lorryOffset+i)) {
+                endpoint& ep = w.Endpoint(e);
+                ep.updateStraight(w, [&](lorryid l){ return tryEntry(w, l, i-1); });
+            }
+            else if (lorryid l = w.LorryInRoad(lorryOffset+i)) {
+                if (tryEntry(w, l, i-1)) {
                     delLorry(w, i);
                 }
             }
-
-            if(endpointid& e = w.EndpointInRoad(lorryOffset+i)) {
-                endpoint& ep = w.Endpoint(e);
-                if (auto l = ep.getLorry(w, endpoint::type::out)) {
-                    if (w.Lorry(l).ready() && tryEntry(w, l, i-1)) {
-                        ep.delLorry(w, endpoint::type::out);
-                    }
-                }
-            }
+        }
+    }
+    lorryid& straight::waitingLorry(world& w) {
+        if (endpointid& e = w.EndpointInRoad(lorryOffset)) {
+            endpoint& ep = w.Endpoint(e);
+            return ep.getOutOrStraight(w);
+        }
+        else {
+            return w.LorryInRoad(lorryOffset);
         }
     }
 }

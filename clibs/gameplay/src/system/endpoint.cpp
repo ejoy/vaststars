@@ -45,7 +45,7 @@ static void entry(lua_State* L, world& w, ecs::station& station, ecs::park& park
 		return;
 	}
 	auto& ep = w.rw.Endpoint(station.endpoint);
-	auto lorryId = ep.getLorry(w.rw, roadnet::road::endpoint::type::wait);
+	auto lorryId = ep.getWaitLorry(w.rw);
 	if (!lorryId) {
 		return;
 	}
@@ -53,7 +53,7 @@ static void entry(lua_State* L, world& w, ecs::station& station, ecs::park& park
 		return;
 	}
 	station.lorry[station.count++] = lorryId.id;
-	ep.delLorry(w.rw, roadnet::road::endpoint::type::wait);
+	ep.delWaitLorry(w.rw);
 }
 
 static int lupdate(lua_State *L) {

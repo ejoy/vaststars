@@ -18,13 +18,16 @@ namespace roadnet::road {
 
         void init(uint16_t id, uint16_t len, direction dir);
         void update(world& w, uint64_t ti);
-        bool canEntry(world& w, lorryid l, uint16_t offset = std::numeric_limits<uint16_t>::max());
-        bool tryEntry(world& w, lorryid l, uint16_t offset = std::numeric_limits<uint16_t>::max());
+        bool canEntry(world& w, lorryid l, uint16_t offset);
+        bool canEntry(world& w, lorryid l);
+        bool tryEntry(world& w, lorryid l, uint16_t offset);
+        bool tryEntry(world& w, lorryid l);
         void setNeighbor(roadid id);
         void setLorryOffset(uint32_t offset) { lorryOffset = offset; }
         void setEndpoint(world& w, uint16_t offset, endpointid id);
         void addLorry(world& w, lorryid l, uint16_t offset);
         bool hasLorry(world& w, uint16_t offset);
         void delLorry(world& w, uint16_t offset);
+        lorryid& waitingLorry(world& w);
     };
 }

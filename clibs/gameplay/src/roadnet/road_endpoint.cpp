@@ -19,6 +19,35 @@ namespace roadnet::road {
         return lorry[(size_t)offset];
     }
 
+    lorryid endpoint::getWaitLorry(world& w) const {
+        return lorry[(size_t)type::wait];
+    }
+    void endpoint::delWaitLorry(world& w) {
+        lorry[(size_t)type::wait] = lorryid::invalid();
+    }
+
+    bool endpoint::canEntry(world& w, type offset) {
+        switch (offset) {
+        case type::in:
+            return !hasLorry(w, type::in) && !hasLorry(w, type::straight);
+        case type::out:
+            return !hasLorry(w, type::out) && !hasLorry(w, type::straight);
+        case type::wait:
+            return !hasLorry(w, type::wait);
+        case type::straight:
+            return !hasLorry(w, type::in) && !hasLorry(w, type::out);
+        }
+        return false;
+    }
+
+    bool endpoint::tryEntry(world& w, lorryid l, type offset) {
+        if (!canEntry(w, offset)) {
+            return false;
+        }
+        addLorry(w, l, offset);
+        return true;
+    }
+
     void endpoint::setOut(world& w, lorryid lorryId, endpointid ending) {
         auto& e = w.Endpoint(ending);
         auto& lorry = w.Lorry(lorryId);
@@ -27,7 +56,7 @@ namespace roadnet::road {
     }
 
     bool endpoint::setOut(world& w, endpointid ending) {
-        if (hasLorry(w, type::out)) {
+        if (!canEntry(w, type::out)) {
             return false;
         }
         auto lorryId = getLorry(w, type::wait);
@@ -40,11 +69,30 @@ namespace roadnet::road {
         auto l = getLorry(w, type::in);
         if (l) {
             auto& lorry = w.Lorry(l);
-            if (lorry.ready() && !hasLorry(w, type::wait)) {
+            if (lorry.ready() && canEntry(w, type::wait)) {
                 addLorry(w, l, type::wait);
                 delLorry(w, type::in);
             }
         }
+    }
+    void endpoint::updateStraight(world& w, std::function<bool(lorryid)> tryEntry) {
+        if (auto l = getLorry(w, type::straight)) {
+            if (w.Lorry(l).ready() && tryEntry(l)) {
+                delLorry(w, type::straight);
+            }
+        }
+        else if (auto l = getLorry(w, type::out)) {
+            if (w.Lorry(l).ready() && tryEntry(l)) {
+                delLorry(w, type::out);
+            }
+        }
+    }
+
+    lorryid& endpoint::getOutOrStraight(world& w) {
+        if (hasLorry(w, type::out)) {
+            return lorry[(size_t)type::out];
+        }
+        return lorry[(size_t)type::straight];
     }
 }
 

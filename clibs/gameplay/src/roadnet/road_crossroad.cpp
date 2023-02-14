@@ -112,8 +112,7 @@ namespace roadnet::road {
     }
 
     lorryid& crossroad::waitingLorry(world& w, direction dir) {
-        uint32_t waiting = w.StraightRoad(rev_neighbor[(size_t)dir]).lorryOffset;
-        return w.LorryInRoad(waiting);
+        return w.StraightRoad(rev_neighbor[(size_t)dir]).waitingLorry(w);
     }
 
     void crossroad::update(world& w, uint64_t ti) {
