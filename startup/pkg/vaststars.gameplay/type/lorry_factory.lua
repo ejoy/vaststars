@@ -4,7 +4,6 @@ local iendpoint = require "interface.endpoint"
 
 local c = type "lorry_factory"
     .speed "percentage"
-    .maxslot "count"
 
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
