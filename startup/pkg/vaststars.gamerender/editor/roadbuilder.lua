@@ -22,6 +22,7 @@ local global = require "global"
 local iroadnet = ecs.require "roadnet"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 
+local ROAD_REMOVE <const> = {}
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 local STATE_NONE  <const> = 0
 local STATE_START <const> = 1
@@ -29,7 +30,7 @@ local STATE_START <const> = 1
 local function _get_object(self, x, y, cache_names)
     local coord = iprototype.packcoord(x, y)
     local tmp = self.update_cache[coord]
-    if tmp then
+    if tmp and tmp ~= ROAD_REMOVE then
         return {
             id = iobject.new_object_id(),
             x = x,
@@ -472,6 +473,32 @@ local function touch_end(self, datamodel)
     end
 end
 
+local function _apply_road_teardown(self, x, y)
+    for _, dir in ipairs(iconstant.ALL_DIR) do
+        local succ, dx, dy = terrain:move_coord(x, y, dir, 1)
+        if not succ then
+            goto continue
+        end
+        local object = _get_object(self, dx, dy, EDITOR_CACHE_NAMES)
+        if not object then
+            goto continue
+        end
+        if not iprototype.is_road(object.prototype_name) then
+            goto continue
+        end
+
+        local prototype_name, dir = iflow_connector.set_road_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), false)
+        assert(prototype_name and dir)
+
+        local shape = iroadnet_converter.to_shape(prototype_name)
+        iroadnet:editor_set("road", "normal", dx, dy, shape, dir)
+
+        local coord = iprototype.packcoord(dx, dy)
+        global.roadnet[coord] = {prototype_name, dir}
+        ::continue::
+    end
+end
+
 local function complete(self, datamodel)
     if self.grid_entity then
         self.grid_entity:remove()
@@ -480,13 +507,24 @@ local function complete(self, datamodel)
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
+    local remove = {}
     for coord, v in pairs(self.update_cache) do
         local x, y = iprototype.unpackcoord(coord)
-        local prototype_name, dir = v[1], v[2]
-        local shape = iroadnet_converter.to_shape(prototype_name)
-        iroadnet:editor_set("road", "normal", x, y, shape, dir)
+        if v == ROAD_REMOVE then
+            iroadnet:editor_del("road", x, y)
+            global.roadnet[coord] = nil
+            remove[coord] = true
+        else
+            local prototype_name, dir = v[1], v[2]
+            local shape = iroadnet_converter.to_shape(prototype_name)
+            iroadnet:editor_set("road", "normal", x, y, shape, dir)
+            global.roadnet[coord] = v
+        end
+    end
 
-        global.roadnet[coord] = v
+    for coord in pairs(remove) do
+        local x, y = iprototype.unpackcoord(coord)
+        _apply_road_teardown(self, x, y)
     end
 
     iroadnet:clear("indicator")
@@ -565,15 +603,66 @@ local function construct(self, datamodel)
     _builder_init(self, datamodel)
 end
 
+local function _road_teardown(self, x, y)
+    iroadnet:editor_del("road", x, y)
+
+    for _, dir in ipairs(iconstant.ALL_DIR) do
+        local succ, dx, dy = terrain:move_coord(x, y, dir, 1)
+        if not succ then
+            goto continue
+        end
+        local object = _get_object(self, dx, dy, EDITOR_CACHE_NAMES)
+        if not object then
+            goto continue
+        end
+        if not iprototype.is_road(object.prototype_name) then
+            goto continue
+        end
+
+        local prototype_name, dir = iflow_connector.set_road_connection(object.prototype_name, object.dir, iprototype.reverse_dir(dir), false)
+        assert(prototype_name and dir)
+
+        local shape = iroadnet_converter.to_shape(prototype_name)
+        iroadnet:editor_set("road", "valid", dx, dy, shape, dir)
+
+        local coord = iprototype.packcoord(dx, dy)
+        self.update_cache[coord] = {prototype_name, dir}
+        ::continue::
+    end
+end
+
 local function teardown(self, datamodel)
     local coord_indicator = self.coord_indicator
     local x, y = coord_indicator.x, coord_indicator.y
     datamodel.show_confirm = true
 
+    local coord = iprototype.packcoord(x, y)
+    if self.update_cache[coord] and self.update_cache[coord] ~= ROAD_REMOVE then
+        self.update_cache[coord] = nil
+        if global.roadnet[coord] then
+            local prototype_name, dir = global.roadnet[coord][1], global.roadnet[coord][2]
+            local shape = iroadnet_converter.to_shape(prototype_name)
+            iroadnet:editor_set("road", "remove", x, y, shape, dir)
+
+            self.update_cache[coord] = ROAD_REMOVE
+        else
+            _road_teardown(self, x, y)
+        end
+    else
+        if global.roadnet[coord] then
+            local prototype_name, dir = global.roadnet[coord][1], global.roadnet[coord][2]
+            local shape = iroadnet_converter.to_shape(prototype_name)
+            iroadnet:editor_set("road", "remove", x, y, shape, dir)
+
+            self.update_cache[coord] = ROAD_REMOVE
+        else
+            assert(false)
+        end
+    end
+
     local object = _get_object(self, x, y, EDITOR_CACHE_NAMES)
     assert(object and iprototype.is_road(object.prototype_name))
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
-
     iroadnet:editor_set("road", "remove", x, y, typeobject.track, object.dir)
 
     _builder_init(self, datamodel)
