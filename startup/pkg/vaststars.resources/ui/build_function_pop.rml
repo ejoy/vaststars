@@ -134,7 +134,7 @@
 
                         if start.show_road_builder then
                             local v = {}
-                            v.text = "道路建造"
+                            v.text = "道路施工"
                             v.message = "road_builder"
                             v.background_image = "textures/common/road-connect.texture"
                             start.buttons[#start.buttons + 1] = v
