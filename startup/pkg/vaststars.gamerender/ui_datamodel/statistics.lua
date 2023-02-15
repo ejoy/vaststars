@@ -133,7 +133,7 @@ local function update_chart(group, total)
 end
 
 local function gen_label_y(power)
-    local total = power * 50
+    local total = power
     local unit = "k"
     local divisor = 1000
     if total >= 1000000000 then
@@ -144,9 +144,10 @@ local function gen_label_y(power)
         unit = "M"
     end
     total = total / divisor
-    local step = total / 8
+    local step = total / 7
     local label = {}
-    for i = 1, 8 do
+    label[#label + 1] = ""--placehold
+    for i = 1, 7 do
         label[#label + 1] = ("%.1f%s"):format(total-step*(i-1), unit)
     end
     return label

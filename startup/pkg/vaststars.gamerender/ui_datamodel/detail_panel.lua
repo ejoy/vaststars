@@ -59,6 +59,7 @@ local function get_display_info(e, typeobject, t)
     end
     local values = t.values
     local status = 3 --work status
+    local frameratio = 30
     for _, propertyName in ipairs(detail) do
         local cfg = property_list[propertyName]
         if cfg.value then
@@ -82,7 +83,7 @@ local function get_display_info(e, typeobject, t)
                                 current = current + value
                             end
                         elseif e.solar_panel then
-                            current = get_solar_panel_power(total) * 50
+                            current = get_solar_panel_power(total) * frameratio
                             if current <= 0 then
                                 status = 1 --shundown status
                             end
@@ -90,12 +91,12 @@ local function get_display_info(e, typeobject, t)
                         if typeobject.drain then
                             if current <= 0 then
                                 status = 1 --shundown status
-                            elseif current <= typeobject.drain * 50 then
+                            elseif current <= typeobject.drain * frameratio then
                                 status = 2 --idle status
                             end
                         end
                     end
-                    total = total * 50
+                    total = total * frameratio
                     local unit = "k"
                     local divisor = 1000
                     if total >= 1000000000 then
