@@ -58,7 +58,7 @@ function M:create(object_id)
     return {
         items = {},
         total = 0,
-        label_x = {"10m","9m","8m","7m","6m","5m","4m","3m","2m","1m"},
+        label_x = {"5s","4.5s","4.0s","3.5s","3.0s","2.5s","2.0s","1.5s","1.0s","0.5s"},
         label_y = {"8w ","7w ","6w ","5w ","4w ","3w ","2w ","1w "}
     }
 end
@@ -99,9 +99,10 @@ local function update_chart(group, total)
     local index = group.tail
     
     local totalframe = total.frames
+    local topheight = canvas_size_h * 0.875
     for count = 1, framecount do
         local frame = group.frames[index]
-        line_list[line_idx][2] = (frame.power / totalframe[index].power) * canvas_size_h
+        line_list[line_idx][2] = (frame.power / totalframe[index].power) * topheight
         if count > 1 and count < framecount then
             line_list[line_idx + 1][2] = line_list[line_idx][2]
             line_idx = line_idx + 1
@@ -133,7 +134,10 @@ local function update_chart(group, total)
 end
 
 local function gen_label_y(power)
-    local total = power
+    -- power is sum of 50 ticks
+    -- frame ratio 30
+    local persec = 30 / 50
+    local total = power * persec
     local unit = "k"
     local divisor = 1000
     if total >= 1000000000 then
