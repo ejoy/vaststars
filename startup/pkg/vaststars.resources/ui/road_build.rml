@@ -79,14 +79,14 @@
                         if start.show_teardown then
                             start.buttons[#start.buttons+1] = {name = "拆除 1 个", message = "teardown", background_image = "textures/common/road-disconnect.texture"}
                         end
-                        if start.show_batch_teardown_end then
-                            start.buttons[#start.buttons+1] = {name = "拆除结束", message = "batch_teardown_end", background_image = "textures/construct/confirm.texture"}
-                        end
                         if start.show_cancel then
                             start.buttons[#start.buttons+1] = {name = "修建取消", message = "cancel", background_image = "textures/common/road-disable.texture"}
                          end
                         if start.show_batch_construct_end then
                             start.buttons[#start.buttons+1] = {name = "修建结束", message = "batch_construct_end", background_image = "textures/construct/confirm.texture"}
+                        end
+                        if start.show_batch_teardown_end then
+                            start.buttons[#start.buttons+1] = {name = "拆除结束", message = "batch_teardown_end", background_image = "textures/construct/confirm.texture"}
                         end
 
                         for i = 1, #start.buttons do
@@ -124,7 +124,7 @@
                     <div style = "flex-direction: row;">
                         <button style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(3, 196, 106);' data-event-click="clickConfirm()" data-if = "show_confirm" >
                             <div style='margin: 0 auto; background-image:"textures/construct/hammer.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover; animation:0.5s linear 0s infinite alternate rotation;'/>
-                            <div style="font-size: 85%;">确认</div>
+                            <div style="font-size: 85%;">施工</div>
                         </button>
                     </div>
                 </div>
