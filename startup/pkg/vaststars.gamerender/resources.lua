@@ -751,6 +751,7 @@ local t = {
 	"/pkg/vaststars.gameplay/type/laboratory.lua",
 	"/pkg/vaststars.gameplay/type/logistic_chest.lua",
 	"/pkg/vaststars.gameplay/type/logistic_hub.lua",
+	"/pkg/vaststars.gameplay/type/lorry_factory.lua",
 	"/pkg/vaststars.gameplay/type/mining.lua",
 	"/pkg/vaststars.gameplay/type/powergrid.lua",
 	"/pkg/vaststars.gameplay/type/pump.lua",
