@@ -28,6 +28,10 @@ local detail_ui = {
         rml = "logistic_center.rml",
     },
     {
+        type = "lorry_factory",
+        rml = "assemble.rml",
+    },
+    {
         type = "assembling",
         rml = "assemble.rml",
     },
@@ -84,7 +88,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
         show_detail = false
     end
 
-    if iprototype.has_type(typeobject.type, "assembling") then
+    if iprototype.has_type(typeobject.type, "assembling") or iprototype.has_type(typeobject.type, "lorry_factory") then
         show_set_recipe = typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining") -- TODO: special case for mining
         if e.assembling.recipe ~= 0 then
             local recipe_typeobject = iprototype.queryById(e.assembling.recipe)

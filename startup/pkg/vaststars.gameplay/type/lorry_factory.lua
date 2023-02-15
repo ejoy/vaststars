@@ -1,6 +1,7 @@
 local type = require "register.type"
 local assembling = require "interface.assembling"
-local iendpoint = require "interface.endpoint"
+local endpoint = require "interface.endpoint"
+local fluidbox = require "interface.fluidbox"
 
 local c = type "lorry_factory"
     .speed "percentage"
@@ -14,12 +15,13 @@ function c:ctor(init, pt)
     local recipe_name = pt.recipe and pt.recipe or init.recipe
     local e = {
         lorry_factory = true,
+        fluidboxes = {},
         chest = {
             index = world:container_create(pt.maxslot),
             asize = pt.maxslot,
             fluidbox_in = 0,
             fluidbox_out = 0,
-            endpoint =  iendpoint.create(world, init, pt, "assembling"),
+            endpoint =  endpoint.create(world, init, pt, "assembling"),
         },
         assembling = {
             progress = 0,
@@ -28,7 +30,7 @@ function c:ctor(init, pt)
             status = STATUS_IDLE,
         },
         park = {
-            endpoint = iendpoint.create(world, init, pt, "park"),
+            endpoint = endpoint.create(world, init, pt, "park"),
             count = 0,
             lorry1 = 0xffff,
             lorry2 = 0xffff,
@@ -46,5 +48,7 @@ function c:ctor(init, pt)
             resultsLimit = 0,
         })
     end
+    fluidbox.update_fluidboxes(e, pt, init.fluids)
+
     return e
 end

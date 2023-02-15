@@ -5,7 +5,6 @@ local w = world.w
 local iefk = ecs.import.interface "ant.efk|iefk"
 
 local timer = ecs.import.interface "ant.timer|itimer"
-local math3d = require "math3d"
 local storm_effect
 local storm_current_time = 0
 local storm_rest_time = 0

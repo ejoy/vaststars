@@ -24,6 +24,13 @@
                 margin: 0.00vmin;
                 font-size: 150%;
             }
+            .back-button {
+                border: 0.00vmin; 
+                background-image:"textures/common/return.texture"; 
+                width: 9.33vmin; 
+                height: 9.33vmin; 
+                background-size:cover;
+            }
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
@@ -87,6 +94,9 @@
     </head>
     <body style = "pointer-events: none;">
         <div data-model="start" style = "pointer-events: none; width: 100%; height:100%;">
+            <div style = "pointer-events: none; position: absolute; width: 100%; height:100%;">
+                <button class = "back-button" data-event-click="clickButton('back')"/>
+            </div>
             <div style = "pointer-events: none; position: absolute; width: 100%; height:100%; flex-direction: column-reverse;">
                 <div style = "pointer-events: none; margin: 0 auto; margin-bottom: 2vmin; flex-direction: row;">
                     <div data-for = "it : buttons" style = "flex-direction: row;">

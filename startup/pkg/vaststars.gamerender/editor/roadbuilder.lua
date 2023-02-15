@@ -24,8 +24,11 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 
 local ROAD_REMOVE <const> = {}
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
+
+-- To distinguish between "batch construction" and "batch teardown" in the touch_end event.
 local STATE_NONE  <const> = 0
 local STATE_START <const> = 1
+local STATE_TEARDOWN <const> = 2
 
 local function _get_object(self, x, y, cache_names)
     local coord = iprototype.packcoord(x, y)
@@ -258,6 +261,7 @@ local function _builder_init(self, datamodel)
     if object and iprototype.is_road(object.prototype_name) then
         datamodel.show_construct = true
         datamodel.show_teardown = true
+        datamodel.show_batch_teardown_begin = true
     else
         datamodel.show_construct = false
         datamodel.show_teardown = false
@@ -359,7 +363,7 @@ local function _builder_start(self, datamodel)
             end
         end
 
-        if not self:check_construct_detector(prototype_name, to_x, to_y, DEFAULT_DIR) then
+        if not self:check_construct_detector(prototype_name, to_x, to_y, DEFAULT_DIR) then -- cannot pave the road in places with minerals
             State.succ = false
         end
         State.to_x, State.to_y = to_x, to_y
@@ -367,7 +371,7 @@ local function _builder_start(self, datamodel)
         _builder_end(self, datamodel, State, dir, delta)
         return State.succ
     else
-        if not self:check_construct_detector(prototype_name, from_x, from_y, DEFAULT_DIR) then
+        if not self:check_construct_detector(prototype_name, from_x, from_y, DEFAULT_DIR) then -- cannot pave the road in places with minerals
             State.succ = false
         end
 
@@ -414,12 +418,236 @@ local function _builder_start(self, datamodel)
         if not succ then
             State.succ = false
         end
-        if not self:check_construct_detector(prototype_name, to_x, to_y, DEFAULT_DIR) then
+        if not self:check_construct_detector(prototype_name, to_x, to_y, DEFAULT_DIR) then -- cannot pave the road in places with minerals
             State.succ = false
         end
         State.to_x, State.to_y = to_x, to_y
         dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
         _builder_end(self, datamodel, State, dir, delta)
+        return State.succ
+    end
+end
+
+
+
+local function _teardown_end(self, datamodel, State, dir, dir_delta)
+    local reverse_dir = iprototype.reverse_dir(dir)
+    local prototype_name = self.coord_indicator.prototype_name
+    local map = {}
+
+    local from_x, from_y
+    if State.starting_connection then
+        from_x, from_y = State.starting_connection.x, State.starting_connection.y
+    else
+        from_x, from_y = State.from_x, State.from_y
+    end
+    local to_x, to_y
+    if State.ending_connection then
+        to_x, to_y = State.ending_connection.x, State.ending_connection.y
+    else
+        to_x, to_y = State.to_x, State.to_y
+    end
+    local x, y = assert(from_x), assert(from_y)
+
+    while true do
+        local coord = packcoord(x, y)
+        local object = _get_object(self, x, y, EDITOR_CACHE_NAMES)
+
+        if x == from_x and y == from_y then
+            if object then
+                map[coord] = {_set_endpoint_connection(State, object, State.starting_connection, dir)}
+            else
+                local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
+                endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(self, x, y, endpoint_prototype_name, endpoint_dir)
+                if not (x == to_x and y == to_y) then
+                    endpoint_prototype_name, endpoint_dir = iflow_connector.set_road_connection(endpoint_prototype_name, endpoint_dir, dir, true)
+                end
+                map[coord] = {endpoint_prototype_name, endpoint_dir}
+            end
+
+        elseif x == to_x and y == to_y then
+            if object then
+                map[coord] = {_set_endpoint_connection(State, object, State.ending_connection, reverse_dir)}
+            else
+                local connected_dir
+                local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
+                endpoint_prototype_name, endpoint_dir, connected_dir = _connect_to_neighbor(self, x, y, endpoint_prototype_name, endpoint_dir)
+                if connected_dir ~= reverse_dir then
+                    endpoint_prototype_name, endpoint_dir = iflow_connector.set_road_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
+                end
+                map[coord] = {endpoint_prototype_name, endpoint_dir}
+            end
+
+        else
+            if object then
+                if not iprototype.is_road(object.prototype_name) then
+                    State.succ = false
+                    map[coord] = {object.prototype_name, object.dir}
+                else
+                    local endpoint_prototype_name, endpoint_dir = object.prototype_name, object.dir
+                    endpoint_prototype_name, endpoint_dir = iflow_connector.set_road_connection(endpoint_prototype_name, endpoint_dir, dir, true)
+                    endpoint_prototype_name, endpoint_dir = iflow_connector.set_road_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
+                    map[coord] = {endpoint_prototype_name, endpoint_dir}
+                end
+            else
+                State.succ = false -- TODO: remove this
+            end
+        end
+
+        if x == to_x and y == to_y then
+            break
+        end
+        x, y = x + dir_delta.x, y + dir_delta.y
+    end
+
+    local object_state = State.succ and "construct" or "invalid_construct"
+    self.coord_indicator.state = object_state
+
+    if State.succ then
+        for coord in pairs(map) do
+            local object = _get_object(self, x, y, EDITOR_CACHE_NAMES)
+            if object and not iprototype.is_road(object.prototype_name) then -- TODO: remove this check
+                goto continue
+            end
+            local x, y = unpackcoord(coord)
+            if x == from_x and y == from_y then
+                iroadnet:editor_set("indicator", "remove", x, y, "U", dir)
+            elseif x == to_x and y == to_y then
+                iroadnet:editor_set("indicator", "remove", x, y, "U", reverse_dir)
+            else
+                iroadnet:editor_set("indicator", "remove", x, y, "I", dir)
+            end
+            ::continue::
+        end
+        self.temporary_map = map
+    end
+
+    datamodel.show_batch_teardown_end = State.succ
+end
+
+local function _teardown_start(self, datamodel)
+    local from_x, from_y = self.from_x, self.from_y
+    local to_x, to_y = self.coord_indicator.x, self.coord_indicator.y
+    local prototype_name = self.coord_indicator.prototype_name
+    local starting = _get_object(self, from_x, from_y, EDITOR_CACHE_NAMES)
+    local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
+
+    local State = {
+        succ = true,
+        starting_connection = nil,
+        ending_connection = nil,
+        from_x = from_x,
+        from_y = from_y,
+        to_x = to_x,
+        to_y = to_y,
+    }
+
+    if starting then
+        -- starting object should at least have one connection, promised by _builder_init()
+        local connection = _find_starting_connection(prototype_name, starting, to_x, to_y, dir)
+        State.starting_connection = connection
+        if connection.dir ~= dir then
+            State.succ = false
+        end
+
+        local succ
+        succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
+            math_abs(to_x - connection.x),
+            math_abs(to_y - connection.y)
+        )
+        if not succ then
+            State.succ = false
+        end
+
+        local ending = _get_object(self, to_x, to_y, EDITOR_CACHE_NAMES)
+        if ending then
+            if starting.x == ending.x and starting.y == ending.y then
+                State.succ = false
+                State.ending_connection = connection
+            else
+                for _, another in ipairs(_get_covers_connections(prototype_name, ending)) do
+                    if another.dir ~= iprototype.reverse_dir(dir) then
+                        goto continue
+                    end
+                    succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
+                        math_abs(another.x - connection.x),
+                        math_abs(another.y - connection.y)
+                    )
+                    if not succ then
+                        goto continue
+                    end
+                    if to_x == another.x and to_y == another.y then
+                        State.ending_connection = another
+                        _teardown_end(self, datamodel, State, dir, delta)
+                        return State.succ
+                    end
+                    ::continue::
+                end
+                State.succ = false
+            end
+        end
+
+        if not self:check_construct_detector(prototype_name, to_x, to_y, DEFAULT_DIR) then -- cannot pave the road in places with minerals
+            State.succ = false
+        end
+        State.to_x, State.to_y = to_x, to_y
+        dir, delta = iprototype.calc_dir(connection.x, connection.y, to_x, to_y)
+        _teardown_end(self, datamodel, State, dir, delta)
+        return State.succ
+    else
+        if not self:check_construct_detector(prototype_name, from_x, from_y, DEFAULT_DIR) then -- cannot pave the road in places with minerals
+            State.succ = false
+        end
+
+        State.from_x, State.from_y = from_x, from_y
+        local succ
+        succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
+            math_abs(to_x - from_x),
+            math_abs(to_y - from_y)
+        )
+        if not succ then
+            State.succ = false
+        end
+        State.to_x, State.to_y = to_x, to_y
+
+        local ending = _get_object(self, to_x, to_y, EDITOR_CACHE_NAMES)
+        if ending then
+            for _, fluidbox in ipairs(_get_covers_connections(prototype_name, ending)) do
+                if fluidbox.dir ~= iprototype.reverse_dir(dir) then
+                    goto continue
+                end
+                succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+                    math_abs(from_x - fluidbox.x),
+                    math_abs(from_y - fluidbox.y)
+                )
+                if not succ then
+                    goto continue
+                end
+                if to_x == fluidbox.x and to_y == fluidbox.y then
+                    State.ending_connection = fluidbox
+                    _teardown_end(self, datamodel, State, dir, delta)
+                    return State.succ
+                end
+                ::continue::
+            end
+            State.succ = false
+        end
+
+        --
+        local succ
+        succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
+            math_abs(to_x - from_x),
+            math_abs(to_y - from_y)
+        )
+        if not succ then
+            State.succ = false
+        end
+        if not self:check_construct_detector(prototype_name, to_x, to_y, DEFAULT_DIR) then -- cannot pave the road in places with minerals
+            State.succ = false
+        end
+        State.to_x, State.to_y = to_x, to_y
+        dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
+        _teardown_end(self, datamodel, State, dir, delta)
         return State.succ
     end
 end
@@ -469,11 +697,13 @@ local function touch_end(self, datamodel)
     self.coord_indicator.x, self.coord_indicator.y = x, y
     iroadnet:clear("indicator")
 
-    if self.state ~= STATE_START then
+    if self.state == STATE_NONE then
         _builder_init(self, datamodel)
         return false
-    else
+    elseif self.state == STATE_START then
         return _builder_start(self, datamodel)
+    elseif self.state == STATE_TEARDOWN then
+        return _teardown_start(self, datamodel)
     end
 end
 
@@ -561,6 +791,7 @@ local function laying_pipe_cancel(self, datamodel)
 
     self.state = STATE_NONE
     datamodel.show_batch_construct_end = false
+    datamodel.show_batch_teardown_end = false
     datamodel.show_cancel = false
 end
 
@@ -635,6 +866,230 @@ local function _road_teardown(self, x, y)
     end
 end
 
+
+
+local function _teardown_end(self, datamodel, State, dir, dir_delta)
+    local reverse_dir = iprototype.reverse_dir(dir)
+    local prototype_name = self.coord_indicator.prototype_name
+    local map = {}
+
+    local from_x, from_y
+    if State.starting_connection then
+        from_x, from_y = State.starting_connection.x, State.starting_connection.y
+    else
+        from_x, from_y = State.from_x, State.from_y
+    end
+    local to_x, to_y
+    if State.ending_connection then
+        to_x, to_y = State.ending_connection.x, State.ending_connection.y
+    else
+        to_x, to_y = State.to_x, State.to_y
+    end
+    local x, y = assert(from_x), assert(from_y)
+
+    while true do
+        local coord = packcoord(x, y)
+        local object = _get_object(self, x, y, EDITOR_CACHE_NAMES)
+
+        if x == from_x and y == from_y then
+            if object then
+                map[coord] = {_set_endpoint_connection(State, object, State.starting_connection, dir)}
+            else
+                local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
+                endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(self, x, y, endpoint_prototype_name, endpoint_dir)
+                if not (x == to_x and y == to_y) then
+                    endpoint_prototype_name, endpoint_dir = iflow_connector.set_road_connection(endpoint_prototype_name, endpoint_dir, dir, true)
+                end
+                map[coord] = {endpoint_prototype_name, endpoint_dir}
+            end
+
+        elseif x == to_x and y == to_y then
+            if object then
+                map[coord] = {_set_endpoint_connection(State, object, State.ending_connection, reverse_dir)}
+            else
+                local connected_dir
+                local endpoint_prototype_name, endpoint_dir = iflow_connector.cleanup(prototype_name, DEFAULT_DIR)
+                endpoint_prototype_name, endpoint_dir, connected_dir = _connect_to_neighbor(self, x, y, endpoint_prototype_name, endpoint_dir)
+                if connected_dir ~= reverse_dir then
+                    endpoint_prototype_name, endpoint_dir = iflow_connector.set_road_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
+                end
+                map[coord] = {endpoint_prototype_name, endpoint_dir}
+            end
+
+        else
+            if object then
+                if not iprototype.is_road(object.prototype_name) then
+                    State.succ = false
+                    map[coord] = {object.prototype_name, object.dir}
+                else
+                    local endpoint_prototype_name, endpoint_dir = object.prototype_name, object.dir
+                    endpoint_prototype_name, endpoint_dir = iflow_connector.set_road_connection(endpoint_prototype_name, endpoint_dir, dir, true)
+                    endpoint_prototype_name, endpoint_dir = iflow_connector.set_road_connection(endpoint_prototype_name, endpoint_dir, reverse_dir, true)
+                    map[coord] = {endpoint_prototype_name, endpoint_dir}
+                end
+            else
+                State.succ = false -- TODO: remove this
+            end
+        end
+
+        if x == to_x and y == to_y then
+            break
+        end
+        x, y = x + dir_delta.x, y + dir_delta.y
+    end
+
+    local object_state = State.succ and "construct" or "invalid_construct"
+    self.coord_indicator.state = object_state
+
+    if State.succ then
+        for coord in pairs(map) do
+            local object = _get_object(self, x, y, EDITOR_CACHE_NAMES)
+            if object and not iprototype.is_road(object.prototype_name) then -- TODO: remove this check
+                goto continue
+            end
+            local x, y = unpackcoord(coord)
+            if x == from_x and y == from_y then
+                iroadnet:editor_set("indicator", "remove", x, y, "U", dir)
+            elseif x == to_x and y == to_y then
+                iroadnet:editor_set("indicator", "remove", x, y, "U", reverse_dir)
+            else
+                iroadnet:editor_set("indicator", "remove", x, y, "I", dir)
+            end
+            ::continue::
+        end
+        self.temporary_map = map
+    end
+
+    datamodel.show_batch_teardown_end = State.succ
+end
+
+local function _teardown_start(self, datamodel)
+    local from_x, from_y = self.from_x, self.from_y
+    local to_x, to_y = self.coord_indicator.x, self.coord_indicator.y
+    local prototype_name = self.coord_indicator.prototype_name
+    local starting = _get_object(self, from_x, from_y, EDITOR_CACHE_NAMES)
+    local dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
+
+    local State = {
+        succ = true,
+        starting_connection = nil,
+        ending_connection = nil,
+        from_x = from_x,
+        from_y = from_y,
+        to_x = to_x,
+        to_y = to_y,
+    }
+
+    if starting then
+        -- starting object should at least have one connection, promised by _builder_init()
+        local connection = _find_starting_connection(prototype_name, starting, to_x, to_y, dir)
+        State.starting_connection = connection
+        if connection.dir ~= dir then
+            State.succ = false
+        end
+
+        local succ
+        succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
+            math_abs(to_x - connection.x),
+            math_abs(to_y - connection.y)
+        )
+        if not succ then
+            State.succ = false
+        end
+
+        local ending = _get_object(self, to_x, to_y, EDITOR_CACHE_NAMES)
+        if ending then
+            if starting.x == ending.x and starting.y == ending.y then
+                State.succ = false
+                State.ending_connection = connection
+            else
+                for _, another in ipairs(_get_covers_connections(prototype_name, ending)) do
+                    if another.dir ~= iprototype.reverse_dir(dir) then
+                        goto continue
+                    end
+                    succ, to_x, to_y = terrain:move_coord(connection.x, connection.y, dir,
+                        math_abs(another.x - connection.x),
+                        math_abs(another.y - connection.y)
+                    )
+                    if not succ then
+                        goto continue
+                    end
+                    if to_x == another.x and to_y == another.y then
+                        State.ending_connection = another
+                        _teardown_end(self, datamodel, State, dir, delta)
+                        return State.succ
+                    end
+                    ::continue::
+                end
+                State.succ = false
+            end
+        end
+
+        if not self:check_construct_detector(prototype_name, to_x, to_y, DEFAULT_DIR) then -- cannot pave the road in places with minerals
+            State.succ = false
+        end
+        State.to_x, State.to_y = to_x, to_y
+        dir, delta = iprototype.calc_dir(connection.x, connection.y, to_x, to_y)
+        _teardown_end(self, datamodel, State, dir, delta)
+        return State.succ
+    else
+        if not self:check_construct_detector(prototype_name, from_x, from_y, DEFAULT_DIR) then -- cannot pave the road in places with minerals
+            State.succ = false
+        end
+
+        State.from_x, State.from_y = from_x, from_y
+        local succ
+        succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
+            math_abs(to_x - from_x),
+            math_abs(to_y - from_y)
+        )
+        if not succ then
+            State.succ = false
+        end
+        State.to_x, State.to_y = to_x, to_y
+
+        local ending = _get_object(self, to_x, to_y, EDITOR_CACHE_NAMES)
+        if ending then
+            for _, fluidbox in ipairs(_get_covers_connections(prototype_name, ending)) do
+                if fluidbox.dir ~= iprototype.reverse_dir(dir) then
+                    goto continue
+                end
+                succ, to_x, to_y = terrain:move_coord(fluidbox.x, fluidbox.y, dir,
+                    math_abs(from_x - fluidbox.x),
+                    math_abs(from_y - fluidbox.y)
+                )
+                if not succ then
+                    goto continue
+                end
+                if to_x == fluidbox.x and to_y == fluidbox.y then
+                    State.ending_connection = fluidbox
+                    _teardown_end(self, datamodel, State, dir, delta)
+                    return State.succ
+                end
+                ::continue::
+            end
+            State.succ = false
+        end
+
+        --
+        local succ
+        succ, to_x, to_y = terrain:move_coord(from_x, from_y, dir,
+            math_abs(to_x - from_x),
+            math_abs(to_y - from_y)
+        )
+        if not succ then
+            State.succ = false
+        end
+        if not self:check_construct_detector(prototype_name, to_x, to_y, DEFAULT_DIR) then -- cannot pave the road in places with minerals
+            State.succ = false
+        end
+        State.to_x, State.to_y = to_x, to_y
+        dir, delta = iprototype.calc_dir(from_x, from_y, to_x, to_y)
+        _teardown_end(self, datamodel, State, dir, delta)
+        return State.succ
+    end
+end
+
 local function teardown(self, datamodel)
     local coord_indicator = self.coord_indicator
     local x, y = coord_indicator.x, coord_indicator.y
@@ -671,23 +1126,89 @@ local function teardown(self, datamodel)
 
     _builder_init(self, datamodel)
 end
+local function batch_teardown_begin(self, datamodel)
+    iroadnet:clear("indicator")
 
-local function clean(self, datamodel)
-    if self.grid_entity then
-        self.grid_entity:remove()
-        self.grid_entity = nil
+    datamodel.show_batch_teardown_begin = false
+    datamodel.show_batch_construct_begin = false
+    datamodel.show_construct = false
+    datamodel.show_teardown = false
+    datamodel.show_cancel = true
+
+    self.state = STATE_TEARDOWN
+    self.from_x = self.coord_indicator.x
+    self.from_y = self.coord_indicator.y
+
+    return _teardown_start(self, datamodel)
+end
+
+local function batch_teardown_end(self, datamodel)
+    self.state = STATE_NONE
+    datamodel.show_batch_teardown_end = false
+    datamodel.show_cancel = false
+    datamodel.show_confirm = true
+
+    iroadnet:clear("indicator")
+
+    for coord in pairs(self.temporary_map) do
+        local x, y = iprototype.unpackcoord(coord)
+        local coord = iprototype.packcoord(x, y)
+        if self.update_cache[coord] and self.update_cache[coord] ~= ROAD_REMOVE then
+            self.update_cache[coord] = nil
+            if global.roadnet[coord] then
+                local prototype_name, dir = global.roadnet[coord][1], global.roadnet[coord][2]
+                local shape = iroadnet_converter.to_shape(prototype_name)
+                iroadnet:editor_set("road", "remove", x, y, shape, dir)
+
+                self.update_cache[coord] = ROAD_REMOVE
+            else
+                _road_teardown(self, x, y)
+            end
+        else
+            if global.roadnet[coord] then
+                local prototype_name, dir = global.roadnet[coord][1], global.roadnet[coord][2]
+                local shape = iroadnet_converter.to_shape(prototype_name)
+                iroadnet:editor_set("road", "remove", x, y, shape, dir)
+
+                self.update_cache[coord] = ROAD_REMOVE
+            else
+                assert(false)
+            end
+        end
+
+        iroadnet:editor_set("road", "remove", x, y, "X", "N")
     end
+    self.temporary_map = {}
+end
 
-    iobject.remove(self.coord_indicator)
-    self.coord_indicator = nil
-
+local function back(self, datamodel)
     iroadnet:clear("indicator")
 
     self.state = STATE_NONE
     datamodel.show_batch_construct_end = false
-    datamodel.show_cancel = false
+    datamodel.show_batch_teardown_end = false
     datamodel.show_batch_construct_begin = false
-    self.super.clean(self, datamodel)
+    datamodel.show_batch_teardown_begin = false
+    datamodel.show_cancel = false
+
+    for coord, v in pairs(self.update_cache) do
+        local x, y = iprototype.unpackcoord(coord)
+        local prototype_name, dir = global.roadnet[coord][1], global.roadnet[coord][2]
+        local shape = iroadnet_converter.to_shape(prototype_name)
+        iroadnet:editor_set("road", "normal", x, y, shape, dir)
+    end
+
+    if self.grid_entity then
+        self.grid_entity:remove()
+        self.grid_entity = nil
+    end
+    iobject.remove(self.coord_indicator)
+    self.coord_indicator = nil
+
+	iui.redirect("construct.rml", "revert_roadbuilder")
+
+    self.temporary_map = {}
+    self.update_cache = {}
 end
 
 local function create()
@@ -699,15 +1220,15 @@ local function create()
     M.touch_end = touch_end
     M.complete = complete
 
-    M.clean = clean
-
-    M.prototype_name = ""
     M.state = STATE_NONE
     M.laying_pipe_begin = laying_pipe_begin
     M.laying_pipe_cancel = laying_pipe_cancel
     M.laying_pipe_confirm = laying_pipe_confirm
     M.construct = construct
     M.teardown = teardown
+    M.batch_teardown_begin = batch_teardown_begin
+    M.batch_teardown_end = batch_teardown_end
+    M.back = back
 
     M.temporary_map = {}
     M.update_cache = {}

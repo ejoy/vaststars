@@ -123,7 +123,7 @@ function M:stage_ui_update(datamodel, object_id)
 end
 
 function M:update(datamodel, object_id)
-    for k, v in pairs(get(object_id)) do
+    for k, v in pairs(get(object_id) or {}) do
         datamodel[k] = v
     end
     self:flush()

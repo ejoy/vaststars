@@ -55,7 +55,7 @@ local assembling_recipe = {}; local get_recipe_index; do
     local index_cache = {}
 
     for _, v in pairs(iprototype.each_maintype "entity") do
-        if not (iprototype.has_type(v.type, "assembling") and v.craft_category )then
+        if not ((iprototype.has_type(v.type, "assembling") or iprototype.has_type(v.type, "lorry_factory")) and v.craft_category )then
             goto continue
         end
         assembling_recipe[v.name] = assembling_recipe[v.name] or {}

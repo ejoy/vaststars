@@ -12,6 +12,8 @@ local cancel_mb = mailbox:sub {"cancel"}
 local confirm_mb = mailbox:sub {"confirm"}
 local teardown_mb = mailbox:sub {"teardown"}
 local batch_teardown_begin_mb = mailbox:sub {"batch_teardown_begin"}
+local batch_teardown_end_mb = mailbox:sub {"batch_teardown_end"}
+local back_mb = mailbox:sub {"back"}
 
 ---------------
 local M = {}
@@ -85,6 +87,16 @@ function M:stage_ui_update(datamodel)
 
     for _ in batch_teardown_begin_mb:unpack() do
         builder:batch_teardown_begin(datamodel)
+        self:flush()
+    end
+
+    for _ in batch_teardown_end_mb:unpack() do
+        builder:batch_teardown_end(datamodel)
+        self:flush()
+    end
+
+    for _ in back_mb:unpack() do
+        builder:back(datamodel)
         self:flush()
     end
 end

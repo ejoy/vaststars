@@ -143,5 +143,11 @@ prototype "车辆厂I" {
             {type="assembling", position={1,4,"S"}, roadside = true},
             {type="park",       position={2,4,"S"}, roadside = true},
         },
-    }
+    },
+    fluidboxes = {
+        input = {
+        },
+        output = {
+        },
+    },
 }
