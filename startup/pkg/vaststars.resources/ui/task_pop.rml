@@ -88,6 +88,15 @@
                 font-size: 4vmin;
                 -webkit-text-stroke: 0.1vmin rgb(0,0,0);
             }
+            .accomplished {
+                position: absolute;
+                right: 1vmin; 
+                top: 2vmin;
+                color:chartreuse;
+                -webkit-text-stroke: 0.3vmin rgb(0,0,0);
+                opacity: 0;
+                animation: 3s sine-in-out 0s enlarge;
+            }
         </style>
         <style path = "common/building_style.rcss"/>
         <style path = "common/listpage_style.rcss"/>
