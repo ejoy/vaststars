@@ -59,25 +59,25 @@
                         start.buttons = {}
                         console.log("start.show_batch_teardown_begin", start.show_batch_teardown_begin)
                         if start.show_batch_teardown_begin then
-                            start.buttons[#start.buttons+1] = {name = "拆除开始", message = "batch_teardown_begin", background_image = "textures/construct/cancel.texture"}
+                            start.buttons[#start.buttons+1] = {name = "批量拆除", message = "batch_teardown_begin", background_image = "textures/common/road-disconnect.texture"}
                         end
                         if start.show_batch_construct_begin then
-                            start.buttons[#start.buttons+1] = {name = "修建开始", message = "batch_construct_begin", background_image = "textures/construct/cancel.texture"}
+                            start.buttons[#start.buttons+1] = {name = "批量修建", message = "batch_construct_begin", background_image = "textures/common/road-connect.texture"}
                         end
                         if start.show_construct then
-                            start.buttons[#start.buttons+1] = {name = "修建 1 个", message = "construct", background_image = "textures/construct/cancel.texture"}
+                            start.buttons[#start.buttons+1] = {name = "修建 1 个", message = "construct", background_image = "textures/common/road-connect.texture"}
                         end
                         if start.show_teardown then
-                            start.buttons[#start.buttons+1] = {name = "拆除 1 个", message = "teardown", background_image = "textures/construct/cancel.texture"}
+                            start.buttons[#start.buttons+1] = {name = "拆除 1 个", message = "teardown", background_image = "textures/common/road-disconnect.texture"}
                         end
                         if start.show_batch_teardown_end then
-                            start.buttons[#start.buttons+1] = {name = "拆除结束", message = "batch_teardown_end", background_image = "textures/construct/cancel.texture"}
+                            start.buttons[#start.buttons+1] = {name = "拆除结束", message = "batch_teardown_end", background_image = "textures/construct/confirm.texture"}
                         end
                         if start.show_batch_construct_end then
-                            start.buttons[#start.buttons+1] = {name = "修建结束", message = "batch_construct_end", background_image = "textures/construct/cancel.texture"}
+                            start.buttons[#start.buttons+1] = {name = "修建结束", message = "batch_construct_end", background_image = "textures/construct/confirm.texture"}
                         end
                         if start.show_cancel then
-                            start.buttons[#start.buttons+1] = {name = "修建取消", message = "cancel", background_image = "textures/construct/cancel.texture"}
+                            start.buttons[#start.buttons+1] = {name = "修建取消", message = "cancel", background_image = "textures/common/road-disable.texture"}
                         end
 
                         for i = 1, #start.buttons do
@@ -114,7 +114,7 @@
                     <div style = "width: 5vmin;" />
                     <div style = "flex-direction: row;">
                         <button style='width: 22.00vmin; height: 16.00vmin; background-color: rgb(203, 118, 24);' data-event-click="clickConfirm()" data-if = "show_confirm" >
-                            <div style="margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-size:cover; background-image: textures/construct/cancel.texture" />
+                            <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-size:cover; background-image: "textures/construct/confirm.texture"'/>
                             <div style="font-size: 85%;">确认</div>
                         </button>
                     </div>
