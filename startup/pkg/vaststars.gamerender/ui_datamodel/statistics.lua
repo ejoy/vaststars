@@ -39,7 +39,7 @@ local function create_grid(row, col)
         lines[#lines + 1] = {index * colstep, 0, 0, 0.5}
         lines[#lines + 1] = {index * colstep, canvas_size_h, 0, 0.5}
     end
-    grid[#grid + 1] = ientity.create_screen_line_list("", lines, nil, {u_color = {0.3, 0.3, 0.3, 1.0}, u_canvas_size = {canvas_size_w, canvas_size_h, 0, 0} }, true, "translucent", queuename)
+    grid[#grid + 1] = ientity.create_screen_line_list(lines, nil, {u_color = {0.3, 0.3, 0.3, 1.0}, u_canvas_size = {canvas_size_w, canvas_size_h, 0, 0} }, true, "translucent", queuename)
 end
 function M:create(object_id)
     if #chart_color_table < 1 then
@@ -126,10 +126,30 @@ local function update_chart(group, total)
         imaterial.set_property(e, "u_color", math3d.vector(color))
         update_vb(group.eid, line_list)
     else
-        group.eid = ientity.create_screen_line_list("", line_list, nil, {u_color = color, u_canvas_size = {canvas_size_w, canvas_size_h, 0, 0} }, true, "translucent", queuename)
+        group.eid = ientity.create_screen_line_list(line_list, nil, {u_color = color, u_canvas_size = {canvas_size_w, canvas_size_h, 0, 0} }, true, "translucent", queuename)
         chart_eid[#chart_eid + 1] = group.eid
     end
     return color
+end
+
+local function gen_label_y(power)
+    local total = power * 50
+    local unit = "k"
+    local divisor = 1000
+    if total >= 1000000000 then
+        divisor = 1000000000
+        unit = "G"
+    elseif total >= 1000000 then
+        divisor = 1000000
+        unit = "M"
+    end
+    total = total / divisor
+    local step = total / 8
+    local label = {}
+    for i = 1, 8 do
+        label[#label + 1] = ("%.1f%s"):format(total-step*(i-1), unit)
+    end
+    return label
 end
 
 function M:stage_ui_update(datamodel)
@@ -149,6 +169,14 @@ function M:stage_ui_update(datamodel)
     for _, _, _, type, value in statistics_mb:unpack() do
         if type == "filter_type" and filter_type ~= value then
             filter_type = value
+            local label = {}
+            local total_str, postfix = string.match(value,"(%d+)(%a)")
+            local total = tonumber(total_str)
+            local step = total / 10
+            for i = 1, 10 do
+                label[#label + 1] = (total-step*(i-1))..postfix
+            end
+            datamodel.label_x = label
             hide_chart()
         elseif type == "chart_type" then
             local nv = math.floor(value)
@@ -167,6 +195,7 @@ function M:stage_ui_update(datamodel)
         if chart_type == 0 then
             local total = global.statistic.power_consumed[filter_type]
             datamodel.total = total.power
+            datamodel.label_y = gen_label_y(total.power)
             for _, group in pairs(power_group) do
                 local node = group[filter_type]
                 if node.consumer then
@@ -178,6 +207,7 @@ function M:stage_ui_update(datamodel)
         elseif chart_type == 1 then
             local total = global.statistic.power_generated[filter_type]
             datamodel.total = total.power
+            datamodel.label_y = gen_label_y(total.power)
             for _, group in pairs(power_group) do
                 local node = group[filter_type]
                 if not node.consumer then
@@ -190,7 +220,6 @@ function M:stage_ui_update(datamodel)
         end
         table.sort(items, function (a, b) return a.power > b.power end)
         datamodel.items = items
-        self:flush()
     end
 end
 return M
