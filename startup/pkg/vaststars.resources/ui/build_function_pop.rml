@@ -136,7 +136,7 @@
                             local v = {}
                             v.text = "道路建造"
                             v.message = "road_builder"
-                            v.background_image = "textures/assemble/wheel.texture"
+                            v.background_image = "textures/common/road-connect.texture"
                             start.buttons[#start.buttons + 1] = v
                         end
 
