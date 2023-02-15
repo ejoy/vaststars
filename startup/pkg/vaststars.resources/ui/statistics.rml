@@ -127,7 +127,7 @@
             }
             .y-text-block {
                 flex-direction: column;
-                justify-content: flex-start;
+                justify-content: flex-end;
                 height:100%;
                 width:6%;
             }
@@ -142,7 +142,7 @@
                 text-align: left;
             }
             .y-text {
-                font-size: 4.5vmin;
+                font-size: 3.0vmin;
                 text-align: right;
             }
         </style>
@@ -164,7 +164,7 @@
                             <div style="height: 11%;" data-for="label : label_y">
                                 <div class="y-text">{{label}}</div>
                             </div>
-                            <div style="height: 12%;"/>
+                            <div style="height: 16%;"/>
                         </div>
                         <div style="width: 94%;">
                             <div class="graph-content-pic"/>
