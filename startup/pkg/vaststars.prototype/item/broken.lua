@@ -240,7 +240,7 @@ prototype "车辆厂设计图" {
     model = "prefabs/rock.prefab",
     description = "车辆厂的设计图",
     group = "加工",
-    order = 132,
+    order = 128,
 }
 
 prototype "道路建造站设计图" {
@@ -250,7 +250,7 @@ prototype "道路建造站设计图" {
     model = "prefabs/rock.prefab",
     description = "道路建造站的设计图",
     group = "加工",
-    order = 132,
+    order = 130,
 }
 
 prototype "管道建造站设计图" {

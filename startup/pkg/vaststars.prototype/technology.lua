@@ -155,6 +155,25 @@ prototype "地质研究" {
 --   },
 -- }
 
+-- prototype "生产运输车辆" {
+--   desc = "生产运输车辆2辆",
+--   icon = "textures/construct/industry.texture",
+--   type = { "tech", "task" },
+--   task = {"stat_consumption", 0, “破损运输车辆”},
+--   prerequisites = {"放置车辆厂"},
+--   task_params = {},
+--   count = 2,
+--   tips_pic = {
+--     "textures/task_tips_pic/task_click_build.texture",
+--     "textures/task_tips_pic/task_demolish2.texture",
+--     "textures/task_tips_pic/task_demolish3.texture",
+--   },
+--   sign_desc = {
+--     { desc = "在车辆厂生产2辆运输车辆", icon = "textures/construct/industry.texture"},
+--   },
+-- }
+
+
 prototype "增添运输车辆" {
   desc = "增加运输车辆至5辆",
   icon = "textures/construct/industry.texture",
