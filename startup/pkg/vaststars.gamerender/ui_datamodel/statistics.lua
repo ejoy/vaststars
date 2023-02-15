@@ -23,7 +23,7 @@ local chart_color_table = {}
 local function hide_chart()
     for _, eid in ipairs(chart_eid) do
         local e <close> = w:entity(eid)
-        ivs.set_state(e, "statistic_chart", false)
+        ivs.set_state(e, queuename, false)
     end
 end
 local grid = {}
@@ -122,7 +122,7 @@ local function update_chart(group, total)
     local color = chart_color_table[colorindex]
     if group.eid then
         local e <close> = w:entity(group.eid)
-        ivs.set_state(e, "statistic_chart", true)
+        ivs.set_state(e, queuename, true)
         imaterial.set_property(e, "u_color", math3d.vector(color))
         update_vb(group.eid, line_list)
     else
