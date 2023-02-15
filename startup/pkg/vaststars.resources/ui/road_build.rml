@@ -82,11 +82,11 @@
                         if start.show_batch_teardown_end then
                             start.buttons[#start.buttons+1] = {name = "拆除结束", message = "batch_teardown_end", background_image = "textures/construct/confirm.texture"}
                         end
-                        if start.show_batch_construct_end then
-                            start.buttons[#start.buttons+1] = {name = "修建结束", message = "batch_construct_end", background_image = "textures/construct/confirm.texture"}
-                        end
                         if start.show_cancel then
                             start.buttons[#start.buttons+1] = {name = "修建取消", message = "cancel", background_image = "textures/common/road-disable.texture"}
+                         end
+                        if start.show_batch_construct_end then
+                            start.buttons[#start.buttons+1] = {name = "修建结束", message = "batch_construct_end", background_image = "textures/construct/confirm.texture"}
                         end
 
                         for i = 1, #start.buttons do
