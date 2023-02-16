@@ -99,7 +99,7 @@ local line_count = 50
 local start_x = 0
 local curve_state = {}
 
-local function update_chart(group, total)
+local function update_chart(group, total, color)
     local line_list = chart_data[group.cfg.name]
     if not chart_data[group.cfg.name] then
         local lines = {{start_x, 0, 0.5}, {start_x + step, 0, 0.5}}
@@ -131,14 +131,14 @@ local function update_chart(group, total)
             index = 1
         end
     end
-    local colorcount = #chart_color_table
-    local colorindex = math.floor((group.power / total.power) * colorcount)
-    if colorindex < 1 then
-        colorindex = 1
-    elseif colorindex > colorcount then
-        colorindex = colorcount
-    end
-    local color = chart_color_table[colorindex]
+    -- local colorcount = #chart_color_table
+    -- local colorindex = math.floor((group.power / total.power) * colorcount)
+    -- if colorindex < 1 then
+    --     colorindex = 1
+    -- elseif colorindex > colorcount then
+    --     colorindex = colorcount
+    -- end
+    -- local color = chart_color_table[colorindex]
     if group.eid then
         local e <close> = w:entity(group.eid)
         ivs.set_state(e, queuename, curve_state[group.cfg.name])
@@ -148,7 +148,6 @@ local function update_chart(group, total)
         group.eid = ientity.create_screen_line_list(line_list, nil, {u_color = color, u_canvas_size = {canvas_size_w, canvas_size_h, 0, 0} }, true, "translucent", queuename)
         chart_eid[#chart_eid + 1] = group.eid
     end
-    return color
 end
 
 local function gen_label_y(power)
@@ -262,8 +261,6 @@ function M:stage_ui_update(datamodel)
                 match = true
             end
             if match then
-                local fc = update_chart(node, total)
-                local ic = {math.floor(fc[1] * 255), math.floor(fc[2] * 255), math.floor(fc[3] * 255)}
                 local name = node.cfg.name
                 if curve_state[name] == nil then
                     curve_state[name] = true
@@ -272,7 +269,7 @@ function M:stage_ui_update(datamodel)
                 if show then
                     show_count = show_count + 1
                 end
-                local item = {name = name, show = show, icon = node.cfg.icon, count = group.count, power = node.power, color = ic, bc = show and item_bc[1] or item_bc[2]}
+                local item = {node = node, name = name, show = show, icon = node.cfg.icon, count = group.count, power = node.power, bc = show and item_bc[1] or item_bc[2]}
                 items[#items + 1] = item
                 items_ref[name] = item
             end
@@ -289,6 +286,12 @@ function M:stage_ui_update(datamodel)
             datamodel.label_y = gen_label_y(total.power)
             local newitems = create_items(total)
             table.sort(newitems, function (a, b) return a.power > b.power end)
+            for index, item in ipairs(newitems) do
+                local fc = chart_color_table[(index > #chart_color_table) and #chart_color_table or index]
+                update_chart(item.node, total, fc)
+                item.color = {math.floor(fc[1] * 255), math.floor(fc[2] * 255), math.floor(fc[3] * 255)}
+                item.node = nil
+            end
             datamodel.items = newitems
         end
     end
