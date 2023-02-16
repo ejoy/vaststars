@@ -2,18 +2,15 @@
 #include <string>
 #include <map>
 #include "roadnet/coord.h"
-#include "roadnet/world.h"
+#include "roadnet/network.h"
 #include "core/world.h"
 
-static world& getworld(lua_State* L, int idx) {
-    return *(world*)lua_touserdata(L, idx);
-}
-
-static roadnet::world& getrworld(lua_State* L, int idx = 1) {
-    return getworld(L, idx).rw;
-}
-
 namespace roadnet::lua {
+    static roadnet::network& get_network(lua_State* L, int idx = 1) {
+        auto& w = *(world*)lua_touserdata(L, idx);
+        return w.rw;
+    }
+
     static std::string_view get_strview(lua_State* L, int idx) {
         size_t len = 0;
         const char* buf = luaL_checklstring(L, idx, &len);
@@ -92,167 +89,164 @@ namespace roadnet::lua {
         lua_settable(L, -3);
     }
 
-    namespace world {
-        static int load_map(lua_State* L) {
-            auto& w = getrworld(L);
-            w.loadMap(get_map_data(L, 2));
-            return 0;
+    static int load_map(lua_State* L) {
+        auto& w = get_network(L);
+        w.loadMap(get_map_data(L, 2));
+        return 0;
+    }
+    static int get_map(lua_State* L) {
+        auto& w = get_network(L);
+        lua_createtable(L, 0, 0);
+        for(auto& [l, m] : w.getMap()) {
+            lua_pushinteger(L, l.id);
+            lua_pushinteger(L, m);
+            lua_settable(L, -3);
         }
-        static int get_map(lua_State* L) {
-            auto& w = getrworld(L);
-            lua_createtable(L, 0, 0);
-            for(auto& [l, m] : w.getMap()) {
-                lua_pushinteger(L, l.id);
-                lua_pushinteger(L, m);
-                lua_settable(L, -3);
-            }
-            return 1;
-        }
-        static int create_endpoint(lua_State* L) {
-            auto& w = getrworld(L);
-            auto connection_x ((uint8_t)luaL_checkinteger(L, 2));
-            auto connection_y ((uint8_t)luaL_checkinteger(L, 3));
-            auto connection_dir ((direction)luaL_checkinteger(L, 4));
-            lua_pushinteger(L, w.createEndpoint(connection_x, connection_y, connection_dir).id);
-            return 1;
-        }
-        static int map_coord(lua_State* L) {
-            auto& w = getrworld(L);
-            auto r = w.coordConvert(get_road_coord(L, 2));
-            push_map_coord(L, r);
-            return 1;
-        }
-        struct eachlorry {
-            enum class status {
-                cross,
-                straight,
-                endpoint,
-                finish,
-            };
-            status status = status::cross;
-            uint32_t index = 0;
-            uint16_t straight = 0;
-            lorryid next_cross(lua_State* L, roadnet::world& w, road_coord& coord) {
-                static constexpr int N = 2;
-                for (;;) {
-                    if (index >= N * w.crossAry.size()) {
-                        status = status::straight;
-                        index = 0;
-                        return next_straight(L, w, coord);
-                    }
-                    uint16_t road_idx = (uint16_t)(index / N);
-                    uint8_t  entry_idx = index % N;
-                    index++;
-                    auto& road = w.crossAry[road_idx];
-                    auto id = road.cross_lorry[entry_idx];
-                    if (id) {
-                        coord = {road_coord::cross_t{}, road_idx, road.cross_status[entry_idx]};
-                        return id;
-                    }
-                }
-            }
-            lorryid next_straight(lua_State* L, roadnet::world& w, road_coord& coord) {
-                for (;;) {
-                    if (index >= w.lorryAry.size()) {
-                        status = status::endpoint;
-                        index = 0;
-                        return next_endpoint(L, w, coord);
-                    }
-                    auto& id = w.lorryAry[index];
-                    if (id) {
-                        while (index >= w.straightAry[straight].lorryOffset + w.straightAry[straight].len) {
-                            straight++;
-                        }
-                        coord = {road_coord::straight_t{}, straight, straight_type::straight, (uint16_t)(index - w.straightAry[straight].lorryOffset)};
-                        index++;
-                        return id;
-                    }
-                    index++;
-                }
-            }
-            lorryid next_endpoint(lua_State* L, roadnet::world& w, road_coord& coord) {
-                static constexpr int N = 4;
-                for (;;) {
-                    if (index >= N * w.endpointVec.size()) {
-                        status = status::finish;
-                        return lorryid::invalid();
-                    }
-                    uint16_t road_idx = (uint16_t)(index / N);
-                    straight_type entry_idx = straight_type(index % N);
-                    index++;
-                    auto& ep = w.endpointVec[road_idx];
-                    auto id = ep.getLorry(entry_idx);
-                    if (id) {
-                        coord = ep.coord;
-                        coord.type = (uint8_t)entry_idx;
-                        return id;
-                    }
-                }
-            }
-            lorryid next(lua_State* L, roadnet::world& w, road_coord& coord) {
-                switch (status) {
-                case status::cross:
-                    return next_cross(L, w, coord);
-                case status::straight:
+        return 1;
+    }
+    static int create_endpoint(lua_State* L) {
+        auto& w = get_network(L);
+        auto connection_x ((uint8_t)luaL_checkinteger(L, 2));
+        auto connection_y ((uint8_t)luaL_checkinteger(L, 3));
+        auto connection_dir ((direction)luaL_checkinteger(L, 4));
+        lua_pushinteger(L, w.createEndpoint(connection_x, connection_y, connection_dir).id);
+        return 1;
+    }
+    static int lmap_coord(lua_State* L) {
+        auto& w = get_network(L);
+        auto r = w.coordConvert(get_road_coord(L, 2));
+        push_map_coord(L, r);
+        return 1;
+    }
+    struct eachlorry {
+        enum class status {
+            cross,
+            straight,
+            endpoint,
+            finish,
+        };
+        status status = status::cross;
+        uint32_t index = 0;
+        uint16_t straight = 0;
+        lorryid next_cross(lua_State* L, roadnet::network& w, road_coord& coord) {
+            static constexpr int N = 2;
+            for (;;) {
+                if (index >= N * w.crossAry.size()) {
+                    status = status::straight;
+                    index = 0;
                     return next_straight(L, w, coord);
-                case status::endpoint:
+                }
+                uint16_t road_idx = (uint16_t)(index / N);
+                uint8_t  entry_idx = index % N;
+                index++;
+                auto& road = w.crossAry[road_idx];
+                auto id = road.cross_lorry[entry_idx];
+                if (id) {
+                    coord = {road_coord::cross_t{}, road_idx, road.cross_status[entry_idx]};
+                    return id;
+                }
+            }
+        }
+        lorryid next_straight(lua_State* L, roadnet::network& w, road_coord& coord) {
+            for (;;) {
+                if (index >= w.lorryAry.size()) {
+                    status = status::endpoint;
+                    index = 0;
                     return next_endpoint(L, w, coord);
-                default:
-                case status::finish:
+                }
+                auto& id = w.lorryAry[index];
+                if (id) {
+                    while (index >= w.straightAry[straight].lorryOffset + w.straightAry[straight].len) {
+                        straight++;
+                    }
+                    coord = {road_coord::straight_t{}, straight, straight_type::straight, (uint16_t)(index - w.straightAry[straight].lorryOffset)};
+                    index++;
+                    return id;
+                }
+                index++;
+            }
+        }
+        lorryid next_endpoint(lua_State* L, roadnet::network& w, road_coord& coord) {
+            static constexpr int N = 4;
+            for (;;) {
+                if (index >= N * w.endpointVec.size()) {
+                    status = status::finish;
                     return lorryid::invalid();
                 }
-            }
-
-            static eachlorry& get(lua_State* L, int idx) {
-                return *static_cast<eachlorry*>(lua_touserdata(L, idx));
-            }
-            static int next(lua_State* L) {
-                auto& w = getrworld(L, lua_upvalueindex(2));
-                eachlorry& self = get(L, lua_upvalueindex(1));
-                road_coord coord;
-                auto id = self.next(L, w, coord);
-                if (id == lorryid::invalid()) {
-                    return 0;
+                uint16_t road_idx = (uint16_t)(index / N);
+                straight_type entry_idx = straight_type(index % N);
+                index++;
+                auto& ep = w.endpointVec[road_idx];
+                auto id = ep.getLorry(entry_idx);
+                if (id) {
+                    coord = ep.coord;
+                    coord.type = (uint8_t)entry_idx;
+                    return id;
                 }
-                lua_pushinteger(L, id.id);
-                push_road_coord(L, coord);
-                lua_pushinteger(L, w.Lorry(id).tick);
-                return 3;
             }
-            static int gc(lua_State* L) {
-                get(L, 1).~eachlorry();
+        }
+        lorryid next(lua_State* L, roadnet::network& w, road_coord& coord) {
+            switch (status) {
+            case status::cross:
+                return next_cross(L, w, coord);
+            case status::straight:
+                return next_straight(L, w, coord);
+            case status::endpoint:
+                return next_endpoint(L, w, coord);
+            default:
+            case status::finish:
+                return lorryid::invalid();
+            }
+        }
+        static eachlorry& get(lua_State* L, int idx) {
+            return *static_cast<eachlorry*>(lua_touserdata(L, idx));
+        }
+        static int next(lua_State* L) {
+            auto& w = get_network(L, lua_upvalueindex(2));
+            eachlorry& self = get(L, lua_upvalueindex(1));
+            road_coord coord;
+            auto id = self.next(L, w, coord);
+            if (id == lorryid::invalid()) {
                 return 0;
             }
-        };
-        static int each_lorry(lua_State* L) {
-            void* storage = lua_newuserdatauv(L, sizeof(eachlorry), 0);
-            new (storage) eachlorry;
-            if (luaL_newmetatable(L, "roadnet::each_lorry")) {
-                static luaL_Reg mt[] = {
-                    {"__gc", eachlorry::gc},
-                    {NULL, NULL},
-                };
-                luaL_setfuncs(L, mt, 0);
-            }
-            lua_setmetatable(L, -2);
-            lua_pushvalue(L, -1);
-            lua_pushvalue(L, 1);
-            lua_pushcclosure(L, eachlorry::next, 2);
-            return 1;
+            lua_pushinteger(L, id.id);
+            push_road_coord(L, coord);
+            lua_pushinteger(L, w.Lorry(id).tick);
+            return 3;
         }
+        static int gc(lua_State* L) {
+            get(L, 1).~eachlorry();
+            return 0;
+        }
+    };
+    static int each_lorry(lua_State* L) {
+        void* storage = lua_newuserdatauv(L, sizeof(eachlorry), 0);
+        new (storage) eachlorry;
+        if (luaL_newmetatable(L, "roadnet::each_lorry")) {
+            static luaL_Reg mt[] = {
+                {"__gc", eachlorry::gc},
+                {NULL, NULL},
+            };
+            luaL_setfuncs(L, mt, 0);
+        }
+        lua_setmetatable(L, -2);
+        lua_pushvalue(L, -1);
+        lua_pushvalue(L, 1);
+        lua_pushcclosure(L, eachlorry::next, 2);
+        return 1;
     }
 }
 
 extern "C" int
 luaopen_vaststars_roadnet_core(lua_State* L) {
     luaL_Reg l[] = {
-        { "load_map", roadnet::lua::world::load_map },
-        { "get_map", roadnet::lua::world::get_map },
-        { "create_endpoint", roadnet::lua::world::create_endpoint },
-        { "map_coord", roadnet::lua::world::map_coord },
-        { "each_lorry", roadnet::lua::world::each_lorry },
+        { "load_map", roadnet::lua::load_map },
+        { "get_map", roadnet::lua::get_map },
+        { "create_endpoint", roadnet::lua::create_endpoint },
+        { "map_coord", roadnet::lua::lmap_coord },
+        { "each_lorry", roadnet::lua::each_lorry },
         { NULL, NULL },
     };
-    luaL_newlib(L,l);
+    luaL_newlib(L, l);
     return 1;
 }

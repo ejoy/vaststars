@@ -1,5 +1,5 @@
 ﻿#include "roadnet/bfs.h"
-#include "roadnet/world.h"
+#include "roadnet/network.h"
 #include <map>
 #include <set>
 #include <optional>
@@ -88,7 +88,7 @@ namespace roadnet {
         return true;
     }
 
-    static std::optional<direction> applyStraight(world& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
+    static std::optional<direction> applyStraight(network& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
         assert(!N.cross);
         if (!ctx.results.contains({N, direction::n})) {
             ctx.openlist.insert(N);
@@ -100,7 +100,7 @@ namespace roadnet {
         return std::nullopt;
     }
 
-    static std::optional<direction> applyCross(world& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
+    static std::optional<direction> applyCross(network& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
         assert(N.cross);
         direction prev = G.dir;
         for (uint8_t i = 0; i < 4; ++i) {
@@ -122,7 +122,7 @@ namespace roadnet {
         return std::nullopt;
     }
 
-    bool bfs(world& w, roadid S, roadid E, std::vector<direction>& path) {
+    bool bfs(network& w, roadid S, roadid E, std::vector<direction>& path) {
         assert(!S.cross && !E.cross);
         bfsContext ctx;
         ctx.openlist.insert(S);
@@ -138,7 +138,7 @@ namespace roadnet {
         return false;
     }
 
-    static roadid next_road(world& w, roadid C, direction dir) {
+    static roadid next_road(network& w, roadid C, direction dir) {
         assert(!C.cross);
         roadid N = w.straightAry[C.id].neighbor;
         roadid Next = w.crossAry[N.id].neighbor[(uint8_t)dir];
@@ -146,7 +146,7 @@ namespace roadnet {
         return Next;
     }
 
-    bool route(world& w, roadid S, roadid E, direction& dir) {
+    bool route(network& w, roadid S, roadid E, direction& dir) {
         auto key = std::make_pair(S, E);
         auto it = w.routeMap.find(key);
         if (it != w.routeMap.end()) {

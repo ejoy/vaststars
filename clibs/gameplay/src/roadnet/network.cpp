@@ -1,10 +1,10 @@
-﻿#include "roadnet/world.h"
+﻿#include "roadnet/network.h"
 #include "roadnet/bfs.h"
 #include <assert.h>
 
 namespace roadnet {
     template <typename T, typename F>
-    static void ary_call(world& w, uint64_t ti, T& ary, F func) {
+    static void ary_call(network& w, uint64_t ti, T& ary, F func) {
         size_t N = ary.size();
         for (size_t i = 0; i < N; ++i) {
             (ary[i].*func)(w, ti);
@@ -319,11 +319,11 @@ namespace roadnet {
             ;
     }
 
-    std::map<loction, uint8_t> world::getMap() const {
+    std::map<loction, uint8_t> network::getMap() const {
         return map;
     }
 
-    void world::loadMap(const std::map<loction, uint8_t>& mapData) {
+    void network::loadMap(const std::map<loction, uint8_t>& mapData) {
         map.clear();
         straightVec.clear();
         crossMap.clear();
@@ -430,7 +430,7 @@ namespace roadnet {
         lorryAry.reset(genLorryOffset);
     }
 
-    lorryid world::createLorry(::world& w, lua_State* L, uint16_t classid) {
+    lorryid network::createLorry(world& w, lua_State* L, uint16_t classid) {
         if (!lorryFreeList.empty()) {
             auto lorryId = lorryFreeList.back();
             lorryFreeList.pop_back();
@@ -442,43 +442,43 @@ namespace roadnet {
         Lorry(lorryId).init(w, L, classid);
         return lorryId;
     }
-    void world::destroyLorry(::world& w, lorryid id) {
+    void network::destroyLorry(world& w, lorryid id) {
         auto& lorry = Lorry(id);
         lorry.reset(w);
         lorryFreeList.push_back(id);
     }
-    void world::update(uint64_t ti) {
+    void network::update(uint64_t ti) {
         ary_call(*this, ti, lorryVec, &lorry::update);
         ary_call(*this, ti, endpointVec, &road::endpoint::update);
         ary_call(*this, ti, crossAry, &road::crossroad::update);
         ary_call(*this, ti, straightAry, &road::straight::update);
     }
-    road::straight& world::StraightRoad(roadid id) {
+    road::straight& network::StraightRoad(roadid id) {
         assert(id != roadid::invalid());
         assert(!id.cross);
         return straightAry[id.id];
     }
-    road::crossroad& world::CrossRoad(roadid id) {
+    road::crossroad& network::CrossRoad(roadid id) {
         assert(id != roadid::invalid());
         assert(id.cross);
         return crossAry[id.id];
     }
-    lorryid& world::LorryInRoad(uint32_t index) {
+    lorryid& network::LorryInRoad(uint32_t index) {
         return lorryAry[index];
     }
-    lorry& world::Lorry(lorryid id) {
+    lorry& network::Lorry(lorryid id) {
         assert(id.id < lorryVec.size());
         return lorryVec[id.id];
     }
-    endpointid& world::EndpointInRoad(uint32_t index) {
+    endpointid& network::EndpointInRoad(uint32_t index) {
         return endpointAry[index];
     }
-    road::endpoint& world::Endpoint(endpointid id) {
+    road::endpoint& network::Endpoint(endpointid id) {
         assert(id.id < endpointVec.size());
         return endpointVec[id.id];
     }
 
-    endpointid world::createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir) {
+    endpointid network::createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir) {
         loction l = move({connection_x, connection_y}, connection_dir);
         direction dir = (direction)(((uint8_t)connection_dir + 1) % 4); // direction of straight road
         road_coord rc = coordConvert(l, dir);
@@ -500,7 +500,7 @@ namespace roadnet {
         return endpointId;
     }
 
-    roadid world::findCrossRoad(loction l) {
+    roadid network::findCrossRoad(loction l) {
         auto iter = crossMap.find(l);
         if (iter != crossMap.end()) {
             return iter->second;
@@ -508,7 +508,7 @@ namespace roadnet {
         return roadid::invalid();
     }
 
-    std::optional<loction> world::whereCrossRoad(roadid id) {
+    std::optional<loction> network::whereCrossRoad(roadid id) {
         auto iter = crossMapR.find(id);
         if (iter != crossMapR.end()) {
             return iter->second;
@@ -516,7 +516,7 @@ namespace roadnet {
         return std::nullopt;
     }
 
-    road_coord world::coordConvert(map_coord mc) {
+    road_coord network::coordConvert(map_coord mc) {
         if (auto cross = findCrossRoad(mc); cross) {
             if (!isValidCrossType(getMapBits(map, loction{mc.x, mc.y}), cross_type(mc.z))) {
                 return {};
@@ -540,7 +540,7 @@ namespace roadnet {
         return {};
     }
 
-    road_coord world::coordConvert(loction l, direction dir) {
+    road_coord network::coordConvert(loction l, direction dir) {
         if (auto cross = findCrossRoad(l); cross) {
             return {};
         }
@@ -562,7 +562,7 @@ namespace roadnet {
         return {};
     }
 
-    map_coord world::coordConvert(road_coord rc) {
+    map_coord network::coordConvert(road_coord rc) {
         if (rc.id.cross) {
             if (auto loc = whereCrossRoad(rc.id); loc) {
                 return {loc->x, loc->y, (uint8_t)rc.offset};

@@ -5,6 +5,6 @@
 #include <vector>
 
 namespace roadnet {
-    class world;
-    bool route(world& w, roadid S, roadid E, direction& dir);
+    class network;
+    bool route(network& w, roadid S, roadid E, direction& dir);
 }

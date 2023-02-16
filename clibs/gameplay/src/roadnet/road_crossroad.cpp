@@ -1,5 +1,5 @@
 ﻿#include "roadnet/road_crossroad.h"
-#include "roadnet/world.h"
+#include "roadnet/network.h"
 #include <assert.h>
 
 namespace roadnet::road {
@@ -74,7 +74,7 @@ namespace roadnet::road {
         rev_neighbor[(uint8_t)dir] = id;
     }
 
-    void crossroad::addLorry(world& w, lorryid id, uint16_t offset) {
+    void crossroad::addLorry(network& w, lorryid id, uint16_t offset) {
         cross_type type = cross_type(offset);
         for (size_t i = 0; i < 2; ++i) {
             if (!cross_lorry[i]) {
@@ -87,7 +87,7 @@ namespace roadnet::road {
         }
     }
 
-    bool crossroad::hasLorry(world& w, uint16_t offset) {
+    bool crossroad::hasLorry(network& w, uint16_t offset) {
         cross_type type = cross_type(offset);
         if (cross_lorry[0] && cross_lorry[1]) {
             return false;
@@ -101,7 +101,7 @@ namespace roadnet::road {
         return !isCross(cross_type(offset), cross_status[1]);
     }
 
-    void crossroad::delLorry(world& w, uint16_t offset) {
+    void crossroad::delLorry(network& w, uint16_t offset) {
         cross_type type = cross_type(offset);
         for (size_t i = 0; i < 2; ++i) {
             if (cross_lorry[i] && cross_status[i] == type) {
@@ -111,11 +111,11 @@ namespace roadnet::road {
         }
     }
 
-    lorryid& crossroad::waitingLorry(world& w, direction dir) {
+    lorryid& crossroad::waitingLorry(network& w, direction dir) {
         return w.StraightRoad(rev_neighbor[(size_t)dir]).waitingLorry(w);
     }
 
-    void crossroad::update(world& w, uint64_t ti) {
+    void crossroad::update(network& w, uint64_t ti) {
         for (size_t i = 0; i < 2; ++i) {
             lorryid id = cross_lorry[i];
             if (!id) {

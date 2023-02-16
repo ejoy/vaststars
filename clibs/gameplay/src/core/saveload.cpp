@@ -1,7 +1,7 @@
 #include <string>
 #include "core/world.h"
 #include "core/saveload.h"
-#include "roadnet/world.h"
+#include "roadnet/network.h"
 
 namespace lua_world {
 

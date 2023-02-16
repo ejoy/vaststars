@@ -1,5 +1,5 @@
 #include "roadnet/lorry.h"
-#include "roadnet/world.h"
+#include "roadnet/network.h"
 #include "roadnet/bfs.h"
 #include "core/world.h"
 extern "C" {
@@ -7,7 +7,7 @@ extern "C" {
 }
 
 namespace roadnet {
-    bool lorry::nextDirection(world& w, roadid C, direction& dir) {
+    bool lorry::nextDirection(network& w, roadid C, direction& dir) {
         if (ending.id == roadid::invalid()) {
             return false;
         }
@@ -16,7 +16,7 @@ namespace roadnet {
     void lorry::initTick(uint8_t v) {
         tick = v;
     }
-    void lorry::update(world& w, uint64_t ti) {
+    void lorry::update(network& w, uint64_t ti) {
         if (capacitance != 0) {
             --capacitance;
         }
@@ -27,7 +27,7 @@ namespace roadnet {
     bool lorry::ready() {
         return tick == 0;
     }
-    void lorry::reset(::world& w) {
+    void lorry::reset(world& w) {
         switch (status) {
         case lorry_status::go_buy:
         case lorry_status::want_buy:
@@ -44,7 +44,7 @@ namespace roadnet {
             break;
         }
     }
-    void lorry::init(::world& w, lua_State* L, uint16_t classid) {
+    void lorry::init(world& w, lua_State* L, uint16_t classid) {
         struct prototype_context pt = w.prototype(L, classid);
         this->classid = classid;
         this->capacitance = pt_capacitance(&pt);

@@ -2,7 +2,7 @@
 
 #include "luaecs.h"
 #include "core/world.h"
-#include "roadnet/world.h"
+#include "roadnet/network.h"
 
 static int
 lupdate(lua_State *L) {

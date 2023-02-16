@@ -1,7 +1,7 @@
 #include <system/trading.h>
 #include <core/world.h>
 #include <lua.hpp>
-#include "roadnet/world.h"
+#include "roadnet/network.h"
 
 constexpr uint8_t BLUE_PRIORITY = 0;
 constexpr uint8_t RED_PRIORITY = 0;

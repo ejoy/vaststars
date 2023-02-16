@@ -8,7 +8,7 @@ struct world;
 struct lua_State;
 
 namespace roadnet {
-    class world;
+    class network;
     struct road_coord;
     enum class lorry_status : uint8_t {
         want_sell,
@@ -27,11 +27,11 @@ namespace roadnet {
         uint16_t buy_endpoint;
         uint8_t tick;
         lorry_status status;
-        bool nextDirection(world& w, roadid C, direction& dir);
+        bool nextDirection(network& w, roadid C, direction& dir);
         void initTick(uint8_t tick);
-        void update(world& w, uint64_t ti);
+        void update(network& w, uint64_t ti);
         bool ready();
-        void reset(::world& w);
-        void init(::world& w, lua_State* L, uint16_t classid);
+        void reset(world& w);
+        void init(world& w, lua_State* L, uint16_t classid);
     };
 }

@@ -1,8 +1,8 @@
 #include "roadnet/road_endpoint.h"
-#include "roadnet/world.h"
+#include "roadnet/network.h"
 
 namespace roadnet::road {
-    void endpoint::addLorry(world& w, lorryid l, straight_type offset) {
+    void endpoint::addLorry(network& w, lorryid l, straight_type offset) {
         w.Lorry(l).initTick(kTime);
         lorry[(size_t)offset] = l;
     }
@@ -40,7 +40,7 @@ namespace roadnet::road {
         return false;
     }
 
-    bool endpoint::tryEntry(world& w, lorryid l, straight_type offset) {
+    bool endpoint::tryEntry(network& w, lorryid l, straight_type offset) {
         if (!canEntry(offset)) {
             return false;
         }
@@ -48,14 +48,14 @@ namespace roadnet::road {
         return true;
     }
 
-    void endpoint::setOut(world& w, lorryid lorryId, endpointid ending) {
+    void endpoint::setOut(network& w, lorryid lorryId, endpointid ending) {
         auto& e = w.Endpoint(ending);
         auto& lorry = w.Lorry(lorryId);
         lorry.ending = e.coord;
         addLorry(w, lorryId, straight_type::endpoint_out);
     }
 
-    bool endpoint::setOut(world& w, endpointid ending) {
+    bool endpoint::setOut(network& w, endpointid ending) {
         if (!canEntry(straight_type::endpoint_out)) {
             return false;
         }
@@ -65,7 +65,7 @@ namespace roadnet::road {
         return true;
     }
 
-    void endpoint::update(world& w, uint64_t ti) {
+    void endpoint::update(network& w, uint64_t ti) {
         auto l = getLorry(straight_type::endpoint_in);
         if (l) {
             auto& lorry = w.Lorry(l);
@@ -75,7 +75,7 @@ namespace roadnet::road {
             }
         }
     }
-    void endpoint::updateStraight(world& w, std::function<bool(lorryid)> tryEntry) {
+    void endpoint::updateStraight(network& w, std::function<bool(lorryid)> tryEntry) {
         if (auto l = getLorry(straight_type::straight)) {
             if (w.Lorry(l).ready() && tryEntry(l)) {
                 delLorry(straight_type::straight);
