@@ -12,7 +12,7 @@ namespace roadnet::road {
             endpoint& ep = w.Endpoint(e);
             auto& lorry = w.Lorry(l);
             bool arrive = lorry.ending.id == id && lorry.ending.offset == offset;
-            return ep.canEntry(w, arrive? endpoint::type::in: endpoint::type::straight);
+            return ep.canEntry(arrive? straight_type::endpoint_in: straight_type::straight);
         }
         return !hasLorry(w, offset);
     }
@@ -24,7 +24,7 @@ namespace roadnet::road {
             endpoint& ep = w.Endpoint(e);
             auto& lorry = w.Lorry(l);
             bool arrive = lorry.ending.id == id && lorry.ending.offset == offset;
-            return ep.tryEntry(w, l, arrive? endpoint::type::in: endpoint::type::straight);
+            return ep.tryEntry(w, l, arrive? straight_type::endpoint_in: straight_type::straight);
         }
         if (!hasLorry(w, offset)) {
             addLorry(w, l, offset);
@@ -70,7 +70,7 @@ namespace roadnet::road {
     lorryid& straight::waitingLorry(world& w) {
         if (endpointid& e = w.EndpointInRoad(lorryOffset)) {
             endpoint& ep = w.Endpoint(e);
-            return ep.getOutOrStraight(w);
+            return ep.getOutOrStraight();
         }
         else {
             return w.LorryInRoad(lorryOffset);

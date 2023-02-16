@@ -3,51 +3,51 @@
 #include <assert.h>
 
 namespace roadnet::road {
-    static constexpr bool constIsCross(RoadType a, RoadType b) {
-        if ((a & 0x03) == (b & 0x03)) {
+    static constexpr bool constIsCross(cross_type a, cross_type b) {
+        if (((uint8_t)a & 0x03) == ((uint8_t)b & 0x03)) {
             return true;
         }
-        if ((a & 0x0C) == (b & 0x0C)) {
+        if (((uint8_t)a & 0x0C) == ((uint8_t)b & 0x0C)) {
             return true;
         }
-        if (((a == RoadCrossLR) || (a == RoadCrossRL)) && ((b == RoadCrossTB) || (b == RoadCrossBT))) {
+        if (((a == cross_type::lr) || (a == cross_type::rl)) && ((b == cross_type::tb) || (b == cross_type::bt))) {
             return true;
         }
-        if (a == RoadCrossLR && (b == RoadCrossBL || b == RoadCrossRB)) {
+        if (a == cross_type::lr && (b == cross_type::bl || b == cross_type::rb)) {
             return true;
         }
-        if (a == RoadCrossRL && (b == RoadCrossTR || b == RoadCrossLT)) {
+        if (a == cross_type::rl && (b == cross_type::tr || b == cross_type::lt)) {
             return true;
         }
-        if (a == RoadCrossTB && (b == RoadCrossLT || b == RoadCrossBL)) {
+        if (a == cross_type::tb && (b == cross_type::lt || b == cross_type::bl)) {
             return true;
         }
-        if (a == RoadCrossBT && (b == RoadCrossRB || b == RoadCrossTR)) {
+        if (a == cross_type::bt && (b == cross_type::rb || b == cross_type::tr)) {
             return true;
         }
         return false;
     }
-    static constexpr uint16_t constGetCrossMask(RoadType a) {
+    static constexpr uint16_t constGetCrossMask(cross_type a) {
         uint16_t m = 0;
         for (uint8_t i = 0; i < 16; ++i) {
-            if (constIsCross(a, RoadType(i)) || constIsCross(RoadType(i), a)) {
+            if (constIsCross(a, cross_type(i)) || constIsCross(cross_type(i), a)) {
                 m |= 1 << i;
             }
         }
         return m;
     }
     static constexpr uint16_t CrossMap[16] = {
-        constGetCrossMask(RoadType(0)),  constGetCrossMask(RoadType(1)),
-        constGetCrossMask(RoadType(2)),  constGetCrossMask(RoadType(3)),
-        constGetCrossMask(RoadType(4)),  constGetCrossMask(RoadType(5)),
-        constGetCrossMask(RoadType(6)),  constGetCrossMask(RoadType(7)),
-        constGetCrossMask(RoadType(8)),  constGetCrossMask(RoadType(9)),
-        constGetCrossMask(RoadType(10)), constGetCrossMask(RoadType(11)),
-        constGetCrossMask(RoadType(12)), constGetCrossMask(RoadType(13)),
-        constGetCrossMask(RoadType(14)), constGetCrossMask(RoadType(15)),
+        constGetCrossMask(cross_type(0)),  constGetCrossMask(cross_type(1)),
+        constGetCrossMask(cross_type(2)),  constGetCrossMask(cross_type(3)),
+        constGetCrossMask(cross_type(4)),  constGetCrossMask(cross_type(5)),
+        constGetCrossMask(cross_type(6)),  constGetCrossMask(cross_type(7)),
+        constGetCrossMask(cross_type(8)),  constGetCrossMask(cross_type(9)),
+        constGetCrossMask(cross_type(10)), constGetCrossMask(cross_type(11)),
+        constGetCrossMask(cross_type(12)), constGetCrossMask(cross_type(13)),
+        constGetCrossMask(cross_type(14)), constGetCrossMask(cross_type(15)),
     };
-    static bool isCross(RoadType a, RoadType b) {
-        return (CrossMap[a] & (1 << (uint16_t)b)) != 0;
+    static bool isCross(cross_type a, cross_type b) {
+        return (CrossMap[(uint8_t)a] & (1 << (uint16_t)b)) != 0;
     }
 
     static constexpr direction reverse(direction dir) {
@@ -75,7 +75,7 @@ namespace roadnet::road {
     }
 
     void crossroad::addLorry(world& w, lorryid id, uint16_t offset) {
-        RoadType type = RoadType(offset);
+        cross_type type = cross_type(offset);
         for (size_t i = 0; i < 2; ++i) {
             if (!cross_lorry[i]) {
                 auto& l = w.Lorry(id);
@@ -88,7 +88,7 @@ namespace roadnet::road {
     }
 
     bool crossroad::hasLorry(world& w, uint16_t offset) {
-        RoadType type = RoadType(offset);
+        cross_type type = cross_type(offset);
         if (cross_lorry[0] && cross_lorry[1]) {
             return false;
         }
@@ -96,13 +96,13 @@ namespace roadnet::road {
             return true;
         }
         if (!cross_lorry[0]) {
-            return !isCross(RoadType(offset), cross_status[0]);
+            return !isCross(cross_type(offset), cross_status[0]);
         }
-        return !isCross(RoadType(offset), cross_status[1]);
+        return !isCross(cross_type(offset), cross_status[1]);
     }
 
     void crossroad::delLorry(world& w, uint16_t offset) {
-        RoadType type = RoadType(offset);
+        cross_type type = cross_type(offset);
         for (size_t i = 0; i < 2; ++i) {
             if (cross_lorry[i] && cross_status[i] == type) {
                 cross_lorry[i] = lorryid::invalid();
@@ -125,9 +125,9 @@ namespace roadnet::road {
             if (!l.ready()) {
                 continue;
             }
-            RoadType t = cross_status[i];
-            auto& road = w.StraightRoad(neighbor[t & 0x03u]);
-            direction out = direction(t & 0x03u);
+            cross_type t = cross_status[i];
+            auto& road = w.StraightRoad(neighbor[(uint8_t)t & 0x03u]);
+            direction out = direction((uint8_t)t & 0x03u);
             if (road.tryEntry(w, id)) {
                 cross_lorry[i] = lorryid::invalid();
             }
@@ -155,7 +155,7 @@ namespace roadnet::road {
             if (!w.StraightRoad(neighbor[(uint8_t)out]).canEntry(w, id)) {
                 continue;
             }
-            RoadType type = RoadType(((uint8_t)i << 2) | (uint8_t)out);
+            cross_type type = (cross_type)(((uint8_t)i << 2) | (uint8_t)out);
             size_t idx;
             if (!cross_lorry[0] && !cross_lorry[1]) {
                 idx = 0;

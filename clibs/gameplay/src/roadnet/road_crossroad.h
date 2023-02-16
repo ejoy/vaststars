@@ -10,10 +10,10 @@ namespace roadnet::road {
         loction loc = {0, 0};
         roadid id;
 #endif//_DEBUG
-        roadid   neighbor[4] = {};
-        roadid   rev_neighbor[4] = {};
-        lorryid  cross_lorry[2] = {};
-        RoadType cross_status[2];
+        roadid     neighbor[4] = {};
+        roadid     rev_neighbor[4] = {};
+        lorryid    cross_lorry[2] = {};
+        cross_type cross_status[2];
         bool u_turn = true;
         void update(world& w, uint64_t ti);
         bool hasNeighbor(direction dir) const;

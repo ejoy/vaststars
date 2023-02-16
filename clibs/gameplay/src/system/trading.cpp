@@ -190,7 +190,7 @@ static bool GoHome(world& w, roadnet::road::endpoint& ep) {
         return false;
     }
     auto& station = e.get<ecs::station>();
-    auto lorryId = ep.getWaitLorry(w.rw);
+    auto lorryId = ep.getWaitLorry();
     if (!ep.setOut(w.rw, station.endpoint)) {
         return false;
     }
@@ -206,7 +206,7 @@ static bool HasTask(world& w) {
 static bool DoTask(world& w, lua_State* L, uint16_t classid, roadnet::road::endpoint& ep) {
     assert(!w.tradings.orders.empty());
     auto& order = w.tradings.orders.front();
-    if (!ep.canEntry(w.rw, roadnet::road::endpoint::type::out)) {
+    if (!ep.canEntry(roadnet::straight_type::endpoint_out)) {
         return false;
     }
     auto lorryId = w.rw.createLorry(w, L, classid);
@@ -223,7 +223,7 @@ static bool DoTask(world& w, lua_State* L, uint16_t classid, roadnet::road::endp
 static bool DoTask(world& w, roadnet::road::endpoint& ep) {
     assert(!w.tradings.orders.empty());
     auto& order = w.tradings.orders.front();
-    auto lorryId = ep.getWaitLorry(w.rw);
+    auto lorryId = ep.getWaitLorry();
     if (!ep.setOut(w.rw, order.sell.endpoint)) {
         return false;
     }
@@ -241,7 +241,7 @@ static bool UpdateChest(world& w, ecs::chest& c) {
         return false;
     }
     auto& ep = w.rw.Endpoint(c.endpoint);
-    auto lorryId = ep.getWaitLorry(w.rw);
+    auto lorryId = ep.getWaitLorry();
     if (!lorryId) {
         return false;
     }

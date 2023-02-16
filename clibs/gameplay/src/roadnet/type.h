@@ -28,11 +28,19 @@ namespace roadnet {
         n,
     };
 
-    enum RoadType: uint8_t {
-        RoadCrossLL=0, RoadCrossLT, RoadCrossLR, RoadCrossLB,
-        RoadCrossTL,   RoadCrossTT, RoadCrossTR, RoadCrossTB,
-        RoadCrossRL,   RoadCrossRT, RoadCrossRR, RoadCrossRB,
-        RoadCrossBL,   RoadCrossBT, RoadCrossBR, RoadCrossBB,
+    enum class cross_type: uint8_t {
+        ll=0, lt, lr, lb,
+        tl,   tt, tr, tb,
+        rl,   rt, rr, rb,
+        bl,   bt, br, bb,
+    };
+
+    enum class straight_type: uint8_t {
+        straight = 0,
+        endpoint_in,
+        endpoint_wait,
+        endpoint_out,
+        max,
     };
 
     struct loction {

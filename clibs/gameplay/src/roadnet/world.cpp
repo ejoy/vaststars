@@ -64,14 +64,14 @@ namespace roadnet {
         }
     }
 
-    static constexpr bool isValidRoadType(uint8_t m, RoadType t) {
-        if (t < 16) {
+    static constexpr bool isValidCrossType(uint8_t m, cross_type t) {
+        if ((uint8_t)t < 16) {
             // cross
-            return m & ((1 << (t & 0x03)) | (1 << ((t >> 2) & 0x03)));
+            return m & ((1 << ((uint8_t)t & 0x03)) | (1 << (((uint8_t)t >> 2) & 0x03)));
         }
         else {
             // in / out
-            return m & (1 << (t & 0x03));
+            return m & (1 << ((uint8_t)t & 0x03));
         }
     }
 
@@ -484,7 +484,7 @@ namespace roadnet {
         road_coord rc = coordConvert(l, dir);
 
         // cannot find endpoint, such as endpoint is not connected to any road
-        if (rc == road_coord::invalid()) {
+        if (!rc) {
             return endpointid(0xffff);
         }
 
@@ -518,47 +518,48 @@ namespace roadnet {
 
     road_coord world::coordConvert(map_coord mc) {
         if (auto cross = findCrossRoad(mc); cross) {
-            if (!isValidRoadType(getMapBits(map, loction{mc.x, mc.y}), RoadType(mc.z))) {
-                return road_coord::invalid();
+            if (!isValidCrossType(getMapBits(map, loction{mc.x, mc.y}), cross_type(mc.z))) {
+                return {};
             }
-            return {cross, mc.z};
+            assert(cross.cross);
+            return {road_coord::cross_t{}, cross.id, (cross_type)mc.z};
         }
 
         direction dir = straightDirection(getMapBits(map, loction{mc.x, mc.y}), mc.z);
         if (dir == direction::n) {
-            return road_coord::invalid();
+                return {};
         }
         auto result = findNeighbor(map, mc, dir);
         if (auto cross = findCrossRoad(result.l); cross) {
             roadid id = crossAry[cross.id].neighbor[(uint8_t)reverse(result.dir)];
-            assert(id);
+            assert(id && !id.cross);
             uint16_t n = road::straight::N * result.n + (mc.z & 0x0Fu);
             uint16_t offset = straightAry[id.id].len - n - 1;
-            return {id, offset};
+            return {road_coord::straight_t{}, id.id, straight_type::straight, offset};
         }
-        return road_coord::invalid();
+        return {};
     }
 
     road_coord world::coordConvert(loction l, direction dir) {
         if (auto cross = findCrossRoad(l); cross) {
-            return road_coord::invalid();
+            return {};
         }
         assert(dir != direction::n);
         assert(map.size() != 0);
         uint8_t m = getMapBits(map, l);
         if (m == 0) {
-            return road_coord::invalid();
+            return {};
         }
 
         auto result = findNeighbor(map, l, reverse(dir));
         if (auto cross = findCrossRoad(result.l); cross) {
             roadid id = crossAry[cross.id].neighbor[(uint8_t)reverse(result.dir)];
-            assert(id);
+            assert(id && !id.cross);
             uint16_t n = road::straight::N * result.n + 0;
             uint16_t offset = straightAry[id.id].len - n - 1;
-            return {id, offset};
+            return {road_coord::straight_t{}, id.id, straight_type::straight, offset};
         }
-        return road_coord::invalid();
+        return {};
     }
 
     map_coord world::coordConvert(road_coord rc) {

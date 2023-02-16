@@ -45,7 +45,7 @@ static void entry(lua_State* L, world& w, ecs::station& station, ecs::park& park
 		return;
 	}
 	auto& ep = w.rw.Endpoint(station.endpoint);
-	auto lorryId = ep.getWaitLorry(w.rw);
+	auto lorryId = ep.getWaitLorry();
 	if (!lorryId) {
 		return;
 	}
@@ -53,7 +53,7 @@ static void entry(lua_State* L, world& w, ecs::station& station, ecs::park& park
 		return;
 	}
 	station.lorry[station.count++] = lorryId.id;
-	ep.delWaitLorry(w.rw);
+	ep.delWaitLorry();
 }
 
 #define STATUS_IDLE 0

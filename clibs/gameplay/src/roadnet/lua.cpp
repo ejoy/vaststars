@@ -30,9 +30,17 @@ namespace roadnet::lua {
 
     static road_coord get_road_coord(lua_State* L, int idx) {
         auto v = luaL_checkinteger(L, idx);
-        uint16_t id     = (uint16_t)((v >>  0) & 0xFFFF);
-        uint16_t offset = (uint16_t)((v >> 16) & 0xFFFF);
-        return {id, offset};
+        uint16_t cross  = (uint16_t)((v >>  0) & 0x8000);
+        uint16_t id     = (uint16_t)((v >>  0) & 0x7FFF);
+        if (cross) {
+            cross_type offset = (cross_type)((v >> 16) & 0x00FF);
+            return road_coord(road_coord::cross_t{}, id, offset);
+        }
+        else {
+            uint8_t type = (uint8_t)(((v >> 16) >> 14) & 0x3);
+            uint16_t offset = (uint16_t)((v >> 16) & 0x3FFF);
+            return road_coord(road_coord::straight_t{}, id, (straight_type)type, offset);
+        }
     }
 
     static loction get_loction(lua_State* L, int idx) {
@@ -115,41 +123,84 @@ namespace roadnet::lua {
             return 1;
         }
         struct eachlorry {
-            bool cross = true;
+            enum class status {
+                cross,
+                straight,
+                endpoint,
+                finish,
+            };
+            status status = status::cross;
             uint32_t index = 0;
             uint16_t straight = 0;
-            lorryid next(lua_State* L, roadnet::world& w, roadnet::road_coord& coord) {
-                if (cross) {
-                    if (index < 2 * w.crossAry.size()) {
-                        uint16_t road_idx = (uint16_t)(index / 2);
-                        uint8_t  entry_idx = index % 2;
-                        index++;
-                        auto& road = w.crossAry[road_idx];
-                        auto& id = road.cross_lorry[entry_idx];
-                        if (id != roadnet::lorryid::invalid()) {
-                            coord = {{1, road_idx}, (uint16_t)road.cross_status[entry_idx]};
-                            return id;
-                        }
-                        return next(L, w, coord);
+            lorryid next_cross(lua_State* L, roadnet::world& w, road_coord& coord) {
+                static constexpr int N = 2;
+                for (;;) {
+                    if (index >= N * w.crossAry.size()) {
+                        status = status::straight;
+                        index = 0;
+                        return next_straight(L, w, coord);
                     }
-                    cross = false;
-                    index = 0;
+                    uint16_t road_idx = (uint16_t)(index / N);
+                    uint8_t  entry_idx = index % N;
+                    index++;
+                    auto& road = w.crossAry[road_idx];
+                    auto id = road.cross_lorry[entry_idx];
+                    if (id) {
+                        coord = {road_coord::cross_t{}, road_idx, road.cross_status[entry_idx]};
+                        return id;
+                    }
                 }
-                
-                if (index < w.lorryAry.size()) {
+            }
+            lorryid next_straight(lua_State* L, roadnet::world& w, road_coord& coord) {
+                for (;;) {
+                    if (index >= w.lorryAry.size()) {
+                        status = status::endpoint;
+                        index = 0;
+                        return next_endpoint(L, w, coord);
+                    }
                     auto& id = w.lorryAry[index];
-                    if (id != roadnet::lorryid::invalid()) {
+                    if (id) {
                         while (index >= w.straightAry[straight].lorryOffset + w.straightAry[straight].len) {
                             straight++;
                         }
-                        coord = {{0, straight}, (uint16_t)(index - w.straightAry[straight].lorryOffset)};
+                        coord = {road_coord::straight_t{}, straight, straight_type::straight, (uint16_t)(index - w.straightAry[straight].lorryOffset)};
                         index++;
                         return id;
                     }
                     index++;
-                    return next(L, w, coord);
                 }
-                return roadnet::lorryid::invalid();
+            }
+            lorryid next_endpoint(lua_State* L, roadnet::world& w, road_coord& coord) {
+                static constexpr int N = 4;
+                for (;;) {
+                    if (index >= N * w.endpointVec.size()) {
+                        status = status::finish;
+                        return lorryid::invalid();
+                    }
+                    uint16_t road_idx = (uint16_t)(index / N);
+                    straight_type entry_idx = straight_type(index % N);
+                    index++;
+                    auto& ep = w.endpointVec[road_idx];
+                    auto id = ep.getLorry(entry_idx);
+                    if (id) {
+                        coord = ep.coord;
+                        coord.type = (uint8_t)entry_idx;
+                        return id;
+                    }
+                }
+            }
+            lorryid next(lua_State* L, roadnet::world& w, road_coord& coord) {
+                switch (status) {
+                case status::cross:
+                    return next_cross(L, w, coord);
+                case status::straight:
+                    return next_straight(L, w, coord);
+                case status::endpoint:
+                    return next_endpoint(L, w, coord);
+                default:
+                case status::finish:
+                    return lorryid::invalid();
+                }
             }
 
             static eachlorry& get(lua_State* L, int idx) {
@@ -158,9 +209,9 @@ namespace roadnet::lua {
             static int next(lua_State* L) {
                 auto& w = getrworld(L, lua_upvalueindex(2));
                 eachlorry& self = get(L, lua_upvalueindex(1));
-                roadnet::road_coord coord;
+                road_coord coord;
                 auto id = self.next(L, w, coord);
-                if (id == roadnet::lorryid::invalid()) {
+                if (id == lorryid::invalid()) {
                     return 0;
                 }
                 lua_pushinteger(L, id.id);
