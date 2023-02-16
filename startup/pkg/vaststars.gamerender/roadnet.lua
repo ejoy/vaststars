@@ -53,7 +53,7 @@ function roadnet:create()
     iroad:create(WIDTH, HEIGHT, WIDTH//2, HEIGHT//2, LAYER_NAMES, SHAPE_TYPES)
 end
 
--- map = {{x, y, shape_type, shape, dir}, ...}
+-- map = {coord = {x, y, shape_type, shape, dir}, ...}
 function roadnet:init(map)
     self._layer_cache = {}
     for _, name in ipairs(LAYER_NAMES) do

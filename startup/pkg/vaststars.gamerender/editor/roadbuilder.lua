@@ -258,13 +258,16 @@ local function _builder_init(self, datamodel)
     end
 
     local object = _get_object(self, coord_indicator.x, coord_indicator.y, EDITOR_CACHE_NAMES)
-    if object and iprototype.is_road(object.prototype_name) then
-        datamodel.show_construct = true
-        datamodel.show_teardown = true
-        datamodel.show_batch_teardown_begin = true
-    else
+    if object then
+        if iprototype.is_road(object.prototype_name) then
+            datamodel.show_teardown = true
+            datamodel.show_batch_teardown_begin = true
+        end
         datamodel.show_construct = false
+    else
+        datamodel.show_construct = true
         datamodel.show_teardown = false
+        datamodel.show_batch_teardown_begin = false
     end
 
     if is_valid_starting(coord_indicator.x, coord_indicator.y) then

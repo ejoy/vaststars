@@ -102,7 +102,7 @@ local function from(t)
         local v = _from_track(_convert_mask(mask))
         local shape, dir = v[1], v[2]
         local x, y = iprototype.unpackcoord(coord)
-        res[#res+1] = {x, y, "normal", shape, dir}
+        res[coord] = {x, y, "normal", shape, dir}
     end
     return res
 end
