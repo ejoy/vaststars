@@ -43,32 +43,30 @@ local function create_grid(row, col)
 end
 function M:create(object_id)
     if #chart_color_table < 1 then
-        -- local a = 1.0
-        -- for i = 1, 10 do
-        --     chart_color_table[#chart_color_table + 1] = {1, 0.5, 1.0 - i * 0.1, a}
-        -- end
-        -- for i = 1, 10 do
-        --     chart_color_table[#chart_color_table + 1] = {1, 1.0 - i * 0.1, 0, a}
-        -- end
-        chart_color_table[#chart_color_table + 1] = {0, 110, 255, 1}  
-        chart_color_table[#chart_color_table + 1] = {0, 255, 221, 1}
-        chart_color_table[#chart_color_table + 1] = {166, 255, 0, 1}
-        chart_color_table[#chart_color_table + 1] = {250, 233, 0, 1}
-        chart_color_table[#chart_color_table + 1] = {255, 136, 0, 1}
-        chart_color_table[#chart_color_table + 1] = {255, 72, 0, 1}
-        chart_color_table[#chart_color_table + 1] = {4, 0, 255, 1}
-        chart_color_table[#chart_color_table + 1] = {111, 0, 255, 1}
-        chart_color_table[#chart_color_table + 1] = {255, 0, 255, 1}
-        chart_color_table[#chart_color_table + 1] = {255, 0, 64, 1}
-        chart_color_table[#chart_color_table + 1] = {102, 255, 0, 1}
-        chart_color_table[#chart_color_table + 1] = {0, 255, 221, 1}
-        chart_color_table[#chart_color_table + 1] = {255, 255, 255, 1}
-        chart_color_table[#chart_color_table + 1] = {65, 60, 60, 1}
-        chart_color_table[#chart_color_table + 1] = {82, 31, 31, 1}
-        chart_color_table[#chart_color_table + 1] = {82, 110, 16, 1}
-        chart_color_table[#chart_color_table + 1] = {114, 6, 69, 1}
-
-
+        chart_color_table[#chart_color_table + 1] = {0, 110, 255, 255}
+        chart_color_table[#chart_color_table + 1] = {0, 255, 221, 255}
+        chart_color_table[#chart_color_table + 1] = {166, 255, 0, 255}
+        chart_color_table[#chart_color_table + 1] = {250, 233, 0, 255}
+        chart_color_table[#chart_color_table + 1] = {255, 136, 0, 255}
+        chart_color_table[#chart_color_table + 1] = {255, 72, 0, 255}
+        chart_color_table[#chart_color_table + 1] = {4, 0, 255, 255}
+        chart_color_table[#chart_color_table + 1] = {111, 0, 255, 255}
+        chart_color_table[#chart_color_table + 1] = {255, 0, 255, 255}
+        chart_color_table[#chart_color_table + 1] = {255, 0, 64, 255}
+        chart_color_table[#chart_color_table + 1] = {102, 255, 0, 255}
+        chart_color_table[#chart_color_table + 1] = {0, 255, 221, 255}
+        chart_color_table[#chart_color_table + 1] = {255, 255, 255, 255}
+        chart_color_table[#chart_color_table + 1] = {65, 60, 60, 255}
+        chart_color_table[#chart_color_table + 1] = {82, 31, 31, 255}
+        chart_color_table[#chart_color_table + 1] = {82, 110, 16, 255}
+        chart_color_table[#chart_color_table + 1] = {114, 6, 69, 255}
+        --
+        for _, color in ipairs(chart_color_table) do
+            color[1] = color[1] / 255
+            color[2] = color[2] / 255
+            color[3] = color[3] / 255
+            color[4] = color[4] / 255
+        end
     end
     chart_data = {}
     filter_type = "5s"
@@ -176,11 +174,14 @@ local function gen_label_y(power)
     end
     return label
 end
+
 local item_bc = {
     {250,205,9},
     {128,128,128}
 }
-
+local items = {}
+local items_ref = {}
+local show_count = 0
 function M:stage_ui_update(datamodel)
     local gid = iUiRt.get_group_id("statistic_chart")
     if gid and canvas_size_w == 0 then
@@ -195,7 +196,7 @@ function M:stage_ui_update(datamodel)
         create_grid(8, 10)
     end
 
-    for _, _, _, type, value, value2 in statistics_mb:unpack() do
+    for _, _, _, type, value in statistics_mb:unpack() do
         if type == "filter_type" and filter_type ~= value then
             filter_type = value
             local label = {}
@@ -214,64 +215,82 @@ function M:stage_ui_update(datamodel)
                 hide_chart()
             end
         elseif type == "item_click" then
-            curve_state[value] = value2
+            if not curve_state[value] then
+                curve_state[value] = true
+                items_ref[value].show = true
+                show_count = show_count + 1
+            else
+                if show_count > 1 then
+                    if show_count == #items then
+                        -- hide others
+                        for name, it in pairs(items_ref) do
+                            if name ~= value then
+                                curve_state[name] = false
+                                it.show = false
+                            end
+                        end
+                        show_count = 1
+                    else
+                        curve_state[value] = false
+                        items_ref[value].show = false
+                        show_count = show_count - 1
+                    end
+                else
+                    --click last visible item, show all
+                    for name, it in pairs(items_ref) do
+                        curve_state[name] = true
+                        it.show = true
+                    end
+                    show_count = #items
+                end
+            end
+            datamodel.items = items
         end
     end
 
-    local function create_node(node, total, count)
-        local fc = update_chart(node, total)
-        local ic = {math.floor(fc[1] * 255), math.floor(fc[2] * 255), math.floor(fc[3] * 255)}
-        local name = node.cfg.name
-        if curve_state[name] == nil then
-            curve_state[name] = true
+    local function create_items(total)
+        local power_group = global.statistic.power_group
+        items = {}
+        items_ref = {}
+        show_count = 0
+        for _, group in pairs(power_group) do
+            local node = group[filter_type]
+            local match = false
+            if chart_type == 0 and node.consumer then
+                match = true
+            elseif chart_type == 1 and not node.consumer then
+                match = true
+            end
+            if match then
+                local fc = update_chart(node, total)
+                local ic = {math.floor(fc[1] * 255), math.floor(fc[2] * 255), math.floor(fc[3] * 255)}
+                local name = node.cfg.name
+                if curve_state[name] == nil then
+                    curve_state[name] = true
+                end
+                local show = curve_state[name]
+                if show then
+                    show_count = show_count + 1
+                end
+                local item = {name = name, show = show, icon = node.cfg.icon, count = group.count, power = node.power, color = ic, bc = show and item_bc[1] or item_bc[2]}
+                items[#items + 1] = item
+                items_ref[name] = item
+            end
         end
-        local show = curve_state[name]
-        return {name = name, show = show, icon = node.cfg.icon, count = count, power = node.power, color = ic, bc = show and item_bc[1] or item_bc[2]}
+        return items
     end
 
     interval = interval + 1
     if interval > 5 then
         interval = 1
-        local power_group = global.statistic.power_group
-        local items = {}
-        if chart_type == 0 then
-            local total = global.statistic.power_consumed[filter_type]
+        if chart_type == 0 or chart_type == 1 then
+            local total = (chart_type == 0) and global.statistic.power_consumed[filter_type] or global.statistic.power_generated[filter_type]
             datamodel.total = total.power
             datamodel.label_y = gen_label_y(total.power)
-            for _, group in pairs(power_group) do
-                local node = group[filter_type]
-                if node.consumer then
-                    -- local fc = update_chart(node, total)
-                    -- local ic = {math.floor(fc[1] * 255), math.floor(fc[2] * 255), math.floor(fc[3] * 255)}
-                    -- local name = node.cfg.name
-                    -- if not curve_state[name] then
-                    --     curve_state[name] = true
-                    -- end
-                    -- local show = curve_state[name]
-                    items[#items + 1] = create_node(node, total, group.count)--{name = name, show = show, icon = node.cfg.icon, count = group.count, power = node.power, color = ic, bc = show and item_bc[1] or item_bc[2]}
-                end
-            end
-        elseif chart_type == 1 then
-            local total = global.statistic.power_generated[filter_type]
-            datamodel.total = total.power
-            datamodel.label_y = gen_label_y(total.power)
-            for _, group in pairs(power_group) do
-                local node = group[filter_type]
-                if not node.consumer then
-                    -- local fc = update_chart(node, total)
-                    -- local ic = {math.floor(fc[1] * 255), math.floor(fc[2] * 255), math.floor(fc[3] * 255)}
-                    -- local name = node.cfg.name
-                    -- if not curve_state[name] then
-                    --     curve_state[name] = true
-                    -- end
-                    -- local show = curve_state[name]
-                    items[#items + 1] = create_node(node, total, group.count)--{name = name, show = show, icon = node.cfg.icon, count = group.count, power = node.power, color = ic, bc = show and item_bc[1] or item_bc[2]}
-                end
-            end
-        elseif chart_type == 2 then
+            local newitems = create_items(total)
+            table.sort(newitems, function (a, b) return a.power > b.power end)
+            datamodel.items = newitems
         end
-        table.sort(items, function (a, b) return a.power > b.power end)
-        datamodel.items = items
     end
 end
 return M
