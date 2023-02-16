@@ -1250,6 +1250,8 @@ local t = {
 	"/pkg/vaststars.resources/ui/textures/common/road-connect.texture",
 	"/pkg/vaststars.resources/ui/textures/common/road-disable.texture",
 	"/pkg/vaststars.resources/ui/textures/common/road-disconnect.texture",
+	"/pkg/vaststars.resources/ui/textures/common/road-mutiple-build.texture",
+	"/pkg/vaststars.resources/ui/textures/common/road-mutiple-delete.texture",
 	"/pkg/vaststars.resources/ui/textures/common/selection-box.texture",
 	"/pkg/vaststars.resources/ui/textures/common/sort.texture",
 	"/pkg/vaststars.resources/ui/textures/common/warning.texture",

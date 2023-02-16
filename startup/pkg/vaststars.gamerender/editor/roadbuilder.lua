@@ -588,6 +588,8 @@ local function _teardown_start(self, datamodel)
                 end
                 State.succ = false
             end
+        else
+            State.succ = false
         end
 
         if not self:check_construct_detector(prototype_name, to_x, to_y, DEFAULT_DIR) then -- cannot pave the road in places with minerals
