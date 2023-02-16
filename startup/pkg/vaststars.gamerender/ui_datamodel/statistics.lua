@@ -43,13 +43,32 @@ local function create_grid(row, col)
 end
 function M:create(object_id)
     if #chart_color_table < 1 then
-        local a = 1.0
-        for i = 1, 10 do
-            chart_color_table[#chart_color_table + 1] = {1, 0.5, 1.0 - i * 0.1, a}
-        end
-        for i = 1, 10 do
-            chart_color_table[#chart_color_table + 1] = {1, 1.0 - i * 0.1, 0, a}
-        end
+        -- local a = 1.0
+        -- for i = 1, 10 do
+        --     chart_color_table[#chart_color_table + 1] = {1, 0.5, 1.0 - i * 0.1, a}
+        -- end
+        -- for i = 1, 10 do
+        --     chart_color_table[#chart_color_table + 1] = {1, 1.0 - i * 0.1, 0, a}
+        -- end
+        chart_color_table[#chart_color_table + 1] = {0, 110, 255, 1}  
+        chart_color_table[#chart_color_table + 1] = {0, 255, 221, 1}
+        chart_color_table[#chart_color_table + 1] = {166, 255, 0, 1}
+        chart_color_table[#chart_color_table + 1] = {250, 233, 0, 1}
+        chart_color_table[#chart_color_table + 1] = {255, 136, 0, 1}
+        chart_color_table[#chart_color_table + 1] = {255, 72, 0, 1}
+        chart_color_table[#chart_color_table + 1] = {4, 0, 255, 1}
+        chart_color_table[#chart_color_table + 1] = {111, 0, 255, 1}
+        chart_color_table[#chart_color_table + 1] = {255, 0, 255, 1}
+        chart_color_table[#chart_color_table + 1] = {255, 0, 64, 1}
+        chart_color_table[#chart_color_table + 1] = {102, 255, 0, 1}
+        chart_color_table[#chart_color_table + 1] = {0, 255, 221, 1}
+        chart_color_table[#chart_color_table + 1] = {255, 255, 255, 1}
+        chart_color_table[#chart_color_table + 1] = {65, 60, 60, 1}
+        chart_color_table[#chart_color_table + 1] = {82, 31, 31, 1}
+        chart_color_table[#chart_color_table + 1] = {82, 110, 16, 1}
+        chart_color_table[#chart_color_table + 1] = {114, 6, 69, 1}
+
+
     end
     chart_data = {}
     filter_type = "5s"
