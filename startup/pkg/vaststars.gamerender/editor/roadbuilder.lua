@@ -241,7 +241,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     end
     self.temporary_map = map
 
-    datamodel.show_batch_construct_end = State.succ
+    datamodel.show_finish_laying = State.succ
 end
 
 -- NOTE:
@@ -260,21 +260,21 @@ local function _builder_init(self, datamodel)
     local object = _get_object(self, coord_indicator.x, coord_indicator.y, EDITOR_CACHE_NAMES)
     if object then
         if iprototype.is_road(object.prototype_name) then
-            datamodel.show_teardown = true
-            datamodel.show_batch_teardown_begin = true
+            datamodel.show_remove_one = true
+            datamodel.show_start_teardown = true
         end
-        datamodel.show_construct = false
+        datamodel.show_place_one = false
     else
-        datamodel.show_construct = true
-        datamodel.show_teardown = false
-        datamodel.show_batch_teardown_begin = false
+        datamodel.show_place_one = true
+        datamodel.show_remove_one = false
+        datamodel.show_start_teardown = false
     end
 
     if is_valid_starting(coord_indicator.x, coord_indicator.y) then
-        datamodel.show_batch_construct_begin = true
+        datamodel.show_start_laying = true
         coord_indicator.state = "construct"
     else
-        datamodel.show_batch_construct_begin = false
+        datamodel.show_start_laying = false
         coord_indicator.state = "invalid_construct"
     end
 end
@@ -525,7 +525,7 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
         self.temporary_map = map
     end
 
-    datamodel.show_batch_teardown_end = State.succ
+    datamodel.show_finish_teardown = State.succ
 end
 
 local function _teardown_start(self, datamodel)
@@ -736,7 +736,7 @@ local function _apply_road_teardown(self, x, y)
     end
 end
 
-local function complete(self, datamodel)
+local function confirm(self, datamodel)
     if self.grid_entity then
         self.grid_entity:remove()
         self.grid_entity = nil
@@ -767,19 +767,22 @@ local function complete(self, datamodel)
     iroadnet:clear("indicator")
     iroadnet:editor_build()
 
-    datamodel.show_batch_construct_end = false
+    datamodel.show_finish_laying = false
     datamodel.show_cancel = false
-    datamodel.show_batch_construct_begin = false
+    datamodel.show_start_laying = false
 
     task.update_progress("routemap")
 
     iui.redirect("construct.rml", "revert_roadbuilder")
 end
 
-local function laying_pipe_begin(self, datamodel)
+local function start_laying(self, datamodel)
     iroadnet:clear("indicator")
 
-    datamodel.show_batch_construct_begin = false
+    datamodel.show_place_one = false
+    datamodel.show_start_laying = false
+    datamodel.show_start_teardown = false
+    datamodel.show_remove_one = false
     datamodel.show_cancel = true
 
     self.state = STATE_START
@@ -789,18 +792,18 @@ local function laying_pipe_begin(self, datamodel)
     return _builder_start(self, datamodel)
 end
 
-local function laying_pipe_cancel(self, datamodel)
+local function cancel(self, datamodel)
     iroadnet:clear("indicator")
 
     self.state = STATE_NONE
-    datamodel.show_batch_construct_end = false
-    datamodel.show_batch_teardown_end = false
+    datamodel.show_finish_laying = false
+    datamodel.show_finish_teardown = false
     datamodel.show_cancel = false
 end
 
-local function laying_pipe_confirm(self, datamodel)
+local function finish_laying(self, datamodel)
     self.state = STATE_NONE
-    datamodel.show_batch_construct_end = false
+    datamodel.show_finish_laying = false
     datamodel.show_cancel = false
     datamodel.show_confirm = true
 
@@ -828,7 +831,7 @@ local function laying_pipe_confirm(self, datamodel)
     self.temporary_map = {}
 end
 
-local function construct(self, datamodel)
+local function place_one(self, datamodel)
     local coord_indicator = self.coord_indicator
     local x, y = coord_indicator.x, coord_indicator.y
     local coord = iprototype.packcoord(x, y)
@@ -963,7 +966,7 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
         self.temporary_map = map
     end
 
-    datamodel.show_batch_teardown_end = State.succ
+    datamodel.show_finish_teardown = State.succ
 end
 
 local function _teardown_start(self, datamodel)
@@ -1093,7 +1096,7 @@ local function _teardown_start(self, datamodel)
     end
 end
 
-local function teardown(self, datamodel)
+local function remove_one(self, datamodel)
     local coord_indicator = self.coord_indicator
     local x, y = coord_indicator.x, coord_indicator.y
     datamodel.show_confirm = true
@@ -1122,20 +1125,15 @@ local function teardown(self, datamodel)
         end
     end
 
-    local object = _get_object(self, x, y, EDITOR_CACHE_NAMES)
-    assert(object and iprototype.is_road(object.prototype_name))
-    local typeobject = iprototype.queryByName("entity", object.prototype_name)
-    iroadnet:editor_set("road", "remove", x, y, typeobject.track, object.dir)
-
     _builder_init(self, datamodel)
 end
-local function batch_teardown_begin(self, datamodel)
+local function start_teardown(self, datamodel)
     iroadnet:clear("indicator")
 
-    datamodel.show_batch_teardown_begin = false
-    datamodel.show_batch_construct_begin = false
-    datamodel.show_construct = false
-    datamodel.show_teardown = false
+    datamodel.show_start_teardown = false
+    datamodel.show_start_laying = false
+    datamodel.show_place_one = false
+    datamodel.show_remove_one = false
     datamodel.show_cancel = true
 
     self.state = STATE_TEARDOWN
@@ -1145,9 +1143,9 @@ local function batch_teardown_begin(self, datamodel)
     return _teardown_start(self, datamodel)
 end
 
-local function batch_teardown_end(self, datamodel)
+local function finish_teardown(self, datamodel)
     self.state = STATE_NONE
-    datamodel.show_batch_teardown_end = false
+    datamodel.show_finish_teardown = false
     datamodel.show_cancel = false
     datamodel.show_confirm = true
 
@@ -1188,10 +1186,10 @@ local function back(self, datamodel)
     iroadnet:clear("indicator")
 
     self.state = STATE_NONE
-    datamodel.show_batch_construct_end = false
-    datamodel.show_batch_teardown_end = false
-    datamodel.show_batch_construct_begin = false
-    datamodel.show_batch_teardown_begin = false
+    datamodel.show_finish_laying = false
+    datamodel.show_finish_teardown = false
+    datamodel.show_start_laying = false
+    datamodel.show_start_teardown = false
     datamodel.show_cancel = false
 
     for coord, v in pairs(self.update_cache) do
@@ -1221,16 +1219,16 @@ local function create()
     M.new_entity = new_entity
     M.touch_move = touch_move
     M.touch_end = touch_end
-    M.complete = complete
 
     M.state = STATE_NONE
-    M.laying_pipe_begin = laying_pipe_begin
-    M.laying_pipe_cancel = laying_pipe_cancel
-    M.laying_pipe_confirm = laying_pipe_confirm
-    M.construct = construct
-    M.teardown = teardown
-    M.batch_teardown_begin = batch_teardown_begin
-    M.batch_teardown_end = batch_teardown_end
+    M.start_laying = start_laying
+    M.finish_laying = finish_laying
+    M.place_one = place_one
+    M.remove_one = remove_one
+    M.start_teardown = start_teardown
+    M.finish_teardown = finish_teardown
+    M.cancel = cancel
+    M.confirm = confirm
     M.back = back
 
     M.temporary_map = {}

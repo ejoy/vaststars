@@ -1,18 +1,19 @@
 local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
+
 local create_roadbuilder = ecs.require "editor.roadbuilder"
 local iprototype = require "gameplay.interface.prototype"
 local single_touch_mb = world:sub {"single_touch"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
-local batch_construct_begin_mb = mailbox:sub {"batch_construct_begin"}
-local batch_construct_end_mb = mailbox:sub {"batch_construct_end"}
-local construct_mb = mailbox:sub {"construct"}
+local start_laying_mb = mailbox:sub {"start_laying"}
+local finish_laying_mb = mailbox:sub {"finish_laying"}
+local place_one_mb = mailbox:sub {"place_one"}
 local cancel_mb = mailbox:sub {"cancel"}
 local confirm_mb = mailbox:sub {"confirm"}
-local teardown_mb = mailbox:sub {"teardown"}
-local batch_teardown_begin_mb = mailbox:sub {"batch_teardown_begin"}
-local batch_teardown_end_mb = mailbox:sub {"batch_teardown_end"}
+local remove_one_mb = mailbox:sub {"remove_one"}
+local start_teardown_mb = mailbox:sub {"start_teardown"}
+local finish_teardown_mb = mailbox:sub {"finish_teardown"}
 local back_mb = mailbox:sub {"back"}
 
 ---------------
@@ -22,12 +23,12 @@ local builder
 function M:create()
     local datamodel = {
         show_confirm = false,
-        show_batch_teardown_begin = false,
-        show_batch_construct_begin = false,
-        show_construct = false,
-        show_teardown = false,
-        show_batch_teardown_end = false,
-        show_batch_construct_end = false,
+        show_start_teardown = false,
+        start_laying = false,
+        show_place_one = false,
+        show_remove_one = false,
+        show_finish_teardown = false,
+        show_finish_laying = false,
         show_cancel = false,
     }
 
@@ -55,43 +56,43 @@ function M:stage_ui_update(datamodel)
         end
     end
 
-    for _ in batch_construct_begin_mb:unpack() do
-        builder:laying_pipe_begin(datamodel)
+    for _ in start_laying_mb:unpack() do
+        builder:start_laying(datamodel)
         self:flush()
     end
 
     for _ in cancel_mb:unpack() do
-        builder:laying_pipe_cancel(datamodel)
+        builder:cancel(datamodel)
         self:flush()
     end
 
     for _ in confirm_mb:unpack() do
-        builder:complete(datamodel)
+        builder:confirm(datamodel)
         self:flush()
     end
 
-    for _ in batch_construct_end_mb:unpack() do
-        builder:laying_pipe_confirm(datamodel)
+    for _ in finish_laying_mb:unpack() do
+        builder:finish_laying(datamodel)
         self:flush()
     end
 
-    for _ in construct_mb:unpack() do
-        builder:construct(datamodel)
+    for _ in place_one_mb:unpack() do
+        builder:place_one(datamodel)
         self:flush()
     end
 
-    for _ in teardown_mb:unpack() do
-        builder:teardown(datamodel)
+    for _ in remove_one_mb:unpack() do
+        builder:remove_one(datamodel)
         self:flush()
     end
 
-    for _ in batch_teardown_begin_mb:unpack() do
-        builder:batch_teardown_begin(datamodel)
+    for _ in start_teardown_mb:unpack() do
+        builder:start_teardown(datamodel)
         self:flush()
     end
 
-    for _ in batch_teardown_end_mb:unpack() do
-        builder:batch_teardown_end(datamodel)
+    for _ in finish_teardown_mb:unpack() do
+        builder:finish_teardown(datamodel)
         self:flush()
     end
 
