@@ -117,7 +117,6 @@ local guide = {
         narrative_end = {
             guide_progress = 20,
             task = {
-                "增添运输车辆",
             }
         },
         prerequisites = {
@@ -138,7 +137,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "增添运输车辆",
+            "地质研究",
         },
 	},
 
@@ -187,11 +186,11 @@ local guide = {
         narrative_end = {
             guide_progress = 30,
             task = {
+                "铁矿熔炼",
             }
         },
         prerequisites = {
-            "维修运输汽车",
-            "维修物流中心",
+            "基地生产1",
         },
 	},
 

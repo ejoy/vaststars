@@ -70,14 +70,14 @@
                         if start.show_batch_teardown_begin then
                             start.buttons[#start.buttons+1] = {name = "批量拆除", message = "batch_teardown_begin", background_image = "textures/common/road-mutiple-delete.texture"}
                         end
+                        if start.show_teardown then
+                            start.buttons[#start.buttons+1] = {name = "拆除 1 个", message = "teardown", background_image = "textures/common/road-disconnect.texture"}
+                        end
                         if start.show_batch_construct_begin then
                             start.buttons[#start.buttons+1] = {name = "批量修建", message = "batch_construct_begin", background_image = "textures/common/road-mutiple-build.texture"}
                         end
                         if start.show_construct then
                             start.buttons[#start.buttons+1] = {name = "修建 1 个", message = "construct", background_image = "textures/common/road-connect.texture"}
-                        end
-                        if start.show_teardown then
-                            start.buttons[#start.buttons+1] = {name = "拆除 1 个", message = "teardown", background_image = "textures/common/road-disconnect.texture"}
                         end
                         if start.show_cancel then
                             start.buttons[#start.buttons+1] = {name = "修建取消", message = "cancel", background_image = "textures/common/road-disable.texture"}
