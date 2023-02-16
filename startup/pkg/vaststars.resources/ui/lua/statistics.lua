@@ -44,12 +44,12 @@ local function page_item_update(item, index)
             <div class="building-sub-content">
                 <div class="building-content">
                     <div class="indicator" style="height: %d%%; background-color: rgb(%d, %d, %d);"/>
-                    <div class="item" style='background-image: %s;'>
+                    <div class="item" style='background-image: %s; background-color: rgb(%d, %d, %d);'>
                         <div class="item-count">%s</div>
                     </div>
                 </div>
             </div>
-        ]]):format(math.floor(itemdata.power / start.total * 100), itemdata.color[1], itemdata.color[2], itemdata.color[3], itemdata.icon, itemdata.count)
+        ]]):format(math.floor(itemdata.power / start.total * 100), itemdata.color[1], itemdata.color[2], itemdata.color[3], itemdata.icon, itemdata.bc[1], itemdata.bc[2], itemdata.bc[3], itemdata.count)
         -- item.outerHTML = ([[
         --     <div class="single-item-block">
         --         <div class="single-item">
@@ -65,6 +65,7 @@ local function page_item_update(item, index)
         --     item.style.border = select_style_border
         -- end
         item.addEventListener('click', function(event)
+            start.items[index].show = not start.items[index].show
             -- item.style.border = select_style_border
             -- if select_item_index then
             --     local v = start.page:get_item_info(select_item_index)
@@ -73,7 +74,8 @@ local function page_item_update(item, index)
             --     end
             -- end
             -- select_item_index = index
-            -- ui_sys.pub {"click_item", start.items[index].id}
+            console.log(" show : ", start.items[index].show)
+            ui_sys.pub {"statistics", "item_click", start.items[index].name, start.items[index].show}
         end)
     end
 end

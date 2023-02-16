@@ -39,7 +39,7 @@ local function create_grid(row, col)
         lines[#lines + 1] = {index * colstep, 0, 0, 0.5}
         lines[#lines + 1] = {index * colstep, canvas_size_h, 0, 0.5}
     end
-    grid[#grid + 1] = ientity.create_screen_line_list(lines, nil, {u_color = {0.3, 0.3, 0.3, 1.0}, u_canvas_size = {canvas_size_w, canvas_size_h, 0, 0} }, true, "translucent", queuename)
+    grid[#grid + 1] = ientity.create_screen_line_list(lines, nil, {u_color = {0.05, 0.05, 0.05, 1.0}, u_canvas_size = {canvas_size_w, canvas_size_h, 0, 0} }, true, "translucent", queuename)
 end
 function M:create(object_id)
     if #chart_color_table < 1 then
@@ -80,7 +80,7 @@ local tick_count = 0
 local step = 0
 local line_count = 50
 local start_x = 0
-
+local curve_state = {}
 
 local function update_chart(group, total)
     local line_list = chart_data[group.cfg.name]
@@ -99,6 +99,7 @@ local function update_chart(group, total)
     local index = group.tail
     
     local totalframe = total.frames
+    -- 7/8 canvas_size_h
     local topheight = canvas_size_h * 0.875
     for count = 1, framecount do
         local frame = group.frames[index]
@@ -123,7 +124,7 @@ local function update_chart(group, total)
     local color = chart_color_table[colorindex]
     if group.eid then
         local e <close> = w:entity(group.eid)
-        ivs.set_state(e, queuename, true)
+        ivs.set_state(e, queuename, curve_state[group.cfg.name])
         imaterial.set_property(e, "u_color", math3d.vector(color))
         update_vb(group.eid, line_list)
     else
@@ -156,6 +157,10 @@ local function gen_label_y(power)
     end
     return label
 end
+local item_bc = {
+    {250,205,9},
+    {128,128,128}
+}
 
 function M:stage_ui_update(datamodel)
     local gid = iUiRt.get_group_id("statistic_chart")
@@ -171,7 +176,7 @@ function M:stage_ui_update(datamodel)
         create_grid(8, 10)
     end
 
-    for _, _, _, type, value in statistics_mb:unpack() do
+    for _, _, _, type, value, value2 in statistics_mb:unpack() do
         if type == "filter_type" and filter_type ~= value then
             filter_type = value
             local label = {}
@@ -189,7 +194,20 @@ function M:stage_ui_update(datamodel)
                 chart_type = nv
                 hide_chart()
             end
+        elseif type == "item_click" then
+            curve_state[value] = value2
         end
+    end
+
+    local function create_node(node, total, count)
+        local fc = update_chart(node, total)
+        local ic = {math.floor(fc[1] * 255), math.floor(fc[2] * 255), math.floor(fc[3] * 255)}
+        local name = node.cfg.name
+        if curve_state[name] == nil then
+            curve_state[name] = true
+        end
+        local show = curve_state[name]
+        return {name = name, show = show, icon = node.cfg.icon, count = count, power = node.power, color = ic, bc = show and item_bc[1] or item_bc[2]}
     end
 
     interval = interval + 1
@@ -204,9 +222,14 @@ function M:stage_ui_update(datamodel)
             for _, group in pairs(power_group) do
                 local node = group[filter_type]
                 if node.consumer then
-                    local fc = update_chart(node, total)
-                    local ic = {math.floor(fc[1] * 255), math.floor(fc[2] * 255), math.floor(fc[3] * 255)}
-                    items[#items + 1] = {icon = node.cfg.icon, count = group.count, power = node.power, color = ic}
+                    -- local fc = update_chart(node, total)
+                    -- local ic = {math.floor(fc[1] * 255), math.floor(fc[2] * 255), math.floor(fc[3] * 255)}
+                    -- local name = node.cfg.name
+                    -- if not curve_state[name] then
+                    --     curve_state[name] = true
+                    -- end
+                    -- local show = curve_state[name]
+                    items[#items + 1] = create_node(node, total, group.count)--{name = name, show = show, icon = node.cfg.icon, count = group.count, power = node.power, color = ic, bc = show and item_bc[1] or item_bc[2]}
                 end
             end
         elseif chart_type == 1 then
@@ -216,9 +239,14 @@ function M:stage_ui_update(datamodel)
             for _, group in pairs(power_group) do
                 local node = group[filter_type]
                 if not node.consumer then
-                    local fc = update_chart(node, total)
-                    local ic = {math.floor(fc[1] * 255), math.floor(fc[2] * 255), math.floor(fc[3] * 255)}
-                    items[#items + 1] = {icon = node.cfg.icon, count = group.count, power = node.power, color = ic}
+                    -- local fc = update_chart(node, total)
+                    -- local ic = {math.floor(fc[1] * 255), math.floor(fc[2] * 255), math.floor(fc[3] * 255)}
+                    -- local name = node.cfg.name
+                    -- if not curve_state[name] then
+                    --     curve_state[name] = true
+                    -- end
+                    -- local show = curve_state[name]
+                    items[#items + 1] = create_node(node, total, group.count)--{name = name, show = show, icon = node.cfg.icon, count = group.count, power = node.power, color = ic, bc = show and item_bc[1] or item_bc[2]}
                 end
             end
         elseif chart_type == 2 then

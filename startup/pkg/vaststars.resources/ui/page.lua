@@ -182,7 +182,9 @@ function page_meta:on_dirty_all(item_count)
         self:init(item_count)
     end
     for index = 1, item_count do
-        self.item_update(self.index_map[index].item, index)
+        local item = self.index_map[index].item
+        item.removeEventListener('click')
+        self.item_update(item, index)
     end
 
     local total_item_count = #self.index_map
