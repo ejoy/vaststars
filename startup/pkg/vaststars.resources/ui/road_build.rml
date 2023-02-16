@@ -27,8 +27,8 @@
             .back-button {
                 border: 0.00vmin; 
                 background-image:"textures/common/return.texture"; 
-                width: 9.33vmin; 
-                height: 9.33vmin; 
+                width: 14.67vmin; 
+                height: 14.67vmin; 
                 background-size:cover;
             }
             @keyframes rotation {
