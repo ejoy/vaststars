@@ -19,7 +19,6 @@
                 font-size: 4.00vmin;
                 transition: transform 0.15s elastic-out;
                 transform: scale(1.0);
-                /* box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6), inset -2px -2px 3px rgba(0, 0, 0, .6); */
             }
             button:active {
                 transform: scale(1.3);
@@ -39,16 +38,6 @@
                 justify-content: flex-start;
                 align-items: center;
                 border-radius: 2.00vmin;
-                border: 0.26vmin rgb(89, 73, 39);
-                background-color: rgb(246, 142, 14);
-                height: 12.00vmin;
-                width: 12.00vmin;
-            }
-            manual_workbutton {
-                font-size: 3.20vmin;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;
                 border: 0.26vmin rgb(89, 73, 39);
                 background-color: rgb(246, 142, 14);
                 height: 12.00vmin;
@@ -88,11 +77,6 @@
                 width: 10.67vmin;
                 margin: 0.00vmin;
             }
-            .tools-button-desc {
-                text-align:left;
-                margin: 0.00vmin;
-                left: 1.33vmin
-            }
             .main-menu-region {
                 width: 78vmin;
                 height: 20.00vmin;
@@ -106,21 +90,16 @@
                 border-radius: 1.33vmin;
             }
             .main-menu-block {
-                width: 78vmin;
                 height: 20.00vmin;
                 flex-direction: row;
                 align-items: center;
-                justify-content: flex-start;
-                position: absolute; 
-                left:15vmin; 
-                bottom:0vmin;
+                justify-content: flex-start; 
                 border: 0.13vmin #fff;
                 z-index: 999;
                 background-color: rgba(200,200,200,80);
                 border-radius: 1.33vmin;
             }
             .building-block {
-                /* width: 78vmin; */
                 width: 28vmin;
                 height: 40.00vmin;
                 flex-direction: column;
@@ -169,14 +148,6 @@
                 -webkit-text-stroke: 0.07vmin rgb(19,175,240);
                 color:rgb(255,255,255);;
             }
-            .item-num {
-                position: absolute;
-                font-size: 5vmin;
-                left:0.2vmin;
-                top:-1.5vmin;
-                color:rgb(255,255,255);
-                -webkit-text-stroke: 0.26vmin rgb(0,0,0);
-            }
             .row {
                 flex-direction: row;
             }
@@ -193,13 +164,6 @@
                 width: 60%;
                 height: 100%;
                 background-color: rgb(87, 238, 0);
-            }
-            .accomplished2 {
-                bottom: 22vmin;
-                color:chartreuse;
-                -webkit-text-stroke: 0.3vmin rgb(0,0,0);
-                font-size: 7vmin;
-                opacity: 0;
             }
             p {
                 animation:0.5s linear 0s infinite alternate rotation;
@@ -231,49 +195,6 @@
                     opacity: 0;
                 }
             }
-            @keyframes wordmovement {
-                0% {
-                    left: -40vmin;
-                    opacity: 1;
-                }
-                25% {
-                    left: -15vmin;
-                    opacity: 1;
-                }
-                100% {
-                   left: -15vmin;
-                   opacity: 0;
-                }
-            }
-            .progressbar-half-cycle-container {
-                position: absolute;
-                top: 0vmin;
-                width: 50%;
-                height: 100%;
-                overflow: hidden;
-            }
-            .progressbar-half-cycle-left {
-                position: absolute;
-                top: -50%;
-                left: -100%;
-                width: 200%;
-                height: 200%;
-                background-color: black;
-                transform: rotate(0deg);
-                transform-origin: 100% 50%;
-                opacity: 0.5;
-            }
-            .progressbar-half-cycle-right {
-                position: absolute;
-                top: -50%;
-                left: 0%;
-                width: 200%;
-                height: 200%;
-                background-color: black;
-                transform: rotate(0deg);
-                transform-origin: 0% 50%;
-                opacity: 0.5;
-            }
             .panel {
                 width: 87%;
                 height: 100%;
@@ -291,7 +212,6 @@
                 background-color: transparent;
             }
         </style>
-        <script type="text/x-lua" path = "lua/custom.lua" />
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
@@ -303,13 +223,6 @@
                 cur_construct_menu = "",  -- 当前选中的二级建造菜单名
                 cur_edit_mode = "",       -- 当前的编辑模式, construct/dismantle
                 show_load_resource = false,
-
-                show_laying_pipe_begin   = false,
-                show_laying_pipe_cancel  = false,
-                show_laying_pipe_confirm = false,
-                show_laying_road_begin  = false,
-                show_laying_road_cancel = false,
-                show_laying_road_confirm = false,
 
                 tech_count = 0,                 --当前可研究的科技数量
                 show_tech_progress = false,     --是否显示科技进度
@@ -349,15 +262,6 @@
             function start.clickSetting(event)
                 ui_sys.pub {"show_setting"}
             end
-            function start.clickLayingPipeBegin(event)
-                ui_sys.pub {"laying_pipe_begin"}
-            end
-            function start.clickLayingPipeCancel(event)
-                ui_sys.pub {"laying_pipe_cancel"}
-            end
-            function start.clickLayingPipeConfirm(event)
-                ui_sys.pub {"laying_pipe_confirm"}
-            end
             function start.clickTask(event, is_task)
                 ui_sys.pub {"open_taskui", is_task}
             end
@@ -367,12 +271,32 @@
             function start.clickConstruct(evnet)
                 ui_sys.pub {"construct"}
             end
+            function start.clickExpandCollapsedBar(event)
+                local function show(e, v) -- TODO: remove this function
+                    if not e.style then
+                        return
+                    end
+                    e.style.opacity = v
+                    for _, child in ipairs(e.childNodes) do
+                        show(child)
+                    end
+                end
+                local e = document.getElementById('main-menu-collapsed-bar')
+                local ea = document.getElementById('main-menu-button')
+
+                if e.attributes.expanded == "false" then
+                    ea.style.transform = "rotate(270deg)"
+                    e.attributes.expanded = "true"
+                    show(e, 1)
+                else
+                    ea.style.transform = "rotate(450deg)"
+                    e.attributes.expanded = "false"
+                    show(e, 0)
+                end
+            end
             window.addEventListener('mousedown', function(event)
                 ui_sys.world_pub {"ui_message", "leave"}
             end)
-
-            start.progress_bar_left = "rotate(0deg)"
-            start.progress_bar_right = "rotate(0deg)"
 
             ui_sys.mapping(start, {
                 {
@@ -392,15 +316,6 @@
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class = "panel" data-model="start">
-            <!-- fps 显示 -->
-            <div style = "pointer-events: none; position: absolute; left: 7.25vmin; top: 6.25vmin; z-index: 999;" data-if="false">
-                <div style = "pointer-events: none; position: absolute; top: 0vmin; width: 50.00vmin; height: auto; font-size: 6.25vmin; color: rgb(0,255,0);">{{fps_text}}</div>
-            </div>
-            <!-- drawcall 显示 -->
-            <div style = "pointer-events: none; position: absolute; left: 7.25vmin; top: 12.50vmin; z-index: 999;" data-if="false">
-                <div style = "pointer-events: none; position: absolute; top: 0vmin; width: 90.00vmax; height: auto; font-size: 6.25vmin; color: rgb(0,255,0);">{{drawcall_text}}</div>
-            </div>
-
             <!-- 建造队列 显示 -->
             <div class = "building-block">
                 <div class = "building-info" data-for = "construct_queue">
@@ -411,48 +326,44 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- 主菜单按钮 -->
             <div class="main-menu-region">
                 <!-- 主菜单隐藏/显示按钮 -->
-                <button  class = "main-menu-button" style="border: 0.00vmin; margin:0 1vmin; align-items:flex-end;" data-if = "cur_edit_mode == '' && guide_progress >= 10">
-                    <div class = "menu-button-pic" style='height: 6.9vmin; width: 16.6vmin; transform: rotate(270deg); background-image: "textures/common/arrow.texture";'/>
+                <button class = "main-menu-button" style="border: 0.00vmin; margin:0 1vmin; align-items:flex-end;" data-event-click = "clickExpandCollapsedBar()" data-if = "cur_edit_mode == '' && guide_progress >= 10">
+                    <div id = "main-menu-button" class = "menu-button-pic" style='height: 6.9vmin; width: 16.6vmin; transform: rotate(270deg); background-image: "textures/common/arrow.texture";'/>
                 </button>
                 <!-- 主菜单隐藏/显示按钮 end-->
-                <div class = "main-menu-block" style="width:19.5vmin" data-if = "cur_edit_mode == '' && guide_progress == 10">
-                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()">
-                        <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
-                        <div class = "menu-button-text">指挥中心</div>
-                    </button>
-                </div>
-                <div class = "main-menu-block" data-if = "cur_edit_mode == '' && guide_progress >= 15">
-                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()">
-                        <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
-                        <div class = "menu-button-text">指挥中心</div>
-                    </button>
-                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()">
-                        <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
-                        <div class = "menu-button-text">科研中心</div>
-                        <!-- 科研中心可研究科技标识 start-->
-                        <div class = "menu-button-pic" data-if = "tech_count > 0" style='width:3.6vmin; height:3.6vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
-                            <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{tech_count}}</div>
-                        </div>
-                        <!-- 科研中心可研究科技标识 end-->
-                    </button>
-                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickStatistic()">
-                        <div class = "menu-button-pic" style='background-image:"textures/construct/statistics.texture"'/>
-                        <div class = "menu-button-text">统计数据</div>
-                    </button>
-                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-if="false"> 
-                        <div class = "menu-button-pic" style='background-image:"textures/construct/road.texture"'/>
-                        <div class = "menu-button-text">地图信息</div>
-                    </button>
-                    <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()">
-                    <!--button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 20"-->
-                        <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
-                        <div class = "menu-button-text">游戏设置</div>
-                    </button>
-                </div>
+                <collapsed-bar id = "main-menu-collapsed-bar" style = "left: 15vmin; bottom: 0vmin; position: absolute; overflow: hidden;">
+                    <div class = "main-menu-block" data-if = "cur_edit_mode == '' && guide_progress >= 10">
+                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickHeadquater()" data-if = "guide_progress == 10">
+                            <div class = "menu-button-pic" style='background-image:"textures/construct/logistics_center.texture"'/>
+                            <div class = "menu-button-text">指挥中心</div>
+                        </button>
+                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click = "clickTechnology()" data-if = "guide_progress >= 15">
+                            <div class = "menu-button-pic" style='background-image:"textures/construct/goods_station.texture"'/>
+                            <div class = "menu-button-text">科研中心</div>
+                            <!-- 科研中心可研究科技标识 start-->
+                            <div class = "menu-button-pic" data-if = "tech_count > 0" style='width:3.6vmin; height:3.6vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
+                                <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{tech_count}}</div>
+                            </div>
+                            <!-- 科研中心可研究科技标识 end-->
+                        </button>
+                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickStatistic()" data-if = "guide_progress >= 15">
+                            <div class = "menu-button-pic" style='background-image:"textures/construct/statistics.texture"'/>
+                            <div class = "menu-button-text">统计数据</div>
+                        </button>
+                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-if="false"> 
+                            <div class = "menu-button-pic" style='background-image:"textures/construct/road.texture"'/>
+                            <div class = "menu-button-text">地图信息</div>
+                        </button>
+                        <button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 15">
+                        <!--button  class = "main-menu-button" style="border: 0.00vmin;" data-event-click="clickSetting()" data-if = "guide_progress >= 20"-->
+                            <div class = "menu-button-pic" style='background-image:"textures/assemble/wheel.texture"'/>
+                            <div class = "menu-button-text">游戏设置</div>
+                        </button>
+                    </div>
+                </collapsed-bar>
             </div>
             <!-- 加载资源按钮 -->
             <button  class = "main-menu-button" style="border: 0.00vmin; position: absolute; left: -5vmin; top: -4vmin;" data-event-click="clickLoadResource()" data-if = "cur_edit_mode == '' && guide_progress >= 10 && show_load_resource">
@@ -489,57 +400,10 @@
             <workbutton class = "panel-switch" data-event-click="showConstructMenu()"/>
             
             <div style = "pointer-events: none; position: absolute; bottom:0vmin; right:0vmin; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "guide_progress >= 5">
-                <!-- separator -->
-                <div style = "width: 2.67vmin;" data-if = "!show_construct" />
                 <!-- 确认放置 -->
                 <button data-if = "show_construct" data-event-click="clickConstruct()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(3, 196, 106); flex-direction: column; justify-content: flex-start;'>
                     <div style='margin: 0 auto; background-image:"textures/construct/hammer.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover; animation:0.5s linear 0s infinite alternate rotation;'/>
                     <div style="font-size: 85%;">施工</div>
-                </button>
-
-                <!-- 确认放置水管 -->
-                <!-- separator -->
-                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_pipe_confirm" />
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_confirm" data-event-click="clickLayingPipeConfirm()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/pipe-end.texture"; background-size:cover;'/>
-                    <div style="font-size: 85%; pointer-events: none;">铺管结束</div>
-                </button>
-          
-                <!-- 建造水管开始 -->
-                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_pipe_begin" />
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_begin" data-event-click="clickLayingPipeBegin()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/pipe-begin.texture"; background-size:cover; pointer-events: none;'/>
-                    <div style="font-size: 85%; pointer-events: none;">铺管开始</div>
-                </button>
-
-                <!-- separator -->
-                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_pipe_cancel" />
-                <!-- 取消铺管 -->
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_pipe_cancel" data-event-click="clickLayingPipeCancel()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/cancel.texture"; background-size:cover;'/>
-                    <div style="font-size: 85%; pointer-events: none;">取消铺管</div>
-                </button>
-
-                <!-- 放置路块 -->
-                <!-- separator -->
-                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_road_confirm" />
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_confirm" data-event-click="clickLayingPipeConfirm()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/road-construct.texture"; background-size:cover;'/>
-                    <div style="font-size: 85%; pointer-events: none;">铺路结束</div>
-                </button>
-          
-                <!-- 建造水管开始 -->
-                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_road_begin" />
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_begin" data-event-click="clickLayingPipeBegin()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/road-construct.texture"; background-size:cover; pointer-events: none;'/>
-                    <div style="font-size: 85%; pointer-events: none;">铺路开始</div>
-                </button>
-
-                <!-- 取消铺管 -->
-                <div style = "width: 2.67vmin;" data-if = "cur_edit_mode == 'construct' && show_laying_road_cancel" />
-                <button data-if = "cur_edit_mode == 'construct' && show_laying_road_cancel" data-event-click="clickLayingPipeCancel()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(203, 118, 24); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; width: 11.20vmin; height: 11.20vmin; background-image:"textures/construct/cancel.texture"; background-size:cover;'/>
-                    <div style="font-size: 85%; pointer-events: none;">取消铺路</div>
                 </button>
             </div>
 

@@ -1178,8 +1178,6 @@ local function finish_teardown(self, datamodel)
                 assert(false)
             end
         end
-
-        iroadnet:editor_set("road", "remove", x, y, "X", "N")
     end
     self.temporary_map = {}
 end

@@ -42,9 +42,6 @@ local show_statistic_mb = mailbox:sub {"statistic"} -- 主界面左下角 -> 统
 local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> 游戏设置
 local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研中心
 local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
-local laying_pipe_begin_mb = mailbox:sub {"laying_pipe_begin"} -- 铺管开始
-local laying_pipe_cancel_mb = mailbox:sub {"laying_pipe_cancel"} -- 铺管取消
-local laying_pipe_confirm_mb = mailbox:sub {"laying_pipe_confirm"} -- 铺管结束
 local open_taskui_event = mailbox:sub {"open_taskui"}
 local load_resource_mb = mailbox:sub {"load_resource"}
 local construct_mb = mailbox:sub {"construct"} -- 施工
@@ -195,21 +192,6 @@ function M:stage_ui_update(datamodel)
 
     for _ in show_setting_mb:unpack() do
         iui.open("option_pop.rml")
-    end
-
-    for _ in laying_pipe_begin_mb:unpack() do
-        builder:laying_pipe_begin(datamodel)
-        self:flush()
-    end
-
-    for _ in laying_pipe_cancel_mb:unpack() do
-        builder:laying_pipe_cancel(datamodel)
-        self:flush()
-    end
-
-    for _ in laying_pipe_confirm_mb:unpack() do
-        builder:laying_pipe_confirm(datamodel)
-        self:flush()
     end
 
     for _ in load_resource_mb:unpack() do

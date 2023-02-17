@@ -41,6 +41,7 @@ local function update_world(world)
                 vsobject:emissive_color_update(STATE_WORKING)
                 vsobject:animation_name_update("work")
             end
+            -- TODO: brownout
         end
     end
     last_frame_count = global.frame_count
