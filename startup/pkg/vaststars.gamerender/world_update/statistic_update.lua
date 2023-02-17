@@ -17,8 +17,7 @@ local function create_statistic_node(cfg, consumer)
         drain = 0,
         power = 0,
         state = 0,
-        consumer = consumer,
-        time = 0
+        consumer = consumer
     }
 end
 local frame_period = 51
@@ -36,8 +35,12 @@ local function update_world(world)
         statistic.power_consumed = {}
         statistic.power_generated = {}
         for key, _ in pairs(filter_statistic) do
-            statistic.power_consumed[key] = create_statistic_node(true)
-            statistic.power_generated[key] = create_statistic_node()
+            local node = create_statistic_node(true)
+            node.time = 0
+            statistic.power_consumed[key] = node
+            local node2 = create_statistic_node()
+            node2.time = 0
+            statistic.power_generated[key] = node2
         end
     end
     global.frame_count = global.frame_count + 1

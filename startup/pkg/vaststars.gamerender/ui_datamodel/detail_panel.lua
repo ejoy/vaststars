@@ -76,6 +76,7 @@ local function get_display_info(e, typeobject, t)
                     if cn == "power" then
                         local st = global.statistic["power"][e.eid]
                         if st then
+                            -- power is sum of 50 tick
                             current = st[cn] * (frameratio / 50)
                         elseif typeobject.name == "指挥中心" then
                             current = 0

@@ -111,21 +111,30 @@ local function update_chart(group, total, color)
         chart_data[group.cfg.name] = lines
         line_list = lines
     end
-    local line_idx = 1
-    local framecount = #group.frames
-    local index = group.tail
-    
+
     local totalframe = total.frames
     -- 7/8 canvas_size_h
     local topheight = canvas_size_h * 0.875
-    for count = 1, framecount do
-        local frame = group.frames[index]
-        line_list[line_idx][2] = (frame.power / totalframe[index].power) * topheight
-        if count > 1 and count < framecount then
-            line_list[line_idx + 1][2] = line_list[line_idx][2]
-            line_idx = line_idx + 1
+    local start_index = 1
+    local framecount = #group.frames
+    if framecount < line_count then
+        start_index = (line_count - framecount) + 1
+        for i = 1, start_index - 1 do
+            line_list[2*i - 1][2] = 0
+            line_list[2*i][2] = 0
         end
-        line_idx = line_idx + 1
+    end
+    local index = group.tail
+    for count = start_index, line_count do
+        local frame = group.frames[index]
+        local h = (frame.power / totalframe[index].power) * topheight
+        local li = 2 * count - 1
+        if li > 1 then
+            line_list[li][2] = line_list[li - 1][2]
+        else
+            line_list[li][2] = h
+        end
+        line_list[li + 1][2] = h
         index = index + 1
         if index > framecount then
             index = 1
