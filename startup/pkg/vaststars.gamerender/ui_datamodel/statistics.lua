@@ -94,7 +94,7 @@ local function update_vb(eid, points)
 end
 
 local tick_count = 0
-local step = 0
+local line_step = 0
 local line_count = 50
 local start_x = 0
 local curve_state = {}
@@ -102,11 +102,11 @@ local curve_state = {}
 local function update_chart(group, total, color)
     local line_list = chart_data[group.cfg.name]
     if not chart_data[group.cfg.name] then
-        local lines = {{start_x, 0, 0.5}, {start_x + step, 0, 0.5}}
+        local lines = {{start_x, 0, 0.5}, {start_x + line_step, 0, 0.5}}
         for i = 2, line_count do
             local tail = lines[#lines]
             lines[#lines + 1] = {tail[1], tail[2], tail[3]}
-            lines[#lines + 1] = {start_x + i * step, 0, 0.5}
+            lines[#lines + 1] = {start_x + i * line_step, 0, 0.5}
         end
         chart_data[group.cfg.name] = lines
         line_list = lines
@@ -131,14 +131,6 @@ local function update_chart(group, total, color)
             index = 1
         end
     end
-    -- local colorcount = #chart_color_table
-    -- local colorindex = math.floor((group.power / total.power) * colorcount)
-    -- if colorindex < 1 then
-    --     colorindex = 1
-    -- elseif colorindex > colorcount then
-    --     colorindex = colorcount
-    -- end
-    -- local color = chart_color_table[colorindex]
     if group.eid then
         local e <close> = w:entity(group.eid)
         ivs.set_state(e, queuename, curve_state[group.cfg.name])
@@ -151,10 +143,7 @@ local function update_chart(group, total, color)
 end
 
 local function gen_label_y(power)
-    -- power is sum of 50 ticks
-    -- frame ratio 30
-    local persec = 30 / 50
-    local total = power * persec
+    local total = power
     local unit = "k"
     local divisor = 1000
     if total >= 1000000000 then
@@ -191,7 +180,7 @@ function M:stage_ui_update(datamodel)
         local rt = qe.render_target
         local vr = rt.view_rect
         canvas_size_w, canvas_size_h = vr.w, vr.h
-        step = canvas_size_w / line_count
+        line_step = canvas_size_w / (line_count - 1)
         create_grid(8, 10)
     end
 
@@ -282,8 +271,9 @@ function M:stage_ui_update(datamodel)
         interval = 1
         if chart_type == 0 or chart_type == 1 then
             local total = (chart_type == 0) and global.statistic.power_consumed[filter_type] or global.statistic.power_generated[filter_type]
-            datamodel.total = total.power
-            datamodel.label_y = gen_label_y(total.power)
+            local persec_totoal = total.power / total.time
+            datamodel.total = persec_totoal
+            datamodel.label_y = gen_label_y(persec_totoal)
             local newitems = create_items(total)
             table.sort(newitems, function (a, b) return a.power > b.power end)
             for index, item in ipairs(newitems) do

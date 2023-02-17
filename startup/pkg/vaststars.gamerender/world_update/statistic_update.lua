@@ -17,15 +17,16 @@ local function create_statistic_node(cfg, consumer)
         drain = 0,
         power = 0,
         state = 0,
-        consumer = consumer
+        consumer = consumer,
+        time = 0
     }
 end
 local frame_period = 51
 local filter_statistic = {
-    ["5s"] = {interval = 0.1, elapsed = 0.0},
-    ["1m"] = {interval = 1.2, elapsed = 0.0},
-    ["10m"] = {interval = 12.0, elapsed = 0.0},
-    ["1h"] = {interval = 72.0, elapsed = 0.0},
+    ["5s"] = {interval = 0.1, elapsed = 0.0, maxsec = 5},
+    ["1m"] = {interval = 1.2, elapsed = 0.0, maxsec = 60},
+    ["10m"] = {interval = 12.0, elapsed = 0.0, maxsec = 600},
+    ["1h"] = {interval = 72.0, elapsed = 0.0, maxsec = 3600},
 }
 local init_group_statistic = false
 local function update_world(world)
@@ -41,8 +42,16 @@ local function update_world(world)
     end
     global.frame_count = global.frame_count + 1
     local delta_s = timer.delta() * 0.001
-    for _, fs in pairs(filter_statistic) do
+    for key, fs in pairs(filter_statistic) do
         fs.elapsed = fs.elapsed + delta_s
+        local consumed = statistic.power_consumed[key]
+        if consumed.time < fs.maxsec then
+            consumed.time = consumed.time + delta_s
+        end
+        local generated = statistic.power_generated[key]
+        if generated.time < fs.maxsec then
+            generated.time = generated.time + delta_s
+        end
     end
 
     for _, _, eid, cfg in entity_create:unpack() do

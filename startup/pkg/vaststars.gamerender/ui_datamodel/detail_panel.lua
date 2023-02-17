@@ -76,7 +76,7 @@ local function get_display_info(e, typeobject, t)
                     if cn == "power" then
                         local st = global.statistic["power"][e.eid]
                         if st then
-                            current = st[cn]
+                            current = st[cn] * (frameratio / 50)
                         elseif typeobject.name == "指挥中心" then
                             current = 0
                             for _, value in pairs(global.statistic.power_consumed) do
