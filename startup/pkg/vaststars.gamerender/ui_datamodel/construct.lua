@@ -346,12 +346,14 @@ function M:stage_camera_usage(datamodel)
         datamodel.cur_edit_mode = "construct"
         idetail.unselected()
         handle_pickup = false
+        gameplay_core.world_update = false
         iui.open("road_build.rml")
     end
 
     for _ in revert_roadbuilder_mb:unpack() do
         datamodel.cur_edit_mode = ""
         handle_pickup = true
+        gameplay_core.world_update = true
         iui.close("road_build.rml")
     end
 

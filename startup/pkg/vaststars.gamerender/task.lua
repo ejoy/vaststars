@@ -57,6 +57,7 @@ end
 custom_type :
 1. routemap, starting = {x, y}, ending = {x, y}
 2. lorry_count, count = x,
+3. set_recipe, recipe = x,
 --]]
 local custom_type_mapping = {
     [0] = {s = "undef", check = function() end}, -- TODO
@@ -69,7 +70,14 @@ local custom_type_mapping = {
         end
 
         return c
-    end, }
+    end, },
+    [3] = {s = "set_recipe", check = function(task_params, recipe_name)
+        if task_params.recipe == recipe_name then
+            return 1
+        else
+            return 0
+        end
+    end, },
 }
 
 local mt = {}
@@ -93,7 +101,7 @@ for _, typeobject in pairs(iprototype.each_maintype("tech", "task")) do
 end
 
 local M = {}
-function M.update_progress(custom_type_mapping)
+function M.update_progress(custom_type_mapping, ...)
     local science = global.science
     if not science.current_tech then
         return
@@ -106,7 +114,7 @@ function M.update_progress(custom_type_mapping)
         return
     end
 
-    local np = c.check(c.task_params)
+    local np = c.check(c.task_params, ...)
     if np ~= progress then
         local gwworld = gameplay_core.get_world()
         gwworld:research_progress(taskname, np)

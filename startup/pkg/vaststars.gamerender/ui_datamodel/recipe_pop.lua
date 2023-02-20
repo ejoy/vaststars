@@ -24,6 +24,7 @@ local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONSTRUCTED"}
 local get_assembling_canvas_items = ecs.require "ui_datamodel.common.assembling_canvas".get_assembling_canvas_items
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local icanvas = ecs.require "engine.canvas"
+local itask = ecs.require "task"
 
 local assembling_recipe = {}; local get_recipe_index; do
     local cache = {}
@@ -308,6 +309,8 @@ function M:stage_ui_update(datamodel, object_id)
                 local w, h = iprototype.unpackarea(typeobject.area)
                 object.recipe = recipe_name
                 vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(object, object.x, object.y, w, h))
+
+                itask.update_progress("set_recipe", recipe_name)
             end
         else
             log.error(("can not found assembling `%s`(%s, %s)"):format(object.name, object.x, object.y))
