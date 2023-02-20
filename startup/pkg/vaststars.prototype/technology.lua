@@ -8,6 +8,9 @@ local prototype = gameplay.register.prototype
   --task = {"select_chest", 0, "指挥中心", "铁丝"},     向指挥中心转移X个物品
   --task = {"power_generator", 0},                      电力发电到达X瓦
   --task = {"unknown", 0},                              自定义任务
+  --task = {"unknown", 0, 3},                           自定义任务，指定选择配方
+  --task_params = {recipe = "地质科技包1"},
+  --count = 1,
   --time是指1个count所需的时间
 
 
