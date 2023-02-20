@@ -12,6 +12,7 @@ return {
         -- power_consumed = {},
         -- power_generated = {}
     },
+    frame_ratio = 30,
     frame_count = 0,
     building_coord_system = require "coord_transform"(255, 255),
     logistic_coord_system = require "coord_transform"(256, 256),

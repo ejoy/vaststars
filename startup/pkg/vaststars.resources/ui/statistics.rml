@@ -182,9 +182,9 @@
                 <div class="column" style="width: 100%; height: 88%; align-items: flex-end;">
                     <!-- 总功率显示 -->
                     <div class="total-power">
-                        <div class="total-power-indicator" style="width: 100%;"/>
-                        <div class="total-power-num" style="right: 0;">1.56M/1.56M</div>
-                        <div class="total-power-num" style="left: -8vmin; font-size: 3.4vmin; color: darkorange;">总电量</div>
+                        <div class="total-power-indicator" data-style-width="percent_str"/>
+                        <div class="total-power-num" style="right: 0;">{{total_str}}</div>
+                        <div class="total-power-num" style="left: -8vmin; font-size: 3.4vmin; color: darkorange;">{{total_label}}</div>
                     </div>
 
                     <!-- 图表显示 -->
@@ -204,126 +204,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--
-                    <div class="building-block">
-                        <div class="building-sub-block">
-                            <div class="building-sub-content">
-                                <div class="building-content">
-                                    <div class="indicator"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="building-sub-content">
-                                <div class="building-content">
-                                    <div class="indicator" style="height: 5vmin; background-color: brown;"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="building-sub-content">
-                                <div class="building-content">
-                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="building-sub-content">
-                                <div class="building-content">
-                                    <div class="indicator" style="height: 5vmin; background-color: brown;"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="building-sub-content">
-                                <div class="building-content">
-                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="building-sub-content">
-                                <div class="building-content">
-                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="building-sub-content">
-                                <div class="building-content">
-                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="building-sub-block">
-                            <div class="building-sub-content">
-                                <div class="row">
-                                    <div class="indicator"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="building-sub-content">
-                                <div class="row">
-                                    <div class="indicator"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="building-sub-content">
-                                <div class="row">
-                                    <div class="indicator"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="building-sub-content">
-                                <div class="building-content">
-                                    <div class="indicator" style="height: 5vmin; background-color: brown;"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="building-sub-content">
-                                <div class="building-content">
-                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="building-sub-content">
-                                <div class="building-content">
-                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="building-sub-content">
-                                <div class="building-content">
-                                    <div class="indicator" style="height: 2vmin; background-color: rgb(17, 0, 255);"/>
-                                    <div class="item" style='background-image: "textures/construct/truck.texture";'>
-                                        <div class="item-count">99</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    -->
                     <div class="item-container" style="width: 100%; height: 40%;">
                         <page width = "100%" height = "30vmin" footerheight = "3.00vmin" row = "2" col = "7" />   
                     </div>

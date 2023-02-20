@@ -59,7 +59,6 @@ local function get_display_info(e, typeobject, t)
     end
     local values = t.values
     local status = 3 --work status
-    local frameratio = 30
     for _, propertyName in ipairs(detail) do
         local cfg = property_list[propertyName]
         if cfg.value then
@@ -77,14 +76,14 @@ local function get_display_info(e, typeobject, t)
                         local st = global.statistic["power"][e.eid]
                         if st then
                             -- power is sum of 50 tick
-                            current = st[cn] * (frameratio / 50)
+                            current = st[cn] * (global.frameratio / 50)
                         elseif typeobject.name == "指挥中心" then
                             current = 0
                             for _, value in pairs(global.statistic.power_consumed) do
                                 current = current + value
                             end
                         elseif e.solar_panel then
-                            current = get_solar_panel_power(total) * frameratio
+                            current = get_solar_panel_power(total) * global.frameratio
                             if current <= 0 then
                                 status = 1 --shundown status
                             end
@@ -92,12 +91,12 @@ local function get_display_info(e, typeobject, t)
                         if typeobject.drain then
                             if current <= 0 then
                                 status = 1 --shundown status
-                            elseif current <= typeobject.drain * frameratio then
+                            elseif current <= typeobject.drain * global.frameratio then
                                 status = 2 --idle status
                             end
                         end
                     end
-                    total = total * frameratio
+                    total = total * global.frameratio
                     local unit = "k"
                     local divisor = 1000
                     if total >= 1000000000 then

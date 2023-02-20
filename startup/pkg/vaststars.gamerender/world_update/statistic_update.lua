@@ -34,6 +34,7 @@ local function update_world(world)
         init_group_statistic = true
         statistic.power_consumed = {}
         statistic.power_generated = {}
+        statistic.total_generated = 0
         for key, _ in pairs(filter_statistic) do
             local node = create_statistic_node(true)
             node.time = 0
@@ -65,6 +66,10 @@ local function update_world(world)
             local key = statistic.power[eid].cfg.name
             statistic.power_group[key].count = statistic.power_group[key].count -1
             statistic.power[eid] = nil
+            local e = gameplay_core.get_entity(eid)
+            if e.generator then
+                statistic.total_generated = statistic.total_generated - statistic.power[eid].cfg.power * global.frame_ratio
+            end
         end
     end
     local finish = {}
@@ -78,12 +83,18 @@ local function update_world(world)
                     if not pg then
                         pg = {}
                         for filter, _ in pairs(filter_statistic) do
-                            pg[filter] = create_statistic_node(cfg, e.consumer)
+                            local node = create_statistic_node(cfg, e.consumer)
+                            node.max_index = 1
+                            pg[filter] = node
                         end
                         pg.count = 0
                         statistic.power_group[cfg.name] = pg
                     end
                     pg.count = pg.count + 1
+
+                    if e.generator then
+                        statistic.total_generated = statistic.total_generated + cfg.power * global.frame_ratio
+                    end
                 end
             end
             finish[#finish + 1] = eid
@@ -95,13 +106,26 @@ local function update_world(world)
     end
 
     local function step_frame_head(st)
+        if st.max_index then
+            if st.frames[st.max_index].power < st.frames[st.head].power then
+                st.max_index = st.head
+            end
+        end
         st.head = (st.head >= frame_period) and 1 or st.head + 1
         if st.head == st.tail then
             local fp = st.frames[st.tail]
             if fp then
                 st.power = st.power - fp.power
                 fp.power = 0
-                st.tail = (st.tail >= frame_period) and 1 or st.tail + 1
+                if st.max_index and st.max_index == st.tail then
+                    st.max_index = 1
+                    for index, frame in ipairs(st.frames) do
+                        if st.frames[st.max_index].power < frame.power then
+                            st.max_index = index
+                        end
+                    end
+                end
+                st.tail = (st.tail >= frame_period) and 1 or st.tail + 1 
             end
         end
     end

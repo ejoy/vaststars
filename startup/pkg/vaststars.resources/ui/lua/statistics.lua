@@ -2,6 +2,9 @@ local ui_sys = require "ui_system"
 local start = ui_sys.createDataMode("start", {
     items = {},
     total = 0,
+    total_str = "",
+    total_label = "",
+    percent_str = "100%;",
     label_x = {},
     label_y = {}
 })

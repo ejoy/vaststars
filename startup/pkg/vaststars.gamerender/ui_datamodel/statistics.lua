@@ -75,6 +75,9 @@ function M:create(object_id)
     return {
         items = {},
         total = 0,
+        total_str = "",
+        total_label = "耗电量",
+        percent_str = "100%;",
         label_x = {"5s","4.5s","4.0s","3.5s","3.0s","2.5s","2.0s","1.5s","1.0s","0.5s"},
         label_y = {"8w ","7w ","6w ","5w ","4w ","3w ","2w ","1w "}
     }
@@ -112,7 +115,7 @@ local function update_chart(group, total, color)
         line_list = lines
     end
 
-    local totalframe = total.frames
+    -- local totalframe = total.frames
     -- 7/8 canvas_size_h
     local topheight = canvas_size_h * 0.875
     local start_index = 1
@@ -127,7 +130,8 @@ local function update_chart(group, total, color)
     local index = group.tail
     for count = start_index, line_count do
         local frame = group.frames[index]
-        local h = (frame.power / totalframe[index].power) * topheight
+        local h = (frame.power / total) * topheight
+        --local h = (frame.power / totalframe[index].power) * topheight
         local li = 2 * count - 1
         if li > 1 then
             line_list[li][2] = line_list[li - 1][2]
@@ -151,8 +155,7 @@ local function update_chart(group, total, color)
     end
 end
 
-local function gen_label_y(power)
-    local total = power
+local function gen_power_label(total)
     local unit = "k"
     local divisor = 1000
     if total >= 1000000000 then
@@ -163,6 +166,11 @@ local function gen_label_y(power)
         unit = "M"
     end
     total = total / divisor
+    return total, unit
+end
+
+local function gen_labels_y(power)
+    local total, unit = gen_power_label(power)
     local step = total / 7
     local label = {}
     label[#label + 1] = ""--placehold
@@ -179,6 +187,12 @@ local item_bc = {
 local items = {}
 local items_ref = {}
 local show_count = 0
+local filter_interval = {
+    ["5s"] = 0.1,
+    ["1m"] = 1.2,
+    ["10m"] = 12.0,
+    ["1h"] = 72.0,
+}
 function M:stage_ui_update(datamodel)
     local gid = iUiRt.get_group_id("statistic_chart")
     if gid and canvas_size_w == 0 then
@@ -210,6 +224,11 @@ function M:stage_ui_update(datamodel)
             if chart_type ~= nv then
                 chart_type = nv
                 hide_chart()
+            end
+            if nv == 0 then
+                datamodel.total_label = "耗电量"
+            elseif nv == 1 then
+                datamodel.total_label = "发电量"
             end
         elseif type == "item_click" then
             if not curve_state[value] then
@@ -245,7 +264,7 @@ function M:stage_ui_update(datamodel)
         end
     end
 
-    local function create_items(total)
+    local function create_items()
         local power_group = global.statistic.power_group
         items = {}
         items_ref = {}
@@ -279,15 +298,26 @@ function M:stage_ui_update(datamodel)
     if interval > 5 then
         interval = 1
         if chart_type == 0 or chart_type == 1 then
-            local total = (chart_type == 0) and global.statistic.power_consumed[filter_type] or global.statistic.power_generated[filter_type]
-            local persec_totoal = total.power / total.time
-            datamodel.total = persec_totoal
-            datamodel.label_y = gen_label_y(persec_totoal)
-            local newitems = create_items(total)
+            -- local total = (chart_type == 0) and global.statistic.power_consumed[filter_type] or global.statistic.power_generated[filter_type]
+            local newitems = create_items()
             table.sort(newitems, function (a, b) return a.power > b.power end)
+            local maxnode = #newitems > 0 and newitems[1].node or {power = 0, time = 0}
+            -- local persec_totoal = maxnode.power / total.time
+            local maxframepower = maxnode.frames[maxnode.max_index].power
+            datamodel.total = maxnode.power
+            local consumenode = global.statistic.power_consumed[filter_type]
+            local consumed = consumenode.power / consumenode.time
+            if chart_type == 0 then
+                datamodel.total_str = ("%.1f%s"):format(gen_power_label(consumed))
+                datamodel.percent_str = "100%;"
+            else
+                datamodel.percent_str = math.floor(consumed / global.statistic.total_generated * 100) .. "%;"
+                datamodel.total_str = ("%.1f%s"):format(gen_power_label(consumed)) .."/".. ("%.1f%s"):format(gen_power_label(global.statistic.total_generated))
+            end
+            datamodel.label_y = gen_labels_y(maxframepower / filter_interval[filter_type])
             for index, item in ipairs(newitems) do
                 local fc = chart_color_table[(index > #chart_color_table) and #chart_color_table or index]
-                update_chart(item.node, total, fc)
+                update_chart(item.node, maxframepower, fc)
                 item.color = {math.floor(fc[1] * 255), math.floor(fc[2] * 255), math.floor(fc[3] * 255)}
                 item.node = nil
             end
