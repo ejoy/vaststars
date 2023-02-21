@@ -322,6 +322,7 @@ prototype "管道建造站" {
     capacity = 50,
     build_area = "24x24",
     group = {"物流"},
+    pipe_builder = true,
 }
 
 prototype "装卸站" {

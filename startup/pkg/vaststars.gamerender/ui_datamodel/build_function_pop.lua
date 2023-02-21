@@ -14,6 +14,7 @@ local close_mb = mailbox:sub {"close"}
 local teardown_mb = mailbox:sub {"teardown"}
 local move_mb = mailbox:sub {"move"}
 local road_builder_mb = mailbox:sub {"road_builder"}
+local pipe_builder_mb = mailbox:sub {"pipe_builder"}
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local iobject = ecs.require "object"
 local ichest = require "gameplay.interface.chest"
@@ -100,6 +101,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
         show_teardown = (typeobject.teardown ~= false),
         show_set_recipe = show_set_recipe,
         show_road_builder = typeobject.road_builder,
+        show_pipe_builder = typeobject.pipe_builder,
         show_detail = show_detail,
         show_move = (typeobject.teardown ~= false),
         recipe_name = recipe_name,
@@ -126,7 +128,7 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
-        iui.open("recipe_pop.rml", object_id)
+        iui.open({"recipe_pop.rml"}, object_id)
     end
 
     for _, _, _, object_id in detail_mb:unpack() do
@@ -134,7 +136,7 @@ function M:stage_ui_update(datamodel, object_id)
         local typeobject = iprototype.queryByName("entity", object.prototype_name)
         for _, v in ipairs(detail_ui) do
             if iprototype.has_type(typeobject.type, v.type) then
-                iui.open(v.rml, object_id)
+                iui.open({v.rml}, object_id)
                 break
             end
         end
@@ -180,6 +182,10 @@ function M:stage_ui_update(datamodel, object_id)
 
     for _, _, _, object_id in road_builder_mb:unpack() do
         iui.redirect("construct.rml", "road_builder", object_id)
+    end
+
+    for _, _, _, object_id in pipe_builder_mb:unpack() do
+        iui.redirect("construct.rml", "pipe_builder", object_id)
     end
 end
 

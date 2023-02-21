@@ -2,7 +2,7 @@ local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
 
-local create_builder = ecs.require "editor.roadbuilder"
+local create_builder = ecs.require "editor.pipebuilder"
 local iprototype = require "gameplay.interface.prototype"
 local single_touch_mb = world:sub {"single_touch"}
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
@@ -58,7 +58,7 @@ function M:create()
     }
 
     builder = create_builder()
-    local typeobject = iprototype.queryByName("entity", "砖石公路-X型-01")
+    local typeobject = iprototype.queryByName("entity", "管道1-X型")
     builder:new_entity(datamodel, typeobject)
     return datamodel
 end

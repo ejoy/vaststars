@@ -33,6 +33,7 @@ local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
 local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
 local cancel_mb = mailbox:sub {"cancel"} -- construct_pop.rml -> 取消
 local road_builder_mb = mailbox:sub {"road_builder"}
+local pipe_builder_mb = mailbox:sub {"pipe_builder"}
 local confirm_cancel_mb = mailbox:sub {"confirm_cancel"} -- 取消已确定的建筑
 local ichest = require "gameplay.interface.chest"
 
@@ -48,7 +49,7 @@ local construct_mb = mailbox:sub {"construct"} -- 施工
 local single_touch_mb = world:sub {"single_touch"}
 local move_mb = mailbox:sub {"move"}
 local move_finish_mb = mailbox:sub {"move_finish"}
-local revert_roadbuilder_mb = mailbox:sub {"revert_roadbuilder"}
+local builder_back_mb = mailbox:sub {"builder_back"}
 local pickup_mb = world:sub {"pickup"}
 local handle_pickup = true
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
@@ -176,26 +177,26 @@ function M:stage_ui_update(datamodel)
     for _, _, _, is_task in open_taskui_event:unpack() do
         if gameplay_core.world_update and global.science.current_tech then
             gameplay_core.world_update = false
-            iui.open(is_task and "task_pop.rml" or "science.rml")
+            iui.open(is_task and {"task_pop.rml"} or {"science.rml"})
         end
     end
 
     --任务完成提示界面
     for _ in technology_mb:unpack() do
         gameplay_core.world_update = false
-        iui.open("science.rml")
+        iui.open({"science.rml"})
     end
 
     for _ in show_statistic_mb:unpack() do
-        iui.open("statistics.rml")
+        iui.open({"statistics.rml"})
     end
 
     for _ in show_setting_mb:unpack() do
-        iui.open("option_pop.rml")
+        iui.open({"option_pop.rml"})
     end
 
     for _ in load_resource_mb:unpack() do
-        iui.open("loading.rml", false)
+        iui.open({"loading.rml"}, false)
         camera.init("camera_default.prefab")
     end
 end
@@ -289,7 +290,7 @@ function M:stage_camera_usage(datamodel)
                     leave = false
                 end
             elseif object.object_state == "confirm" then
-                iui.open("construct_confirm_pop.rml", object.srt.t, object.x, object.y)
+                iui.open({"construct_confirm_pop.rml"}, object.srt.t, object.x, object.y)
                 leave = false
             end
         else
@@ -347,14 +348,24 @@ function M:stage_camera_usage(datamodel)
         idetail.unselected()
         handle_pickup = false
         gameplay_core.world_update = false
-        iui.open("road_build.rml")
+        iui.open({"road_or_pipe_build.rml", "road_build.lua"})
     end
 
-    for _ in revert_roadbuilder_mb:unpack() do
+    for _ in pipe_builder_mb:unpack() do
+        iui.close("build_function_pop.rml")
+        iui.close("detail_panel.rml")
+        datamodel.cur_edit_mode = "construct"
+        idetail.unselected()
+        handle_pickup = false
+        gameplay_core.world_update = false
+        iui.open({"road_or_pipe_build.rml", "pipe_build.lua"})
+    end
+
+    for _ in builder_back_mb:unpack() do
         datamodel.cur_edit_mode = ""
         handle_pickup = true
         gameplay_core.world_update = true
-        iui.close("road_build.rml")
+        iui.close("road_or_pipe_build.rml")
     end
 
     iobject.flush()

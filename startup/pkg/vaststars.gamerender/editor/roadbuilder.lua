@@ -22,7 +22,7 @@ local global = require "global"
 local iroadnet = ecs.require "roadnet"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 
-local ROAD_REMOVE <const> = {}
+local REMOVE <const> = {}
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
 
 -- To distinguish between "batch construction" and "batch teardown" in the touch_end event.
@@ -32,8 +32,8 @@ local STATE_TEARDOWN <const> = 2
 
 local function _get_object(self, x, y, cache_names)
     local coord = iprototype.packcoord(x, y)
-    local tmp = self.update_cache[coord]
-    if tmp and tmp ~= ROAD_REMOVE then
+    local tmp = self.pending[coord]
+    if tmp and tmp ~= REMOVE then
         return {
             id = iobject.new_object_id(),
             x = x,
@@ -698,7 +698,9 @@ local function touch_end(self, datamodel)
     if not self.coord_indicator then
         return
     end
-    local _, x, y = iobject.align(self.coord_indicator)
+
+    local x, y
+    self.coord_indicator, x, y = iobject.align(self.coord_indicator)
     self.coord_indicator.x, self.coord_indicator.y = x, y
     iroadnet:clear("indicator")
 
@@ -712,7 +714,7 @@ local function touch_end(self, datamodel)
     end
 end
 
-local function _apply_road_teardown(self, x, y)
+local function __apply_teardown(self, x, y)
     for _, dir in ipairs(iconstant.ALL_DIR) do
         local succ, dx, dy = terrain:move_coord(x, y, dir, 1)
         if not succ then
@@ -747,9 +749,9 @@ local function confirm(self, datamodel)
     self.coord_indicator = nil
 
     local remove = {}
-    for coord, v in pairs(self.update_cache) do
+    for coord, v in pairs(self.pending) do
         local x, y = iprototype.unpackcoord(coord)
-        if v == ROAD_REMOVE then
+        if v == REMOVE then
             iroadnet:editor_del("road", x, y)
             global.roadnet[coord] = nil
             remove[coord] = true
@@ -763,7 +765,7 @@ local function confirm(self, datamodel)
 
     for coord in pairs(remove) do
         local x, y = iprototype.unpackcoord(coord)
-        _apply_road_teardown(self, x, y)
+        __apply_teardown(self, x, y)
     end
 
     iroadnet:clear("indicator")
@@ -775,7 +777,7 @@ local function confirm(self, datamodel)
 
     task.update_progress("routemap")
 
-    iui.redirect("construct.rml", "revert_roadbuilder")
+    iui.redirect("construct.rml", "builder_back")
 end
 
 local function start_laying(self, datamodel)
@@ -806,8 +808,8 @@ end
 local function finish_laying(self, datamodel)
     self.state = STATE_NONE
     datamodel.show_finish_laying = false
-    datamodel.show_cancel = false
     datamodel.show_confirm = true
+    datamodel.show_cancel = false
 
     iroadnet:clear("indicator")
     for coord, v in pairs(self.temporary_map) do
@@ -818,15 +820,15 @@ local function finish_laying(self, datamodel)
         local r = global.roadnet[coord]
         if not r then
             iroadnet:editor_set("road", "modify", x, y, shape, dir)
-            self.update_cache[coord] = {prototype_name, dir}
+            self.pending[coord] = {prototype_name, dir}
         else
             local r_shape, r_dir = iroadnet_converter.to_shape(r[1]), r[2]
             if r_shape ~= shape or r_dir ~= dir then
                 iroadnet:editor_set("road", "modify", x, y, shape, dir)
-                self.update_cache[coord] = {prototype_name, dir}
+                self.pending[coord] = {prototype_name, dir}
             else
                 iroadnet:editor_set("road", "normal", x, y, shape, dir)
-                self.update_cache[coord] = nil
+                self.pending[coord] = nil
             end
         end
     end
@@ -841,7 +843,7 @@ local function place_one(self, datamodel)
     datamodel.show_confirm = true
 
     iroadnet:editor_set("road", "valid", x, y, "O", "N")
-    self.update_cache[coord] = {"砖石公路-O型-01", "N"}
+    self.pending[coord] = {"砖石公路-O型-01", "N"}
 
     _builder_init(self, datamodel)
 end
@@ -869,7 +871,7 @@ local function _road_teardown(self, x, y)
         iroadnet:editor_set("road", "valid", dx, dy, shape, dir)
 
         local coord = iprototype.packcoord(dx, dy)
-        self.update_cache[coord] = {prototype_name, dir}
+        self.pending[coord] = {prototype_name, dir}
         ::continue::
     end
 end
@@ -1104,14 +1106,14 @@ local function remove_one(self, datamodel)
     datamodel.show_confirm = true
 
     local coord = iprototype.packcoord(x, y)
-    if self.update_cache[coord] and self.update_cache[coord] ~= ROAD_REMOVE then
-        self.update_cache[coord] = nil
+    if self.pending[coord] and self.pending[coord] ~= REMOVE then
+        self.pending[coord] = nil
         if global.roadnet[coord] then
             local prototype_name, dir = global.roadnet[coord][1], global.roadnet[coord][2]
             local shape = iroadnet_converter.to_shape(prototype_name)
             iroadnet:editor_set("road", "remove", x, y, shape, dir)
 
-            self.update_cache[coord] = ROAD_REMOVE
+            self.pending[coord] = REMOVE
         else
             _road_teardown(self, x, y)
         end
@@ -1121,7 +1123,7 @@ local function remove_one(self, datamodel)
             local shape = iroadnet_converter.to_shape(prototype_name)
             iroadnet:editor_set("road", "remove", x, y, shape, dir)
 
-            self.update_cache[coord] = ROAD_REMOVE
+            self.pending[coord] = REMOVE
         else
             assert(false)
         end
@@ -1156,14 +1158,14 @@ local function finish_teardown(self, datamodel)
     for coord in pairs(self.temporary_map) do
         local x, y = iprototype.unpackcoord(coord)
         local coord = iprototype.packcoord(x, y)
-        if self.update_cache[coord] and self.update_cache[coord] ~= ROAD_REMOVE then
-            self.update_cache[coord] = nil
+        if self.pending[coord] and self.pending[coord] ~= REMOVE then
+            self.pending[coord] = nil
             if global.roadnet[coord] then
                 local prototype_name, dir = global.roadnet[coord][1], global.roadnet[coord][2]
                 local shape = iroadnet_converter.to_shape(prototype_name)
                 iroadnet:editor_set("road", "remove", x, y, shape, dir)
 
-                self.update_cache[coord] = ROAD_REMOVE
+                self.pending[coord] = REMOVE
             else
                 _road_teardown(self, x, y)
             end
@@ -1173,7 +1175,7 @@ local function finish_teardown(self, datamodel)
                 local shape = iroadnet_converter.to_shape(prototype_name)
                 iroadnet:editor_set("road", "remove", x, y, shape, dir)
 
-                self.update_cache[coord] = ROAD_REMOVE
+                self.pending[coord] = REMOVE
             else
                 assert(false)
             end
@@ -1192,7 +1194,7 @@ local function back(self, datamodel)
     datamodel.show_start_teardown = false
     datamodel.show_cancel = false
 
-    for coord, v in pairs(self.update_cache) do
+    for coord, v in pairs(self.pending) do
         local x, y = iprototype.unpackcoord(coord)
         local prototype_name, dir = global.roadnet[coord][1], global.roadnet[coord][2]
         local shape = iroadnet_converter.to_shape(prototype_name)
@@ -1206,10 +1208,10 @@ local function back(self, datamodel)
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
-	iui.redirect("construct.rml", "revert_roadbuilder")
+	iui.redirect("construct.rml", "builder_back")
 
     self.temporary_map = {}
-    self.update_cache = {}
+    self.pending = {}
 end
 
 local function create()
@@ -1232,7 +1234,7 @@ local function create()
     M.back = back
 
     M.temporary_map = {}
-    M.update_cache = {}
+    M.pending = {}
     return M
 end
 return create

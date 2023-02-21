@@ -59,7 +59,7 @@ function m:init_world()
     iroadnet:create()
 
     if not DISABLE_LOADING then
-        iui.open("loading.rml")
+        iui.open({"loading.rml"})
         return
     end
 

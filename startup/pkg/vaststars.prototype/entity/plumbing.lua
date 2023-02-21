@@ -176,7 +176,8 @@ prototype "管道1-I型" {
             {type="input-output", position={0,0,"N"}},
             {type="input-output", position={0,0,"S"}},
         },
-    }
+    },
+    building_base = false,
 }
 
 prototype "管道1-L型" {
@@ -197,7 +198,8 @@ prototype "管道1-L型" {
             {type="input-output", position={0,0,"N"}},
             {type="input-output", position={0,0,"E"}},
         },
-    }
+    },
+    building_base = false,
 }
 
 prototype "管道1-T型" {
@@ -219,7 +221,8 @@ prototype "管道1-T型" {
             {type="input-output", position={0,0,"S"}},
             {type="input-output", position={0,0,"W"}},
         },
-    }
+    },
+    building_base = false,
 }
 
 prototype "管道1-X型" {
@@ -243,7 +246,8 @@ prototype "管道1-X型" {
             {type="input-output", position={0,0,"S"}},
             {type="input-output", position={0,0,"W"}},
         },
-    }
+    },
+    building_base = false,
 }
 
 prototype "管道1-O型" {
@@ -262,7 +266,8 @@ prototype "管道1-O型" {
         base_level = 0,
         connections = {
         },
-    }
+    },
+    building_base = false,
 }
 
 prototype "管道1-U型" {
@@ -282,7 +287,8 @@ prototype "管道1-U型" {
         connections = {
             {type="input-output", position={0,0,"N"}},
         },
-    }
+    },
+    building_base = false,
 }
 
 prototype "地下管1-JU型" {
@@ -303,7 +309,8 @@ prototype "地下管1-JU型" {
         connections = {
             {type="input-output", position={0,0,"N"}, ground = 10},
         },
-    }
+    },
+    building_base = false,
 }
 
 prototype "地下管1-JI型" {
@@ -326,7 +333,8 @@ prototype "地下管1-JI型" {
             {type="input-output", position={0,0,"S"}},
             {type="input-output", position={0,0,"N"}, ground = 10},
         },
-    }
+    },
+    building_base = false,
 }
 
 prototype "地下管2-JU型" {
@@ -347,7 +355,8 @@ prototype "地下管2-JU型" {
         connections = {
             {type="input-output", position={0,0,"N"}, ground = 14},
         },
-    }
+    },
+    building_base = false,
 }
 
 prototype "地下管2-JI型" {
@@ -370,5 +379,6 @@ prototype "地下管2-JI型" {
             {type="input-output", position={0,0,"S"}},
             {type="input-output", position={0,0,"N"}, ground = 14},
         },
-    }
+    },
+    building_base = false,
 }

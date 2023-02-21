@@ -19,7 +19,7 @@
             function start.openTech(event)
                 ui_sys.pub {"open_techui"}
                 ui_sys.close()
-                ui_sys.open("science.rml")
+                ui_sys.open({"science.rml"})
             end
         </script>
     </head>

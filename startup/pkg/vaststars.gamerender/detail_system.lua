@@ -12,7 +12,7 @@ local EDITOR_CACHE_NAMES <const> = {"SELECTED", "CONSTRUCTED"}
 local iobject = ecs.require "object"
 
 function idetail.show(object_id)
-    iui.open("detail_panel.rml", object_id)
+    iui.open({"detail_panel.rml"}, object_id)
 
     -- 显示环型菜单
     local object = assert(objects:get(object_id))
@@ -28,9 +28,9 @@ function idetail.show(object_id)
     local ui_x, ui_y = iui.convert_coord(vr, math3d.index(p, 1), math3d.index(p, 2))
 
     if iprototype.has_type(typeobject.type, "logistic_chest") then
-        iui.open("logistic_chest.rml", object_id, object.srt.t, ui_x, ui_y)
+        iui.open({"logistic_chest.rml"}, object_id, object.srt.t, ui_x, ui_y)
     elseif typeobject.show_detail ~= false then
-        iui.open("build_function_pop.rml", object_id, object.srt.t, ui_x, ui_y)
+        iui.open({"build_function_pop.rml"}, object_id, object.srt.t, ui_x, ui_y)
     end
 
     do

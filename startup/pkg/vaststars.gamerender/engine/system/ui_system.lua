@@ -19,7 +19,7 @@ local guide_progress = 0
 
 local _load_datamodel ; do
     local datamodel_funcs = {}
-    local DATAMODEL_PATH = fs.path("/pkg/vaststars.gamerender/ui_datamodel/")
+    local DATAMODEL_PATH <const> = fs.path("/pkg/vaststars.gamerender/ui_datamodel/")
 
     local function _create_ui_mailbox(url)
         local ui_mailbox = {}
@@ -29,28 +29,31 @@ local _load_datamodel ; do
         return ui_mailbox
     end
 
-    function _load_datamodel(url)
-        if datamodel_funcs[url] then
-            return datamodel_funcs[url]
+    function _load_datamodel(url, datamodel)
+        if datamodel_funcs[datamodel] then
+            return datamodel_funcs[datamodel]
         end
 
-        local f = DATAMODEL_PATH / url:gsub("^(.*)%.rml$", "%1.lua")
+        local f = DATAMODEL_PATH / datamodel
         if not fs.exists(f) then
             return
         end
 
         local func, err = loadfile(f:string())
         if not func then
-            error(([[Failed to load datamodel %s: %s]]):format(url, err))
+            error(([[Failed to load datamodel %s: %s]]):format(datamodel, err))
         end
 
-        datamodel_funcs[url] = func(ecs, _create_ui_mailbox(url))
-        return datamodel_funcs[url]
+        datamodel_funcs[datamodel] = func(ecs, _create_ui_mailbox(url))
+        return datamodel_funcs[datamodel]
     end
 end
 
-local function open(url, ...)
-    assert(type(url) == "string")
+-- uiData = {url, datamodel}
+local function open(uiData, ...)
+    assert(type(uiData[1]) == "string")
+    local url = uiData[1]
+    local datamodel = uiData[2] or url:gsub("^(.*)%.rml$", "%1.lua")
 
     local binding = window_bindings[url]
     if binding then
@@ -93,7 +96,7 @@ local function open(url, ...)
     end)
     window_bindings[url] = binding
 
-    binding.template = _load_datamodel(url)
+    binding.template = _load_datamodel(url, datamodel)
     if not binding.template then
         return binding.window
     end
@@ -212,8 +215,8 @@ function ui_system.camera_usage()
 end
 
 local iui = ecs.interface "iui"
-function iui.open(url, ...)
-    return open(url, ...)
+function iui.open(...)
+    return open(...)
 end
 
 function iui.close(url)

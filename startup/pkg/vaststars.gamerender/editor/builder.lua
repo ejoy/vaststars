@@ -100,12 +100,11 @@ end
 local function complete(self, object_id)
     assert(object_id)
     local object = objects:get(object_id, {"CONFIRM"})
-
-    local power_network_dirty = false
     object.state = "constructed"
     object.object_state = "constructed"
 
     -- TODO: special case for assembling machine
+    -- The default recipe for the assembler is empty.
     local recipe
     local typeobject = iprototype.queryByName("entity", object.prototype_name)
     if iprototype.has_type(typeobject.type, "assembling") then
@@ -143,15 +142,12 @@ local function complete(self, object_id)
         end
     end
 
-    if not power_network_dirty and typeobject.power_pole then
-        power_network_dirty = true
-    end
     objects:remove(object_id, "CONFIRM")
     objects:set(object, "CONSTRUCTED")
     gameplay_core.build()
 
     local gw = gameplay_core.get_world()
-    if power_network_dirty then
+    if typeobject.power_pole then
         -- update power network
         ipower:build_power_network(gw)
         ipower_line.update_line(ipower:get_pole_lines())

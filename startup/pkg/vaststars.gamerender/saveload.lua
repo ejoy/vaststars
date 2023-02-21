@@ -447,7 +447,7 @@ function M:restore(index)
     index = index or #archival_list
     if index > #archival_list then
         log.error(("Failed to restore `%s`"):format(index))
-        iui.open("option_pop.rml")
+        iui.open({"option_pop.rml"})
         return false
     end
 
@@ -473,7 +473,7 @@ function M:restore(index)
         local version = json.decode(readall(archival_dir .. "/version"))
         if version.gameplay_version ~= GAMEPLAY_VERSION then
             log.error(("Failed `%s` version `%s` current `%s`"):format(archival_relative_dir, archival_list[index].version, GAMEPLAY_VERSION))
-            iui.open("option_pop.rml")
+            iui.open({"option_pop.rml"})
             return false
         else
             break
@@ -484,7 +484,7 @@ function M:restore(index)
 
     if index == 0 then
         log.error("Failed to restore")
-        iui.open("option_pop.rml")
+        iui.open({"option_pop.rml"})
         return false
     end
 
@@ -495,7 +495,7 @@ function M:restore(index)
     global.roadnet = iroadnet_converter.to_roadnet_data(map)
 
     iscience.update_tech_list(gameplay_core.get_world())
-    iui.open("construct.rml")
+    iui.open({"construct.rml"})
 
     gameplay_core.build()
     restore_world()
@@ -512,7 +512,7 @@ function M:restart()
     iscience.update_tech_list(cw)
     iguide.world = cw
     iui.set_guide_progress(iguide.get_progress())
-    iui.open("construct.rml")
+    iui.open({"construct.rml"})
 
     local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
     if coord then

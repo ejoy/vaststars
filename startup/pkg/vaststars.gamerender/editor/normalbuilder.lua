@@ -125,7 +125,7 @@ local function __new_entity(self, datamodel, typeobject)
         state = state,
         object_state = "none",
     }
-    iui.open("construct_pop.rml", self.pickup_object.srt.t)
+    iui.open({"construct_pop.rml"}, self.pickup_object.srt.t)
 
     local dx, dy = _building_to_logisitic(x, y)
     local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, dx, dy, dir)
