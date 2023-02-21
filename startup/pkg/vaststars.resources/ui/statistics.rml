@@ -152,6 +152,8 @@
                 justify-content: flex-start;
                 text-align: center;
                 font-size: 3vmin;
+                background-color: dimgray;
+                border: 1px #fff;
             }
             .total-power-indicator {
                 flex-direction: row;
