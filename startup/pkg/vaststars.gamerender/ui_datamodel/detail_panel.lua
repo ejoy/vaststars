@@ -76,14 +76,14 @@ local function get_display_info(e, typeobject, t)
                         local st = global.statistic["power"][e.eid]
                         if st then
                             -- power is sum of 50 tick
-                            current = st[cn] * (global.frameratio / 50)
+                            current = st[cn] * (global.frame_ratio / 50)
                         elseif typeobject.name == "指挥中心" then
                             current = 0
                             for _, value in pairs(global.statistic.power_consumed) do
                                 current = current + value
                             end
                         elseif e.solar_panel then
-                            current = get_solar_panel_power(total) * global.frameratio
+                            current = get_solar_panel_power(total) * global.frame_ratio
                             if current <= 0 then
                                 status = 1 --shundown status
                             end
@@ -91,12 +91,12 @@ local function get_display_info(e, typeobject, t)
                         if typeobject.drain then
                             if current <= 0 then
                                 status = 1 --shundown status
-                            elseif current <= typeobject.drain * global.frameratio then
+                            elseif current <= typeobject.drain * global.frame_ratio then
                                 status = 2 --idle status
                             end
                         end
                     end
-                    total = total * global.frameratio
+                    total = total * global.frame_ratio
                     local unit = "k"
                     local divisor = 1000
                     if total >= 1000000000 then
