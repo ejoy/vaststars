@@ -59,9 +59,9 @@ uint64_t task::stat_consumption(lua_State* L, world& w) {
 
 uint64_t task::select_entity(lua_State* L, world& w) {
     uint64_t n = 0;
-    for (auto& v : ecs_api::select<ecs::entity>(w.ecs)) {
-        ecs::entity& e = v.get<ecs::entity>();
-        if (e.prototype == p1) {
+    for (auto& v : ecs_api::select<ecs::building>(w.ecs)) {
+        ecs::building& building = v.get<ecs::building>();
+        if (building.prototype == p1) {
             ++n;
         }
     }
@@ -71,9 +71,9 @@ uint64_t task::select_entity(lua_State* L, world& w) {
 uint64_t task::select_chest(lua_State* L, world& w) {
     uint64_t n = 0;
     //TODO
-    //for (auto& v : ecs_api::select<ecs::chest, ecs::entity>(w.ecs)) {
-    //    ecs::entity& e = v.get<ecs::entity>();
-    //    if (e.prototype == p1) {
+    //for (auto& v : ecs_api::select<ecs::chest, ecs::building>(w.ecs)) {
+    //    ecs::building& building = v.get<ecs::building>();
+    //    if (building.prototype == p1) {
     //        auto& c = v.get<ecs::chest>();
     //        auto& chest = w.query_chest(c.id);
     //        for (auto& slot : chest.slots) {

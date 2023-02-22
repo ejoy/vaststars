@@ -26,8 +26,8 @@ local function update_world(world)
     end
     counter = 1
     local statistic = global.statistic
-    for e in world.ecs:select "entity:in eid:in" do
-        local vsobject = get_object(e.entity.x, e.entity.y)
+    for e in world.ecs:select "building:in eid:in" do
+        local vsobject = get_object(e.building.x, e.building.y)
         local st = statistic.power[e.eid]
         if st then
             local game_object = vsobject.game_object

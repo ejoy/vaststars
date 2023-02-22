@@ -25,13 +25,13 @@ struct powergrid {
 static void
 stat_consumer(lua_State *L, world& w, powergrid pg[]) {
 	struct prototype_context p = w.prototype(L, 0);
-	for (auto& v : ecs_api::select<ecs::consumer, ecs::capacitance, ecs::entity>(w.ecs)) {
+	for (auto& v : ecs_api::select<ecs::consumer, ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
 			continue;
 		}
-		ecs::entity& e = v.get<ecs::entity>();
-		p.id = e.prototype;
+		ecs::building& building = v.get<ecs::building>();
+		p.id = building.prototype;
 		unsigned int priority = pt_priority(&p);
 		unsigned int power = pt_power(&p);
 		unsigned int charge = c.shortage < power ? c.shortage : power;
@@ -43,13 +43,13 @@ stat_consumer(lua_State *L, world& w, powergrid pg[]) {
 static void
 stat_generator(lua_State *L, world& w, powergrid pg[]) {
 	struct prototype_context p = w.prototype(L, 0);
-	for (auto& v : ecs_api::select<ecs::generator, ecs::capacitance, ecs::entity>(w.ecs)) {
+	for (auto& v : ecs_api::select<ecs::generator, ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
 			continue;
 		}
-		ecs::entity& e = v.get<ecs::entity>();
-		p.id = e.prototype;
+		ecs::building& building = v.get<ecs::building>();
+		p.id = building.prototype;
 		unsigned int priority = pt_priority(&p);
 		unsigned int capacitance = pt_capacitance(&p);
 		pg[c.network].generator_power[priority] += capacitance - c.shortage;
@@ -60,13 +60,13 @@ stat_generator(lua_State *L, world& w, powergrid pg[]) {
 static void
 stat_accumulator(lua_State *L, world& w, powergrid pg[]) {
 	struct prototype_context p = w.prototype(L, 0);
-	for (auto& v : ecs_api::select<ecs::accumulator, ecs::capacitance, ecs::entity>(w.ecs)) {
+	for (auto& v : ecs_api::select<ecs::accumulator, ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
 			continue;
 		}
-		ecs::entity& e = v.get<ecs::entity>();
-		p.id = e.prototype;
+		ecs::building& building = v.get<ecs::building>();
+		p.id = building.prototype;
 		unsigned int power = pt_power(&p);
 		if (c.shortage == 0) {
 			// battery is full
@@ -175,14 +175,14 @@ powergrid_run(lua_State *L, world& w, powergrid pg[]) {
 	struct prototype_context p = w.prototype(L, 0);
 	uint64_t generate_power = 0;
 	uint64_t consume_power = 0;
-	for (auto& v : ecs_api::select<ecs::capacitance, ecs::entity>(w.ecs)) {
+	for (auto& v : ecs_api::select<ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0 || !pg[c.network].active) {
 			c.delta = 0;
 			continue;
 		}
-		ecs::entity& e = v.get<ecs::entity>();
-		p.id = e.prototype;
+		ecs::building& building = v.get<ecs::building>();
+		p.id = building.prototype;
 		if (v.sibling<ecs::consumer>()) {
 			// It's a consumer, charge capacitance
 			if (c.shortage > 0) {

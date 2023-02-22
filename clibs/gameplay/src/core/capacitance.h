@@ -37,9 +37,9 @@ struct consumer_context {
 
 template <class Entity>
 consumer_context get_consumer(lua_State* L, world& w, Entity& v) {
-    ecs::entity& e = v.template get<ecs::entity>();
+    ecs::building& building = v.template get<ecs::building>();
     ecs::capacitance& c = v.template get<ecs::capacitance>();
-    prototype_context p = w.prototype(L, e.prototype);
+    prototype_context p = w.prototype(L, building.prototype);
     unsigned int power = pt_power(&p);
     unsigned int drain = pt_drain(&p);
     unsigned int capacitance = pt_capacitance(&p);

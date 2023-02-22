@@ -65,7 +65,7 @@ local custom_type_mapping = {
     [2] = {s = "lorry_count", check = function(task_params)
         local c = 0
         local gameplay_world = gameplay_core.get_world()
-        for e in gameplay_world.ecs:select "station:in chest:in entity:in" do
+        for e in gameplay_world.ecs:select "station:in chest:in building:in" do
             -- TODO
         end
 

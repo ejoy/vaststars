@@ -56,12 +56,12 @@ end
 
 local function update_chest_endpoint(world, e)
     local ecs = world.ecs
-    ecs:extend(e, "chest:update entity:in")
+    ecs:extend(e, "chest:update building:in")
 
-    local pt = query(e.entity.prototype)
-    local x, y, dir = rotate(pt.crossing.connections[1].position, e.entity.direction, pt.area)
-    x = x + e.entity.x
-    y = y + e.entity.y
+    local pt = query(e.building.prototype)
+    local x, y, dir = rotate(pt.crossing.connections[1].position, e.building.direction, pt.area)
+    x = x + e.building.x
+    y = y + e.building.y
     local endpoint = world:roadnet_create_endpoint(x, y, mapping[DIRECTION[dir]]) -- endpoint equals 0xffff if doesn't connect to any road
     if endpoint == 0xffff then
         return

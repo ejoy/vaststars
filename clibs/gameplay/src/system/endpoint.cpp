@@ -11,7 +11,7 @@ static constexpr size_t kStationMaxLorry = std::extent_v<decltype(ecs::station::
 static constexpr size_t kParkMaxLorry = std::extent_v<decltype(ecs::park::lorry)>;
 static_assert(kParkMaxLorry <= kStationMaxLorry);
 
-static void charge(lua_State* L, world& w, ecs_api::entity<ecs::station, ecs::park, ecs::entity, ecs::capacitance>& v) {
+static void charge(lua_State* L, world& w, ecs_api::entity<ecs::station, ecs::park, ecs::building, ecs::capacitance>& v) {
 	auto consumer = get_consumer(L, w, v);
 	if (!consumer.cost_drain()) {
 		return;
@@ -61,7 +61,7 @@ static void entry(lua_State* L, world& w, ecs::station& station, ecs::park& park
 
 static int lupdate(lua_State *L) {
 	world& w = *(world*)lua_touserdata(L, 1);
-	for (auto& v : ecs_api::select<ecs::station, ecs::park, ecs::entity, ecs::capacitance>(w.ecs)) {
+	for (auto& v : ecs_api::select<ecs::station, ecs::park, ecs::building, ecs::capacitance>(w.ecs)) {
 		charge(L, w, v);
 		entry(L, w, v.get<ecs::station>(), v.get<ecs::park>());
 	}

@@ -39,7 +39,7 @@ prototype "指挥中心" {
     icon = "textures/building_pic/small_pic_headquarter.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "generator", "base", "chest"},
+    type = {"building", "generator", "base", "chest"},
     chest_type = "blue",
     area = "5x5",
     supply_area = "9x9",
@@ -62,7 +62,7 @@ prototype "物流需求站" {
     icon = "textures/building_pic/small_pic_goodsstation_input.texture",
     background = "textures/build_background/small_pic_goodsstation_input.texture",
     construct_detector = {"exclusive"},
-    type = {"entity", "logistic_hub"},
+    type = {"building", "logistic_hub"},
     area = "1x1",
     slots = 10,
     group = {"物流"},
@@ -78,7 +78,7 @@ prototype "物流中心I" {
     icon = "textures/building_pic/small_pic_logistics_center2.texture",
     background = "textures/build_background/pic_logisticscenter.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "consumer", "station"},
+    type = {"building", "consumer", "station"},
     area = "3x3",
     capacitance = "50MJ",
     power = "400kW",
@@ -98,7 +98,7 @@ prototype "运输车辆I" {
     icon = "textures/building_pic/small_pic_mars_truck.texture",
     background = "textures/build_background/pic_mars_truck.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "consumer"},
+    type = {"building", "consumer"},
     area = "1x1",
     power = "80kW",
     charge = "50",
@@ -117,7 +117,7 @@ prototype "机器爪I" {
     model = "prefabs/inserter-1.prefab",
     icon = "textures/building_pic/small_pic_inserter.texture",
     construct_detector = {"exclusive"},
-    type = {"entity", "consumer"},
+    type = {"building", "consumer"},
     area = "1x1",
     speed = "1s",
     power = "12kW",
@@ -126,7 +126,7 @@ prototype "机器爪I" {
 }
 
 prototype "科研中心I" {
-    type ={"entity", "consumer","laboratory"},
+    type = {"building", "consumer","laboratory"},
     model = "prefabs/lab-1.prefab",
     icon = "textures/building_pic/small_pic_lab.texture",
     background = "textures/build_background/pic_lab.texture",
@@ -157,7 +157,7 @@ prototype_road "砖石公路-I型-%02d" {
     flow_direction = {"N", "E"},
     track = "I",
     tickcount = 21,
-    type ={"entity", "road"},
+    type = {"building", "road"},
     area = "1x1",
     crossing = {
         connections = {
@@ -176,7 +176,7 @@ prototype_road "砖石公路-L型-%02d" {
     flow_direction = {"N", "E", "S", "W"},
     track = "L",
     tickcount = 21,
-    type ={"entity", "road"},
+    type = {"building", "road"},
     area = "1x1",
     crossing = {
         connections = {
@@ -195,7 +195,7 @@ prototype_road "砖石公路-T型-%02d" {
     flow_direction = {"N", "E", "S", "W"},
     track = "T",
     tickcount = 21,
-    type ={"entity", "road"},
+    type = {"building", "road"},
     area = "1x1",
     crossing = {
         connections = {
@@ -215,7 +215,7 @@ prototype_road "砖石公路-X型-%02d" {
     flow_direction = {"N"},
     track = "X",
     tickcount = 21,
-    type ={"entity", "road"},
+    type = {"building", "road"},
     area = "1x1",
     crossing = {
         connections = {
@@ -236,7 +236,7 @@ prototype "砖石公路-O型-01" {
     flow_direction = {"N"},
     track = "O",
     tickcount = 21,
-    type ={"entity", "road"},
+    type = {"building", "road"},
     area = "1x1",
     group = {"物流","默认"},
     crossing = {
@@ -254,7 +254,7 @@ prototype_road "砖石公路-U型-%02d" {
     flow_direction = {"N", "E", "S", "W"},
     track = "U",
     tickcount = 21,
-    type ={"entity", "road"},
+    type = {"building", "road"},
     area = "1x1",
     crossing = {
         connections = {
@@ -268,7 +268,7 @@ prototype "拆除点" {
     icon = "textures/building_pic/small_pic_chest.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "chest"},
+    type = {"building", "chest"},
     chest_type = "red",
     area = "1x1",
     dismantle_area = "32x32",
@@ -286,7 +286,7 @@ prototype "建造中心" {
     icon = "textures/building_pic/small_pic_headquarter.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "assembling"},
+    type = {"building", "assembling"},
     area = "5x5",
     maxslot = 8,
     group = {"物流"},
@@ -304,7 +304,7 @@ prototype "道路建造站" {
     icon = "textures/building_pic/small_pic_goodsstation_input.texture",
     background = "textures/build_background/small_pic_goodsstation_input.texture",
     construct_detector = {"exclusive"},
-    type = {"entity"},
+    type = {"building"},
     area = "2x2",
     capacity = 50,
     build_area = "30x30",
@@ -317,7 +317,7 @@ prototype "管道建造站" {
     icon = "textures/building_pic/small_pic_goodsstation_input.texture",
     background = "textures/build_background/small_pic_goodsstation_input.texture",
     construct_detector = {"exclusive"},
-    type = {"entity"},
+    type = {"building"},
     area = "2x2",
     capacity = 50,
     build_area = "24x24",
@@ -330,7 +330,7 @@ prototype "装卸站" {
     icon = "textures/building_pic/small_pic_chest.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
-    type ={"entity"},
+    type = {"building"},
     area = "2x2",
     group = {"物流"},
     crossing = {

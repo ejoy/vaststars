@@ -1,6 +1,6 @@
 local component = require "register.component"
 
-component "entity" {
+component "building" {
     "x:byte",
     "y:byte",
     "prototype:word",
