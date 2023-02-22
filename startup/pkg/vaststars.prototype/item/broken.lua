@@ -233,6 +233,16 @@ prototype "装卸站设计图" {
     order = 122,
 }
 
+prototype "熔炼炉设计图" {
+    type = {"item"},
+    stack = 10,
+    icon = "textures/construct/broken-assembler.texture",
+    model = "prefabs/rock.prefab",
+    description = "熔炼炉的设计图",
+    group = "加工",
+    order = 123,
+}
+
 prototype "太阳能板设计图" {
     type = {"item"},
     stack = 50,

@@ -302,11 +302,66 @@ local prototype = gameplay.register.prototype
   --   task = {"stat_production", 0, "铁矿石"},
   --   prerequisites = {"放置装卸站"},
   --   count = 2,
+  --   effects = {
+  --     unlock_recipe = {"熔炼炉打印"},
+  --   },
   --   tips_pic = {
   --     "textures/task_tips_pic/task_produce_ore3.texture",
   --   },
   --   sign_desc = {
   --     { desc = "在铁矿上放置挖矿机并挖掘2个铁矿石", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+
+  -- prototype "铁矿熔炼" {
+  --   desc = "掌握熔炼铁矿石冶炼成铁板的工艺",
+  --   type = { "tech" },
+  --   icon = "textures/science/tech-research.texture",
+  --   effects = {
+  --     unlock_recipe = {"铁板1","熔炼炉打印"},
+  --   },
+  --   prerequisites = {"生产铁矿石"},
+  --   ingredients = {
+  --       {"地质科技包", 1},
+  --   },
+  --   count = 4,
+  --   time = "3s"
+  -- }
+  
+  -- prototype "放置熔炼炉" {
+  --   desc = "放置熔炼炉",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"select_entity", 0, "熔炼炉I"},
+  --   prerequisites = {"铁矿熔炼"},
+  --   count = 2,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_click_build.texture",
+  --     "textures/task_tips_pic/task_produce_geopack1.texture",
+  --     "textures/task_tips_pic/task_produce_geopack2.texture",
+  --     "textures/task_tips_pic/start_construct.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "使用“建造”放置2台熔炼炉", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+  
+  -- prototype "生产铁板" {
+  --   desc = "铁板可以打造坚固器材，对于基地建设多多益善",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"stat_production", 0, "铁板"},
+  --   prerequisites = {"放置熔炼炉"},
+  --   count = 4,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_produce_ironplate1.texture",
+  --     "textures/task_tips_pic/task_produce_ironplate2.texture",
+  --     "textures/task_tips_pic/task_produce_ironplate3.texture",
+  --     "textures/task_tips_pic/task_produce_ironplate4.texture",
+  --     "textures/task_tips_pic/task_produce_ironplate5.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "使用熔炼炉生产4个铁板", icon = "textures/construct/industry.texture"},
   --   },
   -- }
 

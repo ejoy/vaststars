@@ -1401,6 +1401,22 @@ prototype "装卸站打印" {
     description = "打印装卸站",
 }
 
+prototype "熔炼炉打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 56,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"熔炼炉设计图", 1},
+    },
+    results = {
+        {"熔炼炉I", 1},
+    },
+    time = "10s",
+    description = "打印装卸站",
+}
+
 prototype "科研中心打印" {
     type = { "recipe" },
     category = "设计图打印",
