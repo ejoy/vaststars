@@ -21,7 +21,7 @@ local function _get_recipes(category)
 end
 
 local mining_recipe = {}
-for _, typeobject in pairs(iprototype.each_maintype("entity", "mining")) do
+for _, typeobject in pairs(iprototype.each_maintype("building", "mining")) do
     assert(typeobject.mining_category, "mining entity should have mining_category")
     mining_recipe[typeobject.name] = {}
     for _, category in ipairs(typeobject.mining_category) do

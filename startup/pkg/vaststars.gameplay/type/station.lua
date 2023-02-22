@@ -21,7 +21,7 @@ function c:ctor(init, pt)
         park["lorry" .. i] = INVALID_LORRY_ID
     end
     for index, v in ipairs(pt.lorry) do
-        local lpt = prototype.queryByName("entity", v)
+        local lpt = prototype.queryByName("building", v)
         park["lorry" .. index] = lpt.id
     end
 

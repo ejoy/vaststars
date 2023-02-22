@@ -35,7 +35,7 @@ local is_cross; do
     }
 
     -- every 2 bits represent one direction of a road, 00 means nothing, 01 means road, 10 means roadside, total 8 bits represent 4 directions
-    for _, typeobject in pairs(iprototype.each_maintype("entity", "road")) do
+    for _, typeobject in pairs(iprototype.each_maintype("building", "road")) do
         for _, entity_dir in pairs(typeobject.flow_direction) do
             local bits = 0
             local c = 0
@@ -74,7 +74,7 @@ local DIRECTION <const> = {
 local cache = {}
 local function _make_cache()
     -- TODO: cache matrix move to prototype?
-    for _, typeobject in pairs(iprototype.each_maintype("entity", "road")) do
+    for _, typeobject in pairs(iprototype.each_maintype("building", "road")) do
         local slots = igame_object.get_prefab(typeobject.model).slots
         if not next(slots) then
             goto continue

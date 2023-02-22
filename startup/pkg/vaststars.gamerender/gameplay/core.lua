@@ -95,7 +95,7 @@ function m.create_entity(init)
         recipe = init.recipe, -- for debugging
     }
 
-    local typeobject = iprototype.queryByName("entity", init.prototype_name)
+    local typeobject = iprototype.queryByName("building", init.prototype_name)
     for _, entity_type in ipairs(typeobject.type) do
         func = init_func[entity_type]
         if func then

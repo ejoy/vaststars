@@ -25,12 +25,12 @@ local gameplay_core = require "gameplay.core"
 local EDITOR_CACHE_NAMES = {"TEMPORARY", "CONFIRM", "CONSTRUCTED"}
 
 local function __has_type(prototype_name, type)
-    local typeobject = assert(iprototype.queryByName("entity", prototype_name))
+    local typeobject = assert(iprototype.queryByName("building", prototype_name))
     return iprototype.has_type(typeobject.type, type)
 end
 
 local function _get_state(prototype_name, ok)
-    local typeobject = iprototype.queryByName("entity", prototype_name)
+    local typeobject = iprototype.queryByName("building", prototype_name)
     if typeobject.supply_area then
         if ok then
             return ("power_pole_construct_%s"):format(typeobject.supply_area)
@@ -80,7 +80,7 @@ end
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
-    local typeobject = iprototype.queryByName("entity", prototype_name)
+    local typeobject = iprototype.queryByName("building", prototype_name)
     local r = {}
     if not typeobject.crossing then
         return r
@@ -176,7 +176,7 @@ end
 
 local function __align(object)
     assert(object)
-    local typeobject = iprototype.queryByName("entity", object.prototype_name)
+    local typeobject = iprototype.queryByName("building", object.prototype_name)
     local coord = logistic_coord:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
@@ -201,7 +201,7 @@ local function touch_move(self, datamodel, delta_vec)
     end
     pickup_object.x, pickup_object.y = x, y
 
-    local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = iprototype.queryByName("building", pickup_object.prototype_name)
 
     if self.road_entrance then
         local road_entrance_position = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
@@ -262,7 +262,7 @@ local function touch_end(self, datamodel)
     end
     pickup_object.x, pickup_object.y = x, y
 
-    local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = iprototype.queryByName("building", pickup_object.prototype_name)
 
     if self.road_entrance then
         local road_entrance_position = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
@@ -303,7 +303,7 @@ local function confirm(self, datamodel)
         return
     end
 
-    local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = iprototype.queryByName("building", pickup_object.prototype_name)
     if typeobject.supply_area then
         pickup_object.state = ("power_pole_confirm_%s"):format(typeobject.supply_area)
     else
@@ -363,7 +363,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     ieditor:revert_changes({"TEMPORARY"})
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
 
-    local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = iprototype.queryByName("building", pickup_object.prototype_name)
     local coord = logistic_coord:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
     if not coord then
         return

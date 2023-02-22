@@ -77,7 +77,7 @@ function M.show_supply_area()
         for _, pole in ipairs(nw.poles) do
             for _, object in objects:selectall("gameplay_eid", pole.eid, EDITOR_CACHE_NAMES) do
                 local _object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
-                local typeobject = iprototype.queryByName("entity", object.prototype_name)
+                local typeobject = iprototype.queryByName("building", object.prototype_name)
                 _object.state = ("power_pole_selected_%s"):format(typeobject.supply_area)
             end
         end

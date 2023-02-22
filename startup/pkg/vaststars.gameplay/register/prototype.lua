@@ -16,7 +16,7 @@ local function hashstring(s)
 end
 
 local maintype = {
-	entity = {
+	building = {
 		maxid = 0,
 		magic = 0x0000,
 	},

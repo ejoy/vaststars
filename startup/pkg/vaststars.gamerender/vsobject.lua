@@ -15,19 +15,11 @@ local iplant = ecs.require "engine.plane"
 local BLOCK_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.1, 0, 0.0})
 local CONSTRUCT_COLOR_INVALID <const> = math3d.constant "null"
 local CONSTRUCT_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 0.55})
-local CONSTRUCT_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 2.5, 0.0, 0.55})
 local CONSTRUCT_COLOR_WHITE <const> = math3d.constant("v4", {1.5, 2.5, 1.5, 0.55})
-local CONSTRUCT_COLOR_YELLOW <const> = math3d.constant("v4", {2.5, 2.5, 0.0, 0.55})
 
 local CONSTRUCT_BLOCK_COLOR_INVALID <const> = math3d.constant "null"
 local CONSTRUCT_BLOCK_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.2, 0.2, 0.4})
 local CONSTRUCT_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
-local CONSTRUCT_BLOCK_COLOR_WHITE <const> = math3d.constant("v4", {1, 1, 1, 1.0})
-
-local FLUIDFLOW_BLUE <const> = math3d.constant("v4", {0.0, 0.0, 2.5, 0.55})
-local FLUIDFLOW_CHARTREUSE <const> = math3d.constant("v4", {1.2, 2.5, 0.0, 0.55})
-local FLUIDFLOW_CHOCOLATE <const> = math3d.constant("v4", {2.1, 2.0, 0.3, 0.55})
-local FLUIDFLOW_DARKVIOLET <const> = math3d.constant("v4", {1.4, 0.0, 2.1, 0.55})
 
 local CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
 local CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
@@ -37,18 +29,12 @@ local typeinfos = {
     ["invalid_construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_RED, block_edge_size = 0}, -- 未确认, 非法
     ["confirm"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已确认
     ["constructed"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已施工
-    ["task"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_RED, block_edge_size = 4}, -- 新手任务初始需要拆除建筑的底色
     ["selected"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 6},
     ["moving"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 移动中
     ["remove"] = {state = "translucent", color = CONSTRUCT_COLOR_RED, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 未确认, 非法
-
-    ["fluidflow_blue"] = {state = "translucent", color = FLUIDFLOW_BLUE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0},
-    ["fluidflow_chartreuse"] = {state = "translucent", color = FLUIDFLOW_CHARTREUSE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0},
-    ["fluidflow_chocolate"] = {state = "translucent", color = FLUIDFLOW_CHOCOLATE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0},
-    ["fluidflow_darkviolet"] = {state = "translucent", color = FLUIDFLOW_DARKVIOLET, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0},
 }
 
-for _, typeobject in pairs(iprototype.each_maintype "entity") do
+for _, typeobject in pairs(iprototype.each_maintype "building") do
     if typeobject.supply_area then
         local w, h = typeobject.supply_area:match("(%d+)x(%d+)")
         w, h = tonumber(w), tonumber(h)
@@ -95,7 +81,7 @@ end
 
 local function update(self, t)
     local typeinfo = typeinfos[t.type or self.type]
-    local typeobject = iprototype.queryByName("entity", t.prototype_name or self.prototype_name)
+    local typeobject = iprototype.queryByName("building", t.prototype_name or self.prototype_name)
     self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, t.animation_name)
     assert(t.srt)
 
@@ -105,7 +91,7 @@ local function update(self, t)
     end
 
     if typeinfo.block_color ~= CONSTRUCT_BLOCK_COLOR_INVALID then
-        local typeobject = iprototype.queryByName("entity", self.prototype_name)
+        local typeobject = iprototype.queryByName("building", self.prototype_name)
         local w, h = iprototype.unpackarea(typeobject.area)
         w, h = w + 1, h + 1
         local block_pos = math3d.ref(math3d.add(t.srt.t, BLOCK_POSITION_OFFSET))
@@ -121,13 +107,13 @@ end
 local function emissive_color_update(self, color)
     self.emissive_color = color
     local typeinfo = typeinfos[self.type]
-    local typeobject = iprototype.queryByName("entity", self.prototype_name)
+    local typeobject = iprototype.queryByName("building", self.prototype_name)
     self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, nil, color)
 end
 
 local function animation_name_update(self, animation_name)
     local typeinfo = typeinfos[self.type]
-    local typeobject = iprototype.queryByName("entity", self.prototype_name)
+    local typeobject = iprototype.queryByName("building", self.prototype_name)
     self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, animation_name, self.emissive_color)
 end
 
@@ -177,7 +163,7 @@ end
 --     dir = 'N',
 -- }
 return function (init)
-    local typeobject = iprototype.queryByName("entity", init.prototype_name)
+    local typeobject = iprototype.queryByName("building", init.prototype_name)
     local typeinfo = assert(typeinfos[init.type], ("invalid type `%s`"):format(init.type))
 
     local game_object = assert(igame_object.create({

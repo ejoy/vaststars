@@ -78,7 +78,7 @@ local function _get_construct_menu()
 end
 
 local function __has_type(prototype_name, type)
-    local typeobject = assert(iprototype.queryByName("entity", prototype_name))
+    local typeobject = assert(iprototype.queryByName("building", prototype_name))
     return iprototype.has_type(typeobject.type, type)
 end
 
@@ -226,7 +226,7 @@ function M:stage_camera_usage(datamodel)
             builder = create_normalbuilder()
         end
 
-        local typeobject = iprototype.queryByName("entity", prototype_name)
+        local typeobject = iprototype.queryByName("building", prototype_name)
         builder:new_entity(datamodel, typeobject)
         self:flush()
         handle_pickup = false
@@ -244,7 +244,7 @@ function M:stage_camera_usage(datamodel)
         local prototype_name = object.prototype_name
         builder = create_movebuilder(object_id)
 
-        local typeobject = iprototype.queryByName("entity", prototype_name)
+        local typeobject = iprototype.queryByName("building", prototype_name)
         builder:new_entity(datamodel, typeobject)
         self:flush()
         handle_pickup = false

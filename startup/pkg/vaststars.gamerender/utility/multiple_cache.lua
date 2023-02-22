@@ -39,11 +39,7 @@ local function all(self, cache_name)
     return cache:selectall()
 end
 
-local function sync(self, cache_name, syncobj, ...)
-    local cache = assert(self.caches[cache_name])
-    return cache:sync(syncobj, ...)
-end
-
+-- for selectall
 local function select(self, cache_name, index_field, cache_value)
     local cache = assert(self.caches[cache_name])
     return cache:select(index_field, cache_value)
@@ -84,10 +80,6 @@ local function clear(self, cache_names)
     end
 end
 
-local function empty(self, cache_name)
-    return self.caches[cache_name]:empty()
-end
-
 local function create(cache_names, ...)
     local M = {}
     M.caches = {}
@@ -100,13 +92,11 @@ local function create(cache_names, ...)
     M.set = set
     M.get = get
     M.all = all
-    M.sync = sync
     M.select = select
     M.selectall = selectall
     M.commit = commit
     M.remove = remove
     M.clear = clear
-    M.empty = empty
     M.modify = modify
 
     return setmetatable(M, {__index = M})

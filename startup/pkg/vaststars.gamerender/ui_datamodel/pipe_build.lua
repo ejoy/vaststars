@@ -58,7 +58,7 @@ function M:create()
     }
 
     builder = create_builder()
-    local typeobject = iprototype.queryByName("entity", "管道1-X型")
+    local typeobject = iprototype.queryByName("building", "管道1-X型")
     builder:new_entity(datamodel, typeobject)
     return datamodel
 end

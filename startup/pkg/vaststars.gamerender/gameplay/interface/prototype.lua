@@ -185,17 +185,17 @@ function M.show_prototype_name(typeobject)
 end
 
 function M.is_pipe(prototype_name)
-    local typeobject = assert(M.queryByName("entity", prototype_name))
+    local typeobject = assert(M.queryByName("building", prototype_name))
     return typeobject.pipe
 end
 
 function M.is_pipe_to_ground(prototype_name)
-    local typeobject = assert(M.queryByName("entity", prototype_name))
+    local typeobject = assert(M.queryByName("building", prototype_name))
     return typeobject.pipe_to_ground
 end
 
 function M.is_road(prototype_name)
-    local typeobject = assert(M.queryByName("entity", prototype_name))
+    local typeobject = assert(M.queryByName("building", prototype_name))
     return M.has_type(typeobject.type, "road")
 end
 

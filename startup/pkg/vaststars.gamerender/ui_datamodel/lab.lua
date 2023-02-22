@@ -15,7 +15,7 @@ local current_e
 function M:create(object_id)
     local object = assert(objects:get(object_id))
     current_e = gameplay_core.get_entity(assert(object.gameplay_eid))
-    local typeobject = iprototype.queryByName("entity", object.prototype_name)
+    local typeobject = iprototype.queryByName("building", object.prototype_name)
     current_inputs = ilaboratory:get_elements(typeobject.inputs)
     local items = {}
     for i, value in ipairs(current_inputs) do

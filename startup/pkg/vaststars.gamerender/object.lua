@@ -121,7 +121,7 @@ local function flush()
             goto continue
         end
         vsobject = vsobject_manager:get(object_id)
-        local typeobject = iprototype.queryByName("entity", outer.prototype_name)
+        local typeobject = iprototype.queryByName("building", outer.prototype_name)
         outer.srt = outer.srt or {}
         local w, h = iprototype.unpackarea(typeobject.area) -- TODO: duplicate code
 
@@ -208,7 +208,7 @@ local function move_delta(object, delta_vec, coord_system, area_inc)
         return
     end
 
-    local typeobject = iprototype.queryByName("entity", object.prototype_name)
+    local typeobject = iprototype.queryByName("building", object.prototype_name)
     local position = math3d.ref(math3d.add(object.srt.t, delta_vec))
     local coord = coord_system["align"](coord_system, position, iprototype.rotate_area(typeobject.area, object.dir, area_inc, area_inc))
     if not coord then
@@ -224,7 +224,7 @@ end
 
 local function central_coord(prototype_name, dir, coord_system, area_inc)
     coord_system = coord_system or terrain
-    local typeobject = iprototype.queryByName("entity", prototype_name)
+    local typeobject = iprototype.queryByName("building", prototype_name)
     local coord = coord_system["align"](coord_system, camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir, area_inc, area_inc))
     if not coord then
         return
@@ -236,7 +236,7 @@ local function align(object)
     local coord_system = terrain
 
     assert(object)
-    local typeobject = iprototype.queryByName("entity", object.prototype_name)
+    local typeobject = iprototype.queryByName("building", object.prototype_name)
     local coord = coord_system["align"](coord_system, camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
     if not coord then
         return object
@@ -250,7 +250,7 @@ local function coord(object, x, y, coord_system)
     assert(object)
     assert(object.prototype_name ~= "")
     local vsobject = assert(vsobject_manager:get(object.id))
-    local typeobject = iprototype.queryByName("entity", object.prototype_name)
+    local typeobject = iprototype.queryByName("building", object.prototype_name)
     local position = coord_system:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, object.dir))
     if not position then
         log.error(("can not get position"))

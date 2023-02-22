@@ -110,7 +110,7 @@ local function _set_endpoint_connection(prototype_name, State, object, connectio
     if iprototype.is_pipe(object.prototype_name) or iprototype.is_pipe_to_ground(object.prototype_name) then
         _update_fluid_name(State, object.fluid_name, object.fluidflow_id)
 
-        local typeobject = iprototype.queryByName("entity", object.prototype_name)
+        local typeobject = iprototype.queryByName("building", object.prototype_name)
         local _prototype_name, _dir
         -- normal pipe can replace other pipe, including pipe to ground
         _prototype_name, _dir = iflow_connector.covers_flow_type(object.prototype_name, object.dir, typeobject.flow_type)
@@ -131,18 +131,12 @@ local function _set_endpoint_connection(prototype_name, State, object, connectio
     end
 end
 
-local function _get_item_name(prototype_name)
-    local typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
-    return typeobject.name
-end
-
 local function _builder_end(self, datamodel, State, dir, dir_delta)
     local reverse_dir = iprototype.reverse_dir(dir)
     local prototype_name = self.coord_indicator.prototype_name
-    local typeobject = iprototype.queryByName("entity", prototype_name)
+    local typeobject = iprototype.queryByName("building", prototype_name)
 
     local map = {}
-    local remove = {}
 
     local from_x, from_y
     if State.starting_connection then
@@ -224,11 +218,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         if object then
             object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
             if object.prototype_name ~= v[1] or object.dir ~= v[2] then
-                if _get_item_name(object.prototype_name) ~= _get_item_name(v[1]) then
-                    local item_name = _get_item_name(object.prototype_name) -- TODO: use prototype_name?
-                    remove[item_name] = (remove[item_name] or 0) + 1
-                end
-
                 object.prototype_name = v[1]
                 object.dir = v[2]
             end
@@ -255,7 +244,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         for fluidflow_id in pairs(State.fluidflow_ids) do
             for _, object in objects:selectall("fluidflow_id", fluidflow_id, EDITOR_CACHE_NAMES) do
                 local _object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
-                assert(iprototype.has_type(iprototype.queryByName("entity", _object.prototype_name).type, "fluidbox"))
+                assert(iprototype.has_type(iprototype.queryByName("building", _object.prototype_name).type, "fluidbox"))
                 _object.fluid_name = State.fluid_name
                 _object.fluidflow_id = new_fluidflow_id
             end
@@ -268,11 +257,9 @@ end
 local function _teardown_end(self, datamodel, State, dir, dir_delta)
     local reverse_dir = iprototype.reverse_dir(dir)
     local prototype_name = self.coord_indicator.prototype_name
-    local typeobject = iprototype.queryByName("entity", prototype_name)
+    local typeobject = iprototype.queryByName("building", prototype_name)
 
     local map = {}
-    local remove = {}
-
     local from_x, from_y
     if State.starting_connection then
         from_x, from_y = State.starting_connection.x, State.starting_connection.y
@@ -350,11 +337,6 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
         if object then
             object = assert(objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone))
             if object.prototype_name ~= v[1] or object.dir ~= v[2] then
-                if _get_item_name(object.prototype_name) ~= _get_item_name(v[1]) then
-                    local item_name = _get_item_name(object.prototype_name) -- TODO: use prototype_name?
-                    remove[item_name] = (remove[item_name] or 0) + 1
-                end
-
                 object.prototype_name = v[1]
                 object.dir = v[2]
             end
@@ -764,7 +746,7 @@ local function finish_laying(self, datamodel)
     end
     objects:commit("TEMPORARY", "CONFIRM")
 
-    local typeobject = iprototype.queryByName("entity", self.coord_indicator.prototype_name)
+    local typeobject = iprototype.queryByName("building", self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)
 end
 
@@ -777,7 +759,7 @@ local function place_one(self, datamodel)
     local new_fluidflow_id = 0
     global.fluidflow_id = global.fluidflow_id + 1
     new_fluidflow_id = global.fluidflow_id
-    local typeobject = iprototype.queryByName("entity", "管道1-O型")
+    local typeobject = iprototype.queryByName("building", "管道1-O型")
 
     object = iobject.new {
         prototype_name = "管道1-O型",
@@ -856,7 +838,7 @@ local function confirm(self, datamodel)
                 elseif old.dir ~= object.dir then
                     ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
                 elseif old.fluid_name ~= object.fluid_name then
-                    if iprototype.has_type(iprototype.queryByName("entity", object.prototype_name).type, "fluidbox") then
+                    if iprototype.has_type(iprototype.queryByName("building", object.prototype_name).type, "fluidbox") then
                         object.fluid_icon = fluid_icon
                         ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
                         igameplay.update_chimney_recipe(object)
@@ -880,7 +862,7 @@ end
 
 local function cancel(self, datamodel)
     self:revert_changes({"TEMPORARY"})
-    local typeobject = iprototype.queryByName("entity", self.coord_indicator.prototype_name)
+    local typeobject = iprototype.queryByName("building", self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)
 
     self.state = STATE_NONE
@@ -919,7 +901,7 @@ local function finish_teardown(self, datamodel)
     end
     objects:commit("TEMPORARY", "CONFIRM")
 
-    local typeobject = iprototype.queryByName("entity", self.coord_indicator.prototype_name)
+    local typeobject = iprototype.queryByName("building", self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)
 end
 

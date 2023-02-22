@@ -21,7 +21,7 @@ local _from_track, _to_shape, _mask_to_prototype_name, _prototype_name_dir_to_ma
     local mask_prototype_name_dir = {}
     local prototype_name_dir_to_mask = setmetatable({}, mt)
 
-    for _, pt in pairs(iprototype.each_maintype("entity", "road")) do
+    for _, pt in pairs(iprototype.each_maintype("building", "road")) do
         for _, dir in ipairs(pt.flow_direction) do
             local mask = 0
             for _, conn in ipairs(pt.crossing.connections) do
@@ -83,7 +83,7 @@ end
 local function convert(t)
     local res = {}
     for _, r in ipairs(t) do
-        local typeobject = iprototype.queryByName("entity", r.prototype_name)
+        local typeobject = iprototype.queryByName("building", r.prototype_name)
         res[iprototype.packcoord(r.x, r.y)] = {
             r.x,
             r.y,

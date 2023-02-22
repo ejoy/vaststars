@@ -20,7 +20,7 @@ local item_crafting_recipe = setmetatable({}, mt)   -- item id -> crafting recip
 local item_crafting_entities = setmetatable({}, mt) -- item id -> crafting entity info
 local category_to_entities = setmetatable({}, mt)
 
-for _, typeobject in pairs(iprototype.each_maintype("entity", "assembling")) do
+for _, typeobject in pairs(iprototype.each_maintype("building", "assembling")) do
     if typeobject.recipe then -- default recipe, such as "miner"
         local typeobject_recipe = assert(iprototype.queryByName("recipe", typeobject.recipe))
         category_to_entities[typeobject_recipe.category][typeobject.id] = {icon = typeobject.icon, name = typeobject.name}
@@ -127,7 +127,7 @@ local M = {}
 
 function M:create(object_id)
     local object = assert(objects:get(object_id))
-    local typeobject = iprototype.queryByName("entity", object.prototype_name)
+    local typeobject = iprototype.queryByName("building", object.prototype_name)
 
     return {
         object_id = object_id, -- for update

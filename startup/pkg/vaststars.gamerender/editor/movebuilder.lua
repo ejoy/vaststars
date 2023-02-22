@@ -27,7 +27,7 @@ local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local global = require "global"
 
 local function _get_state(prototype_name, ok)
-    local typeobject = iprototype.queryByName("entity", prototype_name)
+    local typeobject = iprototype.queryByName("building", prototype_name)
     if typeobject.supply_area then
         if ok then
             return ("power_pole_construct_%s"):format(typeobject.supply_area)
@@ -56,7 +56,7 @@ end
 
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
-    local typeobject = iprototype.queryByName("entity", prototype_name)
+    local typeobject = iprototype.queryByName("building", prototype_name)
     local r = {}
     if not typeobject.crossing then
         return r
@@ -156,7 +156,7 @@ end
 
 -- TODO: duplicate from builder.lua
 local function _get_mineral_recipe(prototype_name, x, y, dir)
-    local typeobject = iprototype.queryByName("entity", prototype_name)
+    local typeobject = iprototype.queryByName("building", prototype_name)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
 
     if not iprototype.has_type(typeobject.type, "mining") then
@@ -181,7 +181,7 @@ end
 
 local function __align(object)
     assert(object)
-    local typeobject = iprototype.queryByName("entity", object.prototype_name)
+    local typeobject = iprototype.queryByName("building", object.prototype_name)
     local coord, srt = building_coord:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir, 1, 1))
     if not coord then
         return object
@@ -208,7 +208,7 @@ local function touch_move(self, datamodel, delta_vec)
     end
     pickup_object.x, pickup_object.y = x, y
 
-    local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = iprototype.queryByName("building", pickup_object.prototype_name)
 
     if self.road_entrance then
         local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
@@ -273,7 +273,7 @@ local function touch_end(self, datamodel)
     end
     pickup_object.x, pickup_object.y = x, y
 
-    local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = iprototype.queryByName("building", pickup_object.prototype_name)
 
     if self.road_entrance then
         local road_entrance_position, _, _, road_entrance_dir = _get_road_entrance_position(typeobject, x, y, pickup_object.dir)
@@ -316,7 +316,7 @@ local function _teardown(object_id)
     iobject.remove(object)
     objects:remove(object_id, "CONSTRUCTED")
 
-    local typeobject_entity = iprototype.queryByName("entity", object.prototype_name)
+    local typeobject_entity = iprototype.queryByName("building", object.prototype_name)
     if typeobject_entity.supply_area then
         ipower:build_power_network(gameplay_core.get_world())
         ipower_line.update_line(ipower:get_pole_lines())
@@ -340,7 +340,7 @@ local function confirm(self, datamodel)
         return
     end
 
-    local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = iprototype.queryByName("building", pickup_object.prototype_name)
     if typeobject.supply_area then
         pickup_object.state = ("power_pole_confirm_%s"):format(typeobject.supply_area)
     else
@@ -392,7 +392,7 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
         return false
     end
 
-    local typeobject = iprototype.queryByName("entity", prototype_name)
+    local typeobject = iprototype.queryByName("building", prototype_name)
     if typeobject.crossing then
         local valid = false
         for _, conn in ipairs(_get_connections(prototype_name, x, y, dir)) do
@@ -426,7 +426,7 @@ local function rotate_pickup_object(self, datamodel, dir, delta_vec)
     ieditor:revert_changes({"TEMPORARY"})
     dir = dir or iprototype.rotate_dir_times(pickup_object.dir, -1)
 
-    local typeobject = iprototype.queryByName("entity", pickup_object.prototype_name)
+    local typeobject = iprototype.queryByName("building", pickup_object.prototype_name)
     local coord = building_coord:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir, 1, 1))
     if not coord then
         return

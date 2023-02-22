@@ -66,7 +66,7 @@ local function _get_object(self, x, y, cache_names)
 end
 
 local function _get_connections(prototype_name, x, y, dir)
-    local typeobject = iprototype.queryByName("entity", prototype_name)
+    local typeobject = iprototype.queryByName("building", prototype_name)
     local r = {}
     if not typeobject.crossing then
         return r
@@ -126,7 +126,7 @@ end
 -- NOTE:
 local function _set_endpoint_connection(State, object, connection, dir)
     if iprototype.is_road(object.prototype_name) then
-        local typeobject = iprototype.queryByName("entity", object.prototype_name)
+        local typeobject = iprototype.queryByName("building", object.prototype_name)
         local _prototype_name, _dir
         -- normal road can replace other road
         _prototype_name, _dir = iflow_connector.covers_flow_type(object.prototype_name, object.dir, typeobject.flow_type)

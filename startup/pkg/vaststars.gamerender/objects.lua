@@ -19,7 +19,7 @@ end
 function M:set(object, cache_name)
     cache_name = cache_name or DEFAULT_CACHE_NAME
 
-    local typeobject = iprototype.queryByName("entity", object.prototype_name)
+    local typeobject = iprototype.queryByName("building", object.prototype_name)
     local w, h = iprototype.rotate_area(typeobject.area, object.dir)
     for i = 0, w - 1 do
         for j = 0, h - 1 do
@@ -73,10 +73,6 @@ function M:all(cache_name)
     return objects:all(cache_name)
 end
 
-function M:select(...)
-    return objects:select(...)
-end
-
 function M:selectall(index_field, cache_value, cache_names)
     return objects:selectall(cache_names, index_field, cache_value)
 end
@@ -84,14 +80,6 @@ end
 function M:commit(cache_name_1, cache_name_2)
     objects:commit(cache_name_1, cache_name_2)
     tile_objects:commit(cache_name_1, cache_name_2)
-end
-
-function M:sync(...)
-    objects:sync(...)
-end
-
-function M:empty(...)
-    return objects:empty(...)
 end
 
 return M

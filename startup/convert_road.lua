@@ -43,7 +43,7 @@ local function convert(t)
         local k = packcoord(r.x, r.y)
         local v = 0
 
-        local typeobject = iprototype.queryByName("entity", r.prototype_name)
+        local typeobject = iprototype.queryByName("building", r.prototype_name)
         local connections = typeobject.crossing.connections
         for _, connection in ipairs(connections) do
             local dir = assert(mapping[rotate_dir(connection.position[3], r.dir)])
