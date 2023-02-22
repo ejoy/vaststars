@@ -388,7 +388,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "物流中心I"},
-    prerequisites = {"放置道路建造站"},
+    prerequisites = {""},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
