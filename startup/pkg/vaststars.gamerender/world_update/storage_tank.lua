@@ -39,8 +39,8 @@ end
 
 local function update_world(world)
     local t = {}
-    for e in world.ecs:select "fluidbox:in entity:in" do
-        local typeobject = assert(iprototype.queryById(e.entity.prototype))
+    for e in world.ecs:select "fluidbox:in building:in" do
+        local typeobject = assert(iprototype.queryById(e.building.prototype))
         if not typeobject.storage_tank then
             goto continue
         end
@@ -57,7 +57,7 @@ local function update_world(world)
             end
         end
 
-        local vsobject = get_object(e.entity.x, e.entity.y)
+        local vsobject = get_object(e.building.x, e.building.y)
 
         if volume > 0 then
             vsobject:attach("water_slot", "prefabs/storage-tank-water.prefab", "opacity", color or DEFAULT_COLOR)

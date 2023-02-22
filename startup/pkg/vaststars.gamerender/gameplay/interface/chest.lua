@@ -18,7 +18,7 @@ end
 
 function M.collect_item(world, e)
     local r = {}
-    local typeobject = iprototype.queryById(e.entity.prototype)
+    local typeobject = iprototype.queryById(e.building.prototype)
     for i = 1, typeobject.slots do
         local slot = M.chest_get(world, e.chest, i)
         if slot then
@@ -30,7 +30,7 @@ end
 
 function M.add_req(world, e, prototype_name, count)
     local prototype = iprototype.queryByName("item", prototype_name).id
-    local typeobject = iprototype.queryById(e.entity.prototype)
+    local typeobject = iprototype.queryById(e.building.prototype)
     for i = 1, typeobject.slots do
         local slot = world:container_get(e.chest, i)
         if slot then
@@ -52,7 +52,7 @@ end
 
 function M.add_req_force(world, e, prototype_name, count)
     local prototype = iprototype.queryByName("item", prototype_name).id
-    local typeobject = iprototype.queryById(e.entity.prototype)
+    local typeobject = iprototype.queryById(e.building.prototype)
     for i = 1, typeobject.slots do
         local slot = world:container_get(e.chest, i)
         if slot then
@@ -85,17 +85,17 @@ function M.base_chest_pickup(world, ...)
 end
 
 function M.base_collect_item(world)
-    local e = assert(world.ecs:first("base entity:in chest:in"))
+    local e = assert(world.ecs:first("base building:in chest:in"))
     return M.collect_item(world, e)
 end
 
 function M.base_add_req(world, prototype_name, count)
-    local e = assert(world.ecs:first("base entity:in chest:in"))
+    local e = assert(world.ecs:first("base building:in chest:in"))
     return M.add_req(world, e, prototype_name, count)
 end
 
 function M.base_add_req_force(world, prototype_name, count)
-    local e = assert(world.ecs:first("base entity:in chest:in"))
+    local e = assert(world.ecs:first("base building:in chest:in"))
     return M.add_req_force(world, e, prototype_name, count)
 end
 return M

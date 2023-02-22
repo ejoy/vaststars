@@ -6,7 +6,7 @@ prototype "铁制电线杆" {
     icon = "textures/building_pic/small_pic_electricpole.texture",
     construct_detector = {"exclusive"},
     power_pole = true,
-    type = {"entity"},
+    type = {"building"},
     area = "1x1",
     supply_area = "5x5",
     supply_distance = 9,

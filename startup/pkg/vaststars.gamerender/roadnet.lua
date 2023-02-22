@@ -109,19 +109,19 @@ function roadnet:editor_build()
     gameplay_world:roadnet_load_map(t)
 
     local iendpoint = gameplay.interface "endpoint"
-    for e in gameplay_core.select "chest:update entity:in" do
+    for e in gameplay_core.select "chest:update building:in" do
         iendpoint.update_chest_endpoint(gameplay_world, e)
     end
 
-    for e in gameplay_core.select "station:update entity:in" do
-        local pt = iprototype.queryById(e.entity.prototype)
-        local endpoint = iendpoint.create(gameplay_world, {x = e.entity.x, y = e.entity.y, dir = iprototype.dir_tostring(e.entity.direction)}, pt, "station")
+    for e in gameplay_core.select "station:update building:in" do
+        local pt = iprototype.queryById(e.building.prototype)
+        local endpoint = iendpoint.create(gameplay_world, {x = e.building.x, y = e.building.y, dir = iprototype.dir_tostring(e.building.direction)}, pt, "station")
         e.station.endpoint = endpoint
     end
 
-    for e in gameplay_core.select "park:update entity:in" do
-        local pt = iprototype.queryById(e.entity.prototype)
-        local endpoint = iendpoint.create(gameplay_world, {x = e.entity.x, y = e.entity.y, dir = iprototype.dir_tostring(e.entity.direction)}, pt, "park")
+    for e in gameplay_core.select "park:update building:in" do
+        local pt = iprototype.queryById(e.building.prototype)
+        local endpoint = iendpoint.create(gameplay_world, {x = e.building.x, y = e.building.y, dir = iprototype.dir_tostring(e.building.direction)}, pt, "park")
         e.park.endpoint = endpoint
     end
     gameplay_world:build()

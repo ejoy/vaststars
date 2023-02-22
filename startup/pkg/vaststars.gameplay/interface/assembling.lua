@@ -169,9 +169,9 @@ local function set_direction(_, e, dir)
         W = 3, West  = 3,
     }
     local d = assert(DIRECTION[dir])
-    local entity = e.entity
-    if entity.direction ~= d then
-        entity.direction = d
+    local building = e.building
+    if building.direction ~= d then
+        building.direction = d
         e.fluidbox_changed = true
     end
 end

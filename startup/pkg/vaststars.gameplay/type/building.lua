@@ -7,12 +7,12 @@ local DIRECTION <const> = {
     W = 3, West  = 3,
 }
 
-local c = type "entity"
+local c = type "building"
     .area "size"
 
 function c:ctor(init, pt)
     return {
-        entity = {
+        building = {
             x = init.x,
             y = init.y,
             prototype = pt.id,

@@ -16,9 +16,9 @@ end
 
 local function update_world(world)
     local t = {}
-    for e in world.ecs:select "assembling:in entity:in fluidbox?in fluidboxes?in" do
-        local vsobject = get_object(e.entity.x, e.entity.y)
-        local typeobject = iprototype.queryById(e.entity.prototype)
+    for e in world.ecs:select "assembling:in building:in fluidbox?in fluidboxes?in" do
+        local vsobject = get_object(e.building.x, e.building.y)
+        local typeobject = iprototype.queryById(e.building.prototype)
         if typeobject.assembling_slot then
             local assembling = e.assembling
             if assembling.recipe ~= 0 then -- TODO: not need to attach every frame

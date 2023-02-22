@@ -15,7 +15,7 @@ local function get(object_id)
         return
     end
 
-    local typeobject = iprototype.queryById(e.entity.prototype)
+    local typeobject = iprototype.queryById(e.building.prototype)
     local show_set_recipe = true 
     if iprototype.has_type(typeobject.type, "mining") then
         show_set_recipe = false -- TODO: special case for miner

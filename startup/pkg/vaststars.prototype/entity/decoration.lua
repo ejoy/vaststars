@@ -6,7 +6,7 @@ prototype "组装机残骸" {
     icon = "textures/building_pic/small_pic_assemble.texture",
     background = "textures/build_background/pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
-    type = {"entity", "chest"},
+    type = {"building", "chest"},
     chest_type = "red",
     crossing = {
         connections = {
@@ -24,7 +24,7 @@ prototype "排水口残骸" {
     icon = "textures/building_pic/small_pic_outfall.texture",
     background = "textures/build_background/pic_mars_outfall.texture",
     construct_detector = {"exclusive"},
-    type = {"entity", "chest"},
+    type = {"building", "chest"},
     chest_type = "red",
     crossing = {
         connections = {
@@ -42,7 +42,7 @@ prototype "抽水泵残骸" {
     icon = "textures/building_pic/small_pic_pumpjack.texture",
     background = "textures/build_background/pic_pumpjack.texture",
     construct_detector = {"exclusive"},
-    type = {"entity", "chest"},
+    type = {"building", "chest"},
     chest_type = "red",
     crossing = {
         connections = {
@@ -60,7 +60,7 @@ prototype "铁矿" {
     icon = "textures/construct/broken-pump.texture",
     background = "textures/build_background/pic_pumpjack.texture",
     construct_detector = {"exclusive"},
-    type = {"entity"},
+    type = {"building"},
     area = "4x4",
 }
 
@@ -69,6 +69,6 @@ prototype "石矿" {
     icon = "textures/construct/broken-pump.texture",
     background = "textures/build_background/pic_pumpjack.texture",
     construct_detector = {"exclusive"},
-    type = {"entity"},
+    type = {"building"},
     area = "4x4",
 }

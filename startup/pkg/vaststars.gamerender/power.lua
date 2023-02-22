@@ -293,8 +293,8 @@ function M:build_power_network(gw)
     self:clear_all_temp_pole()
     local powerpole = {}
     local capacitance = {}
-    for v in gameplay_core.select("eid:in entity:in capacitance?in") do
-        local e = v.entity
+    for v in gameplay_core.select("eid:in building:in capacitance?in") do
+        local e = v.building
         local typeobject = iprototype.queryById(e.prototype)
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh

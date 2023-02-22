@@ -10,7 +10,7 @@ function M.get_entity(world, eid)
 end
 
 function M.set_recipe(world, e, recipe_name)
-    local typeobject = iprototype.queryById(e.entity.prototype)
+    local typeobject = iprototype.queryById(e.building.prototype)
     if not recipe_name then
         assembling.set_recipe(world, e, typeobject, recipe_name)
         log.info(("clean recipe success"))

@@ -259,8 +259,8 @@ end
 function m.build(world)
     local ecs = world.ecs
     builder_init()
-    for v in ecs:select "fluidbox:update entity:in fluidbox_changed?in" do
-        local pt = query(v.entity.prototype)
+    for v in ecs:select "fluidbox:update building:in fluidbox_changed?in" do
+        local pt = query(v.building.prototype)
         local fluid = v.fluidbox.fluid
         local id = v.fluidbox.id
         if v.fluidbox_changed then
@@ -272,10 +272,10 @@ function m.build(world)
         else
             assert(id ~= 0)
         end
-        builder_connect_fluidbox(fluid, id, pt.fluidbox, v.entity, pt.area)
+        builder_connect_fluidbox(fluid, id, pt.fluidbox, v.building, pt.area)
     end
-    for v in ecs:select "fluidboxes:update entity:in fluidbox_changed?in" do
-        local pt = query(v.entity.prototype)
+    for v in ecs:select "fluidboxes:update building:in fluidbox_changed?in" do
+        local pt = query(v.building.prototype)
         local function init_fluidflow(classify)
             for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
                 local fluid = v.fluidboxes[classify..i.."_fluid"]
@@ -290,7 +290,7 @@ function m.build(world)
                     else
                         assert(id ~= 0)
                     end
-                    builder_connect_fluidbox(fluid, id, fluidbox, v.entity, pt.area)
+                    builder_connect_fluidbox(fluid, id, fluidbox, v.building, pt.area)
                 end
             end
         end
@@ -341,22 +341,22 @@ end
 function m.restore_finish(world)
     local ecs = world.ecs
     builder_init()
-    for v in ecs:select "fluidbox:in entity:in" do
-        local pt = query(v.entity.prototype)
+    for v in ecs:select "fluidbox:in building:in" do
+        local pt = query(v.building.prototype)
         local fluid = v.fluidbox.fluid
         local id = v.fluidbox.id
         builder_restore(world, fluid, id, pt.fluidbox)
-        builder_connect_fluidbox(fluid, id, pt.fluidbox, v.entity, pt.area)
+        builder_connect_fluidbox(fluid, id, pt.fluidbox, v.building, pt.area)
     end
-    for v in ecs:select "fluidboxes:in entity:in" do
-        local pt = query(v.entity.prototype)
+    for v in ecs:select "fluidboxes:in building:in" do
+        local pt = query(v.building.prototype)
         local function init_fluidflow(classify)
             for i, fluidbox in ipairs(pt.fluidboxes[classify.."put"]) do
                 local fluid = v.fluidboxes[classify..i.."_fluid"]
                 if fluid ~= 0 then
                     local id = v.fluidboxes[classify..i.."_id"]
                     builder_restore(world, fluid, id, fluidbox)
-                    builder_connect_fluidbox(fluid, id, fluidbox, v.entity, pt.area)
+                    builder_connect_fluidbox(fluid, id, fluidbox, v.building, pt.area)
                 end
             end
         end

@@ -36,7 +36,7 @@ sync_output_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb, chest::chest
 }
 
 static void
-assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::chest, ecs::capacitance, ecs::entity>& v) {
+assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::chest, ecs::capacitance, ecs::building>& v) {
     ecs::assembling& a = v.get<ecs::assembling>();
     ecs::chest& c2 = v.get<ecs::chest>();
     auto consumer = get_consumer(L, w, v);
@@ -96,7 +96,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    for (auto& v : ecs_api::select<ecs::assembling, ecs::chest, ecs::capacitance, ecs::entity>(w.ecs)) {
+    for (auto& v : ecs_api::select<ecs::assembling, ecs::chest, ecs::capacitance, ecs::building>(w.ecs)) {
         assembling_update(L, w, v);
     }
     return 0;

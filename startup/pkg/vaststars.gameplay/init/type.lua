@@ -1,5 +1,5 @@
 require "type.base"
-require "type.entity"
+require "type.building"
 require "type.chest"
 require "type.inserter"
 require "type.assembling"

@@ -153,9 +153,9 @@ local function complete(self, object_id)
         ipower_line.update_line(ipower:get_pole_lines())
     else
         local capacitance = {}
-        for v in gameplay_core.select("eid:in entity:in capacitance:in") do
+        for v in gameplay_core.select("eid:in building:in capacitance:in") do
             if v.capacitance then
-                local e = v.entity
+                local e = v.building
                 local typeobject = iprototype.queryById(e.prototype)
                 local aw, ah = iprototype.unpackarea(typeobject.area)
                 capacitance[#capacitance + 1] = {
