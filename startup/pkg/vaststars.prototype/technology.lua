@@ -383,12 +383,27 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
+    prototype "放置道路建造站" {
+    desc = "放置1座道路建造站",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "道路建造站"},
+    prerequisites = {""},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "放置1个道路建造站", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "放置物流中心" {
     desc = "放置1座物流中心",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "物流中心I"},
-    prerequisites = {""},
+    prerequisites = {"放置道路建造站"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
