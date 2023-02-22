@@ -1288,6 +1288,22 @@ prototype "破损物流需求站" {
     description = "修复损坏的物流需求站",
 }
 
+prototype "采矿机打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 52,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"采矿机设计图", 1},
+    },
+    results = {
+        {"采矿机I", 1},
+    },
+    time = "10s",
+    description = "打印采矿机",
+}
+
 prototype "物流中心打印" {
     type = { "recipe" },
     category = "设计图打印",
@@ -1336,11 +1352,43 @@ prototype "电线杆打印" {
     description = "打印可导电的电线杆",
 }
 
+prototype "仓库网格打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 55,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"仓库网格设计图", 1},
+    },
+    results = {
+        {"仓库网格", 1},
+    },
+    time = "10s",
+    description = "打印仓库网格",
+}
+
+prototype "装卸站打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 56,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"装卸站设计图", 1},
+    },
+    results = {
+        {"装卸站", 1},
+    },
+    time = "10s",
+    description = "打印装卸站",
+}
+
 prototype "太阳能板打印" {
     type = { "recipe" },
     category = "设计图打印",
     group = "物流",
-    order = 54,
+    order = 56,
     icon = "textures/construct/logisitic1.texture",
     ingredients = {
         {"太阳能板设计图", 1},

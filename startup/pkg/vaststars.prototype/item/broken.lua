@@ -183,6 +183,16 @@ prototype "化工厂设计图" {
     order = 116,
 }
 
+prototype "采矿机设计图" {
+    type = {"item"},
+    stack = 10,
+    icon = "textures/construct/broken-assembler.texture",
+    model = "prefabs/rock.prefab",
+    description = "采矿机的设计图",
+    group = "加工",
+    order = 117,
+}
+
 prototype "组装机设计图" {
     type = {"item"},
     stack = 10,
@@ -201,6 +211,26 @@ prototype "电线杆设计图" {
     description = "铁制电线杆的设计图",
     group = "加工",
     order = 120,
+}
+
+prototype "仓库网格设计图" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/broken-electric-pole1.texture",
+    model = "prefabs/rock.prefab",
+    description = "仓库网格的设计图",
+    group = "加工",
+    order = 121,
+}
+
+prototype "装卸站设计图" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/broken-electric-pole1.texture",
+    model = "prefabs/rock.prefab",
+    description = "装卸站的设计图",
+    group = "加工",
+    order = 122,
 }
 
 prototype "太阳能板设计图" {
