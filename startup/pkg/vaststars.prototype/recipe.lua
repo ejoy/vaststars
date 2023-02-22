@@ -240,7 +240,7 @@ prototype "石砖" {
     order = 100,
     icon = "textures/construct/stone-brick.texture",
     ingredients = {
-        {"碎石", 3},
+        {"碎石", 2},
     },
     results = {
         {"石砖", 1},
@@ -248,6 +248,23 @@ prototype "石砖" {
     time = "3s",
     description = "使用碎石炼制石砖",
 }
+
+prototype "道路建造站" {
+    type = { "recipe" },
+    category = "物流中型制造",
+    group = "物流",
+    order = 101,
+    icon = "textures/construct/stone-brick.texture",
+    ingredients = {
+        {"石砖", 10},
+    },
+    results = {
+        {"道路建造站", 1},
+    },
+    time = "3s",
+    description = "修建道路建造站",
+}
+
 
 prototype "硅1" {
     type = { "recipe" },
@@ -1352,20 +1369,20 @@ prototype "电线杆打印" {
     description = "打印可导电的电线杆",
 }
 
-prototype "仓库网格打印" {
+prototype "无人机仓库打印" {
     type = { "recipe" },
     category = "设计图打印",
     group = "物流",
     order = 55,
     icon = "textures/construct/logisitic1.texture",
     ingredients = {
-        {"仓库网格设计图", 1},
+        {"无人机仓库设计图", 1},
     },
     results = {
-        {"仓库网格", 1},
+        {"无人机仓库", 1},
     },
     time = "10s",
-    description = "打印仓库网格",
+    description = "打印无人机仓库",
 }
 
 prototype "装卸站打印" {
@@ -1382,6 +1399,22 @@ prototype "装卸站打印" {
     },
     time = "10s",
     description = "打印装卸站",
+}
+
+prototype "科研中心打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "物流",
+    order = 56,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"科研中心设计图", 1},
+    },
+    results = {
+        {"科研中心I", 1},
+    },
+    time = "10s",
+    description = "打印科研中心",
 }
 
 prototype "太阳能板打印" {
@@ -1594,6 +1627,7 @@ prototype "机械科技包1" {
     time = "15s",
     description = "机械原料制造机械科技包",
 }
+
 
 prototype "电子科技包1" {
     type = { "recipe" },

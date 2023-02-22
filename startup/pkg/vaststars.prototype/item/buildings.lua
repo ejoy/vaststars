@@ -129,7 +129,7 @@ prototype "物流需求站" {
     order = 18,
 }
 
-prototype "仓库网格" {
+prototype "无人机仓库" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/goodsstation-input.texture",

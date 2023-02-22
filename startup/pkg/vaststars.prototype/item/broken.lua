@@ -213,12 +213,12 @@ prototype "电线杆设计图" {
     order = 120,
 }
 
-prototype "仓库网格设计图" {
+prototype "无人机仓库设计图" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/broken-electric-pole1.texture",
     model = "prefabs/rock.prefab",
-    description = "仓库网格的设计图",
+    description = "无人机仓库的设计图",
     group = "加工",
     order = 121,
 }
@@ -284,6 +284,16 @@ prototype "道路建造站设计图" {
 }
 
 prototype "管道建造站设计图" {
+    type = {"item"},
+    stack = 50,
+    icon = "textures/construct/broken-goodsstation-output.texture",
+    model = "prefabs/rock.prefab",
+    description = "管道建造站的设计图",
+    group = "加工",
+    order = 132,
+}
+
+prototype "科研中心设计图" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/broken-goodsstation-output.texture",

@@ -45,7 +45,7 @@ prototype "仓库" {
     slots = 60,
 }
 
-prototype "仓库网格" {
+prototype "无人机仓库" {
     model = "prefabs/small-chest.prefab",
     icon = "textures/building_pic/small_pic_chest.texture",
     background = "textures/build_background/pic_chest.texture",
