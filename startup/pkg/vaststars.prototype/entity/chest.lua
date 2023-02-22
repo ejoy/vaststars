@@ -52,6 +52,6 @@ prototype "仓库网格" {
     construct_detector = {"exclusive"},
     type = {"entity"},
     group = {"物流" , "默认"},
-    area = "1x1",
+    area = "2x2",
     slots = 1,
 }

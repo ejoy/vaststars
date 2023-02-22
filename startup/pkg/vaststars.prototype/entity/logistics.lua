@@ -330,12 +330,9 @@ prototype "装卸站" {
     icon = "textures/building_pic/small_pic_chest.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
-    type ={"entity", "chest"},
-    chest_type = "red",
-    area = "1x1",
-    dismantle_area = "32x32",
+    type ={"entity"},
+    area = "2x2",
     group = {"物流"},
-    slots = 20,
     crossing = {
         connections = {
             {type="none", position={0,0,"S"}, roadside = true},
