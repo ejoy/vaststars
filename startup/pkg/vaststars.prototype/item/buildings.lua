@@ -172,7 +172,7 @@ prototype "管道建造站" {
 prototype "装卸站" {
     type = {"item"},
     stack = 28,
-    icon = "textures/construct/goodsstation-input.texture",
+    icon = "textures/construct/logisitic1.texture",
     model = "prefabs/rock.prefab",
     description = "运输汽车装卸货物的停靠站点",
     group = "物流",
