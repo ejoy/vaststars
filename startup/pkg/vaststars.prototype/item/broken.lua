@@ -223,12 +223,12 @@ prototype "无人机仓库设计图" {
     order = 121,
 }
 
-prototype "装卸站设计图" {
+prototype "车站设计图" {
     type = {"item"},
     stack = 50,
     icon = "textures/construct/broken-electric-pole1.texture",
     model = "prefabs/rock.prefab",
-    description = "装卸站的设计图",
+    description = "车站的设计图",
     group = "加工",
     order = 122,
 }

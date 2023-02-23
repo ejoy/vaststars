@@ -169,7 +169,7 @@ prototype "管道建造站" {
     order = 22,
 }
 
-prototype "装卸站" {
+prototype "车站" {
     type = {"item"},
     stack = 28,
     icon = "textures/construct/logisitic1.texture",

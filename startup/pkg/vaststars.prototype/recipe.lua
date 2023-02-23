@@ -1383,20 +1383,20 @@ prototype "无人机仓库打印" {
     description = "打印无人机仓库",
 }
 
-prototype "装卸站打印" {
+prototype "车站打印" {
     type = { "recipe" },
     category = "设计图打印",
     group = "物流",
     order = 56,
     icon = "textures/construct/logisitic1.texture",
     ingredients = {
-        {"装卸站设计图", 1},
+        {"车站设计图", 1},
     },
     results = {
-        {"装卸站", 1},
+        {"车站", 1},
     },
     time = "10s",
-    description = "打印装卸站",
+    description = "打印车站",
 }
 
 prototype "熔炼炉打印" {
@@ -1412,7 +1412,7 @@ prototype "熔炼炉打印" {
         {"熔炼炉I", 1},
     },
     time = "10s",
-    description = "打印装卸站",
+    description = "打印熔炼炉",
 }
 
 prototype "科研中心打印" {

@@ -270,7 +270,7 @@ local prototype = gameplay.register.prototype
   --   prerequisites = {"物流学研究"},
   --   count = 1,
   --   effects = {
-  --     unlock_recipe = {"装卸站打印"},
+  --     unlock_recipe = {"车站打印"},
   --   },
   --   tips_pic = {
   --     "textures/task_tips_pic/task_place_logistics.texture",
@@ -298,18 +298,18 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-  -- prototype "放置装卸站" {
+  -- prototype "放置车站" {
   --   desc = "放置1座道路建造站",
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
-  --   task = {"select_entity", 0, "装卸站"},
+  --   task = {"select_entity", 0, "车站"},
   --   prerequisites = {"放置道路建造站"},
   --   count = 1,
   --   tips_pic = {
   --     "textures/task_tips_pic/task_place_logistics.texture",
   --   },
   --   sign_desc = {
-  --     { desc = "放置1个装卸站", icon = "textures/construct/industry.texture"},
+  --     { desc = "放置1个车站", icon = "textures/construct/industry.texture"},
   --   },
   -- }
 
@@ -318,7 +318,7 @@ local prototype = gameplay.register.prototype
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
   --   task = {"stat_production", 0, "铁矿石"},
-  --   prerequisites = {"放置装卸站"},
+  --   prerequisites = {"放置车站"},
   --   count = 2,
   --   effects = {
   --     unlock_recipe = {"熔炼炉打印"},
