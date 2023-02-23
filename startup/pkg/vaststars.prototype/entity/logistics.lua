@@ -325,7 +325,7 @@ prototype "管道建造站" {
     pipe_builder = true,
 }
 
-prototype "装卸站" {
+prototype "车站" {
     model = "prefabs/small-chest.prefab",
     icon = "textures/building_pic/small_pic_chest.texture",
     background = "textures/build_background/pic_chest.texture",
