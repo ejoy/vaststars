@@ -280,7 +280,25 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-    -- prototype "放置装卸站" {
+  -- prototype "修建公路" {
+  --   desc = "修建20节公路",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"select_entity", 0, "砖石公路-X型-01"},
+  --   task_params = {starting = {117, 125}, ending = {135, 125}},
+  --   prerequisites = {"放置道路建造站"},
+  --   count = 20,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_place_road1.texture",
+  --     "textures/task_tips_pic/task_place_road2.texture",
+  --     "textures/task_tips_pic/task_place_road3.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "至少修建20段道路", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+
+  -- prototype "放置装卸站" {
   --   desc = "放置1座道路建造站",
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
@@ -365,6 +383,74 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
+  -- prototype "铁加工1" {
+  --   desc = "获得铁板加工铁齿轮的工艺",
+  --   type = { "tech" },
+  --   icon = "textures/science/tech-research.texture",
+  --   effects = {
+  --     unlock_recipe = {"铁齿轮"},
+  --   },
+  --   prerequisites = {"生产铁板"},
+  --   ingredients = {
+  --       {"地质科技包", 1},
+  --   },
+  --   count = 6,
+  --   time = "2s"
+  -- }
+
+  -- prototype "生产铁齿轮" {
+  --   desc = "铁板可以打造坚固器材，对于基地建设多多益善",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"stat_production", 0, "铁齿轮"},
+  --   prerequisites = {"铁加工1"},
+  --   count = 2,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_produce_ironplate1.texture",
+  --     "textures/task_tips_pic/task_produce_ironplate2.texture",
+  --     "textures/task_tips_pic/task_produce_ironplate3.texture",
+  --     "textures/task_tips_pic/task_produce_ironplate4.texture",
+  --     "textures/task_tips_pic/task_produce_ironplate5.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "使用组装机生产2个铁齿轮", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+
+  -- prototype "运输车辆" {
+  --   desc = "研究生产运输车辆工艺",
+  --   type = { "tech" },
+  --   icon = "textures/science/tech-research.texture",
+  --   effects = {
+  --     unlock_recipe = {"运输车辆1"},
+  --   },
+  --   prerequisites = {"生产铁齿轮"},
+  --   ingredients = {
+  --       {"地质科技包", 1},
+  --   },
+  --   count = 6,
+  --   time = "2s"
+  -- }
+
+  -- prototype "生产运输车辆" {
+  --   desc = "生产4辆运输车",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"stat_production", 0, "运输车辆I"},
+  --   prerequisites = {"运输车辆"},
+  --   count = 4,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_produce_ironplate1.texture",
+  --     "textures/task_tips_pic/task_produce_ironplate2.texture",
+  --     "textures/task_tips_pic/task_produce_ironplate3.texture",
+  --     "textures/task_tips_pic/task_produce_ironplate4.texture",
+  --     "textures/task_tips_pic/task_produce_ironplate5.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "使用组装机生产4辆运输车", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+
   -- prototype "修复阻断公路" {
   --   desc = "放置1座科研中心",
   --   icon = "textures/construct/industry.texture",
@@ -383,7 +469,7 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-    prototype "放置道路建造站" {
+  prototype "放置道路建造站" {
     desc = "放置1座道路建造站",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },

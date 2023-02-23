@@ -479,10 +479,8 @@ prototype "运输车辆1" {
     order = 53,
     icon = "textures/construct/truck.texture",
     ingredients = {
-        {"电动机I", 1},
-        {"塑料", 4},
-        {"铁板", 8},
-        {"玻璃", 4},
+        {"铁齿轮", 1},
+        {"铁板", 2},
     },
     results = {
         {"运输车辆I", 1},
