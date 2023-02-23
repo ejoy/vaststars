@@ -132,7 +132,7 @@ prototype "物流需求站" {
 prototype "无人机仓库" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/goodsstation-input.texture",
+    icon = "textures/construct/drone-depot.texture",
     model = "prefabs/rock.prefab",
     description = "储存货物的放置点",
     group = "物流",
