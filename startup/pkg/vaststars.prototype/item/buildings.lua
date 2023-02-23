@@ -142,7 +142,7 @@ prototype "无人机仓库" {
 prototype "建造中心" {
     type = {"item"},
     stack = 25,
-    icon = "textures/construct/goodsstation-input.texture",
+    icon = "textures/construct/construction-center.texture",
     model = "prefabs/rock.prefab",
     description = "用来建造建筑的场所",
     group = "物流",
@@ -152,7 +152,7 @@ prototype "建造中心" {
 prototype "道路建造站" {
     type = {"item"},
     stack = 25,
-    icon = "textures/construct/goodsstation-input.texture",
+    icon = "textures/construct/road-builder.texture",
     model = "prefabs/rock.prefab",
     description = "用来建造道路的场所",
     group = "物流",
@@ -162,7 +162,7 @@ prototype "道路建造站" {
 prototype "管道建造站" {
     type = {"item"},
     stack = 26,
-    icon = "textures/construct/goodsstation-input.texture",
+    icon = "textures/construct/pipe-builder.texture",
     model = "prefabs/rock.prefab",
     description = "用来建造管道的场所",
     group = "物流",
