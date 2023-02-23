@@ -326,12 +326,12 @@ prototype "管道建造站" {
 }
 
 prototype "车站" {
-    model = "prefabs/small-chest.prefab",
+    model = "prefabs/goods-station-1.prefab",
     icon = "textures/building_pic/small_pic_chest.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
-    area = "2x2",
+    area = "1x1",
     group = {"物流"},
     crossing = {
         connections = {
