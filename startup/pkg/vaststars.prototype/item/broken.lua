@@ -216,7 +216,7 @@ prototype "电线杆设计图" {
 prototype "无人机仓库设计图" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/broken-electric-pole1.texture",
+    icon = "textures/construct/broken-drone-depot.texture",
     model = "prefabs/rock.prefab",
     description = "无人机仓库的设计图",
     group = "加工",
@@ -226,7 +226,7 @@ prototype "无人机仓库设计图" {
 prototype "车站设计图" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/broken-electric-pole1.texture",
+    icon = "textures/construct/broken-logisitic.texture",
     model = "prefabs/rock.prefab",
     description = "车站的设计图",
     group = "加工",
@@ -236,7 +236,7 @@ prototype "车站设计图" {
 prototype "熔炼炉设计图" {
     type = {"item"},
     stack = 10,
-    icon = "textures/construct/broken-assembler.texture",
+    icon = "textures/construct/broken-furnace.texture",
     model = "prefabs/rock.prefab",
     description = "熔炼炉的设计图",
     group = "加工",
@@ -286,7 +286,7 @@ prototype "车辆厂设计图" {
 prototype "道路建造站设计图" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/broken-goodsstation-output.texture",
+    icon = "textures/construct/road-builder.texture",
     model = "prefabs/rock.prefab",
     description = "道路建造站的设计图",
     group = "加工",
@@ -296,7 +296,7 @@ prototype "道路建造站设计图" {
 prototype "管道建造站设计图" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/broken-goodsstation-output.texture",
+    icon = "textures/construct/pipe-builder.texture",
     model = "prefabs/rock.prefab",
     description = "管道建造站的设计图",
     group = "加工",
@@ -306,7 +306,7 @@ prototype "管道建造站设计图" {
 prototype "科研中心设计图" {
     type = {"item"},
     stack = 50,
-    icon = "textures/construct/broken-goodsstation-output.texture",
+    icon = "textures/construct/broken-lab.texture",
     model = "prefabs/rock.prefab",
     description = "管道建造站的设计图",
     group = "加工",

@@ -261,7 +261,7 @@ prototype "道路建造站" {
     results = {
         {"道路建造站", 1},
     },
-    time = "3s",
+    time = "12s",
     description = "修建道路建造站",
 }
 
@@ -358,13 +358,13 @@ prototype "电动机1" {
     ingredients = {
         -- {"铁棒", 1},
         -- {"铁丝", 2},
-        {"铁板", 6},
-        {"塑料", 1},
+        {"铁板", 2},
+        {"铁齿轮", 2},
     },
     results = {
         {"电动机I", 1},
     },
-    time = "8s",
+    time = "6s",
     description = "铁制品和塑料打造初级电动机",
 }
 
@@ -380,7 +380,7 @@ prototype "铁齿轮" {
     results = {
         {"铁齿轮", 2},
     },
-    time = "4s",
+    time = "6s",
     description = "使用铁制品加工铁齿轮",
 }
 
@@ -1315,7 +1315,7 @@ prototype "采矿机打印" {
     results = {
         {"采矿机I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印采矿机",
 }
 
@@ -1331,7 +1331,7 @@ prototype "物流中心打印" {
     results = {
         {"物流中心I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印可给运输车辆充电的物流中心",
 }
 
@@ -1347,7 +1347,7 @@ prototype "车辆厂打印" {
     results = {
         {"车辆厂I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印制造运输汽车的工厂",
 }
 
@@ -1363,7 +1363,7 @@ prototype "电线杆打印" {
     results = {
         {"铁制电线杆", 1},
     },
-    time = "10s",
+    time = "3s",
     description = "打印可导电的电线杆",
 }
 
@@ -1427,7 +1427,7 @@ prototype "科研中心打印" {
     results = {
         {"科研中心I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印科研中心",
 }
 
@@ -1598,13 +1598,12 @@ prototype "地质科技包1" {
     order = 80,
     icon = "textures/recipe/geology-pack.texture",
     ingredients = {
-        {"铁矿石", 1},
-        {"碎石", 1},
+        {"碎石", 2},
     },
     results = {
         {"地质科技包", 1},
     },
-    time = "20s",
+    time = "10s",
     description = "地质材料制造地质科技包",
 }
 
