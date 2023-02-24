@@ -247,7 +247,7 @@ local prototype = gameplay.register.prototype
   --   time = "1s"
   -- }
 
-  -- prototype "物流学研究" {
+  -- prototype "物流学I" {
   --   desc = "获得火星岩石加工成石砖的工艺",
   --   type = { "tech" },
   --   icon = "textures/science/tech-research.texture",
@@ -267,7 +267,7 @@ local prototype = gameplay.register.prototype
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
   --   task = {"select_entity", 0, "道路建造站"},
-  --   prerequisites = {"物流学研究"},
+  --   prerequisites = {"物流学I"},
   --   count = 1,
   --   effects = {
   --     unlock_recipe = {"车站打印"},
@@ -451,6 +451,105 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
+-- prototype "电磁学1" {
+--   desc = "研究电能转换成机械能的基础供能装置",
+--   type = { "tech" },
+--   icon = "textures/science/tech-research.texture",
+--   effects = {
+--     unlock_recipe = {"电动机1"},
+--   },
+--   prerequisites = {"生产运输车辆"},
+--   ingredients = {
+--     {"地质科技包", 1},
+--   },
+--   count = 10,
+--   time = "6s"
+-- }
+
+-- prototype "物流学II" {
+--   desc = "研究电能转换成机械能的基础供能装置",
+--   type = { "tech" },
+--   icon = "textures/science/tech-research.texture",
+--   effects = {
+--     unlock_recipe = {"车站"},
+--   },
+--   prerequisites = {"生产运输车辆"},
+--   ingredients = {
+--     {"地质科技包", 1},
+--   },
+--   count = 10,
+--   time = "6s"
+-- }
+
+-- prototype "气候研究" {
+--   desc = "对火星大气成分进行标本采集和研究",
+--   type = { "tech" },
+--   icon = "textures/science/tech-research.texture",
+--   effects = {
+--     unlock_recipe = {"空气过滤器设计图","地下水挖掘机设计图","气候科技包1"},
+--     unlock_building = {"空气过滤器I","地下水挖掘机"},
+--   },
+--   prerequisites = {"物流学II"},
+--   ingredients = {
+--       {"地质科技包", 1},
+--   },
+--   sign_desc = {
+--     { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
+--   },
+--   sign_icon = "textures/science/tech-important.texture",
+--   count = 6,
+--   time = "1.5s"
+-- }
+
+-- prototype "生产气候科技包" {
+--   desc = "生产科技包用于科技研究",
+--   icon = "textures/construct/industry.texture",
+--   type = { "tech", "task" },
+--   task = {"stat_production", 0, "气候科技包"},
+--   prerequisites = {"气候研究"},
+--   count = 1,
+--   tips_pic = {
+--     "textures/task_tips_pic/task_produce_climatepack2.texture",
+--     "textures/task_tips_pic/task_produce_climatepack3.texture",
+--     "textures/task_tips_pic/task_produce_climatepack4.texture",
+--     "textures/task_tips_pic/task_produce_climatepack5.texture",
+--   },
+--   sign_desc = {
+--     { desc = "使用水电站生产1个气候科技包", icon = "textures/construct/industry.texture"},
+--   },
+-- }
+
+-- prototype "物流学II" {
+--   desc = "研究电能转换成机械能的基础供能装置",
+--   type = { "tech" },
+--   icon = "textures/science/tech-research.texture",
+--   effects = {
+--     unlock_recipe = {"车站"},
+--   },
+--   prerequisites = {"气候研究"},
+--   ingredients = {
+--     {"地质科技包", 1},
+--   },
+--   count = 10,
+--   time = "6s"
+-- }
+
+-- prototype "管道系统1" {
+--   desc = "研究装载和运输液体或气体的管道",
+--   type = { "tech" },
+--   icon = "textures/science/tech-research.texture",
+--   effects = {
+--     unlock_recipe = {"管道1","管道2","液罐1"},
+--     unlock_building = {"液罐I","管道1-X型"},
+--   },
+--   prerequisites = {"气候研究"},
+--   ingredients = {
+--       {"地质科技包", 1},
+--   },
+--   count = 6,
+--   time = "1s"
+-- }
+
   -- prototype "修复阻断公路" {
   --   desc = "放置1座科研中心",
   --   icon = "textures/construct/industry.texture",
@@ -596,7 +695,6 @@ prototype "地质研究" {
 --   },
 -- }
 
-
 -- prototype "增添运输车辆" {
 --   desc = "增加运输车辆至5辆",
 --   icon = "textures/construct/industry.texture",
@@ -614,6 +712,8 @@ prototype "地质研究" {
 --     { desc = "在物流中心需求运输车辆至5辆", icon = "textures/construct/industry.texture"},
 --   },
 -- }
+
+
 
 prototype "放置采矿机" {
   desc = "矿区里放置采矿机",

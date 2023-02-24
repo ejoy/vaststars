@@ -472,6 +472,23 @@ prototype "物流中心1" {
     description = "发电设施和车载设备制造物流中心",
 }
 
+prototype "车站" {
+    type = { "recipe" },
+    category = "物流大型制造",
+    group = "物流",
+    order = 52,
+    icon = "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"运输车辆I", 1},
+        {"电动机I", 2},
+    },
+    results = {
+        {"车站", 1},
+    },
+    time = "10s",
+    description = "发电设施和车载设备制造物流中心",
+}
+
 prototype "运输车辆1" {
     type = { "recipe" },
     category = "车辆制造",
@@ -1632,13 +1649,12 @@ prototype "气候科技包1" {
     order = 82,
     icon = "textures/recipe/climatology-pack.texture",
     ingredients = {
-        {"地下卤水", 2000},
         {"空气", 2200},
     },
     results = {
         {"气候科技包", 1},
     },
-    time = "10s",
+    time = "8s",
     description = "气候材料制造气候科技包",
 }
 
