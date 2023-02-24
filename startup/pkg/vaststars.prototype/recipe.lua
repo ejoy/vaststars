@@ -1379,7 +1379,7 @@ prototype "无人机仓库打印" {
     results = {
         {"无人机仓库", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印无人机仓库",
 }
 
@@ -1395,7 +1395,7 @@ prototype "车站打印" {
     results = {
         {"车站", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印车站",
 }
 
@@ -1411,7 +1411,7 @@ prototype "熔炼炉打印" {
     results = {
         {"熔炼炉I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印熔炼炉",
 }
 
@@ -1459,7 +1459,7 @@ prototype "蓄电池打印" {
     results = {
         {"蓄电池I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印可存储电能的电池",
 }
 
@@ -1523,7 +1523,7 @@ prototype "组装机打印" {
     results = {
         {"组装机I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印可组装元件的工厂",
 }
 
@@ -1539,7 +1539,7 @@ prototype "空气过滤器打印" {
     results = {
         {"空气过滤器I", 1},
     },
-    time = "10s",
+    time = "3s",
     description = "打印可过滤空气的装置",
 }
 
@@ -1555,7 +1555,7 @@ prototype "地下水挖掘机打印" {
     results = {
         {"地下水挖掘机", 1},
     },
-    time = "10s",
+    time = "3s",
     description = "打印可挖掘地下水的装置",
 }
 
@@ -1571,7 +1571,7 @@ prototype "道路建造站打印" {
     results = {
         {"道路建造站", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印可建造道路的装置",
 }
 
@@ -1587,7 +1587,7 @@ prototype "管道建造站打印" {
     results = {
         {"管道建造站", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印可建造管道的装置",
 }
 
@@ -1607,6 +1607,24 @@ prototype "地质科技包1" {
     description = "地质材料制造地质科技包",
 }
 
+prototype "地质科技包2" {
+    type = { "recipe" },
+    category = "器件小型制造",
+    group = "器件",
+    order = 81,
+    icon = "textures/recipe/geology-pack.texture",
+    ingredients = {
+        {"碎石", 3},
+        {"铁矿石", 3},
+    },
+    results = {
+        {"地质科技包", 4},
+    },
+    time = "10s",
+    description = "地质材料制造地质科技包",
+}
+
+
 prototype "气候科技包1" {
     type = { "recipe" },
     category = "流体液体处理",
@@ -1620,7 +1638,7 @@ prototype "气候科技包1" {
     results = {
         {"气候科技包", 1},
     },
-    time = "20s",
+    time = "10s",
     description = "气候材料制造气候科技包",
 }
 
