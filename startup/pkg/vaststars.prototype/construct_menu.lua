@@ -24,7 +24,6 @@ local menu = {
         detail = {
             "组装机I",
             "熔炼炉I",
-            "车辆厂I",
         },
     },
     {
@@ -58,13 +57,12 @@ local menu = {
         name = "默认",
         icon = "textures/construct/modify.texture",
         detail = {
+            "道路建造站",
+            "管道建造站",
             "液罐I",
-            "管道1-X型",
             "熔炼炉I",
             "组装机I",
             "采矿机I",
-            "砖石公路-X型-01",
-            "物流中心I",
             "建造中心",
         },
     },
