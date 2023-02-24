@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "指挥中心" {
     type = {"item"},
-    stack = 10,
+    stack = 1,
     icon = "textures/construct/headquater.texture",
     model = "prefabs/rock.prefab",
     description = "基地建造的核心建筑",
@@ -12,7 +12,7 @@ prototype "指挥中心" {
 }
 prototype "组装机I" {
     type = {"item"},
-    stack = 25,
+    stack = 5,
     icon = "textures/construct/assembler1.texture",
     model = "prefabs/rock.prefab",
     description = "用来组装或制造工业产品的工厂",
@@ -22,7 +22,7 @@ prototype "组装机I" {
 
 prototype "组装机II" {
     type = {"item"},
-    stack = 25,
+    stack = 5,
     icon = "textures/construct/assembler2.texture",
     model = "prefabs/rock.prefab",
     description = "用来组装或制造工业产品的工厂",
@@ -31,7 +31,7 @@ prototype "组装机II" {
 }
 prototype "车辆厂I" {
     type = {"item"},
-    stack = 25,
+    stack = 5,
     icon = "textures/construct/assembler1.texture",
     model = "prefabs/rock.prefab",
     description = "用来组装运输车的工厂",
@@ -41,7 +41,7 @@ prototype "车辆厂I" {
 
 prototype "熔炼炉I" {
     type = {"item"},
-    stack = 25,
+    stack = 5,
     icon = "textures/construct/furnace1.texture",
     model = "prefabs/rock.prefab",
     description = "用来熔炼矿石的炉子",
@@ -51,7 +51,7 @@ prototype "熔炼炉I" {
 
 prototype "熔炼炉II" {
     type = {"item"},
-    stack = 25,
+    stack = 5,
     icon = "textures/construct/furnace2.texture",
     model = "prefabs/rock.prefab",
     description = "用来熔炼矿石的炉子",
@@ -61,7 +61,7 @@ prototype "熔炼炉II" {
 
 prototype "小铁制箱子I" {
     type = {"item"},
-    stack = 50,
+    stack = 10,
     icon = "textures/construct/chest1.texture",
     model = "prefabs/rock.prefab",
     description = "贮藏物品的容器",
@@ -71,7 +71,7 @@ prototype "小铁制箱子I" {
 
 prototype "小铁制箱子II" {
     type = {"item"},
-    stack = 50,
+    stack = 10,
     icon = "textures/construct/chest2.texture",
     model = "prefabs/rock.prefab",
     description = "贮藏物品的容器",
@@ -81,7 +81,7 @@ prototype "小铁制箱子II" {
 
 prototype "大铁制箱子I" {
     type = {"item"},
-    stack = 25,
+    stack = 10,
     icon = "textures/construct/chest.texture",
     model = "prefabs/rock.prefab",
     description = "贮藏物品的容器",
@@ -91,7 +91,7 @@ prototype "大铁制箱子I" {
 
 prototype "仓库" {
     type = {"item"},
-    stack = 25,
+    stack = 5,
     icon = "textures/construct/chest.texture",
     model = "prefabs/rock.prefab",
     description = "贮藏物品的容器",
@@ -101,7 +101,7 @@ prototype "仓库" {
 
 prototype "基建站" {
     type = {"item"},
-    stack = 50,
+    stack = 1,
     icon = "textures/construct/road_box.texture",
     model = "prefabs/rock.prefab",
     description = "修建道路的专用设备",
@@ -111,7 +111,7 @@ prototype "基建站" {
 
 prototype "物流派送站" {
     type = {"item"},
-    stack = 25,
+    stack = 5,
     icon = "textures/construct/goodsstation-output.texture",
     model = "prefabs/rock.prefab",
     description = "将货物从货站装运到运输车",
@@ -121,7 +121,7 @@ prototype "物流派送站" {
 
 prototype "物流需求站" {
     type = {"item"},
-    stack = 25,
+    stack = 5,
     icon = "textures/construct/goodsstation-input.texture",
     model = "prefabs/rock.prefab",
     description = "将货物从运输车卸载到货站",
@@ -131,7 +131,7 @@ prototype "物流需求站" {
 
 prototype "无人机仓库" {
     type = {"item"},
-    stack = 50,
+    stack = 5,
     icon = "textures/construct/drone-depot.texture",
     model = "prefabs/rock.prefab",
     description = "储存货物的放置点",
@@ -141,7 +141,7 @@ prototype "无人机仓库" {
 
 prototype "建造中心" {
     type = {"item"},
-    stack = 25,
+    stack = 1,
     icon = "textures/construct/construction-center.texture",
     model = "prefabs/rock.prefab",
     description = "用来建造建筑的场所",
@@ -151,7 +151,7 @@ prototype "建造中心" {
 
 prototype "道路建造站" {
     type = {"item"},
-    stack = 25,
+    stack = 1,
     icon = "textures/construct/road-builder.texture",
     model = "prefabs/rock.prefab",
     description = "用来建造道路的场所",
@@ -161,7 +161,7 @@ prototype "道路建造站" {
 
 prototype "管道建造站" {
     type = {"item"},
-    stack = 26,
+    stack = 1,
     icon = "textures/construct/pipe-builder.texture",
     model = "prefabs/rock.prefab",
     description = "用来建造管道的场所",
@@ -171,7 +171,7 @@ prototype "管道建造站" {
 
 prototype "车站" {
     type = {"item"},
-    stack = 28,
+    stack = 1,
     icon = "textures/construct/logisitic1.texture",
     model = "prefabs/rock.prefab",
     description = "运输汽车装卸货物的停靠站点",
@@ -181,7 +181,7 @@ prototype "车站" {
 
 prototype "采矿机I" {
     type = {"item"},
-    stack = 25,
+    stack = 1,
     icon = "textures/construct/miner.texture",
     model = "prefabs/rock.prefab",
     description = "用来挖掘矿物资源的机器",
@@ -191,7 +191,7 @@ prototype "采矿机I" {
 
 prototype "采矿机II" {
     type = {"item"},
-    stack = 25,
+    stack = 1,
     icon = "textures/construct/miner.texture",
     model = "prefabs/rock.prefab",
     description = "用来挖掘矿物资源的机器",
