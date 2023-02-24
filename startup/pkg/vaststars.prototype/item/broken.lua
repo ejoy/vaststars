@@ -186,7 +186,7 @@ prototype "化工厂设计图" {
 prototype "采矿机设计图" {
     type = {"item"},
     stack = 10,
-    icon = "textures/construct/broken-assembler.texture",
+    icon = "textures/construct/broken-miner.texture",
     model = "prefabs/rock.prefab",
     description = "采矿机的设计图",
     group = "加工",

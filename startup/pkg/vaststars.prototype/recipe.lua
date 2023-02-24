@@ -38,7 +38,7 @@ prototype "铁板1" {
         {"铁板", 1},
         -- {"碎石", 2},
     },
-    time = "4s",
+    time = "3s",
     description = "铁矿石通过金属冶炼获得铁板",
 }
 
@@ -1308,7 +1308,7 @@ prototype "采矿机打印" {
     category = "设计图打印",
     group = "物流",
     order = 52,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-miner.texture",
     ingredients = {
         {"采矿机设计图", 1},
     },
@@ -1356,7 +1356,7 @@ prototype "电线杆打印" {
     category = "设计图打印",
     group = "物流",
     order = 54,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-electric-pole1.texture",
     ingredients = {
         {"电线杆设计图", 1},
     },
@@ -1372,7 +1372,7 @@ prototype "无人机仓库打印" {
     category = "设计图打印",
     group = "物流",
     order = 55,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-drone-depot.texture",
     ingredients = {
         {"无人机仓库设计图", 1},
     },
@@ -1388,7 +1388,7 @@ prototype "车站打印" {
     category = "设计图打印",
     group = "物流",
     order = 56,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-logisitic.texture",
     ingredients = {
         {"车站设计图", 1},
     },
@@ -1404,7 +1404,7 @@ prototype "熔炼炉打印" {
     category = "设计图打印",
     group = "物流",
     order = 56,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-furnace.texture",
     ingredients = {
         {"熔炼炉设计图", 1},
     },
@@ -1420,7 +1420,7 @@ prototype "科研中心打印" {
     category = "设计图打印",
     group = "物流",
     order = 56,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-lab.texture",
     ingredients = {
         {"科研中心设计图", 1},
     },
@@ -1436,7 +1436,7 @@ prototype "太阳能板打印" {
     category = "设计图打印",
     group = "物流",
     order = 56,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-solar-panel.texture",
     ingredients = {
         {"太阳能板设计图", 1},
     },
@@ -1452,7 +1452,7 @@ prototype "蓄电池打印" {
     category = "设计图打印",
     group = "物流",
     order = 54,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-grid-battery.texture",
     ingredients = {
         {"蓄电池设计图", 1},
     },
@@ -1468,7 +1468,7 @@ prototype "水电站打印" {
     category = "设计图打印",
     group = "物流",
     order = 54,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-hydroplant.texture",
     ingredients = {
         {"水电站设计图", 1},
     },
@@ -1484,7 +1484,7 @@ prototype "电解厂打印" {
     category = "设计图打印",
     group = "物流",
     order = 54,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-electrolysis1.texture",
     ingredients = {
         {"电解厂设计图", 1},
     },
@@ -1500,7 +1500,7 @@ prototype "化工厂打印" {
     category = "设计图打印",
     group = "物流",
     order = 54,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-chemistry2.texture",
     ingredients = {
         {"化工厂设计图", 1},
     },
@@ -1516,7 +1516,7 @@ prototype "组装机打印" {
     category = "设计图打印",
     group = "物流",
     order = 54,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-assembler.texture",
     ingredients = {
         {"组装机设计图", 1},
     },
@@ -1532,7 +1532,7 @@ prototype "空气过滤器打印" {
     category = "设计图打印",
     group = "物流",
     order = 54,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-air-filter1.texture",
     ingredients = {
         {"空气过滤器设计图", 1},
     },
@@ -1548,7 +1548,7 @@ prototype "地下水挖掘机打印" {
     category = "设计图打印",
     group = "物流",
     order = 54,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/broken-pump.texture",
     ingredients = {
         {"地下水挖掘机设计图", 1},
     },
@@ -1564,7 +1564,7 @@ prototype "道路建造站打印" {
     category = "设计图打印",
     group = "物流",
     order = 54,
-    icon = "textures/construct/logisitic1.texture",
+    icon = "textures/construct/road-builder.texture",
     ingredients = {
         {"道路建造站设计图", 1},
     },
@@ -1579,8 +1579,8 @@ prototype "管道建造站打印" {
     type = { "recipe" },
     category = "设计图打印",
     group = "物流",
-    order = 54,
-    icon = "textures/construct/logisitic1.texture",
+    order = 55,
+    icon = "textures/construct/pipe-builder.texture",
     ingredients = {
         {"管道建造站设计图", 1},
     },
