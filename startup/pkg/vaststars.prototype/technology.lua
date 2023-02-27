@@ -1359,6 +1359,25 @@ prototype "碳处理2" {
   time = "2s"
 }
 
+prototype "地质研究2" {
+  desc = "对火星地质结构进行标本采集和研究",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"地质科技包2"},
+  },
+  ingredients = {
+      {"地质科技包", 20},
+  },
+  count = 5,
+  time = "1.2s",
+  prerequisites = {"碳处理2"},
+  sign_desc = {
+    { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
+  },
+  sign_icon = "textures/science/tech-important.texture",
+}
+
 prototype "管道系统2" {
   desc = "研究装载和运输液体或气体的管道",
   type = { "tech" },
