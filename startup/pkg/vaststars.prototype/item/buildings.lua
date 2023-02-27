@@ -12,7 +12,7 @@ prototype "指挥中心" {
 }
 prototype "组装机I" {
     type = {"item"},
-    stack = 5,
+    stack = 1,
     icon = "textures/construct/assembler1.texture",
     model = "prefabs/rock.prefab",
     description = "用来组装或制造工业产品的工厂",
@@ -22,7 +22,7 @@ prototype "组装机I" {
 
 prototype "组装机II" {
     type = {"item"},
-    stack = 5,
+    stack = 1,
     icon = "textures/construct/assembler2.texture",
     model = "prefabs/rock.prefab",
     description = "用来组装或制造工业产品的工厂",
@@ -31,7 +31,7 @@ prototype "组装机II" {
 }
 prototype "车辆厂I" {
     type = {"item"},
-    stack = 5,
+    stack = 1,
     icon = "textures/construct/assembler1.texture",
     model = "prefabs/rock.prefab",
     description = "用来组装运输车的工厂",
@@ -41,7 +41,7 @@ prototype "车辆厂I" {
 
 prototype "熔炼炉I" {
     type = {"item"},
-    stack = 5,
+    stack = 1,
     icon = "textures/construct/furnace1.texture",
     model = "prefabs/rock.prefab",
     description = "用来熔炼矿石的炉子",
@@ -51,7 +51,7 @@ prototype "熔炼炉I" {
 
 prototype "熔炼炉II" {
     type = {"item"},
-    stack = 5,
+    stack = 1,
     icon = "textures/construct/furnace2.texture",
     model = "prefabs/rock.prefab",
     description = "用来熔炼矿石的炉子",
@@ -61,7 +61,7 @@ prototype "熔炼炉II" {
 
 prototype "小铁制箱子I" {
     type = {"item"},
-    stack = 10,
+    stack = 5,
     icon = "textures/construct/chest1.texture",
     model = "prefabs/rock.prefab",
     description = "贮藏物品的容器",
@@ -71,7 +71,7 @@ prototype "小铁制箱子I" {
 
 prototype "小铁制箱子II" {
     type = {"item"},
-    stack = 10,
+    stack = 5,
     icon = "textures/construct/chest2.texture",
     model = "prefabs/rock.prefab",
     description = "贮藏物品的容器",
@@ -81,7 +81,7 @@ prototype "小铁制箱子II" {
 
 prototype "大铁制箱子I" {
     type = {"item"},
-    stack = 10,
+    stack = 5,
     icon = "textures/construct/chest.texture",
     model = "prefabs/rock.prefab",
     description = "贮藏物品的容器",
@@ -91,7 +91,7 @@ prototype "大铁制箱子I" {
 
 prototype "仓库" {
     type = {"item"},
-    stack = 5,
+    stack = 1,
     icon = "textures/construct/chest.texture",
     model = "prefabs/rock.prefab",
     description = "贮藏物品的容器",
@@ -111,7 +111,7 @@ prototype "基建站" {
 
 prototype "物流派送站" {
     type = {"item"},
-    stack = 5,
+    stack = 1,
     icon = "textures/construct/goodsstation-output.texture",
     model = "prefabs/rock.prefab",
     description = "将货物从货站装运到运输车",
@@ -121,7 +121,7 @@ prototype "物流派送站" {
 
 prototype "物流需求站" {
     type = {"item"},
-    stack = 5,
+    stack = 1,
     icon = "textures/construct/goodsstation-input.texture",
     model = "prefabs/rock.prefab",
     description = "将货物从运输车卸载到货站",
@@ -131,7 +131,7 @@ prototype "物流需求站" {
 
 prototype "无人机仓库" {
     type = {"item"},
-    stack = 5,
+    stack = 1,
     icon = "textures/construct/drone-depot.texture",
     model = "prefabs/rock.prefab",
     description = "储存货物的放置点",
@@ -211,7 +211,7 @@ prototype "机器爪I" {
 
 prototype "蒸汽发电机I" {
     type = {"item"},
-    stack = 25,
+    stack = 1,
     icon = "textures/construct/turbine1.texture",
     model = "prefabs/rock.prefab",
     description = "将热能转换成电能的机器",
@@ -221,7 +221,7 @@ prototype "蒸汽发电机I" {
 
 prototype "化工厂I" {
     type = {"item"},
-    stack = 25,
+    stack = 1,
     icon = "textures/construct/chemistry2.texture",
     model = "prefabs/rock.prefab",
     description = "加工化工原料的工厂",
@@ -231,7 +231,7 @@ prototype "化工厂I" {
 
 prototype "铸造厂I" {
     type = {"item"},
-    stack = 25,
+    stack = 1,
     icon = "textures/construct/assembler.texture",
     model = "prefabs/rock.prefab",
     description = "铸造金属的工厂",
@@ -241,7 +241,7 @@ prototype "铸造厂I" {
 
 prototype "蒸馏厂I" {
     type = {"item"},
-    stack = 10,
+    stack = 1,
     icon = "textures/construct/distillery.texture",
     model = "prefabs/rock.prefab",
     description = "用来蒸馏液体的工厂",
@@ -251,7 +251,7 @@ prototype "蒸馏厂I" {
 
 prototype "粉碎机I" {
     type = {"item"},
-    stack = 25,
+    stack = 1,
     icon = "textures/construct/crusher1.texture",
     model = "prefabs/rock.prefab",
     description = "用于粉碎物体的装置",
@@ -261,7 +261,7 @@ prototype "粉碎机I" {
 
 prototype "浮选器I" {
     type = {"item"},
-    stack = 25,
+    stack = 1,
     icon = "textures/construct/flotation-cell.texture",
     model = "prefabs/rock.prefab",
     description = "用于浮沉矿石的机器",
@@ -271,7 +271,7 @@ prototype "浮选器I" {
 
 prototype "物流中心I" {
     type = {"item"},
-    stack = 25,
+    stack = 1,
     icon = "textures/construct/logisitic1.texture",
     model = "prefabs/rock.prefab",
     description = "派遣和停靠运输车辆的物流车站",
@@ -281,7 +281,7 @@ prototype "物流中心I" {
 
 prototype "风力发电机I" {
     type = {"item"},
-    stack = 10,
+    stack = 1,
     icon = "textures/construct/wind-turbine.texture",
     model = "prefabs/rock.prefab",
     description = "利用风能转换电能的机器",
@@ -291,7 +291,7 @@ prototype "风力发电机I" {
 
 prototype "铁制电线杆" {
     type = {"item"},
-    stack = 50,
+    stack = 5,
     icon = "textures/construct/electric-pole1.texture",
     model = "prefabs/rock.prefab",
     description = "用于传输电力的铁制电杆",
@@ -301,7 +301,7 @@ prototype "铁制电线杆" {
 
 prototype "科研中心I" {
     type = {"item"},
-    stack = 25,
+    stack = 1,
     icon = "textures/construct/lab.texture",
     model = "prefabs/rock.prefab",
     description = "研究科技技术的中心",
@@ -311,7 +311,7 @@ prototype "科研中心I" {
 
 prototype "电解厂I" {
     type = {"item"},
-    stack = 10,
+    stack = 1,
     icon = "textures/construct/electrolysis1.texture",
     model = "prefabs/rock.prefab",
     description = "使用电能电离液体的工厂",
@@ -321,7 +321,7 @@ prototype "电解厂I" {
 
 prototype "太阳能板I" {
     type = {"item"},
-    stack = 50,
+    stack = 1,
     icon = "textures/construct/solar-panel.texture",
     model = "prefabs/rock.prefab",
     description = "用来收集太阳能发电的装置",
@@ -331,7 +331,7 @@ prototype "太阳能板I" {
 
 prototype "蓄电池I" {
     type = {"item"},
-    stack = 50,
+    stack = 5,
     icon = "textures/construct/grid-battery.texture",
     model = "prefabs/rock.prefab",
     description = "可充电和放电的蓄能装置",
@@ -341,7 +341,7 @@ prototype "蓄电池I" {
 
 prototype "水电站I" {
     type = {"item"},
-    stack = 10,
+    stack = 1,
     icon = "textures/construct/hydroplant.texture",
     model = "prefabs/rock.prefab",
     description = "处理水的工厂",
@@ -362,7 +362,7 @@ prototype "砖石公路-X型-01" {
 
 prototype "运输车辆I" {
     type = {"item"},
-    stack = 50,
+    stack = 1,
     icon = "textures/construct/truck.texture",
     model = "prefabs/rock.prefab",
     description = "运输货物的交通工具",
@@ -372,7 +372,7 @@ prototype "运输车辆I" {
 
 prototype "换热器I" {
     type = {"item"},
-    stack = 25,
+    stack = 1,
     icon = "textures/construct/turbine1.texture",
     model = "prefabs/rock.prefab",
     description = "将水变成蒸汽的机器",
@@ -382,7 +382,7 @@ prototype "换热器I" {
 
 prototype "锅炉I" {
     type = {"item"},
-    stack = 25,
+    stack = 1,
     icon = "textures/construct/turbine1.texture",
     model = "prefabs/rock.prefab",
     description = "将水变成蒸汽的机器",
