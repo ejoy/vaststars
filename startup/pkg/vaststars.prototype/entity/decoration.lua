@@ -51,7 +51,7 @@ prototype "抽水泵残骸" {
     },
     group = {"物流" , "默认"},
     area = "3x3",
-    slots = 11,
+    slots = 16,
     building_base = false,
 }
 
