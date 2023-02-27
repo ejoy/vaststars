@@ -1249,7 +1249,7 @@ prototype "基地生产2" {
   icon = "textures/science/tech-research.texture",
   effects = {
     modifier = {["headquarter-mining-speed"] = 0.1},
-    unlock_recipe = {"破损铁制电线杆"},
+    unlock_recipe = {"破损铁制电线杆","建造中心"},
     unlock_building = {"铁制电线杆"},
   },
   prerequisites = {"空气分离"},

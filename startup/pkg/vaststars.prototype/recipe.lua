@@ -670,7 +670,7 @@ prototype "组装机2" {
     type = { "recipe" },
     category = "生产中型制造",
     group = "生产",
-    order = 70,
+    order = 71,
     icon = "textures/construct/assembler2.texture",
     ingredients = {
         {"钢板", 2},
@@ -681,6 +681,23 @@ prototype "组装机2" {
     },
     time = "10s",
     description = "机械原料制造组装机",
+}
+
+prototype "建造中心" {
+    type = { "recipe" },
+    category = "设计图打印",
+    group = "生产",
+    order = 72,
+    icon = "textures/construct/assembler1.texture",
+    ingredients = {
+        {"道路建造站", 2},
+        {"管道建造站", 2},
+    },
+    results = {
+        {"建造中心", 1},
+    },
+    time = "6s",
+    description = "制造建造中心",
 }
 
 prototype "蒸汽发电机1" {
