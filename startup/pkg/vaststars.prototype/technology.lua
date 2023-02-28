@@ -519,7 +519,7 @@ local prototype = gameplay.register.prototype
 --   type = { "tech" },
 --   icon = "textures/science/tech-research.texture",
 --   effects = {
---     unlock_recipe = {"地下水挖掘机打印","水电站打印","气候科技包1"},
+--     unlock_recipe = {"气候科技包1"},
 --     unlock_building = {"空气过滤器I","地下水挖掘机"},
 --   },
 --   prerequisites = {"物流学II"},
@@ -534,60 +534,6 @@ local prototype = gameplay.register.prototype
 --   time = "1.5s"
 -- }
 
--- prototype "建造地下水挖掘机" {
---   desc = "生产科技包用于科技研究",
---   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
---   task = {"stat_production", 0, "地下水挖掘机"},
---   prerequisites = {"气候研究"},
---   count = 1,
---   tips_pic = {
---     "textures/task_tips_pic/task_produce_climatepack2.texture",
---     "textures/task_tips_pic/task_produce_climatepack3.texture",
---     "textures/task_tips_pic/task_produce_climatepack4.texture",
---     "textures/task_tips_pic/task_produce_climatepack5.texture",
---   },
---   sign_desc = {
---     { desc = "生产1个地下水挖掘机", icon = "textures/construct/industry.texture"},
---   },
--- }
-
--- prototype "建造水电站" {
---   desc = "建造水电站用于处理液体",
---   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
---   task = {"stat_production", 0, "水电站I"},
---   prerequisites = {"气候研究"},
---   count = 1,
---   tips_pic = {
---     "textures/task_tips_pic/task_produce_climatepack2.texture",
---     "textures/task_tips_pic/task_produce_climatepack3.texture",
---     "textures/task_tips_pic/task_produce_climatepack4.texture",
---     "textures/task_tips_pic/task_produce_climatepack5.texture",
---   },
---   sign_desc = {
---     { desc = "建造1个水电站", icon = "textures/construct/industry.texture"},
---   },
--- }
-
--- prototype "生产气候科技包" {
---   desc = "生产科技包用于科技研究",
---   icon = "textures/construct/industry.texture",
---   type = { "tech", "task" },
---   task = {"stat_production", 0, "气候科技包"},
---   prerequisites = {"生产空气过滤器","生产水电站"},
---   count = 1,
---   tips_pic = {
---     "textures/task_tips_pic/task_produce_climatepack2.texture",
---     "textures/task_tips_pic/task_produce_climatepack3.texture",
---     "textures/task_tips_pic/task_produce_climatepack4.texture",
---     "textures/task_tips_pic/task_produce_climatepack5.texture",
---   },
---   sign_desc = {
---     { desc = "使用水电站生产1个气候科技包", icon = "textures/construct/industry.texture"},
---   },
--- }
-
 -- prototype "管道系统1" {
 --   desc = "研究装载和运输液体或气体的管道",
 --   type = { "tech" },
@@ -596,7 +542,7 @@ local prototype = gameplay.register.prototype
 --     unlock_recipe = {"管道1","管道2","液罐1"},
 --     unlock_building = {"液罐I","管道1-X型"},
 --   },
---   prerequisites = {"生产气候科技包"},
+--   prerequisites = {"气候研究"},
 --   ingredients = {
 --       {"地质科技包", 1},
 --   },
@@ -616,6 +562,79 @@ local prototype = gameplay.register.prototype
 --   },
 --   sign_desc = {
 --     { desc = "使用组装机生产10个管道", icon = "textures/construct/industry.texture"},
+--   },
+-- }
+
+-- prototype "采水研究" {
+--   desc = "对火星大气成分进行标本采集和研究",
+--   type = { "tech" },
+--   icon = "textures/science/tech-research.texture",
+--   effects = {
+--     unlock_recipe = {"地下水挖掘机","水电站打印"},
+--   },
+--   prerequisites = {"生产管道"},
+--   ingredients = {
+--       {"地质科技包", 1},
+--   },
+--   sign_desc = {
+--     { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
+--   },
+--   sign_icon = "textures/science/tech-important.texture",
+--   count = 6,
+--   time = "1.5s"
+-- }
+
+-- prototype "建造地下水挖掘机" {
+--   desc = "生产科技包用于科技研究",
+--   icon = "textures/construct/industry.texture",
+--   type = { "tech", "task" },
+--   task = {"stat_production", 0, "地下水挖掘机"},
+--   prerequisites = {"采水研究"},
+--   count = 1,
+--   tips_pic = {
+--     "textures/task_tips_pic/task_produce_climatepack2.texture",
+--     "textures/task_tips_pic/task_produce_climatepack3.texture",
+--     "textures/task_tips_pic/task_produce_climatepack4.texture",
+--     "textures/task_tips_pic/task_produce_climatepack5.texture",
+--   },
+--   sign_desc = {
+--     { desc = "生产1个地下水挖掘机", icon = "textures/construct/industry.texture"},
+--   },
+-- }
+
+-- prototype "建造水电站" {
+--   desc = "建造水电站用于处理液体",
+--   icon = "textures/construct/industry.texture",
+--   type = { "tech", "task" },
+--   task = {"stat_production", 0, "水电站I"},
+--   prerequisites = {"采水研究"},
+--   count = 1,
+--   tips_pic = {
+--     "textures/task_tips_pic/task_produce_climatepack2.texture",
+--     "textures/task_tips_pic/task_produce_climatepack3.texture",
+--     "textures/task_tips_pic/task_produce_climatepack4.texture",
+--     "textures/task_tips_pic/task_produce_climatepack5.texture",
+--   },
+--   sign_desc = {
+--     { desc = "建造1个水电站", icon = "textures/construct/industry.texture"},
+--   },
+-- }
+
+-- prototype "生产气候科技包" {
+--   desc = "生产科技包用于科技研究",
+--   icon = "textures/construct/industry.texture",
+--   type = { "tech", "task" },
+--   task = {"stat_production", 0, "气候科技包"},
+--   prerequisites = {"建造地下水挖掘机","建造水电站"},
+--   count = 1,
+--   tips_pic = {
+--     "textures/task_tips_pic/task_produce_climatepack2.texture",
+--     "textures/task_tips_pic/task_produce_climatepack3.texture",
+--     "textures/task_tips_pic/task_produce_climatepack4.texture",
+--     "textures/task_tips_pic/task_produce_climatepack5.texture",
+--   },
+--   sign_desc = {
+--     { desc = "使用水电站生产1个气候科技包", icon = "textures/construct/industry.texture"},
 --   },
 -- }
 
