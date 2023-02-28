@@ -247,6 +247,21 @@ local prototype = gameplay.register.prototype
   --   time = "1s"
   -- }
 
+  -- prototype "生产石砖" {
+  --   desc = "挖掘足够的碎石可以开始进行锻造",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"stat_production", 0, "石砖"},
+  --   prerequisites = {"石头处理1"},
+  --   count = 4,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_produce_ore3.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "使用组装机生产4个石砖", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+
   -- prototype "物流学I" {
   --   desc = "获得火星岩石加工成石砖的工艺",
   --   type = { "tech" },
@@ -254,7 +269,7 @@ local prototype = gameplay.register.prototype
   --   effects = {
   --     unlock_recipe = {"道路建造站"},
   --   },
-  --   prerequisites = {"石头处理1"},
+  --   prerequisites = {"生产石砖"},
   --   ingredients = {
   --       {"地质科技包", 4},
   --   },
@@ -305,6 +320,9 @@ local prototype = gameplay.register.prototype
   --   task = {"select_entity", 0, "车站"},
   --   prerequisites = {"放置道路建造站"},
   --   count = 1,
+  --   effects = {
+  --     unlock_recipe = {"破损运输汽车"},
+  --   },
   --   tips_pic = {
   --     "textures/task_tips_pic/task_place_logistics.texture",
   --   },
@@ -313,13 +331,28 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
+  -- prototype "生产运输车辆" {
+  --   desc = "挖掘足够的铁矿石可以开始进行锻造",
+  --   icon = "textures/construct/industry.texture",
+  --   type = { "tech", "task" },
+  --   task = {"stat_production", 0, "运输车辆I"},
+  --   prerequisites = {"放置车站"},
+  --   count = 4,
+  --   tips_pic = {
+  --     "textures/task_tips_pic/task_produce_ore3.texture",
+  --   },
+  --   sign_desc = {
+  --     { desc = "组装机维修4辆运输车辆", icon = "textures/construct/industry.texture"},
+  --   },
+  -- }
+
   -- prototype "生产铁矿石" {
   --   desc = "挖掘足够的铁矿石可以开始进行锻造",
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
   --   task = {"stat_production", 0, "铁矿石"},
-  --   prerequisites = {"放置车站"},
-  --   count = 2,
+  --   prerequisites = {"生产运输车辆"},
+  --   count = 10,
   --   effects = {
   --     unlock_recipe = {"熔炼炉打印"},
   --   },
@@ -327,7 +360,7 @@ local prototype = gameplay.register.prototype
   --     "textures/task_tips_pic/task_produce_ore3.texture",
   --   },
   --   sign_desc = {
-  --     { desc = "在铁矿上放置挖矿机并挖掘2个铁矿石", icon = "textures/construct/industry.texture"},
+  --     { desc = "在铁矿上放置挖矿机并挖掘10个铁矿石", icon = "textures/construct/industry.texture"},
   --   },
   -- }
 
@@ -336,7 +369,7 @@ local prototype = gameplay.register.prototype
   --   type = { "tech" },
   --   icon = "textures/science/tech-research.texture",
   --   effects = {
-  --     unlock_recipe = {"铁板1","熔炼炉打印"},
+  --     unlock_recipe = {"铁板1"},
   --   },
   --   prerequisites = {"生产铁矿石"},
   --   ingredients = {
@@ -351,7 +384,7 @@ local prototype = gameplay.register.prototype
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
   --   task = {"select_entity", 0, "熔炼炉I"},
-  --   prerequisites = {"铁矿熔炼"},
+  --   prerequisites = {"生产铁矿石"},
   --   count = 2,
   --   tips_pic = {
   --     "textures/task_tips_pic/task_click_build.texture",
@@ -369,7 +402,7 @@ local prototype = gameplay.register.prototype
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
   --   task = {"stat_production", 0, "铁板"},
-  --   prerequisites = {"放置熔炼炉"},
+  --   prerequisites = {"放置熔炼炉","铁矿熔炼"},
   --   count = 4,
   --   tips_pic = {
   --     "textures/task_tips_pic/task_produce_ironplate1.texture",
@@ -417,7 +450,7 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-  -- prototype "运输车辆" {
+  -- prototype "机械运输" {
   --   desc = "研究生产运输车辆工艺",
   --   type = { "tech" },
   --   icon = "textures/science/tech-research.texture",
@@ -433,12 +466,12 @@ local prototype = gameplay.register.prototype
   -- }
 
   -- prototype "生产运输车辆" {
-  --   desc = "生产4辆运输车",
+  --   desc = "生产8辆运输车",
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
   --   task = {"stat_production", 0, "运输车辆I"},
-  --   prerequisites = {"运输车辆"},
-  --   count = 4,
+  --   prerequisites = {"机械运输"},
+  --   count = 8,
   --   tips_pic = {
   --     "textures/task_tips_pic/task_produce_ironplate1.texture",
   --     "textures/task_tips_pic/task_produce_ironplate2.texture",
@@ -447,7 +480,7 @@ local prototype = gameplay.register.prototype
   --     "textures/task_tips_pic/task_produce_ironplate5.texture",
   --   },
   --   sign_desc = {
-  --     { desc = "使用组装机生产4辆运输车", icon = "textures/construct/industry.texture"},
+  --     { desc = "使用组装机生产8辆运输车", icon = "textures/construct/industry.texture"},
   --   },
   -- }
 
@@ -486,7 +519,7 @@ local prototype = gameplay.register.prototype
 --   type = { "tech" },
 --   icon = "textures/science/tech-research.texture",
 --   effects = {
---     unlock_recipe = {"空气过滤器设计图","地下水挖掘机设计图","气候科技包1"},
+--     unlock_recipe = {"地下水挖掘机打印","水电站打印","气候科技包1"},
 --     unlock_building = {"空气过滤器I","地下水挖掘机"},
 --   },
 --   prerequisites = {"物流学II"},
@@ -501,12 +534,48 @@ local prototype = gameplay.register.prototype
 --   time = "1.5s"
 -- }
 
+-- prototype "建造地下水挖掘机" {
+--   desc = "生产科技包用于科技研究",
+--   icon = "textures/construct/industry.texture",
+--   type = { "tech", "task" },
+--   task = {"stat_production", 0, "地下水挖掘机"},
+--   prerequisites = {"气候研究"},
+--   count = 1,
+--   tips_pic = {
+--     "textures/task_tips_pic/task_produce_climatepack2.texture",
+--     "textures/task_tips_pic/task_produce_climatepack3.texture",
+--     "textures/task_tips_pic/task_produce_climatepack4.texture",
+--     "textures/task_tips_pic/task_produce_climatepack5.texture",
+--   },
+--   sign_desc = {
+--     { desc = "生产1个地下水挖掘机", icon = "textures/construct/industry.texture"},
+--   },
+-- }
+
+-- prototype "建造水电站" {
+--   desc = "建造水电站用于处理液体",
+--   icon = "textures/construct/industry.texture",
+--   type = { "tech", "task" },
+--   task = {"stat_production", 0, "水电站I"},
+--   prerequisites = {"气候研究"},
+--   count = 1,
+--   tips_pic = {
+--     "textures/task_tips_pic/task_produce_climatepack2.texture",
+--     "textures/task_tips_pic/task_produce_climatepack3.texture",
+--     "textures/task_tips_pic/task_produce_climatepack4.texture",
+--     "textures/task_tips_pic/task_produce_climatepack5.texture",
+--   },
+--   sign_desc = {
+--     { desc = "建造1个水电站", icon = "textures/construct/industry.texture"},
+--   },
+-- }
+
 -- prototype "生产气候科技包" {
 --   desc = "生产科技包用于科技研究",
 --   icon = "textures/construct/industry.texture",
 --   type = { "tech", "task" },
 --   task = {"stat_production", 0, "气候科技包"},
---   prerequisites = {"气候研究"},
+--   prerequisites = {"生产空气过滤器","生产水电站"},
 --   count = 1,
 --   tips_pic = {
 --     "textures/task_tips_pic/task_produce_climatepack2.texture",
@@ -519,21 +588,6 @@ local prototype = gameplay.register.prototype
 --   },
 -- }
 
--- prototype "物流学II" {
---   desc = "研究电能转换成机械能的基础供能装置",
---   type = { "tech" },
---   icon = "textures/science/tech-research.texture",
---   effects = {
---     unlock_recipe = {"车站"},
---   },
---   prerequisites = {"气候研究"},
---   ingredients = {
---     {"地质科技包", 1},
---   },
---   count = 10,
---   time = "6s"
--- }
-
 -- prototype "管道系统1" {
 --   desc = "研究装载和运输液体或气体的管道",
 --   type = { "tech" },
@@ -542,12 +596,27 @@ local prototype = gameplay.register.prototype
 --     unlock_recipe = {"管道1","管道2","液罐1"},
 --     unlock_building = {"液罐I","管道1-X型"},
 --   },
---   prerequisites = {"气候研究"},
+--   prerequisites = {"生产气候科技包"},
 --   ingredients = {
 --       {"地质科技包", 1},
 --   },
 --   count = 6,
 --   time = "1s"
+-- }
+
+-- prototype "生产管道" {
+--   desc = "管道用于液体传输",
+--   icon = "textures/construct/industry.texture",
+--   type = { "tech", "task" },
+--   task = {"stat_production", 0, "管道1-X型"},
+--   prerequisites = {"管道系统1"},
+--   count = 10,
+--   tips_pic = {
+--     "textures/task_tips_pic/task_produce_pipe1.texture",
+--   },
+--   sign_desc = {
+--     { desc = "使用组装机生产10个管道", icon = "textures/construct/industry.texture"},
+--   },
 -- }
 
   -- prototype "修复阻断公路" {
