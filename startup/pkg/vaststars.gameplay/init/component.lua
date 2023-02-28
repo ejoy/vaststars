@@ -38,6 +38,27 @@ component "park" {
 component "lorry_factory" {
 }
 
+component "hub" {
+    "chest:word",
+}
+
+--
+-- prev/next/mov2/home
+-- | unused(5bit) | type(2bit) | chest(4bit) | slot(3bit) | y(9bit) | x(9bit) |
+-- 32            27           25            21           18         9         0
+--
+component "drone" {
+    "prev:dword",
+    "next:dword",
+    "mov2:dword",
+    "home:dword",
+    "classid:word",
+    "maxprogress:word",
+    "progress:word",
+    "item:word",
+    "status:byte",
+}
+
 component "assembling" {
     "progress:int",
     "recipe:word",

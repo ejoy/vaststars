@@ -7,6 +7,7 @@
 #include "core/statistics.h"
 #include "system/trading.h"
 #include "system/fluid.h"
+#include "system/hub.h"
 #include "roadnet/network.h"
 #include <map>
 extern "C" {
@@ -26,6 +27,7 @@ struct world {
     techtree_mgr techtree;
     statistics stat;
     roadnet::network rw;
+    hub_mgr buildings;
     uint64_t time = 0;
 
     prototype_context prototype(lua_State* L, int id) {

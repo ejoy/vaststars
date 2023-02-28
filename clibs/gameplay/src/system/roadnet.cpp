@@ -7,7 +7,7 @@
 static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    w.rw.update(0);
+    w.rw.update(w.time);
     return 0;
 }
 

@@ -15,6 +15,7 @@ lm:lua_source "gameplay" {
         "src/",
         "src/roadnet",
         antdir .. "3rd/luaecs",
+        antdir .. "3rd/bee.lua",
         antdir .. "clibs/ecs/",
     },
     sources = {
