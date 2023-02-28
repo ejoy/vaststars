@@ -984,6 +984,7 @@ local t = {
 	"/pkg/vaststars.resources/prefabs/crusher-1.prefab",
 	"/pkg/vaststars.resources/prefabs/distillery-1.prefab",
 	"/pkg/vaststars.resources/prefabs/distillery-1.prefab.patch",
+	"/pkg/vaststars.resources/prefabs/drone-depot.prefab",
 	"/pkg/vaststars.resources/prefabs/drone.prefab",
 	"/pkg/vaststars.resources/prefabs/effect_baiyan.prefab",
 	"/pkg/vaststars.resources/prefabs/effect_huoxing.prefab",

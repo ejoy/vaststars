@@ -12,6 +12,20 @@ data:
   name: Cube.006
   scene:
     s: {0.7849061489105225, 0.7849061489105225, 0.7849061489105225}
+    t: {33.72509002685547, 45.662052154541016, -28.77433967590332}
+  visible_state: main_view|selectable|cast_shadow
+mount: 1
+policy:
+  ant.general|name
+  ant.render|render
+---
+data:
+  material: /pkg/vaststars.resources/glb/drone.glb|materials/Material.005.material
+  mesh: /pkg/vaststars.resources/glb/drone.glb|meshes/Cube.006_P2.meshbin
+  name: Cube.006
+  scene:
+    s: {0.7849061489105225, 0.7849061489105225, 0.7849061489105225}
+    t: {33.72509002685547, 45.662052154541016, -28.77433967590332}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
