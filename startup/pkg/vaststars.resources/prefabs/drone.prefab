@@ -7,72 +7,11 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  meshskin: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Armature.skinbin
-  name: meshskin
-  scene: {}
-  skeleton: /pkg/vaststars.resources/glb/fly-robot.glb|animations/skeleton.ozz
-  skinning: true
-mount: 1
-policy:
-  ant.animation|meshskin
-  ant.general|name
-  ant.scene|scene_object
----
-data:
-  material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Cube.006_P1.meshbin
-  name: Cube.003
+  material: /pkg/vaststars.resources/glb/drone.glb|materials/Material.004.material
+  mesh: /pkg/vaststars.resources/glb/drone.glb|meshes/Cube.006_P1.meshbin
+  name: Cube.006
   scene:
-    s: {1.3879286050796509, 0.3469821512699127, 1.3879286050796509}
-    t: {0, 2.025148630142212, 0.07886886596679688}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Plane_P1.meshbin
-  name: Plane.001
-  scene: {}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Cube.001_P1.meshbin
-  name: Cube.007
-  scene:
-    s: {1.2804089784622192, 0.3201022446155548, 1.2804089784622192}
-    t: {0, 2.3709356784820557, 0.07886886596679688}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Cube.008_P1.meshbin
-  name: Cube.008
-  scene:
-    s: {2, 0.5, 2}
-    t: {0, 2.3709356784820557, 0.07886886596679688}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/fly-robot.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/fly-robot.glb|meshes/Plane.001_P1.meshbin
-  name: Plane.002
-  scene: {}
+    s: {0.7849061489105225, 0.7849061489105225, 0.7849061489105225}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
