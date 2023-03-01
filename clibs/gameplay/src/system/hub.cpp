@@ -107,10 +107,10 @@ lbuild(lua_State *L) {
                 auto& chestslot = chest::getslot(w, container::index::from(chest.chest), i);
                 auto item = chestslot.item;
                 hub_mgr::berth_type type;
-                if (chestslot.type == container_slot::slot_type::red) {
+                if (chestslot.type == container::slot::slot_type::red) {
                     type = hub_mgr::berth_type::chest_red;
                 }
-                else if (chestslot.type == container_slot::slot_type::blue) {
+                else if (chestslot.type == container::slot::slot_type::blue) {
                     type = hub_mgr::berth_type::chest_blue;
                 }
                 else {

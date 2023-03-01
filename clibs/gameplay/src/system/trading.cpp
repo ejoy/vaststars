@@ -27,7 +27,7 @@ static void trading_match(world& w, uint16_t item, trading_queue& q) {
     trading_match(w, item, q, 1, 0);
 }
 
-static void trading_sell(world& w, trading_who who, uint8_t priority, container_slot& s) {
+static void trading_sell(world& w, trading_who who, uint8_t priority, container::slot& s) {
     if (s.amount <= s.lock_item) {
         return;
     }
@@ -40,7 +40,7 @@ static void trading_sell(world& w, trading_who who, uint8_t priority, container_
     }
 }
 
-static void trading_buy(world& w, trading_who who, uint8_t priority, container_slot& s) {
+static void trading_buy(world& w, trading_who who, uint8_t priority, container::slot& s) {
     if (s.amount + s.lock_space >= s.limit) {
         return;
     }
@@ -53,18 +53,18 @@ static void trading_buy(world& w, trading_who who, uint8_t priority, container_s
     }
 }
 
-void trading_flush(world& w, trading_who who, container_slot& s) {
+void trading_flush(world& w, trading_who who, container::slot& s) {
     if (s.item == 0) {
         return;
     }
     switch (s.type) {
-    case container_slot::slot_type::red:
+    case container::slot::slot_type::red:
         trading_sell(w, who, RED_PRIORITY, s);
         break;
-    case container_slot::slot_type::blue:
+    case container::slot::slot_type::blue:
         trading_buy(w, who, BLUE_PRIORITY, s);
         break;
-    case container_slot::slot_type::green:
+    case container::slot::slot_type::green:
         trading_sell(w, who, GREEN_PRIORITY, s);
         trading_buy(w, who, GREEN_PRIORITY, s);
         break;
@@ -84,7 +84,7 @@ static size_t queue_remove(queue<trading_who>& queue, trading_who who) {
     return n;
 }
 
-void trading_rollback(world& w, trading_who who, container_slot& s) {
+void trading_rollback(world& w, trading_who who, container::slot& s) {
     if (s.item == 0) {
         return;
     }
@@ -92,10 +92,10 @@ void trading_rollback(world& w, trading_who who, container_slot& s) {
     if (s.lock_item > 0) {
         size_t n = 0;
         switch (s.type) {
-        case container_slot::slot_type::red:
+        case container::slot::slot_type::red:
             n = queue_remove(q.sell[RED_PRIORITY], who);
             break;
-        case container_slot::slot_type::green:
+        case container::slot::slot_type::green:
             n = queue_remove(q.sell[GREEN_PRIORITY], who);
             break;
         default:
@@ -111,10 +111,10 @@ void trading_rollback(world& w, trading_who who, container_slot& s) {
     if (s.lock_space > 0) {
         size_t n = 0;
         switch (s.type) {
-        case container_slot::slot_type::blue:
+        case container::slot::slot_type::blue:
             n = queue_remove(q.buy[BLUE_PRIORITY], who);
             break;
-        case container_slot::slot_type::green:
+        case container::slot::slot_type::green:
             n = queue_remove(q.buy[GREEN_PRIORITY], who);
             break;
         default:

@@ -24,22 +24,6 @@ struct recipe_items {
     } items[1];
 };
 
-struct container_slot {
-    enum class slot_type: uint8_t {
-        red = 0,
-        blue,
-        green,
-        none,
-    };
-    slot_type type;
-    bool      eof;
-    uint16_t  item;
-    uint16_t  amount;
-    uint16_t  limit;
-    uint16_t  lock_item;
-    uint16_t  lock_space;
-};
-
 class container {
 public:
     using size_type = uint16_t;
@@ -66,16 +50,20 @@ public:
             return *(index*)&v;
         }
     };
-    struct slot : public container_slot {
-        void init() {
-            type = container_slot::slot_type::red;
-            item = 0;
-            amount = 0;
-            limit = 0;
-            lock_item = 0;
-            lock_space = 0;
-            eof = false;
-        }
+    struct slot {
+        enum class slot_type: uint8_t {
+            red = 0,
+            blue,
+            green,
+            none,
+        };
+        slot_type type = slot_type::red;
+        bool      eof = false;
+        uint16_t  item = 0;
+        uint16_t  amount = 0;
+        uint16_t  limit = 0;
+        uint16_t  lock_item = 0;
+        uint16_t  lock_space = 0;
     };
     struct page {
         slot slots[kPageSize];
@@ -242,7 +230,7 @@ namespace chest {
     container::slot& array_at(world& w, container::index c, uint8_t offset);
     std::span<container::slot> array_slice(world& w, container::index c, uint8_t offset, uint16_t size);
 
-    void    reset(world& w, container::index c, uint16_t endpoint, container_slot* data);
+    void    reset(world& w, container::index c, uint16_t endpoint, container::slot* data);
 
     // for fluidflow
     uint16_t get_fluid(world& w, container::index c, uint8_t offset);
@@ -255,12 +243,12 @@ namespace chest {
     // for laboratory
     bool     pickup(world& w, container::index c, uint16_t endpoint, const recipe_items* r, uint8_t offset = 0);
     bool     place(world& w, container::index c, uint16_t endpoint, const recipe_items* r, uint8_t offset = 0);
-    bool     recover(world& w, container::index c, const recipe_items* r, uint8_t offset = 0);
+    bool     recover(world& w, container::index c, const recipe_items* r);
     void     limit(world& w, container::index c, uint16_t endpoint, const uint16_t* r, uint16_t n);
     uint16_t size(world& w, container::index c);
 
     // for lua api
-    container_slot& getslot(world& w, container::index c, uint8_t offset);
+    container::slot& getslot(world& w, container::index c, uint8_t offset);
     void     flush(world& w, container::index c, uint16_t endpoint);
     void     rollback(world& w, container::index c, uint16_t endpoint);
 
