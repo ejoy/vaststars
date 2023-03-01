@@ -31,19 +31,13 @@ struct container_slot {
         green,
         none,
     };
-    enum class slot_unit: uint8_t {
-        once,
-        fixed,
-        array,
-        head,
-    };
     slot_type type;
-    slot_unit unit;
-    uint16_t item;
-    uint16_t amount;
-    uint16_t limit;
-    uint16_t lock_item;
-    uint16_t lock_space;
+    bool      eof;
+    uint16_t  item;
+    uint16_t  amount;
+    uint16_t  limit;
+    uint16_t  lock_item;
+    uint16_t  lock_space;
 };
 
 class container {
@@ -57,6 +51,11 @@ public:
             assert((size_t)slot + v < kPageSize);
             return {page, (uint8_t)(slot + v)};
         }
+        index& operator++() {
+            assert((size_t)slot + 1 < kPageSize);
+            slot++;
+            return *this;
+        }
         bool operator==(const index& rhs) const {
             return page == rhs.page && slot == rhs.slot;
         }
@@ -68,16 +67,14 @@ public:
         }
     };
     struct slot : public container_slot {
-        index next;
         void init() {
             type = container_slot::slot_type::red;
-            unit = container_slot::slot_unit::once;
             item = 0;
             amount = 0;
             limit = 0;
             lock_item = 0;
             lock_space = 0;
-            next = container::kInvalidIndex;
+            eof = false;
         }
     };
     struct page {
@@ -115,23 +112,12 @@ public:
     container() {
         init();
     }
-    index create_chest(size_type asize, size_type lsize) {
-        assert(asize <= kPageSize && lsize <= kPageSize);
-        auto start = alloc_list(1);
-        if (asize == 0) {
-            if (lsize != 0) {
-                alloc_list(start, lsize);
-            }
-            return start;
+    index create_chest(size_type size) {
+        assert(size <= kPageSize);
+        if (size == 0) {
+            return kInvalidIndex;
         }
-        auto array_start = alloc_array(asize);
-        at(start).next = array_start;
-        if (lsize == 0) {
-            return start;
-        }
-        index l = array_start + (uint8_t)(asize-1);
-        alloc_list(l, lsize);
-        return start;
+        return alloc_array(size);
     }
     slot& at(index idx) {
         assert(idx.page < pages.size());
@@ -150,19 +136,10 @@ public:
         pages.clear();
         freelist.clear();
     }
-    index alloc_slot(size_type size) {
-        return alloc_list(size);
-    }
-    void free_slot(index idx) {
-        free_chunk(idx.page, {idx.slot, 1});
-    }
 private:
     void init_array(index start, size_type size) {
         size_type last = (size_type)(size-1);
-        for (size_type i = 0; i < last; ++i) {
-            pages[start.page]->slots[start.slot+i].next = {start.page, (uint8_t)(start.slot + i+1)};
-        }
-        pages[start.page]->slots[start.slot+last].next = kInvalidIndex;
+        pages[start.page]->slots[start.slot+last].eof = true;
     }
     index alloc_array_(size_type size) {
         assert(size <= kPageSize);
@@ -211,35 +188,8 @@ private:
         }
         return alloc_array_(size);
     }
-    index alloc_list(size_type size) {
-        for (size_t i = 0; i < freelist.size(); ++i) {
-            auto& lst = freelist[i];
-            for (auto it = lst.begin(); it != lst.end(); ++it) {
-                if (it->size() < size) {
-                    index start {(uint8_t)i, it->slot};
-                    lst.erase(it);
-                    init_array(start, it->size());
-                    alloc_list(start, size-it->size());
-                    return start;
-                }
-                else {
-                    return alloc_array(size);
-                }
-            }
-        }
-        return alloc_array_(size);
-    }
-    void alloc_list(index start, size_type size) {
-        at(start).next = alloc_list(size);
-    }
     void free_array(index idx, size_type size) {
         free_chunk(idx.page, {idx.slot, size});
-    }
-    void free_list(index idx, size_type size) {
-        for (size_type i = 0; i < size; ++i) {
-            free_chunk(idx.page, {idx.slot, 1});
-            idx = at(idx).next;
-        }
     }
     void free_page() {
         free_chunk((uint8_t)(pages.size()-1), {top, size_type(kPageSize - top)});
@@ -287,41 +237,34 @@ public: //TODO for saveload
 };
 
 namespace chest {
-    struct chest_data {
-        container::index index;
-        container::size_type asize;
-    };
 
     container::index create(world& w, container::size_type asize);
-    container::index add(world& w, container::index index, uint16_t endpoint, container_slot* data, container::size_type lsize);
-    chest_data&      query(ecs::chest& c);
-    container::index head(world& w, container::index start);
-    container::slot& array_at(world& w, container::index start, uint8_t offset);
-    std::span<container::slot> array_slice(world& w, container::index start, uint8_t offset, uint16_t size);
+    container::slot& array_at(world& w, container::index c, uint8_t offset);
+    std::span<container::slot> array_slice(world& w, container::index c, uint8_t offset, uint16_t size);
 
-    void    reset(world& w, container::index start, uint16_t endpoint, container_slot* data, container::size_type asize);
+    void    reset(world& w, container::index c, uint16_t endpoint, container_slot* data);
 
     // for fluidflow
-    uint16_t get_fluid(world& w, chest_data& c, uint8_t offset);
-    void     set_fluid(world& w, chest_data& c, uint8_t offset, uint16_t value);
+    uint16_t get_fluid(world& w, container::index c, uint8_t offset);
+    void     set_fluid(world& w, container::index c, uint8_t offset, uint16_t value);
 
     // for chest
-    bool     pickup(world& w, chest_data& c, uint16_t endpoint, prototype_context& recipe);
-    bool     place(world& w, chest_data& c, uint16_t endpoint, prototype_context& recipe);
+    bool     pickup(world& w, container::index c, uint16_t endpoint, prototype_context& recipe);
+    bool     place(world& w, container::index c, uint16_t endpoint, prototype_context& recipe);
 
     // for laboratory
-    bool     pickup(world& w, chest_data& c, uint16_t endpoint, const recipe_items* r, uint8_t offset = 0);
-    bool     place(world& w, chest_data& c, uint16_t endpoint, const recipe_items* r, uint8_t offset = 0);
-    bool     recover(world& w, chest_data& c, const recipe_items* r, uint8_t offset = 0);
-    void     limit(world& w, chest_data& c, uint16_t endpoint, const uint16_t* r);
-    size_t   size(chest_data& c);
+    bool     pickup(world& w, container::index c, uint16_t endpoint, const recipe_items* r, uint8_t offset = 0);
+    bool     place(world& w, container::index c, uint16_t endpoint, const recipe_items* r, uint8_t offset = 0);
+    bool     recover(world& w, container::index c, const recipe_items* r, uint8_t offset = 0);
+    void     limit(world& w, container::index c, uint16_t endpoint, const uint16_t* r, uint16_t n);
+    uint16_t size(world& w, container::index c);
 
     // for lua api
-    container_slot* getslot(world& w, container::index index, uint8_t offset);
-    void     flush(world& w, container::index index, uint16_t endpoint);
-    void     rollback(world& w, container::index index, uint16_t endpoint);
+    container_slot& getslot(world& w, container::index c, uint8_t offset);
+    void     flush(world& w, container::index c, uint16_t endpoint);
+    void     rollback(world& w, container::index c, uint16_t endpoint);
 
     // for trading
-    bool pickup_force(world& w, container::index start, uint16_t endpoint, uint16_t item, uint16_t amount, bool unlock);
-    void place_force(world& w, container::index start, uint16_t endpoint, uint16_t item, uint16_t amount, bool unlock);
+    bool pickup_force(world& w, container::index c, uint16_t endpoint, uint16_t item, uint16_t amount, bool unlock);
+    bool place_force(world& w, container::index c, uint16_t endpoint, uint16_t item, uint16_t amount, bool unlock);
 }

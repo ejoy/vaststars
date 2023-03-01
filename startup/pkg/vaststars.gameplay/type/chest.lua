@@ -16,12 +16,9 @@ function c:ctor(init, pt)
     end
 
     local endpoint = iendpoint.create(world, init, pt, "chest")
-    local asize = #items
-    local index = world:container_create(asize)
     local chest = {
         endpoint = endpoint,
-        index = index,
-        asize = asize,
+        chest = world:container_create(#items),
         fluidbox_in = 0,
         fluidbox_out = 0,
         lorry = 0xffff,

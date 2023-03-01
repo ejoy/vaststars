@@ -20,13 +20,11 @@ local function createChest(world, chest, s)
         assert(not isFluidId(id))
         container_in[#container_in+1] = world:chest_slot {
             type = "blue",
-            unit = "array",
             item = id,
             limit = 2,
         }
     end
-    chest.asize = #container_in
-    chest.index = world:container_create(chest.asize)
+    chest.chest = world:container_create(#container_in)
     world:container_reset(chest, table.concat(container_in))
 end
 

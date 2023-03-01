@@ -250,15 +250,13 @@ static bool UpdateChest(world& w, ecs::chest& c) {
         switch (l.status) {
         case roadnet::lorry_status::go_buy: {
             assert(c.endpoint == l.buy_endpoint);
-            auto& chest = chest::query(c);
-            chest::place_force(w, chest.index, c.endpoint, l.item, 1, true);
+            chest::place_force(w, container::index::from(c.chest), c.endpoint, l.item, 1, true);
             l.status = roadnet::lorry_status::want_home;
             break;
         }
         case roadnet::lorry_status::go_sell: {
             assert(c.endpoint == l.sell_endpoint);
-            auto& chest = chest::query(c);
-            if (chest::pickup_force(w, chest.index, c.endpoint, l.item, 1, true)) {
+            if (chest::pickup_force(w, container::index::from(c.chest), c.endpoint, l.item, 1, true)) {
                 l.status = roadnet::lorry_status::want_buy;
             }
             else {

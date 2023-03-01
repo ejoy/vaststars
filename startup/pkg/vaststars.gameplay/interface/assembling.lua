@@ -59,6 +59,7 @@ local function createFluidBox(init, recipe)
 end
 
 local function resetItems(world, recipe, chest, option)
+    --TODO rewrite
     local ingredients_n <const> = #recipe.ingredients//4 - 1
     local results_n <const> = #recipe.results//4 - 1
     if ingredients_n + results_n > chest.asize then
@@ -88,7 +89,6 @@ local function resetItems(world, recipe, chest, option)
         end
         newitems[#newitems+1] = world:chest_slot {
             type = type,
-            unit = "array",
             item = id,
             limit = limit,
             amount = o.amount,

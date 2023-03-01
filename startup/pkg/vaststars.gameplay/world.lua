@@ -262,16 +262,6 @@ return function ()
         green = 2,
         none = 3,
     }
-    local CHEST_UNIT <const> = {
-        [0] = 0,
-        [1] = 1,
-        [2] = 2,
-        [3] = 3,
-        once = 0,
-        fixed = 1,
-        array = 2,
-        head = 3,
-    }
     function world:chest_slot(t)
         assert(t.type)
         assert(t.item)
@@ -281,7 +271,7 @@ return function ()
         end
         return string.pack("<I1I1I2I2I2I2I2",
             CHEST_TYPE[t.type],
-            CHEST_UNIT[t.unit or 0],
+            0,
             id,
             t.amount or 0,
             t.limit or 2,
@@ -290,11 +280,8 @@ return function ()
         )
     end
 
-    function world:container_create(asize)
-        return chest.create(cworld, asize)
-    end
-    function world:container_add(c, info)
-        return chest.add(cworld, c.index, c.endpoint, info)
+    function world:container_create(size)
+        return chest.create(cworld, size)
     end
     function world:container_get(c, i)
         return chest.get(cworld, c.index, i)

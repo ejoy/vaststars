@@ -9,8 +9,7 @@ function c:ctor(init, pt)
     return {
         chest = {
             endpoint = endpoint,
-            index = world:container_create(0),
-            asize = 0,
+            chest = world:container_create(0),
             fluidbox_in = 0,
             fluidbox_out = 0,
             lorry = 0xffff,

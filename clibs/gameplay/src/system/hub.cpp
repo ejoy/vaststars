@@ -91,37 +91,38 @@ lbuild(lua_State *L) {
         building_rect r(building, area);
         if (auto phub = v.sibling<ecs::hub>()) {
             auto& hub = *phub;
-            if (auto chestslot = chest::getslot(w, container::index::from(hub.chest), 0)) {
-                auto item = chestslot->item;
-                auto berth = create_berth(r, hub_mgr::berth_type::hub, 0);
+            auto& chestslot = chest::getslot(w, container::index::from(hub.chest), 0);
+            auto item = chestslot.item;
+            auto berth = create_berth(r, hub_mgr::berth_type::hub, 0);
+            auto& map = globalmap[item];
+            r.each([&](uint8_t x, uint8_t y) {
+                map[getxy(x, y)] = berth;
+            });
+            b.chests.insert_or_assign(r.hash(), hub.chest);
+        }
+        else if (auto pchest = v.sibling<ecs::chest>()) {
+            auto& chest = *pchest;
+            b.chests.insert_or_assign(r.hash(), chest.chest);
+            for (uint8_t i = 0; ; ++i) {
+                auto& chestslot = chest::getslot(w, container::index::from(chest.chest), i);
+                auto item = chestslot.item;
+                hub_mgr::berth_type type;
+                if (chestslot.type == container_slot::slot_type::red) {
+                    type = hub_mgr::berth_type::chest_red;
+                }
+                else if (chestslot.type == container_slot::slot_type::blue) {
+                    type = hub_mgr::berth_type::chest_blue;
+                }
+                else {
+                    continue;
+                }
+                auto berth = create_berth(r, type, i);
                 auto& map = globalmap[item];
                 r.each([&](uint8_t x, uint8_t y) {
                     map[getxy(x, y)] = berth;
                 });
-                b.chests.insert_or_assign(r.hash(), hub.chest);
-            }
-        }
-        else if (auto pchest = v.sibling<ecs::chest>()) {
-            auto& chest = *pchest;
-            b.chests.insert_or_assign(r.hash(), chest.index);
-            for (uint8_t i = 0; i < chest.asize; ++i) {
-                if (auto chestslot = chest::getslot(w, container::index::from(chest.index), i)) {
-                    auto item = chestslot->item;
-                    hub_mgr::berth_type type;
-                    if (chestslot->type == container_slot::slot_type::red) {
-                        type = hub_mgr::berth_type::chest_red;
-                    }
-                    else if (chestslot->type == container_slot::slot_type::blue) {
-                        type = hub_mgr::berth_type::chest_blue;
-                    }
-                    else {
-                        continue;
-                    }
-                    auto berth = create_berth(r, type, i);
-                    auto& map = globalmap[item];
-                    r.each([&](uint8_t x, uint8_t y) {
-                        map[getxy(x, y)] = berth;
-                    });
+                if (chestslot.eof) {
+                    break;
                 }
             }
         }
@@ -129,15 +130,12 @@ lbuild(lua_State *L) {
     b.hubs.clear();
     for (auto& v : ecs_api::select<ecs::hub, ecs::building, ecs::eid>(w.ecs)) {
         auto hub = v.get<ecs::hub>();
-        auto chestslot = chest::getslot(w, container::index::from(hub.chest), 0);
-        if (!chestslot) {
-            continue;
-        }
+        auto& chestslot = chest::getslot(w, container::index::from(hub.chest), 0);
         auto& building = v.get<ecs::building>();
         prototype_context pt = w.prototype(L, building.prototype);
         uint16_t supply_area = (uint16_t)pt_supply_area(&pt);
         building_rect r(building, supply_area);
-        auto& map = globalmap[chestslot->item];
+        auto& map = globalmap[chestslot.item];
         auto self = create_berth(r, hub_mgr::berth_type::hub, 0);
         flatset<hub_mgr::berth> set;
         r.each([&](uint8_t x, uint8_t y) {
@@ -147,7 +145,7 @@ lbuild(lua_State *L) {
             }
         });
         hub_mgr::hub_info hub_info;
-        hub_info.item = chestslot->item;
+        hub_info.item = chestslot.item;
         for (auto const& m: set) {
             auto const& h = m.first;
             switch ((hub_mgr::berth_type)h.type) {
@@ -206,10 +204,9 @@ static size_t FindChestRed(world& w, const hub_mgr::hub_info& info) {
     for (size_t i = 0; i < N; ++i) {
         auto berth = info.chest_red[(i + w.time) % N];
         if (auto chest = w.buildings.chests.find(berth.hash())) {
-            if (auto chestslot = chest::getslot(w, container::index::from(*chest), berth.slot)) {
-                if (chestslot->item > 0) {
-                    return i;
-                }
+            auto& chestslot = chest::getslot(w, container::index::from(*chest), berth.slot);
+            if (chestslot.item > 0) {
+                return i;
             }
         }
     }
@@ -221,10 +218,9 @@ static size_t FindChestBlue(world& w, const hub_mgr::hub_info& info) {
     for (size_t i = 0; i < N; ++i) {
         auto berth = info.chest_blue[(i + w.time) % N];
         if (auto chest = w.buildings.chests.find(berth.hash())) {
-            if (auto chestslot = chest::getslot(w, container::index::from(*chest), berth.slot)) {
-                if (chestslot->limit > chestslot->item) {
-                    return i;
-                }
+            auto& chestslot = chest::getslot(w, container::index::from(*chest), berth.slot);
+            if (chestslot.limit > chestslot.item) {
+                return i;
             }
         }
     }
@@ -242,15 +238,14 @@ static std::tuple<size_t, size_t, bool> FindHub(world& w, const hub_mgr::hub_inf
     for (size_t i = 0; i < N; ++i) {
         auto berth = info.hub[(i + w.time) % N];
         if (auto chest = w.buildings.chests.find(berth.hash())) {
-            if (auto chestslot = chest::getslot(w, container::index::from(*chest), berth.slot)) {
-                if (min.index == -1 || ((chestslot->amount < min.amount) && (chestslot->limit > chestslot->item))) {
-                    min.index = i;
-                    min.amount = chestslot->amount;
-                }
-                if (max.index == -1 || chestslot->amount > max.amount) {
-                    max.index = i;
-                    max.amount = chestslot->amount;
-                }
+            auto& chestslot = chest::getslot(w, container::index::from(*chest), berth.slot);
+            if (min.index == -1 || ((chestslot.amount < min.amount) && (chestslot.limit > chestslot.item))) {
+                min.index = i;
+                min.amount = chestslot.amount;
+            }
+            if (max.index == -1 || chestslot.amount > max.amount) {
+                max.index = i;
+                max.amount = chestslot.amount;
             }
         }
     }

@@ -17,8 +17,7 @@ function c:ctor(init, pt)
     local e = {
         fluidboxes = {},
         chest = {
-            index = world:container_create(pt.maxslot),
-            asize = pt.maxslot,
+            chest = world:container_create(pt.maxslot),
             fluidbox_in = 0,
             fluidbox_out = 0,
             endpoint = endpoint,

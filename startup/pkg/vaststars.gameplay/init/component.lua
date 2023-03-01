@@ -8,8 +8,7 @@ component "building" {
 }
 
 component "chest" {
-    "index:word",
-    "asize:word",
+    "chest:word",
     "fluidbox_in:word",
     "fluidbox_out:word",
     "endpoint:word",
