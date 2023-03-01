@@ -12,9 +12,21 @@ data:
     t: {0, 18, 0}
   tag:
     effect
-mount: 1
+mount: 3
 policy:
   ant.general|name
   ant.scene|scene_object
   ant.efk|efk
   ant.general|tag
+---
+data:
+  name: prefab1
+  scene:
+    t: {0, 0, -25}
+policy:
+  ant.general|name
+  ant.scene|scene_object
+---
+editor: false
+mount: 4
+prefab: /pkg/vaststars.resources/prefabs/goods-gate.prefab
