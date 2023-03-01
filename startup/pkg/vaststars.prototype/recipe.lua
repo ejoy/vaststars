@@ -1263,7 +1263,7 @@ prototype "破损物流中心" {
     description = "修复损坏的物流中心",
 }
 
-prototype "破损运输汽车" {
+prototype "运输汽车生产" {
     type = { "recipe" },
     category = "生产手工制造",
     group = "生产",
@@ -1273,7 +1273,7 @@ prototype "破损运输汽车" {
     ingredients = {
         -- {"铁丝", 10},
         {"铁矿石", 3},
-        {"破损运输车辆", 1},
+        {"运输车辆设计图", 1},
     },
     results = {
         {"运输车辆I", 1},
@@ -1566,7 +1566,7 @@ prototype "空气过滤器打印" {
     category = "设计图打印",
     group = "物流",
     order = 54,
-    icon = "textures/construct/broken-air-filter1.texture",
+    icon = "textures/construct/broken-air-filter1guolv.texture",
     ingredients = {
         {"空气过滤器设计图", 1},
     },
@@ -1618,7 +1618,7 @@ prototype "管道建造站打印" {
     ingredients = {
         {"管道建造站设计图", 1},
     },
-    results = {
+    results = { 
         {"管道建造站", 1},
     },
     time = "5s",

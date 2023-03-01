@@ -321,7 +321,7 @@ local prototype = gameplay.register.prototype
   --   prerequisites = {"放置道路建造站"},
   --   count = 1,
   --   effects = {
-  --     unlock_recipe = {"破损运输汽车"},
+  --     unlock_recipe = {"运输汽车生产"},
   --   },
   --   tips_pic = {
   --     "textures/task_tips_pic/task_place_logistics.texture",
@@ -769,7 +769,7 @@ prototype "地质研究" {
 --   desc = "生产运输车辆2辆",
 --   icon = "textures/construct/industry.texture",
 --   type = { "tech", "task" },
---   task = {"stat_consumption", 0, “破损运输车辆”},
+--   task = {"stat_consumption", 0, 运输车辆设计图},
 --   prerequisites = {"放置车辆厂"},
 --   task_params = {},
 --   count = 2,
@@ -948,7 +948,7 @@ prototype "基地生产1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"破损运输汽车","破损物流中心","砖石公路"},
+    unlock_recipe = {"运输汽车生产","破损物流中心","砖石公路"},
     unlock_building = {"砖石公路-X型-01"},
   },
   prerequisites = {"增添运输车辆"},
