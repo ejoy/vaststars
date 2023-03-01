@@ -10,8 +10,7 @@ data:
   material: /pkg/vaststars.resources/glb/selected_box_invalid.glb|materials/Material.001.material
   mesh: /pkg/vaststars.resources/glb/selected_box_invalid.glb|meshes/Plane.001_P1.meshbin
   name: Plane.001
-  scene:
-    t: {0, 2.005343198776245, 0}
+  scene: {}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
