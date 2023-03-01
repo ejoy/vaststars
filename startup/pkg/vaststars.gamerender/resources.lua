@@ -895,7 +895,7 @@ local t = {
 	"/pkg/vaststars.prototype/entity/powerpole.lua",
 	"/pkg/vaststars.prototype/fluid_category.lua",
 	"/pkg/vaststars.prototype/guide.lua",
-	"/pkg/vaststars.prototype/item/broken.lua",
+	"/pkg/vaststars.prototype/item/blueprint.lua",
 	"/pkg/vaststars.prototype/item/buildings.lua",
 	"/pkg/vaststars.prototype/item/fluid.lua",
 	"/pkg/vaststars.prototype/item/init.lua",
