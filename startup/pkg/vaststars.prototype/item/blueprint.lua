@@ -315,7 +315,7 @@ prototype "科研中心设计图" {
 
 prototype "运输车辆设计图" {
     type = {"item"},
-    stack = 50,
+    stack = 1,
     icon = "textures/construct/broken-truck.texture",
     model = "prefabs/rock.prefab",
     description = "运输车辆的设计图",

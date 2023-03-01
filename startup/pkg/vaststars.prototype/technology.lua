@@ -1614,7 +1614,7 @@ prototype "电磁学1" {
   effects = {
     unlock_recipe = {"电动机1"},
   },
-  prerequisites = {"生产塑料","维修运输汽车","排放"},
+  prerequisites = {"生产塑料","排放"},
   ingredients = {
     {"地质科技包", 1},
     {"气候科技包", 1},
