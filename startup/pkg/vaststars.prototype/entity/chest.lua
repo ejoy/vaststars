@@ -54,4 +54,8 @@ prototype "无人机仓库" {
     group = {"物流" , "默认"},
     area = "2x2",
     slots = 1,
+    drone_count = 2,
+    drone_entity = "无人机",
+    item = "铁矿石", -- for test
+    stack = 10,
 }

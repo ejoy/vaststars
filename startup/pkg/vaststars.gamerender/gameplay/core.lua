@@ -84,6 +84,22 @@ init_func["road"] = function (pt, template)
     return template
 end
 
+init_func["hub"] = function (pt, template)
+    template.name = pt.item
+    template.stack = pt.stack
+    return template
+end
+
+local post_funcs = {}
+post_funcs["hub"] = function (pt, template)
+    local typeobject = iprototype.queryByName("building", pt.name)
+    local w, h = iprototype.unpackarea(typeobject.area)
+
+    for _ = 1, pt.drone_count do
+        create(world, pt.drone_entity, {sumOfXCoord = template.x + template.x + (w - 1), sumOfYCoord = template.y + template.y + (h - 1)})
+    end
+end
+
 function m.create_entity(init)
     local func
     local template = {
@@ -100,6 +116,10 @@ function m.create_entity(init)
         func = init_func[entity_type]
         if func then
             template = assert(func(typeobject, template))
+        end
+        func = post_funcs[entity_type]
+        if func then
+            func(typeobject, template)
         end
     end
 

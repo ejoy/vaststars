@@ -36,6 +36,10 @@ local maintype = {
 		maxid = 0,
 		magic = 0x0C00,
 	},
+	drone = {
+		maxid = 0,
+		magic = 0x3000,
+	},
 }
 local function getid(mainkey, name)
 	local m = assert(maintype[mainkey])

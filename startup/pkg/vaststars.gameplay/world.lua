@@ -299,7 +299,7 @@ return function ()
         return chest.rollback(cworld, c.chest, c.endpoint)
     end
     function world:container_reset(c, info)
-        return chest.reset(cworld, c.chest, c.endpoint, info)
+        --TODO return chest.reset(cworld, c.chest, c.endpoint, info)
     end
 
     function world:wait(...)

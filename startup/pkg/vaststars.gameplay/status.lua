@@ -13,5 +13,6 @@ return {
         recipe = {},
         tech = {},
         fluid = {},
+        drone = {},
     },
 }
