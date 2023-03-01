@@ -136,6 +136,7 @@ prototype "破损物流需求站" {
 prototype "水电站设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-hydroplant.texture",
     model = "prefabs/rock.prefab",
     description = "水电站的设计图",
@@ -146,6 +147,7 @@ prototype "水电站设计图" {
 prototype "空气过滤器设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-air-filter1.texture",
     model = "prefabs/rock.prefab",
     description = "空气过滤器的设计图",
@@ -156,6 +158,7 @@ prototype "空气过滤器设计图" {
 prototype "地下水挖掘机设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-pump.texture",
     model = "prefabs/rock.prefab",
     description = "地下水挖掘机的设计图",
@@ -166,6 +169,7 @@ prototype "地下水挖掘机设计图" {
 prototype "电解厂设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-electrolysis1.texture",
     model = "prefabs/rock.prefab",
     description = "电解厂的设计图",
@@ -176,6 +180,7 @@ prototype "电解厂设计图" {
 prototype "化工厂设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-chemistry2.texture",
     model = "prefabs/rock.prefab",
     description = "化工厂的设计图",
@@ -186,6 +191,7 @@ prototype "化工厂设计图" {
 prototype "采矿机设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-miner.texture",
     model = "prefabs/rock.prefab",
     description = "采矿机的设计图",
@@ -196,6 +202,7 @@ prototype "采矿机设计图" {
 prototype "组装机设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-assembler.texture",
     model = "prefabs/rock.prefab",
     description = "组装机的设计图",
@@ -206,6 +213,7 @@ prototype "组装机设计图" {
 prototype "电线杆设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-electric-pole1.texture",
     model = "prefabs/rock.prefab",
     description = "铁制电线杆的设计图",
@@ -216,6 +224,7 @@ prototype "电线杆设计图" {
 prototype "无人机仓库设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-drone-depot.texture",
     model = "prefabs/rock.prefab",
     description = "无人机仓库的设计图",
@@ -226,6 +235,7 @@ prototype "无人机仓库设计图" {
 prototype "车站设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-logisitic.texture",
     model = "prefabs/rock.prefab",
     description = "车站的设计图",
@@ -236,6 +246,7 @@ prototype "车站设计图" {
 prototype "熔炼炉设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-furnace.texture",
     model = "prefabs/rock.prefab",
     description = "熔炼炉的设计图",
@@ -246,6 +257,7 @@ prototype "熔炼炉设计图" {
 prototype "太阳能板设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-solar-panel.texture",
     model = "prefabs/rock.prefab",
     description = "太阳能板的设计图",
@@ -256,6 +268,7 @@ prototype "太阳能板设计图" {
 prototype "蓄电池设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-grid-battery.texture",
     model = "prefabs/rock.prefab",
     description = "蓄电池的设计图",
@@ -266,6 +279,7 @@ prototype "蓄电池设计图" {
 prototype "物流中心设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-logisitic.texture",
     model = "prefabs/rock.prefab",
     description = "物流中心的设计图",
@@ -276,6 +290,7 @@ prototype "物流中心设计图" {
 prototype "车辆厂设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-goodsstation-output.texture",
     model = "prefabs/rock.prefab",
     description = "车辆厂的设计图",
@@ -286,6 +301,7 @@ prototype "车辆厂设计图" {
 prototype "道路建造站设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/road-builder.texture",
     model = "prefabs/rock.prefab",
     description = "道路建造站的设计图",
@@ -296,6 +312,7 @@ prototype "道路建造站设计图" {
 prototype "管道建造站设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/pipe-builder.texture",
     model = "prefabs/rock.prefab",
     description = "管道建造站的设计图",
@@ -306,6 +323,7 @@ prototype "管道建造站设计图" {
 prototype "科研中心设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-lab.texture",
     model = "prefabs/rock.prefab",
     description = "管道建造站的设计图",
@@ -316,6 +334,7 @@ prototype "科研中心设计图" {
 prototype "运输车辆设计图" {
     type = {"item"},
     stack = 1,
+    pile = "2x1",
     icon = "textures/construct/broken-truck.texture",
     model = "prefabs/rock.prefab",
     description = "运输车辆的设计图",
