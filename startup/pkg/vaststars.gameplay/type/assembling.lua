@@ -17,7 +17,7 @@ function c:ctor(init, pt)
     local e = {
         fluidboxes = {},
         chest = {
-            chest = world:container_create(pt.maxslot),
+            chest = 0xffff,
             fluidbox_in = 0,
             fluidbox_out = 0,
             endpoint = endpoint,
@@ -31,6 +31,7 @@ function c:ctor(init, pt)
     }
     if recipe_name == nil then
         fluidbox.update_fluidboxes(e, pt, init.fluids)
+        e.chest.chest = world:container_create("")
     else
         assembling.set_recipe(self, e, pt, recipe_name, init.fluids)
     end

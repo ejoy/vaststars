@@ -237,6 +237,8 @@ static bool DoTask(world& w, roadnet::road::endpoint& ep) {
 }
 
 static bool UpdateChest(world& w, ecs::chest& c) {
+    return false;
+    /*
     if(c.endpoint == 0xffff) {
         return false;
     }
@@ -289,6 +291,7 @@ static bool UpdateChest(world& w, ecs::chest& c) {
             return false;
         }
     }
+    */
 }
 
 static int

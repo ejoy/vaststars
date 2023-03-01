@@ -32,20 +32,18 @@ std::span<container::slot> chest::array_slice(world& w, container::index start, 
     return w.container.slice(start + offset, size);
 }
 
-container::index chest::create(world& w, container::size_type size) {
-    return w.container.create_chest(size);
+container::index chest::create(world& w, container::slot* data, container::size_type size) {
+    auto start = w.container.create_chest(size);
+    for (uint8_t i = 0; i < size; ++i) {
+        auto& s = w.container.at(start + i);
+        s = data[i];
+        assert(!s.eof);
+    }
+    return start;
 }
 
-void chest::reset(world& w, container::index c, uint16_t endpoint, container::slot* data) {
-    for (auto index = c;; ++index) {
-        auto& s = w.container.at(index);
-        if (endpoint != 0xffff) {
-            trading_flush(w, {endpoint}, s);
-        }
-        if (s.eof) {
-            break;
-        }
-    }
+void chest::destroy(world& w, container::index c) {
+    w.container.free_array(c, chest::size(w, c));
 }
 
 uint16_t chest::get_fluid(world& w, container::index c, uint8_t offset) {
@@ -60,19 +58,19 @@ void chest::set_fluid(world& w, container::index c, uint8_t offset, uint16_t val
     s.amount = value;
 }
 
-bool chest::pickup(world& w, container::index c, uint16_t endpoint, prototype_context& recipe) {
+bool chest::pickup(world& w, container::index c, prototype_context& recipe) {
     recipe_items* ingredients = (recipe_items*)pt_ingredients(&recipe);
-    return chest::pickup(w, c, endpoint, ingredients, 0);
+    return chest::pickup(w, c, ingredients, 0);
 }
 
-bool chest::place(world& w, container::index c, uint16_t endpoint, prototype_context& recipe) {
+bool chest::place(world& w, container::index c, prototype_context& recipe) {
     recipe_items* ingredients = (recipe_items*)pt_ingredients(&recipe);
     recipe_items* results = (recipe_items*)pt_results(&recipe);
     //TODO ingredients->n -> uint8_t
-    return chest::place(w, c, endpoint, results, (uint8_t)ingredients->n);
+    return chest::place(w, c, results, (uint8_t)ingredients->n);
 }
 
-bool chest::pickup(world& w, container::index c, uint16_t endpoint, const recipe_items* r, uint8_t offset) {
+bool chest::pickup(world& w, container::index c, const recipe_items* r, uint8_t offset) {
     size_t i = 0;
     for (auto& s: chest::array_slice(w, c, offset, r->n)) {
         auto& t = r->items[i++];
@@ -86,11 +84,10 @@ bool chest::pickup(world& w, container::index c, uint16_t endpoint, const recipe
         auto& t = r->items[i++];
         s.amount -= t.amount;
     }
-    chest::flush(w, c, endpoint);
     return true;
 }
 
-bool chest::place(world& w, container::index c, uint16_t endpoint, const recipe_items* r, uint8_t offset) {
+bool chest::place(world& w, container::index c, const recipe_items* r, uint8_t offset) {
     size_t i = 0;
     for (auto& s: chest::array_slice(w, c, offset, r->n)) {
         auto& t = r->items[i++];
@@ -104,7 +101,6 @@ bool chest::place(world& w, container::index c, uint16_t endpoint, const recipe_
         auto& t = r->items[i++];
         s.amount += t.amount;
     }
-    chest::flush(w, c, endpoint);
     return true;
 }
 
@@ -118,11 +114,10 @@ bool chest::recover(world& w, container::index c, const recipe_items* r) {
     return true;
 }
 
-void chest::limit(world& w, container::index c, uint16_t endpoint, const uint16_t* r, uint16_t n) {
+void chest::limit(world& w, container::index c, const uint16_t* r, uint16_t n) {
     for (auto& s: chest::array_slice(w, c, 0, n)) {
         s.limit = *r++;
     }
-    chest::flush(w, c, endpoint);
 }
 
 uint16_t chest::size(world& w, container::index c) {
@@ -137,33 +132,7 @@ uint16_t chest::size(world& w, container::index c) {
     return n;
 }
 
-void chest::flush(world& w, container::index c, uint16_t endpoint) {
-    if (endpoint == 0xffff) {
-        return;
-    }
-    for (auto index = c;; ++index) {
-        auto& s = w.container.at(index);
-        trading_flush(w, {endpoint}, s);
-        if (s.eof) {
-            break;
-        }
-    }
-}
-
-void chest::rollback(world& w, container::index c, uint16_t endpoint) {
-    if (endpoint == 0xffff) {
-        return;
-    }
-    for (auto index = c;; ++index) {
-        auto& s = w.container.at(index);
-        trading_rollback(w, {endpoint}, s);
-        if (s.eof) {
-            break;
-        }
-    }
-}
-
-bool chest::pickup_force(world& w, container::index c, uint16_t endpoint, uint16_t item, uint16_t amount, bool unlock) {
+bool chest::pickup_force(world& w, container::index c, uint16_t item, uint16_t amount, bool unlock) {
     for (auto index = c;; ++index) {
         auto& s = w.container.at(index);
         if (s.item == item) {
@@ -184,9 +153,6 @@ bool chest::pickup_force(world& w, container::index c, uint16_t endpoint, uint16
                 }
             }
             s.amount -= amount;
-            if (!unlock) {
-                trading_flush(w, {endpoint}, s);
-            }
             return true;
         }
         if (s.eof) {
@@ -196,7 +162,7 @@ bool chest::pickup_force(world& w, container::index c, uint16_t endpoint, uint16
     return false;
 }
 
-bool chest::place_force(world& w, container::index c, uint16_t endpoint, uint16_t item, uint16_t amount, bool unlock) {
+bool chest::place_force(world& w, container::index c, uint16_t item, uint16_t amount, bool unlock) {
     for (auto index = c;; ++index) {
         auto& s = w.container.at(index);
         if (s.item == item) {
@@ -209,9 +175,6 @@ bool chest::place_force(world& w, container::index c, uint16_t endpoint, uint16_
                 }
             }
             s.amount += amount;
-            if (!unlock) {
-                trading_flush(w, {endpoint}, s);
-            }
             return true;
         }
         if (s.eof) {
@@ -228,25 +191,23 @@ container::slot& chest::getslot(world& w, container::index c, uint8_t offset) {
 static int
 lcreate(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
-    uint16_t asize = (uint16_t)luaL_checkinteger(L, 2);
-    auto index = chest::create(w, asize);
+    size_t sz = 0;
+    container::slot* s = (container::slot*)luaL_checklstring(L, 2, &sz);
+    size_t n = sz / sizeof(container::slot);
+    if (n < 0 || n > (uint16_t) -1 || sz % sizeof(container::slot) != 0) {
+        return luaL_error(L, "size out of range.");
+    }
+    auto index = chest::create(w, s, sz % sizeof(container::slot));
     lua_pushinteger(L, index);
     return 1;
 }
 
 static int
-lreset(lua_State* L) {
+ldestroy(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
-    size_t sz = 0;
-    container::slot* s = (container::slot*)luaL_checklstring(L, 4, &sz);
-    size_t n = sz / sizeof(container::slot);
-    if (n < 0 || n > (uint16_t) -1 || sz % sizeof(container::slot) != 0) {
-        return luaL_error(L, "size out of range.");
-    }
-    chest::reset(w, container::index::from(index), endpoint, s);
-    return 1;
+    chest::destroy(w, container::index::from(index));
+    return 0;
 }
 
 static int
@@ -279,37 +240,33 @@ static int
 lset(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
-    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 4)-1);
+    uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
     auto& r = chest::getslot(w, container::index::from(index), offset);
-    if (LUA_TNIL != lua_getfield(L, 5, "type")) {
+    if (LUA_TNIL != lua_getfield(L, 4, "type")) {
         static const char *const opts[] = {"red", "blue", "green", NULL};
         r.type = (container::slot::slot_type)luaL_checkoption(L, -1, NULL, opts);
     }
     lua_pop(L, 1);
-    if (LUA_TNIL != lua_getfield(L, 5, "item")) {
+    if (LUA_TNIL != lua_getfield(L, 4, "item")) {
         r.item = (uint16_t)luaL_checkinteger(L, -1);
     }
     lua_pop(L, 1);
-    if (LUA_TNIL != lua_getfield(L, 5, "amount")) {
+    if (LUA_TNIL != lua_getfield(L, 4, "amount")) {
         r.amount = (uint16_t)luaL_checkinteger(L, -1);
     }
     lua_pop(L, 1);
-    if (LUA_TNIL != lua_getfield(L, 5, "limit")) {
+    if (LUA_TNIL != lua_getfield(L, 4, "limit")) {
         r.limit = (uint16_t)luaL_checkinteger(L, -1);
     }
     lua_pop(L, 1);
-    if (LUA_TNIL != lua_getfield(L, 5, "lock_item")) {
+    if (LUA_TNIL != lua_getfield(L, 4, "lock_item")) {
         r.lock_item = (uint16_t)luaL_checkinteger(L, -1);
     }
     lua_pop(L, 1);
-    if (LUA_TNIL != lua_getfield(L, 5, "lock_space")) {
+    if (LUA_TNIL != lua_getfield(L, 4, "lock_space")) {
         r.lock_space = (uint16_t)luaL_checkinteger(L, -1);
     }
     lua_pop(L, 1);
-    if (endpoint != 0xffff) {
-        trading_flush(w, {endpoint}, r);
-    }
     return 0;
 }
 
@@ -317,10 +274,9 @@ static int
 lpickup(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
-    uint16_t item = (uint16_t)luaL_checkinteger(L, 4);
-    uint16_t amount = (uint16_t)luaL_checkinteger(L, 5);
-    bool ok = chest::pickup_force(w, container::index::from(index), endpoint, item, amount, false);
+    uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
+    uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);
+    bool ok = chest::pickup_force(w, container::index::from(index), item, amount, false);
     lua_pushboolean(L, ok);
     return 1;
 }
@@ -329,19 +285,9 @@ static int
 lplace(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
-    uint16_t item = (uint16_t)luaL_checkinteger(L, 4);
-    uint16_t amount = (uint16_t)luaL_checkinteger(L, 5);
-    chest::place_force(w, container::index::from(index), endpoint, item, amount, false);
-    return 0;
-}
-
-static int
-lrollback(lua_State* L) {
-    world& w = *(world *)lua_touserdata(L, 1);
-    uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
-    uint16_t endpoint = (uint16_t)luaL_checkinteger(L, 3);
-    chest::rollback(w, container::index::from(index), endpoint);
+    uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
+    uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);
+    chest::place_force(w, container::index::from(index), item, amount, false);
     return 0;
 }
 
@@ -350,12 +296,11 @@ luaopen_vaststars_chest_core(lua_State *L) {
     luaL_checkversion(L);
     luaL_Reg l[] = {
         { "create", lcreate },
-        { "reset", lreset },
+        { "destroy", ldestroy },
         { "get", lget },
         { "set", lset },
         { "pickup", lpickup },
         { "place", lplace },
-        { "rollback", lrollback },
         { NULL, NULL },
     };
     luaL_newlib(L, l);

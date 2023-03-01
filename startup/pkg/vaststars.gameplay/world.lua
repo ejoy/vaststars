@@ -280,26 +280,23 @@ return function ()
         )
     end
 
-    function world:container_create(size)
-        return chest.create(cworld, size)
+    function world:container_create(info)
+        return chest.create(cworld, info)
+    end
+    function world:container_destroy(c)
+        return chest.destroy(cworld, c)
     end
     function world:container_get(c, i)
         return chest.get(cworld, c.chest, i)
     end
     function world:container_set(c, i, t)
-        return chest.set(cworld, c.chest, c.endpoint, i, t)
+        return chest.set(cworld, c.chest, i, t)
     end
     function world:container_pickup(c, item, amount)
-        return chest.pickup(cworld, c.chest, c.endpoint, item, amount)
+        return chest.pickup(cworld, c.chest, item, amount)
     end
     function world:container_place(c, item, amount)
-        chest.place(cworld, c.chest, c.endpoint, item, amount)
-    end
-    function world:container_rollback(c)
-        return chest.rollback(cworld, c.chest, c.endpoint)
-    end
-    function world:container_reset(c, info)
-        --TODO return chest.reset(cworld, c.chest, c.endpoint, info)
+        chest.place(cworld, c.chest, item, amount)
     end
 
     function world:wait(...)

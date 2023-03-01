@@ -18,12 +18,11 @@ function c:ctor(init, pt)
     local endpoint = iendpoint.create(world, init, pt, "chest")
     local chest = {
         endpoint = endpoint,
-        chest = world:container_create(#items),
+        chest = world:container_create(table.concat(items)),
         fluidbox_in = 0,
         fluidbox_out = 0,
         lorry = 0xffff,
     }
-    world:container_reset(chest, table.concat(items))
     return {
         chest = chest
     }

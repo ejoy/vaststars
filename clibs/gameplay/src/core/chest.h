@@ -107,6 +107,9 @@ public:
         }
         return alloc_array(size);
     }
+    void free_array(index idx, size_type size) {
+        free_chunk(idx.page, {idx.slot, size});
+    }
     slot& at(index idx) {
         assert(idx.page < pages.size());
         return pages[idx.page]->slots[idx.slot];
@@ -176,9 +179,6 @@ private:
         }
         return alloc_array_(size);
     }
-    void free_array(index idx, size_type size) {
-        free_chunk(idx.page, {idx.slot, size});
-    }
     void free_page() {
         free_chunk((uint8_t)(pages.size()-1), {top, size_type(kPageSize - top)});
     }
@@ -226,33 +226,31 @@ public: //TODO for saveload
 
 namespace chest {
 
-    container::index create(world& w, container::size_type asize);
+    container::index create(world& w, container::slot* data, container::size_type size);
+    void destroy(world& w, container::index c);
+    
     container::slot& array_at(world& w, container::index c, uint8_t offset);
     std::span<container::slot> array_slice(world& w, container::index c, uint8_t offset, uint16_t size);
-
-    void    reset(world& w, container::index c, uint16_t endpoint, container::slot* data);
 
     // for fluidflow
     uint16_t get_fluid(world& w, container::index c, uint8_t offset);
     void     set_fluid(world& w, container::index c, uint8_t offset, uint16_t value);
 
     // for chest
-    bool     pickup(world& w, container::index c, uint16_t endpoint, prototype_context& recipe);
-    bool     place(world& w, container::index c, uint16_t endpoint, prototype_context& recipe);
+    bool     pickup(world& w, container::index c, prototype_context& recipe);
+    bool     place(world& w, container::index c, prototype_context& recipe);
 
     // for laboratory
-    bool     pickup(world& w, container::index c, uint16_t endpoint, const recipe_items* r, uint8_t offset = 0);
-    bool     place(world& w, container::index c, uint16_t endpoint, const recipe_items* r, uint8_t offset = 0);
+    bool     pickup(world& w, container::index c, const recipe_items* r, uint8_t offset = 0);
+    bool     place(world& w, container::index c, const recipe_items* r, uint8_t offset = 0);
     bool     recover(world& w, container::index c, const recipe_items* r);
-    void     limit(world& w, container::index c, uint16_t endpoint, const uint16_t* r, uint16_t n);
+    void     limit(world& w, container::index c, const uint16_t* r, uint16_t n);
     uint16_t size(world& w, container::index c);
 
     // for lua api
     container::slot& getslot(world& w, container::index c, uint8_t offset);
-    void     flush(world& w, container::index c, uint16_t endpoint);
-    void     rollback(world& w, container::index c, uint16_t endpoint);
 
     // for trading
-    bool pickup_force(world& w, container::index c, uint16_t endpoint, uint16_t item, uint16_t amount, bool unlock);
-    bool place_force(world& w, container::index c, uint16_t endpoint, uint16_t item, uint16_t amount, bool unlock);
+    bool pickup_force(world& w, container::index c, uint16_t item, uint16_t amount, bool unlock);
+    bool place_force(world& w, container::index c, uint16_t item, uint16_t amount, bool unlock);
 }

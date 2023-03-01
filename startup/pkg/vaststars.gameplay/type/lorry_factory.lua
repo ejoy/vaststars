@@ -17,7 +17,7 @@ function c:ctor(init, pt)
         lorry_factory = true,
         fluidboxes = {},
         chest = {
-            chest = world:container_create(pt.maxslot),
+            chest = world:container_create(""), --TODO
             fluidbox_in = 0,
             fluidbox_out = 0,
             endpoint =  endpoint.create(world, init, pt, "assembling"),

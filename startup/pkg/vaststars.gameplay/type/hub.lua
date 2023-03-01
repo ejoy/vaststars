@@ -12,8 +12,7 @@ function c:ctor(init, pt)
         item = prototype.queryByName("item", init.name).id,
         limit = init.stack,
     }
-    local chest = world:container_create(1)
-    world:container_reset(chest, table.concat(c))
+    local chest = world:container_create(table.concat(c))
 
     return {
         hub = {

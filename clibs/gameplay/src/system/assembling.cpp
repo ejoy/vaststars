@@ -54,7 +54,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
     while (a.progress <= 0) {
         prototype_context recipe = w.prototype(L, a.recipe);
         if (a.status == STATUS_DONE) {
-            if (!chest::place(w, container::index::from(c2.chest), c2.endpoint, recipe)) {
+            if (!chest::place(w, container::index::from(c2.chest), recipe)) {
                 return;
             }
             w.stat.finish_recipe(L, w, a.recipe, false);
@@ -67,7 +67,7 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
             }
         }
         if (a.status == STATUS_IDLE) {
-            if (!chest::pickup(w, container::index::from(c2.chest), c2.endpoint, recipe)) {
+            if (!chest::pickup(w, container::index::from(c2.chest), recipe)) {
                 return;
             }
             int time = pt_time(&recipe);

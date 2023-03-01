@@ -149,8 +149,8 @@ local function set_recipe(world, e, pt, recipe_name, fluids, option)
     assembling.status = STATUS_IDLE
     local chest = e.chest
     local items = resetItems(world, recipe, chest, option)
-    world:container_rollback(chest)
-    world:container_reset(chest, items)
+    world:container_destroy(chest)
+    chest.chest = world:container_create(items)
     if fluids and pt.fluidboxes then
         local fluidbox_in, fluidbox_out = createFluidBox(fluids, recipe)
         chest.fluidbox_in = fluidbox_in

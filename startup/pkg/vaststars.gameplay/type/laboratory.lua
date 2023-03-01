@@ -24,8 +24,7 @@ local function createChest(world, chest, s)
             limit = 2,
         }
     end
-    chest.chest = world:container_create(#container_in)
-    world:container_reset(chest, table.concat(container_in))
+    chest.chest = world:container_create(table.concat(container_in))
 end
 
 function c:ctor(init, pt)

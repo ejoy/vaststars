@@ -11,15 +11,6 @@ component "chest" {
     "chest:word",
     "fluidbox_in:word",
     "fluidbox_out:word",
-    "endpoint:word",
-}
-
-component "logistic_hub" {
-}
-
-component "logistic_chest" {
-    "head_index:word",
-    "index:word",
 }
 
 component "station" {
