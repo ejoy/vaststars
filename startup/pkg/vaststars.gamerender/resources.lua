@@ -1045,6 +1045,8 @@ local t = {
 	"/pkg/vaststars.resources/prefabs/road/road_X.prefab.patch",
 	"/pkg/vaststars.resources/prefabs/road/roadside_arrow.prefab",
 	"/pkg/vaststars.resources/prefabs/rock.prefab",
+	"/pkg/vaststars.resources/prefabs/selected_box_invalid.prefab",
+	"/pkg/vaststars.resources/prefabs/selected_box_valid.prefab",
 	"/pkg/vaststars.resources/prefabs/shelf-input.prefab",
 	"/pkg/vaststars.resources/prefabs/shelf-output.prefab",
 	"/pkg/vaststars.resources/prefabs/small-chest.prefab",
