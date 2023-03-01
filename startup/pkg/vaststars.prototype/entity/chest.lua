@@ -50,7 +50,7 @@ prototype "无人机仓库" {
     icon = "textures/building_pic/small_pic_chest.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
-    type = {"building"},
+    type = {"building", "hub"},
     group = {"物流" , "默认"},
     area = "2x2",
     slots = 1,

@@ -12,11 +12,8 @@ local function update_world()
         local construct_queue = {}
         for prototype_name in global.construct_queue:for_each() do
             local typeobject = iprototype.queryByName("item", prototype_name)
-            local slot = global.base_chest_cache[typeobject.id] or {amount = 0}
-            local count = slot.amount
             local total_count = global.construct_queue:size(prototype_name)
-            count = math.min(count, total_count)
-            table.insert(construct_queue, {icon = typeobject.icon, count = count, total_count = total_count})
+            table.insert(construct_queue, {icon = typeobject.icon, count = total_count, total_count = total_count})
         end
         iui.update("construct.rml", "construct_queue", construct_queue)
 

@@ -16,9 +16,20 @@ for v in ecs:select "eid:in entity:in capacitance?update" do
     end
 end
 
-world:wait(2000*50, function ()
-    world.quit = true
-end)
+local function backup_restore(world)
+    local fs = require "bee.filesystem"
+    local archival_backup_dir = (fs.appdata_path() / "test/archiving"):string()
+    if fs.exists(fs.path(archival_backup_dir)) then
+        fs.remove_all(archival_backup_dir)
+    end
+    world:backup(archival_backup_dir)
+
+    local newworld = gameplay.createWorld()
+    newworld:restore(archival_backup_dir)
+    newworld:build()
+
+    return newworld
+end
 
 local function print_slot(prefix, chest, i)
     local slot = world:container_get(chest, i)
@@ -49,7 +60,7 @@ local function add_req(time, prototype_name, count)
     world:container_add(e.chest, info)
 end
 
-for i = 1, 20 do
+for i = 1, 10 do
     add_req(i, "铁矿石", 1)
     world:build()
 end
@@ -61,11 +72,22 @@ local function dump_item()
         for i = 1, 60 do
             local slot = world:container_get(v.chest, i)
             if slot then
-                print(i, gameplay.prototype.queryById(slot.item).name, slot.amount, slot.limit, slot.lock_space, slot.type)
+                print_slot(i, v.chest, i)
             end
         end
     end
 end
+
+world:wait(20*50, function ()
+    dump_item()
+    world = backup_restore(world)
+    dump_item()
+
+    world:wait(1000*50, function ()
+        dump_item()
+        world.quit = true
+    end)
+end)
 
 local movement = false
 while not world.quit do
@@ -77,6 +99,6 @@ while not world.quit do
 end
 
 dump_item()
--- assert(movement)
+assert(movement)
 
 print "ok"

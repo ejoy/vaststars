@@ -326,18 +326,6 @@ local function confirm(self, datamodel)
 
     do
         global.construct_queue:put(pickup_object.prototype_name, pickup_object.id)
-        local typeobject = iprototype.queryByName("item", pickup_object.prototype_name)
-        local slot = global.base_chest_cache[typeobject.id] or {amount = 0}
-        local count = slot.amount
-        local request_count = global.construct_queue:size(pickup_object.prototype_name)
-        if count < request_count then
-            if DIRECT_BUILD then
-                ichest.base_add_req_force(gameplay_core.get_world(), pickup_object.prototype_name, 1)
-            else
-                ichest.base_add_req(gameplay_core.get_world(), pickup_object.prototype_name, 1)
-            end
-        end
-        gameplay_core.build()
     end
 
     self.pickup_object = nil

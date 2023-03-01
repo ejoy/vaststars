@@ -5,18 +5,11 @@ local w = world.w
 local global = require "global"
 local tracedoc = require "utility.tracedoc"
 local ichest = require "gameplay.interface.chest"
+local now = require "engine.time".now
 
-local ltask = require "ltask"
-local ltask_now = ltask.now
 local last_update_time
-
-local function _gettime()
-    local _, t = ltask_now() --10ms
-    return t * 10
-end
-
 local function update_world(world)
-    local current = _gettime()
+    local current = now()
     last_update_time = last_update_time or current
     if current - last_update_time > 1000 then
         last_update_time = current

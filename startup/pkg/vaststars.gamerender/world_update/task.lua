@@ -2,19 +2,13 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local now = require "engine.time".now
 local itask = ecs.require "task"
-local ltask = require "ltask"
-local ltask_now = ltask.now
 
-
-local function _gettime()
-    local _, t = ltask_now() --10ms
-    return t * 10
-end
 local task_update; do
     local last_update_time
     function task_update()
-        local current = _gettime()
+        local current = now()
         last_update_time = last_update_time or current
         if current - last_update_time < 300 then
             return

@@ -316,19 +316,8 @@ function M:stage_camera_usage(datamodel)
     for _ in construct_mb:unpack() do
         local pbuilder = create_builder()
         for prototype_name in global.construct_queue:for_each() do
-            local typeobject = iprototype.queryByName("item", prototype_name)
-            local slot = global.base_chest_cache[typeobject.id] or {amount = 0}
-            local count = slot.amount
-            local total_count = global.construct_queue:size(prototype_name)
-            count = math.min(count, total_count)
-            assert(total_count > 0)
-            -- decrease item count
-            if count > 0 and ichest.base_chest_pickup(gameplay_core.get_world(), typeobject.id, count) then
-                for i = 1, count do
-                    local object_id = global.construct_queue:pop(prototype_name)
-                    pbuilder:complete(object_id)
-                end
-            end
+            local object_id = global.construct_queue:pop(prototype_name)
+            pbuilder:complete(object_id)
         end
 
         if builder then
