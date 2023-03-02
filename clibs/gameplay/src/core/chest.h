@@ -129,7 +129,7 @@ public:
     }
 private:
     void init_array(index start, size_type size) {
-        uint8_t last = (uint8_t)(size-1);
+        uint8_t last = start.slot+(uint8_t)(size-1);
         for (size_t i = 0; i < size; ++i) {
             pages[start.page]->slots[start.slot+i].eof = last;
 
