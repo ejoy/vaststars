@@ -4,5 +4,5 @@ local prototype = gameplay.register.prototype
 prototype "无人机" {
     model = "prefabs/drone.prefab",
     type = {"drone"},
-    speed = 33,
+    speed = 33, --1000为1格/tick
 }
