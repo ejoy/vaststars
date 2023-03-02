@@ -18,18 +18,14 @@ struct hub_mgr {
         uint32_t slot : 3;
         uint32_t y : 9;
         uint32_t x : 9;
-        inline uint32_t toint() const {
-            auto h = *(const uint32_t*)this;
-            return h;
-        }
         inline uint32_t hash() const {
-            return toint() & 0x0003FFFF;
+            return std::bit_cast<uint32_t>(*this) & 0x0003FFFF;
         }
         inline bool operator==(const berth& rhs) const {
-            return toint() == rhs.toint();
+            return std::bit_cast<uint32_t>(*this) == std::bit_cast<uint32_t>(rhs);
         }
         inline bool operator<(const berth& rhs) const {
-            return toint() < rhs.toint();
+            return std::bit_cast<uint32_t>(*this) < std::bit_cast<uint32_t>(rhs);
         }
     };
     static_assert(sizeof(berth) == sizeof(uint32_t));

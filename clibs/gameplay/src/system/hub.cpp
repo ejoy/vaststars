@@ -194,8 +194,8 @@ static void DoTask(lua_State* L, world& w, ecs::drone& drone, uint16_t item, hub
     //do something
     drone.status = (uint8_t)drone_status::mov1;
     drone.item = item;
-    drone.mov2 = mov2.toint();
-    Move(L, w, drone, mov1.toint());
+    drone.mov2 = std::bit_cast<uint32_t>(mov2);
+    Move(L, w, drone, std::bit_cast<uint32_t>(mov1));
 }
 
 static size_t FindChestRed(world& w, const hub_mgr::hub_info& info) {
@@ -253,7 +253,7 @@ static std::tuple<size_t, size_t, bool> FindHub(world& w, const hub_mgr::hub_inf
 }
 
 static bool FindTask(lua_State* L, world& w, ecs::drone& drone) {
-    hub_mgr::berth home {drone.home};
+    hub_mgr::berth home = std::bit_cast<hub_mgr::berth>(drone.home);
     if (auto v = map_find(w.buildings.hubs, home)) {
         auto& info = *v;
         auto red = FindChestRed(w, info);
