@@ -102,8 +102,10 @@ lbuild(lua_State *L) {
         else if (auto pchest = v.sibling<ecs::chest>()) {
             auto& chest = *pchest;
             b.chests.insert_or_assign(r.hash(), chest.chest);
-            for (uint8_t i = 0; ; ++i) {
-                auto& chestslot = chest::getslot(w, container::index::from(chest.chest), i);
+            auto c = container::index::from(chest.chest);
+            auto slice = chest::array_slice(w, c);
+            for (uint8_t i = 0; i < slice.size(); ++i) {
+                auto& chestslot = slice[i];
                 auto item = chestslot.item;
                 hub_mgr::berth_type type;
                 if (chestslot.type == container::slot::slot_type::red) {
@@ -120,9 +122,6 @@ lbuild(lua_State *L) {
                 r.each([&](uint8_t x, uint8_t y) {
                     map[getxy(x, y)] = berth;
                 });
-                if (chestslot.eof) {
-                    break;
-                }
             }
         }
     }

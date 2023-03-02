@@ -13,31 +13,33 @@ static bool isFluidId(uint16_t id) {
 }
 
 container::slot& chest::array_at(world& w, container::index start, uint8_t offset) {
-    if (offset > 0) {
-        for (uint8_t i = 0; i < offset-1; ++i) {
-            auto& s = w.container.at(start + i);
-            assert(!s.eof);
-        }
-    }
+#if !defined(NDEBUG)
+    auto& s = w.container.at(start);
+    assert(s.eof - start.slot >= offset);
+#endif
     return w.container.at(start + offset);
 }
 
 std::span<container::slot> chest::array_slice(world& w, container::index start, uint8_t offset, uint16_t size) {
-    if (offset+size > 0) {
-        for (uint8_t i = 0; i < offset+size-1; ++i) {
-            auto& s = w.container.at(start + i);
-            assert(!s.eof);
-        }
-    }
+#if !defined(NDEBUG)
+    auto& s = w.container.at(start+offset);
+    assert(s.eof - start.slot >= size);
+#endif
     return w.container.slice(start + offset, size);
+}
+
+std::span<container::slot> chest::array_slice(world& w, container::index start) {
+    auto& s = w.container.at(start);
+    return w.container.slice(start, s.eof - start.slot);
 }
 
 container::index chest::create(world& w, container::slot* data, container::size_type size) {
     auto start = w.container.create_chest(size);
     for (uint8_t i = 0; i < size; ++i) {
         auto& s = w.container.at(start + i);
+        auto eof = s.eof;
         s = data[i];
-        assert(!s.eof);
+        s.eof = eof;
     }
     return start;
 }
@@ -121,20 +123,12 @@ void chest::limit(world& w, container::index c, const uint16_t* r, uint16_t n) {
 }
 
 uint16_t chest::size(world& w, container::index c) {
-    uint16_t n = 0;
-    for (auto index = c;; ++index) {
-        auto& s = w.container.at(index);
-        n++;
-        if (s.eof) {
-            break;
-        }
-    }
-    return n;
+    auto& s = w.container.at(c);
+    return s.eof - c.slot;
 }
 
 bool chest::pickup_force(world& w, container::index c, uint16_t item, uint16_t amount, bool unlock) {
-    for (auto index = c;; ++index) {
-        auto& s = w.container.at(index);
+    for (auto& s: chest::array_slice(w, c)) {
         if (s.item == item) {
             if (unlock) {
                 if (amount > s.amount) {
@@ -155,16 +149,12 @@ bool chest::pickup_force(world& w, container::index c, uint16_t item, uint16_t a
             s.amount -= amount;
             return true;
         }
-        if (s.eof) {
-            break;
-        }
     }
     return false;
 }
 
 bool chest::place_force(world& w, container::index c, uint16_t item, uint16_t amount, bool unlock) {
-    for (auto index = c;; ++index) {
-        auto& s = w.container.at(index);
+    for (auto& s: chest::array_slice(w, c)) {
         if (s.item == item) {
             if (unlock) {
                 if (amount <= s.lock_space) {
@@ -176,9 +166,6 @@ bool chest::place_force(world& w, container::index c, uint16_t item, uint16_t am
             }
             s.amount += amount;
             return true;
-        }
-        if (s.eof) {
-            break;
         }
     }
     return false;
@@ -215,13 +202,14 @@ lget(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
     uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
-    auto& r = chest::getslot(w, container::index::from(index), offset);
+    auto c = container::index::from(index);
+    auto& r = chest::getslot(w, c, offset);
     lua_createtable(L, 0, 7);
     switch (r.type) {
     case container::slot::slot_type::red:   lua_pushstring(L, "red"); break;
     case container::slot::slot_type::blue:  lua_pushstring(L, "blue"); break;
     case container::slot::slot_type::green: lua_pushstring(L, "green"); break;
-    default:                               lua_pushstring(L, "unknown"); break;
+    default:                                lua_pushstring(L, "unknown"); break;
     }
     lua_setfield(L, -2, "type");
     lua_pushinteger(L, r.item);
@@ -234,6 +222,8 @@ lget(lua_State* L) {
     lua_setfield(L, -2, "lock_item");
     lua_pushinteger(L, r.lock_space);
     lua_setfield(L, -2, "lock_space");
+    lua_pushinteger(L, r.eof - c.slot);
+    lua_setfield(L, -2, "eof");
     return 1;
 }
 static int

@@ -59,24 +59,20 @@ local function createFluidBox(init, recipe)
 end
 
 local function resetItems(world, recipe, chest, option)
-    --TODO rewrite
     local ingredients_n <const> = #recipe.ingredients//4 - 1
     local results_n <const> = #recipe.results//4 - 1
-    if ingredients_n + results_n > chest.asize then
-        error "The assembling does not support this recipe."
-    end
     local hash = {}
     local olditems = {}
     local newitems = {}
-    for i = 1, chest.asize do
+    for i = 1, 256 do
         local slot = world:container_get(chest, i)
-        if not slot then
-            break
-        end
         if not isFluidId(slot.item) then
             assert(not olditems[slot.item])
             olditems[i] = slot
             hash[slot.item] = i
+        end
+        if slot.eof == 0 then
+            break
         end
     end
     local function create_slot(type, id, limit)
@@ -104,17 +100,7 @@ local function resetItems(world, recipe, chest, option)
         local id, n = string.unpack("<I2I2", recipe.results, 4*idx+1)
         create_slot("red", id, n * option.resultsLimit)
     end
-    local n = chest.asize - (ingredients_n + results_n)
-    for i = 1, chest.asize do
-        local o = olditems[i]
-        if o then
-            create_slot("none", o.item, o.amount)
-        end
-    end
-    while #newitems < chest.asize do
-        create_slot("none", 0, 0)
-    end
-    return table.concat(newitems, "", 1, chest.asize)
+    return table.concat(newitems)
 end
 
 local function del_recipe(e)

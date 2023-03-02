@@ -58,7 +58,7 @@ public:
             none,
         };
         slot_type type = slot_type::red;
-        bool      eof = false;
+        uint8_t   eof;
         uint16_t  item = 0;
         uint16_t  amount = 0;
         uint16_t  limit = 0;
@@ -129,8 +129,11 @@ public:
     }
 private:
     void init_array(index start, size_type size) {
-        size_type last = (size_type)(size-1);
-        pages[start.page]->slots[start.slot+last].eof = true;
+        uint8_t last = (uint8_t)(size-1);
+        for (size_t i = 0; i < size; ++i) {
+            pages[start.page]->slots[start.slot+i].eof = last;
+
+        }
     }
     index alloc_array_(size_type size) {
         assert(size <= kPageSize);
@@ -231,6 +234,7 @@ namespace chest {
     
     container::slot& array_at(world& w, container::index c, uint8_t offset);
     std::span<container::slot> array_slice(world& w, container::index c, uint8_t offset, uint16_t size);
+    std::span<container::slot> array_slice(world& w, container::index c);
 
     // for fluidflow
     uint16_t get_fluid(world& w, container::index c, uint8_t offset);
