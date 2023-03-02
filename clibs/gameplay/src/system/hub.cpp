@@ -17,37 +17,65 @@ static typename Map::mapped_type const* map_find(Map const& map, typename Map::k
     return &it->second;
 }
 
+static uint8_t safe_add(uint8_t a, uint8_t b) {
+    if (b > UINT8_C(255) - a)
+        return a + b;
+    return UINT8_C(255);
+}
+
+static uint8_t safe_sub(uint8_t a, uint8_t b) {
+    if (a > b)
+        return a - b;
+    return UINT8_C(0);
+}
+
 struct building_rect {
     uint8_t x1, x2, y1, y2;
-    building_rect(uint8_t x, uint8_t y, uint8_t direction, uint16_t area) {
+    building_rect(uint8_t x, uint8_t y, uint8_t direction, uint16_t area, uint16_t scale_area) {
         uint8_t w = area >> 8;
         uint8_t h = area & 0xFF;
+        uint8_t sw = scale_area >> 8;
+        uint8_t sh = scale_area & 0xFF;
         assert(w > 0 && h > 0);
-        w--;
-        h--;
+        assert(sw > 0 && sh > 0);
+        if (sw < w) {
+            std::swap(sw, w);
+        }
+        if (sh < h) {
+            std::swap(sh, h);
+        }
+        w--; sw--;
+        h--; sh--;
+        uint8_t wl = (sw - w) / 2;
+        uint8_t wr = sw - wl;
+        uint8_t hl = (sh - h) / 2;
+        uint8_t hr = sh - hl;
         switch (direction) {
         case 0: // N
-            x1 = x; x2 = x + w;
-            y1 = y; y2 = y + h;
+            x1 = safe_sub(x, wl); x2 = safe_add(x, wr);
+            y1 = safe_sub(y, hl); y2 = safe_add(y, hr);
             break;
         case 1: // E
-            x1 = x - h; x2 = x;
-            y1 = y; y2 = y + w;
+            x1 = safe_sub(x, hr); x2 = safe_add(x, hl);
+            y1 = safe_sub(y, wl); y2 = safe_add(y, wr);
             break;
         case 2: // S
-            x1 = x - w; x2 = x;
-            y1 = y - h; y2 = y;
+            x1 = safe_sub(x, wr); x2 = safe_add(x, wl);
+            y1 = safe_sub(y, hr); y2 = safe_add(y, hl);
             break;
         case 3: // W
-            x1 = x; x2 = x + h;
-            y1 = y - w; y2 = y;
+            x1 = safe_sub(x, hl); x2 = safe_add(x, hr);
+            y1 = safe_sub(y, wr); y2 = safe_add(y, wl);
             break;
         default:
             std::unreachable();
         }
     }
     building_rect(ecs::building const& b, uint16_t area)
-        : building_rect(b.x, b.y, b.direction, area)
+        : building_rect(b.x, b.y, b.direction, area, area)
+    {}
+    building_rect(ecs::building const& b, uint16_t area, uint16_t scale_area)
+        : building_rect(b.x, b.y, b.direction, area, scale_area)
     {}
     void each(std::function<void(uint8_t,uint8_t)> f) {
         for (uint8_t i = x1; i <= x2; ++i)
@@ -131,8 +159,9 @@ lbuild(lua_State *L) {
         auto& chestslot = chest::getslot(w, container::index::from(hub.chest), 0);
         auto& building = v.get<ecs::building>();
         prototype_context pt = w.prototype(L, building.prototype);
+        uint16_t area = (uint16_t)pt_area(&pt);
         uint16_t supply_area = (uint16_t)pt_supply_area(&pt);
-        building_rect r(building, supply_area);
+        building_rect r(building, area, supply_area);
         auto& map = globalmap[chestslot.item];
         auto self = create_berth(r, hub_mgr::berth_type::hub, 0);
         flatset<hub_mgr::berth> set;
