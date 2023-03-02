@@ -15,6 +15,7 @@ static bool isFluidId(uint16_t id) {
 container::slot& chest::array_at(world& w, container::index start, uint8_t offset) {
 #if !defined(NDEBUG)
     auto& s = w.container.at(start);
+    assert(s.eof >= start.slot);
     assert(s.eof - start.slot >= offset);
 #endif
     return w.container.at(start + offset);
@@ -23,6 +24,7 @@ container::slot& chest::array_at(world& w, container::index start, uint8_t offse
 std::span<container::slot> chest::array_slice(world& w, container::index start, uint8_t offset, uint16_t size) {
 #if !defined(NDEBUG)
     auto& s = w.container.at(start+offset);
+    assert(s.eof >= start.slot);
     assert(s.eof - start.slot >= size);
 #endif
     return w.container.slice(start + offset, size);
@@ -30,6 +32,7 @@ std::span<container::slot> chest::array_slice(world& w, container::index start, 
 
 std::span<container::slot> chest::array_slice(world& w, container::index start) {
     auto& s = w.container.at(start);
+    assert(s.eof >= start.slot);
     return w.container.slice(start, s.eof - start.slot);
 }
 
@@ -124,6 +127,7 @@ void chest::limit(world& w, container::index c, const uint16_t* r, uint16_t n) {
 
 uint16_t chest::size(world& w, container::index c) {
     auto& s = w.container.at(c);
+    assert(s.eof >= c.slot);
     return s.eof - c.slot;
 }
 
@@ -204,6 +208,9 @@ lget(lua_State* L) {
     uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
     auto c = container::index::from(index);
     auto& r = chest::getslot(w, c, offset);
+    if (r.eof < c.slot) {
+        return 0;
+    }
     lua_createtable(L, 0, 7);
     switch (r.type) {
     case container::slot::slot_type::red:   lua_pushstring(L, "red"); break;
