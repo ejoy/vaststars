@@ -35,17 +35,17 @@ local typeinfos = {
 }
 
 for _, typeobject in pairs(iprototype.each_maintype "building") do
-    if typeobject.supply_area then
-        local w, h = typeobject.supply_area:match("(%d+)x(%d+)")
+    if typeobject.power_supply_area then
+        local w, h = typeobject.power_supply_area:match("(%d+)x(%d+)")
         w, h = tonumber(w), tonumber(h)
 
         local ew, eh = iprototype.unpackarea(typeobject.area)
         assert(w == h)
         assert(ew == eh)
-        typeinfos[("power_pole_construct_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}
-        typeinfos[("power_pole_invalid_construct_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED, block_edge_size = (w - ew) * 10}
-        typeinfos[("power_pole_selected_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}
-        typeinfos[("power_pole_confirm_%s"):format(typeobject.supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}
+        typeinfos[("power_pole_construct_%s"):format(typeobject.power_supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}
+        typeinfos[("power_pole_invalid_construct_%s"):format(typeobject.power_supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED, block_edge_size = (w - ew) * 10}
+        typeinfos[("power_pole_selected_%s"):format(typeobject.power_supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}
+        typeinfos[("power_pole_confirm_%s"):format(typeobject.power_supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}
     end
 end
 

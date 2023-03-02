@@ -6,7 +6,7 @@ prototype "小铁制箱子I" {
     icon = "textures/building_pic/small_pic_chest.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "logistic_chest"},
+    type = {"building"},
     group = {"物流" , "默认"},
     area = "1x1",
     slots = 10,
@@ -56,6 +56,7 @@ prototype "无人机仓库" {
     supply_area = "6x6",
     slots = 1,
     drone_entity = "无人机",
+    drone_count = 2,
     item = "铁矿石", -- for test
     stack = 10,
 }

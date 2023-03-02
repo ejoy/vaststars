@@ -71,7 +71,7 @@ function M.update_line(pole_lines)
     end
 end
 
-function M.show_supply_area()
+function M.show_power_supply_area()
     local network = global.power_network
     for _, nw in ipairs(network) do
         for _, pole in ipairs(nw.poles) do
@@ -79,7 +79,7 @@ function M.show_supply_area()
                 for _, object in objects:selectall("gameplay_eid", pole.eid, EDITOR_CACHE_NAMES) do
                     local _object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
                     local typeobject = iprototype.queryByName("building", object.prototype_name)
-                    _object.state = ("power_pole_selected_%s"):format(typeobject.supply_area)
+                    _object.state = ("power_pole_selected_%s"):format(typeobject.power_supply_area)
                 end
             end
         end

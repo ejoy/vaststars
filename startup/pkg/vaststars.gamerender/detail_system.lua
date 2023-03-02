@@ -27,9 +27,7 @@ function idetail.show(object_id)
     local p = mu.world_to_screen(vp, vr, object.srt.t) -- the position always in the center of the screen after move camera
     local ui_x, ui_y = iui.convert_coord(vr, math3d.index(p, 1), math3d.index(p, 2))
 
-    if iprototype.has_type(typeobject.type, "logistic_chest") then
-        iui.open({"logistic_chest.rml"}, object_id, object.srt.t, ui_x, ui_y)
-    elseif typeobject.show_detail ~= false then
+    if typeobject.show_detail ~= false then
         iui.open({"build_function_pop.rml"}, object_id, object.srt.t, ui_x, ui_y)
     end
 
@@ -51,8 +49,8 @@ function idetail.selected(object)
 
     object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
     local typeobject = iprototype.queryByName("building", object.prototype_name) -- TODO: special case for powerpole
-    if typeobject.supply_area then
-        object.state = ("power_pole_selected_%s"):format(typeobject.supply_area)
+    if typeobject.power_supply_area then
+        object.state = ("power_pole_selected_%s"):format(typeobject.power_supply_area)
     else
         object.state = "selected"
     end

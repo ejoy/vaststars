@@ -68,8 +68,8 @@ local building_detail_config = {
 	["指挥中心"] = {
 		"generate_power",
 		"chest_capacity",
-		"supply_area",
-		"supply_distance",
+		"power_supply_area",
+		"power_supply_distance",
 	},
 	["物流中心"] = {
 		"truck",
@@ -115,8 +115,8 @@ local building_detail_config = {
 		"fluid_rate",
 	},
 	["铁制电线杆"] = {
-		"supply_area",
-		"supply_distance",
+		"power_supply_area",
+		"power_supply_distance",
 	},
 }
 

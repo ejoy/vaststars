@@ -2,6 +2,7 @@ local type = require "register.type"
 local prototype = require "prototype"
 
 local c = type "hub"
+    .supply_area "size"
 
 function c:ctor(init, pt)
     local world = self

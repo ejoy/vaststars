@@ -42,8 +42,8 @@ prototype "指挥中心" {
     type = {"building", "generator", "base", "chest"},
     chest_type = "blue",
     area = "5x5",
-    supply_area = "9x9",
-    supply_distance = 9,
+    power_supply_area = "9x9",
+    power_supply_distance = 9,
     dismantle_area = "21x21",
     power = "1MW",
     priority = "primary",
@@ -62,13 +62,13 @@ prototype "物流需求站" {
     icon = "textures/building_pic/small_pic_goodsstation_input.texture",
     background = "textures/build_background/small_pic_goodsstation_input.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "logistic_hub"},
+    type = {"building"},
     area = "1x1",
     slots = 10,
     group = {"物流"},
     crossing = {
         connections = {
-            {type="logistic_hub", position={0,0,"S"}, roadside = true},
+            {type="none", position={0,0,"S"}, roadside = true},
         },
     }
 }

@@ -3,7 +3,7 @@ local iprototype        = require "gameplay.interface.prototype"
 local global            = require "global"
 
 local M = {}
-local function set_supply_area(area, e)
+local function set_power_supply_area(area, e)
     local offset_x = (e.sw - e.w)//2
     local offset_y = (e.sh - e.h)//2
     for i = e.y - offset_y, e.y + e.h + offset_y - 1 do
@@ -22,7 +22,7 @@ local function new_network(e)
         end
         area[#area + 1] = row
     end
-    set_supply_area(area, e)
+    set_power_supply_area(area, e)
     net.area = area
     return net
 end
@@ -33,13 +33,7 @@ local function max_area_x(e) return e.x + e.w - 1 end
 local function min_area_y(e) return e.y end
 local function max_area_y(e) return e.y + e.h - 1 end
 
--- supply_area
-local function min_supply_x(e) return e.x - (e.sw - e.w)//2 end
-local function max_supply_x(e) return e.x + e.w + (e.sw - e.w)//2 - 1 end
-local function min_supply_y(e) return e.y - (e.sh - e.h)//2 end
-local function max_supply_y(e) return e.y + e.h + (e.sh - e.h)//2 - 1 end
-
--- supply_distance
+-- power_supply_distance
 local function min_distance_x(e) return e.x - (e.sd - (e.w + 1)//2) end
 local function max_distance_x(e) return e.x + e.w - 1 + (e.sd - (e.w + 1)//2) end
 local function min_distance_y(e) return e.y - (e.sd - (e.h + 1)//2) end
@@ -246,7 +240,7 @@ end
 
 local function merge_network(net1, net2)
     for _, p in ipairs(net1.poles) do
-        set_supply_area(net2.area, p)
+        set_power_supply_area(net2.area, p)
         table.insert(net2.poles, p)
     end
 end
@@ -298,8 +292,8 @@ function M:build_power_network(gw)
         local typeobject = iprototype.queryById(e.prototype)
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh
-        if typeobject.supply_area then
-            sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
+        if typeobject.power_supply_area then
+            sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
         end
         if v.capacitance then
             capacitance[#capacitance + 1] = {
@@ -323,7 +317,7 @@ function M:build_power_network(gw)
                 h = ah,
                 sw = tonumber(sw),
                 sh = tonumber(sh),
-                sd = typeobject.supply_distance
+                sd = typeobject.power_supply_distance
             }
         end
     end

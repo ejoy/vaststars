@@ -125,16 +125,16 @@ local property_list = {
 		desc = "最高温度",
 		pos = 24,
 	},
-	["supply_area"] = {
+	["power_supply_area"] = {
 		icon = "textures/property/supply-area.texture",
 		desc = "覆盖范围",
-		value = "$supply_area$",
+		value = "$power_supply_area$",
 		pos = 25,
 	},
-	["supply_distance"] = {
+	["power_supply_distance"] = {
 		icon = "textures/property/supply-distance.texture",
 		desc = "连接距离",
-		value = "$supply_distance$",
+		value = "$power_supply_distance$",
 		pos = 26,
 	},
 	["mine_deposit"] = {

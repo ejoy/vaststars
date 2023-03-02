@@ -13,8 +13,6 @@ local iprototype = require "gameplay.interface.prototype"
 local create_normalbuilder = ecs.require "editor.normalbuilder"
 local create_pipebuilder = ecs.require "editor.pipebuilder"
 local create_pipetogroundbuilder = ecs.require "editor.pipetogroundbuilder"
-local create_logisticbuilder = ecs.require "editor.logisticbuilder"
-local create_logisticchestbuilder = ecs.require "editor.logisticchestbuilder"
 local create_movebuilder = ecs.require "editor.movebuilder"
 local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
@@ -35,7 +33,6 @@ local cancel_mb = mailbox:sub {"cancel"} -- construct_pop.rml -> 取消
 local road_builder_mb = mailbox:sub {"road_builder"}
 local pipe_builder_mb = mailbox:sub {"pipe_builder"}
 local confirm_cancel_mb = mailbox:sub {"confirm_cancel"} -- 取消已确定的建筑
-local ichest = require "gameplay.interface.chest"
 
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local show_construct_menu_mb = mailbox:sub {"show_construct_menu"}
@@ -168,7 +165,7 @@ function M:stage_ui_update(datamodel)
             datamodel.show_rotate = false
             datamodel.show_confirm = false
             datamodel.construct_menu = _get_construct_menu()
-            ipower_line.show_supply_area()
+            ipower_line.show_power_supply_area()
         else
             ieditor:revert_changes({"TEMPORARY", "POWER_AREA"})
         end
@@ -218,10 +215,6 @@ function M:stage_camera_usage(datamodel)
             builder = create_pipetogroundbuilder()
         elseif iprototype.is_pipe(prototype_name) then
             builder = create_pipebuilder()
-        elseif __has_type(prototype_name, "logistic_hub") then
-            builder = create_logisticbuilder()
-        elseif __has_type(prototype_name, "logistic_chest") then
-            builder = create_logisticchestbuilder()
         else
             builder = create_normalbuilder()
         end

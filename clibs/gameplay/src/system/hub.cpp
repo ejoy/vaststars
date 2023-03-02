@@ -25,7 +25,6 @@ struct building_rect {
         assert(w > 0 && h > 0);
         w--;
         h--;
-        uint8_t x1, x2, y1, y2;
         switch (direction) {
         case 0: // N
             x1 = x; x2 = x + w;

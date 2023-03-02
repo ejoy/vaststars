@@ -8,7 +8,7 @@ prototype "铁制电线杆" {
     power_pole = true,
     type = {"building"},
     area = "1x1",
-    supply_area = "5x5",
-    supply_distance = 9,
+    power_supply_area = "5x5",
+    power_supply_distance = 9,
     group = {"电力","默认"},
 }

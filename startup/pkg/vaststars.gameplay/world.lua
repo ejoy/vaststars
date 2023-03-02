@@ -64,9 +64,9 @@ return function ()
     world._cworld = cworld
     world._context = context
 
-    function world:create_entity(type)
+    function world:create_entity(maintype, type)
         return function (init)
-            local typeobject = assert(prototype.queryByName("building", type), "unknown entity: " .. type)
+            local typeobject = assert(prototype.queryByName(maintype, type), "unknown entity: " .. type)
             local types = typeobject.type
             local obj = {}
             for i = 1, #types do

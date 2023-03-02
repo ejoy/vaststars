@@ -3,7 +3,6 @@ local create_consruct_queue = require "construct_queue"
 
 return {
     fluidflow_id = 0,
-    logistic_hub_id = 0,
     science = {},
     statistic = {
         pending_eid = {},

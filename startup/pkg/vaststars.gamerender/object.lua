@@ -53,7 +53,6 @@ local function new(init)
         recipe = init.recipe,
         fluid_icon = init.fluid_icon,
         srt = init.srt,
-        logistic_hub_id = init.logistic_hub_id,
     }
 
     local outer = setmetatable(t, mt)

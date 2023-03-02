@@ -152,8 +152,7 @@ local function restore_world()
     local all_object = {}
     local map = {} -- coord -> id
     local fluidbox_map = {} -- coord -> id -- only for fluidbox
-    local logistic_chest_map = {} -- coord -> id -- only for logistic_chest&logistic_hub
-    for v in gameplay_core.select("eid:in building:in fluidbox?in fluidboxes?in assembling?in logistic_hub?in logistic_chest?in") do
+    for v in gameplay_core.select("eid:in building:in fluidbox?in fluidboxes?in assembling?in") do
         local e = v.building
         local typeobject = iprototype.queryById(e.prototype)
         local fluid_name = ""
@@ -190,10 +189,6 @@ local function restore_world()
             end
         end
 
-        if v.logistic_hub or v.logistic_chest then
-            logistic_chest_map[iprototype.packcoord(e.x, e.y)] = v.eid
-        end
-
         local recipe
         if v.assembling then
             local show_recipe_icon = typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining") -- TODO: special case for mining -- duplicate with build_function_pop.lua
@@ -213,7 +208,6 @@ local function restore_world()
             y = e.y,
             fluid_name = fluid_name,
             -- fluidflow_id, -- fluidflow_id is not null only when the object is a fluidbox
-            -- logistic_hub_id, -- logistic_hub_id is not null only when the object is a logistic_hub or logistic_chest
             recipe = recipe, -- for assembling machine only, display the recipe icon, see also: restore_object() -> iobject.new
         }
 
@@ -311,43 +305,12 @@ local function restore_world()
         end
     end
 
-    local function logistic_chest_dfs(all_object, map, object, input_dir)
-        for _, dir in ipairs(ALL_DIR) do
-            if dir == input_dir then
-                goto continue
-            end
-
-            local succ, dx, dy = terrain:move_coord(object.x, object.y, dir, 1)
-            local neighbor_id = map[iprototype.packcoord(dx, dy)]
-            if not neighbor_id then
-                goto continue
-            end
-
-            local neighbor = assert(all_object[neighbor_id])
-            assert(neighbor.logistic_hub_id == nil)
-
-            neighbor.logistic_hub_id = object.logistic_hub_id
-            logistic_chest_dfs(all_object, map, neighbor, iprototype.reverse_dir(dir))
-            ::continue::
-        end
-    end
-
     for _, id in pairs(fluidbox_map) do
         local object = all_object[id]
         if not object.fluidflow_id then
             global.fluidflow_id = global.fluidflow_id + 1
             object.fluidflow_id = global.fluidflow_id
             fluidbox_dfs(all_object, fluidbox_map, object)
-        end
-    end
-
-    ---
-    for _, id in pairs(logistic_chest_map) do
-        local object = all_object[id]
-        if not object.logistic_hub_id then
-            global.logistic_hub_id = global.logistic_hub_id + 1
-            object.logistic_hub_id = global.logistic_hub_id
-            logistic_chest_dfs(all_object, logistic_chest_map, object)
         end
     end
 

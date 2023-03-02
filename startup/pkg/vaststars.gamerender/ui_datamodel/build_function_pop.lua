@@ -159,7 +159,7 @@ function M:stage_ui_update(datamodel, object_id)
         end
 
         local typeobject_entity = iprototype.queryByName("building", object.prototype_name)
-        if typeobject_entity.supply_area then
+        if typeobject_entity.power_supply_area then
             ipower:build_power_network(gameplay_core.get_world())
             ipower_line.update_line(ipower:get_pole_lines())
         end

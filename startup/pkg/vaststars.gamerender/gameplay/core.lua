@@ -43,9 +43,9 @@ function m.is_researched(...)
 end
 
 local create_entity_cache = {}
-local function create(world, prototype, entity)
+local function create(world, maintype, prototype, entity)
     if not create_entity_cache[prototype] then
-        create_entity_cache[prototype] = world:create_entity(prototype)
+        create_entity_cache[prototype] = world:create_entity(maintype, prototype)
         if not create_entity_cache[prototype] then
             log.error(("failed to create entity `%s`"):format(prototype))
             return
@@ -96,7 +96,7 @@ post_funcs["hub"] = function (pt, template)
     local w, h = iprototype.unpackarea(typeobject.area)
 
     for _ = 1, pt.drone_count do
-        create(world, pt.drone_entity, {sumOfXCoord = template.x + template.x + (w - 1), sumOfYCoord = template.y + template.y + (h - 1)})
+         create(world, "drone", pt.drone_entity, {sumOfXCoord = template.x + template.x + (w - 1), sumOfYCoord = template.y + template.y + (h - 1)})
     end
 end
 
@@ -123,7 +123,7 @@ function m.create_entity(init)
         end
     end
 
-    local eid = create(world, init.prototype_name, template)
+    local eid = create(world, "building", init.prototype_name, template)
     print("gameplay create_entity", init.prototype_name, template.dir, template.x, template.y, template.fluid or "[fluid]", template.recipe or "[recipe]", template.fluidflow_id or "[fluidflow_id]", eid)
     return eid
 end

@@ -29,11 +29,11 @@ local DIRECT_BUILD <const> = require "debugger".direct_build
 
 local function _get_state(prototype_name, ok)
     local typeobject = iprototype.queryByName("building", prototype_name)
-    if typeobject.supply_area then
+    if typeobject.power_supply_area then
         if ok then
-            return ("power_pole_construct_%s"):format(typeobject.supply_area)
+            return ("power_pole_construct_%s"):format(typeobject.power_supply_area)
         else
-            return ("power_pole_invalid_construct_%s"):format(typeobject.supply_area)
+            return ("power_pole_invalid_construct_%s"):format(typeobject.power_supply_area)
         end
     else
         if ok then
@@ -239,10 +239,10 @@ local function touch_move(self, datamodel, delta_vec)
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, x, y, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
 
     -- update temp pole
-    if typeobject.supply_area and typeobject.supply_distance then
+    if typeobject.power_supply_area and typeobject.power_supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
-        local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({key = pickup_object.id, targets = {}, x = x, y = y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, smooth_pos = true})
+        local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
+        ipower:merge_pole({key = pickup_object.id, targets = {}, x = x, y = y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true})
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 end
@@ -288,10 +288,10 @@ local function touch_end(self, datamodel)
     pickup_object.recipe = _get_mineral_recipe(pickup_object.prototype_name, pickup_object.x, pickup_object.y, pickup_object.dir) -- TODO: maybe set recipt according to entity type?
 
     -- update temp pole
-    if typeobject.supply_area and typeobject.supply_distance then
+    if typeobject.power_supply_area and typeobject.power_supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
-        local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({key = pickup_object.id, targets = {}, x = self.pickup_object.x, y = self.pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance})
+        local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
+        ipower:merge_pole({key = pickup_object.id, targets = {}, x = self.pickup_object.x, y = self.pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance})
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 end
@@ -305,8 +305,8 @@ local function confirm(self, datamodel)
     end
 
     local typeobject = iprototype.queryByName("building", pickup_object.prototype_name)
-    if typeobject.supply_area then
-        pickup_object.state = ("power_pole_confirm_%s"):format(typeobject.supply_area)
+    if typeobject.power_supply_area then
+        pickup_object.state = ("power_pole_confirm_%s"):format(typeobject.power_supply_area)
     else
         pickup_object.state = "confirm"
     end
@@ -317,10 +317,10 @@ local function confirm(self, datamodel)
     datamodel.show_confirm = false
     datamodel.show_rotate = false
     --
-    if typeobject.supply_area and typeobject.supply_distance then
+    if typeobject.power_supply_area and typeobject.power_supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
-        local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance}, true)
+        local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
+        ipower:merge_pole({key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance}, true)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
