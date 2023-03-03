@@ -10,7 +10,7 @@ function c:ctor(init, pt)
     local c = {}
     c[#c+1] = world:chest_slot {
         type = "blue",
-        item = prototype.queryByName("item", init.name).id,
+        item = prototype.queryByName(init.name).id,
         limit = init.stack,
     }
     local chest = world:container_create(table.concat(c))

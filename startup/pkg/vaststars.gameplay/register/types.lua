@@ -133,22 +133,11 @@ register_unit("filter", "string", function(s)
 	return s
 end)
 
-local function query_(t, v)
-	if t == "item/fluid" then
-		local what = prototype.queryByName("item", v)
-		if not what then
-			what = prototype.queryByName("fluid", v)
-		end
-		return what
-	end
-	return prototype.queryByName(t, v)
-end
-
 local function query(t, v)
 	if t == "raw" then
 		return tonumber(v)
 	end
-	local what = query_(t, v)
+	local what = prototype.queryByName(v)
 	if what then
 		return what.id
 	end

@@ -132,7 +132,7 @@ local function set_recipe(world, e, pt, recipe_name, fluids, option)
     }
 
     local assembling = e.assembling
-    local recipe = assert(prototype.queryByName("recipe", recipe_name), "unknown recipe: "..recipe_name)
+    local recipe = assert(prototype.queryByName(recipe_name), "unknown recipe: "..recipe_name)
     if assembling.recipe == recipe.id then
         return
     end

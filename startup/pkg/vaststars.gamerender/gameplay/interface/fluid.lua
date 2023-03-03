@@ -27,7 +27,7 @@ do
 end
 
 function M:need_set_fluid(prototype_name)
-    local typeobject = iprototype.queryByName("building", prototype_name)
+    local typeobject = iprototype.queryByName(prototype_name)
     if not iprototype.has_type(typeobject.type, "fluidbox") then
         return false
     end
@@ -37,7 +37,7 @@ end
 function M:update_fluidbox(e, fluid_name)
     assert(e.fluidbox or e.fluidboxes)
     assert(type(fluid_name) == "string")
-    local typeobject = iprototype.queryByName("fluid", fluid_name)
+    local typeobject = iprototype.queryByName(fluid_name)
     if not typeobject then
         ifluidbox.update_fluidbox(e, 0)
     else
@@ -84,7 +84,7 @@ function M:get_fluidbox(prototype_name, x, y, dir, fluid_name)
     end
 
     local result = {}
-    local typeobject = assert(iprototype.queryByName("building", prototype_name))
+    local typeobject = assert(iprototype.queryByName(prototype_name))
     for _, t in ipairs(typeobject.type) do
         local func = funcs[t]
         if func then

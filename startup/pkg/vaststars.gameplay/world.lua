@@ -64,9 +64,9 @@ return function ()
     world._cworld = cworld
     world._context = context
 
-    function world:create_entity(maintype, type)
+    function world:create_entity(type)
         return function (init)
-            local typeobject = assert(prototype.queryByName(maintype, type), "unknown entity: " .. type)
+            local typeobject = assert(prototype.queryByName(type), "unknown entity: " .. type)
             local types = typeobject.type
             local obj = {}
             for i = 1, #types do
@@ -167,7 +167,7 @@ return function ()
     end
 
     function world:is_researched(tech)
-        local pt = prototype.queryByName("tech", tech)
+        local pt = prototype.queryByName(tech)
         assert(pt, "unknown tech: " .. tech)
         return cworld:is_researched(pt.id)
     end
@@ -184,7 +184,7 @@ return function ()
         else
             local q = {}
             for i, v in ipairs(queue) do
-                local pt = prototype.queryByName("tech", v)
+                local pt = prototype.queryByName(v)
                 assert(pt, "unknown tech: " .. v)
                 q[i] = pt.id
             end
@@ -193,7 +193,7 @@ return function ()
     end
 
     function world:research_progress(tech, progress)
-        local pt = prototype.queryByName("tech", tech)
+        local pt = prototype.queryByName(tech)
         assert(pt, "unknown tech: " .. tech)
         if progress then
             return cworld:research_progress(pt.id, progress)
@@ -221,11 +221,11 @@ return function ()
         for i, v in ipairs(lst) do
             local type, id = v[1], v[2]
             if type == "crafting" then
-                local pt = prototype.queryByName("recipe", id)
+                local pt = prototype.queryByName(id)
                 assert(pt, "unknown recipe: " .. id)
                 todos[i] = { type, pt.id }
             elseif type == "finish" then
-                local pt = prototype.queryByName("item", id)
+                local pt = prototype.queryByName(id)
                 assert(pt, "unknown item: " .. id)
                 todos[i] = { type, pt.id }
             elseif type == "separator" then
@@ -267,7 +267,7 @@ return function ()
         assert(t.item)
         local id = t.item
         if type(id) == "string" then
-            id = prototype.queryByName("item", id).id
+            id = prototype.queryByName(id).id
         end
         return string.pack("<I1I1I2I2I2I2I2",
             CHEST_TYPE[t.type],

@@ -34,7 +34,7 @@ function M:revert_changes(revert_cache_names)
 end
 
 local function refresh_pipe(prototype_name, dir, entry_dir, value)
-    local typeobject = iprototype.queryByName("building", prototype_name)
+    local typeobject = iprototype.queryByName(prototype_name)
     if not typeobject.pipe then
         return
     end

@@ -4,102 +4,59 @@ local prototype = gameplay.register.prototype
 prototype "液罐I" {
     type = {"item"},
     stack = 1,
-    icon = "textures/construct/liquid-tank.texture",
-    model = "prefabs/rock.prefab",
-    description = "专门贮藏液体的容器",
-    group = "管道",
-    order = 22,
+    item_description = "专门贮藏液体的容器",
 }
 
 prototype "气罐I" {
     type = {"item"},
     stack = 1,
-    icon = "textures/construct/gas-tank.texture",
-    model = "prefabs/rock.prefab",
-    description = "专门贮藏气体的容器",
-    group = "管道",
-    order = 23,
+    item_description = "专门贮藏气体的容器",
 }
 
 prototype "地下水挖掘机" {
     type = {"item"},
     stack = 1,
-    icon = "textures/construct/pumpjack1.texture",
-    model = "prefabs/rock.prefab",
-    description = "从水源抽取水的装置",
-    group = "管道",
-    order = 50,
+    item_description = "从水源抽取水的装置",
 }
 
 prototype "压力泵I" {
     type = {"item"},
     stack = 1,
-    icon = "textures/construct/pump1.texture",
-    model = "prefabs/rock.prefab",
-    description = "抽取并传输液体或气体的装置",
-    group = "管道",
-    order = 40,
+    item_description = "抽取并传输液体或气体的装置",
 }
 
 prototype "烟囱I" {
     type = {"item"},
     stack = 2,
-    icon = "textures/construct/chimney2.texture",
-    model = "prefabs/rock.prefab",
-    description = "用来排放无害气体的装置",
-    group = "管道",
-    order = 65,
+    item_description = "用来排放无害气体的装置",
 }
 
 prototype "排水口I" {
     type = {"item"},
     stack = 1,
-    icon = "textures/construct/outfall.texture",
-    model = "prefabs/rock.prefab",
-    description = "用来排放无害液体的装置",
-    group = "管道",
-    order = 56,
+    item_description = "用来排放无害液体的装置",
 }
 
 prototype "空气过滤器I" {
     type = {"item"},
     stack = 2,
-    icon = "textures/construct/air-filter1.texture",
-    model = "prefabs/rock.prefab",
-    description = "抽取空气的装置",
-    group = "管道",
-    order = 60,
+    item_description = "抽取空气的装置",
 }
 
 prototype "管道1-X型" {
-    show_prototype_name = "管道I",
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/pipe.texture",
-    model = "prefabs/rock.prefab",
-    description = "在地上传输液体或气体的管道",
-    group = "管道",
-    order = 10,
+    item_description = "在地上传输液体或气体的管道",
 }
 
 prototype "地下管1-JI型" {
-    show_prototype_name = "地下管I",
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/underground-pipe1.texture",
-    model = "prefabs/rock.prefab",
-    description = "从地下传输液体或气体的管道",
-    group = "管道",
-    order = 12,
+    item_description = "从地下传输液体或气体的管道",
 }
 
 prototype "地下管2-JI型" {
-    show_prototype_name = "地下管II",
     type = {"item"},
     stack = 100,
-    icon = "textures/construct/underground-pipe1.texture",
-    model = "prefabs/rock.prefab",
-    description = "从地下传输液体或气体的管道",
-    group = "管道",
-    order = 14,
+    item_description = "从地下传输液体或气体的管道",
 }

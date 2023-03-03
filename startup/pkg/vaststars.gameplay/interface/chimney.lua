@@ -11,7 +11,7 @@ local function set_recipe(e, recipe_name)
         chimney.recipe = 0
         return
     end
-    local recipe = assert(prototype.queryByName("recipe", recipe_name), "unknown recipe: "..recipe_name)
+    local recipe = assert(prototype.queryByName(recipe_name), "unknown recipe: "..recipe_name)
     chimney.recipe = recipe.id
 end
 

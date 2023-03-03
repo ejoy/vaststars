@@ -150,7 +150,7 @@ end
 
 local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir)
     local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
-    local typeobject = iprototype.queryByName("building", prototype_name)
+    local typeobject = iprototype.queryByName(prototype_name)
 
     if x == PipeToGroundState.to_x and y == PipeToGroundState.to_y then
         return
@@ -218,7 +218,7 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
         _update_fluid_name(State, State.starting_fluidbox.fluid_name, object.fluidflow_id)
 
         local _prototype_name, _dir
-        local typeobject = iprototype.queryByName("building", prototype_name)
+        local typeobject = iprototype.queryByName(prototype_name)
         _prototype_name, _dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, iprototype.reverse_dir(dir), dir)
 
         x, y = x + PipeToGroundState.dir_delta.x, y + PipeToGroundState.dir_delta.y
@@ -246,7 +246,7 @@ local function _set_starting(prototype_name, State, PipeToGroundState, x, y, dir
 end
 
 local function _set_section(prototype_name, State, PipeToGroundState, x, y, dir)
-    local typeobject = iprototype.queryByName("building", prototype_name)
+    local typeobject = iprototype.queryByName(prototype_name)
     local reverse_dir = iprototype.reverse_dir(dir)
 
     if PipeToGroundState.distance + 1 < PipeToGroundState.max_distance then
@@ -305,7 +305,7 @@ local function _set_section(prototype_name, State, PipeToGroundState, x, y, dir)
 end
 
 local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
-    local typeobject = iprototype.queryByName("building", prototype_name)
+    local typeobject = iprototype.queryByName(prototype_name)
     local endpoint_prototype_name, endpoint_dir = iflow_connector.covers_pipe_to_ground(typeobject.flow_type, nil, iprototype.reverse_dir(dir))
     assert(endpoint_prototype_name and endpoint_dir)
     endpoint_prototype_name, endpoint_dir = _connect_to_neighbor(State, x, y, dir, endpoint_prototype_name, endpoint_dir)
@@ -350,15 +350,15 @@ local function _set_ending(prototype_name, State, PipeToGroundState, x, y, dir)
 end
 
 local function _get_item_name(prototype_name)
-    local typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
+    local typeobject = iprototype.queryByName(iflow_connector.covers(prototype_name, DEFAULT_DIR))
     return typeobject.name
 end
 
 -- NOTE: different from pipe_builder
 local function _builder_end(self, datamodel, State, dir, dir_delta)
     local prototype_name = self.coord_indicator.prototype_name
-    local typeobject = iprototype.queryByName("building", prototype_name)
-    local item_typeobject = iprototype.queryByName("item", iflow_connector.covers(prototype_name, DEFAULT_DIR))
+    local typeobject = iprototype.queryByName(prototype_name)
+    local item_typeobject = iprototype.queryByName(iflow_connector.covers(prototype_name, DEFAULT_DIR))
 
     if State.starting_fluidbox then -- TODO: optimize
         if State.ending_fluidbox then
@@ -485,7 +485,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         for fluidflow_id in pairs(State.fluidflow_ids) do
             for _, object in objects:selectall("fluidflow_id", fluidflow_id, EDITOR_CACHE_NAMES) do
                 local _object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
-                assert(iprototype.has_type(iprototype.queryByName("building", _object.prototype_name).type, "fluidbox"))
+                assert(iprototype.has_type(iprototype.queryByName(_object.prototype_name).type, "fluidbox"))
                 _object.fluid_name = State.fluid_name
                 _object.fluidflow_id = new_fluidflow_id
             end
@@ -753,7 +753,7 @@ end
 
 local function laying_pipe_cancel(self, datamodel)
     self:revert_changes({"TEMPORARY"})
-    local typeobject = iprototype.queryByName("building", self.coord_indicator.prototype_name)
+    local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)
 
     self.state = STATE_NONE
@@ -772,7 +772,7 @@ local function laying_pipe_confirm(self, datamodel)
         self.dotted_line:show(false)
     end
 
-    local typeobject = iprototype.queryByName("building", self.coord_indicator.prototype_name)
+    local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
     self:new_entity(datamodel, typeobject)
 
     self.state = STATE_NONE

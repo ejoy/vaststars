@@ -10,7 +10,7 @@ function m.queryById(id)
 	return id_lookup[id]
 end
 
-function m.queryByName(_, name)
+function m.queryByName(name)
 	return name_lookup[name]
 end
 

@@ -11,7 +11,7 @@ local function update_world()
     if tracedoc.changed(global.base_chest_cache) or global.construct_queue:changed() then
         local construct_queue = {}
         for prototype_name in global.construct_queue:for_each() do
-            local typeobject = iprototype.queryByName("item", prototype_name)
+            local typeobject = iprototype.queryByName(prototype_name)
             local total_count = global.construct_queue:size(prototype_name)
             table.insert(construct_queue, {icon = typeobject.icon, count = total_count, total_count = total_count})
         end

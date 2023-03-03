@@ -1,7 +1,7 @@
 local prototype = require "prototype"
 
 local function fluidId(name)
-    local what = prototype.queryByName("fluid", name)
+    local what = prototype.queryByName(name)
     if what then
         return what.id
     end

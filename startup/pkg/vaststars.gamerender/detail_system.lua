@@ -16,7 +16,7 @@ function idetail.show(object_id)
 
     -- 显示环型菜单
     local object = assert(objects:get(object_id))
-    local typeobject = iprototype.queryByName("building", object.prototype_name)
+    local typeobject = iprototype.queryByName(object.prototype_name)
 
     idetail.selected(object)
 
@@ -48,7 +48,7 @@ function idetail.selected(object)
     idetail.unselected()
 
     object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
-    local typeobject = iprototype.queryByName("building", object.prototype_name) -- TODO: special case for powerpole
+    local typeobject = iprototype.queryByName(object.prototype_name) -- TODO: special case for powerpole
     if typeobject.power_supply_area then
         object.state = ("power_pole_selected_%s"):format(typeobject.power_supply_area)
     else

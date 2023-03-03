@@ -37,7 +37,7 @@ local function print_slot(prefix, chest, i)
 end
 
 local function add_req(time, prototype_name, count)
-    local prototype = gameplay.prototype.queryByName("item", prototype_name).id
+    local prototype = gameplay.prototype.queryByName(prototype_name).id
     local ecs = world.ecs
     local e = assert(ecs:first("base entity:in chest:update"))
     local typeobject = gameplay.prototype.queryById(e.entity.prototype)

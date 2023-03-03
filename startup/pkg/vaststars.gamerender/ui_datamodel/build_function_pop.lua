@@ -79,7 +79,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
     if not e then
         return
     end
-    local typeobject = iprototype.queryByName("building", object.prototype_name)
+    local typeobject = iprototype.queryByName(object.prototype_name)
 
     -- 组装机才显示设置配方菜单
     local show_set_recipe = false
@@ -133,7 +133,7 @@ function M:stage_ui_update(datamodel, object_id)
 
     for _, _, _, object_id in detail_mb:unpack() do
         local object = assert(objects:get(object_id))
-        local typeobject = iprototype.queryByName("building", object.prototype_name)
+        local typeobject = iprototype.queryByName(object.prototype_name)
         for _, v in ipairs(detail_ui) do
             if iprototype.has_type(typeobject.type, v.type) then
                 iui.open({v.rml}, object_id)
@@ -153,12 +153,12 @@ function M:stage_ui_update(datamodel, object_id)
         iui.close("build_function_pop.rml")
         iui.close("detail_panel.rml")
 
-        local typeobject_item = iprototype.queryByName("item", object.prototype_name)
+        local typeobject_item = iprototype.queryByName(object.prototype_name)
         if typeobject_item then
             ichest.base_chest_place(gameplay_core.get_world(), typeobject_item.id, 1)
         end
 
-        local typeobject_entity = iprototype.queryByName("building", object.prototype_name)
+        local typeobject_entity = iprototype.queryByName(object.prototype_name)
         if typeobject_entity.power_supply_area then
             ipower:build_power_network(gameplay_core.get_world())
             ipower_line.update_line(ipower:get_pole_lines())

@@ -78,7 +78,7 @@ function M.show_power_supply_area()
             if pole.eid then
                 for _, object in objects:selectall("gameplay_eid", pole.eid, EDITOR_CACHE_NAMES) do
                     local _object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
-                    local typeobject = iprototype.queryByName("building", object.prototype_name)
+                    local typeobject = iprototype.queryByName(object.prototype_name)
                     _object.state = ("power_pole_selected_%s"):format(typeobject.power_supply_area)
                 end
             end

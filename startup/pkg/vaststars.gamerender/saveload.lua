@@ -49,7 +49,7 @@ local archival_list = {}
 
 local function restore_world()
     local function _finish_task(task)
-        local typeobject = iprototype.queryByName("tech", task)
+        local typeobject = iprototype.queryByName(task)
         gameplay_core.get_world():research_progress(task, typeobject.count)
     end
 
@@ -93,7 +93,7 @@ local function restore_world()
 
             local o = all_object[id]
 
-            local typeobject = iprototype.queryByName("building", o.prototype_name)
+            local typeobject = iprototype.queryByName(o.prototype_name)
             if iprototype.has_type(typeobject.type, "assembling") then
                 return true
             end
@@ -115,7 +115,7 @@ local function restore_world()
 
     --
     local function restore_object(all_object, map, gameplay_eid, prototype_name, dir, x, y, fluid_name, fluidflow_id, recipe)
-        local typeobject = iprototype.queryByName("building", prototype_name)
+        local typeobject = iprototype.queryByName(prototype_name)
 
         local fluid_icon -- TODO: duplicate code, see also builder.lua
         if iprototype.has_type(typeobject.type, "fluidbox") and fluid_name ~= "" then
@@ -285,7 +285,7 @@ local function restore_world()
             end
 
             local neighbor = assert(all_object[neighbor_id])
-            if not iprototype.has_type(iprototype.queryByName("building", neighbor.prototype_name).type, "fluidbox") then
+            if not iprototype.has_type(iprototype.queryByName(neighbor.prototype_name).type, "fluidbox") then
                 goto continue
             end
 

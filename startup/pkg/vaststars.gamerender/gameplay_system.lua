@@ -68,7 +68,7 @@ funcs["fluidbox"] = function (object, typeobject)
             goto continue
         end
 
-        local _typeobject = iprototype.queryByName("building", chimney.prototype_name)
+        local _typeobject = iprototype.queryByName(chimney.prototype_name)
         if not iprototype.has_type(_typeobject.type, "chimney") then
             goto continue
         end
@@ -111,7 +111,7 @@ end
 funcs["fluidboxes"] = funcs["fluidbox"]
 
 function igameplay.create_entity(init)
-    local typeobject = iprototype.queryByName("building", init.prototype_name)
+    local typeobject = iprototype.queryByName(init.prototype_name)
     for _, v in ipairs(typeobject.type) do
         if funcs[v] then
             init = funcs[v](init, typeobject)
@@ -136,7 +136,7 @@ function igameplay.remove_entity(eid)
 end
 
 function igameplay.update_chimney_recipe(object) -- TODO: better way to do this?
-    local typeobject = iprototype.queryByName("building", object.prototype_name)
+    local typeobject = iprototype.queryByName(object.prototype_name)
     for _, v in ipairs(typeobject.type) do
         if funcs[v] then
             object = funcs[v](object, typeobject)

@@ -20,7 +20,7 @@ local function get_techlist(tech_list)
         local simple_ingredients = {}
         local ingredients = irecipe.get_elements(value.ingredients)
         for _, ingredient in ipairs(ingredients) do
-            simple_ingredients[#simple_ingredients + 1] = {icon = ingredient.tech_icon, count = ingredient.count}
+            simple_ingredients[#simple_ingredients + 1] = {icon = assert(ingredient.tech_icon), count = ingredient.count}
         end
         local detail = {}
         if value.sign_desc then
@@ -36,16 +36,16 @@ local function get_techlist(tech_list)
                     local input = {}
                     ingredients = irecipe.get_elements(recipe_detail.ingredients)
                     for _, ingredient in ipairs(ingredients) do
-                        input[#input + 1] = {name = ingredient.name, icon = ingredient.icon, count = ingredient.count}
+                        input[#input + 1] = {name = ingredient.name, icon = assert(ingredient.icon), count = ingredient.count}
                     end
                     local output = {}
                     local results = irecipe.get_elements(recipe_detail.results)
                     for _, ingredient in ipairs(results) do
-                        output[#output + 1] = {name = ingredient.name, icon = ingredient.icon, count = ingredient.count}
+                        output[#output + 1] = {name = ingredient.name, icon = assert(ingredient.icon), count = ingredient.count}
                     end
                     detail[#detail + 1] = {
                         name = recipe,
-                        icon = recipe_detail.icon,
+                        icon = assert(recipe_detail.recipe_icon),
                         desc = recipe_detail.description,
                         input = input,
                         output = output,
@@ -60,7 +60,7 @@ local function get_techlist(tech_list)
 
         return {
             name = name,
-            icon = value.icon,
+            icon = assert(value.icon),
             desc = value.desc or " ",
             sign_icon = value.sign_icon,
             detail = detail,

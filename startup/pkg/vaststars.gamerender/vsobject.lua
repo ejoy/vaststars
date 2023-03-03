@@ -81,7 +81,7 @@ end
 
 local function update(self, t)
     local typeinfo = typeinfos[t.type or self.type]
-    local typeobject = iprototype.queryByName("building", t.prototype_name or self.prototype_name)
+    local typeobject = iprototype.queryByName(t.prototype_name or self.prototype_name)
     self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, t.animation_name)
     assert(t.srt)
 
@@ -91,7 +91,7 @@ local function update(self, t)
     end
 
     if typeinfo.block_color ~= CONSTRUCT_BLOCK_COLOR_INVALID then
-        local typeobject = iprototype.queryByName("building", self.prototype_name)
+        local typeobject = iprototype.queryByName(self.prototype_name)
         local w, h = iprototype.unpackarea(typeobject.area)
         w, h = w + 1, h + 1
         local block_pos = math3d.ref(math3d.add(t.srt.t, BLOCK_POSITION_OFFSET))
@@ -107,13 +107,13 @@ end
 local function emissive_color_update(self, color)
     self.emissive_color = color
     local typeinfo = typeinfos[self.type]
-    local typeobject = iprototype.queryByName("building", self.prototype_name)
+    local typeobject = iprototype.queryByName(self.prototype_name)
     self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, nil, color)
 end
 
 local function animation_name_update(self, animation_name)
     local typeinfo = typeinfos[self.type]
-    local typeobject = iprototype.queryByName("building", self.prototype_name)
+    local typeobject = iprototype.queryByName(self.prototype_name)
     self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, animation_name, self.emissive_color)
 end
 
@@ -163,7 +163,7 @@ end
 --     dir = 'N',
 -- }
 return function (init)
-    local typeobject = iprototype.queryByName("building", init.prototype_name)
+    local typeobject = iprototype.queryByName(init.prototype_name)
     local typeinfo = assert(typeinfos[init.type], ("invalid type `%s`"):format(init.type))
 
     local game_object = assert(igame_object.create({

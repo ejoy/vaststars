@@ -100,7 +100,7 @@ local function _get_road_covers(flow_type, pipe_bits)
 end
 
 local function _get_cleanup(prototype_name, entity_dir)
-    local typeobject = assert(iprototype.queryByName("building", prototype_name))
+    local typeobject = assert(iprototype.queryByName(prototype_name))
     local bits = 0
     for _, connection in ipairs(_get_connections(typeobject)) do
         if connection.ground then
@@ -115,7 +115,7 @@ local prototype_covers = {}
 local prototype_cleanup = {}
 for prototype_name, t in pairs(prototype_bits) do
     for entity_dir, bits in pairs(t) do
-        local typeobject = iprototype.queryByName("building", prototype_name)
+        local typeobject = iprototype.queryByName(prototype_name)
         prototype_covers[prototype_name] = prototype_covers[prototype_name] or {}
 
         if iprototype.is_road(typeobject.name) then -- TODO: special case for road
@@ -160,7 +160,7 @@ end
 function M.covers_roadside(prototype_name, entity_dir, roadside_dir, v)
     -- local prototype_name, dir = M.set_connection(prototype_name, entity_dir, roadside_dir, false)
     local bits
-    local typeobject = iprototype.queryByName("building", prototype_name)
+    local typeobject = iprototype.queryByName(prototype_name)
 
     if v == true then
         bits = assert(prototype_bits[prototype_name][entity_dir])
@@ -185,7 +185,7 @@ function M.set_connection(prototype_name, entity_dir, connection_dir, s)
     assert(prototype_bits[covers_prototype_name], ("invalid prototype_name `%s`"):format(covers_prototype_name))
     assert(prototype_bits[covers_prototype_name][covers_dir], ("invalid entity_dir `%s`"):format(covers_dir))
     local bits
-    local typeobject = iprototype.queryByName("building", prototype_name)
+    local typeobject = iprototype.queryByName(prototype_name)
 
     if s == true then
         bits = prototype_bits[covers_prototype_name][covers_dir]
@@ -204,7 +204,7 @@ end
 
 function M.set_road_connection(prototype_name, entity_dir, connection_dir, s)
     local bits
-    local typeobject = iprototype.queryByName("building", prototype_name)
+    local typeobject = iprototype.queryByName(prototype_name)
 
     -- & 0xF -- exclude road side
     if s == true then

@@ -83,7 +83,7 @@ end
 local function convert(t)
     local res = {}
     for _, r in ipairs(t) do
-        local typeobject = iprototype.queryByName("building", r.prototype_name)
+        local typeobject = iprototype.queryByName(r.prototype_name)
         res[iprototype.packcoord(r.x, r.y)] = {
             r.x,
             r.y,

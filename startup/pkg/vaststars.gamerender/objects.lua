@@ -19,7 +19,7 @@ end
 function M:set(object, cache_name)
     cache_name = cache_name or DEFAULT_CACHE_NAME
 
-    local typeobject = iprototype.queryByName("building", object.prototype_name)
+    local typeobject = iprototype.queryByName(object.prototype_name)
     local w, h = iprototype.rotate_area(typeobject.area, object.dir)
     for i = 0, w - 1 do
         for j = 0, h - 1 do

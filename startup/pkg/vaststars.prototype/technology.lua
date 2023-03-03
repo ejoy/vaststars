@@ -1827,7 +1827,7 @@ prototype "物流1" {
   time = "10s"
 }
 
-prototype "空气过滤" {
+prototype "空气过滤技术" {
   desc = "研究将火星混合气体分离的装置",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
@@ -1917,7 +1917,7 @@ prototype "铁矿熔炼2" {
   effects = {
     unlock_recipe = {"铁板2"},
   },
-  prerequisites = {"钢加工","空气过滤"},
+  prerequisites = {"钢加工","空气过滤技术"},
   ingredients = {
       {"地质科技包", 1},
       {"机械科技包", 1},
@@ -1934,7 +1934,7 @@ prototype "能量存储" {
     unlock_recipe = {"电解厂1"},
     unlock_building = {"电解厂I"},
   },
-  prerequisites = {"空气过滤"},
+  prerequisites = {"空气过滤技术"},
   ingredients = {
       {"气候科技包", 1},
       {"机械科技包", 1},
@@ -1985,7 +1985,7 @@ prototype "管道系统3" {
     unlock_recipe = {"地下管2"},
     unlock_building = {"地下管2-JI型"},
   },
-  prerequisites = {"空气过滤","浮选"},
+  prerequisites = {"空气过滤技术","浮选"},
   ingredients = {
       {"气候科技包", 1},
       {"机械科技包", 1},

@@ -29,7 +29,7 @@ function M.collect_item(world, e)
 end
 
 function M.add_req(world, e, prototype_name, count)
-    local prototype = iprototype.queryByName("item", prototype_name).id
+    local prototype = iprototype.queryByName(prototype_name).id
     local typeobject = iprototype.queryById(e.building.prototype)
     for i = 1, typeobject.slots do
         local slot = world:container_get(e.chest, i)
@@ -51,7 +51,7 @@ function M.add_req(world, e, prototype_name, count)
 end
 
 function M.add_req_force(world, e, prototype_name, count)
-    local prototype = iprototype.queryByName("item", prototype_name).id
+    local prototype = iprototype.queryByName(prototype_name).id
     local typeobject = iprototype.queryById(e.building.prototype)
     for i = 1, typeobject.slots do
         local slot = world:container_get(e.chest, i)

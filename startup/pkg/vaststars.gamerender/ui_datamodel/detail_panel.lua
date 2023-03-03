@@ -234,7 +234,7 @@ local function get_entity_property_list(object_id)
         return {}
     end
 
-    local typeobject = iprototype.queryByName("building", object.prototype_name)
+    local typeobject = iprototype.queryByName(object.prototype_name)
 
     local entity = get_property(e, typeobject)
     local property_list = get_property_list(entity)
@@ -306,7 +306,7 @@ function M:create(object_id)
         return {}
     end
 
-    local typeobject = iprototype.queryByName("building", object.prototype_name)
+    local typeobject = iprototype.queryByName(object.prototype_name)
     local datamodel = {
         object_id = object_id,
         icon = typeobject.icon,

@@ -22,7 +22,7 @@ end
 
 do
     local cache = {}
-    function M.each_maintype(maintype, ...)
+    function M.each_maintype(...)
         local function _check_types(typeobject, types)
             for _, type in ipairs(types) do
                 if not M.has_type(typeobject.type, type) then
@@ -34,7 +34,7 @@ do
 
         local types = {...}
         if #types == 0 then
-            return gameplay.prototype.each(maintype)
+            return gameplay.prototype.each()
         end
 
         table.sort(types)
@@ -44,7 +44,7 @@ do
         end
 
         local r = {}
-        for _, typeobject in pairs(gameplay.prototype.each(maintype)) do
+        for _, typeobject in pairs(gameplay.prototype.each()) do
             if _check_types(typeobject, types) then
                 r[typeobject.name] = typeobject
             end
@@ -185,17 +185,17 @@ function M.show_prototype_name(typeobject)
 end
 
 function M.is_pipe(prototype_name)
-    local typeobject = assert(M.queryByName("building", prototype_name))
+    local typeobject = assert(M.queryByName(prototype_name))
     return typeobject.pipe
 end
 
 function M.is_pipe_to_ground(prototype_name)
-    local typeobject = assert(M.queryByName("building", prototype_name))
+    local typeobject = assert(M.queryByName(prototype_name))
     return typeobject.pipe_to_ground
 end
 
 function M.is_road(prototype_name)
-    local typeobject = assert(M.queryByName("building", prototype_name))
+    local typeobject = assert(M.queryByName(prototype_name))
     return M.has_type(typeobject.type, "road")
 end
 

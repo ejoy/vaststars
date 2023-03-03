@@ -19,7 +19,7 @@ local global = require "global"
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
     dir = dir or DEFAULT_DIR
-    local typeobject = iprototype.queryByName("building", prototype_name)
+    local typeobject = iprototype.queryByName(prototype_name)
     local w, h = iprototype.rotate_area(typeobject.area, dir)
 
     if typeobject.construct_detector[1] == "exclusive" then
@@ -76,7 +76,7 @@ local function complete(self, object_id)
     -- TODO: special case for assembling machine
     -- The default recipe for the assembler is empty.
     local recipe
-    local typeobject = iprototype.queryByName("building", object.prototype_name)
+    local typeobject = iprototype.queryByName(object.prototype_name)
     if iprototype.has_type(typeobject.type, "assembling") then
         recipe = ""
     end
@@ -92,7 +92,7 @@ local function complete(self, object_id)
         elseif old.dir ~= object.dir then
             ientity:set_direction(gameplay_core.get_world(), gameplay_core.get_entity(object.gameplay_eid), object.dir)
         elseif old.fluid_name ~= object.fluid_name then
-            if iprototype.has_type(iprototype.queryByName("building", object.prototype_name).type, "fluidbox") then -- TODO: object may be fluidboxes
+            if iprototype.has_type(iprototype.queryByName(object.prototype_name).type, "fluidbox") then -- TODO: object may be fluidboxes
                 ifluid:update_fluidbox(gameplay_core.get_entity(object.gameplay_eid), object.fluid_name)
                 igameplay.update_chimney_recipe(object)
             end

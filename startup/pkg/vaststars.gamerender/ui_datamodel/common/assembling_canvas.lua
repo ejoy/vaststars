@@ -62,11 +62,11 @@ local function get_assembling_canvas_items(object, x, y, w, h)
         return draw_x, draw_y, draw_w, draw_h
     end
 
-    local recipe_typeobject = iprototype.queryByName("recipe", object.recipe)
-    local cfg = recipe_icon_canvas_cfg[recipe_typeobject.icon]
+    local recipe_typeobject = iprototype.queryByName(object.recipe)
+    local cfg = recipe_icon_canvas_cfg[recipe_typeobject.recipe_icon]
     if not cfg then
         assert(cfg)
-        log.error(("can not found `%s`"):format(recipe_typeobject.icon))
+        log.error(("can not found `%s`"):format(recipe_typeobject.recipe_icon))
         return
     end
 
@@ -116,7 +116,7 @@ local function get_assembling_canvas_items(object, x, y, w, h)
             goto continue
         end
 
-        local typeobject = iprototype.queryByName("fluid", fb.fluid_name)
+        local typeobject = iprototype.queryByName(fb.fluid_name)
         cfg = assert(fluid_icon_canvas_cfg[typeobject.icon], ("can not found `%s`"):format(typeobject.icon))
         position = iterrain:get_begin_position_by_coord(fb.x, fb.y)
         local x, y, w, h

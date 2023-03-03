@@ -29,15 +29,15 @@ local itask = ecs.require "task"
 local assembling_recipe = {}; local get_recipe_index; do
     local cache = {}
     for _, v in pairs(iprototype.each_maintype "recipe") do
-        if v.group then
+        if v.recipe_group then
             local recipe_item = {
                 name = v.name,
-                order = v.order,
-                icon = v.icon,
+                order = v.recipe_order,
+                icon = v.recipe_icon,
                 time = v.time,
                 ingredients = irecipe.get_elements(v.ingredients),
                 results = irecipe.get_elements(v.results),
-                group = v.group,
+                group = v.recipe_group,
             }
             cache[v.category] = cache[v.category] or {}
             cache[v.category][#cache[v.category] + 1] = recipe_item
@@ -55,7 +55,7 @@ local assembling_recipe = {}; local get_recipe_index; do
 
     local index_cache = {}
 
-    for _, v in pairs(iprototype.each_maintype "entity") do
+    for _, v in pairs(iprototype.each_maintype "building") do
         if not ((iprototype.has_type(v.type, "assembling") or iprototype.has_type(v.type, "lorry_factory")) and v.craft_category )then
             goto continue
         end
@@ -119,7 +119,7 @@ local function _update_neighbor_fluidbox(object)
                 goto continue
             end
 
-            local typeobject = iprototype.queryByName("building", o.prototype_name)
+            local typeobject = iprototype.queryByName(o.prototype_name)
             if iprototype.has_type(typeobject.type, "assembling") then
                 return true
             end
@@ -149,7 +149,7 @@ local function _update_neighbor_fluidbox(object)
                         sibling.fluidflow_id = neighbor.fluidflow_id
 
                         local fluid_icon -- TODO: duplicate code, see also saveload.lua
-                        local typeobject = iprototype.queryByName("building", sibling.prototype_name)
+                        local typeobject = iprototype.queryByName(sibling.prototype_name)
                         if iprototype.has_type(typeobject.type, "fluidbox") and sibling.fluid_name ~= "" then
                             if iprototype.is_pipe(sibling.prototype_name) or iprototype.is_pipe_to_ground(sibling.prototype_name) then
                                 if ((sibling.x % 2 == 1 and sibling.y % 2 == 1) or (sibling.x % 2 == 0 and sibling.y % 2 == 0)) and not _has_connection(sibling) then
@@ -294,7 +294,7 @@ function M:stage_ui_update(datamodel, object_id)
         if e.assembling then
             if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name) then
                 -- TODO viewport
-                local recipe_typeobject = iprototype.queryByName("recipe", recipe_name)
+                local recipe_typeobject = iprototype.queryByName(recipe_name)
                 assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))
                 object.fluid_name = irecipe.get_init_fluids(recipe_typeobject) or {} -- recipe may not have fluid
 
@@ -305,7 +305,7 @@ function M:stage_ui_update(datamodel, object_id)
                 iui.update("build_function_pop.rml", "update", object_id)
 
                 local vsobject = assert(vsobject_manager:get(object_id))
-                local typeobject = assert(iprototype.queryByName("building", object.prototype_name))
+                local typeobject = assert(iprototype.queryByName(object.prototype_name))
                 local w, h = iprototype.unpackarea(typeobject.area)
                 object.recipe = recipe_name
                 vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(object, object.x, object.y, w, h))
@@ -322,7 +322,7 @@ function M:stage_ui_update(datamodel, object_id)
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         iworld.set_recipe(gameplay_core.get_world(), e, nil)
         local vsobject = assert(vsobject_manager:get(object_id))
-        local typeobject = assert(iprototype.queryByName("building", object.prototype_name))
+        local typeobject = assert(iprototype.queryByName(object.prototype_name))
         local w, h = iprototype.unpackarea(typeobject.area)
         object.recipe = ""
         vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(object, object.x, object.y, w, h))
