@@ -34,7 +34,7 @@ std::span<container::slot> chest::array_slice(world& w, container::index start) 
 
 container::index chest::create(world& w, container::slot* data, container::size_type size) {
     auto start = w.container.create_chest(size);
-    for (uint8_t i = 0; i < size; ++i) {
+    for (uint8_t i = 0; i <= size; ++i) {
         auto& s = w.container.at(start + i);
         auto eof = s.eof;
         s = data[i];
