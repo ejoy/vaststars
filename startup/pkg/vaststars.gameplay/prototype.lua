@@ -10,12 +10,12 @@ function m.queryById(id)
 	return id_lookup[id]
 end
 
-function m.queryByName(maintype, name)
-	return name_lookup[maintype][name]
+function m.queryByName(_, name)
+	return name_lookup[name]
 end
 
-function m.each(maintype)
-	return name_lookup[maintype]
+function m.each()
+	return name_lookup
 end
 
 function m.value(unitname, v)

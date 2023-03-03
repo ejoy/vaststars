@@ -8,10 +8,6 @@ extern "C" {
 #include "util/prototype.h"
 }
 
-static bool isFluidId(uint16_t id) {
-    return (id & 0x0C00) == 0x0C00;
-}
-
 container::slot& chest::array_at(world& w, container::index start, uint8_t offset) {
 #if !defined(NDEBUG)
     auto& s = w.container.at(start);
@@ -53,13 +49,11 @@ void chest::destroy(world& w, container::index c) {
 
 uint16_t chest::get_fluid(world& w, container::index c, uint8_t offset) {
     auto& s = chest::array_at(w, c, offset);
-    assert(isFluidId(s.item));
     return s.amount;
 }
 
 void chest::set_fluid(world& w, container::index c, uint8_t offset, uint16_t value) {
     auto& s = chest::array_at(w, c, offset);
-    assert(isFluidId(s.item));
     s.amount = value;
 }
 

@@ -7,48 +7,23 @@ local id_lookup = status.prototype_id
 local name_lookup = status.prototype_name
 
 local function hashstring(s)
-	local h = #s
-	local b = { string.byte(s, 1, h) }
-	for i = 1, h do
+	local sz = #s
+	local h = sz
+	local b = { string.byte(s, 1, sz) }
+	for i = 1, sz do
 		h = h ~ ((h<<5) + (h>>2) + b[i])
 	end
 	return h
 end
 
-local maintype = {
-	building = {
-		maxid = 0,
-		magic = 0x0000,
-	},
-	item = {
-		maxid = 0,
-		magic = 0x0200,
-	},
-	recipe = {
-		maxid = 0,
-		magic = 0x0400,
-	},
-	tech = {
-		maxid = 0,
-		magic = 0x0600,
-	},
-	fluid = {
-		maxid = 0,
-		magic = 0x0C00,
-	},
-	drone = {
-		maxid = 0,
-		magic = 0x3000,
-	},
-}
-local function getid(mainkey, name)
-	local m = assert(maintype[mainkey])
+local maxid = 0
+local function getid(name)
 	local hash = hashstring(name) & 0xF000
-	m.maxid = m.maxid + 1
-	if m.maxid > 0x1FF then
+	maxid = maxid + 1
+	if maxid > 0xFFF then
 		error "Too many prototype"
 	end
-	return m.maxid | m.magic | hash
+	return maxid | hash
 end
 
 local function gen_union(list)
@@ -114,37 +89,90 @@ local function init(object)
 	end
 end
 
+local function array_exist(a, v)
+	for _, av in ipairs(a) do
+		if av == v then
+			return true
+		end
+	end
+	return false
+end
+
+local function array_append(t, a)
+	table.move(a, 1, #a, #t+1, t)
+end
+
+local function array_merge(a, b)
+	local c = {}
+	for _, bv in ipairs(b) do
+		if not array_exist(a, bv) then
+			c[#c+1] = bv
+		end
+	end
+	array_append(a, b)
+end
+
+local function equals(a, b)
+	local ta = type(a)
+    if ta ~= 'table' then
+        return a == b
+    end
+    if ta ~= type(b) then
+        return false
+    end
+    for k, v in pairs(a) do
+        if not equals(v, b[k]) then
+            return false
+        end
+    end
+    for k, v in pairs(b) do
+        if not equals(a[k], v) then
+            return false
+        end
+    end
+    return true
+end
+
 return function (name)
 	return function (object)
 		init(object)
 		local typelist = assert(object.type)
 		local cache_key = table.concat(typelist, ":")
 		local combine_keys = ckeys[cache_key](typelist)
-		local mainkey = object.type[1]
-		local namekey = "("..mainkey..")"..name
-		if name_lookup[mainkey][name] ~= nil then
-			local o = name_lookup[mainkey][name]
-			error(("Duplicate %s: %s"):format(o.type[1], o.name))
-		end
-		local id = getid(mainkey, name)
-		if id_lookup[id] ~= nil then
-			local o = id_lookup[id]
-			error(("Duplicate id: %s %s"):format(namekey, "("..o.type[1]..")"..o.name))
-		end
-		object.name = name
-		object.id = id
 		for _, key in ipairs(combine_keys) do
 			local v = object[key.key]
 			local ok, r, errmsg = pcall(unit[key.unit].converter, v, object)
 			if not ok then
-				error(string.format("Error format .%s in %s", key.key, namekey))
+				error(string.format("Error format .%s in %s", key.key, name))
 			end
 			if r == nil then
-				error(string.format(".%s in %s: %s", key.key, namekey, errmsg))
+				error(string.format(".%s in %s: %s", key.key, name, errmsg))
 			end
 			object[key.key] = r
 		end
-		name_lookup[mainkey][name] = object
-		id_lookup[id] = object
+		local oldobject = name_lookup[name]
+		if oldobject == nil then
+			local id = getid(name)
+			if id_lookup[id] ~= nil then
+				local o = id_lookup[id]
+				error(("Duplicate id: %s %s"):format(name, "("..o.type[1]..")"..o.name))
+			end
+			object.name = name
+			object.id = id
+			name_lookup[name] = object
+			id_lookup[object.id] = object
+		else
+			for k, v in pairs(object) do
+				if oldobject[k] == nil then
+					oldobject[k] = v
+				elseif k == "type" then
+					array_merge(oldobject[k], v)
+				elseif equals(oldobject[k], v) then
+					--ignore same
+				else
+					error(string.format("`%s` has duplicate key `%s`.", name, k))
+				end
+			end
+		end
 	end
 end

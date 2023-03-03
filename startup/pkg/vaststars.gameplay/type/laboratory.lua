@@ -10,7 +10,13 @@ local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
 
 local function isFluidId(id)
-    return id & 0x0C00 == 0x0C00
+    local pt = prototype.queryById(id)
+    for _, t in ipairs(pt.type) do
+        if t == "fluid" then
+            return true
+        end
+    end
+    return false
 end
 
 local function createChest(world, chest, s)

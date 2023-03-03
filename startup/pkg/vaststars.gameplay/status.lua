@@ -7,12 +7,5 @@ return {
     components = {},
     pipelines = {},
     prototype_id = require "vaststars.prototype.core",
-    prototype_name = {
-        building = {},
-        item = {},
-        recipe = {},
-        tech = {},
-        fluid = {},
-        drone = {},
-    },
+    prototype_name = {},
 }
