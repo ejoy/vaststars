@@ -18,11 +18,15 @@ static typename Map::mapped_type const* map_find(Map const& map, typename Map::k
 }
 
 static uint8_t safe_add(uint8_t a, uint8_t b) {
-    return (a + b <= UINT8_C(255)) ? a + b : UINT8_C(255);
+    if (b > UINT8_C(255) - a)
+        return UINT8_C(255);
+    return a + b;
 }
 
 static uint8_t safe_sub(uint8_t a, uint8_t b) {
-    return (a - b >= UINT8_C(0)) ? a - b : UINT8_C(0);
+    if (a > b)
+        return a - b;
+    return UINT8_C(0);
 }
 
 struct building_rect {
