@@ -58,6 +58,18 @@ local entities = {
         y = 126,
     },
     {
+        prototype_name = "无人机仓库",
+        dir = "S",
+        x = 120,
+        y = 130,
+    },
+    {
+        prototype_name = "水电站I",
+        dir = "S",
+        x = 124,
+        y = 128,
+    },
+    {
         prototype_name = "排水口残骸",
         dir = "S",
         items = {
