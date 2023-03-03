@@ -19,7 +19,7 @@ struct hub_mgr {
         uint32_t y : 9;
         uint32_t x : 9;
         inline uint32_t hash() const {
-            return std::bit_cast<uint32_t>(*this) & 0x0003FFFF;
+            return std::bit_cast<uint32_t>(*this) & 0xFFFFC000;
         }
         inline bool operator==(const berth& rhs) const {
             return std::bit_cast<uint32_t>(*this) == std::bit_cast<uint32_t>(rhs);

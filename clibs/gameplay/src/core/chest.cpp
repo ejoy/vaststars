@@ -188,7 +188,7 @@ lcreate(lua_State* L) {
     if (n < 0 || n > (uint16_t) -1 || sz % sizeof(container::slot) != 0) {
         return luaL_error(L, "size out of range.");
     }
-    auto index = chest::create(w, s, sz % sizeof(container::slot));
+    auto index = chest::create(w, s, (container::size_type)n);
     lua_pushinteger(L, index);
     return 1;
 }

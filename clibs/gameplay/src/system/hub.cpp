@@ -18,15 +18,11 @@ static typename Map::mapped_type const* map_find(Map const& map, typename Map::k
 }
 
 static uint8_t safe_add(uint8_t a, uint8_t b) {
-    if (b > UINT8_C(255) - a)
-        return a + b;
-    return UINT8_C(255);
+    return (a + b <= UINT8_C(255)) ? a + b : UINT8_C(255);
 }
 
 static uint8_t safe_sub(uint8_t a, uint8_t b) {
-    if (a > b)
-        return a - b;
-    return UINT8_C(0);
+    return (a - b >= UINT8_C(0)) ? a - b : UINT8_C(0);
 }
 
 struct building_rect {
@@ -188,11 +184,13 @@ lbuild(lua_State *L) {
             }
         }
         if (hub_info.hub.size() <= 1) {
-            if (hub_info.chest_red.empty() || hub_info.chest_blue.empty()) {
+            if (hub_info.chest_red.empty() && hub_info.chest_blue.empty()) {
                 continue;
             }
         }
-        b.hubs.emplace(std::move(self), std::move(hub_info));
+
+        auto s = create_berth({building, area}, hub_mgr::berth_type::hub, 0);
+        b.hubs.emplace(std::move(s), std::move(hub_info));
     }
     return 0;
 }
