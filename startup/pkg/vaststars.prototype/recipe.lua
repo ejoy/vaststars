@@ -1625,6 +1625,283 @@ prototype "管道建造站打印" {
     description = "打印可建造管道的装置",
 }
 
+------------------设计图-------------------
+prototype "采矿机设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  52,
+    recipe_icon =  "textures/construct/broken-miner.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"采矿机设计图", 1},
+    },
+    time = "5s",
+    description = "打印采矿机",
+}
+
+prototype "物流中心设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  52,
+    recipe_icon =  "textures/construct/logisitic1.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"物流中心设计图", 1},
+    },
+    time = "5s",
+    description = "打印可给运输车辆充电的物流中心",
+}
+
+prototype "电线杆设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-electric-pole1.texture",
+    ingredients = {
+        {"铁板", 1},
+    },
+    results = {
+        {"电线杆设计图", 1},
+    },
+    time = "3s",
+    description = "打印可导电的电线杆",
+}
+
+prototype "无人机仓库设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  55,
+    recipe_icon =  "textures/construct/broken-drone-depot.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"无人机仓库设计图", 1},
+    },
+    time = "5s",
+    description = "打印无人机仓库",
+}
+
+prototype "车站设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/broken-logisitic.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"车站设计图", 1},
+    },
+    time = "5s",
+    description = "打印车站",
+}
+
+prototype "熔炼炉设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "生产",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/broken-furnace.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"熔炼炉设计图", 1},
+    },
+    time = "5s",
+    description = "打印熔炼炉",
+}
+
+prototype "科研中心设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/broken-lab.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"科研中心设计图", 1},
+    },
+    time = "5s",
+    description = "打印科研中心",
+}
+
+prototype "太阳能板设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "生产",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/broken-solar-panel.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"太阳能板设计图", 1},
+    },
+    time = "10s",
+    description = "打印利用太阳能发电的装置",
+}
+
+prototype "蓄电池设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "生产",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-grid-battery.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"蓄电池设计图", 1},
+    },
+    time = "5s",
+    description = "打印可存储电能的电池",
+}
+
+prototype "水电站设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "化工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-hydroplant.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"水电站设计图", 1},
+    },
+    time = "10s",
+    description = "打印可处理液体的装置",
+}
+
+prototype "电解厂设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "化工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-electrolysis1.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"电解厂设计图", 1},
+    },
+    time = "10s",
+    description = "打印可电解液体的工厂",
+}
+
+prototype "化工厂设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "化工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-chemistry2.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"化工厂设计图", 1},
+    },
+    time = "10s",
+    description = "打印可处理化工原料的工厂",
+}
+
+prototype "组装机设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "生产",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-assembler.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"组装机设计图", 1},
+    },
+    time = "5s",
+    description = "打印可组装元件的工厂",
+}
+
+prototype "空气过滤器设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "化工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-air-filter1guolv.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"空气过滤器设计图", 1},
+    },
+    time = "3s",
+    description = "打印可过滤空气的装置",
+}
+
+prototype "地下水挖掘机设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "化工",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/broken-pump.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"地下水挖掘机设计图", 1},
+    },
+    time = "3s",
+    description = "打印可挖掘地下水的装置",
+}
+
+prototype "道路建造站设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  54,
+    recipe_icon =  "textures/construct/road-builder.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"道路建造站设计图", 1},
+    },
+    time = "5s",
+    description = "打印可建造道路的装置",
+}
+
+prototype "管道建造站设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  55,
+    recipe_icon =  "textures/construct/pipe-builder.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = { 
+        {"管道建造站设计图", 1},
+    },
+    time = "5s",
+    description = "打印可建造管道的装置",
+}
+
+-------------------------------------------
+
+
+
 prototype "地质科技包1" {
     type = { "recipe" },
     category = "器件小型制造",
