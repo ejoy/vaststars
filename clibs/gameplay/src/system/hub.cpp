@@ -340,7 +340,7 @@ static bool FindTask(lua_State* L, world& w, ecs::drone& drone) {
 static void Arrival(lua_State* L, world& w, ecs::drone& drone) {
     drone.prev = drone.next;
     switch ((drone_status)drone.status) {
-    case drone_status::mov1:
+    case drone_status::mov1: {
         auto slot = GetChestSlot(w, std::bit_cast<hub_mgr::berth>(drone.next));
         assert(slot);
         assert(slot->item == drone.item);
@@ -352,7 +352,8 @@ static void Arrival(lua_State* L, world& w, ecs::drone& drone) {
         Move(L, w, drone, drone.mov2);
         drone.mov2 = 0;
         break;
-    case drone_status::mov2:
+    }
+    case drone_status::mov2: {
         auto slot = GetChestSlot(w, std::bit_cast<hub_mgr::berth>(drone.next));
         assert(slot);
         assert(slot->item == drone.item);
@@ -366,6 +367,7 @@ static void Arrival(lua_State* L, world& w, ecs::drone& drone) {
             Move(L, w, drone, drone.home);
         }
         break;
+    }
     case drone_status::home:
         if (!FindTask(L, w, drone)) {
             drone.status = (uint8_t)drone_status::idle;
