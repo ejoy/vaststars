@@ -1,7 +1,6 @@
 require "type.base"
 require "type.building"
 require "type.chest"
-require "type.inserter"
 require "type.assembling"
 require "type.laboratory"
 require "type.powergrid"
