@@ -64,7 +64,7 @@ local entities = {
         y = 130,
     },
     {
-        prototype_name = "水电站I",
+        prototype_name = "建造中心",
         dir = "S",
         x = 124,
         y = 128,

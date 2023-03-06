@@ -282,7 +282,7 @@ prototype "拆除点" {
 }
 
 prototype "建造中心" {
-    model = "prefabs/headquater-1.prefab",
+    model = "prefabs/construction-center.prefab",
     icon = "textures/building_pic/small_pic_headquarter.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
@@ -292,11 +292,44 @@ prototype "建造中心" {
     group = {"物流"},
     craft_category = {"设计图打印"},
     slots = 5,
-    crossing = {
-        connections = {
-            {type="none", position={2,4,"S"}, roadside = true},
+    fluidboxes = {
+        input = {
+            {
+                capacity = 3000,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input", position={4,1,"E"}},
+                }
+            },
+            {
+                capacity = 3000,
+                height = 100,
+                base_level = -100,
+                connections = {
+                    {type="input", position={4,3,"E"}},
+                }
+            },
         },
-    }
+        output = {
+            {
+                capacity = 500,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={0,1,"W"}},
+                }
+            },
+            {
+                capacity = 500,
+                height = 100,
+                base_level = 150,
+                connections = {
+                    {type="output", position={0,3,"W"}},
+                }
+            },
+        },
+    },
 }
 
 prototype "道路建造站" {
