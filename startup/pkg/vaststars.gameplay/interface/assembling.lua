@@ -73,13 +73,13 @@ local function resetItems(world, recipe, chest, option)
     if chest.chest ~= 0 then
         for i = 1, 256 do
             local slot = world:container_get(chest, i)
+            if not slot then
+                break
+            end
             if not isFluidId(slot.item) then
                 assert(not olditems[slot.item])
                 olditems[i] = slot
                 hash[slot.item] = i
-            end
-            if slot.eof == 0 then
-                break
             end
         end
     end
