@@ -1545,7 +1545,7 @@ prototype "空气过滤器打印" {
     category = "设计图打印",
     recipe_group =  "物流",
     recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-air-filter1guolv.texture",
+    recipe_icon =  "textures/construct/broken-air-filter1.texture",
     ingredients = {
         {"空气过滤器设计图", 1},
     },
@@ -1818,7 +1818,7 @@ prototype "空气过滤器设计" {
     category = "设计图打印",
     recipe_group =  "化工",
     recipe_order =  54,
-    recipe_icon =  "textures/construct/broken-air-filter1guolv.texture",
+    recipe_icon =  "textures/construct/broken-air-filter1.texture",
     ingredients = {
         {"电动机I", 1},
         {"管道1-X型", 2},
