@@ -51,7 +51,7 @@ local detail_rml = {
 }
 
 local function __get_detail_rml(typeobject)
-    if typeobject.show_detail == false then
+    if typeobject.build_center == true then
         return "build_center.rml"
     end
 
