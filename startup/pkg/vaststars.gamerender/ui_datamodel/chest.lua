@@ -23,13 +23,19 @@ local item_crafting_recipe = setmetatable({}, mt)   -- item id -> crafting recip
 local item_crafting_entities = setmetatable({}, mt) -- item id -> crafting entity info
 local category_to_entities = setmetatable({}, mt)
 
+for _, typeobject in pairs(iprototype.each_maintype("item")) do
+    assert(typeobject.group, "item group is nil: " .. typeobject.name)
+end
+
 for _, typeobject in pairs(iprototype.each_maintype("building", "assembling")) do
-    if typeobject.recipe then -- default recipe, such as "miner"
+    if typeobject.recipe then -- default recipe
         local typeobject_recipe = assert(iprototype.queryByName(typeobject.recipe))
         category_to_entities[typeobject_recipe.category][typeobject.id] = {icon = typeobject.icon, name = typeobject.name}
     else
         if not typeobject.craft_category then
-            log.error(("%s dont have craft_category"):format(typeobject.name))
+            if not typeobject.mining_category then
+                log.error(("%s dont have craft_category"):format(typeobject.name))
+            end
         else
             for _, craft_category in ipairs(typeobject.craft_category) do
                 category_to_entities[craft_category][typeobject.id] = {icon = typeobject.icon, name = typeobject.name}
@@ -109,7 +115,7 @@ local function get_inventory(object_id)
             t.id = typeobject_item.id
             t.name = typeobject_item.name
             t.icon = typeobject_item.icon
-            t.category = typeobject_item.group
+            t.category = typeobject_item.group[1] -- currently, items will only have one category, which is used for displaying in the inventory.
 
             if stack >= typeobject_item.stack then
                 t.count = typeobject_item.stack
