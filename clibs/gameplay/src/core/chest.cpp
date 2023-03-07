@@ -29,7 +29,7 @@ std::span<container::slot> chest::array_slice(world& w, container::index start, 
 std::span<container::slot> chest::array_slice(world& w, container::index start) {
     auto& s = w.container.at(start);
     assert(s.eof >= start.slot);
-    return w.container.slice(start, s.eof - start.slot);
+    return w.container.slice(start, s.eof - start.slot + 1);
 }
 
 container::index chest::create(world& w, container::slot* data, container::size_type size) {

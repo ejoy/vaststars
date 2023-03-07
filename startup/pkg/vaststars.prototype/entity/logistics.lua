@@ -309,6 +309,7 @@ prototype "建造中心" {
             },
         },
     },
+    build_center = true,
 }
 
 prototype "道路建造站" {

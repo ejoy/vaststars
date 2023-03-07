@@ -20,7 +20,6 @@ local global = require "global"
 local iobject = ecs.require "object"
 local terrain = ecs.require "terrain"
 local icamera = ecs.require "engine.camera"
-local ipower_line = ecs.require "power_line"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local SHOW_LOAD_RESOURCE <const> = not require "debugger".disable_load_resource

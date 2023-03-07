@@ -23,7 +23,7 @@ local ipower_line = ecs.require "power_line"
 
 -- An object may contain multiple types at the same time
 -- The types are listed in order, with the earlier ones taking precedence over the later ones
-local detail_ui = {
+local detail_rml = {
     {
         type = "station",
         rml = "logistic_center.rml",
@@ -50,13 +50,24 @@ local detail_ui = {
     },
 }
 
-local function _show_detail(typeobject)
-    for _, v in ipairs(detail_ui) do
+local function __get_detail_rml(typeobject)
+    if typeobject.show_detail == false then
+        return "build_center.rml"
+    end
+
+    for _, v in ipairs(detail_rml) do
         if iprototype.has_type(typeobject.type, v.type) then
-            return true
+            return v.rml
         end
     end
-    return false
+    return nil
+end
+
+local function __show_detail(typeobject)
+    if typeobject.show_detail == false then
+        return false
+    end
+    return __get_detail_rml(typeobject) ~= nil
 end
 
 ---------------
@@ -83,11 +94,8 @@ function M:create(object_id, object_position, ui_x, ui_y)
 
     -- 组装机才显示设置配方菜单
     local show_set_recipe = false
-    local show_detail = _show_detail(typeobject)
+    local show_detail = __show_detail(typeobject)
     local recipe_name = ""
-    if typeobject.show_detail == false then
-        show_detail = false
-    end
 
     if iprototype.has_type(typeobject.type, "assembling") or iprototype.has_type(typeobject.type, "lorry_factory") then
         show_set_recipe = typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining") -- TODO: special case for mining
@@ -134,11 +142,9 @@ function M:stage_ui_update(datamodel, object_id)
     for _, _, _, object_id in detail_mb:unpack() do
         local object = assert(objects:get(object_id))
         local typeobject = iprototype.queryByName(object.prototype_name)
-        for _, v in ipairs(detail_ui) do
-            if iprototype.has_type(typeobject.type, v.type) then
-                iui.open({v.rml}, object_id)
-                break
-            end
+        local rml = __get_detail_rml(typeobject)
+        if rml then
+            iui.open({rml}, object_id)
         end
     end
 
