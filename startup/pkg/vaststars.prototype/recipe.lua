@@ -1169,7 +1169,7 @@ prototype "破损化工厂" {
     description = "修复损坏的化工厂",
 }
 
-prototype "破损组装机" {
+prototype "维修组装机" {
     type = { "recipe" },
     category = "生产手工制造",
     recipe_group =  "生产",
@@ -1189,7 +1189,7 @@ prototype "破损组装机" {
     description = "修复损坏的组装机",
 }
 
-prototype "破损铁制电线杆" {
+prototype "维修铁制电线杆" {
     type = { "recipe" },
     category = "生产手工制造",
     recipe_group =  "生产",
@@ -1208,7 +1208,7 @@ prototype "破损铁制电线杆" {
     description = "修复损坏的铁制电线杆",
 }
 
-prototype "破损太阳能板" {
+prototype "维修太阳能板" {
     type = { "recipe" },
     category = "生产手工制造",
     recipe_group =  "生产",
@@ -1245,7 +1245,7 @@ prototype "破损蓄电池" {
     description = "修复损坏的蓄电池",
 }
 
-prototype "破损物流中心" {
+prototype "维修物流中心" {
     type = { "recipe" },
     category = "生产手工制造",
     recipe_group =  "生产",
@@ -1263,7 +1263,7 @@ prototype "破损物流中心" {
     description = "修复损坏的物流中心",
 }
 
-prototype "运输汽车生产" {
+prototype "维修运输汽车" {
     type = { "recipe" },
     category = "生产手工制造",
     recipe_group =  "生产",
@@ -1271,27 +1271,6 @@ prototype "运输汽车生产" {
     allow_as_intermediate = false,
     recipe_icon =  "textures/construct/broken-truck.texture",
     ingredients = {
-        -- {"铁丝", 10},
-        {"铁矿石", 3},
-        {"运输车辆设计图", 1},
-    },
-    results = {
-        {"运输车辆I", 1},
-    },
-    time = "4s",
-    description = "修复损坏的运输汽车",
-}
-
-prototype "破损运输车" {
-    type = { "recipe" },
-    category = "车辆制造",
-    recipe_group =  "生产",
-    recipe_order =  128,
-    allow_as_intermediate = false,
-    recipe_icon =  "textures/construct/broken-truck.texture",
-    ingredients = {
-        -- {"铁丝", 10},
-        {"铁矿石", 3},
         {"破损运输车辆", 1},
     },
     results = {
@@ -1301,7 +1280,7 @@ prototype "破损运输车" {
     description = "修复损坏的运输汽车",
 }
 
-prototype "破损基建站" {
+prototype "维修基建站" {
     type = { "recipe" },
     category = "生产手工制造",
     recipe_group =  "生产",
@@ -1319,7 +1298,7 @@ prototype "破损基建站" {
     description = "修复损坏的基建站",
 }
 
-prototype "破损物流需求站" {
+prototype "维修物流需求站" {
     type = { "recipe" },
     category = "生产手工制造",
     recipe_group =  "生产",
@@ -1842,6 +1821,7 @@ prototype "空气过滤器设计" {
     recipe_icon =  "textures/construct/broken-air-filter1guolv.texture",
     ingredients = {
         {"电动机I", 1},
+        {"管道1-X型", 2},
     },
     results = {
         {"空气过滤器设计图", 1},

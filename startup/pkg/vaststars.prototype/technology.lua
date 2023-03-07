@@ -1259,7 +1259,7 @@ prototype "铁加工1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"铁齿轮","破损组装机"},
+    unlock_recipe = {"铁齿轮","维修组装机"},
     unlock_building = {"组装机I"},
   },
   prerequisites = {"生产管道"},
@@ -1290,7 +1290,7 @@ prototype "石头处理2" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"破损太阳能板","破损蓄电池"},
+    unlock_recipe = {"维修太阳能板","维修蓄电池"},
     unlock_building = {"太阳能板I","蓄电池I"},
   },
   prerequisites = {"空气分离"},
@@ -1301,7 +1301,7 @@ prototype "石头处理2" {
   time = "2s"
 }
 
-prototype "维修太阳能板" {
+prototype "修理太阳能板" {
   desc = "维修太阳能板并利用太阳能板技术发电",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
@@ -1321,7 +1321,7 @@ prototype "放置太阳能板" {
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
   task = {"select_entity", 0, "太阳能板I"},
-  prerequisites = {"维修太阳能板"},
+  prerequisites = {"修理太阳能板"},
   count = 8,
   tips_pic = {
     "textures/task_tips_pic/task_place_solarpanel.texture",
@@ -1337,7 +1337,7 @@ prototype "基地生产2" {
   icon = "textures/science/tech-research.texture",
   effects = {
     modifier = {["headquarter-mining-speed"] = 0.1},
-    unlock_recipe = {"破损铁制电线杆","建造中心"},
+    unlock_recipe = {"维修铁制电线杆","建造中心"},
     unlock_building = {"铁制电线杆"},
   },
   prerequisites = {"空气分离"},
@@ -1389,7 +1389,7 @@ prototype "碳处理1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"二氧化碳转甲烷","破损化工厂"},
+    unlock_recipe = {"二氧化碳转甲烷","化工厂打印"},
     unlock_building = {"化工厂I"},
   },
   prerequisites = {"电解","空气分离","放置太阳能板"},
