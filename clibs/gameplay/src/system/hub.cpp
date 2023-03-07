@@ -85,12 +85,12 @@ struct building_rect {
     uint32_t hash() const;
 };
 
-static hub_mgr::berth create_berth(building_rect const& r, hub_mgr::berth_type type, uint8_t slot) {
+static hub_mgr::berth create_berth(building_rect const& r, hub_mgr::berth_type type, uint8_t chest_slot, uint8_t berth_slot = 0) {
     return {
         0
         , (uint32_t)type
-        , 0
-        , slot
+        , chest_slot
+        , berth_slot
         , (uint32_t)r.y1+(uint32_t)r.y2
         , (uint32_t)r.x1+(uint32_t)r.x2
     };
@@ -222,7 +222,7 @@ static void Move(lua_State* L, world& w, ecs::drone& drone, uint32_t target) {
 
 static container::slot* GetChestSlot(world& w, hub_mgr::berth const& berth) {
     if (auto chest = w.buildings.chests.find(berth.hash())) {
-        return &chest::getslot(w, container::index::from(*chest), berth.slot);
+        return &chest::getslot(w, container::index::from(*chest), berth.chest_slot);
     }
     return nullptr;
 }
@@ -255,7 +255,7 @@ static size_t FindChestRed(world& w, const hub_mgr::hub_info& info) {
         size_t ii = (i + w.time) % N;
         auto berth = info.chest_red[ii];
         if (auto chest = w.buildings.chests.find(berth.hash())) {
-            auto& chestslot = chest::getslot(w, container::index::from(*chest), berth.slot);
+            auto& chestslot = chest::getslot(w, container::index::from(*chest), berth.chest_slot);
             if (chestslot.amount > chestslot.lock_item) {
                 return ii;
             }
@@ -270,7 +270,7 @@ static size_t FindChestBlue(world& w, const hub_mgr::hub_info& info) {
         size_t ii = (i + w.time) % N;
         auto berth = info.chest_blue[ii];
         if (auto chest = w.buildings.chests.find(berth.hash())) {
-            auto& chestslot = chest::getslot(w, container::index::from(*chest), berth.slot);
+            auto& chestslot = chest::getslot(w, container::index::from(*chest), berth.chest_slot);
             if (chestslot.limit > chestslot.amount + chestslot.lock_space) {
                 return ii;
             }
@@ -291,7 +291,7 @@ static std::tuple<size_t, size_t, bool> FindHub(world& w, const hub_mgr::hub_inf
         size_t ii = (i + w.time) % N;
         auto berth = info.hub[ii];
         if (auto chest = w.buildings.chests.find(berth.hash())) {
-            auto& chestslot = chest::getslot(w, container::index::from(*chest), berth.slot);
+            auto& chestslot = chest::getslot(w, container::index::from(*chest), berth.chest_slot);
             if (min.index == -1 || ((chestslot.amount < min.amount) && (chestslot.limit > chestslot.item))) {
                 min.index = ii;
                 min.amount = chestslot.amount;
