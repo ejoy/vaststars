@@ -103,9 +103,9 @@ namespace roadnet {
     static std::optional<direction> applyCross(network& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
         assert(N.cross);
         direction prev = G.dir;
+        auto& cross = w.crossAry[N.id];
         for (uint8_t i = 0; i < 4; ++i) {
             direction dir = (direction)i;
-            auto cross = w.crossAry[N.id];
             roadid Next = cross.neighbor[i];
             if (Next && (cross.u_turn || prev != dir)) {
                 if (!ctx.results.contains({N, dir})) {
@@ -130,9 +130,11 @@ namespace roadnet {
             roadid G = pop(ctx.openlist);
             assert(!G.cross);
             auto& straight = w.straightAry[G.id];
-            roadid N = straight.neighbor;
-            if (auto res = applyCross(w, ctx, {G, straight.dir}, N, E); res) {
-                return buildPath(ctx, {S, direction::n}, {E, *res}, path);
+            roadid Next = straight.neighbor;
+            if (Next) {
+                if (auto res = applyCross(w, ctx, {G, straight.dir}, Next, E); res) {
+                    return buildPath(ctx, {S, direction::n}, {E, *res}, path);
+                }
             }
         }
         return false;
