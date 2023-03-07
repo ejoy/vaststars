@@ -1,7 +1,10 @@
 local ecs, mailbox = ...
 local world = ecs.world
 local w = world.w
-
+local math3d    = require "math3d"
+local ivs       = ecs.import.interface "ant.scene|ivisible_state"
+local iUiRt     = ecs.import.interface "ant.rmlui|iuirt"
+local iom       = ecs.import.interface "ant.objcontroller|iobj_motion"
 local item_category = import_package "vaststars.prototype"("item_category")
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"
@@ -124,23 +127,67 @@ end
 
 ---------------
 local M = {}
-
+local current_model
+local model_path
 function M:create(object_id)
     local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName(object.prototype_name)
-
+    model_path = typeobject.model
+    if current_model then
+        for _, eid in ipairs(current_model.tag["*"]) do
+            w:remove(eid)
+        end
+        current_model = nil
+    end
     return {
         object_id = object_id, -- for update
         prototype_name = iprototype.show_prototype_name(typeobject),
-        background = typeobject.background, -- The picture displayed on the far left when the UI is opened.
         item_category = item_category,
         inventory = get_inventory(object_id),
         item_prototype_name = "",
         max_slot_count = typeobject.slots,
     }
 end
-
+local queuename = "chest_model_queue"
+local gid
+local inited = false
 function M:stage_ui_update(datamodel)
+    gid = iUiRt.get_group_id("chest_model")
+    if gid and not inited then
+        inited = true
+        local g = ecs.group(gid)
+        g:enable "view_visible"
+        g:enable "scene_update"
+        --g:create_instance("/pkg/vaststars.resources/light.prefab")
+        -- local ground = g:create_instance("/pkg/ant.resources.binary/meshes/plane.glb|mesh.prefab")
+        -- ground.on_ready = function (e)
+        --     for _, eid in ipairs(e.tag['*']) do
+        --         local ee = w:entity(eid, "visible_state?in")
+        --         if ee.visible_state then
+        --             ivs.set_state(ee, "main_view|selectable|cast_shadow", false)
+        --             ivs.set_state(ee, queuename, true)
+        --         end
+        --     end
+        -- end
+        -- world:create_object(ground)
+    end
+    if gid and model_path and not current_model then
+        local g = ecs.group(gid)
+        --TODO: test model
+        current_model = g:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab")--g:create_instance("/pkg/vaststars.resources/"..model_path)--
+        current_model.on_ready = function (e)
+            for _, eid in ipairs(e.tag['*']) do
+                local ee = w:entity(eid, "visible_state?in")
+                if ee.visible_state then
+                    ivs.set_state(ee, "main_view|selectable|cast_shadow", false)
+                    ivs.set_state(ee, queuename, true)
+                    -- iom.set_position(ee, math3d.vector(0, 0, 0))
+                end
+            end 
+        end       
+        world:create_object(current_model)
+    end
+
     for _, _, _, prototype in click_item_mb:unpack() do
         local typeobject = iprototype.queryById(prototype)
         datamodel.show_item_info = true
