@@ -11,7 +11,6 @@ extern "C" {
 container::slot& chest::array_at(world& w, container::index start, uint8_t offset) {
 #if !defined(NDEBUG)
     auto& s = w.container.at(start);
-    assert(s.eof >= start.slot);
     assert(s.eof - start.slot >= offset);
 #endif
     return w.container.at(start + offset);
@@ -19,8 +18,7 @@ container::slot& chest::array_at(world& w, container::index start, uint8_t offse
 
 std::span<container::slot> chest::array_slice(world& w, container::index start, uint8_t offset, uint16_t size) {
 #if !defined(NDEBUG)
-    auto& s = w.container.at(start+offset);
-    assert(s.eof >= start.slot);
+    auto& s = chest::array_at(w, start, offset);
     assert(s.eof - start.slot >= size);
 #endif
     return w.container.slice(start + offset, size);
@@ -28,7 +26,6 @@ std::span<container::slot> chest::array_slice(world& w, container::index start, 
 
 std::span<container::slot> chest::array_slice(world& w, container::index start) {
     auto& s = w.container.at(start);
-    assert(s.eof >= start.slot);
     return w.container.slice(start, s.eof - start.slot + 1);
 }
 
@@ -121,7 +118,6 @@ void chest::limit(world& w, container::index c, const uint16_t* r, uint16_t n) {
 
 uint16_t chest::size(world& w, container::index c) {
     auto& s = w.container.at(c);
-    assert(s.eof >= c.slot);
     return s.eof - c.slot;
 }
 
@@ -169,10 +165,6 @@ bool chest::place_force(world& w, container::index c, uint16_t item, uint16_t am
     return false;
 }
 
-container::slot& chest::getslot(world& w, container::index c, uint8_t offset) {
-    return w.container.at(c + offset);
-}
-
 static int
 lcreate(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
@@ -201,29 +193,30 @@ lget(lua_State* L) {
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
     uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
     auto c = container::index::from(index);
-    auto& r = chest::getslot(w, c, offset);
-    if (r.eof < c.slot) {
+    auto& start = w.container.at(c);
+    if (start.eof - c.slot < offset) {
         return 0;
     }
+    auto& s = chest::array_at(w, c, offset);
     lua_createtable(L, 0, 7);
-    switch (r.type) {
+    switch (s.type) {
     case container::slot::slot_type::red:   lua_pushstring(L, "red"); break;
     case container::slot::slot_type::blue:  lua_pushstring(L, "blue"); break;
     case container::slot::slot_type::green: lua_pushstring(L, "green"); break;
     default:                                lua_pushstring(L, "unknown"); break;
     }
     lua_setfield(L, -2, "type");
-    lua_pushinteger(L, r.item);
+    lua_pushinteger(L, s.item);
     lua_setfield(L, -2, "item");
-    lua_pushinteger(L, r.amount);
+    lua_pushinteger(L, s.amount);
     lua_setfield(L, -2, "amount");
-    lua_pushinteger(L, r.limit);
+    lua_pushinteger(L, s.limit);
     lua_setfield(L, -2, "limit");
-    lua_pushinteger(L, r.lock_item);
+    lua_pushinteger(L, s.lock_item);
     lua_setfield(L, -2, "lock_item");
-    lua_pushinteger(L, r.lock_space);
+    lua_pushinteger(L, s.lock_space);
     lua_setfield(L, -2, "lock_space");
-    lua_pushinteger(L, r.eof - c.slot);
+    lua_pushinteger(L, s.eof - c.slot);
     lua_setfield(L, -2, "eof");
     return 1;
 }
@@ -232,7 +225,12 @@ lset(lua_State* L) {
     world& w = *(world *)lua_touserdata(L, 1);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
     uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
-    auto& r = chest::getslot(w, container::index::from(index), offset);
+    auto c = container::index::from(index);
+    auto& start = w.container.at(c);
+    if (start.eof - c.slot < offset) {
+        return 0;
+    }
+    auto& r = chest::array_at(w, c, offset);
     if (LUA_TNIL != lua_getfield(L, 4, "type")) {
         static const char *const opts[] = {"red", "blue", "green", NULL};
         r.type = (container::slot::slot_type)luaL_checkoption(L, -1, NULL, opts);

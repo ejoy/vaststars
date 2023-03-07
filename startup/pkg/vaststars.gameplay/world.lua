@@ -284,7 +284,7 @@ return function ()
         return chest.create(cworld, info)
     end
     function world:container_destroy(c)
-        return chest.destroy(cworld, c)
+        return chest.destroy(cworld, c.chest)
     end
     function world:container_get(c, i)
         return chest.get(cworld, c.chest, i)

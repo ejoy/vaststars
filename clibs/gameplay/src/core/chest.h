@@ -108,11 +108,16 @@ public:
         return alloc_array(size);
     }
     void free_array(index idx, size_type size) {
+        if (idx == kInvalidIndex) {
+            return;
+        }
         free_chunk(idx.page, {idx.slot, size});
     }
     slot& at(index idx) {
         assert(idx.page < pages.size());
-        return pages[idx.page]->slots[idx.slot];
+        auto& s = pages[idx.page]->slots[idx.slot];
+        assert(s.eof >= idx.slot);
+        return s;
     }
     std::span<slot> slice(index idx, size_type size) {
         assert(idx.page < pages.size());
