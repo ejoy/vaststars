@@ -111,7 +111,7 @@ prototype "机器爪I" {
     speed = "1s",
     power = "12kW",
     priority = "secondary",
-    group = {"物流","默认"},
+    group = {"物流"},
 }
 
 prototype "科研中心I" {
@@ -222,7 +222,7 @@ prototype "砖石公路-O型-01" {
     tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
-    group = {"物流","默认"},
+    group = {"物流"},
     crossing = {
         connections = {
         }

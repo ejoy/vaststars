@@ -53,7 +53,7 @@ prototype "地下水挖掘机" {
     power = "6kW",
     priority = "secondary",
     recipe = "离岸抽水",
-    group = {"管道","默认"},
+    group = {"管道"},
     show_detail = false,
     maxslot = "8",
     fluidboxes = {
@@ -172,7 +172,7 @@ prototype "管道1-I型" {
     show_detail = false,
     type = {"building","fluidbox"},
     area = "1x1",
-    group = {"管道","默认"},
+    group = {"管道"},
     fluidbox = {
         capacity = 100,
         height = 100,
