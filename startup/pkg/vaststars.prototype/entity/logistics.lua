@@ -66,11 +66,6 @@ prototype "物流需求站" {
     area = "1x1",
     slots = 10,
     group = {"物流"},
-    crossing = {
-        connections = {
-            {type="none", position={0,0,"S"}, roadside = true},
-        },
-    }
 }
 
 prototype "物流中心I" {
@@ -85,12 +80,6 @@ prototype "物流中心I" {
     priority = "secondary",
     group = {"物流"},
     lorry = {"运输车辆I"},
-    crossing = {
-        connections = {
-            {type="station", position={1,2,"S"}, roadside = true},
-            {type="park",    position={2,2,"S"}, roadside = true},
-        },
-    }
 }
 
 prototype "运输车辆I" {
@@ -141,11 +130,6 @@ prototype "科研中心I" {
         "机械科技包",
     },
     group = {"物流"},
-    crossing = {
-        connections = {
-            {type="laboratory", position={1,2,"S"}, roadside = true},
-        },
-    }
 }
 
 prototype_road "砖石公路-I型-%02d" {
@@ -274,11 +258,6 @@ prototype "拆除点" {
     dismantle_area = "32x32",
     group = {"物流"},
     slots = 20,
-    crossing = {
-        connections = {
-            {type="none", position={0,0,"S"}, roadside = true},
-        },
-    }
 }
 
 prototype "建造中心" {
@@ -368,7 +347,7 @@ prototype "车站" {
     group = {"物流"},
     crossing = {
         connections = {
-            {type="none", position={0,0,"S"}, roadside = true},
+            {type="station", position={0,0,"S"}, roadside = true},
         },
     }
 }

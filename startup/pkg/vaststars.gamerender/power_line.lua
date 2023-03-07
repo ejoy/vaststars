@@ -1,15 +1,10 @@
 local ecs   = ...
 local world = ecs.world
 local w           = world.w
-local iobject           = ecs.require "object"
 local iterrain          = ecs.require "terrain"
 local iline_entity      = ecs.require "engine.line_entity"
 local vsobject_manager  = ecs.require "vsobject_manager"
 local math3d            = require "math3d"
-local global            = require "global"
-local iprototype        = require "gameplay.interface.prototype"
-local objects           = require "objects"
-local EDITOR_CACHE_NAMES = {"POWER_AREA", "CONSTRUCTED"}
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local M ={}
@@ -68,21 +63,6 @@ function M.update_line(pole_lines)
     M.clear_line()
     for _, l in ipairs(pole_lines) do
         lines[#lines + 1] = create_line(l.p1, l.p2)
-    end
-end
-
-function M.show_power_supply_area()
-    local network = global.power_network
-    for _, nw in ipairs(network) do
-        for _, pole in ipairs(nw.poles) do
-            if pole.eid then
-                for _, object in objects:selectall("gameplay_eid", pole.eid, EDITOR_CACHE_NAMES) do
-                    local _object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
-                    local typeobject = iprototype.queryByName(object.prototype_name)
-                    _object.state = ("power_pole_selected_%s"):format(typeobject.power_supply_area)
-                end
-            end
-        end
     end
 end
 

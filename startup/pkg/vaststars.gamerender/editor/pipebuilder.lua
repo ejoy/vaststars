@@ -22,6 +22,8 @@ local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local ientity = require "gameplay.interface.entity"
 local gameplay_core = require "gameplay.core"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
+local math3d = require "math3d"
+local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 
 local REMOVE <const> = {}
 local DEFAULT_DIR <const> = require("gameplay.interface.constant").DEFAULT_DIR
@@ -209,7 +211,6 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         new_fluidflow_id = global.fluidflow_id
     end
     local object_state = State.succ and "construct" or "invalid_construct"
-    self.coord_indicator.state = object_state
 
     -- TODO: map may be include some non-pipe objects, such as some building which have fluidboxes, only for changing the state of the building
     for coord, v in pairs(map) do
@@ -328,7 +329,6 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
         new_fluidflow_id = global.fluidflow_id
     end
     local object_state = State.succ and "construct" or "invalid_construct"
-    self.coord_indicator.state = object_state
 
     -- TODO: map may be include some non-pipe objects, such as some building which have fluidboxes, only for changing the state of the building
     for coord, v in pairs(map) do
@@ -389,10 +389,8 @@ local function _builder_init(self, datamodel)
 
     if is_valid_starting(coord_indicator.x, coord_indicator.y) then
         datamodel.show_start_laying = true
-        coord_indicator.state = "construct"
     else
         datamodel.show_start_laying = false
-        coord_indicator.state = "invalid_construct"
     end
 end
 
@@ -658,10 +656,15 @@ local function __apply_teardown(self, x, y)
     end
 end
 
+local function __calc_grid_position(self, typeobject)
+    local _, originPosition = logistic_coord:align(math3d.vector {0, 0, 0}, iprototype.unpackarea(typeobject.area))
+    local buildingPosition = logistic_coord:get_begin_position_by_coord(self.pickup_object.x, self.pickup_object.y)
+    return math3d.ref(math3d.add(math3d.sub(buildingPosition, originPosition), GRID_POSITION_OFFSET))
+end
 --------------------------------------------------------------------------------------------------
 local function new_entity(self, datamodel, typeobject)
     if not self.grid_entity then
-        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = {0, 0.1, 0}})
+        self.grid_entity = igrid_entity.create("polyline_grid", terrain._width, terrain._height, terrain.tile_size, {t = __calc_grid_position(self, typeobject)})
     end
     self.grid_entity:show(true)
 
@@ -682,7 +685,6 @@ local function new_entity(self, datamodel, typeobject)
             t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
         },
         fluid_name = "",
-        state = "construct",
         object_state = "none",
     }
 
@@ -693,6 +695,10 @@ end
 local function touch_move(self, datamodel, delta_vec)
     if self.coord_indicator then
         iobject.move_delta(self.coord_indicator, delta_vec)
+    end
+    if self.grid_entity then
+        local typeobject = iprototype.queryByName(self.coord_indicator.prototype_name)
+        self.grid_entity:send("obj_motion", "set_position", __calc_grid_position(self, typeobject))
     end
 end
 
@@ -771,7 +777,6 @@ local function place_one(self, datamodel)
         },
         fluid_name = 0,
         fluidflow_id = new_fluidflow_id,
-        state = "construct",
         object_state = "none",
     }
     objects:set(object, EDITOR_CACHE_NAMES[2])
@@ -845,7 +850,6 @@ local function confirm(self, datamodel)
                     end
                 end
             end
-            object.state = "constructed"
             object.object_state = "constructed"
         end
     end

@@ -7,71 +7,23 @@ local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local iprototype = require "gameplay.interface.prototype"
 local imodifier = ecs.import.interface "ant.modifier|imodifier"
-local terrain = ecs.require "terrain"
 local icanvas = ecs.require "engine.canvas"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
-local iplant = ecs.require "engine.plane"
 
-local BLOCK_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.1, 0, 0.0})
 local CONSTRUCT_COLOR_INVALID <const> = math3d.constant "null"
-local CONSTRUCT_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 0.55})
-local CONSTRUCT_COLOR_WHITE <const> = math3d.constant("v4", {1.5, 2.5, 1.5, 0.55})
-
-local CONSTRUCT_BLOCK_COLOR_INVALID <const> = math3d.constant "null"
-local CONSTRUCT_BLOCK_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.2, 0.2, 0.4})
-local CONSTRUCT_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
-
-local CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
-local CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
-
-local typeinfos = {
-    ["construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 0}, -- 未确认, 合法
-    ["invalid_construct"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_RED, block_edge_size = 0}, -- 未确认, 非法
-    ["confirm"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已确认
-    ["constructed"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 已施工
-    ["selected"] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_BLOCK_COLOR_GREEN, block_edge_size = 6},
-    ["moving"] = {state = "translucent", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 移动中
-    ["remove"] = {state = "translucent", color = CONSTRUCT_COLOR_RED, block_color = CONSTRUCT_BLOCK_COLOR_INVALID, block_edge_size = 0}, -- 未确认, 非法
-}
-
-for _, typeobject in pairs(iprototype.each_maintype "building") do
-    if typeobject.power_supply_area then
-        local w, h = typeobject.power_supply_area:match("(%d+)x(%d+)")
-        w, h = tonumber(w), tonumber(h)
-
-        local ew, eh = iprototype.unpackarea(typeobject.area)
-        assert(w == h)
-        assert(ew == eh)
-        typeinfos[("power_pole_construct_%s"):format(typeobject.power_supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}
-        typeinfos[("power_pole_invalid_construct_%s"):format(typeobject.power_supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_RED, block_edge_size = (w - ew) * 10}
-        typeinfos[("power_pole_selected_%s"):format(typeobject.power_supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_INVALID, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}
-        typeinfos[("power_pole_confirm_%s"):format(typeobject.power_supply_area)] = {state = "opaque", color = CONSTRUCT_COLOR_WHITE, block_color = CONSTRUCT_POWER_POLE_BLOCK_COLOR_GREEN, block_edge_size = (w - ew) * 10}
-    end
-end
 
 local function set_position(self, position)
     assert(position)
     self.game_object:send("obj_motion", "set_position", position)
-    if self.block then
-        local block_pos = math3d.ref(math3d.add(position, BLOCK_POSITION_OFFSET))
-        self.block:send("obj_motion", "set_position", block_pos)
-    end
 end
 
 local function set_dir(self, dir)
     self.game_object:send("obj_motion", "set_rotation", ROTATORS[dir])
-    if self.block then
-        self.block:send("obj_motion", "set_rotation", ROTATORS[dir])
-    end
 end
 
 local function remove(self)
     if self.game_object then
         self.game_object:remove()
-    end
-
-    if self.block then
-        self.block:remove()
     end
 
     for _, type in ipairs({icanvas.types().ICON, icanvas.types().BUILDING_BASE}) do
@@ -80,24 +32,8 @@ local function remove(self)
 end
 
 local function update(self, t)
-    local typeinfo = typeinfos[t.type or self.type]
     local typeobject = iprototype.queryByName(t.prototype_name or self.prototype_name)
-    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, t.animation_name)
-    assert(t.srt)
-
-    if self.block then
-        self.block:remove()
-        self.block = nil
-    end
-
-    if typeinfo.block_color ~= CONSTRUCT_BLOCK_COLOR_INVALID then
-        local typeobject = iprototype.queryByName(self.prototype_name)
-        local w, h = iprototype.unpackarea(typeobject.area)
-        w, h = w + 1, h + 1
-        local block_pos = math3d.ref(math3d.add(t.srt.t, BLOCK_POSITION_OFFSET))
-        local srt = {r = t.srt.r, s = {terrain.tile_size * w + typeinfo.block_edge_size, 1, terrain.tile_size * h + typeinfo.block_edge_size}, t = block_pos}
-        self.block = iplant.create("/pkg/vaststars.resources/materials/singlecolor.material", "u_color", typeinfo.block_color, srt)
-    end
+    self.game_object:update(typeobject.model, "opaque", CONSTRUCT_COLOR_INVALID, t.animation_name)
 
     self.type = t.type or self.type
     self.prototype_name = t.prototype_name or self.prototype_name
@@ -106,15 +42,13 @@ end
 -- TODO: remove this function, simply use update
 local function emissive_color_update(self, color)
     self.emissive_color = color
-    local typeinfo = typeinfos[self.type]
     local typeobject = iprototype.queryByName(self.prototype_name)
-    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, nil, color)
+    self.game_object:update(typeobject.model, "opaque", CONSTRUCT_COLOR_INVALID, nil, color)
 end
 
 local function animation_name_update(self, animation_name)
-    local typeinfo = typeinfos[self.type]
     local typeobject = iprototype.queryByName(self.prototype_name)
-    self.game_object:update(typeobject.model, typeinfo.state, typeinfo.color, animation_name, self.emissive_color)
+    self.game_object:update(typeobject.model, "opaque", CONSTRUCT_COLOR_INVALID, animation_name, self.emissive_color)
 end
 
 local function attach(self, slot_name, model, ...)
@@ -164,27 +98,15 @@ end
 -- }
 return function (init)
     local typeobject = iprototype.queryByName(init.prototype_name)
-    local typeinfo = assert(typeinfos[init.type], ("invalid type `%s`"):format(init.type))
-
     local game_object = assert(igame_object.create({
         prefab = typeobject.model,
         group_id = init.group_id,
-        state = typeinfo.state,
-        color = typeinfo.color,
+        state = "opaque",
+        color = CONSTRUCT_COLOR_INVALID,
         srt = {r = ROTATORS[init.dir], t = init.position},
         parent = nil,
         slot = nil,
     }))
-
-    local w, h = iprototype.unpackarea(typeobject.area)
-    w, h = w + 1, h + 1
-
-    local block_pos = math3d.ref(math3d.add(init.position, BLOCK_POSITION_OFFSET))
-    local srt = {r = ROTATORS[init.dir], s = {terrain.tile_size * w + typeinfo.block_edge_size, 1, terrain.tile_size * h + typeinfo.block_edge_size}, t = block_pos}
-    local block
-    if typeinfo.block_color ~= CONSTRUCT_COLOR_INVALID then
-        block = iplant.create("/pkg/vaststars.resources/materials/singlecolor.material", "u_color", typeinfo.block_color, srt)
-    end
 
     local vsobject = {
         id = init.id,
@@ -195,7 +117,6 @@ return function (init)
         canvas_id = {}, -- type -> canvas_id
 
         game_object = game_object,
-        block = block,
         srt_modifier = imodifier.create_bone_modifier(game_object.hitch_entity_object.id, init.group_id, "/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab", "Bone"), -- TODO
 
         --

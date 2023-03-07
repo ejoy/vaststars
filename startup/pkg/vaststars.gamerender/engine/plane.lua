@@ -34,6 +34,9 @@ end
 entity_events["material"] = function(_, e, method, ...)
     imaterial[method](e, ...)
 end
+entity_events["set_color"] = function(_, e, color)
+	imaterial.set_property(e, "u_color", color)
+end
 
 local function create(material, property, color, srt, render_layer)
 	assert(color and color ~= MATH3D_NULL)
@@ -47,7 +50,7 @@ local function create(material, property, color, srt, render_layer)
 			material = material,
 			visible_state = "main_view",
 			name = ("plane_%d"):format(gen_id()),
-			render_layer = "translucent",
+			render_layer = render_layer or "translucent",
 			simplemesh = imesh.init_mesh(ientity.create_mesh({"p3|n3", plane_vb}, nil, math3d.ref(math3d.aabb({-0.5, 0, -0.5}, {0.5, 0, 0.5}))), true),
 			on_ready = function (e)
 				ivs.set_state(e, "main_view", true)

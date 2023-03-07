@@ -20,11 +20,6 @@ prototype "熔炼炉I" {
         output = {
         },
     },
-    crossing = {
-        connections = {
-            {type="assembling", position={1,2,"S"}, roadside = true},
-        },
-    }
 }
 
 prototype "熔炼炉II" {
@@ -46,11 +41,6 @@ prototype "熔炼炉II" {
         output = {
         },
     },
-    crossing = {
-        connections = {
-            {type="assembling", position={1,2,"S"}, roadside = true},
-        },
-    }
 }
 
 prototype "粉碎机I" {

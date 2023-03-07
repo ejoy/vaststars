@@ -8,6 +8,7 @@ local irecipe = require "gameplay.interface.recipe"
 local ilaboratory = require "gameplay.interface.laboratory"
 local ichest = require "gameplay.interface.chest"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
+local UPS <const> = require("gameplay.interface.constant").UPS
 
 local function format_vars(fmt, vars)
     return string.gsub(fmt, "%$([%w%._]+)%$", vars)
@@ -38,7 +39,8 @@ local function get_property_list(entity)
 end
 
 local function get_solar_panel_power(total)
-    local t = global.frame_count % 25000
+    local gameplayWorld = gameplay_core.get_world()
+    local t = gameplayWorld:now() % 25000
     if t <= 6250 or t > 18750 then
         return total
     elseif t <= 11250  then
@@ -76,14 +78,14 @@ local function get_display_info(e, typeobject, t)
                         local st = global.statistic["power"][e.eid]
                         if st then
                             -- power is sum of 50 tick
-                            current = st[cn] * (global.frame_ratio / 50)
+                            current = st[cn] * (UPS / 50)
                         elseif typeobject.name == "指挥中心" then
                             current = 0
                             for _, value in pairs(global.statistic.power_consumed) do
                                 current = current + value
                             end
                         elseif e.solar_panel then
-                            current = get_solar_panel_power(total) * global.frame_ratio
+                            current = get_solar_panel_power(total) * UPS
                             if current <= 0 then
                                 status = 1 --shundown status
                             end
@@ -91,12 +93,12 @@ local function get_display_info(e, typeobject, t)
                         if typeobject.drain then
                             if current <= 0 then
                                 status = 1 --shundown status
-                            elseif current <= typeobject.drain * global.frame_ratio then
+                            elseif current <= typeobject.drain * UPS then
                                 status = 2 --idle status
                             end
                         end
                     end
-                    total = total * global.frame_ratio
+                    total = total * UPS
                     local unit = "k"
                     local divisor = 1000
                     if total >= 1000000000 then

@@ -20,11 +20,6 @@ prototype "采矿机I" {
         input = {},
         output = {},
     },
-    crossing = {
-        connections = {
-            {type="assembling", position={1,2,"S"}, roadside = true},
-        },
-    }
 }
 
 prototype "采矿机II" {
@@ -46,9 +41,4 @@ prototype "采矿机II" {
         input = {},
         output = {},
     },
-    crossing = {
-        connections = {
-            {type="assembling", position={1,2,"S"}, roadside = true},
-        },
-    }
 }

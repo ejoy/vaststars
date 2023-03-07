@@ -226,9 +226,4 @@ prototype "水电站I" {
             },
         },
     },
-    crossing = {
-        connections = {
-            {type="assembling", position={2,0,"N"}, roadside = true},
-        },
-    }
 }

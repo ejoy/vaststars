@@ -48,7 +48,6 @@ local function new(init)
         y = assert(init.y),
         fluid_name = init.fluid_name,
         fluidflow_id = init.fluidflow_id,
-        state = assert(init.state),
         object_state = assert(init.object_state),
         recipe = init.recipe,
         fluid_icon = init.fluid_icon,
@@ -71,7 +70,6 @@ local function clone(outer)
         y = assert(outer.y),
         fluid_name = outer.fluid_name,
         fluidflow_id = outer.fluidflow_id,
-        state = assert(outer.state),
         gameplay_eid = outer.gameplay_eid,
         recipe = outer.recipe,
         fluid_icon = outer.fluid_icon,
@@ -130,7 +128,6 @@ local function flush()
                 prototype_name = outer.prototype_name,
                 dir = outer.dir,
                 position = outer.srt.t,
-                type = outer.state,
                 group_id = terrain:get_group_id(outer.x, outer.y),
             }
 

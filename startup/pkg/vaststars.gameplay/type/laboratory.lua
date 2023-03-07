@@ -1,6 +1,5 @@
 local type = require "register.type"
 local prototype = require "prototype"
-local iendpoint = require "interface.endpoint"
 
 local c = type "laboratory"
     .inputs "itemtypes"
@@ -35,9 +34,7 @@ end
 
 function c:ctor(init, pt)
     local world = self
-    local endpoint = iendpoint.create(world, init, pt, "laboratory")
     local chest = {
-        endpoint = endpoint,
         fluidbox_in = 0,
         fluidbox_out = 0,
         lorry = 0xffff,

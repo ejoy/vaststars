@@ -8,11 +8,6 @@ prototype "组装机残骸" {
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "red",
-    crossing = {
-        connections = {
-            {type="chest", position={4,2,"E"}, roadside = true},
-        },
-    },
     group = {"物流" , "默认"},
     area = "5x5",
     slots = 8,
@@ -26,11 +21,6 @@ prototype "排水口残骸" {
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "red",
-    crossing = {
-        connections = {
-            {type="chest", position={1,0,"N"}, roadside = true},
-        },
-    },
     group = {"物流" , "默认"},
     area = "3x3",
     slots = 5,
@@ -44,11 +34,6 @@ prototype "抽水泵残骸" {
     construct_detector = {"exclusive"},
     type = {"building", "chest"},
     chest_type = "red",
-    crossing = {
-        connections = {
-            {type="chest", position={1,2,"S"}, roadside = true},
-        },
-    },
     group = {"物流" , "默认"},
     area = "3x3",
     slots = 17,

@@ -165,9 +165,8 @@ function M:stage_ui_update(datamodel)
             datamodel.show_rotate = false
             datamodel.show_confirm = false
             datamodel.construct_menu = _get_construct_menu()
-            ipower_line.show_power_supply_area()
         else
-            ieditor:revert_changes({"TEMPORARY", "POWER_AREA"})
+            ieditor:revert_changes({"TEMPORARY"})
         end
     end
 
@@ -231,7 +230,7 @@ function M:stage_camera_usage(datamodel)
         end
 
         idetail.unselected()
-        ieditor:revert_changes({"TEMPORARY", "POWER_AREA"})
+        ieditor:revert_changes({"TEMPORARY"})
 
         local object = assert(objects:get(object_id))
         local prototype_name = object.prototype_name

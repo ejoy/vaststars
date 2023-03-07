@@ -149,7 +149,6 @@ function M:stage_ui_update(datamodel, object_id)
 
         iobject.remove(object)
         objects:remove(object_id, "CONSTRUCTED")
-        objects:remove(object_id, "SELECTED")
         iui.close("build_function_pop.rml")
         iui.close("detail_panel.rml")
 

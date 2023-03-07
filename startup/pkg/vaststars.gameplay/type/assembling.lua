@@ -1,7 +1,6 @@
 local type = require "register.type"
 local assembling = require "interface.assembling"
 local fluidbox = require "interface.fluidbox"
-local iendpoint = require "interface.endpoint"
 
 local c = type "assembling"
     .speed "percentage"
@@ -13,14 +12,12 @@ local STATUS_DONE <const> = 1
 function c:ctor(init, pt)
     local world = self
     local recipe_name = pt.recipe and pt.recipe or init.recipe
-    local endpoint = iendpoint.create(world, init, pt, "assembling")
     local e = {
         fluidboxes = {},
         chest = {
             chest = 0xffff,
             fluidbox_in = 0,
             fluidbox_out = 0,
-            endpoint = endpoint,
         },
         assembling = {
             progress = 0,

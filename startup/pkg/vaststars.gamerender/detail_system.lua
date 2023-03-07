@@ -8,8 +8,6 @@ local math3d = require "math3d"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local idetail = ecs.interface "idetail"
-local EDITOR_CACHE_NAMES <const> = {"SELECTED", "CONSTRUCTED"}
-local iobject = ecs.require "object"
 
 function idetail.show(object_id)
     iui.open({"detail_panel.rml"}, object_id)
@@ -37,21 +35,39 @@ function idetail.show(object_id)
     return true
 end
 
-function idetail.unselected()
-    for _, object in objects:all("SELECTED") do
-        object.state = "constructed"
+do
+    local CONSTRUCT_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
+    local BLOCK_CONSTRUCT_POWER_POLE_COLOR_GREEN <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
+    local BLOCK_EDGE_SIZE <const> = 6
+
+    local BLOCK_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
+    local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
+    local terrain = ecs.require "terrain"
+    local iplant = ecs.require "engine.plane"
+
+    local blocks = {}
+
+    function idetail.unselected()
+        for _, block in ipairs(blocks) do
+            block:remove()
+        end
+        blocks = {}
     end
-    objects:clear({"SELECTED"})
-end
 
-function idetail.selected(object)
-    idetail.unselected()
+    function idetail.selected(object)
+        idetail.unselected()
 
-    object = objects:modify(object.x, object.y, EDITOR_CACHE_NAMES, iobject.clone)
-    local typeobject = iprototype.queryByName(object.prototype_name) -- TODO: special case for powerpole
-    if typeobject.power_supply_area then
-        object.state = ("power_pole_selected_%s"):format(typeobject.power_supply_area)
-    else
-        object.state = "selected"
+        local block_color
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        if typeobject.power_supply_area then
+            block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_GREEN
+        else
+            block_color = CONSTRUCT_BLOCK_COLOR_GREEN
+        end
+        local block_pos = math3d.ref(math3d.add(object.srt.t, BLOCK_POSITION_OFFSET))
+
+        local w, h = iprototype.unpackarea(typeobject.area)
+        local srt = {r = ROTATORS[object.dir], s = {terrain.tile_size * w + BLOCK_EDGE_SIZE, 1, terrain.tile_size * h + BLOCK_EDGE_SIZE}, t = block_pos}
+        blocks[#blocks+1] = iplant.create("/pkg/vaststars.resources/materials/singlecolor.material", "u_color", block_color, srt)
     end
 end

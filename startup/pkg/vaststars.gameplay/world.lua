@@ -305,6 +305,9 @@ return function ()
     function world:loop(...)
         return timer.loop(...)
     end
+    function world:now(...)
+        return timer.now(...)
+    end
 
     for name, f in pairs(roadnet) do
         world["roadnet_"..name] = function (_, ...)

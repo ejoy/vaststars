@@ -5,6 +5,7 @@ local w = world.w
 
 local ipl = ecs.import.interface "ant.render|ipolyline"
 local ivs = ecs.import.interface "ant.scene|ivisible_state"
+local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
 local COLOR <const> = {0.0, 1.0, 0.0, 0.4}
 local LINE_WIDTH = 70
@@ -16,6 +17,9 @@ events["show"] = function(_, e, b)
 end
 events["remove"] = function(_, e)
 	w:remove(e)
+end
+events["obj_motion"] = function(_, e, method, ...)
+    iom[method](e, ...)
 end
 
 local M = {}
@@ -60,7 +64,7 @@ function M.create(name, width, height, unit, srt)
 
 	local objects = {}
 	objects[#objects+1] = ientity_object.create(ipl.add_linelist(p1, LINE_WIDTH, COLOR, material, srt), events)
-	objects[#objects+1] = ientity_object.create(ipl.add_linelist(p2, LINE_WIDTH * 2, COLOR, material, srt), events)
+	objects[#objects+1] = ientity_object.create(ipl.add_linelist(p2, LINE_WIDTH, COLOR, material, srt), events)
 
 	local outer_proxy = {
 		objects = objects,
@@ -75,6 +79,11 @@ function M.create(name, width, height, unit, srt)
 				obj:send("remove")
 			end
 			self.objects = {}
+		end,
+		send = function (self, ...)
+			for _, obj in ipairs(self.objects) do
+				obj:send(...)
+			end
 		end,
 	}
 	return outer_proxy

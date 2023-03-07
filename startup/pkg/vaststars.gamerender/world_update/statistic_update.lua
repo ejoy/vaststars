@@ -2,6 +2,7 @@ local ecs = ...
 local world = ecs.world
 local w = world.w
 
+local UPS <const> = require("gameplay.interface.constant").UPS
 local timer = ecs.import.interface "ant.timer|itimer"
 local gameplay_core = require "gameplay.core"
 local global = require "global"
@@ -44,7 +45,6 @@ local function update_world(world)
             statistic.power_generated[key] = node2
         end
     end
-    global.frame_count = global.frame_count + 1
     local delta_s = timer.delta() * 0.001
     for key, fs in pairs(filter_statistic) do
         fs.elapsed = fs.elapsed + delta_s
@@ -68,7 +68,7 @@ local function update_world(world)
             statistic.power[eid] = nil
             local e = gameplay_core.get_entity(eid)
             if e.generator then
-                statistic.total_generated = statistic.total_generated - statistic.power[eid].cfg.power * global.frame_ratio
+                statistic.total_generated = statistic.total_generated - statistic.power[eid].cfg.power * UPS
             end
         end
     end
@@ -93,7 +93,7 @@ local function update_world(world)
                     pg.count = pg.count + 1
 
                     if e.generator then
-                        statistic.total_generated = statistic.total_generated + cfg.power * global.frame_ratio
+                        statistic.total_generated = statistic.total_generated + cfg.power * UPS
                     end
                 end
             end

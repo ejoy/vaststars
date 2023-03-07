@@ -40,11 +40,6 @@ prototype "组装机I" {
             },
         },
     },
-    crossing = {
-        connections = {
-            {type="assembling", position={1,2,"S"}, roadside = true},
-        },
-    }
 }
 
 prototype "组装机II" {
@@ -138,12 +133,6 @@ prototype "车辆厂I" {
     maxslot = "8",
     group = {"加工"},
     craft_category = {"车辆制造"},
-    crossing = {
-        connections = {
-            {type="assembling", position={1,4,"S"}, roadside = true},
-            {type="park",       position={2,4,"S"}, roadside = true},
-        },
-    },
     fluidboxes = {
         input = {
         },

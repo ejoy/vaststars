@@ -139,7 +139,6 @@ local function restore_world()
             },
             fluid_name = fluid_name,
             fluidflow_id = fluidflow_id,
-            state = "constructed",
             recipe = recipe,
             fluid_icon = fluid_icon,
             object_state = "constructed",

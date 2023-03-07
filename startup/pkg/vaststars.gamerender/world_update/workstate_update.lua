@@ -32,7 +32,7 @@ local function update_world(world)
         if st then
             local game_object = vsobject.game_object
             -- is working ?
-            if st.power < math.floor((global.frame_count - last_frame_count) * 0.5) * st.cfg.power then
+            if st.power < math.floor((world:now() - last_frame_count) * 0.5) * st.cfg.power then
                 game_object.on_idle()
                 vsobject:emissive_color_update(STATE_NO_POWER)
                 vsobject:animation_name_update("idle")
@@ -44,6 +44,6 @@ local function update_world(world)
             -- TODO: low_power
         end
     end
-    last_frame_count = global.frame_count
+    last_frame_count = world:now()
 end
 return update_world
