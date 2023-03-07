@@ -98,6 +98,9 @@ local function get_inventory(object_id)
     end
 
     for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e)) do
+        if slot.item == 0 then -- TODO: fix this
+            goto continue
+        end
         local typeobject_item = assert(iprototype.queryById(slot.item))
         local stack = slot.amount
 
@@ -117,6 +120,7 @@ local function get_inventory(object_id)
             inventory[#inventory+1] = t
             stack = stack - typeobject_item.stack
         end
+        ::continue::
     end
     return inventory
 end
