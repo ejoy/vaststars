@@ -2,6 +2,7 @@
 
 #include "util/component.h"
 #include "util/flatmap.h"
+#include "util/bit_cast.h"
 #include <vector>
 #include <map>
 
