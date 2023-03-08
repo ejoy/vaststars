@@ -61,18 +61,6 @@ prototype "仓库" {
     item_description = "贮藏物品的容器",
 }
 
-prototype "基建站" {
-    type = {"item"},
-    stack = 1,
-    item_description = "修建道路的专用设备",
-}
-
-prototype "物流派送站" {
-    type = {"item"},
-    stack = 1,
-    item_description = "将货物从货站装运到运输车",
-}
-
 prototype "物流需求站" {
     type = {"item"},
     stack = 1,

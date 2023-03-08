@@ -8,6 +8,7 @@ prototype "蒸汽发电机I" {
     construct_detector = {"exclusive"},
     type = {"building", "generator", "fluidbox"},
     area = "3x5",
+    rotate_on_build = true,
     power = "1MW",
     priority = "secondary",
     group = {"物流"},
@@ -75,9 +76,11 @@ prototype "换热器I" {
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes"},
     area = "3x2",
+    rotate_on_build = true,
     craft_category = {"流体换热处理"},
     show_detail = false,
     maxslot = "8",
+    group = {"物流"},
     fluidboxes = {
         input = {
             {
@@ -127,8 +130,10 @@ prototype "锅炉I" {
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "fluidboxes"},
     area = "3x2",
+    rotate_on_build = true,
     craft_category = {"流体换热处理"},
     maxslot = "8",
+    group = {"物流"},
     fluidboxes = {
         input = {
             {

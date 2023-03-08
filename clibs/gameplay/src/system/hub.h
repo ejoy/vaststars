@@ -2,6 +2,7 @@
 
 #include "util/component.h"
 #include "util/flatmap.h"
+#include "util/bit_cast.h"
 #include <vector>
 #include <map>
 
@@ -14,8 +15,8 @@ struct hub_mgr {
     struct berth {
         uint32_t unused : 5;
         uint32_t type : 2;
-        uint32_t chest : 4;
-        uint32_t slot : 3;
+        uint32_t chest_slot : 4;
+        uint32_t berth_slot : 3;
         uint32_t y : 9;
         uint32_t x : 9;
         inline uint32_t hash() const {

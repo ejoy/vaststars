@@ -11,4 +11,5 @@ prototype "任务" {
     type = {"item"},
     stack = 10,
     tech_icon = "",
+    group = {},
 }

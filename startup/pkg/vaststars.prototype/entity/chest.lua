@@ -7,7 +7,7 @@ prototype "小铁制箱子I" {
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
-    group = {"物流" , "默认"},
+    group = {"物流"},
     area = "1x1",
     slots = 10,
 }
@@ -18,7 +18,7 @@ prototype "小铁制箱子II" {
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
-    group = {"物流" , "默认"},
+    group = {"物流"},
     area = "1x1",
     slots = 20,
 }
@@ -29,7 +29,7 @@ prototype "大铁制箱子I" {
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
-    group = {"物流" , "默认"},
+    group = {"物流"},
     area = "2x2",
     slots = 30,
 }
@@ -40,7 +40,7 @@ prototype "仓库" {
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
-    group = {"物流" , "默认"},
+    group = {"物流"},
     area = "5x5",
     slots = 60,
 }
@@ -51,7 +51,7 @@ prototype "无人机仓库" {
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "hub"},
-    group = {"物流" , "默认"},
+    group = {"物流"},
     area = "2x2",
     supply_area = "6x6",
     slots = 1,
