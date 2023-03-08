@@ -71,6 +71,12 @@ local entities = {
         x = 133,
         y = 122,
     },
+    {
+        prototype_name = "熔炼炉I",
+        dir = "N",
+        x = 140,
+        y = 126,
+    },
 }
 
 local road = {
