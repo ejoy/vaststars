@@ -311,6 +311,7 @@ local t = {
 	"/pkg/ant.render/framebuffer_mgr.lua",
 	"/pkg/ant.render/ibl/ibl.ecs",
 	"/pkg/ant.render/ibl/ibl.lua",
+	"/pkg/ant.render/ibl/sh.lua",
 	"/pkg/ant.render/light/light.ecs",
 	"/pkg/ant.render/light/light.lua",
 	"/pkg/ant.render/main.lua",

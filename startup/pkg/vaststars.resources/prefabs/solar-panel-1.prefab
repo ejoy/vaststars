@@ -31,8 +31,9 @@ policy:
 data:
   anim_ctrl: {}
   animation:
-    work: /pkg/vaststars.resources/glb/solar-panel-1.glb|animations/work.ozz
-  animation_birth: work
+    idle_start: /pkg/vaststars.resources/glb/solar-panel-1.glb|animations/idle_start.ozz
+    work_start: /pkg/vaststars.resources/glb/solar-panel-1.glb|animations/work_start.ozz
+  animation_birth: idle_start
   name: animation
   skeleton: /pkg/vaststars.resources/glb/solar-panel-1.glb|animations/skeleton.ozz
 policy:
