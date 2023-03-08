@@ -168,22 +168,42 @@ function M:stage_ui_update(datamodel)
         local g = ecs.group(gid)
         g:enable "view_visible"
         g:enable "scene_update"
-        -- g:create_instance("/pkg/vaststars.resources/light2.prefab")
-        -- local ground = g:create_instance("/pkg/ant.resources.binary/meshes/plane.glb|mesh.prefab")
-        -- ground.on_ready = function (e)
-        --     for _, eid in ipairs(e.tag['*']) do
-        --         local ee = w:entity(eid, "visible_state?in")
-        --         if ee.visible_state then
-        --             ivs.set_state(ee, "main_view|selectable|cast_shadow", false)
-        --             ivs.set_state(ee, queuename, true)
-        --         end
-        --     end
-        -- end
-        -- world:create_object(ground)
+        ---[[
+        local light = g:create_instance("/pkg/vaststars.resources/light2.prefab")
+        light.on_ready = function (inst)
+            local alleid = inst.tag['*']
+            for _, eid in ipairs(alleid) do
+                local ee <close> = w:entity(eid, "visible_state?in")
+                if ee.visible_state then
+                    ivs.set_state(ee, "main_view|selectable|cast_shadow", false)
+                    ivs.set_state(ee, queuename, true)
+                end
+            end
+        end
+        world:create_object(light)
+        --]]
+        ---[[
+        local ground = g:create_instance("/pkg/vaststars.resources/glb/plane.glb|mesh.prefab")
+        ground.on_ready = function (inst)
+            local alleid = inst.tag['*']
+            local re <close> = w:entity(alleid[1])
+            iom.set_scale(re, math3d.vector(10, 1, 10))
+            for _, eid in ipairs(alleid) do
+                local ee <close> = w:entity(eid, "visible_state?in")
+                if ee.visible_state then
+                    ivs.set_state(ee, "main_view|selectable|cast_shadow", false)
+                    ivs.set_state(ee, queuename, true)
+                end
+            end
+        end
+        world:create_object(ground)
+        --]]
+        ---[[
         local test = g:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab")--g:create_instance("/pkg/vaststars.resources/"..model_path)--
-        test.on_ready = function (e)
-            for _, eid in ipairs(e.tag['*']) do
-                local ee = w:entity(eid, "visible_state?in")
+        test.on_ready = function (inst)
+            local alleid = inst.tag['*']
+            for _, eid in ipairs(alleid) do
+                local ee <close> = w:entity(eid, "visible_state?in")
                 if ee.visible_state then
                     ivs.set_state(ee, "main_view|selectable|cast_shadow", false)
                     ivs.set_state(ee, queuename, true)
@@ -192,21 +212,22 @@ function M:stage_ui_update(datamodel)
             end 
         end       
         world:create_object(test)
+        --]]
     end
     -- if gid and model_path and not current_model then
     --     local g = ecs.group(gid)
     --     --TODO: test model
-    --     current_model = g:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab")--g:create_instance("/pkg/vaststars.resources/"..model_path)--
+    --     current_model = g:create_instance("/pkg/vaststars.resources/"..model_path)--g:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab")--
     --     current_model.on_ready = function (e)
     --         for _, eid in ipairs(e.tag['*']) do
-    --             local ee = w:entity(eid, "visible_state?in")
+    --             local ee <close> = w:entity(eid, "visible_state?in")
     --             if ee.visible_state then
     --                 ivs.set_state(ee, "main_view|selectable|cast_shadow", false)
     --                 ivs.set_state(ee, queuename, true)
     --                 -- iom.set_position(ee, math3d.vector(0, 0, 0))
     --             end
-    --         end 
-    --     end       
+    --         end
+    --     end
     --     world:create_object(current_model)
     -- end
 
