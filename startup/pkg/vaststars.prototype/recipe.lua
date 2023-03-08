@@ -261,7 +261,7 @@ prototype "道路建造站" {
     results = {
         {"道路建造站", 1},
     },
-    time = "12s",
+    time = "5s",
     description = "修建道路建造站",
 }
 
@@ -433,7 +433,7 @@ prototype "物流中心1" {
     results = {
         {"物流中心I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "发电设施和车载设备制造物流中心",
 }
 
@@ -450,7 +450,7 @@ prototype "车站" {
     results = {
         {"车站", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "发电设施和车载设备制造物流中心",
 }
 
@@ -530,15 +530,14 @@ prototype "铁制电线杆" {
     recipe_order =  30,
     recipe_icon =  "textures/construct/electric-pole1.texture",
     ingredients = {
-        {"塑料", 1},
-        {"铁板", 2},
+        {"铁板", 3},
         -- {"铁棒", 1},
         -- {"铁丝", 2},
     },
     results = {
         {"铁制电线杆", 1},
     },
-    time = "2s",
+    time = "5s",
     description = "导电材料制造电线杆",
 }
 
@@ -549,14 +548,13 @@ prototype "采矿机1" {
     recipe_order =  40,
     recipe_icon =  "textures/construct/miner.texture",
     ingredients = {
-        {"铁板", 4},
         {"铁齿轮", 3},
         {"电动机I", 2},
     },
     results = {
         {"采矿机I", 2},
     },
-    time = "6s",
+    time = "5s",
     description = "使用铁制品和电动机制造采矿机",
 }
 
@@ -573,7 +571,7 @@ prototype "采矿机2" {
     results = {
         {"采矿机II", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "使用铁制品和电动机制造采矿机",
 }
 
@@ -585,13 +583,12 @@ prototype "熔炼炉1" {
     recipe_icon =  "textures/construct/furnace1.texture",
     ingredients = {
         {"铁板", 3},
-        -- {"铁丝", 2},
         {"石砖", 4},
     },
     results = {
         {"熔炼炉I", 1},
     },
-    time = "8s",
+    time = "5s",
     description = "使用铁制品和石砖制造熔炼炉",
 }
 
@@ -609,7 +606,7 @@ prototype "熔炼炉2" {
     results = {
         {"熔炼炉II", 1},
     },
-    time = "15s",
+    time = "5s",
     description = "使用铁制品和石砖制造熔炼炉",
 }
 
@@ -620,14 +617,13 @@ prototype "组装机1" {
     recipe_order =  70,
     recipe_icon =  "textures/construct/assembler1.texture",
     ingredients = {
-        {"小铁制箱子I", 1},
         {"电动机I", 2},
         {"铁齿轮", 4},
     },
     results = {
         {"组装机I", 1},
     },
-    time = "6s",
+    time = "5s",
     description = "机械原料制造组装机",
 }
 
@@ -644,7 +640,7 @@ prototype "组装机2" {
     results = {
         {"组装机II", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "机械原料制造组装机",
 }
 
@@ -661,7 +657,7 @@ prototype "建造中心" {
     results = {
         {"建造中心", 1},
     },
-    time = "6s",
+    time = "5s",
     description = "制造建造中心",
 }
 
@@ -680,7 +676,7 @@ prototype "蒸汽发电机1" {
     results = {
         {"蒸汽发电机I", 1},
     },
-    time = "8s",
+    time = "5s",
     description = "管道和机械原料制造蒸汽发电机",
 }
 
@@ -708,14 +704,13 @@ prototype "液罐1" {
     recipe_order =  22,
     recipe_icon =  "textures/construct/liquid-tank.texture",
     ingredients = {
-        {"管道1-X型", 4},
+        {"管道1-X型", 6},
         -- {"铁棒", 1},
-        {"铁板", 6},
     },
     results = {
         {"液罐I", 1},
     },
-    time = "6s",
+    time = "5s",
     description = "制造可装载液体资源的容器",
 }
 
@@ -726,14 +721,13 @@ prototype "气罐1" {
     recipe_order =  23,
     recipe_icon =  "textures/construct/gas-tank.texture",
     ingredients = {
-        {"管道1-X型", 3},
+        {"管道1-X型", 6},
         -- {"铁棒", 1},
-        {"铁板", 8},
     },
     results = {
         {"气罐I", 1},
     },
-    time = "6s",
+    time = "5s",
     description = "制造可装载气体资源的容器",
 }
 
@@ -744,15 +738,13 @@ prototype "化工厂1" {
     recipe_order =  80,
     recipe_icon =  "textures/construct/chemistry2.texture",
     ingredients = {
-        {"玻璃", 4},
-        {"压力泵I", 1},
         {"液罐I", 2},
         {"组装机I", 1},
     },
     results = {
         {"化工厂I", 1},
     },
-    time = "15s",
+    time = "5s",
     description = "液体容器和加工设备制造化工厂",
 }
 
@@ -763,14 +755,13 @@ prototype "铸造厂1" {
     recipe_order =  63,
     recipe_icon =  "textures/construct/assembler.texture",
     ingredients = {
-        {"铁板", 3},
-        {"电动机I", 4},
+        {"铁板", 4},
         {"熔炼炉I", 1},
     },
     results = {
         {"铸造厂I", 1},
     },
-    time = "15s",
+    time = "5s",
     description = "熔炼设备和机器爪制造铸造厂",
 }
 
@@ -787,7 +778,7 @@ prototype "水电站1" {
     results = {
         {"水电站I", 1},
     },
-    time = "4s",
+    time = "5s",
     description = "蒸馏设施和地下水挖掘机制造水电站",
 }
 
@@ -805,7 +796,7 @@ prototype "蒸馏厂1" {
     results = {
         {"蒸馏厂I", 1},
     },
-    time = "4s",
+    time = "5s",
     description = "液体容器和熔炼设备制造蒸馏厂",
 }
 
@@ -818,14 +809,13 @@ prototype "烟囱1" {
     recipe_icon =  "textures/construct/chimney2.texture",
     ingredients = {
         -- {"铁棒", 2},
-        {"铁板", 2},
         {"管道1-X型", 3},
-        {"石砖", 3},
+        {"石砖", 4},
     },
     results = {
         {"烟囱I", 1},
     },
-    time = "4s",
+    time = "5s",
     description = "铁制品和管道制造烟囱",
 }
 
@@ -842,7 +832,7 @@ prototype "压力泵1" {
     results = {
         {"压力泵I", 1},
     },
-    time = "2s",
+    time = "5s",
     description = "管道和电机制造压力泵",
 }
 
@@ -859,7 +849,7 @@ prototype "地下水挖掘机" {
     results = {
         {"地下水挖掘机", 1},
     },
-    time = "4s",
+    time = "5s",
     description = "排水设施和压力泵制造抽水泵",
 }
 
@@ -870,14 +860,13 @@ prototype "空气过滤器1" {
     recipe_order =  60,
     recipe_icon =  "textures/construct/air-filter1.texture",
     ingredients = {
-        {"压力泵I", 1},
         {"塑料", 4},
         {"蒸汽发电机I", 1},
     },
     results = {
         {"空气过滤器I", 1},
     },
-    time = "8s",
+    time = "5s",
     description = "压力泵和发电设施制造空气过滤器",
 }
 
@@ -894,7 +883,7 @@ prototype "排水口1" {
     results = {
         {"排水口I", 1},
     },
-    time = "4s",
+    time = "5s",
     description = "管道制造排水口",
 }
 
@@ -910,7 +899,7 @@ prototype "管道1" {
     results = {
         {"管道1-X型", 2},
     },
-    time = "6s",
+    time = "5s",
     description = "石砖制造管道",
 }
 
@@ -928,7 +917,7 @@ prototype "管道2" {
         {"管道1-X型", 5},
         {"碎石", 1},
     },
-    time = "6s",
+    time = "5s",
     description = "石砖制造管道",
 }
 
@@ -999,7 +988,7 @@ prototype "电解厂1" {
     results = {
         {"电解厂I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "液体容器和电传输设备制造电解厂",
 }
 
@@ -1030,12 +1019,11 @@ prototype "科研中心1" {
     ingredients = {
         {"电动机I", 8},
         {"铁板", 20},
-        {"玻璃", 4},
     },
     results = {
         {"科研中心I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "机械装置和电动机制造科研中心",
 }
 
@@ -1150,7 +1138,7 @@ prototype "维修组装机" {
     results = {
         {"组装机I", 1},
     },
-    time = "3s",
+    time = "5s",
     description = "修复损坏的组装机",
 }
 
@@ -1169,7 +1157,7 @@ prototype "维修铁制电线杆" {
     results = {
         {"铁制电线杆", 1},
     },
-    time = "2s",
+    time = "5s",
     description = "修复损坏的铁制电线杆",
 }
 
@@ -1188,7 +1176,7 @@ prototype "维修太阳能板" {
     results = {
         {"太阳能板I", 1},
     },
-    time = "8s",
+    time = "5s",
     description = "修复损坏的太阳能板",
 }
 
@@ -1206,7 +1194,7 @@ prototype "破损蓄电池" {
     results = {
         {"蓄电池I", 1},
     },
-    time = "6s",
+    time = "5s",
     description = "修复损坏的蓄电池",
 }
 
@@ -1224,7 +1212,7 @@ prototype "维修物流中心" {
     results = {
         {"物流中心I", 1},
     },
-    time = "6s",
+    time = "5s",
     description = "修复损坏的物流中心",
 }
 
@@ -1263,6 +1251,7 @@ prototype "维修物流需求站" {
     description = "修复损坏的物流需求站",
 }
 
+------------------打印-------------------
 prototype "采矿机打印" {
     type = { "recipe" },
     category = "设计图打印",
@@ -1323,7 +1312,7 @@ prototype "电线杆打印" {
     results = {
         {"铁制电线杆", 1},
     },
-    time = "3s",
+    time = "5s",
     description = "打印可导电的电线杆",
 }
 
@@ -1403,7 +1392,7 @@ prototype "太阳能板打印" {
     results = {
         {"太阳能板I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印利用太阳能发电的装置",
 }
 
@@ -1435,7 +1424,7 @@ prototype "水电站打印" {
     results = {
         {"水电站I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印可处理液体的装置",
 }
 
@@ -1451,7 +1440,7 @@ prototype "电解厂打印" {
     results = {
         {"电解厂I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印可电解液体的工厂",
 }
 
@@ -1467,7 +1456,7 @@ prototype "化工厂打印" {
     results = {
         {"化工厂I", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印可处理化工原料的工厂",
 }
 
@@ -1499,7 +1488,7 @@ prototype "空气过滤器打印" {
     results = {
         {"空气过滤器I", 1},
     },
-    time = "3s",
+    time = "5s",
     description = "打印可过滤空气的装置",
 }
 
@@ -1515,7 +1504,7 @@ prototype "地下水挖掘机打印" {
     results = {
         {"地下水挖掘机", 1},
     },
-    time = "3s",
+    time = "5s",
     description = "打印可挖掘地下水的装置",
 }
 
@@ -1596,7 +1585,7 @@ prototype "电线杆设计" {
     results = {
         {"电线杆设计图", 1},
     },
-    time = "3s",
+    time = "5s",
     description = "打印可导电的电线杆",
 }
 
@@ -1676,7 +1665,7 @@ prototype "太阳能板设计" {
     results = {
         {"太阳能板设计图", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印利用太阳能发电的装置",
 }
 
@@ -1708,7 +1697,7 @@ prototype "水电站设计" {
     results = {
         {"水电站设计图", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印可处理液体的装置",
 }
 
@@ -1724,7 +1713,7 @@ prototype "电解厂设计" {
     results = {
         {"电解厂设计图", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印可电解液体的工厂",
 }
 
@@ -1740,7 +1729,7 @@ prototype "化工厂设计" {
     results = {
         {"化工厂设计图", 1},
     },
-    time = "10s",
+    time = "5s",
     description = "打印可处理化工原料的工厂",
 }
 
@@ -1773,7 +1762,7 @@ prototype "空气过滤器设计" {
     results = {
         {"空气过滤器设计图", 1},
     },
-    time = "3s",
+    time = "5s",
     description = "打印可过滤空气的装置",
 }
 
@@ -1789,7 +1778,7 @@ prototype "地下水挖掘机设计" {
     results = {
         {"地下水挖掘机设计图", 1},
     },
-    time = "3s",
+    time = "5s",
     description = "打印可挖掘地下水的装置",
 }
 
