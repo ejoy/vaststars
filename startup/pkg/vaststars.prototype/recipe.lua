@@ -1251,6 +1251,24 @@ prototype "维修物流需求站" {
     description = "修复损坏的物流需求站",
 }
 
+prototype "运输汽车制造" {
+    type = { "recipe" },
+    category = "生产手工制造",
+    recipe_group =  "生产",
+    recipe_order =  128,
+    allow_as_intermediate = false,
+    recipe_icon =  "textures/construct/broken-truck.texture",
+    ingredients = {
+        {"电动机I", 1},
+        {"铁板", 2},
+    },
+    results = {
+        {"运输车辆I", 1},
+    },
+    time = "4s",
+    description = "制造运输汽车",
+}
+
 ------------------打印-------------------
 prototype "采矿机打印" {
     type = { "recipe" },
