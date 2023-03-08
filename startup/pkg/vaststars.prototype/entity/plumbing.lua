@@ -241,6 +241,7 @@ prototype "管道1-X型" {
     show_detail = false,
     type = {"building","fluidbox"},
     area = "1x1",
+    group = {"管道"},
     fluidbox = {
         capacity = 100,
         height = 100,

@@ -201,6 +201,7 @@ prototype_road "砖石公路-X型-%02d" {
     tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
+    group = {"物流"},
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},

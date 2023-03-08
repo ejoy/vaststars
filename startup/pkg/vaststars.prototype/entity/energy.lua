@@ -80,6 +80,7 @@ prototype "换热器I" {
     craft_category = {"流体换热处理"},
     show_detail = false,
     maxslot = "8",
+    group = {"物流"},
     fluidboxes = {
         input = {
             {
@@ -132,6 +133,7 @@ prototype "锅炉I" {
     rotate_on_build = true,
     craft_category = {"流体换热处理"},
     maxslot = "8",
+    group = {"物流"},
     fluidboxes = {
         input = {
             {
