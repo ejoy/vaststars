@@ -2,6 +2,7 @@
 #include "core/world.h"
 #include "core/saveload.h"
 #include "roadnet/network.h"
+#include <unordered_map>
 
 namespace lua_world {
 

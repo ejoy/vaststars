@@ -7,6 +7,7 @@ extern "C" {
 #include "util/prototype.h"
 }
 #include <bee/nonstd/unreachable.h>
+#include <math.h>
 
 template <typename Map>
 static typename Map::mapped_type const* map_find(Map const& map, typename Map::key_type const& key) {
@@ -163,7 +164,6 @@ lbuild(lua_State *L) {
         uint16_t supply_area = (uint16_t)pt_supply_area(&pt);
         building_rect r(building, area, supply_area);
         auto& map = globalmap[chestslot.item];
-        auto self = create_berth(r, hub_mgr::berth_type::hub, 0);
         flatset<hub_mgr::berth> set;
         r.each([&](uint8_t x, uint8_t y) {
             if (auto pm = map_find(map, getxy(x, y))) {
