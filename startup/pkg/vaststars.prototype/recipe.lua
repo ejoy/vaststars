@@ -419,23 +419,6 @@ prototype "砖石公路" {
     description = "使用石砖制造公路",
 }
 
-prototype "物流派送站1" {
-    type = { "recipe" },
-    category = "物流中型制造",
-    recipe_group =  "物流",
-    recipe_order =  52,
-    recipe_icon =  "textures/construct/goodsstation-output.texture",
-    ingredients = {
-        {"电动机I", 2},
-        {"小铁制箱子I", 1},
-    },
-    results = {
-        {"物流派送站", 1},
-    },
-    time = "4s",
-    description = "使用电动机和箱子制造物流派送站",
-}
-
 prototype "基建站1" {
     type = { "recipe" },
     category = "物流中型制造",
@@ -461,7 +444,6 @@ prototype "物流中心1" {
     recipe_icon =  "textures/construct/logisitic1.texture",
     ingredients = {
         {"蒸汽发电机I", 1},
-        {"物流派送站", 1},
         {"物流需求站", 1},
         {"砖石公路-X型-01", 10},
     },
