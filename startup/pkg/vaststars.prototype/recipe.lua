@@ -419,23 +419,6 @@ prototype "砖石公路" {
     description = "使用石砖制造公路",
 }
 
-prototype "基建站1" {
-    type = { "recipe" },
-    category = "物流中型制造",
-    recipe_group =  "物流",
-    recipe_order =  53,
-    recipe_icon =  "textures/construct/goodsstation-input.texture",
-    ingredients = {
-        {"电动机I", 2},
-        {"小铁制箱子I", 1},
-    },
-    results = {
-        {"基建站", 1},
-    },
-    time = "4s",
-    description = "使用电动机和箱子制造基建站",
-}
-
 prototype "物流中心1" {
     type = { "recipe" },
     category = "物流大型制造",
@@ -1260,24 +1243,6 @@ prototype "维修运输汽车" {
     },
     time = "4s",
     description = "修复损坏的运输汽车",
-}
-
-prototype "维修基建站" {
-    type = { "recipe" },
-    category = "生产手工制造",
-    recipe_group =  "生产",
-    recipe_order =  130,
-    allow_as_intermediate = false,
-    recipe_icon =  "textures/construct/broken-goodsstation-output.texture",
-    ingredients = {
-        {"铁齿轮", 1},
-        {"破损基建站", 1},
-    },
-    results = {
-        {"基建站", 1},
-    },
-    time = "5s",
-    description = "修复损坏的基建站",
 }
 
 prototype "维修物流需求站" {

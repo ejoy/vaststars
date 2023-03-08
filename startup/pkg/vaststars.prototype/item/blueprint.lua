@@ -78,13 +78,6 @@ prototype "破损运输车辆" {
     group = {"加工"},
 }
 
-prototype "破损基建站" {
-    type = {"item"},
-    stack = 50,
-    icon = "textures/construct/broken-goodsstation-output.texture",
-    group = {"加工"},
-}
-
 prototype "破损物流需求站" {
     type = {"item"},
     stack = 50,

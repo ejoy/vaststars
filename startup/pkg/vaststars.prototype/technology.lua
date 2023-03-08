@@ -1816,7 +1816,7 @@ prototype "物流1" {
   type = { "tech" },
   icon = "textures/science/tech-logistics.texture",
   effects = {
-    unlock_recipe ={"基建站1","物流中心1","运输车辆1"},
+    unlock_recipe ={"物流中心1","运输车辆1"},
     unlock_building = {"物流中心I"},
   },
   prerequisites = {"发电机1"},
