@@ -165,15 +165,16 @@ local function update_world(gameworld)
                 local chest = gameworld:container_get(e.hub, 1)
                 local typeobject = iprototype.queryById(chest.item)
                 pile_id = pile_id + 1
-                local heap_item_name = "pile" .. pile_id
+                local pile_name = "pile" .. pile_id
+                local pos_offset = {-1, 5, 4}
                 drone_depot[objid] = {
-                    heap_item_name = heap_item_name,
                     drones = {},
-                    heap_num = chest.amount,
-                    heap_items = create_heap_items(heap_item_name, "/pkg/vaststars.resources/"..typeobject.pile_model.."|meshes/Cube_P1.meshbin", {s = 1, t = {pos[1], pos[2] + 5, pos[3]}}, 4, 0),
+                    pile_name = pile_name,
+                    pile_num = chest.amount,
+                    pile_eid = create_heap_items(pile_name, "/pkg/vaststars.resources/"..typeobject.pile_model.."|meshes/Cube_P1.meshbin", {s = 1, t = {pos[1] + pos_offset[1], pos[2] + pos_offset[2], pos[3] + pos_offset[3]}}, 4, 0),
                     update_heap = function (self)
-                        self.heap_num = self.heap_num + 1
-                        iheapmesh.update_heap_mesh_number(self.heap_num, self.heap_item_name)
+                        self.pile_num = self.pile_num + 1
+                        iheapmesh.update_heap_mesh_number(self.pile_num, self.pile_name)
                     end
                 }
             end
