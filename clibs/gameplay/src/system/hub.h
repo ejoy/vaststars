@@ -2,7 +2,7 @@
 
 #include "util/component.h"
 #include "util/flatmap.h"
-#include "util/bit_cast.h"
+#include <bee/nonstd/bit.h>
 #include <vector>
 #include <map>
 

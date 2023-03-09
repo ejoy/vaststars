@@ -405,7 +405,7 @@ lupdate(lua_State *L) {
             Update(L, w, drone);
             break;
         default:
-            bee::unreachable();
+            std::unreachable();
         }
     }
     return 0;
