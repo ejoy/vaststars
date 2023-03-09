@@ -4,6 +4,8 @@ local prototype = gameplay.register.prototype
 prototype "破损水电站" {
     type = {"item"},
     stack = 10,
+    pile = "2x2",
+    pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-hydroplant.texture",
     group = {"加工"},
 }
@@ -11,6 +13,8 @@ prototype "破损水电站" {
 prototype "破损空气过滤器" {
     type = {"item"},
     stack = 10,
+    pile = "2x2",
+    pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-air-filter1.texture",
     group = {"加工"},
 }
@@ -18,6 +22,8 @@ prototype "破损空气过滤器" {
 prototype "破损地下水挖掘机" {
     type = {"item"},
     stack = 50,
+    pile = "2x2",
+    pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-pump.texture",
     group = {"加工"},
 }
@@ -25,6 +31,8 @@ prototype "破损地下水挖掘机" {
 prototype "破损电解厂" {
     type = {"item"},
     stack = 10,
+    pile = "2x2",
+    pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-electrolysis1.texture",
     group = {"加工"},
 }
@@ -32,6 +40,8 @@ prototype "破损电解厂" {
 prototype "破损化工厂" {
     type = {"item"},
     stack = 10,
+    pile = "2x2",
+    pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-chemistry2.texture",
     group = {"加工"},
 }
@@ -39,6 +49,8 @@ prototype "破损化工厂" {
 prototype "破损组装机" {
     type = {"item"},
     stack = 10,
+    pile = "2x2",
+    pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-assembler.texture",
     group = {"加工"},
 }
@@ -46,6 +58,8 @@ prototype "破损组装机" {
 prototype "破损铁制电线杆" {
     type = {"item"},
     stack = 50,
+    pile = "2x2",
+    pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-electric-pole1.texture",
     group = {"加工"},
 }
@@ -53,6 +67,8 @@ prototype "破损铁制电线杆" {
 prototype "破损太阳能板" {
     type = {"item"},
     stack = 50,
+    pile = "2x2",
+    pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-solar-panel.texture",
     group = {"加工"},
 }
@@ -60,6 +76,8 @@ prototype "破损太阳能板" {
 prototype "破损蓄电池" {
     type = {"item"},
     stack = 50,
+    pile = "2x2",
+    pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-grid-battery.texture",
     group = {"加工"},
 }
@@ -67,6 +85,8 @@ prototype "破损蓄电池" {
 prototype "破损物流中心" {
     type = {"item"},
     stack = 50,
+    pile = "2x2",
+    pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-logisitic.texture",
     group = {"加工"},
 }
