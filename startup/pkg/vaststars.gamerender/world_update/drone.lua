@@ -134,7 +134,7 @@ local function create_heap_items(glbname, meshname, scene, dimsize, num)
         data = {
             name    = "heap_items",
             scene   = scene,
-            material = "/pkg/ant.resources/materials/heap_test.material", -- 自定义material文件中需加入HEAP_MESH :1
+            material = "/pkg/ant.resources/materials/pbr_heap.material", -- 自定义material文件中需加入HEAP_MESH :1
             visible_state = "main_view",
             mesh = meshname,
             heapmesh = {
@@ -148,43 +148,46 @@ end
 -- iheapmesh.update_heap_mesh_number(27, "iron-ingot") -- 更新当前堆叠数 参数一为待更新堆叠数 参数二为entity筛选的glb名字
 -- iheapmesh.update_heap_mesh_sidesize(4, "iron-ingot") -- 更新当前每个轴的最大堆叠数 参数一为待更新每个轴的最大堆叠数 参数二为entity筛选的glb名字
 local drone_depot = {}
-local all_drones = {}
-local heap_id = 0
+local lookup_drones = {}
+local pile_id = 0
 local function update_world(gameworld)
     local t = {}
     --TODO: update framerate is 30
     local elapsed_time = 1.0 / 30
     for e in gameworld.ecs:select "drone:in eid:in" do
         local drone = e.drone
-        if not all_drones[e.eid] then
+        if not lookup_drones[e.eid] then
             local obj = get_object(drone.home)
             local pos = obj.srt.t
-            if not drone_depot[obj.id] then
+            local objid = obj.id
+            if not drone_depot[objid] then
                 local e = gameplay_core.get_entity(obj.gameplay_eid)
-                heap_id = heap_id + 1
-                local heap_item_name = "iron-ore" .. heap_id
-                drone_depot[obj.id] = {
+                local chest = gameworld:container_get(e.hub, 1)
+                local typeobject = iprototype.queryById(chest.item)
+                pile_id = pile_id + 1
+                local heap_item_name = "pile" .. pile_id
+                drone_depot[objid] = {
                     heap_item_name = heap_item_name,
                     drones = {},
-                    heap_num = 0,--e.chest,
-                    heap_items = create_heap_items(heap_item_name, "/pkg/vaststars.resources/glb/stackeditems/iron-ore.glb|meshes/Cube_P1.meshbin", {s = 1, t = {pos[1], pos[2] + 5, pos[3]}}, 4, 0),
+                    heap_num = chest.amount,
+                    heap_items = create_heap_items(heap_item_name, "/pkg/vaststars.resources/"..typeobject.pile_model.."|meshes/Cube_P1.meshbin", {s = 1, t = {pos[1], pos[2] + 5, pos[3]}}, 4, 0),
                     update_heap = function (self)
                         self.heap_num = self.heap_num + 1
                         iheapmesh.update_heap_mesh_number(self.heap_num, self.heap_item_name)
                     end
                 }
             end
-            local depot = drone_depot[obj.id]
+            local depot = drone_depot[objid]
             local drones = depot.drones
             if not drones[e.eid] then
                 local drone = create_drone({pos[1] + 6, pos[2] + 8, pos[3] - 6})
                 drone.owner = depot
                 drones[e.eid] = drone
                 -- cache lookup table
-                all_drones[e.eid] = drone
+                lookup_drones[e.eid] = drone
             end
         else
-            local current = all_drones[e.eid]
+            local current = lookup_drones[e.eid]
             if not current.running then
                 if drone.maxprogress > 0 then
                     if not current.start_progress then
