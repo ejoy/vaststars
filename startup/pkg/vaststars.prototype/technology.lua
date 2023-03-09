@@ -43,7 +43,7 @@ local prototype = gameplay.register.prototype
   --     "textures/task_tips_pic/task_place_logistics.texture",
   --   },
   --   sign_desc = {
-  --     { desc = "选择采矿机蓝图", icon = "textures/construct/industry.texture"},
+  --     { desc = "选择采矿机设计图", icon = "textures/construct/industry.texture"},
   --   },
   -- }
 
@@ -76,7 +76,7 @@ local prototype = gameplay.register.prototype
   --     "textures/task_tips_pic/task_place_logistics.texture",
   --   },
   --   sign_desc = {
-  --     { desc = "在“建造中心”建造1个采矿机", icon = "textures/construct/industry.texture"},
+  --     { desc = "在石矿上放置2个采矿机", icon = "textures/construct/industry.texture"},
   --   },
   -- }
 
@@ -91,7 +91,7 @@ local prototype = gameplay.register.prototype
   --     "textures/task_tips_pic/task_place_logistics.texture",
   --   },
   --   sign_desc = {
-  --     { desc = "在“建造中心”建造1个采矿机", icon = "textures/construct/industry.texture"},
+  --     { desc = "在“建造中心”建造4个电线杆", icon = "textures/construct/industry.texture"},
   --   },
   -- }
 
@@ -110,12 +110,12 @@ local prototype = gameplay.register.prototype
   --     "textures/task_tips_pic/task_place_pole2.texture",
   --   },
   --   sign_desc = {
-  --     { desc = "使用“建造”放置4个铁制电线杆", icon = "textures/construct/industry.texture"},
+  --     { desc = "放置4个铁制电线杆构成电网", icon = "textures/construct/industry.texture"},
   --   },
   -- }
 
-    -- prototype "建造仓库" {
-  --   desc = "建造仓库",
+    -- prototype "建造无人机仓库" {
+  --   desc = "建造2个无人机仓库",
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
   --   task = {"stat_consumption", 0, "无人机仓库设计图"},
@@ -129,12 +129,12 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-    -- prototype "放置仓库" {
+    -- prototype "放置无人机仓库" {
   --   desc = "放置2个无人机仓库",
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
   --   task = {"select_entity", 0, "无人机仓库"},
-  --   prerequisites = {"建造仓库"},
+  --   prerequisites = {"建造无人机仓库"},
   --   count = 2,
   --   tips_pic = {
   --     "textures/task_tips_pic/task_place_pole1.texture",
@@ -150,7 +150,7 @@ local prototype = gameplay.register.prototype
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
   --   task = {"stat_production", 0, "碎石"},
-  --   prerequisites = {"放置仓库"},
+  --   prerequisites = {"放置无人机仓库"},
   --   count = 6,
   --   effects = {
   --      unlock_recipe = {"科研中心打印"},
@@ -164,7 +164,7 @@ local prototype = gameplay.register.prototype
   -- }
 
   -- prototype "放置科研中心" {
-  --   desc = "放置1座科研中心",
+  --   desc = "放置可以研究火星科技的建筑",
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
   --   task = {"select_entity", 0, "科研中心I"},
@@ -183,7 +183,7 @@ local prototype = gameplay.register.prototype
 --     type = { "tech" },
 --     icon = "textures/science/tech-research.texture",
 --     effects = {
---       unlock_recipe = {"地质科技包1"},
+--       unlock_recipe = {"地质科技包1","组装机打印"},
 --     },
 --     ingredients = {
 --     },
@@ -197,7 +197,7 @@ local prototype = gameplay.register.prototype
 -- }
 
     -- prototype "建造组装机" {
-  --   desc = "建造仓库",
+  --   desc = "建造组装机",
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
   --   task = {"stat_consumption", 0, "组装机设计图"},
