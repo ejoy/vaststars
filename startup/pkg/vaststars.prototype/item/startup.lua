@@ -48,7 +48,7 @@ local entities = {
     },
     {
         prototype_name = "无人机仓库",
-        dir = "S",
+        dir = "N",
         x = 120,
         y = 130,
     },
