@@ -46,11 +46,13 @@ void chest::destroy(world& w, container::index c) {
 
 uint16_t chest::get_fluid(world& w, container::index c, uint8_t offset) {
     auto& s = chest::array_at(w, c, offset);
+    assert(s.type == container::slot::slot_type::none);
     return s.amount;
 }
 
 void chest::set_fluid(world& w, container::index c, uint8_t offset, uint16_t value) {
     auto& s = chest::array_at(w, c, offset);
+    assert(s.type == container::slot::slot_type::none);
     s.amount = value;
 }
 

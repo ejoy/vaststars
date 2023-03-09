@@ -76,7 +76,7 @@ local function resetItems(world, recipe, chest, option)
             if not slot then
                 break
             end
-            if not isFluidId(slot.item) then
+            if slot.type ~= "none" then
                 assert(not olditems[slot.item])
                 olditems[i] = slot
                 hash[slot.item] = i
@@ -102,11 +102,11 @@ local function resetItems(world, recipe, chest, option)
     end
     for idx = 1, ingredients_n do
         local id, n = string.unpack("<I2I2", recipe.ingredients, 4*idx+1)
-        create_slot("blue", id, n * option.ingredientsLimit)
+        create_slot(isFluidId(id) and "none" or "blue", id, n * option.ingredientsLimit)
     end
     for idx = 1, results_n do
         local id, n = string.unpack("<I2I2", recipe.results, 4*idx+1)
-        create_slot("red", id, n * option.resultsLimit)
+        create_slot(isFluidId(id) and "none" or "red", id, n * option.resultsLimit)
     end
     return table.concat(newitems)
 end
