@@ -23,6 +23,8 @@ if lm.os == "ios" then
     else
         lm.sys = "ios14.1"
     end
+elseif lm.os == "macos" then
+    lm.sys = "macos11.0"
 end
 
 lm.ios = {
