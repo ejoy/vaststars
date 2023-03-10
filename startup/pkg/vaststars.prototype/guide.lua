@@ -6,10 +6,9 @@ local guide = {
             {"哔哩..哔哗..哔哩..启动大气分析协议中..P4031{/g 缺少氧气}..(失望)"},
             {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 铁铝丰富}..(轻松)","textures/guide/guide-1.texture"},
             {"哔哩..哔哗..启动生存可靠性分析..{/g 0.04565%}存活概率..(情绪表达跳过中)","textures/guide/guide-4.texture"},
-            {"作为助理AI，我建议你立刻开始工作..哔哩..你的剩余生存时间理论上只有{/g 348.26}地球小时..(担忧)", "textures/guide/guide-6.texture"},
+    
         },
         narrative_end = {
-            pop_chapter = {"序章","迫降P4031"},
             task = {
                 "迫降火星",
             },
@@ -20,9 +19,11 @@ local guide = {
 	{
         name = "guide-2",
 		narrative = {
+            {"作为助理AI，我建议你立刻开始工作..哔哩..你的剩余生存时间理论上只有{/g 348.26}地球小时..(担忧)", "textures/guide/guide-6.texture"},
             {"哔哩..发现道路阻断..哔哩..建议{/g 修复道路}..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
+            pop_chapter = {"序章","迫降P4031"},
             task = {
                 "放置道路建造站",
             },
