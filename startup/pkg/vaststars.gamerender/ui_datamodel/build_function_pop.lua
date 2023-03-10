@@ -121,7 +121,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
     local build_center_icon, build_center_count, build_center_ingredients
     if typeobject.build_center == true then
         if e.assembling.recipe == 0 then
-            build_center_icon = "textures/assemble/setup2.texture"
+            build_center_icon = "textures/factory/place-building.texture"
             build_center_count = 0
         else
             local results
@@ -160,7 +160,7 @@ local function __build_center_update(datamodel, object_id)
     local build_center_icon, build_center_count, build_center_ingredients
     if typeobject.build_center == true then
         if e.assembling.recipe == 0 then
-            build_center_icon = "textures/assemble/setup2.texture"
+            build_center_icon = "textures/factory/place-building.texture"
             build_center_count = 0
         else
             local results

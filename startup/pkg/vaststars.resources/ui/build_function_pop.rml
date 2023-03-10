@@ -173,7 +173,7 @@
 
                         if start.show_set_recipe then
                             local v = {}
-                            v.text = "修改配方"
+                            v.text = "变更"
                             v.message = "set_recipe"
                             v.background_image = "textures/assemble/wheel.texture"
                             v.build_center_count = 0
@@ -209,7 +209,7 @@
 
                         if start.build_center_icon and start.build_center_icon ~= "" then
                             local v = {}
-                            v.text = "修建"
+                            v.text = "放置"
                             v.message = ""
                             v.background_image = start.build_center_icon
                             v.build_center_count = start.build_center_count

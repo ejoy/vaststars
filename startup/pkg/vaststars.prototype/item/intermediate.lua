@@ -263,7 +263,7 @@ prototype "塑料" {
 prototype "电动机I" {
     type = {"item"},
     stack = 2,
-    pile = "2x1",
+    pile = "4x1",
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/electric-motor.texture",
     item_description = "一种机械加工品",
@@ -303,7 +303,7 @@ prototype "坩埚" {
 prototype "橡胶" {
     type = {"item"},
     stack = 2,
-    pile = "2x1",
+    pile = "4x1",
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/rubber.texture",
     item_description = "一种高弹性聚合物材料",
@@ -323,7 +323,7 @@ prototype "电容" {
 prototype "绝缘线" {
     type = {"item"},
     stack = 2,
-    pile = "2x1",
+    pile = "4x1",
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/insulated-wire.texture",
     item_description = "一种高弹性聚合物材料",
