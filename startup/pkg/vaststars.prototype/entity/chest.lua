@@ -57,6 +57,7 @@ prototype "无人机仓库" {
     slots = 1,
     drone_entity = "无人机",
     drone_count = 2,
+    show_detail = false,
     item = "铁矿石", -- for test
     shelf_stack = 10,
 }
