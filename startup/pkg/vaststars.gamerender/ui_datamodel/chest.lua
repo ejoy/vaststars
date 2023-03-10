@@ -164,7 +164,7 @@ function M:stage_ui_update(datamodel)
         local g = ecs.group(gid)
         g:enable "view_visible"
         g:enable "scene_update"
-        ---[[
+        --[[
         local light = g:create_instance("/pkg/vaststars.resources/light2.prefab")
         light.on_ready = function (inst)
             local alleid = inst.tag['*']
