@@ -662,6 +662,9 @@ local prototype = gameplay.register.prototype
     type = { "tech", "task" },
     task = {"select_entity", 0, "道路建造站"},
     prerequisites = {""},
+    effects = {
+      unlock_recipe = {"采矿机打印"},
+    },
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
