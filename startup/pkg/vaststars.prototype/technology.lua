@@ -656,13 +656,13 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-  prototype "测试任务" {
-    desc = "测试任务",
+  prototype "迫降火星" {
+    desc = "迫降火星",
     icon = "textures/construct/industry.texture",
     type = { "task" },
     task = {"unknown", 0, 4},
     effects = {
-      unlock_recipe = {"地质科技包1"},
+      unlock_recipe = {"采矿机设计图"},
     },
     prerequisites = {""},
     count = 1,
@@ -670,7 +670,7 @@ local prototype = gameplay.register.prototype
       "",
     },
     sign_desc = {
-      { desc = "放置1个道路建造站", icon = "textures/construct/industry.texture"},
+      { desc = "初次进入火星", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -679,7 +679,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "道路建造站"},
-    prerequisites = {"测试任务"},
+    prerequisites = {"迫降火星"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
