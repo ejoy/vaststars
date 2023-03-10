@@ -10,6 +10,7 @@ local vsobject_manager = ecs.require "vsobject_manager"
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
 local iheapmesh = ecs.import.interface "ant.render|iheapmesh"
 local gameplay_core = require "gameplay.core"
+local entity_remove = world:sub {"gameplay", "remove_entity"}
 local sampler_group
 local function create_motion_object(s, r, t, parent)
     if not sampler_group then
@@ -98,6 +99,13 @@ local function create_drone(home)
                     end
                 end
             end
+        end,
+        destroy = function (self)
+            for _, eid in ipairs(self.prefab.tag["*"]) do
+                w:remove(eid)
+            end
+            w:remove(self.motion_y)
+            w:remove(self.motion_xz)
         end
     }
     local motion_xz = create_motion_object(nil, nil, math3d.vector(home[1], 0, home[3]))
@@ -139,8 +147,8 @@ local function create_heap_items(glbname, meshname, scene, dimsize, num)
             mesh = meshname,
             heapmesh = {
                 curSideSize = dimsize,  -- 当前 x y z方向最大堆叠数量均为curSideSize = 3，最大堆叠数为3*3*3 = 27
-                curHeapNum = num,  -- 当前堆叠数为10，以x->z->y轴的正方向顺序堆叠。最小为0，最大为10，超过边界值时会clamp到边界值。
-                glbName = glbname -- 当前entity对应的glb名字，用于筛选
+                curHeapNum = num,       -- 当前堆叠数为10，以x->z->y轴的正方向顺序堆叠。最小为0，最大为10，超过边界值时会clamp到边界值。
+                glbName = glbname       -- 当前entity对应的glb名字，用于筛选
             }
         },
     }
@@ -151,6 +159,14 @@ local drone_depot = {}
 local lookup_drones = {}
 local pile_id = 0
 local function update_world(gameworld)
+    for _, _, geid in entity_remove:unpack() do
+        local e = gameplay_core.get_entity(geid)
+        if e.hub and drone_depot[geid] then
+            drone_depot[geid]:destroy()
+            drone_depot[geid] = nil
+        end
+    end
+
     local t = {}
     --TODO: update framerate is 30
     local elapsed_time = 1.0 / 30
@@ -159,14 +175,14 @@ local function update_world(gameworld)
         if not lookup_drones[e.eid] then
             local obj = get_object(drone.home)
             local pos = obj.srt.t
-            local objid = obj.id
+            local objid = obj.gameplay_eid
             if not drone_depot[objid] then
-                local e = gameplay_core.get_entity(obj.gameplay_eid)
+                local e = gameplay_core.get_entity(objid)
                 local chest = gameworld:container_get(e.hub, 1)
                 local typeobject = iprototype.queryById(chest.item)
                 pile_id = pile_id + 1
                 local pile_name = "pile" .. pile_id
-                local pos_offset = {-1, 5, 4}
+                local pos_offset = {-1, 5, 4} -- read from drone depot prefab file
                 drone_depot[objid] = {
                     drones = {},
                     pile_name = pile_name,
@@ -175,6 +191,12 @@ local function update_world(gameworld)
                     update_heap = function (self)
                         self.pile_num = self.pile_num + 1
                         iheapmesh.update_heap_mesh_number(self.pile_num, self.pile_name)
+                    end,
+                    destroy = function (self)
+                        for _, drone in pairs(self.drones) do
+                            drone:destroy()
+                        end
+                        w:remove(self.pile_eid)
                     end
                 }
             end
