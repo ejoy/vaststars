@@ -56,16 +56,18 @@ local _instance_hash ; do
     local state_hash = get_hash_func()
     local color_hash = get_hash_func()
     local animation_hash = get_hash_func()
+    local animation_loop_hash = get_hash_func()
     local emissive_color_hash = get_hash_func()
 
-    function _instance_hash(prefab_file_name, state, color, animation_name, emissive_color)
+    function _instance_hash(prefab_file_name, state, color, animation_name, animation_loop, emissive_color)
         local h1 = prefab_name_hash(prefab_file_name or 0)
         local h2 = state_hash(state or 0)
         local h3 = color_hash(color or 0)
         local h4 = animation_hash(animation_name or 0)
-        local h5 = emissive_color_hash(emissive_color or 0)
+        local h5 = animation_loop_hash(animation_loop or 0)
+        local h6 = emissive_color_hash(emissive_color or 0)
 
-        return h1 | (h2 << 8) | (h3 << 16) | (h4 << 24) | (h5 << 32) -- assuming 255 types of every parameter at most
+        return h1 | (h2 << 8) | (h3 << 16) | (h4 << 24) | (h5 << 32) | (h6 << 40) -- assuming 255 types of every parameter at most
     end
 end
 
@@ -77,6 +79,7 @@ local _get_hitch_children ; do
         local effects = {}
         local slots = {}
         local scene = {}
+        local animations = {}
         for _, v in ipairs(template) do
             if v.data then
                 if v.data.slot then
@@ -88,13 +91,18 @@ local _get_hitch_children ; do
                 if v.data.name == "Scene" and v.data.scene then -- TODO: special for hitch which attach to slot
                     scene = v.data.scene
                 end
+                if v.data.animation then
+                    for animation_name in pairs(v.data.animation) do
+                        animations[animation_name] = true
+                    end
+                end
             end
         end
-        return scene, slots, effects
+        return scene, slots, effects, animations
     end
 
-    function _get_hitch_children(prefab_file_path, state, color, animation_name, emissive_color)
-        local hash = _instance_hash(prefab_file_path, state, tostring(color), animation_name, tostring(emissive_color))
+    function _get_hitch_children(prefab_file_path, state, color, animation_name, animation_loop, emissive_color)
+        local hash = _instance_hash(prefab_file_path, state, tostring(color), animation_name, animation_loop, tostring(emissive_color))
         if cache[hash] then
             return cache[hash]
         end
@@ -125,7 +133,7 @@ local _get_hitch_children ; do
         end
 
         -- cache all slots & srt of the prefab
-        local scene, slots, effects = _cache_prefab_info(template)
+        local scene, slots, effects, animations = _cache_prefab_info(template)
 
         hitch_group_id = hitch_group_id + 1
         local g = ecs.group(hitch_group_id)
@@ -146,7 +154,7 @@ local _get_hitch_children ; do
             for _, eid in ipairs(prefab.tag["*"]) do
                 local e <close> = w:entity(eid, "tag?in animation?in")
                 if animation_name and e.animation and e.animation[animation_name] then
-                    iani.play(eid, {name = animation_name, loop = true, manual = false})
+                    iani.play(eid, {name = animation_name, loop = animation_loop, manual = false})
                 end
 
                 if e.tag then
@@ -168,7 +176,7 @@ local _get_hitch_children ; do
             instance:send("material_tag", "set_property", "u_emissive_factor", "u_emissive_factor", emissive_color)
         end
 
-        cache[hash] = {prefab_file_name = prefab_file_path, instance = instance, hitch_group_id = hitch_group_id, scene = scene, slots = slots, pose = pose, effects = effects}
+        cache[hash] = {prefab_file_name = prefab_file_path, instance = instance, hitch_group_id = hitch_group_id, scene = scene, slots = slots, pose = pose, effects = effects, animations = animations}
         return cache[hash]
     end
 end
@@ -190,7 +198,7 @@ init = {
 }
 --]]
 function igame_object.create(init)
-    local children = _get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, init.animation_name, init.emissive_color)
+    local children = _get_hitch_children(RESOURCES_BASE_PATH:format(init.prefab), init.state, init.color, init.animation_name, init.animation_loop or false, init.emissive_color)
     local hitch_events = {}
     hitch_events["group"] = function(_, e, group)
         w:extend(e, "hitch:update")
@@ -234,12 +242,15 @@ function igame_object.create(init)
     local function remove(self)
         self.hitch_entity_object:remove()
     end
-    local function update(self, prefab_file_name, state, color, animation_name, emissive_color)
-        local children = _get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, emissive_color)
+    local function update(self, prefab_file_name, state, color, animation_name, animation_loop, emissive_color)
+        local children = _get_hitch_children(RESOURCES_BASE_PATH:format(prefab_file_name), state, color, animation_name, animation_loop, emissive_color)
         self.hitch_entity_object:send("group", children.hitch_group_id)
         for _, slot_game_object in pairs(self.slot_attach) do
             slot_game_object.hitch_entity_object:send("slot_pose", children.pose)
         end
+    end
+    local function has_animation(self, animation_name)
+        return children.animations[animation_name] ~= nil
     end
     local function attach(self, slot_name, model, state, color)
         local s = children.slots[slot_name]
@@ -296,6 +307,7 @@ function igame_object.create(init)
     outer.attach = attach
     outer.detach = detach
     outer.send   = send
+    outer.has_animation = has_animation
     outer.on_work = function ()
         local effeting = false
         if #effects > 0 then
@@ -326,5 +338,5 @@ function igame_object.create(init)
 end
 
 function igame_object.get_prefab(prefab)
-    return _get_hitch_children(RESOURCES_BASE_PATH:format(prefab), "opaque", COLOR_INVALID, nil, nil)
+    return _get_hitch_children(RESOURCES_BASE_PATH:format(prefab), "opaque", COLOR_INVALID, nil, nil, nil)
 end

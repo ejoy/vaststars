@@ -262,8 +262,8 @@
             function start.clickSetting(event)
                 ui_sys.pub {"show_setting"}
             end
-            function start.clickTask(event, is_task)
-                ui_sys.pub {"open_taskui", is_task}
+            function start.clickTechOrTaskIcon(event, is_task)
+                ui_sys.pub {"click_techortaskicon", is_task}
             end
             function start.clickLoadResource(event)
                 ui_sys.pub {"load_resource"}
@@ -375,9 +375,9 @@
                 <div style='margin: 0 auto; background-image:"textures/construct/joystick.texture"; width: 35vmin; height: 35vmin; background-size:cover; pointer-events: none;'/>
             </div>
 
-            <!-- 右上角：当前科技进度 data-if = "cur_edit_mode == '' && show_tech_progress"-->
+            <!-- 右上角：当前科技进度 -->
             <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
-                <button style='background-color:rgb(204,219,11);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickTask(is_task)">
+                <button style='background-color:rgb(204,219,11);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickTechOrTaskIcon(is_task)">
                     <div style="position:absolute; left:2.5vmin; bottom:0; width: 70%; height: 70%; background-size:cover;" data-style-background-image="current_tech_icon"/>
                     <div style="-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 3.5vmin; word-break: break-all;">{{current_tech_name}}</div>
                     <div class="progress-bar-block" style = "position:absolute; bottom: -4.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">

@@ -20,6 +20,7 @@ local iobject = ecs.require "object"
 local ichest = require "gameplay.interface.chest"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
+local assembling_common = require "ui_datamodel.common.assembling"
 
 -- An object may contain multiple types at the same time
 -- The types are listed in order, with the earlier ones taking precedence over the later ones
@@ -52,7 +53,7 @@ local detail_rml = {
 
 local function __get_detail_rml(typeobject)
     if typeobject.build_center == true then
-        return "build_center.rml"
+        return
     end
 
     for _, v in ipairs(detail_rml) do
@@ -68,6 +69,19 @@ local function __show_detail(typeobject)
         return false
     end
     return __get_detail_rml(typeobject) ~= nil
+end
+
+local function __show_set_recipe(typeobject)
+    if typeobject.build_center == true then
+        return true
+    end
+
+    if not iprototype.has_type(typeobject.type, "assembling") and
+       not iprototype.has_type(typeobject.type, "lorry_factory") then
+        return false
+    end
+
+    return typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining")
 end
 
 ---------------
@@ -93,25 +107,41 @@ function M:create(object_id, object_position, ui_x, ui_y)
     local typeobject = iprototype.queryByName(object.prototype_name)
 
     -- 组装机才显示设置配方菜单
-    local show_set_recipe = false
+    local show_set_recipe = __show_set_recipe(typeobject)
     local show_detail = __show_detail(typeobject)
     local recipe_name = ""
 
     if iprototype.has_type(typeobject.type, "assembling") or iprototype.has_type(typeobject.type, "lorry_factory") then
-        show_set_recipe = typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining") -- TODO: special case for mining
         if e.assembling.recipe ~= 0 then
             local recipe_typeobject = iprototype.queryById(e.assembling.recipe)
             recipe_name = recipe_typeobject.name
         end
     end
 
+    local build_center_icon, build_center_count, build_center_ingredients
+    if typeobject.build_center == true then
+        if e.assembling.recipe == 0 then
+            build_center_icon = "textures/assemble/setup2.texture"
+            build_center_count = 0
+        else
+            local results
+            build_center_ingredients, results = assembling_common.get(gameplay_core.get_world(), e)
+            assert(results and results[1])
+            build_center_icon = results[1].icon
+            build_center_count = results[1].count
+        end
+    end
+
     return {
-        show_teardown = (typeobject.teardown ~= false),
+        show_teardown = false,
+        show_move = false,
         show_set_recipe = show_set_recipe,
         show_road_builder = typeobject.road_builder,
         show_pipe_builder = typeobject.pipe_builder,
+        build_center_icon = build_center_icon,
+        build_center_count = build_center_count,
+        build_center_ingredients = build_center_ingredients,
         show_detail = show_detail,
-        show_move = (typeobject.teardown ~= false),
         recipe_name = recipe_name,
         object_id = object_id,
         left = ui_x,
@@ -120,11 +150,38 @@ function M:create(object_id, object_position, ui_x, ui_y)
     }
 end
 
+local function __build_center_update(datamodel, object_id)
+    local object = assert(objects:get(object_id))
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if not e then
+        return
+    end
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    local build_center_icon, build_center_count, build_center_ingredients
+    if typeobject.build_center == true then
+        if e.assembling.recipe == 0 then
+            build_center_icon = "textures/assemble/setup2.texture"
+            build_center_count = 0
+        else
+            local results
+            build_center_ingredients, results = assembling_common.get(gameplay_core.get_world(), e)
+            assert(results and results[1])
+            build_center_icon = results[1].icon
+            build_center_count = results[1].count
+        end
+    end
+    datamodel.build_center_icon = build_center_icon
+    datamodel.build_center_count = build_center_count
+    datamodel.build_center_ingredients = build_center_ingredients
+
+end
+
 function M:update(datamodel, object_id, recipe_name)
     if datamodel.object_id ~= object_id then
         return
     end
     datamodel.recipe_name = recipe_name
+    __build_center_update(datamodel, object_id)
     return true
 end
 
@@ -135,8 +192,16 @@ function M:stage_ui_update(datamodel, object_id)
         assert(false)
     end
 
+    __build_center_update(datamodel, object_id)
+
     for _, _, _, object_id in set_recipe_mb:unpack() do
-        iui.open({"recipe_pop.rml"}, object_id)
+        local object = assert(objects:get(object_id))
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        if typeobject.build_center == true then
+            iui.open({"build_center.rml"}, object_id)
+        else
+            iui.open({"recipe_pop.rml"}, object_id)
+        end
     end
 
     for _, _, _, object_id in detail_mb:unpack() do

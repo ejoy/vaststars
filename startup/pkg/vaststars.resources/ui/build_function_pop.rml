@@ -32,12 +32,53 @@
                 background-image: "textures/common/info-arc.texture";
                 background-size:cover;
             }
+            .materials-block {
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                background-size: cover;
+                border-radius: 0.27vmin;
+                width: 100%;
+                height:86%;
+            }
+            .materials {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                background-size: cover;
+                width: 10vmin;
+                height:15%;
+            }
+            .materials-item {
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .materials-icon {
+                margin-left: 0.5em;
+                width: 4.67vmin;
+                height: 4.67vmin;
+                background-color: rgb(250, 205, 9);;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                background-size: cover;
+            }
+            .materials-num {
+                padding-bottom: 0.3em;
+                padding-right:1em;
+                font-size: 4.73vmin;
+                text-align: center;
+            }
         </style>
         <style path = "common/building_style.rcss"/>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
                 object_position = {},
+                build_center_icon = "",
+                build_center_count = 0,
+                build_center_ingredients = {},
                 show_teardown = false,
                 show_move = false,
                 show_set_recipe = false,
@@ -80,6 +121,9 @@
             }
 
             function start.clickButton(event, message)
+                if message == "" then
+                    return
+                end
                 ui_sys.pub {message, start.object_id}
             end
 
@@ -114,6 +158,7 @@
                             v.text = "拆除"
                             v.message = "teardown"
                             v.background_image = "textures/factory/demolition.texture"
+                            v.build_center_count = 0
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -122,6 +167,7 @@
                             v.text = "移动"
                             v.message = "move"
                             v.background_image = "textures/factory/move.texture"
+                            v.build_center_count = 0
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -130,6 +176,7 @@
                             v.text = "修改配方"
                             v.message = "set_recipe"
                             v.background_image = "textures/assemble/wheel.texture"
+                            v.build_center_count = 0
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -138,6 +185,7 @@
                             v.text = "道路施工"
                             v.message = "road_builder"
                             v.background_image = "textures/common/road-connect.texture"
+                            v.build_center_count = 0
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -146,6 +194,7 @@
                             v.text = "管道施工"
                             v.message = "pipe_builder"
                             v.background_image = "textures/common/pipe-connect.texture"
+                            v.build_center_count = 0
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -154,11 +203,20 @@
                             v.text = "详细"
                             v.message = "detail"
                             v.background_image = "textures/factory/seacher.texture"
+                            v.build_center_count = 0
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        console.log(#start.buttons)
-                        local pos = assert(positions[#start.buttons])
+                        if start.build_center_icon and start.build_center_icon ~= "" then
+                            local v = {}
+                            v.text = "修建"
+                            v.message = ""
+                            v.background_image = start.build_center_icon
+                            v.build_center_count = start.build_center_count
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        local pos = assert(positions[#start.buttons], #start.buttons)
                         for i = 1, #start.buttons do
                             local v = start.buttons[i]
                             v.left = pos[i].left
@@ -167,7 +225,7 @@
                         end
                         start("buttons")
                     end,
-                    "show_teardown", "show_move", "show_set_recipe", "show_road_builder", "show_detail",
+                    "show_teardown", "show_move", "show_set_recipe", "show_road_builder", "show_detail", "build_center_icon", "build_center_count"
                 }
             })
         </script>
@@ -177,6 +235,21 @@
             <div class="button-fuction-block" style="position: absolute;" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message)" data-for = "it : buttons">
                 <button class="button-function" data-style-background-image = "it.background_image" />
                 <div class="title-text">{{it.text}}</div>
+                <div class = "menu-button-pic" data-if = "it.build_center_count > 0" style='width:3.6vmin; height:3.6vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
+                    <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{it.build_center_count}}</div>
+                </div>
+            </div>
+
+            <div class = "materials-block" style="position: absolute; top: 32.33vmin; height: 10vmin; width: 100%; justify-content: center; align-items: center;"> 
+                <div class = "materials" data-for = "build_center_ingredients">
+                    <div class = "materials-item">
+                        <div class = "materials-icon" data-style-background-image = "it.icon" />
+                        <div style = "flex-grow: 1; flex-direction:row-reverse;">
+                            <div class = "materials-num" data-style-color = "it.color" data-if = "it.state == 'can_craft' || it.state == 'enough'">X{{it.need_count}}</div>
+                            <div class = "materials-num" data-style-color = "it.color" data-if = "it.state == 'lack'">X({{it.count}}/{{it.need_count}})</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>

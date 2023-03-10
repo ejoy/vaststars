@@ -58,6 +58,7 @@ custom_type :
 1. routemap, starting = {x, y}, ending = {x, y}
 2. lorry_count, count = x,
 3. set_recipe, recipe = x,
+4. auto_complete_task,
 --]]
 local custom_type_mapping = {
     [0] = {s = "undef", check = function() end}, -- TODO
@@ -78,6 +79,9 @@ local custom_type_mapping = {
             return 0
         end
     end, },
+    [4] = {s = "auto_complete_task", check = function(task_params)
+        return 1
+    end, },
 }
 
 local mt = {}
@@ -88,7 +92,7 @@ end
 local cache = setmetatable({}, mt)
 
 local UNKNOWN <const> = 5 -- custom task type, see also register_unit("task", ...)
-for _, typeobject in pairs(iprototype.each_maintype("tech", "task")) do
+for _, typeobject in pairs(iprototype.each_maintype("task")) do
     local task_type, _, custom_type = string.unpack("<I2I2I2", typeobject.task) -- second param is multiple
     if task_type ~= UNKNOWN then
         goto continue
@@ -102,22 +106,25 @@ end
 
 local M = {}
 function M.update_progress(custom_type_mapping, ...)
-    local science = global.science
-    if not science.current_tech then
+    local q = gameplay_core.get_world():research_queue()
+    if #q == 0 then
         return
     end
 
-    local taskname = science.current_tech.name
-    local progress = science.current_tech.progress
-    local c = cache[custom_type_mapping][taskname]
-    if not c then
-        return
-    end
+    for _, v in ipairs(q) do
+        local taskname = v
+        local progress = gameplay_core.get_world():research_progress(taskname)
+        local c = cache[custom_type_mapping][taskname]
+        if not c then
+            goto continue
+        end
 
-    local np = c.check(c.task_params, ...)
-    if np ~= progress then
-        local gwworld = gameplay_core.get_world()
-        gwworld:research_progress(taskname, np)
+        local np = c.check(c.task_params, ...)
+        if np ~= progress then
+            local gwworld = gameplay_core.get_world()
+            gwworld:research_progress(taskname, np)
+        end
+        ::continue::
     end
 end
 return M

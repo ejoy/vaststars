@@ -39,7 +39,7 @@ local show_statistic_mb = mailbox:sub {"statistic"} -- 主界面左下角 -> 统
 local show_setting_mb = mailbox:sub {"show_setting"} -- 主界面左下角 -> 游戏设置
 local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研中心
 local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
-local open_taskui_event = mailbox:sub {"open_taskui"}
+local click_techortaskicon_mb = mailbox:sub {"click_techortaskicon"}
 local load_resource_mb = mailbox:sub {"load_resource"}
 local construct_mb = mailbox:sub {"construct"} -- 施工
 local single_touch_mb = world:sub {"single_touch"}
@@ -73,11 +73,6 @@ local function _get_construct_menu()
     return construct_menu
 end
 
-local function __has_type(prototype_name, type)
-    local typeobject = assert(iprototype.queryByName(prototype_name))
-    return iprototype.has_type(typeobject.type, type)
-end
-
 ---------------
 local M = {}
 local function get_new_tech_count(tech_list)
@@ -99,12 +94,6 @@ function M:create()
         current_tech_name = "none",    --当前科技名字
         current_tech_progress = "0%",  --当前科技进度
     }
-end
-
-function M:show_chapter(datamodel, main_text, sub_text)
-    datamodel.show_chapter = true
-    datamodel.chapter_main_text = main_text
-    datamodel.chapter_sub_text = sub_text
 end
 
 function M:update_tech(datamodel, tech)
@@ -169,7 +158,7 @@ function M:stage_ui_update(datamodel)
         end
     end
 
-    for _, _, _, is_task in open_taskui_event:unpack() do
+    for _, _, _, is_task in click_techortaskicon_mb:unpack() do
         if gameplay_core.world_update and global.science.current_tech then
             gameplay_core.world_update = false
             iui.open(is_task and {"task_pop.rml"} or {"science.rml"})

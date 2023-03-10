@@ -8,6 +8,7 @@ import "@ant.efk"
 import "@ant.modifier"
 import "@ant.terrain"
 import "@ant.motion_sampler"
+import "@mod.printer"
 
 pipeline "init"
     .stage "init"

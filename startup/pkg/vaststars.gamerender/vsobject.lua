@@ -46,9 +46,13 @@ local function emissive_color_update(self, color)
     self.game_object:update(typeobject.model, "opaque", CONSTRUCT_COLOR_INVALID, nil, color)
 end
 
-local function animation_name_update(self, animation_name)
+local function animation_name_update(self, animation_name, animation_loop)
     local typeobject = iprototype.queryByName(self.prototype_name)
-    self.game_object:update(typeobject.model, "opaque", CONSTRUCT_COLOR_INVALID, animation_name, self.emissive_color)
+    self.game_object:update(typeobject.model, "opaque", CONSTRUCT_COLOR_INVALID, animation_name, animation_loop, self.emissive_color)
+end
+
+local function has_animation(self, animation_name)
+    self.game_object:has_animation(animation_name)
 end
 
 local function attach(self, slot_name, model, ...)
@@ -132,6 +136,7 @@ return function (init)
         modifier = modifier,
         add_canvas = add_canvas,
         del_canvas = del_canvas,
+        has_animation = has_animation,
     }
     return vsobject
 end

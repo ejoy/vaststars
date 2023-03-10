@@ -23,10 +23,6 @@ local item_crafting_recipe = setmetatable({}, mt)   -- item id -> crafting recip
 local item_crafting_entities = setmetatable({}, mt) -- item id -> crafting entity info
 local category_to_entities = setmetatable({}, mt)
 
-for _, typeobject in pairs(iprototype.each_maintype("item")) do
-    assert(typeobject.group, "item group is nil: " .. typeobject.name)
-end
-
 for _, typeobject in pairs(iprototype.each_maintype("building", "assembling")) do
     if typeobject.recipe then -- default recipe
         local typeobject_recipe = assert(iprototype.queryByName(typeobject.recipe))

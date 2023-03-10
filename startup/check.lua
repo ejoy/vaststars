@@ -1,9 +1,10 @@
 package.path = "engine/?.lua"
 require "bootstrap"
 import_package "vaststars.prototype"
+local iprototype = import_package "vaststars.gamerender"("gameplay.interface.prototype")
 
+-- Check if there are any duplicates in the ingredients and results of each recipe.
 do
-    local iprototype = import_package "vaststars.gamerender"("gameplay.interface.prototype")
     local function check_elements(recipe_name, name, s)
         local r = {}
         for idx = 2, #s // 4 do
@@ -18,6 +19,15 @@ do
     for _, v in pairs(iprototype.each_maintype "recipe") do
         check_elements(v.name, "ingredient", v.ingredients)
         check_elements(v.name, "result", v.results)
+    end
+end
+
+-- Check if each item has a 'group' field
+do
+    for _, typeobject in pairs(iprototype.each_maintype("item")) do
+        if not typeobject.group then
+            log.error(typeobject.name .. " item must have group")
+        end
     end
 end
 

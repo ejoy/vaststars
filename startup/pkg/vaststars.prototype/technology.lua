@@ -656,15 +656,30 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
+  prototype "测试任务" {
+    desc = "测试任务",
+    icon = "textures/construct/industry.texture",
+    type = { "task" },
+    task = {"unknown", 0, 4},
+    effects = {
+      unlock_recipe = {"地质科技包1"},
+    },
+    prerequisites = {""},
+    count = 1,
+    tips_pic = {
+      "",
+    },
+    sign_desc = {
+      { desc = "放置1个道路建造站", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "放置道路建造站" {
     desc = "放置1座道路建造站",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "道路建造站"},
-    prerequisites = {""},
-    effects = {
-      unlock_recipe = {"采矿机打印"},
-    },
+    prerequisites = {"测试任务"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -724,9 +739,6 @@ prototype "地质研究" {
     desc = "对火星地质结构进行标本采集和研究",
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
-    effects = {
-      unlock_recipe = {"地质科技包1"},
-    },
     ingredients = {
     },
     count = 5,

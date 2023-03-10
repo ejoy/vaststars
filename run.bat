@@ -1,5 +1,6 @@
 @echo off
-chcp 65001
+@chcp 65001 >nul
+
 set current_dir=%~dp0
 set cachedir=.build
 set param=startup/main.lua

@@ -21,12 +21,18 @@ local recipe_unlocked; do
             end
         end
     end
+    for _, typeobject in pairs(iprototype.each_maintype "task") do
+        if typeobject.effects and typeobject.effects.unlock_recipe then
+            for _, recipe in ipairs(typeobject.effects.unlock_recipe) do
+                table.insert(recipe_tech[recipe], typeobject.name)
+            end
+        end
+    end
     for recipe, v in pairs(recipe_tech) do
         if #v > 1 then
             error(("recipe `%s` is unlocked by multiple techs: %s"):format(recipe, table.concat(v, ", ")))
         end
     end
-
 
 if VASTSTARS_DEBUG_RECIPE_UNLOCKED then
     function recipe_unlocked(recipe)

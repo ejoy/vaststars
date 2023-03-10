@@ -1,9 +1,8 @@
 local iprototype = require "gameplay.interface.prototype"
-local irecipe = require "gameplay.interface.recipe"
 local objects = require "objects"
-local ichest = require "gameplay.interface.chest"
 local gameplay_core = require "gameplay.core"
 local itypes = require "gameplay.interface.types"
+local assembling_common = require "ui_datamodel.common.assembling"
 
 local STATUS_IDLE <const> = 0
 local STATUS_DONE <const> = 1
@@ -31,36 +30,20 @@ local function get(object_id)
             prototype_name = iprototype.show_prototype_name(typeobject),
             background = typeobject.background,
             recipe_name = "",
-            recipe_ingredients = {},
-            recipe_results = {},
             recipe_ingredients_count = {},
             recipe_results_count = {},
             show_set_recipe = show_set_recipe,
         }
     end
 
-    local recipe_ingredients = irecipe.get_elements(recipe_typeobject.ingredients)
-    local recipe_results = irecipe.get_elements(recipe_typeobject.results)
-
-    local recipe_ingredients_count = {}
-    for index, v in ipairs(recipe_ingredients) do
-        recipe_ingredients_count[index] = {icon = v.icon, count = 0, need_count = v.count}
-    end
-
-    local recipe_results_count = {}
-    for index, v in ipairs(recipe_results) do
-        recipe_results_count[index] = {icon = v.icon, count = 0, need_count = v.count}
-    end
-
+    local ingredients_count, results_count = assembling_common.get(gameplay_core.get_world(), e)
     return {
         object_id = object_id,
         prototype_name = iprototype.show_prototype_name(typeobject),
         background = typeobject.background,
         recipe_name = recipe_typeobject.name,
-        recipe_ingredients = recipe_ingredients,
-        recipe_results = recipe_results,
-        recipe_ingredients_count = recipe_ingredients_count,
-        recipe_results_count = recipe_results_count,
+        recipe_ingredients_count = ingredients_count,
+        recipe_results_count = results_count,
         show_set_recipe = show_set_recipe,
     }
 end
@@ -79,43 +62,11 @@ function M:stage_ui_update(datamodel, object_id)
         return
     end
 
-    -- 更新组装机 成分 与 产出材料 的显示个数
-    -- 组装机箱子里已有个数 / 配方所需个数
-    local assembling = e.assembling
-    local total_progress = 0
-    local progress = 0
+    local ingredients_count, results_count, progress, total_progress = assembling_common.get(gameplay_core.get_world(), e)
+    datamodel.recipe_ingredients_count = ingredients_count
+    datamodel.recipe_results_count = results_count
 
-    if assembling.recipe ~= 0 then
-        local recipe_typeobject = assert(iprototype.queryById(assembling.recipe))
-        total_progress = recipe_typeobject.time * 100
-        progress = assembling.progress
-    end
-
-    local recipe_ingredients_count = {}
-    local recipe_results_count = {}
-    for index, v in ipairs(datamodel.recipe_ingredients) do
-        local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, index)
-        if slot then
-            recipe_ingredients_count[index] = {icon = v.icon, count = slot.amount, need_count = v.count}
-        else
-            recipe_ingredients_count[index] = {icon = v.icon, count = 0, need_count = v.count}
-        end
-    end
-
-    for index, v in ipairs(datamodel.recipe_results) do
-        local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, #datamodel.recipe_ingredients + index)
-        if slot then
-            recipe_results_count[index] = {icon = v.icon, count = slot.amount, need_count = v.count}
-        else
-            recipe_results_count[index] = {icon = v.icon, count = 0, need_count = v.count}
-
-        end
-    end
-
-    datamodel.recipe_ingredients_count = recipe_ingredients_count
-    datamodel.recipe_results_count = recipe_results_count
-
-    if assembling.status == STATUS_IDLE then
+    if e.assembling.status == STATUS_IDLE then
         datamodel.progress = "0%"
     else
         datamodel.progress = itypes.progress_str(progress, total_progress)

@@ -10,20 +10,8 @@ local timer 	= ecs.import.interface "ant.timer|itimer"
 local printer_sys = ecs.system 'printer_system'
 local iprinter = ecs.interface "iprinter"
 
-
-
-
-
-
 function printer_sys:data_changed()
-
-    for e in w:select "printer:update eid:in" do
-        local printer = e.printer
-        printer.eid = e.eid
-        iprinter.update_printer_percent(printer.eid, printer.percent) 
-    end    
 end
-
 
 --[[ function printer_sys:follow_transform_updated()
     for e in w:select "printer:in bounding?in" do
@@ -40,17 +28,11 @@ end
 
 end ]]
 
-
-
 function iprinter.update_printer_percent(eid, percent)
-    for e in w:select "printer:update bounding?in" do
-        local printer = e.printer
-        if printer.eid == eid then
-            assert(percent <= 1.0 and percent >= 0.0)
-            local aabb = e.bounding.scene_aabb
-            local factor = math3d.lerp(math3d.array_index(aabb, 1), math3d.array_index(aabb, 2), percent)
-            imaterial.set_property(e, "u_printer_factor", factor)
-            printer.percent = percent  
-        end
-    end    
+    local e <close> = w:entity(eid, "printer:update bounding?in")
+    assert(percent <= 1.0 and percent >= 0.0)
+    local aabb = e.bounding.scene_aabb
+    local factor = math3d.lerp(math3d.array_index(aabb, 1), math3d.array_index(aabb, 2), percent)
+    imaterial.set_property(e, "u_printer_factor", factor)
+    e.printer.percent = percent
 end

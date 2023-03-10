@@ -39,8 +39,10 @@ function M:stage_ui_update(datamodel)
                 local task_name = task[1]
                 game_world:research_queue {task_name}
                 local tech_node = global.science.tech_tree[task_name]
-                global.science.tech_picked_flag[tech_node.detail.name] = false
-                global.science.current_tech = tech_node
+                if tech_node then
+                    global.science.tech_picked_flag[tech_node.detail.name] = false
+                    global.science.current_tech = tech_node
+                end
                 iguide.set_task(task_name)
             end
             iguide.step_progress()

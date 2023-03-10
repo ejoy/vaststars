@@ -16,34 +16,64 @@ local function get_object(x, y)
     end
 end
 
-local STATE_WORKING  = math3d.constant("v4", {0.0, 1.0, 0.0, 1})
-local STATE_NO_POWER = math3d.constant("v4", {1.0, 1.0, 0.0, 1})
+local EMISSIVE_COLOR_WORKING  = math3d.constant("v4", {0.0, 1.0, 0.0, 1})
+local EMISSIVE_COLOR_IDLE = math3d.constant("v4", {1.0, 1.0, 0.0, 1})
+
+local STATUS_NONE <const> = 0
+local STATUS_WORKING <const> = 1
+local STATUS_IDLE <const> = 2
+
+local statuses = {} -- TODO: when an object is destroyed, clear it.
 local last_frame_count = 0
+
 local function update_world(world)
     counter = counter + 1
     if counter < update_interval then
         return
     end
     counter = 1
+
     local statistic = global.statistic
     for e in world.ecs:select "building:in eid:in" do
         local vsobject = get_object(e.building.x, e.building.y)
         local st = statistic.power[e.eid]
         if st then
             local game_object = vsobject.game_object
+            statuses[e.eid] = statuses[e.eid] or {s = STATUS_NONE}
+            local status = statuses[e.eid]
+
             -- is working ?
             if st.power < math.floor((world:now() - last_frame_count) * 0.5) * st.cfg.power then
                 game_object.on_idle()
-                vsobject:emissive_color_update(STATE_NO_POWER)
-                vsobject:animation_name_update("idle")
+                vsobject:emissive_color_update(EMISSIVE_COLOR_IDLE)
+                if vsobject:has_animation("idle_start") then
+                    if status.s ~= STATUS_IDLE then
+                        status.s = STATUS_IDLE
+                        vsobject:animation_name_update("idle_start", false)
+                    end
+                else
+                    vsobject:animation_name_update("idle", true)
+                end
             else
                 game_object.on_work()
-                vsobject:emissive_color_update(STATE_WORKING)
-                vsobject:animation_name_update("work")
+                vsobject:emissive_color_update(EMISSIVE_COLOR_WORKING)
+                if vsobject:has_animation("work_start") then
+                    if status.s ~= STATUS_WORKING then
+                        status.s = STATUS_WORKING
+                        vsobject:animation_name_update("work_start", false)
+                    end
+                else
+                    vsobject:animation_name_update("work", true)
+                end
             end
             -- TODO: low_power
         end
     end
+
+    for e in world.ecs:select "REMOVED building:in" do
+        print("REMOVED building:in", e.eid)
+    end
+
     last_frame_count = world:now()
 end
 return update_world

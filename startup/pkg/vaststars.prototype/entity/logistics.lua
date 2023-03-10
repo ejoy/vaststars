@@ -266,7 +266,7 @@ prototype "建造中心" {
     icon = "textures/building_pic/small_pic_headquarter.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "assembling"},
+    type = {"building", "assembling", "consumer"},
     area = "5x5",
     maxslot = 8,
     group = {"物流"},
@@ -310,6 +310,8 @@ prototype "建造中心" {
             },
         },
     },
+    power = "75kW",
+    priority = "secondary",
     build_center = true,
 }
 

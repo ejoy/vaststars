@@ -1,4 +1,6 @@
 @echo off
+@chcp 65001 >nul
+
 set current_dir=%~dp0
 set mode=%1
 if not defined mode (

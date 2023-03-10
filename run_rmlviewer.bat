@@ -1,5 +1,6 @@
 @echo off
-chcp 65001
+@chcp 65001 >nul
+
 set current_dir=%~dp0
 set cachedir=.\3rd\ant\tools\prefab_editor\.build
 set param=.\3rd\ant\tools\rmlviewer\main.lua
