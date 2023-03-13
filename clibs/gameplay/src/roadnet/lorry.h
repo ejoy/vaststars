@@ -20,13 +20,11 @@ namespace roadnet {
     };
     struct lorry {
         uint32_t capacitance;
-        road_coord ending;
+        roadid ending;
         uint16_t classid;
-        uint16_t item;
-        uint16_t sell_endpoint;
-        uint16_t buy_endpoint;
+        uint16_t item_classid;
+        uint16_t item_amount;
         uint8_t tick;
-        lorry_status status;
         bool nextDirection(network& w, roadid C, direction& dir);
         void initTick(uint8_t tick);
         void update(network& w, uint64_t ti);

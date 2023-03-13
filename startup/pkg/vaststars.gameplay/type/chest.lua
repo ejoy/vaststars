@@ -1,5 +1,4 @@
 local type = require "register.type"
-local iendpoint = require "interface.endpoint"
 
 local c = type "chest"
     .chest_type "chest_type"
@@ -15,13 +14,10 @@ function c:ctor(init, pt)
         }
     end
 
-    local endpoint = iendpoint.create(world, init, pt, "chest")
     local chest = {
-        endpoint = endpoint,
         chest = world:container_create(table.concat(items)),
         fluidbox_in = 0,
         fluidbox_out = 0,
-        lorry = 0xffff,
     }
     return {
         chest = chest

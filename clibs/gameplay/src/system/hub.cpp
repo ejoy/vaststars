@@ -109,7 +109,7 @@ static uint16_t getxy(uint8_t x, uint8_t y) {
 static int
 lbuild(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
-    auto& b = w.buildings;
+    auto& b = w.hubs;
     b.chests.clear();
     std::map<uint16_t, std::map<uint16_t, hub_mgr::berth>> globalmap;
     for (auto& v : ecs_api::select<ecs::building>(w.ecs)) {
@@ -221,7 +221,7 @@ static void Move(lua_State* L, world& w, ecs::drone& drone, uint32_t target) {
 }
 
 static container::slot* GetChestSlot(world& w, hub_mgr::berth const& berth) {
-    if (auto chest = w.buildings.chests.find(berth.hash())) {
+    if (auto chest = w.hubs.chests.find(berth.hash())) {
         return &chest::array_at(w, container::index::from(*chest), berth.chest_slot);
     }
     return nullptr;
@@ -254,7 +254,7 @@ static size_t FindChestRed(world& w, const hub_mgr::hub_info& info) {
     for (size_t i = 0; i < N; ++i) {
         size_t ii = (i + w.time) % N;
         auto berth = info.chest_red[ii];
-        if (auto chest = w.buildings.chests.find(berth.hash())) {
+        if (auto chest = w.hubs.chests.find(berth.hash())) {
             auto& chestslot = chest::array_at(w, container::index::from(*chest), berth.chest_slot);
             if (chestslot.amount > chestslot.lock_item) {
                 return ii;
@@ -269,7 +269,7 @@ static size_t FindChestBlue(world& w, const hub_mgr::hub_info& info) {
     for (size_t i = 0; i < N; ++i) {
         size_t ii = (i + w.time) % N;
         auto berth = info.chest_blue[ii];
-        if (auto chest = w.buildings.chests.find(berth.hash())) {
+        if (auto chest = w.hubs.chests.find(berth.hash())) {
             auto& chestslot = chest::array_at(w, container::index::from(*chest), berth.chest_slot);
             if (chestslot.limit > chestslot.amount + chestslot.lock_space) {
                 return ii;
@@ -290,7 +290,7 @@ static std::tuple<size_t, size_t, bool> FindHub(world& w, const hub_mgr::hub_inf
     for (size_t i = 0; i < N; ++i) {
         size_t ii = (i + w.time) % N;
         auto berth = info.hub[ii];
-        if (auto chest = w.buildings.chests.find(berth.hash())) {
+        if (auto chest = w.hubs.chests.find(berth.hash())) {
             auto& chestslot = chest::array_at(w, container::index::from(*chest), berth.chest_slot);
             if (min.index == -1 || ((chestslot.amount < min.amount) && (chestslot.limit > chestslot.item))) {
                 min.index = ii;
@@ -308,7 +308,7 @@ static std::tuple<size_t, size_t, bool> FindHub(world& w, const hub_mgr::hub_inf
 
 static bool FindTask(lua_State* L, world& w, ecs::drone& drone) {
     hub_mgr::berth home = std::bit_cast<hub_mgr::berth>(drone.home);
-    if (auto v = map_find(w.buildings.hubs, home)) {
+    if (auto v = map_find(w.hubs.hubs, home)) {
         auto& info = *v;
         auto red = FindChestRed(w, info);
         auto blue = FindChestBlue(w, info);

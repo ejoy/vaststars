@@ -13,10 +13,17 @@ component "chest" {
     "fluidbox_out:word",
 }
 
+component "station_producer" {
+}
+
+component "station_consumer" {
+}
+
 component "station" {
     "endpoint:word",
-    "lorry:word[8]",
-    "count:byte",
+    "chest:word",
+    "weights:byte",
+    "lorry:byte",
 }
 
 component "park" {

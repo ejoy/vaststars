@@ -329,7 +329,6 @@ namespace roadnet {
         crossMap.clear();
         crossMapR.clear();
 
-        endpointVec.clear();
         lorryVec.clear();
 
         uint16_t genCrossId = 0;
@@ -426,7 +425,6 @@ namespace roadnet {
             crossroad.setRevNeighbor(data.finish_dir, straight.id);
             genLorryOffset += (uint16_t)length;
         }
-        endpointAry.reset(genLorryOffset);
         lorryAry.reset(genLorryOffset);
     }
 
@@ -449,7 +447,6 @@ namespace roadnet {
     }
     void network::update(uint64_t ti) {
         ary_call(*this, ti, lorryVec, &lorry::update);
-        ary_call(*this, ti, endpointVec, &road::endpoint::update);
         ary_call(*this, ti, crossAry, &road::crossroad::update);
         ary_call(*this, ti, straightAry, &road::straight::update);
     }
@@ -470,34 +467,9 @@ namespace roadnet {
         assert(id.id < lorryVec.size());
         return lorryVec[id.id];
     }
-    endpointid& network::EndpointInRoad(uint32_t index) {
-        return endpointAry[index];
-    }
     road::endpoint& network::Endpoint(endpointid id) {
         assert(id.id < endpointVec.size());
         return endpointVec[id.id];
-    }
-
-    endpointid network::createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir) {
-        loction l = move({connection_x, connection_y}, connection_dir);
-        direction dir = (direction)(((uint8_t)connection_dir + 1) % 4); // direction of straight road
-        road_coord rc = coordConvert(l, dir);
-
-        // cannot find endpoint, such as endpoint is not connected to any road
-        if (!rc) {
-            return endpointid(0xffff);
-        }
-
-        endpointid endpointId((uint16_t)endpointVec.size());
-        road::endpoint endpoint;
-        endpoint.loc = {connection_x, connection_y};
-        endpoint.coord = rc;
-        endpointVec.push_back(endpoint);
-
-        assert(rc.id.cross == 0 && rc.id.id < straightAry.size());
-        auto& straight = straightAry[rc.id.id];
-        straight.setEndpoint(*this, rc.offset, endpointId);
-        return endpointId;
     }
 
     roadid network::findCrossRoad(loction l) {

@@ -16,14 +16,12 @@ namespace roadnet {
         void loadMap(const std::map<loction, uint8_t>& mapData);
         lorryid    createLorry(world& w, lua_State* L, uint16_t classid);
         void       destroyLorry(world& w, lorryid id);
-        endpointid createEndpoint(uint8_t connection_x, uint8_t connection_y, direction connection_dir);
 
         void        update(uint64_t ti);
         road::straight& StraightRoad(roadid id);
         road::crossroad& CrossRoad(roadid id);
         lorry&      Lorry(lorryid id);
         lorryid&    LorryInRoad(uint32_t index);
-        endpointid& EndpointInRoad(uint32_t index);
         road::endpoint& Endpoint(endpointid id);
 
         road_coord coordConvert(map_coord  mc);
@@ -32,7 +30,6 @@ namespace roadnet {
 
         dynarray<road::crossroad>   crossAry;
         dynarray<road::straight>    straightAry;
-        dynarray<endpointid>        endpointAry;
         std::vector<road::endpoint> endpointVec;
         dynarray<lorryid>           lorryAry;
         std::vector<lorry>          lorryVec;

@@ -8,10 +8,10 @@ extern "C" {
 
 namespace roadnet {
     bool lorry::nextDirection(network& w, roadid C, direction& dir) {
-        if (ending.id == roadid::invalid()) {
+        if (ending == roadid::invalid()) {
             return false;
         }
-        return route(w, C, ending.id, dir);
+        return route(w, C, ending, dir);
     }
     void lorry::initTick(uint8_t v) {
         tick = v;
@@ -28,25 +28,12 @@ namespace roadnet {
         return tick == 0;
     }
     void lorry::reset(world& w) {
-        switch (status) {
-        case lorry_status::go_buy:
-        case lorry_status::want_buy:
-            // unlock buy
-            [[fallthrough]];
-        case lorry_status::go_sell:
-        case lorry_status::want_sell:
-            // unlock sell
-            break;
-        case lorry_status::go_home:
-        case lorry_status::want_home:
-            break;
-        default:
-            break;
-        }
     }
     void lorry::init(world& w, lua_State* L, uint16_t classid) {
         struct prototype_context pt = w.prototype(L, classid);
         this->classid = classid;
         this->capacitance = pt_capacitance(&pt);
+        this->item_classid = 0;
+        this->item_amount = 0;
     }
 }

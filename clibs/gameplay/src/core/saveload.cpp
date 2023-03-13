@@ -2,6 +2,7 @@
 #include "core/world.h"
 #include "core/saveload.h"
 #include "roadnet/network.h"
+#include "util/queue.h"
 #include <unordered_map>
 
 namespace lua_world {
@@ -26,27 +27,6 @@ namespace lua_world {
             typename T::value_type v;
             file_read(f, v);
             t.push(v);
-        }
-    }
-
-    template <typename T>
-        requires (std::same_as<T, trading_queue>)
-    void file_write(FILE* f, const T& t) {
-        for (size_t i = 0; i < SELL_PRIORITY; ++i) {
-            file_write(f, t.sell[i]);
-        }
-        for (size_t i = 0; i < BUY_PRIORITY; ++i) {
-            file_write(f, t.buy[i]);
-        }
-    }
-    template <typename T>
-        requires (std::same_as<T, trading_queue>)
-    void file_read(FILE* f, T& t) {
-        for (size_t i = 0; i < SELL_PRIORITY; ++i) {
-            file_read(f, t.sell[i]);
-        }
-        for (size_t i = 0; i < BUY_PRIORITY; ++i) {
-            file_read(f, t.buy[i]);
         }
     }
 
@@ -240,17 +220,10 @@ namespace lua_world {
             file_write(f, w.container.top);
         });
 
-        backup_scope(L, f, "tradings", [&](){
-            file_write(f, w.tradings.queues);
-            file_write(f, w.tradings.orders);
-        });
-
         backup_scope(L, f, "roadnet", [&](){
             auto& rw = w.rw;
             file_write(f, rw.crossAry);
             file_write(f, rw.straightAry);
-            file_write(f, rw.endpointAry);
-            file_write(f, rw.endpointVec);
             file_write(f, rw.lorryAry);
             file_write(f, rw.lorryFreeList);
             file_write(f, rw.lorryVec);
@@ -321,20 +294,10 @@ namespace lua_world {
             w.container.init();
         });
 
-        restore_scope(L, f, "tradings", [&](){
-            file_read(f, w.tradings.queues);
-            file_read(f, w.tradings.orders);
-        }, [&](){
-            w.tradings.queues.clear();
-            w.tradings.orders.clear();
-        });
-
         restore_scope(L, f, "roadnet", [&](){
             auto& rw = w.rw;
             file_read(f, rw.crossAry);
             file_read(f, rw.straightAry);
-            file_read(f, rw.endpointAry);
-            file_read(f, rw.endpointVec);
             file_read(f, rw.lorryAry);
             file_read(f, rw.lorryFreeList);
             file_read(f, rw.lorryVec);
