@@ -158,6 +158,7 @@ end
 local drone_depot = {}
 local lookup_drones = {}
 local pile_id = 0
+local drone_offset = 6
 local function update_world(gameworld)
     for _, _, geid in entity_remove:unpack() do
         local e = gameplay_core.get_entity(geid)
@@ -170,15 +171,18 @@ local function update_world(gameworld)
     local t = {}
     --TODO: update framerate is 30
     local elapsed_time = 1.0 / 30
+    local same_dest_offset = {}
+    local drone_task = {}
     for e in gameworld.ecs:select "drone:in eid:in" do
         local drone = e.drone
         if not lookup_drones[e.eid] then
             local obj = get_object(drone.home)
+            assert(obj)
             local pos = obj.srt.t
             local objid = obj.gameplay_eid
             if not drone_depot[objid] then
-                local e = gameplay_core.get_entity(objid)
-                local chest = gameworld:container_get(e.hub, 1)
+                local ge = gameplay_core.get_entity(objid)
+                local chest = gameworld:container_get(ge.hub, 1)
                 local typeobject = iprototype.queryById(chest.item)
                 pile_id = pile_id + 1
                 local pile_name = "pile" .. pile_id
@@ -193,8 +197,8 @@ local function update_world(gameworld)
                         iheapmesh.update_heap_mesh_number(self.pile_num, self.pile_name)
                     end,
                     destroy = function (self)
-                        for _, drone in pairs(self.drones) do
-                            drone:destroy()
+                        for _, d in pairs(self.drones) do
+                            d:destroy()
                         end
                         w:remove(self.pile_eid)
                     end
@@ -203,11 +207,11 @@ local function update_world(gameworld)
             local depot = drone_depot[objid]
             local drones = depot.drones
             if not drones[e.eid] then
-                local drone = create_drone({pos[1] + 6, pos[2] + 8, pos[3] - 6})
-                drone.owner = depot
-                drones[e.eid] = drone
+                local newDrone = create_drone({pos[1] + 6, pos[2] + 8, pos[3] - 6})
+                newDrone.owner = depot
+                drones[e.eid] = newDrone
                 -- cache lookup table
-                lookup_drones[e.eid] = drone
+                lookup_drones[e.eid] = newDrone
             end
         else
             local current = lookup_drones[e.eid]
@@ -221,13 +225,18 @@ local function update_world(gameworld)
                         local duration = (current.start_progress / drone.maxprogress) * total
                         current.start_progress = nil
 
-                        local obj = get_object(drone.next)
-                        if obj then
-                            local pos = obj.srt.t
-                            current:flyto(fly_height, {pos[1], item_height, pos[3]}, duration)
-                            if drone.item and (drone.next == drone.home) then
+                        local target = get_object(drone.next)
+                        if target then
+                            if drone.item > 0 and (drone.next == drone.home) then
                                 current.item = create_item(drone.item, current.prefab.tag["*"][1])
                             end
+                            local key = drone.prev << 32 | drone.next
+                            if not same_dest_offset[key] then
+                                same_dest_offset[key] = 0
+                            else
+                                same_dest_offset[key] = same_dest_offset[key] - (drone_offset / 2)
+                            end
+                            drone_task[#drone_task + 1] = {key, current, target.srt.t, duration}
                         end
                     end
                 elseif not current.at_home then
@@ -237,9 +246,12 @@ local function update_world(gameworld)
                 current:update(elapsed_time)
             end
         end
-        -- if drone.maxprogress > 0 then
-        --     print(e.eid, drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
-        -- end
+    end
+    for _, task in ipairs(drone_task) do
+        local key = task[1]
+        local pos = task[3]
+        task[2]:flyto(fly_height, {pos[1] + same_dest_offset[key], item_height, pos[3]}, task[4])
+        same_dest_offset[key] = same_dest_offset[key] + drone_offset
     end
     return t
 end
