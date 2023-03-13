@@ -8,10 +8,10 @@ policy:
 ---
 data:
   material: /pkg/vaststars.resources/glb/shelf-output.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/shelf-output.glb|meshes/Plane_P1.meshbin
-  name: Plane
+  mesh: /pkg/vaststars.resources/glb/shelf-output.glb|meshes/Plane.002_P1.meshbin
+  name: Plane.004
   scene:
-    t: {0, 18.758563995361328, 0}
+    s: {1.2019320726394653, 1.2019320726394653, 1.2019320726394653}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
