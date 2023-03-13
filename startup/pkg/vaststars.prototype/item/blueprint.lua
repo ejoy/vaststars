@@ -123,7 +123,7 @@ prototype "破损运输车辆" {
 
 prototype "水电站设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-hydroplant.texture",
@@ -133,7 +133,7 @@ prototype "水电站设计图" {
 
 prototype "空气过滤器设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-air-filter1.texture",
@@ -143,7 +143,7 @@ prototype "空气过滤器设计图" {
 
 prototype "地下水挖掘机设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-pump.texture",
@@ -153,7 +153,7 @@ prototype "地下水挖掘机设计图" {
 
 prototype "电解厂设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-electrolysis1.texture",
@@ -163,7 +163,7 @@ prototype "电解厂设计图" {
 
 prototype "化工厂设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-chemistry2.texture",
@@ -173,7 +173,7 @@ prototype "化工厂设计图" {
 
 prototype "采矿机设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-miner.texture",
@@ -183,7 +183,7 @@ prototype "采矿机设计图" {
 
 prototype "组装机设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-assembler.texture",
@@ -193,7 +193,7 @@ prototype "组装机设计图" {
 
 prototype "电线杆设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-electric-pole1.texture",
@@ -203,7 +203,7 @@ prototype "电线杆设计图" {
 
 prototype "无人机仓库设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-drone-depot.texture",
@@ -213,7 +213,7 @@ prototype "无人机仓库设计图" {
 
 prototype "车站设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-logisitic.texture",
@@ -223,7 +223,7 @@ prototype "车站设计图" {
 
 prototype "进货车站设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-logisitic.texture",
@@ -233,7 +233,7 @@ prototype "进货车站设计图" {
 
 prototype "收货车站设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-logisitic.texture",
@@ -243,7 +243,7 @@ prototype "收货车站设计图" {
 
 prototype "熔炼炉设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-furnace.texture",
@@ -253,7 +253,7 @@ prototype "熔炼炉设计图" {
 
 prototype "太阳能板设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-solar-panel.texture",
@@ -263,7 +263,7 @@ prototype "太阳能板设计图" {
 
 prototype "蓄电池设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-grid-battery.texture",
@@ -273,7 +273,7 @@ prototype "蓄电池设计图" {
 
 prototype "物流中心设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-logisitic.texture",
@@ -283,7 +283,7 @@ prototype "物流中心设计图" {
 
 prototype "车辆厂设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-goodsstation-output.texture",
@@ -293,7 +293,7 @@ prototype "车辆厂设计图" {
 
 prototype "道路建造站设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/road-builder.texture",
@@ -303,7 +303,7 @@ prototype "道路建造站设计图" {
 
 prototype "管道建造站设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/pipe-builder.texture",
@@ -313,7 +313,7 @@ prototype "管道建造站设计图" {
 
 prototype "科研中心设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-lab.texture",
@@ -323,7 +323,7 @@ prototype "科研中心设计图" {
 
 prototype "运输车辆设计图" {
     type = {"item"},
-    stack = 1,
+    stack = 4,
     pile = "2x1x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-truck.texture",
