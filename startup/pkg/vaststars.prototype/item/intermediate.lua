@@ -401,6 +401,7 @@ prototype "铜片" {
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/steel-beam.texture",
     group = {"金属"},
+    item_description = "用来抓取货物的机械装置",
 }
 prototype "铜丝" {
     type = {"item"},
@@ -409,6 +410,7 @@ prototype "铜丝" {
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/iron-wire.texture",
     group = {"金属"},
+    item_description = "用来抓取货物的机械装置",
 }
 
 prototype "电路板" {
@@ -418,6 +420,7 @@ prototype "电路板" {
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/processor.texture",
     group = {"器件"},
+    item_description = "用来抓取货物的机械装置",
 }
 
 prototype "核铀燃料" {
@@ -427,6 +430,7 @@ prototype "核铀燃料" {
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/coal.texture",
     group = {"器件"},
+    item_description = "用来抓取货物的机械装置",
 }
 
 prototype "用尽的核铀燃料" {
@@ -436,6 +440,7 @@ prototype "用尽的核铀燃料" {
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/coal.texture",
     group = {"器件"},
+    item_description = "用来抓取货物的机械装置",
 }
 
 prototype "无人机" {
@@ -444,7 +449,7 @@ prototype "无人机" {
     pile = "4x4",
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/drone1.texture",
-    des = "可飞行的小型空中运输工具",
+    item_description = "用来抓取货物的机械装置",
     group = {"器件"},
 }
 --------------------------
