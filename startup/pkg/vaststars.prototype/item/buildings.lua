@@ -136,6 +136,7 @@ prototype "机器爪I" {
 
 prototype "蒸汽发电机I" {
     type = {"item"},
+    group = {"物流"},
     stack = 1,
     item_description = "将热能转换成电能的机器",
 }
