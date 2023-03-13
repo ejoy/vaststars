@@ -1122,7 +1122,6 @@ local t = {
 	"/pkg/vaststars.resources/textures/sky/sky.texture",
 	"/pkg/vaststars.resources/ui/assemble.rml",
 	"/pkg/vaststars.resources/ui/blueprint.rml",
-	"/pkg/vaststars.resources/ui/build_center.rml",
 	"/pkg/vaststars.resources/ui/build_function_pop.rml",
 	"/pkg/vaststars.resources/ui/chapter_pop.rml",
 	"/pkg/vaststars.resources/ui/character.rml",

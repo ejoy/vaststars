@@ -182,6 +182,9 @@ function page_meta:on_dirty_all(item_count)
         self:init(item_count)
     end
     for index = 1, item_count do
+        if not self.index_map[index] then
+            break
+        end
         local item = self.index_map[index].item
         item.removeEventListener('click')
         self.item_update(item, index)

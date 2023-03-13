@@ -120,7 +120,7 @@ void chest::limit(world& w, container::index c, const uint16_t* r, uint16_t n) {
 
 uint16_t chest::size(world& w, container::index c) {
     auto& s = w.container.at(c);
-    return s.eof - c.slot;
+    return s.eof - c.slot + 1;
 }
 
 bool chest::pickup_force(world& w, container::index c, uint16_t item, uint16_t amount, bool unlock) {

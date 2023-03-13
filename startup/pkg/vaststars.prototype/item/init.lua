@@ -12,4 +12,5 @@ prototype "任务" {
     stack = 10,
     tech_icon = "",
     group = {},
+    icon = "",
 }

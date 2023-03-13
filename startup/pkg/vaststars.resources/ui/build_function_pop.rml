@@ -158,7 +158,7 @@
                             v.text = "拆除"
                             v.message = "teardown"
                             v.background_image = "textures/factory/demolition.texture"
-                            v.build_center_count = 0
+                            v.build_center_count = -1
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -167,7 +167,7 @@
                             v.text = "移动"
                             v.message = "move"
                             v.background_image = "textures/factory/move.texture"
-                            v.build_center_count = 0
+                            v.build_center_count = -1
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -176,7 +176,7 @@
                             v.text = "变更"
                             v.message = "set_recipe"
                             v.background_image = "textures/assemble/wheel.texture"
-                            v.build_center_count = 0
+                            v.build_center_count = -1
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -185,7 +185,7 @@
                             v.text = "道路施工"
                             v.message = "road_builder"
                             v.background_image = "textures/common/road-connect.texture"
-                            v.build_center_count = 0
+                            v.build_center_count = -1
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -194,7 +194,7 @@
                             v.text = "管道施工"
                             v.message = "pipe_builder"
                             v.background_image = "textures/common/pipe-connect.texture"
-                            v.build_center_count = 0
+                            v.build_center_count = -1
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -203,16 +203,43 @@
                             v.text = "详细"
                             v.message = "detail"
                             v.background_image = "textures/factory/seacher.texture"
-                            v.build_center_count = 0
+                            v.build_center_count = -1
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.build_center_build then
+                            local v = {}
+                            v.text = "开始建造"
+                            v.message = "build_center_build"
+                            v.background_image = "textures/construct/hammer.texture"
+                            v.build_center_count = -1
                             start.buttons[#start.buttons + 1] = v
                         end
 
                         if start.build_center_icon and start.build_center_icon ~= "" then
                             local v = {}
-                            v.text = "放置"
+                            v.text = " "
                             v.message = ""
                             v.background_image = start.build_center_icon
                             v.build_center_count = start.build_center_count
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.build_center_stop_build then
+                            local v = {}
+                            v.text = "停止建造"
+                            v.message = "build_center_stop_build"
+                            v.background_image = "textures/construct/hammer-stop.texture"
+                            v.build_center_count = -1
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.build_center_place then
+                            local v = {}
+                            v.text = "放置"
+                            v.message = "build_center_place"
+                            v.background_image = "textures/factory/place-building.texture"
+                            v.build_center_count = -1
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -235,7 +262,7 @@
             <div class="button-fuction-block" style="position: absolute;" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message)" data-for = "it : buttons">
                 <button class="button-function" data-style-background-image = "it.background_image" />
                 <div class="title-text">{{it.text}}</div>
-                <div class = "menu-button-pic" data-if = "it.build_center_count > 0" style='width:3.6vmin; height:3.6vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
+                <div class = "menu-button-pic" data-if = "it.build_center_count >= 0" style='width:4.26vmin; height:4.26vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
                     <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{it.build_center_count}}</div>
                 </div>
             </div>

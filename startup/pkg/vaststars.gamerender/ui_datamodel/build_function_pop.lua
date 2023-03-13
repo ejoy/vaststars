@@ -7,6 +7,9 @@ local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
 local vsobject_manager = ecs.require "vsobject_manager"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
+local iworld = require "gameplay.interface.world"
+local icanvas = ecs.require "engine.canvas"
+local get_assembling_canvas_items = ecs.require "ui_datamodel.common.assembling_canvas".get_assembling_canvas_items
 
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local detail_mb = mailbox:sub {"detail"}
@@ -15,6 +18,8 @@ local teardown_mb = mailbox:sub {"teardown"}
 local move_mb = mailbox:sub {"move"}
 local road_builder_mb = mailbox:sub {"road_builder"}
 local pipe_builder_mb = mailbox:sub {"pipe_builder"}
+local build_center_stop_build_mb = mailbox:sub {"build_center_stop_build"}
+
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local iobject = ecs.require "object"
 local ichest = require "gameplay.interface.chest"
@@ -25,6 +30,10 @@ local assembling_common = require "ui_datamodel.common.assembling"
 -- An object may contain multiple types at the same time
 -- The types are listed in order, with the earlier ones taking precedence over the later ones
 local detail_rml = {
+    {
+        type = "hub",
+        rml = "drone_depot.rml",
+    },
     {
         type = "station",
         rml = "logistic_center.rml",
@@ -118,10 +127,12 @@ function M:create(object_id, object_position, ui_x, ui_y)
         end
     end
 
+    local build_center_place, build_center_build, build_center_stop_build = false, false, false
     local build_center_icon, build_center_count, build_center_ingredients
     if typeobject.build_center == true then
+        build_center_place, build_center_build, build_center_stop_build = true, true, true
         if e.assembling.recipe == 0 then
-            build_center_icon = "textures/factory/place-building.texture"
+            build_center_icon = ""
             build_center_count = 0
         else
             local results
@@ -141,6 +152,9 @@ function M:create(object_id, object_position, ui_x, ui_y)
         build_center_icon = build_center_icon,
         build_center_count = build_center_count,
         build_center_ingredients = build_center_ingredients,
+        build_center_place = build_center_place,
+        build_center_build = build_center_build,
+        build_center_stop_build = build_center_stop_build,
         show_detail = show_detail,
         recipe_name = recipe_name,
         object_id = object_id,
@@ -160,7 +174,7 @@ local function __build_center_update(datamodel, object_id)
     local build_center_icon, build_center_count, build_center_ingredients
     if typeobject.build_center == true then
         if e.assembling.recipe == 0 then
-            build_center_icon = "textures/factory/place-building.texture"
+            build_center_icon = ""
             build_center_count = 0
         else
             local results
@@ -195,13 +209,7 @@ function M:stage_ui_update(datamodel, object_id)
     __build_center_update(datamodel, object_id)
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
-        local object = assert(objects:get(object_id))
-        local typeobject = iprototype.queryByName(object.prototype_name)
-        if typeobject.build_center == true then
-            iui.open({"build_center.rml"}, object_id)
-        else
-            iui.open({"recipe_pop.rml"}, object_id)
-        end
+        iui.open({"recipe_pop.rml"}, object_id)
     end
 
     for _, _, _, object_id in detail_mb:unpack() do
@@ -256,6 +264,21 @@ function M:stage_ui_update(datamodel, object_id)
 
     for _, _, _, object_id in pipe_builder_mb:unpack() do
         iui.redirect("construct.rml", "pipe_builder", object_id)
+    end
+
+    for _, _, _, object_id in build_center_stop_build_mb:unpack() do
+        local object = assert(objects:get(object_id))
+        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        iworld.set_recipe(gameplay_core.get_world(), e, nil)
+        local vsobject = assert(vsobject_manager:get(object_id))
+        local typeobject = assert(iprototype.queryByName(object.prototype_name))
+        local w, h = iprototype.unpackarea(typeobject.area)
+        object.recipe = ""
+        vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(object, object.x, object.y, w, h))
+        object.fluid_name = {}
+
+        iui.update("build_function_pop.rml", "update", object_id)
+        gameplay_core.build()
     end
 end
 
