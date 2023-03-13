@@ -12,8 +12,8 @@ local item_category = {
         icon = "textures/construct/logisitic1.texture",
     },
     {
-        category = "管道",
-        icon = "textures/construct/pipe.texture",
+        category = "器件",
+        icon = "textures/construct/plastic.texture",
     },
     {
         category = "加工",

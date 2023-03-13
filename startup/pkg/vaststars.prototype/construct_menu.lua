@@ -43,14 +43,15 @@ local menu = {
         name = "物流",
         icon = "textures/construct/logisitic1.texture",
         detail = {
-            "物流中心I",
             "科研中心I",
             "采矿机I",
-            "车站",
+            "进货车站",
+            "收货车站",
             "无人机仓库", 
             "建造中心",
             "道路建造站",
             "管道建造站",
+            "物流中心I",
         },
     },
     {

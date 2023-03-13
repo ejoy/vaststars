@@ -199,6 +199,24 @@ prototype "车站设计图" {
     group = {"加工"},
 }
 
+prototype "进货车站设计图" {
+    type = {"item"},
+    stack = 1,
+    pile = "2x1",
+    pile_model = "glb/stackeditems/iron-ore.glb",
+    icon = "textures/construct/broken-logisitic.texture",
+    group = {"加工"},
+}
+
+prototype "收货车站设计图" {
+    type = {"item"},
+    stack = 1,
+    pile = "2x1",
+    pile_model = "glb/stackeditems/iron-ore.glb",
+    icon = "textures/construct/broken-logisitic.texture",
+    group = {"加工"},
+}
+
 prototype "熔炼炉设计图" {
     type = {"item"},
     stack = 1,

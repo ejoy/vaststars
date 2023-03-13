@@ -1366,6 +1366,38 @@ prototype "车站打印" {
     description = "打印车站",
 }
 
+prototype "进货车站打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/broken-logisitic.texture",
+    ingredients = {
+        {"进货车站设计图", 1},
+    },
+    results = {
+        {"进货车站", 1},
+    },
+    time = "5s",
+    description = "打印进货车站",
+}
+
+prototype "收货车站打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/broken-logisitic.texture",
+    ingredients = {
+        {"收货车站设计图", 1},
+    },
+    results = {
+        {"收货车站", 1},
+    },
+    time = "5s",
+    description = "打印收货车站",
+}
+
 prototype "熔炼炉打印" {
     type = { "recipe" },
     category = "设计图打印",
@@ -1637,6 +1669,38 @@ prototype "车站设计" {
     },
     time = "5s",
     description = "打印车站",
+}
+
+prototype "进货车站设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/broken-logisitic.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"进货车站设计图", 1},
+    },
+    time = "5s",
+    description = "打印进货车站",
+}
+
+prototype "收货车站设计" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/broken-logisitic.texture",
+    ingredients = {
+        {"电动机I", 1},
+    },
+    results = {
+        {"收货车站设计图", 1},
+    },
+    time = "5s",
+    description = "打印收货车站",
 }
 
 prototype "熔炼炉设计" {

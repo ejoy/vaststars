@@ -355,3 +355,33 @@ prototype "车站" {
         },
     }
 }
+
+prototype "进货车站" {
+    model = "prefabs/goods-station-1.prefab",
+    icon = "textures/building_pic/small_pic_chest.texture",
+    background = "textures/build_background/pic_chest.texture",
+    construct_detector = {"exclusive"},
+    type = {"building"},
+    area = "1x1",
+    group = {"物流"},
+    crossing = {
+        connections = {
+            {type="station", position={0,0,"S"}, roadside = true},
+        },
+    }
+}
+
+prototype "收货车站" {
+    model = "prefabs/goods-station-1.prefab",
+    icon = "textures/building_pic/small_pic_chest.texture",
+    background = "textures/build_background/pic_chest.texture",
+    construct_detector = {"exclusive"},
+    type = {"building"},
+    area = "1x1",
+    group = {"物流"},
+    crossing = {
+        connections = {
+            {type="station", position={0,0,"S"}, roadside = true},
+        },
+    }
+}
