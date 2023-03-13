@@ -8,7 +8,6 @@ prototype "液罐I" {
     storage_tank = true,
     type = {"building", "fluidbox"},
     area = "3x3",
-    group = {"管道"},
     fluidbox = {
         capacity = 15000,
         height = 100,
@@ -29,7 +28,6 @@ prototype "气罐I" {
     storage_tank = true,
     type = {"building", "fluidbox"},
     area = "3x3",
-    group = {"管道"},
     fluidbox = {
         capacity = 15000,
         height = 100,
@@ -53,7 +51,6 @@ prototype "地下水挖掘机" {
     power = "6kW",
     priority = "secondary",
     recipe = "离岸抽水",
-    group = {"管道"},
     show_detail = false,
     maxslot = "8",
     fluidboxes = {
@@ -81,7 +78,6 @@ prototype "压力泵I" {
     power = "10kW",
     drain = "300W",
     priority = "secondary",
-    group = {"管道"},
     fluidbox = {
         capacity = 500,
         height = 300,
@@ -103,7 +99,6 @@ prototype "烟囱I" {
     rotate_on_build = true,
     craft_category = {"流体气体排泄"},
     speed = "100%",
-    group = {"管道"},
     fluidbox = {
         capacity = 1000,
         height = 100,
@@ -123,7 +118,6 @@ prototype "排水口I" {
     rotate_on_build = true,
     craft_category = {"流体液体排泄"},
     speed = "100%",
-    group = {"管道"},
     fluidbox = {
         capacity = 1000,
         height = 100,
@@ -144,7 +138,6 @@ prototype "空气过滤器I" {
     power = "50kW",
     drain = "1.5kW",
     priority = "secondary",
-    group = {"管道"},
     recipe = "空气过滤",
     maxslot = "8",
     fluidboxes = {
@@ -172,7 +165,6 @@ prototype "管道1-I型" {
     show_detail = false,
     type = {"building","fluidbox"},
     area = "1x1",
-    group = {"管道"},
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -241,7 +233,6 @@ prototype "管道1-X型" {
     show_detail = false,
     type = {"building","fluidbox"},
     area = "1x1",
-    group = {"管道"},
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -307,7 +298,6 @@ prototype "地下管1-JU型" {
     flow_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox"},
     area = "1x1",
-    group = {"管道"},
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -330,7 +320,6 @@ prototype "地下管1-JI型" {
     flow_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox"},
     area = "1x1",
-    group = {"管道"},
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -353,7 +342,6 @@ prototype "地下管2-JU型" {
     flow_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox"},
     area = "1x1",
-    group = {"管道"},
     fluidbox = {
         capacity = 100,
         height = 100,
@@ -376,7 +364,6 @@ prototype "地下管2-JI型" {
     flow_direction = {"N", "E", "S", "W"},
     type = {"building","fluidbox"},
     area = "1x1",
-    group = {"管道"},
     fluidbox = {
         capacity = 100,
         height = 100,

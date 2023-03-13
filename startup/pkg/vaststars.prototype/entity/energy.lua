@@ -11,7 +11,6 @@ prototype "蒸汽发电机I" {
     rotate_on_build = true,
     power = "1MW",
     priority = "secondary",
-    group = {"物流"},
     fluidbox = {
         capacity = 100,
         height = 200,
@@ -31,7 +30,6 @@ prototype "风力发电机I" {
     area = "3x3",
     power = "1.2MW",
     priority = "primary",
-    group = {"物流"},
 }
 
 prototype "太阳能板I" {
@@ -42,7 +40,6 @@ prototype "太阳能板I" {
     area = "3x3",
     power = "300kW",
     priority = "primary",
-    group = {"物流"},
 }
 
 prototype "蓄电池I" {
@@ -55,7 +52,6 @@ prototype "蓄电池I" {
 	capacitance = "10MJ",
     area = "2x2",
     priority = "secondary",
-    group = {"物流"},
 }
 
 prototype "核反应堆" {
@@ -66,7 +62,6 @@ prototype "核反应堆" {
     area = "3x3",
     power = "40MW",
     priority = "primary",
-    group = {"物流"},
 }
 
 prototype "换热器I" {
@@ -80,7 +75,6 @@ prototype "换热器I" {
     craft_category = {"流体换热处理"},
     show_detail = false,
     maxslot = "8",
-    group = {"物流"},
     fluidboxes = {
         input = {
             {
@@ -120,7 +114,6 @@ prototype "热管1-X型" {
     show_detail = false,
     type = {"building"},
     area = "1x1",
-    group = {"物流"},
 }
 
 prototype "锅炉I" {
@@ -133,7 +126,6 @@ prototype "锅炉I" {
     rotate_on_build = true,
     craft_category = {"流体换热处理"},
     maxslot = "8",
-    group = {"物流"},
     fluidboxes = {
         input = {
             {

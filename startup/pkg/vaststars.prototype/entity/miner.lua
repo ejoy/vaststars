@@ -13,7 +13,6 @@ prototype "采矿机I" {
     mining_area = "5x5",
     mining_category = {"矿石开采"},
     speed = "50%",
-    group = {"加工"},
     building_base = false,
     maxslot = "8",
     fluidboxes = {
@@ -34,7 +33,6 @@ prototype "采矿机II" {
     mining_area = "5x5",
     mining_category = {"矿石开采"},
     speed = "100%",
-    group = {"加工"},
     building_base = false,
     maxslot = "8",
     fluidboxes = {

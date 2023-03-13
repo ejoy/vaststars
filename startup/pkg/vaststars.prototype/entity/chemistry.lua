@@ -11,7 +11,6 @@ prototype "化工厂I" {
     power = "200kW",
     drain = "6kW",
     priority = "secondary",
-    group = {"化工"},
     maxslot = "8",
     craft_category = {"器件基础化工","流体基础化工"},
     fluidboxes = {
@@ -71,7 +70,6 @@ prototype "蒸馏厂I" {
     type = {"building", "assembling", "consumer", "fluidboxes"},
     area = "5x5",
     power = "240kW",
-    group = {"化工"},
     priority = "secondary",
     craft_category = {"过滤"},
     maxslot = "8",
@@ -132,7 +130,6 @@ prototype "电解厂I" {
     area = "4x4",
     power = "1MW",
     drain = "30kW",
-    group = {"化工"},
     priority = "secondary",
     craft_category = {"电解"},
     maxslot = "8",
@@ -185,7 +182,6 @@ prototype "水电站I" {
     area = "5x5",
     power = "150kW",
     priority = "secondary",
-    group = {"化工"},
     craft_category = {"流体液体处理"},
     maxslot = "8",
     fluidboxes = {

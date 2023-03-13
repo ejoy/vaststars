@@ -47,7 +47,6 @@ prototype "指挥中心" {
     dismantle_area = "21x21",
     power = "1MW",
     priority = "primary",
-    group = {"物流"},
     slots = 60,
     teardown = false,
     crossing = {
@@ -65,7 +64,6 @@ prototype "物流需求站" {
     type = {"building"},
     area = "1x1",
     slots = 10,
-    group = {"物流"},
 }
 
 prototype "物流中心I" {
@@ -78,7 +76,6 @@ prototype "物流中心I" {
     capacitance = "50MJ",
     power = "400kW",
     priority = "secondary",
-    group = {"物流"},
     lorry = {"运输车辆I"},
 }
 
@@ -94,7 +91,6 @@ prototype "运输车辆I" {
     stop_energy = "500kJ",
     capacitance = "10MJ",
     priority = "secondary",
-    group = {"物流"},
     velocity = 3,
     room = 1,
     acceleration = 1.5,
@@ -111,7 +107,6 @@ prototype "机器爪I" {
     speed = "1s",
     power = "12kW",
     priority = "secondary",
-    group = {"物流"},
 }
 
 prototype "科研中心I" {
@@ -129,7 +124,6 @@ prototype "科研中心I" {
         "气候科技包",
         "机械科技包",
     },
-    group = {"物流"},
 }
 
 prototype_road "砖石公路-I型-%02d" {
@@ -201,7 +195,6 @@ prototype_road "砖石公路-X型-%02d" {
     tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
-    group = {"物流"},
     crossing = {
         connections = {
             {type="none", position={0,0,"N"}},
@@ -223,7 +216,6 @@ prototype "砖石公路-O型-01" {
     tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
-    group = {"物流"},
     crossing = {
         connections = {
         }
@@ -257,7 +249,6 @@ prototype "拆除点" {
     chest_type = "red",
     area = "1x1",
     dismantle_area = "32x32",
-    group = {"物流"},
     slots = 20,
 }
 
@@ -269,7 +260,6 @@ prototype "建造中心" {
     type = {"building", "assembling", "consumer"},
     area = "5x5",
     maxslot = 8,
-    group = {"物流"},
     craft_category = {"设计图打印"},
     slots = 5,
     fluidboxes = {
@@ -324,7 +314,6 @@ prototype "道路建造站" {
     area = "2x2",
     capacity = 50,
     build_area = "30x30",
-    group = {"物流"},
     road_builder = true,
 }
 
@@ -337,7 +326,6 @@ prototype "管道建造站" {
     area = "2x2",
     capacity = 50,
     build_area = "24x24",
-    group = {"物流"},
     pipe_builder = true,
 }
 
@@ -348,7 +336,6 @@ prototype "车站" {
     construct_detector = {"exclusive"},
     type = {"building"},
     area = "1x1",
-    group = {"物流"},
     crossing = {
         connections = {
             {type="station", position={0,0,"S"}, roadside = true},
@@ -363,7 +350,6 @@ prototype "进货车站" {
     construct_detector = {"exclusive"},
     type = {"building"},
     area = "1x1",
-    group = {"物流"},
     crossing = {
         connections = {
             {type="station", position={0,0,"S"}, roadside = true},
@@ -378,7 +364,6 @@ prototype "收货车站" {
     construct_detector = {"exclusive"},
     type = {"building"},
     area = "1x1",
-    group = {"物流"},
     crossing = {
         connections = {
             {type="station", position={0,0,"S"}, roadside = true},
