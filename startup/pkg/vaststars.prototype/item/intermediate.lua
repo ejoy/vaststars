@@ -108,7 +108,7 @@ prototype "氢氧化铝" {
     pile_model = "glb/stackeditems/gravel.glb",
     icon = "textures/construct/aluminum-hydroxide.texture",
     item_description = "含铝的化合物",
-    group = {"金属"},
+    group = {"化工"},
 }
 
 prototype "氧化铝" {
@@ -187,7 +187,7 @@ prototype "石墨" {
     pile_model = "glb/stackeditems/gravel.glb",
     icon = "textures/construct/coal.texture",
     item_description = "一种化工原料",
-    group = {"器件"},
+    group = {"化工"},
 }
 
 prototype "硅" {
@@ -197,7 +197,7 @@ prototype "硅" {
     pile_model = "glb/stackeditems/gravel.glb",
     icon = "textures/construct/ore-Si.texture",
     item_description = "沙子中提炼的原料",
-    group = {"器件"},
+    group = {"化工"},
 }
 
 prototype "硅板" {
@@ -227,7 +227,7 @@ prototype "氢氧化钠" {
     pile_model = "glb/stackeditems/gravel.glb",
     icon = "textures/construct/coal.texture",
     item_description = "一种化工原料",
-    group = {"金属"},
+    group = {"化工"},
 }
 
 prototype "石头" {
