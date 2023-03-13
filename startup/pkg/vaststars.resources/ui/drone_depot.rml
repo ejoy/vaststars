@@ -169,17 +169,16 @@
                         <div class = "item-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192); font-size: 5vmin;">{{item_name}}</div>
                     </div>
                 </div>
-                <div class = "item-name-block">
-                    <div class = "name-block">
-                        <div class = "small-bg" style='background-image: "textures/science/book.texture"; width:4.8vmin; height:4.8vmin;'/>
-                        <div class = "item-name-text" style="-webkit-text-stroke: 0.2vmin rgb(0, 112, 192); font-size: 5vmin;">{{item_desc}}</div>
+                <div class = "recipe-change-block" style="height:75%;">
+                    <div class = "materials-block" style="height:70%"> 
+                        <div class = "materials" style="height:100%">
+                            <div class = "materials-item">
+                                <div class = "materials-name" style="text-align: left; word-break: break-all; font-size: 5vmin;">这是当前建筑的描述这是当前建筑的描述这是当前建筑的描述这是当前建筑的描述</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class = "button-block">
-                    <button class = "confirm-button" style="background-color:rgb(203, 118, 24);" data-event-click = "clickClose()">
-                        <div class="middle-bg" style='background-image: "textures/road/forbidden.texture";'/>
-                        <div class = "item-name-text" style="font-size: 5.73vmin;">取消</div>
-                    </button>
                     <button class = "confirm-button" style="background-color:rgb(52, 207, 115);" data-event-click = "clickConfirm()">
                         <div class="middle-bg" style='background-image: "textures/construct/work.texture";'/>
                         <div class = "item-name-text" style="font-size: 5.73vmin;">确定</div>
