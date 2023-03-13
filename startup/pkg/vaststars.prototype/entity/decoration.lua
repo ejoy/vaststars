@@ -9,7 +9,7 @@ prototype "组装机残骸" {
     type = {"building", "chest"},
     chest_type = "red",
     area = "5x5",
-    slots = 8,
+    slots = 18,
     building_base = false,
 }
 
@@ -21,7 +21,7 @@ prototype "排水口残骸" {
     type = {"building", "chest"},
     chest_type = "red",
     area = "3x3",
-    slots = 5,
+    slots = 33,
     building_base = false,
 }
 
@@ -33,7 +33,7 @@ prototype "抽水泵残骸" {
     type = {"building", "chest"},
     chest_type = "red",
     area = "3x3",
-    slots = 17,
+    slots = 21,
     building_base = false,
 }
 
