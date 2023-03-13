@@ -963,7 +963,7 @@ prototype "基地生产1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"运输汽车生产","破损物流中心","砖石公路"},
+    unlock_recipe = {"运输汽车生产","砖石公路"},
     unlock_building = {"砖石公路-X型-01"},
   },
   prerequisites = {"增添运输车辆"},
@@ -1093,7 +1093,7 @@ prototype "气候研究" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"破损空气过滤器","破损地下水挖掘机","气候科技包1"},
+    unlock_recipe = {"气候科技包1"},
     unlock_building = {"空气过滤器I","地下水挖掘机"},
   },
   prerequisites = {"生产石砖"},
@@ -1112,7 +1112,7 @@ prototype "维修破损空气过滤器" {
   desc = "将破损的机器修复会大大节省建设时间和资源",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
-  task = {"stat_consumption", 0, "破损空气过滤器"},
+  task = {"stat_consumption", 0, "空气过滤器设计图"},
   prerequisites = {"气候研究"},
   count = 1,
   tips_pic = {
@@ -1127,7 +1127,7 @@ prototype "维修破损地下水挖掘机" {
   desc = "将破损的机器修复会大大节省建设时间和资源",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
-  task = {"stat_consumption", 0, "破损地下水挖掘机"},
+  task = {"stat_consumption", 0, "地下水挖掘机设计图"},
   prerequisites = {"气候研究"},
   count = 1,
   tips_pic = {
@@ -1209,7 +1209,7 @@ prototype "水利研究" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"破损水电站"},
+    unlock_recipe = {"水电站设计"},
     unlock_building = {"水电站I"},
   },
   prerequisites = {"生产管道"},
@@ -1227,7 +1227,7 @@ prototype "电解" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"地下卤水电解","隔膜电解","破损电解厂"},
+    unlock_recipe = {"地下卤水电解","隔膜电解","电解厂设计"},
     unlock_building = {"电解厂I"},
   },
   prerequisites = {"水利研究"},
@@ -1289,7 +1289,7 @@ prototype "维修破损组装机" {
   desc = "将破损的机器修复会大大节省建设时间和资源",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
-  task = {"stat_consumption", 0, "破损组装机"},
+  task = {"stat_consumption", 0, "组装机设计图"},
   prerequisites = {"铁加工1"},
   count = 3,
   tips_pic = {
@@ -1320,7 +1320,7 @@ prototype "修理太阳能板" {
   desc = "维修太阳能板并利用太阳能板技术发电",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
-  task = {"stat_consumption", 0, "破损太阳能板"},
+  task = {"stat_consumption", 0, "太阳能板设计图"},
   prerequisites = {"石头处理2"},
   count = 2,
   tips_pic = {
@@ -1534,7 +1534,7 @@ prototype "维修化工厂" {
   desc = "维修化工厂生成化工原料",
   icon = "textures/construct/industry.texture",
   type = { "tech", "task" },
-  task = {"stat_consumption", 0, "破损化工厂"},
+  task = {"stat_consumption", 0, "化工厂设计图"},
   prerequisites = {"碳处理2"},
   count = 1,
   tips_pic = {

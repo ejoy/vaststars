@@ -1028,99 +1028,99 @@ prototype "科研中心1" {
 }
 
 
-prototype "破损水电站" {
-    type = { "recipe" },
-    category = "生产手工制造",
-    recipe_group =  "生产",
-    recipe_order =  110,
-    allow_as_intermediate = false,
-    recipe_icon =  "textures/construct/broken-hydroplant.texture",
-    ingredients = {
-        {"管道1-X型", 6},
-        {"破损水电站", 1},
-    },
-    results = {
-        {"水电站I", 1},
-    },
-    time = "4s",
-    description = "修复损坏的水电站",
-}
+-- prototype "破损水电站" {
+--     type = { "recipe" },
+--     category = "生产手工制造",
+--     recipe_group =  "生产",
+--     recipe_order =  110,
+--     allow_as_intermediate = false,
+--     recipe_icon =  "textures/construct/broken-hydroplant.texture",
+--     ingredients = {
+--         {"管道1-X型", 6},
+--         {"破损水电站", 1},
+--     },
+--     results = {
+--         {"水电站I", 1},
+--     },
+--     time = "4s",
+--     description = "修复损坏的水电站",
+-- }
 
-prototype "破损空气过滤器" {
-    type = { "recipe" },
-    category = "生产手工制造",
-    recipe_group =  "生产",
-    recipe_order =  111,
-    allow_as_intermediate = false,
-    recipe_icon =  "textures/construct/broken-air-filter1.texture",
-    ingredients = {
-        {"石砖", 4},
-        {"铁板", 4},
-        {"破损空气过滤器", 1},
-    },
-    results = {
-        {"空气过滤器I", 1},
-    },
-    time = "3s",
-    description = "修复损坏的空气过滤器",
-}
+-- prototype "破损空气过滤器" {
+--     type = { "recipe" },
+--     category = "生产手工制造",
+--     recipe_group =  "生产",
+--     recipe_order =  111,
+--     allow_as_intermediate = false,
+--     recipe_icon =  "textures/construct/broken-air-filter1.texture",
+--     ingredients = {
+--         {"石砖", 4},
+--         {"铁板", 4},
+--         {"破损空气过滤器", 1},
+--     },
+--     results = {
+--         {"空气过滤器I", 1},
+--     },
+--     time = "3s",
+--     description = "修复损坏的空气过滤器",
+-- }
 
-prototype "破损地下水挖掘机" {
-    type = { "recipe" },
-    category = "生产手工制造",
-    recipe_group =  "生产",
-    recipe_order =  112,
-    allow_as_intermediate = false,
-    recipe_icon =  "textures/construct/broken-pump.texture",
-    ingredients = {
-        {"石砖", 4},
-        {"铁板", 4},
-        {"破损地下水挖掘机", 1},
-    },
-    results = {
-        {"地下水挖掘机", 1},
-    },
-    time = "3s",
-    description = "修复损坏的空气过滤器",
-}
+-- prototype "破损地下水挖掘机" {
+--     type = { "recipe" },
+--     category = "生产手工制造",
+--     recipe_group =  "生产",
+--     recipe_order =  112,
+--     allow_as_intermediate = false,
+--     recipe_icon =  "textures/construct/broken-pump.texture",
+--     ingredients = {
+--         {"石砖", 4},
+--         {"铁板", 4},
+--         {"破损地下水挖掘机", 1},
+--     },
+--     results = {
+--         {"地下水挖掘机", 1},
+--     },
+--     time = "3s",
+--     description = "修复损坏的空气过滤器",
+-- }
 
-prototype "破损电解厂" {
-    type = { "recipe" },
-    category = "生产手工制造",
-    recipe_group =  "生产",
-    recipe_order =  114,
-    allow_as_intermediate = false,
-    recipe_icon =  "textures/construct/broken-electrolysis1.texture",
-    ingredients = {
-        {"石砖", 10},
-        {"铁板", 10},
-        {"破损电解厂", 1},
-    },
-    results = {
-        {"电解厂I", 1},
-    },
-    time = "6s",
-    description = "修复损坏的电解厂",
-}
+-- prototype "破损电解厂" {
+--     type = { "recipe" },
+--     category = "生产手工制造",
+--     recipe_group =  "生产",
+--     recipe_order =  114,
+--     allow_as_intermediate = false,
+--     recipe_icon =  "textures/construct/broken-electrolysis1.texture",
+--     ingredients = {
+--         {"石砖", 10},
+--         {"铁板", 10},
+--         {"破损电解厂", 1},
+--     },
+--     results = {
+--         {"电解厂I", 1},
+--     },
+--     time = "6s",
+--     description = "修复损坏的电解厂",
+-- }
 
-prototype "破损化工厂" {
-    type = { "recipe" },
-    category = "生产手工制造",
-    recipe_group =  "生产",
-    recipe_order =  116,
-    allow_as_intermediate = false,
-    recipe_icon =  "textures/construct/broken-chemistry2.texture",
-    ingredients = {
-        {"小铁制箱子I", 2},
-        {"石砖", 10},
-        {"破损化工厂", 1},
-    },
-    results = {
-        {"化工厂I", 1},
-    },
-    time = "5s",
-    description = "修复损坏的化工厂",
-}
+-- prototype "破损化工厂" {
+--     type = { "recipe" },
+--     category = "生产手工制造",
+--     recipe_group =  "生产",
+--     recipe_order =  116,
+--     allow_as_intermediate = false,
+--     recipe_icon =  "textures/construct/broken-chemistry2.texture",
+--     ingredients = {
+--         {"小铁制箱子I", 2},
+--         {"石砖", 10},
+--         {"破损化工厂", 1},
+--     },
+--     results = {
+--         {"化工厂I", 1},
+--     },
+--     time = "5s",
+--     description = "修复损坏的化工厂",
+-- }
 
 prototype "维修组装机" {
     type = { "recipe" },
@@ -1133,7 +1133,7 @@ prototype "维修组装机" {
         -- {"铁丝", 6},
         {"石砖", 8},
         {"铁齿轮", 3},
-        {"破损组装机", 1},
+        {"组装机设计图", 1},
     },
     results = {
         {"组装机I", 1},
@@ -1152,7 +1152,7 @@ prototype "维修铁制电线杆" {
     ingredients = {
         -- {"铁棒", 2},
         {"铁板", 2},
-        {"破损铁制电线杆", 1},
+        {"电线杆设计图", 1},
     },
     results = {
         {"铁制电线杆", 1},
@@ -1171,7 +1171,7 @@ prototype "维修太阳能板" {
     ingredients = {
         {"铁齿轮", 3},
         {"石砖", 10},
-        {"破损太阳能板", 1},
+        {"太阳能板设计图", 1},
     },
     results = {
         {"太阳能板I", 1},
@@ -1180,23 +1180,23 @@ prototype "维修太阳能板" {
     description = "修复损坏的太阳能板",
 }
 
-prototype "破损蓄电池" {
-    type = { "recipe" },
-    category = "生产手工制造",
-    recipe_group =  "生产",
-    recipe_order =  124,
-    allow_as_intermediate = false,
-    recipe_icon =  "textures/construct/broken-grid-battery.texture",
-    ingredients = {
-        {"铁板", 8},
-        {"破损蓄电池", 1},
-    },
-    results = {
-        {"蓄电池I", 1},
-    },
-    time = "5s",
-    description = "修复损坏的蓄电池",
-}
+-- prototype "破损蓄电池" {
+--     type = { "recipe" },
+--     category = "生产手工制造",
+--     recipe_group =  "生产",
+--     recipe_order =  124,
+--     allow_as_intermediate = false,
+--     recipe_icon =  "textures/construct/broken-grid-battery.texture",
+--     ingredients = {
+--         {"铁板", 8},
+--         {"破损蓄电池", 1},
+--     },
+--     results = {
+--         {"蓄电池I", 1},
+--     },
+--     time = "5s",
+--     description = "修复损坏的蓄电池",
+-- }
 
 prototype "维修物流中心" {
     type = { "recipe" },
@@ -1207,7 +1207,7 @@ prototype "维修物流中心" {
     recipe_icon =  "textures/construct/broken-logisitic.texture",
     ingredients = {
         {"碎石", 3},
-        {"破损物流中心", 1},
+        {"物流中心设计图", 1},
     },
     results = {
         {"物流中心I", 1},
@@ -1231,24 +1231,6 @@ prototype "维修运输汽车" {
     },
     time = "4s",
     description = "修复损坏的运输汽车",
-}
-
-prototype "维修物流需求站" {
-    type = { "recipe" },
-    category = "生产手工制造",
-    recipe_group =  "生产",
-    recipe_order =  131,
-    allow_as_intermediate = false,
-    recipe_icon =  "textures/construct/broken-goodsstation-input.texture",
-    ingredients = {
-        {"铁齿轮", 1},
-        {"破损物流需求站", 1},
-    },
-    results = {
-        {"物流需求站", 1},
-    },
-    time = "5s",
-    description = "修复损坏的物流需求站",
 }
 
 prototype "运输汽车制造" {
