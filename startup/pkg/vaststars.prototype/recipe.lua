@@ -6,24 +6,6 @@ local prototype = gameplay.register.prototype
 -- allow_as_intermediate：允许在手工打造过程中作为中间产物，默认为true
 -- results里面的第一个物品为主产物，只有主产物才可以被手工打造
 
-prototype "铁锭" {
-    type = { "recipe" },
-    category = "金属冶炼",
-    --recipe_group =  "金属",
-    recipe_order =  10,
-    allow_manual = false,
-    recipe_icon =  "textures/construct/plate-Fe.texture",
-    ingredients = {
-        {"铁矿石", 3},
-    },
-    results = {
-        {"铁锭", 1},
-        {"碎石", 1}
-    },
-    time = "4s",
-    description = "铁矿石通过金属冶炼获得铁锭",
-}
-
 prototype "铁板1" {
     type = { "recipe" },
     category = "金属冶炼",
@@ -191,7 +173,7 @@ prototype "铁棒1" {
     recipe_order =  13,
     recipe_icon =  "textures/construct/iron_stick.texture",
     ingredients = {
-        {"铁锭", 4},
+        {"铁板", 4},
     },
     results = {
         {"铁棒", 5}

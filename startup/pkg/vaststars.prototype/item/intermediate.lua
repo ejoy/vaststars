@@ -1,16 +1,6 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
-prototype "铁锭" {
-    type = {"item"},
-    stack = 10,
-    pile = "4x4x4",
-    pile_model = "glb/stackeditems/iron-ingot.glb",
-    icon = "textures/construct/iron-ingot.texture",
-    item_description = "铁矿石通过工业熔炼的锭",
-    group = {"金属"},
-}
-
 prototype "铁板" {
     type = {"item"},
     stack = 8,
