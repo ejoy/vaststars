@@ -22,8 +22,8 @@ namespace roadnet::road {
 
         void init(uint16_t id, uint16_t len, direction dir);
         void update(network& w, uint64_t ti);
-        bool canEntry(network& w, lorryid l, uint16_t offset);
-        bool canEntry(network& w, lorryid l);
+        bool canEntry(network& w, uint16_t offset);
+        bool canEntry(network& w);
         bool tryEntry(network& w, lorryid l, uint16_t offset);
         bool tryEntry(network& w, lorryid l);
         void setNeighbor(roadid id);

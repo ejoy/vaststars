@@ -16,6 +16,10 @@ namespace roadnet::road {
         roadid neighbor;
         roadid rev_neighbor;
         lorryid& waitingLorry(network& w);
+        bool isReady(network& w);
+        bool setOut(network& w, lorryid id);
         bool setOut(network& w);
+        void setOutForce(network& w, lorryid id);
+        void setOutForce(network& w);
     };
 }

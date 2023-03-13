@@ -7,11 +7,11 @@ namespace roadnet::road {
         this->len = len;
         this->dir = dir;
     }
-    bool straight::canEntry(network& w, lorryid l, uint16_t offset)  {
+    bool straight::canEntry(network& w, uint16_t offset)  {
         return !hasLorry(w, offset);
     }
-    bool straight::canEntry(network& w, lorryid l)  {
-        return canEntry(w, l, len-1);
+    bool straight::canEntry(network& w)  {
+        return canEntry(w, len-1);
     }
     bool straight::tryEntry(network& w, lorryid l, uint16_t offset) {
         if (!hasLorry(w, offset)) {

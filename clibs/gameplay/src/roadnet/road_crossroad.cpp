@@ -152,7 +152,7 @@ namespace roadnet::road {
             if (!l.nextDirection(w, rev_neighbor[i], out)) {
                 continue;
             }
-            if (!w.StraightRoad(neighbor[(uint8_t)out]).canEntry(w, id)) {
+            if (!w.StraightRoad(neighbor[(uint8_t)out]).canEntry(w)) {
                 continue;
             }
             cross_type type = (cross_type)(((uint8_t)i << 2) | (uint8_t)out);
