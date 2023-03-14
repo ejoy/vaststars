@@ -343,7 +343,8 @@ prototype "车站" {
     }
 }
 
-prototype "进货车站" {
+--送货车站需要设置送货类型以及需求车辆
+prototype "送货车站" {
     model = "prefabs/goods-station-1.prefab",
     icon = "textures/building_pic/small_pic_chest.texture",
     background = "textures/build_background/pic_chest.texture",
@@ -357,6 +358,7 @@ prototype "进货车站" {
     }
 }
 
+--收货车站需要设置送货类型
 prototype "收货车站" {
     model = "prefabs/goods-station-1.prefab",
     icon = "textures/building_pic/small_pic_chest.texture",

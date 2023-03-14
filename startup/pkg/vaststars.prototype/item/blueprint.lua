@@ -221,14 +221,14 @@ prototype "车站设计图" {
     item_description = "用于建造车站的设计图",
 }
 
-prototype "进货车站设计图" {
+prototype "送货车站设计图" {
     type = {"item"},
     stack = 4,
     pile = "2x1",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-logisitic.texture",
     group = {"加工"},
-    item_description = "用于建造进货车站的设计图",
+    item_description = "用于建造送货车站的设计图",
 }
 
 prototype "收货车站设计图" {
