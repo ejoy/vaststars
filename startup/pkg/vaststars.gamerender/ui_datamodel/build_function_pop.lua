@@ -19,12 +19,14 @@ local move_mb = mailbox:sub {"move"}
 local road_builder_mb = mailbox:sub {"road_builder"}
 local pipe_builder_mb = mailbox:sub {"pipe_builder"}
 local build_center_stop_build_mb = mailbox:sub {"build_center_stop_build"}
+local build_center_place_mb = mailbox:sub {"build_center_place"}
 
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local iobject = ecs.require "object"
 local ichest = require "gameplay.interface.chest"
 local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
+local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local assembling_common = require "ui_datamodel.common.assembling"
 
 -- An object may contain multiple types at the same time
@@ -155,6 +157,8 @@ function M:create(object_id, object_position, ui_x, ui_y)
         build_center_place = build_center_place,
         build_center_build = build_center_build,
         build_center_stop_build = build_center_stop_build,
+        drone_depot_icon = "",
+        drone_depot_count = 0,
         show_detail = show_detail,
         recipe_name = recipe_name,
         object_id = object_id,
@@ -187,7 +191,25 @@ local function __build_center_update(datamodel, object_id)
     datamodel.build_center_icon = build_center_icon
     datamodel.build_center_count = build_center_count
     datamodel.build_center_ingredients = build_center_ingredients
+end
 
+local function __drone_depot_update(datamodel, object_id)
+    local object = assert(objects:get(object_id))
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if not e then
+        return
+    end
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    if not iprototype.has_type(typeobject.type, "hub") then
+        return
+    end
+    local c = ichest.chest_get(gameplay_core.get_world(), e.hub, 1)
+    if not c then
+        return
+    end
+    local item_typeobject = iprototype.queryById(c.item)
+    datamodel.drone_depot_icon = item_typeobject.icon
+    datamodel.drone_depot_count = c.amount
 end
 
 function M:update(datamodel, object_id, recipe_name)
@@ -196,6 +218,7 @@ function M:update(datamodel, object_id, recipe_name)
     end
     datamodel.recipe_name = recipe_name
     __build_center_update(datamodel, object_id)
+    __drone_depot_update(datamodel, object_id)
     return true
 end
 
@@ -207,6 +230,7 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     __build_center_update(datamodel, object_id)
+    __drone_depot_update(datamodel, object_id)
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
         iui.open({"recipe_pop.rml"}, object_id)
@@ -279,6 +303,26 @@ function M:stage_ui_update(datamodel, object_id)
 
         iui.update("build_function_pop.rml", "update", object_id)
         gameplay_core.build()
+    end
+
+    for _ in build_center_place_mb:unpack() do
+        local object = assert(objects:get(object_id))
+        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        if e.assembling.recipe == 0 then
+            goto continue
+        end
+
+        local _, results = assembling_common.get(gameplay_core.get_world(), e)
+        assert(results and results[1])
+        if results[1].count <= 0 then
+            goto continue
+        end
+
+        idetail.unselected()
+        iui.close("build_function_pop.rml")
+        iui.close("detail_panel.rml")
+        iui.redirect("construct.rml", "build_center_place", results[1].name)
+        ::continue::
     end
 end
 

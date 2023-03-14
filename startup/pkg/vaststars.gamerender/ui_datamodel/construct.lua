@@ -14,6 +14,7 @@ local create_normalbuilder = ecs.require "editor.normalbuilder"
 local create_pipebuilder = ecs.require "editor.pipebuilder"
 local create_pipetogroundbuilder = ecs.require "editor.pipetogroundbuilder"
 local create_movebuilder = ecs.require "editor.movebuilder"
+local create_setitembuilder = ecs.require "editor.setitembuilder"
 local objects = require "objects"
 local ieditor = ecs.require "editor.editor"
 local global = require "global"
@@ -46,6 +47,7 @@ local single_touch_mb = world:sub {"single_touch"}
 local move_mb = mailbox:sub {"move"}
 local move_finish_mb = mailbox:sub {"move_finish"}
 local builder_back_mb = mailbox:sub {"builder_back"}
+local build_center_place_mb = mailbox:sub {"build_center_place"}
 local pickup_mb = world:sub {"pickup"}
 local handle_pickup = true
 local single_touch_move_mb = world:sub {"single_touch", "MOVE"}
@@ -335,6 +337,22 @@ function M:stage_camera_usage(datamodel)
         handle_pickup = true
         gameplay_core.world_update = true
         iui.close("road_or_pipe_build.rml")
+    end
+
+    for _, _, _, prototype_name in build_center_place_mb:unpack() do
+        if builder then
+            builder:clean(datamodel)
+        end
+
+        if true then -- TODO: use setitembuilder if it is a drone depot or a cargo station for receiving/sending goods.
+            builder = create_setitembuilder()
+        else
+            builder = create_normalbuilder()
+        end
+        local typeobject = iprototype.queryByName(prototype_name)
+        builder:new_entity(datamodel, typeobject)
+        self:flush()
+        handle_pickup = false
     end
 
     iobject.flush()

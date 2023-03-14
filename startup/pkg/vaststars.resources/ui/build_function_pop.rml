@@ -158,7 +158,8 @@
                             v.text = "拆除"
                             v.message = "teardown"
                             v.background_image = "textures/factory/demolition.texture"
-                            v.build_center_count = -1
+                            v.number = -1
+                            v.show_number = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -167,7 +168,8 @@
                             v.text = "移动"
                             v.message = "move"
                             v.background_image = "textures/factory/move.texture"
-                            v.build_center_count = -1
+                            v.number = -1
+                            v.show_number = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -176,7 +178,8 @@
                             v.text = "变更"
                             v.message = "set_recipe"
                             v.background_image = "textures/assemble/wheel.texture"
-                            v.build_center_count = -1
+                            v.number = -1
+                            v.show_number = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -185,7 +188,8 @@
                             v.text = "道路施工"
                             v.message = "road_builder"
                             v.background_image = "textures/common/road-connect.texture"
-                            v.build_center_count = -1
+                            v.number = -1
+                            v.show_number = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -194,7 +198,8 @@
                             v.text = "管道施工"
                             v.message = "pipe_builder"
                             v.background_image = "textures/common/pipe-connect.texture"
-                            v.build_center_count = -1
+                            v.number = -1
+                            v.show_number = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -203,7 +208,8 @@
                             v.text = "详细"
                             v.message = "detail"
                             v.background_image = "textures/factory/seacher.texture"
-                            v.build_center_count = -1
+                            v.number = -1
+                            v.show_number = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -212,7 +218,8 @@
                             v.text = "开始建造"
                             v.message = "build_center_build"
                             v.background_image = "textures/construct/hammer.texture"
-                            v.build_center_count = -1
+                            v.number = -1
+                            v.show_number = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -221,7 +228,8 @@
                             v.text = " "
                             v.message = ""
                             v.background_image = start.build_center_icon
-                            v.build_center_count = start.build_center_count
+                            v.number = start.build_center_count
+                            v.show_number = (start.build_center_count > 1)
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -230,7 +238,8 @@
                             v.text = "停止建造"
                             v.message = "build_center_stop_build"
                             v.background_image = "textures/construct/hammer-stop.texture"
-                            v.build_center_count = -1
+                            v.number = -1
+                            v.show_number = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -239,7 +248,18 @@
                             v.text = "放置"
                             v.message = "build_center_place"
                             v.background_image = "textures/factory/place-building.texture"
-                            v.build_center_count = -1
+                            v.number = -1
+                            v.show_number = false
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.drone_depot_icon and start.drone_depot_icon ~= "" then
+                            local v = {}
+                            v.text = " "
+                            v.message = ""
+                            v.background_image = start.drone_depot_icon
+                            v.number = start.drone_depot_count
+                            v.show_number = true
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -252,7 +272,7 @@
                         end
                         start("buttons")
                     end,
-                    "show_teardown", "show_move", "show_set_recipe", "show_road_builder", "show_detail", "build_center_icon", "build_center_count"
+                    "show_teardown", "show_move", "show_set_recipe", "show_road_builder", "show_detail", "build_center_icon", "build_center_count", "drone_depot_icon"
                 }
             })
         </script>
@@ -262,8 +282,8 @@
             <div class="button-fuction-block" style="position: absolute;" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message)" data-for = "it : buttons">
                 <button class="button-function" data-style-background-image = "it.background_image" />
                 <div class="title-text">{{it.text}}</div>
-                <div class = "menu-button-pic" data-if = "it.build_center_count >= 0" style='width:4.26vmin; height:4.26vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
-                    <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{it.build_center_count}}</div>
+                <div class = "menu-button-pic" data-if = "it.show_number" style='width:4.26vmin; height:4.26vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
+                    <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{it.number}}</div>
                 </div>
             </div>
 
