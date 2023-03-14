@@ -330,3 +330,13 @@ prototype "运输车辆设计图" {
     group = {"加工"},
     item_description = "用于建造运输车辆的设计图",
 }
+
+prototype "建造中心设计图" {
+    type = {"item"},
+    stack = 4,
+    pile = "2x1x4",
+    pile_model = "glb/stackeditems/iron-ore.glb",
+    icon = "textures/construct/broken-truck.texture",
+    group = {"加工"},
+    item_description = "用于建造建造中心的设计图",
+}

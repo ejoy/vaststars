@@ -628,7 +628,7 @@ prototype "组装机2" {
 
 prototype "建造中心" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "生产",
     recipe_order =  72,
     recipe_icon =  "textures/construct/assembler1.texture",
@@ -637,7 +637,7 @@ prototype "建造中心" {
         {"管道建造站", 2},
     },
     results = {
-        {"建造中心", 1},
+        {"建造中心设计图", 1},
     },
     time = "5s",
     description = "制造建造中心",
@@ -1557,7 +1557,7 @@ prototype "管道建造站打印" {
 ------------------设计图-------------------
 prototype "采矿机设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "物流",
     recipe_order =  52,
     recipe_icon =  "textures/construct/broken-miner.texture",
@@ -1573,7 +1573,7 @@ prototype "采矿机设计" {
 
 prototype "物流中心设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "物流",
     recipe_order =  52,
     recipe_icon =  "textures/construct/logisitic1.texture",
@@ -1589,7 +1589,7 @@ prototype "物流中心设计" {
 
 prototype "电线杆设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "物流",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-electric-pole1.texture",
@@ -1605,7 +1605,7 @@ prototype "电线杆设计" {
 
 prototype "无人机仓库设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "物流",
     recipe_order =  55,
     recipe_icon =  "textures/construct/broken-drone-depot.texture",
@@ -1621,7 +1621,7 @@ prototype "无人机仓库设计" {
 
 prototype "车站设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "物流",
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-logisitic.texture",
@@ -1637,7 +1637,7 @@ prototype "车站设计" {
 
 prototype "送货车站设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "物流",
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-logisitic.texture",
@@ -1653,7 +1653,7 @@ prototype "送货车站设计" {
 
 prototype "收货车站设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "物流",
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-logisitic.texture",
@@ -1669,7 +1669,7 @@ prototype "收货车站设计" {
 
 prototype "熔炼炉设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "生产",
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-furnace.texture",
@@ -1685,7 +1685,7 @@ prototype "熔炼炉设计" {
 
 prototype "科研中心设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "物流",
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-lab.texture",
@@ -1701,7 +1701,7 @@ prototype "科研中心设计" {
 
 prototype "太阳能板设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "生产",
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-solar-panel.texture",
@@ -1717,7 +1717,7 @@ prototype "太阳能板设计" {
 
 prototype "蓄电池设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "生产",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-grid-battery.texture",
@@ -1733,7 +1733,7 @@ prototype "蓄电池设计" {
 
 prototype "水电站设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "化工",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-hydroplant.texture",
@@ -1749,7 +1749,7 @@ prototype "水电站设计" {
 
 prototype "电解厂设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "化工",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-electrolysis1.texture",
@@ -1765,7 +1765,7 @@ prototype "电解厂设计" {
 
 prototype "化工厂设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "化工",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-chemistry2.texture",
@@ -1781,7 +1781,7 @@ prototype "化工厂设计" {
 
 prototype "组装机设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "生产",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-assembler.texture",
@@ -1797,7 +1797,7 @@ prototype "组装机设计" {
 
 prototype "空气过滤器设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "化工",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-air-filter1.texture",
@@ -1814,7 +1814,7 @@ prototype "空气过滤器设计" {
 
 prototype "地下水挖掘机设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "化工",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-pump.texture",
@@ -1830,7 +1830,7 @@ prototype "地下水挖掘机设计" {
 
 prototype "道路建造站设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "物流",
     recipe_order =  54,
     recipe_icon =  "textures/construct/road-builder.texture",
@@ -1846,7 +1846,7 @@ prototype "道路建造站设计" {
 
 prototype "管道建造站设计" {
     type = { "recipe" },
-    category = "设计图打印",
+    category = "设计图设计",
     recipe_group =  "物流",
     recipe_order =  55,
     recipe_icon =  "textures/construct/pipe-builder.texture",
