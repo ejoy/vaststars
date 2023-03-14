@@ -31,8 +31,10 @@ policy:
 data:
   anim_ctrl: {}
   animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/furnace-1.glb|animations/ArmatureAction.ozz
-  animation_birth: ArmatureAction
+    idle: /pkg/vaststars.resources/glb/furnace-1.glb|animations/idle.ozz
+    low_power: /pkg/vaststars.resources/glb/furnace-1.glb|animations/low_power.ozz
+    work: /pkg/vaststars.resources/glb/furnace-1.glb|animations/work.ozz
+  animation_birth: idle
   name: animation
   skeleton: /pkg/vaststars.resources/glb/furnace-1.glb|animations/skeleton.ozz
 policy:

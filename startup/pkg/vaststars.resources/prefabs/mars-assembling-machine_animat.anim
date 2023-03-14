@@ -1,6 +1,5 @@
 ---
-type: ske
-duration: 7.2
+duration: 3
 name: mars-assembling-machine_animat
 sample_ratio: 50
 skeleton: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|animations/skeleton.ozz
@@ -16,7 +15,7 @@ target_anims:
     amplitude_rot: 0
     direction: 1
     random_amplitude: false
-    range: {0, 300}
+    range: {0, 120}
     repeat_count: 1
     rot_axis: 2
     tween: 1
@@ -26,7 +25,7 @@ target_anims:
     amplitude_rot: 0
     direction: 1
     random_amplitude: false
-    range: {301, 350}
+    range: {121, 149}
     repeat_count: 1
     rot_axis: 2
     tween: 1
@@ -40,7 +39,7 @@ target_anims:
     amplitude_rot: 0
     direction: 3
     random_amplitude: false
-    range: {0, 300}
+    range: {0, 110}
     repeat_count: 10
     rot_axis: 2
     tween: 7
@@ -48,17 +47,7 @@ target_anims:
   inherit: {false, false, false}
   target_name: Bone.003
   ---
-  clips:
-    ---
-    amplitude_pos: 0
-    amplitude_rot: 0
-    direction: 2
-    random_amplitude: false
-    range: {0, 1}
-    repeat_count: 1
-    rot_axis: 2
-    tween: 1
-    type: 1
+  clips: {}
   inherit: {false, false, false}
   target_name: Bone.005
   ---
@@ -68,7 +57,7 @@ target_anims:
     amplitude_rot: -60
     direction: 2
     random_amplitude: false
-    range: {0, 359}
+    range: {0, 149}
     repeat_count: 1
     rot_axis: 1
     tween: 1
@@ -82,10 +71,11 @@ target_anims:
     amplitude_rot: 0
     direction: 3
     random_amplitude: false
-    range: {0, 359}
+    range: {0, 149}
     repeat_count: 1
     rot_axis: 2
     tween: 1
     type: 3
   inherit: {false, false, false}
   target_name: Bone.001
+type: ske

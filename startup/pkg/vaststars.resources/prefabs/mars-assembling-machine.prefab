@@ -47,6 +47,8 @@ data:
   anim_ctrl: {}
   animation:
     ArmatureAction: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|animations/ArmatureAction.ozz
+    low_power: /pkg/vaststars.resources/prefabs/animation/mars-assembling-machine_animat_low.anim
+    work: /pkg/vaststars.resources/prefabs/animation/mars-assembling-machine_animat.anim
   animation_birth: ArmatureAction
   name: animation
   skeleton: /pkg/vaststars.resources/glb/mars-assembling-machine.glb|animations/skeleton.ozz
