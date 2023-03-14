@@ -369,7 +369,7 @@ prototype "铁齿轮" {
 prototype "机器爪1" {
     type = { "recipe" },
     category = "物流小型制造",
-    recipe_group =  "物流",
+    --recipe_group =  "物流",
     recipe_order =  40,
     recipe_icon =  "textures/construct/insert1.texture",
     ingredients = {
@@ -388,7 +388,7 @@ prototype "机器爪1" {
 prototype "砖石公路" {
     type = { "recipe" },
     category = "物流中型制造",
-    recipe_group =  "物流",
+    --recipe_group =  "物流",
     recipe_order =  104,
     recipe_icon =  "textures/construct/road1.texture",
     ingredients = {
@@ -404,7 +404,7 @@ prototype "砖石公路" {
 prototype "物流中心1" {
     type = { "recipe" },
     category = "物流大型制造",
-    recipe_group =  "物流",
+    --recipe_group =  "物流",
     recipe_order =  52,
     recipe_icon =  "textures/construct/logisitic1.texture",
     ingredients = {
@@ -422,7 +422,7 @@ prototype "物流中心1" {
 prototype "车站" {
     type = { "recipe" },
     category = "物流大型制造",
-    recipe_group =  "物流",
+    --recipe_group =  "物流",
     recipe_order =  52,
     recipe_icon =  "textures/construct/logisitic1.texture",
     ingredients = {
@@ -456,7 +456,7 @@ prototype "运输车辆1" {
 prototype "小铁制箱子1" {
     type = { "recipe" },
     category = "物流中型制造",
-    recipe_group =  "物流",
+    --recipe_group =  "物流",
     recipe_order =  10,
     recipe_icon =  "textures/construct/chest1.texture",
     ingredients = {
@@ -473,7 +473,7 @@ prototype "小铁制箱子1" {
 prototype "小铁制箱子2" {
     type = { "recipe" },
     category = "物流中型制造",
-    recipe_group =  "物流",
+    --recipe_group =  "物流",
     recipe_order =  11,
     recipe_icon =  "textures/construct/chest2.texture",
     ingredients = {
@@ -491,7 +491,7 @@ prototype "小铁制箱子2" {
 prototype "大铁制箱子1" {
     type = { "recipe" },
     category = "物流中型制造",
-    recipe_group =  "物流",
+    --recipe_group =  "物流",
     recipe_order =  13,
     recipe_icon =  "textures/construct/large-chest.texture",
     ingredients = {
@@ -699,7 +699,7 @@ prototype "液罐1" {
 prototype "气罐1" {
     type = { "recipe" },
     category = "器件中型制造",
-    recipe_group =  "化工",
+    --recipe_group =  "化工",
     recipe_order =  23,
     recipe_icon =  "textures/construct/gas-tank.texture",
     ingredients = {
@@ -977,7 +977,7 @@ prototype "电解厂1" {
 prototype "浮选器1" {
     type = { "recipe" },
     category = "生产大型制造",
-    recipe_group =  "生产",
+    --recipe_group =  "生产",
     recipe_order =  64,
     recipe_icon =  "textures/construct/flotation-cell.texture",
     ingredients = {
@@ -1107,7 +1107,7 @@ prototype "科研中心1" {
 prototype "维修组装机" {
     type = { "recipe" },
     category = "生产手工制造",
-    recipe_group =  "生产",
+    --recipe_group =  "生产",
     recipe_order =  118,
     allow_as_intermediate = false,
     recipe_icon =  "textures/construct/broken-assembler.texture",
@@ -1127,7 +1127,7 @@ prototype "维修组装机" {
 prototype "维修铁制电线杆" {
     type = { "recipe" },
     category = "生产手工制造",
-    recipe_group =  "生产",
+    --recipe_group =  "生产",
     recipe_order =  120,
     allow_as_intermediate = false,
     recipe_icon =  "textures/construct/broken-electric-pole1.texture",
@@ -1146,7 +1146,7 @@ prototype "维修铁制电线杆" {
 prototype "维修太阳能板" {
     type = { "recipe" },
     category = "生产手工制造",
-    recipe_group =  "生产",
+    --recipe_group =  "生产",
     recipe_order =  122,
     allow_as_intermediate = false,
     recipe_icon =  "textures/construct/broken-solar-panel.texture",
@@ -1183,7 +1183,7 @@ prototype "维修太阳能板" {
 prototype "维修物流中心" {
     type = { "recipe" },
     category = "生产手工制造",
-    recipe_group =  "生产",
+    --recipe_group =  "生产",
     recipe_order =  126,
     allow_as_intermediate = false,
     recipe_icon =  "textures/construct/broken-logisitic.texture",
