@@ -1394,6 +1394,22 @@ prototype "科研中心打印" {
     description = "打印科研中心",
 }
 
+prototype "建造中心打印" {
+    type = { "recipe" },
+    category = "设计图打印",
+    recipe_group =  "物流",
+    recipe_order =  56,
+    recipe_icon =  "textures/construct/broken-lab.texture",
+    ingredients = {
+        {"建造中心设计图", 1},
+    },
+    results = {
+        {"建造中心", 1},
+    },
+    time = "5s",
+    description = "打印建造中心",
+}
+
 prototype "太阳能板打印" {
     type = { "recipe" },
     category = "设计图打印",
