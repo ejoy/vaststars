@@ -138,7 +138,7 @@ static ecs::station& find_producer(world& w, station_vector& producers) {
     return *result;
 }
 
-static std::optional<ecs_cid> find_consumer(world& w, lua_State *L, ecs::building& starting, uint16_t item) {
+static std::optional<ecs_cid> find_consumer(lua_State*L, world& w, ecs::building& starting, uint16_t item) {
     auto& consumers = w.stations.consumers;
     auto it = consumers.find(item);
     if (it == consumers.end()) {
@@ -196,7 +196,7 @@ static int lupdate(lua_State *L) {
         if (chestslot.amount == 0 || chestslot.amount < chestslot.limit) {
             continue;
         }
-        if (auto consumer_cid = find_consumer(w, L, v.get<ecs::building>(), chestslot.item)) {
+        if (auto consumer_cid = find_consumer(L, w, v.get<ecs::building>(), chestslot.item)) {
             ecs_api::entity<ecs::station_consumer, ecs::station> target {w.ecs};
             if (!target.init(*consumer_cid)) {
                 continue;
