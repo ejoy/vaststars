@@ -14,7 +14,7 @@ extern "C" {
 #define STATUS_INVALID 2
 
 static void
-laboratory_set_tech(lua_State* L, world& w, ecs::building& building, ecs::laboratory& l, ecs::chest& c2, uint16_t techid) {
+laboratory_set_tech(world& w, ecs::building& building, ecs::laboratory& l, ecs::chest& c2, uint16_t techid) {
     l.tech = techid;
     std::vector<uint16_t> limit(chest::size(w, container::index::from(c2.chest)));
     if (techid == 0 || l.status == STATUS_INVALID) {
@@ -23,7 +23,7 @@ laboratory_set_tech(lua_State* L, world& w, ecs::building& building, ecs::labora
         }
     }
     else {
-        auto& r = w.techtree.get_ingredients(L, w, building.prototype, techid);
+        auto& r = w.techtree.get_ingredients(w, building.prototype, techid);
         assert(r);
         for (size_t i = 0; i < limit.size(); ++i) {
             limit[i] = 2 * (std::max)((uint16_t)1, (*r)[i+1].amount);
@@ -33,33 +33,33 @@ laboratory_set_tech(lua_State* L, world& w, ecs::building& building, ecs::labora
 }
 
 static void
-laboratory_next_tech(lua_State* L, world& w, ecs::building& building, ecs::laboratory& l, ecs::chest& c2, uint16_t techid) {
+laboratory_next_tech(world& w, ecs::building& building, ecs::laboratory& l, ecs::chest& c2, uint16_t techid) {
     if (l.tech == techid) {
         return;
     }
     if (l.tech) {
-        auto& oldr = w.techtree.get_ingredients(L, w, building.prototype, l.tech);
+        auto& oldr = w.techtree.get_ingredients(w, building.prototype, l.tech);
         if (oldr) {
             chest::recover(w, container::index::from(c2.chest), to_recipe(oldr));
         }
     }
     if (!techid) {
-        laboratory_set_tech(L, w, building, l, c2, 0);
+        laboratory_set_tech(w, building, l, c2, 0);
         l.progress = 0;
         l.status = STATUS_IDLE;
         return;
     }
 
-    auto& newr = w.techtree.get_ingredients(L, w, building.prototype, techid);
+    auto& newr = w.techtree.get_ingredients(w, building.prototype, techid);
     if (!newr) {
         l.tech = techid;
         l.progress = 0;
         l.status = STATUS_INVALID;
         return;
     }
-    laboratory_set_tech(L, w, building, l, c2, techid);
+    laboratory_set_tech(w, building, l, c2, techid);
     if (chest::pickup(w, container::index::from(c2.chest), to_recipe(newr))) {
-        prototype_context tech = w.prototype(L, techid);
+        prototype_context tech = w.prototype(techid);
         int time = pt_time(&tech);
         l.progress = time * 100;
         l.status = STATUS_DONE;
@@ -71,11 +71,11 @@ laboratory_next_tech(lua_State* L, world& w, ecs::building& building, ecs::labor
 }
 
 static void
-laboratory_update(lua_State* L, world& w, ecs_api::entity<ecs::laboratory, ecs::chest, ecs::capacitance, ecs::building>& v, bool& updated) {
+laboratory_update(world& w, ecs_api::entity<ecs::laboratory, ecs::chest, ecs::capacitance, ecs::building>& v, bool& updated) {
     auto& building = v.get<ecs::building>();
     auto& l = v.get<ecs::laboratory>();
     auto& c2 = v.get<ecs::chest>();
-    auto consumer = get_consumer(L, w, v);
+    auto consumer = get_consumer(w, v);
 
     // step.1
     if (!consumer.cost_drain()) {
@@ -87,7 +87,7 @@ laboratory_update(lua_State* L, world& w, ecs_api::entity<ecs::laboratory, ecs::
 
     // step.2
     while (l.progress <= 0) {
-        prototype_context tech = w.prototype(L, l.tech);
+        prototype_context tech = w.prototype(l.tech);
         if (l.status == STATUS_DONE) {
             int count = pt_count(&tech);
             if (w.techtree.research_add(l.tech, count, 1)) {
@@ -101,7 +101,7 @@ laboratory_update(lua_State* L, world& w, ecs_api::entity<ecs::laboratory, ecs::
             l.status = STATUS_IDLE;
         }
         if (l.status == STATUS_IDLE) {
-            auto& r = w.techtree.get_ingredients(L, w, building.prototype, l.tech);
+            auto& r = w.techtree.get_ingredients(w, building.prototype, l.tech);
             if (!r || !chest::pickup(w, container::index::from(c2.chest), to_recipe(r))) {
                 return;
             }
@@ -127,7 +127,7 @@ lbuild(lua_State *L) {
         auto& building = v.get<ecs::building>();
         auto& l = v.get<ecs::laboratory>();
         auto& c2 = v.get<ecs::chest>();
-        laboratory_set_tech(L, w, building, l, c2, l.tech);
+        laboratory_set_tech(w, building, l, c2, l.tech);
     }
     return 0;
 }
@@ -142,9 +142,9 @@ lupdate(lua_State *L) {
         uint16_t techid = w.techtree.queue_top();
         if (techid != l.tech) {
             ecs::building& building = v.get<ecs::building>();
-            laboratory_next_tech(L, w, building, l, c2, techid);
+            laboratory_next_tech(w, building, l, c2, techid);
         }
-        laboratory_update(L, w, v, updated);
+        laboratory_update(w, v, updated);
     }
     if (updated) {
         uint16_t techid = w.techtree.queue_top();
@@ -152,7 +152,7 @@ lupdate(lua_State *L) {
             auto& building = v.get<ecs::building>();
             auto& l = v.get<ecs::laboratory>();
             auto& c2 = v.get<ecs::chest>();
-            laboratory_next_tech(L, w, building, l, c2, techid);
+            laboratory_next_tech(w, building, l, c2, techid);
         }
     }
     return 0;

@@ -30,21 +30,21 @@ static bool fluidbox_pickup(world& w, ecs::fluidbox& f, recipe_items& r) {
 }
 
 static void
-chimney_update(lua_State* L, world& w, ecs_api::entity<ecs::chimney, ecs::fluidbox>& v) {
+chimney_update(world& w, ecs_api::entity<ecs::chimney, ecs::fluidbox>& v) {
     ecs::chimney& c = v.get<ecs::chimney>();
     if (c.recipe == 0) {
         return;
     }
 
     while (c.progress <= 0) {
-        prototype_context recipe = w.prototype(L, c.recipe);
+        prototype_context recipe = w.prototype(c.recipe);
         if (c.status == STATUS_DONE) {
             //recipe_items* r = (recipe_items*)pt_results(&recipe);
             //if (false) {
             //    //TODO
             //    return;
             //}
-            w.stat.finish_recipe(L, w, c.recipe, false);
+            w.stat.finish_recipe(w, c.recipe, false);
             c.status = STATUS_IDLE;
         }
         if (c.status == STATUS_IDLE) {
@@ -66,7 +66,7 @@ static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     for (auto& v : ecs_api::select<ecs::chimney, ecs::fluidbox>(w.ecs)) {
-        chimney_update(L, w, v);
+        chimney_update(w, v);
     }
     return 0;
 }

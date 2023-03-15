@@ -31,8 +31,8 @@ bool techtree_mgr::research_set(uint16_t techid, uint16_t max, uint16_t val) {
     return finish;
 }
 
-bool techtree_mgr::research_set(world& w, lua_State* L, uint16_t techid, uint16_t val) {
-    prototype_context pt = w.prototype(L, techid);
+bool techtree_mgr::research_set(world& w,uint16_t techid, uint16_t val) {
+    prototype_context pt = w.prototype(techid);
     uint16_t count = (uint16_t)pt_count(&pt);
     if (!research_set(techid, count, val)) {
         return false;
@@ -81,14 +81,14 @@ static std::optional<uint16_t> recipeFind(lab_inputs& r, uint16_t item) {
     return std::nullopt;
 }
 
-techtree_mgr::ingredients_opt& techtree_mgr::get_ingredients(lua_State* L, world& w, uint16_t labid, uint16_t techid) {
+techtree_mgr::ingredients_opt& techtree_mgr::get_ingredients(world& w, uint16_t labid, uint16_t techid) {
     auto& techcache = cache[techid];
     auto iter = techcache.find(labid);
     if (iter != techcache.end()) {
         return iter->second;
     }
-    auto lab = w.prototype(L, labid);
-    auto tech = w.prototype(L, techid);
+    auto lab = w.prototype(labid);
+    auto tech = w.prototype(techid);
     auto& inputs = *(lab_inputs*)pt_inputs(&lab);
     auto& ingredients = *(recipe_items*)pt_ingredients(&tech);
 

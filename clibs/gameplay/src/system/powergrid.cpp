@@ -23,8 +23,8 @@ struct powergrid {
 };
 
 static void
-stat_consumer(lua_State *L, world& w, powergrid pg[]) {
-	struct prototype_context p = w.prototype(L, 0);
+stat_consumer(world& w, powergrid pg[]) {
+	struct prototype_context p = w.prototype(0);
 	for (auto& v : ecs_api::select<ecs::consumer, ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
@@ -41,8 +41,8 @@ stat_consumer(lua_State *L, world& w, powergrid pg[]) {
 }
 
 static void
-stat_generator(lua_State *L, world& w, powergrid pg[]) {
-	struct prototype_context p = w.prototype(L, 0);
+stat_generator(world& w, powergrid pg[]) {
+	struct prototype_context p = w.prototype(0);
 	for (auto& v : ecs_api::select<ecs::generator, ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
@@ -58,8 +58,8 @@ stat_generator(lua_State *L, world& w, powergrid pg[]) {
 }
 
 static void
-stat_accumulator(lua_State *L, world& w, powergrid pg[]) {
-	struct prototype_context p = w.prototype(L, 0);
+stat_accumulator(world& w, powergrid pg[]) {
+	struct prototype_context p = w.prototype(0);
 	for (auto& v : ecs_api::select<ecs::accumulator, ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
@@ -82,7 +82,7 @@ stat_accumulator(lua_State *L, world& w, powergrid pg[]) {
 }
 
 static void
-calc_efficiency(lua_State *L, world& w, powergrid pgs[]) {
+calc_efficiency(world& w, powergrid pgs[]) {
 	for (int ii = 1; ii < 256; ++ii) {
 		powergrid& pg = pgs[ii];
 		if (!pg.active) {
@@ -171,8 +171,8 @@ calc_efficiency(lua_State *L, world& w, powergrid pgs[]) {
 }
 
 static void
-powergrid_run(lua_State *L, world& w, powergrid pg[]) {
-	struct prototype_context p = w.prototype(L, 0);
+powergrid_run(world& w, powergrid pg[]) {
+	struct prototype_context p = w.prototype(0);
 	uint64_t generate_power = 0;
 	uint64_t consume_power = 0;
 	for (auto& v : ecs_api::select<ecs::capacitance, ecs::building>(w.ecs)) {
@@ -258,15 +258,15 @@ lupdate(lua_State *L) {
 	struct powergrid pg[256];
 
 	// step 2: stat consumers in powergrid
-	stat_consumer(L, w, pg);
+	stat_consumer(w, pg);
 	// step 3: stat generators
-	stat_generator(L, w, pg);
+	stat_generator(w, pg);
 	// step 4: stat accumulators
-	stat_accumulator(L, w, pg);
+	stat_accumulator(w, pg);
 	// step 5: calc efficiency
-	calc_efficiency(L, w, pg);
+	calc_efficiency(w, pg);
 	// step 6: powergrid charge consumers' capacitance, and consume generators' capacitance
-	powergrid_run(L, w, pg);
+	powergrid_run(w, pg);
 
 	return 0;
 }

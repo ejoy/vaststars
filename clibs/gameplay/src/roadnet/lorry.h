@@ -30,6 +30,6 @@ namespace roadnet {
         void update(network& w, uint64_t ti);
         bool ready();
         void reset(world& w);
-        void init(world& w, lua_State* L, uint16_t classid);
+        void init(world& w, uint16_t classid);
     };
 }

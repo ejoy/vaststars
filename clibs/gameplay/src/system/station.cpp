@@ -65,9 +65,9 @@ static uint8_t safe_add(uint8_t a, uint8_t b) {
     return a + b;
 }
 
-static std::tuple<uint8_t, uint8_t> building_center(lua_State* L, world& world, ecs::building& building) {
+static std::tuple<uint8_t, uint8_t> building_center(world& world, ecs::building& building) {
     //TODO 使用更精确的x/y
-    prototype_context pt = world.prototype(L, building.prototype);
+    prototype_context pt = world.prototype(building.prototype);
     uint16_t area = (uint16_t)pt_area(&pt);
     uint8_t w = area >> 8;
     uint8_t h = area & 0xFF;
@@ -107,7 +107,7 @@ static int lbuild(lua_State *L) {
         auto& chestslot = chest::array_at(w, container::index::from(station.chest), 0);
         auto& kdtree = s.consumers[chestslot.item];
         auto& building = v.get<ecs::building>();
-        auto [x, y] = building_center(L, w, building);
+        auto [x, y] = building_center(w, building);
         kdtree.dataset.emplace_back(x, y, v.getid());
     }
     for (auto& [_, kdtree]: s.consumers) {
@@ -138,7 +138,7 @@ static ecs::station& find_producer(world& w, station_vector& producers) {
     return *result;
 }
 
-static std::optional<ecs_cid> find_consumer(lua_State*L, world& w, ecs::building& starting, uint16_t item) {
+static std::optional<ecs_cid> find_consumer(world& w, ecs::building& starting, uint16_t item) {
     auto& consumers = w.stations.consumers;
     auto it = consumers.find(item);
     if (it == consumers.end()) {
@@ -146,18 +146,18 @@ static std::optional<ecs_cid> find_consumer(lua_State*L, world& w, ecs::building
     }
     auto& kdtree = it->second;
     nearest_result result(w);
-    auto [x, y] = building_center(L, w, starting);
+    auto [x, y] = building_center(w, starting);
     if (!kdtree.tree.nearest(result, {x,y})) {
         return std::nullopt;
     }
     return kdtree.dataset[result.value()].cid;
 }
 
-static std::optional<uint8_t> recipeFirstOutput(world& w, lua_State *L, uint16_t recipe) {
+static std::optional<uint8_t> recipeFirstOutput(world& w, uint16_t recipe) {
     if (recipe == 0) {
         return std::nullopt;
     }
-    prototype_context pt = w.prototype(L, recipe);
+    prototype_context pt = w.prototype(recipe);
     recipe_items* ingredients = (recipe_items*)pt_ingredients(&pt);
     recipe_items* results = (recipe_items*)pt_results(&pt);
     if (results->n == 0) {
@@ -196,7 +196,7 @@ static int lupdate(lua_State *L) {
         if (chestslot.amount == 0 || chestslot.amount < chestslot.limit) {
             continue;
         }
-        if (auto consumer_cid = find_consumer(L, w, v.get<ecs::building>(), chestslot.item)) {
+        if (auto consumer_cid = find_consumer(w, v.get<ecs::building>(), chestslot.item)) {
             ecs_api::entity<ecs::station_consumer, ecs::station> target {w.ecs};
             if (!target.init(*consumer_cid)) {
                 continue;
@@ -248,7 +248,7 @@ static int lupdate(lua_State *L) {
             continue;
         }
         auto& assembling = v.get<ecs::assembling>();
-        auto slot_opt = recipeFirstOutput(w, L, assembling.recipe);
+        auto slot_opt = recipeFirstOutput(w, assembling.recipe);
         if (!slot_opt) {
             continue;
         }
@@ -260,7 +260,7 @@ static int lupdate(lua_State *L) {
         }
         chestslot.amount--;
         auto& producer = find_producer(w, producers);
-        roadnet::lorryid lorryId = w.rw.createLorry(w, L, chestslot.item);
+        roadnet::lorryid lorryId = w.rw.createLorry(w, chestslot.item);
         auto& l = w.rw.Lorry(lorryId);
         l.item_classid = 0;
         l.item_amount = 0;

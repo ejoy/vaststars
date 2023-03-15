@@ -36,10 +36,10 @@ sync_output_fluidbox(world& w, ecs::chest& c2, ecs::fluidboxes& fb) {
 }
 
 static void
-assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::chest, ecs::capacitance, ecs::building>& v) {
+assembling_update(world& w, ecs_api::entity<ecs::assembling, ecs::chest, ecs::capacitance, ecs::building>& v) {
     ecs::assembling& a = v.get<ecs::assembling>();
     ecs::chest& c2 = v.get<ecs::chest>();
-    auto consumer = get_consumer(L, w, v);
+    auto consumer = get_consumer(w, v);
 
     // step.1
     if (!consumer.cost_drain()) {
@@ -52,12 +52,12 @@ assembling_update(lua_State* L, world& w, ecs_api::entity<ecs::assembling, ecs::
 
     // step.2
     while (a.progress <= 0) {
-        prototype_context recipe = w.prototype(L, a.recipe);
+        prototype_context recipe = w.prototype(a.recipe);
         if (a.status == STATUS_DONE) {
             if (!chest::place(w, container::index::from(c2.chest), recipe)) {
                 return;
             }
-            w.stat.finish_recipe(L, w, a.recipe, false);
+            w.stat.finish_recipe(w, a.recipe, false);
             a.status = STATUS_IDLE;
             if (c2.fluidbox_out != 0) {
                 ecs::fluidboxes* fb = v.sibling<ecs::fluidboxes>();
@@ -95,7 +95,7 @@ static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     for (auto& v : ecs_api::select<ecs::assembling, ecs::chest, ecs::capacitance, ecs::building>(w.ecs)) {
-        assembling_update(L, w, v);
+        assembling_update(w, v);
     }
     return 0;
 }

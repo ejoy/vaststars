@@ -119,13 +119,13 @@ namespace roadnet::lua {
         status status = status::cross;
         uint32_t index = 0;
         uint16_t straight = 0;
-        lorryid next_cross(lua_State* L, roadnet::network& w, road_coord& coord) {
+        lorryid next_cross(roadnet::network& w, road_coord& coord) {
             static constexpr int N = 2;
             for (;;) {
                 if (index >= N * w.crossAry.size()) {
                     status = status::straight;
                     index = 0;
-                    return next_straight(L, w, coord);
+                    return next_straight(w, coord);
                 }
                 uint16_t road_idx = (uint16_t)(index / N);
                 uint8_t  entry_idx = index % N;
@@ -138,7 +138,7 @@ namespace roadnet::lua {
                 }
             }
         }
-        lorryid next_straight(lua_State* L, roadnet::network& w, road_coord& coord) {
+        lorryid next_straight(roadnet::network& w, road_coord& coord) {
             for (;;) {
                 if (index >= w.lorryAry.size()) {
                     status = status::finish;
@@ -156,12 +156,12 @@ namespace roadnet::lua {
                 index++;
             }
         }
-        lorryid next(lua_State* L, roadnet::network& w, road_coord& coord) {
+        lorryid next(roadnet::network& w, road_coord& coord) {
             switch (status) {
             case status::cross:
-                return next_cross(L, w, coord);
+                return next_cross(w, coord);
             case status::straight:
-                return next_straight(L, w, coord);
+                return next_straight(w, coord);
             default:
             case status::finish:
                 return lorryid::invalid();
@@ -174,7 +174,7 @@ namespace roadnet::lua {
             auto& w = get_network(L, lua_upvalueindex(2));
             eachlorry& self = get(L, lua_upvalueindex(1));
             road_coord coord;
-            auto id = self.next(L, w, coord);
+            auto id = self.next(w, coord);
             if (id == lorryid::invalid()) {
                 return 0;
             }

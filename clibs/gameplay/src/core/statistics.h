@@ -3,7 +3,7 @@
 #include "../util/flatmap.h"
 
 struct statistics {
-    void finish_recipe(lua_State* L, world& w, uint16_t id, bool manual);
+    void finish_recipe(world& w, uint16_t id, bool manual);
     flatmap<uint16_t, uint32_t> production;
     flatmap<uint16_t, uint32_t> manual_production;
     flatmap<uint16_t, uint32_t> consumption;

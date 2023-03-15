@@ -22,18 +22,18 @@ struct task {
     uint16_t p1;
     uint16_t p2;
 
-    uint64_t stat_production(lua_State* L, world& w);
-    uint64_t stat_manual_production(lua_State* L, world& w);
-    uint64_t stat_consumption(lua_State* L, world& w);
-    uint64_t select_entity(lua_State* L, world& w);
-    uint64_t select_chest(lua_State* L, world& w);
-    uint64_t power_generator(lua_State* L, world& w);
-    uint64_t eval(lua_State* L, world& w);
-    uint16_t progress(lua_State* L, world& w);
+    uint64_t stat_production(world& w);
+    uint64_t stat_manual_production(world& w);
+    uint64_t stat_consumption(world& w);
+    uint64_t select_entity(world& w);
+    uint64_t select_chest(world& w);
+    uint64_t power_generator(world& w);
+    uint64_t eval(world& w);
+    uint16_t progress(world& w);
 };
 
 
-uint64_t task::stat_production(lua_State* L, world& w) {
+uint64_t task::stat_production(world& w) {
     auto iter = w.stat.production.find(p1);
     if (iter) {
         return *iter;
@@ -41,7 +41,7 @@ uint64_t task::stat_production(lua_State* L, world& w) {
     return 0;
 }
 
-uint64_t task::stat_manual_production(lua_State* L, world& w) {
+uint64_t task::stat_manual_production(world& w) {
     auto iter = w.stat.manual_production.find(p1);
     if (iter) {
         return *iter;
@@ -49,7 +49,7 @@ uint64_t task::stat_manual_production(lua_State* L, world& w) {
     return 0;
 }
 
-uint64_t task::stat_consumption(lua_State* L, world& w) {
+uint64_t task::stat_consumption(world& w) {
     auto iter = w.stat.consumption.find(p1);
     if (iter) {
         return *iter;
@@ -57,7 +57,7 @@ uint64_t task::stat_consumption(lua_State* L, world& w) {
     return 0;
 }
 
-uint64_t task::select_entity(lua_State* L, world& w) {
+uint64_t task::select_entity(world& w) {
     uint64_t n = 0;
     for (auto& v : ecs_api::select<ecs::building>(w.ecs)) {
         ecs::building& building = v.get<ecs::building>();
@@ -68,7 +68,7 @@ uint64_t task::select_entity(lua_State* L, world& w) {
     return n;
 }
 
-uint64_t task::select_chest(lua_State* L, world& w) {
+uint64_t task::select_chest(world& w) {
     uint64_t n = 0;
     //TODO
     //for (auto& v : ecs_api::select<ecs::chest, ecs::building>(w.ecs)) {
@@ -87,24 +87,24 @@ uint64_t task::select_chest(lua_State* L, world& w) {
     return n;
 }
 
-uint64_t task::power_generator(lua_State* L, world& w) {
+uint64_t task::power_generator(world& w) {
     return w.stat.generate_power;
 }
 
-uint64_t task::eval(lua_State* L, world& w) {
+uint64_t task::eval(world& w) {
     switch (type) {
-    case task::type::stat_production:         return stat_production(L, w);
-    case task::type::stat_manual_production:  return stat_manual_production(L, w);
-    case task::type::stat_consumption:        return stat_consumption(L, w);
-    case task::type::select_entity:           return select_entity(L, w);
-    case task::type::select_chest:            return select_chest(L, w);
-    case task::type::power_generator:         return power_generator(L, w);
+    case task::type::stat_production:         return stat_production(w);
+    case task::type::stat_manual_production:  return stat_manual_production(w);
+    case task::type::stat_consumption:        return stat_consumption(w);
+    case task::type::select_entity:           return select_entity(w);
+    case task::type::select_chest:            return select_chest(w);
+    case task::type::power_generator:         return power_generator(w);
     default: return 0;
     }
 }
 
-uint16_t task::progress(lua_State* L, world& w) {
-    uint64_t v = eval(L, w);
+uint16_t task::progress(world& w) {
+    uint64_t v = eval(w);
     for (uint16_t i = 0; i < e; ++i) {
         v /= 10;
     }
@@ -123,7 +123,7 @@ lupdate(lua_State *L) {
         if (taskid == 0) {
             break;
         }
-        prototype_context task_prototype = w.prototype(L, taskid);
+        prototype_context task_prototype = w.prototype(taskid);
         if (0 != pt_time(&task_prototype)) {
             break;
         }
@@ -131,8 +131,8 @@ lupdate(lua_State *L) {
         if (task.type == task::type::unknown) {
             break;
         }
-        uint16_t value = task.progress(L, w);
-        if (!w.techtree.research_set(w, L, taskid, value)) {
+        uint16_t value = task.progress(w);
+        if (!w.techtree.research_set(w, taskid, value)) {
             break;
         }
     }

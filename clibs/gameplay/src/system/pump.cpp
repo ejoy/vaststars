@@ -16,7 +16,7 @@ static int
 lupdate(lua_State *L) {
     world& w = *(world*)lua_touserdata(L, 1);
     for (auto& v : ecs_api::select<ecs::pump, ecs::building, ecs::capacitance, ecs::fluidbox>(w.ecs)) {
-        auto consumer = get_consumer(L, w, v);
+        auto consumer = get_consumer(w, v);
         if (!consumer.cost_drain() || !consumer.cost_power()) {
             block(w, v.get<ecs::fluidbox>());
             continue;

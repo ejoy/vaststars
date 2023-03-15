@@ -29,8 +29,8 @@ namespace roadnet {
     }
     void lorry::reset(world& w) {
     }
-    void lorry::init(world& w, lua_State* L, uint16_t classid) {
-        struct prototype_context pt = w.prototype(L, classid);
+    void lorry::init(world& w, uint16_t classid) {
+        struct prototype_context pt = w.prototype(classid);
         this->classid = classid;
         this->capacitance = pt_capacitance(&pt);
         this->item_classid = 0;

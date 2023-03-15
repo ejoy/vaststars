@@ -80,7 +80,7 @@ namespace lua_world {
             return 1;
         }
         uint16_t value = checkinteger<uint16_t>(L, 3);
-        bool ok = w.techtree.research_set(w, L, techid, value);
+        bool ok = w.techtree.research_set(w, techid, value);
         lua_pushboolean(L, ok);
         return 1;
     }
@@ -344,10 +344,12 @@ namespace lua_world {
 
     static int
     create(lua_State* L) {
-        struct world* w = (struct world*)lua_newuserdatauv(L, sizeof(struct world), 0);
+        struct world* w = (struct world*)lua_newuserdatauv(L, sizeof(struct world), 1);
         new (w) world;
         w->ecs = (struct ecs_context *)lua_touserdata(L, 1);
         w->P = (struct prototype_cache *)lua_touserdata(L, 2);
+        w->prototypeL = lua_newthread(L);
+        lua_setiuservalue(L, -2, 1);
         if (luaL_newmetatable(L, "gameplay::world")) {
             lua_pushvalue(L, -1);
             lua_setfield(L, -2, "__index");

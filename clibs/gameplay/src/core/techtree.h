@@ -22,9 +22,9 @@ public:
     uint16_t         get_progress(uint16_t techid) const;
     bool             is_researched(uint16_t techid) const;
     bool             research_set(uint16_t techid, uint16_t max, uint16_t val);
-    bool             research_set(world& w, lua_State* L, uint16_t techid, uint16_t val);
+    bool             research_set(world& w, uint16_t techid, uint16_t val);
     bool             research_add(uint16_t techid, uint16_t max, uint16_t inc);
-    ingredients_opt& get_ingredients(lua_State* L, world& w, uint16_t labid, uint16_t techid);
+    ingredients_opt& get_ingredients(world& w, uint16_t labid, uint16_t techid);
     uint16_t         queue_top() const;
     void             queue_pop();
     void             queue_set(const queue_t& q);
