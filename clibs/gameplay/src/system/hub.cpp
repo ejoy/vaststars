@@ -285,7 +285,7 @@ static std::tuple<size_t, size_t, bool> FindHub(world& w, const hub_mgr::hub_inf
         auto berth = info.hub[ii];
         if (auto chest = w.hubs.chests.find(berth.hash())) {
             auto& chestslot = chest::array_at(w, container::index::from(*chest), berth.chest_slot);
-            if (((min.index == -1) || (chestslot.amount < min.amount)) && (chestslot.limit > chestslot.item)) {
+            if (((min.index == -1) || (chestslot.amount < min.amount)) && (chestslot.limit > chestslot.amount + 1)) {
                 min.index = ii;
                 min.amount = chestslot.amount;
             }
