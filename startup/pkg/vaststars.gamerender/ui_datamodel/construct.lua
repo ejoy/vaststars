@@ -299,7 +299,11 @@ function M:stage_camera_usage(datamodel)
         local pbuilder = create_builder()
         for prototype_name in global.construct_queue:for_each() do
             local object_id = global.construct_queue:pop(prototype_name)
-            pbuilder:complete(object_id)
+            if builder.complete then
+                builder:complete(object_id)
+            else
+                pbuilder:complete(object_id)
+            end
         end
 
         if builder then

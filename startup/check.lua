@@ -56,4 +56,39 @@ do
     end
 end
 
+-- The recipe for building center must meet: 1. Only one result; 2. The result must be a building
+do
+    local function check_elements(recipe_name, name, s)
+        local r = {}
+        for idx = 2, #s // 4 do
+            local id = string.unpack("<I2I2", s, 4 * idx - 3)
+            local typeobject = assert(iprototype.queryById(id), ("can not found id `%s`"):format(id))
+
+            if #r > 1 then
+                log.error("recipe `" .. recipe_name .. "` has more than one result (%d)" .. #r)
+            end
+            r[#r+1] = typeobject.name
+
+            if not iprototype.has_type(typeobject.type, "building") then
+                log.error("recipe `" .. recipe_name .. "` has invalid result `" .. typeobject.name .. "`")
+            end
+        end
+        return r
+    end
+
+    local function check(category)
+        for _, typeobject in pairs(iprototype.each_maintype "recipe") do
+            if typeobject.category == category then
+                check_elements(typeobject.name, "result", typeobject.results)
+            end
+        end
+    end
+
+    local typeobject = iprototype.queryByName "建造中心"
+    local craft_categories = typeobject.craft_category
+    for _, v in pairs(craft_categories) do
+       check(v)
+    end
+end
+
 print "ok"

@@ -333,21 +333,6 @@ local function confirm(self, datamodel)
     __new_entity(self, datamodel, typeobject)
 end
 
-local function complete(self, datamodel, object_id)
-    if self.grid_entity then
-        self.grid_entity:remove()
-        self.grid_entity = nil
-    end
-    iobject.remove(self.pickup_object)
-    self.pickup_object = nil
-
-    ieditor:revert_changes({"TEMPORARY"})
-    datamodel.show_rotate = false
-    datamodel.show_confirm = false
-
-    self.super.complete(self, object_id)
-end
-
 local function check_construct_detector(self, prototype_name, x, y, dir)
     local succ = self.super:check_construct_detector(prototype_name, x, y, dir)
     if not succ then
@@ -450,7 +435,6 @@ local function create()
     M.touch_move = touch_move
     M.touch_end = touch_end
     M.confirm = confirm
-    M.complete = complete
     M.rotate_pickup_object = rotate_pickup_object
     M.clean = clean
     M.check_construct_detector = check_construct_detector

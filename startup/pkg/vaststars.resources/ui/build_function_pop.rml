@@ -213,11 +213,11 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.build_center_build then
+                        if start.build_center_stop_build then
                             local v = {}
-                            v.text = "开始建造"
-                            v.message = "build_center_build"
-                            v.background_image = "textures/construct/hammer.texture"
+                            v.text = "停止建造"
+                            v.message = "build_center_stop_build"
+                            v.background_image = "textures/construct/hammer-stop.texture"
                             v.number = -1
                             v.show_number = false
                             start.buttons[#start.buttons + 1] = v
@@ -233,11 +233,11 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.build_center_stop_build then
+                        if start.build_center_build then
                             local v = {}
-                            v.text = "停止建造"
-                            v.message = "build_center_stop_build"
-                            v.background_image = "textures/construct/hammer-stop.texture"
+                            v.text = "开始建造"
+                            v.message = "build_center_build"
+                            v.background_image = "textures/construct/hammer.texture"
                             v.number = -1
                             v.show_number = false
                             start.buttons[#start.buttons + 1] = v

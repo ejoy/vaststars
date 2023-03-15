@@ -132,16 +132,20 @@ function M:create(object_id, object_position, ui_x, ui_y)
     local build_center_place, build_center_build, build_center_stop_build = false, false, false
     local build_center_icon, build_center_count, build_center_ingredients
     if typeobject.build_center == true then
-        build_center_place, build_center_build, build_center_stop_build = true, true, true
         if e.assembling.recipe == 0 then
             build_center_icon = ""
             build_center_count = 0
         else
+            build_center_build, build_center_stop_build = true, true
             local results
             build_center_ingredients, results = assembling_common.get(gameplay_core.get_world(), e)
             assert(results and results[1])
             build_center_icon = results[1].icon
             build_center_count = results[1].count
+
+            if build_center_count > 0 then
+                build_center_place = true
+            end
         end
     end
 
@@ -181,11 +185,16 @@ local function __build_center_update(datamodel, object_id)
             build_center_icon = ""
             build_center_count = 0
         else
+            datamodel.build_center_build, datamodel.build_center_stop_build = true, true
             local results
             build_center_ingredients, results = assembling_common.get(gameplay_core.get_world(), e)
             assert(results and results[1])
             build_center_icon = results[1].icon
             build_center_count = results[1].count
+
+            if build_center_count > 0 then
+                datamodel.build_center_place = true
+            end
         end
     end
     datamodel.build_center_icon = build_center_icon

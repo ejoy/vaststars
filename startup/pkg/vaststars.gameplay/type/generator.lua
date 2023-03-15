@@ -1,5 +1,4 @@
 local type = require "register.type"
-local iendpoint = require "interface.endpoint"
 
 local c1 = type "solar_panel"
 function c1:ctor(init, pt)

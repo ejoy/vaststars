@@ -62,8 +62,8 @@ local assembling_recipe = {}; local get_recipe_index; do
         assembling_recipe[v.name] = assembling_recipe[v.name] or {}
 
         for _, c in ipairs(v.craft_category) do
-            assert(cache[c], ("entity(%s).craft_category, can not find category `%s` in recipe.lua"):format(v.name, c))
-            for _, recipe_item in ipairs(cache[c]) do
+            -- The craft_category field of the assembler may be configured with a "category", and the recipe_group field of all recipes will not be configured with this "category".
+            for _, recipe_item in ipairs(cache[c] or {}) do
                 assembling_recipe[v.name][recipe_item.group] = assembling_recipe[v.name][recipe_item.group] or {}
                 assembling_recipe[v.name][recipe_item.group][#assembling_recipe[v.name][recipe_item.group] + 1] = recipe_item
             end

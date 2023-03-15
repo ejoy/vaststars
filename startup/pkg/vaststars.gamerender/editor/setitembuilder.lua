@@ -317,10 +317,6 @@ local function confirm(self, datamodel)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
-    do
-        global.construct_queue:put(pickup_object.prototype_name, pickup_object.id)
-    end
-
     self.pickup_object = nil
     if self.road_entrance then
         self.road_entrance:remove()
@@ -330,22 +326,26 @@ local function confirm(self, datamodel)
         self.block:remove()
         self.block = nil
     end
-    __new_entity(self, datamodel, typeobject)
+
+    iui.close("construct_pop.rml")
+    global.construct_queue:put(pickup_object.prototype_name, pickup_object.id)
 end
 
-local function complete(self, datamodel, object_id)
-    if self.grid_entity then
-        self.grid_entity:remove()
-        self.grid_entity = nil
-    end
-    iobject.remove(self.pickup_object)
-    self.pickup_object = nil
+local gameplay_core = require "gameplay.core"
 
-    ieditor:revert_changes({"TEMPORARY"})
-    datamodel.show_rotate = false
-    datamodel.show_confirm = false
-
+local function complete(self, object_id)
     self.super.complete(self, object_id)
+
+    local object = assert(objects:get(object_id))
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if not e then
+        return
+    end
+
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    if iprototype.has_type(typeobject.type, "hub") then
+        iui.open({"drone_depot.rml"}, object_id)
+    end
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
