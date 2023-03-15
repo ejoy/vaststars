@@ -53,20 +53,14 @@ struct building_rect {
         uint8_t hr = sh - hl;
         switch (direction) {
         case 0: // N
+        case 2: // S
             x1 = safe_sub(x, wl); x2 = safe_add(x, wr);
             y1 = safe_sub(y, hl); y2 = safe_add(y, hr);
             break;
         case 1: // E
-            x1 = safe_sub(x, hr); x2 = safe_add(x, hl);
-            y1 = safe_sub(y, wl); y2 = safe_add(y, wr);
-            break;
-        case 2: // S
-            x1 = safe_sub(x, wr); x2 = safe_add(x, wl);
-            y1 = safe_sub(y, hr); y2 = safe_add(y, hl);
-            break;
         case 3: // W
             x1 = safe_sub(x, hl); x2 = safe_add(x, hr);
-            y1 = safe_sub(y, wr); y2 = safe_add(y, wl);
+            y1 = safe_sub(y, wl); y2 = safe_add(y, wr);
             break;
         default:
             std::unreachable();
