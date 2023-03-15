@@ -285,11 +285,11 @@ static std::tuple<size_t, size_t, bool> FindHub(world& w, const hub_mgr::hub_inf
         auto berth = info.hub[ii];
         if (auto chest = w.hubs.chests.find(berth.hash())) {
             auto& chestslot = chest::array_at(w, container::index::from(*chest), berth.chest_slot);
-            if (min.index == -1 || ((chestslot.amount < min.amount) && (chestslot.limit > chestslot.item))) {
+            if (((min.index == -1) || (chestslot.amount < min.amount)) && (chestslot.limit > chestslot.item)) {
                 min.index = ii;
                 min.amount = chestslot.amount;
             }
-            if (max.index == -1 || ((chestslot.amount > max.amount) && (chestslot.amount > 0))) {
+            if (((max.index == -1) || (chestslot.amount > max.amount)) && (chestslot.amount > 0)) {
                 max.index = ii;
                 max.amount = chestslot.amount;
             }
@@ -340,7 +340,7 @@ static void Arrival(world& w, ecs::drone& drone) {
         assert(slot->amount > 0);
         slot->lock_item--;
         slot->amount--;
-        drone.item = drone.item;
+        drone.item = slot->item;
         drone.status = (uint8_t)drone_status::mov2;
         Move(w, drone, drone.mov2);
         drone.mov2 = 0;
