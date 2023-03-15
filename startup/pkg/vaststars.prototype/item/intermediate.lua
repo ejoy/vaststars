@@ -133,7 +133,7 @@ prototype "铝板" {
 prototype "铝棒" {
     type = {"item"},
     stack = 4,
-    pile = "4x1x4",
+    pile = "2x2x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/iron_stick.texture",
     item_description = "铝制材料锻造加工成的铝棒",
@@ -243,7 +243,7 @@ prototype "沙子" {
 prototype "塑料" {
     type = {"item"},
     stack = 4,
-    pile = "4x1x4",
+    pile = "2x2x4",
     pile_model = "glb/stackeditems/gravel.glb",
     icon = "textures/construct/plastic.texture",
     item_description = "一种化工成品",
@@ -253,7 +253,7 @@ prototype "塑料" {
 prototype "电动机I" {
     type = {"item"},
     stack = 2,
-    pile = "4x1x4",
+    pile = "2x2x4",
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/electric-motor.texture",
     item_description = "一种机械加工品",
@@ -273,7 +273,7 @@ prototype "铁齿轮" {
 prototype "玻璃" {
     type = {"item"},
     stack = 2,
-    pile = "4x1x4",
+    pile = "2x2x4",
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/glass.texture",
     item_description = "一种硅制加工品",
@@ -283,7 +283,7 @@ prototype "玻璃" {
 prototype "坩埚" {
     type = {"item"},
     stack = 2,
-    pile = "4x1x4",
+    pile = "2x2x4",
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/crucible.texture",
     item_description = "一种硅制加工品",
@@ -293,7 +293,7 @@ prototype "坩埚" {
 prototype "橡胶" {
     type = {"item"},
     stack = 2,
-    pile = "4x1x4",
+    pile = "2x2x4",
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/rubber.texture",
     item_description = "一种高弹性聚合物材料",
@@ -303,7 +303,7 @@ prototype "橡胶" {
 prototype "电容" {
     type = {"item"},
     stack = 4,
-    pile = "4x1x4",
+    pile = "2x2x4",
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/capacitor.texture",
     item_description = "一种高弹性聚合物材料",
@@ -313,7 +313,7 @@ prototype "电容" {
 prototype "绝缘线" {
     type = {"item"},
     stack = 2,
-    pile = "4x1x4",
+    pile = "2x2x4",
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/insulated-wire.texture",
     item_description = "一种高弹性聚合物材料",
@@ -323,7 +323,7 @@ prototype "绝缘线" {
 prototype "逻辑电路" {
     type = {"item"},
     stack = 4,
-    pile = "4x1x4",
+    pile = "2x2x4",
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/logic-circuit.texture",
     item_description = "一种高弹性聚合物材料",
