@@ -8,7 +8,7 @@ data:
     visible: true
   name: work1
   scene:
-    s: {2.5, 2.5, 2.5}
+    s: {3, 3, 3}
     t: {0, 9.600000381469727, 0}
   tag:
     effect
@@ -28,7 +28,7 @@ data:
   name: work2
   scene:
     s: {1.5, 1.5, 1.5}
-    t: {-3.5999999046325684, 32.599998474121094, 7.699999809265137}
+    t: {-4.099999904632568, 30.5, -8}
   tag:
     effect
 policy:
@@ -47,7 +47,7 @@ data:
   name: work3
   scene:
     s: {1.5, 1.5, 1.5}
-    t: {4.099999904632568, 31.299999237060547, 7.599999904632568}
+    t: {3.4137206077575684, 30.49993896484375, -7.484030246734619}
   tag:
     effect
 policy:
@@ -55,3 +55,110 @@ policy:
   ant.scene|scene_object
   ant.efk|efk
   ant.general|tag
+---
+data:
+  efk:
+    auto_play: true
+    loop: true
+    path: /pkg/vaststars.resources/effect/efk/distillery_fire.efk
+    speed: 1
+    visible: true
+  name: work4
+  scene:
+    r: {0, -0.1736481785774231, 0, 0.9848077297210693}
+    s: {3, 3, 3}
+    t: {-0, 9.600000381469727, -0}
+  tag:
+    effect
+policy:
+  ant.general|name
+  ant.scene|scene_object
+  ant.efk|efk
+  ant.general|tag
+---
+data:
+  name: shelf1
+  scene:
+    r: {-0, 1, -0, -4.371138828673793e-08}
+    t: {-12, 15, 17}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot1
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: shelf2
+  scene:
+    r: {-0, 1, -0, -4.371138828673793e-08}
+    t: {0, 17.84029769897461, 17}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot2
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: shelf3
+  scene:
+    r: {-0, 1, -0, -4.371138828673793e-08}
+    t: {12, 15, 17}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot3
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: shelf4
+  scene:
+    t: {-17, 15, -17}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot4
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: shelf5
+  scene:
+    t: {0, 11, -22}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot5
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: shelf6
+  scene:
+    t: {17, 15, -17}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot6
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot

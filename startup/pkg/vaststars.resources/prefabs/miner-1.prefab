@@ -26,7 +26,7 @@ data:
     t: {-1.3385653495788574, 2, 0}
   tag:
     u_emissive_factor
-  visible_state: csm1_queue|csm4_queue|pre_depth_queue|main_queue|csm3_queue|csm1_queue|csm4_queue|pickup_queue|main_queue|csm3_queue|pre_depth_queue|csm2_queue|csm2_queue
+  visible_state: csm1_queue|csm1_queue|csm4_queue|pre_depth_queue|main_queue|csm3_queue|csm1_queue|csm4_queue|pickup_queue|main_queue|csm3_queue|pre_depth_queue|csm2_queue|csm2_queue|pre_depth_queue|main_queue|csm4_queue|csm3_queue|csm2_queue
 mount: 1
 policy:
   ant.general|name
