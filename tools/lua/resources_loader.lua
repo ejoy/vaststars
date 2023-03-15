@@ -97,7 +97,7 @@ local t = {}
 for _, v in ipairs(packagedir) do
     for file in fs.pairs(fs.path(basedir / v)) do
         if fs.is_directory(file) then
-            local tmp = _package_files( file:localpath():lexically_normal():string() )
+            local tmp = _package_files( file:lexically_normal() )
             table.move(tmp, 1, #tmp, #t + 1, t)
         end
     end

@@ -7,8 +7,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/terrain/mine_Stone.glb|materials/mmm.material
-  mesh: /pkg/vaststars.resources/glb/terrain/mine_Stone.glb|meshes/立方体.044_P1.meshbin
+  material: /pkg/vaststars.resources/glb/terrain/ground-gravel.glb|materials/mmm.material
+  mesh: /pkg/vaststars.resources/glb/terrain/ground-gravel.glb|meshes/立方体.044_P1.meshbin
   name: "123.036"
   scene:
     r: {0, -1, 0, 1.6292068494294654e-07}
