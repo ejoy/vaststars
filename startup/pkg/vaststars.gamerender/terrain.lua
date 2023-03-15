@@ -149,8 +149,8 @@ function terrain:create(width, height)
     end
 
     local mineral_meshes = {
-        ["铁矿石"] = "prefabs/terrain/ground_iron_ore.prefab", -- TODO: remove hard code
-        ["碎石"] = "prefabs/terrain/ground_gravel.prefab",
+        ["铁矿石"] = "prefabs/terrain/ground-iron-ore.prefab", -- TODO: remove hard code
+        ["碎石"] = "prefabs/terrain/ground-gravel.prefab",
     }
 
     self.mineral_map = {}

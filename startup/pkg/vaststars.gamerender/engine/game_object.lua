@@ -311,6 +311,8 @@ function igame_object.create(init)
     outer.on_work = function ()
         local effeting = false
         if #effects > 0 then
+            -- when multiple effects are playing simultaneously, only the first effect is checked to see if it is playing.
+            -- if the first effect is playing, it is assumed that all effects are playing.
             local e <close> = w:entity(effects[1])
             effeting = iefk.is_playing(e)
         end
