@@ -202,10 +202,10 @@ enum class drone_status : uint8_t {
 
 static void Move(world& w, ecs::drone& drone, uint32_t target) {
     drone.next = target;
-    uint8_t x1 = (drone.prev >> 9) & 0xF;
-    uint8_t y1 = (drone.prev >> 0) & 0xF;
-    uint8_t x2 = (drone.next >> 9) & 0xF;
-    uint8_t y2 = (drone.next >> 0) & 0xF;
+    uint8_t x1 = (drone.prev >> 23) & 0xF;
+    uint8_t y1 = (drone.prev >> 14) & 0xF;
+    uint8_t x2 = (drone.next >> 23) & 0xF;
+    uint8_t y2 = (drone.next >> 14) & 0xF;
     uint8_t dx = (x1>x2)? (x1-x2): (x2-x1);
     uint8_t dy = (y1>y2)? (y1-y2): (y2-y1);
     float z = sqrt((float)dx*(float)dx+(float)dy*(float)dy) / 2.f;
