@@ -662,7 +662,8 @@ local prototype = gameplay.register.prototype
     type = { "task" },
     task = {"unknown", 0, 4},
     effects = {
-      unlock_recipe = {"采矿机设计图"},
+      unlock_recipe = {"采矿机设计图","采矿机打印"},
+      unlock_item = {"铁板","采矿机设计图"},
     },
     prerequisites = {""},
     count = 1,
