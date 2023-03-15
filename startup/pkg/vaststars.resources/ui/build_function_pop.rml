@@ -47,7 +47,7 @@
                 align-items: center;
                 background-size: cover;
                 width: 10vmin;
-                height:15%;
+                height:20%;
             }
             .materials-item {
                 flex-direction: row;
@@ -287,7 +287,7 @@
                 </div>
             </div>
 
-            <div class = "materials-block" style="position: absolute; top: 32.33vmin; height: 10vmin; width: 100%; justify-content: center; align-items: center;"> 
+            <div class = "materials-block" style="position: absolute; top: 40.33vmin; height: 10vmin; width: 100%; justify-content: center; align-items: center;"> 
                 <div class = "materials" data-for = "build_center_ingredients">
                     <div class = "materials-item">
                         <div class = "materials-icon" data-style-background-image = "it.icon" />
