@@ -49,13 +49,13 @@ local entities = {
         prototype_name = "无人机仓库",
         dir = "N",
         x = 120,
-        y = 130,
+        y = 129,
     },
     {
         prototype_name = "建造中心",
         dir = "S",
         x = 120,
-        y = 134,
+        y = 132,
     },
     {
         prototype_name = "排水口残骸",
