@@ -10,6 +10,7 @@ extern "C" {
 
 container::slot& chest::array_at(world& w, container::index start, uint8_t offset) {
 #if !defined(NDEBUG)
+    assert(start != container::kInvalidIndex);
     auto& s = w.container.at(start);
     assert(s.eof - start.slot >= offset);
 #endif
@@ -18,6 +19,7 @@ container::slot& chest::array_at(world& w, container::index start, uint8_t offse
 
 std::span<container::slot> chest::array_slice(world& w, container::index start, uint8_t offset, uint16_t size) {
 #if !defined(NDEBUG)
+    assert(start != container::kInvalidIndex);
     auto& s = chest::array_at(w, start, offset);
     assert(s.eof - start.slot + 1 >= size);
 #endif
@@ -25,6 +27,9 @@ std::span<container::slot> chest::array_slice(world& w, container::index start, 
 }
 
 std::span<container::slot> chest::array_slice(world& w, container::index start) {
+    if (start == container::kInvalidIndex) {
+        return {};
+    }
     auto& s = w.container.at(start);
     return w.container.slice(start, s.eof - start.slot + 1);
 }
@@ -119,6 +124,7 @@ void chest::limit(world& w, container::index c, const uint16_t* r, uint16_t n) {
 }
 
 uint16_t chest::size(world& w, container::index c) {
+    assert(c != container::kInvalidIndex);
     auto& s = w.container.at(c);
     return s.eof - c.slot + 1;
 }
@@ -195,6 +201,9 @@ lget(lua_State* L) {
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
     uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
     auto c = container::index::from(index);
+    if (c == container::kInvalidIndex) {
+        return 0;
+    }
     auto& start = w.container.at(c);
     if (start.eof - c.slot < offset) {
         return 0;
@@ -228,6 +237,9 @@ lset(lua_State* L) {
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
     uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
     auto c = container::index::from(index);
+    if (c == container::kInvalidIndex) {
+        return 0;
+    }
     auto& start = w.container.at(c);
     if (start.eof - c.slot < offset) {
         return 0;
