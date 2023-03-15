@@ -11,7 +11,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cylinder_P1.meshbin
   name: Cylinder
   scene:
-    t: {20.478639602661133, 0, -37.4067268371582}
+    r: {0, -1, 0, -4.371138828673793e-08}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
@@ -23,31 +23,7 @@ data:
   mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cylinder_P2.meshbin
   name: Cylinder
   scene:
-    t: {20.478639602661133, 0, -37.4067268371582}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.003_clr.material
-  mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cylinder.004_P1.meshbin
-  name: Cylinder.003
-  scene:
-    t: {20.478639602661133, 0, -37.4067268371582}
-  visible_state: main_view|selectable|cast_shadow
-mount: 1
-policy:
-  ant.general|name
-  ant.render|render
----
-data:
-  material: /pkg/vaststars.resources/glb/lorry-1.glb|materials/Material.007_clr.material
-  mesh: /pkg/vaststars.resources/glb/lorry-1.glb|meshes/Cylinder.004_P2.meshbin
-  name: Cylinder.003
-  scene:
-    t: {20.478639602661133, 0, -37.4067268371582}
+    r: {0, -1, 0, -4.371138828673793e-08}
   visible_state: main_view|selectable|cast_shadow
 mount: 1
 policy:
