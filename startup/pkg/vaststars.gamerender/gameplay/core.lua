@@ -85,8 +85,8 @@ init_func["road"] = function (pt, template)
 end
 
 init_func["hub"] = function (pt, template)
-    template.name = pt.item
-    template.stack = pt.shelf_stack
+    template.item = template.item
+    template.stack = template.shelf_stack
     return template
 end
 

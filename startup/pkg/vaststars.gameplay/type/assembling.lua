@@ -28,7 +28,13 @@ function c:ctor(init, pt)
     }
     if recipe_name == nil then
         fluidbox.update_fluidboxes(e, pt, init.fluids)
-        e.chest.chest = world:container_create("")
+        local r = {}
+        r[#r+1] = world:chest_slot {
+            type = "blue",
+            item = 0,
+            limit = 0,
+        }
+        e.chest.chest = world:container_create(table.concat(r))
     else
         assembling.set_recipe(self, e, pt, recipe_name, init.fluids)
     end

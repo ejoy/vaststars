@@ -6,7 +6,7 @@ local mc = import_package "ant.math".constant
 local iom = ecs.import.interface "ant.objcontroller|iobj_motion"
 local objects = require "objects"
 local iprototype = require "gameplay.interface.prototype"
-local vsobject_manager = ecs.require "vsobject_manager"
+local ichest = require "gameplay.interface.chest"
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
 local iheapmesh = ecs.import.interface "ant.render|iheapmesh"
 local gameplay_core = require "gameplay.core"
@@ -182,7 +182,11 @@ local function update_world(gameworld)
             local objid = obj.gameplay_eid
             if not drone_depot[objid] then
                 local ge = gameplay_core.get_entity(objid)
-                local chest = gameworld:container_get(ge.hub, 1)
+                local chest = ichest.chest_get(gameworld, ge.hub, 1)
+                if not chest then
+                    goto continue
+                end
+
                 local typeobject = iprototype.queryById(chest.item)
                 pile_id = pile_id + 1
                 local pile_name = "pile" .. pile_id
@@ -246,6 +250,7 @@ local function update_world(gameworld)
                 current:update(elapsed_time)
             end
         end
+        ::continue::
     end
     for _, task in ipairs(drone_task) do
         local key = task[1]

@@ -3,7 +3,11 @@ local iprototype = require "gameplay.interface.prototype"
 local M = {}
 
 function M.chest_get(world, chest, i)
-    return world:container_get(chest, i)
+    local c = world:container_get(chest, i)
+    if c and c.item == 0 then
+        return
+    end
+    return c
 end
 
 -- prototype, count

@@ -115,10 +115,16 @@ function M:create(object_id)
     if not e then
         return
     end
-    local item = assert(__get_hub_item(e))
-    local category_index = __get_category_index(item)
-    local item_indexes = __get_default_item_indexes()
-    item_indexes[category_index] = __get_item_index(item)
+    local item = __get_hub_item(e)
+    local category_index, item_indexes
+    item_indexes = __get_default_item_indexes()
+    if item then
+        category_index = __get_category_index(item)
+        item_indexes[category_index] = __get_item_index(item)
+    else
+        category_index = 1
+    end
+
 
     local datamodel = {
         categories = __get_categories(),
