@@ -2,7 +2,7 @@
 data:
   name: pile_slot
   scene:
-    t: {0, 1.2999999523162842, -1}
+    t: {-2.555568556772414e-08, 1.2999999523162842, -0.7076770067214966}
   slot:
     follow_flag: 1
     joint_name: None

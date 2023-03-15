@@ -1,0 +1,78 @@
+---
+data:
+  name: shelf1
+  scene: {}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot14
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: shelf2
+  scene: {}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot15
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: shelf3
+  scene: {}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot16
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: shelf4
+  scene: {}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot17
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: shelf5
+  scene: {}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot18
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
+---
+data:
+  name: shelf6
+  scene: {}
+  slot:
+    follow_flag: 1
+    joint_name: None
+  tag:
+    slot19
+policy:
+  ant.general|name
+  ant.general|tag
+  ant.animation|slot
