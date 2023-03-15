@@ -238,7 +238,6 @@ static void DoTask(world& w, ecs::drone& drone, const hub_mgr::hub_info& info, h
     }
     //update drone
     drone.status = (uint8_t)drone_status::mov1;
-    drone.item = info.item;
     drone.mov2 = std::bit_cast<uint32_t>(mov2);
     Move(w, drone, std::bit_cast<uint32_t>(mov1));
 }
@@ -290,7 +289,7 @@ static std::tuple<size_t, size_t, bool> FindHub(world& w, const hub_mgr::hub_inf
                 min.index = ii;
                 min.amount = chestslot.amount;
             }
-            if (max.index == -1 || chestslot.amount > max.amount) {
+            if (max.index == -1 || ((chestslot.amount > max.amount) && (chestslot.amount > 0))) {
                 max.index = ii;
                 max.amount = chestslot.amount;
             }
@@ -337,11 +336,11 @@ static void Arrival(world& w, ecs::drone& drone) {
     case drone_status::mov1: {
         auto slot = GetChestSlot(w, std::bit_cast<hub_mgr::berth>(drone.next));
         assert(slot);
-        assert(slot->item == drone.item);
         assert(slot->lock_item > 0);
         assert(slot->amount > 0);
         slot->lock_item--;
         slot->amount--;
+        drone.item = drone.item;
         drone.status = (uint8_t)drone_status::mov2;
         Move(w, drone, drone.mov2);
         drone.mov2 = 0;
