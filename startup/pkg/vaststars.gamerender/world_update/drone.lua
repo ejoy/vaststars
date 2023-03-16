@@ -35,6 +35,11 @@ local function create_motion_object(s, r, t, parent)
         }
     }
 end
+
+local drone_depot = {}
+local lookup_drones = {}
+local pile_id = 0
+local drone_offset = 6
 local fly_height = 20
 local item_height = 15
 local function create_drone(home)
@@ -95,7 +100,11 @@ local function create_drone(home)
                             w:remove(eid)
                         end
                         self.item = nil
-                        self.owner:update_heap()
+                        -- TODO: update dest item count
+                        if self.target and drone_depot[self.target.gameplay_eid] then
+                            drone_depot[self.target.gameplay_eid]:update_heap(1)
+                            -- print("--------targetobj", self.target.gameplay_eid)
+                        end
                     end
                 end
             end
@@ -155,10 +164,7 @@ local function create_heap_items(glbname, meshname, scene, dimsize, num)
 end
 -- iheapmesh.update_heap_mesh_number(27, "iron-ingot") -- 更新当前堆叠数 参数一为待更新堆叠数 参数二为entity筛选的glb名字
 -- iheapmesh.update_heap_mesh_sidesize(4, "iron-ingot") -- 更新当前每个轴的最大堆叠数 参数一为待更新每个轴的最大堆叠数 参数二为entity筛选的glb名字
-local drone_depot = {}
-local lookup_drones = {}
-local pile_id = 0
-local drone_offset = 6
+
 local function update_world(gameworld)
     for _, _, geid in entity_remove:unpack() do
         local e = gameplay_core.get_entity(geid)
@@ -175,6 +181,9 @@ local function update_world(gameworld)
     local drone_task = {}
     for e in gameworld.ecs:select "drone:in eid:in" do
         local drone = e.drone
+        -- if (drone.prev ~= 0) or (drone.next ~= 0) or (drone.maxprogress ~= 0) or (drone.progress ~= 0) then
+        --     print(drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
+        -- end
         if not lookup_drones[e.eid] then
             local obj = get_object(drone.home)
             assert(obj)
@@ -188,6 +197,7 @@ local function update_world(gameworld)
                 end
 
                 local typeobject = iprototype.queryById(chest.item)
+                -- local w, h, d = typeobject.pile:match("(%d+)x(%d+)x(%d+)")
                 pile_id = pile_id + 1
                 local pile_name = "pile" .. pile_id
                 local pos_offset = {-1, 5, 4} -- read from drone depot prefab file
@@ -195,9 +205,9 @@ local function update_world(gameworld)
                     drones = {},
                     pile_name = pile_name,
                     pile_num = chest.amount,
-                    pile_eid = create_heap_items(pile_name, "/pkg/vaststars.resources/"..typeobject.pile_model.."|meshes/Cube_P1.meshbin", {s = 1, t = {pos[1] + pos_offset[1], pos[2] + pos_offset[2], pos[3] + pos_offset[3]}}, 4, 0),
-                    update_heap = function (self)
-                        self.pile_num = self.pile_num + 1
+                    pile_eid = create_heap_items(pile_name, "/pkg/vaststars.resources/"..typeobject.pile_model.."|meshes/Cube_P1.meshbin", {s = 1, t = {pos[1] + pos_offset[1], pos[2] + pos_offset[2], pos[3] + pos_offset[3]}}, 4, chest.amount),
+                    update_heap = function (self, num)
+                        self.pile_num = self.pile_num + num
                         iheapmesh.update_heap_mesh_number(self.pile_num, self.pile_name)
                     end,
                     destroy = function (self)
@@ -229,18 +239,25 @@ local function update_world(gameworld)
                         local duration = (current.start_progress / drone.maxprogress) * total
                         current.start_progress = nil
 
-                        local target = get_object(drone.next)
-                        if target then
-                            if drone.item > 0 and (drone.next == drone.home) then
+                        local destobj = get_object(drone.next)
+                        if destobj then
+                            current.target = destobj
+                            if drone.item > 0 then
                                 current.item = create_item(drone.item, current.prefab.tag["*"][1])
                             end
+                            -- TODO: update src item count
+                            local srcobj = get_object(drone.prev)
+                            if srcobj and drone_depot[srcobj.gameplay_eid] and drone.item > 0 then
+                                drone_depot[srcobj.gameplay_eid]:update_heap(-1)
+                            end
+
                             local key = drone.prev << 32 | drone.next
                             if not same_dest_offset[key] then
                                 same_dest_offset[key] = 0
                             else
                                 same_dest_offset[key] = same_dest_offset[key] - (drone_offset / 2)
                             end
-                            drone_task[#drone_task + 1] = {key, current, target.srt.t, duration}
+                            drone_task[#drone_task + 1] = {key, current, destobj.srt.t, duration}
                         end
                     end
                 elseif not current.at_home then
