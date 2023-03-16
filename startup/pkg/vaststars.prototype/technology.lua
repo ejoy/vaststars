@@ -661,8 +661,8 @@ local prototype = gameplay.register.prototype
     desc = "选择采矿机蓝图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"unknown", 0, 3},
-    task_params = {recipe = "采矿机设计图"},
+    task = {"unknown", 0, 5},
+    task_params = {item = "采矿机设计图"},
     prerequisites = {"迫降火星"},
     count = 1,
     tips_pic = {

@@ -59,6 +59,7 @@ custom_type :
 2. lorry_count, count = x,
 3. set_recipe, recipe = x,
 4. auto_complete_task,
+5. set_item, item = x,
 --]]
 local custom_type_mapping = {
     [0] = {s = "undef", check = function() end}, -- TODO
@@ -81,6 +82,13 @@ local custom_type_mapping = {
     end, },
     [4] = {s = "auto_complete_task", check = function(task_params)
         return 1
+    end, },
+    [5] = {s = "set_item", check = function(task_params, item_name)
+        if task_params.item == item_name then
+            return 1
+        else
+            return 0
+        end
     end, },
 }
 

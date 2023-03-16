@@ -11,6 +11,7 @@ local click_category_mb = mailbox:sub {"click_category"}
 local set_item_mb = mailbox:sub {"set_item"}
 local gameplay = import_package "vaststars.gameplay"
 local ihub = gameplay.interface "hub"
+local itask = ecs.require "task"
 
 local cache = {} -- item_index -> item
 local index_cache = {} -- item_id -> item_index
@@ -147,6 +148,8 @@ function M:stage_ui_update(datamodel, object_id)
         local gameplay_world = gameplay_core.get_world()
         ihub.set_item(gameplay_world, e, item.name)
         gameplay_core.get_world():build()
+
+        itask.update_progress("set_item", item.name)
     end
 end
 
