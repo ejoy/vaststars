@@ -1246,7 +1246,7 @@ prototype "采矿机打印" {
     results = {
         {"采矿机I", 1},
     },
-    time = "5s",
+    time = "4s",
     description = "打印采矿机",
 }
 
@@ -1294,7 +1294,7 @@ prototype "电线杆打印" {
     results = {
         {"铁制电线杆", 1},
     },
-    time = "5s",
+    time = "2s",
     description = "打印可导电的电线杆",
 }
 

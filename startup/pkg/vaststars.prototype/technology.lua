@@ -8,10 +8,12 @@ local prototype = gameplay.register.prototype
   --task = {"select_chest", 0, "指挥中心", "铁丝"},     向指挥中心转移X个物品
   --task = {"power_generator", 0},                      电力发电到达X瓦
   --task = {"unknown", 0},                              自定义任务
-  --task = {"unknown", 0, 3},                           自定义任务，指定选择配方
+  --task = {"unknown", 0, 3},                           自定义任务，组装机指定选择配方
   --task_params = {recipe = "地质科技包1"},
   --count = 1,
   --time是指1个count所需的时间
+  -- task = {"unknown", 0, 5},                          自定义任务，无人机仓库指定选择物品
+  -- task_params = {item = "采矿机设计图"},
 
 
   -- prototype "清除废墟" {
@@ -706,42 +708,95 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "放置道路建造站" {
-    desc = "放置1座道路建造站",
+prototype "建造电线杆" {
+    desc = "建造3个电线杆",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"select_entity", 0, "道路建造站"},
-    prerequisites = {"操作仓库"},
-    count = 1,
+    task = {"stat_consumption", 0, "电线杆设计图"},
+    prerequisites = {"放置采矿机"},
+    count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "放置1个道路建造站", icon = "textures/construct/industry.texture"},
+      { desc = "在“建造中心”建造4个电线杆", icon = "textures/construct/industry.texture"},
     },
   }
 
-  prototype "放置物流中心" {
-    desc = "放置1座物流中心",
+  prototype "放置电线杆" {
+    desc = "放置3个铁制电线杆",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"select_entity", 0, "物流中心I"},
-    prerequisites = {"放置道路建造站"},
-    count = 1,
+    task = {"select_entity", 0, "铁制电线杆"},
+    prerequisites = {"建造电线杆"},
+    count = 3,
+    effects = {
+       unlock_recipe = {"无人机仓库打印"},
+    },
+    tips_pic = {
+      "textures/task_tips_pic/task_place_pole1.texture",
+      "textures/task_tips_pic/task_place_pole2.texture",
+    },
+    sign_desc = {
+      { desc = "放置4个铁制电线杆构成电网", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+    prototype "建造无人机仓库" {
+    desc = "建造2个无人机仓库",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"stat_consumption", 0, "无人机仓库设计图"},
+    prerequisites = {"放置电线杆"},
+    count = 2,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "使用“建造”放置1个物流中心", icon = "textures/construct/industry.texture"},
+      { desc = "在“建造中心”建造2个无人机仓库", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+    prototype "放置无人机仓库" {
+    desc = "放置2个无人机仓库",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "无人机仓库"},
+    prerequisites = {"建造无人机仓库"},
+    count = 2,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_pole1.texture",
+      "textures/task_tips_pic/task_place_pole2.texture",
+    },
+    sign_desc = {
+      { desc = "放置2个无人机仓库", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "生产碎石矿" {
+    desc = "挖掘足够的碎石可以开始进行锻造",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"stat_production", 0, "碎石"},
+    prerequisites = {"放置无人机仓库"},
+    count = 6,
+    effects = {
+       unlock_recipe = {"科研中心打印"},
+    },
+    tips_pic = {
+      "textures/task_tips_pic/task_produce_ore3.texture",
+    },
+    sign_desc = {
+      { desc = "在碎石矿上放置挖矿机并挖掘6个碎石矿", icon = "textures/construct/industry.texture"},
     },
   }
 
   prototype "放置科研中心" {
-    desc = "放置1座科研中心",
+    desc = "放置可以研究火星科技的建筑",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "科研中心I"},
-    prerequisites = {"放置物流中心"},
+    prerequisites = {"生产碎石矿"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
@@ -751,31 +806,18 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "放置电线杆" {
-    desc = "放置2个铁制电线杆",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"select_entity", 0, "铁制电线杆"},
-    prerequisites = {"放置科研中心"},
-    count = 2,
-    tips_pic = {
-      "textures/task_tips_pic/task_place_pole1.texture",
-      "textures/task_tips_pic/task_place_pole2.texture",
-    },
-    sign_desc = {
-      { desc = "使用“建造”放置2个铁制电线杆", icon = "textures/construct/industry.texture"},
-    },
-  }
-  
-prototype "地质研究" {
+  prototype "地质研究" {
     desc = "对火星地质结构进行标本采集和研究",
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
+    effects = {
+      unlock_recipe = {"地质科技包1","组装机打印"},
+    },
     ingredients = {
     },
     count = 5,
     time = "1.2s",
-    prerequisites = {"放置电线杆"},
+    prerequisites = {"放置科研中心"},
     sign_desc = {
       { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
     },
@@ -860,21 +902,6 @@ prototype "生产铁矿石" {
   },
   sign_desc = {
     { desc = "在铁矿上放置挖矿机并挖掘2个铁矿石", icon = "textures/construct/industry.texture"},
-  },
-}
-
-prototype "生产碎石矿" {
-  desc = "挖掘足够的碎石可以开始进行锻造",
-  icon = "textures/construct/industry.texture",
-  type = { "tech", "task" },
-  task = {"stat_production", 0, "碎石"},
-  prerequisites = {"放置采矿机"},
-  count = 2,
-  tips_pic = {
-    "textures/task_tips_pic/task_produce_ore3.texture",
-  },
-  sign_desc = {
-    { desc = "在碎石矿上放置挖矿机并挖掘2个碎石矿", icon = "textures/construct/industry.texture"},
   },
 }
 
