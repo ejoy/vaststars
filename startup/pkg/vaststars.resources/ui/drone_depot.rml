@@ -173,7 +173,7 @@
                     <div class = "materials-block" style="height:70%"> 
                         <div class = "materials" style="height:100%">
                             <div class = "materials-item">
-                                <div class = "materials-name" style="text-align: left; word-break: break-all; font-size: 5vmin;">这是当前建筑的描述这是当前建筑的描述这是当前建筑的描述这是当前建筑的描述</div>
+                                <div class = "materials-name" style="text-align: left; word-break: break-all; font-size: 5vmin;">{{item_desc}}</div>
                             </div>
                         </div>
                     </div>
