@@ -25,7 +25,7 @@ local guide = {
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
             task = {
-                "操作仓库",
+                "管理仓库",
             },
             guide_progress = 10,
         },
@@ -46,7 +46,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "操作仓库",
+            "管理仓库",
         },
 	},
 
@@ -123,10 +123,7 @@ local guide = {
     {
         name = "guide-7",
 		narrative = {
-            {"哔哩..整个基地的用电设施都需要被{/g 电网覆盖}，否则它们将无法工作..哔哩(无奈）", "textures/guide/guide-6.texture"},
-            {"指挥中心可产生电力..哔哩..{/g 放置电线杆}把指挥中心的电力扩散出去..哔哩(期待)", "textures/guide/guide-3.texture"},
-            {"当电线杆之间出现{/r 红色电线}时则表示成功连接，在电线{/color:4bd0ff 蓝色范围}内就会有电力传输(兴奋)", "textures/guide/guide-3.texture"},
-            {"若指挥中心和电线杆形成一个{/g 电网}，处于{/g 电网}内的用电设施就可以工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
+            {"哔哩..采矿机顺利工作了，储藏石矿需要新的无人机仓库，请在建造中心生产更多无人机仓库..哔哩(期待)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -143,8 +140,7 @@ local guide = {
     {
         name = "guide-8",
 		narrative = {
-            {"哔哩..我们终于恢复了研究能力..哔哩..目前{/g 存活概率}提升为0.07672%..(轻松)", "textures/guide/guide-1.texture"},
-            {"哔哩..让我们点击{/g 研究中心}按钮，开始研究第一个科技..(兴奋)", "textures/guide/guide-3.texture"},
+            {"哔哩..将新建的无人机仓库放置在石矿采矿机旁边，这样我们就可以等会采集矿石了....(轻松)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -161,8 +157,8 @@ local guide = {
     {
         name = "guide-9",
 		narrative = {
-            {"哔哩..基地需要更多的{/g 运输车}参与运输。运输车越多，建造效率越高..哔哩..(期待)", "textures/guide/guide-2.texture"},
-            {"让我们在{/g 物流中心}需求更多的运输车吧..哔哩..(兴奋)", "textures/guide/guide-3.texture"},
+            {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至0.3244%！..(期待)", "textures/guide/guide-2.texture"},
+            {"勤劳的无人机平台再次上线..选择运输{/g 碎石}就可以开始工作了(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 10,

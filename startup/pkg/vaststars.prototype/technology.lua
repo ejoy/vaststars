@@ -659,7 +659,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "操作仓库" {
+  prototype "管理仓库" {
     desc = "选择采矿机蓝图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -680,7 +680,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "采矿机设计图"},
-    prerequisites = {"操作仓库"},
+    prerequisites = {"管理仓库"},
     count = 2,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",

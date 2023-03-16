@@ -220,15 +220,15 @@ prototype "氢氧化钠" {
     group = {"化工"},
 }
 
-prototype "石头" {
-    type = {"item"},
-    stack = 10,
-    pile = "4x4x4",
-    pile_model = "glb/stackeditems/gravel.glb",
-    icon = "textures/construct/gravel.texture",
-    item_description = "一种矿石",
-    group = {"金属"},
-}
+-- prototype "石头" {
+--     type = {"item"},
+--     stack = 10,
+--     pile = "4x4x4",
+--     pile_model = "glb/stackeditems/gravel.glb",
+--     icon = "textures/construct/gravel.texture",
+--     item_description = "一种矿石",
+--     group = {"金属"},
+-- }
 
 prototype "沙子" {
     type = {"item"},
