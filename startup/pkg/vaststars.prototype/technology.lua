@@ -675,12 +675,28 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "操作仓库" {
+    desc = "选择采矿机蓝图",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 3},
+    task_params = {recipe = "采矿机设计图"},
+    prerequisites = {"迫降火星"},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "选择采矿机设计图", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "放置道路建造站" {
     desc = "放置1座道路建造站",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "道路建造站"},
-    prerequisites = {"迫降火星"},
+    prerequisites = {"操作仓库"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
