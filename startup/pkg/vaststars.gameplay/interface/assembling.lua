@@ -167,7 +167,7 @@ local function set_option(world, e, option)
     end
     for idx = 1, results_n do
         local _, n = string.unpack("<I2I2", recipe.results, 4*idx+1)
-        world:container_set(e.chest, idx, {limit = n * option.resultsLimit})
+        world:container_set(e.chest, ingredients_n + idx, {limit = n * option.resultsLimit})
     end
 end
 
