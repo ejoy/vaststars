@@ -78,9 +78,11 @@
                 object_position = {},
                 construction_center_icon = "",
                 construction_center_count = 0,
+                construction_center_multiple = 0,
                 construction_center_ingredients = {},
                 show_teardown = false,
                 show_move = false,
+                show_set_item = false,
                 show_set_recipe = false,
                 show_road_builder = false,
                 show_pipe_builder = false,
@@ -183,6 +185,16 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
+                        if start.show_set_item then
+                            local v = {}
+                            v.text = "管理"
+                            v.message = "set_item"
+                            v.background_image = "textures/assemble/wheel.texture"
+                            v.number = -1
+                            v.show_number = false
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
                         if start.show_road_builder then
                             local v = {}
                             v.text = "道路施工"
@@ -228,7 +240,7 @@
                             v.text = " "
                             v.message = ""
                             v.background_image = start.construction_center_icon
-                            v.number = 0
+                            v.number = start.construction_center_multiple
                             v.show_number = true
                             start.buttons[#start.buttons + 1] = v
                         end
@@ -272,7 +284,7 @@
                         end
                         start("buttons")
                     end,
-                    "show_teardown", "show_move", "show_set_recipe", "show_road_builder", "show_detail", "construction_center_icon", "construction_center_count", "drone_depot_icon"
+                    "show_teardown", "show_move", "show_set_recipe", "show_set_item", "show_road_builder", "show_detail", "construction_center_icon", "construction_center_count", "construction_center_multiple", "drone_depot_icon"
                 }
             })
         </script>

@@ -260,6 +260,7 @@ prototype "建造中心" {
     type = {"building", "assembling", "consumer"},
     area = "5x5",
     maxslot = 8,
+    recipe_chest_limit = 10,
     craft_category = {"设计图打印"},
     slots = 5,
     fluidboxes = {

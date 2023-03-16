@@ -12,12 +12,14 @@ local icanvas = ecs.require "engine.canvas"
 local get_assembling_canvas_items = ecs.require "ui_datamodel.common.assembling_canvas".get_assembling_canvas_items
 
 local set_recipe_mb = mailbox:sub {"set_recipe"}
+local set_item_mb = mailbox:sub {"set_item"}
 local detail_mb = mailbox:sub {"detail"}
 local close_mb = mailbox:sub {"close"}
 local teardown_mb = mailbox:sub {"teardown"}
 local move_mb = mailbox:sub {"move"}
 local road_builder_mb = mailbox:sub {"road_builder"}
 local pipe_builder_mb = mailbox:sub {"pipe_builder"}
+local construction_center_build_mb = mailbox:sub {"construction_center_build"}
 local construction_center_stop_build_mb = mailbox:sub {"construction_center_stop_build"}
 local construction_center_place_mb = mailbox:sub {"construction_center_place"}
 
@@ -28,14 +30,12 @@ local ipower = ecs.require "power"
 local ipower_line = ecs.require "power_line"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local assembling_common = require "ui_datamodel.common.assembling"
+local gameplay = import_package "vaststars.gameplay"
+local iassembling = gameplay.interface "assembling"
 
 -- An object may contain multiple types at the same time
 -- The types are listed in order, with the earlier ones taking precedence over the later ones
 local detail_rml = {
-    {
-        type = "hub",
-        rml = "drone_depot.rml",
-    },
     {
         type = "station",
         rml = "logistic_center.rml",
@@ -82,6 +82,10 @@ local function __show_detail(typeobject)
     return __get_detail_rml(typeobject) ~= nil
 end
 
+local function __show_set_item(typeobject)
+    return iprototype.has_type(typeobject.type, "hub")
+end
+
 local function __show_set_recipe(typeobject)
     if typeobject.construction_center == true then
         return true
@@ -119,6 +123,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
 
     -- 组装机才显示设置配方菜单
     local show_set_recipe = __show_set_recipe(typeobject)
+    local show_set_item = __show_set_item(typeobject)
     local show_detail = __show_detail(typeobject)
     local recipe_name = ""
 
@@ -131,6 +136,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
 
     local construction_center_place, construction_center_build, construction_center_stop_build = false, false, false
     local construction_center_icon, construction_center_count, construction_center_ingredients
+    local construction_center_multiple = 2
     if typeobject.construction_center == true then
         if e.assembling.recipe == 0 then
             construction_center_icon = ""
@@ -147,17 +153,24 @@ function M:create(object_id, object_position, ui_x, ui_y)
                 construction_center_place = true
             end
         end
+
+        local ingredients, _ = assembling_common.get(gameplay_core.get_world(), e)
+        if ingredients[1] then -- Not yet set recipe
+            construction_center_multiple = (ingredients[1].limit // ingredients[1].need_count)
+        end
     end
 
     return {
         show_teardown = false,
         show_move = false,
         show_set_recipe = show_set_recipe,
+        show_set_item = show_set_item,
         show_road_builder = typeobject.road_builder,
         show_pipe_builder = typeobject.pipe_builder,
         construction_center_icon = construction_center_icon,
         construction_center_count = construction_center_count,
         construction_center_ingredients = construction_center_ingredients,
+        construction_center_multiple = construction_center_multiple,
         construction_center_place = construction_center_place,
         construction_center_build = construction_center_build,
         construction_center_stop_build = construction_center_stop_build,
@@ -245,6 +258,10 @@ function M:stage_ui_update(datamodel, object_id)
         iui.open({"recipe_pop.rml"}, object_id)
     end
 
+    for _, _, _, object_id in set_item_mb:unpack() do
+        iui.open({"drone_depot.rml"}, object_id)
+    end
+
     for _, _, _, object_id in detail_mb:unpack() do
         local object = assert(objects:get(object_id))
         local typeobject = iprototype.queryByName(object.prototype_name)
@@ -297,6 +314,22 @@ function M:stage_ui_update(datamodel, object_id)
 
     for _, _, _, object_id in pipe_builder_mb:unpack() do
         iui.redirect("construct.rml", "pipe_builder", object_id)
+    end
+
+    for _, _, _, object_id in construction_center_build_mb:unpack() do
+        local object = assert(objects:get(object_id))
+        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        local typeobject = iprototype.queryById(e.building.prototype)
+        local ingredients, _ = assembling_common.get(gameplay_core.get_world(), e)
+        if not ingredients[1] then -- Not yet set recipe
+            goto continue
+        end
+        local multiple = (ingredients[1].limit // ingredients[1].need_count) + 1
+        if typeobject.recipe_chest_limit and typeobject.recipe_chest_limit >= multiple then
+            datamodel.construction_center_multiple = multiple
+            iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})
+        end
+        ::continue::
     end
 
     for _, _, _, object_id in construction_center_stop_build_mb:unpack() do
