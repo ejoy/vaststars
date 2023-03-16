@@ -330,7 +330,7 @@ function M:stage_ui_update(datamodel, object_id)
         idetail.unselected()
         iui.close("build_function_pop.rml")
         iui.close("detail_panel.rml")
-        iui.redirect("construct.rml", "construction_center_place", results[1].name)
+        iui.redirect("construct.rml", "construction_center_place", results[1].name, object.gameplay_eid, results[1].id)
         ::continue::
     end
 end

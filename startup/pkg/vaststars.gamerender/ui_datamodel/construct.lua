@@ -343,16 +343,12 @@ function M:stage_camera_usage(datamodel)
         iui.close("road_or_pipe_build.rml")
     end
 
-    for _, _, _, prototype_name in construction_center_place_mb:unpack() do
+    for _, _, _, prototype_name, gameplay_eid, item in construction_center_place_mb:unpack() do
         if builder then
             builder:clean(datamodel)
         end
 
-        if true then -- TODO: use setitembuilder if it is a drone depot or a cargo station for receiving/sending goods.
-            builder = create_setitembuilder()
-        else
-            builder = create_normalbuilder()
-        end
+        builder = create_setitembuilder(gameplay_eid, item)
         local typeobject = iprototype.queryByName(prototype_name)
         builder:new_entity(datamodel, typeobject)
         self:flush()

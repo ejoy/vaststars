@@ -334,6 +334,11 @@ end
 local gameplay_core = require "gameplay.core"
 
 local function complete(self, object_id)
+    do
+        local e = gameplay_core.get_entity(assert(self.gameplay_eid))
+        gameplay_core.get_world():container_pickup(e.chest, self.item, 1)
+    end
+
     self.super.complete(self, object_id)
 
     local object = assert(objects:get(object_id))
@@ -442,7 +447,7 @@ local function clean(self, datamodel)
     iui.close("construct_pop.rml")
 end
 
-local function create()
+local function create(gameplay_eid, item)
     local builder = create_builder()
 
     local M = setmetatable({super = builder}, {__index = builder})
@@ -454,6 +459,9 @@ local function create()
     M.rotate_pickup_object = rotate_pickup_object
     M.clean = clean
     M.check_construct_detector = check_construct_detector
+
+    M.gameplay_eid = gameplay_eid
+    M.item = item
 
     return M
 end

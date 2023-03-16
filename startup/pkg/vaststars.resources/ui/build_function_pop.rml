@@ -228,8 +228,8 @@
                             v.text = " "
                             v.message = ""
                             v.background_image = start.construction_center_icon
-                            v.number = start.construction_center_count
-                            v.show_number = (start.construction_center_count > 1)
+                            v.number = 0
+                            v.show_number = true
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -248,8 +248,8 @@
                             v.text = "放置"
                             v.message = "construction_center_place"
                             v.background_image = "textures/factory/place-building.texture"
-                            v.number = -1
-                            v.show_number = false
+                            v.number = start.construction_center_count
+                            v.show_number = start.construction_center_count > 0
                             start.buttons[#start.buttons + 1] = v
                         end
 
