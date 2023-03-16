@@ -7,6 +7,13 @@ local gameplay_core = require "gameplay.core"
 local VASTSTARS_DEBUG_RECIPE_UNLOCKED <const> = require "debugger".recipe_unlocked
 
 local recipe_unlocked; do
+    local function length(t)
+        local n = 0
+        for _ in pairs(t) do
+            n = n + 1
+        end
+        return n
+    end
     local mt = {}
     function mt:__index(k)
         local v = {}
@@ -17,19 +24,19 @@ local recipe_unlocked; do
     for _, typeobject in pairs(iprototype.each_maintype "tech") do
         if typeobject.effects and typeobject.effects.unlock_recipe then
             for _, recipe in ipairs(typeobject.effects.unlock_recipe) do
-                table.insert(recipe_tech[recipe], typeobject.name)
+                recipe_tech[recipe][typeobject.name] = true
             end
         end
     end
     for _, typeobject in pairs(iprototype.each_maintype "task") do
         if typeobject.effects and typeobject.effects.unlock_recipe then
             for _, recipe in ipairs(typeobject.effects.unlock_recipe) do
-                table.insert(recipe_tech[recipe], typeobject.name)
+                recipe_tech[recipe][typeobject.name] = true
             end
         end
     end
     for recipe, v in pairs(recipe_tech) do
-        if #v > 1 then
+        if length(v) > 1 then
             error(("recipe `%s` is unlocked by multiple techs: %s"):format(recipe, table.concat(v, ", ")))
         end
     end
@@ -40,9 +47,8 @@ if VASTSTARS_DEBUG_RECIPE_UNLOCKED then
     end
 else
     function recipe_unlocked(recipe)
-        local tech = recipe_tech[recipe][1]
+        local tech = next(recipe_tech[recipe])
         if not tech then
-            -- log.info(("recipe `%s` is locked defaultly"):format(recipe))
             return false
         end
         return gameplay_core.is_researched(tech)
