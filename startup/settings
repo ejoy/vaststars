@@ -24,7 +24,7 @@ graphic:
     cluster_shading: 1
   postprocess:
     bloom:
-      enable: true
+      enable: false
       inv_highlight: 0.2
       threshold: 2.200000047683716
     fxaa:
