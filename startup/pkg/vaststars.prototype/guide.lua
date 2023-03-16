@@ -178,7 +178,7 @@ local guide = {
             {"P4031蕴含丰富的矿藏..哔哩..先用{/g 采矿机}挖掘铁矿和石矿资源..开工开工..(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
-            guide_progress = 15,
+            guide_progress = 10,
             task = {
                 "放置科研中心",
             }
@@ -187,7 +187,6 @@ local guide = {
             "生产碎石矿",
         },
 	},
-
     -- {
     --     name = "guide-8",
 	-- 	narrative = {
