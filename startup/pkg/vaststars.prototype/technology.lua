@@ -847,9 +847,6 @@ prototype "建造电线杆" {
     task = {"stat_production", 0, "地质科技包"},
     prerequisites = {"建造组装机"},
     count = 4,
-    effects = {
-       unlock_recipe = {"地质科技包1"},
-    },
     tips_pic = {
       "textures/task_tips_pic/task_produce_geopack3.texture",
       "textures/task_tips_pic/task_produce_geopack4.texture",
