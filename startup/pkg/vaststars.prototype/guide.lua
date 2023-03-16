@@ -235,7 +235,6 @@ local guide = {
             }
         },
         prerequisites = {
-            "基地生产1",
         },
 	},
 
@@ -297,12 +296,9 @@ local guide = {
         narrative_end = {
             guide_progress = 30,
             task = {
-                "空气分离",
             }
         },
         prerequisites = {
-            "维修破损组装机",
-            "电解",
         },
 	},
 
@@ -315,11 +311,9 @@ local guide = {
             pop_chapter = {"第二阶段","化工生产"},
             guide_progress = 30,
             task = {
-                "放置化工厂",
             }
         },
         prerequisites = {
-            "维修化工厂",
         },
 	},
 
@@ -331,11 +325,9 @@ local guide = {
         narrative_end = {
             guide_progress = 30,
             task = {
-                "生产塑料",
             }
         },
         prerequisites = {
-            "生产乙烯",
         },
 	},
 
@@ -347,11 +339,9 @@ local guide = {
         narrative_end = {
             guide_progress = 30,
             task = {
-                "生产机械科技包",
             }
         },
         prerequisites = {
-            "机械研究",
         },
 	},
 
