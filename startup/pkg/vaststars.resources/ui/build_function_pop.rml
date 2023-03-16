@@ -175,7 +175,7 @@
 
                         if start.show_set_recipe then
                             local v = {}
-                            v.text = "变更"
+                            v.text = "管理"
                             v.message = "set_recipe"
                             v.background_image = "textures/assemble/wheel.texture"
                             v.number = -1
@@ -205,9 +205,9 @@
 
                         if start.show_detail then
                             local v = {}
-                            v.text = "详细"
+                            v.text = "管理"
                             v.message = "detail"
-                            v.background_image = "textures/factory/seacher.texture"
+                            v.background_image = "textures/assemble/wheel.texture"
                             v.number = -1
                             v.show_number = false
                             start.buttons[#start.buttons + 1] = v
