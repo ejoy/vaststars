@@ -2,7 +2,7 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
 prototype "组装机残骸" {
-    model = "prefabs/broken-assembling-3X3.prefab",
+    model = "prefabs/broken-assembling-3x3.prefab",
     icon = "textures/building_pic/small_pic_assemble.texture",
     background = "textures/build_background/pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
@@ -14,7 +14,7 @@ prototype "组装机残骸" {
 }
 
 prototype "排水口残骸" {
-    model = "prefabs/broken-outfall-2X2.prefab",
+    model = "prefabs/broken-outfall-2x2.prefab",
     icon = "textures/building_pic/small_pic_outfall.texture",
     background = "textures/build_background/pic_mars_outfall.texture",
     construct_detector = {"exclusive"},
@@ -26,7 +26,7 @@ prototype "排水口残骸" {
 }
 
 prototype "抽水泵残骸" {
-    model = "prefabs/broken-pump-2X2.prefab",
+    model = "prefabs/broken-pump-2x2.prefab",
     icon = "textures/building_pic/small_pic_pumpjack.texture",
     background = "textures/build_background/pic_pumpjack.texture",
     construct_detector = {"exclusive"},

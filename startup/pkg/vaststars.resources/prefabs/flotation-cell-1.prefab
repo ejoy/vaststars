@@ -7,8 +7,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/flotation-cell.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/flotation-cell.glb|meshes/Cylinder_P1.meshbin
+  material: /pkg/vaststars.resources/glb/flotation-cell-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/flotation-cell-1.glb|meshes/Cylinder_P1.meshbin
   name: Cylinder
   scene: {}
   visible_state: main_view|selectable|cast_shadow

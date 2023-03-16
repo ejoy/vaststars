@@ -302,7 +302,7 @@ prototype "建造中心" {
     },
     power = "75kW",
     priority = "secondary",
-    build_center = true,
+    construction_center = true,
 }
 
 prototype "道路建造站" {

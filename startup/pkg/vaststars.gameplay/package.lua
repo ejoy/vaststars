@@ -5,5 +5,6 @@ return {
         "ant.serialize",
         "ant.json",
         "ant.luaecs",
+        "vaststars.version"
     }
 }
