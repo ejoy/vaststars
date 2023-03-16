@@ -7,10 +7,10 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  meshskin: /pkg/vaststars.resources/glb/turbine.glb|meshes/Armature.skinbin
+  meshskin: /pkg/vaststars.resources/glb/turbine-1.glb|meshes/Armature.skinbin
   name: meshskin
   scene: {}
-  skeleton: /pkg/vaststars.resources/glb/turbine.glb|animations/skeleton.ozz
+  skeleton: /pkg/vaststars.resources/glb/turbine-1.glb|animations/skeleton.ozz
   skinning: true
 mount: 1
 policy:
@@ -19,8 +19,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/turbine.glb|materials/Material_skin.material
-  mesh: /pkg/vaststars.resources/glb/turbine.glb|meshes/zhuti.002_P1.meshbin
+  material: /pkg/vaststars.resources/glb/turbine-1.glb|materials/Material_skin.material
+  mesh: /pkg/vaststars.resources/glb/turbine-1.glb|meshes/zhuti.002_P1.meshbin
   name: zhuti.II.003
   skinning: true
   visible_state: main_view|selectable|cast_shadow
@@ -31,10 +31,10 @@ policy:
 data:
   anim_ctrl: {}
   animation:
-    ArmatureAction: /pkg/vaststars.resources/glb/turbine.glb|animations/ArmatureAction.ozz
+    ArmatureAction: /pkg/vaststars.resources/glb/turbine-1.glb|animations/ArmatureAction.ozz
   animation_birth: ArmatureAction
   name: animation
-  skeleton: /pkg/vaststars.resources/glb/turbine.glb|animations/skeleton.ozz
+  skeleton: /pkg/vaststars.resources/glb/turbine-1.glb|animations/skeleton.ozz
 policy:
   ant.animation|animation
   ant.general|name

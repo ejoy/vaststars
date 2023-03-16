@@ -18,8 +18,8 @@ local teardown_mb = mailbox:sub {"teardown"}
 local move_mb = mailbox:sub {"move"}
 local road_builder_mb = mailbox:sub {"road_builder"}
 local pipe_builder_mb = mailbox:sub {"pipe_builder"}
-local build_center_stop_build_mb = mailbox:sub {"build_center_stop_build"}
-local build_center_place_mb = mailbox:sub {"build_center_place"}
+local construction_center_stop_build_mb = mailbox:sub {"construction_center_stop_build"}
+local construction_center_place_mb = mailbox:sub {"construction_center_place"}
 
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local iobject = ecs.require "object"
@@ -63,7 +63,7 @@ local detail_rml = {
 }
 
 local function __get_detail_rml(typeobject)
-    if typeobject.build_center == true then
+    if typeobject.construction_center == true then
         return
     end
 
@@ -83,7 +83,7 @@ local function __show_detail(typeobject)
 end
 
 local function __show_set_recipe(typeobject)
-    if typeobject.build_center == true then
+    if typeobject.construction_center == true then
         return true
     end
 
@@ -129,22 +129,22 @@ function M:create(object_id, object_position, ui_x, ui_y)
         end
     end
 
-    local build_center_place, build_center_build, build_center_stop_build = false, false, false
-    local build_center_icon, build_center_count, build_center_ingredients
-    if typeobject.build_center == true then
+    local construction_center_place, construction_center_build, construction_center_stop_build = false, false, false
+    local construction_center_icon, construction_center_count, construction_center_ingredients
+    if typeobject.construction_center == true then
         if e.assembling.recipe == 0 then
-            build_center_icon = ""
-            build_center_count = 0
+            construction_center_icon = ""
+            construction_center_count = 0
         else
-            build_center_build, build_center_stop_build = true, true
+            construction_center_build, construction_center_stop_build = true, true
             local results
-            build_center_ingredients, results = assembling_common.get(gameplay_core.get_world(), e)
+            construction_center_ingredients, results = assembling_common.get(gameplay_core.get_world(), e)
             assert(results and results[1])
-            build_center_icon = results[1].icon
-            build_center_count = results[1].count
+            construction_center_icon = results[1].icon
+            construction_center_count = results[1].count
 
-            if build_center_count > 0 then
-                build_center_place = true
+            if construction_center_count > 0 then
+                construction_center_place = true
             end
         end
     end
@@ -155,12 +155,12 @@ function M:create(object_id, object_position, ui_x, ui_y)
         show_set_recipe = show_set_recipe,
         show_road_builder = typeobject.road_builder,
         show_pipe_builder = typeobject.pipe_builder,
-        build_center_icon = build_center_icon,
-        build_center_count = build_center_count,
-        build_center_ingredients = build_center_ingredients,
-        build_center_place = build_center_place,
-        build_center_build = build_center_build,
-        build_center_stop_build = build_center_stop_build,
+        construction_center_icon = construction_center_icon,
+        construction_center_count = construction_center_count,
+        construction_center_ingredients = construction_center_ingredients,
+        construction_center_place = construction_center_place,
+        construction_center_build = construction_center_build,
+        construction_center_stop_build = construction_center_stop_build,
         drone_depot_icon = "",
         drone_depot_count = 0,
         show_detail = show_detail,
@@ -172,34 +172,34 @@ function M:create(object_id, object_position, ui_x, ui_y)
     }
 end
 
-local function __build_center_update(datamodel, object_id)
+local function __construction_center_update(datamodel, object_id)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
         return
     end
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local build_center_icon, build_center_count, build_center_ingredients
-    if typeobject.build_center == true then
+    local construction_center_icon, construction_center_count, construction_center_ingredients
+    if typeobject.construction_center == true then
         if e.assembling.recipe == 0 then
-            build_center_icon = ""
-            build_center_count = 0
+            construction_center_icon = ""
+            construction_center_count = 0
         else
-            datamodel.build_center_build, datamodel.build_center_stop_build = true, true
+            datamodel.construction_center_build, datamodel.construction_center_stop_build = true, true
             local results
-            build_center_ingredients, results = assembling_common.get(gameplay_core.get_world(), e)
+            construction_center_ingredients, results = assembling_common.get(gameplay_core.get_world(), e)
             assert(results and results[1])
-            build_center_icon = results[1].icon
-            build_center_count = results[1].count
+            construction_center_icon = results[1].icon
+            construction_center_count = results[1].count
 
-            if build_center_count > 0 then
-                datamodel.build_center_place = true
+            if construction_center_count > 0 then
+                datamodel.construction_center_place = true
             end
         end
     end
-    datamodel.build_center_icon = build_center_icon
-    datamodel.build_center_count = build_center_count
-    datamodel.build_center_ingredients = build_center_ingredients
+    datamodel.construction_center_icon = construction_center_icon
+    datamodel.construction_center_count = construction_center_count
+    datamodel.construction_center_ingredients = construction_center_ingredients
 end
 
 local function __drone_depot_update(datamodel, object_id)
@@ -226,7 +226,7 @@ function M:update(datamodel, object_id, recipe_name)
         return
     end
     datamodel.recipe_name = recipe_name
-    __build_center_update(datamodel, object_id)
+    __construction_center_update(datamodel, object_id)
     __drone_depot_update(datamodel, object_id)
     return true
 end
@@ -238,7 +238,7 @@ function M:stage_ui_update(datamodel, object_id)
         assert(false)
     end
 
-    __build_center_update(datamodel, object_id)
+    __construction_center_update(datamodel, object_id)
     __drone_depot_update(datamodel, object_id)
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
@@ -299,7 +299,7 @@ function M:stage_ui_update(datamodel, object_id)
         iui.redirect("construct.rml", "pipe_builder", object_id)
     end
 
-    for _, _, _, object_id in build_center_stop_build_mb:unpack() do
+    for _, _, _, object_id in construction_center_stop_build_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         iworld.set_recipe(gameplay_core.get_world(), e, nil)
@@ -314,7 +314,7 @@ function M:stage_ui_update(datamodel, object_id)
         gameplay_core.build()
     end
 
-    for _ in build_center_place_mb:unpack() do
+    for _ in construction_center_place_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if e.assembling.recipe == 0 then
@@ -330,7 +330,7 @@ function M:stage_ui_update(datamodel, object_id)
         idetail.unselected()
         iui.close("build_function_pop.rml")
         iui.close("detail_panel.rml")
-        iui.redirect("construct.rml", "build_center_place", results[1].name)
+        iui.redirect("construct.rml", "construction_center_place", results[1].name)
         ::continue::
     end
 end

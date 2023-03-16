@@ -7,8 +7,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/electrolyzer.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/electrolyzer.glb|meshes/Plane.006_P1.meshbin
+  material: /pkg/vaststars.resources/glb/electrolyzer-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/electrolyzer-1.glb|meshes/Plane.006_P1.meshbin
   name: Plane.005
   scene:
     s: {0.153352290391922, 0.153352290391922, 0.153352290391922}

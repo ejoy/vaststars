@@ -33,7 +33,7 @@ local function update_world(world)
     local t = {}
     for e in world.ecs:select "assembling:in building:in chest:in eid:in" do
         local typeobject = iprototype.queryById(e.building.prototype)
-        if typeobject.build_center ~= true then
+        if typeobject.construction_center ~= true then
             goto continue
         end
 

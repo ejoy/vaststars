@@ -76,9 +76,9 @@
             local ui_sys = require "ui_system"
             local start = ui_sys.createDataMode("start", {
                 object_position = {},
-                build_center_icon = "",
-                build_center_count = 0,
-                build_center_ingredients = {},
+                construction_center_icon = "",
+                construction_center_count = 0,
+                construction_center_ingredients = {},
                 show_teardown = false,
                 show_move = false,
                 show_set_recipe = false,
@@ -213,40 +213,40 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.build_center_stop_build then
+                        if start.construction_center_stop_build then
                             local v = {}
                             v.text = "停止建造"
-                            v.message = "build_center_stop_build"
+                            v.message = "construction_center_stop_build"
                             v.background_image = "textures/construct/hammer-stop.texture"
                             v.number = -1
                             v.show_number = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.build_center_icon and start.build_center_icon ~= "" then
+                        if start.construction_center_icon and start.construction_center_icon ~= "" then
                             local v = {}
                             v.text = " "
                             v.message = ""
-                            v.background_image = start.build_center_icon
-                            v.number = start.build_center_count
-                            v.show_number = (start.build_center_count > 1)
+                            v.background_image = start.construction_center_icon
+                            v.number = start.construction_center_count
+                            v.show_number = (start.construction_center_count > 1)
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.build_center_build then
+                        if start.construction_center_build then
                             local v = {}
                             v.text = "开始建造"
-                            v.message = "build_center_build"
+                            v.message = "construction_center_build"
                             v.background_image = "textures/construct/hammer.texture"
                             v.number = -1
                             v.show_number = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.build_center_place then
+                        if start.construction_center_place then
                             local v = {}
                             v.text = "放置"
-                            v.message = "build_center_place"
+                            v.message = "construction_center_place"
                             v.background_image = "textures/factory/place-building.texture"
                             v.number = -1
                             v.show_number = false
@@ -272,7 +272,7 @@
                         end
                         start("buttons")
                     end,
-                    "show_teardown", "show_move", "show_set_recipe", "show_road_builder", "show_detail", "build_center_icon", "build_center_count", "drone_depot_icon"
+                    "show_teardown", "show_move", "show_set_recipe", "show_road_builder", "show_detail", "construction_center_icon", "construction_center_count", "drone_depot_icon"
                 }
             })
         </script>
@@ -288,7 +288,7 @@
             </div>
 
             <div class = "materials-block" style="position: absolute; top: 40.33vmin; height: 10vmin; width: 100%; justify-content: center; align-items: center;"> 
-                <div class = "materials" data-for = "build_center_ingredients">
+                <div class = "materials" data-for = "construction_center_ingredients">
                     <div class = "materials-item">
                         <div class = "materials-icon" data-style-background-image = "it.icon" />
                         <div style = "flex-grow: 1; flex-direction:row-reverse;">

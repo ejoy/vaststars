@@ -7,10 +7,10 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  meshskin: /pkg/vaststars.resources/glb/crusher.glb|meshes/Armature.skinbin
+  meshskin: /pkg/vaststars.resources/glb/crusher-1.glb|meshes/Armature.skinbin
   name: meshskin
   scene: {}
-  skeleton: /pkg/vaststars.resources/glb/crusher.glb|animations/skeleton.ozz
+  skeleton: /pkg/vaststars.resources/glb/crusher-1.glb|animations/skeleton.ozz
   skinning: true
 mount: 1
 policy:
@@ -19,8 +19,8 @@ policy:
   ant.scene|scene_object
 ---
 data:
-  material: /pkg/vaststars.resources/glb/crusher.glb|materials/Material.material
-  mesh: /pkg/vaststars.resources/glb/crusher.glb|meshes/Cube_P1.meshbin
+  material: /pkg/vaststars.resources/glb/crusher-1.glb|materials/Material.material
+  mesh: /pkg/vaststars.resources/glb/crusher-1.glb|meshes/Cube_P1.meshbin
   name: Cube
   scene: {}
   visible_state: main_view|selectable|cast_shadow

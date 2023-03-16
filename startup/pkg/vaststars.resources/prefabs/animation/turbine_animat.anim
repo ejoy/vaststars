@@ -3,7 +3,7 @@ type: ske
 duration: 0.6
 name: turbine_animat
 sample_ratio: 50
-skeleton: /pkg/vaststars.resources/glb/turbine.glb|animations/skeleton.ozz
+skeleton: /pkg/vaststars.resources/glb/turbine-1.glb|animations/skeleton.ozz
 target_anims:
   ---
   clips:
