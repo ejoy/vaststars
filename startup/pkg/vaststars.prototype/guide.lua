@@ -20,7 +20,7 @@ local guide = {
         name = "guide-2",
 		narrative = {
             {"作为助理AI，我建议你立刻开始工作..哔哩..你的剩余生存时间理论上只有{/g 348.26}地球小时..(担忧)", "textures/guide/guide-6.texture"},
-            {"哔哩..发现道路阻断..哔哩..建议{/g 修复道路}..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..发现可用{/g 无人机仓库}和{/g 废墟}..哔哩..引导无人机搬运有用物资..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
@@ -44,11 +44,11 @@ local guide = {
             -- pop_chapter = {"第一阶段","物流网络"},
             guide_progress = 10,
             task = {
-                "放置物流中心",
+                "建造采矿机",
             }
         },
         prerequisites = {
-            "放置道路建造站",
+            "操作仓库",
         },
 	},
 
@@ -76,7 +76,7 @@ local guide = {
         narrative_end = {
             guide_progress = 10,
             task = {
-                "放置科研中心",
+                "放置采矿机",
             }
         },
         prerequisites = {
@@ -146,7 +146,6 @@ local guide = {
         narrative_end = {
             guide_progress = 20,
             task = {
-                "放置采矿机",
             }
         },
         prerequisites = {

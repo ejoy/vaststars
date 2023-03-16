@@ -62,24 +62,6 @@ local prototype = gameplay.register.prototype
   --   },
   -- }
 
-  -- prototype "放置采矿机" {
-  --   desc = "放置2台采矿机",
-  --   icon = "textures/construct/industry.texture",
-  --   type = { "tech", "task" },
-  --   task = {"select_entity", 0, "采矿机I"},
-  --   prerequisites = {"建造采矿机"},
-  --   effects = {
-  --      unlock_recipe = {"电线杆打印"},
-  --   },
-  --   count = 1,
-  --   tips_pic = {
-  --     "textures/task_tips_pic/task_place_logistics.texture",
-  --   },
-  --   sign_desc = {
-  --     { desc = "在石矿上放置2个采矿机", icon = "textures/construct/industry.texture"},
-  --   },
-  -- }
-
   -- prototype "建造电线杆" {
   --   desc = "建造4个电线杆",
   --   icon = "textures/construct/industry.texture",
@@ -691,6 +673,39 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "建造采矿机" {
+    desc = "",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"stat_consumption", 0, "采矿机设计图"},
+    prerequisites = {"操作仓库"},
+    count = 2,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "使用建造中心建造2个采矿机", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "放置采矿机" {
+    desc = "放置2台采矿机",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "采矿机I"},
+    prerequisites = {"建造采矿机"},
+    effects = {
+       unlock_recipe = {"电线杆打印"},
+    },
+    count = 2,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "在石矿上放置2个采矿机", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "放置道路建造站" {
     desc = "放置1座道路建造站",
     icon = "textures/construct/industry.texture",
@@ -832,26 +847,6 @@ prototype "地质研究" {
 --     { desc = "在物流中心需求运输车辆至5辆", icon = "textures/construct/industry.texture"},
 --   },
 -- }
-
-
-
-prototype "放置采矿机" {
-  desc = "矿区里放置采矿机",
-  icon = "textures/construct/industry.texture",
-  type = { "tech", "task" },
-  task = {"select_entity", 0, "采矿机I"},
-  prerequisites = {"地质研究"},
-  count = 2,
-  tips_pic = {
-    "textures/task_tips_pic/task_click_build.texture",
-    "textures/task_tips_pic/task_produce_ore1.texture",
-    "textures/task_tips_pic/task_produce_ore2.texture",
-    "textures/task_tips_pic/start_construct.texture",
-  },
-  sign_desc = {
-    { desc = "使用“建造”在铁矿和石矿区域放置2台采矿机", icon = "textures/construct/industry.texture"},
-  },
-}
 
 prototype "生产铁矿石" {
   desc = "挖掘足够的铁矿石可以开始进行锻造",
