@@ -758,18 +758,18 @@ prototype "建造电线杆" {
   }
 
     prototype "放置无人机仓库" {
-    desc = "放置2个无人机仓库",
+    desc = "放置3个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "无人机仓库"},
     prerequisites = {"建造无人机仓库"},
-    count = 2,
+    count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_place_pole1.texture",
       "textures/task_tips_pic/task_place_pole2.texture",
     },
     sign_desc = {
-      { desc = "放置2个无人机仓库", icon = "textures/construct/industry.texture"},
+      { desc = "放置3个无人机仓库", icon = "textures/construct/industry.texture"},
     },
   }
 
