@@ -197,7 +197,8 @@ local function update_world(gameworld)
                 end
 
                 local typeobject = iprototype.queryById(chest.item)
-                -- local w, h, d = typeobject.pile:match("(%d+)x(%d+)x(%d+)")
+                local dw, dh, dd = typeobject.pile:match("(%d+)x(%d+)x(%d+)")
+                local dim = {dw, dh, dd}
                 pile_id = pile_id + 1
                 local pile_name = "pile" .. pile_id
                 local pos_offset = {-1, 5, 4} -- read from drone depot prefab file
@@ -205,7 +206,7 @@ local function update_world(gameworld)
                     drones = {},
                     pile_name = pile_name,
                     pile_num = chest.amount,
-                    pile_eid = create_heap_items(pile_name, "/pkg/vaststars.resources/"..typeobject.pile_model.."|meshes/Cube_P1.meshbin", {s = 1, t = {pos[1] + pos_offset[1], pos[2] + pos_offset[2], pos[3] + pos_offset[3]}}, 4, chest.amount),
+                    pile_eid = create_heap_items(pile_name, "/pkg/vaststars.resources/"..typeobject.pile_model.."|meshes/Cube_P1.meshbin", {s = 1, t = {pos[1] + pos_offset[1], pos[2] + pos_offset[2], pos[3] + pos_offset[3]}}, dim, chest.amount),
                     update_heap = function (self, num)
                         self.pile_num = self.pile_num + num
                         iheapmesh.update_heap_mesh_number(self.pile_num, self.pile_name)
