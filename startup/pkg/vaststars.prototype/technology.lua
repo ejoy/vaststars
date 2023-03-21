@@ -811,7 +811,7 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_production", 0, "碎石"},
     prerequisites = {"放置无人机仓库"},
-    count = 6,
+    count = 12,
     effects = {
        unlock_recipe = {"科研中心打印"},
     },
@@ -819,7 +819,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "在碎石矿上放置挖矿机并挖掘6个碎石矿", icon = "textures/construct/industry.texture"},
+      { desc = "在碎石矿上放置挖矿机并挖掘12个碎石矿", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -868,7 +868,22 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在“建造中心”建造2个组装机", icon = "textures/construct/industry.texture"},
+      { desc = "在“建造中心”建造2台组装机", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "放置组装机" {
+    desc = "放置组装机",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "组装机I"},
+    prerequisites = {"建造组装机"},
+    count = 2,
+    tips_pic = {
+      "textures/task_tips_pic/task_click_build.texture",
+    },
+    sign_desc = {
+      { desc = "放置2台组装机", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -877,7 +892,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "地质科技包"},
-    prerequisites = {"建造组装机"},
+    prerequisites = {"放置组装机"},
     count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_produce_geopack3.texture",

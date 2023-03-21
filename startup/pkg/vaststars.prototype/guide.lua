@@ -70,7 +70,7 @@ local guide = {
         name = "guide-4",
 		narrative = {
             {"哔哩..采矿机顺利建造完毕..石矿采集技术可行性为{/g 99.983%}..哔哩..(期待)", "textures/guide/guide-2.texture"},
-            {"哔哩..请将采矿机放置在石矿位置，开始采集石矿..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..请将采矿机放置在{/g 石矿}上方后，我们就可以采集石矿了..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -87,7 +87,7 @@ local guide = {
     {
         name = "guide-5",
 		narrative = {
-            {"哔哩..目前采矿机处于断电状态，无法正常工作..哔哩..哔哗..(失望)", "textures/guide/guide-6.texture"},
+            {"哔哩..目前采矿机处于{/r 断电状态}，无法正常工作..哔哩..哔哗..(失望)", "textures/guide/guide-6.texture"},
             {"哔哩..发现可用的{/g 电线杆设计图}，我们用无人机把它送往建造中心。", "textures/guide/guide-6.texture"}, 
         },
         narrative_end = {
@@ -139,7 +139,7 @@ local guide = {
     {
         name = "guide-8",
 		narrative = {
-            {"哔哩..采矿机顺利工作了，储藏石矿需要新的{/g 无人机仓库}，请将{/g 无人机仓库设计图}送往建造中心..哔哩(期待)", "textures/guide/guide-3.texture"},
+            {"哔哩..采矿机顺利工作了，储藏石矿需要新的无人机仓库，请将{/g 无人机仓库设计图}送往建造中心..哔哩(期待)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -240,7 +240,7 @@ local guide = {
     {
         name = "guide-13",
 		narrative = {
-            {"{/g 组装机}可使用3D打印技术制造地质科技包..哔哩..哔哗..请求建造{/g 组装机}..(兴奋)", "textures/guide/guide-3.texture"},
+            {"我们需要仔细研究蕴藏在这个星球的地质特征..让我们采集一些{/g 地质科技包}吧(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             pop_chapter = {"第一章","自动生产"},
