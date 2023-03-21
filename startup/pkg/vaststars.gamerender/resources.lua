@@ -995,7 +995,7 @@ local t = {
 	"/pkg/vaststars.resources/prefabs/chemical-plant-1.prefab",
 	"/pkg/vaststars.resources/prefabs/chemical-plant-1.prefab.patch",
 	"/pkg/vaststars.resources/prefabs/chimney-1.prefab",
-	"/pkg/vaststars.resources/prefabs/chimney-1.prefab.path",
+	"/pkg/vaststars.resources/prefabs/chimney-1.prefab.patch",
 	"/pkg/vaststars.resources/prefabs/construction-center.prefab",
 	"/pkg/vaststars.resources/prefabs/construction-center.prefab.patch",
 	"/pkg/vaststars.resources/prefabs/crusher-1.prefab",
