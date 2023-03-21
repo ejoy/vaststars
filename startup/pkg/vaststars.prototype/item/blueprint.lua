@@ -198,7 +198,7 @@ prototype "电线杆设计图" {
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-electric-pole1.texture",
     group = {"加工"},
-    item_description = "用于建造特制电线杆的设计图",
+    item_description = "用于建造铁制电线杆的设计图",
 }
 
 prototype "无人机仓库设计图" {

@@ -725,12 +725,12 @@ local prototype = gameplay.register.prototype
   }
 
 prototype "建造电线杆" {
-    desc = "建造3个电线杆",
+    desc = "建造4个电线杆",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "电线杆设计图"},
     prerequisites = {"仓库调度2"},
-    count = 3,
+    count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -740,12 +740,12 @@ prototype "建造电线杆" {
   }
 
   prototype "放置电线杆" {
-    desc = "放置3个铁制电线杆",
+    desc = "放置4个铁制电线杆",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "铁制电线杆"},
     prerequisites = {"建造电线杆"},
-    count = 3,
+    count = 4,
     effects = {
        unlock_recipe = {"无人机仓库打印"},
     },
