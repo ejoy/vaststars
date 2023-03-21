@@ -54,6 +54,12 @@
                 justify-content: flex-start;
                 align-items: center;
             }
+            .icon-background {
+                width: 15vmin;
+                height: 15vmin;
+                background-color: yellow;
+                transform: rotate(45deg);
+            }
             .materials-icon {
                 margin-left: 0.5em;
                 width: 4.67vmin;
@@ -162,6 +168,7 @@
                             v.background_image = "textures/factory/demolition.texture"
                             v.number = -1
                             v.show_number = false
+                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -172,6 +179,7 @@
                             v.background_image = "textures/factory/move.texture"
                             v.number = -1
                             v.show_number = false
+                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -182,6 +190,7 @@
                             v.background_image = "textures/assemble/wheel.texture"
                             v.number = -1
                             v.show_number = false
+                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -192,6 +201,7 @@
                             v.background_image = "textures/assemble/wheel.texture"
                             v.number = -1
                             v.show_number = false
+                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -202,6 +212,7 @@
                             v.background_image = "textures/common/road-connect.texture"
                             v.number = -1
                             v.show_number = false
+                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -212,6 +223,7 @@
                             v.background_image = "textures/common/pipe-connect.texture"
                             v.number = -1
                             v.show_number = false
+                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -222,6 +234,7 @@
                             v.background_image = "textures/factory/seacher.texture"
                             v.number = -1
                             v.show_number = false
+                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -232,6 +245,7 @@
                             v.background_image = "textures/construct/hammer-stop.texture"
                             v.number = -1
                             v.show_number = false
+                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -242,6 +256,7 @@
                             v.background_image = start.construction_center_icon
                             v.number = start.construction_center_multiple
                             v.show_number = true
+                            v.show_icon_background = true
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -252,6 +267,7 @@
                             v.background_image = "textures/construct/hammer.texture"
                             v.number = -1
                             v.show_number = false
+                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -262,6 +278,7 @@
                             v.background_image = "textures/factory/place-building.texture"
                             v.number = start.construction_center_count
                             v.show_number = start.construction_center_count > 0
+                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -272,6 +289,7 @@
                             v.background_image = start.drone_depot_icon
                             v.number = start.drone_depot_count
                             v.show_number = true
+                            v.show_icon_background = true
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -294,6 +312,7 @@
     <body style = "pointer-events: none;">
         <div class="info-panel" style="position: relative; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top">
             <div class="button-fuction-block" style="position: absolute;" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message)" data-for = "it : buttons">
+                <div class = "icon-background" style="position: absolute;" data-if = "it.show_icon_background" />
                 <button class="button-function" data-style-background-image = "it.background_image" />
                 <div class="title-text">{{it.text}}</div>
                 <div class = "menu-button-pic" data-if = "it.show_number" style='width:4.26vmin; height:4.26vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
