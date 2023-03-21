@@ -1633,6 +1633,5 @@ local t = {
 	"/pkg/vaststars.version/package.lua",
 	"/pkg/vaststars.version/version.lua",
 	"/pkg/vaststars.resources/glb/animation/Interact_build.glb|animation.prefab"
-
 }
 return t
