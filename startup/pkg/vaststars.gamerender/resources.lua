@@ -955,6 +955,7 @@ local t = {
 	"/pkg/vaststars.resources/glb/materials/Material.material",
 	"/pkg/vaststars.resources/glb/textures/goods-station-output.texture",
 	"/pkg/vaststars.resources/light.prefab",
+	"/pkg/vaststars.resources/light2.prefab",
 	"/pkg/vaststars.resources/materials/dotted_line.material",
 	"/pkg/vaststars.resources/materials/fluid_icon_bg.material",
 	"/pkg/vaststars.resources/materials/fluid_icon_canvas.material",
