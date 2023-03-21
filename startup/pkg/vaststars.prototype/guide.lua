@@ -206,8 +206,7 @@ local guide = {
     {
         name = "guide-12",
 		narrative = {
-            {"采集P4031地质样本制造{/g 科技包}..哔哩..我们就能更好地研究星球地质结构。", "textures/guide/guide-2.texture"},
-            {"P4031蕴含丰富的矿藏..哔哩..先用{/g 采矿机}挖掘铁矿和石矿资源..开工开工..(兴奋)", "textures/guide/guide-3.texture"},
+            {"我们需要对这个星球进行全面的科学考察，让我们建造并放置一座{/g 科研中心}..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -240,7 +239,7 @@ local guide = {
     {
         name = "guide-13",
 		narrative = {
-            {"我们需要仔细研究这个陌生星球的地质特征..让我们采集一些{/g 地质科技包}吧(兴奋)", "textures/guide/guide-3.texture"},
+            {"科研中心需要一些样本才可以开展深入研究..让我们采集一些{/g 地质科技包}吧(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             pop_chapter = {"第一章","自动生产"},
