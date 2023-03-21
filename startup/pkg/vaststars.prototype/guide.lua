@@ -25,7 +25,7 @@ local guide = {
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
             task = {
-                "管理仓库",
+                "管理仓库1",
             },
             guide_progress = 10,
         },
@@ -46,7 +46,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "管理仓库",
+            "管理仓库1",
         },
 	},
 
@@ -93,7 +93,7 @@ local guide = {
         narrative_end = {
             guide_progress = 10,
             task = {
-                "建造电线杆",
+                "管理仓库2",
             }
         },
         prerequisites = {
@@ -128,7 +128,7 @@ local guide = {
         narrative_end = {
             guide_progress = 10,
             task = {
-                "建造无人机仓库",
+                "管理仓库3",
             }
         },
         prerequisites = {

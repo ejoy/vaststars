@@ -1887,12 +1887,12 @@ prototype "地质科技包1" {
     recipe_order =  80,
     recipe_icon =  "textures/recipe/geology-pack.texture",
     ingredients = {
-        {"碎石", 2},
+        {"碎石", 3},
     },
     results = {
         {"地质科技包", 1},
     },
-    time = "10s",
+    time = "6s",
     description = "地质材料制造地质科技包",
 }
 

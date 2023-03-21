@@ -659,8 +659,8 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "管理仓库" {
-    desc = "选择采矿机蓝图",
+  prototype "管理仓库1" {
+    desc = "选择采矿机设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"unknown", 0, 5},
@@ -671,7 +671,7 @@ local prototype = gameplay.register.prototype
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "选择采矿机设计图", icon = "textures/construct/industry.texture"},
+      { desc = "无人机仓库中选择采矿机设计图", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -680,7 +680,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "采矿机设计图"},
-    prerequisites = {"管理仓库"},
+    prerequisites = {"管理仓库1"},
     count = 2,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -708,12 +708,28 @@ local prototype = gameplay.register.prototype
     },
   }
 
+  prototype "管理仓库2" {
+    desc = "选择电线杆设计图",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 5},
+    task_params = {item = "电线杆设计图"},
+    prerequisites = {"放置采矿机"},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "无人机仓库中选择电线杆设计图", icon = "textures/construct/industry.texture"},
+    },
+  }
+
 prototype "建造电线杆" {
     desc = "建造3个电线杆",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "电线杆设计图"},
-    prerequisites = {"放置采矿机"},
+    prerequisites = {"管理仓库2"},
     count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -742,12 +758,28 @@ prototype "建造电线杆" {
     },
   }
 
+  prototype "管理仓库3" {
+    desc = "选择无人机仓库设计图",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 5},
+    task_params = {item = "无人机仓库设计图"},
+    prerequisites = {"放置电线杆"},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "无人机仓库中选择无人机仓库设计图", icon = "textures/construct/industry.texture"},
+    },
+  }
+
     prototype "建造无人机仓库" {
     desc = "建造2个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "无人机仓库设计图"},
-    prerequisites = {"放置电线杆"},
+    prerequisites = {"管理仓库3"},
     count = 2,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -867,7 +899,7 @@ prototype "建造电线杆" {
     },
     prerequisites = {"自动化生产"},
     ingredients = {
-        {"地质科技包", 2},
+        {"地质科技包", 1},
     },
     count = 4,
     time = "1s"
@@ -897,9 +929,9 @@ prototype "建造电线杆" {
     },
     prerequisites = {"生产石砖"},
     ingredients = {
-        {"地质科技包", 4},
+        {"地质科技包", 1},
     },
-    count = 4,
+    count = 6,
     time = "1s"
   }
 
