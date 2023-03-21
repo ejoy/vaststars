@@ -25,7 +25,7 @@ local guide = {
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
             task = {
-                "管理仓库1",
+                "仓库调度1",
             },
             guide_progress = 10,
         },
@@ -46,7 +46,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "管理仓库1",
+            "仓库调度1",
         },
 	},
 
@@ -70,7 +70,7 @@ local guide = {
         name = "guide-4",
 		narrative = {
             {"哔哩..采矿机顺利建造完毕..石矿采集技术可行性为{/g 99.983%}..哔哩..(期待)", "textures/guide/guide-2.texture"},
-            {"哔哩..请将采矿机放置在{/g 石矿}上方后，我们就可以采集石矿了..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..请将采矿机放置在{/g 石矿}上方后，我们就可以采集矿物了..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -93,7 +93,7 @@ local guide = {
         narrative_end = {
             guide_progress = 10,
             task = {
-                "管理仓库2",
+                "仓库调度2",
             }
         },
         prerequisites = {
@@ -113,7 +113,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "管理仓库2",
+            "仓库调度2",
         },
 	},
 
@@ -144,7 +144,7 @@ local guide = {
         narrative_end = {
             guide_progress = 10,
             task = {
-                "管理仓库3",
+                "仓库调度3",
             }
         },
         prerequisites = {
@@ -165,14 +165,14 @@ local guide = {
             }
         },
         prerequisites = {
-            "管理仓库3",
+            "仓库调度3",
         },
 	},
 
     {
         name = "guide-10",
 		narrative = {
-            {"哔哩..将新建的无人机仓库放置在石矿采矿机旁边，这样我们就可以等会采集矿石了....(轻松)", "textures/guide/guide-1.texture"},
+            {"哔哩..将新建的无人机仓库放置在{/g 石矿采矿机}旁边，无人机就可以运输矿石了....(轻松)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -240,7 +240,7 @@ local guide = {
     {
         name = "guide-13",
 		narrative = {
-            {"我们需要仔细研究蕴藏在这个星球的地质特征..让我们采集一些{/g 地质科技包}吧(兴奋)", "textures/guide/guide-3.texture"},
+            {"我们需要仔细研究这个陌生星球的地质特征..让我们采集一些{/g 地质科技包}吧(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             pop_chapter = {"第一章","自动生产"},
