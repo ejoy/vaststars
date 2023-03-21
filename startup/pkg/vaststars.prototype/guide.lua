@@ -235,6 +235,7 @@ local guide = {
             }
         },
         prerequisites = {
+            "生产铁矿石",
         },
 	},
 
