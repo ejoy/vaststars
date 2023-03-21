@@ -70,12 +70,12 @@ function M:stage_ui_update(datamodel, object_id)
         return
     end
 
-    -- local gid = iUiRt.get_group_id(rt_name)
-    -- if gid and not rt_exist then
-    --     rt_exist = true
-    --     local focus_entity_scale = {0.1, 0.1, 0.1}
-    --     iUiRt.create_new_rt(rt_name, rt_model_path, "vaststars", focus_entity_scale)
-    -- end
+    local gid = iUiRt.get_group_id(rt_name)
+    if gid and not rt_exist then
+        rt_exist = true
+        local focus_entity_scale = {0.1, 0.1, 0.1}
+        iUiRt.create_new_rt(rt_name, rt_model_path, "vaststars", focus_entity_scale)
+    end
 
     local ingredients_count, results_count, progress, total_progress = assembling_common.get(gameplay_core.get_world(), e)
     datamodel.recipe_ingredients_count = ingredients_count
@@ -87,12 +87,12 @@ function M:stage_ui_update(datamodel, object_id)
         datamodel.progress = itypes.progress_str(progress, total_progress)
     end
 
-    -- for _, _, _ in close_assembleui_mb:unpack() do
-    --     if rt_exist then
-    --         iUiRt.close_ui_rt(rt_name)
-    --         rt_exist = false
-    --     end
-    -- end
+    for _, _, _ in close_assembleui_mb:unpack() do
+        if rt_exist then
+            iUiRt.close_ui_rt(rt_name)
+            rt_exist = false
+        end
+    end
 end
 
 function M:update(datamodel, object_id)
