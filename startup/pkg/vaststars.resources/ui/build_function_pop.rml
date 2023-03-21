@@ -275,12 +275,14 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        local pos = assert(positions[#start.buttons], #start.buttons)
-                        for i = 1, #start.buttons do
-                            local v = start.buttons[i]
-                            v.left = pos[i].left
-                            v.top = pos[i].top
-                            start.buttons[#start.buttons + 1] = v
+                        if #start.buttons > 0 then
+                            local pos = assert(positions[#start.buttons], #start.buttons)
+                            for i = 1, #start.buttons do
+                                local v = start.buttons[i]
+                                v.left = pos[i].left
+                                v.top = pos[i].top
+                                start.buttons[#start.buttons + 1] = v
+                            end
                         end
                         start("buttons")
                     end,
