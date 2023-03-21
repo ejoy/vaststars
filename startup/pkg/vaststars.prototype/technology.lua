@@ -659,7 +659,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "管理仓库1" {
+  prototype "仓库调度1" {
     desc = "选择采矿机设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -680,7 +680,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "采矿机设计图"},
-    prerequisites = {"管理仓库1"},
+    prerequisites = {"仓库调度1"},
     count = 2,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -708,7 +708,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "管理仓库2" {
+  prototype "仓库调度2" {
     desc = "选择电线杆设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -729,7 +729,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "电线杆设计图"},
-    prerequisites = {"管理仓库2"},
+    prerequisites = {"仓库调度2"},
     count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -758,7 +758,7 @@ prototype "建造电线杆" {
     },
   }
 
-  prototype "管理仓库3" {
+  prototype "仓库调度3" {
     desc = "选择无人机仓库设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -779,7 +779,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "无人机仓库设计图"},
-    prerequisites = {"管理仓库3"},
+    prerequisites = {"仓库调度3"},
     count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -878,12 +878,12 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"select_entity", 0, "组装机I"},
     prerequisites = {"建造组装机"},
-    count = 2,
+    count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
     },
     sign_desc = {
-      { desc = "放置2台组装机", icon = "textures/construct/industry.texture"},
+      { desc = "放置3台组装机", icon = "textures/construct/industry.texture"},
     },
   }
 
