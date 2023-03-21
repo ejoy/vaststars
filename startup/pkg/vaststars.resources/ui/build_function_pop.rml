@@ -227,7 +227,7 @@
 
                         if start.construction_center_stop_build then
                             local v = {}
-                            v.text = "停止建造"
+                            v.text = "建造取消"
                             v.message = "construction_center_stop_build"
                             v.background_image = "textures/construct/hammer-stop.texture"
                             v.number = -1
@@ -247,7 +247,7 @@
 
                         if start.construction_center_build then
                             local v = {}
-                            v.text = "开始建造"
+                            v.text = "建造增加"
                             v.message = "construction_center_build"
                             v.background_image = "textures/construct/hammer.texture"
                             v.number = -1
