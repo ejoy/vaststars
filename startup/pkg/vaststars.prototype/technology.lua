@@ -780,28 +780,28 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "无人机仓库设计图"},
     prerequisites = {"管理仓库3"},
-    count = 2,
+    count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在“建造中心”建造2个无人机仓库", icon = "textures/construct/industry.texture"},
+      { desc = "在“建造中心”建造3个无人机仓库", icon = "textures/construct/industry.texture"},
     },
   }
 
     prototype "放置无人机仓库" {
-    desc = "放置3个无人机仓库",
+    desc = "放置4个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "无人机仓库"},
     prerequisites = {"建造无人机仓库"},
-    count = 3,
+    count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_place_pole1.texture",
       "textures/task_tips_pic/task_place_pole2.texture",
     },
     sign_desc = {
-      { desc = "放置3个无人机仓库", icon = "textures/construct/industry.texture"},
+      { desc = "放置4个无人机仓库", icon = "textures/construct/industry.texture"},
     },
   }
 
