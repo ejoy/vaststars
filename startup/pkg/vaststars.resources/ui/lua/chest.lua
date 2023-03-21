@@ -51,6 +51,7 @@ local function update_category(category)
 end
 
 function start.clickClose(event)
+    ui_sys.pub {"close_chestui"}
     ui_sys.close()
 end
 

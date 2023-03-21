@@ -13,7 +13,7 @@ local itypes = require "gameplay.interface.types"
 local objects = require "objects"
 local irecipe = require "gameplay.interface.recipe"
 local click_item_mb = mailbox:sub {"click_item"}
-
+local close_chestui_mb = mailbox:sub {"close_chestui"}
 local mt = {}
 function mt:__index(k)
     self[k] = {}
@@ -133,18 +133,14 @@ end
 
 ---------------
 local M = {}
-local current_model
-local model_path
+local rt_model_path-- = "/pkg/vaststars.resources/glb/drone.glb|mesh.prefab"
+local rt_exist = false
+local rt_name = "chest_model"
 function M:create(object_id)
     local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName(object.prototype_name)
-    model_path = typeobject.model
-    if current_model then
-        for _, eid in ipairs(current_model.tag["*"]) do
-            w:remove(eid)
-        end
-        current_model = nil
-    end
+    local filename = typeobject.model:match("^.+/(.+).prefab$")
+    rt_model_path = "/pkg/vaststars.resources/glb/"..filename..".glb|mesh.prefab"
     return {
         object_id = object_id, -- for update
         prototype_name = iprototype.show_prototype_name(typeobject),
@@ -154,37 +150,14 @@ function M:create(object_id)
         max_slot_count = typeobject.slots,
     }
 end
-local queuename = "chest_model_queue"
-local gid
-local inited = false
-function M:stage_ui_update(datamodel)
-    local rt_name = "chest_model"
-    gid = iUiRt.get_group_id(rt_name)
-    if gid and not inited then
-        inited = true
-        local focus_path = "/pkg/vaststars.resources/glb/drone.glb|mesh.prefab"
-        local light_path = "/pkg/vaststars.resources/light_rt.prefab"
-        local plane_path_type = "vaststars"
-        local focus_entity_scale = {0.1, 0.1, 0.1}
-        iUiRt.create_new_rt(rt_name, focus_path, plane_path_type, light_path, focus_entity_scale)
-    end
-    -- if gid and model_path and not current_model then
-    --     local g = ecs.group(gid)
-    --     --TODO: test model
-    --     current_model = g:create_instance("/pkg/vaststars.resources/"..model_path)--g:create_instance("/pkg/vaststars.resources/prefabs/drone.prefab")--
-    --     current_model.on_ready = function (e)
-    --         for _, eid in ipairs(e.tag['*']) do
-    --             local ee <close> = w:entity(eid, "visible_state?in")
-    --             if ee.visible_state then
-    --                 ivs.set_state(ee, "main_view|selectable|cast_shadow", false)
-    --                 ivs.set_state(ee, queuename, true)
-    --                 -- iom.set_position(ee, math3d.vector(0, 0, 0))
-    --             end
-    --         end
-    --     end
-    --     world:create_object(current_model)
-    -- end
 
+function M:stage_ui_update(datamodel)
+    local gid = iUiRt.get_group_id(rt_name)
+    if gid and not rt_exist then
+        rt_exist = true
+        local focus_entity_scale = {0.1, 0.1, 0.1}
+        iUiRt.create_new_rt(rt_name, rt_model_path, "vaststars", focus_entity_scale)
+    end
     for _, _, _, prototype in click_item_mb:unpack() do
         local typeobject = iprototype.queryById(prototype)
         datamodel.show_item_info = true
@@ -196,6 +169,13 @@ function M:stage_ui_update(datamodel)
 
     update(datamodel, datamodel.object_id) -- TODO
     self:flush()
+
+    for _, _, _ in close_chestui_mb:unpack() do
+        if rt_exist then
+            iUiRt.close_ui_rt(rt_name)
+            rt_exist = false
+        end
+    end
 end
 
 function M:update(datamodel)

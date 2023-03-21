@@ -39,6 +39,7 @@ function start.ClickBack(event)
 end
 
 function start.clickClose(event)
+    ui_sys.pub {"close_assembleui"}
     ui_sys.close()
 end
 

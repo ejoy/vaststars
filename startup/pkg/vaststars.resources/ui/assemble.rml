@@ -19,7 +19,7 @@
                 <div style="border-bottom: 1px rgb(89, 73, 39);"/>
                 <div class="column" data-if="mode == 'init'" style="width: 100%;height: 95%;">
                     <!-- 左上方建筑信息 begin -->
-                    <div class="build-info-reigon" data-style-background-image="background" style='background-size: cover;'>
+                    <div class="build-info-reigon" style='background-image:"<assemble_model>";background-size: cover;'>
                         <!-- 左边显示信息 -->
                         <div class ="info-block" data-if = "false">
                                 <div class="row">
