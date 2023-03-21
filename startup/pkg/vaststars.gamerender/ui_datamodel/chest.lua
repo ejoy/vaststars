@@ -158,67 +158,15 @@ local queuename = "chest_model_queue"
 local gid
 local inited = false
 function M:stage_ui_update(datamodel)
-    gid = iUiRt.get_group_id("chest_model")
+    local rt_name = "chest_model"
+    gid = iUiRt.get_group_id(rt_name)
     if gid and not inited then
         inited = true
-        
-        local g = ecs.group(gid)
-        local light = g:create_instance("/pkg/vaststars.resources/light2.prefab")
-        light.on_ready = function (inst)
-            local alleid = inst.tag['*']
-            for _, eid in ipairs(alleid) do
-                local ee <close> = w:entity(eid, "visible_state?in")
-                if ee.visible_state then
-                    ivs.set_state(ee, "main_view|selectable|cast_shadow", false)
-                    ivs.set_state(ee, queuename, true)
-                end
-            end
-        end
-        world:create_object(light)
-
-        g:enable "view_visible"
-        g:enable "scene_update"
-    
-    
-        local ground = g:create_instance("/pkg/vaststars.resources/glb/plane.glb|mesh.prefab")
-        ground.on_ready = function (inst)
-            local alleid = inst.tag['*']
-            local re <close> = w:entity(alleid[1])
-            iom.set_scale(re, math3d.vector(10, 1, 10))
-            for _, eid in ipairs(alleid) do
-                local ee <close> = w:entity(eid, "visible_state?in name:in")
-                ee.name = "ground"
-                if ee.visible_state then
-                    ivs.set_state(ee, "main_view|selectable|cast_shadow", false)
-                    ivs.set_state(ee, queuename, true)
-                end
-            end
-        end
-        world:create_object(ground)  
-
-        local test = g:create_instance("/pkg/vaststars.resources/glb/chimney-1.glb|mesh.prefab")--g:create_instance("/pkg/vaststars.resources/"..model_path)--
-        test.on_ready = function (inst)
-            local alleid = inst.tag['*']
-            local re <close> = w:entity(alleid[1])
-            iom.set_scale(re, math3d.vector(0.1, 0.1, 0.1))
-            iom.set_position(re, math3d.vector(0, 0, 0))
-            for _, eid in ipairs(alleid) do
-                local ee <close> = w:entity(eid, "visible_state?in")
-                if ee.visible_state then
-                    ivs.set_state(ee, "main_view|selectable|cast_shadow", false)
-                    ivs.set_state(ee, queuename, true)
-                end
-            end 
-        end       
-        world:create_object(test)
-
-        -- 一个ui_rt最少需要创建一个灯光和一个平面作为背景，被观察的glb目前有且仅有只有一个。
-        --当前chset.lua在创建灯光、平面、被观察的glb以后，还需要两个步骤:
-        -- 1. 仿照test/rmlui_rt的end_frame编写镜头调节函数，并将rt1改成对应的render target的名字。该函数每帧都会将相机摆在合适的位置。
-        -- 2. 当从ui退出回到主场景之前，ui_rt中的light应该被关闭。
-
-
-        --]]
+        local focus_path = "/pkg/vaststars.resources/glb/drone.glb|mesh.prefab"
+        local light_path = "/pkg/vaststars.resources/light_rt.prefab"
+        local plane_path_type = "vaststars"
+        local focus_entity_scale = {0.1, 0.1, 0.1}
+        iUiRt.create_new_rt(rt_name, focus_path, plane_path_type, light_path, focus_entity_scale)
     end
     -- if gid and model_path and not current_model then
     --     local g = ecs.group(gid)
