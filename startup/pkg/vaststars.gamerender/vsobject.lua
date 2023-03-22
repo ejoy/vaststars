@@ -52,7 +52,7 @@ local function animation_name_update(self, animation_name, animation_loop)
 end
 
 local function has_animation(self, animation_name)
-    self.game_object:has_animation(animation_name)
+    return self.game_object:has_animation(animation_name)
 end
 
 local function attach(self, slot_name, model, ...)

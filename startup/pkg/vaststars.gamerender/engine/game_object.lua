@@ -153,16 +153,17 @@ local _get_hitch_children ; do
         prefab.on_ready = function(prefab)
             for _, eid in ipairs(prefab.tag["*"]) do
                 local e <close> = w:entity(eid, "tag?in animation?in")
-                if animation_name and e.animation and e.animation[animation_name] then
-                    iani.play(eid, {name = animation_name, loop = animation_loop, manual = false})
-                end
-
                 if e.tag then
                     for _, tag in ipairs(e.tag) do
                         inner.tags[tag] = inner.tags[tag] or {}
                         table.insert(inner.tags[tag], eid)
                     end
                 end
+            end
+
+            if animation_name and animations[animation_name] then
+                log.info(("animation_name: %s animation_loop: %s"):format(animation_name, animation_loop))
+                iani.play(prefab, {name = animation_name, loop = animation_loop, speed = 1.0, manual = false, forwards = true})
             end
         end
         prefab.on_message = function(prefab, ...)

@@ -59,14 +59,17 @@ do
 
         local block_color
         local typeobject = iprototype.queryByName(object.prototype_name)
+        local w, h
         if typeobject.power_supply_area then
             block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_GREEN
+            w, h = typeobject.power_supply_area:match("(%d+)x(%d+)")
+            w, h = tonumber(w), tonumber(h)
         else
             block_color = CONSTRUCT_BLOCK_COLOR_GREEN
+            w, h = iprototype.unpackarea(typeobject.area)
         end
-        local block_pos = math3d.ref(math3d.add(object.srt.t, BLOCK_POSITION_OFFSET))
 
-        local w, h = iprototype.unpackarea(typeobject.area)
+        local block_pos = math3d.ref(math3d.add(object.srt.t, BLOCK_POSITION_OFFSET))
         local srt = {r = ROTATORS[object.dir], s = {terrain.tile_size * w + BLOCK_EDGE_SIZE, 1, terrain.tile_size * h + BLOCK_EDGE_SIZE}, t = block_pos}
         blocks[#blocks+1] = iplant.create("/pkg/vaststars.resources/materials/singlecolor.material", "u_color", block_color, srt)
     end

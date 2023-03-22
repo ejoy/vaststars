@@ -1,10 +1,5 @@
 local ecs, mailbox = ...
-local world = ecs.world
-local w = world.w
-local math3d    = require "math3d"
-local ivs       = ecs.import.interface "ant.scene|ivisible_state"
 local iUiRt     = ecs.import.interface "ant.rmlui|iuirt"
-local iom       = ecs.import.interface "ant.objcontroller|iobj_motion"
 local item_category = import_package "vaststars.prototype"("item_category")
 local gameplay_core = require "gameplay.core"
 local ichest = require "gameplay.interface.chest"

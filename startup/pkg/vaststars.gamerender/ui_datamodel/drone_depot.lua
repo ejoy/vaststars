@@ -12,6 +12,7 @@ local set_item_mb = mailbox:sub {"set_item"}
 local gameplay = import_package "vaststars.gameplay"
 local ihub = gameplay.interface "hub"
 local itask = ecs.require "task"
+local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
 
 local cache = {} -- item_index -> item
 local index_cache = {} -- item_id -> item_index
@@ -89,12 +90,18 @@ local function __get_item_index(item_id)
 end
 
 local function __get_items(category_index)
-    return items_cache[category_index]
+    local res = {}
+    for _, item in ipairs(items_cache[category_index]) do
+        if item_unlocked(item.name) then
+            res[#res+1] = item
+        end
+    end
+    return res
 end
 
 local function __get_default_item_indexes()
     local res = {}
-    for index, v in ipairs(category_cache) do
+    for index in ipairs(category_cache) do
         res[index] = 1
     end
     return res

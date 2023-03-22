@@ -659,7 +659,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "管理仓库1" {
+  prototype "仓库调度1" {
     desc = "选择采矿机设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -680,7 +680,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "采矿机设计图"},
-    prerequisites = {"管理仓库1"},
+    prerequisites = {"仓库调度1"},
     count = 2,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -708,7 +708,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "管理仓库2" {
+  prototype "仓库调度2" {
     desc = "选择电线杆设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -725,12 +725,12 @@ local prototype = gameplay.register.prototype
   }
 
 prototype "建造电线杆" {
-    desc = "建造3个电线杆",
+    desc = "建造4个电线杆",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "电线杆设计图"},
-    prerequisites = {"管理仓库2"},
-    count = 3,
+    prerequisites = {"仓库调度2"},
+    count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -740,12 +740,12 @@ prototype "建造电线杆" {
   }
 
   prototype "放置电线杆" {
-    desc = "放置3个铁制电线杆",
+    desc = "放置4个铁制电线杆",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "铁制电线杆"},
     prerequisites = {"建造电线杆"},
-    count = 3,
+    count = 4,
     effects = {
        unlock_recipe = {"无人机仓库打印"},
     },
@@ -758,7 +758,7 @@ prototype "建造电线杆" {
     },
   }
 
-  prototype "管理仓库3" {
+  prototype "仓库调度3" {
     desc = "选择无人机仓库设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -779,7 +779,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "无人机仓库设计图"},
-    prerequisites = {"管理仓库3"},
+    prerequisites = {"仓库调度3"},
     count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -811,7 +811,7 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_production", 0, "碎石"},
     prerequisites = {"放置无人机仓库"},
-    count = 6,
+    count = 12,
     effects = {
        unlock_recipe = {"科研中心打印"},
     },
@@ -819,7 +819,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "在碎石矿上放置挖矿机并挖掘6个碎石矿", icon = "textures/construct/industry.texture"},
+      { desc = "在碎石矿上放置挖矿机并挖掘12个碎石矿", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -868,7 +868,22 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在“建造中心”建造2个组装机", icon = "textures/construct/industry.texture"},
+      { desc = "在“建造中心”建造2台组装机", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "放置组装机" {
+    desc = "放置组装机",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "组装机I"},
+    prerequisites = {"建造组装机"},
+    count = 3,
+    tips_pic = {
+      "textures/task_tips_pic/task_click_build.texture",
+    },
+    sign_desc = {
+      { desc = "放置3台组装机", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -877,7 +892,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "地质科技包"},
-    prerequisites = {"建造组装机"},
+    prerequisites = {"放置组装机"},
     count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_produce_geopack3.texture",
