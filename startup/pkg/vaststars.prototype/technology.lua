@@ -952,7 +952,7 @@ prototype "建造电线杆" {
     icon = "textures/science/tech-research.texture",
     effects = {
       unlock_recipe = {"道路建造站"},
-      unlock_item = {"道路建造站"},
+      unlock_item = {"道路建造站设计图"},
     },
     prerequisites = {"生产石砖"},
     ingredients = {
