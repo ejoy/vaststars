@@ -15,6 +15,9 @@
                 position: relative;
                 bottom:0.5em;
             }
+            button:active {
+                transform: scale(1.3);
+            }
             .button-fuction-block {
                 width: 13.33vmin;
             }
@@ -293,13 +296,13 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
+                        console.log("#start.buttons", #start.buttons)
                         if #start.buttons > 0 then
                             local pos = assert(positions[#start.buttons], #start.buttons)
                             for i = 1, #start.buttons do
                                 local v = start.buttons[i]
                                 v.left = pos[i].left
                                 v.top = pos[i].top
-                                start.buttons[#start.buttons + 1] = v
                             end
                         end
                         start("buttons")
@@ -311,14 +314,14 @@
     </head>
     <body style = "pointer-events: none;">
         <div class="info-panel" style="position: relative; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top">
-            <div class="button-fuction-block" style="position: absolute;" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message)" data-for = "it : buttons">
+            <button class="button-fuction-block" style="position: absolute;" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message)" data-for = "it : buttons">
                 <div class = "icon-background" style="position: absolute; margin: 1.8vmin 0.7vmin;" data-if = "it.show_icon_background" />
-                <button class="button-function" data-style-background-image = "it.background_image" />
+                <div class="button-function" data-style-background-image = "it.background_image" />
                 <div class="title-text">{{it.text}}</div>
                 <div class = "menu-button-pic" data-if = "it.show_number" style='width:4.26vmin; height:4.26vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
                     <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{it.number}}</div>
                 </div>
-            </div>
+            </button>
 
             <div class = "materials-block" style="position: absolute; top: 40.33vmin; height: 10vmin; width: 100%; justify-content: center; align-items: center;"> 
                 <div class = "materials" data-for = "construction_center_ingredients">
