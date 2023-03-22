@@ -1007,7 +1007,7 @@ prototype "建造电线杆" {
     prerequisites = {"放置道路建造站"},
     count = 1,
     effects = {
-      unlock_recipe = {"运输汽车生产"},
+      unlock_recipe = {"维修运输汽车"},
       unlock_item = {"运输车辆I"},
     },
     tips_pic = {
@@ -1126,6 +1126,7 @@ prototype "建造电线杆" {
     icon = "textures/science/tech-research.texture",
     effects = {
       unlock_recipe = {"铁齿轮"},
+      unlock_item = {"铁齿轮"},
     },
     prerequisites = {"生产铁板"},
     ingredients = {
@@ -1194,6 +1195,7 @@ prototype "电磁学1" {
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"电动机1"},
+    unlock_item = {"电动机I"},
   },
   prerequisites = {"量产运输车辆"},
   ingredients = {
@@ -1208,7 +1210,7 @@ prototype "物流学II" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"车站"},
+    unlock_recipe = {"送货车站设计","收货车站设计"},
   },
   prerequisites = {"量产运输车辆"},
   ingredients = {
@@ -1223,8 +1225,8 @@ prototype "气候研究" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"气候科技包1"},
-    unlock_building = {"空气过滤器I","地下水挖掘机"},
+    unlock_recipe = {"气候科技包1","空气过滤器打印","地下水挖掘机打印"},
+    unlock_item = {"气候科技包","空气过滤器设计图","地下水挖掘机设计图"},
   },
   prerequisites = {"物流学II"},
   ingredients = {
@@ -1243,8 +1245,8 @@ prototype "管道系统1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"管道1","管道2","液罐1"},
-    unlock_building = {"液罐I","管道1-X型"},
+    unlock_recipe = {"管道建造站设计","管道1","管道2","液罐1"},
+    unlock_item = {"液罐I","管道建造站设计图","管道1-X型"},
   },
   prerequisites = {"气候研究"},
   ingredients = {
@@ -1269,14 +1271,31 @@ prototype "生产管道" {
   },
 }
 
+prototype "排放" {
+  desc = "研究气体和液体的排放工艺",
+  type = { "tech" },
+  icon = "textures/science/tech-research.texture",
+  effects = {
+    unlock_recipe = {"烟囱1","排水口1"},
+    unlock_item = {"烟囱I","排水口I"},
+  },
+  prerequisites = {"生产管道"},
+  ingredients = {
+    {"气候科技包", 1},
+  },
+  count = 8,
+  time = "2s"
+}
+
 prototype "采水研究" {
   desc = "对火星大气成分进行标本采集和研究",
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
     unlock_recipe = {"地下水挖掘机","水电站打印"},
+    unlock_item = {"水电站设计图"},
   },
-  prerequisites = {"生产管道"},
+  prerequisites = {"排放"},
   ingredients = {
       {"地质科技包", 1},
   },
