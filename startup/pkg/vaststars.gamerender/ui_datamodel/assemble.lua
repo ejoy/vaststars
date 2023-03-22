@@ -54,7 +54,7 @@ end
 local M = {}
 local rt_model_path
 local rt_exist = false
-local rt_name = "assemble_model"
+local rt_name = "chest_model"
 function M:create(object_id)
     local object = assert(objects:get(object_id))
     local typeobject = iprototype.queryByName(object.prototype_name)
