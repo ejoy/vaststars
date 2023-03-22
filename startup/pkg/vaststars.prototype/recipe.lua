@@ -236,12 +236,12 @@ prototype "道路建造站" {
     category = "物流中型制造",
     recipe_group =  "物流",
     recipe_order =  101,
-    recipe_icon =  "textures/construct/stone-brick.texture",
+    recipe_icon =  "textures/construct/road1.texture",
     ingredients = {
         {"石砖", 10},
     },
     results = {
-        {"道路建造站", 1},
+        {"道路建造站设计图", 1},
     },
     time = "5s",
     description = "修建道路建造站",
