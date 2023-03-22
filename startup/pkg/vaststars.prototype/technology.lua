@@ -783,6 +783,9 @@ prototype "建造电线杆" {
     task = {"stat_consumption", 0, "无人机仓库设计图"},
     prerequisites = {"仓库调度3"},
     count = 3,
+    effects = {
+      unlock_item = {"碎石"},
+    },
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -797,9 +800,6 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"select_entity", 0, "无人机仓库"},
     prerequisites = {"建造无人机仓库"},
-    effects = {
-      unlock_item = {"碎石"},
-    },
     count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_place_pole1.texture",
@@ -819,7 +819,7 @@ prototype "建造电线杆" {
     count = 12,
     effects = {
        unlock_recipe = {"科研中心打印"},
-       unlock_item = {"科研中心I"},
+       unlock_item = {"科研中心设计图"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
@@ -870,6 +870,9 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "组装机设计图"},
     prerequisites = {"地质研究"},
+    effects = {
+      unlock_item = {"地质科技包"},
+    },
     count = 2,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -885,9 +888,6 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"select_entity", 0, "组装机I"},
     prerequisites = {"建造组装机"},
-    effects = {
-      unlock_item = {"地质科技包1"},
-    },
     count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
