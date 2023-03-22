@@ -285,13 +285,17 @@ static std::tuple<size_t, size_t, bool> FindHub(world& w, const hub_mgr::hub_inf
         auto berth = info.hub[ii];
         if (auto chest = w.hubs.chests.find(berth.hash())) {
             auto& chestslot = chest::array_at(w, container::index::from(*chest), berth.chest_slot);
-            if (((min.index == -1) || (chestslot.amount + chestslot.lock_space - chestslot.lock_item < min.amount)) && (chestslot.limit > chestslot.amount)) {
+
+            auto amount1 = chestslot.amount + chestslot.lock_space - chestslot.lock_item;
+            if (((min.index == -1) || (amount1 < min.amount)) && (chestslot.limit > amount1)) {
                 min.index = ii;
-                min.amount = chestslot.amount + chestslot.lock_space - chestslot.lock_item;
+                min.amount = amount1;
             }
-            if (((max.index == -1) || (chestslot.amount + chestslot.lock_space - chestslot.lock_item > max.amount)) && (chestslot.amount > 0)) {
+
+            auto amount2 = chestslot.amount + chestslot.lock_space - chestslot.lock_item;
+            if (((max.index == -1) || (amount2 > max.amount)) && (amount2 > 0)) {
                 max.index = ii;
-                max.amount = chestslot.amount + chestslot.lock_space - chestslot.lock_item;
+                max.amount = amount2;
             }
         }
     }
