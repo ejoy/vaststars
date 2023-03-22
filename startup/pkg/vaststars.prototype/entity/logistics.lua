@@ -254,7 +254,7 @@ prototype "拆除点" {
 
 prototype "建造中心" {
     model = "prefabs/construction-center.prefab",
-    icon = "textures/building_pic/small_pic_headquarter.texture",
+    icon = "textures/building_pic/small_pic_construction_site.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "consumer"},
@@ -332,7 +332,7 @@ prototype "管道建造站" {
 
 prototype "车站" {
     model = "prefabs/goods-station-1.prefab",
-    icon = "textures/building_pic/small_pic_chest.texture",
+    icon = "textures/building_pic/small_pic_goods_station1.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
@@ -346,8 +346,8 @@ prototype "车站" {
 
 --送货车站需要设置送货类型以及需求车辆
 prototype "送货车站" {
-    model = "prefabs/goods-station-1.prefab",
-    icon = "textures/building_pic/small_pic_chest.texture",
+    model = "prefabs/delivery-station-1.prefab",
+    icon = "textures/building_pic/small_pic_goods_station1.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},
@@ -361,8 +361,8 @@ prototype "送货车站" {
 
 --收货车站需要设置送货类型
 prototype "收货车站" {
-    model = "prefabs/goods-station-1.prefab",
-    icon = "textures/building_pic/small_pic_chest.texture",
+    model = "prefabs/receiving-station-1.prefab",
+    icon = "textures/building_pic/small_pic_goods_station1.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building"},

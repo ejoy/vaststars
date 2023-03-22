@@ -43,7 +43,7 @@ prototype "仓库" {
 
 prototype "无人机仓库" {
     model = "prefabs/drone-depot.prefab",
-    icon = "textures/building_pic/small_pic_chest.texture",
+    icon = "textures/building_pic/small_pic_drone_depot.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "hub"},

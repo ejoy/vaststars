@@ -3,7 +3,7 @@ local prototype = gameplay.register.prototype
 
 prototype "化工厂I" {
     model = "prefabs/chemical-plant-1.prefab",
-    icon = "textures/building_pic/small_pic_assemble.texture",
+    icon = "textures/building_pic/small_pic_chemical_plant.texture",
     background = "textures/build_background/pic_distillery.texture",
     construct_detector = {"exclusive"},
     type = {"building", "assembling", "consumer","fluidboxes"},
