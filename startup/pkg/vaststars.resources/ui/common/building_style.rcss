@@ -11,6 +11,9 @@ button {
 	border-radius: 1.07vmin;
 	opacity: 1;                
 }
+button:active {
+	transform: scale(1.3);
+}
 .button-bg {
 		width: 6.67vmin;
 		height: 6.67vmin;
