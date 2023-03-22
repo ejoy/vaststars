@@ -346,7 +346,7 @@ prototype "车站" {
 
 --送货车站需要设置送货类型以及需求车辆
 prototype "送货车站" {
-    model = "prefabs/goods-station-1.prefab",
+    model = "prefabs/delivery-station-1.prefab",
     icon = "textures/building_pic/small_pic_goods_station1.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
@@ -361,7 +361,7 @@ prototype "送货车站" {
 
 --收货车站需要设置送货类型
 prototype "收货车站" {
-    model = "prefabs/goods-station-1.prefab",
+    model = "prefabs/receiving-station-1.prefab",
     icon = "textures/building_pic/small_pic_goods_station1.texture",
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
