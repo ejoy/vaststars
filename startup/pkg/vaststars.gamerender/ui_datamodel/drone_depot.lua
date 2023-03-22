@@ -150,7 +150,7 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     for _, _, _, item_index in set_item_mb:unpack() do
-        local item = items_cache[datamodel.category_index][item_index]
+        local item = __get_items(datamodel.category_index)[item_index]
         local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
         local gameplay_world = gameplay_core.get_world()
         ihub.set_item(gameplay_world, e, item.name)
