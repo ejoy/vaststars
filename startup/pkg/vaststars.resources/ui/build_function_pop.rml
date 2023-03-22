@@ -55,16 +55,16 @@
                 align-items: center;
             }
             .icon-background {
-                width: 15vmin;
-                height: 15vmin;
-                background-color: yellow;
+                width: 12vmin;
+                height: 12vmin;
+                background-color: rgb(253, 176, 2);
                 transform: rotate(45deg);
             }
             .materials-icon {
                 margin-left: 0.5em;
                 width: 4.67vmin;
                 height: 4.67vmin;
-                background-color: rgb(250, 205, 9);;
+                background-color: rgb(250, 205, 9);
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: center;
@@ -312,7 +312,7 @@
     <body style = "pointer-events: none;">
         <div class="info-panel" style="position: relative; pointer-events: none;" data-model="start" data-style-left = "left" data-style-top = "top">
             <div class="button-fuction-block" style="position: absolute;" data-style-top="it.top" data-style-left="it.left" data-event-click="clickButton(it.message)" data-for = "it : buttons">
-                <div class = "icon-background" style="position: absolute;" data-if = "it.show_icon_background" />
+                <div class = "icon-background" style="position: absolute; margin: 1.8vmin 0.7vmin;" data-if = "it.show_icon_background" />
                 <button class="button-function" data-style-background-image = "it.background_image" />
                 <div class="title-text">{{it.text}}</div>
                 <div class = "menu-button-pic" data-if = "it.show_number" style='width:4.26vmin; height:4.26vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>

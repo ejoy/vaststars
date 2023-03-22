@@ -647,7 +647,7 @@ local prototype = gameplay.register.prototype
     task = {"unknown", 0, 4},
     effects = {
       unlock_recipe = {"采矿机设计图","采矿机打印"},
-      unlock_item = {"铁板","采矿机设计图"},
+      unlock_item = {"采矿机设计图"},
     },
     prerequisites = {""},
     count = 1,
@@ -698,6 +698,7 @@ local prototype = gameplay.register.prototype
     prerequisites = {"建造采矿机"},
     effects = {
        unlock_recipe = {"电线杆打印"},
+       unlock_item = {"电线杆设计图"},
     },
     count = 2,
     tips_pic = {
@@ -748,6 +749,7 @@ prototype "建造电线杆" {
     count = 4,
     effects = {
        unlock_recipe = {"无人机仓库打印"},
+       unlock_item = {"无人机仓库设计图"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_place_pole1.texture",
@@ -795,6 +797,9 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"select_entity", 0, "无人机仓库"},
     prerequisites = {"建造无人机仓库"},
+    effects = {
+      unlock_item = {"碎石"},
+    },
     count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_place_pole1.texture",
@@ -814,6 +819,7 @@ prototype "建造电线杆" {
     count = 12,
     effects = {
        unlock_recipe = {"科研中心打印"},
+       unlock_item = {"科研中心I"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
@@ -844,6 +850,7 @@ prototype "建造电线杆" {
     icon = "textures/science/tech-research.texture",
     effects = {
       unlock_recipe = {"地质科技包1","组装机打印"},
+      unlock_item = {"组装机设计图"},
     },
     ingredients = {
     },
@@ -878,6 +885,9 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"select_entity", 0, "组装机I"},
     prerequisites = {"建造组装机"},
+    effects = {
+      unlock_item = {"地质科技包1"},
+    },
     count = 3,
     tips_pic = {
       "textures/task_tips_pic/task_click_build.texture",
@@ -911,6 +921,7 @@ prototype "建造电线杆" {
     icon = "textures/science/tech-research.texture",
     effects = {
       unlock_recipe = {"石砖"},
+      unlock_item = {"石砖"},
     },
     prerequisites = {"自动化生产"},
     ingredients = {
@@ -941,6 +952,7 @@ prototype "建造电线杆" {
     icon = "textures/science/tech-research.texture",
     effects = {
       unlock_recipe = {"道路建造站"},
+      unlock_item = {"道路建造站"},
     },
     prerequisites = {"生产石砖"},
     ingredients = {
@@ -958,7 +970,8 @@ prototype "建造电线杆" {
     prerequisites = {"物流学I"},
     count = 1,
     effects = {
-      unlock_recipe = {"车站打印"},
+      unlock_recipe = {"送货车站打印","收货车站打印"},
+      unlock_item = {"送货车站设计图","收货车站设计图","铁矿石"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -986,21 +999,37 @@ prototype "建造电线杆" {
     },
   }
 
-  prototype "放置车站" {
+  prototype "放置送货车站" {
     desc = "放置1座道路建造站",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"select_entity", 0, "车站"},
+    task = {"select_entity", 0, "送货车站"},
     prerequisites = {"放置道路建造站"},
     count = 1,
     effects = {
       unlock_recipe = {"运输汽车生产"},
+      unlock_item = {"运输车辆I"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "放置1个车站", icon = "textures/construct/industry.texture"},
+      { desc = "放置1个送货车站", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "放置收货车站" {
+    desc = "放置1座道路建造站",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "收货车站"},
+    prerequisites = {"放置道路建造站"},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "放置1个收货车站", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -1009,7 +1038,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "运输车辆I"},
-    prerequisites = {"放置车站"},
+    prerequisites = {"放置送货车站","放置收货车站"},
     count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
@@ -1028,6 +1057,7 @@ prototype "建造电线杆" {
     count = 10,
     effects = {
       unlock_recipe = {"熔炼炉打印"},
+      unlock_item = {"熔炼炉设计图"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
@@ -1043,6 +1073,7 @@ prototype "建造电线杆" {
     icon = "textures/science/tech-research.texture",
     effects = {
       unlock_recipe = {"铁板1"},
+      unlock_item = {"铁板"},
     },
     prerequisites = {"生产铁矿石"},
     ingredients = {
