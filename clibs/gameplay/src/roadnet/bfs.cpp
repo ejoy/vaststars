@@ -74,7 +74,7 @@ namespace roadnet {
             }
             C = iter->second;
             auto& [road, dir] = iter->second;
-            if (road.cross) {
+            if (road.get_type() == roadtype::cross) {
                 assert(dir != direction::n);
                 r.push_back(dir);
             }
@@ -89,7 +89,7 @@ namespace roadnet {
     }
 
     static std::optional<direction> applyStraight(network& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
-        assert(!N.cross);
+        assert(N.get_type() == roadtype::straight);
         if (!ctx.results.contains({N, direction::n})) {
             ctx.openlist.insert(N);
             ctx.results.emplace(bfsRoad{N, direction::n}, G);
@@ -101,9 +101,9 @@ namespace roadnet {
     }
 
     static std::optional<direction> applyCross(network& w, bfsContext& ctx, bfsRoad G, roadid N, roadid E) {
-        assert(N.cross);
+        assert(N.get_type() == roadtype::cross);
         direction prev = G.dir;
-        auto& cross = w.crossAry[N.id];
+        auto& cross = w.CrossRoad(N);
         for (uint8_t i = 0; i < 4; ++i) {
             direction dir = (direction)i;
             roadid Next = cross.neighbor[i];
@@ -123,13 +123,13 @@ namespace roadnet {
     }
 
     bool bfs(network& w, roadid S, roadid E, std::vector<direction>& path) {
-        assert(!S.cross && !E.cross);
+        assert(S.get_type() == roadtype::straight && E.get_type() == roadtype::straight);
         bfsContext ctx;
         ctx.openlist.insert(S);
         while (!ctx.openlist.empty()) {
             roadid G = pop(ctx.openlist);
-            assert(!G.cross);
-            auto& straight = w.straightAry[G.id];
+            assert(G.get_type() == roadtype::straight);
+            auto& straight = w.StraightRoad(G);
             roadid Next = straight.neighbor;
             if (Next) {
                 if (auto res = applyCross(w, ctx, {G, straight.dir}, Next, E); res) {
@@ -141,10 +141,10 @@ namespace roadnet {
     }
 
     static roadid next_road(network& w, roadid C, direction dir) {
-        assert(!C.cross);
-        roadid N = w.straightAry[C.id].neighbor;
-        roadid Next = w.crossAry[N.id].neighbor[(uint8_t)dir];
-        assert(!Next.cross);
+        assert(C.get_type() == roadtype::straight);
+        roadid N = w.StraightRoad(C).neighbor;
+        roadid Next = w.CrossRoad(N).neighbor[(uint8_t)dir];
+        assert(Next.get_type() == roadtype::straight);
         return Next;
     }
 

@@ -2,7 +2,7 @@
 #include "roadnet/network.h"
 
 namespace roadnet::road {
-    void straight::init(uint16_t id, uint16_t len, direction dir) {
+    void straight::init(roadid id, uint16_t len, direction dir) {
         this->id = id;
         this->len = len;
         this->dir = dir;

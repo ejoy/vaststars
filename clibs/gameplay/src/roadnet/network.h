@@ -37,14 +37,14 @@ namespace roadnet {
         std::map<std::pair<roadid,roadid>, direction> routeMap;
 
         struct straightData {
-            uint16_t  id;
+            roadid    id;
             uint16_t  len;
             loction   loc;
             direction start_dir;
             direction finish_dir;
             roadid neighbor; // the next crossroad along this straight road
             straightData() {}
-            straightData(uint16_t id, uint16_t len, loction loc, direction start_dir, direction finish_dir, roadid neighbor)
+            straightData(roadid id, uint16_t len, loction loc, direction start_dir, direction finish_dir, roadid neighbor)
                 : id(id)
                 , len(len)
                 , loc(loc)

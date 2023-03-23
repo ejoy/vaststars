@@ -22,4 +22,5 @@ namespace roadnet::road {
         void setOutForce(network& w, lorryid id);
         void setOutForce(network& w);
     };
+    static_assert(std::is_trivial_v<endpoint>);
 }

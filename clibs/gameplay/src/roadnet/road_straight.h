@@ -14,13 +14,13 @@ namespace roadnet::road {
     struct straight {
         static inline const uint16_t N = 2;
 
-        uint16_t id;
+        roadid id;
         uint16_t len;
         uint32_t lorryOffset;
-        roadid neighbor = roadid::invalid();
-        direction dir = direction::n;
+        roadid neighbor;
+        direction dir;
 
-        void init(uint16_t id, uint16_t len, direction dir);
+        void init(roadid id, uint16_t len, direction dir);
         void update(network& w, uint64_t ti);
         bool canEntry(network& w, uint16_t offset);
         bool canEntry(network& w);
@@ -33,4 +33,5 @@ namespace roadnet::road {
         void delLorry(network& w, uint16_t offset);
         lorryid& waitingLorry(network& w);
     };
+    static_assert(std::is_trivial_v<straight>);
 }
