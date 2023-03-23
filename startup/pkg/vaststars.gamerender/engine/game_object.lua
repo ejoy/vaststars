@@ -152,12 +152,17 @@ local _get_hitch_children ; do
         end
         prefab.on_ready = function(prefab)
             for _, eid in ipairs(prefab.tag["*"]) do
-                local e <close> = w:entity(eid, "tag?in animation?in")
+                local e <close> = w:entity(eid, "tag?in animation?in anim_ctrl?in")
                 if e.tag then
                     for _, tag in ipairs(e.tag) do
                         inner.tags[tag] = inner.tags[tag] or {}
                         table.insert(inner.tags[tag], eid)
                     end
+                end
+                if e.anim_ctrl then
+                    e.anim_ctrl.for_hitch = true
+                    e.anim_ctrl.group_id = cache[hash].hitch_group_id
+                    iani.load_events(eid, string.sub(prefab_file_path, 1, -8) .. ".event")
                 end
             end
 
