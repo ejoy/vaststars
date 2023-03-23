@@ -109,12 +109,15 @@
                 prototype_name = " ",
                 detail_panel_status_icon = "textures/work_status_icon/normal.texture",
                 detail_panel_status_desc = "正常工作",
-                showchest = false,
+                show_chest = false,
                 chest_list0 = {},
                 chest_list1 = {},
                 show_minner = false,
-                minner_progress = "0%",
-                minner_info = {},
+                progress = "0%",
+                recipe_inputs = {},
+                recipe_ouputs = {},
+                show_assemble = false,
+                recipe_name = " "
             })
 
             ui_sys.addEventListener({
@@ -166,7 +169,7 @@
                 
                 </div>
                 
-                <div style="height:19%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "showchest">
+                <div style="height:19%; flex-direction: column; justify-content: flex-start; align-items: center;" data-if = "show_chest">
                     <div style = "width:98%; border-bottom: 0.1vmin #fff; margin:0.3vmin"/>
                     <div style="padding-top:0.3vmin; padding-left:0.04vmin; width:100%; flex-direction: row; justify-content: flex-start; align-items: center;">
                         <div data-for = "chest : chest_list0" class="small-item1" data-style-background-image="chest.icon">
@@ -187,44 +190,38 @@
                     <div class="row" style="width:100%; height: 100%; justify-content: space-evenly; align-items: center;">
                         <div class="column" style="justify-content: center; width: 70%; height:30%;">
                             <div class="progress-bar-block" style = "width: 100%; height:100%; border: 0.30vmin rgb(0, 0, 0);">
-                                <div class="progress-background" style ="background-color: rgb(87, 238, 0);" data-style-width="minner_progress"/>
+                                <div class="progress-background" style ="background-color: rgb(87, 238, 0);" data-style-width="progress"/>
                             </div> 
-                            <div class = "percent-num">{{minner_progress}}</div>
+                            <div class = "percent-num">{{progress}}</div>
                         </div>
                         <div class="row" style="width: 25%; justify-content: center;">
-                            <div class="small-item1" style="width:7vmin; height:7vmin;" data-style-background-image="minner_info.icon">
-                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{minner_info.count}}</div>
+                            <div class="small-item1" style="width:7vmin; height:7vmin;" data-style-background-image="it.icon" data-for="recipe_ouputs">
+                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{it.count}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!--组装机类型底部显示进度-->
-                <div style="height:22%; flex-direction: column; justify-content: center; align-items: center;" data-if = "false">
+                <div style="height:22%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_assemble">
                     <div class="recipe-name">
                         <div class="progress-bar-block" style = "width: 100%; height:98%; border: 0.10vmin rgb(255, 255, 255); background-color: darkgray;">
-                            <div class="progress-background" style ="background-color: rgb(87, 238, 0); width:50%;"/>
+                            <div class="progress-background" style ="background-color: rgb(87, 238, 0);" data-style-width="progress"/>
                             <div style="flex-direction:row; justify-content: flex-start; align-items: center; position: absolute; left:0;">
                                 <div class = "small-bg" style='background-image: "textures/science/book.texture"; padding-top:1vmin;'/>
-                                <div style="text-align: left; -webkit-text-stroke: 0.2vmin rgb(0, 112, 192); font-size: 3.5vmin; padding-bottom: 1vmin;">组装机配方</div>
+                                <div style="text-align: left; -webkit-text-stroke: 0.2vmin rgb(0, 112, 192); font-size: 3.5vmin; padding-bottom: 1vmin;">{{recipe_name}}</div>
                             </div>
-                            <div style="position: absolute; right:0; padding-bottom: 1vmin; text-align: right; -webkit-text-stroke: 0.3vmin rgb(39, 32, 17); font-size: 4.2vmin; color: chartreuse;">98%</div>
+                            <div style="position: absolute; right:0; padding-bottom: 1vmin; text-align: right; -webkit-text-stroke: 0.3vmin rgb(39, 32, 17); font-size: 4.2vmin; color: chartreuse;">{{progress}}</div>
                         </div> 
                     </div>
                     <div class="row" style="width:100%; height: 100%; justify-content: space-evenly; align-items: center;">
                         <!--组装机进料栏-->
                         <div class="row" style="width: 50%; justify-content: space-evenly; flex-wrap: wrap;">
-                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.4vmin rgb(0, 217, 255);" data-style-background-image="minner_info.icon">
-                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{minner_info.count}}</div>
-                            </div>
-                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.4vmin rgb(0, 217, 255);" data-style-background-image="minner_info.icon">
-                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{minner_info.count}}</div>
-                            </div>
-                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.4vmin rgb(0, 217, 255);" data-style-background-image="minner_info.icon">
-                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{minner_info.count}}</div>
-                            </div>
-                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.4vmin rgb(0, 217, 255);" data-style-background-image="minner_info.icon">
-                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{minner_info.count}}</div>
+                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.4vmin rgb(0, 217, 255);" data-style-background-image="it.icon" data-for="recipe_inputs">
+                                <div class ="item-count-combination">
+                                    <div class="item-count-new" data-style-color="it.count < it.need_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                                    <div class="item-count-new" style="font-size: 3vmin;">/{{it.need_count}}</div>
+                                </div>
                             </div>
                         </div>
 
@@ -233,17 +230,11 @@
 
                         <!--组装机成品栏-->
                         <div class="row" style="width: 50%; justify-content: space-evenly; flex-wrap: wrap;">
-                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.4vmin rgb(92, 204, 0);" data-style-background-image="minner_info.icon">
-                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{minner_info.count}}</div>
-                            </div>
-                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.4vmin rgb(92, 204, 0);" data-style-background-image="minner_info.icon">
-                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{minner_info.count}}</div>
-                            </div>
-                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.4vmin rgb(92, 204, 0);" data-style-background-image="minner_info.icon">
-                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{minner_info.count}}</div>
-                            </div>
-                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.4vmin rgb(92, 204, 0);" data-style-background-image="minner_info.icon">
-                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{minner_info.count}}</div>
+                            <div class="small-item1" style="width:7vmin; height:7vmin; border: 0.4vmin rgb(92, 204, 0);" data-style-background-image="it.icon" data-for="recipe_ouputs">
+                                <div class ="item-count-combination">
+                                    <div class="item-count-new" data-style-color="it.count < it.need_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                                    <div class="item-count-new" style="font-size: 3vmin;">/{{it.need_count}}</div>
+                                </div>
                             </div>
                         </div>
                     </div>

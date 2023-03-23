@@ -8,6 +8,7 @@ local irecipe = require "gameplay.interface.recipe"
 local ilaboratory = require "gameplay.interface.laboratory"
 local ichest = require "gameplay.interface.chest"
 local building_detail = import_package "vaststars.prototype"("building_detail_config")
+local assembling_common = require "ui_datamodel.common.assembling"
 local UPS <const> = require("gameplay.interface.constant").UPS
 
 local function format_vars(fmt, vars)
@@ -240,31 +241,26 @@ local function get_entity_property_list(object_id)
 
     local entity = get_property(e, typeobject)
     local property_list = get_property_list(entity)
-    if e.mining then
+    if e.assembling then
         local total_progress = 0
         local progress = 0
         if e.assembling.recipe ~= 0 then
             local recipe_typeobject = assert(iprototype.queryById(e.assembling.recipe))
             total_progress = recipe_typeobject.time * 100
             progress = e.assembling.progress
-
-            local recipe_results = irecipe.get_elements(recipe_typeobject.results)
-            for index, v in ipairs(recipe_results) do
-                local slot = ichest.chest_get(gameplay_core.get_world(), e.chest, index)
-                if slot then
-                    property_list.minner_info = {icon = v.icon, count = slot.amount, need_count = v.count}
-                else
-                    property_list.minner_info = {icon = v.icon, count = 0, need_count = v.count}
-                end
-                break
-            end
+            property_list.recipe_name = recipe_typeobject.name
+            property_list.recipe_inputs, property_list.recipe_ouputs = assembling_common.get(gameplay_core.get_world(), e)
         end
         if e.assembling.status == STATUS_IDLE then
-            property_list.minner_progress = "0%"
+            property_list.progress = "0%"
         else
-            property_list.minner_progress = itypes.progress_str(progress, total_progress)
+            property_list.progress = itypes.progress_str(progress, total_progress)
         end
-
+        if e.mining then
+            property_list.is_minner = true
+        else
+            property_list.is_assemble = true
+        end
     elseif e.laboratory then
         local current_inputs = ilaboratory:get_elements(typeobject.inputs)
         local items = {}
@@ -286,18 +282,23 @@ local counter = 1
 local function update_property_list(datamodel, property_list)
     datamodel.chest_list0 = property_list.chest_list0 or {}
     datamodel.chest_list1 = property_list.chest_list1 or {}
-    datamodel.showchest = #datamodel.chest_list0 > 0
-    datamodel.minner_progress = property_list.minner_progress or "0%"
-    datamodel.minner_info = property_list.minner_info or {}
-    datamodel.show_minner = (datamodel.minner_info.icon ~= nil)
+    datamodel.show_chest = #datamodel.chest_list0 > 0
+    datamodel.progress = property_list.progress or "0%"
+    datamodel.recipe_inputs = property_list.recipe_inputs or {}
+    datamodel.recipe_ouputs = property_list.recipe_ouputs or {}
+    datamodel.show_minner = property_list.is_minner
+    datamodel.show_assemble = property_list.is_assemble
+    datamodel.recipe_name = property_list.recipe_name
     local status = property_list.status
     datamodel.detail_panel_status_icon = detail_panel_status_icon[status]
     datamodel.detail_panel_status_desc = detail_panel_status_desc[status]
     property_list.chest_list0 = nil
     property_list.chest_list1 = nil
-    property_list.minner_progress = nil
-    property_list.minner_info = nil
+    property_list.progress = nil
+    property_list.recipe_inputs = nil
+    property_list.recipe_ouputs = nil
     property_list.status = nil
+    property_list.recipe_name = nil
     datamodel.property_list = property_list
 end
 function M:create(object_id)
