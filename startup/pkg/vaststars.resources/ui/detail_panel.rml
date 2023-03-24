@@ -195,7 +195,9 @@
                         </div>
                         <div class="row" style="width: 25%; justify-content: center;">
                             <div class="small-item1" style="width:7vmin; height:7vmin;" data-style-background-image="it.icon" data-for="recipe_ouputs">
-                                <div style="-webkit-text-stroke:0.25vmin rgb(0, 0, 0);">{{it.count}}</div>
+                                <div class ="item-count-combination">
+                                    <div class="item-count-new" style="font-size: 4vmin;">{{it.count}}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
