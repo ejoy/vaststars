@@ -101,7 +101,7 @@
             @keyframes pannelmovement {
                 0% {
                     left: -10vmin;
-                    opacity: 1;
+                    opacity: 0;
                 }
                 100% {
                     left: 0vmin;
