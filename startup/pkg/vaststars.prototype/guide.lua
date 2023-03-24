@@ -189,8 +189,9 @@ local guide = {
     {
         name = "guide-11",
 		narrative = {
-            {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至0.3244%！..(期待)", "textures/guide/guide-2.texture"},
-            {"勤劳的无人机平台再次上线..选择运输{/g 碎石}就可以开始工作了(兴奋)", "textures/guide/guide-3.texture"},
+            {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至{/g 0.3244%}..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..勤劳的无人机仓库再次上线..在仓库中选择运输{/g 碎石}就可以开始工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
+            {"哔哩..让我们采集足够{/g 碎石}资源吧..哔哩(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 10,
