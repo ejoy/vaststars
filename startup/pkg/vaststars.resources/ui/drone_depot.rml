@@ -94,7 +94,7 @@
                     item.outerHTML = [[<div style = "width: 100%; height: 100%;" />]]
                 else
                     item.outerHTML = ([[<div class = "item" style = "width: 100%%; height: 100%%; backgroundImage: %s"></div>]]):format(start.items[index].icon)
-                    local select_style_border = "4px rgb(109, 47, 156)"
+                    local select_style_border = "0.5vmin rgb(109, 47, 156)"
                     if start.item_index == index then
                         select_item = item
                         item.style.border = select_style_border
