@@ -320,7 +320,7 @@
                 </div>
             </button>
 
-            <div class = "materials-block" style="position: absolute; top: 40.33vmin; height: 10vmin; width: 100%; justify-content: center; align-items: center;"> 
+            <!-- div class = "materials-block" style="position: absolute; top: 40.33vmin; height: 10vmin; width: 100%; justify-content: center; align-items: center;"> 
                 <div class = "materials" data-for = "construction_center_ingredients">
                     <div class = "materials-item">
                         <div class = "materials-icon" data-style-background-image = "it.icon" />
@@ -330,7 +330,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div -->
         </div>
     </body>
 </rml>
