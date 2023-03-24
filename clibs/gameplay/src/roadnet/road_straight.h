@@ -20,7 +20,7 @@ namespace roadnet::road {
         roadid neighbor;
         direction dir;
 
-        void init(roadid id, uint16_t len, direction dir);
+        void init(roadid id, uint16_t len, direction dir, roadid neighbor);
         void update(network& w, uint64_t ti);
         bool canEntry(network& w, uint16_t offset);
         bool canEntry(network& w);

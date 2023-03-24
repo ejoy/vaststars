@@ -2,10 +2,11 @@
 #include "roadnet/network.h"
 
 namespace roadnet::road {
-    void straight::init(roadid id, uint16_t len, direction dir) {
+    void straight::init(roadid id, uint16_t len, direction dir, roadid neighbor) {
         this->id = id;
         this->len = len;
         this->dir = dir;
+        this->neighbor = neighbor;
     }
     bool straight::canEntry(network& w, uint16_t offset)  {
         return !hasLorry(w, offset);

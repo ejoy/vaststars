@@ -418,9 +418,8 @@ namespace roadnet {
         for (auto& data: straightVec) {
             road::straight& straight = StraightRoad(data.id);
             size_t length = data.len * road::straight::N + 1;
-            straight.init(data.id, (uint16_t)length, data.finish_dir);
+            straight.init(data.id, (uint16_t)length, data.finish_dir, data.neighbor);
             straight.setLorryOffset(genLorryOffset);
-            straight.setNeighbor(data.neighbor);
             auto& crossroad = CrossRoad(data.neighbor);
             crossroad.setRevNeighbor(data.finish_dir, straight.id);
             genLorryOffset += (uint16_t)length;
