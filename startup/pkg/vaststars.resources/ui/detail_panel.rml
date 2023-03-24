@@ -75,6 +75,7 @@
                 width: 87%;
                 height: 100%;
                 pointer-events: none;
+                animation: 0.5s linear 0s pannelmovement;
             }
             .arrow {
                 width: 4.88vmin;
@@ -96,6 +97,16 @@
                 justify-content: center;
                 align-items: center;
                 font-size: 2.5vmin;
+            }
+            @keyframes pannelmovement {
+                0% {
+                    left: -10vmin;
+                    opacity: 1;
+                }
+                100% {
+                    left: 0vmin;
+                    opacity: 1;
+                }
             }
         </style>
         <style path = "common/building_style.rcss"/>
