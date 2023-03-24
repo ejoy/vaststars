@@ -1,4 +1,4 @@
-#include <lua.hpp>
+﻿#include <lua.hpp>
 #include "system/hub.h"
 #include "luaecs.h"
 #include "core/world.h"
@@ -96,6 +96,28 @@ uint32_t building_rect::hash() const {
     return *(uint32_t*)&berth;
 }
 
+enum class drone_status : uint8_t {
+    idle,
+    mov1,
+    mov2,
+    home,
+    error,
+};
+
+static container::slot* GetChestSlot(world& w, hub_mgr::berth const& berth) {
+    if (auto chest = w.hubs.chests.find(berth.hash())) {
+        return &chest::array_at(w, container::index::from(*chest), berth.chest_slot);
+    }
+    return nullptr;
+}
+
+static container::slot* GetChestSlot(world& w, hub_mgr::berth const& berth, uint16_t item) {
+    if (auto chest = w.hubs.chests.find(berth.hash())) {
+        return chest::find_item(w, container::index::from(*chest), item);
+    }
+    return nullptr;
+}
+
 static uint16_t getxy(uint8_t x, uint8_t y) {
     return ((uint16_t)x << 8) | (uint16_t)y;
 }
@@ -190,15 +212,28 @@ lbuild(lua_State *L) {
         auto s = create_berth({building, area}, hub_mgr::berth_type::hub, 0);
         b.hubs.emplace(std::move(s), std::move(hub_info));
     }
+    
+    //TODO when remove chest
+    for (auto& v : ecs_api::select<ecs::drone>(w.ecs)) {
+        auto& drone = v.get<ecs::drone>();
+        auto status = (drone_status)drone.status;
+        if (status == drone_status::error) {
+            continue;
+        }
+        hub_mgr::berth home = std::bit_cast<hub_mgr::berth>(drone.home);
+        if (!map_find(w.hubs.hubs, home)) {
+            drone.status = (uint8_t)drone_status::error;
+            drone.prev = 0;
+            drone.next = 0;
+            drone.mov2 = 0;
+            drone.home = 0;
+            drone.maxprogress = 0;
+            drone.progress = 0;
+            drone.item = 0;
+        }
+    }
     return 0;
 }
-
-enum class drone_status : uint8_t {
-    idle,
-    mov1,
-    mov2,
-    home,
-};
 
 static void Move(world& w, ecs::drone& drone, uint32_t target) {
     drone.next = target;
@@ -212,13 +247,6 @@ static void Move(world& w, ecs::drone& drone, uint32_t target) {
     prototype_context p = w.prototype(drone.classid);
     int speed = pt_speed(&p);
     drone.maxprogress = drone.progress = uint16_t(z*1000/speed);
-}
-
-static container::slot* GetChestSlot(world& w, hub_mgr::berth const& berth) {
-    if (auto chest = w.hubs.chests.find(berth.hash())) {
-        return &chest::array_at(w, container::index::from(*chest), berth.chest_slot);
-    }
-    return nullptr;
 }
 
 static void DoTask(world& w, ecs::drone& drone, const hub_mgr::hub_info& info, hub_mgr::berth const& mov1, hub_mgr::berth const& mov2) {
@@ -240,6 +268,20 @@ static void DoTask(world& w, ecs::drone& drone, const hub_mgr::hub_info& info, h
     drone.status = (uint8_t)drone_status::mov1;
     drone.mov2 = std::bit_cast<uint32_t>(mov2);
     Move(w, drone, std::bit_cast<uint32_t>(mov1));
+}
+
+static void DoTask(world& w, ecs::drone& drone, const hub_mgr::hub_info& info, hub_mgr::berth const& mov2) {
+    {
+        //lock mov2
+        auto chestslot = GetChestSlot(w, mov2);
+        assert(chestslot);
+        assert(chestslot->limit > chestslot->amount + chestslot->lock_space);
+        chestslot->lock_space += 1;
+    }
+    //update drone
+    drone.status = (uint8_t)drone_status::mov2;
+    drone.mov2 = 0;
+    Move(w, drone, std::bit_cast<uint32_t>(mov2));
 }
 
 static size_t FindChestRed(world& w, const hub_mgr::hub_info& info) {
@@ -337,35 +379,69 @@ static bool FindTask(world& w, ecs::drone& drone) {
     return false;
 }
 
+static void NextTask(world& w, ecs::drone& drone) {
+    if (!FindTask(w, drone)) {
+        drone.status = (uint8_t)drone_status::home;
+        Move(w, drone, drone.home);
+    }
+}
+
+static bool FindTask(world& w, ecs::drone& drone, uint16_t item) {
+    hub_mgr::berth home = std::bit_cast<hub_mgr::berth>(drone.home);
+    if (auto v = map_find(w.hubs.hubs, home)) {
+        auto& info = *v;
+        auto blue = FindChestBlue(w, info);
+        if (blue != (size_t)-1) {
+            DoTask(w, drone, info, info.chest_blue[blue]);
+            return true;
+        }
+        auto [min, _1, _2] = FindHub(w, info);
+        if (min != (size_t)-1) {
+            DoTask(w, drone, info, info.hub[min]);
+            return true;
+        }
+    }
+    return false;
+}
+
+static void NextTask(world& w, ecs::drone& drone, uint16_t item) {
+    if (!FindTask(w, drone, item)) {
+        drone.item = 0;
+        drone.status = (uint8_t)drone_status::home;
+        Move(w, drone, drone.home);
+    }
+}
+
 static void Arrival(world& w, ecs::drone& drone) {
     drone.prev = drone.next;
     switch ((drone_status)drone.status) {
     case drone_status::mov1: {
-        auto slot = GetChestSlot(w, std::bit_cast<hub_mgr::berth>(drone.next));
-        assert(slot);
-        assert(slot->lock_item > 0);
-        assert(slot->amount > 0);
+        hub_mgr::berth home = std::bit_cast<hub_mgr::berth>(drone.home);
+        auto info = map_find(w.hubs.hubs, home);
+        assert(info);
+        auto slot = GetChestSlot(w, std::bit_cast<hub_mgr::berth>(drone.next), info->item);
+        if (!slot || slot->lock_item == 0 || slot->amount == 0) {
+            NextTask(w, drone);
+            break;
+        }
         slot->lock_item--;
         slot->amount--;
-        drone.item = slot->item;
+        drone.item = info->item;
         drone.status = (uint8_t)drone_status::mov2;
         Move(w, drone, drone.mov2);
         drone.mov2 = 0;
         break;
     }
     case drone_status::mov2: {
-        auto slot = GetChestSlot(w, std::bit_cast<hub_mgr::berth>(drone.next));
-        assert(slot);
-        assert(slot->item == drone.item);
-        assert(slot->lock_space > 0);
-        assert(slot->limit > slot->amount);
+        auto slot = GetChestSlot(w, std::bit_cast<hub_mgr::berth>(drone.next), drone.item);
+        if (!slot || slot->lock_space == 0) {
+            NextTask(w, drone, drone.item);
+            break;
+        }
         slot->lock_space--;
         slot->amount++;
         drone.item = 0;
-        if (!FindTask(w, drone)) {
-            drone.status = (uint8_t)drone_status::home;
-            Move(w, drone, drone.home);
-        }
+        NextTask(w, drone);
         break;
     }
     case drone_status::home:
@@ -376,6 +452,7 @@ static void Arrival(world& w, ecs::drone& drone) {
         }
         break;
     default:
+    case drone_status::error:
     case drone_status::idle:
         std::unreachable();
     }
@@ -403,6 +480,8 @@ lupdate(lua_State *L) {
         case drone_status::mov2:
         case drone_status::home:
             Update(w, drone);
+            break;
+        case drone_status::error:
             break;
         default:
             std::unreachable();

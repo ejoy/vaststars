@@ -129,6 +129,27 @@ uint16_t chest::size(world& w, container::index c) {
     return s.eof - c.slot + 1;
 }
 
+container::slot* chest::find_item(world& w, container::index c, uint16_t item) {
+    for (auto& s: chest::array_slice(w, c)) {
+        if (s.item == item) {
+            return &s;;
+        }
+    }
+    return nullptr;
+}
+
+bool chest::pickup_force(world& w, container::index c, uint16_t item, uint16_t amount) {
+    if (auto s = find_item(w, c, item)) {
+        if (amount > s->amount || amount > s->lock_item) {
+            return false;
+        }
+        s->lock_item -= amount;
+        s->amount -= amount;
+        return true;
+    }
+    return false;
+}
+
 bool chest::pickup_force(world& w, container::index c, uint16_t item, uint16_t amount, bool unlock) {
     for (auto& s: chest::array_slice(w, c)) {
         if (s.item == item) {
