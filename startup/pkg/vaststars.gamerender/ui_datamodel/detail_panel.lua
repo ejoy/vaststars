@@ -250,16 +250,17 @@ local function get_entity_property_list(object_id)
             progress = e.assembling.progress
             property_list.recipe_name = recipe_typeobject.name
             property_list.recipe_inputs, property_list.recipe_ouputs = assembling_common.get(gameplay_core.get_world(), e)
-        end
-        if e.assembling.status == STATUS_IDLE then
-            property_list.progress = "0%"
-        else
-            property_list.progress = itypes.progress_str(progress, total_progress)
-        end
-        if e.mining then
-            property_list.is_minner = true
-        else
-            property_list.is_assemble = true
+        
+            if e.assembling.status == STATUS_IDLE then
+                property_list.progress = "0%"
+            else
+                property_list.progress = itypes.progress_str(progress, total_progress)
+            end
+            if e.mining then
+                property_list.is_minner = true
+            else
+                property_list.is_assemble = true
+            end
         end
     elseif e.laboratory then
         local current_inputs = ilaboratory:get_elements(typeobject.inputs)

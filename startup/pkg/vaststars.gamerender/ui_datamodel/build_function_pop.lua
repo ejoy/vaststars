@@ -124,7 +124,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
     -- 组装机才显示设置配方菜单
     local show_set_recipe = __show_set_recipe(typeobject)
     local show_set_item = __show_set_item(typeobject)
-    local show_detail = __show_detail(typeobject)
+    local show_detail = false--__show_detail(typeobject)
     local recipe_name = ""
 
     if iprototype.has_type(typeobject.type, "assembling") or iprototype.has_type(typeobject.type, "lorry_factory") then
