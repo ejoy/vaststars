@@ -31,6 +31,7 @@
                 width: 83.47vmin;
                 background-image: "textures/common/info-arc.texture";
                 background-size:cover;
+                animation: 0.3s linear 0s enlarge;
             }
             .materials-block {
                 flex-direction: column;
@@ -75,6 +76,17 @@
                 padding-right:1em;
                 font-size: 4.73vmin;
                 text-align: center;
+            }
+            @keyframes enlarge {
+                0% {
+                    transform: scale(0.9);
+                }
+                50% {
+                    transform: scale(1.1);
+                }
+                100% {
+                    transform: scale(1.0);
+                }
             }
         </style>
         <style path = "common/building_style.rcss"/>
