@@ -31,9 +31,9 @@ function c:ctor(init, pt)
     local c = {}
     c[#c+1] = world:chest_slot {
         type = pt.station_type,
-        item = prototype.queryByName("铁板").id, -- TODO: remove this hardcode
-        amount = 100,
-        limit = 10,
+        item = 0,
+        amount = 0,
+        limit = 1,
     }
     res.station.chest = world:container_create(table.concat(c))
 
