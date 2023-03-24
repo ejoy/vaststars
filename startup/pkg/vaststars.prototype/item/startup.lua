@@ -123,6 +123,18 @@ local entities = {
         x = 144,
         y = 115,
     },
+    {
+        prototype_name = "铁制电线杆",
+        dir = "N",
+        x = 136,
+        y = 126,
+    },
+    {
+        prototype_name = "铁制电线杆",
+        dir = "N",
+        x = 144,
+        y = 126,
+    },
 }
 
 local road = {
