@@ -52,6 +52,7 @@ local function _load_game()
     end
     icanvas.create(icanvas.types().ICON, show)
     icanvas.create(icanvas.types().BUILDING_BASE, true, 0.01)
+    icanvas.create(icanvas.types().ROAD_ENTRANCE_MARKER, false, 0.02)
 
     if not saveload:restore() then
         return

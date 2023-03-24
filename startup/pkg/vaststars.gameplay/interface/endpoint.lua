@@ -1,5 +1,3 @@
-local query = require "prototype".queryById
-
 local DIRECTION <const> = {
     N = 0,
     E = 1,
@@ -43,35 +41,15 @@ local function getConnection(pt, type)
     end
 end
 
-local function create_endpoint(world, init, pt, type)
-    if not pt.crossing then
-        return 0xffff -- Assembling that does not rely on logistics network, eg: groundwater excavator.
-    end
+local function endpoint_id(world, init, pt, type)
+    assert(pt.crossing)
     local c = assert(getConnection(pt, type))
     local x, y, dir = rotate(c.position, DIRECTION[init.dir], pt.area)
     x = x + init.x
     y = y + init.y
-    return world:roadnet_create_endpoint(x, y, mapping[DIRECTION[dir]]) -- endpoint equals 0xffff if doesn't connect to any road
-end
-
-local function update_chest_endpoint(world, e)
-    local ecs = world.ecs
-    ecs:extend(e, "chest:update building:in")
-
-    local pt = query(e.building.prototype)
-    local x, y, dir = rotate(pt.crossing.connections[1].position, e.building.direction, pt.area)
-    x = x + e.building.x
-    y = y + e.building.y
-    local endpoint = world:roadnet_create_endpoint(x, y, mapping[DIRECTION[dir]]) -- endpoint equals 0xffff if doesn't connect to any road
-    if endpoint == 0xffff then
-        return
-    end
-
-    local chest = e.chest
-    chest.endpoint = endpoint
+    return world:roadnet_endpoint_id(x, y, mapping[DIRECTION[dir]])
 end
 
 return {
-    create = create_endpoint,
-    update_chest_endpoint = update_chest_endpoint,
+    endpoint_id = endpoint_id,
 }

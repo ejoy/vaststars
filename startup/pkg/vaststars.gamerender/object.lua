@@ -214,7 +214,6 @@ local function move_delta(object, delta_vec, coord_system, area_inc)
 
     object.x, object.y = coord[1], coord[2]
     object.srt.t = position
-    vsobject:set_position(position)
     return object
 end
 

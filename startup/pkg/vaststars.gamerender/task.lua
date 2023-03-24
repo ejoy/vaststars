@@ -68,7 +68,7 @@ local custom_type_mapping = {
         local c = 0
         local gameplay_world = gameplay_core.get_world()
         for e in gameplay_world.ecs:select "station:in chest:in building:in" do
-            -- TODO
+            -- TODO remove this
         end
 
         return c

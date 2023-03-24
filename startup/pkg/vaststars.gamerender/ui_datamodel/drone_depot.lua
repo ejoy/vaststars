@@ -5,17 +5,13 @@ local w = world.w
 local objects = require "objects"
 local gameplay_core = require "gameplay.core"
 local iprototype = require "gameplay.interface.prototype"
-local ichest = require "gameplay.interface.chest"
 local item_category = import_package "vaststars.prototype"("item_category")
 local click_category_mb = mailbox:sub {"click_category"}
 local set_item_mb = mailbox:sub {"set_item"}
-local gameplay = import_package "vaststars.gameplay"
-local ihub = gameplay.interface "hub"
 local itask = ecs.require "task"
 local item_unlocked = ecs.require "ui_datamodel.common.item_unlocked".is_unlocked
 
 local cache = {} -- item_index -> item
-local index_cache = {} -- item_id -> item_index
 local category_cache = {} -- category_index -> category
 local category_index_cache = {} -- item_id -> category_index
 local items_cache = {} -- category_index -> items
@@ -70,10 +66,6 @@ do
             return a.name < b.name
         end)
         items_cache[category_index] = items
-
-        for index, item in ipairs(items) do
-            index_cache[item.id] = index
-        end
     end
 end
 
@@ -83,10 +75,6 @@ end
 
 local function __get_category_index(item_id)
   return assert(category_index_cache[item_id])
-end
-
-local function __get_item_index(item_id)
-  return index_cache[item_id]
 end
 
 local function __get_items(category_index)
@@ -107,43 +95,46 @@ local function __get_default_item_indexes()
     return res
 end
 
-local function __get_hub_item(e)
-    local slot = ichest.chest_get(gameplay_core.get_world(), e.hub, 1)
-    if slot then
-        return slot.item
-    end
-end
-
 ---------------
 local M = {}
 
-function M:create(object_id)
+function M:create(object_id, interface)
     local object = assert(objects:get(object_id))
     local e = gameplay_core.get_entity(assert(object.gameplay_eid))
     if not e then
         return
     end
-    local item = __get_hub_item(e)
+    local item = interface.get_first_item(gameplay_core.get_world(), e)
     local category_index, item_indexes
     item_indexes = __get_default_item_indexes()
     if item then
         category_index = __get_category_index(item)
-        item_indexes[category_index] = __get_item_index(item)
     else
         category_index = 1
     end
 
+    local items = __get_items(category_index)
+    if item then
+        local item_index
+        for index, v in ipairs(items) do
+            if v.id == item then
+                item_index = index
+                break
+            end
+        end
+        item_indexes[category_index] = assert(item_index)
+    end
 
     local datamodel = {
         categories = __get_categories(),
         category_index = category_index,
-        items = __get_items(category_index),
+        items = items,
         item_indexes = item_indexes,
     }
     return datamodel
 end
 
-function M:stage_ui_update(datamodel, object_id)
+function M:stage_ui_update(datamodel, object_id, interface)
     for _, _, _, catalog_index in click_category_mb:unpack() do
         datamodel.category_index = catalog_index
         datamodel.items = __get_items(catalog_index)
@@ -153,8 +144,8 @@ function M:stage_ui_update(datamodel, object_id)
         local item = __get_items(datamodel.category_index)[item_index]
         local e = gameplay_core.get_entity(assert(objects:get(object_id).gameplay_eid))
         local gameplay_world = gameplay_core.get_world()
-        ihub.set_item(gameplay_world, e, item.name)
-        gameplay_core.get_world():build()
+        interface.set_first_item(gameplay_world, e, item.name)
+        gameplay_world:build()
 
         itask.update_progress("set_item", item.name)
     end

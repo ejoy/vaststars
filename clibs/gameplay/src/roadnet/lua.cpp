@@ -205,6 +205,15 @@ namespace roadnet::lua {
         lua_pushcclosure(L, eachlorry::next, 2);
         return 1;
     }
+    static int EndpointId(lua_State* L) {
+        auto& w = get_network(L);
+        auto x = luaL_checkinteger(L, 2);
+        auto y = luaL_checkinteger(L, 3);
+        auto dir = direction(luaL_checkinteger(L, 4));
+        auto id = w.EndpointId({(uint8_t)x, (uint8_t)y}, dir);
+        lua_pushinteger(L, id.id);
+        return 1;
+    }
 }
 
 extern "C" int
@@ -214,6 +223,7 @@ luaopen_vaststars_roadnet_core(lua_State* L) {
         { "get_map", roadnet::lua::get_map },
         { "map_coord", roadnet::lua::lmap_coord },
         { "each_lorry", roadnet::lua::each_lorry },
+        { "endpoint_id", roadnet::lua::EndpointId },
         { NULL, NULL },
     };
     luaL_newlib(L, l);

@@ -13,6 +13,7 @@ local types <const> = {
     -- Assembling liquid icon (displayed on the corresponding liquid port of the assembling)
     -- Fluid icon (displayed in the center of the pipe, shown every certain distance)
     ICON = 2,
+    ROAD_ENTRANCE_MARKER = 3,
 }
 
 local cache = {} -- type = entity object of canavs
@@ -28,6 +29,10 @@ entity_events.add_item = function(self, e, id, ...)
 end
 
 entity_events.remove_item = function(self, e, id)
+    if not self.cache or not self.cache[id] then
+        return
+    end
+
     for _, item_id in ipairs(self.cache[id]) do
         icas.remove_item(e, item_id)
     end

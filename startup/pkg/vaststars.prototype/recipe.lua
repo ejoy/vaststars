@@ -395,7 +395,7 @@ prototype "砖石公路" {
         -- {"石砖", 2},
     },
     results = {
-        {"砖石公路-X型-01", 2},
+        {"砖石公路-X型", 2},
     },
     time = "6s",
     description = "使用石砖制造公路",
@@ -410,27 +410,10 @@ prototype "物流中心1" {
     ingredients = {
         {"蒸汽发电机I", 1},
         {"物流需求站", 1},
-        {"砖石公路-X型-01", 10},
+        {"砖石公路-X型", 10},
     },
     results = {
         {"物流中心I", 1},
-    },
-    time = "5s",
-    description = "发电设施和车载设备制造物流中心",
-}
-
-prototype "车站" {
-    type = { "recipe" },
-    category = "物流大型制造",
-    --recipe_group =  "物流",
-    recipe_order =  52,
-    recipe_icon =  "textures/construct/logisitic1.texture",
-    ingredients = {
-        {"运输车辆I", 1},
-        {"电动机I", 2},
-    },
-    results = {
-        {"车站", 1},
     },
     time = "5s",
     description = "发电设施和车载设备制造物流中心",
@@ -1312,22 +1295,6 @@ prototype "无人机仓库打印" {
     },
     time = "5s",
     description = "打印无人机仓库",
-}
-
-prototype "车站打印" {
-    type = { "recipe" },
-    category = "设计图打印",
-    recipe_group =  "物流",
-    recipe_order =  56,
-    recipe_icon =  "textures/construct/broken-logisitic.texture",
-    ingredients = {
-        {"车站设计图", 1},
-    },
-    results = {
-        {"车站", 1},
-    },
-    time = "5s",
-    description = "打印车站",
 }
 
 prototype "送货车站打印" {

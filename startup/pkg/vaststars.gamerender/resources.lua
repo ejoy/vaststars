@@ -1176,8 +1176,6 @@ local t = {
 	"/pkg/vaststars.resources/ui/recipe_pop.rml",
 	"/pkg/vaststars.resources/ui/road_or_pipe_build.rml",
 	"/pkg/vaststars.resources/ui/route.rml",
-	"/pkg/vaststars.resources/ui/route_new.lua",
-	"/pkg/vaststars.resources/ui/route_new.rml",
 	"/pkg/vaststars.resources/ui/science.rml",
 	"/pkg/vaststars.resources/ui/statistics.rml",
 	"/pkg/vaststars.resources/ui/task_pop.rml",

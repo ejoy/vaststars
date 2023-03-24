@@ -52,7 +52,7 @@ local function _get_connections(prototype_name, x, y, dir)
 
     for _, conn in ipairs(typeobject.crossing.connections) do
         local dx, dy, ddir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
-        r[#r+1] = {x = x + dx, y = y + dy, dir = ddir, roadside = conn.roadside}
+        r[#r+1] = {x = x + dx, y = y + dy, dir = ddir}
     end
     return r
 end
@@ -343,10 +343,6 @@ local function check_construct_detector(self, prototype_name, x, y, dir)
     if typeobject.crossing then
         local valid = false
         for _, conn in ipairs(_get_connections(prototype_name, x, y, dir)) do
-            if not conn.roadside then
-                goto continue
-            end
-
             local succ, dx, dy = logistic_coord:move_coord(conn.x, conn.y, conn.dir, 1)
             if not succ then
                 goto continue

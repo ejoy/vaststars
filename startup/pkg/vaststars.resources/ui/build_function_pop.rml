@@ -305,6 +305,17 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
+                        if start.station_item_icon and start.station_item_icon ~= "" then
+                            local v = {}
+                            v.text = " "
+                            v.message = ""
+                            v.background_image = start.station_item_icon
+                            v.number = start.station_item_count
+                            v.show_number = true
+                            v.show_icon_background = true
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
                         console.log("#start.buttons", #start.buttons)
                         if #start.buttons > 0 then
                             local pos = assert(positions[#start.buttons], #start.buttons)
@@ -316,7 +327,7 @@
                         end
                         start("buttons")
                     end,
-                    "show_teardown", "show_move", "show_set_recipe", "show_set_item", "show_road_builder", "show_detail", "construction_center_icon", "construction_center_count", "construction_center_multiple", "drone_depot_icon"
+                    "show_teardown", "show_move", "show_set_recipe", "show_set_item", "show_road_builder", "show_detail", "construction_center_icon", "construction_center_count", "construction_center_multiple", "drone_depot_icon", "station_item_icon"
                 }
             })
         </script>

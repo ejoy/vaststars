@@ -125,7 +125,7 @@ static ecs::station& find_producer(world& w, station_vector& producers) {
         size_t ii = (i + w.time) % N;
         auto& station = *producers[ii];
         float cap = (float)station.lorry / station.weights;
-        if (cap < min_cap) {
+        if(!result || (cap < min_cap)) {
             min_cap = cap;
             result = &station;
             if (station.lorry == 0) {
@@ -166,7 +166,7 @@ static std::optional<uint8_t> recipeFirstOutput(world& w, uint16_t recipe) {
     if (ingredients->n >= (std::numeric_limits<uint8_t>::max)()) {
         return std::nullopt;
     }
-    return (uint8_t)ingredients->n + 1;
+    return (uint8_t)ingredients->n;
 }
 
 static int lupdate(lua_State *L) {
@@ -204,10 +204,10 @@ static int lupdate(lua_State *L) {
             ep.setOutForce(w.rw);
             auto& target_station = target.get<ecs::station>();
             auto& target_ep = w.rw.Endpoint(target_station.endpoint);
-            chestslot.amount = 0;
             l.item_classid = chestslot.item;
             l.item_amount = chestslot.amount;
             l.ending = target_ep.rev_neighbor;
+            chestslot.amount = 0;
             station.lorry--;
             target_station.lorry++;
         }

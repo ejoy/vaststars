@@ -8,8 +8,6 @@ local json = import_package "ant.json"
 local SKIP_GUIDE <const> = require "debugger".skip_guide
 local CUSTOM_ARCHIVING <const> = require "debugger".custom_archiving
 local startup_lua <const> = require "debugger".startup or "item.startup"
-local iconstant = require "gameplay.interface.constant"
-local ALL_DIR = iconstant.ALL_DIR
 
 local archival_base_dir
 if CUSTOM_ARCHIVING then
@@ -23,7 +21,6 @@ local iprototype = require "gameplay.interface.prototype"
 local startup_lua = import_package("vaststars.prototype")(startup_lua)
 local startup_entities = startup_lua.entities
 local iroadnet_converter = require "roadnet_converter"
-local startup_road = iroadnet_converter.convert(startup_lua.road)
 local objects = require "objects"
 local ifluid = require "gameplay.interface.fluid"
 local iscience = require "gameplay.interface.science"
@@ -453,8 +450,14 @@ function M:restore(index)
     self.running = true
     gameplay_core.restore(archival_dir)
     local map = gameplay_core.get_world():roadnet_get_map()
-    iroadnet:init(iroadnet_converter.from(map))
-    global.roadnet = iroadnet_converter.to_roadnet_data(map)
+    local renderData = {}
+    for coord, mask in pairs(map) do
+        local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
+        local x, y = iprototype.unpackcoord(coord)
+        renderData[coord] = {x, y, "normal", shape, dir}
+    end
+    iroadnet:init(renderData, true)
+    global.roadnet = map
 
     iscience.update_tech_list(gameplay_core.get_world())
     iui.open({"construct.rml"})
@@ -482,14 +485,9 @@ function M:restart()
     end
 
     --
-    iroadnet:init(startup_road, true)
+    iroadnet:init({}, true)
     global.roadnet = {}
-    local t = {}
-    for _, v in ipairs(startup_lua.road) do
-        global.roadnet[iprototype.packcoord(v.x, v.y)] = {v.prototype_name, v.dir}
-        t[iprototype.packcoord(v.x, v.y)] = iroadnet_converter.prototype_name_dir_to_mask(v.prototype_name, v.dir)
-    end
-    gameplay_core.get_world():roadnet_load_map(t)
+    gameplay_core.get_world():roadnet_load_map(global.roadnet)
 
     --
     for _, e in ipairs(startup_entities) do

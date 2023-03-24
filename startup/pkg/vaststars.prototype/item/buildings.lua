@@ -106,13 +106,6 @@ prototype "管道建造站" {
     item_description = "用来建造管道的场所",
 }
 
-prototype "车站" {
-    type = {"item"},
-    group = {"物流"},
-    stack = 1,
-    item_description = "运输汽车装卸货物的停靠站点",
-}
-
 prototype "采矿机I" {
     type = {"item"},
     group = {"加工"},
@@ -232,7 +225,7 @@ prototype "水电站I" {
     item_description = "处理水的工厂",
 }
 
-prototype "砖石公路-X型-01" {
+prototype "砖石公路-X型" {
     type = {"item"},
     group = {"物流"},
     stack = 100,

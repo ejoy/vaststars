@@ -26,6 +26,7 @@ local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu"
 local SHOW_LOAD_RESOURCE <const> = not require "debugger".disable_load_resource
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
 local create_builder = ecs.require "editor.builder"
+local create_station_builder = ecs.require "editor.stationbuilder"
 
 local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
 local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
@@ -200,15 +201,17 @@ function M:stage_camera_usage(datamodel)
             builder:clean(datamodel)
         end
 
+        local typeobject = iprototype.queryByName(prototype_name)
         if iprototype.is_pipe_to_ground(prototype_name) then
             builder = create_pipetogroundbuilder()
         elseif iprototype.is_pipe(prototype_name) then
             builder = create_pipebuilder()
+        elseif typeobject.crossing then
+            builder = create_station_builder()
         else
             builder = create_normalbuilder()
         end
 
-        local typeobject = iprototype.queryByName(prototype_name)
         builder:new_entity(datamodel, typeobject)
         self:flush()
         handle_pickup = false

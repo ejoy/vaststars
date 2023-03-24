@@ -32,6 +32,8 @@ local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local assembling_common = require "ui_datamodel.common.assembling"
 local gameplay = import_package "vaststars.gameplay"
 local iassembling = gameplay.interface "assembling"
+local gameplay = import_package "vaststars.gameplay"
+local ihub = gameplay.interface "hub"
 
 -- An object may contain multiple types at the same time
 -- The types are listed in order, with the earlier ones taking precedence over the later ones
@@ -83,7 +85,7 @@ local function __show_detail(typeobject)
 end
 
 local function __show_set_item(typeobject)
-    return iprototype.has_type(typeobject.type, "hub")
+    return iprototype.has_type(typeobject.type, "hub") or iprototype.has_type(typeobject.type, "station")
 end
 
 local function __show_set_recipe(typeobject)
@@ -127,7 +129,7 @@ function M:create(object_id, object_position, ui_x, ui_y)
     local show_detail = false--__show_detail(typeobject)
     local recipe_name = ""
 
-    if iprototype.has_type(typeobject.type, "assembling") or iprototype.has_type(typeobject.type, "lorry_factory") then
+    if iprototype.has_type(typeobject.type, "assembling") then
         if e.assembling.recipe ~= 0 then
             local recipe_typeobject = iprototype.queryById(e.assembling.recipe)
             recipe_name = recipe_typeobject.name
@@ -176,6 +178,10 @@ function M:create(object_id, object_position, ui_x, ui_y)
         construction_center_stop_build = construction_center_stop_build,
         drone_depot_icon = "",
         drone_depot_count = 0,
+        station_item_icon = "",
+        station_item_count = 0,
+        station_weight_increase = false,
+        station_weight_decrease = false,
         show_detail = show_detail,
         recipe_name = recipe_name,
         object_id = object_id,
@@ -234,13 +240,65 @@ local function __drone_depot_update(datamodel, object_id)
     datamodel.drone_depot_count = c.amount
 end
 
+local function __station_update(datamodel, object_id)
+    local object = assert(objects:get(object_id))
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if not e then
+        return
+    end
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    if not iprototype.has_type(typeobject.type, "station") then
+        return
+    end
+    local c = ichest.chest_get(gameplay_core.get_world(), e.station, 1)
+    if not c then
+        return
+    end
+    local item_typeobject = iprototype.queryById(c.item)
+    datamodel.station_item_icon = item_typeobject.icon
+    datamodel.station_item_count = c.amount
+    datamodel.station_weight_increase = true
+    datamodel.station_weight_decrease = true
+end
+
+local function __set_hub_first_item(gameplay_world, e, prototype_name)
+    ihub.set_item(gameplay_world, e, prototype_name)
+end
+
+local function __get_hub_first_item(gameplay_world, e)
+    local slot = ichest.chest_get(gameplay_world, e.hub, 1)
+    if slot then
+        return slot.item
+    end
+end
+
+local function __set_station_first_item(gameplay_world, e, prototype_name)
+    local station = e.station
+    gameplay_world:container_destroy(station)
+
+    local typeobject = iprototype.queryByName(prototype_name)
+    local c = {}
+    c[#c+1] = gameplay_world:chest_slot {
+        type = "blue",
+        item = typeobject.id,
+        limit = 1,
+    }
+    station.chest = gameplay_world:container_create(table.concat(c))
+end
+
+local function __get_station_first_item(gameplay_world, e)
+    local slot = ichest.chest_get(gameplay_world, e.station, 1)
+    if slot then
+        return slot.item
+    end
+end
+
 function M:update(datamodel, object_id, recipe_name)
     if datamodel.object_id ~= object_id then
         return
     end
     datamodel.recipe_name = recipe_name
     __construction_center_update(datamodel, object_id)
-    __drone_depot_update(datamodel, object_id)
     return true
 end
 
@@ -253,13 +311,26 @@ function M:stage_ui_update(datamodel, object_id)
 
     __construction_center_update(datamodel, object_id)
     __drone_depot_update(datamodel, object_id)
+    __station_update(datamodel, object_id)
 
     for _, _, _, object_id in set_recipe_mb:unpack() do
         iui.open({"recipe_pop.rml"}, object_id)
     end
 
     for _, _, _, object_id in set_item_mb:unpack() do
-        iui.open({"drone_depot.rml"}, object_id)
+        local object = assert(objects:get(object_id))
+        local typeobject = iprototype.queryByName(object.prototype_name)
+        local interface = {}
+        if iprototype.has_type(typeobject.type, "hub") then
+            interface.get_first_item = __get_hub_first_item
+            interface.set_first_item = __set_hub_first_item
+        elseif iprototype.has_type(typeobject.type, "station") then
+            interface.get_first_item = __get_station_first_item
+            interface.set_first_item = __set_station_first_item
+        else
+            assert(false)
+        end
+        iui.open({"drone_depot.rml"}, object_id, interface)
     end
 
     for _, _, _, object_id in detail_mb:unpack() do

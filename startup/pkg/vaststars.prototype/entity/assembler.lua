@@ -122,7 +122,7 @@ prototype "车辆厂I" {
     icon = "textures/building_pic/small_pic_mars_assembling_machine.texture",
     background = "textures/build_background/pic_mars_assembling_machine.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "consumer", "lorry_factory"},
+    type = {"building", "assembling", "consumer", "lorry_factory"},
     area = "5x5",
     speed = "50%",
     power = "300kW",
@@ -135,4 +135,9 @@ prototype "车辆厂I" {
         output = {
         },
     },
+    crossing = {
+        connections = {
+            {type="lorry_factory", position={2,4,"S"}},
+        },
+    }
 }

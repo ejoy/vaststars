@@ -48,6 +48,10 @@ function m:init_world()
             {layer_name = "6", logic_layer_names = {"ICON_CONTENT"}},
             {layer_name = "7", logic_layer_names = {"WIRE"}},
         },
+        {
+            "translucent",
+            {layer_name = "8", logic_layer_names = {"SELECTED_BOXES"}},
+        },
     })
 
     iefk.preload "/pkg/vaststars.resources/effect/efk/"
@@ -92,6 +96,7 @@ function m:init_world()
     end
     icanvas.create(icanvas.types().ICON, show)
     icanvas.create(icanvas.types().BUILDING_BASE, true, 0.01)
+    icanvas.create(icanvas.types().ROAD_ENTRANCE_MARKER, false, 0.02)
 
     if not saveload:restore() then
         return
