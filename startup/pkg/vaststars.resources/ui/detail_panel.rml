@@ -221,7 +221,7 @@
                             <div class="progress-background" data-style-width="progress"/>
                             <div style="flex-direction:row; justify-content: flex-start; align-items: center; position: absolute; left:0;">
                                 <div class = "small-bg" style='background-image: "textures/science/book.texture"; padding-top:1vmin;'/>
-                                <div style="text-align: left; -webkit-text-stroke: 0.2vmin rgb(0, 112, 192); font-size: 3.5vmin; padding-bottom: 1vmin;">{{recipe_name}}</div>
+                                <div style="text-align: left; -webkit-text-stroke: 0.2vmin rgb(0, 112, 192); font-size: 3.2vmin;">{{recipe_name}}</div>
                             </div>
                             <div style="position: absolute; right:0; padding-bottom: 1vmin; text-align: right; -webkit-text-stroke: 0.3vmin rgb(39, 32, 17); font-size: 4.2vmin; color: chartreuse;">{{progress}}</div>
                         </div> 
