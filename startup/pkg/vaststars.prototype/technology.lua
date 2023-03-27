@@ -951,7 +951,7 @@ prototype "建造电线杆" {
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
-      unlock_recipe = {"道路建造站"},
+      unlock_recipe = {"道路建造站","道路建造站打印"},
       unlock_item = {"道路建造站设计图"},
     },
     prerequisites = {"生产石砖"},
