@@ -507,7 +507,6 @@ namespace roadnet {
     }
     endpointid network::EndpointId(loction loc, direction dir) {
         auto it = endpointMap.find({loc, dir});
-        assert(it != endpointMap.end());
         if (it != endpointMap.end()) {
             return it->second;
         }

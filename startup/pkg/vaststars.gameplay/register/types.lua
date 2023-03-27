@@ -133,6 +133,12 @@ register_unit("filter", "string", function(s)
 	return s
 end)
 
+register_unit("station_type", "string", function(s)
+	assert(type(s) == "string")
+	assert(s == "station_consumer" or s == "station_producer")
+	return s
+end)
+
 local function query(t, v)
 	if t == "raw" then
 		return tonumber(v)

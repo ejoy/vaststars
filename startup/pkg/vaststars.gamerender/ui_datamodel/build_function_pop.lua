@@ -276,14 +276,17 @@ local function __set_station_first_item(gameplay_world, e, prototype_name)
     local station = e.station
     gameplay_world:container_destroy(station)
 
-    local typeobject = iprototype.queryByName(prototype_name)
+    local typeobject = iprototype.queryById(e.building.prototype)
+    local typeobject_item = iprototype.queryByName(prototype_name)
     local c = {}
     c[#c+1] = gameplay_world:chest_slot {
-        type = "blue",
-        item = typeobject.id,
+        type = typeobject.chest_type,
+        item = typeobject_item.id,
         limit = 1,
     }
     station.chest = gameplay_world:container_create(table.concat(c))
+
+    e.chest.chest = station.chest
 end
 
 local function __get_station_first_item(gameplay_world, e)

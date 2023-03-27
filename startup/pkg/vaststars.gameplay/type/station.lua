@@ -1,8 +1,8 @@
 local type = require "register.type"
 local iendpoint = require "interface.endpoint"
-local prototype = require "prototype"
 local c = type "station"
-    .station_type "chest_type"
+    .station_type "station_type"
+    .chest_type "chest_type"
     .weights "count"
 
 local CHEST_TYPE <const> = {
@@ -27,23 +27,20 @@ function c:ctor(init, pt)
         }
     }
 
-    assert(pt.station_type)
     local c = {}
     c[#c+1] = world:chest_slot {
-        type = pt.station_type,
+        type = pt.chest_type,
         item = 0,
         amount = 0,
         limit = 1,
     }
     res.station.chest = world:container_create(table.concat(c))
+    res[pt.station_type] = true
 
-    if pt.station_type == CHEST_TYPE.blue then
-        res.station_consumer = true
-    elseif pt.station_type == CHEST_TYPE.red then
-        res.station_producer = true
-    else
-        assert(false)
-    end
-
+    res.chest = {
+        chest = res.station.chest,
+        fluidbox_in = 0,
+        fluidbox_out = 0,
+    }
     return res
 end

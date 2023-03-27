@@ -20,7 +20,7 @@ local igrid_entity = ecs.require "engine.grid_entity"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
-local create_selected_boxed = ecs.require "editor.selected_boxes"
+local create_selected_boxes = ecs.require "editor.selected_boxes"
 local icanvas = ecs.require "engine.canvas"
 local datalist = require "datalist"
 local fs = require "filesystem"
@@ -85,10 +85,19 @@ local function _get_road_entrance_position(typeobject, dir, position)
     return math3d.ref(math3d.add(position, {ox * logistic_coord.tile_size / 2, 0, oy * logistic_coord.tile_size / 2})), ddir
 end
 
+local function __align(prototype_name, dir)
+    local typeobject = iprototype.queryByName(prototype_name)
+    local coord, position = logistic_coord:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, dir))
+    if not coord then
+        return
+    end
+    return position, coord[1], coord[2]
+end
+
 local function __new_entity(self, datamodel, typeobject)
     iobject.remove(self.pickup_object)
     local dir = DEFAULT_DIR
-    local x, y = iobject.central_coord(typeobject.name, dir, logistic_coord, 1)
+    local position, x, y = __align(typeobject.name, dir)
     if not x or not y then
         return
     end
@@ -110,7 +119,7 @@ local function __new_entity(self, datamodel, typeobject)
         x = x,
         y = y,
         srt = {
-            t = logistic_coord:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir, 1, 1)),
+            t = position,
         },
         fluid_name = "",
         state = state,
@@ -119,14 +128,15 @@ local function __new_entity(self, datamodel, typeobject)
     iui.open({"construct_pop.rml"}, self.pickup_object.srt.t)
 
     local road_entrance_position, road_entrance_dir = _get_road_entrance_position(typeobject, dir, self.pickup_object.srt.t)
+    local selected_boxes_srt = {t = logistic_coord:get_begin_position_by_coord(x, y, 1, 1)}
     if road_entrance_position then
         local srt = {t = road_entrance_position, r = ROTATORS[road_entrance_dir]}
         if datamodel.show_confirm then
             self.road_entrance = create_road_entrance(srt, "valid")
-            self.selected_boxes = create_selected_boxed(srt, typeobject.area, "valid")
+            self.selected_boxes = create_selected_boxes(selected_boxes_srt, typeobject.area, "valid")
         else
             self.road_entrance = create_road_entrance(srt, "invalid")
-            self.selected_boxes = create_selected_boxed(srt, typeobject.area, "invalid")
+            self.selected_boxes = create_selected_boxes(selected_boxes_srt, typeobject.area, "invalid")
         end
     end
 end
@@ -270,8 +280,8 @@ local function __show_road_entrance_marker(self, typeobject, dir)
         table.unpack(markers)
     }
 
+    icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
     icanvas.add_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0, table.unpack(t))
-
     return min_coord
 end
 
@@ -314,17 +324,6 @@ local function _get_mineral_recipe(prototype_name, x, y, dir)
     end
 
     return imining.get_mineral_recipe(prototype_name, found)
-end
-
-local function __align(object)
-    assert(object)
-    local typeobject = iprototype.queryByName(object.prototype_name)
-    local coord, srt = logistic_coord:align(camera.get_central_position(), iprototype.rotate_area(typeobject.area, object.dir))
-    if not coord then
-        return object
-    end
-    object.srt.t = srt
-    return object, coord[1], coord[2]
 end
 
 local function rotate_pickup_object(self, datamodel, dir, delta_vec)
@@ -383,12 +382,12 @@ local function touch_end(self, datamodel)
         return
     end
 
-    local x, y
-    self.pickup_object, x, y = __align(self.pickup_object)
-    if not x then
+    local position, x, y = __align(self.pickup_object.prototype_name, self.pickup_object.dir)
+    if not position then
         return
     end
     pickup_object.x, pickup_object.y = x, y
+    pickup_object.srt.t = position
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
 
@@ -488,11 +487,13 @@ local function complete(self, object_id)
     iobject.remove(self.pickup_object)
     self.pickup_object = nil
 
+    icanvas.remove_item(icanvas.types().ROAD_ENTRANCE_MARKER, 0)
+
     ieditor:revert_changes({"TEMPORARY"})
 
     local object = objects:get(object_id, {"CONFIRM"})
     local rd = _get_connections(object.prototype_name, object.x, object.y, object.dir)
-    assert(#rd == 1)
+    assert(#rd == 1, ("road entrance must have one connection: %s"):format(object.prototype_name))
     local dx, dy = iprototype.move_coord(rd[1].x, rd[1].y, rd[1].dir, 1)
     local mask = assert(global.roadnet[iprototype.packcoord(dx, dy)])
     mask = set_state_value(mask, iprototype.reverse_dir(rd[1].dir))

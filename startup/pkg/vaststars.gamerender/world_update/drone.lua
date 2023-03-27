@@ -181,9 +181,7 @@ local function update_world(gameworld)
     local drone_task = {}
     for e in gameworld.ecs:select "drone:in eid:in" do
         local drone = e.drone
-        if drone.home == 0 then -- TODO: remove this
-            goto continue
-        end
+        assert(drone.home ~= 0, "drone.home == 0")
         -- if (drone.prev ~= 0) or (drone.next ~= 0) or (drone.maxprogress ~= 0) or (drone.progress ~= 0) then
         --     print(drone.prev, drone.next, drone.maxprogress, drone.progress, drone.item)
         -- end

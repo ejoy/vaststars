@@ -180,6 +180,9 @@ static int lupdate(lua_State *L) {
     for (auto& v : ecs_api::select<ecs::station_producer, ecs::station, ecs::building>(w.ecs)) {
         auto& station = v.get<ecs::station>();
         producers[i++] = &station;
+        if (station.endpoint == 0xFFFF) {
+            continue;
+        }
         auto& ep = w.rw.Endpoint(station.endpoint);
         auto lorryId = ep.waitingLorry(w.rw);
         if (!lorryId) {
@@ -214,6 +217,9 @@ static int lupdate(lua_State *L) {
     }
     for (auto& v : ecs_api::select<ecs::station_consumer, ecs::station>(w.ecs)) {
         auto& station = v.get<ecs::station>();
+        if (station.endpoint == 0xFFFF) {
+            continue;
+        }
         auto& ep = w.rw.Endpoint(station.endpoint);
         auto lorryId = ep.waitingLorry(w.rw);
         if (!lorryId) {
@@ -243,6 +249,9 @@ static int lupdate(lua_State *L) {
     }
     for (auto& v : ecs_api::select<ecs::lorry_factory, ecs::assembling, ecs::chest>(w.ecs)) {
         auto& lorry_factory = v.get<ecs::lorry_factory>();
+        if (lorry_factory.endpoint == 0xFFFF) {
+            continue;
+        }
         auto& ep = w.rw.Endpoint(lorry_factory.endpoint);
         if (!ep.isReady(w.rw)) {
             continue;

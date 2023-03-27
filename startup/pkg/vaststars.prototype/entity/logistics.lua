@@ -310,7 +310,8 @@ prototype "送货车站" {
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "station"},
-    station_type = "red",
+    station_type = "station_producer",
+    chest_type = "blue",
     area = "1x1",
     weights = 1,
     crossing = {
@@ -327,7 +328,8 @@ prototype "收货车站" {
     background = "textures/build_background/pic_chest.texture",
     construct_detector = {"exclusive"},
     type = {"building", "station"},
-    station_type = "blue",
+    station_type = "station_consumer",
+    chest_type = "red",
     area = "1x1",
     weights = 1,
     crossing = {

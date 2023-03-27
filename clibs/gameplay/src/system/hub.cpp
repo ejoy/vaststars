@@ -8,6 +8,7 @@ extern "C" {
 }
 #include <bee/nonstd/unreachable.h>
 #include <math.h>
+#include <algorithm>
 
 template <typename Map>
 static typename Map::mapped_type const* map_find(Map const& map, typename Map::key_type const& key) {
@@ -203,11 +204,6 @@ lbuild(lua_State *L) {
                 break;
             }
         }
-        if (hub_info.hub.size() <= 1) {
-            if (hub_info.chest_red.empty() && hub_info.chest_blue.empty()) {
-                continue;
-            }
-        }
 
         auto s = create_berth({building, area}, hub_mgr::berth_type::hub, 0);
         b.hubs.emplace(std::move(s), std::move(hub_info));
@@ -221,7 +217,7 @@ lbuild(lua_State *L) {
             continue;
         }
         hub_mgr::berth home = std::bit_cast<hub_mgr::berth>(drone.home);
-        if (!map_find(w.hubs.hubs, home)) {
+        if (!map_find(b.hubs, home)) {
             drone.status = (uint8_t)drone_status::error;
             drone.prev = 0;
             drone.next = 0;
@@ -232,6 +228,11 @@ lbuild(lua_State *L) {
             drone.item = 0;
         }
     }
+
+    std::erase_if(b.hubs, [](const auto& v) {
+        const auto& hub_info = v.second;
+        return hub_info.hub.size() <= 1 && hub_info.chest_red.empty() && hub_info.chest_blue.empty();
+    });
     return 0;
 }
 

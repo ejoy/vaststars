@@ -47,7 +47,11 @@ local function endpoint_id(world, init, pt, type)
     local x, y, dir = rotate(c.position, DIRECTION[init.dir], pt.area)
     x = x + init.x
     y = y + init.y
-    return world:roadnet_endpoint_id(x, y, mapping[DIRECTION[dir]])
+    local endpoint_id =  world:roadnet_endpoint_id(x, y, mapping[DIRECTION[dir]])
+    if endpoint_id == 0xFFFF then
+        print("can not find roadnet endpoint", pt.name, x, y, mapping[DIRECTION[dir]])
+    end
+    return endpoint_id
 end
 
 return {
