@@ -264,10 +264,11 @@ static int lupdate(lua_State *L) {
         auto& slot = *slot_opt;
         auto& chest = v.get<ecs::chest>();
         auto& chestslot = chest::array_at(w, container::index::from(chest.chest), slot);
-        if (chestslot.amount == 0) {
+        if (chestslot.amount == 0 || chestslot.limit == 0) {
             continue;
         }
         chestslot.amount--;
+        chestslot.limit--;
         auto& producer = find_producer(w, producers);
         roadnet::lorryid lorryId = w.rw.createLorry(w, chestslot.item);
         auto& l = w.rw.Lorry(lorryId);
