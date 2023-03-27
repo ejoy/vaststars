@@ -927,7 +927,7 @@ prototype "建造电线杆" {
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 6,
+    count = 8,
     time = "1s"
   }
 
@@ -958,7 +958,7 @@ prototype "建造电线杆" {
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 9,
+    count = 10,
     time = "1s"
   }
 
@@ -1079,7 +1079,7 @@ prototype "建造电线杆" {
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 6,
+    count = 8,
     time = "3s"
   }
   
@@ -1132,7 +1132,7 @@ prototype "建造电线杆" {
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 9,
+    count = 10,
     time = "2s"
   }
 
@@ -1166,7 +1166,7 @@ prototype "建造电线杆" {
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 6,
+    count = 8,
     time = "2s"
   }
 
@@ -1201,7 +1201,7 @@ prototype "电磁学1" {
   ingredients = {
     {"地质科技包", 1},
   },
-  count = 15,
+  count = 20,
   time = "6s"
 }
 
@@ -1216,7 +1216,7 @@ prototype "物流学II" {
   ingredients = {
     {"地质科技包", 1},
   },
-  count = 15,
+  count = 20,
   time = "6s"
 }
 
@@ -1236,7 +1236,7 @@ prototype "气候研究" {
     { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
   },
   sign_icon = "textures/science/tech-important.texture",
-  count = 9,
+  count = 12,
   time = "1.5s"
 }
 
@@ -1252,7 +1252,7 @@ prototype "管道系统1" {
   ingredients = {
       {"地质科技包", 1},
   },
-  count = 9,
+  count = 12,
   time = "1s"
 }
 
@@ -1283,7 +1283,7 @@ prototype "排放" {
   ingredients = {
     {"气候科技包", 1},
   },
-  count = 12,
+  count = 15,
   time = "2s"
 }
 
@@ -1303,7 +1303,7 @@ prototype "采水研究" {
     { desc = "该科技是火星探索的前沿科技，它可以引导更多的科技研究", icon = "textures/science/important.texture"},
   },
   sign_icon = "textures/science/tech-important.texture",
-  count = 9,
+  count = 12,
   time = "1.5s"
 }
 
