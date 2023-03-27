@@ -8,6 +8,7 @@ prototype "指挥中心" {
     construct_detector = {"exclusive"},
     type = {"building", "generator", "base", "chest"},
     chest_type = "blue",
+    show_detail = "false",
     area = "5x5",
     power_supply_area = "9x9",
     power_supply_distance = 9,
