@@ -331,7 +331,22 @@ local function confirm(self, datamodel)
     global.construct_queue:put(pickup_object.prototype_name, pickup_object.id)
 end
 
+-- TODO: remove this
 local gameplay_core = require "gameplay.core"
+local gameplay = import_package "vaststars.gameplay"
+local ihub = gameplay.interface "hub"
+local ichest = require "gameplay.interface.chest"
+
+local function __set_hub_first_item(gameplay_world, e, prototype_name)
+    ihub.set_item(gameplay_world, e, prototype_name)
+end
+
+local function __get_hub_first_item(gameplay_world, e)
+    local slot = ichest.chest_get(gameplay_world, e.hub, 1)
+    if slot then
+        return slot.item
+    end
+end
 
 local function complete(self, object_id)
     do
@@ -349,7 +364,10 @@ local function complete(self, object_id)
 
     local typeobject = iprototype.queryByName(object.prototype_name)
     if iprototype.has_type(typeobject.type, "hub") then
-        iui.open({"drone_depot.rml"}, object_id)
+        local interface = {} -- TODO: remove this
+        interface.get_first_item = __get_hub_first_item
+        interface.set_first_item = __set_hub_first_item
+        iui.open({"drone_depot.rml"}, object_id, interface)
     end
 end
 
