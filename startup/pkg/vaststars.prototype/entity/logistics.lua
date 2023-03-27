@@ -101,7 +101,6 @@ prototype "砖石公路-I型" {
     flow_type = 11,
     flow_direction = {"N", "E"},
     track = "I",
-    tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
     crossing = {
@@ -121,7 +120,6 @@ prototype "砖石公路-L型" {
     flow_type = 11,
     flow_direction = {"N", "E", "S", "W"},
     track = "L",
-    tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
     crossing = {
@@ -141,7 +139,6 @@ prototype "砖石公路-T型" {
     flow_type = 11,
     flow_direction = {"N", "E", "S", "W"},
     track = "T",
-    tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
     crossing = {
@@ -162,7 +159,6 @@ prototype "砖石公路-X型" {
     flow_type = 11,
     flow_direction = {"N"},
     track = "X",
-    tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
     crossing = {
@@ -184,7 +180,6 @@ prototype "砖石公路-O型" {
     flow_type = 11,
     flow_direction = {"N"},
     track = "O",
-    tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
     crossing = {
@@ -202,7 +197,6 @@ prototype "砖石公路-U型" {
     flow_type = 11,
     flow_direction = {"N", "E", "S", "W"},
     track = "U",
-    tickcount = 21,
     type = {"building", "road"},
     area = "1x1",
     crossing = {

@@ -4,7 +4,6 @@ local w = world.w
 
 local math3d = require "math3d"
 local lorries = {}
-local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local iprototype = require "gameplay.interface.prototype"
 local road_track = import_package "vaststars.prototype"("road_track")
 local iterrain = ecs.require "terrain"
@@ -13,49 +12,45 @@ local itrack = ecs.require "engine.track"
 local create_lorry = ecs.require "lorry"
 local global = require "global"
 local iroadnet_converter = require "roadnet_converter"
+local cr = import_package "ant.compile_resource"
+local serialize = import_package "ant.serialize"
+local fs = require "filesystem"
+local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
+local gameplay_core = require "gameplay.core"
 
-local STRAIGHT_TICKCOUNT <const> = 10
-local CROSS_TICKCOUNT <const> = 20
+local CONSTANTS = gameplay_core.get_world():roadnet_constants()
+local STRAIGHT_TICKCOUNT <const> = CONSTANTS.kTime
+local CROSS_TICKCOUNT <const> = CONSTANTS.kCrossTime
 
-local is_cross; do
-    local mt = {}
-    function mt:__index(k)
-        local v = {}
-        rawset(self, k, v)
-        return v
-    end
-    local prototype_bits = setmetatable({}, mt) -- = [prototype][direction] = bits
-    local bits_prototype = setmetatable({}, mt)
-
-    local mapping = {
-        W = 0, -- left
-        N = 1, -- top
-        E = 2, -- right
-        S = 3, -- bottom
-    }
-
-    for _, typeobject in pairs(iprototype.each_maintype("building", "road")) do
-        for _, entity_dir in pairs(typeobject.flow_direction) do
-            local bits = 0
-            local c = 0
-
-            local connections = typeobject.crossing.connections
-            for _, connection in ipairs(connections) do
-                local dir = assert(mapping[iprototype.rotate_dir(connection.position[3], entity_dir)])
-                local value = 1
-                c = c + 1
-                bits = bits | (value << dir)
+local function __prefab_parser(f)
+    local fullpath = RESOURCES_BASE_PATH:format(f)
+    local res = serialize.parse(fullpath, cr.read_file(fullpath))
+    local patch = fullpath .. ".patch"
+    if fs.exists(fs.path(patch)) then
+        local count = #res
+        for index, value in ipairs(serialize.parse(patch, cr.read_file(patch))) do -- TODO: duplicated code - ant.ecs/main.lua -> create_template
+            if value.mount then
+                if value.mount ~= 1 then
+                    value.mount = count + index - 1
+                end
+            else
+                value.mount = 1
             end
-
-            assert(prototype_bits[typeobject.name][entity_dir] == nil)
-            prototype_bits[typeobject.name][entity_dir] = {bits = bits, is_cross = (c >= 3), c = c}
-            bits_prototype[bits] = {name = typeobject.name, dir = entity_dir}
+            res[#res + 1] = value
         end
     end
+    return res
+end
 
-    function is_cross(prototype_name, dir)
-        return assert(prototype_bits[prototype_name][dir]).is_cross
+local function __prefab_slots(prefab)
+    local res = {}
+    local t = __prefab_parser(prefab)
+    for _, v in ipairs(t) do
+        if v.data.slot then
+            res[v.data.name] = v.data
+        end
     end
+    return res
 end
 
 local DIRECTION <const> = {
@@ -66,22 +61,22 @@ local DIRECTION <const> = {
 }
 
 local cache = {}
-local function _make_cache()
-    -- TODO: cache matrix move to prototype?
+do
     for _, typeobject in pairs(iprototype.each_maintype("building", "road")) do
-        local slots = igame_object.get_prefab(typeobject.model).slots
+        local slots = __prefab_slots(typeobject.model)
         if not next(slots) then
             goto continue
         end
 
         assert(typeobject.track)
+        local is_cross = #typeobject.crossing.connections > 2
         local track = assert(road_track[typeobject.track])
         for _, entity_dir in pairs(typeobject.flow_direction) do
             local t = iprototype.dir_tonumber(entity_dir) - iprototype.dir_tonumber('N')
-
+            local tickcount = is_cross and CROSS_TICKCOUNT or STRAIGHT_TICKCOUNT
             for toward, slot_names in pairs(track) do
                 local z = toward
-                if is_cross(typeobject.name, entity_dir) then
+                if is_cross then
                     assert(toward <= 0xf) -- see also: enum RoadType
                     local s = ((z >> 2)  + t) % 4 -- high 2 bits is indir
                     local e = ((z & 0x3) + t) % 4 -- low  2 bits is outdir
@@ -92,7 +87,7 @@ local function _make_cache()
 
                 local combine_keys = ("%s:%s:%s"):format(typeobject.name, entity_dir, z) -- TODO: optimize
                 -- assert(cache[combine_keys] == nil)
-                cache[combine_keys] = itrack.make_track(slots, slot_names, typeobject.tickcount)
+                cache[combine_keys] = itrack.make_track(slots, slot_names, tickcount)
             end
         end
 
@@ -101,9 +96,6 @@ local function _make_cache()
 end
 
 local function offset_matrix(prototype_name, dir, toward, tick)
-    if not next(cache) then
-        _make_cache()
-    end
     local combine_keys = ("%s:%s:%s"):format(prototype_name, dir, toward) -- TODO: optimize
     local mat = cache[combine_keys]
     if not mat then
@@ -123,9 +115,10 @@ local function _get_offset_matrix(is_cross_flag, x, y, toward, tick)
     local mask = assert(global.roadnet[coord])
     local prototype_name, dir = iroadnet_converter.mask_to_prototype_name_dir(mask)
     local matrix = math3d.matrix {t = iterrain:get_position_by_coord(x, y, 1, 1), r = ROTATORS[dir]}
+    local is_cross = #iprototype.queryByName(prototype_name).crossing.connections > 2
 
     if not is_cross_flag then
-        if is_cross(prototype_name, dir) then
+        if is_cross then
             local REVERSE <const> = {
                 [0] = 2,
                 [1] = 3,
@@ -171,7 +164,8 @@ local function update(lorry_id, is_cross, x, y, z, tick)
     else
         local pos
         pos, toward = z & 0x0F, (z >> 4) & 0x0F -- pos: [0, 1], toward: [0, 1], tick: [0, (STRAIGHT_TICKCOUNT - 1)]
-        ti = pos * STRAIGHT_TICKCOUNT + (STRAIGHT_TICKCOUNT - tick)
+        -- assert(pos == 0 and pos == 1) -- TODO: remove assert
+        ti = STRAIGHT_TICKCOUNT - tick
     end
     ti = ti + 1 -- offset matrix start from 1
 
