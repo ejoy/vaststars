@@ -1008,7 +1008,7 @@ prototype "建造电线杆" {
     count = 1,
     effects = {
       unlock_recipe = {"维修运输汽车"},
-      unlock_item = {"运输车辆I"},
+      unlock_item = {"运输车辆I","破损运输车辆"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
