@@ -291,6 +291,31 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
+                        if start.lorry_factory_inc_lorry then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "增加车辆"
+                            v.message = "lorry_factory_inc_lorry"
+                            v.background_image = "textures/construct/truck-item.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.lorry_factory_icon and start.lorry_factory_icon ~= "" then
+                            local v = setmetatable({}, {__index = mt})
+                            v.background_image = start.lorry_factory_icon
+                            v.number = start.lorry_factory_count
+                            v.show_number = true
+                            v.show_icon_background = true
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
+                        if start.lorry_factory_dec_lorry then
+                            local v = setmetatable({}, {__index = mt})
+                            v.text = "减少车辆"
+                            v.message = "lorry_factory_dec_lorry"
+                            v.background_image = "textures/construct/truck-item.texture"
+                            start.buttons[#start.buttons + 1] = v
+                        end
+
                         console.log("#start.buttons", #start.buttons)
                         if #start.buttons > 0 then
                             local pos = assert(positions[#start.buttons], #start.buttons)
@@ -302,7 +327,9 @@
                         end
                         start("buttons")
                     end,
-                    "show_teardown", "show_move", "show_set_recipe", "show_set_item", "show_road_builder", "show_detail", "construction_center_icon", "construction_center_count", "construction_center_multiple", "drone_depot_icon", "station_item_icon"
+                    "show_teardown", "show_move", "show_set_recipe", "show_set_item", "show_road_builder", "show_detail", 
+                    "construction_center_icon", "construction_center_count", "construction_center_multiple", "drone_depot_icon", "station_item_icon",
+                    "lorry_factory_icon", "lorry_factory_count", "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
                 }
             })
         </script>

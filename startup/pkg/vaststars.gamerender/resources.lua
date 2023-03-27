@@ -883,7 +883,6 @@ local t = {
 	"/pkg/vaststars.gamerender/vsobject.lua",
 	"/pkg/vaststars.gamerender/vsobject_manager.lua",
 	"/pkg/vaststars.gamerender/world_update/assembling.lua",
-	"/pkg/vaststars.gamerender/world_update/base_chest_cache.lua",
 	"/pkg/vaststars.gamerender/world_update/construct_queue.lua",
 	"/pkg/vaststars.gamerender/world_update/construction_center.lua",
 	"/pkg/vaststars.gamerender/world_update/drone.lua",

@@ -6,7 +6,16 @@ prototype "指挥中心" {
     icon = "textures/building_pic/small_pic_headquarter.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "generator", "base", "chest"},
+    type = {"building", "generator", "base", "assembling", "consumer"},
+    speed = "50%",
+    maxslot = "8",
+    fluidboxes = {
+        input = {
+        },
+        output = {
+        },
+    },
+    limit = {ingredientsLimit = 0, resultsLimit = 0},
     chest_type = "blue",
     show_arc_menu = false,
     area = "5x5",
@@ -15,7 +24,6 @@ prototype "指挥中心" {
     dismantle_area = "21x21",
     power = "1MW",
     priority = "primary",
-    slots = 60,
     teardown = false,
     crossing = {
         connections = {

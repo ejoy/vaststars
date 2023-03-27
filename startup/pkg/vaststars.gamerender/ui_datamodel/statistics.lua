@@ -303,7 +303,12 @@ function M:stage_ui_update(datamodel)
             table.sort(newitems, function (a, b) return a.power > b.power end)
             local maxnode = #newitems > 0 and newitems[1].node or {power = 0, time = 0}
             -- local persec_totoal = maxnode.power / total.time
-            local maxframepower = maxnode.frames[maxnode.max_index].power
+            local maxframepower
+            if #newitems <= 0 then
+                maxframepower = 1
+            else
+                maxframepower = maxnode.frames[maxnode.max_index].power
+            end
             datamodel.total = maxnode.power
             local consumenode = global.statistic.power_consumed[filter_type]
             local consumed = consumenode.power / consumenode.time

@@ -38,6 +38,6 @@ function c:ctor(init, pt)
     }
     e.chest.chest = world:container_create(table.concat(r))
 
-    assembling.set_recipe(self, e, pt, recipe_name, init.fluids)
+    assembling.set_recipe(self, e, pt, recipe_name, init.fluids, pt.limit)
     return e
 end

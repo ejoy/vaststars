@@ -176,6 +176,10 @@ function M:create(object_id, object_position, ui_x, ui_y)
         construction_center_place = construction_center_place,
         construction_center_build = construction_center_build,
         construction_center_stop_build = construction_center_stop_build,
+        lorry_factory_icon = "",
+        lorry_factory_count = 0,
+        lorry_factory_inc_lorry = false,
+        lorry_factory_dec_lorry = false,
         drone_depot_icon = "",
         drone_depot_count = 0,
         station_item_icon = "",
@@ -219,6 +223,32 @@ local function __construction_center_update(datamodel, object_id)
     datamodel.construction_center_icon = construction_center_icon
     datamodel.construction_center_count = construction_center_count
     datamodel.construction_center_ingredients = construction_center_ingredients
+end
+
+local function __lorry_factory_update(datamodel, object_id)
+    local object = assert(objects:get(object_id))
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if not e then
+        return
+    end
+    local typeobject = iprototype.queryByName(object.prototype_name)
+    local lorry_factory_inc_lorry, lorry_factory_dec_lorry = false, false
+    local lorry_factory_icon, lorry_factory_count = "", 0
+    if iprototype.has_type(typeobject.type, "lorry_factory") then
+        if e.assembling.recipe ~= 0 then
+            lorry_factory_inc_lorry = true
+            lorry_factory_dec_lorry = true
+
+            local _, results = assembling_common.get(gameplay_core.get_world(), e)
+            assert(results and results[1])
+            lorry_factory_icon = results[1].icon
+            lorry_factory_count = results[1].count
+        end
+    end
+    datamodel.lorry_factory_icon = lorry_factory_icon
+    datamodel.lorry_factory_count = lorry_factory_count
+    datamodel.lorry_factory_inc_lorry = lorry_factory_inc_lorry
+    datamodel.lorry_factory_dec_lorry = lorry_factory_dec_lorry
 end
 
 local function __drone_depot_update(datamodel, object_id)
@@ -302,6 +332,7 @@ function M:update(datamodel, object_id, recipe_name)
     end
     datamodel.recipe_name = recipe_name
     __construction_center_update(datamodel, object_id)
+    __lorry_factory_update(datamodel, object_id)
     return true
 end
 
@@ -313,6 +344,7 @@ function M:stage_ui_update(datamodel, object_id)
     end
 
     __construction_center_update(datamodel, object_id)
+    __lorry_factory_update(datamodel, object_id)
     __drone_depot_update(datamodel, object_id)
     __station_update(datamodel, object_id)
 
