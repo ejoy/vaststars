@@ -224,7 +224,7 @@ prototype "车站设计图" {
 prototype "送货车站设计图" {
     type = {"item"},
     stack = 4,
-    pile = "2x1",
+    pile = "2x2x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-logisitic.texture",
     group = {"加工"},
@@ -234,7 +234,7 @@ prototype "送货车站设计图" {
 prototype "收货车站设计图" {
     type = {"item"},
     stack = 4,
-    pile = "2x1",
+    pile = "2x2x4",
     pile_model = "glb/stackeditems/iron-ore.glb",
     icon = "textures/construct/broken-logisitic.texture",
     group = {"加工"},
