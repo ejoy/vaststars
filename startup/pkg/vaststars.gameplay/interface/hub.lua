@@ -7,6 +7,7 @@ local function set_item(world, e, item)
     local typeobject = assert(prototype.queryByName(item))
     assert(typeobject.pile)
     local w, h, d = typeobject.pile:match("(%d+)x(%d+)x(%d+)")
+    assert(w and h and d, "Invalid pile: " .. typeobject.pile)
     local capacity = w * h * d
 
     local c = {}
