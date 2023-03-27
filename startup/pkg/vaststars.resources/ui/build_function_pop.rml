@@ -172,99 +172,81 @@
                 },
                 {
                     function(_)
+                        local mt = {
+                            text = " ",
+                            message = " ",
+                            number = -1,
+                            show_number = false,
+                            show_icon_background = false,
+                        }
+
                         start.buttons = {}
                         if start.show_teardown then
-                            local v = {}
+                            local v = setmetatable({}, {__index = mt})
                             v.text = "拆除"
                             v.message = "teardown"
                             v.background_image = "textures/factory/demolition.texture"
-                            v.number = -1
-                            v.show_number = false
-                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
                         if start.show_move then
-                            local v = {}
+                            local v = setmetatable({}, {__index = mt})
                             v.text = "移动"
                             v.message = "move"
                             v.background_image = "textures/factory/move.texture"
-                            v.number = -1
-                            v.show_number = false
-                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
                         if start.show_set_recipe then
-                            local v = {}
+                            local v = setmetatable({}, {__index = mt})
                             v.text = "管理"
                             v.message = "set_recipe"
                             v.background_image = "textures/assemble/wheel.texture"
-                            v.number = -1
-                            v.show_number = false
-                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
                         if start.show_set_item then
-                            local v = {}
+                            local v = setmetatable({}, {__index = mt})
                             v.text = "管理"
                             v.message = "set_item"
                             v.background_image = "textures/assemble/wheel.texture"
-                            v.number = -1
-                            v.show_number = false
-                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
                         if start.show_road_builder then
-                            local v = {}
+                            local v = setmetatable({}, {__index = mt})
                             v.text = "道路施工"
                             v.message = "road_builder"
                             v.background_image = "textures/common/road-connect.texture"
-                            v.number = -1
-                            v.show_number = false
-                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
                         if start.show_pipe_builder then
-                            local v = {}
+                            local v = setmetatable({}, {__index = mt})
                             v.text = "管道施工"
                             v.message = "pipe_builder"
                             v.background_image = "textures/common/pipe-connect.texture"
-                            v.number = -1
-                            v.show_number = false
-                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
                         if start.show_detail then
-                            local v = {}
+                            local v = setmetatable({}, {__index = mt})
                             v.text = "详细"
                             v.message = "detail"
                             v.background_image = "textures/factory/seacher.texture"
-                            v.number = -1
-                            v.show_number = false
-                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
                         if start.construction_center_stop_build then
-                            local v = {}
+                            local v = setmetatable({}, {__index = mt})
                             v.text = "建造取消"
                             v.message = "construction_center_stop_build"
                             v.background_image = "textures/construct/hammer-stop.texture"
-                            v.number = -1
-                            v.show_number = false
-                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
                         if start.construction_center_icon and start.construction_center_icon ~= "" then
-                            local v = {}
-                            v.text = " "
-                            v.message = ""
+                            local v = setmetatable({}, {__index = mt})
                             v.background_image = start.construction_center_icon
                             v.number = start.construction_center_multiple
                             v.show_number = true
@@ -273,18 +255,15 @@
                         end
 
                         if start.construction_center_build then
-                            local v = {}
+                            local v = setmetatable({}, {__index = mt})
                             v.text = "建造增加"
                             v.message = "construction_center_build"
                             v.background_image = "textures/construct/hammer.texture"
-                            v.number = -1
-                            v.show_number = false
-                            v.show_icon_background = false
                             start.buttons[#start.buttons + 1] = v
                         end
 
                         if start.construction_center_place then
-                            local v = {}
+                            local v = setmetatable({}, {__index = mt})
                             v.text = "放置"
                             v.message = "construction_center_place"
                             v.background_image = "textures/factory/place-building.texture"
@@ -295,9 +274,7 @@
                         end
 
                         if start.drone_depot_icon and start.drone_depot_icon ~= "" then
-                            local v = {}
-                            v.text = " "
-                            v.message = ""
+                            local v = setmetatable({}, {__index = mt})
                             v.background_image = start.drone_depot_icon
                             v.number = start.drone_depot_count
                             v.show_number = true
@@ -306,9 +283,7 @@
                         end
 
                         if start.station_item_icon and start.station_item_icon ~= "" then
-                            local v = {}
-                            v.text = " "
-                            v.message = ""
+                            local v = setmetatable({}, {__index = mt})
                             v.background_image = start.station_item_icon
                             v.number = start.station_item_count
                             v.show_number = true
