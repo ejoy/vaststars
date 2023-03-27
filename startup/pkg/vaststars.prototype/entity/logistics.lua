@@ -8,7 +8,7 @@ prototype "指挥中心" {
     construct_detector = {"exclusive"},
     type = {"building", "generator", "base", "chest"},
     chest_type = "blue",
-    show_detail = "false",
+    show_arc_menu = false,
     area = "5x5",
     power_supply_area = "9x9",
     power_supply_distance = 9,
@@ -230,7 +230,6 @@ prototype "建造中心" {
     maxslot = 8,
     recipe_chest_limit = 10,
     craft_category = {"设计图打印"},
-    slots = 5,
     fluidboxes = {
         input = {
             {

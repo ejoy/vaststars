@@ -146,21 +146,24 @@ local function get_property(e, typeobject)
         -- the items display is shown in two rows, with list0 for the first row and list1 for the second row (five items per row, up to ten items in total)
         local chest_list0 = {}
         local chest_list1 = {}
-        for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e)) do
-            local typeobject_item = assert(iprototype.queryById(slot.item))
-            slotnum = slotnum + math.floor(slot.amount / typeobject_item.stack)
-            if slot.amount % typeobject_item.stack > 0 then
-                slotnum = slotnum + 1
+        local typeobject = iprototype.queryById(e.building.prototype)
+        if typeobject.slots then
+            for _, slot in pairs(ichest.collect_item(gameplay_core.get_world(), e)) do
+                local typeobject_item = assert(iprototype.queryById(slot.item))
+                slotnum = slotnum + math.floor(slot.amount / typeobject_item.stack)
+                if slot.amount % typeobject_item.stack > 0 then
+                    slotnum = slotnum + 1
+                end
+                if #chest_list0 < 5 then
+                    chest_list0[#chest_list0 + 1] = {icon = typeobject_item.icon, count = slot.amount}
+                elseif #chest_list1 < 5 then
+                    chest_list1[#chest_list1 + 1] = {icon = typeobject_item.icon, count = slot.amount}
+                end
             end
-            if #chest_list0 < 5 then
-                chest_list0[#chest_list0 + 1] = {icon = typeobject_item.icon, count = slot.amount}
-            elseif #chest_list1 < 5 then
-                chest_list1[#chest_list1 + 1] = {icon = typeobject_item.icon, count = slot.amount}
-            end
+            t.chest_list0 = #chest_list0 > 0 and chest_list0 or nil
+            t.chest_list1 = #chest_list1 > 0 and chest_list1 or nil
+            t.values.slots = string.format("%d/%d", slotnum, t.values.slots or 0)
         end
-        t.chest_list0 = #chest_list0 > 0 and chest_list0 or nil
-        t.chest_list1 = #chest_list1 > 0 and chest_list1 or nil
-        t.values.slots = string.format("%d/%d", slotnum, t.values.slots or 0)
     end
     if e.fluidbox then
         local name = "无"

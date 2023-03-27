@@ -10,5 +10,5 @@ prototype "铁制电线杆" {
     area = "1x1",
     power_supply_area = "5x5",
     power_supply_distance = 9,
-    show_detail = false,
+    show_arc_menu = false,
 }

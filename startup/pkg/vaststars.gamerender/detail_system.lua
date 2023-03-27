@@ -25,7 +25,7 @@ function idetail.show(object_id)
     local p = mu.world_to_screen(vp, vr, object.srt.t) -- the position always in the center of the screen after move camera
     local ui_x, ui_y = iui.convert_coord(vr, math3d.index(p, 1), math3d.index(p, 2))
 
-    if typeobject.show_detail ~= false then
+    if typeobject.show_arc_menu ~= false then
         iui.open({"build_function_pop.rml"}, object_id, object.srt.t, ui_x, ui_y)
     end
 

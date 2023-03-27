@@ -73,7 +73,7 @@ prototype "换热器I" {
     area = "3x2",
     rotate_on_build = true,
     craft_category = {"流体换热处理"},
-    show_detail = false,
+    show_arc_menu = false,
     maxslot = "8",
     fluidboxes = {
         input = {
@@ -111,7 +111,7 @@ prototype "热管1-X型" {
     model = "prefabs/pipe/pipe_I.prefab",
     icon = "textures/construct/pipe.texture",
     construct_detector = {"exclusive"},
-    show_detail = false,
+    show_arc_menu = false,
     type = {"building"},
     area = "1x1",
 }
