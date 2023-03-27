@@ -759,6 +759,7 @@ local function confirm(self, datamodel)
     iobject.remove(self.coord_indicator)
     self.coord_indicator = nil
 
+    local c = 0
     local remove = {}
     for coord, mask in pairs(self.pending) do
         local x, y = unpackcoord(coord)
@@ -768,6 +769,7 @@ local function confirm(self, datamodel)
             remove[coord] = true
         else
             global.roadnet[coord] = mask
+            c = c + 1
         end
     end
 
@@ -783,7 +785,7 @@ local function confirm(self, datamodel)
     datamodel.show_cancel = false
     datamodel.show_start_laying = false
 
-    task.update_progress("routemap")
+    task.update_progress("road_laying", c)
 
     iui.redirect("construct.rml", "builder_back")
 end

@@ -985,8 +985,8 @@ prototype "建造电线杆" {
     desc = "修建20节公路",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
-    task = {"select_entity", 0, "砖石公路-X型"},
-    task_params = {starting = {117, 125}, ending = {135, 125}},
+    task = {"unknown", 0, 1},
+    task_params = {},
     prerequisites = {"放置道路建造站"},
     count = 20,
     tips_pic = {
