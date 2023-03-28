@@ -237,6 +237,9 @@ lbuild(lua_State *L) {
 }
 
 static void Move(world& w, ecs::drone& drone, uint32_t target) {
+    if (!drone.prev) {
+        drone.prev = drone.home;
+    }
     drone.next = target;
     uint32_t x1 = (drone.prev >> 23) & 0x1FF;
     uint32_t y1 = (drone.prev >> 14) & 0x1FF;
