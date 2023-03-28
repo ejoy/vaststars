@@ -138,7 +138,6 @@ local function restore_world()
             fluidflow_id = fluidflow_id,
             recipe = recipe,
             fluid_icon = fluid_icon,
-            object_state = "constructed",
         }
         object.gameplay_eid = gameplay_eid
         objects:set(object)

@@ -121,7 +121,6 @@ local function __new_entity(self, datamodel, typeobject)
             t = building_positon,
         },
         fluid_name = fluid_name,
-        object_state = "none",
     }
     iui.open({"move_pop.rml"}, self.pickup_object.srt.t)
 
@@ -340,7 +339,6 @@ local function confirm(self, datamodel)
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
-    pickup_object.object_state = "confirm"
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false

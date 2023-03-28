@@ -25,7 +25,6 @@ local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local construct_menu_cfg = import_package "vaststars.prototype"("construct_menu")
 local SHOW_LOAD_RESOURCE <const> = not require "debugger".disable_load_resource
 local EDITOR_CACHE_NAMES = {"CONFIRM", "CONSTRUCTED"}
-local create_builder = ecs.require "editor.builder"
 local create_station_builder = ecs.require "editor.stationbuilder"
 
 local rotate_mb = mailbox:sub {"rotate"} -- construct_pop.rml -> 旋转
@@ -33,8 +32,6 @@ local build_mb = mailbox:sub {"build"}   -- construct_pop.rml -> 修建
 local cancel_mb = mailbox:sub {"cancel"} -- construct_pop.rml -> 取消
 local road_builder_mb = mailbox:sub {"road_builder"}
 local pipe_builder_mb = mailbox:sub {"pipe_builder"}
-local confirm_cancel_mb = mailbox:sub {"confirm_cancel"} -- 取消已确定的建筑
-
 local dragdrop_camera_mb = world:sub {"dragdrop_camera"}
 local show_construct_menu_mb = mailbox:sub {"show_construct_menu"}
 local show_statistic_mb = mailbox:sub {"statistic"} -- 主界面左下角 -> 统计信息
@@ -43,7 +40,6 @@ local technology_mb = mailbox:sub {"technology"} -- 主界面左下角 -> 科研
 local construct_entity_mb = mailbox:sub {"construct_entity"} -- 建造 entity
 local click_techortaskicon_mb = mailbox:sub {"click_techortaskicon"}
 local load_resource_mb = mailbox:sub {"load_resource"}
-local construct_mb = mailbox:sub {"construct"} -- 施工
 local single_touch_mb = world:sub {"single_touch"}
 local move_mb = mailbox:sub {"move"}
 local move_finish_mb = mailbox:sub {"move_finish"}
@@ -112,10 +108,6 @@ function M:update_tech(datamodel, tech)
     end
 end
 
-function M:construct_queue(datamodel, construct_queue)
-    datamodel.construct_queue = construct_queue
-end
-
 function M:stage_ui_update(datamodel)
     for _ in rotate_mb:unpack() do
         if builder then
@@ -128,17 +120,6 @@ function M:stage_ui_update(datamodel)
             builder:confirm(datamodel)
         end
         self:flush()
-    end
-
-    for _, _, _, x, y in confirm_cancel_mb:unpack() do
-        local object = objects:coord(x, y, EDITOR_CACHE_NAMES)
-        assert(object)
-        assert(object.object_state == "confirm")
-        objects:remove(object.id, "CONFIRM")
-        iobject.remove(object)
-        global.construct_queue:remove(object.prototype_name, object.id)
-        iui.close("construct_confirm_pop.rml")
-        datamodel.show_construct = false
     end
 
     for _ in cancel_mb:unpack() do
@@ -270,12 +251,7 @@ function M:stage_camera_usage(datamodel)
 
         local object = _get_object(x, y)
         if object then -- object may be nil, such as when user click on empty space
-            if object.object_state == "constructed" then
-                if idetail.show(object.id) then
-                    leave = false
-                end
-            elseif object.object_state == "confirm" then
-                iui.open({"construct_confirm_pop.rml"}, object.srt.t, object.x, object.y)
+            if idetail.show(object.id) then
                 leave = false
             end
         else
@@ -296,27 +272,6 @@ function M:stage_camera_usage(datamodel)
             leave = false
             break
         end
-    end
-
-    for _ in construct_mb:unpack() do
-        local pbuilder = create_builder()
-        for prototype_name in global.construct_queue:for_each() do
-            local object_id = global.construct_queue:pop(prototype_name)
-            if builder and builder.complete then
-                builder:complete(object_id)
-            else
-                pbuilder:complete(object_id)
-            end
-        end
-
-        if builder then
-            builder:clean(datamodel)
-            builder = nil
-        end
-        self:flush()
-
-        datamodel.cur_edit_mode = ""
-        handle_pickup = true
     end
 
     for _ in road_builder_mb:unpack() do

@@ -231,8 +231,6 @@
                 current_tech_name = "none",     --当前科技名字
                 current_tech_progress = "0%",   --当前科技进度
                 guide_progress = 0,
-                construct_queue = {}, -- = {{icon = xx, count = xx, total_count = xx}, ...}
-                show_construct = false,
             })
             function start.clickShowConstructMenuDetail(event, construct_menu)
                 start.cur_construct_menu = construct_menu
@@ -268,9 +266,6 @@
             function start.clickLoadResource(event)
                 ui_sys.pub {"load_resource"}
             end
-            function start.clickConstruct(evnet)
-                ui_sys.pub {"construct"}
-            end
             function start.clickExpandCollapsedBar(event)
                 local function show(e, v) -- TODO: remove this function
                     if not e.style then
@@ -297,36 +292,10 @@
             window.addEventListener('mousedown', function(event)
                 ui_sys.world_pub {"ui_message", "leave"}
             end)
-
-            ui_sys.mapping(start, {
-                {
-                    "construct_queue",
-                    function()
-                        for _, v in ipairs(start.construct_queue) do
-                            if v.count > 0 then
-                                start.show_construct = true
-                                return
-                            end
-                        end
-                        start.show_construct = false
-                    end
-                },
-            })
         </script>
     </head>
     <body style = "pointer-events: none; justify-content: center; align-items: center;">
         <div class = "panel" data-model="start">
-            <!-- 建造队列 显示 -->
-            <div class = "building-block">
-                <div class = "building-info" data-for = "construct_queue">
-                    <div class = "building-pic" data-style-background-image = "it.icon" />
-                    <div class = "building-num" data-style-color="it.count < it.total_count? 'rgb(255,255,255)' : 'rgb(0,255,0)'">
-                        <div data-if="it.count < it.total_count">{{it.count}}/{{it.total_count}}</div>
-                        <div data-if="it.count >= it.total_count" style="animation: 1.5s linear 0s enlarge;">{{it.count}}/{{it.total_count}}</div>
-                    </div>
-                </div>
-            </div>
-
             <!-- 主菜单按钮 -->
             <div class="main-menu-region">
                 <!-- 主菜单隐藏/显示按钮 -->
@@ -398,14 +367,6 @@
 
             <!-- 展开建筑菜单的三角 -->
             <workbutton class = "panel-switch" data-event-click="showConstructMenu()"/>
-            
-            <div style = "pointer-events: none; position: absolute; bottom:0vmin; right:0vmin; width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-end;" data-if = "guide_progress >= 5">
-                <!-- 确认放置 -->
-                <button data-if = "show_construct" data-event-click="clickConstruct()" style='width: 22.00vmin; height: 16.00vmin; bottom: 2vmin; background-color: rgb(3, 196, 106); flex-direction: column; justify-content: flex-start;'>
-                    <div style='margin: 0 auto; background-image:"textures/construct/hammer.texture"; width: 11.20vmin; height: 11.20vmin; background-size:cover; animation:0.5s linear 0s infinite alternate rotation;'/>
-                    <div style="font-size: 85%;">施工</div>
-                </button>
-            </div>
 
             <!-- 右边菜单 -->
             <div style = "pointer-events: none; position: absolute; right:0vmin; width: 98vmax; height: 97vmin; flex-direction: row-reverse;" data-if="show_construct_menu && guide_progress >= 10">

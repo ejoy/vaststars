@@ -210,7 +210,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
         global.fluidflow_id = global.fluidflow_id + 1
         new_fluidflow_id = global.fluidflow_id
     end
-    local object_state = State.succ and "construct" or "invalid_construct"
+    local state = State.succ and "construct" or "invalid_construct"
 
     -- TODO: map may be include some non-pipe objects, such as some building which have fluidboxes, only for changing the state of the building
     for coord, v in pairs(map) do
@@ -222,7 +222,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 object.prototype_name = v[1]
                 object.dir = v[2]
             end
-            object.state = object_state
+            object.state = state
         else
             object = iobject.new {
                 prototype_name = v[1],
@@ -234,8 +234,7 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
                 },
                 fluid_name = State.fluid_name,
                 fluidflow_id = new_fluidflow_id,
-                state = object_state,
-                object_state = "none",
+                state = state,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
         end
@@ -328,7 +327,7 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
         global.fluidflow_id = global.fluidflow_id + 1
         new_fluidflow_id = global.fluidflow_id
     end
-    local object_state = State.succ and "construct" or "invalid_construct"
+    local state = State.succ and "construct" or "invalid_construct"
 
     -- TODO: map may be include some non-pipe objects, such as some building which have fluidboxes, only for changing the state of the building
     for coord, v in pairs(map) do
@@ -340,7 +339,7 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
                 object.prototype_name = v[1]
                 object.dir = v[2]
             end
-            object.state = object_state
+            object.state = state
         else
             object = iobject.new {
                 prototype_name = v[1],
@@ -352,8 +351,7 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
                 },
                 fluid_name = State.fluid_name,
                 fluidflow_id = new_fluidflow_id,
-                state = object_state,
-                object_state = "none",
+                state = state,
             }
             objects:set(object, EDITOR_CACHE_NAMES[1])
         end
@@ -685,7 +683,6 @@ local function new_entity(self, datamodel, typeobject)
             t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
         },
         fluid_name = "",
-        object_state = "none",
     }
 
     --
@@ -777,7 +774,6 @@ local function place_one(self, datamodel)
         },
         fluid_name = 0,
         fluidflow_id = new_fluidflow_id,
-        object_state = "none",
     }
     objects:set(object, EDITOR_CACHE_NAMES[2])
 
@@ -850,7 +846,6 @@ local function confirm(self, datamodel)
                     end
                 end
             end
-            object.object_state = "constructed"
         end
     end
     objects:commit("CONFIRM", "CONSTRUCTED")

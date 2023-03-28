@@ -48,7 +48,6 @@ local function new(init)
         y = assert(init.y),
         fluid_name = init.fluid_name,
         fluidflow_id = init.fluidflow_id,
-        object_state = assert(init.object_state),
         recipe = init.recipe,
         fluid_icon = init.fluid_icon,
         srt = init.srt,

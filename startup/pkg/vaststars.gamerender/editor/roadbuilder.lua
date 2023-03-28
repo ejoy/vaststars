@@ -43,7 +43,6 @@ local function _get_object(self, x, y, cache_names)
             y = y,
             prototype_name = prototype_name,
             dir = dir,
-            object_state = "none",
         }
     end
 
@@ -62,7 +61,6 @@ local function _get_object(self, x, y, cache_names)
             y = y,
             prototype_name = prototype_name,
             dir = dir,
-            object_state = "none",
         }
     end
 end
@@ -683,7 +681,6 @@ local function new_entity(self, datamodel, typeobject, x, y)
             t = terrain:get_position_by_coord(x, y, iprototype.rotate_area(typeobject.area, dir)),
         },
         state = "construct",
-        object_state = "none",
     }
 
     --

@@ -78,7 +78,7 @@ do
         local block_color
         local typeobject = iprototype.queryByName(object.prototype_name)
         local w, h
-        if typeobject.power_supply_area then
+        if typeobject.power_supply_area and typeobject.power_supply_distance then
             block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_GREEN
             for _, object in objects:all() do
                 local otypeobject = iprototype.queryByName(object.prototype_name)

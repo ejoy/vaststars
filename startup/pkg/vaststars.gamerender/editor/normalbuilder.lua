@@ -119,7 +119,6 @@ local function __new_entity(self, datamodel, typeobject)
             t = building_positon,
         },
         fluid_name = fluid_name,
-        object_state = "none",
     }
     iui.open({"construct_pop.rml"}, self.pickup_object.srt.t)
 
@@ -305,7 +304,6 @@ local function confirm(self, datamodel)
     pickup_object.state = "confirm"
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
-    pickup_object.object_state = "confirm"
 
     datamodel.show_confirm = false
     datamodel.show_rotate = false
@@ -317,9 +315,7 @@ local function confirm(self, datamodel)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
-    do
-        global.construct_queue:put(pickup_object.prototype_name, pickup_object.id)
-    end
+    self:complete(pickup_object.id)
 
     self.pickup_object = nil
     if self.road_entrance then
@@ -434,6 +430,7 @@ local function create()
     M.rotate_pickup_object = rotate_pickup_object
     M.clean = clean
     M.check_construct_detector = check_construct_detector
+    M.complete = M.super.complete
 
     return M
 end

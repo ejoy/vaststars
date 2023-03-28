@@ -70,7 +70,6 @@ end
 local function complete(self, object_id)
     assert(object_id)
     local object = objects:get(object_id, {"CONFIRM"})
-    object.object_state = "constructed"
 
     -- TODO: special case for assembling machine
     -- The default recipe for the assembler is empty.
