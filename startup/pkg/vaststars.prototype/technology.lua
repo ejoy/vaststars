@@ -2,7 +2,6 @@ local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
   --task = {"stat_production", 0, "铁矿石"},            生产XX个物品
-  --task = {"stat_manual_production", 0, "铁矿石"},     手动生产XX个物品
   --task = {"stat_consumption", 0, "铁矿石"},           消耗XX个物品
   --task = {"select_entity", 0, "组装机"},              拥有XX台机器
   --task = {"select_chest", 0, "指挥中心", "铁丝"},     向指挥中心转移X个物品

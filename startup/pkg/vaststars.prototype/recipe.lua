@@ -1,17 +1,11 @@
 local gameplay = import_package "vaststars.gameplay"
 local prototype = gameplay.register.prototype
 
-
--- allow_manual：允许手工打造，默认为true。如果一个物品被禁止手工打造那么它也不会成为中间产物
--- allow_as_intermediate：允许在手工打造过程中作为中间产物，默认为true
--- results里面的第一个物品为主产物，只有主产物才可以被手工打造
-
 prototype "铁板1" {
     type = { "recipe" },
     category = "金属冶炼",
     recipe_group =  "金属",
     recipe_order =  11,
-    allow_manual = false,
     recipe_icon =  "textures/construct/plate-Fe.texture",
     ingredients = {
         {"铁矿石", 2},
@@ -29,7 +23,6 @@ prototype "铁板2" {
     category = "金属冶炼",
     recipe_group =  "金属",
     recipe_order =  12,
-    allow_manual = false,
     recipe_icon =  "textures/construct/plate-Fe.texture",
     ingredients = {
         {"碾碎铁矿石", 8},
@@ -48,7 +41,6 @@ prototype "碾碎铁矿石" {
     category = "矿石粉碎",
     recipe_group =  "金属",
     recipe_order =  14,
-    allow_manual = false,
     recipe_icon =  "textures/construct/crush-ore-Fe.texture",
     ingredients = {
         {"铁矿石", 8},
@@ -66,7 +58,6 @@ prototype "碾碎铝矿石" {
     category = "矿石粉碎",
     recipe_group =  "金属",
     recipe_order =  14,
-    allow_manual = false,
     recipe_icon =  "textures/construct/crush-ore-Al.texture",
     ingredients = {
         {"铝矿石", 7},
@@ -103,7 +94,6 @@ prototype "氧化铝" {
     category = "金属冶炼",
     recipe_group =  "金属",
     recipe_order =  16,
-    allow_manual = false,
     recipe_icon =  "textures/construct/alumina.texture",
     ingredients = {
         {"氢氧化铝", 4},
@@ -120,7 +110,6 @@ prototype "铝板1" {
     category = "金属冶炼",
     recipe_group =  "金属",
     recipe_order =  18,
-    allow_manual = false,
     recipe_icon =  "textures/construct/plate-Al.texture",
     ingredients = {
         {"氧化铝", 9},
@@ -203,7 +192,6 @@ prototype "沙子1" {
     category = "矿石粉碎",
     recipe_group =  "金属",
     recipe_order =  40,
-    allow_manual = false,
     recipe_icon =  "textures/construct/sand.texture",
     ingredients = {
         {"碎石", 5},
@@ -253,7 +241,6 @@ prototype "硅1" {
     category = "矿石浮选",
     recipe_group =  "金属",
     recipe_order =  68,
-    allow_manual = false,
     recipe_icon =  "textures/construct/ore-Si.texture",
     ingredients = {
         {"沙子", 8},
@@ -302,7 +289,6 @@ prototype "硅板1" {
     category = "金属冶炼",
     recipe_group =  "金属",
     recipe_order =  68,
-    allow_manual = false,
     recipe_icon =  "textures/construct/plate-Si.texture",
     ingredients = {
         {"硅", 5},
@@ -856,7 +842,6 @@ prototype "管道2" {
     category = "器件小型制造",
     recipe_group =  "化工",
     recipe_order =  10,
-    allow_as_intermediate = false,
     recipe_icon =  "textures/construct/pipe.texture",
     ingredients = {
         {"石砖", 8},
@@ -975,13 +960,11 @@ prototype "科研中心1" {
     description = "机械装置和电动机制造科研中心",
 }
 
-
 -- prototype "破损水电站" {
 --     type = { "recipe" },
 --     category = "生产手工制造",
 --     recipe_group =  "生产",
 --     recipe_order =  110,
---     allow_as_intermediate = false,
 --     recipe_icon =  "textures/construct/broken-hydroplant.texture",
 --     ingredients = {
 --         {"管道1-X型", 6},
@@ -999,7 +982,6 @@ prototype "科研中心1" {
 --     category = "生产手工制造",
 --     recipe_group =  "生产",
 --     recipe_order =  111,
---     allow_as_intermediate = false,
 --     recipe_icon =  "textures/construct/broken-air-filter1.texture",
 --     ingredients = {
 --         {"石砖", 4},
@@ -1018,7 +1000,6 @@ prototype "科研中心1" {
 --     category = "生产手工制造",
 --     recipe_group =  "生产",
 --     recipe_order =  112,
---     allow_as_intermediate = false,
 --     recipe_icon =  "textures/construct/broken-pump.texture",
 --     ingredients = {
 --         {"石砖", 4},
@@ -1037,7 +1018,6 @@ prototype "科研中心1" {
 --     category = "生产手工制造",
 --     recipe_group =  "生产",
 --     recipe_order =  114,
---     allow_as_intermediate = false,
 --     recipe_icon =  "textures/construct/broken-electrolysis1.texture",
 --     ingredients = {
 --         {"石砖", 10},
@@ -1056,7 +1036,6 @@ prototype "科研中心1" {
 --     category = "生产手工制造",
 --     recipe_group =  "生产",
 --     recipe_order =  116,
---     allow_as_intermediate = false,
 --     recipe_icon =  "textures/construct/broken-chemistry2.texture",
 --     ingredients = {
 --         {"小铁制箱子I", 2},
@@ -1075,7 +1054,6 @@ prototype "维修组装机" {
     category = "生产手工制造",
     --recipe_group =  "生产",
     recipe_order =  118,
-    allow_as_intermediate = false,
     recipe_icon =  "textures/construct/broken-assembler.texture",
     ingredients = {
         -- {"铁丝", 6},
@@ -1095,7 +1073,6 @@ prototype "维修铁制电线杆" {
     category = "生产手工制造",
     --recipe_group =  "生产",
     recipe_order =  120,
-    allow_as_intermediate = false,
     recipe_icon =  "textures/construct/broken-electric-pole1.texture",
     ingredients = {
         -- {"铁棒", 2},
@@ -1114,7 +1091,6 @@ prototype "维修太阳能板" {
     category = "生产手工制造",
     --recipe_group =  "生产",
     recipe_order =  122,
-    allow_as_intermediate = false,
     recipe_icon =  "textures/construct/broken-solar-panel.texture",
     ingredients = {
         {"铁齿轮", 3},
@@ -1133,7 +1109,6 @@ prototype "维修太阳能板" {
 --     category = "生产手工制造",
 --     recipe_group =  "生产",
 --     recipe_order =  124,
---     allow_as_intermediate = false,
 --     recipe_icon =  "textures/construct/broken-grid-battery.texture",
 --     ingredients = {
 --         {"铁板", 8},
@@ -1151,7 +1126,6 @@ prototype "维修物流中心" {
     category = "生产手工制造",
     --recipe_group =  "生产",
     recipe_order =  126,
-    allow_as_intermediate = false,
     recipe_icon =  "textures/construct/broken-logisitic.texture",
     ingredients = {
         {"碎石", 3},
@@ -1169,7 +1143,6 @@ prototype "维修运输汽车" {
     category = "生产手工制造",
     recipe_group =  "生产",
     recipe_order =  128,
-    allow_as_intermediate = false,
     recipe_icon =  "textures/construct/broken-truck.texture",
     ingredients = {
         {"破损运输车辆", 1},
@@ -1186,7 +1159,6 @@ prototype "运输汽车制造" {
     category = "生产手工制造",
     recipe_group =  "生产",
     recipe_order =  128,
-    allow_as_intermediate = false,
     recipe_icon =  "textures/construct/broken-truck.texture",
     ingredients = {
         {"电动机I", 1},
@@ -1204,7 +1176,6 @@ prototype "车辆装配" {
     category = "生产手工制造",
     recipe_group =  "生产",
     recipe_order =  128,
-    allow_as_intermediate = false,
     recipe_icon =  "textures/construct/broken-truck.texture",
     ingredients = {
         {"运输车框架", 1},
@@ -1937,7 +1908,6 @@ prototype "石铁矿挖掘" {
     type = { "recipe" },
     category = "金属冶炼",
     --recipe_group =  "金属",
-    allow_manual = false,
     recipe_order =  20,
     recipe_icon =  "textures/construct/ore-Fe.texture",
     ingredients = {
@@ -1954,7 +1924,6 @@ prototype "铁矿石挖掘" {
     type = { "recipe" },
     category = "矿石开采",
     --recipe_group =  "金属",
-    allow_manual = false,
     recipe_order =  21,
     recipe_icon =  "textures/construct/ore-Fe.texture",
     ingredients = {
@@ -1970,7 +1939,6 @@ prototype "碎石挖掘" {
     type = { "recipe" },
     category = "矿石开采",
     --recipe_group =  "金属",
-    allow_manual = false,
     recipe_order =  22,
     recipe_icon =  "textures/construct/gravel.texture",
     ingredients = {
@@ -2407,7 +2375,6 @@ prototype "钢齿轮" {
     category = "金属小型制造",
     recipe_group =  "金属",
     recipe_order =  22,
-    allow_manual = false,
     recipe_icon =  "textures/construct/steel-gear.texture",
     ingredients = {
         {"钢板", 3},
@@ -2422,7 +2389,6 @@ prototype "钢齿轮" {
 prototype "铁矿石回收" {
     type = { "recipe" },
     category = "矿石粉碎",
-    allow_manual = false,
     recipe_group =  "金属",
     recipe_order =  104,
     recipe_icon =  "textures/fluid/liquid.texture",
@@ -2439,7 +2405,6 @@ prototype "铁矿石回收" {
 prototype "碎石回收" {
     type = { "recipe" },
     category = "矿石浮选",
-    allow_manual = false,
     recipe_group =  "金属",
     recipe_order =  106,
     recipe_icon =  "textures/fluid/liquid.texture",
