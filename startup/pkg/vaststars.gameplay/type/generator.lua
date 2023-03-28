@@ -7,9 +7,15 @@ function c1:ctor(init, pt)
     }
 end
 
-local c2 = type "base"
-
+local c2 = type "wind_turbine"
 function c2:ctor(init, pt)
+    return {
+        wind_turbine = true
+    }
+end
+
+local c3 = type "base"
+function c3:ctor(init, pt)
     return {
         base = true,
         manual = {

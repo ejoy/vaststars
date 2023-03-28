@@ -115,6 +115,9 @@ component "save_fluidflow" {
 component "solar_panel" {
 }
 
+component "wind_turbine" {
+}
+
 component "base" {
 }
 

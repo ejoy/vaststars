@@ -52,7 +52,7 @@ lupdate(lua_State *L) {
         }
     }
     
-    for (auto& v : ecs_api::select<ecs::base, ecs::capacitance, ecs::building>(w.ecs)) {
+    for (auto& v : ecs_api::select<ecs::wind_turbine, ecs::capacitance, ecs::building>(w.ecs)) {
         ecs::building& building = v.get<ecs::building>();
         ecs::capacitance& c = v.get<ecs::capacitance>();
         prototype_context p = w.prototype(building.prototype);
