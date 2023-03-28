@@ -187,7 +187,6 @@ register_unit("task", "string", function(args)
 		select_chest = {3, "raw", "building", "item"},
 		power_generator = {4, "raw"},
 		unknown = {5, "raw", "raw"},
-		stat_manual_production = {6, "raw", "item/fluid"},
 	}
 	local schema = TaskSchema[args[1]]
 	if not schema then

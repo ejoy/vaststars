@@ -17,11 +17,8 @@ void flatmap_stat(flatmap<Key, Mapped>& m, recipe_items& r) {
     }
 }
 
-void statistics::finish_recipe(world& w, uint16_t id, bool manual) {
+void statistics::finish_recipe(world& w, uint16_t id) {
     prototype_context recipe = w.prototype(id);
     flatmap_stat(consumption, *(recipe_items*)pt_ingredients(&recipe));
     flatmap_stat(production, *(recipe_items*)pt_results(&recipe));
-    if (manual) {
-        flatmap_stat(manual_production, *(recipe_items*)pt_results(&recipe));
-    }
 }

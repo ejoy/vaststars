@@ -121,11 +121,4 @@ component "wind_turbine" {
 component "base" {
 }
 
-component "manual" {
-    "recipe:word",
-    "speed:word",
-    "status:byte",
-    "progress:int",
-}
-
 component "fluidbox_changed" {}

@@ -57,7 +57,7 @@ assembling_update(world& w, ecs_api::entity<ecs::assembling, ecs::chest, ecs::ca
             if (!chest::place(w, container::index::from(c2.chest), recipe)) {
                 return;
             }
-            w.stat.finish_recipe(w, a.recipe, false);
+            w.stat.finish_recipe(w, a.recipe);
             a.status = STATUS_IDLE;
             if (c2.fluidbox_out != 0) {
                 ecs::fluidboxes* fb = v.sibling<ecs::fluidboxes>();

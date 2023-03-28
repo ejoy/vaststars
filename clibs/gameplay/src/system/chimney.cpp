@@ -44,7 +44,7 @@ chimney_update(world& w, ecs_api::entity<ecs::chimney, ecs::fluidbox>& v) {
             //    //TODO
             //    return;
             //}
-            w.stat.finish_recipe(w, c.recipe, false);
+            w.stat.finish_recipe(w, c.recipe);
             c.status = STATUS_IDLE;
         }
         if (c.status == STATUS_IDLE) {

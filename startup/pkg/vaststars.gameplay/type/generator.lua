@@ -18,11 +18,5 @@ local c3 = type "base"
 function c3:ctor(init, pt)
     return {
         base = true,
-        manual = {
-            recipe = 0,
-            speed = 100,
-            status = 0,
-            progress = 0,
-        },
     }
 end

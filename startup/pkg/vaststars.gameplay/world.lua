@@ -202,52 +202,6 @@ return function ()
         end
     end
 
-    function world:manual(lst)
-        if lst == nil then
-            lst = {}
-            for _, v in ipairs(cworld:manual()) do
-                local type, id = v[1], v[2]
-                if type == "separator" then
-                    lst[#lst+1] = {type, id}
-                else
-                    local pt = prototype.queryById(id)
-                    assert(pt, "unknown ID: " .. id)
-                    lst[#lst+1] = {type, pt.name}
-                end
-            end
-            return lst
-        end
-        local todos = {}
-        for i, v in ipairs(lst) do
-            local type, id = v[1], v[2]
-            if type == "crafting" then
-                local pt = prototype.queryByName(id)
-                assert(pt, "unknown recipe: " .. id)
-                todos[i] = { type, pt.id }
-            elseif type == "finish" then
-                local pt = prototype.queryByName(id)
-                assert(pt, "unknown item: " .. id)
-                todos[i] = { type, pt.id }
-            elseif type == "separator" then
-                todos[i] = { type, id }
-            else
-                error("unknown type: "..type)
-            end
-        end
-        return cworld:manual(todos)
-    end
-
-    function world:manual_container()
-        local c = {}
-        local cc = cworld:manual_chest()
-        for k, v in pairs(cc) do
-            local pt = prototype.queryById(k)
-            assert(pt, "unknown ID: " .. k)
-            c[pt.name] = v
-        end
-        return c
-    end
-
     function world:fluidflow_query(fluid, id)
         return cworld:fluidflow_query(fluid, id)
     end
