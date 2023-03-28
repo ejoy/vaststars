@@ -450,7 +450,7 @@ prototype "运输车框架" {
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/broken-truck.texture",
     item_description = "用来装配运输车的框架",
-    group = {"生产"},
+    group = {"加工"},
 }
 --------------------------
 prototype "海藻" {
