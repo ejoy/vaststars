@@ -50,6 +50,12 @@ local entities = {
         y = 120,
     },
     {
+        prototype_name = "风力发电机I",
+        dir = "N",
+        x = 121,
+        y = 127,
+    },
+    {
         prototype_name = "排水口残骸",
         dir = "S",
         items = {

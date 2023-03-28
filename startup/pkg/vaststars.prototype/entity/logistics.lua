@@ -21,7 +21,7 @@ prototype "指挥中心" {
     power_supply_area = "9x9",
     power_supply_distance = 9,
     dismantle_area = "21x21",
-    power = "1MW",
+    power = "100kW",
     priority = "primary",
     teardown = false,
     crossing = {
