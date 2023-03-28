@@ -20,7 +20,7 @@ local guide = {
         name = "guide-2",
 		narrative = {
             {"作为助理AI，我建议你立刻开始工作..哔哩..你的剩余生存时间理论上只有{/g 348.26}地球小时..(担忧)", "textures/guide/guide-6.texture"},
-            {"哔哩..发现可用{/g 无人机仓库}和{/g 废墟}..哔哩..引导无人机搬运有用物资..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..发现可用{/g 无人机仓库}和{/g 建筑废墟}..哔哩..引导{/color:4bd0ff 无人机}搬运有用物资..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
@@ -69,7 +69,7 @@ local guide = {
     {
         name = "guide-4",
 		narrative = {
-            {"哔哩..采矿机顺利建造完毕..石矿采集技术可行性为{/g 99.983%}..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..{/g 采矿机}顺利建造完毕..石矿采集技术可行性为{/g 99.983%}..哔哩..(期待)", "textures/guide/guide-2.texture"},
             {"哔哩..请将{/g 采矿机}放置在{/g 石矿}上方后，我们就可以采集矿物了..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
@@ -104,7 +104,7 @@ local guide = {
     {
         name = "guide-6",
 		narrative = {
-            {"哔哩..请使用{/g 建造中心}生产足够电线杆..哔哩..哔哗..(期待)", "textures/guide/guide-3.texture"},
+            {"哔哩..请使用{/g 建造中心}生产足够{/g 电线杆}..哔哩..哔哗..(期待)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -121,9 +121,9 @@ local guide = {
         name = "guide-7",
 		narrative = {
             {"哔哩..整个基地的用电设施都需要被{/g 电网覆盖}，否则它们将无法工作..哔哩(无奈）", "textures/guide/guide-6.texture"},
-            {"风力发电机可产生电力..哔哩..{/g 放置电线杆}把风力发电机的电力扩散出去..哔哩(期待)", "textures/guide/guide-3.texture"},
+            {"{/color:4bd0ff 风力发电机}可产生电力..哔哩..{/g 放置电线杆}把风力发电机的电力扩散出去..哔哩(期待)", "textures/guide/guide-3.texture"},
             {"当电线杆之间出现{/r 红色电线}时则表示成功连接，在电线{/color:4bd0ff 蓝色范围}内就会有电力传输(兴奋)", "textures/guide/guide-3.texture"},
-            {"若风力发电机和电线杆形成彼此连接的{/g 电网}，处于{/g 电网}内的用电设施就可以工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
+            {"若{/color:4bd0ff 风力发电机}和{/color:4bd0ff 电线杆}形成彼此连接的{/g 电网}，处于{/g 电网}内的用电设施就可以工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 10,
