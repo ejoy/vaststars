@@ -291,13 +291,14 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.lorry_factory_inc_lorry then
+                        if start.lorry_factory_dec_lorry then
                             local v = setmetatable({}, {__index = mt})
-                            v.text = "增加车辆"
-                            v.message = "lorry_factory_inc_lorry"
+                            v.text = "车辆取消"
+                            v.message = "lorry_factory_stop_build"
                             v.background_image = "textures/construct/truck-item.texture"
                             start.buttons[#start.buttons + 1] = v
                         end
+
 
                         if start.lorry_factory_icon and start.lorry_factory_icon ~= "" then
                             local v = setmetatable({}, {__index = mt})
@@ -308,10 +309,10 @@
                             start.buttons[#start.buttons + 1] = v
                         end
 
-                        if start.lorry_factory_dec_lorry then
+                        if start.lorry_factory_inc_lorry then
                             local v = setmetatable({}, {__index = mt})
-                            v.text = "车辆取消"
-                            v.message = "lorry_factory_stop_build"
+                            v.text = "增加车辆"
+                            v.message = "lorry_factory_inc_lorry"
                             v.background_image = "textures/construct/truck-item.texture"
                             start.buttons[#start.buttons + 1] = v
                         end

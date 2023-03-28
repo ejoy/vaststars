@@ -70,7 +70,7 @@ local guide = {
         name = "guide-4",
 		narrative = {
             {"哔哩..采矿机顺利建造完毕..石矿采集技术可行性为{/g 99.983%}..哔哩..(期待)", "textures/guide/guide-2.texture"},
-            {"哔哩..请将采矿机放置在{/g 石矿}上方后，我们就可以采集矿物了..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..请将{/g 采矿机}放置在{/g 石矿}上方后，我们就可以采集矿物了..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             guide_progress = 10,
