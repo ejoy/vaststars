@@ -681,17 +681,17 @@ local prototype = gameplay.register.prototype
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "采矿机设计图"},
     prerequisites = {"仓库调度1"},
-    count = 2,
+    count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "使用建造中心建造2个采矿机", icon = "textures/construct/industry.texture"},
+      { desc = "使用建造中心建造1个采矿机", icon = "textures/construct/industry.texture"},
     },
   }
 
   prototype "放置采矿机" {
-    desc = "放置2台采矿机",
+    desc = "放置1台采矿机",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "采矿机I"},
@@ -700,12 +700,12 @@ local prototype = gameplay.register.prototype
        unlock_recipe = {"电线杆打印"},
        unlock_item = {"电线杆设计图"},
     },
-    count = 2,
+    count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在石矿上放置2个采矿机", icon = "textures/construct/industry.texture"},
+      { desc = "在石矿上放置1个采矿机", icon = "textures/construct/industry.texture"},
     },
   }
 
