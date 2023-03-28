@@ -64,12 +64,12 @@ do
 
     local function __show_block(position, dir, color, w, h)
         blocks[#blocks+1] = iplant.create("/pkg/vaststars.resources/materials/singlecolor.material", "u_color", color,
-        {
-            s = {terrain.tile_size * w + BLOCK_EDGE_SIZE, 1, terrain.tile_size * h + BLOCK_EDGE_SIZE},
-            r = ROTATORS[dir],
-            t = math3d.ref(math3d.add(position, BLOCK_POSITION_OFFSET))
-        }
-    )
+            {
+                s = {terrain.tile_size * w + BLOCK_EDGE_SIZE, 1, terrain.tile_size * h + BLOCK_EDGE_SIZE},
+                r = ROTATORS[dir],
+                t = math3d.ref(math3d.add(position, BLOCK_POSITION_OFFSET))
+            }
+        )
     end
 
     function idetail.selected(object)

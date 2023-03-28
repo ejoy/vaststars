@@ -805,6 +805,9 @@ local function confirm(self, datamodel)
             global.roadnet[coord] = mask
             c = c + 1
         end
+        local x, y = unpackcoord(coord)
+        local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
+        iroadnet:editor_set("road", "normal", x, y, shape, dir)
     end
 
     for coord in pairs(remove) do
