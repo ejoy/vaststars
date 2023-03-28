@@ -306,7 +306,7 @@ function M:build_power_network(gw)
                 h = ah,
             }
         end
-        if typeobject.name == "指挥中心" or typeobject.power_pole then
+        if typeobject.power_pole then
             powerpole[#powerpole + 1] = {
                 targets = {},
                 -- name = typeobject.name,

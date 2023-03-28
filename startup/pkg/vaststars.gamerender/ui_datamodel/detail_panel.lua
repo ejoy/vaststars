@@ -77,10 +77,11 @@ local function get_display_info(e, typeobject, t)
                     local current = 0
                     if cn == "power" then
                         local st = global.statistic["power"][e.eid]
-                        if typeobject.name == "指挥中心" then
-                            local consumenode = global.statistic.power_consumed["5s"]
-                            current = consumenode.power / consumenode.time
-                        elseif st then
+                        -- if typeobject.name == "指挥中心" then
+                        --     local consumenode = global.statistic.power_consumed["5s"]
+                        --     current = consumenode.power / consumenode.time
+                        -- else
+                        if st then
                             -- power is sum of 50 tick
                             current = st[cn] * (UPS / 50)
                         elseif e.solar_panel then
