@@ -28,7 +28,7 @@ local itask = ecs.require "task"
 
 local assembling_recipe = {}; local get_recipe_index; do
     local cache = {}
-    for _, v in pairs(iprototype.each_maintype "recipe") do
+    for _, v in pairs(iprototype.each_type "recipe") do
         if v.recipe_group then
             local recipe_item = {
                 name = v.name,
@@ -55,7 +55,7 @@ local assembling_recipe = {}; local get_recipe_index; do
 
     local index_cache = {}
 
-    for _, v in pairs(iprototype.each_maintype "building") do
+    for _, v in pairs(iprototype.each_type "building") do
         if not ((iprototype.has_type(v.type, "assembling") or iprototype.has_type(v.type, "lorry_factory")) and v.craft_category )then
             goto continue
         end

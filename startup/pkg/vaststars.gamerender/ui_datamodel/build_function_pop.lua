@@ -22,6 +22,8 @@ local pipe_builder_mb = mailbox:sub {"pipe_builder"}
 local construction_center_build_mb = mailbox:sub {"construction_center_build"}
 local construction_center_stop_build_mb = mailbox:sub {"construction_center_stop_build"}
 local construction_center_place_mb = mailbox:sub {"construction_center_place"}
+local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
+local lorry_factory_stop_build_mb = mailbox:sub {"lorry_factory_stop_build"}
 
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
 local iobject = ecs.require "object"
@@ -242,7 +244,7 @@ local function __lorry_factory_update(datamodel, object_id)
             local _, results = assembling_common.get(gameplay_core.get_world(), e)
             assert(results and results[1])
             lorry_factory_icon = results[1].icon
-            lorry_factory_count = results[1].count
+            lorry_factory_count = results[1].limit
         end
     end
     datamodel.lorry_factory_icon = lorry_factory_icon
@@ -389,7 +391,7 @@ function M:stage_ui_update(datamodel, object_id)
 
         local typeobject_item = iprototype.queryByName(object.prototype_name)
         if typeobject_item then
-            ichest.base_chest_place(gameplay_core.get_world(), typeobject_item.id, 1)
+            ichest.inventory_place(gameplay_core.get_world(), typeobject_item.id, 1)
         end
 
         local typeobject_entity = iprototype.queryByName(object.prototype_name)
@@ -471,6 +473,24 @@ function M:stage_ui_update(datamodel, object_id)
         iui.close("detail_panel.rml")
         iui.redirect("construct.rml", "construction_center_place", results[1].name, object.gameplay_eid, results[1].id)
         ::continue::
+    end
+
+    for _ in lorry_factory_inc_lorry_mb:unpack() do
+        local object = assert(objects:get(object_id))
+        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        assert(e.assembling.recipe ~= 0)
+
+        local _, results = assembling_common.get(gameplay_core.get_world(), e)
+        assert(results and results[1])
+        local limit = results[1].limit + 1
+        iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = limit, resultsLimit = limit})
+    end
+
+    for _ in lorry_factory_stop_build_mb:unpack() do
+        local object = assert(objects:get(object_id))
+        local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+        assert(e.assembling.recipe ~= 0)
+        iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = 0, resultsLimit = 0})
     end
 end
 

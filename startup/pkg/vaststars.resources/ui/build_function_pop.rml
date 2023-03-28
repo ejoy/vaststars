@@ -310,8 +310,8 @@
 
                         if start.lorry_factory_dec_lorry then
                             local v = setmetatable({}, {__index = mt})
-                            v.text = "减少车辆"
-                            v.message = "lorry_factory_dec_lorry"
+                            v.text = "车辆取消"
+                            v.message = "lorry_factory_stop_build"
                             v.background_image = "textures/construct/truck-item.texture"
                             start.buttons[#start.buttons + 1] = v
                         end

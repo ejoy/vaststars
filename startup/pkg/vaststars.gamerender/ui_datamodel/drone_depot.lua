@@ -17,7 +17,7 @@ local category_index_cache = {} -- item_id -> category_index
 local items_cache = {} -- category_index -> items
 
 do
-    for _, typeobject in pairs(iprototype.each_maintype("item")) do
+    for _, typeobject in pairs(iprototype.each_type("item")) do
         -- "任务" is a special item that is not subject to any checks.
         if typeobject.name == "任务" then
             goto continue

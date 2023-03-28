@@ -23,7 +23,7 @@ local _mask_to_shape_dir, _prototype_name_to_shape, _mask_to_prototype_name_dir,
     local mask_prototype_name_dir = {}
     local prototype_name_dir_mask = setmetatable({}, mt)
 
-    for _, pt in pairs(iprototype.each_maintype("building", "road")) do
+    for _, pt in pairs(iprototype.each_type("building", "road")) do
         for _, dir in ipairs(pt.flow_direction) do
             local v = 0
             for _, conn in ipairs(pt.crossing.connections) do

@@ -45,7 +45,7 @@ local accel = {} -- flow_type + bits -> prototype_name + dir
 local prototype_bits = {} -- prototype_name + dir -> bits
 local max_ground = {} -- flow_type -> max_ground
 
-for _, typeobject in pairs(iprototype.each_maintype "building") do
+for _, typeobject in pairs(iprototype.each_type "building") do
     if not typeobject.flow_type then
         goto continue
     end

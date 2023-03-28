@@ -65,7 +65,6 @@ local function _get_object(self, x, y, cache_names)
             object_state = "none",
         }
     end
-    return
 end
 
 local function _get_connections(prototype_name, x, y, dir)
@@ -76,7 +75,8 @@ local function _get_connections(prototype_name, x, y, dir)
     end
 
     for _, conn in ipairs(typeobject.crossing.connections) do
-        r[#r+1] = {x = x, y = y, dir = conn.position[3]} -- area of road is 1x1
+        local dx, dy, dir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
+        r[#r+1] = {x = x + dx, y = y + dy, dir = dir}
     end
     return r
 end
@@ -101,8 +101,7 @@ local function _connect_to_neighbor(self, x, y, prototype_name, dir)
         end
 
         for _, fb in ipairs(_get_connections(object.prototype_name, object.x, object.y, object.dir)) do
-            succ, dx, dy = terrain:move_coord(fb.x, fb.y, fb.dir, 1)
-            if succ and dx == x and dy == y then
+            if fb.x == x and fb.y == y then
                 prototype_name, dir = iflow_connector.covers_roadside(prototype_name, dir, neighbor_dir, true)
                 connected_dir = neighbor_dir
                 goto continue -- only one connection can be connected to the endpoint
@@ -722,10 +721,10 @@ local function touch_end(self, datamodel)
 end
 
 local REMOVE_ROAD_DIR_MASK = {
-    W = 0xFFFFFF00,
-    N = 0xFFFF00FF,
-    E = 0xFF00FFFF,
-    S = 0x00FFFFFF,
+    W = 0xE,
+    N = 0xD,
+    E = 0xB,
+    S = 0x7,
 }
 
 local function __apply_teardown(self, x, y)
@@ -751,6 +750,36 @@ local function __apply_teardown(self, x, y)
     end
 end
 
+local function __check_connections(self, x, y)
+    local object = _get_object(self, x, y, EDITOR_CACHE_NAMES)
+    if not object then
+        return false
+    end
+    if iprototype.is_road(object.prototype_name) then
+        return false
+    end
+    for _, fb in ipairs(_get_connections(object.prototype_name, object.x, object.y, object.dir)) do
+        if fb.x == x and fb.y == y then
+            return true
+        end
+    end
+    return false
+end
+
+local MAPPING <const> = {
+    W = 0, -- left
+    N = 1, -- top
+    E = 2, -- right
+    S = 3, -- bottom
+}
+
+local function __set_state_value(num, dir)
+    local index = MAPPING[dir]
+    assert(index >= 0 and index <= 3)
+    num = num & ~(1 << index) | (1 << index)
+    return num
+end
+
 local function confirm(self, datamodel)
     if self.grid_entity then
         self.grid_entity:remove()
@@ -768,6 +797,14 @@ local function confirm(self, datamodel)
             global.roadnet[coord] = nil
             remove[coord] = true
         else
+            for _, dir in ipairs(ALL_DIR) do
+                local succ, dx, dy = terrain:move_coord(x, y, dir, 1)
+                if succ and __check_connections(self, dx, dy) then
+                    mask = __set_state_value(mask, dir)
+                    global.roadnet[packcoord(dx, dy)] = 0x10
+                end
+            end
+
             global.roadnet[coord] = mask
             c = c + 1
         end

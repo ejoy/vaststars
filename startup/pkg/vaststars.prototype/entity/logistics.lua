@@ -6,7 +6,7 @@ prototype "指挥中心" {
     icon = "textures/building_pic/small_pic_headquarter.texture",
     background = "textures/build_background/pic_headquater.texture",
     construct_detector = {"exclusive"},
-    type = {"building", "generator", "base", "assembling", "consumer"},
+    type = {"building", "base", "assembling", "consumer", "lorry_factory"},
     speed = "50%",
     maxslot = "8",
     fluidboxes = {
@@ -16,8 +16,7 @@ prototype "指挥中心" {
         },
     },
     limit = {ingredientsLimit = 0, resultsLimit = 0},
-    chest_type = "blue",
-    show_arc_menu = false,
+    recipe = "运输车辆1",
     area = "5x5",
     power_supply_area = "9x9",
     power_supply_distance = 9,
@@ -27,7 +26,7 @@ prototype "指挥中心" {
     teardown = false,
     crossing = {
         connections = {
-            {type="chest", position={2,4,"S"}},
+            {type="lorry_factory", position={2,4,"S"}},
         },
     }
 }

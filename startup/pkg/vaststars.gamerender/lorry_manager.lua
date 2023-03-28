@@ -62,7 +62,7 @@ local DIRECTION <const> = {
 
 local cache = {}
 do
-    for _, typeobject in pairs(iprototype.each_maintype("building", "road")) do
+    for _, typeobject in pairs(iprototype.each_type("building", "road")) do
         local slots = __prefab_slots(typeobject.model)
         if not next(slots) then
             goto continue

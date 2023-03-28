@@ -471,7 +471,7 @@ local MAPPING <const> = {
     S = 3, -- bottom
 }
 
-local function set_state_value(num, dir)
+local function __set_state_value(num, dir)
     local index = MAPPING[dir]
     assert(index >= 0 and index <= 3)
     num = num & ~(1 << index) | (1 << index)
@@ -496,7 +496,7 @@ local function complete(self, object_id)
     assert(#rd == 1, ("road entrance must have one connection: %s"):format(object.prototype_name))
     local dx, dy = iprototype.move_coord(rd[1].x, rd[1].y, rd[1].dir, 1)
     local mask = assert(global.roadnet[iprototype.packcoord(dx, dy)])
-    mask = set_state_value(mask, iprototype.reverse_dir(rd[1].dir))
+    mask = __set_state_value(mask, iprototype.reverse_dir(rd[1].dir))
     global.roadnet[iprototype.packcoord(dx, dy)] = mask
     global.roadnet[iprototype.packcoord(rd[1].x, rd[1].y)] = 0x10
     iroadnet:editor_build()

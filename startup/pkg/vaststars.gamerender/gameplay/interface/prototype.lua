@@ -22,7 +22,7 @@ end
 
 do
     local cache = {}
-    function M.each_maintype(...)
+    function M.each_type(...)
         local function _check_types(typeobject, types)
             for _, type in ipairs(types) do
                 if not M.has_type(typeobject.type, type) then
