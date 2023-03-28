@@ -217,7 +217,7 @@
                 <!--组装机类型底部显示进度-->
                 <div style="height:22%; flex-direction: column; justify-content: center; align-items: center;" data-if = "show_assemble">
                     <div class="recipe-name">
-                        <div class="progress-bar-block" style = "width: 100%; height:98%; border: 0.1vmin rgb(0, 0, 0);">
+                        <div class="progress-bar-block" style = "width: 100%; height:98%; border: 0.2vmin rgb(0, 0, 0);">
                             <div class="progress-background" data-style-width="progress"/>
                             <div style="flex-direction:row; justify-content: flex-start; align-items: center; position: absolute; left:0;">
                                 <div class = "small-bg" style='background-image: "textures/science/book.texture"; padding-top:1vmin;'/>
