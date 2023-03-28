@@ -16,7 +16,7 @@ prototype "指挥中心" {
         },
     },
     limit = {ingredientsLimit = 0, resultsLimit = 0},
-    recipe = "运输车辆1",
+    recipe = "车辆装配",
     area = "5x5",
     power_supply_area = "9x9",
     power_supply_distance = 9,

@@ -1007,8 +1007,8 @@ prototype "建造电线杆" {
     prerequisites = {"放置道路建造站"},
     count = 1,
     effects = {
-      unlock_recipe = {"维修运输汽车"},
-      unlock_item = {"运输车辆I","破损运输车辆"},
+      unlock_recipe = {"车辆装配"},
+      unlock_item = {"运输车框架"},
     },
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -1160,7 +1160,7 @@ prototype "建造电线杆" {
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
-      unlock_recipe = {"运输车辆1"},
+      unlock_recipe = {"运输汽车制造"},
     },
     prerequisites = {"生产铁齿轮"},
     ingredients = {

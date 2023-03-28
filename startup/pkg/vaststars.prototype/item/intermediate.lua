@@ -435,12 +435,22 @@ prototype "用尽的核铀燃料" {
 
 prototype "无人机" {
     type = {"item"},
-    stack = 2,
+    stack = 4,
     pile = "4x4x4",
     pile_model = "glb/stackeditems/iron-ingot.glb",
     icon = "textures/construct/drone1.texture",
     item_description = "用来抓取货物的机械装置",
     group = {"器件"},
+}
+
+prototype "运输车框架" {
+    type = {"item"},
+    stack = 4,
+    pile = "4x4x4",
+    pile_model = "glb/stackeditems/iron-ingot.glb",
+    icon = "textures/construct/broken-truck.texture",
+    item_description = "用来装配运输车的框架",
+    group = {"生产"},
 }
 --------------------------
 prototype "海藻" {

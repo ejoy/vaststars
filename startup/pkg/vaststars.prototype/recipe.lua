@@ -419,23 +419,6 @@ prototype "物流中心1" {
     description = "发电设施和车载设备制造物流中心",
 }
 
-prototype "运输车辆1" {
-    type = { "recipe" },
-    category = "车辆制造",
-    recipe_group =  "物流",
-    recipe_order =  53,
-    recipe_icon =  "textures/construct/truck.texture",
-    ingredients = {
-        {"铁齿轮", 1},
-        {"铁板", 2},
-    },
-    results = {
-        {"运输车辆I", 1},
-    },
-    time = "5s",
-    description = "电动机和铁制品制造汽车",
-}
-
 prototype "小铁制箱子1" {
     type = { "recipe" },
     category = "物流中型制造",
@@ -1208,6 +1191,23 @@ prototype "运输汽车制造" {
     ingredients = {
         {"电动机I", 1},
         {"铁板", 2},
+    },
+    results = {
+        {"运输车框架", 1},
+    },
+    time = "4s",
+    description = "制造运输车框架",
+}
+
+prototype "车辆装配" {
+    type = { "recipe" },
+    category = "生产手工制造",
+    recipe_group =  "生产",
+    recipe_order =  128,
+    allow_as_intermediate = false,
+    recipe_icon =  "textures/construct/broken-truck.texture",
+    ingredients = {
+        {"运输车框架", 1},
     },
     results = {
         {"运输车辆I", 1},
