@@ -69,6 +69,7 @@ local building_detail_config = {
 		"charge_energy",
 	},
 	["指挥中心"] = {
+		"work_power",
 		"power_supply_area",
 		"power_supply_distance",
 	},
