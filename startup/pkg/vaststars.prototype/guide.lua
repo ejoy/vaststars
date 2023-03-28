@@ -121,9 +121,9 @@ local guide = {
         name = "guide-7",
 		narrative = {
             {"哔哩..整个基地的用电设施都需要被{/g 电网覆盖}，否则它们将无法工作..哔哩(无奈）", "textures/guide/guide-6.texture"},
-            {"指挥中心可产生电力..哔哩..{/g 放置电线杆}把指挥中心的电力扩散出去..哔哩(期待)", "textures/guide/guide-3.texture"},
+            {"风力发电机可产生电力..哔哩..{/g 放置电线杆}把风力发电机的电力扩散出去..哔哩(期待)", "textures/guide/guide-3.texture"},
             {"当电线杆之间出现{/r 红色电线}时则表示成功连接，在电线{/color:4bd0ff 蓝色范围}内就会有电力传输(兴奋)", "textures/guide/guide-3.texture"},
-            {"若指挥中心和电线杆形成一个{/g 电网}，处于{/g 电网}内的用电设施就可以工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
+            {"若风力发电机和电线杆形成彼此连接的{/g 电网}，处于{/g 电网}内的用电设施就可以工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 10,
