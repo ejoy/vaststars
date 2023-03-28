@@ -96,7 +96,7 @@ register_unit("time", "word", function(s)
 	end
 	if s:match "^[%d.]+s$" then
 		local time = assert(tonumber(s:sub(1, -2)))
-		local tick = math.floor(time*50)
+		local tick = math.floor(time*UPS)
 		return tick
 	end
 	if s:match "^[%d]+$" then
