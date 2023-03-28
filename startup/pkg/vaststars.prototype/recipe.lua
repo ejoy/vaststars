@@ -1273,7 +1273,7 @@ prototype "送货车站打印" {
     category = "设计图打印",
     recipe_group =  "物流",
     recipe_order =  56,
-    recipe_icon =  "textures/construct/broken-logisitic.texture",
+    recipe_icon =  "textures/construct/broken-goodsstation-output.texture",
     ingredients = {
         {"送货车站设计图", 1},
     },
@@ -1289,7 +1289,7 @@ prototype "收货车站打印" {
     category = "设计图打印",
     recipe_group =  "物流",
     recipe_order =  56,
-    recipe_icon =  "textures/construct/broken-logisitic.texture",
+    recipe_icon =  "textures/construct/broken-goodsstation-input.texture",
     ingredients = {
         {"收货车站设计图", 1},
     },
