@@ -47,13 +47,7 @@ local function convert(t)
         local connections = typeobject.crossing.connections
         for _, connection in ipairs(connections) do
             local dir = assert(mapping[rotate_dir(connection.position[3], r.dir)])
-            local value
-            if connection.roadside then
-                value = 2
-            else
-                value = 1
-            end
-            v = v | (value << (dir * 1))
+            v = v | (1 << (dir * 1))
         end
 
         res[k] = v

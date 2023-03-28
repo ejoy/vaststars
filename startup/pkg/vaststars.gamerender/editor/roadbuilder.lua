@@ -100,7 +100,7 @@ local function _connect_to_neighbor(self, x, y, prototype_name, dir)
 
         for _, fb in ipairs(_get_connections(object.prototype_name, object.x, object.y, object.dir)) do
             if fb.x == x and fb.y == y then
-                prototype_name, dir = iflow_connector.covers_roadside(prototype_name, dir, neighbor_dir, true)
+                prototype_name, dir = iflow_connector.set_road_connection(prototype_name, dir, neighbor_dir, true)
                 connected_dir = neighbor_dir
                 goto continue -- only one connection can be connected to the endpoint
             end
@@ -223,11 +223,11 @@ local function _builder_end(self, datamodel, State, dir, dir_delta)
     local shape_type = State.succ and "valid" or "invalid"
     self.temporary_map = {}
     for coord, v in pairs(map) do
+        local x, y = unpackcoord(coord)
         local object = _get_object(self, x, y, EDITOR_CACHE_NAMES)
         if object and not iprototype.is_road(object.prototype_name) then -- TODO: remove this check
             goto continue
         end
-        local x, y = unpackcoord(coord)
         if x == from_x and y == from_y then
             iroadnet:editor_set("indicator", shape_type, x, y, "U", dir)
         elseif x == to_x and y == to_y then
