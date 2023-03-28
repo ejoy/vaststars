@@ -103,6 +103,7 @@ local start_x = 0
 local curve_state = {}
 
 local function update_chart(group, total, color)
+    if total <= 0 then return end
     local line_list = chart_data[group.cfg.name]
     if not chart_data[group.cfg.name] then
         local lines = {{start_x, 0, 0.5}, {start_x + line_step, 0, 0.5}}
@@ -305,7 +306,7 @@ function M:stage_ui_update(datamodel)
             -- local persec_totoal = maxnode.power / total.time
             local maxframepower
             if #newitems <= 0 then
-                maxframepower = 1
+                maxframepower = 0
             else
                 maxframepower = maxnode.frames[maxnode.max_index].power
             end
