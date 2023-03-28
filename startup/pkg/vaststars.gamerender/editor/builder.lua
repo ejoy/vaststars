@@ -103,7 +103,7 @@ local function complete(self, object_id)
     gameplay_core.build()
 
     local gw = gameplay_core.get_world()
-    if typeobject.power_pole then
+    if typeobject.power_pole or typeobject.power_supply_distance then
         -- update power network
         ipower:build_power_network(gw)
         ipower_line.update_line(ipower:get_pole_lines())

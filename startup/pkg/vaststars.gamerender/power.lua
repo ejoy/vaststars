@@ -306,7 +306,7 @@ function M:build_power_network(gw)
                 h = ah,
             }
         end
-        if typeobject.power_pole then
+        if typeobject.power_pole or typeobject.power_supply_distance then
             powerpole[#powerpole + 1] = {
                 targets = {},
                 -- name = typeobject.name,
@@ -317,7 +317,8 @@ function M:build_power_network(gw)
                 h = ah,
                 sw = tonumber(sw),
                 sh = tonumber(sh),
-                sd = typeobject.power_supply_distance
+                sd = typeobject.power_supply_distance,
+                power_pole = typeobject.power_pole
             }
         end
     end
