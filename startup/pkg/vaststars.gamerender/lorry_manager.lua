@@ -12,39 +12,17 @@ local itrack = ecs.require "engine.track"
 local create_lorry = ecs.require "lorry"
 local global = require "global"
 local iroadnet_converter = require "roadnet_converter"
-local cr = import_package "ant.compile_resource"
-local serialize = import_package "ant.serialize"
-local fs = require "filesystem"
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 local gameplay_core = require "gameplay.core"
+local prefab_parse = require("engine.prefab_parser").parse
 
 local CONSTANTS = gameplay_core.get_world():roadnet_constants()
 local STRAIGHT_TICKCOUNT <const> = CONSTANTS.kTime
 local CROSS_TICKCOUNT <const> = CONSTANTS.kCrossTime
 
-local function __prefab_parser(f)
-    local fullpath = RESOURCES_BASE_PATH:format(f)
-    local res = serialize.parse(fullpath, cr.read_file(fullpath))
-    local patch = fullpath .. ".patch"
-    if fs.exists(fs.path(patch)) then
-        local count = #res
-        for index, value in ipairs(serialize.parse(patch, cr.read_file(patch))) do -- TODO: duplicated code - ant.ecs/main.lua -> create_template
-            if value.mount then
-                if value.mount ~= 1 then
-                    value.mount = count + index - 1
-                end
-            else
-                value.mount = 1
-            end
-            res[#res + 1] = value
-        end
-    end
-    return res
-end
-
 local function __prefab_slots(prefab)
     local res = {}
-    local t = __prefab_parser(prefab)
+    local t = prefab_parse(RESOURCES_BASE_PATH:format(prefab))
     for _, v in ipairs(t) do
         if v.data.slot then
             res[v.data.name] = v.data

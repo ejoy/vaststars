@@ -62,6 +62,16 @@ do
         blocks = {}
     end
 
+    local function __show_block(position, dir, color, w, h)
+        blocks[#blocks+1] = iplant.create("/pkg/vaststars.resources/materials/singlecolor.material", "u_color", color,
+        {
+            s = {terrain.tile_size * w + BLOCK_EDGE_SIZE, 1, terrain.tile_size * h + BLOCK_EDGE_SIZE},
+            r = ROTATORS[dir],
+            t = math3d.ref(math3d.add(position, BLOCK_POSITION_OFFSET))
+        }
+    )
+    end
+
     function idetail.selected(object)
         idetail.unselected()
 
@@ -70,15 +80,18 @@ do
         local w, h
         if typeobject.power_supply_area then
             block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_GREEN
-            w, h = typeobject.power_supply_area:match("(%d+)x(%d+)")
-            w, h = tonumber(w), tonumber(h)
+            for _, object in objects:all() do
+                local otypeobject = iprototype.queryByName(object.prototype_name)
+                if otypeobject.power_supply_area then
+                    local ow, oh = otypeobject.power_supply_area:match("(%d+)x(%d+)")
+                    ow, oh = tonumber(ow), tonumber(oh)
+                    __show_block(object.srt.t, object.dir, block_color, ow, oh)
+                end
+            end
         else
             block_color = CONSTRUCT_BLOCK_COLOR_GREEN
             w, h = iprototype.unpackarea(typeobject.area)
+            __show_block(object.srt.t, object.dir, block_color, w, h)
         end
-
-        local block_pos = math3d.ref(math3d.add(object.srt.t, BLOCK_POSITION_OFFSET))
-        local srt = {r = ROTATORS[object.dir], s = {terrain.tile_size * w + BLOCK_EDGE_SIZE, 1, terrain.tile_size * h + BLOCK_EDGE_SIZE}, t = block_pos}
-        blocks[#blocks+1] = iplant.create("/pkg/vaststars.resources/materials/singlecolor.material", "u_color", block_color, srt)
     end
 end
