@@ -326,7 +326,7 @@ local function confirm(self, datamodel)
     end
 
     iui.close("construct_pop.rml")
-    self:complete(pickup_object.id)
+    self:complete(pickup_object.id, datamodel)
 end
 
 -- TODO: remove this
@@ -346,7 +346,7 @@ local function __get_hub_first_item(gameplay_world, e)
     end
 end
 
-local function complete(self, object_id)
+local function complete(self, object_id, datamodel)
     do
         local e = gameplay_core.get_entity(assert(self.gameplay_eid))
         gameplay_core.get_world():container_pickup(e.chest, self.item, 1)
@@ -367,6 +367,9 @@ local function complete(self, object_id)
         interface.set_first_item = __set_hub_first_item
         iui.open({"drone_depot.rml"}, object_id, interface)
     end
+
+    self:clean(datamodel)
+    iui.redirect("construct.rml", "move_finish") -- TODO：remove this
 end
 
 local function check_construct_detector(self, prototype_name, x, y, dir)
