@@ -104,7 +104,9 @@ function M:update_tech(datamodel, tech)
             local ingredient_icons = {}
             local ingredients = irecipe.get_elements(tech.detail.ingredients)
             for _, ingredient in ipairs(ingredients) do
-                ingredient_icons[#ingredient_icons + 1] = {icon = assert(ingredient.tech_icon), count = ingredient.count}
+                if ingredient.tech_icon ~= '' then
+                    ingredient_icons[#ingredient_icons + 1] = {icon = assert(ingredient.tech_icon), count = ingredient.count}
+                end
             end
             current_techname = tech.name
             datamodel.ingredient_icons = ingredient_icons
