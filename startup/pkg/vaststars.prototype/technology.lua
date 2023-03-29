@@ -1015,7 +1015,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "送货车站"},
-    prerequisites = {"放置道路建造站","修建公路"},
+    prerequisites = {"物流学I","修建公路"},
     count = 1,
     effects = {
       unlock_recipe = {"车辆装配"},
@@ -1034,7 +1034,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "收货车站"},
-    prerequisites = {"放置道路建造站","修建公路"},
+    prerequisites = {"物流学I","修建公路"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",

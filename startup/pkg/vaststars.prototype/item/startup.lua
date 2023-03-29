@@ -81,7 +81,7 @@ local entities = {
         prototype_name = "熔炼炉I",
         dir = "N",
         x = 140,
-        y = 126,
+        y = 127,
     },
 }
 

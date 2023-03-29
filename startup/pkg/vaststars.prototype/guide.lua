@@ -20,7 +20,7 @@ local guide = {
         name = "guide-2",
 		narrative = {
             {"作为助理AI，我建议你立刻开始工作..哔哩..你的剩余生存时间理论上只有{/color:4bd0ff 348.26}地球小时..(担忧)", "textures/guide/guide-6.texture"},
-            {"哔哩..发现可用{/g 无人机仓库}和{/g 建筑废墟}..哔哩..引导{/color:4bd0ff 无人机}搬运有用物资..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..发现{/g 无人机仓库}和{/g 建筑废墟}..哔哩..引导{/color:4bd0ff 无人机}搬运有用物资..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             pop_chapter = {"序章","迫降P4031"},
@@ -104,10 +104,10 @@ local guide = {
     {
         name = "guide-7",
 		narrative = {
-            {"哔哩..整个基地的{/color:4bd0ff 用电设施}都需要被{/g 电网覆盖}，否则它们将无法工作..哔哩(无奈）", "textures/guide/guide-6.texture"},
-            {"{/color:4bd0ff 风力发电机}可产生电力..哔哩..{/g 放置电线杆}把风力发电机的电力扩散出去..哔哩(期待)", "textures/guide/guide-3.texture"},
-            {"当电线杆之间出现{/r 红色电线}时则表示成功连接，在其覆盖{/color:4bd0ff 蓝色范围}内就会产生电力传输(兴奋)", "textures/guide/guide-3.texture"},
-            {"若{/color:4bd0ff 风力发电机}和{/color:4bd0ff 电线杆}彼此连接，它们所形成的{/g 电网}就能让用电设施工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
+            {"哔哩..整个基地的{/color:4bd0ff 用电设施}都需要被{/g 电网}覆盖，否则它们将无法工作..哔哩(无奈）", "textures/guide/guide-6.texture"},
+            {"{/color:4bd0ff 风力发电机}可产生电力..哔哩..在风力发电机附近放置{/g 电线杆}可以形成{/color:4bd0ff 电网}..哔哩(期待)", "textures/guide/guide-3.texture"},
+            {"当电线杆之间出现{/r 红色电线}时则表示成功连接，在其覆盖{/color:4bd0ff 蓝色范围}内就会提供电能(兴奋)", "textures/guide/guide-3.texture"},
+            {"{/g 电网}可以通过连接多个{/color:4bd0ff 电线杆}逐步扩散，它们所形成的{/g 电网}就能让用电设施工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -156,7 +156,7 @@ local guide = {
     {
         name = "guide-10",
 		narrative = {
-            {"哔哩..将新建的无人机仓库放置在{/g 石矿采矿机}旁边，无人机就可以运输矿石了....(轻松)", "textures/guide/guide-1.texture"},
+            {"哔哩..将新建的无人机仓库放置在{/g 采矿机}旁边，无人机就可以运输矿石了....(轻松)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 10,
