@@ -351,8 +351,8 @@
                     <div class = "materials-item">
                         <div class = "materials-icon" data-style-background-image = "it.icon" />
                         <div style = "flex-grow: 1; flex-direction:row-reverse;">
-                            <div class = "materials-num" data-style-color = "it.color" data-if = "it.state == 'can_craft' || it.state == 'enough'">X{{it.need_count}}</div>
-                            <div class = "materials-num" data-style-color = "it.color" data-if = "it.state == 'lack'">X({{it.count}}/{{it.need_count}})</div>
+                            <div class = "materials-num" data-style-color = "it.color" data-if = "it.state == 'can_craft' || it.state == 'enough'">X{{it.demand_count}}</div>
+                            <div class = "materials-num" data-style-color = "it.color" data-if = "it.state == 'lack'">X({{it.count}}/{{it.demand_count}})</div>
                         </div>
                     </div>
                 </div>

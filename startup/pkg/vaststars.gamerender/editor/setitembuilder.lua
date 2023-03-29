@@ -24,15 +24,19 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local mc = import_package "ant.math".constant
 local create_road_entrance = ecs.require "editor.road_entrance"
 local iplant = ecs.require "engine.plane"
+local terrain = ecs.require "terrain"
+local gameplay = import_package "vaststars.gameplay"
+local iassembling = gameplay.interface "assembling"
+local assembling_common = require "ui_datamodel.common.assembling"
 local BLOCK_CONSTRUCT_COLOR_INVALID <const> = math3d.constant("v4", {2.5, 0.2, 0.2, 0.4})
 local BLOCK_CONSTRUCT_COLOR_VALID <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
 local BLOCK_CONSTRUCT_POWER_POLE_COLOR_VALID <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
 local BLOCK_CONSTRUCT_POWER_POLE_COLOR_INVALID <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 local BLOCK_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
-local terrain = ecs.require "terrain"
 local BLOCK_EDGE_SIZE <const> = 6
 local BLOCK_CONSTRUCT_POWER_POLE_COLOR_GREEN <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
+
 
 local function _building_to_logisitic(x, y)
     local nposition = assert(building_coord:get_begin_position_by_coord(x, y))
@@ -394,11 +398,22 @@ local function __get_station_first_item(gameplay_world, e)
     end
 end
 
-local function complete(self, object_id, datamodel)
-    do
-        local e = gameplay_core.get_entity(assert(self.gameplay_eid))
-        gameplay_core.get_world():container_pickup(e.chest, self.item, 1)
+local function __deduct_item(self, e)
+    gameplay_core.get_world():container_pickup(e.chest, self.item, 1)
+
+    local typeobject = iprototype.queryById(e.building.prototype)
+    local _, results = assembling_common.get(gameplay_core.get_world(), e)
+    assert(results and #results == 1)
+    local multiple = math.max((results[1].limit // results[1].output_count) - 1, 0)
+    if typeobject.recipe_max_limit and typeobject.recipe_max_limit.resultsLimit >= multiple then
+        iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})
+        gameplay_core.build()
     end
+end
+
+local function complete(self, object_id, datamodel)
+    local e = gameplay_core.get_entity(assert(self.gameplay_eid))
+    __deduct_item(self, e)
 
     self.super.complete(self, object_id)
 

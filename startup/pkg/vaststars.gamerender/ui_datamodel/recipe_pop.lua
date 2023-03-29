@@ -290,9 +290,10 @@ function M:stage_ui_update(datamodel, object_id)
 
     for _, _, _, object_id, recipe_name in set_recipe_mb:unpack() do
         local object = assert(objects:get(object_id, {"CONSTRUCTED"}))
+        local typeobject = iprototype.queryByName(object.prototype_name)
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         if e.assembling then
-            if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name) then
+            if iworld.set_recipe(gameplay_core.get_world(), e, recipe_name, typeobject.recipe_init_limit) then
                 -- TODO viewport
                 local recipe_typeobject = iprototype.queryByName(recipe_name)
                 assert(recipe_typeobject, ("can not found recipe `%s`"):format(recipe_name))

@@ -15,7 +15,7 @@ prototype "指挥中心" {
         output = {
         },
     },
-    limit = {ingredientsLimit = 0, resultsLimit = 0},
+    recipe_init_limit = {ingredientsLimit = 0, resultsLimit = 0},
     recipe = "车辆装配",
     area = "5x5",
     power_supply_area = "9x9",
@@ -235,7 +235,6 @@ prototype "建造中心" {
     type = {"building", "assembling", "consumer"},
     area = "5x5",
     maxslot = 8,
-    recipe_chest_limit = 10,
     craft_category = {"设计图打印"},
     fluidboxes = {
         input = {
@@ -275,6 +274,8 @@ prototype "建造中心" {
             },
         },
     },
+    recipe_init_limit = {ingredientsLimit = 0, resultsLimit = 0},
+    recipe_max_limit = {ingredientsLimit = 10, resultsLimit = 10},
     power = "75kW",
     priority = "secondary",
     construction_center = true,

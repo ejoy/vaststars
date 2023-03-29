@@ -103,99 +103,6 @@ local function __show_set_recipe(typeobject)
     return typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining")
 end
 
----------------
-local M = {}
-local current_object_id
-function M:create(object_id, object_position, ui_x, ui_y)
-    if current_object_id and current_object_id ~= object_id then
-        local vsobject = vsobject_manager:get(current_object_id)
-        if vsobject then -- current_object_id may be destroyed
-            vsobject:modifier("start", {name = "over", forwards = true})
-        end
-    end
-    if current_object_id ~= object_id then
-        local vsobject = vsobject_manager:get(object_id)
-        vsobject:modifier("start", {name = "talk", forwards = true})
-    end
-    current_object_id = object_id
-    local object = assert(objects:get(object_id))
-    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-    if not e then
-        return
-    end
-    local typeobject = iprototype.queryByName(object.prototype_name)
-
-    -- 组装机才显示设置配方菜单
-    local show_set_recipe = __show_set_recipe(typeobject)
-    local show_set_item = __show_set_item(typeobject)
-    local show_detail = false--__show_detail(typeobject)
-    local recipe_name = ""
-
-    if iprototype.has_type(typeobject.type, "assembling") then
-        if e.assembling.recipe ~= 0 then
-            local recipe_typeobject = iprototype.queryById(e.assembling.recipe)
-            recipe_name = recipe_typeobject.name
-        end
-    end
-
-    local construction_center_place, construction_center_build, construction_center_stop_build = false, false, false
-    local construction_center_icon, construction_center_count, construction_center_ingredients
-    local construction_center_multiple = 2
-    if typeobject.construction_center == true then
-        if e.assembling.recipe == 0 then
-            construction_center_icon = ""
-            construction_center_count = 0
-        else
-            construction_center_build, construction_center_stop_build = true, true
-            local results
-            construction_center_ingredients, results = assembling_common.get(gameplay_core.get_world(), e)
-            assert(results and results[1])
-            construction_center_icon = results[1].icon
-            construction_center_count = results[1].count
-
-            if construction_center_count > 0 then
-                construction_center_place = true
-            end
-        end
-
-        local ingredients, _ = assembling_common.get(gameplay_core.get_world(), e)
-        if ingredients[1] then -- Not yet set recipe
-            construction_center_multiple = (ingredients[1].limit // ingredients[1].need_count)
-        end
-    end
-
-    return {
-        show_teardown = false,
-        show_move = false,
-        show_set_recipe = show_set_recipe,
-        show_set_item = show_set_item,
-        show_road_builder = typeobject.road_builder,
-        show_pipe_builder = typeobject.pipe_builder,
-        construction_center_icon = construction_center_icon,
-        construction_center_count = construction_center_count,
-        construction_center_ingredients = construction_center_ingredients,
-        construction_center_multiple = construction_center_multiple,
-        construction_center_place = construction_center_place,
-        construction_center_build = construction_center_build,
-        construction_center_stop_build = construction_center_stop_build,
-        lorry_factory_icon = "",
-        lorry_factory_count = 0,
-        lorry_factory_inc_lorry = false,
-        lorry_factory_dec_lorry = false,
-        drone_depot_icon = "",
-        drone_depot_count = 0,
-        station_item_icon = "",
-        station_item_count = 0,
-        station_weight_increase = false,
-        station_weight_decrease = false,
-        show_detail = show_detail,
-        recipe_name = recipe_name,
-        object_id = object_id,
-        left = ui_x,
-        top = ui_y,
-        object_position = object_position,
-    }
-end
 
 local function __construction_center_update(datamodel, object_id)
     local object = assert(objects:get(object_id))
@@ -204,27 +111,24 @@ local function __construction_center_update(datamodel, object_id)
         return
     end
     local typeobject = iprototype.queryByName(object.prototype_name)
-    local construction_center_icon, construction_center_count, construction_center_ingredients
-    if typeobject.construction_center == true then
-        if e.assembling.recipe == 0 then
-            construction_center_icon = ""
-            construction_center_count = 0
-        else
-            datamodel.construction_center_build, datamodel.construction_center_stop_build = true, true
-            local results
-            construction_center_ingredients, results = assembling_common.get(gameplay_core.get_world(), e)
-            assert(results and results[1])
-            construction_center_icon = results[1].icon
-            construction_center_count = results[1].count
-
-            if construction_center_count > 0 then
-                datamodel.construction_center_place = true
-            end
-        end
+    if typeobject.construction_center ~= true then
+        return
     end
-    datamodel.construction_center_icon = construction_center_icon
-    datamodel.construction_center_count = construction_center_count
-    datamodel.construction_center_ingredients = construction_center_ingredients
+
+    if e.assembling.recipe == 0 then
+        datamodel.construction_center_icon = ""
+        datamodel.construction_center_count = 0
+        datamodel.construction_center_build, datamodel.construction_center_stop_build = false, false
+        datamodel.construction_center_place = false
+    else
+        local ingredients, results = assembling_common.get(gameplay_core.get_world(), e)
+        assert(results and results[1])
+        datamodel.construction_center_icon = results[1].icon
+        datamodel.construction_center_count = results[1].count
+        datamodel.construction_center_build, datamodel.construction_center_stop_build = true, true
+        datamodel.construction_center_place = results[1].count > 0
+        datamodel.construction_center_ingredients = ingredients
+    end
 end
 
 local function __lorry_factory_update(datamodel, object_id)
@@ -291,6 +195,77 @@ local function __station_update(datamodel, object_id)
     datamodel.station_item_count = c.amount
     datamodel.station_weight_increase = true
     datamodel.station_weight_decrease = true
+end
+
+---------------
+local M = {}
+local current_object_id
+function M:create(object_id, object_position, ui_x, ui_y)
+    if current_object_id and current_object_id ~= object_id then
+        local vsobject = vsobject_manager:get(current_object_id)
+        if vsobject then -- current_object_id may be destroyed
+            vsobject:modifier("start", {name = "over", forwards = true})
+        end
+    end
+    if current_object_id ~= object_id then
+        local vsobject = vsobject_manager:get(object_id)
+        vsobject:modifier("start", {name = "talk", forwards = true})
+    end
+    current_object_id = object_id
+    local object = assert(objects:get(object_id))
+    local e = gameplay_core.get_entity(assert(object.gameplay_eid))
+    if not e then
+        return
+    end
+    local typeobject = iprototype.queryByName(object.prototype_name)
+
+    -- 组装机才显示设置配方菜单
+    local show_set_recipe = __show_set_recipe(typeobject)
+    local show_set_item = __show_set_item(typeobject)
+    local show_detail = false--__show_detail(typeobject)
+    local recipe_name = ""
+
+    if iprototype.has_type(typeobject.type, "assembling") then
+        if e.assembling.recipe ~= 0 then
+            local recipe_typeobject = iprototype.queryById(e.assembling.recipe)
+            recipe_name = recipe_typeobject.name
+        end
+    end
+
+    local datamodel = {
+        show_teardown = false,
+        show_move = false,
+        show_set_recipe = show_set_recipe,
+        show_set_item = show_set_item,
+        show_road_builder = typeobject.road_builder,
+        show_pipe_builder = typeobject.pipe_builder,
+        construction_center_icon = "",
+        construction_center_count = 0,
+        construction_center_ingredients = {},
+        construction_center_multiple = 0,
+        construction_center_place = false,
+        construction_center_build = false,
+        construction_center_stop_build = false,
+        lorry_factory_icon = "",
+        lorry_factory_count = 0,
+        lorry_factory_inc_lorry = false,
+        lorry_factory_dec_lorry = false,
+        drone_depot_icon = "",
+        drone_depot_count = 0,
+        station_item_icon = "",
+        station_item_count = 0,
+        station_weight_increase = false,
+        station_weight_decrease = false,
+        show_detail = show_detail,
+        recipe_name = recipe_name,
+        object_id = object_id,
+        left = ui_x,
+        top = ui_y,
+        object_position = object_position,
+    }
+    __construction_center_update(datamodel, object_id)
+
+    return datamodel
 end
 
 local function __set_hub_first_item(gameplay_world, e, prototype_name)
@@ -428,14 +403,15 @@ function M:stage_ui_update(datamodel, object_id)
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         local typeobject = iprototype.queryById(e.building.prototype)
-        local ingredients, _ = assembling_common.get(gameplay_core.get_world(), e)
-        if not ingredients[1] then -- Not yet set recipe
+        local _, results = assembling_common.get(gameplay_core.get_world(), e)
+        if not results[1] then -- Not yet set recipe
             goto continue
         end
-        local multiple = (ingredients[1].limit // ingredients[1].need_count) + 1
-        if typeobject.recipe_chest_limit and typeobject.recipe_chest_limit >= multiple then
+        local multiple = (results[1].limit // results[1].output_count) + 1
+        if typeobject.recipe_max_limit and typeobject.recipe_max_limit.resultsLimit >= multiple then
             datamodel.construction_center_multiple = multiple
             iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})
+            gameplay_core.build()
         end
         ::continue::
     end
@@ -443,16 +419,15 @@ function M:stage_ui_update(datamodel, object_id)
     for _, _, _, object_id in construction_center_stop_build_mb:unpack() do
         local object = assert(objects:get(object_id))
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
-        iworld.set_recipe(gameplay_core.get_world(), e, nil)
-        local vsobject = assert(vsobject_manager:get(object_id))
-        local typeobject = assert(iprototype.queryByName(object.prototype_name))
-        local w, h = iprototype.unpackarea(typeobject.area)
-        object.recipe = ""
-        vsobject:add_canvas(icanvas.types().ICON, get_assembling_canvas_items(object, object.x, object.y, w, h))
-        object.fluid_name = {}
-
-        iui.update("build_function_pop.rml", "update", object_id)
+        local _, results = assembling_common.get(gameplay_core.get_world(), e)
+        if not results[1] then -- Not yet set recipe
+            goto continue
+        end
+        local multiple = 0
+        datamodel.construction_center_multiple = multiple
+        iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})
         gameplay_core.build()
+        ::continue::
     end
 
     for _ in construction_center_place_mb:unpack() do
@@ -482,8 +457,8 @@ function M:stage_ui_update(datamodel, object_id)
 
         local _, results = assembling_common.get(gameplay_core.get_world(), e)
         assert(results and results[1])
-        local limit = results[1].limit + 1
-        iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = limit, resultsLimit = limit})
+        local multiple = results[1].limit + 1
+        iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = multiple, resultsLimit = multiple})
     end
 
     for _ in lorry_factory_stop_build_mb:unpack() do

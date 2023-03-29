@@ -168,10 +168,10 @@
                     <div class="row" data-event-click="ClickMaterial()" style="border: 0.13vmin rgb(89, 73, 39); width: 100%; height: 75%; justify-content: space-evenly;">
                         <div class="row" style="width: 100%; height:100%;">
                             <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
-                                <button class="item" data-style-background = "it.icon" data-for="recipe_ingredients_count" data-style-background-color = "it.count < it.need_count ? 'rgb(128,128,128)' : it.count >= it.need_count * 2 ? 'rgb(255,255,0)' : 'rgb(0,255,0)'">
+                                <button class="item" data-style-background = "it.icon" data-for="recipe_ingredients_count" data-style-background-color = "it.count < it.demand_count ? 'rgb(128,128,128)' : it.count >= it.demand_count * 2 ? 'rgb(255,255,0)' : 'rgb(0,255,0)'">
                                     <div class ="item-count-combination">
-                                        <div class="item-count-new" data-style-color="it.count < it.need_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
-                                        <div class="item-count-new" style="font-size: 3vmin;">/{{it.need_count}}</div>
+                                        <div class="item-count-new" data-style-color="it.count < it.demand_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                                        <div class="item-count-new" style="font-size: 3vmin;">/{{it.demand_count}}</div>
                                     </div>
                                 </button>
                             </div>
@@ -185,10 +185,10 @@
                                 </div> 
                             </div>
                             <div class="row" style="flex-wrap: wrap; justify-content: space-evenly; width: 35%;">
-                                <button class="item" data-style-background = "it.icon" data-for="recipe_results_count" data-style-background-color = "it.count < it.need_count ? 'rgb(128,128,128)' : it.count >= it.need_count * 2 ? 'rgb(255,255,0)' : 'rgb(0,255,0)'">
+                                <button class="item" data-style-background = "it.icon" data-for="recipe_results_count" data-style-background-color = "it.count < it.output_count ? 'rgb(128,128,128)' : it.count >= it.output_count * 2 ? 'rgb(255,255,0)' : 'rgb(0,255,0)'">
                                     <div class ="item-count-combination">
-                                        <div class="item-count-new" data-style-color="it.count < it.need_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
-                                        <div class="item-count-new" style="font-size: 3vmin;">/{{it.need_count}}</div>
+                                        <div class="item-count-new" data-style-color="it.count < it.output_count ? 'rgb(255,255,255)' : 'rgb(0,255,0)'">{{it.count}}</div>
+                                        <div class="item-count-new" style="font-size: 3vmin;">/{{it.output_count}}</div>
                                     </div>
                                 </button>
                             </div>
