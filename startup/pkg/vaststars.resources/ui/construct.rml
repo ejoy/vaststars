@@ -211,6 +211,32 @@
                 top: 40%;
                 background-color: transparent;
             }
+            .progress-num {
+                width:100%; 
+                position:absolute; 
+                bottom:0; 
+                font-size: 3vmin; 
+                text-align: center;
+                -webkit-text-stroke: 0.2vmin #000;
+            }
+            .progress-item-block {
+                width:92%; 
+                height:3.2vmin;
+                position:absolute; 
+                left: 0.5vmin;
+                bottom:3.4vmin;
+                justify-content: center;
+                flex-direction: row;
+                align-items:center;
+                background-color: rgba(0,0,0,120);
+                border-radius: 1vmin;
+                border: 0.1vmin rgba(0,0,0,120);
+            }
+            .progress-item {
+                width:3.4vmin;
+                height:3.4vmin;
+                background-size: cover;
+            }
         </style>
         <script type="text/x-lua" >
             local ui_sys = require "ui_system"
@@ -347,10 +373,18 @@
             <!-- 右上角：当前科技进度 -->
             <div data-if = "cur_edit_mode == '' && show_tech_progress" style = "pointer-events: none; position: absolute; right:0vmin; top:0vmin;  width: 97vmax; height: 98.5vmin; flex-direction: row-reverse; align-items: flex-start; padding-top: 1vmin;">
                 <button style='background-color:rgb(204,219,11);  width: 16.00vmin; height: 16.00vmin; align-items: center;' data-event-click="clickTechOrTaskIcon(is_task)">
-                    <div style="position:absolute; left:2.5vmin; bottom:0; width: 70%; height: 70%; background-size:cover;" data-style-background-image="current_tech_icon"/>
+                    <div style="position:absolute; left:3.5vmin; bottom:2.7vmin; width: 50%; height: 50%; background-size:cover;" data-style-background-image="current_tech_icon"/>
                     <div style="-webkit-text-stroke: 0.3vmin rgb(39, 32, 17);font-size: 3.5vmin; word-break: break-all;">{{current_tech_name}}</div>
                     <div class="progress-bar-block" style = "position:absolute; bottom: -4.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
                         <div class="progress-background" data-style-width="current_tech_progress"/>
+                        <!-- 右上角：当前科技进度数字标识x/y -->
+                        <div class="progress-num">3/10</div>
+
+                        <!-- 右上角：当前科技需要科技包图标 -->
+                        <div class="progress-item-block">
+                            <div class="progress-item" style='background-image:"textures/science/graybox.texture";'/>
+                            <div class="progress-item" style='background-image:"textures/science/greenbox.texture";'/>
+                        </div>
                     </div> 
                     <p data-if="is_task" style="position: absolute; left:-1vmin; top:-0.75vmin;">
                         <div style='width:2.8vmin; height:7.6vmin; background-image: "textures/common/exclamation2.texture"; background-size: cover;'/>
