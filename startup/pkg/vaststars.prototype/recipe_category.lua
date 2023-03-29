@@ -1,5 +1,9 @@
 local menu = {
     {
+        group = "全部",
+        icon = "textures/construct/industry.texture",
+    },
+    {
         group = "金属",
         icon = "textures/construct/steel-beam.texture",
     },
@@ -8,20 +12,16 @@ local menu = {
         icon = "textures/construct/logisitic1.texture",
     },
     {
-        group = "生产",
+        group = "器件",
+        icon = "textures/construct/plastic.texture",
+    },
+    {
+        group = "加工",
         icon = "textures/construct/assembler.texture",
     },
     {
         group = "化工",
         icon = "textures/construct/chemistry2.texture",
-    },
-    {
-        group = "器件",
-        icon = "textures/construct/processor.texture",
-    },
-    {
-        group = "流体",
-        icon = "textures/construct/tank3.texture",
     },
 }
 return menu
