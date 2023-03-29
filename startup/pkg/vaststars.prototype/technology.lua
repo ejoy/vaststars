@@ -815,7 +815,7 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_production", 0, "碎石"},
     prerequisites = {"放置无人机仓库"},
-    count = 12,
+    count = 16,
     effects = {
        unlock_recipe = {"科研中心打印"},
        unlock_item = {"科研中心设计图"},
@@ -824,7 +824,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "在碎石矿上放置挖矿机并挖掘12个碎石矿", icon = "textures/construct/industry.texture"},
+      { desc = "在碎石矿上放置挖矿机并挖掘16个碎石矿", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -936,17 +936,17 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_production", 0, "石砖"},
     prerequisites = {"石头处理1"},
-    count = 4,
+    count = 8,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产4个石砖", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产8个石砖", icon = "textures/construct/industry.texture"},
     },
   }
 
-  prototype "物流学I" {
-    desc = "获得火星岩石加工成石砖的工艺",
+  prototype "道路建造" {
+    desc = "掌握使用石砖制造道路的技术",
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
@@ -954,6 +954,22 @@ prototype "建造电线杆" {
       unlock_item = {"道路建造站设计图"},
     },
     prerequisites = {"生产石砖"},
+    ingredients = {
+        {"地质科技包", 1},
+    },
+    count = 12,
+    time = "1s"
+  }
+
+  prototype "物流学I" {
+    desc = "研究送货车站和收货车站建造工艺",
+    type = { "tech" },
+    icon = "textures/science/tech-research.texture",
+    effects = {
+      unlock_recipe = {"送货车站打印","收货车站打印"},
+      unlock_item = {"送货车站设计图","收货车站设计图","铁矿石"},
+    },
+    prerequisites = {"道路建造"},
     ingredients = {
         {"地质科技包", 1},
     },
@@ -966,12 +982,8 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "道路建造站"},
-    prerequisites = {"物流学I"},
+    prerequisites = {"道路建造"},
     count = 1,
-    effects = {
-      unlock_recipe = {"送货车站打印","收货车站打印"},
-      unlock_item = {"送货车站设计图","收货车站设计图","铁矿石"},
-    },
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
@@ -1003,7 +1015,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "送货车站"},
-    prerequisites = {"放置道路建造站"},
+    prerequisites = {"放置道路建造站","修建公路"},
     count = 1,
     effects = {
       unlock_recipe = {"车辆装配"},
@@ -1022,7 +1034,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "收货车站"},
-    prerequisites = {"放置道路建造站"},
+    prerequisites = {"放置道路建造站","修建公路"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",

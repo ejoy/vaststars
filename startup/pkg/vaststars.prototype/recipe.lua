@@ -1288,7 +1288,7 @@ prototype "收货车站打印" {
     type = { "recipe" },
     category = "设计图打印",
     recipe_group =  "加工",
-    recipe_order =  56,
+    recipe_order =  57,
     recipe_icon =  "textures/construct/broken-goodsstation-input.texture",
     ingredients = {
         {"收货车站设计图", 1},
@@ -1825,7 +1825,7 @@ prototype "地质科技包1" {
     recipe_order =  80,
     recipe_icon =  "textures/recipe/geology-pack.texture",
     ingredients = {
-        {"碎石", 3},
+        {"碎石", 4},
     },
     results = {
         {"地质科技包", 1},

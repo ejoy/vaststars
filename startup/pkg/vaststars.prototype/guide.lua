@@ -5,7 +5,7 @@ local guide = {
             {"哔哩..哔哗..已迫降在{/g 代号P4031}的星球。尚未发现任何生命迹象..(失望)", "textures/guide/guide-6.texture"},
             {"哔哩..哔哗..哔哩..启动大气分析协议中..P4031{/g 缺少氧气}..(失望)"},
             {"哔哩..哔哗..哔哩..启动地质分析协议中..P4031{/g 铁铝丰富}..(轻松)","textures/guide/guide-1.texture"},
-            {"哔哩..哔哗..启动生存可靠性分析..{/g 0.04565%}存活概率..(情绪表达跳过中)","textures/guide/guide-4.texture"},
+            {"哔哩..哔哗..启动生存可靠性分析..{/color:4bd0ff 0.04565%}存活概率..(情绪表达跳过中)","textures/guide/guide-4.texture"},
     
         },
         narrative_end = {
@@ -19,7 +19,7 @@ local guide = {
 	{
         name = "guide-2",
 		narrative = {
-            {"作为助理AI，我建议你立刻开始工作..哔哩..你的剩余生存时间理论上只有{/g 348.26}地球小时..(担忧)", "textures/guide/guide-6.texture"},
+            {"作为助理AI，我建议你立刻开始工作..哔哩..你的剩余生存时间理论上只有{/color:4bd0ff 348.26}地球小时..(担忧)", "textures/guide/guide-6.texture"},
             {"哔哩..发现可用{/g 无人机仓库}和{/g 建筑废墟}..哔哩..引导{/color:4bd0ff 无人机}搬运有用物资..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
@@ -53,7 +53,7 @@ local guide = {
     {
         name = "guide-4",
 		narrative = {
-            {"哔哩..{/g 采矿机}顺利建造完毕..石矿采集技术可行性为{/g 99.983%}..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..{/g 采矿机}顺利建造完毕..石矿采集技术可行性为{/color:4bd0ff 99.983%}..哔哩..(期待)", "textures/guide/guide-2.texture"},
             {"哔哩..请将{/g 采矿机}放置在{/g 石矿}上方后，我们就可以采集矿物了..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
@@ -104,10 +104,10 @@ local guide = {
     {
         name = "guide-7",
 		narrative = {
-            {"哔哩..整个基地的用电设施都需要被{/g 电网覆盖}，否则它们将无法工作..哔哩(无奈）", "textures/guide/guide-6.texture"},
+            {"哔哩..整个基地的{/color:4bd0ff 用电设施}都需要被{/g 电网覆盖}，否则它们将无法工作..哔哩(无奈）", "textures/guide/guide-6.texture"},
             {"{/color:4bd0ff 风力发电机}可产生电力..哔哩..{/g 放置电线杆}把风力发电机的电力扩散出去..哔哩(期待)", "textures/guide/guide-3.texture"},
-            {"当电线杆之间出现{/r 红色电线}时则表示成功连接，在电线{/color:4bd0ff 蓝色范围}内就会有电力传输(兴奋)", "textures/guide/guide-3.texture"},
-            {"若{/color:4bd0ff 风力发电机}和{/color:4bd0ff 电线杆}形成彼此连接的{/g 电网}，处于{/g 电网}内的用电设施就可以工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
+            {"当电线杆之间出现{/r 红色电线}时则表示成功连接，在其覆盖{/color:4bd0ff 蓝色范围}内就会产生电力传输(兴奋)", "textures/guide/guide-3.texture"},
+            {"若{/color:4bd0ff 风力发电机}和{/color:4bd0ff 电线杆}彼此连接，它们所形成的{/g 电网}就能让用电设施工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -173,7 +173,7 @@ local guide = {
     {
         name = "guide-11",
 		narrative = {
-            {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至{/g 0.3244%}..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至{/color:4bd0ff 0.3244%}..(期待)", "textures/guide/guide-2.texture"},
             {"哔哩..勤劳的{/color:4bd0ff 无人机}再次上线..在仓库中选择运输{/g 碎石}就可以开始工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
             {"哔哩..让我们采集足够{/g 碎石}资源吧..哔哩(兴奋)", "textures/guide/guide-3.texture"},
         },
@@ -242,7 +242,7 @@ local guide = {
         name = "guide-14",
 		narrative = {
             {"这个星球蕴含丰富的{/color:4bd0ff 铁矿}，铁矿锻造成{/g 铁板}将成为非常关键的工业原料..哔哩..哔哗..(期待)", "textures/guide/guide-2.texture"},
-            {"好好利用这个星球的资源，我们的生存概率将会提高至{/g 0.3244%}..哔哩..哔哗..(兴奋)", "textures/guide/guide-3.texture"},
+            {"好好利用这个星球的资源，我们的生存概率将会提高至{/color:4bd0ff 0.3244%}..哔哩..哔哗..(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 30,
@@ -259,7 +259,7 @@ local guide = {
     {
         name = "guide-15",
 		narrative = {
-            {"{/g 铁矿熔炼}研究顺利完成..哔哩..我们掌握了生产{/g 铁板}的工艺..哔哗..(期待)", "textures/guide/guide-2.texture"},
+            {"{/color:4bd0ff 铁矿熔炼}研究顺利完成..哔哩..我们掌握了生产{/g 铁板}的工艺..哔哗..(期待)", "textures/guide/guide-2.texture"},
             {"{/g 熔炼炉}可以帮助我们处理铁矿，让我们开始建造吧..哔哩..哔哗..(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
@@ -337,7 +337,7 @@ local guide = {
     {
         name = "guide-20",
 		narrative = {
-            {"{/g 塑料}可制造更多精密元件，掌握这种新材料，存活概率提升为1.2923%..哔哩(兴奋）", "textures/guide/guide-3.texture"},
+            {"{/g 塑料}可制造更多精密元件，掌握这种新材料，存活概率提升为{/color:4bd0ff 1.2923%}..哔哩(兴奋）", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 30,
