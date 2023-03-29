@@ -28,7 +28,7 @@ local meshbin ; do
         if not meshbin_caches[fullpath] then
             local res = {}
             for _, v in ipairs(parse(fullpath)) do
-                if v.data.mesh then
+                if v.data and v.data.mesh then
                     res[#res+1] = v.data.mesh
                 end
             end
