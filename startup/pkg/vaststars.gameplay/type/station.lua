@@ -1,20 +1,11 @@
 local type = require "register.type"
+local prototype = require "prototype"
+
 local iendpoint = require "interface.endpoint"
 local c = type "station"
     .station_type "station_type"
     .chest_type "chest_type"
     .weights "count"
-
-local CHEST_TYPE <const> = {
-    [0] = 0,
-    [1] = 1,
-    [2] = 2,
-    [3] = 3,
-    red = 0,
-    blue = 1,
-    green = 2,
-    none = 3,
-}
 
 function c:ctor(init, pt)
     local world = self
@@ -27,10 +18,15 @@ function c:ctor(init, pt)
         }
     }
 
+    local item = 0
+    if init.item then
+        item = assert(prototype.queryByName(init.item), "Invalid item: " .. init.item).id
+    end
+
     local c = {}
     c[#c+1] = world:chest_slot {
         type = pt.chest_type,
-        item = 0,
+        item = item,
         amount = 0,
         limit = 1,
     }

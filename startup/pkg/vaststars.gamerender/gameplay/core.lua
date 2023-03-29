@@ -86,7 +86,6 @@ end
 
 init_func["hub"] = function (pt, template)
     template.item = template.item
-    template.stack = template.shelf_stack
     return template
 end
 
@@ -95,6 +94,7 @@ post_funcs["hub"] = function (pt, template)
     local typeobject = iprototype.queryByName(pt.name)
     local w, h = iprototype.unpackarea(typeobject.area)
 
+    -- TODO: deleting a hub requires the deletion of all drone entities that are linked to it
     for _ = 1, pt.drone_count do
          create(world, pt.drone_entity, {sumOfXCoord = template.x + template.x + (w - 1), sumOfYCoord = template.y + template.y + (h - 1)})
     end
@@ -108,6 +108,7 @@ function m.create_entity(init)
         dir = init.dir,
         fluid = init.fluid_name,
         items = init.items,
+        item = init.item,
         recipe = init.recipe, -- for debugging
     }
 

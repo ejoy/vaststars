@@ -6,13 +6,21 @@ local c = type "hub"
 
 function c:ctor(init, pt)
     local world = self
+
     local chest
     local c = {}
     if init.item then
+        local typeobject = prototype.queryByName(init.item)
+        assert(typeobject and typeobject.pile, "Invalid item: " .. init.item)
+
+        local w, h, d = typeobject.pile:match("(%d+)x(%d+)x(%d+)")
+        assert(w and h and d, "Invalid pile: " .. typeobject.pile)
+        local capacity = w * h * d
+
         c[#c+1] = world:chest_slot {
             type = "blue",
-            item = prototype.queryByName(init.item).id,
-            limit = init.stack,
+            item = typeobject.id,
+            limit = capacity,
         }
     else
         c[#c+1] = world:chest_slot {
