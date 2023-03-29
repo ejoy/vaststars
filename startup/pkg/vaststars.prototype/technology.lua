@@ -902,7 +902,7 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_production", 0, "地质科技包"},
     prerequisites = {"放置组装机"},
-    count = 4,
+    count = 8,
     tips_pic = {
       "textures/task_tips_pic/task_produce_geopack3.texture",
       "textures/task_tips_pic/task_produce_geopack4.texture",
@@ -910,7 +910,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_produce_geopack6.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产至4个地质科技包", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产至8个地质科技包", icon = "textures/construct/industry.texture"},
     },
   }
 
