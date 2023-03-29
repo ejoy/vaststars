@@ -14,6 +14,9 @@ extern "C" {
 #else
 #endif
 
+extern "C"
+struct prototype_cache* prototype_core(lua_State *L, int idx);
+
 namespace lua_world {
     template <typename T, typename R>
     T checklimit(lua_State* L, int idx, R const& r) {
@@ -347,8 +350,7 @@ namespace lua_world {
         struct world* w = (struct world*)lua_newuserdatauv(L, sizeof(struct world), 1);
         new (w) world;
         w->ecs = (struct ecs_context *)lua_touserdata(L, 1);
-        w->P = (struct prototype_cache *)lua_touserdata(L, 2);
-        w->prototypeL = lua_newthread(L);
+        w->P = (struct prototype_cache *)prototype_core(L, 2);
         lua_setiuservalue(L, -2, 1);
         if (luaL_newmetatable(L, "gameplay::world")) {
             lua_pushvalue(L, -1);

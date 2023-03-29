@@ -54,57 +54,14 @@ read_string_lua(lua_State *L, struct prototype_cache *c, int id, const char *nam
 	return lua_tostring(c->L, 3);
 }
  
-static int
-insert_type(lua_State *L) {
-	int id = luaL_checkinteger(L, 2);
-	if (id == 0) {
-		return luaL_error(L, "Invalid id 0");
-	}
-	luaL_checktype(L, 3, LUA_TTABLE);
-	lua_getiuservalue(L, 1, 1);
-	lua_State *cL = lua_tothread(L, -1);
-	if (lua_geti(cL, 1, id) != LUA_TNIL) {
-		lua_pop(cL, 1);
-		return luaL_error(L, "Duplicated id %d", id);
-	}
-	lua_pop(cL, 1);
-	lua_settop(L, 3);
-	lua_xmove(L, cL, 1);
-	lua_seti(cL, 1, id);
-	return 0;
-}
- 
-static int
-get_type(lua_State *L) {
-	int id = luaL_checkinteger(L, 2);
-	lua_getiuservalue(L, 1, 1);
-	lua_State *cL = lua_tothread(L, -1);
-	lua_geti(cL, 1, id);
-	lua_xmove(cL, L, 1);
-	return 1;
-}
- 
-static void
-prototype_meta(lua_State *L) {
-	luaL_Reg l[] = {
-		{ "__newindex", insert_type },
-		{ "__index", get_type },
-		{ NULL, NULL },
-	};
-	luaL_newlib(L, l);
-}
- 
-LUAMOD_API int
-luaopen_vaststars_prototype_core(lua_State *L) {
-	luaL_checkversion(L);
+struct prototype_cache* prototype_core(lua_State *L, int idx) {
 	struct prototype_cache *cache = (struct prototype_cache *)lua_newuserdatauv(L, sizeof(*cache), 1);
 	memset(cache, 0, sizeof(*cache));
 	cache->L = lua_newthread(L);
 	lua_setiuservalue(L, -2, 1);
-	lua_newtable(cache->L);
-	prototype_meta(L);
-	lua_setmetatable(L, -2);
-	return 1;
+	lua_pushvalue(L, idx);
+	lua_xmove(L, cache->L, 1);
+	return cache;
 }
  
 #ifdef TEST_PROTOTYPE

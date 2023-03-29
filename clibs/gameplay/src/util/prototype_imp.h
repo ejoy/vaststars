@@ -9,7 +9,6 @@ typedef lua_Integer int64_pt;
  
 struct prototype_cache;
 struct prototype_context {
-	lua_State *L;
 	struct prototype_cache *c;
 	int id;
 };
@@ -208,8 +207,8 @@ read_int64_(lua_State *L, struct prototype_cache *c, unsigned int cid, const cha
  
 #define PROTOTYPE(name, type)	\
 type##_pt pt_##name(struct prototype_context *ctx) {	\
-	lua_State *L = ctx->L;	\
 	struct prototype_cache *c = ctx->c;	\
+	lua_State *L = c->L;	\
 	unsigned int cid = (__COUNTER__	<< 16) | ctx->id;	\
 	switch (ID_##type) {	\
 	case ID_float :	\

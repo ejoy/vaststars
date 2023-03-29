@@ -21,7 +21,6 @@ struct prototype_cache;
 struct world {
     ecs_context* ecs;
     struct prototype_cache* P;
-    lua_State* prototypeL;
     container container;
     std::map<uint16_t, fluidflow> fluidflows;
     techtree_mgr techtree;
@@ -32,6 +31,6 @@ struct world {
     uint64_t time = 0;
 
     prototype_context prototype(int id) {
-        return {prototypeL, P, id};
+        return {P, id};
     }
 };

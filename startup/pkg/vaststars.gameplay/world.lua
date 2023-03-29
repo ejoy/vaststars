@@ -58,8 +58,7 @@ return function ()
     end
 
     local context = ecs:context(components)
-    local ptable = require "vaststars.prototype.core"
-    local cworld = vaststars.create_world(context, ptable)
+    local cworld = vaststars.create_world(context, require "status".prototype_id)
     world.ecs = ecs
     world._cworld = cworld
     world._context = context
