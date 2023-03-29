@@ -94,7 +94,8 @@ function M:create()
         current_tech_name = "none",    --当前科技名字
         current_tech_progress = "0%",  --当前科技进度
         current_tech_progress_detail = "0/0",  --当前科技进度(数量),
-        ingredient_icons = {}
+        ingredient_icons = {},
+        show_ingredient = false
     }
 end
 local current_techname = ""
@@ -110,6 +111,11 @@ function M:update_tech(datamodel, tech)
             end
             current_techname = tech.name
             datamodel.ingredient_icons = ingredient_icons
+            if #ingredient_icons > 0 then
+                datamodel.show_ingredient = true
+            else
+                datamodel.show_ingredient = false
+            end
         end
         datamodel.show_tech_progress = true
         datamodel.is_task = tech.task

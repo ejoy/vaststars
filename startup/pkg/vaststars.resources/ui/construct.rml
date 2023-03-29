@@ -257,6 +257,7 @@
                 current_tech_name = "none",     --当前科技名字
                 current_tech_progress = "0%",   --当前科技进度
                 current_tech_progress_detail = "0/0",  --当前科技进度（数量）
+                show_ingredient = false,
                 ingredient_icons = {},
                 guide_progress = 0,
             })
@@ -383,7 +384,7 @@
                         <div class="progress-num">{{current_tech_progress_detail}}</div>
 
                         <!-- 右上角：当前科技需要科技包图标 -->
-                        <div class="progress-item-block">
+                        <div class="progress-item-block" data-if = "show_ingredient">
                             <div class="progress-item" data-style-background-image = "it.icon" data-for = "ingredient_icons"/>
                         </div>
                     </div> 
