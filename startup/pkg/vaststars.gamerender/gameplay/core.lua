@@ -96,7 +96,7 @@ post_funcs["hub"] = function (pt, template)
     local w, h = iprototype.unpackarea(typeobject.area)
 
     for _ = 1, pt.drone_count do
-         create(world, pt.drone_entity, {sumOfXCoord = template.x + template.x + (w - 1), sumOfYCoord = template.y + template.y + (h - 1), x = template.x, y = template.y})
+         create(world, pt.drone_entity, {sumOfXCoord = template.x + template.x + (w - 1), sumOfYCoord = template.y + template.y + (h - 1)})
     end
 end
 
