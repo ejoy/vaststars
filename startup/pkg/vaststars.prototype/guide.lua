@@ -174,7 +174,7 @@ local guide = {
         name = "guide-11",
 		narrative = {
             {"哔哩..矿物采集进展非常顺利，存活概率大幅提升至{/g 0.3244%}..(期待)", "textures/guide/guide-2.texture"},
-            {"哔哩..勤劳的无人机仓库再次上线..在仓库中选择运输{/g 碎石}就可以开始工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
+            {"哔哩..勤劳的{/color:4bd0ff 无人机}再次上线..在仓库中选择运输{/g 碎石}就可以开始工作了..哔哩(兴奋)", "textures/guide/guide-3.texture"},
             {"哔哩..让我们采集足够{/g 碎石}资源吧..哔哩(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
@@ -224,7 +224,7 @@ local guide = {
     {
         name = "guide-13",
 		narrative = {
-            {"科研中心需要一些样本才可以开展深入研究..让我们采集一些{/g 地质科技包}吧(兴奋)", "textures/guide/guide-3.texture"},
+            {"{/color:4bd0ff 科研中心}需要一些样本才可以开展深入研究..让我们采集一些{/g 地质科技包}吧(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             pop_chapter = {"第一章","自动生产"},
@@ -241,7 +241,7 @@ local guide = {
     {
         name = "guide-14",
 		narrative = {
-            {"这个星球蕴含丰富的铁矿，将{/g 铁}从中提炼出来就能成为我们工业原料..哔哩..哔哗..(期待)", "textures/guide/guide-2.texture"},
+            {"这个星球蕴含丰富的{/color:4bd0ff 铁矿}，铁矿锻造成{/g 铁板}将成为非常关键的工业原料..哔哩..哔哗..(期待)", "textures/guide/guide-2.texture"},
             {"好好利用这个星球的资源，我们的生存概率将会提高至{/g 0.3244%}..哔哩..哔哗..(兴奋)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
