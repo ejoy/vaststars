@@ -105,7 +105,6 @@ function m:init_world()
     iui.set_guide_progress(iguide.get_progress())
 end
 
-local tick = 0
 function m:update_world()
     if DEBUG_TERRAIN then
         return
@@ -120,17 +119,14 @@ function m:update_world()
         world_update(gameplay_world)
         gameplay_update(gameplay_world)
 
-        tick = tick + 1
-        if tick > 3 then -- TODO: remove this
-            local is_cross, mc, x, y, z
-            for lorry_id, rc, tick in gameplay_world:roadnet_each_lorry() do
-                is_cross = (rc & 0x8000 ~= 0) -- see also: push_road_coord() in c code
-                mc = gameplay_world:roadnet_map_coord(rc)
-                x = (mc >>  0) & 0xFF
-                y = (mc >>  8) & 0xFF
-                z = (mc >> 16) & 0xFF
-                lorry_manager.update(lorry_id, is_cross, x, y, z, tick)
-            end
+        local is_cross, mc, x, y, z
+        for lorry_id, rc, tick in gameplay_world:roadnet_each_lorry() do
+            is_cross = (rc & 0x8000 ~= 0) -- see also: push_road_coord() in c code
+            mc = gameplay_world:roadnet_map_coord(rc)
+            x = (mc >>  0) & 0xFF
+            y = (mc >>  8) & 0xFF
+            z = (mc >> 16) & 0xFF
+            lorry_manager.update(lorry_id, is_cross, x, y, z, tick)
         end
     end
 end

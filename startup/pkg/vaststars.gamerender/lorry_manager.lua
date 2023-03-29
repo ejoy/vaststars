@@ -124,16 +124,7 @@ local function _get_offset_matrix(is_cross_flag, x, y, toward, tick)
     return math3d.ref(math3d.matrix {s = s, r = r, t = t})
 end
 
-
-local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
-local g
-
 local function update(lorry_id, is_cross, x, y, z, tick)
-    if not g then
-        g = ims.sampler_group()
-        g:enable "view_visible"
-        g:enable "scene_update"
-    end
     local ti, toward
     if is_cross then
         assert(z <= 0xf)
@@ -141,7 +132,7 @@ local function update(lorry_id, is_cross, x, y, z, tick)
         toward = z
     else
         local pos
-        pos, toward = z & 0x0F, (z >> 4) & 0x0F -- pos: [0, 1], toward: [0, 1], tick: [0, (STRAIGHT_TICKCOUNT - 1)]
+        pos, toward = z & 0x0F, (z >> 4) & 0x0F -- pos: [0, 1], toward: [0, 1], tick: [1, STRAIGHT_TICKCOUNT]
         -- assert(pos == 0 and pos == 1) -- TODO: remove assert
         ti = STRAIGHT_TICKCOUNT - tick
     end

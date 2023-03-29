@@ -5,29 +5,12 @@ local w = world.w
 local iprototype = require "gameplay.interface.prototype"
 local objects = require "objects"
 local assembling_common = require "ui_datamodel.common.assembling"
-local cr = import_package "ant.compile_resource"
-local serialize = import_package "ant.serialize"
 local iprinter = ecs.import.interface "mod.printer|iprinter"
+local prefab_meshbin = require("engine.prefab_parser").meshbin
 
 local RESOURCES_BASE_PATH <const> = "/pkg/vaststars.resources/%s"
 
 local progresses = {} --TODO: when an object is destroyed, clear it.
-
-local __get_meshbins; do
-    local meshbin_caches = {}
-    function __get_meshbins(prefab)
-        if not meshbin_caches[prefab] then
-            local res = {}
-            for _, v in ipairs(serialize.parse(prefab, cr.read_file(prefab))) do
-                if v.data.mesh then
-                    res[#res+1] = v.data.mesh
-                end
-            end
-            meshbin_caches[prefab] = res
-        end
-        return meshbin_caches[prefab]
-    end
-end
 
 local function update_world(world)
     local t = {}
@@ -53,7 +36,7 @@ local function update_world(world)
 
             if #eids == 0 then
                 local res_typeobject = iprototype.queryById(results[1].id)
-                local meshbins = __get_meshbins(RESOURCES_BASE_PATH:format(res_typeobject.model))
+                local meshbins = prefab_meshbin(RESOURCES_BASE_PATH:format(res_typeobject.model))
 
                 for _, meshbin in ipairs(meshbins) do
                     eids[#eids+1] = ecs.create_entity {

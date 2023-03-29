@@ -22,6 +22,23 @@ local function parse(fullpath)
     return res
 end
 
+local meshbin ; do
+    local meshbin_caches = {}
+    function meshbin(fullpath)
+        if not meshbin_caches[fullpath] then
+            local res = {}
+            for _, v in ipairs(parse(fullpath)) do
+                if v.data.mesh then
+                    res[#res+1] = v.data.mesh
+                end
+            end
+            meshbin_caches[fullpath] = res
+        end
+        return meshbin_caches[fullpath]
+    end
+end
+
 return {
     parse = parse,
+    meshbin = meshbin,
 }
