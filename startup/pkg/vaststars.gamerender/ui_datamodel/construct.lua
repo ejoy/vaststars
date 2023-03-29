@@ -10,6 +10,7 @@ local camera = ecs.require "engine.camera"
 local gameplay_core = require "gameplay.core"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
 local iprototype = require "gameplay.interface.prototype"
+local irecipe = require "gameplay.interface.recipe"
 local create_normalbuilder = ecs.require "editor.normalbuilder"
 local create_pipebuilder = ecs.require "editor.pipebuilder"
 local create_pipetogroundbuilder = ecs.require "editor.pipetogroundbuilder"
@@ -92,16 +93,28 @@ function M:create()
         current_tech_icon = "none",    --当前科技图标
         current_tech_name = "none",    --当前科技名字
         current_tech_progress = "0%",  --当前科技进度
+        current_tech_progress_detail = "0/0",  --当前科技进度(数量),
+        ingredient_icons = {}
     }
 end
-
+local current_techname = ""
 function M:update_tech(datamodel, tech)
     if tech then
+        if current_techname ~= tech.name then
+            local ingredient_icons = {}
+            local ingredients = irecipe.get_elements(tech.detail.ingredients)
+            for _, ingredient in ipairs(ingredients) do
+                ingredient_icons[#ingredient_icons + 1] = {icon = assert(ingredient.tech_icon), count = ingredient.count}
+            end
+            current_techname = tech.name
+            datamodel.ingredient_icons = ingredient_icons
+        end
         datamodel.show_tech_progress = true
         datamodel.is_task = tech.task
         datamodel.current_tech_name = tech.name
         datamodel.current_tech_icon = tech.detail.icon
         datamodel.current_tech_progress = (tech.progress * 100) // tech.detail.count .. '%'
+        datamodel.current_tech_progress_detail = tech.progress.."/"..tech.detail.count
     else
         datamodel.show_tech_progress = false
         datamodel.tech_count = get_new_tech_count(global.science.tech_list)

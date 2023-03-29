@@ -256,6 +256,8 @@
                 current_tech_icon = "none",     --当前科技图标
                 current_tech_name = "none",     --当前科技名字
                 current_tech_progress = "0%",   --当前科技进度
+                current_tech_progress_detail = "0/0",  --当前科技进度（数量）
+                ingredient_icons = {},
                 guide_progress = 0,
             })
             function start.clickShowConstructMenuDetail(event, construct_menu)
@@ -378,12 +380,11 @@
                     <div class="progress-bar-block" style = "position:absolute; bottom: -4.1vmin; width:100%; height:20%; border-radius: 0.3vmin; background-color: rgb(194, 194, 194);">
                         <div class="progress-background" data-style-width="current_tech_progress"/>
                         <!-- 右上角：当前科技进度数字标识x/y -->
-                        <div class="progress-num">3/10</div>
+                        <div class="progress-num">{{current_tech_progress_detail}}</div>
 
                         <!-- 右上角：当前科技需要科技包图标 -->
                         <div class="progress-item-block">
-                            <div class="progress-item" style='background-image:"textures/science/graybox.texture";'/>
-                            <div class="progress-item" style='background-image:"textures/science/greenbox.texture";'/>
+                            <div class="progress-item" data-style-background-image = "it.icon" data-for = "ingredient_icons"/>
                         </div>
                     </div> 
                     <p data-if="is_task" style="position: absolute; left:-1vmin; top:-0.75vmin;">
