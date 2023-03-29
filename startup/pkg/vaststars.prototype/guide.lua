@@ -36,7 +36,7 @@ local guide = {
     {
         name = "guide-3",
 		narrative = {
-            {"哔哩..无人机真是听话的机器..请操作附近的{/g 建造中心}建造{/g 采矿机}..(期待)", "textures/guide/guide-6.texture"},
+            {"哔哩..无人机真是听话的机器..请操作附近的{/color:4bd0ff 建造中心}建造{/g 采矿机}..(期待)", "textures/guide/guide-6.texture"},
         },
         narrative_end = {
             -- pop_chapter = {"第一阶段","物流网络"},
@@ -49,22 +49,6 @@ local guide = {
             "仓库调度1",
         },
 	},
-
-    -- {
-    --     name = "guide-2",
-	-- 	narrative = {
-    --         {"哔哩..发现道路阻断..哔哩..建议{/g 修复道路}..哔哩..(期待)", "textures/guide/guide-2.texture"},
-    --     },
-    --     narrative_end = {
-    --         guide_progress = 10,
-    --         task = {
-    --             "修复阻断公路",
-    --         }
-    --     },
-    --     prerequisites = {
-    --         "清除废墟",
-    --     },
-	-- },
 
     {
         name = "guide-4",
@@ -88,7 +72,7 @@ local guide = {
         name = "guide-5",
 		narrative = {
             {"哔哩..目前采矿机处于{/r 断电状态}，无法正常工作..哔哩..哔哗..(失望)", "textures/guide/guide-6.texture"},
-            {"哔哩..发现可用的{/g 电线杆设计图}，我们用无人机把它送往建造中心。", "textures/guide/guide-6.texture"}, 
+            {"哔哩..发现可用的{/g 电线杆设计图}，我们用无人机把它送往{/color:4bd0ff 建造中心}。", "textures/guide/guide-6.texture"}, 
         },
         narrative_end = {
             guide_progress = 10,
@@ -104,7 +88,7 @@ local guide = {
     {
         name = "guide-6",
 		narrative = {
-            {"哔哩..请使用{/g 建造中心}生产足够{/g 电线杆}..哔哩..哔哗..(期待)", "textures/guide/guide-3.texture"},
+            {"哔哩..请使用{/color:4bd0ff 建造中心}生产足够{/g 电线杆}..哔哩..哔哗..(期待)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -139,7 +123,7 @@ local guide = {
     {
         name = "guide-8",
 		narrative = {
-            {"哔哩..采矿机顺利工作了，储藏石矿需要新的无人机仓库，请将{/g 无人机仓库设计图}送往建造中心..哔哩(期待)", "textures/guide/guide-3.texture"},
+            {"哔哩..采矿机顺利工作了，储藏石矿需要新的{/color:4bd0ff 无人机仓库}，请将{/g 无人机仓库设计图}送往{/color:4bd0ff 建造中心}..哔哩(期待)", "textures/guide/guide-3.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -156,7 +140,7 @@ local guide = {
     {
         name = "guide-9",
 		narrative = {
-            {"哔哩..{/g 无人机仓库}可以选择不同的物品进行运输，让我们用建造中心建造更多的{/g 无人机仓库}....(轻松)", "textures/guide/guide-1.texture"},
+            {"哔哩..{/color:4bd0ff 无人机}能运输指定货物，让我们用{/color:4bd0ff 建造中心}建造更多的{/g 无人机仓库}....(轻松)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 10,
