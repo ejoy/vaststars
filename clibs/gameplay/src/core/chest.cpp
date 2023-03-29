@@ -138,58 +138,21 @@ container::slot* chest::find_item(world& w, container::index c, uint16_t item) {
     return nullptr;
 }
 
-bool chest::pickup_force(world& w, container::index c, uint16_t item, uint16_t amount) {
+bool chest::pickup(world& w, container::index c, uint16_t item, uint16_t amount) {
     if (auto s = find_item(w, c, item)) {
-        if (amount > s->amount || amount > s->lock_item) {
+        if (amount + s->lock_item > s->amount) {
             return false;
         }
-        s->lock_item -= amount;
         s->amount -= amount;
         return true;
     }
     return false;
 }
 
-bool chest::pickup_force(world& w, container::index c, uint16_t item, uint16_t amount, bool unlock) {
-    for (auto& s: chest::array_slice(w, c)) {
-        if (s.item == item) {
-            if (unlock) {
-                if (amount > s.amount) {
-                    return false;
-                }
-                if (amount <= s.lock_item) {
-                    s.lock_item -= amount;
-                }
-                else {
-                    s.lock_item = 0;
-                }
-            }
-            else {
-                if (amount + s.lock_item > s.amount) {
-                    return false;
-                }
-            }
-            s.amount -= amount;
-            return true;
-        }
-    }
-    return false;
-}
-
-bool chest::place_force(world& w, container::index c, uint16_t item, uint16_t amount, bool unlock) {
-    for (auto& s: chest::array_slice(w, c)) {
-        if (s.item == item) {
-            if (unlock) {
-                if (amount <= s.lock_space) {
-                    s.lock_space -= amount;
-                }
-                else {
-                    s.lock_space = 0;
-                }
-            }
-            s.amount += amount;
-            return true;
-        }
+bool chest::place(world& w, container::index c, uint16_t item, uint16_t amount) {
+    if (auto s = find_item(w, c, item)) {
+        s->amount += amount;
+        return true;
     }
     return false;
 }
@@ -300,7 +263,7 @@ lpickup(lua_State* L) {
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
     uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
     uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);
-    bool ok = chest::pickup_force(w, container::index::from(index), item, amount, false);
+    bool ok = chest::pickup(w, container::index::from(index), item, amount);
     lua_pushboolean(L, ok);
     return 1;
 }
@@ -311,7 +274,7 @@ lplace(lua_State* L) {
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
     uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
     uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);
-    chest::place_force(w, container::index::from(index), item, amount, false);
+    chest::place(w, container::index::from(index), item, amount);
     return 0;
 }
 

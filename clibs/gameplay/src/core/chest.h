@@ -257,10 +257,9 @@ namespace chest {
 
     // for lua api
     container::slot& getslot(world& w, container::index c, uint8_t offset);
-    bool pickup_force(world& w, container::index c, uint16_t item, uint16_t amount, bool unlock);
-    bool place_force(world& w, container::index c, uint16_t item, uint16_t amount, bool unlock);
+    bool pickup(world& w, container::index c, uint16_t item, uint16_t amount);
+    bool place(world& w, container::index c, uint16_t item, uint16_t amount);
 
     // for trading
     container::slot* find_item(world& w, container::index c, uint16_t item);
-    bool pickup_force(world& w, container::index c, uint16_t item, uint16_t amount);
 }
