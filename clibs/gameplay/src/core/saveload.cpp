@@ -184,7 +184,7 @@ namespace lua_world {
     }
 
     int backup_world(lua_State* L) {
-        world& w = *(world*)lua_touserdata(L, 1);
+        auto& w = getworld(L);
         FILE* f = createfile(L, 2, filemode::write);
 
         lua_newtable(L);
@@ -239,7 +239,7 @@ namespace lua_world {
     }
 
     int restore_world(lua_State *L) {
-        world& w = *(world*)lua_touserdata(L, 1);
+        auto& w = getworld(L);
         FILE* f = createfile(L, 2, filemode::read);
         luaL_checktype(L, 3, LUA_TTABLE);
         lua_settop(L, 3);

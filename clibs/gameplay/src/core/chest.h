@@ -8,9 +8,6 @@
 #include <assert.h>
 #include <stdint.h>
 #include <util/component.h>
-extern "C" {
-#include "util/prototype.h"
-}
 
 struct world;
 struct lua_State;
@@ -245,8 +242,8 @@ namespace chest {
     void     set_fluid(world& w, container::index c, uint8_t offset, uint16_t value);
 
     // for chest
-    bool     pickup(world& w, container::index c, prototype_context& recipe);
-    bool     place(world& w, container::index c, prototype_context& recipe);
+    bool     pickup(world& w, container::index c, uint16_t recipe);
+    bool     place(world& w, container::index c, uint16_t recipe);
 
     // for laboratory
     bool     pickup(world& w, container::index c, const recipe_items* r, uint8_t offset = 0);

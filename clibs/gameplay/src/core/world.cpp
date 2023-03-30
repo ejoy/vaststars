@@ -5,6 +5,7 @@
 #include "core/world.h"
 #include "core/chest.h"
 #include "system/fluid.h"
+#include "util/prototype.h"
 extern "C" {
     #include "core/fluidflow.h"
 }
@@ -13,9 +14,6 @@ extern "C" {
     #include <windows.h>
 #else
 #endif
-
-extern "C"
-struct prototype_cache* prototype_core(lua_State *L, int idx);
 
 namespace lua_world {
     template <typename T, typename R>
@@ -33,13 +31,10 @@ namespace lua_world {
     T optinteger(lua_State* L, int idx, lua_Integer def) {
         return checklimit<T>(L, idx, luaL_optinteger(L, idx, def));
     }
-    struct world& getworld(lua_State* L, int idx) {
-        return *(struct world*)lua_touserdata(L, idx);
-    }
 
     static int
     is_researched(lua_State* L) {
-        struct world& w = getworld(L, 1);
+        auto& w = getworld(L);
         uint16_t techid = checkinteger<uint16_t>(L, 2);
         lua_pushboolean(L, w.techtree.is_researched(techid));
         return 1;
@@ -47,7 +42,7 @@ namespace lua_world {
     
     static int
     research_queue(lua_State* L) {
-        struct world& w = getworld(L, 1);
+        auto& w = getworld(L);
         if (lua_gettop(L) == 1) {
             auto& q = w.techtree.queue_get();
             size_t N = q.size();
@@ -72,7 +67,7 @@ namespace lua_world {
 
     static int
     research_progress(lua_State* L) {
-        struct world& w = getworld(L, 1);
+        auto& w = getworld(L);
         uint16_t techid = checkinteger<uint16_t>(L, 2);
         if (lua_gettop(L) == 2) {
             uint16_t progress = w.techtree.get_progress(techid);
@@ -90,21 +85,21 @@ namespace lua_world {
 
     static int
     reset(lua_State* L) {
-        struct world& w = getworld(L, 1);
+        auto& w = getworld(L);
         w.fluidflows.clear();
         return 0;
     }
 
     static int
     destroy(lua_State* L) {
-        struct world& w = getworld(L, 1);
+        auto& w = getworld(L);
         w.~world();
         return 0;
     }
     
     static int
     fluidflow_build(lua_State *L) {
-        struct world& w = getworld(L, 1);
+        auto& w = getworld(L);
         uint16_t fluid = checkinteger<uint16_t>(L, 2);
         int capacity = checkinteger<int>(L, 3);
         int height =  checkinteger<int>(L, 4);
@@ -126,7 +121,7 @@ namespace lua_world {
 
     static int
     fluidflow_rebuild(lua_State *L) {
-        struct world& w = getworld(L, 1);
+        auto& w = getworld(L);
         uint16_t fluid = checkinteger<uint16_t>(L, 2);
         uint16_t id = checkinteger<uint16_t>(L, 3);
         w.fluidflows[fluid].rebuild(id);
@@ -135,7 +130,7 @@ namespace lua_world {
 
     static int
     fluidflow_restore(lua_State *L) {
-        struct world& w = getworld(L, 1);
+        auto& w = getworld(L);
         uint16_t fluid = checkinteger<uint16_t>(L, 2);
         uint16_t id = checkinteger<uint16_t>(L, 3);
         int capacity =  checkinteger<int>(L, 4);
@@ -157,7 +152,7 @@ namespace lua_world {
 
     static int
     fluidflow_teardown(lua_State *L) {
-        struct world& w = getworld(L, 1);
+        auto& w = getworld(L);
         uint16_t fluid = checkinteger<uint16_t>(L, 2);
         uint16_t id = checkinteger<uint16_t>(L, 3);
         bool ok = w.fluidflows[fluid].teardown(id);
@@ -169,7 +164,7 @@ namespace lua_world {
 
     static int
     fluidflow_connect(lua_State *L) {
-        struct world& w = getworld(L, 1);
+        auto& w = getworld(L);
         uint16_t fluid = checkinteger<uint16_t>(L, 2);
         fluidflow& flow = w.fluidflows[fluid];
         luaL_checktype(L, 3, LUA_TTABLE);
@@ -192,7 +187,7 @@ namespace lua_world {
 
     static int
     fluidflow_query(lua_State *L) {
-        struct world& w = getworld(L, 1);
+        auto& w = getworld(L);
         uint16_t fluid = checkinteger<uint16_t>(L, 2);
 
         auto& f = w.fluidflows[fluid];
@@ -221,7 +216,7 @@ namespace lua_world {
 
     static int
     fluidflow_set(lua_State *L) {
-        struct world& w = getworld(L, 1);
+        auto& w = getworld(L);
         uint16_t fluid = checkinteger<uint16_t>(L, 2);
 
         auto& f = w.fluidflows[fluid];
@@ -349,9 +344,11 @@ namespace lua_world {
     create(lua_State* L) {
         struct world* w = (struct world*)lua_newuserdatauv(L, sizeof(struct world), 1);
         new (w) world;
+        w->L = L;
         w->ecs = (struct ecs_context *)lua_touserdata(L, 1);
-        w->P = (struct prototype_cache *)prototype_core(L, 2);
+        w->P = prototype::create_cache(L, 2);
         lua_setiuservalue(L, -2, 1);
+
         if (luaL_newmetatable(L, "gameplay::world")) {
             lua_pushvalue(L, -1);
             lua_setfield(L, -2, "__index");
@@ -419,4 +416,10 @@ luaopen_vaststars_world_core(lua_State *L) {
 	};
 	luaL_newlib(L, l);
 	return 1;
+}
+
+struct world& getworld(lua_State* L) {
+    auto& w = *(struct world*)lua_touserdata(L, 1);
+    w.L = L;
+    return w;
 }

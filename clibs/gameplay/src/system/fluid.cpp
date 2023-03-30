@@ -120,7 +120,7 @@ void fluidflow::set(int id, int fluid, int user_multiple) {
 
 static int
 lupdate(lua_State *L) {
-	world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
 	for (auto& [_,f] : w.fluidflows) {
 		f.update();
 	}

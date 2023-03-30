@@ -2,9 +2,7 @@
 #include "roadnet/network.h"
 #include "roadnet/bfs.h"
 #include "core/world.h"
-extern "C" {
 #include "util/prototype.h"
-}
 
 namespace roadnet {
     bool lorry::nextDirection(network& w, roadid C, direction& dir) {
@@ -30,9 +28,9 @@ namespace roadnet {
     void lorry::reset(world& w) {
     }
     void lorry::init(world& w, uint16_t classid) {
-        struct prototype_context pt = w.prototype(classid);
+        auto capacitance = prototype::get<"capacitance">(w, classid);
         this->classid = classid;
-        this->capacitance = pt_capacitance(&pt);
+        this->capacitance = capacitance;
         this->item_classid = 0;
         this->item_amount = 0;
     }

@@ -4,9 +4,7 @@
 
 #include "luaecs.h"
 #include "core/world.h"
-extern "C" {
 #include "util/prototype.h"
-}
 
 #define CONSUMER_PRIORITY 2
 #define GENERATOR_PRIORITY 2
@@ -24,16 +22,14 @@ struct powergrid {
 
 static void
 stat_consumer(world& w, powergrid pg[]) {
-	struct prototype_context p = w.prototype(0);
 	for (auto& v : ecs_api::select<ecs::consumer, ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
 			continue;
 		}
 		ecs::building& building = v.get<ecs::building>();
-		p.id = building.prototype;
-		unsigned int priority = pt_priority(&p);
-		unsigned int power = pt_power(&p);
+		unsigned int priority = prototype::get<"priority">(w, building.prototype);
+		unsigned int power = prototype::get<"power">(w, building.prototype);
 		unsigned int charge = c.shortage < power ? c.shortage : power;
 		pg[c.network].consumer_power[priority] += charge;
 		pg[c.network].active = true;
@@ -42,16 +38,14 @@ stat_consumer(world& w, powergrid pg[]) {
 
 static void
 stat_generator(world& w, powergrid pg[]) {
-	struct prototype_context p = w.prototype(0);
 	for (auto& v : ecs_api::select<ecs::generator, ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
 			continue;
 		}
 		ecs::building& building = v.get<ecs::building>();
-		p.id = building.prototype;
-		unsigned int priority = pt_priority(&p);
-		unsigned int capacitance = pt_capacitance(&p);
+		unsigned int priority = prototype::get<"priority">(w, building.prototype);
+		unsigned int capacitance = prototype::get<"capacitance">(w, building.prototype);
 		pg[c.network].generator_power[priority] += capacitance - c.shortage;
 		pg[c.network].active = true;
 	}
@@ -59,22 +53,21 @@ stat_generator(world& w, powergrid pg[]) {
 
 static void
 stat_accumulator(world& w, powergrid pg[]) {
-	struct prototype_context p = w.prototype(0);
 	for (auto& v : ecs_api::select<ecs::accumulator, ecs::capacitance, ecs::building>(w.ecs)) {
 		ecs::capacitance& c = v.get<ecs::capacitance>();
 		if (c.network == 0) {
 			continue;
 		}
 		ecs::building& building = v.get<ecs::building>();
-		p.id = building.prototype;
-		unsigned int power = pt_power(&p);
+		unsigned int power = prototype::get<"power">(w, building.prototype);
 		if (c.shortage == 0) {
 			// battery is full
 			pg[c.network].accumulator_output += power;
 		} else {
-			unsigned int charge_power = pt_charge_power(&p);
+			unsigned int charge_power = prototype::get<"charge_power">(w, building.prototype);
+			unsigned int capacitance = prototype::get<"capacitance">(w, building.prototype);
 			pg[c.network].accumulator_input += (c.shortage <= charge_power) ? c.shortage : charge_power;
-			unsigned int capacitance_remain = pt_capacitance(&p) - c.shortage;
+			unsigned int capacitance_remain = capacitance - c.shortage;
 			pg[c.network].accumulator_output += (capacitance_remain <= power) ? capacitance_remain : power;
 		}
 		pg[c.network].active = true;
@@ -172,7 +165,6 @@ calc_efficiency(world& w, powergrid pgs[]) {
 
 static void
 powergrid_run(world& w, powergrid pg[]) {
-	struct prototype_context p = w.prototype(0);
 	uint64_t generate_power = 0;
 	uint64_t consume_power = 0;
 	for (auto& v : ecs_api::select<ecs::capacitance, ecs::building>(w.ecs)) {
@@ -182,14 +174,14 @@ powergrid_run(world& w, powergrid pg[]) {
 			continue;
 		}
 		ecs::building& building = v.get<ecs::building>();
-		p.id = building.prototype;
 		if (v.sibling<ecs::consumer>()) {
 			// It's a consumer, charge capacitance
 			if (c.shortage > 0) {
-				float eff = pg[c.network].consumer_efficiency[pt_priority(&p)];
+				unsigned int priority = prototype::get<"priority">(w, building.prototype);
+				float eff = pg[c.network].consumer_efficiency[priority];
 				if (eff > 0) {
 					// charge
-					uint32_t power = pt_power(&p);
+					unsigned int power = prototype::get<"power">(w, building.prototype);
 					if (c.shortage <= power) {
 						if (eff >= 1.0f) {
 							power = c.shortage;	// full charge
@@ -208,9 +200,11 @@ powergrid_run(world& w, powergrid pg[]) {
 		}
 		else if (v.sibling<ecs::generator>()) {
 			// It's a generator, and must be not a consumer
-			float eff = pg[c.network].generator_efficiency[pt_priority(&p)];
+			unsigned int priority = prototype::get<"priority">(w, building.prototype);
+			float eff = pg[c.network].generator_efficiency[priority];
 			if (eff > 0) {
-				uint32_t power = (uint32_t)((pt_capacitance(&p) - c.shortage) * eff);
+				unsigned int capacitance = prototype::get<"capacitance">(w, building.prototype);
+				uint32_t power = (uint32_t)((capacitance - c.shortage) * eff);
 				c.delta = power;
 				c.shortage += power;
 				generate_power += power;
@@ -221,9 +215,10 @@ powergrid_run(world& w, powergrid pg[]) {
 			float eff = pg[c.network].accumulator_efficiency;
 			if (eff > 0) {
 				// discharge
-				unsigned int capacitance = pt_capacitance(&p); 
+				unsigned int power = prototype::get<"power">(w, building.prototype);
+				unsigned int capacitance = prototype::get<"capacitance">(w, building.prototype);
 				unsigned int remain = capacitance - c.shortage;
-				uint32_t power = (uint32_t)(pt_power(&p) * eff);
+				power = (unsigned int)(power * eff);
 				if (remain < power) {
 					power = remain;
 				}
@@ -234,7 +229,8 @@ powergrid_run(world& w, powergrid pg[]) {
 			} else {
 				// charge
 				eff = -eff;
-				uint32_t charge_power = (uint32_t)(pt_charge_power(&p) * eff);
+				unsigned int charge_power = prototype::get<"charge_power">(w, building.prototype);
+				charge_power = (unsigned int)(charge_power * eff);
 				if (charge_power >= c.shortage) {
 					charge_power = c.shortage;
 				}
@@ -254,7 +250,7 @@ powergrid_run(world& w, powergrid pg[]) {
 static int
 lupdate(lua_State *L) {
 	// step 1: init powergrid runtime struct
-	struct world& w = *(struct world *)lua_touserdata(L, 1);
+    auto& w = getworld(L);
 	struct powergrid pg[256];
 
 	// step 2: stat consumers in powergrid

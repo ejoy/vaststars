@@ -2,10 +2,7 @@
 
 #include "luaecs.h"
 #include "core/world.h"
-extern "C" {
 #include "util/prototype.h"
-}
-
 
 struct task {
     enum class type: uint16_t {
@@ -106,17 +103,17 @@ uint16_t task::progress(world& w) {
 
 static int
 lupdate(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     for (;;) {
         uint16_t taskid = w.techtree.queue_top();
         if (taskid == 0) {
             break;
         }
-        prototype_context task_prototype = w.prototype(taskid);
-        if (0 != pt_time(&task_prototype)) {
+        auto time = prototype::get<"time">(w, taskid);
+        if (0 != time) {
             break;
         }
-        struct task& task = *(struct task*)pt_task(&task_prototype);
+        auto& task = *(struct task*)prototype::get<"task">(w, taskid).data();
         if (task.type == task::type::unknown) {
             break;
         }

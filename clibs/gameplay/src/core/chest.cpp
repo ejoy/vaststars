@@ -4,9 +4,7 @@
 #include <assert.h>
 #include "core/chest.h"
 #include "core/world.h"
-extern "C" {
 #include "util/prototype.h"
-}
 
 container::slot& chest::array_at(world& w, container::index start, uint8_t offset) {
 #if !defined(NDEBUG)
@@ -61,14 +59,14 @@ void chest::set_fluid(world& w, container::index c, uint8_t offset, uint16_t val
     s.amount = value;
 }
 
-bool chest::pickup(world& w, container::index c, prototype_context& recipe) {
-    recipe_items* ingredients = (recipe_items*)pt_ingredients(&recipe);
+bool chest::pickup(world& w, container::index c, uint16_t recipe) {
+    auto ingredients = (recipe_items*)prototype::get<"ingredients">(w, recipe).data();
     return chest::pickup(w, c, ingredients, 0);
 }
 
-bool chest::place(world& w, container::index c, prototype_context& recipe) {
-    recipe_items* ingredients = (recipe_items*)pt_ingredients(&recipe);
-    recipe_items* results = (recipe_items*)pt_results(&recipe);
+bool chest::place(world& w, container::index c, uint16_t recipe) {
+    auto ingredients = (recipe_items*)prototype::get<"ingredients">(w, recipe).data();
+    auto results = (recipe_items*)prototype::get<"results">(w, recipe).data();
     //TODO ingredients->n -> uint8_t
     return chest::place(w, c, results, (uint8_t)ingredients->n);
 }
@@ -159,7 +157,7 @@ bool chest::place(world& w, container::index c, uint16_t item, uint16_t amount) 
 
 static int
 lcreate(lua_State* L) {
-    world& w = *(world *)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     size_t sz = 0;
     container::slot* s = (container::slot*)luaL_checklstring(L, 2, &sz);
     size_t n = sz / sizeof(container::slot);
@@ -173,7 +171,7 @@ lcreate(lua_State* L) {
 
 static int
 ldestroy(lua_State* L) {
-    world& w = *(world *)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
     chest::destroy(w, container::index::from(index));
     return 0;
@@ -181,7 +179,7 @@ ldestroy(lua_State* L) {
 
 static int
 lget(lua_State* L) {
-    world& w = *(world *)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
     uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
     auto c = container::index::from(index);
@@ -217,7 +215,7 @@ lget(lua_State* L) {
 }
 static int
 lset(lua_State* L) {
-    world& w = *(world *)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
     uint8_t offset = (uint8_t)(luaL_checkinteger(L, 3)-1);
     auto c = container::index::from(index);
@@ -259,7 +257,7 @@ lset(lua_State* L) {
 
 static int
 lpickup(lua_State* L) {
-    world& w = *(world *)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
     uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
     uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);
@@ -270,7 +268,7 @@ lpickup(lua_State* L) {
 
 static int
 lplace(lua_State* L) {
-    world& w = *(world *)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     uint16_t index = (uint16_t)luaL_checkinteger(L, 2);
     uint16_t item = (uint16_t)luaL_checkinteger(L, 3);
     uint16_t amount = (uint16_t)luaL_checkinteger(L, 4);

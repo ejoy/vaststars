@@ -5,9 +5,7 @@
 #include "luaecs.h"
 #include "core/world.h"
 #include "core/capacitance.h"
-extern "C" {
 #include "util/prototype.h"
-}
 
 #define STATUS_IDLE 0
 #define STATUS_DONE 1
@@ -59,8 +57,7 @@ laboratory_next_tech(world& w, ecs::building& building, ecs::laboratory& l, ecs:
     }
     laboratory_set_tech(w, building, l, c2, techid);
     if (chest::pickup(w, container::index::from(c2.chest), to_recipe(newr))) {
-        prototype_context tech = w.prototype(techid);
-        int time = pt_time(&tech);
+        auto time = prototype::get<"time">(w, techid);
         l.progress = time * 100;
         l.status = STATUS_DONE;
     }
@@ -87,9 +84,8 @@ laboratory_update(world& w, ecs_api::entity<ecs::laboratory, ecs::chest, ecs::ca
 
     // step.2
     while (l.progress <= 0) {
-        prototype_context tech = w.prototype(l.tech);
         if (l.status == STATUS_DONE) {
-            int count = pt_count(&tech);
+            auto count = prototype::get<"count">(w, l.tech);
             if (w.techtree.research_add(l.tech, count, 1)) {
                 w.techtree.queue_pop();
                 l.tech = 0;
@@ -105,7 +101,7 @@ laboratory_update(world& w, ecs_api::entity<ecs::laboratory, ecs::chest, ecs::ca
             if (!r || !chest::pickup(w, container::index::from(c2.chest), to_recipe(r))) {
                 return;
             }
-            int time = pt_time(&tech);
+            auto time = prototype::get<"time">(w, l.tech);
             l.progress += time * 100;
             l.status = STATUS_DONE;
         }
@@ -122,7 +118,7 @@ laboratory_update(world& w, ecs_api::entity<ecs::laboratory, ecs::chest, ecs::ca
 
 static int
 lbuild(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     for (auto& v : ecs_api::select<ecs::laboratory, ecs::chest, ecs::building>(w.ecs)) {
         auto& building = v.get<ecs::building>();
         auto& l = v.get<ecs::laboratory>();
@@ -134,7 +130,7 @@ lbuild(lua_State *L) {
 
 static int
 lupdate(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     bool updated = false;
     for (auto& v : ecs_api::select<ecs::laboratory, ecs::chest, ecs::capacitance, ecs::building>(w.ecs)) {
         auto& l = v.get<ecs::laboratory>();

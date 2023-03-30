@@ -3,9 +3,6 @@
 #include "luaecs.h"
 #include "core/world.h"
 #include "core/capacitance.h"
-extern "C" {
-#include "util/prototype.h"
-}
 #include <bee/nonstd/unreachable.h>
 #include <math.h>
 #include <algorithm>
@@ -125,14 +122,13 @@ static uint16_t getxy(uint8_t x, uint8_t y) {
 
 static int
 lbuild(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     auto& b = w.hubs;
     b.chests.clear();
     std::map<uint16_t, std::map<uint16_t, hub_mgr::berth>> globalmap;
     for (auto& v : ecs_api::select<ecs::building>(w.ecs)) {
         auto& building = v.get<ecs::building>();
-        prototype_context pt = w.prototype(building.prototype);
-        uint16_t area = (uint16_t)pt_area(&pt);
+        uint16_t area = (uint16_t)prototype::get<"area">(w, building.prototype);
         building_rect r(building, area);
         if (auto phub = v.sibling<ecs::hub>()) {
             auto& hub = *phub;
@@ -176,9 +172,8 @@ lbuild(lua_State *L) {
         auto hub = v.get<ecs::hub>();
         auto& chestslot = chest::array_at(w, container::index::from(hub.chest), 0);
         auto& building = v.get<ecs::building>();
-        prototype_context pt = w.prototype(building.prototype);
-        uint16_t area = (uint16_t)pt_area(&pt);
-        uint16_t supply_area = (uint16_t)pt_supply_area(&pt);
+        uint16_t area = (uint16_t)prototype::get<"area">(w, building.prototype);
+        uint16_t supply_area = (uint16_t)prototype::get<"supply_area">(w, building.prototype);
         building_rect r(building, area, supply_area);
         auto& map = globalmap[chestslot.item];
         flatset<hub_mgr::berth> set;
@@ -248,8 +243,7 @@ static void Move(world& w, ecs::drone& drone, uint32_t target) {
     uint32_t dx = (x1>x2)? (x1-x2): (x2-x1);
     uint32_t dy = (y1>y2)? (y1-y2): (y2-y1);
     float z = sqrt((float)dx*(float)dx+(float)dy*(float)dy) / 2.f;
-    prototype_context p = w.prototype(drone.classid);
-    int speed = pt_speed(&p);
+    auto speed = prototype::get<"speed">(w, drone.classid);
     drone.maxprogress = drone.progress = uint16_t(z*1000/speed);
 }
 
@@ -473,7 +467,7 @@ static void Update(world& w, ecs::drone& drone) {
 
 static int
 lupdate(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     for (auto& v : ecs_api::select<ecs::drone>(w.ecs)) {
         auto& drone = v.get<ecs::drone>();
         switch ((drone_status)drone.status) {

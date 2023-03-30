@@ -1,8 +1,6 @@
 #include "core/techtree.h"
 #include "core/world.h"
-extern "C" {
 #include "util/prototype.h"
-}
 #include <assert.h>
 
 uint16_t techtree_mgr::get_progress(uint16_t techid) const {
@@ -32,8 +30,7 @@ bool techtree_mgr::research_set(uint16_t techid, uint16_t max, uint16_t val) {
 }
 
 bool techtree_mgr::research_set(world& w,uint16_t techid, uint16_t val) {
-    prototype_context pt = w.prototype(techid);
-    uint16_t count = (uint16_t)pt_count(&pt);
+    uint16_t count = (uint16_t)prototype::get<"count">(w, techid);
     if (!research_set(techid, count, val)) {
         return false;
     }
@@ -87,10 +84,8 @@ techtree_mgr::ingredients_opt& techtree_mgr::get_ingredients(world& w, uint16_t 
     if (iter != techcache.end()) {
         return iter->second;
     }
-    auto lab = w.prototype(labid);
-    auto tech = w.prototype(techid);
-    auto& inputs = *(lab_inputs*)pt_inputs(&lab);
-    auto& ingredients = *(recipe_items*)pt_ingredients(&tech);
+    auto& inputs = *(lab_inputs*)prototype::get<"inputs">(w, labid).data();
+    auto& ingredients = *(recipe_items*)prototype::get<"ingredients">(w, techid).data();
 
     ingredients_t r(inputs.n+1);
     r[0].item = inputs.n;

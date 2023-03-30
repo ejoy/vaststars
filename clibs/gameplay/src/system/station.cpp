@@ -1,9 +1,7 @@
 ﻿#include "system/station.h"
 #include "core/world.h"
 #include "core/capacitance.h"
-extern "C" {
 #include "util/prototype.h"
-}
 #include "luaecs.h"
 #include <lua.hpp>
 #include <bee/nonstd/unreachable.h>
@@ -67,8 +65,7 @@ static uint8_t safe_add(uint8_t a, uint8_t b) {
 
 static std::tuple<uint8_t, uint8_t> building_center(world& world, ecs::building& building) {
     //TODO 使用更精确的x/y
-    prototype_context pt = world.prototype(building.prototype);
-    uint16_t area = (uint16_t)pt_area(&pt);
+    uint16_t area = (uint16_t)prototype::get<"area">(world, building.prototype);
     uint8_t w = area >> 8;
     uint8_t h = area & 0xFF;
     assert(w > 0 && h > 0);
@@ -98,7 +95,7 @@ static std::tuple<uint8_t, uint8_t> building_center(world& world, ecs::building&
 }
 
 static int lbuild(lua_State *L) {
-    auto& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     auto& rw = w.rw;
     auto& s = w.stations;
     s.consumers.clear();
@@ -157,20 +154,19 @@ static std::optional<uint8_t> recipeFirstOutput(world& w, uint16_t recipe) {
     if (recipe == 0) {
         return std::nullopt;
     }
-    prototype_context pt = w.prototype(recipe);
-    recipe_items* ingredients = (recipe_items*)pt_ingredients(&pt);
-    recipe_items* results = (recipe_items*)pt_results(&pt);
-    if (results->n == 0) {
+    auto& ingredients = *(recipe_items*)prototype::get<"ingredients">(w, recipe).data();
+    auto& results = *(recipe_items*)prototype::get<"results">(w, recipe).data();
+    if (results.n == 0) {
         return std::nullopt;
     }
-    if (ingredients->n >= (std::numeric_limits<uint8_t>::max)()) {
+    if (ingredients.n >= (std::numeric_limits<uint8_t>::max)()) {
         return std::nullopt;
     }
-    return (uint8_t)ingredients->n;
+    return (uint8_t)ingredients.n;
 }
 
 static int lupdate(lua_State *L) {
-    world& w = *(world*)lua_touserdata(L, 1);
+    auto& w = getworld(L);
     size_t sz = ecs_api::count<ecs::station_producer>(w.ecs);
     if (sz == 0) {
         return 0;

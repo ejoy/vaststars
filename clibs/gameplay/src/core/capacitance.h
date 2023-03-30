@@ -2,9 +2,7 @@
 
 #include "luaecs.h"
 #include "core/world.h"
-extern "C" {
 #include "util/prototype.h"
-}
 
 struct consumer_context {
     ecs::capacitance& c;
@@ -39,10 +37,9 @@ template <class Entity>
 consumer_context get_consumer(world& w, Entity& v) {
     ecs::building& building = v.template get<ecs::building>();
     ecs::capacitance& c = v.template get<ecs::capacitance>();
-    prototype_context p = w.prototype(building.prototype);
-    unsigned int power = pt_power(&p);
-    unsigned int drain = pt_drain(&p);
-    unsigned int capacitance = pt_capacitance(&p);
+    unsigned int power = prototype::get<"power">(w, building.prototype);
+    unsigned int drain = prototype::get<"drain">(w, building.prototype);
+    unsigned int capacitance = prototype::get<"capacitance">(w, building.prototype);
     return {
         c, power, drain, capacitance
     };
