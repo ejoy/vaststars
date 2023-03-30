@@ -24,7 +24,7 @@ prototype "蒸汽发电机I" {
 
 prototype "风力发电机I" {
     model = "prefabs/wind-turbine-1.prefab",
-    icon = "textures/construct/wind-turbine.texture",
+    icon = "textures/building_pic/small_pic_wind_turbine.texture",
     construct_detector = {"exclusive"},
     type = {"building", "generator", "wind_turbine"},
     area = "3x3",
