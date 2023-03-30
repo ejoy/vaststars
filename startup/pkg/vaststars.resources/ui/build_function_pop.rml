@@ -266,7 +266,7 @@
                             local v = setmetatable({}, {__index = mt})
                             v.text = "建造增加"
                             v.message = "construction_center_build"
-                            v.background_image = "textures/construct/hammer.texture"
+                            v.background_image = "textures/construct/hammer-add.texture"
                             start.buttons[#start.buttons + 1] = v
                         end
 
