@@ -54,7 +54,7 @@ local guide = {
         name = "guide-4",
 		narrative = {
             {"哔哩..{/g 采矿机}顺利建造完毕..石矿采集技术可行性为{/color:4bd0ff 99.983%}..哔哩..(期待)", "textures/guide/guide-2.texture"},
-            {"哔哩..请将{/g 采矿机}放置在{/g 石矿}上方后，我们就可以采集矿物了..哔哩..(期待)", "textures/guide/guide-2.texture"},
+            {"哔哩..将{/g 采矿机}放置在{/g 石矿}上方，碎石就可以被采矿机开采出来了..哔哩..(期待)", "textures/guide/guide-2.texture"},
         },
         narrative_end = {
             guide_progress = 10,
@@ -156,7 +156,7 @@ local guide = {
     {
         name = "guide-10",
 		narrative = {
-            {"哔哩..将新建的无人机仓库放置在{/g 采矿机}旁边，无人机就可以运输矿石了....(轻松)", "textures/guide/guide-1.texture"},
+            {"哔哩..将新建的{/color:4bd0ff 无人机仓库}放置在{/g 采矿机}旁边，无人机就可以运输矿石了....(轻松)", "textures/guide/guide-1.texture"},
         },
         narrative_end = {
             guide_progress = 10,

@@ -226,7 +226,7 @@ prototype "送货车站设计图" {
     stack = 4,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
-    icon = "textures/construct/broken-logisitic.texture",
+    icon = "textures/construct/broken-goodsstation-input.texture",
     group = {"加工"},
     item_description = "用于建造送货车站的设计图",
 }
@@ -236,7 +236,7 @@ prototype "收货车站设计图" {
     stack = 4,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
-    icon = "textures/construct/broken-logisitic.texture",
+    icon = "textures/construct/broken-goodsstation-output.texture",
     group = {"加工"},
     item_description = "用于建造收货车站的设计图",
 }
