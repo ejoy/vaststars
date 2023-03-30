@@ -332,7 +332,7 @@ static std::tuple<size_t, size_t, bool> FindHub(world& w, const hub_mgr::hub_inf
                 min.amount = amount1;
             }
 
-            auto amount2 = chestslot.amount + chestslot.lock_space;
+            auto amount2 = chestslot.amount - chestslot.lock_item;
             if (((max.index == -1) || (amount2 > max.amount)) && (amount2 > 0)) {
                 max.index = ii;
                 max.amount = amount2;
