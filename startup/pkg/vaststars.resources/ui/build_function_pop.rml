@@ -303,7 +303,7 @@
                             local v = setmetatable({}, {__index = mt})
                             v.text = "车辆取消"
                             v.message = "lorry_factory_stop_build"
-                            v.background_image = "textures/construct/truck-item.texture"
+                            v.background_image = "textures/construct/truck-cancel.texture"
                             start.buttons[#start.buttons + 1] = v
                         end
 
@@ -321,7 +321,7 @@
                             local v = setmetatable({}, {__index = mt})
                             v.text = "增加车辆"
                             v.message = "lorry_factory_inc_lorry"
-                            v.background_image = "textures/construct/truck-item.texture"
+                            v.background_image = "textures/construct/truck-add.texture"
                             start.buttons[#start.buttons + 1] = v
                         end
 
