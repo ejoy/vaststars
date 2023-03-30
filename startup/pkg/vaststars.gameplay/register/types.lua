@@ -161,6 +161,7 @@ register_unit("itemtypes", "string", function(s)
 	end
 	return table.concat(r)
 end)
+unit["itemtypes"].lazy = true
 
 register_unit("items", "string", function(s)
 	local r = {string.pack("<I4", #s)}
@@ -174,6 +175,7 @@ register_unit("items", "string", function(s)
 	end
 	return table.concat(r)
 end)
+unit["items"].lazy = true
 
 register_unit("fluidbox", "table", function(s)
 	return s
@@ -205,6 +207,7 @@ register_unit("task", "string", function(args)
 	end
 	return table.concat(r)
 end)
+unit["task"].lazy = true
 
 local enum = {
 	priority = {

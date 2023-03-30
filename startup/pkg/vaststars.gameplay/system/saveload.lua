@@ -82,3 +82,17 @@ do
         cworld:restore_chest(world.storage_path.."/chest.bin")
     end
 end
+do
+    local m = system "saveload-prototype"
+    function m.backup(world)
+        local prototype = require "prototype"
+        local metafile = world.storage_path.."/prototype.json"
+        writeall(metafile, json.encode(prototype.backup()))
+    end
+    function m.restore(world)
+        local cworld = world._cworld
+        local prototype = require "prototype"
+        local metafile = world.storage_path.."/prototype.json"
+        prototype.restore(cworld, json.decode(readall(metafile)))
+    end
+end

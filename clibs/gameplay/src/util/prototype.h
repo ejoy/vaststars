@@ -143,14 +143,19 @@ namespace prototype {
         int last = 0;
     };
 
-    inline cache* create_cache(lua_State* L, int idx) {
+    inline cache* create_cache(lua_State* L) {
         cache* c = (cache*)lua_newuserdatauv(L, sizeof(*c), 1);
         new (c) cache;
         c->L = lua_newthread(L);
         lua_setiuservalue(L, -2, 1);
+        return c;
+    }
+
+    inline void bind(world& w, lua_State* L, int idx) {
+        cache* c = w.P;
+        lua_settop(c->L, 0);
         lua_pushvalue(L, idx);
         lua_xmove(L, c->L, 1);
-        return c;
     }
 
     inline void fetch_value(world& w, cache* c, uint16_t id, const char* name, lua_value& v) {

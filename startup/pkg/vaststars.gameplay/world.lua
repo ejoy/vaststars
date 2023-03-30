@@ -58,10 +58,13 @@ return function ()
     end
 
     local context = ecs:context(components)
-    local cworld = vaststars.create_world(context, require "status".prototype_id)
+    local cworld = vaststars.create_world(context)
     world.ecs = ecs
     world._cworld = cworld
     world._context = context
+
+    --TOOD: 如果可以提前得知需要读档，这个操作是可以省略的
+    prototype.restore(cworld, {})
 
     function world:create_entity(type)
         return function (init)

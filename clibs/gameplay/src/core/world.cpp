@@ -90,6 +90,12 @@ namespace lua_world {
         return 0;
     }
 
+    static int prototype_bind(lua_State* L) {
+        auto& w = getworld(L);
+        prototype::bind(w, L, 2);
+        return 0;
+    }
+
     static int
     destroy(lua_State* L) {
         auto& w = getworld(L);
@@ -346,7 +352,7 @@ namespace lua_world {
         new (w) world;
         w->L = L;
         w->ecs = (struct ecs_context *)lua_touserdata(L, 1);
-        w->P = prototype::create_cache(L, 2);
+        w->P = prototype::create_cache(L);
         lua_setiuservalue(L, -2, 1);
 
         if (luaL_newmetatable(L, "gameplay::world")) {
@@ -372,6 +378,7 @@ namespace lua_world {
                 { "restore_chest", restore_chest },
                 // misc
                 {"reset", reset},
+                {"prototype_bind", prototype_bind},
                 {"system_solve", system_solve},
                 {"system_perf_solve", system_perf_solve},
                 {"__gc", destroy},

@@ -6,6 +6,4 @@ return {
     csystems = {},
     components = {},
     pipelines = {},
-    prototype_id = {},
-    prototype_name = {},
 }
