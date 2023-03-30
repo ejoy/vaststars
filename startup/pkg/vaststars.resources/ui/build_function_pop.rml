@@ -77,6 +77,14 @@
                 font-size: 4.73vmin;
                 text-align: center;
             }
+            .red-dot {
+                width:4.26vmin; 
+                height:4.26vmin; 
+                position:absolute; 
+                right:0; 
+                top:0; 
+                background-image:"textures/work_status_icon/red_dot.texture";
+            }
             @keyframes enlarge {
                 0% {
                     transform: scale(0.9);
@@ -341,7 +349,7 @@
                 <div class = "icon-background" style="position: absolute; margin: 1.8vmin 0.7vmin;" data-if = "it.show_icon_background" />
                 <div class="button-function" data-style-background-image = "it.background_image" />
                 <div class="title-text">{{it.text}}</div>
-                <div class = "menu-button-pic" data-if = "it.show_number" style='width:4.26vmin; height:4.26vmin; position:absolute; right:0; top:0; background-image:"textures/work_status_icon/red_dot.texture"'>
+                <div class = "red-dot" data-if = "it.show_number">
                     <div style="text-align:center; font-size:3vmin; padding-right: 0.5vmin;">{{it.number}}</div>
                 </div>
             </button>
