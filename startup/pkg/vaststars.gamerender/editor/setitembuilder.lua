@@ -455,7 +455,7 @@ local function complete(self, object_id, datamodel)
 
     local typeobject = iprototype.queryByName(object.prototype_name)
     local rd = _get_connections(object.prototype_name, object.x, object.y, object.dir)
-    if rd == 1 then
+    if #rd == 1 then
         local dx, dy = iprototype.move_coord(rd[1].x, rd[1].y, rd[1].dir, 1)
         local mask = assert(global.roadnet[iprototype.packcoord(dx, dy)])
         mask = __set_state_value(mask, iprototype.reverse_dir(rd[1].dir))
