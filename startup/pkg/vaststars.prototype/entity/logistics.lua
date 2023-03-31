@@ -281,7 +281,7 @@ prototype "建造中心" {
     construction_center = true,
 }
 
-prototype "道路建造站" {
+prototype "修路站" {
     model = "prefabs/road-center.prefab",
     icon = "textures/building_pic/small_pic_road_center.texture",
     background = "textures/build_background/small_pic_goodsstation_input.texture",
@@ -293,7 +293,7 @@ prototype "道路建造站" {
     road_builder = true,
 }
 
-prototype "管道建造站" {
+prototype "修管站" {
     model = "prefabs/pipe-center.prefab",
     icon = "textures/building_pic/small_pic_pipe_center.texture",
     background = "textures/build_background/small_pic_goodsstation_input.texture",

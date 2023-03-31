@@ -226,7 +226,7 @@ prototype "送货车站设计图" {
     stack = 4,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
-    icon = "textures/construct/broken-goodsstation-input.texture",
+    icon = "textures/construct/broken-goodsstation-output.texture",
     group = {"加工"},
     item_description = "用于建造送货车站的设计图",
 }
@@ -236,7 +236,7 @@ prototype "收货车站设计图" {
     stack = 4,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
-    icon = "textures/construct/broken-goodsstation-output.texture",
+    icon = "textures/construct/broken-goodsstation-input.texture",
     group = {"加工"},
     item_description = "用于建造收货车站的设计图",
 }
@@ -291,24 +291,24 @@ prototype "车辆厂设计图" {
     item_description = "用于建造车辆厂的设计图",
 }
 
-prototype "道路建造站设计图" {
+prototype "修路站设计图" {
     type = {"item"},
     stack = 4,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/road-builder.texture",
     group = {"加工"},
-    item_description = "用于建造道路建造站的设计图",
+    item_description = "用于建造修路站的设计图",
 }
 
-prototype "管道建造站设计图" {
+prototype "修管站设计图" {
     type = {"item"},
     stack = 4,
     pile = "2x2x4",
     pile_model = "prefabs/stackeditems/iron-ore.prefab",
     icon = "textures/construct/pipe-builder.texture",
     group = {"加工"},
-    item_description = "用于建造管道建造站的设计图",
+    item_description = "用于建造修管站的设计图",
 }
 
 prototype "科研中心设计图" {

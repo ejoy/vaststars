@@ -250,7 +250,7 @@ local prototype = gameplay.register.prototype
   --   type = { "tech" },
   --   icon = "textures/science/tech-research.texture",
   --   effects = {
-  --     unlock_recipe = {"道路建造站"},
+  --     unlock_recipe = {"修路站"},
   --   },
   --   prerequisites = {"生产石砖"},
   --   ingredients = {
@@ -260,11 +260,11 @@ local prototype = gameplay.register.prototype
   --   time = "1s"
   -- }
 
-    -- prototype "放置道路建造站" {
-  --   desc = "放置1座道路建造站",
+    -- prototype "放置修路站" {
+  --   desc = "放置1座修路站",
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
-  --   task = {"select_entity", 0, "道路建造站"},
+  --   task = {"select_entity", 0, "修路站"},
   --   prerequisites = {"物流学I"},
   --   count = 1,
   --   effects = {
@@ -274,7 +274,7 @@ local prototype = gameplay.register.prototype
   --     "textures/task_tips_pic/task_place_logistics.texture",
   --   },
   --   sign_desc = {
-  --     { desc = "放置1个道路建造站", icon = "textures/construct/industry.texture"},
+  --     { desc = "放置1个修路站", icon = "textures/construct/industry.texture"},
   --   },
   -- }
 
@@ -284,7 +284,7 @@ local prototype = gameplay.register.prototype
   --   type = { "tech", "task" },
   --   task = {"select_entity", 0, "砖石公路-X型"},
   --   task_params = {starting = {117, 125}, ending = {135, 125}},
-  --   prerequisites = {"放置道路建造站"},
+  --   prerequisites = {"放置修路站"},
   --   count = 20,
   --   tips_pic = {
   --     "textures/task_tips_pic/task_place_road1.texture",
@@ -297,11 +297,11 @@ local prototype = gameplay.register.prototype
   -- }
 
   -- prototype "放置车站" {
-  --   desc = "放置1座道路建造站",
+  --   desc = "放置1座修路站",
   --   icon = "textures/construct/industry.texture",
   --   type = { "tech", "task" },
   --   task = {"select_entity", 0, "车站"},
-  --   prerequisites = {"放置道路建造站"},
+  --   prerequisites = {"放置修路站"},
   --   count = 1,
   --   effects = {
   --     unlock_recipe = {"运输汽车生产"},
@@ -627,7 +627,7 @@ local prototype = gameplay.register.prototype
   --   type = { "tech", "task" },
   --   task = {"unknown", 0, 1},
   --   task_params = {starting = {117, 125}, ending = {135, 125}},
-  --   prerequisites = {"放置道路建造站"},
+  --   prerequisites = {"放置修路站"},
   --   count = 1,
   --   tips_pic = {
   --     "textures/task_tips_pic/task_place_road1.texture",
@@ -936,29 +936,92 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_production", 0, "石砖"},
     prerequisites = {"石头处理1"},
-    count = 8,
+    count = 10,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ore3.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产8个石砖", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产10个石砖", icon = "textures/construct/industry.texture"},
     },
   }
 
-  prototype "道路建造" {
+  prototype "道路研究" {
     desc = "掌握使用石砖制造道路的技术",
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
-      unlock_recipe = {"道路建造站","道路建造站打印"},
-      unlock_item = {"道路建造站设计图"},
+      unlock_recipe = {"修路站","修路站打印"},
+      unlock_item = {"修路站设计图"},
     },
     prerequisites = {"生产石砖"},
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 12,
+    count = 15,
     time = "1s"
+  }
+
+  prototype "道路设计" {
+    desc = "制造1张修路站设计图",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"stat_production", 0, "修路站设计图"},
+    prerequisites = {"道路研究"},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_produce_ore3.texture",
+    },
+    sign_desc = {
+      { desc = "组装机生产1张修路站设计图", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "建造道路站" {
+    desc = "建造组装机",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"stat_consumption", 0, "修路站设计图"},
+    prerequisites = {"道路设计"},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "在“建造中心”建造1个修路站", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+    prototype "放置修路站" {
+    desc = "放置1座修路站",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "修路站"},
+    prerequisites = {"建造道路站"},
+    count = 1,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "放置1个修路站", icon = "textures/construct/industry.texture"},
+    },
+  }
+
+  prototype "通向铁矿" {
+    desc = "修建20节公路",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"unknown", 0, 1},
+    task_params = {},
+    prerequisites = {"放置修路站"},
+    count = 20,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_road1.texture",
+      "textures/task_tips_pic/task_place_road2.texture",
+      "textures/task_tips_pic/task_place_road3.texture",
+    },
+    sign_desc = {
+      { desc = "修建道路从指挥中心到东边的铁矿", icon = "textures/construct/industry.texture"},
+    },
   }
 
   prototype "物流学I" {
@@ -969,7 +1032,7 @@ prototype "建造电线杆" {
       unlock_recipe = {"送货车站打印","收货车站打印"},
       unlock_item = {"送货车站设计图","收货车站设计图","铁矿石"},
     },
-    prerequisites = {"道路建造"},
+    prerequisites = {"通向铁矿"},
     ingredients = {
         {"地质科技包", 1},
     },
@@ -977,45 +1040,12 @@ prototype "建造电线杆" {
     time = "1s"
   }
 
-    prototype "放置道路建造站" {
-    desc = "放置1座道路建造站",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"select_entity", 0, "道路建造站"},
-    prerequisites = {"道路建造"},
-    count = 1,
-    tips_pic = {
-      "textures/task_tips_pic/task_place_logistics.texture",
-    },
-    sign_desc = {
-      { desc = "放置1个道路建造站", icon = "textures/construct/industry.texture"},
-    },
-  }
-
-  prototype "修建公路" {
-    desc = "修建20节公路",
-    icon = "textures/construct/industry.texture",
-    type = { "tech", "task" },
-    task = {"unknown", 0, 1},
-    task_params = {},
-    prerequisites = {"放置道路建造站"},
-    count = 20,
-    tips_pic = {
-      "textures/task_tips_pic/task_place_road1.texture",
-      "textures/task_tips_pic/task_place_road2.texture",
-      "textures/task_tips_pic/task_place_road3.texture",
-    },
-    sign_desc = {
-      { desc = "至少修建20段道路", icon = "textures/construct/industry.texture"},
-    },
-  }
-
   prototype "放置送货车站" {
-    desc = "放置1座道路建造站",
+    desc = "放置1座修路站",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "送货车站"},
-    prerequisites = {"物流学I","修建公路"},
+    prerequisites = {"物流学I"},
     count = 1,
     effects = {
       unlock_recipe = {"车辆装配"},
@@ -1030,11 +1060,11 @@ prototype "建造电线杆" {
   }
 
   prototype "放置收货车站" {
-    desc = "放置1座道路建造站",
+    desc = "放置1座修路站",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "收货车站"},
-    prerequisites = {"物流学I","修建公路"},
+    prerequisites = {"物流学I"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -1256,8 +1286,8 @@ prototype "管道系统1" {
   type = { "tech" },
   icon = "textures/science/tech-research.texture",
   effects = {
-    unlock_recipe = {"管道建造站设计","管道1","管道2","液罐1"},
-    unlock_item = {"液罐I","管道建造站设计图","管道1-X型"},
+    unlock_recipe = {"修管站设计","管道1","管道2","液罐1"},
+    unlock_item = {"液罐I","修管站设计图","管道1-X型"},
   },
   prerequisites = {"气候研究"},
   ingredients = {

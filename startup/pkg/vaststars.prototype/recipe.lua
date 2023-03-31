@@ -219,20 +219,20 @@ prototype "石砖" {
     description = "使用碎石炼制石砖",
 }
 
-prototype "道路建造站" {
+prototype "修路站" {
     type = { "recipe" },
     category = "物流中型制造",
     recipe_group =  "物流",
     recipe_order =  101,
-    recipe_icon =  "textures/construct/road1.texture",
+    recipe_icon =  "textures/construct/road-builder.texture",
     ingredients = {
-        {"石砖", 10},
+        {"石砖", 20},
     },
     results = {
-        {"道路建造站设计图", 1},
+        {"修路站设计图", 1},
     },
-    time = "5s",
-    description = "修建道路建造站",
+    time = "20s",
+    description = "修建修路站",
 }
 
 
@@ -585,8 +585,8 @@ prototype "建造中心" {
     recipe_order =  72,
     recipe_icon =  "textures/construct/assembler1.texture",
     ingredients = {
-        {"道路建造站", 2},
-        {"管道建造站", 2},
+        {"修路站", 2},
+        {"修管站", 2},
     },
     results = {
         {"建造中心设计图", 1},
@@ -1476,33 +1476,33 @@ prototype "地下水挖掘机打印" {
     description = "打印可挖掘地下水的装置",
 }
 
-prototype "道路建造站打印" {
+prototype "修路站打印" {
     type = { "recipe" },
     category = "设计图打印",
     recipe_group =  "加工",
     recipe_order =  54,
     recipe_icon =  "textures/construct/road-builder.texture",
     ingredients = {
-        {"道路建造站设计图", 1},
+        {"修路站设计图", 1},
     },
     results = {
-        {"道路建造站", 1},
+        {"修路站", 1},
     },
     time = "5s",
     description = "打印可建造道路的装置",
 }
 
-prototype "管道建造站打印" {
+prototype "修管站打印" {
     type = { "recipe" },
     category = "设计图打印",
     recipe_group =  "加工",
     recipe_order =  55,
     recipe_icon =  "textures/construct/pipe-builder.texture",
     ingredients = {
-        {"管道建造站设计图", 1},
+        {"修管站设计图", 1},
     },
     results = { 
-        {"管道建造站", 1},
+        {"修管站", 1},
     },
     time = "5s",
     description = "打印可建造管道的装置",
@@ -1782,7 +1782,7 @@ prototype "地下水挖掘机设计" {
     description = "打印可挖掘地下水的装置",
 }
 
-prototype "道路建造站设计" {
+prototype "修路站设计" {
     type = { "recipe" },
     category = "设计图设计",
     recipe_group =  "物流",
@@ -1792,13 +1792,13 @@ prototype "道路建造站设计" {
         {"电动机I", 1},
     },
     results = {
-        {"道路建造站设计图", 1},
+        {"修路站设计图", 1},
     },
     time = "5s",
     description = "打印可建造道路的装置",
 }
 
-prototype "管道建造站设计" {
+prototype "修管站设计" {
     type = { "recipe" },
     category = "设计图设计",
     recipe_group =  "物流",
@@ -1808,7 +1808,7 @@ prototype "管道建造站设计" {
         {"电动机I", 1},
     },
     results = { 
-        {"管道建造站设计图", 1},
+        {"修管站设计图", 1},
     },
     time = "5s",
     description = "打印可建造管道的装置",

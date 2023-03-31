@@ -92,14 +92,14 @@ prototype "建造中心" {
     item_description = "用来建造建筑的场所",
 }
 
-prototype "道路建造站" {
+prototype "修路站" {
     type = {"item"},
     group = {"物流"},
     stack = 1,
     item_description = "用来建造道路的场所",
 }
 
-prototype "管道建造站" {
+prototype "修管站" {
     type = {"item"},
     group = {"物流"},
     stack = 1,
