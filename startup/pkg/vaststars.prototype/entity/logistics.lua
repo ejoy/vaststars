@@ -93,6 +93,7 @@ prototype "科研中心I" {
     area = "3x3",
     power = "150kW",
     speed = "100%",
+    show_arc_menu = false,
     priority = "secondary",
     inputs = {
         "地质科技包",
