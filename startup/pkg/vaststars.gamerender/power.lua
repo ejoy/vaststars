@@ -152,8 +152,8 @@ local function do_create_line(pole1, pole2)
     pole1.targets[#pole1.targets + 1] = pole2
     pole2.targets[#pole2.targets + 1] = pole1
     if pole1.power_pole and pole2.power_pole then
-        pole1.power_pole_count = pole1.power_pole_count + 1
-        pole2.power_pole_count = pole2.power_pole_count + 1
+        pole1.power_pole_target = pole1.power_pole_target + 1
+        pole2.power_pole_target = pole2.power_pole_target + 1
     end
     return { p1 = pole1, p2 = pole2 }
 end
