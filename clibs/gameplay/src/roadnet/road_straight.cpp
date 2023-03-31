@@ -43,7 +43,7 @@ namespace roadnet::road {
         // see also: crossroad::waitingLorry()
         for (uint16_t i = 1; i < len; ++i) {
             if (lorryid l = w.LorryInRoad(lorryOffset+i)) {
-                if (tryEntry(w, l, i-1)) {
+                if (w.Lorry(l).ready() && tryEntry(w, l, i-1)) {
                     delLorry(w, i);
                 }
             }

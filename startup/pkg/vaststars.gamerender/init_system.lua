@@ -119,14 +119,13 @@ function m:update_world()
         world_update(gameplay_world)
         gameplay_update(gameplay_world)
 
-        local is_cross, mc, x, y, z
+        local mc, x, y, z
         for lorry_id, rc, tick in gameplay_world:roadnet_each_lorry() do
-            is_cross = (rc & 0x8000 ~= 0) -- see also: push_road_coord() in c code
             mc = gameplay_world:roadnet_map_coord(rc)
             x = (mc >>  0) & 0xFF
             y = (mc >>  8) & 0xFF
             z = (mc >> 16) & 0xFF
-            lorry_manager.update(lorry_id, is_cross, x, y, z, tick)
+            lorry_manager.update(lorry_id, x, y, z, tick)
         end
     end
 end

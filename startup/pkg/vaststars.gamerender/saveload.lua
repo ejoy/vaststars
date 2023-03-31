@@ -26,7 +26,7 @@ local ifluid = require "gameplay.interface.fluid"
 local iscience = require "gameplay.interface.science"
 local iguide = require "gameplay.interface.guide"
 local iui = ecs.import.interface "vaststars.gamerender|iui"
-local GAMEPLAY_VERSION <const> = require "version"
+local PROTOTYPE_VERSION <const> = import_package("vaststars.prototype")("version")
 local global = require "global"
 
 local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
@@ -379,7 +379,7 @@ function M:backup()
     archival_list[#archival_list + 1] = {dir = dn}
     gameplay_core.backup(archival_dir)
 
-    writeall(archival_dir .. "/version", json.encode({gameplay_version = GAMEPLAY_VERSION}))
+    writeall(archival_dir .. "/version", json.encode({PROTOTYPE_VERSION = PROTOTYPE_VERSION}))
     writeall(archiving_list_path, json.encode(archival_list))
     writeall(camera_setting_path, json.encode(get_camera_setting()))
     print("save success", archival_dir)
@@ -429,8 +429,8 @@ function M:restore(index)
         end
 
         local version = json.decode(readall(archival_dir .. "/version"))
-        if version.gameplay_version ~= GAMEPLAY_VERSION then
-            log.error(("Failed `%s` version `%s` current `%s`"):format(archival_relative_dir, archival_list[index].version, GAMEPLAY_VERSION))
+        if version.PROTOTYPE_VERSION ~= PROTOTYPE_VERSION then
+            log.error(("Failed `%s` version `%s` current `%s`"):format(archival_relative_dir, archival_list[index].version, PROTOTYPE_VERSION))
             iui.open({"option_pop.rml"})
             return false
         else

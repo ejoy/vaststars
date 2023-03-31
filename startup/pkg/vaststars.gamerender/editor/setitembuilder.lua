@@ -411,6 +411,36 @@ local function __deduct_item(self, e)
     end
 end
 
+local function _get_connections(prototype_name, x, y, dir)
+    local typeobject = iprototype.queryByName(prototype_name)
+    local r = {}
+    if not typeobject.crossing then
+        return r
+    end
+
+    for _, conn in ipairs(typeobject.crossing.connections) do
+        local dx, dy, ddir = iprototype.rotate_connection(conn.position, dir, typeobject.area)
+        r[#r+1] = {x = x + dx, y = y + dy, dir = ddir}
+    end
+    return r
+end
+
+local iroadnet = ecs.require "roadnet"
+local MAPPING <const> = {
+    W = 0, -- left
+    N = 1, -- top
+    E = 2, -- right
+    S = 3, -- bottom
+}
+
+-- TODO：duplicate codes
+local function __set_state_value(num, dir)
+    local index = MAPPING[dir]
+    assert(index >= 0 and index <= 3)
+    num = num & ~(1 << index) | (1 << index)
+    return num
+end
+
 local function complete(self, object_id, datamodel)
     local e = gameplay_core.get_entity(assert(self.gameplay_eid))
     __deduct_item(self, e)
@@ -424,6 +454,16 @@ local function complete(self, object_id, datamodel)
     end
 
     local typeobject = iprototype.queryByName(object.prototype_name)
+    local rd = _get_connections(object.prototype_name, object.x, object.y, object.dir)
+    if rd == 1 then
+        local dx, dy = iprototype.move_coord(rd[1].x, rd[1].y, rd[1].dir, 1)
+        local mask = assert(global.roadnet[iprototype.packcoord(dx, dy)])
+        mask = __set_state_value(mask, iprototype.reverse_dir(rd[1].dir))
+        global.roadnet[iprototype.packcoord(dx, dy)] = mask
+        global.roadnet[iprototype.packcoord(rd[1].x, rd[1].y)] = 0x10
+        iroadnet:editor_build()
+    end
+
     if iprototype.has_type(typeobject.type, "hub") then
         local interface = {} -- TODO: remove this
         interface.get_first_item = __get_hub_first_item

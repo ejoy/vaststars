@@ -513,7 +513,7 @@ local function _teardown_end(self, datamodel, State, dir, dir_delta)
             else
                 iroadnet:editor_set("indicator", "remove", x, y, "I", dir)
             end
-            self.temporary_map[coord] = iroadnet_converter.prototype_name_dir_to_mask(v[1], v[2])
+            self.temporary_map[coord] = REMOVE
             ::continue::
         end
     end
@@ -804,10 +804,11 @@ local function confirm(self, datamodel)
 
             global.roadnet[coord] = mask
             c = c + 1
+
+            local x, y = unpackcoord(coord)
+            local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
+            iroadnet:editor_set("road", "normal", x, y, shape, dir)
         end
-        local x, y = unpackcoord(coord)
-        local shape, dir = iroadnet_converter.mask_to_shape_dir(mask)
-        iroadnet:editor_set("road", "normal", x, y, shape, dir)
     end
 
     for coord in pairs(remove) do
