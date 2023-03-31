@@ -689,7 +689,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "放置采矿机" {
+  prototype "石矿放置采矿机" {
     desc = "放置1台采矿机",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -714,7 +714,7 @@ local prototype = gameplay.register.prototype
     type = { "tech", "task" },
     task = {"unknown", 0, 5},
     task_params = {item = "电线杆设计图"},
-    prerequisites = {"放置采矿机"},
+    prerequisites = {"石矿放置采矿机"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -1089,12 +1089,27 @@ prototype "建造电线杆" {
     },
   }
 
+  prototype "铁矿放置采矿机" {
+    desc = "放置1台采矿机",
+    icon = "textures/construct/industry.texture",
+    type = { "tech", "task" },
+    task = {"select_entity", 0, "采矿机I"},
+    prerequisites = {"生产运输车辆"},
+    count = 2,
+    tips_pic = {
+      "textures/task_tips_pic/task_place_logistics.texture",
+    },
+    sign_desc = {
+      { desc = "在铁矿上放置1台采矿机", icon = "textures/construct/industry.texture"},
+    },
+  }
+
   prototype "生产铁矿石" {
     desc = "挖掘足够的铁矿石可以开始进行锻造",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "铁矿石"},
-    prerequisites = {"生产运输车辆"},
+    prerequisites = {"铁矿放置采矿机"},
     count = 10,
     effects = {
       unlock_recipe = {"熔炼炉打印"},

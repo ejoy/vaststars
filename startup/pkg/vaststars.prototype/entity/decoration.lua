@@ -36,6 +36,6 @@ prototype "抽水泵残骸" {
     chest_type = "red",
     show_arc_menu = false,
     area = "3x3",
-    slots = 20,
+    slots = 21,
     building_base = false,
 }
