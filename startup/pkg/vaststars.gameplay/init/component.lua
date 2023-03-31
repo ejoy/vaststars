@@ -48,6 +48,7 @@ component "drone" {
     "maxprogress:word",
     "progress:word",
     "item:word",
+    "home_item:word",
     "status:byte",
 }
 

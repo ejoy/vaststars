@@ -1,5 +1,4 @@
 local type = require "register.type"
-local prototype = require "prototype"
 
 local c = type "drone"
 
@@ -18,6 +17,7 @@ function c:ctor(init, pt)
             maxprogress = 0,
             progress = 0,
             item = 0,
+            home_item = 0,
             status = 0,
         }
     }
