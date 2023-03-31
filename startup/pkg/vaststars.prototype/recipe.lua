@@ -1772,12 +1772,12 @@ prototype "修路站设计" {
     recipe_order =  101,
     recipe_icon =  "textures/construct/road-builder.texture",
     ingredients = {
-        {"石砖", 20},
+        {"石砖", 15},
     },
     results = {
         {"修路站设计图", 1},
     },
-    time = "20s",
+    time = "15s",
     description = "修建修路站",
 }
 
