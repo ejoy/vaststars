@@ -319,6 +319,7 @@ local function restore_world()
     -- update power network
     ipower:build_power_network(gameplay_core.get_world())
     ipower_line.update_line(ipower:get_pole_lines())
+    global.statistic.valid = false
 end
 
 local function writeall(file, content)

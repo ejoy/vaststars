@@ -28,11 +28,13 @@ local filter_statistic = {
     ["10m"] = {interval = 12.0, elapsed = 0.0, maxsec = 600},
     ["1h"] = {interval = 72.0, elapsed = 0.0, maxsec = 3600},
 }
-local init_group_statistic = false
 local function update_world(world)
     local statistic = global.statistic
-    if not init_group_statistic then
-        init_group_statistic = true
+    if not statistic.valid then
+        statistic.valid = true
+        statistic.pending_eid = {}
+        statistic.power = {}
+        statistic.power_group = {}
         statistic.power_consumed = {}
         statistic.power_generated = {}
         statistic.total_generated = 0
