@@ -224,12 +224,13 @@ local function _update_recipe_items(datamodel, recipe_name)
 
     datamodel.recipe_items = {}
     local recipe_category_new_flag = {}
+    local all_new = false
     for group, recipe_set in pairs(recipes) do
         for _, recipe_item in ipairs(recipe_set) do
             if recipe_unlocked(recipe_item.name) then
                 local new_recipe_flag = (not storage.recipe_picked_flag[recipe_item.name]) and true or false
 
-                if group == cur_recipe_category_cfg.group then
+                if group == cur_recipe_category_cfg.group or cur_recipe_category_cfg.group == "全部" then
                     datamodel.recipe_items[#datamodel.recipe_items+1] = {
                         name = recipe_item.name,
                         icon = recipe_item.icon,
@@ -249,11 +250,15 @@ local function _update_recipe_items(datamodel, recipe_name)
 
                 if new_recipe_flag then
                     recipe_category_new_flag[group] = true
+                    all_new = true
                 end
             end
         end
     end
 
+    if all_new then
+        recipe_category_new_flag["全部"] = true
+    end
     datamodel.recipe_category = {}
     for _, category in ipairs(recipe_category_cfg) do
         datamodel.recipe_category[#datamodel.recipe_category+1] = {
