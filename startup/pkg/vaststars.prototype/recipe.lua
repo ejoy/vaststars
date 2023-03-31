@@ -219,23 +219,6 @@ prototype "石砖" {
     description = "使用碎石炼制石砖",
 }
 
-prototype "修路站" {
-    type = { "recipe" },
-    category = "物流中型制造",
-    recipe_group =  "物流",
-    recipe_order =  101,
-    recipe_icon =  "textures/construct/road-builder.texture",
-    ingredients = {
-        {"石砖", 20},
-    },
-    results = {
-        {"修路站设计图", 1},
-    },
-    time = "20s",
-    description = "修建修路站",
-}
-
-
 prototype "硅1" {
     type = { "recipe" },
     category = "矿石浮选",
@@ -1784,24 +1767,25 @@ prototype "地下水挖掘机设计" {
 
 prototype "修路站设计" {
     type = { "recipe" },
-    category = "设计图设计",
-    recipe_group =  "物流",
-    recipe_order =  54,
+    category = "物流中型制造",
+    recipe_group =  "加工",
+    recipe_order =  101,
     recipe_icon =  "textures/construct/road-builder.texture",
     ingredients = {
-        {"电动机I", 1},
+        {"石砖", 20},
     },
     results = {
         {"修路站设计图", 1},
     },
-    time = "5s",
-    description = "打印可建造道路的装置",
+    time = "20s",
+    description = "修建修路站",
 }
+
 
 prototype "修管站设计" {
     type = { "recipe" },
-    category = "设计图设计",
-    recipe_group =  "物流",
+    category = "物流中型制造",
+    recipe_group =  "加工",
     recipe_order =  55,
     recipe_icon =  "textures/construct/pipe-builder.texture",
     ingredients = {

@@ -776,12 +776,12 @@ prototype "建造电线杆" {
   }
 
     prototype "建造无人机仓库" {
-    desc = "建造2个无人机仓库",
+    desc = "建造4个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "无人机仓库设计图"},
     prerequisites = {"仓库调度3"},
-    count = 3,
+    count = 4,
     effects = {
       unlock_item = {"碎石"},
     },
@@ -789,23 +789,23 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_place_logistics.texture",
     },
     sign_desc = {
-      { desc = "在“建造中心”建造3个无人机仓库", icon = "textures/construct/industry.texture"},
+      { desc = "在“建造中心”建造4个无人机仓库", icon = "textures/construct/industry.texture"},
     },
   }
 
     prototype "放置无人机仓库" {
-    desc = "放置4个无人机仓库",
+    desc = "放置5个无人机仓库",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"select_entity", 0, "无人机仓库"},
     prerequisites = {"建造无人机仓库"},
-    count = 4,
+    count = 5,
     tips_pic = {
       "textures/task_tips_pic/task_place_pole1.texture",
       "textures/task_tips_pic/task_place_pole2.texture",
     },
     sign_desc = {
-      { desc = "放置4个无人机仓库", icon = "textures/construct/industry.texture"},
+      { desc = "放置5个无人机仓库", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -950,7 +950,7 @@ prototype "建造电线杆" {
     type = { "tech" },
     icon = "textures/science/tech-research.texture",
     effects = {
-      unlock_recipe = {"修路站","修路站打印"},
+      unlock_recipe = {"修路站设计","修路站打印"},
       unlock_item = {"修路站设计图"},
     },
     prerequisites = {"生产石砖"},
