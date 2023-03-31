@@ -130,7 +130,7 @@ uint16_t chest::size(world& w, container::index c) {
 container::slot* chest::find_item(world& w, container::index c, uint16_t item) {
     for (auto& s: chest::array_slice(w, c)) {
         if (s.item == item) {
-            return &s;;
+            return &s;
         }
     }
     return nullptr;

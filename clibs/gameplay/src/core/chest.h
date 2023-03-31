@@ -253,7 +253,6 @@ namespace chest {
     uint16_t size(world& w, container::index c);
 
     // for lua api
-    container::slot& getslot(world& w, container::index c, uint8_t offset);
     bool pickup(world& w, container::index c, uint16_t item, uint16_t amount);
     bool place(world& w, container::index c, uint16_t item, uint16_t amount);
 

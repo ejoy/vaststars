@@ -111,11 +111,16 @@ static container::slot* GetChestSlot(world& w, hub_mgr::berth const& berth) {
     return nullptr;
 }
 
-static container::slot* GetChestSlot(world& w, hub_mgr::berth const& berth, uint16_t item) {
+static std::optional<uint8_t> GetChestSlot(world& w, hub_mgr::berth const& berth, uint16_t item) {
     if (auto chest = w.hubs.chests.find(berth.hash())) {
-        return chest::find_item(w, container::index::from(*chest), item);
+        auto c = container::index::from(*chest);
+        container::slot* index = chest::find_item(w, c, item);
+        if (index) {
+            auto& start = chest::array_at(w, c, 0);
+            return (uint8_t)(index-&start);
+        }
     }
-    return nullptr;
+    return std::nullopt;
 }
 
 static uint16_t getxy(uint8_t x, uint8_t y) {
@@ -220,9 +225,9 @@ lbuild(lua_State *L) {
                 drone.home_item = info->item;
                 drone.status = (uint8_t)drone_status::at_home;
                 break;
-            case drone_status::go_mov2:
             case drone_status::go_home:
             case drone_status::at_home:
+            case drone_status::go_mov2:
             case drone_status::empty_task:
                 drone.home_item = info->item;
                 break;
@@ -231,6 +236,31 @@ lbuild(lua_State *L) {
                 if (drone.home_item != info->item) {
                     drone.home_item = info->item;
                     drone.status = (uint8_t)drone_status::empty_task;
+                    break;
+                }
+                auto next = std::bit_cast<hub_mgr::berth>(drone.next);
+                if (auto slot = GetChestSlot(w, next)) {
+                    if (slot->item != drone.home_item) {
+                        if (auto findshot = GetChestSlot(w, next, drone.home_item)) {
+                            next.chest_slot = *findshot;
+                            drone.next = std::bit_cast<uint32_t>(next);
+                        }
+                        else {
+                            drone.status = (uint8_t)drone_status::empty_task;
+                            break;
+                        }
+                    }
+                }
+                auto mov2 = std::bit_cast<hub_mgr::berth>(drone.mov2);
+                if (auto slot = GetChestSlot(w, std::bit_cast<hub_mgr::berth>(drone.mov2))) {
+                    if (auto findshot = GetChestSlot(w, mov2, drone.home_item)) {
+                        mov2.chest_slot = *findshot;
+                        drone.mov2 = std::bit_cast<uint32_t>(mov2);
+                    }
+                    else {
+                        drone.status = (uint8_t)drone_status::empty_task;
+                        break;
+                    }
                 }
                 break;
             default:
@@ -433,8 +463,8 @@ static void Arrival(world& w, ecs::drone& drone) {
     switch ((drone_status)drone.status) {
     case drone_status::go_mov1: {
         assert(drone.home_item != 0);
-        auto slot = GetChestSlot(w, std::bit_cast<hub_mgr::berth>(drone.next), drone.home_item);
-        if (!slot || slot->lock_item == 0 || slot->amount == 0) {
+        auto slot = GetChestSlot(w, std::bit_cast<hub_mgr::berth>(drone.next));
+        if (!slot || slot->lock_item == 0 || slot->amount == 0 || slot->item != drone.home_item) {
             NextTask(w, drone);
             break;
         }
@@ -447,8 +477,8 @@ static void Arrival(world& w, ecs::drone& drone) {
         break;
     }
     case drone_status::go_mov2: {
-        auto slot = GetChestSlot(w, std::bit_cast<hub_mgr::berth>(drone.next), drone.item);
-        if (!slot || slot->lock_space == 0) {
+        auto slot = GetChestSlot(w, std::bit_cast<hub_mgr::berth>(drone.next));
+        if (!slot || slot->lock_space == 0 || slot->item != drone.item) {
             NextTask(w, drone, drone.item);
             break;
         }
