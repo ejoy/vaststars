@@ -1814,7 +1814,7 @@ prototype "地质科技包1" {
     results = {
         {"地质科技包", 1},
     },
-    time = "3s",
+    time = "4s",
     description = "地质材料制造地质科技包",
 }
 
@@ -1831,7 +1831,7 @@ prototype "地质科技包2" {
     results = {
         {"地质科技包", 4},
     },
-    time = "5s",
+    time = "8s",
     description = "地质材料制造地质科技包",
 }
 
