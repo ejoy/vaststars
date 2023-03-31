@@ -134,6 +134,10 @@ function M:clear_temp_pole(pole, keep)
        for _, line in ipairs(lines) do
             remove_from_table(line.p1, line.p2.targets)
             remove_from_table(line.p2, line.p1.targets)
+            if line.p2.power_pole and line.p1.power_pole then
+                line.p2.power_pole_target = line.p2.power_pole_target - 1
+                line.p1.power_pole_target = line.p1.power_pole_target - 1
+            end
        end
     end
     if not keep then
@@ -163,7 +167,7 @@ local function create_lines(head, connects)
         for _, connected in ipairs(poles) do
             for _, target in ipairs(connected.targets) do
                 if p == target then
-                    return true
+                    return p.power_pole and connected.power_pole
                 end
             end
         end
