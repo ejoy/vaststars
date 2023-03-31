@@ -1120,8 +1120,8 @@ prototype "建造电线杆" {
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 8,
-    time = "3s"
+    count = 10,
+    time = "5s"
   }
   
   prototype "放置熔炼炉" {
@@ -1173,8 +1173,8 @@ prototype "建造电线杆" {
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 10,
-    time = "2s"
+    count = 16,
+    time = "5s"
   }
 
   prototype "生产铁齿轮" {
@@ -1183,7 +1183,7 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_production", 0, "铁齿轮"},
     prerequisites = {"铁加工1"},
-    count = 2,
+    count = 6,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ironplate1.texture",
       "textures/task_tips_pic/task_produce_ironplate2.texture",
@@ -1192,7 +1192,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_produce_ironplate5.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产2个铁齿轮", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产6个铁齿轮", icon = "textures/construct/industry.texture"},
     },
   }
 

@@ -8,7 +8,7 @@ prototype "铁板1" {
     recipe_order =  11,
     recipe_icon =  "textures/construct/plate-Fe.texture",
     ingredients = {
-        {"铁矿石", 2},
+        {"铁矿石", 4},
     },
     results = {
         {"铁板", 1},
