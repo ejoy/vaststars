@@ -31,8 +31,8 @@ prototype "风力发电机I" {
     power = "1.2MW",
     priority = "primary",
     power_pole = true,
-    power_supply_area = "9x9",
-    power_supply_distance = 11,
+    power_supply_area = "7x7",
+    power_supply_distance = 7,
 }
 
 prototype "太阳能板I" {
