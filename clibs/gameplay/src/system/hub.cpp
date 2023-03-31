@@ -95,10 +95,12 @@ uint32_t building_rect::hash() const {
 }
 
 enum class drone_status : uint8_t {
+    init,
     at_home,
     go_mov1,
     go_mov2,
     go_home,
+    empty_task,
     has_error,
 };
 
@@ -213,7 +215,27 @@ lbuild(lua_State *L) {
         }
         hub_mgr::berth home = std::bit_cast<hub_mgr::berth>(drone.home);
         if (auto info = map_find(w.hubs.hubs, home)) {
-            drone.home_item = info->item;
+            switch (status) {
+            case drone_status::init:
+                drone.home_item = info->item;
+                drone.status = (uint8_t)drone_status::at_home;
+                break;
+            case drone_status::go_mov2:
+            case drone_status::go_home:
+            case drone_status::at_home:
+            case drone_status::empty_task:
+                drone.home_item = info->item;
+                break;
+            case drone_status::go_mov1:
+                assert(drone.home_item != 0);
+                if (drone.home_item != info->item) {
+                    drone.home_item = info->item;
+                    drone.status = (uint8_t)drone_status::empty_task;
+                }
+                break;
+            default:
+                std::unreachable();
+            }
         }
         else {
             drone.status = (uint8_t)drone_status::has_error;
@@ -410,10 +432,7 @@ static void Arrival(world& w, ecs::drone& drone) {
     drone.prev = drone.next;
     switch ((drone_status)drone.status) {
     case drone_status::go_mov1: {
-        if (drone.home_item == 0) {
-            Move(w, drone, drone.home);
-            break;
-        }
+        assert(drone.home_item != 0);
         auto slot = GetChestSlot(w, std::bit_cast<hub_mgr::berth>(drone.next), drone.home_item);
         if (!slot || slot->lock_item == 0 || slot->amount == 0) {
             NextTask(w, drone);
@@ -446,6 +465,9 @@ static void Arrival(world& w, ecs::drone& drone) {
             drone.maxprogress = 0;
         }
         break;
+    case drone_status::empty_task:
+        NextTask(w, drone);
+        break;
     default:
         std::unreachable();
     }
@@ -472,8 +494,10 @@ lupdate(lua_State *L) {
         case drone_status::go_mov1:
         case drone_status::go_mov2:
         case drone_status::go_home:
+        case drone_status::empty_task:
             Update(w, drone);
             break;
+        case drone_status::init:
         case drone_status::has_error:
             break;
         default:
