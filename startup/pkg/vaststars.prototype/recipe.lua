@@ -1174,7 +1174,7 @@ prototype "车辆装配" {
 prototype "采矿机打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "金属",
     recipe_order =  52,
     recipe_icon =  "textures/construct/broken-miner.texture",
     ingredients = {
@@ -1190,7 +1190,7 @@ prototype "采矿机打印" {
 prototype "物流中心打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "物流",
     recipe_order =  52,
     recipe_icon =  "textures/construct/logisitic1.texture",
     ingredients = {
@@ -1206,7 +1206,7 @@ prototype "物流中心打印" {
 prototype "车辆厂打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "物流",
     recipe_order =  53,
     recipe_icon =  "textures/construct/logisitic1.texture",
     ingredients = {
@@ -1222,7 +1222,7 @@ prototype "车辆厂打印" {
 prototype "电线杆打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "物流",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-electric-pole1.texture",
     ingredients = {
@@ -1238,7 +1238,7 @@ prototype "电线杆打印" {
 prototype "无人机仓库打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "物流",
     recipe_order =  55,
     recipe_icon =  "textures/construct/broken-drone-depot.texture",
     ingredients = {
@@ -1254,7 +1254,7 @@ prototype "无人机仓库打印" {
 prototype "送货车站打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "物流",
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-goodsstation-output.texture",
     ingredients = {
@@ -1270,7 +1270,7 @@ prototype "送货车站打印" {
 prototype "收货车站打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "物流",
     recipe_order =  57,
     recipe_icon =  "textures/construct/broken-goodsstation-input.texture",
     ingredients = {
@@ -1286,7 +1286,7 @@ prototype "收货车站打印" {
 prototype "熔炼炉打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "金属",
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-furnace.texture",
     ingredients = {
@@ -1334,7 +1334,7 @@ prototype "建造中心打印" {
 prototype "太阳能板打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "器件",
     recipe_order =  56,
     recipe_icon =  "textures/construct/broken-solar-panel.texture",
     ingredients = {
@@ -1350,7 +1350,7 @@ prototype "太阳能板打印" {
 prototype "蓄电池打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "器件",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-grid-battery.texture",
     ingredients = {
@@ -1366,7 +1366,7 @@ prototype "蓄电池打印" {
 prototype "水电站打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "化工",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-hydroplant.texture",
     ingredients = {
@@ -1382,7 +1382,7 @@ prototype "水电站打印" {
 prototype "电解厂打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "化工",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-electrolysis1.texture",
     ingredients = {
@@ -1398,7 +1398,7 @@ prototype "电解厂打印" {
 prototype "化工厂打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "化工",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-chemistry2.texture",
     ingredients = {
@@ -1430,7 +1430,7 @@ prototype "组装机打印" {
 prototype "空气过滤器打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "化工",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-air-filter1.texture",
     ingredients = {
@@ -1446,7 +1446,7 @@ prototype "空气过滤器打印" {
 prototype "地下水挖掘机打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "化工",
     recipe_order =  54,
     recipe_icon =  "textures/construct/broken-pump.texture",
     ingredients = {
@@ -1462,7 +1462,7 @@ prototype "地下水挖掘机打印" {
 prototype "修路站打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "物流",
     recipe_order =  54,
     recipe_icon =  "textures/construct/road-builder.texture",
     ingredients = {
@@ -1478,7 +1478,7 @@ prototype "修路站打印" {
 prototype "修管站打印" {
     type = { "recipe" },
     category = "设计图打印",
-    recipe_group =  "加工",
+    recipe_group =  "化工",
     recipe_order =  55,
     recipe_icon =  "textures/construct/pipe-builder.texture",
     ingredients = {
