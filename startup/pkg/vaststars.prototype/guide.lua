@@ -81,7 +81,7 @@ local guide = {
             }
         },
         prerequisites = {
-            "放置采矿机",
+            "石矿放置采矿机",
         },
 	},
 
