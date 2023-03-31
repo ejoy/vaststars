@@ -658,7 +658,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "仓库调度1" {
+  prototype "采矿机调度" {
     desc = "选择采矿机设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -679,7 +679,7 @@ local prototype = gameplay.register.prototype
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "采矿机设计图"},
-    prerequisites = {"仓库调度1"},
+    prerequisites = {"采矿机调度"},
     count = 1,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -708,7 +708,7 @@ local prototype = gameplay.register.prototype
     },
   }
 
-  prototype "仓库调度2" {
+  prototype "电线杆调度" {
     desc = "选择电线杆设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -729,7 +729,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "电线杆设计图"},
-    prerequisites = {"仓库调度2"},
+    prerequisites = {"电线杆调度"},
     count = 4,
     tips_pic = {
       "textures/task_tips_pic/task_place_logistics.texture",
@@ -759,7 +759,7 @@ prototype "建造电线杆" {
     },
   }
 
-  prototype "仓库调度3" {
+  prototype "无人机仓库调度" {
     desc = "选择无人机仓库设计图",
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
@@ -780,7 +780,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_consumption", 0, "无人机仓库设计图"},
-    prerequisites = {"仓库调度3"},
+    prerequisites = {"无人机仓库调度"},
     count = 4,
     effects = {
       unlock_item = {"碎石"},
