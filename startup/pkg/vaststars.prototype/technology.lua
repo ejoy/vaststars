@@ -1198,7 +1198,7 @@ prototype "建造电线杆" {
     type = { "tech", "task" },
     task = {"stat_production", 0, "铁齿轮"},
     prerequisites = {"铁加工1"},
-    count = 6,
+    count = 10,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ironplate1.texture",
       "textures/task_tips_pic/task_produce_ironplate2.texture",
@@ -1207,7 +1207,7 @@ prototype "建造电线杆" {
       "textures/task_tips_pic/task_produce_ironplate5.texture",
     },
     sign_desc = {
-      { desc = "使用组装机生产6个铁齿轮", icon = "textures/construct/industry.texture"},
+      { desc = "使用组装机生产10个铁齿轮", icon = "textures/construct/industry.texture"},
     },
   }
 
@@ -1222,8 +1222,24 @@ prototype "建造电线杆" {
     ingredients = {
         {"地质科技包", 1},
     },
-    count = 8,
-    time = "2s"
+    count = 16,
+    time = "5s"
+  }
+
+  prototype "电磁学1" {
+    desc = "研究电能转换成机械能的基础供能装置",
+    type = { "tech" },
+    icon = "textures/science/tech-research.texture",
+    effects = {
+      unlock_recipe = {"电动机1"},
+      unlock_item = {"电动机I"},
+    },
+    prerequisites = {"机械运输"},
+    ingredients = {
+      {"地质科技包", 1},
+    },
+    count = 20,
+    time = "6s"
   }
 
   prototype "量产运输车辆" {
@@ -1231,7 +1247,7 @@ prototype "建造电线杆" {
     icon = "textures/construct/industry.texture",
     type = { "tech", "task" },
     task = {"stat_production", 0, "运输车辆I"},
-    prerequisites = {"机械运输"},
+    prerequisites = {"电磁学1"},
     count = 8,
     tips_pic = {
       "textures/task_tips_pic/task_produce_ironplate1.texture",
@@ -1244,22 +1260,6 @@ prototype "建造电线杆" {
       { desc = "使用组装机生产8辆运输车", icon = "textures/construct/industry.texture"},
     },
   }
-
-prototype "电磁学1" {
-  desc = "研究电能转换成机械能的基础供能装置",
-  type = { "tech" },
-  icon = "textures/science/tech-research.texture",
-  effects = {
-    unlock_recipe = {"电动机1"},
-    unlock_item = {"电动机I"},
-  },
-  prerequisites = {"量产运输车辆"},
-  ingredients = {
-    {"地质科技包", 1},
-  },
-  count = 20,
-  time = "6s"
-}
 
 prototype "物流学II" {
   desc = "研究电能转换成机械能的基础供能装置",
