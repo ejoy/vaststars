@@ -416,7 +416,7 @@ local function touch_end(self, datamodel)
     if typeobject.supply_area and typeobject.supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({key = pickup_object.id, targets = {}, x = self.pickup_object.x, y = self.pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, power_pole = typeobject.power_pole})
+        ipower:merge_pole({power_pole_target = 0, key = pickup_object.id, targets = {}, x = self.pickup_object.x, y = self.pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, power_pole = typeobject.power_pole})
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 end
@@ -444,7 +444,7 @@ local function confirm(self, datamodel)
     if typeobject.supply_area and typeobject.supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, power_pole = typeobject.power_pole}, true)
+        ipower:merge_pole({power_pole_target = 0, key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, power_pole = typeobject.power_pole}, true)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 

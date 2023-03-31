@@ -151,6 +151,10 @@ end
 local function do_create_line(pole1, pole2)
     pole1.targets[#pole1.targets + 1] = pole2
     pole2.targets[#pole2.targets + 1] = pole1
+    if pole1.power_pole and pole2.power_pole then
+        pole1.power_pole_count = pole1.power_pole_count + 1
+        pole2.power_pole_count = pole2.power_pole_count + 1
+    end
     return { p1 = pole1, p2 = pole2 }
 end
 
@@ -172,7 +176,7 @@ local function create_lines(head, connects)
         assert(con[1] == head )
         local tail = con[2]
         local skip = has_connected(tail, connected_pole)
-        if not skip and #head.targets < 5 and #tail.targets < 5 then
+        if not skip and head.power_pole_target < 5 and tail.power_pole_target < 5 then
             lines[#lines + 1] = do_create_line(head, tail)
             connected_pole[#connected_pole + 1] = tail
         end
@@ -298,6 +302,7 @@ function M:build_power_network(gw)
         if v.capacitance then
             capacitance[#capacitance + 1] = {
                 targets = {},
+                power_pole_target = 0,
                 -- name = typeobject.name,
                 eid = v.eid,
                 x = e.x,
@@ -309,6 +314,7 @@ function M:build_power_network(gw)
         if typeobject.power_pole or typeobject.power_supply_distance then
             powerpole[#powerpole + 1] = {
                 targets = {},
+                power_pole_target = 0,
                 -- name = typeobject.name,
                 eid = v.eid,
                 x = e.x,

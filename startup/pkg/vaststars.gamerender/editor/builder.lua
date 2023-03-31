@@ -115,6 +115,7 @@ local function complete(self, object_id)
                 local aw, ah = iprototype.unpackarea(typeobject.area)
                 capacitance[#capacitance + 1] = {
                     targets = {},
+                    power_pole_target = 0,
                     eid = v.eid,
                     x = e.x,
                     y = e.y,
