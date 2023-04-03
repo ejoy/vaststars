@@ -134,9 +134,9 @@ function M:clear_temp_pole(pole, keep)
        for _, line in ipairs(lines) do
             remove_from_table(line.p1, line.p2.targets)
             remove_from_table(line.p2, line.p1.targets)
-            if line.p2.power_pole and line.p1.power_pole then
-                line.p2.power_pole_target = line.p2.power_pole_target - 1
-                line.p1.power_pole_target = line.p1.power_pole_target - 1
+            if line.p2.power_network_link and line.p1.power_network_link then
+                line.p2.power_network_link_target = line.p2.power_network_link_target - 1
+                line.p1.power_network_link_target = line.p1.power_network_link_target - 1
             end
        end
     end
@@ -155,9 +155,9 @@ end
 local function do_create_line(pole1, pole2)
     pole1.targets[#pole1.targets + 1] = pole2
     pole2.targets[#pole2.targets + 1] = pole1
-    if pole1.power_pole and pole2.power_pole then
-        pole1.power_pole_target = pole1.power_pole_target + 1
-        pole2.power_pole_target = pole2.power_pole_target + 1
+    if pole1.power_network_link and pole2.power_network_link then
+        pole1.power_network_link_target = pole1.power_network_link_target + 1
+        pole2.power_network_link_target = pole2.power_network_link_target + 1
     end
     return { p1 = pole1, p2 = pole2 }
 end
@@ -167,7 +167,7 @@ local function create_lines(head, connects)
         for _, connected in ipairs(poles) do
             for _, target in ipairs(connected.targets) do
                 if p == target then
-                    return p.power_pole and connected.power_pole
+                    return p.power_network_link and connected.power_network_link
                 end
             end
         end
@@ -180,7 +180,7 @@ local function create_lines(head, connects)
         assert(con[1] == head )
         local tail = con[2]
         local skip = has_connected(tail, connected_pole)
-        if not skip and head.power_pole_target < 5 and tail.power_pole_target < 5 then
+        if not skip and head.power_network_link_target < 5 and tail.power_network_link_target < 5 then
             lines[#lines + 1] = do_create_line(head, tail)
             connected_pole[#connected_pole + 1] = tail
         end
@@ -306,7 +306,7 @@ function M:build_power_network(gw)
         if v.capacitance then
             capacitance[#capacitance + 1] = {
                 targets = {},
-                power_pole_target = 0,
+                power_network_link_target = 0,
                 -- name = typeobject.name,
                 eid = v.eid,
                 x = e.x,
@@ -315,10 +315,10 @@ function M:build_power_network(gw)
                 h = ah,
             }
         end
-        if typeobject.power_pole or typeobject.power_supply_distance then
+        if typeobject.power_network_link or typeobject.power_supply_distance then
             powerpole[#powerpole + 1] = {
                 targets = {},
-                power_pole_target = 0,
+                power_network_link_target = 0,
                 -- name = typeobject.name,
                 eid = v.eid,
                 x = e.x,
@@ -328,7 +328,7 @@ function M:build_power_network(gw)
                 sw = tonumber(sw),
                 sh = tonumber(sh),
                 sd = typeobject.power_supply_distance,
-                power_pole = typeobject.power_pole
+                power_network_link = typeobject.power_network_link
             }
         end
     end

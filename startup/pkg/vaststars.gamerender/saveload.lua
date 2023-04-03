@@ -353,7 +353,7 @@ function M:restore_camera_setting()
     end
 
     if terrain.init then
-        local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+        local coord = terrain:align(camera.get_central_position(), 1, 1)
         if coord then
             terrain:enable_terrain(coord[1], coord[2])
         end
@@ -479,7 +479,7 @@ function M:restart()
     iui.set_guide_progress(iguide.get_progress())
     iui.open({"construct.rml"})
 
-    local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+    local coord = terrain:align(camera.get_central_position(), 1, 1)
     if coord then
         terrain:enable_terrain(coord[1], coord[2])
     end

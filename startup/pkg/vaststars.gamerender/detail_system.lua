@@ -44,8 +44,8 @@ function idetail.show(object_id)
 end
 
 do
-    local CONSTRUCT_BLOCK_COLOR_GREEN <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
-    local BLOCK_CONSTRUCT_POWER_POLE_COLOR_GREEN <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
+    local BLOCK_COLOR <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
+    local BLOCK_POWER_SUPPLY_AREA_COLOR <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
     local BLOCK_EDGE_SIZE <const> = 6
 
     local BLOCK_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
@@ -79,7 +79,7 @@ do
         local typeobject = iprototype.queryByName(object.prototype_name)
         local w, h
         if typeobject.power_supply_area and typeobject.power_supply_distance then
-            block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_GREEN
+            block_color = BLOCK_POWER_SUPPLY_AREA_COLOR
             for _, object in objects:all() do
                 local otypeobject = iprototype.queryByName(object.prototype_name)
                 if otypeobject.power_supply_area then
@@ -89,7 +89,7 @@ do
                 end
             end
         else
-            block_color = CONSTRUCT_BLOCK_COLOR_GREEN
+            block_color = BLOCK_COLOR
             w, h = iprototype.unpackarea(typeobject.area)
             __show_block(object.srt.t, object.dir, block_color, w, h)
         end

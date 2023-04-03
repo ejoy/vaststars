@@ -275,7 +275,7 @@ local M = {}
 function M:create(object_id)
     local datamodel = {}
     _show_object_recipe(datamodel, object_id)
-    _update_recipe_items(datamodel)
+    _update_recipe_items(datamodel, datamodel.recipe_name)
     return datamodel
 end
 

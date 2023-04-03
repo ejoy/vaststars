@@ -135,7 +135,7 @@ function m:camera_usage()
         if not terrain.init then
             goto continue
         end
-        local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+        local coord = terrain:align(camera.get_central_position(), 1, 1)
         if coord then
             terrain:enable_terrain(coord[1], coord[2])
         end
@@ -148,7 +148,7 @@ function m:camera_usage()
             local pos = icamera.screen_to_world(x, y, {PLANES[1]})
             local coord = terrain:get_coord_by_position(pos[1])
             if coord then
-                log.info(("pickup coord: (%s, %s) ground(%s, %s)"):format(coord[1], coord[2], coord[1] - (coord[1] % terrain.ground_width), coord[2] - (coord[2] % terrain.ground_height)))
+                log.info(("pickup coord: (%s, %s)"):format(coord[1], coord[2]))
             end
         end
     end

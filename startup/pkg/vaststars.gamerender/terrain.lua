@@ -9,6 +9,8 @@ local igame_object = ecs.import.interface "vaststars.gamerender|igame_object"
 local COLOR_INVALID <const> = math3d.constant "null"
 local ROTATORS <const> = require("gameplay.interface.constant").ROTATORS
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
+local MINERAL_WIDTH <const> = 4
+local MINERAL_HEIGHT <const> = 4
 
 -- three-dimensional axial
 -- z
@@ -30,10 +32,8 @@ local SURFACE_HEIGHT <const> = 1
 local TILE_SIZE <const> = 10
 local WIDTH <const> = 256 -- coordinate value range: [0, WIDTH - 1]
 local HEIGHT <const> = 256
-local GROUND_WIDTH <const> = 4
-local GROUND_HEIGHT <const> = 4
-local GRID_WIDTH <const> = (10 + 5) * GROUND_WIDTH
-local GRID_HEIGHT <const> = ((5 + 3) * GROUND_HEIGHT)
+local GRID_WIDTH <const> = (10 + 5) * 4
+local GRID_HEIGHT <const> = ((5 + 3) * 4)
 assert(GRID_WIDTH % 2 == 0 and GRID_HEIGHT % 2 == 0)
 local TERRAIN_MAX_GROUP_ID = 10000
 
@@ -101,7 +101,6 @@ function terrain:get_group_id(x, y)
 end
 
 function terrain:create(width, height)
-    self.ground_width, self.ground_height = GROUND_WIDTH, GROUND_HEIGHT
     self.surface_height = SURFACE_HEIGHT
     self.tile_size = TILE_SIZE
     self.tile_width, self.tile_height = width or WIDTH, height or HEIGHT
@@ -148,45 +147,34 @@ function terrain:create(width, height)
         w:remove(eid)
     end
 
-    local mineral_meshes = {
+    local mineral_prefabs = {
         ["铁矿石"] = "prefabs/terrain/ground-iron-ore.prefab", -- TODO: remove hard code
         ["碎石"] = "prefabs/terrain/ground-gravel.prefab",
     }
 
     self.mineral_map = {}
     for c, mineral in pairs(map) do
-        local x, y = c:match("^(%d*),(%d*)$")
+        local x, y = c:match("^(%d+),(%d+)$")
         x, y = tonumber(x), tonumber(y)
-        x, y = x - (x % terrain.ground_width), y - (y % terrain.ground_height)
-        for i = 0, GROUND_WIDTH - 1 do
-            for j = 0, GROUND_HEIGHT - 1 do
+        for i = 0, MINERAL_WIDTH - 1 do
+            for j = 0, MINERAL_HEIGHT - 1 do
                 self.mineral_map[_hash(x + i, y + j)] = mineral
             end
         end
-    end
 
-    -- assert(self._width % GROUND_WIDTH == 0 and self._height % GROUND_HEIGHT == 0)
-    local w, h = self._width // GROUND_WIDTH, self._height // GROUND_HEIGHT
-    for y = 0, h - 1 do
-        for x = 0, w - 1 do
-            local _x, _y = x * GROUND_WIDTH, y * GROUND_HEIGHT
-            local srt = {r = ROTATORS[math.random(1, 4)], t = self:get_position_by_coord(_x, _y, GROUND_WIDTH, GROUND_HEIGHT)}
-            local prefab
-            if self.mineral_map[_hash(_x, _y)] then
-                prefab = mineral_meshes[self.mineral_map[_hash(_x, _y)]]
-                self.eids[#self.eids+1] = igame_object.create {
-                    prefab = prefab,
-                    effect = nil,
-                    group_id = self:get_group_id(_x, _y),
-                    state = "opaque",
-                    color = COLOR_INVALID,
-                    srt = srt,
-                    parent = nil,
-                    slot = nil,
-                    render_layer = RENDER_LAYER.TERRAIN
-                }
-            end
-        end
+        local prefab = mineral_prefabs[mineral]
+        local srt = {r = ROTATORS[math.random(1, 4)], t = self:get_position_by_coord(x, y, MINERAL_WIDTH, MINERAL_HEIGHT)}
+        self.eids[#self.eids+1] = igame_object.create {
+            prefab = prefab,
+            effect = nil,
+            group_id = self:get_group_id(x, y),
+            state = "opaque",
+            color = COLOR_INVALID,
+            srt = srt,
+            parent = nil,
+            slot = nil,
+            render_layer = RENDER_LAYER.TERRAIN
+        }
     end
 
     self.init = true

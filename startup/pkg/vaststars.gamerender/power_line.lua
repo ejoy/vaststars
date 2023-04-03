@@ -12,7 +12,7 @@ local temp_lines = {}
 local lines = {}
 local pole_height = 30
 local function create_line(pole1, pole2)
-    if not pole1.power_pole or not pole2.power_pole then
+    if not pole1.power_network_link or not pole2.power_network_link then
         return 0
     end
     local pos1

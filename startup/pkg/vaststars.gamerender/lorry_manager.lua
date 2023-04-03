@@ -83,10 +83,11 @@ end
 local handlers = {}
 handlers.endpoint = function(x, y, z, tick)
     local ti = STRAIGHT_TICKCOUNT - tick
-    local toward, offset = (z >> 4) & 0x01, z & 0x0F
+    local wait, toward, offset = (z >> 5) & 0x01, (z >> 4) & 0x01, z & 0x0F
+    assert(wait >= 0 or wait <= 1)
     assert(toward >= 0 or toward <= 1)
     assert(offset >= 0 or offset <= 1)
-    -- toward can be 0 or 1, indicating direction towards the station exit or entrance, respectively
+    -- toward can be 0 or 1, indicating direction towards the station entrance or exit, respectively
     -- two cells represent the straight path for entering or leaving the station
     -- when the offset is 0, it indicates the first cell
     -- when the offset is 1, it indicates the second cell

@@ -30,7 +30,7 @@ prototype "风力发电机I" {
     area = "3x3",
     power = "1.2MW",
     priority = "primary",
-    power_pole = true,
+    power_network_link = true,
     power_supply_area = "7x7",
     power_supply_distance = 7,
 }

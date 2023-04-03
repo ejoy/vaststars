@@ -11,7 +11,7 @@ set list=%list% 3rd\ant\bin
 pushd %current_dir%
 (for %%a in (%list%) do (
     if exist %%a (
-        rd /s /q %%a
+        rmdir /s /q %%a
     )
 ))
 popd

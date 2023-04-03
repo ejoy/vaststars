@@ -139,7 +139,7 @@ function camera.update()
         iom.set_position(e, t)
 
         if terrain.init then
-            local coord = terrain:align(camera.get_central_position(), terrain.ground_width, terrain.ground_height)
+            local coord = terrain:align(camera.get_central_position(), 1, 1)
             if coord then
                 terrain:enable_terrain(coord[1], coord[2])
             end

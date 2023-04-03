@@ -102,7 +102,7 @@ local function complete(self, object_id)
     gameplay_core.build()
 
     local gw = gameplay_core.get_world()
-    if typeobject.power_pole or typeobject.power_supply_distance then
+    if typeobject.power_network_link or typeobject.power_supply_distance then
         -- update power network
         ipower:build_power_network(gw)
         ipower_line.update_line(ipower:get_pole_lines())
@@ -115,7 +115,7 @@ local function complete(self, object_id)
                 local aw, ah = iprototype.unpackarea(typeobject.area)
                 capacitance[#capacitance + 1] = {
                     targets = {},
-                    power_pole_target = 0,
+                    power_network_link_target = 0,
                     eid = v.eid,
                     x = e.x,
                     y = e.y,

@@ -28,8 +28,8 @@ local global = require "global"
 local iplant = ecs.require "engine.plane"
 local BLOCK_CONSTRUCT_COLOR_INVALID <const> = math3d.constant("v4", {2.5, 0.2, 0.2, 0.4})
 local BLOCK_CONSTRUCT_COLOR_VALID <const> = math3d.constant("v4", {0.0, 1, 0.0, 1.0})
-local BLOCK_CONSTRUCT_POWER_POLE_COLOR_VALID <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
-local BLOCK_CONSTRUCT_POWER_POLE_COLOR_INVALID <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
+local BLOCK_POWER_SUPPLY_AREA_COLOR_VALID <const> = math3d.constant("v4", {0.13, 1.75, 2.4, 0.5})
+local BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID <const> = math3d.constant("v4", {2.5, 0.0, 0.0, 1.0})
 local BLOCK_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.1, 0, 0.0})
 local GRID_POSITION_OFFSET <const> = math3d.constant("v4", {0, 0.2, 0, 0.0})
 
@@ -85,7 +85,7 @@ local function __new_entity(self, datamodel, typeobject)
     local block_color
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
         if typeobject.power_supply_area then
-            block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_INVALID
+            block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID
         else
             block_color = BLOCK_CONSTRUCT_COLOR_INVALID
         end
@@ -93,7 +93,7 @@ local function __new_entity(self, datamodel, typeobject)
         datamodel.show_rotate = true
     else
         if typeobject.power_supply_area then
-            block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_VALID
+            block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_VALID
         else
             block_color = BLOCK_CONSTRUCT_COLOR_VALID
         end
@@ -258,12 +258,12 @@ local function touch_move(self, datamodel, delta_vec)
         end
         if self.block then
             if typeobject.power_supply_area then
-                block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_INVALID
+                block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID
             else
                 block_color = BLOCK_CONSTRUCT_COLOR_INVALID
             end
             if typeobject.power_supply_area then
-                block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_INVALID
+                block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_INVALID
             else
                 block_color = BLOCK_CONSTRUCT_COLOR_INVALID
             end
@@ -279,7 +279,7 @@ local function touch_move(self, datamodel, delta_vec)
         end
         if self.block then
             if typeobject.power_supply_area then
-                block_color = BLOCK_CONSTRUCT_POWER_POLE_COLOR_VALID
+                block_color = BLOCK_POWER_SUPPLY_AREA_COLOR_VALID
             else
                 block_color = BLOCK_CONSTRUCT_COLOR_VALID
             end
@@ -293,7 +293,7 @@ local function touch_move(self, datamodel, delta_vec)
     if typeobject.power_supply_area and typeobject.power_supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({power_pole_target = 0, key = pickup_object.id, targets = {}, x = lx, y = ly, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true, power_pole = typeobject.power_pole})
+        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = lx, y = ly, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, smooth_pos = true, power_network_link = typeobject.power_network_link})
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 end
@@ -346,7 +346,7 @@ local function confirm(self, datamodel)
     if typeobject.power_supply_area and typeobject.power_supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.power_supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({power_pole_target = 0, key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, power_pole = typeobject.power_pole}, true)
+        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.power_supply_distance, power_network_link = typeobject.power_network_link}, true)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 

@@ -29,23 +29,6 @@ local building_coord = require "global".building_coord_system
 local math3d = require "math3d"
 local iroadnet_converter = require "roadnet_converter"
 
-local function _get_state(prototype_name, ok)
-    local typeobject = iprototype.queryByName(prototype_name)
-    if typeobject.supply_area then
-        if ok then
-            return ("power_pole_construct_%s"):format(typeobject.supply_area)
-        else
-            return ("power_pole_invalid_construct_%s"):format(typeobject.supply_area)
-        end
-    else
-        if ok then
-            return "construct"
-        else
-            return "invalid_construct"
-        end
-    end
-end
-
 -- TODO: duplicate from roadbuilder.lua
 local function _get_connections(prototype_name, x, y, dir)
     local typeobject = iprototype.queryByName(prototype_name)
@@ -102,13 +85,10 @@ local function __new_entity(self, datamodel, typeobject)
         return
     end
 
-    local state
     if not self:check_construct_detector(typeobject.name, x, y, dir) then
-        state = _get_state(typeobject.name, false)
         datamodel.show_confirm = false
         datamodel.show_rotate = true
     else
-        state = _get_state(typeobject.name, true)
         datamodel.show_confirm = true
         datamodel.show_rotate = true
     end
@@ -122,7 +102,6 @@ local function __new_entity(self, datamodel, typeobject)
             t = position,
         },
         fluid_name = "",
-        state = state,
     }
     iui.open({"construct_pop.rml"}, self.pickup_object.srt.t)
 
@@ -391,7 +370,6 @@ local function touch_end(self, datamodel)
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
 
     if not self:check_construct_detector(pickup_object.prototype_name, x, y, pickup_object.dir) then
-        pickup_object.state = _get_state(pickup_object.prototype_name, false)
         datamodel.show_confirm = false
 
         if self.road_entrance then
@@ -399,7 +377,6 @@ local function touch_end(self, datamodel)
             self.selected_boxes:set_state("invalid")
         end
     else
-        pickup_object.state = _get_state(pickup_object.prototype_name, true)
         if self.road_entrance then
             self.road_entrance:set_state("valid")
             self.selected_boxes:set_state("valid")
@@ -416,7 +393,7 @@ local function touch_end(self, datamodel)
     if typeobject.supply_area and typeobject.supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({power_pole_target = 0, key = pickup_object.id, targets = {}, x = self.pickup_object.x, y = self.pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, power_pole = typeobject.power_pole})
+        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = self.pickup_object.x, y = self.pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, power_network_link = typeobject.power_network_link})
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 end
@@ -430,11 +407,7 @@ local function confirm(self, datamodel)
     end
 
     local typeobject = iprototype.queryByName(pickup_object.prototype_name)
-    if typeobject.supply_area then
-        pickup_object.state = ("power_pole_confirm_%s"):format(typeobject.supply_area)
-    else
-        pickup_object.state = "confirm"
-    end
+    pickup_object.state = "confirm"
     objects:set(pickup_object, "CONFIRM")
     pickup_object.PREPARE = true
 
@@ -444,7 +417,7 @@ local function confirm(self, datamodel)
     if typeobject.supply_area and typeobject.supply_distance then
         local aw, ah = iprototype.unpackarea(typeobject.area)
         local sw, sh = typeobject.supply_area:match("(%d+)x(%d+)")
-        ipower:merge_pole({power_pole_target = 0, key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, power_pole = typeobject.power_pole}, true)
+        ipower:merge_pole({power_network_link_target = 0, key = pickup_object.id, targets = {}, x = pickup_object.x, y = pickup_object.y, w = aw, h = ah, sw = tonumber(sw), sh = tonumber(sh), sd = typeobject.supply_distance, power_network_link = typeobject.power_network_link}, true)
         ipower_line.update_temp_line(ipower:get_temp_pole())
     end
 
