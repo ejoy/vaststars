@@ -10,14 +10,6 @@ struct lua_State;
 namespace roadnet {
     class network;
     struct road_coord;
-    enum class lorry_status : uint8_t {
-        want_sell,
-        go_sell,
-        want_buy,
-        go_buy,
-        want_home,
-        go_home,
-    };
     struct lorry {
         uint32_t capacitance;
         roadid ending;
