@@ -42,13 +42,24 @@ namespace lua_world {
     is_instantiation_of<T, std::map> || is_instantiation_of<T, std::unordered_map>;
 
     template <typename T>
+        requires (is_instantiation_of<T, std::pair> && !std::is_trivially_copyable_v<T>)
+    void file_write(FILE* f, const T& t) {
+        file_write(f, t.first);
+        file_write(f, t.second);
+    }
+    template <typename T>
         requires (is_instantiation_of<T, std::map>)
     void file_write(FILE* f, const T& t) {
         file_write<size_t>(f, t.size());
-        for (auto& kv : t) {
-            file_write(f, kv.first);
-            file_write(f, kv.second);
+        for (auto const& kv : t) {
+            file_write(f, kv);
         }
+    }
+    template <typename T>
+        requires (is_instantiation_of<T, std::pair> && !std::is_trivially_copyable_v<T>)
+    void file_read(FILE* f, T& t) {
+        file_read(f, t.first);
+        file_read(f, t.second);
     }
     template <typename T>
         requires (is_instantiation_of<T, std::map>)
@@ -57,17 +68,9 @@ namespace lua_world {
         size_t n = 0;
         file_read(f, n);
         for (size_t i = 1; i <= n; ++i) {
-            typename T::key_type k;
-            file_read(f, k);
-            auto r = t.emplace(typename T::value_type(std::move(k), typename T::mapped_type{}));
-            assert(r.second);
-            if (r.second) {
-                file_read(f, r.first->second);
-            }
-            else {
-                typename T::mapped_type v;
-                file_read(f, v);
-            }
+            typename T::value_type kv;
+            file_read(f, kv);
+            t.emplace(std::move(kv));
         }
     }
 
