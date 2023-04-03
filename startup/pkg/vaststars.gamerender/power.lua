@@ -166,10 +166,8 @@ local function create_lines(head, connects)
     local function has_connected(p, poles)
         for _, connected in ipairs(poles) do
             for _, target in ipairs(connected.targets) do
-                if p == target then
-                    if p.power_network_link and connected.power_network_link then
-                        return true
-                    end
+                if p == target and p.power_network_link and connected.power_network_link then
+                    return true
                 end
             end
         end
