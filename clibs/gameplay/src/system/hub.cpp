@@ -231,7 +231,7 @@ lbuild(lua_State *L) {
             case drone_status::empty_task:
                 drone.home_item = info->item;
                 break;
-            case drone_status::go_mov1:
+            case drone_status::go_mov1: {
                 assert(drone.home_item != 0);
                 if (drone.home_item != info->item) {
                     drone.home_item = info->item;
@@ -263,6 +263,7 @@ lbuild(lua_State *L) {
                     }
                 }
                 break;
+            }
             default:
                 std::unreachable();
             }

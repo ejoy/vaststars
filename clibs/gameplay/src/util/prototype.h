@@ -2,6 +2,7 @@
 
 #include <type_traits>
 #include <variant>
+#include <string_view>
 #include <lua.hpp>
 #include <bee/nonstd/unreachable.h>
 #include "core/world.h"
