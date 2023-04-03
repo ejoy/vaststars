@@ -4,16 +4,14 @@ local w = world.w
 
 local ims = ecs.import.interface "ant.motion_sampler|imotion_sampler"
 local ientity_object = ecs.import.interface "vaststars.gamerender|ientity_object"
-local math3d = require "math3d"
 local RENDER_LAYER <const> = ecs.require("engine.render_layer").RENDER_LAYER
 
 local sampler_group
 
 local function _create_motion_object(s, r, t)
     local events = {}
-    events["set_target"] = function(_, e, mat)
-        local s, r, t = math3d.srt(mat)
-        ims.set_target(e, s, r, t, 20)
+    events["set_target"] = function(_, e, ...)
+        ims.set_target(e, ...)
     end
     return ientity_object.create(sampler_group:create_entity {
         policy = {
@@ -108,8 +106,8 @@ local function create(prefab, s, r, t)
             outer.objs[#outer.objs] = nil
         end
     end
-    function outer:set_mat(mat)
-        motion_obj:send("set_target", mat)
+    function outer:set_target(...)
+        motion_obj:send("set_target", ...)
     end
 
     return outer
