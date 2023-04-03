@@ -224,6 +224,7 @@ namespace lua_world {
             file_write(f, rw.lorryFreeList);
             file_write(f, rw.lorryVec);
             file_write(f, rw.map);
+            file_write(f, rw.crossAry);
         });
 
         fclose(f);
@@ -292,6 +293,7 @@ namespace lua_world {
             file_read(f, rw.lorryVec);
             file_read(f, rw.map);
             rw.reloadMap();
+            file_read(f, rw.crossAry); // rw.reloadMap() will generate the crossAry, so it must be restored after rw.reloadMap()
         }, [&](){
             //TODO
         });

@@ -112,7 +112,7 @@ local DIRECTION <const> = {
 function roadnet:editor_build()
     --
     local gameplay_world = gameplay_core.get_world()
-    gameplay_world:roadnet_load_map(global.roadnet)
+    gameplay_world:roadnet_reset(global.roadnet)
 
     local iendpoint = gameplay.interface "endpoint"
     for e in gameplay_core.select "station:update building:in" do

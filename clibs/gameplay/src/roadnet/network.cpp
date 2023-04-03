@@ -331,7 +331,7 @@ namespace roadnet {
         map = mapData;
     }
 
-    void network::reloadMap() {
+    uint32_t network::reloadMap() {
         straightVec.clear();
         crossMap.clear();
         crossMapR.clear();
@@ -364,7 +364,7 @@ namespace roadnet {
                 crossMap.emplace(loc, id);
                 crossMapR.emplace(id, loc);
             }
-            return;
+            return 0;
         }
 
         crossAry.reset(genCrossId);
@@ -458,6 +458,8 @@ namespace roadnet {
             straight.setLorryOffset(genLorryOffset);
             genLorryOffset += (uint16_t)length;
         }
+
+        return genLorryOffset;
     }
 
     lorryid network::createLorry(world& w, uint16_t classid) {

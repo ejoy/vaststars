@@ -14,7 +14,7 @@ namespace roadnet {
 
         std::map<loction, uint8_t> getMap() const;
         void setMap(const std::map<loction, uint8_t>& mapData);
-        void reloadMap();
+        uint32_t reloadMap();
         lorryid    createLorry(world& w, uint16_t classid);
         void       destroyLorry(world& w, lorryid id);
 

@@ -90,11 +90,13 @@ namespace roadnet::lua {
         lua_pushinteger(L, cost);
         lua_settable(L, -3);
     }
-
-    static int load_map(lua_State* L) {
+    static int reset(lua_State* L) {
         auto& w = get_network(L);
+        w.lorryVec.clear();
+        w.lorryFreeList.clear();
         w.setMap(get_map_data(L, 2));
-        w.reloadMap();
+        uint32_t genLorryOffset = w.reloadMap();
+        w.lorryAry.reset(genLorryOffset);
         return 0;
     }
     static int get_map(lua_State* L) {
@@ -238,7 +240,7 @@ namespace roadnet::lua {
 extern "C" int
 luaopen_vaststars_roadnet_core(lua_State* L) {
     luaL_Reg l[] = {
-        { "load_map", roadnet::lua::load_map },
+        { "reset", roadnet::lua::reset },
         { "get_map", roadnet::lua::get_map },
         { "map_coord", roadnet::lua::lmap_coord },
         { "each_lorry", roadnet::lua::each_lorry },

@@ -487,7 +487,7 @@ function M:restart()
     --
     iroadnet:init({}, true)
     global.roadnet = {}
-    gameplay_core.get_world():roadnet_load_map(global.roadnet)
+    gameplay_core.get_world():roadnet_reset(global.roadnet)
 
     --
     for _, e in ipairs(startup_entities) do
