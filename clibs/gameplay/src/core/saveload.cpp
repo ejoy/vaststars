@@ -224,17 +224,12 @@ namespace lua_world {
 
         backup_scope(L, f, "roadnet", [&](){
             auto& rw = w.rw;
-            file_write(f, rw.crossAry);
-            file_write(f, rw.straightAry);
-            file_write(f, rw.endpointVec);
             file_write(f, rw.lorryAry);
             file_write(f, rw.lorryFreeList);
             file_write(f, rw.lorryVec);
-            file_write(f, rw.straightVec);
-            file_write(f, rw.map);
+            file_write(f, rw.endpointVec);
             file_write(f, rw.endpointMap);
-            file_write(f, rw.crossMap);
-            file_write(f, rw.crossMapR);
+            file_write(f, rw.map);
         });
 
         fclose(f);
@@ -298,17 +293,13 @@ namespace lua_world {
 
         restore_scope(L, f, "roadnet", [&](){
             auto& rw = w.rw;
-            file_read(f, rw.crossAry);
-            file_read(f, rw.straightAry);
-            file_read(f, rw.endpointVec);
             file_read(f, rw.lorryAry);
             file_read(f, rw.lorryFreeList);
             file_read(f, rw.lorryVec);
-            file_read(f, rw.straightVec);
-            file_read(f, rw.map);
+            file_read(f, rw.endpointVec);
             file_read(f, rw.endpointMap);
-            file_read(f, rw.crossMap);
-            file_read(f, rw.crossMapR);
+            file_read(f, rw.map);
+            rw.reloadMap();
         }, [&](){
             //TODO
         });

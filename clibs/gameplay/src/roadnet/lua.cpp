@@ -93,7 +93,8 @@ namespace roadnet::lua {
 
     static int load_map(lua_State* L) {
         auto& w = get_network(L);
-        w.loadMap(get_map_data(L, 2));
+        w.setMap(get_map_data(L, 2));
+        w.reloadMap();
         return 0;
     }
     static int get_map(lua_State* L) {

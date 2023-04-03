@@ -327,8 +327,11 @@ namespace roadnet {
         return map;
     }
 
-    void network::loadMap(const std::map<loction, uint8_t>& mapData) {
-        map.clear();
+    void network::setMap(const std::map<loction, uint8_t>& mapData) {
+        map = mapData;
+    }
+
+    void network::reloadMap() {
         straightVec.clear();
         crossMap.clear();
         crossMapR.clear();
@@ -343,9 +346,7 @@ namespace roadnet {
         uint32_t genLorryOffset = 0;
         std::map<loction, bool> URoadMap;
 
-        for (auto& [l, m] : mapData) {
-            setMapBits(map, l, m);
-
+        for (auto& [l, m] : map) {
             if (isURoad(m)) {
                 URoadMap.emplace(l, true);
             }
