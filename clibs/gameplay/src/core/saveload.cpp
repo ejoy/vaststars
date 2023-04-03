@@ -21,11 +21,9 @@ namespace lua_world {
     void file_read(FILE* f, T& t) {
         //TODO: performance optimization
         t.clear();
-        size_t n = 0;
-        file_read(f, n);
+        size_t n = file_read<size_t>(f);
         for (size_t i = 0; i < n; ++i) {
-            typename T::value_type v;
-            file_read(f, v);
+            auto v = file_read<typename T::value_type>(f);
             t.push(v);
         }
     }
@@ -65,11 +63,9 @@ namespace lua_world {
         requires (is_instantiation_of<T, std::map>)
     void file_read(FILE* f, T& t) {
         t.clear();
-        size_t n = 0;
-        file_read(f, n);
+        size_t n = file_read<size_t>(f);
         for (size_t i = 1; i <= n; ++i) {
-            typename T::value_type kv;
-            file_read(f, kv);
+            auto kv = file_read<typename T::value_type>(f);
             t.emplace(std::move(kv));
         }
     }
