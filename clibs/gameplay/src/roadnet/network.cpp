@@ -337,8 +337,6 @@ namespace roadnet {
         crossMapR.clear();
         endpointVec.clear();
         endpointMap.clear();
-        lorryVec.clear();
-        lorryFreeList.clear();
         routeMap.clear();
 
         uint16_t genCrossId = 0;
@@ -460,7 +458,6 @@ namespace roadnet {
             straight.setLorryOffset(genLorryOffset);
             genLorryOffset += (uint16_t)length;
         }
-        lorryAry.reset(genLorryOffset);
     }
 
     lorryid network::createLorry(world& w, uint16_t classid) {

@@ -223,8 +223,6 @@ namespace lua_world {
             file_write(f, rw.lorryAry);
             file_write(f, rw.lorryFreeList);
             file_write(f, rw.lorryVec);
-            file_write(f, rw.endpointVec);
-            file_write(f, rw.endpointMap);
             file_write(f, rw.map);
         });
 
@@ -292,8 +290,6 @@ namespace lua_world {
             file_read(f, rw.lorryAry);
             file_read(f, rw.lorryFreeList);
             file_read(f, rw.lorryVec);
-            file_read(f, rw.endpointVec);
-            file_read(f, rw.endpointMap);
             file_read(f, rw.map);
             rw.reloadMap();
         }, [&](){
