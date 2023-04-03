@@ -3,6 +3,8 @@
 
 set current_dir=%~dp0
 set mode=%1
+set exit_or_pause=%2
+
 if not defined mode (
 	set mode=release
 )
@@ -13,4 +15,4 @@ pushd %CURRENT_DIR%
 	luamake.exe tools -mode %mode%
 popd
 
-pause
+if "%exit_or_pause%"=="" pause
