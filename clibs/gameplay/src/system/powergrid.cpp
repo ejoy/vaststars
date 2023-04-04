@@ -5,17 +5,22 @@
 #include "luaecs.h"
 #include "core/world.h"
 #include "util/prototype.h"
+#include <bee/nonstd/to_underlying.h>
 
-#define CONSUMER_PRIORITY 2
-#define GENERATOR_PRIORITY 2
+enum class power_priority: uint8_t {
+	primary,
+	secondary,
+};
+
+static constexpr size_t POWER_PRIORITY = enum_count_v<power_priority>;
 
 struct powergrid {
-    uint64_t consumer_power[CONSUMER_PRIORITY] = {0};
-    uint64_t generator_power[GENERATOR_PRIORITY] = {0};
+    uint64_t consumer_power[POWER_PRIORITY] = {0};
+    uint64_t generator_power[POWER_PRIORITY] = {0};
     uint64_t accumulator_output = 0;
     uint64_t accumulator_input = 0;
-    float consumer_efficiency[CONSUMER_PRIORITY] = {0};
-    float generator_efficiency[GENERATOR_PRIORITY] = {0};
+    float consumer_efficiency[POWER_PRIORITY] = {0};
+    float generator_efficiency[POWER_PRIORITY] = {0};
     float accumulator_efficiency = 0.f;
 	bool active = false;
 };
@@ -28,10 +33,10 @@ stat_consumer(world& w, powergrid pg[]) {
 			continue;
 		}
 		ecs::building& building = v.get<ecs::building>();
-		unsigned int priority = prototype::get<"priority">(w, building.prototype);
+		auto priority = prototype::get<"priority", power_priority>(w, building.prototype);
 		uint32_t power = prototype::get<"power">(w, building.prototype);
 		uint32_t charge = c.shortage < power ? c.shortage : power;
-		pg[c.network].consumer_power[priority] += charge;
+		pg[c.network].consumer_power[std::to_underlying(priority)] += charge;
 		pg[c.network].active = true;
 	}
 }
@@ -44,9 +49,9 @@ stat_generator(world& w, powergrid pg[]) {
 			continue;
 		}
 		ecs::building& building = v.get<ecs::building>();
-		unsigned int priority = prototype::get<"priority">(w, building.prototype);
+		auto priority = prototype::get<"priority", power_priority>(w, building.prototype);
 		uint32_t capacitance = prototype::get<"capacitance">(w, building.prototype);
-		pg[c.network].generator_power[priority] += capacitance - c.shortage;
+		pg[c.network].generator_power[std::to_underlying(priority)] += capacitance - c.shortage;
 		pg[c.network].active = true;
 	}
 }
@@ -82,17 +87,17 @@ calc_efficiency(world& w, powergrid pgs[]) {
 			break;
 		}
 		uint64_t need_power = 0;
-		for (int i=0;i<CONSUMER_PRIORITY;i++) {
+		for (int i=0;i<POWER_PRIORITY;i++) {
 			need_power += pg.consumer_power[i];
 		}
 		uint64_t offer_power = 0;
-		for (int i=0;i<GENERATOR_PRIORITY;i++) {
+		for (int i=0;i<POWER_PRIORITY;i++) {
 			offer_power += pg.generator_power[i];
 		}
 
 		if (need_power > offer_power) {
 			// power is not enough, all generator efficiency are 100%
-			for (int i=0;i<GENERATOR_PRIORITY;i++) {
+			for (int i=0;i<POWER_PRIORITY;i++) {
 				pg.generator_efficiency[i] = 1.0f;
 			}
 
@@ -105,7 +110,7 @@ calc_efficiency(world& w, powergrid pgs[]) {
 					pg.accumulator_efficiency = 1.0f;
 					offer_power += pg.accumulator_output;
 				}
-				for (int i=0;i<CONSUMER_PRIORITY;i++) {
+				for (int i=0;i<POWER_PRIORITY;i++) {
 					if (offer_power == 0) {
 						// no power
 						pg.consumer_efficiency[i] = 0;
@@ -121,13 +126,13 @@ calc_efficiency(world& w, powergrid pgs[]) {
 			} else {
 				pg.accumulator_efficiency = (float)need_power / pg.accumulator_output;
 				// power is enough now.
-				for (int i=0;i<CONSUMER_PRIORITY;i++) {
+				for (int i=0;i<POWER_PRIORITY;i++) {
 					pg.consumer_efficiency[i] = 1.0f;
 				}
 			}
 		} else {
 			// power is enough, all consumer efficiency are 100%
-			for (int i=0;i<CONSUMER_PRIORITY;i++) {
+			for (int i=0;i<POWER_PRIORITY;i++) {
 				pg.consumer_efficiency[i] = 1.0f;
 			}
 			offer_power -= need_power;
@@ -139,7 +144,7 @@ calc_efficiency(world& w, powergrid pgs[]) {
 					pg.accumulator_efficiency = -1.0f;
 					need_power += pg.accumulator_input;
 				}
-				for (int i=0;i<GENERATOR_PRIORITY;i++) {
+				for (int i=0;i<POWER_PRIORITY;i++) {
 					if (need_power == 0) {
 						// Don't need power yet
 						pg.generator_efficiency[i] = 0;
@@ -155,7 +160,7 @@ calc_efficiency(world& w, powergrid pgs[]) {
 			} else {
 				pg.accumulator_efficiency = -(float)offer_power / pg.accumulator_input;
 				// part charge, generators full output
-				for (int i=0;i<GENERATOR_PRIORITY;i++) {
+				for (int i=0;i<POWER_PRIORITY;i++) {
 					pg.generator_efficiency[i] = 1.0f;
 				}
 			}
@@ -177,8 +182,8 @@ powergrid_run(world& w, powergrid pg[]) {
 		if (v.sibling<ecs::consumer>()) {
 			// It's a consumer, charge capacitance
 			if (c.shortage > 0) {
-				unsigned int priority = prototype::get<"priority">(w, building.prototype);
-				float eff = pg[c.network].consumer_efficiency[priority];
+				auto priority = prototype::get<"priority", power_priority>(w, building.prototype);
+				float eff = pg[c.network].consumer_efficiency[std::to_underlying(priority)];
 				if (eff > 0) {
 					// charge
 					uint32_t power = prototype::get<"power">(w, building.prototype);
@@ -200,8 +205,8 @@ powergrid_run(world& w, powergrid pg[]) {
 		}
 		else if (v.sibling<ecs::generator>()) {
 			// It's a generator, and must be not a consumer
-			unsigned int priority = prototype::get<"priority">(w, building.prototype);
-			float eff = pg[c.network].generator_efficiency[priority];
+			auto priority = prototype::get<"priority", power_priority>(w, building.prototype);
+			float eff = pg[c.network].generator_efficiency[std::to_underlying(priority)];
 			if (eff > 0) {
 				uint32_t capacitance = prototype::get<"capacitance">(w, building.prototype);
 				uint32_t power = (uint32_t)((capacitance - c.shortage) * eff);

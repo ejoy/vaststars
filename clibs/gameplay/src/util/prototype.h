@@ -6,6 +6,7 @@
 #include <lua.hpp>
 #include <bee/nonstd/unreachable.h>
 #include "core/world.h"
+#include "util/enum.h"
 
 namespace prototype {
     constexpr size_t CACHE_SLOTS = 1021;
@@ -121,6 +122,17 @@ namespace prototype {
                         error(w, "[%d].%s limit exceeded.", id, name);
                         std::unreachable();
                     }
+                    else if constexpr (std::is_enum_v<R>) {
+                        using UR = std::underlying_type_t<R>;
+                        static_assert(std::is_unsigned_v<UR>);
+                        static_assert(sizeof(UR) <= sizeof(size_t));
+                        static_assert(sizeof(UR) <= sizeof(lua_Integer));
+                        if (static_cast<size_t>(arg) < enum_count_v<R>) {
+                            return static_cast<R>(static_cast<UR>(arg));
+                        }
+                        error(w, "[%d].%s limit exceeded.", id, name);
+                        std::unreachable();
+                    }
                     else {
                         error(w, "[%d].%s is not integer.", id, name);
                         std::unreachable();
@@ -180,7 +192,7 @@ namespace prototype {
     }
 
     template <typename T>
-    T get(world& w, uint16_t id, uint16_t hash, const char* name) {
+    T rawget(world& w, uint16_t id, uint16_t hash, const char* name) {
         cache* c = w.P;
         uint32_t cid = (hash<<16) | id;
         auto& s = c->s[inthash(cid)];
@@ -191,9 +203,9 @@ namespace prototype {
         return s.v.get<T>(w, id, name);
     }
 
-    template <string_literal str>
+    template <string_literal str, typename T = typename key<str>::type>
     auto get(world& w, uint16_t id) {
-        return get<typename key<str>::type>(w, id, key<str>::id, str.value);
+        return rawget<T>(w, id, key<str>::id, str.value);
     }
 
 #define PROTOTYPE(NAME, TYPE) \
@@ -201,7 +213,7 @@ namespace prototype {
         using type = TYPE; \
         static constexpr uint16_t id = __LINE__; \
     };
-    PROTOTYPE(priority, unsigned int)
+    PROTOTYPE(priority, uint8_t)
     PROTOTYPE(power, uint32_t)
     PROTOTYPE(drain, uint32_t)
     PROTOTYPE(charge_power, uint32_t)
