@@ -18,6 +18,8 @@ local construction_center_stop_build_mb = mailbox:sub {"construction_center_stop
 local construction_center_place_mb = mailbox:sub {"construction_center_place"}
 local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
 local lorry_factory_stop_build_mb = mailbox:sub {"lorry_factory_stop_build"}
+local manual_items_oper_subscribe_mb = mailbox:sub {"manual_items_oper_subscribe"}
+local manual_items_oper_unsubscribe_mb = mailbox:sub {"manual_items_oper_unsubscribe"}
 
 local ichest = require "gameplay.interface.chest"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
@@ -162,7 +164,7 @@ local function __manual_items_oper(datamodel, object_id)
         datamodel.manual_items_oper_subscribe = false
     end
 
-    datamodel.manual_items_oper_unsubscribe = (manual_items_object_id == object_id)
+    datamodel.manual_items_oper_unsubscribe = (manual_items_object_id ~= nil) and (manual_items_object_id == object_id)
 
     if iprototype.has_type(typeobject.type, "assembling") or
        iprototype.has_type(typeobject.type, "hub") then
@@ -404,6 +406,16 @@ function M:stage_ui_update(datamodel, object_id)
         local e = gameplay_core.get_entity(assert(object.gameplay_eid))
         assert(e.assembling.recipe ~= 0)
         iassembling.set_option(gameplay_core.get_world(), e, {ingredientsLimit = 0, resultsLimit = 0})
+    end
+
+    for _ in manual_items_oper_subscribe_mb:unpack() do
+        manual_items_object_id = object_id
+        __manual_items_oper(datamodel, object_id)
+    end
+
+    for _ in manual_items_oper_unsubscribe_mb:unpack() do
+        manual_items_object_id = nil
+        __manual_items_oper(datamodel, object_id)
     end
 end
 
