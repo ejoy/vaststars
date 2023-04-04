@@ -106,8 +106,6 @@
                 construction_center_count = 0,
                 construction_center_multiple = 0,
                 construction_center_ingredients = {},
-                show_teardown = false,
-                show_move = false,
                 show_set_item = false,
                 show_set_recipe = false,
                 show_road_builder = false,
@@ -188,22 +186,6 @@
                         }
 
                         start.buttons = {}
-                        if start.show_teardown then
-                            local v = setmetatable({}, {__index = mt})
-                            v.text = "拆除"
-                            v.message = "teardown"
-                            v.background_image = "textures/factory/demolition.texture"
-                            start.buttons[#start.buttons + 1] = v
-                        end
-
-                        if start.show_move then
-                            local v = setmetatable({}, {__index = mt})
-                            v.text = "移动"
-                            v.message = "move"
-                            v.background_image = "textures/factory/move.texture"
-                            start.buttons[#start.buttons + 1] = v
-                        end
-
                         if start.show_set_recipe then
                             local v = setmetatable({}, {__index = mt})
                             v.text = "管理"
@@ -327,7 +309,7 @@
                         end
                         start("buttons")
                     end,
-                    "show_teardown", "show_move", "show_set_recipe", "show_set_item", "show_road_builder", 
+                    "show_set_recipe", "show_set_item", "show_road_builder", 
                     "construction_center_icon", "construction_center_count", "construction_center_multiple", "drone_depot_icon", "station_item_icon",
                     "lorry_factory_icon", "lorry_factory_count", "lorry_factory_inc_lorry", "lorry_factory_dec_lorry",
                 }

@@ -11,8 +11,6 @@ local iui = ecs.import.interface "vaststars.gamerender|iui"
 local set_recipe_mb = mailbox:sub {"set_recipe"}
 local set_item_mb = mailbox:sub {"set_item"}
 local close_mb = mailbox:sub {"close"}
-local teardown_mb = mailbox:sub {"teardown"}
-local move_mb = mailbox:sub {"move"}
 local road_builder_mb = mailbox:sub {"road_builder"}
 local pipe_builder_mb = mailbox:sub {"pipe_builder"}
 local construction_center_build_mb = mailbox:sub {"construction_center_build"}
@@ -21,11 +19,7 @@ local construction_center_place_mb = mailbox:sub {"construction_center_place"}
 local lorry_factory_inc_lorry_mb = mailbox:sub {"lorry_factory_inc_lorry"}
 local lorry_factory_stop_build_mb = mailbox:sub {"lorry_factory_stop_build"}
 
-local igameplay = ecs.import.interface "vaststars.gamerender|igameplay"
-local iobject = ecs.require "object"
 local ichest = require "gameplay.interface.chest"
-local ipower = ecs.require "power"
-local ipower_line = ecs.require "power_line"
 local idetail = ecs.import.interface "vaststars.gamerender|idetail"
 local assembling_common = require "ui_datamodel.common.assembling"
 local gameplay = import_package "vaststars.gameplay"
@@ -49,7 +43,6 @@ local function __show_set_recipe(typeobject)
 
     return typeobject.recipe == nil and not iprototype.has_type(typeobject.type, "mining")
 end
-
 
 local function __construction_center_update(datamodel, object_id)
     local object = assert(objects:get(object_id))
@@ -179,8 +172,6 @@ function M:create(object_id, object_position, ui_x, ui_y)
     end
 
     local datamodel = {
-        show_teardown = false,
-        show_move = false,
         show_set_recipe = show_set_recipe,
         show_set_item = show_set_item,
         show_road_builder = typeobject.road_builder,
@@ -288,38 +279,6 @@ function M:stage_ui_update(datamodel, object_id)
             assert(false)
         end
         iui.open({"drone_depot.rml"}, object_id, interface)
-    end
-
-    for _, _, _, object_id in teardown_mb:unpack() do
-        local object = assert(objects:get(object_id))
-        igameplay.remove_entity(object.gameplay_eid)
-        gameplay_core.build()
-
-        iobject.remove(object)
-        objects:remove(object_id, "CONSTRUCTED")
-        iui.close("build_function_pop.rml")
-        iui.close("detail_panel.rml")
-
-        local typeobject_item = iprototype.queryByName(object.prototype_name)
-        if typeobject_item then
-            ichest.inventory_place(gameplay_core.get_world(), typeobject_item.id, 1)
-        end
-
-        local typeobject_entity = iprototype.queryByName(object.prototype_name)
-        if typeobject_entity.power_supply_area then
-            ipower:build_power_network(gameplay_core.get_world())
-            ipower_line.update_line(ipower:get_pole_lines())
-        end
-    end
-
-    for _, _, _, object_id in move_mb:unpack() do
-        iui.close("build_function_pop.rml")
-        iui.close("detail_panel.rml")
-
-        local vsobject = vsobject_manager:get(object_id)
-        vsobject:modifier("start", {name = "over", forwards = true})
-
-        iui.redirect("construct.rml", "move", object_id)
     end
 
     for _, _, _, object_id in close_mb:unpack() do

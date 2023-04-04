@@ -1163,8 +1163,6 @@ local t = {
 	"/pkg/vaststars.resources/ui/list.lua",
 	"/pkg/vaststars.resources/ui/loading.rml",
 	"/pkg/vaststars.resources/ui/logistic_pop.rml",
-	"/pkg/vaststars.resources/ui/lua/assemble.lua",
-	"/pkg/vaststars.resources/ui/lua/chest.lua",
 	"/pkg/vaststars.resources/ui/lua/popup_bound.lua",
 	"/pkg/vaststars.resources/ui/lua/statistics.lua",
 	"/pkg/vaststars.resources/ui/lua/tracedoc.lua",

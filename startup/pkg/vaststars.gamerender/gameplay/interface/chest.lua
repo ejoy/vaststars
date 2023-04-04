@@ -30,18 +30,4 @@ function M.collect_item(world, e)
     return r
 end
 
-function M.inventory_place(world, ...)
-    local e = assert(world.ecs:first("base chest:in"))
-    world:container_place(e.chest, ...)
-end
-
-function M.inventory_pickup(world, ...)
-    local e = assert(world.ecs:first("base chest:in"))
-    return world:container_pickup(e.chest, ...)
-end
-
-function M.inventory_collect_item(world)
-    local e = assert(world.ecs:first("base building:in chest:in"))
-    return M.collect_item(world, e)
-end
 return M
